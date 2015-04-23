@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+    <ConfigMapEntry panelClass="FileMenu" configName="FileMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="FileMenu.xml"/>
+    <ConfigMapEntry panelClass="SettingsMenu" configName="SettingsMenu" formId="5FE98886-D943-4E27-8380-BBB42D95D21E" configFile="SettingsMenu.xml"/>
+    <ConfigMapEntry panelClass="WindowPosSizeContextMenu" configName="WindowPosSizeContextMenu" formId="9144567C-7821-425A-904F-4601A89AE3FD" configFile="WindowPosSizeContextMenu.xml"/>
+    <ConfigMapEntry panelClass="YesNoScanner" configName="YesNoScanner2" formId="9FD64F2C-DEFA-4672-8B96-D13EA4AAFE2B" configFile="YesNoScanner2.xml"/>
+    <ConfigMapEntry panelClass="YesNoScanner" configName="YesNoScanner" formId="B760945E-AA11-4C99-AB62-F03F47F9C76A" configFile="YesNoScanner.xml"/>
+    <ConfigMapEntry panelClass="SimpleContextMenu" configName="SimpleContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="SimpleContextMenu.xml"/>
+    <ConfigMapEntry panelClass="SimpleContextMenu" configName="SimpleContextMenu2" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="SimpleContextMenu2.xml"/>
+    <ConfigMapEntry panelClass="SimpleContextMenuIconsOnly" configName="SimpleContextMenuIconsOnly" formId="6DD7E759-9ACE-40B0-9991-20FB56266BE9" configFile="SimpleContextMenuIconsOnly.xml"/>
+    <ConfigMapEntry panelClass="SimpleContextMenuIconsOnly" configName="SimpleContextMenuIconsOnly2" formId="6DD7E759-9ACE-40B0-9991-20FB56266BE9" configFile="SimpleContextMenuIconsOnly2.xml"/>
+    <ConfigMapEntry panelClass="YesNoScannerNarrow" configName="YesNoScanner2Narrow" formId="056E5553-66C7-4B60-A931-D7FED719DAF2" configFile="YesNoScanner2.xml"/>
+    <ConfigMapEntry panelClass="YesNoScannerNarrow" configName="YesNoScannerNarrow" formId="D44F3B69-E0A3-4EBF-AA7C-4EA750A75762" configFile="YesNoScanner.xml"/>
+  </ConfigMapEntries>
+</ACAT>

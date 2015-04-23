@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Aster.ScreenManagement.DialogCommon" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="6.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgCQAACCSAEgUhTECBAgAUKAACAkAAABYEAABEBBAA=</HashCode>
+      <FileName>Common\DialogCommon.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_dialogPanel" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Aster.ScreenManagement.ScannerCommon" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.75" Y="2.5" Width="1.5" />
+    <AssociationLine Name="_scannerPanel" Type="Aster.ScreenManagement.IScannerPanel" ManuallyRouted="true">
+      <Path>
+        <Point X="8.75" Y="2.781" />
+        <Point X="6.275" Y="2.781" />
+        <Point X="6.275" Y="4.291" />
+        <Point X="1.25" Y="4.291" />
+        <Point X="1.25" Y="2.441" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="PositionSizeController" Type="Aster.ScreenManagement.ScannerPositionSizeController">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.203" Y="0.31" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>BBUCyAICB3TGEUoxAOoAwCTi8JIowgFAgaGmANABBSg=</HashCode>
+      <FileName>Common\ScannerCommon.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_scannerPanel" />
+      <Property Name="StatusBarController" />
+      <Property Name="PositionSizeController" />
+      <Property Name="TextController" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Aster.ScreenManagement.ScannerPositionSizeController" Collapsed="true">
+    <Position X="10.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kAApIAAAQAAAAQAgAkAAgAACMEAAgAAAAAEAiAAABBI=</HashCode>
+      <FileName>Common\ScannerPositionSizeController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_autoPositionScanner" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Aster.ScreenManagement.ScannerStatusBar" Collapsed="true">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAACAAAAAAAgAAABAAAAAEAAAAA=</HashCode>
+      <FileName>Common\ScannerStatusBar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aster.ScreenManagement.StartupArg" Collapsed="true">
+    <Position X="12.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAACAAAAAABCAAAIIAEAAAAAAAAAA=</HashCode>
+      <FileName>Common\StartupArg.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aster.ScreenManagement.StatusBarController" Collapsed="true">
+    <Position X="8.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAACAAAAAAAEAAAAAAAAAAAQAAAAEAAAAAIAAAAg=</HashCode>
+      <FileName>Common\StatusBarController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_statusBar" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Aster.ScreenManagement.TextController" Collapsed="true">
+    <Position X="8.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>REYAQIAEBAAAAQAACQAIgAQCIAAADAAAQAAAIQAADQA=</HashCode>
+      <FileName>Common\TextController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aster.ScreenManagement.ContextMenu" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="1.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BgAAASAgAGEAAfhRjwCAAAEC/CEDQAAQEiMAQhGoCWA=</HashCode>
+      <FileName>CommonScreens\ContextMenu.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Aster.ScreenManagement.HorizontalDockScanner" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BgAgBiABAWAAAYgIwAKAgEgiolAAEKAAEAEAQFGAQyA=</HashCode>
+      <FileName>CommonScreens\HorizontalDockScanner.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_dockScanner" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Aster.ScreenManagement.Context" Collapsed="true">
+    <Position X="3.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ChQgAAAAAKgAAQEAJAAAABAADgASAAAAIBEjSGIgAAQ=</HashCode>
+      <FileName>Context.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aster.ScreenManagement.MenuSelectedArgs" Collapsed="true">
+    <Position X="6.25" Y="5.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IMenuPanel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aster.ScreenManagement.PanelConfigMapEntry" Collapsed="true">
+    <Position X="8.5" Y="6.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAgCAAAAAAAAAEASAAAAAAACAAAAAAEAAAAAAIAAA=</HashCode>
+      <FileName>PanelConfigMap\PanelConfigMapEntry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aster.ScreenManagement.ScreenManager" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="6.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAFEAEAEACAEACiBBAMCIAFAIAA0AgAARAAKAAAAAAA=</HashCode>
+      <FileName>ScreenManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Aster.ScreenManagement.NativeMethods" Collapsed="true">
+    <Position X="3.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAIAAAAAAAAAAgAAAQAAAAAAAAgA=</HashCode>
+      <FileName>ScreenManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aster.ScreenManagement.AutoPositionScanner" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAKIkAAAIAAgQQAAAAAAAAAACIAAAAAEABEA=</HashCode>
+      <FileName>Utils\AutoPositionScanner.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Aster.ScreenManagement.AutoScanTimer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="1" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAEAAKIkAAAIQIgQQAABAAAAAAACIgAgAAMAREA=</HashCode>
+      <FileName>Utils\AutoScanTimer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Aster.ScreenManagement.ControlHighlight" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAACAEAAAAAACCQAIAACAAAAAAAgAgAAAABAA=</HashCode>
+      <FileName>Utils\ControlHighlight.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Aster.ScreenManagement.ControlHighlightOverlayWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11.5" Y="5.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAABAgAACAEDgBAAEAQAAAAgABAAAAACAAAAAAABAA=</HashCode>
+      <FileName>Utils\ControlHighlightOverlayWindow.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Aster.ScreenManagement.DockScanner" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAEAQAACAEAAAAAAgAQAAAAAAAAQAAAAAAAAAABAA=</HashCode>
+      <FileName>Utils\DockScanner.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="Aster.ScreenManagement.IDialogPanel" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAACAAAA=</HashCode>
+      <FileName>Interfaces\IDialogPanel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Aster.ScreenManagement.IMenuPanel" Collapsed="true">
+    <Position X="2.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IMenuPanel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Aster.ScreenManagement.IPanel" Collapsed="true">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAgAAAAAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Interfaces\IPanel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Aster.ScreenManagement.IScannerPanel" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAYAAgAAAAAAAgAAAAAAAEAAAAAGAAAA=</HashCode>
+      <FileName>Interfaces\IScannerPanel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Aster.ScreenManagement.IScannerPreview" Collapsed="true">
+    <Position X="5.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAgAAAAAAAAAEAAAABAAAAAAAAAAAI=</HashCode>
+      <FileName>Interfaces\IScannerPreview.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Aster.ScreenManagement.IScreenAutomation" Collapsed="true">
+    <Position X="4.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IScreenAutomation.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Aster.ScreenManagement.ISupportsStatusBar" Collapsed="true">
+    <Position X="10.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\ISupportsStatusBar.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

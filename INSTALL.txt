@@ -1,0 +1,44 @@
+------------
+Introduction
+------------
+Assistive Context-Aware Toolkit (ACAT) is an open source platform developed at Intel Labs to enable people with motor neuron diseases and other disabilities to have full access to the capabilities and applications of their computers through very constrained interfaces suitable for their condition.  More specifically, ACAT enables users to easily communicate with others through keyboard simulation, word prediction and speech synthesis. Users can perform a range of tasks such as editing, managing documents, navigating the Web and accessing emails. 
+
+ACAT was originally developed by researchers at Intel Labs for Professor Stephen Hawking, through a very iterative design process over the course of three years. Professor Hawking was instrumental to the design process and was a key contributor to the project design and validation. After Intel deployed the system to Professor Hawking, we turned our attention to the larger community and continued to make ACAT more configurable to support a larger set of users with different conditions.
+
+Our hope is that, by open sourcing this configurable platform, developers will continue to expand on this system by adding new user interfaces, new sensing modalities, word prediction and many other features. ACAT is designed to run on Microsoft Windows* machines and can interface to different sensor inputs such as infrared switches, camera, push buttons, and more. 
+
+ACAT project website: https://01.org/acat
+
+------------
+Requirements
+------------
+1. Visual Studio 2012
+2. At least 1 GB of free space
+3. Presage word prediction software v0.9.1.
+
+------------------
+Installing Presage
+------------------
+1. Presage must be installed for the software to run.
+2. Download the source.
+3. The path to the Presage installer in the source tree is $\Applications\SetupClean\Install\presage-0.9.1-32bit-setup.exe
+4. Run this installer and accept all defaults.
+5. Presage will run as a systray application. It is automatically launched on Windows startup.
+
+Alternatively, run the pre-built binary for ACAT (ACATSetup.exe). This will install Presage as well.
+
+--------------------
+Building the toolkit
+--------------------
+1. Open ACAT.sln
+2. Set Applications\ACATApp as the startup project
+3. Do a Rebuild All.
+
+-----------------------
+Running the application
+-----------------------
+1. Make sure you have installed Presage (see Installing Presage above)
+2. After building the toolkit, the application will be located under $\Applications\ACATApp\bin\Release.  The name of the exeutable is ACATApp.exe
+3. Run the app from within Visual Studio or from Explorer.
+4. Use the F5 key as the input trigger for the application.
+

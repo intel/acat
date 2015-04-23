@@ -1,0 +1,408 @@
+<?xml version="1.0" ?> 
+
+<ACAT>
+	<WidgetAttributes>
+    <WidgetAttribute name="lblOK" label="OK" value="valButtonSave"  fontsize="14" mouseClickActuate="true"/>
+		<WidgetAttribute name="lblBack" label="Cancel" value="valButtonBack"  fontsize="14"  mouseClickActuate="true"/>
+    <WidgetAttribute name="lblRestoreDefaults" label="Defaults" value="valButtonRestoreDefaults" fontsize="14"  mouseClickActuate="true" />
+    
+    <WidgetAttribute name="lblSelectingClick" label="Beep On Select" fontsize="14" value="valSelectingClick"/>
+    <WidgetAttribute name="pbSelectingClick" label="M" value="valCheckSelectingClick" fontname="ACAT Icon" fontsize="32" bold="false" mouseClickActuate="true"/>
+
+    <WidgetAttribute name="lblEveryHalfLess" label="O" value="valButtonEveryHalfLess" fontname="ACAT Icon" fontsize="36"  bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="lblEveryHalfMore" label="N" value="valButtonEveryHalfMore" fontname="ACAT Icon" fontsize="36"  bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="lblEveryRowLess" label="O" value="valButtonEveryRowLess" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="lblEveryRowMore" label="N" value="valButtonEveryRowMore" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="lblEveryColumnLess" label="O" value="valButtonEveryColumnLess" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>
+    <WidgetAttribute name="lblEveryColumnMore" label="N" value="valButtonEveryColumnMore" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>
+    <WidgetAttribute name="lblWordPredictionLess" label="O" value="valButtonWordPredictionLess" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>
+    <WidgetAttribute name="lblWordPredictionMore" label="N" value="valButtonWordPredictionMore" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>
+    
+    <WidgetAttribute name="ltbAcceptTimeLess" label="O" value="valButtonAcceptTimeLess" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbAcceptTimeMore" label="N" value="valButtonAcceptTimeMore" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbSteppingLess" label="O" value="valButtonSteppingLess" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbSteppingMore" label="N" value="valButtonSteppingMore" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbHesitateLess" label="O" value="valButtonSteppingMore" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbHesitateMore" label="N" value="valButtonHesitateMore" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbWordListHesitateLess" label="O" value="valButtonSteppingMore" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbWordListHesitateMore" label="N" value="valButtonHesitateMore" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbTabScanLess" label="O" value="valTabScanLess" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbTabScanMore" label="N" value="valTabScanMore" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbFirstRepeatLess" label="O" value="valFirstRepeatLess" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbFirstRepeatMore" label="N" value="valFirstRepeatMore" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+	</WidgetAttributes>
+
+  <Layout>
+      <Widget class="ButtonControlWidget" name="lblOK" />
+      <Widget class="ButtonControlWidget" name="lblBack" />
+      <Widget class="ButtonControlWidget" name="lblRestoreDefaults" />
+
+      <Widget class="CheckBoxWidget" name="pbSelectingClick" onStateText="L" offStateText="M" onOffState="on" />
+      <Widget class="LabelWidget" name="lblSelectingClick" />
+
+    <Widget class="SliderWidget" name="tbEveryHalf" min="1" max="10" initialvalue="5" tickfrequency="1" step="1" caption="Every Half">
+        <Widget class="LabelWidget" name="lblEveryHalfLess" subclass="sliderdecrement"/>
+        <Widget class="LabelWidget" name="lblEveryHalfMore" subclass="sliderincrement"/>
+        <Widget class="WinControlWidget" name="tbEveryHalf"/>
+        <Widget class="LabelWidget" name="lblEveryHalf" subclass="slidercaption"/>
+        <Widget class="WinControlWidget" name="sminEveryHalf" subclass="sliderminvalue"/>
+        <Widget class="WinControlWidget" name="smaxEveryHalf" subclass="slidermaxvalue"/>
+        <Widget class="WinControlWidget" name="svalEveryHalf" subclass="slidercurrentvalue" />
+      </Widget>
+
+      <Widget class="SliderWidget" name="tbEveryRow" min="1" max="10" initialvalue="5" tickfrequency="1" step="1" caption="Every Row">
+        <Widget class="LabelWidget" name="lblEveryRowLess" subclass="sliderdecrement"/>
+        <Widget class="LabelWidget" name="lblEveryRowMore" subclass="sliderincrement"/>
+        <Widget class="WinControlWidget" name="tbEveryRow"/>
+        <Widget class="LabelWidget" name="lblEveryRow" subclass="slidercaption"/>
+        <Widget class="WinControlWidget" name="sminEveryRow" subclass="sliderminvalue"/>
+        <Widget class="WinControlWidget" name="smaxEveryRow" subclass="slidermaxvalue"/>
+        <Widget class="WinControlWidget" name="svalEveryRow" subclass="slidercurrentvalue" />
+      </Widget>
+
+      <Widget class="SliderWidget" name="tbEveryColumn" min="1" max="10" initialvalue="5" tickfrequency="1" step="1" caption="Every Column">
+        <Widget class="LabelWidget" name="lblEveryColumnLess" subclass="sliderdecrement"/>
+        <Widget class="LabelWidget" name="lblEveryColumnMore" subclass="sliderincrement"/>
+        <Widget class="WinControlWidget" name="tbEveryColumn"/>
+        <Widget class="LabelWidget" name="lblEveryColumn" subclass="slidercaption"/>
+        <Widget class="WinControlWidget" name="sminEveryColumn" subclass="sliderminvalue"/>
+        <Widget class="WinControlWidget" name="smaxEveryColumn" subclass="slidermaxvalue"/>
+        <Widget class="WinControlWidget" name="svalEveryColumn" subclass="slidercurrentvalue" />
+      </Widget>
+
+      <Widget class="SliderWidget" name="tbWordPrediction" min="1" max="10" initialvalue="5" tickfrequency="1" step="1" caption="Word Prediction">
+        <Widget class="LabelWidget" name="lblWordPredictionLess" subclass="sliderdecrement"/>
+        <Widget class="LabelWidget" name="lblWordPredictionMore" subclass="sliderincrement"/>
+        <Widget class="WinControlWidget" name="tbWordPrediction"/>
+        <Widget class="LabelWidget" name="lblWordPrediction" subclass="slidercaption"/>
+        <Widget class="WinControlWidget" name="sminWordPrediction" subclass="sliderminvalue"/>
+        <Widget class="WinControlWidget" name="smaxWordPrediction" subclass="slidermaxvalue"/>
+        <Widget class="WinControlWidget" name="svalWordPrediction" subclass="slidercurrentvalue" />
+      </Widget>
+        
+        <Widget class="SliderWidget" name="tbAcceptTime" min="0" max="2" initialvalue="1" tickfrequency="0.5" step="0.05" caption="Accept Time">
+          <Widget class="LabelWidget" name="ltbAcceptTimeLess" subclass="sliderdecrement"/>
+          <Widget class="LabelWidget" name="ltbAcceptTimeMore" subclass="sliderincrement"/>
+          <Widget class="WinControlWidget" name="tbAcceptTime"/>
+          <Widget class="LabelWidget" name="lblAcceptTime" subclass="slidercaption"/>
+          <Widget class="WinControlWidget" name="sminAcceptTime" subclass="sliderminvalue"/>
+          <Widget class="WinControlWidget" name="smaxAcceptTime" subclass="slidermaxvalue"/>
+          <Widget class="WinControlWidget" name="svalAcceptTime" subclass="slidercurrentvalue" />
+        </Widget>
+
+        <Widget class="SliderWidget" name="tbSteppingTime" min="0.2" max="2" initialvalue="1" tickfrequency="0.5" step="0.05" caption="Stepping Time">
+          <Widget class="LabelWidget" name="ltbSteppingLess" subclass="sliderdecrement"/>
+          <Widget class="LabelWidget" name="ltbSteppingMore" subclass="sliderincrement"/>
+          <Widget class="WinControlWidget" name="tbSteppingTime"/>
+          <Widget class="LabelWidget" name="lblSteppingTime" subclass="slidercaption"/>
+          <Widget class="WinControlWidget" name="sminSteppingTime" subclass="sliderminvalue"/>
+          <Widget class="WinControlWidget" name="smaxSteppingTime" subclass="slidermaxvalue"/>
+          <Widget class="WinControlWidget" name="svalSteppingTime" subclass="slidercurrentvalue" />
+        </Widget>
+
+        <Widget class="SliderWidget" name="tbHesitateTime" min="0" max="2" initialvalue="1" tickfrequency="0.5" step="0.05" caption="Hesitate Time">
+          <Widget class="LabelWidget" name="ltbHesitateLess" subclass="sliderdecrement"/>
+          <Widget class="LabelWidget" name="ltbHesitateMore" subclass="sliderincrement"/>
+          <Widget class="WinControlWidget" name="tbHesitateTime"/>
+          <Widget class="LabelWidget" name="lblHesitateTime" subclass="slidercaption"/>
+          <Widget class="WinControlWidget" name="sminHesitateTime" subclass="sliderminvalue"/>
+          <Widget class="WinControlWidget" name="smaxHesitateTime" subclass="slidermaxvalue"/>
+          <Widget class="WinControlWidget" name="svalHesitateTime" subclass="slidercurrentvalue" />
+        </Widget>
+
+        <Widget class="SliderWidget" name="tbWordListHesitateTime" min="0" max="2" initialvalue="1" tickfrequency="0.5" step="0.05" caption="WordList Hesitate">
+          <Widget class="LabelWidget" name="ltbWordListHesitateLess" subclass="sliderdecrement"/>
+          <Widget class="LabelWidget" name="ltbWordListHesitateMore" subclass="sliderincrement"/>
+          <Widget class="WinControlWidget" name="tbWordListHesitateTime"/>
+          <Widget class="LabelWidget" name="lblWordListHesitateTime" subclass="slidercaption"/>
+          <Widget class="WinControlWidget" name="sminWordListHesitateTime" subclass="sliderminvalue"/>
+          <Widget class="WinControlWidget" name="smaxWordListHesitateTime" subclass="slidermaxvalue"/>
+          <Widget class="WinControlWidget" name="svalWordListHesitateTime" subclass="slidercurrentvalue" />
+        </Widget>
+
+        <Widget class="SliderWidget" name="tbTabScanTime" min="0.2" max="5" initialvalue="1" tickfrequency="0.5" step="0.05" caption="Tab Scan Time">
+          <Widget class="LabelWidget" name="ltbTabScanLess" subclass="sliderdecrement"/>
+          <Widget class="LabelWidget" name="ltbTabScanMore" subclass="sliderincrement"/>
+          <Widget class="WinControlWidget" name="tbTabScanTime"/>
+          <Widget class="LabelWidget" name="lblTabScanTime" subclass="slidercaption"/>
+          <Widget class="WinControlWidget" name="sminTabScanTime" subclass="sliderminvalue"/>
+          <Widget class="WinControlWidget" name="smaxTabScanTime" subclass="slidermaxvalue"/>
+          <Widget class="WinControlWidget" name="svalTabScanTime" subclass="slidercurrentvalue" />
+        </Widget>
+
+        <Widget class="SliderWidget" name="tbFirstRepeatTime" min="0.2" max="5" initialvalue="1" tickfrequency="0.5" step="0.05" caption="First Repeat Time">
+          <Widget class="LabelWidget" name="ltbFirstRepeatLess" subclass="sliderdecrement"/>
+          <Widget class="LabelWidget" name="ltbFirstRepeatMore" subclass="sliderincrement"/>
+          <Widget class="WinControlWidget" name="tbFirstRepeatTime"/>
+          <Widget class="LabelWidget" name="lblFirstRepeatTime" subclass="slidercaption"/>
+          <Widget class="WinControlWidget" name="sminFirstRepeatTime" subclass="sliderminvalue"/>
+          <Widget class="WinControlWidget" name="smaxFirstRepeatTime" subclass="slidermaxvalue"/>
+          <Widget class="WinControlWidget" name="svalFirstRepeatTime" subclass="slidercurrentvalue" />
+        </Widget>
+  </Layout>
+  
+	<Animations> 
+    <Animation  name="TopLevel"
+                start="true"
+                onEnter=""
+                steppingTime="@TabScanTime"
+                iterations="@HalfScanIterations">
+        <Widget name="lblEveryHalf" onSelect="transition(animEveryHalf);" />
+        <Widget name="lblEveryRow" onSelect="transition(animEveryRow);"/>
+        <Widget name="lblEveryColumn" onSelect="transition(animEveryColumn);"/>
+        <Widget name="lblWordPrediction" onSelect="transition(animWordPrediction);"/>
+        <Widget name="lblAcceptTime" onSelect="transition(animAcceptTime);"/>
+        <Widget name="lblSteppingTime" onSelect="transition(animSteppingTime);"/>
+        <Widget name="lblHesitateTime" onSelect="transition(animHesitate);"/>
+        <Widget name="lblWordListHesitateTime" onSelect="transition(animWordListHesitate);"/>
+        <Widget name="lblTabScanTime" onSelect="transition(animTabScan);"/>
+        <Widget name="lblFirstRepeatTime" onSelect="transition(animFirstRepeat);"/>
+        <Widget name="lblSelectingClick" onSelect="actuate(pbSelectingClick);" />
+        <Widget name="lblOK" onSelect="actuate(@SelectedWidget)"/>
+        <Widget name="lblBack" onSelect="actuate(@SelectedWidget);" />
+        <Widget name="lblRestoreDefaults" onSelect="actuate(@SelectedWidget)"/>
+    </Animation>
+
+    <Animation name="animEveryHalf"
+               start="false"
+               onEnter=""
+               iterations="3"
+               steppingTime="@TabScanTime"
+               onEnd="transition(TopLevel)">
+        <Widget name="lblEveryHalfLess" onSelect="actuate(@SelectedWidget);transition(animEveryHalfDecrement);" />
+        <Widget name="lblEveryHalfMore" onSelect="actuate(@SelectedWidget);transition(animEveryHalfIncrement);"/>
+    </Animation>
+      <Animation name="animEveryHalfDecrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animEveryHalf)">
+        <Widget name="lblEveryHalfLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(lblEveryHalfLess);" />
+      </Animation>
+      <Animation name="animEveryHalfIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animEveryHalf)">
+        <Widget name="lblEveryHalfMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(lblEveryHalfMore);" />
+      </Animation>
+
+    <Animation name="animEveryRow"
+           start="false"
+           onEnter=""
+           iterations="3"
+           steppingTime="@TabScanTime"
+           onEnd="transition(TopLevel)">
+      <Widget name="lblEveryRowLess" onSelect="actuate(@SelectedWidget);transition(animEveryRowDecrement);" />
+      <Widget name="lblEveryRowMore" onSelect="actuate(@SelectedWidget);transition(animEveryRowIncrement);"/>
+    </Animation>
+      <Animation name="animEveryRowDecrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animEveryRow)">
+        <Widget name="lblEveryRowLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(lblEveryRowLess);" />
+      </Animation>
+
+      <Animation name="animEveryRowIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animEveryRow)">
+        <Widget name="lblEveryRowMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(lblEveryRowMore);" />
+      </Animation>
+
+    <Animation name="animEveryColumn"
+       start="false"
+       onEnter=""
+       iterations="3"
+       steppingTime="@TabScanTime"
+       onEnd="transition(TopLevel)">
+      <Widget name="lblEveryColumnLess" onSelect="actuate(@SelectedWidget);transition(animEveryColumnDecrement);" />
+      <Widget name="lblEveryColumnMore" onSelect="actuate(@SelectedWidget);transition(animEveryColumnIncrement);"/>
+    </Animation>
+      <Animation name="animEveryColumnDecrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animEveryColumn)">
+        <Widget name="lblEveryColumnLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(lblEveryColumnLess);" />
+      </Animation>
+      <Animation name="animEveryColumnIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animEveryColumn)">
+        <Widget name="lblEveryColumnMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(lblEveryColumnMore);" />
+      </Animation>
+
+    <Animation name="animWordPrediction"
+       start="false"
+       onEnter=""
+       iterations="3"
+       steppingTime="@TabScanTime"
+       onEnd="transition(TopLevel)">
+      <Widget name="lblWordPredictionLess" onSelect="actuate(@SelectedWidget);transition(animWordPredictionDecrement);" />
+      <Widget name="lblWordPredictionMore" onSelect="actuate(@SelectedWidget);transition(animWordPredictionIncrement);"/>
+    </Animation>
+      <Animation name="animWordPredictionDecrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animWordPrediction)">
+        <Widget name="lblWordPredictionLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(lblWordPredictionLess);" />
+      </Animation>
+      <Animation name="animWordPredictionIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animWordPrediction)">
+        <Widget name="lblWordPredictionMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(lblWordPredictionMore);" />
+      </Animation>
+    
+    <Animation name="animAcceptTime"
+           start="false"
+           onEnter=""
+           iterations="3"
+           steppingTime="@TabScanTime"
+           onEnd="transition(TopLevel)">
+        <Widget name="ltbAcceptTimeLess" onSelect="actuate(@SelectedWidget);transition(animAcceptTimeDecrement);" />
+        <Widget name="ltbAcceptTimeMore" onSelect="actuate(@SelectedWidget);transition(animAcceptTimeIncrement);"/>
+    </Animation>
+      <Animation name="animAcceptTimeDecrement"
+              start="false"
+              onEnter=""
+              iterations="1"
+              onEnd="transition(animAcceptTime)">
+        <Widget name="ltbAcceptTimeLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbAcceptTimeLess);" />
+      </Animation>
+
+      <Animation name="animAcceptTimeIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animAcceptTime)">
+        <Widget name="ltbAcceptTimeMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbAcceptTimeMore);" />
+      </Animation>
+
+    <Animation name="animSteppingTime"
+       start="false"
+       onEnter=""
+       iterations="3"
+       steppingTime="@TabScanTime"
+       onEnd="transition(TopLevel)">
+      <Widget name="ltbSteppingLess" onSelect="actuate(@SelectedWidget);transition(animSteppingTimeDecrement);" />
+      <Widget name="ltbSteppingMore" onSelect="actuate(@SelectedWidget);transition(animSteppingTimeIncrement);"/>
+    </Animation>
+      <Animation name="animSteppingTimeDecrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animSteppingTime)">
+        <Widget name="ltbSteppingLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbSteppingLess);" />
+      </Animation>
+      <Animation name="animSteppingTimeIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animSteppingTime)">
+        <Widget name="ltbSteppingMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbSteppingMore);" />
+      </Animation>
+
+    <Animation  name="animHesitate"
+                start="false"
+                onEnter=""
+                iterations="3"
+                steppingTime="@TabScanTime"
+                onEnd="transition(TopLevel)">
+      <Widget name="ltbHesitateLess" onSelect="actuate(@SelectedWidget);transition(animHesitateDecrement);" />
+      <Widget name="ltbHesitateMore" onSelect="actuate(@SelectedWidget);transition(animHesitateIncrement);"/>
+    </Animation>
+      <Animation name="animHesitateDecrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animHesitate)">
+        <Widget name="ltbHesitateLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbHesitateLess);" />
+      </Animation>
+      <Animation name="animHesitateIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animHesitate)">
+        <Widget name="ltbHesitateMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbHesitateMore);" />
+      </Animation>
+
+    <Animation  name="animWordListHesitate"
+                start="false"
+                onEnter=""
+                iterations="3"
+                steppingTime="@TabScanTime"
+                onEnd="transition(TopLevel)">
+      <Widget name="ltbWordListHesitateLess" onSelect="actuate(@SelectedWidget);transition(animWordListHesitateDecrement);" />
+      <Widget name="ltbWordListHesitateMore" onSelect="actuate(@SelectedWidget);transition(animWordListHesitateIncrement);"/>
+    </Animation>
+      <Animation name="animWordListHesitateDecrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animWordListHesitate)">
+        <Widget name="ltbWordListHesitateLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbWordListHesitateLess);" />
+      </Animation>
+      <Animation name="animWordListHesitateIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animWordListHesitate)">
+        <Widget name="ltbWordListHesitateMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbWordListHesitateMore);" />
+      </Animation>
+
+    <Animation name="animTabScan"
+      start="false"
+      onEnter=""
+      iterations="3"
+      steppingTime="@TabScanTime"
+      onEnd="transition(TopLevel)">
+      <Widget name="ltbTabScanLess" onSelect="actuate(@SelectedWidget);transition(animTabScanDecrement);" />
+      <Widget name="ltbTabScanMore" onSelect="actuate(@SelectedWidget);transition(animTabScanIncrement);"/>
+    </Animation>
+      <Animation name="animTabScanDecrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animTabScan)">
+        <Widget name="ltbTabScanLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbTabScanLess);" />
+      </Animation>
+      <Animation name="animTabScanIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animTabScan)">
+        <Widget name="ltbTabScanMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbTabScanMore);" />
+      </Animation>
+
+    <Animation name="animFirstRepeat"
+          start="false"
+          onEnter=""
+          iterations="3"
+          steppingTime="@TabScanTime"
+          onEnd="transition(TopLevel)">
+      <Widget name="ltbFirstRepeatLess" onSelect="actuate(@SelectedWidget);transition(animFirstRepeatDecrement);" />
+      <Widget name="ltbFirstRepeatMore" onSelect="actuate(@SelectedWidget);transition(animFirstRepeatIncrement);"/>
+    </Animation>
+      <Animation name="animFirstRepeatDecrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animFirstRepeat)">
+        <Widget name="ltbFirstRepeatLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbFirstRepeatLess);" />
+      </Animation>
+      <Animation name="animFirstRepeatIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animFirstRepeat)">
+        <Widget name="ltbFirstRepeatMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbFirstRepeatMore);" />
+      </Animation>
+  </Animations>
+</ACAT>

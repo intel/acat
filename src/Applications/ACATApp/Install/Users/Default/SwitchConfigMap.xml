@@ -1,0 +1,69 @@
+<ACAT>
+  <SwitchMap panel="default" enabled="true">
+    <Actuators>
+      <Actuator  name="Keyboard" enabled="true">
+        <Switch name="S9" onTrigger="default()"/>
+      </Actuator>
+
+      <Actuator  name="WordsPlus" enabled="true">
+        <Switch name="S1" onTrigger="default()"/>
+        <Switch name="S2" onTrigger="default()"/>
+      </Actuator>
+
+      <Actuator name="CameraActuator" enabled="true">
+        <Switch name="CT" onTrigger="default()"/>
+      </Actuator>
+    
+    </Actuators>
+  </SwitchMap>
+
+  <SwitchMap panel="Scanner" enabled="true">
+    <Actuators>
+      <Actuator  name="Keyboard" enabled="true">
+        <Switch name="S9" onTrigger="default()"/>
+        <Switch name="H1" onTrigger="run(@CmdTalkWindowToggle)"/>
+        <Switch name="H2" onTrigger="run(@CmdMainMenu)"/>
+        <Switch name="H4" onTrigger="run(@CmdTalkWindowClear)"/>
+      </Actuator>
+      
+      <Actuator  name="WordsPlus" enabled="true">
+        <Switch name="S1" onTrigger="default()"/>
+        <Switch name="S2" onTrigger="default()"/>
+      </Actuator>
+      
+    <Actuator name="CameraActuator" enabled="true">
+        <Switch name="CT" onTrigger="default()"/>
+        <!-- <Switch name="ER" onTrigger="run(CmdTalkWindowToggle)"/> -->
+        <!-- <Switch name="EM"/> -->
+        <!-- <Switch name="MP" onTrigger="run(ContextMenu)"/> -->
+      </Actuator>
+    </Actuators>
+  </SwitchMap>
+    
+  <SwitchMap panel="Dialog" enabled="true">
+    <Actuators>
+      <Actuator  name="Keyboard" enabled="true">
+        <Switch name="S9" onTrigger="default()"/>
+      </Actuator>
+      
+      <Actuator  name="WordsPlus" enabled="true">
+        <Switch name="S1" onTrigger="default()"/>
+        <Switch name="S2" onTrigger="default()"/>
+      </Actuator>
+      
+    </Actuators>
+  </SwitchMap>
+
+  <SwitchMap panel="ContextMenu" enabled="true">
+    <Actuators>
+      <Actuator  name="Keyboard" enabled="true">
+        <Switch name="S9" onTrigger="default()"/>
+      </Actuator>
+
+      <Actuator  name="WordsPlus" enabled="true">
+        <Switch name="S1" onTrigger="default()"/>
+        <Switch name="S2" onTrigger="default()"/>
+      </Actuator>
+    </Actuators>
+  </SwitchMap>
+</ACAT>	

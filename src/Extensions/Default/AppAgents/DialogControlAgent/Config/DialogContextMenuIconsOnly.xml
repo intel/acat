@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="ItemIcon1" label="(" value="@CmdGoBack" fontsize="20" fontname="ACAT Icon" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemIcon2" label="m" value="@CmdEnterKey" fontsize="20" fontname="ACAT Icon" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemIcon3" label="G" value="@Escape" virtualkey="true" fontsize="20" fontname="ACAT Alpha" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemIcon4" label="z" value="@Tab" virtualkey="true" fontsize="20" fontname="ACAT Icon" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemIcon5" label="y" value="@Tab" virtualkey="true" modifiers="Shift" fontsize="20" fontname="ACAT Icon" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemIcon6" label="x" value="@Up" virtualkey="true" fontsize="20" fontname="ACAT Icon" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemIcon7" label="w" value="@Down" virtualkey="true" fontsize="20" fontname="ACAT Icon" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemIcon8" label="T" value=" " virtualkey="true" fontsize="20" fontname="ACAT Icon" mouseClickActuate="true"/>
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="RowWidget" name="Row1">
+      <Widget class="ContextMenuIcon" name="ItemIcon1"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row2">
+      <Widget class="ContextMenuIcon" name="ItemIcon2"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row3">
+      <Widget class="ContextMenuIcon" name="ItemIcon3"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row4">
+      <Widget class="ContextMenuIcon" name="ItemIcon4"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row5">
+      <Widget class="ContextMenuIcon" name="ItemIcon5"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row6">
+      <Widget class="ContextMenuIcon" name="ItemIcon6"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row7">
+      <Widget class="ContextMenuIcon" name="ItemIcon7"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row8">
+      <Widget class="ContextMenuIcon" name="ItemIcon8"/>
+    </Widget>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopLevelRotation"
+               start="true"
+               onEnter=""
+               autoStart="true"
+               steppingTime="@TabScanTime"
+               iterations="@RowScanIterations">
+      <Widget name="Row1" onSelect="actuate(ItemIcon1);transition(TopLevelRotation)"/>
+      <Widget name="Row2" onSelect="actuate(ItemIcon2);transition(TopLevelRotation)"/>
+      <Widget name="Row3" onSelect="actuate(ItemIcon3);transition(TopLevelRotation)"/>
+      <Widget name="Row4" onSelect="actuate(ItemIcon4);select(ItemIcon4);transition(ButtonPressed)"/>
+      <Widget name="Row5" onSelect="actuate(ItemIcon5);select(ItemIcon5);transition(ButtonPressed)"/>
+      <Widget name="Row6" onSelect="actuate(ItemIcon6);select(ItemIcon6);transition(ButtonPressed)"/>
+      <Widget name="Row7" onSelect="actuate(ItemIcon7);select(ItemIcon7);transition(ButtonPressed)"/>
+      <Widget name="Row8" onSelect="actuate(ItemIcon8);transition(TopLevelRotation)"/>
+    </Animation>
+
+    <Animation name="ButtonPressed"
+                onEnter=""
+                iterations="1"
+                onEnd="transition(TopLevelRotation)">
+      <Widget name="@SelectedWidget" hesitateTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+    </Animation>
+  </Animations>
+</ACAT>
+
+

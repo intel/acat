@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="Button1" label="No" fontsize="18" bold="true" value="@CmdNo" mouseClickActuate="true"/>
+    <WidgetAttribute name="Button1Blank" label="" fontsize="18" bold="true" value="" mouseClickActuate="false"/>
+    <WidgetAttribute name="Button2" label="Yes" fontsize="18" bold="true" value="@CmdYes" mouseClickActuate="true"/>
+    <WidgetAttribute name="Button2Blank" label="" fontsize="18" bold="true" value="" mouseClickActuate="false"/>
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="LabelWidget" name="Button1"  roundedCorners="false"/>
+    <Widget class="LabelWidget" name="Button1Blank"  roundedCorners="false"/>
+    <Widget class="LabelWidget" name="Button2"  roundedCorners="false"/>
+    <Widget class="LabelWidget" name="Button2Blank"  roundedCorners="false"/>
+  </Layout>
+
+  <Animations>
+    <Animation name="OptionsScroll"
+               start="true"
+               steppingTime="@TabScanTime"
+               onEnter=""
+               iterations="-1">
+      <Widget name="Button1Blank"/>
+      <Widget name="Button1" onSelect="actuate(@SelectedWidget)"/>
+      <Widget name="Button2Blank"/>
+      <Widget name="Button2" onSelect="actuate(@SelectedWidget)"/>
+    </Animation>
+  </Animations>
+</ACAT>

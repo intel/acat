@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="ContextMenuTitle" label="" value="" fontsize="20" fontname="Arial" mouseClickActuate="false"/>
+    
+    <WidgetAttribute name="ItemIcon1" label=" " value="@CmdGoBack" fontsize="20" fontname="Arial" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemText1" label="(" value="@CmdGoBack" fontsize="18" fontname="ACAT Icon" mouseClickActuate="true"/>
+
+    <WidgetAttribute name="ItemIcon2" label="h" value="@NewFile" fontsize="20" fontname="ACAT Icon" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemText2" label="New" value="@NewFile" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+
+    <WidgetAttribute name="ItemIcon3" label="e" value="@OpenFile" fontsize="20" fontname="ACAT Icon" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemText3" label="Open" value="@OpenFile" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+
+    <WidgetAttribute name="ItemIcon4" label="g" value="@OpenRecentFile" fontsize="20" fontname="ACAT Icon" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemText4" label="Open Recent" value="@OpenRecentFile" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+
+    <WidgetAttribute name="ItemIcon5" label="i" value="@SaveFile" fontsize="20" fontname="ACAT Icon" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemText5" label="Save" value="@SaveFile" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+
+    <WidgetAttribute name="ItemIcon6" label="j" value="@SaveFileAs" fontsize="20" fontname="ACAT Icon" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemText6" label="Save As" value="@SaveFileAs" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+
+    <WidgetAttribute name="ItemIcon7" label="2" value="@CmdFind" fontsize="20" fontname="ACAT Icon" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemText7" label="Find" value="@CmdFind" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+
+    <WidgetAttribute name="ItemIcon8" label="&#x0161;" value="@WindowPosSizeContextMenu" fontsize="20" fontname="ACAT Icon" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemText8" label="Window" value="@WindowPosSizeContextMenu" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="RowWidget" name="TitleRow">
+      <Widget class="ScannerButton" name="ContextMenuTitle" colorScheme="ContextMenuTitle"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row1">
+      <Widget class="ContextMenuIcon" name="ItemIcon1"/>
+      <Widget class="ContextMenuText" name="ItemText1"/>
+    </Widget>
+      
+    <Widget class="RowWidget" name="Row2">
+      <Widget class="ContextMenuIcon" subclass="NewFile" enabled="contextual" name="ItemIcon2"/>
+      <Widget class="ContextMenuText" subclass="NewFile" enabled="contextual" name="ItemText2"/>
+    </Widget>
+        
+    <Widget class="RowWidget" name="Row3">
+      <Widget class="ContextMenuIcon" subclass="OpenFile" enabled="contextual" name="ItemIcon3"/>
+      <Widget class="ContextMenuText" subclass="OpenFile" enabled="contextual" name="ItemText3"/>
+    </Widget>
+      
+    <Widget class="RowWidget" name="Row4" subclass="OpenRecentFile" enabled="contextual" >
+      <Widget class="ContextMenuIcon" name="ItemIcon4" subclass="OpenRecentFile" enabled="contextual"/>
+      <Widget class="ContextMenuText" name="ItemText4" subclass="OpenRecentFile" enabled="contextual"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row5">
+      <Widget class="ContextMenuIcon" subclass="SaveFile" enabled="contextual" name="ItemIcon5"/>
+      <Widget class="ContextMenuText" subclass="SaveFile" enabled="contextual" name="ItemText5"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row6">
+      <Widget class="ContextMenuIcon" subclass="SaveFileAs" enabled="contextual" name="ItemIcon6"/>
+      <Widget class="ContextMenuText" subclass="SaveFileAs" enabled="contextual" name="ItemText6"/>
+    </Widget>
+      
+    <Widget class="RowWidget" name="Row7">
+      <Widget class="ContextMenuIcon" subclass="Find" enabled="contextual" name="ItemIcon7"/>
+      <Widget class="ContextMenuText" subclass="Find" enabled="contextual" name="ItemText7"/>
+    </Widget>
+        
+    <Widget class="RowWidget" name="Row8">
+      <Widget class="ContextMenuIcon" name="ItemIcon8"/>
+      <Widget class="ContextMenuText" name="ItemText8"/>
+    </Widget>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopLevelRotation"
+               start="true"
+               onEnter=""
+               autoStart="true"
+               steppingTime="@TabScanTime"
+               iterations="@RowScanIterations">
+      <Widget name="Row1" onSelect="actuate(ItemText1);transition(TopLevelRotation)"/>
+      <Widget name="Row2" onSelect="actuate(ItemText2);transition(TopLevelRotation)"/>
+      <Widget name="Row3" onSelect="actuate(ItemText3);transition(TopLevelRotation)"/>
+      <Widget name="Row4" onSelect="actuate(ItemText4);transition(TopLevelRotation)"/>
+      <Widget name="Row5" onSelect="actuate(ItemText5);transition(TopLevelRotation)"/>
+      <Widget name="Row6" onSelect="actuate(ItemText6);transition(TopLevelRotation)"/>
+      <Widget name="Row7" onSelect="actuate(ItemText7);transition(TopLevelRotation)"/>
+      <Widget name="Row8" onSelect="actuate(ItemText8);transition(TopLevelRotation)"/>
+    </Animation>
+  </Animations>
+</ACAT>
+
+

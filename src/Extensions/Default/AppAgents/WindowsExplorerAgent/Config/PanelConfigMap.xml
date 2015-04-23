@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" ?>
+<Aster>
+  <ConfigMapEntries>
+    <!--form=ContextMenu-->
+    <ConfigMapEntry panelClass="WindowsDesktopContextMenu" configName="WindowsDesktopContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868"  configFile="WindowsDesktopContextMenu.xml"/>
+    <!--form=ContextMenu-->
+    <ConfigMapEntry panelClass="WindowsExplorerContextMenu" configName="WindowsExplorerContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="WindowsExplorerContextMenu.xml"/>
+    <!--WindowsExplorerNavigateContextMenuDock-->
+    <ConfigMapEntry panelClass="WindowsExplorerNavigateContextMenuDock" configName="WindowsExplorerNavigateContextMenuDock" formId="2008558E-D12C-4A6D-ACF2-8AF522B4DEA0" configFile="WindowsExplorerNavigateContextMenuDock.xml"/>
+    <!--WindowsExplorerNavigateContextMenu-->
+    <ConfigMapEntry panelClass="WindowsExplorerNavigateContextMenu" configName="WindowsExplorerNavigateContextMenu" formId="715C231D-0325-4CF2-BB13-3470DFC84FEE" configFile="WindowsExplorerNavigateContextMenu.xml"/>
+  </ConfigMapEntries>
+</Aster>

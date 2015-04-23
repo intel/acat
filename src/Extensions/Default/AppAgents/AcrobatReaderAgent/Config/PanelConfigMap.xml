@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+    <ConfigMapEntry panelClass="AcrobatReaderContextMenu" configName="AcrobatReaderContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="AcrobatReaderContextMenu.xml"/>
+    <ConfigMapEntry panelClass="AcrobatReaderContextMenu" configName="AcrobatReaderContextMenuIconsOnly" formId="6DD7E759-9ACE-40B0-9991-20FB56266BE9"  configFile="AcrobatReaderContextMenuIconsOnly.xml"/>
+    <ConfigMapEntry panelClass="AcrobatReaderZoomMenu" configName="AcrobatReaderZoomMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="AcrobatReaderZoomMenu.xml"/>
+    <ConfigMapEntry panelClass="AcrobatReaderZoomMenu" configName="AcrobatReaderZoomMenuIconsOnly" formId="6DD7E759-9ACE-40B0-9991-20FB56266BE9" configFile="AcrobatReaderZoomMenuIconsOnly.xml"/>
+  </ConfigMapEntries>
+</ACAT>

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="lblFinished" label="OK" value="valButtonFinished"  fontsize="14" mouseClickActuate="true"/>
+    <WidgetAttribute name="lblCancel" label="Cancel" value="valButtonCancel"  fontsize="14"  mouseClickActuate="true"/>
+    <WidgetAttribute name="lblWritten" label="Written" fontsize="14" value="valWritten"/>
+    <WidgetAttribute name="lblSpoken" label="Spoken" fontsize="14" value="valSpoken"/>
+    <WidgetAttribute name="pbTypeWritten" label="M" value="valCheckWritten" fontname="ACAT Icon" fontsize="32" bold="false" mouseClickActuate="true" />
+    <WidgetAttribute name="pbTypeSpoken" label="M" value="valCheckSpoken" fontname="ACAT Icon" fontsize="32" bold="false" mouseClickActuate="true" />
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="ButtonControlWidget" name="lblFinished" />
+    <Widget class="ButtonControlWidget" name="lblCancel" />
+    <Widget class="WinControlWidget" name="tbAbbreviation" drawBorder="true" panel="Alphabet"/>
+    <Widget class="WinControlWidget" name="tbExpansion" drawBorder="true" panel="Alphabet"/>
+    
+    <Widget class="BoxWidget" name="boxType">
+      <Widget class="CheckBoxWidget" name="pbTypeWritten" onStateText="L" offStateText="M" onOffState="off" />
+      <Widget class="LabelWidget" name="lblWritten" />
+      <Widget class="CheckBoxWidget" name="pbTypeSpoken" onStateText="L" offStateText="M" onOffState="off" />
+      <Widget class="LabelWidget" name="lblSpoken" />
+    </Widget>
+  </Layout>
+
+  <Animations>
+    <Animation  name="animTopLevel"
+                start="true"
+                onEnter=""
+                steppingTime="@TabScanTime"
+                iterations="@HalfScanIterations">
+      <Widget name="tbAbbreviation" onSelect="actuate(@SelectedWidget);"/>
+      <Widget name="boxType" onSelect="transition(animType);" />
+      <Widget name="tbExpansion" onSelect="actuate(@SelectedWidget);"/>
+      <Widget name="lblFinished" onSelect="actuate(@SelectedWidget)"/>
+      <Widget name="lblCancel" onSelect="actuate(@SelectedWidget);" />
+    </Animation>
+
+    <Animation  name="animType"
+                start="false"
+                onEnter=""
+                steppingTime="@TabScanTime"
+                iterations="2"
+                onEnd="transition(animTopLevel)">
+      <Widget name="lblWritten" onSelect="actuate(pbTypeWritten)"/>
+      <Widget name="lblSpoken" onSelect="actuate(pbTypeSpoken);" />
+    </Animation>
+  </Animations>
+</ACAT>
+

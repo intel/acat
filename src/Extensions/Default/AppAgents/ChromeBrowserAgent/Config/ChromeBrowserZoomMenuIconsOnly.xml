@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="ItemIcon1" label="(" value="@CmdGoBack" fontsize="20" fontname="ACAT Icon" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemIcon2" label="Q" value="@CmdZoomFit" fontsize="20" fontname="ACAT Alpha" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemIcon3" label="$" value="@CmdZoomIn" fontsize="20" fontname="ACAT Icon" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemIcon4" label="#" value="@CmdZoomOut" fontsize="20" fontname="ACAT Icon" mouseClickActuate="true"/>
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="RowWidget" name="Row1">
+      <Widget class="ContextMenuIcon" name="ItemIcon1"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row2">
+      <Widget class="ContextMenuIcon" name="ItemIcon2"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row3">
+      <Widget class="ContextMenuIcon" name="ItemIcon3"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row4">
+      <Widget class="ContextMenuIcon" name="ItemIcon4"/>
+    </Widget>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopLevelRotation"
+               start="true"
+               onEnter=""
+               autoStart="true"
+               steppingTime="@TabScanTime"
+               iterations="@RowScanIterations">
+      <Widget name="Row1" onSelect="actuate(ItemIcon1);"/>
+      <Widget name="Row2" onSelect="actuate(ItemIcon2);transition(TopLevelRotation)"/>
+      <Widget name="Row3" onSelect="select(ItemIcon3);actuate(ItemText3);transition(ButtonPressed)"/>
+      <Widget name="Row4" onSelect="select(ItemIcon4);actuate(ItemText4);transition(ButtonPressed)"/>
+    </Animation>
+
+    <Animation name="ButtonPressed"
+                onEnter=""
+                iterations="1"
+                onEnd="transition(TopLevelRotation)">
+      <Widget name="@SelectedWidget" hesitateTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+    </Animation>
+  </Animations>
+</ACAT>
+
+

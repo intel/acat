@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="ContextMenuTitle" label="" value="" fontsize="20" fontname="Arial" mouseClickActuate="false"/>
+
+    <WidgetAttribute name="ItemIcon1" label=" " value="@CancelEditDelAbbreviation" fontsize="20" fontname="Arial" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemText1" label="(" value="@CancelEditDelAbbreviation" fontsize="18" fontname="ACAT Icon" mouseClickActuate="true"/>
+
+    <WidgetAttribute name="ItemIcon2" label="&#x68;" value="@EditAbbreviation" fontsize="20" fontname="ACAT Icon" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemText2" label="Edit" value="@EditAbbreviation" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+
+    <WidgetAttribute name="ItemIcon3" label="&#x25;" value="@DeleteAbbreviation" fontsize="20" fontname="ACAT Icon" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemText3" label="Delete" value="@DeleteAbbreviation" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="RowWidget" name="TitleRow">
+      <Widget class="ScannerButton" name="ContextMenuTitle" colorScheme="ContextMenuTitle"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row1">
+      <Widget class="ContextMenuIcon" name="ItemIcon1"/>
+      <Widget class="ContextMenuText" name="ItemText1"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row2">
+      <Widget class="ContextMenuIcon" name="ItemIcon2"/>
+      <Widget class="ContextMenuText" name="ItemText2"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row3">
+      <Widget class="ContextMenuIcon" name="ItemIcon3"/>
+      <Widget class="ContextMenuText" name="ItemText3"/>
+    </Widget>
+  </Layout>
+  
+  <Animations>
+    <Animation name="TopLevelRotation"
+               start="true"
+               onEnter=""
+               autoStart="true"
+               steppingTime="@TabScanTime"
+               iterations="@RowScanIterations">
+      <Widget name="Row1" onSelect="actuate(ItemText1)"/>
+      <Widget name="Row2" onSelect="actuate(ItemText2);"/>
+      <Widget name="Row3" onSelect="actuate(ItemText3);"/>
+    </Animation>
+  </Animations>
+</ACAT>

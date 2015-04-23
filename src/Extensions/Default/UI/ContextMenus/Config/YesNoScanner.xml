@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="Prompt" label=" " value=" " fontsize="18" fontname="Arial"/>
+    <WidgetAttribute name="ItemText1" label="Yes" value="@CmdYes" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemText2" label="No" value="@CmdNo" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="RowWidget" name="PromptRow">
+      <Widget class="ContextMenuText" name="Prompt" colorScheme="ContextMenuTitle"/>
+    </Widget>
+      
+    <Widget class="RowWidget" name="Row1">
+      <Widget class="ContextMenuText" name="ItemText1"/>
+    </Widget>
+      
+    <Widget class="RowWidget" name="Row2">
+      <Widget class="ContextMenuText" name="ItemText2"/>
+    </Widget>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopLevelRotation"
+               start="true"
+               onEnter=""
+               steppingTime="@TabScanTime"
+               iterations="@HalfScanIterations">
+      <Widget name="Row1" onSelect="actuate(ItemText1);transition(TopLevelRotation)"/>
+      <Widget name="Row2" onSelect="actuate(ItemText2);transition(TopLevelRotation)"/>
+    </Animation>
+  </Animations>
+</ACAT>

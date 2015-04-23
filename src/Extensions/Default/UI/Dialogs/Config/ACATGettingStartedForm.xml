@@ -1,0 +1,41 @@
+<?xml version="1.0" ?> 
+
+<ACAT>
+	<WidgetAttributes>
+    <WidgetAttribute name="B1" label="b" value="b" fontname="Arial" fontsize="44" bold="true" mouseClickActuate="true"/>
+    <WidgetAttribute name="B2" label="t" value="t" fontname="Arial" fontsize="44" bold="true" mouseClickActuate="true"/>
+    <WidgetAttribute name="B3" label="a" value="a" fontname="Arial" fontsize="44" bold="true" mouseClickActuate="true"/>
+    <WidgetAttribute name="B4" label="e" value="e" fontname="Arial" fontsize="44" bold="true" mouseClickActuate="true"/>
+    <WidgetAttribute name="buttonBackspace" label="&lt;" value="backspace" fontname="Arial" fontsize="44" bold="true" mouseClickActuate="true"/>
+    <WidgetAttribute name="buttonReset" label="0" value="reset" fontname="ACAT Icon" fontsize="44" bold="true" mouseClickActuate="true"/>
+    <WidgetAttribute name="buttonExit" label="Exit" value="exit" fontname="Arial" fontsize="28" bold="true" mouseClickActuate="true"/>
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="ButtonControlWidget" name="B1" colorScheme="Dialog"/>
+    <Widget class="ButtonControlWidget" name="B2" colorScheme="Dialog"/>
+    <Widget class="ButtonControlWidget" name="B3" colorScheme="Dialog"/>
+    <Widget class="ButtonControlWidget" name="B4" colorScheme="Dialog"/>
+    <Widget class="ButtonControlWidget" name="buttonBackspace" colorScheme="Dialog"/>
+    <Widget class="ButtonControlWidget" name="buttonReset" colorScheme="Dialog"/>
+    <Widget class="ButtonControlWidget" name="buttonExit" colorScheme="Dialog"/>
+  </Layout>
+  
+	<Animations> 
+		<Animation name="TopLevel" 
+               start="true" 
+               onEnter=""
+               steppingTime="@TabScanTime"
+               hesitateTime="@HesitateTime"
+               iterations="@HalfScanIterations">
+      <Widget name="B1" onSelect="actuate(B1);transition(TopLevel)"/>
+      <Widget name="B2" onSelect="actuate(B2);transition(TopLevel)"/>
+      <Widget name="B3" onSelect="actuate(B3);transition(TopLevel)"/>
+      <Widget name="B4" onSelect="actuate(B4);transition(TopLevel)"/>
+      <Widget name="buttonBackspace" onSelect="actuate(buttonBackspace);transition(TopLevel)"/>
+      <Widget name="buttonReset" onSelect="actuate(buttonReset);transition(TopLevel)"/>
+      <Widget name="buttonExit" onSelect="actuate(buttonExit)"/>
+    </Animation>
+  </Animations>
+</ACAT>
+

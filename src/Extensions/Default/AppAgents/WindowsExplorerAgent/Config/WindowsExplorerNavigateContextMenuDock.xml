@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" ?>
+
+<!--****************************************************************************
+Configuration file for screen="WindowsExplorerDialogContextMenu"
+********************************************************************************-->
+
+<Aster>
+  <!--Version number of this config file-->
+  <Version version="0.6"/>
+
+  <SwitchMap>
+    <Map name="S9" onTrigger="default()"/>
+    <Map name="S1" onTrigger="default()"/>
+    <Map name="S2" onTrigger="default()"/>
+    <Map name="S6" onTrigger="default()"/>
+  </SwitchMap>
+
+  <!--
+******************************************************
+ Key Mappings
+******************************************************
+-->
+
+  <!-- Mapping of button keys to the values they will generate
+  when the key is selected.  
+  "Map" element attributes:
+    name:  Internal name of the button in the UI
+    label: The string that will be displayed on screen for this button
+    value: The value this button represents.  Prefix the value with an
+           @ symbol to indicate this is a special function key
+    fontsize:  Size of font to use for this button.  Overrides the
+               default setting
+    offset1:  For buttons that have to display two characters, the
+              zero-based offset from the left edge of the bounding
+              rectangle, of the first character
+    offset2:  For buttons that have to display two characters, the
+              zero-based offset from the left edge of the bounding
+              rectangle, of the second character
+  -->
+  <ButtonAttributes>
+
+    <ButtonAttribute name="B1" label="(" value="@CmdGoBack" fontsize="16" fontname="Hawking" mouseClickActuate="true"/>
+    <ButtonAttribute name="B2" label="x" value="@Tab" fontsize="14" fontname="PSH Alpha" mouseClickActuate="true"/>
+    <ButtonAttribute name="B3" label="R" value="@TabScan" fontsize="14" fontname="PSH Alpha" mouseClickActuate="true"/>
+    <ButtonAttribute name="B4" label="m" value="@Select" fontsize="16" fontname="Hawking" mouseClickActuate="true"/>
+    <ButtonAttribute name="B5" label="&lt;" value="@Back" virtualkey="true" fontsize="16" fontname="Hawking" mouseClickActuate="true"/>
+    <ButtonAttribute name="B6" label="R" value="@CmdRightClick" fontname="Hawking" fontsize="16" mouseClickActuate="true" />
+    <ButtonAttribute name="B7" label="T" value="@Text" fontsize="16" fontname="PSH Alpha" mouseClickActuate="true"/>
+    <ButtonAttribute name="B8" label="G" value="@Escape" fontname="PSH Alpha" fontsize="14" mouseClickActuate="true"/>
+    <ButtonAttribute name="B9" label="w" value="@Down" fontsize="16" fontname="Hawking" mouseClickActuate="true"/>
+    <ButtonAttribute name="B10" label="x" value="@Up" fontsize="16" fontname="Hawking" mouseClickActuate="true"/>
+    <ButtonAttribute name="B11" label="y" value="@Left" fontsize="16" fontname="Hawking" mouseClickActuate="true"/>
+    <ButtonAttribute name="B12" label="z" value="@Right" fontsize="16" fontname="Hawking" mouseClickActuate="true"/>
+    
+    
+  </ButtonAttributes>
+
+  <!--
+******************************************************
+  Screen layout. 
+  This section lists the parent-child relationships
+  between the widgets for each screen.
+  For instance, it shows that Box1 has four rows
+  (Row1, Row2, Row3 and Row4) and each row has buttons
+  
+  Attributes:
+    "screen":  Same as the name of the .NET form
+    "class":   The type of the widget. Must be one 
+               of the pre-defined supported types of Aster
+    "name":    Name of the widget. Has to be the same as
+               the name of the .NET control in the form
+******************************************************
+-->
+
+  <Layout>
+    <Widget class="ScannerButton" name="B1" subclass="GoBack"/>
+    <Widget class="ScannerButton" name="B2"/>
+    <Widget class="ScannerButton" name="B3"/>
+    <Widget class="ScannerButton" name="B4"/>
+    <Widget class="ScannerButton" name="B5"/>
+    <Widget class="ScannerButton" name="B6"/>
+    <Widget class="ScannerButton" name="B7"/>
+    <Widget class="ScannerButton" name="B8"/>
+    <Widget class="ScannerButton" name="B9"/>
+    <Widget class="ScannerButton" name="B10"/>
+    <Widget class="ScannerButton" name="B11"/>
+    <Widget class="ScannerButton" name="B12"/>
+  </Layout>
+
+
+  <!--
+******************************************************taskmanager
+  Animations
+******************************************************
+-->
+
+  <!-- Here, all the animations are configured. This includes
+  the sequence of animations. For each animation, the list of 
+  UI elements (widgets) is listed.  These widgets will be
+  highlighted in the order they are listed.
+  
+  "Animation" element attributes:
+    name:       A name for this animation.
+    screen:     Which UI screen is this associated with.  Currently,
+                the UI has only one screen (Aster).  This will be
+                extended to multiple screens - one with navigation, 
+                one for mouse control etc.  The name should match the
+                name of the form in the UI
+    start:    	If true, start with this animation when form is loaded.
+    iterations: Number of times to repeat this animation. If the user has 
+                not made any selection during the rotation, the actions 
+                associated with the 'onEnd' attribute are triggered.
+                Set this to -1 to iterate forever.
+    onEnd:      The actions to be triggered if the user has not
+                made any selection during the rotation and the
+                rotation has come to an end.
+    hesitateTime: The additional amount of delay that will be added to 
+                  the stepping time. This delay is applicable only
+                  for the first widget in the animation.
+    onSelect:   The actions to perform if the user selects a UI element 
+                in this animation.
+  
+  "Widget" element attributes:              
+    name:           Name of the widget.  Must match the name of the UI element
+                    in the form.
+    onSelect:       The actions to perform if the user selects this widget. If
+                    the parent animation also has a onSelect attribute, the onSelect
+                    for the widget is first executed followed by the onSelect for the
+                    parent animation.
+    onHighlightOn:  During a rotation, the actions to perform when the widget 
+                    is highlighted
+    onHighlightOff: During a rotation, the actions to perform whtn the widget 
+                    is unhighlighted
+    hesitateTime:   The additional amount of time this widget will stay highlighted
+                    during a rotation.
+  -->
+
+  <!--name of the scheme, selected through preferences.-->
+  <Animations>
+
+    <!--
+      start:      Set to true which means this animation is the one to start with
+                  when the form is displayed.
+      iterations: Set to -1, which means this will go on forever.
+     -->
+    <Animation name="TopLevelRotation"
+               start="true"
+               onEnter=""
+               iterations="@HalfScanIterations">
+      <Widget name="B1" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+      <Widget name="B2" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B3" onSelect="actuate(@SelectedWidget);"/>
+      <Widget name="B4" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+      <Widget name="B5" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+      <Widget name="B6" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+      <Widget name="B7" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+      <Widget name="B8" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+      <Widget name="B9" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B10" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B11" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B12" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+    </Animation>
+
+    <Animation name="ButtonPressed"
+            onEnter=""
+            iterations="1"
+            onEnd="transition(TopLevelRotation)">
+      <Widget name="@SelectedWidget" hesitateTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+    </Animation>
+  </Animations>
+</Aster>
+
+

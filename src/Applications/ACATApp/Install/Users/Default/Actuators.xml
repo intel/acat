@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ACAT>
+  <Actuators>
+    <Actuator name="Keyboard" id="D91A1877-C92B-4D7E-9AB6-F01F30B12DF9" enabled="true">
+      <Switch name="S9" source="F5" enabled="true" beepFile="beep.wav" acceptTime="@AcceptTime"/>
+      <Switch name="H1" source="Ctrl+T" enabled="true"/>
+      <Switch name="H2" source="Ctrl+Alt+M" enabled="true"/>
+      <Switch name="H4" source="Alt+C" enabled="true"/>
+    </Actuator>
+
+    <Actuator name="WordsPlus" id="6375D1EC-6D70-4376-8B89-E09A1DD1AED4" enabled="true">
+      <Switch name="S1" source="1" enabled="true" acceptTime="@AcceptTime"/>
+      <!-- switch 1 on the EZ Keys HW-->
+      <Switch name="S2" source="2" enabled="true" acceptTime="@AcceptTime"/>
+      <!-- switch 2 on the EZ Keys HW -->
+    </Actuator>
+    
+    <Actuator name="CameraActuator" id="A5B9BFF9-0A35-41AC-8989-69A3D60F4435" enabled="true">
+      <Switch name="CT" source="CT" enabled="true" acceptTime="@AcceptTime"/>
+      <Switch name="MP" source="MP" enabled="true" acceptTime="@AcceptTime"/>
+      <Switch name="ER" source="ER" enabled="true" acceptTime="@AcceptTime"/>
+      <Switch name="EM" source="EM" enabled="true" acceptTime="@AcceptTime"/>
+    </Actuator>
+  </Actuators>
+</ACAT>

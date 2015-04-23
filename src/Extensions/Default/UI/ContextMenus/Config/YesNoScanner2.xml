@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="Prompt" label=" " value=" " fontsize="18" fontname="Arial"/>
+    <WidgetAttribute name="ItemText1" label=" " value=" " fontsize="18" fontname="Arial"/>
+    <WidgetAttribute name="ItemText2" label="No" value="@CmdNo" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+    <WidgetAttribute name="ItemText3" label=" " value=" " fontsize="18" fontname="Arial"/>
+    <WidgetAttribute name="ItemText4" label="Yes" value="@CmdYes" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="RowWidget" name="PromptRow">
+      <Widget class="ContextMenuText" name="Prompt" colorScheme="ContextMenuTitle"/>
+    </Widget>
+    
+    <Widget class="ContextMenuText" name="ItemText1"/>
+    <Widget class="ContextMenuText" name="ItemText2"/>
+    <Widget class="ContextMenuText" name="ItemText3"/>
+    <Widget class="ContextMenuText" name="ItemText4"/>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopLevelRotation"
+               start="true"
+               onEnter=""
+               steppingTime="@TabScanTime"
+               iterations="@HalfScanIterations">
+      <Widget name="ItemText1" />
+      <Widget name="ItemText2" onSelect="actuate(ItemText2);transition(TopLevelRotation)"/>
+      <Widget name="ItemText3" />
+      <Widget name="ItemText4" onSelect="actuate(ItemText4);transition(TopLevelRotation)" />
+    </Animation>
+  </Animations>
+</ACAT>

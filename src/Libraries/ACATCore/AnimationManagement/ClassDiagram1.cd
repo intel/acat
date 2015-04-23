@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Aster.AnimationManagement.Animation" Collapsed="true">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAECgIBAMCEEIAAABAEAAiYgggAAQAgCIIAAACAgMAA=</HashCode>
+      <FileName>Animation.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="AnimationWidgetList" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Aster.AnimationManagement.AnimationManager" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CBIgAAAAAbAkCAACBEABCgEAgGBAwAIYKBQCBxgiEBA=</HashCode>
+      <FileName>AnimationManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_player" />
+      <Field Name="_animationsCollection" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Aster.AnimationManagement.AnimationMouseClickEventArgs" Collapsed="true">
+    <Position X="10" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAA=</HashCode>
+      <FileName>AnimationMouseClickEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aster.AnimationManagement.AnimationPlayer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAkABAAQCAsAAEAAgIACAMAAABAAAAKIBEEAwsCACA=</HashCode>
+      <FileName>AnimationPlayer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_currentAnimation" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Aster.AnimationManagement.Animations" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAACAEAAAACAAAIgQAAAAAAAAAAAAgAQAAAAA=</HashCode>
+      <FileName>Animations.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_animationTable" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Aster.AnimationManagement.AnimationsCollection" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4.25" Y="4.25" Width="2.75" />
+    <AssociationLine Name="_animationsTable" Type="Aster.AnimationManagement.Animations">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.475" Y="-1.085" Height="0.182" Width="1.795" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAACAEAAAADgAAAgQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>AnimationsCollection.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_animationsTable" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Aster.AnimationManagement.AnimationWidget" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACgAACASAEAAAAAAQQACQAAAAAAAgCAgEAAAQAIAA=</HashCode>
+      <FileName>AnimationWidget.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Aster.AnimationManagement.AnimationWidgetAddedEventArgs" Collapsed="true">
+    <Position X="8" Y="6.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>AnimationWidgetAddedEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aster.AnimationManagement.PlayerStateChangedEventArgs" Collapsed="true">
+    <Position X="10.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PlayerStateChangedEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aster.AnimationManagement.ResoveWidgetChildrenEventArgs" Collapsed="true">
+    <Position X="12.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAEAAAA=</HashCode>
+      <FileName>ResoveWidgetChildrenEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aster.AnimationManagement.Variables" Collapsed="true">
+    <Position X="12" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAABBhAAAAAJCAAgAAAACAAQAAAAADAAAA=</HashCode>
+      <FileName>Variables.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Aster.AnimationManagement.PlayerState" Collapsed="true">
+    <Position X="8.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgBAAAAAIAAAAAAAAAAAAAAAAAAAIIAAAAAAAAABA=</HashCode>
+      <FileName>AnimationPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

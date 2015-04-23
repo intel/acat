@@ -1,0 +1,187 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+  <!ENTITY usebold "true">
+]>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="B1" label="(" value="@CmdGoBack" fontname="ACAT Icon" fontsize="16" bold="&usebold;" mouseClickActuate="true"/>
+    <WidgetAttribute name="B2" label="W" value="@CmdRadarCounterClockwise" fontname="ACAT Icon" fontsize="20" bold="&usebold;" mouseClickActuate="true"/>
+    <WidgetAttribute name="B3" label="X" value="@CmdRadarClockwise" fontname="ACAT Icon" fontsize="20" bold="&usebold;" mouseClickActuate="true"/> 
+    <WidgetAttribute name="B4" label="Y" value="@CmdScanVerticalDown" fontname="ACAT Icon" fontsize="22" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="B5" label="Z" value="@CmdScanVerticalUp"  fontname="ACAT Icon" fontsize="22" bold="false" mouseClickActuate="true"/>
+    
+    <WidgetAttribute name="B6" label="Q" value="@CmdLeftClick" fontname="ACAT Icon" fontsize="20" bold="false"/>
+    <WidgetAttribute name="B7" label="S" value="@CmdLeftDoubleClick" fontname="ACAT Icon" fontsize="20" bold="false"/>
+    <WidgetAttribute name="B8" label="U" value="@CmdLeftClickAndHold"  fontname="ACAT Icon" fontsize="20" bold="false"/>
+    <WidgetAttribute name="B9" label="q" value="@CmdPositionScannerTopLeft" fontname="ACAT Alpha" fontsize="16" bold="&usebold;" mouseClickActuate="true"/>
+    <WidgetAttribute name="B10" label="r" value="@CmdPositionScannerTopRight" fontname="ACAT Alpha" fontsize="16" bold="&usebold;" mouseClickActuate="true"/>
+    
+    <WidgetAttribute name="B11" label="R" value="@CmdRightClick"  fontname="ACAT Icon" fontsize="20" bold="false"/>
+    <WidgetAttribute name="B12" label="&#xAE;" value="@CmdRightDoubleClick" fontname="ACAT Icon" fontsize="20" bold="false"/>
+    <WidgetAttribute name="B13" label="&#xAF;" value="@CmdRightClickAndHold"  fontname="ACAT Icon" fontsize="20" bold="false"/>
+    <WidgetAttribute name="B14" label="p" value="@CmdPositionScannerBottomLeft" fontname="ACAT Alpha" fontsize="16" bold="&usebold;" mouseClickActuate="true"/>
+    <WidgetAttribute name="B15" label="o" value="@CmdPositionScannerBottomRight" fontname="ACAT Alpha" fontsize="16" bold="&usebold;" mouseClickActuate="true"/>
+    
+    <WidgetAttribute name="B16" label="&#x2212;" value="@CmdMoveCursorNW"  fontname="ACAT Icon" fontsize="18" bold="&usebold;" />
+    <WidgetAttribute name="B17" label="&#x3B;" value="@CmdMoveCursorN"  fontname="ACAT Icon" fontsize="18" bold="&usebold;" />
+    <WidgetAttribute name="B18" label="&#xAB;" value="@CmdMoveCursorNE"  fontname="ACAT Icon" fontsize="18" bold="&usebold;" />
+    <WidgetAttribute name="B19" label=" " value=" "  virtualkey="true" fontname="ACAT Icon" fontsize="18" bold="&usebold;" mouseClickActuate="true"/>
+    <WidgetAttribute name="B20" label=" " value=" "  virtualkey="true" fontname="ACAT Icon" fontsize="18" bold="&usebold;" mouseClickActuate="true"/>
+    
+    <WidgetAttribute name="B21" label="u" value="@CmdMoveCursorW"  fontname="ACAT Icon" fontsize="18"  bold="&usebold;" />
+    <WidgetAttribute name="B22" label=" " value="@unknown" fontname="Arial Narrow" fontsize="10" bold="&usebold;" />
+    <WidgetAttribute name="B23" label="v" value="@CmdMoveCursorE"  fontname="ACAT Icon" fontsize="18"  bold="&usebold;" />
+    <WidgetAttribute name="B24" label=" " value=" "  virtualkey="true" fontname="ACAT Icon" fontsize="18" bold="&usebold;" mouseClickActuate="true"/>
+    <WidgetAttribute name="B25" label=" " value=" "  virtualkey="true" fontname="ACAT Icon" fontsize="18" bold="&usebold;" mouseClickActuate="true"/>
+    
+    <WidgetAttribute name="B26" label="&#xAA;" value="@CmdMoveCursorSW"  fontname="ACAT Icon" fontsize="18" bold="&usebold;" />
+    <WidgetAttribute name="B27" label="&#x3A;" value="@CmdMoveCursorS"  fontname="ACAT Icon" fontsize="18" bold="&usebold;" />
+    <WidgetAttribute name="B28" label="&#xAC;" value="@CmdMoveCursorSE"  fontname="ACAT Icon" fontsize="18" bold="&usebold;" />
+    <WidgetAttribute name="B29" label="m" value="@CmdEnterKey" fontname="ACAT Icon" fontsize="18" bold="&usebold;" mouseClickActuate="true"/>
+    <WidgetAttribute name="B30" label=" " value=" " fontname="ACAT Alpha" fontsize="14" bold="&usebold;"/>
+    
+    <WidgetAttribute name="BShiftStatus" label=" " value="@unknown" fontname="ACAT Alpha" fontsize="14" />
+    <WidgetAttribute name="BAltStatus" label=" " value="@unknown" fontname="ACAT Alpha" fontsize="14" />
+    <WidgetAttribute name="BCtrlStatus" label=" " value="@unknown" fontname="ACAT Alpha" fontsize="14" />
+    <WidgetAttribute name="BFuncStatus" label=" " value="@unknown" fontname="ACAT Alpha" fontsize="14" />
+    <WidgetAttribute name="BLockStatus" label=" " value="@unknown" fontname="ACAT Icon" fontsize="14" />
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="LabelWidget" name="BShiftStatus" colorScheme="HighContrast"/>
+    <Widget class="LabelWidget" name="BCtrlStatus" colorScheme="HighContrast"/>
+    <Widget class="LabelWidget" name="BAltStatus" colorScheme="HighContrast"/>
+    <Widget class="LabelWidget" name="BFuncStatus" colorScheme="HighContrast"/>
+    <Widget class="LabelWidget" name="BLockStatus" colorScheme="HighContrast"/>
+    
+    <Widget class="BoxWidget"  name="Box1">
+      <Widget class="RowWidget" name="Row1">
+        <Widget class="ScannerButton" name="B1"/>
+        <Widget class="ScannerButton" name="B2"/>
+        <Widget class="ScannerButton" name="B3"/>
+        <Widget class="ScannerButton" name="B4"/>
+        <Widget class="ScannerButton" name="B5"/>
+      </Widget>
+      
+      <Widget class="RowWidget" name="Row2">
+        <Widget class="ScannerButton" name="B6"/>
+        <Widget class="ScannerButton" name="B7"/>
+        <Widget class="ScannerButton" name="B8"/>
+        <Widget class="ScannerButton" name="B9"/>
+        <Widget class="ScannerButton" name="B10"/>
+      </Widget>
+      
+      <Widget class="RowWidget" name="Row3">
+        <Widget class="ScannerButton" name="B11"/>
+        <Widget class="ScannerButton" name="B12"/>
+        <Widget class="ScannerButton" name="B13"/>
+        <Widget class="ScannerButton" name="B14"/>
+        <Widget class="ScannerButton" name="B15"/>
+      </Widget>
+    </Widget> 
+    
+    <Widget class="BoxWidget"  name="Box2">
+      <Widget class="RowWidget" name="Row4">
+        <Widget class="ScannerButton" name="B16"/>
+        <Widget class="ScannerButton" name="B17"/>
+        <Widget class="ScannerButton" name="B18"/>
+        <Widget class="ScannerButton" name="B19"/>
+        <Widget class="ScannerButton" name="B20"/>
+      </Widget>
+        
+      <Widget class="RowWidget" name="Row5">
+        <Widget class="ScannerButton" name="B21"/>
+        <Widget class="ScannerButton" name="B22" enabled="false"/>
+        <Widget class="ScannerButton" name="B23"/>
+        <Widget class="ScannerButton" name="B24"/>
+        <Widget class="ScannerButton" name="B25"/>
+      </Widget>
+          
+      <Widget class="RowWidget" name="Row6">
+        <Widget class="ScannerButton" name="B26"/>
+        <Widget class="ScannerButton" name="B27"/>
+        <Widget class="ScannerButton" name="B28"/>
+        <Widget class="ScannerButton" name="B29"/>
+        <Widget class="ScannerButton" name="B30" enabled="false"/>
+      </Widget>
+    </Widget>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopLevelRotation"
+               start="true"
+               iterations="@HalfScanIterations">
+      <Widget name="Box1" onSelect="transition(RowRotationBox1)"/>
+      <Widget name="Box2" onSelect="transition(RowRotationBox2)"/>
+    </Animation>
+
+    <Animation name="RowRotationBox1"
+               iterations="@RowScanIterations"
+               hesitateTime="@HesitateTime"
+               onEnd="transition(TopLevelRotation)">
+      <Widget name="Row1" onSelect="transition(ButtonRotationBox1)"/>
+      <Widget name="Row2" onSelect="transition(ButtonRotationBox1)"/>
+      <Widget name="Row3" onSelect="transition(ButtonRotationBox1)"/>
+    </Animation>
+
+    <Animation name="ButtonRotationBox1"
+               iterations="@ColumnScanIterations"
+               onEnd="transition(RowRotationBox1)"
+               hesitateTime="@HesitateTime"
+              onSelect="actuate(@SelectedWidget); transition(TopLevelRotation)">
+      <Widget name="@SelectedWidget/*"/>
+    </Animation>
+
+    <Animation name="RowRotationBox2"
+               hesitateTime="@HesitateTime"
+               iterations="@RowScanIterations"
+               onEnd="transition(TopLevelRotation)">
+      <Widget name="Row4" onSelect="transition(ButtonRotationBox2Row4)" />
+      <Widget name="Row5" onSelect="transition(ButtonRotationBox2Row5)"/>
+      <Widget name="Row6" onSelect="transition(ButtonRotationBox2Row6)"/>
+    </Animation>
+
+    <Animation name="ButtonRotationBox2Row4"
+               iterations="@ColumnScanIterations"
+               onEnd="transition(RowRotationBox2)"
+               hesitateTime="@HesitateTime">
+      <Widget name="B16" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B17" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B17" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B18" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B19" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+      <Widget name="B20" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+    </Animation>
+
+    <Animation name="ButtonRotationBox2Row5"
+               iterations="@ColumnScanIterations"
+               onEnd="transition(RowRotationBox2)"
+               hesitateTime="@HesitateTime">
+      <Widget name="B21" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B22"/>
+      <Widget name="B23" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B24" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+      <Widget name="B25" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+    </Animation>
+
+    <Animation name="ButtonRotationBox2Row6"
+               iterations="@ColumnScanIterations"
+               onEnd="transition(RowRotationBox2)"
+               hesitateTime="@HesitateTime">
+      <Widget name="B26" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B27" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B28" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B29" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+      <Widget name="B30" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+    </Animation>
+
+    <Animation name="ButtonPressed"
+               onEnter=""
+               iterations="1"
+               onEnd="transition(TopLevelRotation)">
+      <Widget name="@SelectedWidget" hesitateTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+    </Animation>
+  </Animations>
+</ACAT>
+

@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{827AD764-63DD-4B12-974D-2B70CC877051}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ACAT.Lib.Core</RootNamespace>
+    <AssemblyName>ACATCore</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationClient" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AbbreviationsManagement\Abbreviation.cs" />
+    <Compile Include="AbbreviationsManagement\AbbreviationReplaceEventArgs.cs" />
+    <Compile Include="AbbreviationsManagement\Abbreviations.cs" />
+    <Compile Include="AbbreviationsManagement\AbbreviationTTSEventArgs.cs" />
+    <Compile Include="ActuatorManagement\ActuatorBase.cs" />
+    <Compile Include="ActuatorManagement\ActuatorManager.cs" />
+    <Compile Include="ActuatorManagement\Actuators.cs" />
+    <Compile Include="ActuatorManagement\ActuatorSwitchBase.cs" />
+    <Compile Include="ActuatorManagement\ActuatorSwitchEventArgs.cs" />
+    <Compile Include="ActuatorManagement\Interfaces\IActuator.cs" />
+    <Compile Include="ActuatorManagement\Interfaces\IActuatorSwitch.cs" />
+    <Compile Include="ActuatorManagement\KeyboardActuator\KeyboardActuator.cs" />
+    <Compile Include="ActuatorManagement\KeyboardActuator\KeyboardHook.cs" />
+    <Compile Include="ActuatorManagement\KeyboardActuator\KeyboardSwitch.cs" />
+    <Compile Include="ActuatorManagement\KeyboardActuator\MouseHook.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="ActuatorManagement\SwitchMap\SwitchConfig.cs" />
+    <Compile Include="ActuatorManagement\SwitchMap\SwitchElement.cs" />
+    <Compile Include="ActuatorManagement\SwitchMap\SwitchMap.cs" />
+    <Compile Include="ActuatorManagement\SwitchMap\SwitchMapActuator.cs" />
+    <Compile Include="ActuatorManagement\USBHidInterface\DllImports.cs" />
+    <Compile Include="ActuatorManagement\USBHidInterface\USBDevice.cs" />
+    <Compile Include="ActuatorManagement\USBHidInterface\USBInterop.cs" />
+    <Compile Include="ActuatorManagement\WinsockActuators\WinsockClientActuator\SocketClient.cs" />
+    <Compile Include="ActuatorManagement\WinsockActuators\WinsockClientActuator\WinsockClientActuatorBase.cs" />
+    <Compile Include="ActuatorManagement\WinsockActuators\WinsockCommon.cs" />
+    <Compile Include="ActuatorManagement\WinsockActuators\WinsockSwitch.cs" />
+    <Compile Include="ActuatorManagement\WinsockActuators\WinsockServerActuator\ClientConnHandler.cs" />
+    <Compile Include="ActuatorManagement\WinsockActuators\WinsockServerActuator\SocketServer.cs" />
+    <Compile Include="ActuatorManagement\WinsockActuators\WinsockServerActuator\WinsockClientConnectEventArgs.cs" />
+    <Compile Include="ActuatorManagement\WinsockActuators\WinsockServerActuator\WinsockServerActuatorBase.cs" />
+    <Compile Include="AgentManagement\AgentBase.cs" />
+    <Compile Include="AgentManagement\AgentCloseEventArgs.cs" />
+    <Compile Include="AgentManagement\AgentContext.cs" />
+    <Compile Include="AgentManagement\AgentManager.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="AgentManagement\AgentProcessInfo.cs" />
+    <Compile Include="AgentManagement\AgentsCache\AgentsCache.cs" />
+    <Compile Include="AgentManagement\AgentsCache\PreferredAgents.cs" />
+    <Compile Include="AgentManagement\AgentUtils.cs" />
+    <Compile Include="AgentManagement\CheckEnabledArgs.cs" />
+    <Compile Include="AgentManagement\FunctionalAgentBase.cs" />
+    <Compile Include="AgentManagement\GenericAppAgentBase.cs" />
+    <Compile Include="AgentManagement\Interfaces\IApplicationAgent.cs" />
+    <Compile Include="AgentManagement\Interfaces\IFunctionalAgent.cs" />
+    <Compile Include="AgentManagement\Interfaces\IKeyboard.cs" />
+    <Compile Include="AgentManagement\Interfaces\ITextControlAgent.cs" />
+    <Compile Include="AgentManagement\Keyboard.cs" />
+    <Compile Include="AgentManagement\NullAgent.cs" />
+    <Compile Include="AgentManagement\TextControlAgents\EditTextControlAgent.cs" />
+    <Compile Include="AgentManagement\TextControlAgents\KeyLogTextControlAgent.cs" />
+    <Compile Include="AgentManagement\TextControlAgents\ReadOnlyTextControlAgent.cs" />
+    <Compile Include="AgentManagement\TextControlAgents\TextChangedEventArgs.cs" />
+    <Compile Include="AgentManagement\TextControlAgents\TextControlAgentBase.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="AgentManagement\UnsupportedAppAgent.cs" />
+    <Compile Include="AnimationManagement\Animation.cs" />
+    <Compile Include="AnimationManagement\AnimationManager.cs" />
+    <Compile Include="AnimationManagement\AnimationMouseClickEventArgs.cs" />
+    <Compile Include="AnimationManagement\AnimationPlayer.cs" />
+    <Compile Include="AnimationManagement\Animations.cs" />
+    <Compile Include="AnimationManagement\AnimationsCollection.cs" />
+    <Compile Include="AnimationManagement\AnimationWidget.cs" />
+    <Compile Include="AnimationManagement\AnimationWidgetAddedEventArgs.cs" />
+    <Compile Include="AnimationManagement\PlayerStateChangedEventArgs.cs" />
+    <Compile Include="AnimationManagement\ResolveWidgetChildrenEventArgs.cs" />
+    <Compile Include="AnimationManagement\Variables.cs" />
+    <Compile Include="PanelManagement\CommandDispatcher\IRunCommandDispatcher.cs" />
+    <Compile Include="PanelManagement\CommandDispatcher\IRunCommandHandler.cs" />
+    <Compile Include="PanelManagement\CommandDispatcher\RunCommandHandler.cs" />
+    <Compile Include="PanelManagement\CommandDispatcher\RunCommandDispatcher.cs" />
+    <Compile Include="Extensions\ExtensionEventArgs.cs" />
+    <Compile Include="Extensions\ExtensionInvoker.cs" />
+    <Compile Include="Extensions\IExtension.cs" />
+    <Compile Include="Interpreter\ActionVerb.cs" />
+    <Compile Include="Interpreter\Interpret.cs" />
+    <Compile Include="Interpreter\InterpreterEventArgs.cs" />
+    <Compile Include="Interpreter\InterpreterRunEventArgs.cs" />
+    <Compile Include="Interpreter\Parser.cs" />
+    <Compile Include="Interpreter\PCode.cs" />
+    <Compile Include="Interpreter\Scripts.cs" />
+    <Compile Include="Interpreter\Variables.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PanelManagement\CommandDispatcher\RunCommands.cs" />
+    <Compile Include="PanelManagement\UI\ContextMenuMinimalBase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ContextMenuMinimalBase.designer.cs">
+      <DependentUpon>ContextMenuMinimalBase.cs</DependentUpon>
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ContextualMenuBase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ContextualMenuBase.designer.cs">
+      <DependentUpon>ContextualMenuBase.cs</DependentUpon>
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="PanelManagement\UI\Glass.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PanelManagement\UI\Glass.Designer.cs">
+      <DependentUpon>Glass.cs</DependentUpon>
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="PanelManagement\UI\SplashScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PanelManagement\UI\SplashScreen.designer.cs">
+      <DependentUpon>SplashScreen.cs</DependentUpon>
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="PanelManagement\UI\TimedMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PanelManagement\UI\TimedMessageBox.designer.cs">
+      <DependentUpon>TimedMessageBox.cs</DependentUpon>
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ToastForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ToastForm.Designer.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="PanelManagement\Common\PostExitCommand.cs" />
+    <Compile Include="PanelManagement\Common\DialogCommon.cs" />
+    <Compile Include="PanelManagement\Common\ScannerCommon.cs" />
+    <Compile Include="PanelManagement\Common\ScannerPositionSizeController.cs" />
+    <Compile Include="PanelManagement\Common\ScannerShowEventArg.cs" />
+    <Compile Include="PanelManagement\Common\ScannerStatusBar.cs" />
+    <Compile Include="PanelManagement\Common\Splash.cs" />
+    <Compile Include="PanelManagement\Common\StartupArg.cs" />
+    <Compile Include="PanelManagement\Common\StatusBarController.cs" />
+    <Compile Include="PanelManagement\Common\TextController.cs" />
+    <Compile Include="PanelManagement\Context.cs" />
+    <Compile Include="PanelManagement\Interfaces\IDialogPanel.cs" />
+    <Compile Include="PanelManagement\Interfaces\IPanel.cs" />
+    <Compile Include="PanelManagement\Interfaces\IScannerPanel.cs" />
+    <Compile Include="PanelManagement\Interfaces\IScannerPreview.cs" />
+    <Compile Include="PanelManagement\Interfaces\ISupportsStatusBar.cs" />
+    <Compile Include="PanelManagement\Interfaces\ITalkWindow.cs" />
+    <Compile Include="PanelManagement\Interfaces\ITextController.cs" />
+    <Compile Include="PanelManagement\PanelConfigMap\PanelConfigMap.cs" />
+    <Compile Include="PanelManagement\PanelConfigMap\PanelConfigMapEntry.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="PanelManagement\PanelConfigMap\PreferredPanelConfig.cs" />
+    <Compile Include="PanelManagement\PanelManager.cs" />
+    <Compile Include="PanelManagement\Utils\AutoPositionScanner.cs" />
+    <Compile Include="PanelManagement\Utils\Fonts.cs" />
+    <Compile Include="PanelManagement\Utils\OutlineWindow.cs" />
+    <Compile Include="PanelManagement\Utils\DockScanner.cs" />
+    <Compile Include="PanelManagement\Utils\WindowHighlight.cs" />
+    <Compile Include="PanelManagement\Utils\WindowOverlapWatchdog.cs" />
+    <Compile Include="SpellCheckManagement\Interfaces\ISpellChecker.cs" />
+    <Compile Include="SpellCheckManagement\Interfaces\ISpellCheckerSettingsDialog.cs" />
+    <Compile Include="SpellCheckManagement\NullSpellChecker.cs" />
+    <Compile Include="SpellCheckManagement\SpellCheckers.cs" />
+    <Compile Include="SpellCheckManagement\SpellCheckManager.cs" />
+    <Compile Include="TalkWindowManagement\TalkWindowBase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TalkWindowManagement\TalkWindowCreatedEventArgs.cs" />
+    <Compile Include="TalkWindowManagement\TalkWindowManager.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="TalkWindowManagement\TalkWindowVisibilityChangedEventArgs.cs" />
+    <Compile Include="ThemeManagement\ColorScheme.cs" />
+    <Compile Include="ThemeManagement\ColorSchemes.cs" />
+    <Compile Include="ThemeManagement\Theme.cs" />
+    <Compile Include="ThemeManagement\ThemeManager.cs" />
+    <Compile Include="TTSManagement\Interfaces\ITTSEngine.cs" />
+    <Compile Include="TTSManagement\Interfaces\ITTSSettingsDialog.cs" />
+    <Compile Include="TTSManagement\Interfaces\ITTSValue.cs" />
+    <Compile Include="TTSManagement\Pronunciation.cs" />
+    <Compile Include="TTSManagement\Pronunciations.cs" />
+    <Compile Include="TTSManagement\TTSBookmarkReachedEventArgs.cs" />
+    <Compile Include="TTSManagement\TTSEngines.cs" />
+    <Compile Include="TTSManagement\TTSEngines\NullEngine\NullEngine.cs" />
+    <Compile Include="TTSManagement\TTSManager.cs" />
+    <Compile Include="TTSManagement\TTSStatusChangedEventArgs.cs" />
+    <Compile Include="TTSManagement\TTSValue.cs" />
+    <Compile Include="TTSManagement\TTSVoiceChangedEventArgs.cs" />
+    <Compile Include="Audit\AuditEventAbbreviation.cs" />
+    <Compile Include="Audit\AuditEventActiveWindowChange.cs" />
+    <Compile Include="Audit\AuditEventAnimationEnd.cs" />
+    <Compile Include="Audit\AuditEvent.cs" />
+    <Compile Include="Audit\AuditEventBase.cs" />
+    <Compile Include="Audit\AuditLog.cs" />
+    <Compile Include="Audit\AuditEventAutoComplete.cs" />
+    <Compile Include="Audit\AuditEventSwitchActuate.cs" />
+    <Compile Include="Audit\AuditEventFocusChanged.cs" />
+    <Compile Include="Audit\AuditEventMouseMover.cs" />
+    <Compile Include="Audit\AuditEventMuteScreen.cs" />
+    <Compile Include="Audit\AuditEventScannerActivity.cs" />
+    <Compile Include="Audit\AuditEventUISwitchDetect.cs" />
+    <Compile Include="Audit\AuditEventTalkWindow.cs" />
+    <Compile Include="Audit\AuditEventTextToSpeech.cs" />
+    <Compile Include="UserManagement\ProfileManager.cs" />
+    <Compile Include="UserManagement\UserManager.cs" />
+    <Compile Include="Utility\Attributions.cs" />
+    <Compile Include="Utility\AutomationEventManager.cs" />
+    <Compile Include="Utility\CoreGlobals.cs" />
+    <Compile Include="Utility\KeyToChar.cs" />
+    <Compile Include="Utility\Mouse\BresenhamLine.cs" />
+    <Compile Include="Utility\XmlUtils.cs" />
+    <Compile Include="Utility\Mouse\Bresenham.cs" />
+    <Compile Include="Utility\DescriptorAttribute.cs" />
+    <Compile Include="Utility\DirectoryWalker.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="Utility\FileUtils.cs" />
+    <Compile Include="Utility\FocusChangedEventArgs.cs" />
+    <Compile Include="Utility\GlobalPreferences.cs" />
+    <Compile Include="Utility\Mouse\GridMouseMover.cs" />
+    <Compile Include="Utility\ImageUtils.cs" />
+    <Compile Include="Utility\Interfaces\IDescriptor.cs" />
+    <Compile Include="Utility\KeyStateTracker.cs" />
+    <Compile Include="Utility\Log.cs" />
+    <Compile Include="Utility\Mouse\MouseMoverStateChangedEventArgs.cs" />
+    <Compile Include="Utility\Mouse\MouseUtils.cs" />
+    <Compile Include="PanelManagement\Common\PanelClasses.cs" />
+    <Compile Include="PanelManagement\Common\PanelRequestEventArgs.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="Utility\Preferences.cs" />
+    <Compile Include="Utility\PreferencesBase.cs" />
+    <Compile Include="Utility\Mouse\RadarMouseMover.cs" />
+    <Compile Include="Utility\RoundedCornerRectangle.cs" />
+    <Compile Include="Utility\SmartPath.cs" />
+    <Compile Include="Utility\SyncLock.cs" />
+    <Compile Include="Utility\TextUtils.cs" />
+    <Compile Include="Utility\TimerQueue.cs" />
+    <Compile Include="Utility\TriggerLock.cs" />
+    <Compile Include="Utility\User32Interop.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="Utility\WebSearch.cs" />
+    <Compile Include="Utility\WindowActiveWatchdog.cs" />
+    <Compile Include="Utility\WindowActivityMonitor.cs" />
+    <Compile Include="Utility\WindowActivityMonitorInfo.cs" />
+    <Compile Include="Utility\Windows.cs" />
+    <Compile Include="Utility\EnumWindows.cs" />
+    <Compile Include="WidgetManagement\Interfaces\IBoxWidget.cs" />
+    <Compile Include="WidgetManagement\Interfaces\IButtonWidget.cs" />
+    <Compile Include="WidgetManagement\Interfaces\IRowWidget.cs" />
+    <Compile Include="WidgetManagement\Layout\WidgetAttribute.cs" />
+    <Compile Include="WidgetManagement\Layout\WidgetAttributes.cs" />
+    <Compile Include="WidgetManagement\Layout\Layout.cs" />
+    <Compile Include="WidgetManagement\ScannerButtonControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WidgetManagement\ScannerButtonControl.designer.cs">
+      <DependentUpon>ScannerButtonControl.cs</DependentUpon>
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="WidgetManagement\Widget.cs" />
+    <Compile Include="WidgetManagement\WidgetEventArg.cs" />
+    <Compile Include="WidgetManagement\WidgetFinder.cs" />
+    <Compile Include="WidgetManagement\WidgetManager.cs" />
+    <Compile Include="Widgets\PictureBoxWidget.cs" />
+    <Compile Include="Widgets\BoxWidget.cs" />
+    <Compile Include="Widgets\ButtonControlWidget.cs" />
+    <Compile Include="Widgets\ButtonWidgetBase.cs" />
+    <Compile Include="Widgets\ContextMenuIcon.cs" />
+    <Compile Include="Widgets\ContextMenuText.cs" />
+    <Compile Include="Widgets\CurrentWordWidget.cs" />
+    <Compile Include="Widgets\ImageWidget.cs" />
+    <Compile Include="Widgets\LabelWidget.cs" />
+    <Compile Include="Widgets\PictureBoxWidgetBase.cs" />
+    <Compile Include="Widgets\RowWidget.cs" />
+    <Compile Include="Widgets\ScannerButton.cs" />
+    <Compile Include="Widgets\ScannerButtonBase.cs" />
+    <Compile Include="Widgets\SliderWidget.cs" />
+    <Compile Include="Widgets\TabStopScannerButton.cs" />
+    <Compile Include="Widgets\TextBoxWidget.cs" />
+    <Compile Include="Widgets\CheckBoxWidget.cs" />
+    <Compile Include="Widgets\WidgetUtils.cs" />
+    <Compile Include="Widgets\WinControlWidget.cs" />
+    <Compile Include="Widgets\WordListWidget.cs" />
+    <Compile Include="Widgets\WordListItemWidget.cs" />
+    <Compile Include="WordPredictorManagement\Interfaces\IWordPredictor.cs" />
+    <Compile Include="WordPredictorManagement\Interfaces\IWordPredictorSettingsDialog.cs" />
+    <Compile Include="WordPredictorManagement\Models\NullWordPredictor.cs" />
+    <Compile Include="WordPredictorManagement\WordPredictionManager.cs" />
+    <Compile Include="WordPredictorManagement\WordPredictors.cs" />
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Shell32">
+      <Guid>{50A7E9B0-70EF-11D1-B75A-00A0C90564FE}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="PanelManagement\UI\ContextMenuMinimalBase.resx">
+      <DependentUpon>ContextMenuMinimalBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PanelManagement\UI\ContextualMenuBase.resx">
+      <DependentUpon>ContextualMenuBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PanelManagement\UI\Glass.resx">
+      <DependentUpon>Glass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PanelManagement\UI\SplashScreen.resx">
+      <DependentUpon>SplashScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PanelManagement\UI\TimedMessageBox.resx">
+      <DependentUpon>TimedMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PanelManagement\UI\ToastForm.resx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if not exist "$(SolutionDir)\Redistributable" mkdir "$(SolutionDir)\Redistributable"
+copy /y "$(TargetDir)\$(TargetFileName)" "$(SolutionDir)\Redistributable"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

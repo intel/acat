@@ -1,0 +1,82 @@
+<?xml version="1.0" ?> 
+
+<ACAT>
+	<WidgetAttributes>
+    <WidgetAttribute name="lblOK" label="OK" value="valButtonSave"  fontsize="14" mouseClickActuate="true"/>
+		<WidgetAttribute name="lblBack" label="Cancel" value="valButtonBack"  fontsize="14"  mouseClickActuate="true"/>
+    <WidgetAttribute name="lblRestoreDefaults" label="Defaults" value="valButtonRestoreDefaults" fontsize="14"  mouseClickActuate="true" />
+    
+    <WidgetAttribute name="pbScanClick" label="M" value="valCheckScanClick" fontname="ACAT Icon" fontsize="32" bold="false" />
+    <WidgetAttribute name="pbAlarmSound" label="M" value="valCheckAlarmSound" fontname="ACAT Icon" fontsize="32" bold="false" />
+    <WidgetAttribute name="pbSelectingClick" label="M" value="valCheckSelectingClick" fontname="ACAT Icon" fontsize="32" bold="false" mouseClickActuate="true"/>
+
+    <WidgetAttribute name="pbDynamicLearning" label="M" value="valDynamicLearning" fontname="ACAT Icon" fontsize="32" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="lblDynamicLearning" label="Dynamic Learning" fontsize="14" value="valDynamicLearning"/>
+    <WidgetAttribute name="pbUseCorpus" label="M" value="valUseCorpus" fontname="ACAT Icon" fontsize="32" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="lblUseCorpus" label="Use Corpus Model" fontsize="14" value="valUseCorpus"/>
+    <WidgetAttribute name="lblWordCount" label="Word Count" fontsize="14" value="valWordCount"/>
+    <WidgetAttribute name="ltbWordCountLess" label="O" value="valButtonWordCountLess" fontname="ACAT Icon" fontsize="36"  bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbWordCountMore" label="N" value="valButtonWordCountMore" fontname="ACAT Icon" fontsize="36"  bold="false" mouseClickActuate="true"/>
+	</WidgetAttributes>
+
+  <Layout>
+    <Widget class="ButtonControlWidget" name="lblOK" />
+    <Widget class="ButtonControlWidget" name="lblBack" />
+    <Widget class="ButtonControlWidget" name="lblRestoreDefaults" />
+    
+    <Widget class="CheckBoxWidget" name="pbDynamicLearning" onStateText="L" offStateText="M" onOffState="on" />
+    <Widget class="LabelWidget" name="lblDynamicLearning" />
+
+    <Widget class="CheckBoxWidget" name="pbUseCorpus" onStateText="L" offStateText="M" onOffState="on" />
+    <Widget class="LabelWidget" name="lblUseCorpus" />
+        
+    <Widget class="SliderWidget" name="tbWordCount" min="1" max="10" initialvalue="1" tickfrequency="1" step="1" caption="Word Count">
+      <Widget class="LabelWidget" name="ltbWordCountLess" subclass="sliderdecrement"/>
+      <Widget class="LabelWidget" name="ltbWordCountMore" subclass="sliderincrement"/>
+      <Widget class="WinControlWidget" name="tbWordcount"/>
+      <Widget class="LabelWidget" name="lblWordCount" subclass="slidercaption"/>
+      <Widget class="WinControlWidget" name="sminWordCount" subclass="sliderminvalue"/>
+      <Widget class="WinControlWidget" name="smaxWordCount" subclass="slidermaxvalue"/>
+      <Widget class="WinControlWidget" name="svalWordCount" subclass="slidercurrentvalue" />
+    </Widget>
+  </Layout>
+
+	<Animations> 
+    <Animation  name="TopLevel"
+                start="true"
+                onEnter=""
+                steppingTime="@TabScanTime"
+                iterations="@HalfScanIterations">
+        <Widget name="lblDynamicLearning" onSelect="actuate(pbDynamicLearning);" />
+        <Widget name="lblUseCorpus" onSelect="actuate(pbUseCorpus);" />
+        <Widget name="lblWordCount" onSelect="transition(animWordCount);" />
+        <Widget name="lblOK" onSelect="actuate(@SelectedWidget)"/>
+        <Widget name="lblBack" onSelect="actuate(@SelectedWidget);" />
+        <Widget name="lblRestoreDefaults" onSelect="actuate(@SelectedWidget)"/>
+    </Animation>
+
+    <Animation name="animWordCount"
+           start="false"
+           onEnter=""
+           iterations="3"
+           steppingTime="@TabScanTime"
+           onEnd="transition(TopLevel)">
+      <Widget name="ltbWordCountLess" onSelect="actuate(@SelectedWidget);transition(animWordCountDecrement);" />
+      <Widget name="ltbWordCountMore" onSelect="actuate(@SelectedWidget);transition(animWordCountIncrement);"/>
+    </Animation>
+      <Animation name="animWordCountDecrement"
+              start="false"
+              onEnter=""
+              iterations="1"
+              onEnd="transition(animWordCount)">
+        <Widget name="ltbWordCountLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbWordCountLess);" />
+      </Animation>
+      <Animation name="animWordCountIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animWordCount)">
+        <Widget name="ltbWordCountMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbWordCountMore);" />
+      </Animation>
+  </Animations>
+</ACAT>

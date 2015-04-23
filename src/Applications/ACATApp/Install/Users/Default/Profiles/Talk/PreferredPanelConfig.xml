@@ -1,0 +1,6 @@
+<ACAT>
+   <PanelConfigs name="Talk" description="AlphabetScanner with alphabetical layout">
+      <PanelConfig panelClass="Alphabet" configName="AlphabetScannerTalkWindowOnly"/>
+ </PanelConfigs>
+
+</ACAT>	

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ACATPreferences xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TabScanTime>1000</TabScanTime>
+  <FirstRepeatTime>1000</FirstRepeatTime>
+  <SteppingTime>1000</SteppingTime>
+  <HesitateTime>250</HesitateTime>
+  <ScanClick>false</ScanClick>
+  <SelectClick>true</SelectClick>
+  <ScannerScaleFactor>10</ScannerScaleFactor>
+  <FontName>Arial</FontName>
+  <FontSize>18</FontSize>
+  <Skin>BlackYellow</Skin>
+  <AutoSaveScannerLastPosition>false</AutoSaveScannerLastPosition>
+  <ScanDisabledElements>true</ScanDisabledElements>
+  <ScannerPosition>TopRight</ScannerPosition>
+  <ScannerShowBorder>true</ScannerShowBorder>
+  <ScannerShowTitleBar>true</ScannerShowTitleBar>
+  <PreferredPanelConfigNames>Talk;MenusWithText</PreferredPanelConfigNames>
+  <AcceptTime>50</AcceptTime>
+  <EnableGlass>true</EnableGlass>
+  <GlassOpacity>0.8</GlassOpacity>
+  <GlassFadeIn>false</GlassFadeIn>
+  <SpacesAfterPunctuation>1</SpacesAfterPunctuation>
+  <HideWindowsTaskBar>false</HideWindowsTaskBar>
+  <HideScannerOnIdle>false</HideScannerOnIdle>
+  <HideOnIdleTimeout>5000</HideOnIdleTimeout>
+  <ExpandAbbreviationsOnSeparator>false</ExpandAbbreviationsOnSeparator>
+  <DebugLogMessagesToFile>false</DebugLogMessagesToFile>
+  <DebugMessagesEnable>false</DebugMessagesEnable>
+  <DebugAssertOnError>false</DebugAssertOnError>
+  <AuditLogEnable>false</AuditLogEnable>
+  <AuditLogFilter>*</AuditLogFilter>
+  <RetainTalkWindowContentsOnHide>true</RetainTalkWindowContentsOnHide>
+  <TalkWindowFontSize>0</TalkWindowFontSize>
+  <EnableTextToSpeech>true</EnableTextToSpeech>
+  <Extensions>Default</Extensions>
+  <PreferredTTSEngines>SAPI TTS Engine</PreferredTTSEngines>
+  <PreferredWordPredictor>Presage Word Predictor</PreferredWordPredictor>
+  <PreferredSpellChecker>ACAT SpellChecker</PreferredSpellChecker>
+  <HalfScanIterations>4</HalfScanIterations>
+  <RowScanIterations>1</RowScanIterations>
+  <ColumnScanIterations>1</ColumnScanIterations>
+  <WordPredictionScanIterations>1</WordPredictionScanIterations>
+  <WordPredictionHesitateTime>600</WordPredictionHesitateTime>
+  <HideLaunchpadOnIdle>false</HideLaunchpadOnIdle>
+  <TimedDialogTimeout>4000</TimedDialogTimeout>
+  <PrefixNumbersInWordPredictionList>true</PrefixNumbersInWordPredictionList>
+  <EnableContextualMenusForMenus>false</EnableContextualMenusForMenus>
+  <EnableContextualMenusForDialogs>false</EnableContextualMenusForDialogs>
+  <WordPredictionCount>10</WordPredictionCount>
+  <EnableWordPredictionCorpusModel>false</EnableWordPredictionCorpusModel>
+  <EnableWordPredictionDynamicModel>true</EnableWordPredictionDynamicModel>
+  <WordPredictionNGram>4</WordPredictionNGram>
+  <WordPredictionFilterPunctuations>true</WordPredictionFilterPunctuations>
+  <WordPredictionFilterMatchPrefix>false</WordPredictionFilterMatchPrefix>
+  <WordPredictionFilterMatchPrefixLengthAdjust>1</WordPredictionFilterMatchPrefixLengthAdjust>
+  <ShowTalkWindowOnStartup>true</ShowTalkWindowOnStartup>
+  <TalkWindowDisplayDateTimeEnable>true</TalkWindowDisplayDateTimeEnable>
+  <TalkWindowDisplayDateFormat>ddd, MMM d, yyyy</TalkWindowDisplayDateFormat>
+  <TalkWindowDisplayTimeFormat>h:mm tt</TalkWindowDisplayTimeFormat>
+  <TalkWindowShowBorder>true</TalkWindowShowBorder>
+  <TalkWindowShowTitleBar>true</TalkWindowShowTitleBar>
+  <MouseRadarRotatingSpeed>6</MouseRadarRotatingSpeed>
+  <MouseRadarRotatingSweeps>1</MouseRadarRotatingSweeps>
+  <MouseRadarRadialSpeed>6</MouseRadarRadialSpeed>
+  <MouseRadarRadialSweeps>1</MouseRadarRadialSweeps>
+  <MouseRadarLineWidth>3</MouseRadarLineWidth>
+  <MouseRadarStartFromLastCursorPos>true</MouseRadarStartFromLastCursorPos>
+  <MouseRadarSoundEffectsOn>false</MouseRadarSoundEffectsOn>
+  <MouseRadarRotatingSpeedMultiplier>4</MouseRadarRotatingSpeedMultiplier>
+  <MouseRadarRadialSpeedMultipler>12</MouseRadarRadialSpeedMultipler>
+  <MouseGridVerticalSpeed>4</MouseGridVerticalSpeed>
+  <MouseGridVerticalSweeps>1</MouseGridVerticalSweeps>
+  <MouseGridHorizontalSpeed>11</MouseGridHorizontalSpeed>
+  <MouseGridHorizontalSweeps>1</MouseGridHorizontalSweeps>
+  <MouseGridLineWidth>3</MouseGridLineWidth>
+  <MouseGridStartFromLastCursorPos>false</MouseGridStartFromLastCursorPos>
+  <MouseGridMouseMoveSpeedMultiplier>6</MouseGridMouseMoveSpeedMultiplier>
+  <MouseGridScanSpeedMultiplier>14</MouseGridScanSpeedMultiplier>
+  <MuteScanIterations>-1</MuteScanIterations>
+  <MutePin>2589</MutePin>
+  <MutePinDigitMax>9</MutePinDigitMax>
+  <MuteScreenDisplayDateFormat>dddd, MMMM d, yyyy</MuteScreenDisplayDateFormat>
+  <MuteScreenDisplayTimeFormat>h:mm:ss tt</MuteScreenDisplayTimeFormat>
+  <UserVoiceTestString>The boundary condition of the universe is that it has no boundary.  </UserVoiceTestString>
+  <TTSUseBookmarks>true</TTSUseBookmarks>
+  <FileBrowserDateFormat>dd/MM/yyyy</FileBrowserDateFormat>
+  <FavoriteFolders>C:\Users\sprasad1\Documents</FavoriteFolders>
+  <FileBrowserExcludeFileExtensions />
+  <FileBrowserShowFileOperationsMenu>true</FileBrowserShowFileOperationsMenu>
+  <NewTextFileCreateFolder>C:\Users\sprasad1\Documents</NewTextFileCreateFolder>
+  <NewWordDocCreateFolder>C:\Users\sprasad1\Documents</NewWordDocCreateFolder>
+  <SeedWordPredictionOnNewSentence>true</SeedWordPredictionOnNewSentence>
+  <WindowMaximizeSizePercent>66</WindowMaximizeSizePercent>
+  <LectureManagerSpeakAllParagraphPause>4000</LectureManagerSpeakAllParagraphPause>
+</ACATPreferences>

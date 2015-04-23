@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+
+<ACAT>
+  <Spellings>
+    <Spelling word="i" replaceWith="I"/>
+    <Spelling word="cant" replaceWith="can't"/>
+    <Spelling word="dont" replaceWith="don't"/>
+    <Spelling word="shouldnt" replaceWith="shouldn't"/>
+    <Spelling word="couldnt" replaceWith="couldn't"/>
+    <Spelling word="wouldnt" replaceWith="wouldn't"/>
+    <Spelling word="id" replaceWith="I'd"/>
+    <Spelling word="ive" replaceWith="I've"/>
+    <Spelling word="havent" replaceWith="haven't"/>
+    <Spelling word="isnt" replaceWith="isn't"/>
+  </Spellings>
+</ACAT>
+

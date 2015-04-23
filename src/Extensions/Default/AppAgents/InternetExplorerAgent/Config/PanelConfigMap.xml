@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+    <ConfigMapEntry panelClass="InternetExplorerContextMenu" configName="InternetExplorerContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="InternetExplorerContextMenu.xml"/>
+    <ConfigMapEntry panelClass="InternetExplorerContextMenu" configName="InternetExplorerContextMenuIconsOnly" formId="6DD7E759-9ACE-40B0-9991-20FB56266BE9"  configFile="InternetExplorerContextMenuIconsOnly.xml"/>
+    <ConfigMapEntry panelClass="InternetExplorerBrowserMenu" configName="InternetExplorerBrowserMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="InternetExplorerBrowserMenu.xml"/>
+    <ConfigMapEntry panelClass="InternetExplorerZoomMenu" configName="InternetExplorerZoomMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="InternetExplorerZoomMenu.xml"/>
+    <ConfigMapEntry panelClass="InternetExplorerZoomMenu" configName="InternetExplorerZoomMenuIconsOnly" formId="6DD7E759-9ACE-40B0-9991-20FB56266BE9"  configFile="InternetExplorerZoomMenuIconsOnly.xml"/>
+  </ConfigMapEntries>
+</ACAT>

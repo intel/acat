@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="lblCancel" label="(" value="valButtonCancel"  fontname="ACAT Icon" fontsize="14"  mouseClickActuate="true"/>
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="WinControlWidget" name="TaskList"/>
+    <Widget class="ButtonControlWidget" name="lblCancel" subclass="Exit"/>
+  </Layout>
+
+  <Animations>
+    <Animation  name="animTopLevel"
+                start="true"
+                onEnter=""
+                steppingTime="2500"
+                hesitateTime="@HesitateTime"
+                iterations="@HalfScanIterations">
+      <Widget name="lblCancel" onSelect="actuate(@SelectedWidget);" />
+      <Widget name="TaskList/*" onSelect="highlightSelected(@SelectedWidget, true);actuate(@SelectedWidget);actuate(lblCancel);" onMouseClick="actuate(@SelectedWidget);actuate(lblCancel);" />
+    </Animation>
+
+    <Animation name="tryExit`"
+               iterations="3"
+               steppingTime="@TabScanTime"
+               onEnter="highlightSelected(@SelectedWidget, true)"
+               onEnd="highlightSelected(@SelectedWidget, false);transition(animTopLevel)">
+      <Widget name="lblCancel"  onSelect="actuate(@SelectedWidget)" />
+    </Animation>
+  </Animations>
+</ACAT>

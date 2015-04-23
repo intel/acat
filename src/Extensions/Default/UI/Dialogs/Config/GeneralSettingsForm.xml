@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="lblOK" label="OK" value="valButtonSave"  fontsize="14" mouseClickActuate="true"/>
+    <WidgetAttribute name="lblBack" label="Cancel" value="valButtonBack"  fontsize="14"  mouseClickActuate="true"/>
+    <WidgetAttribute name="lblRestoreDefaults" label="Defaults" value="valButtonRestoreDefaults" fontsize="14"  mouseClickActuate="true" />
+    
+    <WidgetAttribute name="pbScannerAutoSaveLastPosition" label="M" value="valScannerAutoSaveLastPosition" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>
+    <WidgetAttribute name="pbHideScannersOnIdle" label="M" value="valHideScannersOnIdle" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>
+    <WidgetAttribute name="pbShowGlass" label="M" value="valShowGlass" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>
+    <WidgetAttribute name="pbShowTalkWindowOnStartup" label="M" value="valShowTalkWindowOnStartup" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>
+    <WidgetAttribute name="pbRetainTalkWindowText" label="M" value="valRetainTalkWindowText" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>
+    <WidgetAttribute name="pbExpandAbbreviationsOnSeparator" label="M" value="valExpandAbbreviationsOnSeparator" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>    
+    <WidgetAttribute name="pbEnableDebugTraceLogging" label="M" value="valEnableDebugTraceLogging" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>
+    <WidgetAttribute name="pbEnableAuditLog" label="M" value="valEnableAuditLog" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="ButtonControlWidget" name="lblOK" />
+    <Widget class="ButtonControlWidget" name="lblBack" />
+    <Widget class="ButtonControlWidget" name="lblRestoreDefaults" />
+
+    <Widget class="LabelWidget" name="lblShowGlass" />
+    <Widget class="LabelWidget" name="lblHideScannersOnIdle" />
+    <Widget class="LabelWidget" name="lblExpandAbbreviationsOnSeparator" />
+    <Widget class="LabelWidget" name="lblShowTalkWindowOnStartup" />
+    <Widget class="LabelWidget" name="lblRetainTalkWindowText" />
+    <Widget class="LabelWidget" name="lblScannerAutoSaveLastPosition" />
+    <Widget class="LabelWidget" name="lblEnableDebugTraceLogging" />
+    <Widget class="LabelWidget" name="lblEnableAuditLog" />
+
+    <Widget class="CheckBoxWidget" name="pbShowGlass" onStateText="L" offStateText="M" onOffState="on" />
+    <Widget class="CheckBoxWidget" name="pbHideScannersOnIdle" onStateText="L" offStateText="M" onOffState="on" />
+    <Widget class="CheckBoxWidget" name="pbExpandAbbreviationsOnSeparator" onStateText="L" offStateText="M" onOffState="on" />
+    <Widget class="CheckBoxWidget" name="pbShowTalkWindowOnStartup" onStateText="L" offStateText="M" onOffState="on" />
+    <Widget class="CheckBoxWidget" name="pbRetainTalkWindowText" onStateText="L" offStateText="M" onOffState="on" />
+    <Widget class="CheckBoxWidget" name="pbScannerAutoSaveLastPosition" onStateText="L" offStateText="M" onOffState="on" />
+    <Widget class="CheckBoxWidget" name="pbEnableDebugTraceLogging" onStateText="L" offStateText="M" onOffState="on" />
+    <Widget class="CheckBoxWidget" name="pbEnableAuditLog" onStateText="L" offStateText="M" onOffState="on" />
+  </Layout>
+
+  <Animations>
+    <Animation  name="animTopLevel"
+                start="true"
+                onEnter=""
+                steppingTime="@TabScanTime"
+                iterations="@HalfScanIterations">
+      <Widget name="lblScannerAutoSaveLastPosition" onSelect="actuate(pbScannerAutoSaveLastPosition);" />
+      <Widget name="lblHideScannersOnIdle" onSelect="actuate(pbHideScannersOnIdle);" />
+      <Widget name="lblShowGlass" onSelect="actuate(pbShowGlass);" />
+      <Widget name="lblShowTalkWindowOnStartup" onSelect="actuate(pbShowTalkWindowOnStartup);" />
+      <Widget name="lblRetainTalkWindowText" onSelect="actuate(pbRetainTalkWindowText);" />
+      <Widget name="lblExpandAbbreviationsOnSeparator" onSelect="actuate(pbExpandAbbreviationsOnSeparator);" />
+      <Widget name="lblEnableDebugTraceLogging" onSelect="actuate(pbEnableDebugTraceLogging);" />
+      <Widget name="lblEnableAuditLog" onSelect="actuate(pbEnableAuditLog);" />
+      <Widget name="lblOK" onSelect="actuate(@SelectedWidget)"/>
+      <Widget name="lblBack" onSelect="actuate(@SelectedWidget);" />
+      <Widget name="lblRestoreDefaults" onSelect="actuate(@SelectedWidget)"/>
+    </Animation>
+  </Animations>
+</ACAT>
+
+

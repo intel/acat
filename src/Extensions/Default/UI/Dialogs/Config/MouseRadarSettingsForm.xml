@@ -1,0 +1,225 @@
+<?xml version="1.0" ?> 
+
+<ACAT>
+	<WidgetAttributes>
+    <WidgetAttribute name="lblOK" label="OK" value="valButtonSave"  fontsize="14" mouseClickActuate="true"/>
+    <WidgetAttribute name="lblBack" label="Cancel" value="valButtonBack"  fontsize="14"  mouseClickActuate="true"/>
+    <WidgetAttribute name="lblRestoreDefaults" label="Defaults" value="valButtonRestoreDefaults" fontsize="14"  mouseClickActuate="true" />
+    
+    <WidgetAttribute name="ltbRotatingSpeedLess" label="O" value="valButtonRotatingSpeedLess" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbRotatingSpeedMore" label="N" value="valButtonRotatingSpeedMore" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbRotatingSweepsLess" label="O" value="valButtonRotatingSweepsLess" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbRotatingSweepsMore" label="N" value="valButtonRotatingSweepsMore" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbRadialSpeedLess" label="O" value="valButtonRadialSpeedLess" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbRadialSpeedMore" label="N" value="valButtonRadialSpeedMore" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbRadialSweepsLess" label="O" value="valButtonRadialSweepsLess" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbRadialSweepsMore" label="N" value="valButtonRadialSweepsMore" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbLineWidthLess" label="O" value="valButtonLineWidthLess" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbLineWidthMore" label="N" value="valButtonLineWidthMore" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+
+    <WidgetAttribute name="pbStartFromLastCursorPos" label="M" value="valStartFromLastCursorPos" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>
+    <WidgetAttribute name="pbSoundEffectsOn" label="M" value="valCheckSoundEffectsOn" fontname="ACAT Icon" bold="false" fontsize="36"/>
+	</WidgetAttributes>
+
+  <Layout>
+    <Widget class="ButtonControlWidget" name="lblOK" />
+    <Widget class="ButtonControlWidget" name="lblBack" />
+    <Widget class="ButtonControlWidget" name="lblRestoreDefaults" />
+        
+    <Widget class="SliderWidget" name="tbRotatingSpeed" min="1" max="20" initialvalue="8" tickfrequency="1" step="1" caption="Rotating Speed">
+      <Widget class="LabelWidget" name="ltbRotatingSpeedLess" subclass="sliderdecrement"/>
+      <Widget class="LabelWidget" name="ltbRotatingSpeedMore" subclass="sliderincrement"/>
+      <Widget class="WinControlWidget" name="tbRotatingSpeed"/>
+      <Widget class="LabelWidget" name="lblRotatingSpeed" subclass="slidercaption"/>
+      <Widget class="WinControlWidget" name="sminRotatingSpeed" subclass="sliderminvalue"/>
+      <Widget class="WinControlWidget" name="smaxRotatingSpeed" subclass="slidermaxvalue"/>
+      <Widget class="WinControlWidget" name="svalRotatingSpeed" subclass="slidercurrentvalue" />
+    </Widget>
+
+    <Widget class="SliderWidget" name="tbRotatingSweeps" min="1" max="5" initialvalue="4" tickfrequency="1" step="1" caption="Rotating Sweeps">
+      <Widget class="LabelWidget" name="ltbRotatingSweepsLess" subclass="sliderdecrement"/>
+      <Widget class="LabelWidget" name="ltbRotatingSweepsMore" subclass="sliderincrement"/>
+      <Widget class="WinControlWidget" name="tbRotatingSweeps"/>
+      <Widget class="LabelWidget" name="lblRotatingSweeps" subclass="slidercaption"/>
+      <Widget class="WinControlWidget" name="sminRotatingSweeps" subclass="sliderminvalue"/>
+      <Widget class="WinControlWidget" name="smaxRotatingSweeps" subclass="slidermaxvalue"/>
+      <Widget class="WinControlWidget" name="svalRotatingSweeps" subclass="slidercurrentvalue" />
+    </Widget>
+
+    <Widget class="SliderWidget" name="tbRadialSpeed" min="1" max="20" initialvalue="20" tickfrequency="1" step="1" caption="Mouse Speed">
+      <Widget class="LabelWidget" name="ltbRadialSpeedLess" subclass="sliderdecrement"/>
+      <Widget class="LabelWidget" name="ltbRadialSpeedMore" subclass="sliderincrement"/>
+      <Widget class="WinControlWidget" name="tbRadialSpeed"/>
+      <Widget class="LabelWidget" name="lblRadialSpeed" subclass="slidercaption"/>
+      <Widget class="WinControlWidget" name="sminRadialSpeed" subclass="sliderminvalue"/>
+      <Widget class="WinControlWidget" name="smaxRadialSpeed" subclass="slidermaxvalue"/>
+      <Widget class="WinControlWidget" name="svalRadialSpeed" subclass="slidercurrentvalue" />
+    </Widget>
+
+    <Widget class="SliderWidget" name="tbRadialSweeps" min="1" max="5" initialvalue="3" tickfrequency="1" step="1" caption="Mouse Sweeps">
+      <Widget class="LabelWidget" name="ltbRadialSweepsLess" subclass="sliderdecrement"/>
+      <Widget class="LabelWidget" name="ltbRadialSweepsMore" subclass="sliderincrement"/>
+      <Widget class="WinControlWidget" name="tbRadialSweeps"/>
+      <Widget class="LabelWidget" name="lblRadialSweeps" subclass="slidercaption"/>
+      <Widget class="WinControlWidget" name="sminRadialSweeps" subclass="sliderminvalue"/>
+      <Widget class="WinControlWidget" name="smaxRadialSweeps" subclass="slidermaxvalue"/>
+      <Widget class="WinControlWidget" name="svalRadialSweeps" subclass="slidercurrentvalue" />
+    </Widget>
+
+    <Widget class="SliderWidget" name="tbLineWidth" min="1" max="5" initialvalue="5" tickfrequency="1" step="1" caption="Line Width">
+      <Widget class="LabelWidget" name="ltbLineWidthLess" subclass="sliderdecrement"/>
+      <Widget class="LabelWidget" name="ltbLineWidthMore" subclass="sliderincrement"/>
+      <Widget class="WinControlWidget" name="tbLineWidth"/>
+      <Widget class="LabelWidget" name="lblLineWidth" subclass="slidercaption"/>
+      <Widget class="WinControlWidget" name="sminLineWidth" subclass="sliderminvalue"/>
+      <Widget class="WinControlWidget" name="smaxLineWidth" subclass="slidermaxvalue"/>
+      <Widget class="WinControlWidget" name="svalLineWidth" subclass="slidercurrentvalue" />
+    </Widget>
+
+    <Widget class="CheckBoxWidget" name="pbStartFromLastCursorPos" onStateText="L" offStateText="M" onOffState="off" />
+    <Widget class="LabelWidget" name="lblStartFromLastCursorPos" />
+
+    <Widget class="CheckBoxWidget" name="pbSoundEffectsOn" onStateText="L" offStateText="M" onOffState="on" />
+    <Widget class="LabelWidget" name="lblSoundEffectsOn" />
+  </Layout>
+  
+	<Animations> 
+    <Animation  name="animTopLevel"
+                start="true"
+                onEnter=""
+                steppingTime="@TabScanTime"
+                iterations="@HalfScanIterations">
+      <Widget name="lblRotatingSpeed" onSelect="transition(animRotatingSpeed);" />
+      <Widget name="lblRotatingSweeps" onSelect="transition(animRotatingSweeps);"/>
+      <Widget name="lblRadialSpeed" onSelect="transition(animRadialSpeed);"/>
+      <Widget name="lblRadialSweeps" onSelect="transition(animRadialSweeps);"/>
+      <Widget name="lblLineWidth" onSelect="transition(animLineWidth);"/>
+      <Widget name="lblStartFromLastCursorPos" onSelect="actuate(pbStartFromLastCursorPos);" />
+      <Widget name="lblOK" onSelect="actuate(@SelectedWidget)"/>
+      <Widget name="lblBack" onSelect="actuate(@SelectedWidget);" />
+      <Widget name="lblRestoreDefaults" onSelect="actuate(@SelectedWidget)"/>      
+    </Animation>
+
+    <Animation name="animRotatingSpeed"
+           start="false"
+           onEnter=""
+           iterations="3"
+           steppingTime="@TabScanTime"
+           onEnd="transition(animTopLevel)">
+      <Widget name="ltbRotatingSpeedLess" onSelect="actuate(@SelectedWidget);transition(animRotatingSpeedDecrement);" />
+      <Widget name="ltbRotatingSpeedMore" onSelect="actuate(@SelectedWidget);transition(animRotatingSpeedIncrement);"/>
+    </Animation>
+      <Animation name="animRotatingSpeedDecrement"
+              start="false"
+              onEnter=""
+              iterations="1"
+              onEnd="transition(animRotatingSpeed)">
+        <Widget name="ltbRotatingSpeedLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbRotatingSpeedLess);" />
+      </Animation>
+
+      <Animation name="animRotatingSpeedIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animRotatingSpeed)">
+        <Widget name="ltbRotatingSpeedMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbRotatingSpeedMore);" />
+      </Animation>
+
+    <Animation name="animRotatingSweeps"
+               start="false"
+               onEnter=""
+               iterations="3"
+               steppingTime="@TabScanTime"
+               onEnd="transition(animTopLevel)">
+        <Widget name="ltbRotatingSweepsLess" onSelect="actuate(@SelectedWidget);transition(animRotatingSweepsDecrement);" />
+        <Widget name="ltbRotatingSweepsMore" onSelect="actuate(@SelectedWidget);transition(animRotatingSweepsIncrement);"/>
+    </Animation>
+      <Animation name="animRotatingSweepsDecrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animRotatingSweeps)">
+        <Widget name="ltbRotatingSweepsLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbRotatingSweepsLess);" />
+      </Animation>
+      <Animation name="animRotatingSweepsIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animRotatingSweeps)">
+        <Widget name="ltbRotatingSweepsMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbRotatingSweepsMore);" />
+      </Animation>
+
+    <Animation name="animRadialSpeed"
+           start="false"
+           onEnter=""
+           iterations="3"
+           steppingTime="@TabScanTime"
+           onEnd="transition(animTopLevel)">
+      <Widget name="ltbRadialSpeedLess" onSelect="actuate(@SelectedWidget);transition(animRadialSpeedDecrement);" />
+      <Widget name="ltbRadialSpeedMore" onSelect="actuate(@SelectedWidget);transition(animRadialSpeedIncrement);"/>
+    </Animation>
+      <Animation name="animRadialSpeedDecrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animRadialSpeed)">
+        <Widget name="ltbRadialSpeedLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbRadialSpeedLess);" />
+      </Animation>
+      <Animation name="animRadialSpeedIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animRadialSpeed)">
+        <Widget name="ltbRadialSpeedMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbRadialSpeedMore);" />
+      </Animation>
+
+    <Animation name="animRadialSweeps"
+       start="false"
+       onEnter=""
+       iterations="3"
+       steppingTime="@TabScanTime"
+       onEnd="transition(animTopLevel)">
+      <Widget name="ltbRadialSweepsLess" onSelect="actuate(@SelectedWidget);transition(animRadialSweepsDecrement);" />
+      <Widget name="ltbRadialSweepsMore" onSelect="actuate(@SelectedWidget);transition(animRadialSweepsIncrement);"/>
+    </Animation>
+      <Animation name="animRadialSweepsDecrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animRadialSweeps)">
+        <Widget name="ltbRadialSweepsLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbRadialSweepsLess);" />
+      </Animation>
+      <Animation name="animRadialSweepsIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animRadialSweeps)">
+        <Widget name="ltbRadialSweepsMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbRadialSweepsMore);" />
+      </Animation>
+    
+    <Animation name="animLineWidth"
+           start="false"
+           onEnter=""
+           iterations="3"
+           steppingTime="@TabScanTime"
+           onEnd="transition(animTopLevel)">
+        <Widget name="ltbLineWidthLess" onSelect="actuate(@SelectedWidget);transition(animLineWidthDecrement);" />
+        <Widget name="ltbLineWidthMore" onSelect="actuate(@SelectedWidget);transition(animLineWidthIncrement);"/>
+    </Animation>
+      <Animation name="animLineWidthDecrement"
+              start="false"
+              onEnter=""
+              iterations="1"
+              onEnd="transition(animLineWidth)">
+        <Widget name="ltbLineWidthLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbLineWidthLess);" />
+      </Animation>
+      <Animation name="animLineWidthIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animLineWidth)">
+        <Widget name="ltbLineWidthMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbLineWidthMore);" />
+      </Animation>
+  </Animations>
+</ACAT>
+

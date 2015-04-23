@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+    <ConfigMapEntry panelClass="TalkWindowContextMenu" configName="TalkWindowContextMenuMinimal" formId="C614C735-4A28-47B2-9FB0-DA570EEB51BA" configFile="TalkWindowContextMenuMinimal.xml"/>
+    <ConfigMapEntry panelClass="TalkWindowContextMenu" configName="TalkWindowContextMenu" formId="C614C735-4A28-47B2-9FB0-DA570EEB51BA" configFile="TalkWindowContextMenu.xml"/>
+    <ConfigMapEntry panelClass="TalkWindowZoomMenu" configName="TalkWindowZoomMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="TalkWindowZoomMenu.xml"/>
+  </ConfigMapEntries>
+</ACAT>

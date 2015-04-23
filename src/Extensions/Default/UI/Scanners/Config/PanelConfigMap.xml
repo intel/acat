@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+    <ConfigMapEntry panelClass="Alphabet" configName="Alphabet" formId="D1C82679-8E84-4F1B-BB93-ED55EFC744CC" configFile="AlphabetScanner.xml"/>
+    <ConfigMapEntry panelClass="Alphabet" configName="AlphabetABC" formId="D1C82679-8E84-4F1B-BB93-ED55EFC744CC" configFile="AlphabetScannerABC.xml"/>
+    <ConfigMapEntry panelClass="Alphabet" configName="AlphabetScannerTalkWindowOnly" formId="D1C82679-8E84-4F1B-BB93-ED55EFC744CC" configFile="AlphabetScannerTalkWindowOnly.xml"/>
+    <ConfigMapEntry panelClass="AlphabetMinimal" configName="AlphabetMinimal" formId="FE891968-D0A7-4EFF-805C-546C790036C9" configFile="AlphabetScannerMinimal.xml"/>
+    <ConfigMapEntry panelClass="AlphabetMinimal" configName="AlphabetABCMinimal" formId="FE891968-D0A7-4EFF-805C-546C790036C9" configFile="AlphabetScannerABCMinimal.xml"/>
+    <ConfigMapEntry panelClass="Mouse" configName="MouseScanner" formId="9F350464-4135-4B03-9F44-5FB3B5226AD0" configFile="MouseScanner.xml"/>
+    <ConfigMapEntry panelClass="Mouse" configName="MouseScanner2" formId="0190D5B7-FA40-48A9-B888-267C60072C57" configFile="MouseScanner2.xml"/>
+    <ConfigMapEntry panelClass="Punctuation" configName="Punctuation" formId="D7F899FF-73AD-4B32-A0CA-6E0FDA83CC0A" configFile="PunctuationsScanner.xml"/>
+    <ConfigMapEntry panelClass="Cursor" configName="Cursor" formId="78DA9448-096B-4FE1-940B-08B964E9DDDD" configFile="CursorNavigationScanner.xml"/>
+    <ConfigMapEntry panelClass="Number" configName="Number" formId="EABAEEA7-EABF-4499-B571-2D8F29ABFF09" configFile="NumbersScanner.xml"/>
+  </ConfigMapEntries>
+</ACAT>

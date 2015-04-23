@@ -41,4 +41,3 @@ Running the application
 2. After building the toolkit, the application will be located under $\Applications\ACATApp\bin\Release.  The name of the exeutable is ACATApp.exe
 3. Run the app from within Visual Studio or from Explorer.
 4. Use the F5 key as the input trigger for the application.
-

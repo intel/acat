@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+    <ConfigMapEntry panelClass="LectureManagerContextMenu" configName="LectureManagerContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="LectureManagerContextMenu.xml"/>
+    <ConfigMapEntry panelClass="LectureManagerSpeakSelectMenu" configName="LectureManagerSpeakSelectMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868"  configFile="LectureManagerSpeakSelectMenu.xml"/>
+    <ConfigMapEntry panelClass="LectureManagerNavigationMenu" configName="LectureManagerNavigationMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868"  configFile="LectureManagerNavigationMenu.xml"/>
+    <ConfigMapEntry panelClass="LectureManagerSpeakMenu" configName="LectureManagerSpeakMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868"  configFile="LectureManagerSpeakMenu.xml"/>
+    <ConfigMapEntry panelClass="LectureManagerSpeakMenu" configName="LectureManagerSpeakMenu2" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868"  configFile="LectureManagerSpeakMenu2.xml"/>
+    <ConfigMapEntry panelClass="LectureManagerFileOpenContextMenu" configName="LectureManagerFileOpenContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="LectureManagerFileOpenContextMenu.xml"/>
+    <ConfigMapEntry panelClass="LectureManagerContextMenuSimple" configName="LectureManagerContextMenuSimple" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="LectureManagerContextMenuSimple.xml"/>
+    <ConfigMapEntry panelClass="LectureManagerSpeakAllMenu" configName="LectureManagerSpeakAllMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868"  configFile="LectureManagerSpeakAllMenu.xml"/>
+    <ConfigMapEntry panelClass="LectureManagerToggleModeMenu" configName="LectureManagerToggleModeMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868"  configFile="LectureManagerToggleModeMenu.xml"/>
+  </ConfigMapEntries>
+</ACAT>

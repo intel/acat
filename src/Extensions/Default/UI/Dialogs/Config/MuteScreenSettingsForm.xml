@@ -1,0 +1,65 @@
+<?xml version="1.0" ?> 
+
+<ACAT>
+	<WidgetAttributes>
+    <WidgetAttribute name="lblOK" label="OK" value="valButtonOK"  fontsize="14" mouseClickActuate="true"/>
+		<WidgetAttribute name="lblCancel" label="Cancel" value="valButtonCancel"  fontsize="14"  mouseClickActuate="true"/>
+    <WidgetAttribute name="lblPINCode" label="PIN Code" value="valLabelPINCode" fontsize="14"  mouseClickActuate="true" />
+    <WidgetAttribute name="lblMaxDigit" label="Range: 0   to  " fontsize="14" value="valLabelMaxDigit"/>
+    <WidgetAttribute name="ltbMaxDigitLess" label="O" value="valButtonMaxDigitLess" fontname="ACAT Icon" fontsize="36"  bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbMaxDigitMore" label="N" value="valButtonMaxDigitMore" fontname="ACAT Icon" fontsize="36"  bold="false" mouseClickActuate="true"/>
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="WinControlWidget" name="tbPINCode" drawBorder="true" panel="Number"/>
+    <Widget class="SliderWidget" name="tbMaxDigit" min="2" max="9" initialvalue="9" tickfrequency="1" step="1" caption="Max Digit">
+      <Widget class="LabelWidget" name="ltbMaxDigitLess" subclass="sliderdecrement"/>
+      <Widget class="LabelWidget" name="ltbMaxDigitMore" subclass="sliderincrement"/>
+      <Widget class="WinControlWidget" name="tbMaxDigit"/>
+      <Widget class="LabelWidget" name="lblMaxDigit" subclass="slidercaption"/>
+      <Widget class="WinControlWidget" name="sminMaxDigit" subclass="sliderminvalue"/>
+      <Widget class="WinControlWidget" name="smaxMaxDigit" subclass="slidermaxvalue"/>
+      <Widget class="LabelWidget" name="svalMaxDigit" subclass="slidercurrentvalue" />
+    </Widget>
+    <Widget class="ButtonControlWidget" name="lblOK" />
+    <Widget class="ButtonControlWidget" name="lblCancel" />
+  </Layout>
+  
+	<Animations> 
+		<Animation name="animMain" 
+               start="true" 
+               onEnter=""
+               steppingTime="@TabScanTime"
+               iterations="@HalfScanIterations">
+        <Widget name="tbPINCode" onSelect="actuate(@SelectedWidget);" />
+        <Widget name="svalMaxDigit" onSelect="transition(animMaxDigit);" />
+        <Widget name="lblOK" onSelect="actuate(@SelectedWidget)"/>
+        <Widget name="lblCancel" onSelect="actuate(@SelectedWidget);" />
+    </Animation>
+
+    <Animation name="animMaxDigit"
+           start="false"
+           onEnter=""
+           iterations="3"
+           steppingTime="@TabScanTime"
+           onEnd="transition(animMain)">
+      <Widget name="ltbMaxDigitLess" onSelect="actuate(@SelectedWidget);transition(animMaxDigitDecrement);" />
+      <Widget name="ltbMaxDigitMore" onSelect="actuate(@SelectedWidget);transition(animMaxDigitIncrement);"/>
+    </Animation>
+      <Animation name="animMaxDigitDecrement"
+              start="false"
+              onEnter=""
+              iterations="1"
+              onEnd="transition(animMaxDigit)">
+        <Widget name="ltbMaxDigitLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbMaxDigitLess);" />
+      </Animation>
+      <Animation name="animMaxDigitIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animMaxDigit)">
+        <Widget name="ltbMaxDigitMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbMaxDigitMore);" />
+      </Animation>
+  </Animations>
+</ACAT>
+

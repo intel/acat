@@ -1,0 +1,97 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+  <!ENTITY usebold "true">
+]>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="B1" label="(" value="@CmdGoBack" mouseClickActuate="true" fontname="ACAT Icon" bold="&usebold;" fontsize="16" />
+    <WidgetAttribute name="B2" label="-" value="-" fontname="Arial" fontsize="14" bold="&usebold;" mouseClickActuate="true"/>
+    <WidgetAttribute name="B3" label="1" value="1" fontname="Arial" fontsize="14" bold="&usebold;" mouseClickActuate="true"/>
+    <WidgetAttribute name="B4" label="2" value="2" fontname="Arial" fontsize="14" bold="&usebold;"  mouseClickActuate="true"/>
+    <WidgetAttribute name="B5" label="3" value="3" fontname="Arial" fontsize="14" bold="&usebold;"  mouseClickActuate="true"/>
+    <WidgetAttribute name="B6" label="4" value="4" fontname="Arial" fontsize="14" bold="&usebold;"  mouseClickActuate="true"/>
+    <WidgetAttribute name="B7" label="5" value="5" fontname="Arial" fontsize="14"  bold="&usebold;" mouseClickActuate="true"/>
+    
+    <WidgetAttribute name="B8" label="m" value="@CmdEnterKey" fontname="ACAT Icon" fontsize="18"  bold="&usebold;" mouseClickActuate="true"/>
+    <WidgetAttribute name="B9" label="&lt;" value="@Back" virtualkey="true" fontname="ACAT Icon" fontsize="14" bold="&usebold;" mouseClickActuate="true"/>
+    <WidgetAttribute name="B10" label="6" value="6" fontname="Arial" fontsize="14" bold="&usebold;" mouseClickActuate="true"/>
+    <WidgetAttribute name="B11" label="7" value="7" fontname="Arial" fontsize="14"  bold="&usebold;" mouseClickActuate="true"/>
+    <WidgetAttribute name="B12" label="8" value="8" fontname="Arial" fontsize="14"  bold="&usebold;" mouseClickActuate="true"/>
+    <WidgetAttribute name="B13" label="9" value="9" fontname="Arial" fontsize="14"  bold="&usebold;" mouseClickActuate="true"/>
+    <WidgetAttribute name="B14" label="0" value="0" fontname="Arial" fontsize="14"  bold="&usebold;" mouseClickActuate="true"/>
+    
+    <WidgetAttribute name="BShiftStatus" label=" " value="@unknown" fontname="ACAT Alpha" fontsize="14" />
+    <WidgetAttribute name="BAltStatus" label=" " value="@unknown" fontname="ACAT Alpha" fontsize="14" />
+    <WidgetAttribute name="BCtrlStatus" label=" " value="@unknown" fontname="ACAT Alpha" fontsize="14" />
+    <WidgetAttribute name="BFuncStatus" label=" " value="@unknown" fontname="ACAT Alpha" fontsize="14" />
+    <WidgetAttribute name="BLockStatus" label=" " value="@unknown" fontname="ACAT Icon" fontsize="14" />
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="LabelWidget" name="BShiftStatus" colorScheme="HighContrast"/>
+    <Widget class="LabelWidget" name="BCtrlStatus" colorScheme="HighContrast"/>
+    <Widget class="LabelWidget" name="BAltStatus" colorScheme="HighContrast"/>
+    <Widget class="LabelWidget" name="BFuncStatus" colorScheme="HighContrast"/>
+    <Widget class="LabelWidget" name="BLockStatus" colorScheme="HighContrast"/>
+    
+      <Widget class="RowWidget" name="Row1">
+        <Widget class="ScannerButton" name="B1"/>
+        <Widget class="ScannerButton" name="B2"/>
+        <Widget class="ScannerButton" name="B3"/>
+        <Widget class="ScannerButton" name="B4"/>
+        <Widget class="ScannerButton" name="B5"/>
+        <Widget class="ScannerButton" name="B6"/>
+        <Widget class="ScannerButton" name="B7"/>
+      </Widget>
+        
+      <Widget class="RowWidget" name="Row2">
+        <Widget class="ScannerButton" name="B8"/>
+        <Widget class="ScannerButton" name="B9"/>
+        <Widget class="ScannerButton" name="B10"/>
+        <Widget class="ScannerButton" name="B11"/>
+        <Widget class="ScannerButton" name="B12"/>
+        <Widget class="ScannerButton" name="B13"/>
+        <Widget class="ScannerButton" name="B14"/>
+      </Widget>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopLevelRotation"
+               start="true"
+               iterations="@HalfScanIterations">
+      <Widget name="Row1" onSelect="transition(ButtonRotationRow1)"/>
+      <Widget name="Row2" onSelect="transition(ButtonRotationRow2)"/>
+    </Animation>
+
+    <Animation name="ButtonRotationRow1"
+               iterations="@ColumnScanIterations"
+               onEnd="transition(TopLevelRotation)"
+               hesitateTime="@HesitateTime"
+              onSelect="actuate(@SelectedWidget); transition(TopLevelRotation);">
+      <Widget name="@SelectedWidget/*"/>
+    </Animation>
+
+    <Animation name="ButtonRotationRow2"
+               iterations="@ColumnScanIterations"
+               onEnd="transition(TopLevelRotation)"
+               hesitateTime="@HesitateTime"
+               onSelect="actuate(@SelectedWidget); transition(TopLevelRotation);">
+      <Widget name="B8"/>
+      <Widget name="B9" onSelect="actuate(@SelectedWidget); transition(ButtonPressed);"/>
+      <Widget name="B10"/>
+      <Widget name="B11"/>
+      <Widget name="B12"/>
+      <Widget name="B13"/>
+      <Widget name="B14"/>
+    </Animation>
+
+    <Animation name="ButtonPressed"
+                 onEnter=""
+                 iterations="1"
+                 onEnd="transition(TopLevelRotation)">
+      <Widget name="@SelectedWidget" hesitateTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+    </Animation>
+  </Animations>
+</ACAT>
+

@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="B0" label="0" value="0" mouseClickActuate="True" />
+    <WidgetAttribute name="B1" label="1" value="1" mouseClickActuate="True" />
+    <WidgetAttribute name="B2" label="2" value="2" mouseClickActuate="True" />
+    <WidgetAttribute name="B3" label="3" value="3" mouseClickActuate="True" />
+    <WidgetAttribute name="B4" label="4" value="4" mouseClickActuate="True" />
+    <WidgetAttribute name="B5" label="5" value="5" mouseClickActuate="True" />
+    <WidgetAttribute name="B6" label="6" value="6" mouseClickActuate="True" />
+    <WidgetAttribute name="B7" label="7" value="7" mouseClickActuate="True" />
+    <WidgetAttribute name="B8" label="8" value="8" mouseClickActuate="True" />
+    <WidgetAttribute name="B9" label="9" value="9" mouseClickActuate="True" />
+    <WidgetAttribute name="B11" label="2" value="2" mouseClickActuate="False" />
+    <WidgetAttribute name="B12" label="5" value="5" mouseClickActuate="False" />
+    <WidgetAttribute name="B13" label="8" value="8" mouseClickActuate="False" />
+    <WidgetAttribute name="B14" label="6" value="6" mouseClickActuate="False" />
+  </WidgetAttributes>
+    
+  <Layout colorScheme="Mute">
+    <Widget class="LabelWidget" name="B11" mouseClickActuate="False" colorScheme="ColorCodedRegion2"/>
+    <Widget class="LabelWidget" name="B12" mouseClickActuate="False" colorScheme="ColorCodedRegion2"/>
+    <Widget class="LabelWidget" name="B13" mouseClickActuate="False" colorScheme="ColorCodedRegion2"/>
+    <Widget class="LabelWidget" name="B14" mouseClickActuate="False" colorScheme="ColorCodedRegion2"/>
+    <Widget class="LabelWidget" name="B0" mouseClickActuate="True" />
+    <Widget class="LabelWidget" name="B1" mouseClickActuate="True" />
+    <Widget class="LabelWidget" name="B2" mouseClickActuate="True" />
+    <Widget class="LabelWidget" name="B3" mouseClickActuate="True" />
+    <Widget class="LabelWidget" name="B4" mouseClickActuate="True" />
+    <Widget class="LabelWidget" name="B5" mouseClickActuate="True" />
+    <Widget class="LabelWidget" name="B6" mouseClickActuate="True" />
+    <Widget class="LabelWidget" name="B7" mouseClickActuate="True" />
+    <Widget class="LabelWidget" name="B8" mouseClickActuate="True" />
+    <Widget class="LabelWidget" name="B9" mouseClickActuate="True" />
+  </Layout>
+  
+  <Animations>
+    <Animation name="TopLevel" start="true" onEnter="highlightSelected(B11, true);highlightSelected(B12, true);highlightSelected(B13, true);highlightSelected(B14, true)" iterations="@MuteScanIterations">
+      <Widget name="B0" onSelect="actuate(B0)"/>
+      <Widget name="B1" onSelect="actuate(B1)"/>
+      <Widget name="B2" onSelect="actuate(B2)" />
+      <Widget name="B3" onSelect="actuate(B3)"/>
+      <Widget name="B4" onSelect="actuate(B4)"/>
+      <Widget name="B5" onSelect="actuate(B5)"/>
+      <Widget name="B6" onSelect="actuate(B6)"/>
+      <Widget name="B7" onSelect="actuate(B7)"/>
+      <Widget name="B8" onSelect="actuate(B8)"/>
+      <Widget name="B9" onSelect="actuate(B9)"/>
+    </Animation>
+
+    <Animation name="FirstKey" onEnter="highlightSelected(B11, false);highlightSelected(B12, true);highlightSelected(B13, true);highlightSelected(B14, true)" onEnd="transition(TopLevel)" iterations="@MuteScanIterations">
+      <Widget name="B0" onSelect="actuate(B0)"/>
+      <Widget name="B1" onSelect="actuate(B1)"/>
+      <Widget name="B2" onSelect="actuate(B2)" />
+      <Widget name="B3" onSelect="actuate(B3)"/>
+      <Widget name="B4" onSelect="actuate(B4)"/>
+      <Widget name="B5" onSelect="actuate(B5)"/>
+      <Widget name="B6" onSelect="actuate(B6)"/>
+      <Widget name="B7" onSelect="actuate(B7)"/>
+      <Widget name="B8" onSelect="actuate(B8)"/>
+      <Widget name="B9" onSelect="actuate(B9)"/>
+    </Animation>
+
+    <Animation name="SecondKey" onEnter="highlightSelected(B11, false);highlightSelected(B12, false);highlightSelected(B13, true);highlightSelected(B14, true)"  onEnd="transition(TopLevel)" iterations="@MuteScanIterations" >
+      <Widget name="B0" onSelect="actuate(B0)"/>
+      <Widget name="B1" onSelect="actuate(B1)"/>
+      <Widget name="B2" onSelect="actuate(B2)" />
+      <Widget name="B3" onSelect="actuate(B3)"/>
+      <Widget name="B4" onSelect="actuate(B4)"/>
+      <Widget name="B5" onSelect="actuate(B5)"/>
+      <Widget name="B6" onSelect="actuate(B6)"/>
+      <Widget name="B7" onSelect="actuate(B7)"/>
+      <Widget name="B8" onSelect="actuate(B8)"/>
+      <Widget name="B9" onSelect="actuate(B9)"/>
+    </Animation>
+
+    <Animation name="ThirdKey"  onEnter="highlightSelected(B11, false);highlightSelected(B12, false);highlightSelected(B13, false);highlightSelected(B14, true)"  onEnd="transition(TopLevel)" iterations="@MuteScanIterations" >
+      <Widget name="B0" onSelect="actuate(B0)"/>
+      <Widget name="B1" onSelect="actuate(B1)"/>
+      <Widget name="B2" onSelect="actuate(B2)" />
+      <Widget name="B3" onSelect="actuate(B3)"/>
+      <Widget name="B4" onSelect="actuate(B4)"/>
+      <Widget name="B5" onSelect="actuate(B5)"/>
+      <Widget name="B6" onSelect="actuate(B6)"/>
+      <Widget name="B7" onSelect="actuate(B7)"/>
+      <Widget name="B8" onSelect="actuate(B8)"/>
+      <Widget name="B9" onSelect="actuate(B9)"/>
+    </Animation>
+
+    <Animation name="FourthKey" onEnter="highlightSelected(B11, false);highlightSelected(B12, false);highlightSelected(B13, false);highlightSelected(B14, false)"  onEnd="transition(TopLevel)" iterations="@MuteScanIterations" >
+      <Widget name="B0" onSelect="actuate(B0)"/>
+      <Widget name="B1" onSelect="actuate(B1)"/>
+      <Widget name="B2" onSelect="actuate(B2)" />
+      <Widget name="B3" onSelect="actuate(B3)"/>
+      <Widget name="B4" onSelect="actuate(B4)"/>
+      <Widget name="B5" onSelect="actuate(B5)"/>
+      <Widget name="B6" onSelect="actuate(B6)"/>
+      <Widget name="B7" onSelect="actuate(B7)"/>
+      <Widget name="B8" onSelect="actuate(B8)"/>
+      <Widget name="B9" onSelect="actuate(B9)"/>
+    </Animation>
+  </Animations>
+</ACAT>

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+    <ConfigMapEntry panelClass="EudoraInboxContextMenu" configName="EudoraInboxContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="EudoraInboxContextMenu.xml"/>
+    <ConfigMapEntry panelClass="EudoraMailComposeContextMenu" configName="EudoraMailComposeContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="EudoraMailComposeContextMenu.xml"/>
+    <ConfigMapEntry panelClass="EudoraBrowseMailContextMenu" configName="EudoraBrowseMailContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="EudoraBrowseMailcontextMenu.xml"/>
+    <ConfigMapEntry panelClass="EudoraMailActionContextMenu" configName="EudoraMailActionContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="EudoraMailAction.xml"/>
+    <ConfigMapEntry panelClass="EudoraMailBoxesContextMenu" configName="EudoraMailBoxesContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="EudoraMailBoxesContextMenu.xml"/>
+    <ConfigMapEntry panelClass="EudoraContextMenuSimple" configName="EudoraContextMenuSimple" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="EudoraContextMenuSimple.xml"/>
+  </ConfigMapEntries>
+</ACAT>

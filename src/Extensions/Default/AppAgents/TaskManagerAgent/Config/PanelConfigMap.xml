@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" ?>
+<Aster>
+  <ConfigMapEntries>
+    <!--form=DialogContextMenu-->
+    <ConfigMapEntry panelClass="TaskManagerContextMenuDock" configName="TaskManagerContextMenuDock" formId="999DE20D-949A-4CE1-8762-9181D8396E81" configFile="TaskManagerContextMenuDock.xml"/>
+    <ConfigMapEntry panelClass="TaskManagerContextMenu" configName="TaskManagerContextMenu" formId="A1B4D6F5-7F48-4A06-A36C-5239CA94C5BA" configFile="TaskManagerContextMenu.xml"/>
+  </ConfigMapEntries>
+</Aster>

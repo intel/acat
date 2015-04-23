@@ -1,0 +1,154 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+  <!ENTITY usebold "true">
+]>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="B1" label="(" value="@CmdGoBack" fontname="ACAT Icon" fontsize="16" bold="&usebold;" mouseClickActuate="true"/>
+    <WidgetAttribute name="B2" label="4" value="@CmdCut"  fontname="ACAT Icon" fontsize="16" bold="&usebold;" mouseClickActuate="true"/>
+    <WidgetAttribute name="B3" label="5" value="@CmdCopy"  fontname="ACAT Icon" fontsize="16" bold="&usebold;" mouseClickActuate="true"/>
+    <WidgetAttribute name="B4" label="6" value="@CmdPaste"  fontname="ACAT Icon" fontsize="16" bold="&usebold;" mouseClickActuate="true"/>
+    <WidgetAttribute name="B5" label="u" value="@CmdCtrlKey" fontname="ACAT Alpha" fontsize="18" bold="&usebold;" mouseClickActuate="true"/>
+    <WidgetAttribute name="B6" label="t" value="@CmdShiftKey"  fontname="ACAT Alpha" fontsize="16" bold="&usebold;"  mouseClickActuate="true"/>
+
+    <WidgetAttribute name="B7" label="y" value="@CmdPrevChar" fontname="ACAT Icon" fontsize="16" bold="&usebold;"  mouseClickActuate="true"/>
+    <WidgetAttribute name="B8" label="z" value="@CmdNextChar" fontname="ACAT Icon" fontsize="16" bold="&usebold;"  mouseClickActuate="true"/>
+    <WidgetAttribute name="B9" label="x" value="@CmdPrevLine" fontname="ACAT Icon" fontsize="16" bold="&usebold;"  mouseClickActuate="true"/>
+    <WidgetAttribute name="B10" label="w" value="@CmdNextLine" fontname="ACAT Icon" fontsize="16" mouseClickActuate="true" bold="&usebold;" />
+    <WidgetAttribute name="B11" label="w" value="@CmdAltKey" fontname="ACAT Alpha" fontsize="18" bold="&usebold;" mouseClickActuate="true"/>
+    <WidgetAttribute name="B12" label="s" value="@CmdDeleteNextChar" fontname="ACAT Alpha" fontsize="16" mouseClickActuate="true" bold="&usebold;" />
+
+    <WidgetAttribute name="B13" label="&#x36;" value="@CmdPrevWord" fontname="ACAT Alpha" fontsize="16" mouseClickActuate="true" bold="&usebold;" />
+    <WidgetAttribute name="B14" label="&#x35;" value="@CmdNextWord" fontname="ACAT Alpha" fontsize="16" bold="&usebold;"  mouseClickActuate="true"/>
+    <WidgetAttribute name="B15" label="&#x38;" value="@CmdPrevPara"  fontname="ACAT Alpha" fontsize="16" bold="&usebold;"  mouseClickActuate="true"/>
+    <WidgetAttribute name="B16" label="&#x37;" value="@CmdNextPara" fontname="ACAT Alpha" fontsize="16" mouseClickActuate="true" bold="&usebold;" />
+    <WidgetAttribute name="B17" label=" " value="@unknown"  fontname="Arial" fontsize="16" bold="&usebold;"/>
+    <WidgetAttribute name="B18" label="d" value="@CmdUndo"  fontname="ACAT Icon" fontsize="16" bold="&usebold;" mouseClickActuate="true"/>
+    
+    <WidgetAttribute name="B19" label="&#x79;" value="@CmdPrevPage" fontname="ACAT Alpha" fontsize="14" mouseClickActuate="true" bold="&usebold;" />
+    <WidgetAttribute name="B20" label="&#x7A;" value="@CmdNextPage" fontname="ACAT Alpha" fontsize="14" bold="&usebold;"  mouseClickActuate="true"/>
+    <WidgetAttribute name="B21" label="&#x50;" value="@CmdHome" fontname="ACAT Alpha" fontsize="14" bold="&usebold;"  mouseClickActuate="true"/>
+    <WidgetAttribute name="B22" label="&#x48;" value="@CmdEnd" fontname="ACAT Alpha" fontsize="14" bold="&usebold;"  mouseClickActuate="true"/>
+    <WidgetAttribute name="B23" label=" " value="@unknown"  fontname="Arial" fontsize="16" bold="&usebold;"/>
+    <WidgetAttribute name="B24" label="m" value="@CmdEnterKey" fontname="ACAT Icon" fontsize="14"  bold="&usebold;" mouseClickActuate="true"/>
+
+    <WidgetAttribute name="BShiftStatus" label=" " value="@unknown" fontname="ACAT Alpha" fontsize="14" />
+    <WidgetAttribute name="BAltStatus" label=" " value="@unknown" fontname="ACAT Alpha" fontsize="14" />
+    <WidgetAttribute name="BCtrlStatus" label=" " value="@unknown" fontname="ACAT Alpha" fontsize="14" />
+    <WidgetAttribute name="BFuncStatus" label=" " value="@unknown" fontname="ACAT Alpha" fontsize="14" />
+    <WidgetAttribute name="BLockStatus" label=" " value="@unknown" fontname="ACAT Icon" fontsize="12" />
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="LabelWidget" name="BShiftStatus" colorScheme="HighContrast"/>
+    <Widget class="LabelWidget" name="BCtrlStatus" colorScheme="HighContrast"/>
+    <Widget class="LabelWidget" name="BAltStatus" colorScheme="HighContrast"/>
+    <Widget class="LabelWidget" name="BFuncStatus" colorScheme="HighContrast"/>
+    <Widget class="LabelWidget" name="BLockStatus" colorScheme="HighContrast"/>
+
+      <Widget class="RowWidget" name="Row1">
+        <Widget class="ScannerButton" name="B1"/>
+        <Widget class="ScannerButton" name="B2" subclass="Cut" enabled="contextual"/>
+        <Widget class="ScannerButton" name="B3" subclass="Copy" enabled="contextual"/>
+        <Widget class="ScannerButton" name="B4" subclass="Paste" enabled="contextual"/>
+        <Widget class="ScannerButton" name="B5"/>
+        <Widget class="ScannerButton" name="B6" subclass="SelectMode" enabled="contextual" />
+      </Widget>
+
+      <Widget class="RowWidget" name="Row2">
+        <Widget class="ScannerButton" name="B7" subclass="PreviousChar" enabled="contextual"  />
+        <Widget class="ScannerButton" name="B8" subclass="NextChar" enabled="contextual"  />
+        <Widget class="ScannerButton" name="B9" subclass="PreviousLine" enabled="contextual"  />
+        <Widget class="ScannerButton" name="B10" subclass="NextLine" enabled="contextual" />
+        <Widget class="ScannerButton" name="B11"/>
+        <Widget class="ScannerButton" name="B12" subclass="DeleteNextChar" enabled="contextual" />
+      </Widget>
+
+      <Widget class="RowWidget" name="Row3">
+        <Widget class="ScannerButton" name="B13" subclass="PreviousWord" enabled="contextual"   />
+        <Widget class="ScannerButton" name="B14" subclass="NextWord" enabled="contextual"  />
+        <Widget class="ScannerButton" name="B15" subclass="PreviousPara" enabled="contextual"   />
+        <Widget class="ScannerButton" name="B16" subclass="NextPara" enabled="contextual"   />
+        <Widget class="ScannerButton" name="B17" enabled="false"  />
+        <Widget class="ScannerButton" name="B18" subclass="Undo" enabled="contextual"  />
+      </Widget>
+
+      <Widget class="RowWidget" name="Row4" >
+        <Widget class="ScannerButton" name="B19" subclass="PreviousPage" enabled="contextual"  />
+        <Widget class="ScannerButton" name="B20" subclass="NextPage" enabled="contextual"  />
+        <Widget class="ScannerButton" name="B21" subclass="Home" enabled="contextual"  />
+        <Widget class="ScannerButton" name="B22" subclass="End" enabled="contextual"  />
+        <Widget class="ScannerButton" name="B23" enabled="false"  />
+        <Widget class="ScannerButton" name="B24" subclass="EnterKey" enabled="contextual" />
+      </Widget>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopLevelRotation"
+               start="true"
+               iterations="@HalfScanIterations">
+      <Widget name="Row1" onSelect="transition(ButtonRotationRow1)"/>
+      <Widget name="Row2" onSelect="transition(ButtonRotationRow2)"/>
+      <Widget name="Row3" onSelect="transition(ButtonRotationRow3)"/>
+      <Widget name="Row4" onSelect="transition(ButtonRotationRow4)"/>
+    </Animation>
+
+    <Animation name="ButtonRotationRow1"
+               iterations="@ColumnScanIterations"
+               hesitateTime="@HesitateTime"
+               onEnd="transition(TopLevelRotation)">
+      <Widget name="B1" onSelect="actuate(@SelectedWidget)"/>
+      <Widget name="B2" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+      <Widget name="B3" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+      <Widget name="B4" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+      <Widget name="B5" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+      <Widget name="B6" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+
+    </Animation>
+
+    <Animation name="ButtonRotationRow2"
+               iterations="@ColumnScanIterations"
+               hesitateTime="@HesitateTime"
+               onEnd="transition(TopLevelRotation)">
+      <Widget name="B7" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B8" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B9" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B10" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B11" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+      <Widget name="B12" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+    </Animation>
+
+    <Animation name="ButtonRotationRow3"
+              iterations="@ColumnScanIterations"
+              hesitateTime="@HesitateTime"
+              onEnd="transition(TopLevelRotation)">
+      <Widget name="B13" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B14" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B15" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B16" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B17"/>
+      <Widget name="B18" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+    </Animation>
+
+    <Animation name="ButtonRotationRow4"
+               iterations="@ColumnScanIterations"
+               hesitateTime="@HesitateTime"
+               onEnd="transition(TopLevelRotation)">
+      <Widget name="B19" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B20" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="B21" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+      <Widget name="B22" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+      <Widget name="B23"/>
+      <Widget name="B24" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
+    </Animation>
+
+    <Animation name="ButtonPressed"
+         onEnter=""
+         iterations="1"
+         onEnd="transition(TopLevelRotation)">
+      <Widget name="@SelectedWidget" hesitateTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+    </Animation>
+  </Animations>
+  </ACAT>
+

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+    <ConfigMapEntry panelClass="FileBrowserScanner" configName="FileBrowserScanner" formId="D5DABE09-4B8C-4D1C-A778-9E0A7F8B7D69" configFile="FileBrowserScanner.xml"/>
+    <ConfigMapEntry panelClass="FileOperationConfirmScanner" configName="FileOperationConfirmScanner" formId="472AA253-2FB4-4FFC-A763-42C1717D5DF4" configFile="FileOperationConfirmScanner.xml"/>
+  </ConfigMapEntries>
+</ACAT>

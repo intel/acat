@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" ?>
+
+<!--****************************************************************************
+Configuration file for ASTER, the Assistive Smart Text Editor.
+********************************************************************************-->
+
+<Aster>
+  <!--Version number of this config file-->
+  <Version version="0.6"/>
+
+  <SwitchMap>
+    <Map name="S9" onTrigger="default()"/>
+    <Map name="S1" onTrigger="default()"/>
+    <Map name="S2" onTrigger="default()"/>
+    <Map name="S6" onTrigger="default()"/>
+  </SwitchMap>
+
+  <!--
+******************************************************
+ Key Mappings
+******************************************************
+-->
+
+  <!-- Mapping of button keys to the values they will generate
+  when the key is selected.  
+  "Map" element attributes:
+    name:  Internal name of the button in the UI
+    label: The string that will be displayed on screen for this button
+    value: The value this button represents.  Prefix the value with an
+           @ symbol to indicate this is a special function key
+    fontsize:  Size of font to use for this button.  Overrides the
+               default setting
+    offset1:  For buttons that have to display two characters, the
+              zero-based offset from the left edge of the bounding
+              rectangle, of the first character
+    offset2:  For buttons that have to display two characters, the
+              zero-based offset from the left edge of the bounding
+              rectangle, of the second character
+  -->
+  <ButtonAttributes>
+
+    <ButtonAttribute name="ContextMenuTitle" label="" value="" fontsize="20" fontname="Arial" mouseClickActuate="false"/>
+    
+    <ButtonAttribute name="ItemIcon1" label=" " value="@CmdGoBack" fontsize="20" fontname="Hawking" mouseClickActuate="true"/>
+    <ButtonAttribute name="ItemText1" label="(" value="@CmdGoBack" fontsize="18" fontname="Hawking" mouseClickActuate="true"/>
+
+    <ButtonAttribute name="ItemIcon2" label="P" value="@WindowsExplorerNavigate" fontsize="20" fontname="Hawking" mouseClickActuate="true"/>
+    <ButtonAttribute name="ItemText2" label="Navigate" value="@WindowsExplorerNavigate" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+
+    <ButtonAttribute name="ItemIcon3" label="f" value="@WindowsExplorerRecentLocations" fontsize="20" fontname="Hawking" mouseClickActuate="true"/>
+    <ButtonAttribute name="ItemText3" label="Address Bar" value="@WindowsExplorerRecentLocations" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+
+    <ButtonAttribute name="ItemIcon4" label="e" value="@WindowsExplorerUp" fontsize="20" fontname="Hawking" mouseClickActuate="true"/>
+    <ButtonAttribute name="ItemText4" label="Parent Dir" value="@WindowsExplorerUp" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+
+    <ButtonAttribute name="ItemIcon5" label="y" value="@PageUp" fontsize="20" fontname="PSH Alpha" mouseClickActuate="true"/>
+    <ButtonAttribute name="ItemText5" label="Page Up" value="@PageUp" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+
+    <ButtonAttribute name="ItemIcon6" label="z" value="@PageDown" fontsize="20" fontname="PSH Alpha" mouseClickActuate="true"/>
+    <ButtonAttribute name="ItemText6" label="Page Down" value="@PageDown" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+
+    <ButtonAttribute name="ItemIcon7" label="&lt;" value="@WindowsExplorerBack" fontsize="20" fontname="Hawking" mouseClickActuate="true"/>
+    <ButtonAttribute name="ItemText7" label="Back" value="@WindowsExplorerBack" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+
+    <ButtonAttribute name="ItemIcon8" label="&gt;" value="@WindowsExploreroForward" fontsize="20" fontname="Hawking" mouseClickActuate="true"/>
+    <ButtonAttribute name="ItemText8" label="Forward" value="@WindowsExplorerGoForward" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+
+    <ButtonAttribute name="ItemIcon9" label="h" value="@WindowsExplorerNewWindow" fontsize="20" fontname="Hawking" mouseClickActuate="true"/>
+    <ButtonAttribute name="ItemText9" label="New Window" value="@WindowsExplorerNewWindow" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+
+    <ButtonAttribute name="ItemIcon10" label="&#x0161;" value="@WindowPosSizeContextMenu" fontsize="20" fontname="Hawking" mouseClickActuate="true"/>
+    <ButtonAttribute name="ItemText10" label="Window" value="@WindowPosSizeContextMenu" fontsize="18" fontname="Arial" mouseClickActuate="true"/>
+  </ButtonAttributes>
+
+  <!--
+******************************************************
+  Screen layout. 
+  This section lists the parent-child relationships
+  between the widgets for each screen.
+  For instance, it shows that Box1 has four rows
+  (Row1, Row2, Row3 and Row4) and each row has buttons
+  
+  Attributes:
+    "screen":  Same as the name of the .NET form
+    "class":   The type of the widget. Must be one 
+               of the pre-defined supported types of Aster
+    "name":    Name of the widget. Has to be the same as
+               the name of the .NET control in the form
+******************************************************
+-->
+
+  <Layout>
+    <Widget class="Row" name="TitleRow">
+      <Widget class="ScannerButton" name="ContextMenuTitle" colorScheme="ContextMenuTitle"/>
+    </Widget>
+    <Widget class="Row" name="Row1">
+      <Widget class="ContextMenuIcon" name="ItemIcon1" />
+      <Widget class="ContextMenuText" name="ItemText1"  subclass="GoBack"/>
+    </Widget>
+    <Widget class="Row" name="Row2">
+      <Widget class="ContextMenuIcon" name="ItemIcon2"/>
+      <Widget class="ContextMenuText" name="ItemText2"/>
+    </Widget>
+    <Widget class="Row" name="Row3">
+      <Widget class="ContextMenuIcon" name="ItemIcon3"/>
+      <Widget class="ContextMenuText" name="ItemText3"/>
+    </Widget>
+    <Widget class="Row" name="Row4">
+      <Widget class="ContextMenuIcon" name="ItemIcon4"/>
+      <Widget class="ContextMenuText" name="ItemText4"/>
+    </Widget>
+    <Widget class="Row" name="Row5">
+      <Widget class="ContextMenuIcon" name="ItemIcon5"/>
+      <Widget class="ContextMenuText" name="ItemText5"/>
+    </Widget>
+    <Widget class="Row" name="Row6">
+      <Widget class="ContextMenuIcon" name="ItemIcon6"/>
+      <Widget class="ContextMenuText" name="ItemText6"/>
+    </Widget>
+    <Widget class="Row" name="Row7">
+      <Widget class="ContextMenuIcon" name="ItemIcon7"/>
+      <Widget class="ContextMenuText" name="ItemText7"/>
+    </Widget>
+    <Widget class="Row" name="Row8">
+      <Widget class="ContextMenuIcon" name="ItemIcon8"/>
+      <Widget class="ContextMenuText" name="ItemText8"/>
+    </Widget>
+    <Widget class="Row" name="Row9">
+      <Widget class="ContextMenuIcon" name="ItemIcon9"/>
+      <Widget class="ContextMenuText" name="ItemText9"/>
+    </Widget>
+    <Widget class="Row" name="Row10">
+      <Widget class="ContextMenuIcon" name="ItemIcon10"/>
+      <Widget class="ContextMenuText" name="ItemText10"/>
+    </Widget>
+  </Layout>
+
+
+  <!--
+******************************************************taskmanager
+  Animations
+******************************************************
+-->
+
+  <!-- Here, all the animations are configured. This includes
+  the sequence of animations. For each animation, the list of 
+  UI elements (widgets) is listed.  These widgets will be
+  highlighted in the order they are listed.
+  
+  "Animation" element attributes:
+    name:       A name for this animation.
+    screen:     Which UI screen is this associated with.  Currently,
+                the UI has only one screen (Aster).  This will be
+                extended to multiple screens - one with navigation, 
+                one for mouse control etc.  The name should match the
+                name of the form in the UI
+    start:    	If true, start with this animation when form is loaded.
+    iterations: Number of times to repeat this animation. If the user has 
+                not made any selection during the rotation, the actions 
+                associated with the 'onEnd' attribute are triggered.
+                Set this to -1 to iterate forever.
+    onEnd:      The actions to be triggered if the user has not
+                made any selection during the rotation and the
+                rotation has come to an end.
+    hesitateTime: The additional amount of delay that will be added to 
+                  the stepping time. This delay is applicable only
+                  for the first widget in the animation.
+    onSelect:   The actions to perform if the user selects a UI element 
+                in this animation.
+  
+  "Widget" element attributes:              
+    name:           Name of the widget.  Must match the name of the UI element
+                    in the form.
+    onSelect:       The actions to perform if the user selects this widget. If
+                    the parent animation also has a onSelect attribute, the onSelect
+                    for the widget is first executed followed by the onSelect for the
+                    parent animation.
+    onHighlightOn:  During a rotation, the actions to perform when the widget 
+                    is highlighted
+    onHighlightOff: During a rotation, the actions to perform whtn the widget 
+                    is unhighlighted
+    hesitateTime:   The additional amount of time this widget will stay highlighted
+                    during a rotation.
+  -->
+
+  <!--name of the scheme, selected through preferences.-->
+  <Animations>
+
+    <!--
+      start:      Set to true which means this animation is the one to start with
+                  when the form is displayed.
+      iterations: Set to -1, which means this will go on forever.
+     -->
+    <Animation name="TopLevelRotation"
+               start="true"
+               onEnter=""
+               autoStart="true"
+               steppingTime="@TabScanTime"
+               iterations="@RowScanIterations">
+      <Widget name="Row1" onSelect="actuate(ItemText1);transition(TopLevelRotation)"/>
+      <Widget name="Row2" onSelect="actuate(ItemText2);transition(TopLevelRotation)"/>
+      <Widget name="Row3" onSelect="actuate(ItemText3);transition(TopLevelRotation)"/>
+      <Widget name="Row4" onSelect="actuate(ItemText4);transition(TopLevelRotation)"/>
+      <Widget name="Row5" onSelect="actuate(ItemText5);transition(TopLevelRotation)"/>
+      <Widget name="Row6" onSelect="actuate(ItemText6);select(ItemText6);transition(ButtonPressed)"/>
+      <Widget name="Row7" onSelect="actuate(ItemText7);select(ItemText7);transition(ButtonPressed)"/>
+      <Widget name="Row8" onSelect="actuate(ItemText8);transition(TopLevelRotation)"/>
+      <Widget name="Row9" onSelect="actuate(ItemText9);transition(TopLevelRotation)"/>
+      <Widget name="Row10" onSelect="actuate(ItemText10)"/>
+    </Animation>
+
+    <Animation name="ButtonPressed"
+        onEnter=""
+        iterations="1"
+        onEnd="transition(TopLevelRotation)">
+      <Widget name="@SelectedWidget" hesitateTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+    </Animation>
+
+    
+  </Animations>
+</Aster>
+
+

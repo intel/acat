@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="buttonOK" label="OK" value="ok" fontsize="14" bold="false" mouseClickActuate="true"/>
+  </WidgetAttributes>
+
+  <Layout>
+      <Widget class="ButtonControlWidget" name="buttonOK" />
+  </Layout>
+
+  <Animations>
+    <Animation name="OK"
+               start="true"
+               onEnter=""
+               hesitateTime="@TimedDialogTimeout"
+               onEnd="run(@ok)"
+               iterations="1">
+      <Widget name="buttonOK" onSelect="actuate(@SelectedWidget)"/>
+    </Animation>
+  </Animations>
+</ACAT>

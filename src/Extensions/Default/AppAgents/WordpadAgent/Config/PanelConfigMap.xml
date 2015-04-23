@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+    <ConfigMapEntry panelClass="WordPadContextMenu" configName="WordPadContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868"  configFile="WordPadContextMenu.xml"/>
+    <ConfigMapEntry panelClass="WordPadContextMenu" configName="WordPadContextMenuIconsOnly" formId="6DD7E759-9ACE-40B0-9991-20FB56266BE9"  configFile="WordPadContextMenuIconsOnly.xml"/>
+  </ConfigMapEntries>
+</ACAT>

@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Aster.AbbreviationsManagement.Abbreviation" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="2" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="Aster.AbbreviationsManagement.Abbreviation.AbbreviationMode" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Abbreviation.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAKAEAAAAAIAAAAAAAAAAAAIAAQAAAAAAAAA=</HashCode>
+      <FileName>Abbreviation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Aster.AbbreviationsManagement.AbbreviationReplaceEventArgs" Collapsed="true">
+    <Position X="7.75" Y="3.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAACAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AbbreviationReplaceEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aster.AbbreviationsManagement.Abbreviations" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <NestedTypes>
+      <Delegate Name="Aster.AbbreviationsManagement.Abbreviations.AbbreviationReplaceDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Abbreviations.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="Aster.AbbreviationsManagement.Abbreviations.AbbreviationTTSDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Abbreviations.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AQ4AgIAAgCAEAAAAAAAAJRAAEAAAAQCEAEAAQIFgAEg=</HashCode>
+      <FileName>Abbreviations.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_abbreviationList" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Aster.AbbreviationsManagement.AbbreviationTTSEventArgs" Collapsed="true">
+    <Position X="7.75" Y="2.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>AbbreviationTTSEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

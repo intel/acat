@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+    <ConfigMapEntry panelClass="NewFileContextMenu" configName="NewFileContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="NewFileContextMenu.xml"/>
+  </ConfigMapEntries>
+</ACAT>

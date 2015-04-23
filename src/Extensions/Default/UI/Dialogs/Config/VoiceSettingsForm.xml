@@ -1,0 +1,39 @@
+<?xml version="1.0" ?> 
+<ACAT>
+
+	<WidgetAttributes>
+    <WidgetAttribute name="lblOK" label="OK" value="valButtonSave"  fontsize="14" mouseClickActuate="true"/>
+    <WidgetAttribute name="lblBack" label="Cancel" value="valButtonBack"  fontsize="14"  mouseClickActuate="true"/>
+    <WidgetAttribute name="lblRestoreDefaults" label="Defaults" value="valButtonRestoreDefaults" fontsize="14"  mouseClickActuate="true" />
+    <WidgetAttribute name="lblTest" label="Test" value="valButtonTest" fontsize="14"  mouseClickActuate="true" />
+    <WidgetAttribute name="lblTTSEngineName" label="" value="" fontsize="14"  mouseClickActuate="false" />
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="LabelWidget" name="lblTTSEngineName"/>
+    <Widget class="WinControlWidget" name="tbVolume" drawBorder="true" panel="Number"/>
+    <Widget class="WinControlWidget" name="tbRate" drawBorder="true" panel="Number"/>
+    <Widget class="WinControlWidget" name="tbPitch" drawBorder="true" panel="Number"/>
+    <Widget class="ButtonControlWidget" name="lblOK" />
+    <Widget class="ButtonControlWidget" name="lblBack" />
+    <Widget class="ButtonControlWidget" name="lblTest" />
+    <Widget class="ButtonControlWidget" name="lblRestoreDefaults" />
+  </Layout>
+  
+	<Animations> 
+    <Animation  name="animTopLevel"
+                start="true"
+                onEnter=""
+                steppingTime="@TabScanTime"
+                iterations="@HalfScanIterations">
+      <Widget name="tbVolume" onSelect="actuate(@SelectedWidget);" />
+      <Widget name="tbRate" onSelect="actuate(@SelectedWidget);" />
+      <Widget name="tbPitch" onSelect="actuate(@SelectedWidget);" />
+      <Widget name="lblTest" onSelect="actuate(@SelectedWidget);"/>
+      <Widget name="lblOK" onSelect="actuate(@SelectedWidget);" />
+      <Widget name="lblBack" onSelect="actuate(@SelectedWidget);"/>
+      <Widget name="lblRestoreDefaults" onSelect="actuate(@SelectedWidget);"/>
+    </Animation>
+  </Animations>
+</ACAT>
+

@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+  <!ENTITY usebold "true">
+]>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="SearchFilter" label=" " value="@unknown" fontname="Arial" fontsize="16" />
+    <WidgetAttribute name="SortOrderIcon" label=" " value="@unknown" fontname="ACAT Icon" fontsize="18" />
+    <WidgetAttribute name="PageNumber" label=" " value="@unknown" fontname="Arial" fontsize="18" />
+    <WidgetAttribute name="Item1" label=" " value="@Item1" fontname="Arial" fontsize="15" mouseClickActuate="true"/>
+    <WidgetAttribute name="Item2" label=" " value="@Item2" fontname="Arial" fontsize="15" mouseClickActuate="true"/>
+    <WidgetAttribute name="Item3" label=" " value="@Item3" fontname="Arial" fontsize="15" mouseClickActuate="true"/>
+    <WidgetAttribute name="Item4" label=" " value="@Item4" fontname="Arial" fontsize="15" mouseClickActuate="true"/>
+    <WidgetAttribute name="Item5" label=" " value="@Item5" fontname="Arial" fontsize="15" mouseClickActuate="true"/>
+    <WidgetAttribute name="Item6" label=" " value="@Item6" fontname="Arial" fontsize="15" mouseClickActuate="true"/>
+    <WidgetAttribute name="Item7" label=" " value="@Item7" fontname="Arial" fontsize="15" mouseClickActuate="true"/>
+    <WidgetAttribute name="Item8" label=" " value="@Item8" fontname="Arial" fontsize="15" mouseClickActuate="true"/>
+    <WidgetAttribute name="Item9" label=" " value="@Item9" fontname="Arial" fontsize="15" mouseClickActuate="true"/>
+    <WidgetAttribute name="Item10" label=" " value="@Item10" fontname="Arial" fontsize="15" mouseClickActuate="true"/>
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="TextBoxWidget" name="SearchFilter" colorScheme="HighContrast" roundedCorners="false"/>
+    <Widget class="LabelWidget" name="SortOrderIcon" colorScheme="HighContrast" roundedCorners="false"/>
+    <Widget class="LabelWidget" name="PageNumber" colorScheme="HighContrast" roundedCorners="false"/>
+    
+    <Widget class="WinControlWidget" name="ItemsList">
+      <Widget class="TabStopScannerButton" name="Item1" colorScheme="WordListItemButton"/>
+      <Widget class="TabStopScannerButton" name="Item2" colorScheme="WordListItemButton"/>
+      <Widget class="TabStopScannerButton" name="Item3" colorScheme="WordListItemButton"/>
+      <Widget class="TabStopScannerButton" name="Item4" colorScheme="WordListItemButton"/>
+      <Widget class="TabStopScannerButton" name="Item5" colorScheme="WordListItemButton"/>
+      <Widget class="TabStopScannerButton" name="Item6" colorScheme="WordListItemButton"/>
+      <Widget class="TabStopScannerButton" name="Item7" colorScheme="WordListItemButton"/>
+      <Widget class="TabStopScannerButton" name="Item8" colorScheme="WordListItemButton"/>
+      <Widget class="TabStopScannerButton" name="Item9" colorScheme="WordListItemButton"/>
+      <Widget class="TabStopScannerButton" name="Item10" colorScheme="WordListItemButton"/>
+    </Widget>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopLevelRotation"
+               start="true"
+               iterations="@HalfScanIterations">
+      <Widget name="Item1" />
+    </Animation>
+  </Animations>
+</ACAT>
+

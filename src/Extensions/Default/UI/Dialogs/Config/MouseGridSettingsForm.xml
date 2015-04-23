@@ -1,0 +1,220 @@
+<?xml version="1.0" ?> 
+
+<ACAT>
+	<WidgetAttributes>
+    <WidgetAttribute name="lblOK" label="OK" value="valButtonSave"  fontsize="14" mouseClickActuate="true"/>
+    <WidgetAttribute name="lblBack" label="Cancel" value="valButtonBack"  fontsize="14"  mouseClickActuate="true"/>
+    <WidgetAttribute name="lblRestoreDefaults" label="Defaults" value="valButtonRestoreDefaults" fontsize="14"  mouseClickActuate="true" />
+    
+    <WidgetAttribute name="ltbVerticalSpeedLess" label="O" value="valButtonVerticalSpeedLess" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbVerticalSpeedMore" label="N" value="valButtonVerticalSpeedMore" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbVerticalSweepsLess" label="O" value="valButtonVerticalSweepsLess" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbVerticalSweepsMore" label="N" value="valButtonVerticalSweepsMore" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbHorizontalSpeedLess" label="O" value="valButtonHorizontalSpeedLess" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbHorizontalSpeedMore" label="N" value="valButtonHorizontalSpeedMore" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbHorizontalSweepsLess" label="O" value="valButtonHorizontalSweepsLess" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbHorizontalSweepsMore" label="N" value="valButtonHorizontalSweepsMore" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbLineWidthLess" label="O" value="valButtonLineWidthLess" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+    <WidgetAttribute name="ltbLineWidthMore" label="N" value="valButtonLineWidthMore" fontname="ACAT Icon" fontsize="36" bold="false" mouseClickActuate="true"/>
+
+    <WidgetAttribute name="pbStartFromLastCursorPos" label="M" value="valStartFromLastCursorPos" fontname="ACAT Icon" bold="false" fontsize="36" mouseClickActuate="true"/>
+	</WidgetAttributes>
+
+  <Layout>
+    <Widget class="ButtonControlWidget" name="lblOK" />
+    <Widget class="ButtonControlWidget" name="lblBack" />
+    <Widget class="ButtonControlWidget" name="lblRestoreDefaults" />
+        
+    <Widget class="SliderWidget" name="tbVerticalSpeed" min="1" max="20" initialvalue="8" tickfrequency="1" step="1" caption="Vertical Speed">
+      <Widget class="LabelWidget" name="ltbVerticalSpeedLess" subclass="sliderdecrement"/>
+      <Widget class="LabelWidget" name="ltbVerticalSpeedMore" subclass="sliderincrement"/>
+      <Widget class="WinControlWidget" name="tbVerticalSpeed"/>
+      <Widget class="LabelWidget" name="lblVerticalSpeed" subclass="slidercaption"/>
+      <Widget class="WinControlWidget" name="sminVerticalSpeed" subclass="sliderminvalue"/>
+      <Widget class="WinControlWidget" name="smaxVerticalSpeed" subclass="slidermaxvalue"/>
+      <Widget class="WinControlWidget" name="svalVerticalSpeed" subclass="slidercurrentvalue" />
+    </Widget>
+
+    <Widget class="SliderWidget" name="tbVerticalSweeps" min="1" max="5" initialvalue="4" tickfrequency="1" step="1" caption="Vertical Sweeps">
+      <Widget class="LabelWidget" name="ltbVerticalSweepsLess" subclass="sliderdecrement"/>
+      <Widget class="LabelWidget" name="ltbVerticalSweepsMore" subclass="sliderincrement"/>
+      <Widget class="WinControlWidget" name="tbVerticalSweeps"/>
+      <Widget class="LabelWidget" name="lblVerticalSweeps" subclass="slidercaption"/>
+      <Widget class="WinControlWidget" name="sminVerticalSweeps" subclass="sliderminvalue"/>
+      <Widget class="WinControlWidget" name="smaxVerticalSweeps" subclass="slidermaxvalue"/>
+      <Widget class="WinControlWidget" name="svalVerticalSweeps" subclass="slidercurrentvalue" />
+    </Widget>
+
+    <Widget class="SliderWidget" name="tbHorizontalSpeed" min="1" max="20" initialvalue="20" tickfrequency="1" step="1" caption="Mouse Speed">
+      <Widget class="LabelWidget" name="ltbHorizontalSpeedLess" subclass="sliderdecrement"/>
+      <Widget class="LabelWidget" name="ltbHorizontalSpeedMore" subclass="sliderincrement"/>
+      <Widget class="WinControlWidget" name="tbHorizontalSpeed"/>
+      <Widget class="LabelWidget" name="lblHorizontalSpeed" subclass="slidercaption"/>
+      <Widget class="WinControlWidget" name="sminHorizontalSpeed" subclass="sliderminvalue"/>
+      <Widget class="WinControlWidget" name="smaxHorizontalSpeed" subclass="slidermaxvalue"/>
+      <Widget class="WinControlWidget" name="svalHorizontalSpeed" subclass="slidercurrentvalue" />
+    </Widget>
+
+    <Widget class="SliderWidget" name="tbHorizontalSweeps" min="1" max="5" initialvalue="3" tickfrequency="1" step="1" caption="Mouse Sweeps">
+      <Widget class="LabelWidget" name="ltbHorizontalSweepsLess" subclass="sliderdecrement"/>
+      <Widget class="LabelWidget" name="ltbHorizontalSweepsMore" subclass="sliderincrement"/>
+      <Widget class="WinControlWidget" name="tbHorizontalSweeps"/>
+      <Widget class="LabelWidget" name="lblHorizontalSweeps" subclass="slidercaption"/>
+      <Widget class="WinControlWidget" name="sminHorizontalSweeps" subclass="sliderminvalue"/>
+      <Widget class="WinControlWidget" name="smaxHorizontalSweeps" subclass="slidermaxvalue"/>
+      <Widget class="WinControlWidget" name="svalHorizontalSweeps" subclass="slidercurrentvalue" />
+    </Widget>
+
+    <Widget class="SliderWidget" name="tbLineWidth" min="1" max="5" initialvalue="5" tickfrequency="1" step="1" caption="Line Width">
+      <Widget class="LabelWidget" name="ltbLineWidthLess" subclass="sliderdecrement"/>
+      <Widget class="LabelWidget" name="ltbLineWidthMore" subclass="sliderincrement"/>
+      <Widget class="WinControlWidget" name="tbLineWidth"/>
+      <Widget class="LabelWidget" name="lblLineWidth" subclass="slidercaption"/>
+      <Widget class="WinControlWidget" name="sminLineWidth" subclass="sliderminvalue"/>
+      <Widget class="WinControlWidget" name="smaxLineWidth" subclass="slidermaxvalue"/>
+      <Widget class="WinControlWidget" name="svalLineWidth" subclass="slidercurrentvalue" />
+    </Widget>
+
+    <Widget class="CheckBoxWidget" name="pbStartFromLastCursorPos" onStateText="L" offStateText="M" onOffState="off" />
+    <Widget class="LabelWidget" name="lblStartFromLastCursorPos" />
+  </Layout>
+  
+	<Animations> 
+    <Animation  name="animTopLevel"
+                start="true"
+                onEnter=""
+                steppingTime="@TabScanTime"
+                iterations="@HalfScanIterations">
+      <Widget name="lblVerticalSpeed" onSelect="transition(animVerticalSpeed);" />
+      <Widget name="lblVerticalSweeps" onSelect="transition(animVerticalSweeps);"/>
+      <Widget name="lblHorizontalSpeed" onSelect="transition(animHorizontalSpeed);"/>
+      <Widget name="lblHorizontalSweeps" onSelect="transition(animHorizontalSweeps);"/>
+      <Widget name="lblLineWidth" onSelect="transition(animLineWidth);"/>
+      <Widget name="lblStartFromLastCursorPos" onSelect="actuate(pbStartFromLastCursorPos);" />
+      <Widget name="lblOK" onSelect="actuate(@SelectedWidget)"/>
+      <Widget name="lblBack" onSelect="actuate(@SelectedWidget);" />
+      <Widget name="lblRestoreDefaults" onSelect="actuate(@SelectedWidget)"/>      
+    </Animation>
+
+    <Animation name="animVerticalSpeed"
+           start="false"
+           onEnter=""
+           iterations="3"
+           steppingTime="@TabScanTime"
+           onEnd="transition(animTopLevel)">
+      <Widget name="ltbVerticalSpeedLess" onSelect="actuate(@SelectedWidget);transition(animVerticalSpeedDecrement);" />
+      <Widget name="ltbVerticalSpeedMore" onSelect="actuate(@SelectedWidget);transition(animVerticalSpeedIncrement);"/>
+    </Animation>
+      <Animation name="animVerticalSpeedDecrement"
+              start="false"
+              onEnter=""
+              iterations="1"
+              onEnd="transition(animVerticalSpeed)">
+        <Widget name="ltbVerticalSpeedLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbVerticalSpeedLess);" />
+      </Animation>
+      <Animation name="animVerticalSpeedIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animVerticalSpeed)">
+        <Widget name="ltbVerticalSpeedMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbVerticalSpeedMore);" />
+      </Animation>
+
+    <Animation name="animVerticalSweeps"
+               start="false"
+               onEnter=""
+               iterations="3"
+               steppingTime="@TabScanTime"
+               onEnd="transition(animTopLevel)">
+        <Widget name="ltbVerticalSweepsLess" onSelect="actuate(@SelectedWidget);transition(animVerticalSweepsDecrement);" />
+        <Widget name="ltbVerticalSweepsMore" onSelect="actuate(@SelectedWidget);transition(animVerticalSweepsIncrement);"/>
+    </Animation> 
+      <Animation name="animVerticalSweepsDecrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animVerticalSweeps)">
+        <Widget name="ltbVerticalSweepsLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbVerticalSweepsLess);" />
+      </Animation>
+      <Animation name="animVerticalSweepsIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animVerticalSweeps)">
+        <Widget name="ltbVerticalSweepsMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbVerticalSweepsMore);" />
+      </Animation>
+
+    <Animation name="animHorizontalSpeed"
+           start="false"
+           onEnter=""
+           iterations="3"
+           steppingTime="@TabScanTime"
+           onEnd="transition(animTopLevel)">
+      <Widget name="ltbHorizontalSpeedLess" onSelect="actuate(@SelectedWidget);transition(animHorizontalSpeedDecrement);" />
+      <Widget name="ltbHorizontalSpeedMore" onSelect="actuate(@SelectedWidget);transition(animHorizontalSpeedIncrement);"/>
+    </Animation>
+      <Animation name="animHorizontalSpeedDecrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animHorizontalSpeed)">
+        <Widget name="ltbHorizontalSpeedLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbHorizontalSpeedLess);" />
+      </Animation>
+      <Animation name="animHorizontalSpeedIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animHorizontalSpeed)">
+        <Widget name="ltbHorizontalSpeedMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbHorizontalSpeedMore);" />
+      </Animation>
+
+    <Animation name="animHorizontalSweeps"
+       start="false"
+       onEnter=""
+       iterations="3"
+       steppingTime="@TabScanTime"
+       onEnd="transition(animTopLevel)">
+      <Widget name="ltbHorizontalSweepsLess" onSelect="actuate(@SelectedWidget);transition(animHorizontalSweepsDecrement);" />
+      <Widget name="ltbHorizontalSweepsMore" onSelect="actuate(@SelectedWidget);transition(animHorizontalSweepsIncrement);"/>
+    </Animation>
+      <Animation name="animHorizontalSweepsDecrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animHorizontalSweeps)">
+        <Widget name="ltbHorizontalSweepsLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbHorizontalSweepsLess);" />
+      </Animation>
+      <Animation name="animHorizontalSweepsIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animHorizontalSweeps)">
+        <Widget name="ltbHorizontalSweepsMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbHorizontalSweepsMore);" />
+      </Animation>
+    
+    <Animation name="animLineWidth"
+           start="false"
+           onEnter=""
+           iterations="3"
+           steppingTime="@TabScanTime"
+           onEnd="transition(animTopLevel)">
+        <Widget name="ltbLineWidthLess" onSelect="actuate(@SelectedWidget);transition(animLineWidthDecrement);" />
+        <Widget name="ltbLineWidthMore" onSelect="actuate(@SelectedWidget);transition(animLineWidthIncrement);"/>
+    </Animation>
+      <Animation name="animLineWidthDecrement"
+              start="false"
+              onEnter=""
+              iterations="1"
+              onEnd="transition(animLineWidth)">
+        <Widget name="ltbLineWidthLess" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbLineWidthLess);" />
+      </Animation>
+      <Animation name="animLineWidthIncrement"
+          start="false"
+          onEnter=""
+          iterations="1"
+          onEnd="transition(animLineWidth)">
+        <Widget name="ltbLineWidthMore" hesitateTime="@FirstRepeatTime" onSelect="actuate(ltbLineWidthMore);" />
+      </Animation>
+  </Animations>
+</ACAT>
+

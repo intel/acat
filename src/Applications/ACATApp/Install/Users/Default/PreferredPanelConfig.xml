@@ -1,0 +1,49 @@
+<ACAT>
+  <PanelConfigs name="MenusWithText" description="Contextual Menus with text">
+      <PanelConfig panelClass="Alphabet" configName="Alphabet"/>
+      <PanelConfig panelClass="AlphabetMinimal" configName="AlphabetMinimal"/>
+      <PanelConfig panelClass="Mouse" configName="MouseScanner2"/>
+      <PanelConfig panelClass="YesNoScanner" configName="YesNoScanner2"/>
+      <PanelConfig panelClass="YesNoScannerNarrow" configName="YesNoScanner2Narrow"/>
+      <PanelConfig panelClass="YesNoDialog" configName="YesNoDialog2"/>
+      <PanelConfig panelClass="NotepadContextMenu" configName="NotepadContextMenu"/>
+      <PanelConfig panelClass="AcrobatReaderContextMenu" configName="AcrobatReaderContextMenu"/>
+      <PanelConfig panelClass="AcrobatReaderZoomMenu" configName="AcrobatReaderZoomMenu"/>
+      <PanelConfig panelClass="InternetExplorerContextMenu" configName="InternetExplorerContextMenu"/>
+      <PanelConfig panelClass="InternetExplorerZoomMenu" configName="InternetExplorerZoomMenu"/>
+      <PanelConfig panelClass="ChromeBrowserContextMenu" configName="ChromeBrowserContextMenu"/>
+      <PanelConfig panelClass="ChromeBrowserZoomMenu" configName="ChromeBrowserZoomMenu"/>
+      <PanelConfig panelClass="FirefoxBrowsersContextMenu" configName="FireFoxBrowserContextMenu"/>
+      <PanelConfig panelClass="FireFoxBrowserZoomMenu" configName="FireFoxBrowserZoomMenu"/>
+      <PanelConfig panelClass="MSWordContextMenu" configName="MSWordContextMenu"/>
+      <PanelConfig panelClass="WordPadContextMenu" configName="WordPadContextMenu"/>
+      <PanelConfig panelClass="LectureManagerSpeakMenu" configName="LectureManagerSpeakMenu2"/>
+      <PanelConfig panelClass="TalkWindowContextMenu" configName="TalkWindowContextMenu"/>
+ </PanelConfigs >
+ <PanelConfigs name="MenusWithoutText" description="Contextual Menus with Icons only">
+      <PanelConfig panelClass="Alphabet" configName="Alphabet"/>
+      <PanelConfig panelClass="AlphabetMinimal" configName="AlphabetMinimal"/>
+      <PanelConfig panelClass="Mouse" configName="MouseScanner2"/>
+      <PanelConfig panelClass="YesNoScanner" configName="YesNoScanner2"/>
+      <PanelConfig panelClass="YesNoScannerNarrow" configName="YesNoScanner2Narrow"/>
+      <PanelConfig panelClass="YesNoDialog" configName="YesNoDialog2"/>
+      <PanelConfig panelClass="NotepadContextMenu" configName="NotepadContextMenuIconsOnly"/>
+      <PanelConfig panelClass="AcrobatReaderContextMenu" configName="AcrobatReaderContextMenuIconsOnly"/>
+      <PanelConfig panelClass="AcrobatReaderZoomMenu" configName="AcrobatReaderZoomMenuIconsOnly"/>
+      <PanelConfig panelClass="InternetExplorerContextMenu" configName="InternetExplorerContextMenuIconsOnly"/>
+      <PanelConfig panelClass="InternetExplorerZoomMenu" configName="InternetExplorerZoomMenuIconsonly"/>
+      <PanelConfig panelClass="ChromeBrowserContextMenu" configName="ChromeBrowserContextMenuIconsOnly"/>
+      <PanelConfig panelClass="ChromeBrowserZoomMenu" configName="ChromeBrowserZoomMenuIconsonly"/>
+      <PanelConfig panelClass="FireFoxBrowserContextMenu" configName="FireFoxBrowserContextMenuIconsOnly"/>
+      <PanelConfig panelClass="FireFoxBrowserZoomMenu" configName="FireFoxBrowserZoomMenuIconsonly"/>
+      <PanelConfig panelClass="MSWordContextMenu" configName="MSWordContextMenuIconsOnly"/>
+      <PanelConfig panelClass="LectureManagerSpeakMenu" configName="LectureManagerSpeakMenu2"/>
+      <PanelConfig panelClass="TalkWindowContextMenu" configName="TalkWindowContextMenu"/>
+      <PanelConfig panelClass="DialogContextMenu" configName="DialogContextMenuIconsOnly"/>
+      <PanelConfig panelClass="MenuContextMenu" configName="MenuContextMenuIconsOnly"/>
+      <PanelConfig panelClass="WordPadContextMenu" configName="WordPadContextMenuIconsOnly"/>
+      <PanelConfig panelClass="PhotoViewerRotateMenu" configName="PhotoViewerRotateMenuIconsOnly"/>
+      <PanelConfig panelClass="PhotoViewerZoomMenu" configName="PhotoViewerZoomMenuIconsOnly"/>
+      <PanelConfig panelClass="WindowsPhotoViewerContextMenu" configName="WindowsPhotoViewerContextMenuIconsOnly"/>
+ </PanelConfigs>
+</ACAT>	

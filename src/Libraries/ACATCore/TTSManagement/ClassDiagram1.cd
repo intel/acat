@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Aster.TTSManagement.TTSEngines" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAACAkUAAACAAAAEAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TTSEngines.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_ttsEnginesTypeCache" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Aster.TTSManagement.TTSManager" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <AssociationLine Name="_ttsEngines" Type="Aster.TTSManagement.TTSEngines">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.007" Y="0.301" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AEAEAgAAACAEAAAIAAACAAAAAAAAgAIAQAACAAQAAAA=</HashCode>
+      <FileName>TTSManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_ttsEngines" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Aster.TTSManagement.TTSStatusChangedEventArgs" Collapsed="true">
+    <Position X="11.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TTSStatusChangedEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aster.TTSManagement.TTSValue" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAQAAAAgAAAAAAA=</HashCode>
+      <FileName>TTSValue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Aster.TTSManagement.TTSVoiceChangedEventArgs" Collapsed="true">
+    <Position X="9" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>TTSVoiceChangedEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Type" Collapsed="true">
+    <Position X="6" Y="1.75" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Aster.TTSManagement.ITTSSettingsDialog" Collapsed="true">
+    <Position X="5.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAgA=</HashCode>
+      <FileName>Interfaces\ITTSSettingsDialog.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Aster.TTSManagement.ITTSValue&lt;T&gt;" Collapsed="true">
+    <Position X="11.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAQAAAAgAAAAAAA=</HashCode>
+      <FileName>Interfaces\ITTSValue.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Aster.TTSManagement.SpeakFlags" Collapsed="true">
+    <Position X="7" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAYAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Interfaces\ITTSEngine.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Aster.TTSManagement.StatusFlags" Collapsed="true">
+    <Position X="9" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAIAAAAAAAAAAAAAAAAAAAAAAABAAAEAAAA=</HashCode>
+      <FileName>Interfaces\ITTSEngine.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="Aster.TTSManagement.TTSVoiceChanged" Collapsed="true">
+    <Position X="7" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\ITTSEngine.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Aster.TTSManagement.TTSStatusChanged" Collapsed="true">
+    <Position X="7" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Interfaces\ITTSEngine.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

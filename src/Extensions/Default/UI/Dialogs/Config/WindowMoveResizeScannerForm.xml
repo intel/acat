@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="B1" label="(" value="goBack"  fontname="ACAT Icon" fontsize="14" mouseClickActuate="true"/>
+    <WidgetAttribute name="B2" label="&#x509;" value="Up"  fontsize="18"  fontname="ACAT Icon" mouseClickActuate="true"/>
+    <WidgetAttribute name="B3" label="&#x502;" value="Down"  fontsize="18" fontname="ACAT Icon" mouseClickActuate="true"/>
+    <WidgetAttribute name="B4" label="&#x510;" value="Left"  fontsize="18"  fontname="ACAT Icon" mouseClickActuate="true"/>
+    <WidgetAttribute name="B5" label="&#x503;" value="Right"  fontsize="18"  fontname="ACAT Icon" mouseClickActuate="true"/>
+    <WidgetAttribute name="B6" label="m" value="Done"  fontsize="14"  fontname="ACAT Icon" mouseClickActuate="true"/>
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="ButtonControlWidget" name="B1" />
+    <Widget class="ButtonControlWidget" name="B2" />
+    <Widget class="ButtonControlWidget" name="B3" />
+    <Widget class="ButtonControlWidget" name="B4" />
+    <Widget class="ButtonControlWidget" name="B5" />
+    <Widget class="ButtonControlWidget" name="B6" />
+  </Layout>
+
+  <Animations>
+    <Animation  name="TopLevelRotation"
+                start="true"
+                onEnter=""
+                steppingTime="@TabScanTime"
+                iterations="@HalfScanIterations">
+      <Widget name="B1" onSelect="actuate(@SelectedWidget)"/>
+      <Widget name="B2" onSelect="actuate(@SelectedWidget);transition(ButtonPressed);"/>
+      <Widget name="B3" onSelect="actuate(@SelectedWidget);transition(ButtonPressed);"/>
+      <Widget name="B4" onSelect="actuate(@SelectedWidget);transition(ButtonPressed);"/>
+      <Widget name="B5" onSelect="actuate(@SelectedWidget);transition(ButtonPressed);"/>
+      <Widget name="B6" onSelect="actuate(@SelectedWidget);"/>
+    </Animation>
+
+    <Animation name="ButtonPressed"
+             onEnter=""
+             iterations="1"
+             onEnd="transition(TopLevelRotation)">
+      <Widget name="@SelectedWidget" hesitateTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+    </Animation>
+  </Animations>
+</ACAT>
+

@@ -1,1 +1,0 @@
-Assistive Context-Aware Toolkit (ACAT)

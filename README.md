@@ -7,7 +7,9 @@ Our hope is that, by open sourcing this configurable platform, developers will c
 
 Intel has developed ACAT "from scratch". It is written in C# using Microsoft Visual Studio 2012 and .NET 4.5 and runs on Microsoft Windows 7 or later. Word prediction functionality is powered by [Presage](http://presage.sourceforge.net/), an intelligent predictive text engine created by Matteo Vescovi. 
 
+##Project Website
 Click [here](http://01.org/acat) for the ACAT project website.
+Documentation can be found [here](https://01.org/acat/documentation-list)
 
 ##Licensing
 ACAT is distributed under the Apache License, Version 2.0.  

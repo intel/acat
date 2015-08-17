@@ -11,6 +11,9 @@ Intel has developed ACAT "from scratch". It is written in C# using Microsoft Vis
 Click [here](http://01.org/acat) for the ACAT project website.
 Documentation can be found [here](https://01.org/acat/documentation-list)
 
+##Reviews
+For screenshots of how it works, see the article, "Intel just open sourced Stephen Hawking’s speech system and it’s a .NET 4.5 WinForms app that you can try for yourself" by Mansib Rahman, [here](http://blogs.msdn.com/b/cdndevs/archive/2015/08/14/intel-just-open-sourced-stephen-hawking-s-speech-system-and-it-s-a-net-4-5-winforms-app.aspx)
+
 ##Licensing
 ACAT is distributed under the Apache License, Version 2.0.  
 

@@ -1,0 +1,4 @@
+version: 1.0.{build}
+build:
+  project: src\ACAT.sln
+  verbosity: minimal

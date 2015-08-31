@@ -317,7 +317,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.SwitchWindows
         {
             Invoke(new MethodInvoker(delegate()
                 {
-                    if (SearchFilter.Text.Length > 0 && DialogUtils.ConfirmScanner("Clear filter?"))
+                    if (SearchFilter.Text.Length > 0 && DialogUtils.ConfirmScanner(Strings.Clear_filter))
                     {
                         SearchFilter.Text = String.Empty;
                     }
@@ -585,7 +585,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.SwitchWindows
                 IntPtr desktopHWnd = User32Interop.GetDesktopWindow();
                 if (desktopHWnd != null)
                 {
-                    sortedList.Insert(0, new EnumWindows.WindowInfo(desktopHWnd, "Show Desktop"));
+                    sortedList.Insert(0, new EnumWindows.WindowInfo(desktopHWnd, Strings.Show_Desktop));
                 }
             }
 
@@ -694,9 +694,9 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.SwitchWindows
                     {
                         if (!User32Interop.IsWindow(itemTag.WInfo.Handle) || !User32Interop.IsWindowVisible(itemTag.WInfo.Handle))
                         {
-                            DialogUtils.ShowTimedDialog(this, "Window does not exist");
+                            DialogUtils.ShowTimedDialog(this, Strings.Window_does_not_exist);
                         }
-                        else if (DialogUtils.ConfirmScanner("Switch to " + itemTag.WInfo.Title + "?"))
+                        else if (DialogUtils.ConfirmScanner(Strings.Switch_to + itemTag.WInfo.Title + Strings.String14))
                         {
                             if (EvtActivateWindow != null)
                             {
@@ -811,7 +811,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.SwitchWindows
             if (!_windowsList.Any())
             {
                 (list[0] as TabStopScannerButton).SetTabStops(0.0f, new float[] { 25 });
-                list[0].SetText("------------- NO ACTIVE WINDOWS -------------");
+                list[0].SetText(Strings.NO_ACTIVE_WINDOWS);
                 return;
             }
 
@@ -826,17 +826,17 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.SwitchWindows
                 list[ii].UserData = new ItemTag(ItemTag.ItemType.OrderBy);
                 if (_sortOrder == SortOrder.Ascending)
                 {
-                    list[ii].SetText(displayIndex + ".\t------------- SORT Z-A -------------");
+                    list[ii].SetText(displayIndex + Strings.SORT);
                 }
                 else
                 {
-                    list[ii].SetText(displayIndex + ".\t------------- SORT A-Z -------------");
+                    list[ii].SetText(displayIndex + Strings.SORT1);
                 }
             }
             else
             {
                 list[ii].UserData = new ItemTag(ItemTag.ItemType.PreviousPage);
-                list[ii].SetText(displayIndex + ".\t------------- PREVIOUS PAGE  -------------");
+                list[ii].SetText(displayIndex + Strings.PREVIOUS_PAGE);
             }
 
             ii++;
@@ -851,7 +851,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.SwitchWindows
                 var title = _windowsList[jj].Title;
                 if (title.Length > MaxWindowTitleLength)
                 {
-                    title = title.Substring(0, MaxWindowTitleLength) + "...";
+                    title = title.Substring(0, MaxWindowTitleLength) + Strings.String15;
                 }
 
                 list[ii].SetText(displayIndex + ".\t" + title);
@@ -865,7 +865,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.SwitchWindows
                 displayIndex = (ii + 1) % 10;
                 (list[ii] as TabStopScannerButton).SetTabStops(0.0f, new float[] { 25, 400 });
                 list[ii].UserData = new ItemTag(ItemTag.ItemType.NextPage);
-                list[ii].SetText(displayIndex + ".\t------------- NEXT PAGE  -------------");
+                list[ii].SetText(displayIndex + Strings.NEXT_PAGE);
                 ii++;
             }
 
@@ -1059,7 +1059,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.SwitchWindows
 
             if (_pageNumberWidget != null)
             {
-                var text = _windowsList.Any() ? "Page " + (_pageNumber + 1) + " of " + _numPages : String.Empty;
+                var text = _windowsList.Any() ? Strings.Page + (_pageNumber + 1) + Strings.of + _numPages : String.Empty;
                 _pageNumberWidget.SetText(text);
             }
         }

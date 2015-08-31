@@ -180,7 +180,7 @@
             this.Controls.Add(this.flowLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MenuContextMenu";
-            this.Text = "MenuContextMenu";
+            this.Text = Strings.MenuContextMenu;
             this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 

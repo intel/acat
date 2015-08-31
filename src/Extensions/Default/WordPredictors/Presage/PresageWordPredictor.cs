@@ -178,10 +178,10 @@ namespace ACAT.Extensions.Default.WordPredictors.PresageWCF
 
             try
             {
-                Attributions.Add("PRESAGE",
-                                "Predictive text functionality is powered by Presage, the " +
-                                "intelligent predictive text engine created by Matteo Vescovi. " +
-                                "(http://presage.sourceforge.net/)");
+                Attributions.Add(Strings.PRESAGE,
+                                Strings.Predictive_text_functionality_is_powered_by_Presage_the +
+                                Strings.intelligent_predictive_text_engine_created_by_Matteo_Vescovi +
+                                Strings.http_presage_sourceforge_net);
 
                 Settings.PreferencesFilePath = UserManager.GetFullPath(SettingsFileName);
 

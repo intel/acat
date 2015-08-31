@@ -68,7 +68,7 @@
             this.labelTryWord.Name = "labelTryWord";
             this.labelTryWord.Size = new System.Drawing.Size(118, 40);
             this.labelTryWord.TabIndex = 136;
-            this.labelTryWord.Text = "Test";
+            this.labelTryWord.Text = Strings.Test;
             // 
             // label1
             // 
@@ -78,7 +78,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(203, 44);
             this.label1.TabIndex = 135;
-            this.label1.Text = "Type this: ";
+            this.label1.Text = Strings.Type_this;
             // 
             // textBoxEntry
             // 
@@ -97,7 +97,7 @@
             this.buttonExit.Size = new System.Drawing.Size(224, 63);
             this.buttonExit.TabIndex = 133;
             this.buttonExit.TabStop = false;
-            this.buttonExit.Text = "Exit";
+            this.buttonExit.Text = Strings.Exit;
             this.buttonExit.UseVisualStyleBackColor = true;
             // 
             // buttonReset
@@ -107,7 +107,7 @@
             this.buttonReset.Size = new System.Drawing.Size(85, 85);
             this.buttonReset.TabIndex = 132;
             this.buttonReset.TabStop = false;
-            this.buttonReset.Text = "Reset";
+            this.buttonReset.Text = Strings.Reset;
             this.buttonReset.UseVisualStyleBackColor = true;
             // 
             // buttonBackspace
@@ -117,7 +117,7 @@
             this.buttonBackspace.Size = new System.Drawing.Size(85, 85);
             this.buttonBackspace.TabIndex = 131;
             this.buttonBackspace.TabStop = false;
-            this.buttonBackspace.Text = "Backspace";
+            this.buttonBackspace.Text = Strings.Backspace;
             this.buttonBackspace.UseVisualStyleBackColor = true;
             // 
             // B4
@@ -127,7 +127,7 @@
             this.B4.Size = new System.Drawing.Size(85, 85);
             this.B4.TabIndex = 130;
             this.B4.TabStop = false;
-            this.B4.Text = "s";
+            this.B4.Text = Strings.s;
             this.B4.UseVisualStyleBackColor = true;
             // 
             // B3
@@ -137,7 +137,7 @@
             this.B3.Size = new System.Drawing.Size(85, 85);
             this.B3.TabIndex = 129;
             this.B3.TabStop = false;
-            this.B3.Text = "b";
+            this.B3.Text = Strings.b;
             this.B3.UseVisualStyleBackColor = true;
             // 
             // B2
@@ -147,7 +147,7 @@
             this.B2.Size = new System.Drawing.Size(85, 85);
             this.B2.TabIndex = 128;
             this.B2.TabStop = false;
-            this.B2.Text = "t";
+            this.B2.Text = Strings.t;
             this.B2.UseVisualStyleBackColor = true;
             // 
             // B1
@@ -157,7 +157,7 @@
             this.B1.Size = new System.Drawing.Size(85, 85);
             this.B1.TabIndex = 127;
             this.B1.TabStop = false;
-            this.B1.Text = "a";
+            this.B1.Text = Strings.a;
             this.B1.UseVisualStyleBackColor = true;
             // 
             // ACATGettingStartedForm

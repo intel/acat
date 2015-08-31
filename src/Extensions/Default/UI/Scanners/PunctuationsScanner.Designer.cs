@@ -1093,7 +1093,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "PunctuationsScanner";
-            this.Text = "Numbers and Punctuations";
+            this.Text = Strings.Numbers_and_Punctuations;
             this.bigtablepanel.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.Box1.ResumeLayout(false);

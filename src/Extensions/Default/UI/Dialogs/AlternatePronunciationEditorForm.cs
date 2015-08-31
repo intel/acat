@@ -55,7 +55,7 @@ namespace Aster.Extensions.Base.UI.Dialogs
 
             if (!_dialogCommon.Initialize())
             {
-                MessageBox.Show("Initialization error");
+                MessageBox.Show(Strings_3.Initialization_error);
             }
 
             this.Load += new EventHandler(AsterScreenTemplateForm_Load);
@@ -93,7 +93,7 @@ namespace Aster.Extensions.Base.UI.Dialogs
             if (String.IsNullOrEmpty(tbOriginalTerm.Text))
             {
                 // prompt user that pronunciation cannot be blank!
-                DialogUtils.ShowTimedDialog(this, "Error", "Please enter a term!");
+                DialogUtils.ShowTimedDialog(this, Strings_3.Error, Strings_3.Please_enter_term);
             }
             else
             {
@@ -111,7 +111,7 @@ namespace Aster.Extensions.Base.UI.Dialogs
         {
             bool undo = true;
 
-            if (!DialogUtils.Confirm(this, "Undo Change?"))
+            if (!DialogUtils.Confirm(this, Strings_3.Undo_Change))
             {
                 undo = false;
             }

@@ -526,7 +526,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
 
                 if (desktopHWnd != null)
                 {
-                    windowList.Insert(0, new EnumWindows.WindowInfo(desktopHWnd, "Show Desktop"));
+                    windowList.Insert(0, new EnumWindows.WindowInfo(desktopHWnd, Strings.Show_Desktop));
                 }
             }
 

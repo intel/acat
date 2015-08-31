@@ -360,9 +360,9 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.VolumeSettings
                 setting = 0;
             }
 
-            _titleWidget.SetText("Volume (" + ((setting < 0) ?
+            _titleWidget.SetText(Strings.VolumeOpenParentheses + ((setting < 0) ?
                                     Context.AppTTSManager.GetNormalizedVolume().Value :
-                                    setting) + ")");
+                                    setting) + Strings.CloseParentheses);
         }
 
         /// <summary>
@@ -438,11 +438,11 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.VolumeSettings
 
                     if (form._volumeSelected == 0)
                     {
-                        prompt = "Mute Speaker?";
+                        prompt = Strings.Mute_Speaker;
                     }
                     else
                     {
-                        prompt = "Set volume to " + form._volumeSelected + "?";
+                        prompt = Strings.Set_volume_to + form._volumeSelected + Strings.QuestionMark;
                     }
 
                     if (DialogUtils.ConfirmScanner(prompt))
@@ -486,7 +486,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.VolumeSettings
                 switch (Command)
                 {
                     case "VolumeTest":
-                        Context.AppTTSManager.ActiveEngine.Speak("Test");
+                        Context.AppTTSManager.ActiveEngine.Speak(Strings.Test);
                         break;
 
                     default:

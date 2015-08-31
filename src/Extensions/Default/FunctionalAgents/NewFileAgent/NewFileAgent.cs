@@ -301,7 +301,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.NewFile
                     break;
 
                 case "clearText":
-                    if (_newFileNameForm != null && confirm("Clear File Name?"))
+                    if (_newFileNameForm != null && confirm(Strings.Clear_File_Name))
                     {
                         _newFileNameForm.ClearFileName();
                     }
@@ -395,8 +395,8 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.NewFile
             {
                 DialogUtils.ShowTimedDialog(
                                     Context.AppPanelManager.GetCurrentForm() as Form,
-                                    "Error", 
-                                    "Could not create folder " + normalizedFolder);
+                                    Strings.Error, 
+                                    Strings.Could_not_create_folder + normalizedFolder);
             }
 
             return false;
@@ -545,7 +545,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.NewFile
             if (!String.IsNullOrEmpty(fileName))
             {
                 var name = Path.GetFileName(fileName);
-                if (confirm("Create file " + name + "?"))
+                if (confirm(Strings.Create_file + name + "?"))
                 {
                     createFileAndLaunchApp(fileName);
                     handleQuit(false);
@@ -563,7 +563,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.NewFile
             bool confirmQuit = true;
             if (showPrompt)
             {
-                confirmQuit = confirm("Exit without creating?");
+                confirmQuit = confirm(Strings.Exit_without_creating);
                 if (confirmQuit)
                 {
                     ExitCode = CompletionCode.None;
@@ -592,7 +592,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.NewFile
         /// </summary>
         private void showFileChoices()
         {
-            _newFileContextMenu = Context.AppPanelManager.CreatePanel("NewFileContextMenu", "Create New");
+            _newFileContextMenu = Context.AppPanelManager.CreatePanel("NewFileContextMenu", Strings.Create_New);
             _scannerShown = false;
             Context.AppPanelManager.ShowDialog(_newFileContextMenu as IPanel);
         }

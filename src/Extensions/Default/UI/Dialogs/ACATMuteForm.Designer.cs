@@ -105,7 +105,7 @@
             this.Title.Name = "Title";
             this.Title.Size = new System.Drawing.Size(18, 18);
             this.Title.TabIndex = 11;
-            this.Title.Text = "Screen Locked";
+            this.Title.Text = Strings.Screen_Locked;
             this.Title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblDate
@@ -117,7 +117,7 @@
             this.lblDate.Name = "lblDate";
             this.lblDate.Size = new System.Drawing.Size(114, 31);
             this.lblDate.TabIndex = 12;
-            this.lblDate.Text = "doomsday";
+            this.lblDate.Text = Strings.doomsday;
             this.lblDate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // timer
@@ -214,7 +214,7 @@
             this.lblTime.Name = "lblTime";
             this.lblTime.Size = new System.Drawing.Size(107, 31);
             this.lblTime.TabIndex = 23;
-            this.lblTime.Text = "12:12 PM";
+            this.lblTime.Text = Strings.PM;
             this.lblTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ACATMuteForm
@@ -239,7 +239,7 @@
             this.Controls.Add(this.TopRow);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "ACATMuteForm";
-            this.Text = "ACAT Mute";
+            this.Text = Strings.ACAT_Mute;
             this.TopRow.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

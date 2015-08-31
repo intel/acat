@@ -353,7 +353,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.NewFile
             FileToCreate = !FileExists ? Path.Combine(CreateFileDirectory, displayFileName) : String.Empty;
             Log.Debug("File: " + FileToCreate);
             labelNameOfFile.ForeColor = FileExists ? Color.Red : Color.Green;
-            Windows.SetText(labelPrompt, FileExists ? "File already exists" : String.Empty);
+            Windows.SetText(labelPrompt, FileExists ? Strings.File_already_exists : String.Empty);
         }
     }
 }

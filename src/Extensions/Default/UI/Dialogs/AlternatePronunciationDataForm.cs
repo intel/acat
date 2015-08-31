@@ -49,7 +49,7 @@ namespace Aster.Extensions.Base.UI.Dialogs
 
             if (!_dialogCommon.Initialize())
             {
-                MessageBox.Show("Initialization error");
+                MessageBox.Show(Strings_3.Initialization_error);
             }
 
             this.KeyPreview = true;
@@ -178,7 +178,7 @@ namespace Aster.Extensions.Base.UI.Dialogs
                     if (Context.AppPronunications.Exists(dlg._originalTerm))
                     {
                         // prompt user that pronunciation already exists!
-                        DialogUtils.ShowTimedDialog(this, "Error", "Pronunciation for '" + dlg._originalTerm + "' already exists");
+                        DialogUtils.ShowTimedDialog(this, Strings_3.Error, Strings_3.Pronunciation_for + dlg._originalTerm + Strings_3.already_exists);
                     }
                     else
                     {
@@ -203,7 +203,7 @@ namespace Aster.Extensions.Base.UI.Dialogs
                 Boolean gotListViewItem = Windows.GetSelectedListViewItem(listViewAP, ref itemCells);
                 String term = itemCells[COLUMN_TERM].ToString();
 
-                if (!DialogUtils.Confirm(this, "Delete " + term + "?"))
+                if (!DialogUtils.Confirm(this, Strings_3.Delete + term + Strings_3.QuestionMark))
                 {
                     delete = false;
                 }
@@ -278,7 +278,7 @@ namespace Aster.Extensions.Base.UI.Dialogs
 
                     if (String.IsNullOrEmpty(dlg._originalTerm))
                     {
-                        DialogUtils.ShowTimedDialog(this, "Message", "Pronunciation cannot be empty!");
+                        DialogUtils.ShowTimedDialog(this, Strings_3.Message, Strings_3.Pronunciation_cannot_be_empty);
                     }
                     else
                     {
@@ -297,7 +297,7 @@ namespace Aster.Extensions.Base.UI.Dialogs
 
             if (isDirty)
             {
-                if (!DialogUtils.Confirm(this, "Changes not saved. Quit?"))
+                if (!DialogUtils.Confirm(this, Strings_3.Changes_not_saved_Quit))
                 {
                     quit = false;
                 }
@@ -324,7 +324,7 @@ namespace Aster.Extensions.Base.UI.Dialogs
                 {
                     // TODO confirm save?
                     //
-                    if (DialogUtils.Confirm(this, "You have made changes.\nSave?"))
+                    if (DialogUtils.Confirm(this, Strings_3.You_have_made_changes_Save))
                     {
                         Context.AppPronunications.Save();
                         Context.AppPronunications.Load();

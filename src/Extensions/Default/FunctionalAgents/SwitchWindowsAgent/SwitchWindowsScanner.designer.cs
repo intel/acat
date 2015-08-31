@@ -324,7 +324,7 @@
             this.MinimizeBox = false;
             this.Name = "SwitchWindowsScanner";
             this.ShowIcon = false;
-            this.Text = "Active Applications";
+            this.Text = Strings.Active_Applications;
             this.TopMost = true;
             this.Load += new System.EventHandler(this.SwitchWindowsScanner_Load);
             this.ScannerBorder.ResumeLayout(false);

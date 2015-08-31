@@ -18,7 +18,7 @@ namespace Aster.Extensions.Hawking.AppAgents.LectureManager
 {
     public partial class LectureManagerOpenFileForm : Form, IPanel
     {
-        const string exitItem = "-------------------EXIT-------------------";
+        const string exitItem = Strings.EXIT;
         
         // backing field
         private WindowActiveWatchdog _windowActiveWatchdog;
@@ -110,7 +110,7 @@ namespace Aster.Extensions.Hawking.AppAgents.LectureManager
         {
             if (!Directory.Exists(_folderPath))
             {
-                DialogUtils.ShowTimedDialog(this, "Directory " + _folderPath + " does not exist");
+                DialogUtils.ShowTimedDialog(this, Strings.Directory + _folderPath + Strings.does_not_exist);
                 DialogResult = System.Windows.Forms.DialogResult.Cancel;
                 this.Close();
                 return;

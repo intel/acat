@@ -547,7 +547,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
             if (!TTSManager.Instance.ActiveEngine.IsMuted())
             {
                 trackBarVolume.Value = volume;
-                labelSpeaker.Text = "F";
+                labelSpeaker.Text = Strings.F;
                 labelSpeaker.ForeColor = Color.Black;
                 labelVolumeLevel.Text = volume.ToString();
                 labelVolumeLevel.ForeColor = Color.Black;
@@ -556,7 +556,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
             {
                 labelSpeaker.Text = "\u0511";
                 labelSpeaker.ForeColor = Color.Red;
-                labelVolumeLevel.Text = "M";
+                labelVolumeLevel.Text = Strings.M;
                 labelVolumeLevel.ForeColor = Color.Red;
             }
         }

@@ -106,7 +106,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.FileBrowser
         {
             if (FInfo != null)
             {
-                if (!DialogUtils.ConfirmScanner("Delete " + FInfo.Name + "?"))
+                if (!DialogUtils.ConfirmScanner(Strings.Delete + FInfo.Name + Strings.String13))
                 {
                     return;
                 }
@@ -124,7 +124,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.FileBrowser
         {
             if (FInfo != null)
             {
-                if (!DialogUtils.ConfirmScanner("Open " + FInfo.Name + "?"))
+                if (!DialogUtils.ConfirmScanner(Strings.Open1 + FInfo.Name + Strings.String13))
                 {
                     return;
                 }

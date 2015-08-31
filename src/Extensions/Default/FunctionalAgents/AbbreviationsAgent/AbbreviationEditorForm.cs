@@ -274,7 +274,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.Abbreviations
         {
             if (Add)
             {
-                Windows.SetText(labelTitle, "Add Abbreviation");
+                Windows.SetText(labelTitle, Strings.Add_Abbreviation);
                 var widget = _dialogCommon.GetRootWidget().Finder.FindChild("lblDelete");
                 if (widget != null)
                 {
@@ -283,7 +283,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.Abbreviations
             }
             else
             {
-                Windows.SetText(labelTitle, "Edit/Delete Abbreviation");
+                Windows.SetText(labelTitle, Strings.Edit_Delete_Abbreviation);
             }
 
             _windowActiveWatchdog = new WindowActiveWatchdog(this);
@@ -302,7 +302,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.Abbreviations
         {
             Log.Debug();
 
-            if (DialogUtils.Confirm("Cancel and Quit?"))
+            if (DialogUtils.Confirm(Strings.Cancel_and_Quit))
             {
                 Invoke(new MethodInvoker(delegate()
                 {
@@ -321,11 +321,11 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.Abbreviations
             var abbr = tbAbbreviation.Text.Trim();
             if (String.IsNullOrEmpty(abbr))
             {
-                DialogUtils.ShowTimedDialog(this, "Error", "Please enter an abbreviation!");
+                DialogUtils.ShowTimedDialog(this, Strings.Error, Strings.Please_enter_an_abbreviation);
             }
             else if (String.IsNullOrEmpty(tbExpansion.Text.Trim()))
             {
-                DialogUtils.ShowTimedDialog(this, "Error", "Expansion is empty");
+                DialogUtils.ShowTimedDialog(this, Strings.Error, Strings.Expansion_is_empty);
             }
             else
             {
@@ -339,8 +339,8 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.Abbreviations
                     {
                         DialogUtils.ShowTimedDialog(
                                         Context.AppPanelManager.GetCurrentPanel() as Form,
-                                        "Add", 
-                                        "Can't Save. Abbr for '" + abbr + "' already exists");
+                                        Strings.Add, 
+                                        Strings.Can_Save_Abbr_for + abbr + Strings.already_exists);
                     }
                     else
                     {
@@ -351,7 +351,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.Abbreviations
                 else if (Context.AppAbbreviations.Exists(abbr) &&
                         String.Compare(abbr, InputAbbreviation.Mnemonic.Trim(), true) != 0)
                 {
-                    if (DialogUtils.Confirm("You are changing existing abbr " + tbAbbreviation.Text + " . Continue?"))
+                    if (DialogUtils.Confirm(Strings.You_are_changing_existing_abbr + tbAbbreviation.Text + Strings.Continue))
                     {
                         saveAndQuit = true;
                     }
@@ -368,7 +368,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.Abbreviations
 
                     if (confirm)
                     {
-                        quit = DialogUtils.Confirm("Save Abbreviation and Quit?");
+                        quit = DialogUtils.Confirm(Strings.Save_Abbreviation_and_Quit);
                     }
 
                     if (quit)
@@ -448,7 +448,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.Abbreviations
         /// </summary>
         private void undo()
         {
-            if (DialogUtils.Confirm(this, "Undo Change?"))
+            if (DialogUtils.Confirm(this, Strings.Undo_Change))
             {
                 initWidgetSettings();
             }

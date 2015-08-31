@@ -44,7 +44,7 @@
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(199, 40);
             this.buttonOK.TabIndex = 7;
-            this.buttonOK.Text = "OK";
+            this.buttonOK.Text = Strings.OK;
             this.buttonOK.UseVisualStyleBackColor = true;
             // 
             // labelAppTitle
@@ -56,7 +56,7 @@
             this.labelAppTitle.Name = "labelAppTitle";
             this.labelAppTitle.Size = new System.Drawing.Size(407, 39);
             this.labelAppTitle.TabIndex = 8;
-            this.labelAppTitle.Text = "ACAT - Assistive Context-Aware Toolkit";
+            this.labelAppTitle.Text = Strings.ACAT_Assistive_Context_Aware_Toolkit;
             this.labelAppTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pictureBoxLogo
@@ -79,7 +79,7 @@
             this.textBoxOtherInfo.Size = new System.Drawing.Size(544, 125);
             this.textBoxOtherInfo.TabIndex = 11;
             this.textBoxOtherInfo.TabStop = false;
-            this.textBoxOtherInfo.Text = "Presage Software used for word prediction";
+            this.textBoxOtherInfo.Text = Strings.Presage_Software_used_for_word_prediction;
             // 
             // labelCopyrightInfo
             // 
@@ -90,7 +90,7 @@
             this.labelCopyrightInfo.Name = "labelCopyrightInfo";
             this.labelCopyrightInfo.Size = new System.Drawing.Size(407, 58);
             this.labelCopyrightInfo.TabIndex = 13;
-            this.labelCopyrightInfo.Text = "Copyright 2013-2015 Intel Corporation";
+            this.labelCopyrightInfo.Text = Strings.Copyright_Intel_Corporation;
             this.labelCopyrightInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelVersionInfo
@@ -102,7 +102,7 @@
             this.labelVersionInfo.Name = "labelVersionInfo";
             this.labelVersionInfo.Size = new System.Drawing.Size(407, 34);
             this.labelVersionInfo.TabIndex = 14;
-            this.labelVersionInfo.Text = "Version 1.00.00";
+            this.labelVersionInfo.Text = Strings.Version;
             this.labelVersionInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // AboutBoxForm

@@ -742,7 +742,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MouseScannerScreen";
-            this.Text = "ACAT";
+            this.Text = Strings.ACAT;
             this.tableLayoutPanel1.ResumeLayout(false);
             this.Box2.ResumeLayout(false);
             this.Row6.ResumeLayout(false);

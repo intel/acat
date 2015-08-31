@@ -125,7 +125,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LectureManager
         private Timer _speakAllParagraphTimer;
         private SyncLock _syncObj;
         private ExtensionInvoker _invoker;
-        private String[] abbreviations = new String[] { "dr", "mr", "prof", "mrs", "st", "etc" };
+        private String[] abbreviations = new String[] { Strings.dr, Strings.mr, Strings.prof, Strings.mrs, Strings.st, Strings.etc };
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -397,7 +397,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LectureManager
         /// </summary>
         public void ProcessExit()
         {
-            if (LectureManagerAgent.Confirm("Exit Lecture Manager?"))
+            if (LectureManagerAgent.Confirm(Strings.Exit_Lecture_Manager))
             {
                 StopSpeaking();
 
@@ -474,7 +474,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LectureManager
                 txtStatusBox.Font = font;
             }
 
-            Size s = TextRenderer.MeasureText("Hello", textBox1.Font);
+            Size s = TextRenderer.MeasureText(Strings.Hello, textBox1.Font);
             _textHeight = s.Height;
 
             MaximizeBox = false;
@@ -930,25 +930,25 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LectureManager
                     switch (Mode)
                     {
                         case SpeechMode.Paragraph:
-                            status = "SPEAKING PARAGRAPH";
+                            status = Strings.SPEAKING_PARAGRAPH;
                             break;
 
                         case SpeechMode.All:
-                            status = "SPEAKING ALL";
+                            status = Strings.SPEAKING_ALL;
                             break;
 
                         case SpeechMode.Sentence:
-                            status = "SPEAKING SENTENCE";
+                            status = Strings.SPEAKING_SENTENCE;
                             break;
 
                         default:
-                            status = "SPEAKING";
+                            status = Strings.SPEAKING1;
                             break;
                     }
                 }
                 else if (_paused)
                 {
-                    status = "PAUSED";
+                    status = Strings.PAUSED;
                 }
 
                 Windows.SetText(lblStatus, status);

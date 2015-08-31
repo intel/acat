@@ -63,7 +63,7 @@ namespace Aster.Screens
 
             if (!_screenCommon.Initialize(startupArg))
             {
-                MessageBox.Show("Could not initialize form " + Name);
+                MessageBox.Show(Strings.Could_not_initialize_form + Name);
                 return false;
             }
 

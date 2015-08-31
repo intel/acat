@@ -272,7 +272,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
         /// </summary>
         private void loadDefaultSettings()
         {
-            if (DialogUtils.Confirm(this, "Restore default settings?"))
+            if (DialogUtils.Confirm(this, Strings.Restore_default_settings))
             {
                 // get entire default file and just set those settings that belong to this preferences screen
                 initWidgetSettings(ACATPreferences.LoadDefaultSettings());
@@ -289,7 +289,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
 
             if (_isDirty)
             {
-                if (!DialogUtils.Confirm(this, "Changes not saved. Quit?"))
+                if (!DialogUtils.Confirm(this, Strings.Changes_not_saved_Quit))
                 {
                     quit = false;
                 }
@@ -306,7 +306,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
         /// </summary>
         private void saveSettingsAndQuit()
         {
-            if (_isDirty && DialogUtils.Confirm(this, "Save settings?"))
+            if (_isDirty && DialogUtils.Confirm(this, Strings.Save_settings))
             {
                 getSettingsFromUI().Save();
 

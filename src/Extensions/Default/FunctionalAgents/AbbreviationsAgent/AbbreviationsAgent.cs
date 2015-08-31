@@ -290,7 +290,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.Abbreviations
                 case "DeleteAbbreviation":
                     if (_abbreviationSelected != null)
                     {
-                        if (DialogUtils.ConfirmScanner("Delete " + _abbreviationSelected.Mnemonic + "?"))
+                        if (DialogUtils.ConfirmScanner(Strings.Delete + _abbreviationSelected.Mnemonic + Strings.String34))
                         {
                             deleteAbbreviation(_abbreviationSelected);
                             _abbreviationSelected = null;
@@ -357,7 +357,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.Abbreviations
             if (!_editDeleteMenuShown)
             {
                 _abbreviationSelected = abbr;
-                _editDeleteConfirmScanner = Context.AppPanelManager.CreatePanel("AbbreviationEditDeleteConfirm", "Abbreviation");
+                _editDeleteConfirmScanner = Context.AppPanelManager.CreatePanel("AbbreviationEditDeleteConfirm", Strings.Abbreviation);
                 if (_editDeleteConfirmScanner != null)
                 {
                     _editDeleteMenuShown = true;
@@ -541,7 +541,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.Abbreviations
 
             if (showConfirmDialog)
             {
-                quit = DialogUtils.ConfirmScanner("Close and Exit?");
+                quit = DialogUtils.ConfirmScanner(Strings.Close_and_Exit);
             }
 
             if (quit)

@@ -406,7 +406,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MouseScanner2";
-            this.Text = "Mouse";
+            this.Text = Strings.Mouse;
             this.tableLayoutPanel1.ResumeLayout(false);
             this.Row3.ResumeLayout(false);
             this.Row2.ResumeLayout(false);

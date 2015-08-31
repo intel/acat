@@ -644,7 +644,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "CursorNavigationScanner";
-            this.Text = "Cursor Navigation";
+            this.Text = Strings.Cursor_Navigation;
             this.tableLayoutPanel1.ResumeLayout(false);
             this.Symbols.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);

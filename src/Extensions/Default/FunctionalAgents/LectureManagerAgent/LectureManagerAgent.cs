@@ -179,9 +179,9 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LectureManager
                             {
                                 if (isContextMenuText(arg.Widget))
                                 {
-                                    if (arg.Widget.GetText() != "Pause")
+                                    if (arg.Widget.GetText() != Strings.Pause)
                                     {
-                                        arg.Widget.SetText("Pause");
+                                        arg.Widget.SetText(Strings.Pause);
                                     }
                                 }
                                 else if (isContextMenuIcon(arg.Widget))
@@ -194,15 +194,15 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LectureManager
                                     }
                                 }
                             }
-                            else if (arg.Widget.GetText() != "Next")
+                            else if (arg.Widget.GetText() != Strings.Next)
                             {
                                 if (isContextMenuText(arg.Widget))
                                 {
-                                    arg.Widget.SetText("Next");
+                                    arg.Widget.SetText(Strings.Next);
                                 }
                                 else if (isContextMenuIcon(arg.Widget))
                                 {
-                                    arg.Widget.SetText("F");
+                                    arg.Widget.SetText(Strings.String2);
                                 }
                             }
 
@@ -306,7 +306,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LectureManager
                 case "SpeakMenu":
                     if (isMainFormActive())
                     {
-                        if (Confirm("Speak now?"))
+                        if (Confirm(Strings.Speak_now))
                         {
                             PanelRequestEventArgs speakArg;
                             if (_lectureMgrForm.Mode == LectureManagerMainForm.SpeechMode.All)
@@ -365,7 +365,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LectureManager
                 case "SpeechModeParagraph":
                     if (isMainFormActive())
                     {
-                        if (Confirm("Set Paragraph Mode?"))
+                        if (Confirm(Strings.Set_Paragraph_Mode))
                         {
                             _lectureMgrForm.Mode = LectureManagerMainForm.SpeechMode.Paragraph;
                             closeCurrentPanel();
@@ -377,7 +377,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LectureManager
                 case "SpeechModeSentence":
                     if (isMainFormActive())
                     {
-                        if (Confirm("Set Sentence Mode?"))
+                        if (Confirm(Strings.Set_Sentence_Mode))
                         {
                             _lectureMgrForm.Mode = LectureManagerMainForm.SpeechMode.Sentence;
                             closeCurrentPanel();
@@ -389,7 +389,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LectureManager
                 case "SpeechModeAll":
                     if (isMainFormActive())
                     {
-                        if (Confirm("Set All?"))
+                        if (Confirm(Strings.Set_All))
                         {
                             _lectureMgrForm.Mode = LectureManagerMainForm.SpeechMode.All;
                             closeCurrentPanel();
@@ -422,7 +422,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LectureManager
                     break;
 
                 case "leaveSpeak":
-                    if (Confirm("Speaking. Leave?"))
+                    if (Confirm(Strings.Speaking_Leave))
                     {
                         closeCurrentPanel();
                         if (isMainFormActive())
@@ -434,7 +434,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LectureManager
                     break;
 
                 case "exitLectureManager":
-                    if (Confirm("Exit Lecture Manager?"))
+                    if (Confirm(Strings.Exit_Lecture_Manager))
                     {
                         closeCurrentPanel();
                         if (_lectureMgrForm != null)
@@ -510,7 +510,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LectureManager
         private bool getLectureManagerPanel(PanelRequestEventArgs arg)
         {
             arg.PanelClass = "LectureManagerContextMenuSimple";
-            arg.Title = "Lecture Mgr";
+            arg.Title = Strings.Lecture_Mgr;
             return true;
         }
 

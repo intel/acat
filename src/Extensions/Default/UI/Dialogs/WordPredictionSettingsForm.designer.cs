@@ -76,7 +76,7 @@
             this.lblUseCorpus.Name = "lblUseCorpus";
             this.lblUseCorpus.Size = new System.Drawing.Size(207, 29);
             this.lblUseCorpus.TabIndex = 81;
-            this.lblUseCorpus.Text = "Use Corpus Models for Word Prediction";
+            this.lblUseCorpus.Text = Strings.Use_Corpus_Models_for_Word_Prediction;
             this.lblUseCorpus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblDynamicLearning
@@ -86,7 +86,7 @@
             this.lblDynamicLearning.Name = "lblDynamicLearning";
             this.lblDynamicLearning.Size = new System.Drawing.Size(254, 29);
             this.lblDynamicLearning.TabIndex = 69;
-            this.lblDynamicLearning.Text = "Enable Dynamic Learning";
+            this.lblDynamicLearning.Text = Strings.Enable_Dynamic_Learning;
             this.lblDynamicLearning.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ltbWordCountMore
@@ -115,7 +115,7 @@
             this.lblWordCount.Name = "lblWordCount";
             this.lblWordCount.Size = new System.Drawing.Size(135, 22);
             this.lblWordCount.TabIndex = 65;
-            this.lblWordCount.Text = "Word Count";
+            this.lblWordCount.Text = Strings.Word_Count;
             // 
             // lblRestoreDefaults
             // 
@@ -125,7 +125,7 @@
             this.lblRestoreDefaults.Size = new System.Drawing.Size(107, 47);
             this.lblRestoreDefaults.TabIndex = 130;
             this.lblRestoreDefaults.TabStop = false;
-            this.lblRestoreDefaults.Text = "Defaults";
+            this.lblRestoreDefaults.Text = Strings.Defaults;
             this.lblRestoreDefaults.UseVisualStyleBackColor = false;
             // 
             // lblBack
@@ -136,7 +136,7 @@
             this.lblBack.Size = new System.Drawing.Size(107, 47);
             this.lblBack.TabIndex = 129;
             this.lblBack.TabStop = false;
-            this.lblBack.Text = "Cancel";
+            this.lblBack.Text = Strings.Cancel;
             this.lblBack.UseVisualStyleBackColor = false;
             // 
             // lblOK
@@ -147,7 +147,7 @@
             this.lblOK.Size = new System.Drawing.Size(107, 47);
             this.lblOK.TabIndex = 128;
             this.lblOK.TabStop = false;
-            this.lblOK.Text = "OK";
+            this.lblOK.Text = Strings.OK;
             this.lblOK.UseVisualStyleBackColor = false;
             // 
             // sminWordCount
@@ -175,7 +175,7 @@
             this.pbDynamicLearning.Name = "pbDynamicLearning";
             this.pbDynamicLearning.Size = new System.Drawing.Size(28, 29);
             this.pbDynamicLearning.TabIndex = 69;
-            this.pbDynamicLearning.Text = "N";
+            this.pbDynamicLearning.Text = Strings.N;
             // 
             // pbUseCorpus
             // 
@@ -184,7 +184,7 @@
             this.pbUseCorpus.Name = "pbUseCorpus";
             this.pbUseCorpus.Size = new System.Drawing.Size(28, 29);
             this.pbUseCorpus.TabIndex = 70;
-            this.pbUseCorpus.Text = "N";
+            this.pbUseCorpus.Text = Strings.N;
             // 
             // label1
             // 
@@ -193,7 +193,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(243, 24);
             this.label1.TabIndex = 161;
-            this.label1.Text = "Word Prediction Settings";
+            this.label1.Text = Strings.Word_Prediction_Settings;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // groupBox1

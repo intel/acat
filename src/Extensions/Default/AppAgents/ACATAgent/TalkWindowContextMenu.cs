@@ -143,8 +143,8 @@ namespace ACAT.Extensions.Default.AppAgents.ACATApp
             {
                 DialogUtils.ShowTimedDialog(
                                 PanelManager.Instance.GetCurrentPanel() as Form,
-                                "Google Search", 
-                                "Search text is empty.");
+                                Strings.Google_Search, 
+                                Strings.Search_text_is_empty);
             }
         }
 
@@ -168,8 +168,8 @@ namespace ACAT.Extensions.Default.AppAgents.ACATApp
             {
                 DialogUtils.ShowTimedDialog(
                             PanelManager.Instance.GetCurrentPanel() as Form,
-                            "Quick Search", 
-                            "Search text is empty.");
+                            Strings.Quick_Search, 
+                            Strings.Search_text_is_empty);
             }
         }
 
@@ -205,7 +205,7 @@ namespace ACAT.Extensions.Default.AppAgents.ACATApp
 
                 if (retVal)
                 {
-                    var prompt = "Send speech control sequence?";
+                    var prompt = Strings.Send_speech_control_sequence;
                     if (Context.AppTTSManager.ActiveEngine.GetInvoker().SupportsMethod("GetSpeechControlPrompt"))
                     {
                         ret = Context.AppTTSManager.ActiveEngine.GetInvoker()
@@ -217,7 +217,7 @@ namespace ACAT.Extensions.Default.AppAgents.ACATApp
 
                         if (DialogUtils.ConfirmScanner(prompt))
                         {
-                            Context.AppTTSManager.ActiveEngine.GetInvoker().InvokeExtensionMethod("SpeechControl", word);
+                            Context.AppTTSManager.ActiveEngine.GetInvoker().InvokeExtensionMethod(Strings.SpeechControl, word);
                         }
                     }
                 }
@@ -260,7 +260,7 @@ namespace ACAT.Extensions.Default.AppAgents.ACATApp
             }
             else
             {
-                DialogUtils.ShowTimedDialog(PanelManager.Instance.GetCurrentPanel() as Form, "Wiki Search", "Search text is empty.");
+                DialogUtils.ShowTimedDialog(PanelManager.Instance.GetCurrentPanel() as Form, Strings.Wiki_Search, Strings.Search_text_is_empty);
             }
         }
 
@@ -269,7 +269,7 @@ namespace ACAT.Extensions.Default.AppAgents.ACATApp
         /// </summary>
         private void showZoomMenu()
         {
-            var zoomMenuForm = Context.AppPanelManager.CreatePanel("TalkWindowZoomMenu", "Talk Window");
+            var zoomMenuForm = Context.AppPanelManager.CreatePanel("TalkWindowZoomMenu", Strings.Talk_Window);
             if (zoomMenuForm != null)
             {
                 Context.AppPanelManager.ShowDialog(zoomMenuForm as IPanel);

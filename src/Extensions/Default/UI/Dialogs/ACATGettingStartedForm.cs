@@ -84,7 +84,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
         /// <summary>
         /// List of words to try.
         /// </summary>
-        private readonly String[] words = { "tea", "eat", "ate", "tab", "bet", "bat", "beet" };
+        private readonly String[] words = { Strings.tea, Strings.eat, Strings.ate, Strings.tab, Strings.bet, Strings.bat, Strings.beet };
 
         /// <summary>
         /// Which word are we trying now?
@@ -189,7 +189,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
 
                 if (quit)
                 {
-                    if (DialogUtils.Confirm("Exit?"))
+                    if (DialogUtils.Confirm(Strings.Exit))
                     {
                         Context.AppQuit = true;
                         Windows.CloseForm(this);
@@ -309,7 +309,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
                 _dialogCommon.GetAnimationManager().Pause();
 
                 Opacity = 0.75f;
-                DialogUtils.Toast("Good.", 500);
+                DialogUtils.Toast(Strings.Good, 500);
                 Opacity = 1.0f;
 
                 clearTextBox();

@@ -299,7 +299,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
 
             if (_isDirty)
             {
-                if (DialogUtils.Confirm(this, "Save settings?"))
+                if (DialogUtils.Confirm(this, Strings.Save_settings))
                 {
                     _previewScreenInterface.SaveSettings();
                 }
@@ -337,7 +337,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
         /// </summary>
         private void onRestoreDefaults()
         {
-            if (DialogUtils.Confirm("Restore default settings?"))
+            if (DialogUtils.Confirm(Strings.Restore_default_settings))
             {
                 _previewScreenInterface.RestoreDefaults();
                 _isDirty = true;

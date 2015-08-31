@@ -44,7 +44,7 @@
             this.Button2.Name = "Button2";
             this.Button2.Size = new System.Drawing.Size(374, 40);
             this.Button2.TabIndex = 129;
-            this.Button2.Text = "Yes";
+            this.Button2.Text = Strings.Yes;
             this.Button2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Button1
@@ -55,7 +55,7 @@
             this.Button1.Name = "Button1";
             this.Button1.Size = new System.Drawing.Size(374, 40);
             this.Button1.TabIndex = 128;
-            this.Button1.Text = "No";
+            this.Button1.Text = Strings.No;
             this.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelCaption
@@ -67,7 +67,7 @@
             this.labelCaption.Name = "labelCaption";
             this.labelCaption.Size = new System.Drawing.Size(378, 126);
             this.labelCaption.TabIndex = 127;
-            this.labelCaption.Text = "Are you sure you want to exit?";
+            this.labelCaption.Text = Strings.Are_you_sure_you_want_to_exit;
             this.labelCaption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label2

@@ -132,7 +132,7 @@
             this.lblRestoreDefaults.Size = new System.Drawing.Size(114, 47);
             this.lblRestoreDefaults.TabIndex = 139;
             this.lblRestoreDefaults.TabStop = false;
-            this.lblRestoreDefaults.Text = "Defaults";
+            this.lblRestoreDefaults.Text = Strings.Defaults;
             this.lblRestoreDefaults.UseVisualStyleBackColor = false;
             // 
             // lblScanTimes
@@ -145,7 +145,7 @@
             this.lblScanTimes.Name = "lblScanTimes";
             this.lblScanTimes.Size = new System.Drawing.Size(135, 22);
             this.lblScanTimes.TabIndex = 132;
-            this.lblScanTimes.Text = "Scan Times";
+            this.lblScanTimes.Text = Strings.Scan_Times;
             // 
             // lblNumberofTimes
             // 
@@ -157,7 +157,7 @@
             this.lblNumberofTimes.Name = "lblNumberofTimes";
             this.lblNumberofTimes.Size = new System.Drawing.Size(165, 25);
             this.lblNumberofTimes.TabIndex = 133;
-            this.lblNumberofTimes.Text = "Scan Iterations";
+            this.lblNumberofTimes.Text = Strings.Scan_Iterations;
             // 
             // lblSelectingClick
             // 
@@ -166,7 +166,7 @@
             this.lblSelectingClick.Name = "lblSelectingClick";
             this.lblSelectingClick.Size = new System.Drawing.Size(173, 29);
             this.lblSelectingClick.TabIndex = 131;
-            this.lblSelectingClick.Text = "Beep on Select";
+            this.lblSelectingClick.Text = Strings.Beep_on_Select;
             this.lblSelectingClick.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblBack
@@ -177,7 +177,7 @@
             this.lblBack.Size = new System.Drawing.Size(110, 47);
             this.lblBack.TabIndex = 138;
             this.lblBack.TabStop = false;
-            this.lblBack.Text = "Cancel";
+            this.lblBack.Text = Strings.Cancel;
             this.lblBack.UseVisualStyleBackColor = false;
             // 
             // pbSelectingClick
@@ -187,7 +187,7 @@
             this.pbSelectingClick.Name = "pbSelectingClick";
             this.pbSelectingClick.Size = new System.Drawing.Size(28, 29);
             this.pbSelectingClick.TabIndex = 134;
-            this.pbSelectingClick.Text = "N";
+            this.pbSelectingClick.Text = Strings.N;
             // 
             // lblOK
             // 
@@ -197,7 +197,7 @@
             this.lblOK.Size = new System.Drawing.Size(110, 47);
             this.lblOK.TabIndex = 137;
             this.lblOK.TabStop = false;
-            this.lblOK.Text = "OK";
+            this.lblOK.Text = Strings.OK;
             this.lblOK.UseVisualStyleBackColor = false;
             // 
             // boxScanTop
@@ -284,7 +284,7 @@
             this.lblWordPrediction.Name = "lblWordPrediction";
             this.lblWordPrediction.Size = new System.Drawing.Size(162, 26);
             this.lblWordPrediction.TabIndex = 61;
-            this.lblWordPrediction.Text = "Word Prediction";
+            this.lblWordPrediction.Text = Strings.Word_Prediction;
             this.lblWordPrediction.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblWordPredictionLess
@@ -447,7 +447,7 @@
             this.lblEveryColumn.Name = "lblEveryColumn";
             this.lblEveryColumn.Size = new System.Drawing.Size(141, 26);
             this.lblEveryColumn.TabIndex = 18;
-            this.lblEveryColumn.Text = "Every Column";
+            this.lblEveryColumn.Text = Strings.Every_Column;
             this.lblEveryColumn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblEveryHalf
@@ -457,7 +457,7 @@
             this.lblEveryHalf.Name = "lblEveryHalf";
             this.lblEveryHalf.Size = new System.Drawing.Size(141, 26);
             this.lblEveryHalf.TabIndex = 16;
-            this.lblEveryHalf.Text = "Every Half";
+            this.lblEveryHalf.Text = Strings.Every_Half;
             this.lblEveryHalf.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblEveryRow
@@ -467,7 +467,7 @@
             this.lblEveryRow.Name = "lblEveryRow";
             this.lblEveryRow.Size = new System.Drawing.Size(141, 26);
             this.lblEveryRow.TabIndex = 17;
-            this.lblEveryRow.Text = "Every Row";
+            this.lblEveryRow.Text = Strings.Every_Row;
             this.lblEveryRow.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblEveryHalfMore
@@ -613,7 +613,7 @@
             this.lblWordListHesitateTime.Name = "lblWordListHesitateTime";
             this.lblWordListHesitateTime.Size = new System.Drawing.Size(187, 26);
             this.lblWordListHesitateTime.TabIndex = 82;
-            this.lblWordListHesitateTime.Text = "Word List Hesitate time";
+            this.lblWordListHesitateTime.Text = Strings.Word_List_Hesitate_time;
             this.lblWordListHesitateTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // sminWordListHesitateTime
@@ -683,7 +683,7 @@
             this.lblFirstRepeatTime.Name = "lblFirstRepeatTime";
             this.lblFirstRepeatTime.Size = new System.Drawing.Size(187, 26);
             this.lblFirstRepeatTime.TabIndex = 75;
-            this.lblFirstRepeatTime.Text = "First Repeat Time";
+            this.lblFirstRepeatTime.Text = Strings.First_Repeat_Time;
             this.lblFirstRepeatTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // sminFirstRepeatTime
@@ -807,7 +807,7 @@
             this.lblTabScanTime.Name = "lblTabScanTime";
             this.lblTabScanTime.Size = new System.Drawing.Size(166, 26);
             this.lblTabScanTime.TabIndex = 26;
-            this.lblTabScanTime.Text = "Tab Scan time";
+            this.lblTabScanTime.Text = Strings.Tab_Scan_time;
             this.lblTabScanTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // smaxSteppingTime
@@ -867,7 +867,7 @@
             this.lblHesitateTime.Name = "lblHesitateTime";
             this.lblHesitateTime.Size = new System.Drawing.Size(166, 26);
             this.lblHesitateTime.TabIndex = 24;
-            this.lblHesitateTime.Text = "Hesitate time";
+            this.lblHesitateTime.Text = Strings.Hesitate_time;
             this.lblHesitateTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tbSteppingTime
@@ -895,7 +895,7 @@
             this.lblSteppingTime.Name = "lblSteppingTime";
             this.lblSteppingTime.Size = new System.Drawing.Size(166, 26);
             this.lblSteppingTime.TabIndex = 23;
-            this.lblSteppingTime.Text = "Stepping time";
+            this.lblSteppingTime.Text = Strings.Stepping_time;
             this.lblSteppingTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // sminHesitateTime
@@ -983,7 +983,7 @@
             this.lblAcceptTime.Name = "lblAcceptTime";
             this.lblAcceptTime.Size = new System.Drawing.Size(166, 26);
             this.lblAcceptTime.TabIndex = 20;
-            this.lblAcceptTime.Text = "Accept time";
+            this.lblAcceptTime.Text = Strings.Accept_time;
             this.lblAcceptTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // groupBox1
@@ -1002,7 +1002,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(146, 24);
             this.label1.TabIndex = 161;
-            this.label1.Text = "Scan Settings";
+            this.label1.Text = Strings.Scan_Settings;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ScannerSettingsForm

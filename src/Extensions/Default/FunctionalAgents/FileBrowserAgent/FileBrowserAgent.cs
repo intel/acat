@@ -327,7 +327,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.FileBrowser
 
             if (String.IsNullOrEmpty(FileUtils.GetFileAssociationForExtension(extension)))
             {
-                if (!DialogUtils.ConfirmScanner("No program associated with file. Open anyway?"))
+                if (!DialogUtils.ConfirmScanner(Strings.No_program_associated_with_file_Open_anyway))
                 {
                     return;
                 }
@@ -403,7 +403,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.FileBrowser
             if (extension.Equals(".txt", StringComparison.InvariantCultureIgnoreCase) || String.IsNullOrEmpty(extension))
             {
                 String name = Path.GetFileName(fileName);
-                String title = name + " - Notepad";
+                String title = name + Strings.Notepad;
                 Log.Debug("Finding window " + title);
                 IntPtr h = User32Interop.FindWindow(null, title);
                 Log.Debug("handle h = " + h);
@@ -467,7 +467,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.FileBrowser
         /// </summary>
         private void initProperties()
         {
-            ActionVerb = "Open";
+            ActionVerb = Strings.Open;
             IncludeFileExtensions = new String[] { };
             ExcludeFileExtensions = (!String.IsNullOrEmpty(Common.AppPreferences.FileBrowserExcludeFileExtensions)) ?
                                         Common.AppPreferences.FileBrowserExcludeFileExtensions.Split(';') : new String[] { };
@@ -493,7 +493,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.FileBrowser
         {
             if (_fileBrowserScanner != null)
             {
-                if (DialogUtils.ConfirmScanner("Exit File Browser?"))
+                if (DialogUtils.ConfirmScanner(Strings.Exit_File_Browser))
                 {
                     quit();
                 }

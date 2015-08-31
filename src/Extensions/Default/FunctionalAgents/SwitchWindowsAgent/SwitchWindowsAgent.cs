@@ -260,7 +260,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.SwitchWindows
         /// </summary>
         private void _form_EvtDone()
         {
-            if (confirm("Close and exit?"))
+            if (confirm(Strings.Close_and_exit))
             {
                 quit();
             }

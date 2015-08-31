@@ -56,7 +56,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
             this.Title.Size = new System.Drawing.Size(925, 50);
             this.Title.TabIndex = 127;
             this.Title.TabStop = false;
-            this.Title.Text = "Switch Apps";
+            this.Title.Text = Strings.Switch_Apps;
             this.Title.UseVisualStyleBackColor = false;
             // 
             // TaskSwitcherForm
@@ -77,7 +77,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Switch Application";
+            this.Text = Strings.Switch_Application;
             this.TopMost = true;
             this.ResumeLayout(false);
 

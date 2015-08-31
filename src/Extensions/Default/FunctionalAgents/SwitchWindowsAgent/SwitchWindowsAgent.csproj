@@ -85,6 +85,11 @@
     <Reference Include="UIAutomationTypes" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
     <Compile Include="SwitchWindowsTextControlAgent.cs" />
     <Compile Include="SwitchWindowsScanner.cs">
       <SubType>Form</SubType>
@@ -118,6 +123,10 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="SwitchWindowsScanner.resx">
       <DependentUpon>SwitchWindowsScanner.cs</DependentUpon>
     </EmbeddedResource>

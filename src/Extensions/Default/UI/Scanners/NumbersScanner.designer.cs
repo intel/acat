@@ -425,7 +425,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "NumbersScanner";
-            this.Text = "Numbers";
+            this.Text = Strings.Numbers;
             this.tableLayoutPanel1.ResumeLayout(false);
             this.Row2.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);

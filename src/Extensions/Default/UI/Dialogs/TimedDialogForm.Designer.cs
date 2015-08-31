@@ -38,7 +38,7 @@
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(199, 40);
             this.buttonOK.TabIndex = 7;
-            this.buttonOK.Text = "OK";
+            this.buttonOK.Text = Strings.OK;
             this.buttonOK.UseVisualStyleBackColor = true;
             // 
             // labelMessage
@@ -50,7 +50,7 @@
             this.labelMessage.Name = "labelMessage";
             this.labelMessage.Size = new System.Drawing.Size(438, 129);
             this.labelMessage.TabIndex = 8;
-            this.labelMessage.Text = "<Message>";
+            this.labelMessage.Text = Strings.Message;
             this.labelMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // TimedDialogForm

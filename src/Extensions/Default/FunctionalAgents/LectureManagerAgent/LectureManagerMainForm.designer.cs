@@ -102,7 +102,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LectureManager
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(72, 24);
             this.label1.TabIndex = 23;
-            this.label1.Text = "Mode:";
+            this.label1.Text = Strings.Mode;
             // 
             // lblMode
             // 
@@ -112,7 +112,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LectureManager
             this.lblMode.Name = "lblMode";
             this.lblMode.Size = new System.Drawing.Size(115, 24);
             this.lblMode.TabIndex = 24;
-            this.lblMode.Text = "Paragraph";
+            this.lblMode.Text = Strings.Paragraph;
             // 
             // label2
             // 
@@ -123,7 +123,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LectureManager
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(52, 24);
             this.label2.TabIndex = 25;
-            this.label2.Text = "File:";
+            this.label2.Text = Strings.File;
             // 
             // panel1
             // 

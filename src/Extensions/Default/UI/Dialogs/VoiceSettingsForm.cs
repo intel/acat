@@ -249,21 +249,21 @@ namespace ACAT.Extensions.Default.UI.Dialogs
             if (!int.TryParse(Windows.GetText(tbVolume), out value) ||
                 !_initialVolume.IsValid(value))
             {
-                showError("Invalid Volume setting");
+                showError(Strings.Invalid_Volume_setting);
                 return false;
             }
 
             if (!int.TryParse(Windows.GetText(tbRate), out value) ||
                 !_initialRate.IsValid(value))
             {
-                showError("Invalid Rate setting");
+                showError(Strings.Invalid_Rate_setting);
                 return false;
             }
 
             if (!int.TryParse(Windows.GetText(tbPitch), out value) ||
                 !_initialPitch.IsValid(value))
             {
-                showError("Invalid Rate setting");
+                showError(Strings.Invalid_Rate_setting);
                 return false;
             }
 
@@ -275,7 +275,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
         /// </summary>
         private void loadDefaultSettings()
         {
-            if (DialogUtils.Confirm(this, "Restore default settings?"))
+            if (DialogUtils.Confirm(this, Strings.Restore_default_settings))
             {
                 // get entire default file and just set those settings that belong to this preferences screen
                 Context.AppTTSManager.ActiveEngine.RestoreDefaults();
@@ -304,7 +304,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
 
             if (_isDirty)
             {
-                if (!DialogUtils.Confirm(this, "Changes not saved. Quit?"))
+                if (!DialogUtils.Confirm(this, Strings.Changes_not_saved_Quit))
                 {
                     quit = false;
                 }
@@ -348,7 +348,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
                 return;
             }
 
-            if (DialogUtils.Confirm(this, "Save settings?"))
+            if (DialogUtils.Confirm(this, Strings.Save_settings))
             {
                 updateActiveEngineSettingsFromUI();
                 Context.AppTTSManager.ActiveEngine.Save();
@@ -469,9 +469,9 @@ namespace ACAT.Extensions.Default.UI.Dialogs
         /// </summary>
         private void VoiceSettingsForm_Load(object sender, EventArgs e)
         {
-            lblVolumeText.Text = _initialVolume.RangeMin + " to " + _initialVolume.RangeMax;
-            lblRateText.Text = _initialRate.RangeMin + " to " + _initialRate.RangeMax;
-            lblPitchText.Text = _initialPitch.RangeMin + " to " + _initialPitch.RangeMax;
+            lblVolumeText.Text = _initialVolume.RangeMin + Strings.to + _initialVolume.RangeMax;
+            lblRateText.Text = _initialRate.RangeMin + Strings.to + _initialRate.RangeMax;
+            lblPitchText.Text = _initialPitch.RangeMin + Strings.to + _initialPitch.RangeMax;
             lblTTSEngineName.Text = Context.AppTTSManager.ActiveEngine.Descriptor.Name;
 
             _windowActiveWatchdog = new WindowActiveWatchdog(this);

@@ -89,12 +89,12 @@ namespace ACAT.Extensions.Default.UI.Dialogs
         /// <summary>
         /// Default format of date to display on the form
         /// </summary>
-        private const String DefaultDateFormat = "dddd, MMMM d, yyyy";
+        private readonly String DefaultDateFormat = Strings.dddd_MMMM_yyyy;
 
         /// <summary>
         /// Default format of the time to display on the form
         /// </summary>
-        private const String DefaultTimeFormat = "h:mm:ss tt";
+        private readonly String DefaultTimeFormat = Strings.mm_ss_tt;
 
         /// <summary>
         /// The keyboard actuator object

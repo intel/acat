@@ -30,7 +30,7 @@ namespace Aster.Extensions.Hawking.AppAgents.LectureManager
         enum speakingStates { silent, speakingSentence, speakingParagraph, speakingAll };
 
         WindowActiveWatchdog _windowActiveWatchdog;
-        private const String _speakingStatus = "Speaking...";
+        private const String _speakingStatus = Strings.Speaking;
         private const String _silentStatus = "";
 
 	    public LectureManagerMainForm()
@@ -893,7 +893,7 @@ namespace Aster.Extensions.Hawking.AppAgents.LectureManager
 
 		private void ProcessExit()
 		{
-            if (LectureManagerAgent.Confirm("Exit Lecture Manager?"))
+            if (LectureManagerAgent.Confirm(Strings.Exit_Lecture_Manager))
             {
                 AgentManager.Instance.RemoveAgent(this.Handle);
 

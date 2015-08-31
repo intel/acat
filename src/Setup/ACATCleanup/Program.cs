@@ -104,7 +104,7 @@ namespace ACATCleanup
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("Error Deleting folders " + ex.ToString());
+                    Debug.WriteLine(Strings.Error_Deleting_folders + ex.ToString());
                 }
 
                 RemovePresage();
@@ -133,7 +133,7 @@ namespace ACATCleanup
                     String presageUninstaller = Path.Combine(presageInstallDir, "Uninstall.exe");
                     if (File.Exists(presageUninstaller))
                     {
-                        MessageBox.Show("Presage will be uninstalled now", "ACAT Uninstall");
+                        MessageBox.Show(Strings.Presage_will_be_uninstalled_now, Strings.ACAT_Uninstall);
                         var process = new Process();
                         var startInfo = new ProcessStartInfo { FileName = presageUninstaller };
                         process.StartInfo = startInfo;

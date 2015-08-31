@@ -328,7 +328,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LaunchApp
         /// <param name="e">event args</param>
         private void _launchAppScanner_EvtQuit(object sender, EventArgs args)
         {
-            if (confirm("Close and exit?"))
+            if (confirm(Strings.Close_and_exit))
             {
                 quit();
             }

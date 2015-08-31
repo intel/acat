@@ -1323,7 +1323,7 @@
             this.MinimizeBox = false;
             this.Name = "AlphabetScannerMinimal";
             this.ShowIcon = false;
-            this.Text = "Alphabet";
+            this.Text = Strings.Alphabet;
             this.Load += new System.EventHandler(this.AlphabetScannerMinimal_Load);
             this.ScannerBorder.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);

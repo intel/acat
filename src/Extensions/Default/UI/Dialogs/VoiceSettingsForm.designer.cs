@@ -54,7 +54,7 @@
             this.lblVolumeText.Name = "lblVolumeText";
             this.lblVolumeText.Size = new System.Drawing.Size(79, 25);
             this.lblVolumeText.TabIndex = 158;
-            this.lblVolumeText.Text = "(1 to 15)";
+            this.lblVolumeText.Text = Strings.OneToFifteen;
             this.lblVolumeText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblRateText
@@ -64,7 +64,7 @@
             this.lblRateText.Name = "lblRateText";
             this.lblRateText.Size = new System.Drawing.Size(79, 25);
             this.lblRateText.TabIndex = 157;
-            this.lblRateText.Text = "(50 to 250)";
+            this.lblRateText.Text = Strings.FiftyToTwoHundredAndFifty;
             this.lblRateText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblPitchText
@@ -74,7 +74,7 @@
             this.lblPitchText.Name = "lblPitchText";
             this.lblPitchText.Size = new System.Drawing.Size(79, 25);
             this.lblPitchText.TabIndex = 156;
-            this.lblPitchText.Text = "(50 to 200)";
+            this.lblPitchText.Text = Strings.FiftyToTwoHundred;
             this.lblPitchText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblTest
@@ -85,7 +85,7 @@
             this.lblTest.Size = new System.Drawing.Size(113, 47);
             this.lblTest.TabIndex = 6;
             this.lblTest.TabStop = false;
-            this.lblTest.Text = " Test";
+            this.lblTest.Text = Strings.Test;
             this.lblTest.UseVisualStyleBackColor = true;
             // 
             // lblRestoreDefaults
@@ -96,7 +96,7 @@
             this.lblRestoreDefaults.Size = new System.Drawing.Size(113, 47);
             this.lblRestoreDefaults.TabIndex = 2;
             this.lblRestoreDefaults.TabStop = false;
-            this.lblRestoreDefaults.Text = "Defaults";
+            this.lblRestoreDefaults.Text = Strings.Defaults;
             this.lblRestoreDefaults.UseVisualStyleBackColor = true;
             // 
             // lblBack
@@ -107,7 +107,7 @@
             this.lblBack.Size = new System.Drawing.Size(113, 47);
             this.lblBack.TabIndex = 1;
             this.lblBack.TabStop = false;
-            this.lblBack.Text = "Cancel";
+            this.lblBack.Text = Strings.Cancel;
             this.lblBack.UseVisualStyleBackColor = true;
             // 
             // lblOK
@@ -118,7 +118,7 @@
             this.lblOK.Size = new System.Drawing.Size(113, 47);
             this.lblOK.TabIndex = 0;
             this.lblOK.TabStop = false;
-            this.lblOK.Text = "OK";
+            this.lblOK.Text = Strings.OK;
             this.lblOK.UseVisualStyleBackColor = true;
             // 
             // lblPitch
@@ -128,7 +128,7 @@
             this.lblPitch.Name = "lblPitch";
             this.lblPitch.Size = new System.Drawing.Size(100, 24);
             this.lblPitch.TabIndex = 155;
-            this.lblPitch.Text = "Pitch";
+            this.lblPitch.Text = Strings.Pitch;
             this.lblPitch.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tbPitch
@@ -146,7 +146,7 @@
             this.lblSpeed.Name = "lblSpeed";
             this.lblSpeed.Size = new System.Drawing.Size(100, 24);
             this.lblSpeed.TabIndex = 154;
-            this.lblSpeed.Text = "Rate";
+            this.lblSpeed.Text = Strings.Rate;
             this.lblSpeed.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblVolume
@@ -156,7 +156,7 @@
             this.lblVolume.Name = "lblVolume";
             this.lblVolume.Size = new System.Drawing.Size(100, 24);
             this.lblVolume.TabIndex = 153;
-            this.lblVolume.Text = "Volume";
+            this.lblVolume.Text = Strings.Volume;
             this.lblVolume.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tbRate
@@ -200,7 +200,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(144, 24);
             this.label1.TabIndex = 161;
-            this.label1.Text = "Voice Settings";
+            this.label1.Text = Strings.Voice_Settings;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // VoiceSettingsForm

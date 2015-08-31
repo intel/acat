@@ -324,7 +324,7 @@
             this.MinimizeBox = false;
             this.Name = "LaunchAppScanner";
             this.ShowIcon = false;
-            this.Text = "Select Application to Launch";
+            this.Text = Strings.Select_Application_to_Launch;
             this.TopMost = true;
             this.Load += new System.EventHandler(this.LauncAppScanner_Load);
             this.ScannerBorder.ResumeLayout(false);

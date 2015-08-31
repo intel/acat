@@ -9,9 +9,9 @@ namespace ACAT.Extensions.Default.WordPredictors.PresageWCF
         [NonSerialized]
         public static String PreferencesFilePath;
 
-        public String DatabaseFileName = "database.db";
-        public String LearningDatabaseFileName = "learn.db";
-        public String ConfigFileName = "presage.xml";
+        public String DatabaseFileName = Strings.database_db;
+        public String LearningDatabaseFileName = Strings.learn_db;
+        public String ConfigFileName = Strings.presage_xml;
         public bool StartPresageIfNotRunning = true;
 
         public static Settings Load()

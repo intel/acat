@@ -115,7 +115,7 @@ namespace ACAT.Applications.ACATApp
                             ((AssemblyTitleAttribute)attributes[0]).Title : 
                             String.Empty;
 
-            var appVersion = "Version " + assembly.GetName().Version;
+            var appVersion = Strings.Version + assembly.GetName().Version;
             attributes = assembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
             var appCopyright = (attributes.Length != 0) ? 
                                 ((AssemblyCopyrightAttribute)attributes[0]).Copyright : 
@@ -229,7 +229,7 @@ namespace ACAT.Applications.ACATApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Unable to create user. Error executing batchfile " + batchFileName + ".\nError: " + ex.ToString());
+                MessageBox.Show(Strings.Unable_to_create_user_Error_executing_batchfile + batchFileName + Strings.Error + ex.ToString());
                 retVal = false;
             }
             return retVal;
@@ -259,7 +259,7 @@ namespace ACAT.Applications.ACATApp
 
             if (!ProfileManager.ProfileExists(ProfileManager.CurrentProfile))
             {
-                MessageBox.Show("Could not find profile " + ProfileManager.CurrentProfile);
+                MessageBox.Show(Strings.Could_not_find_profile + ProfileManager.CurrentProfile);
                 return false;
             }
 
@@ -296,7 +296,7 @@ namespace ACAT.Applications.ACATApp
             Common.AppPreferences = ACATPreferences.Load();
             if (Common.AppPreferences == null)
             {
-                MessageBox.Show("Unable to read preferences from " + FileUtils.AppPreferencesDir);
+                MessageBox.Show(Strings.Unable_to_read_preferences_from + FileUtils.AppPreferencesDir);
                 return false;
             }
 

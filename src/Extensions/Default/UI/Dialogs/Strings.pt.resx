@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Mouse_Grid_Settings" xml:space="preserve">
+    <value>Configurações do Mouse</value>
+  </data>
+  <data name="Expand_abbreviations_on_separator" xml:space="preserve">
+    <value>Expandir abreviações no separador</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="Finished" xml:space="preserve">
+    <value>Concluído</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Voltar</value>
+  </data>
+  <data name="Beep_on_Select" xml:space="preserve">
+    <value>Emitir som ao Selecionar</value>
+  </data>
+  <data name="Are_you_sure_you_want_to_exit" xml:space="preserve">
+    <value>Tem certeza de que deseja sair?</value>
+  </data>
+  <data name="F" xml:space="preserve">
+    <value>F</value>
+  </data>
+  <data name="Aster_Edit_Add_Abbreviation" xml:space="preserve">
+    <value>Aster Editar/Adicionar Abreviação</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Adicionar</value>
+  </data>
+  <data name="Alternative_Pronunciations" xml:space="preserve">
+    <value>Pronúncias Alternativas</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="Backspace" xml:space="preserve">
+    <value>Backspace</value>
+  </data>
+  <data name="Hesitate_time" xml:space="preserve">
+    <value>Tempo de indecisão</value>
+  </data>
+  <data name="First_Repeat_Time" xml:space="preserve">
+    <value>Tempo para Primeira Repetição</value>
+  </data>
+  <data name="ACAT_Scanner_Design" xml:space="preserve">
+    <value>ACAT Scanner Design</value>
+  </data>
+  <data name="Alternative_Pronunciation" xml:space="preserve">
+    <value>Pronúncia Alternativa</value>
+  </data>
+  <data name="Auto_save_scanner_last_position" xml:space="preserve">
+    <value>Auto-salvar última posição do scanner</value>
+  </data>
+  <data name="Every_Half" xml:space="preserve">
+    <value>A cada meia</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Deletar</value>
+  </data>
+  <data name="Edit_Add_Alternative_Pronunciation" xml:space="preserve">
+    <value>Editar/Adicionar Pronúncia Alternativa</value>
+  </data>
+  <data name="Copyright_Intel_Corporation" xml:space="preserve">
+    <value>Copyright 2013-2015 Intel Corporation</value>
+  </data>
+  <data name="Every_Column" xml:space="preserve">
+    <value>Cada Coluna</value>
+  </data>
+  <data name="FiftyToTwoHundredAndFifty" xml:space="preserve">
+    <value>(50 a 250)</value>
+  </data>
+  <data name="Every_Row" xml:space="preserve">
+    <value>Cada Linha</value>
+  </data>
+  <data name="Aster_Abbreviations" xml:space="preserve">
+    <value>Aster Abreviações</value>
+  </data>
+  <data name="Defaults" xml:space="preserve">
+    <value>Padrões</value>
+  </data>
+  <data name="Mouse_Speed" xml:space="preserve">
+    <value>Velocidade do Mouse</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Sair</value>
+  </data>
+  <data name="ACAT_Mute" xml:space="preserve">
+    <value>ACAT Mudo</value>
+  </data>
+  <data name="OneToFifteen" xml:space="preserve">
+    <value>(1 a 15)</value>
+  </data>
+  <data name="M" xml:space="preserve">
+    <value>M</value>
+  </data>
+  <data name="Accept_time" xml:space="preserve">
+    <value>Aceitar tempo</value>
+  </data>
+  <data name="Hide_scanners_on_idle" xml:space="preserve">
+    <value>Ocultar scanners quando inativo</value>
+  </data>
+  <data name="PM" xml:space="preserve">
+    <value>12:12 PM</value>
+  </data>
+  <data name="ACAT_Talk_Window" xml:space="preserve">
+    <value>ACAT Talk Window</value>
+  </data>
+  <data name="ACAT_Assistive_Context_Aware_Toolkit" xml:space="preserve">
+    <value>ACAT - Assistive Context-Aware Toolkit</value>
+  </data>
+  <data name="Line_Width" xml:space="preserve">
+    <value>Largura da Linha</value>
+  </data>
+  <data name="FiftyToTwoHundred" xml:space="preserve">
+    <value>(50 a 200)</value>
+  </data>
+  <data name="Invalid_Volume_setting" xml:space="preserve">
+    <value>Configuração inválida de volume</value>
+  </data>
+  <data name="and" xml:space="preserve">
+    <value> e </value>
+  </data>
+  <data name="digits" xml:space="preserve">
+    <value> dígitos</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>&lt;Mensagem&gt;</value>
+  </data>
+  <data name="Enable_Dynamic_Learning" xml:space="preserve">
+    <value>Ativar Aprendizado Din�mico</value>
+  </data>
+  <data name="Invalid_Rate_setting" xml:space="preserve">
+    <value>Configurações inválidas de taxa</value>
+  </data>
+  <data name="Mouse_Radar_Settings" xml:space="preserve">
+    <value>Configurações inválidas de radar do mouse</value>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value> Teste</value>
+  </data>
+  <data name="General_Settings" xml:space="preserve">
+    <value>Configurações gerais</value>
+  </data>
+  <data name="to" xml:space="preserve">
+    <value> a </value>
+  </data>
+  <data name="Digits_to" xml:space="preserve">
+    <value>Dígitos: 0  a  </value>
+  </data>
+  <data name="a" xml:space="preserve">
+    <value>a</value>
+  </data>
+  <data name="already_exists" xml:space="preserve">
+    <value>' já existe</value>
+  </data>
+  <data name="ate" xml:space="preserve">
+    <value>ate</value>
+  </data>
+  <data name="b" xml:space="preserve">
+    <value>b</value>
+  </data>
+  <data name="bat" xml:space="preserve">
+    <value>bat</value>
+  </data>
+  <data name="beet" xml:space="preserve">
+    <value>beet</value>
+  </data>
+  <data name="bet" xml:space="preserve">
+    <value>bet</value>
+  </data>
+  <data name="Changes_not_saved_Quit" xml:space="preserve">
+    <value>Mudanças não salvas. Sair?</value>
+  </data>
+  <data name="Changes_not_saved_Quit_anyway" xml:space="preserve">
+    <value>Mudanças não salvas.
+Sair de qualquer forma?</value>
+  </data>
+  <data name="dddd_MMMM_yyyy" xml:space="preserve">
+    <value>dddd, MMMM d, yyyy</value>
+  </data>
+  <data name="Delete1" xml:space="preserve">
+    <value>Deletar </value>
+  </data>
+  <data name="doomsday" xml:space="preserve">
+    <value>doomsday</value>
+  </data>
+  <data name="eat" xml:space="preserve">
+    <value>eat</value>
+  </data>
+  <data name="Enable_audit_log" xml:space="preserve">
+    <value>Habilitar log auditor</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Erro</value>
+  </data>
+  <data name="Exit1" xml:space="preserve">
+    <value>Sair?</value>
+  </data>
+  <data name="Good" xml:space="preserve">
+    <value>Bom.</value>
+  </data>
+  <data name="Initialization_error" xml:space="preserve">
+    <value>Erro de inicialização</value>
+  </data>
+  <data name="Message1" xml:space="preserve">
+    <value>Mensagem</value>
+  </data>
+  <data name="mm_ss_tt" xml:space="preserve">
+    <value>h:mm:ss tt</value>
+  </data>
+  <data name="Mouse_Sweeps" xml:space="preserve">
+    <value>Mouse Sweeps</value>
+  </data>
+  <data name="Mute_Settings" xml:space="preserve">
+    <value>Mute Settings</value>
+  </data>
+  <data name="N" xml:space="preserve">
+    <value>N</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Original_Term" xml:space="preserve">
+    <value>Termo Original</value>
+  </data>
+  <data name="PIN" xml:space="preserve">
+    <value>PIN</value>
+  </data>
+  <data name="PIN_cannot_be_empty" xml:space="preserve">
+    <value>PIN não pode ser vazio</value>
+  </data>
+  <data name="PIN_contains_non_numeric_characters" xml:space="preserve">
+    <value>PIN contém caracteres não-numéricos</value>
+  </data>
+  <data name="PIN_has_digits_outside_of_the_valid_range" xml:space="preserve">
+    <value>PIN possui dígitos inválidos</value>
+  </data>
+  <data name="PIN_length_has_to_be_between" xml:space="preserve">
+    <value>O tamanho do PIN precisa estar entre </value>
+  </data>
+  <data name="Pitch" xml:space="preserve">
+    <value>Pitch</value>
+  </data>
+  <data name="Please_enter_term" xml:space="preserve">
+    <value>Por favor escolha um termo!</value>
+  </data>
+  <data name="Presage_Software_used_for_word_prediction" xml:space="preserve">
+    <value>Presage Software used for word prediction</value>
+  </data>
+  <data name="Pronunciation_cannot_be_empty" xml:space="preserve">
+    <value>Pronúncia não pode ser vazia!</value>
+  </data>
+  <data name="Pronunciation_for" xml:space="preserve">
+    <value>Pronúncia para '</value>
+  </data>
+  <data name="QuestionMark" xml:space="preserve">
+    <value>?</value>
+  </data>
+  <data name="Rate" xml:space="preserve">
+    <value>Rate</value>
+  </data>
+  <data name="Replacement_Term" xml:space="preserve">
+    <value>Replacement Term</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Resetar</value>
+  </data>
+  <data name="Restore_default_settings" xml:space="preserve">
+    <value>Restaurar configurações padrão?</value>
+  </data>
+  <data name="Retain_Talk_window_text_on_close" xml:space="preserve">
+    <value>Retain Talk window text on close</value>
+  </data>
+  <data name="Rotating_Speed" xml:space="preserve">
+    <value>Velocidade de Rotação</value>
+  </data>
+  <data name="Rotating_Sweeps" xml:space="preserve">
+    <value>Rotating Sweeps</value>
+  </data>
+  <data name="s" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="Save_changes" xml:space="preserve">
+    <value>
+Salvar alterações?</value>
+  </data>
+  <data name="Save_settings" xml:space="preserve">
+    <value>Salvar alterações?</value>
+  </data>
+  <data name="Scan_Iterations" xml:space="preserve">
+    <value>Scan Iterations</value>
+  </data>
+  <data name="Scan_Settings" xml:space="preserve">
+    <value>Scan Settings</value>
+  </data>
+  <data name="Scan_Times" xml:space="preserve">
+    <value>Scan Times</value>
+  </data>
+  <data name="Screen_Locked" xml:space="preserve">
+    <value>Screen Locked</value>
+  </data>
+  <data name="Show_Desktop" xml:space="preserve">
+    <value>Show Desktop</value>
+  </data>
+  <data name="Show_glass_under_Talk_window" xml:space="preserve">
+    <value>Show glass under Talk window</value>
+  </data>
+  <data name="Show_Talk_window_on_startup" xml:space="preserve">
+    <value>Show Talk window on startup</value>
+  </data>
+  <data name="Start_from_last_cursor_position" xml:space="preserve">
+    <value>Start from last cursor position</value>
+  </data>
+  <data name="Stepping_time" xml:space="preserve">
+    <value>Stepping time</value>
+  </data>
+  <data name="Switch_Application" xml:space="preserve">
+    <value>Switch Application</value>
+  </data>
+  <data name="Switch_Apps" xml:space="preserve">
+    <value>Switch Apps</value>
+  </data>
+  <data name="t" xml:space="preserve">
+    <value>t</value>
+  </data>
+  <data name="tab" xml:space="preserve">
+    <value>tab</value>
+  </data>
+  <data name="Tab_Scan_time" xml:space="preserve">
+    <value>Tab Scan time</value>
+  </data>
+  <data name="Talk" xml:space="preserve">
+    <value>Talk</value>
+  </data>
+  <data name="tea" xml:space="preserve">
+    <value>tea</value>
+  </data>
+  <data name="Test1" xml:space="preserve">
+    <value>Teste</value>
+  </data>
+  <data name="Type_this" xml:space="preserve">
+    <value>Digite isto: </value>
+  </data>
+  <data name="Undo" xml:space="preserve">
+    <value>Desfazer</value>
+  </data>
+  <data name="Undo_Change" xml:space="preserve">
+    <value>Desfazer alteração?</value>
+  </data>
+  <data name="Use_Corpus_Models_for_Word_Prediction" xml:space="preserve">
+    <value>Use Corpus Models for Word Prediction</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version 1.00.00</value>
+  </data>
+  <data name="Vertical_Speed" xml:space="preserve">
+    <value>Vertical Speed</value>
+  </data>
+  <data name="Vertical_Sweeps" xml:space="preserve">
+    <value>Vertical Sweeps</value>
+  </data>
+  <data name="Voice_Settings" xml:space="preserve">
+    <value>Voice Settings</value>
+  </data>
+  <data name="Volume" xml:space="preserve">
+    <value>Volume</value>
+  </data>
+  <data name="Word_Count" xml:space="preserve">
+    <value>Word Count</value>
+  </data>
+  <data name="Word_List_Hesitate_time" xml:space="preserve">
+    <value>Word List Hesitate time</value>
+  </data>
+  <data name="Word_Prediction" xml:space="preserve">
+    <value>Word Prediction</value>
+  </data>
+  <data name="Word_Prediction_Settings" xml:space="preserve">
+    <value>Word Prediction Settings</value>
+  </data>
+  <data name="X" xml:space="preserve">
+    <value>X</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Your_new_PIN_is" xml:space="preserve">
+    <value>Seu novo PIN é </value>
+  </data>
+  <data name="You_have_made_changes_Save" xml:space="preserve">
+    <value>Você fez alterações.
+Salvar?</value>
+  </data>
+</root>

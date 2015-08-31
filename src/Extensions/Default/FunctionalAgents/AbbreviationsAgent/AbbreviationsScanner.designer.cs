@@ -324,7 +324,7 @@
             this.MinimizeBox = false;
             this.Name = "AbbreviationsScanner";
             this.ShowIcon = false;
-            this.Text = "Abbreviations";
+            this.Text = Strings.Abbreviations;
             this.TopMost = true;
             this.Load += new System.EventHandler(this.AbbreviationsScanner_Load);
             this.ScannerBorder.ResumeLayout(false);

@@ -49,7 +49,7 @@
             this.lbTerm.Name = "lbTerm";
             this.lbTerm.Size = new System.Drawing.Size(143, 24);
             this.lbTerm.TabIndex = 81;
-            this.lbTerm.Text = "Original Term";
+            this.lbTerm.Text = Strings_2.Original_Term;
             // 
             // tbOriginalTerm
             // 
@@ -75,7 +75,7 @@
             this.lblAlternate.Name = "lblAlternate";
             this.lblAlternate.Size = new System.Drawing.Size(198, 24);
             this.lblAlternate.TabIndex = 87;
-            this.lblAlternate.Text = "Replacement Term";
+            this.lblAlternate.Text = Strings_2.Replacement_Term;
             // 
             // panel1
             // 
@@ -96,7 +96,7 @@
             this.lblCancel.Size = new System.Drawing.Size(152, 47);
             this.lblCancel.TabIndex = 2;
             this.lblCancel.TabStop = false;
-            this.lblCancel.Text = "Cancel";
+            this.lblCancel.Text = Strings.Cancel;
             this.lblCancel.UseVisualStyleBackColor = true;
             // 
             // lblUndo
@@ -106,7 +106,7 @@
             this.lblUndo.Size = new System.Drawing.Size(152, 47);
             this.lblUndo.TabIndex = 1;
             this.lblUndo.TabStop = false;
-            this.lblUndo.Text = "Undo";
+            this.lblUndo.Text = Strings_2.Undo;
             this.lblUndo.UseVisualStyleBackColor = true;
             // 
             // lblFinished
@@ -116,7 +116,7 @@
             this.lblFinished.Size = new System.Drawing.Size(152, 47);
             this.lblFinished.TabIndex = 0;
             this.lblFinished.TabStop = false;
-            this.lblFinished.Text = "Finished";
+            this.lblFinished.Text = Strings.Finished;
             this.lblFinished.UseVisualStyleBackColor = true;
             // 
             // Title
@@ -129,7 +129,7 @@
             this.Title.Size = new System.Drawing.Size(766, 38);
             this.Title.TabIndex = 96;
             this.Title.TabStop = false;
-            this.Title.Text = "Edit/Add Alternative Pronunciation";
+            this.Title.Text = Strings.Edit_Add_Alternative_Pronunciation;
             this.Title.UseVisualStyleBackColor = false;
             // 
             // AlternatePronunciationEditorForm
@@ -142,7 +142,7 @@
             this.Controls.Add(this.lbTerm);
             this.Controls.Add(this.panel1);
             this.Name = "AlternatePronunciationEditorForm";
-            this.Text = "Aster Edit/Add Abbreviation";
+            this.Text = Strings.Aster_Edit_Add_Abbreviation;
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);

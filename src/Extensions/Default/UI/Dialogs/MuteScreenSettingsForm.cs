@@ -238,20 +238,20 @@ namespace ACAT.Extensions.Default.UI.Dialogs
 
             if (strPIN.Length == 0)
             {
-                errorMessage = "PIN cannot be empty";
+                errorMessage = Strings.PIN_cannot_be_empty;
                 return false;
             }
 
             if (!Int32.TryParse(strPIN, out testPin))
             {
-                errorMessage = "PIN contains non-numeric characters";
+                errorMessage = Strings.PIN_contains_non_numeric_characters;
                 return false;
             }
 
             // wrong length
             if ((strPIN.Length < MinPinLength) || (strPIN.Length > MaxPinLength))
             {
-                errorMessage = "PIN length has to be between " + MinPinLength + " and " + MaxPinLength + " digits";
+                errorMessage = Strings.PIN_length_has_to_be_between + MinPinLength + Strings.and + MaxPinLength + Strings.digits;
                 return false;
             }
 
@@ -261,7 +261,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
                 Log.Debug("strPIN[i]=" + (strPIN[i] - '0') + "  charMaxDigit=" + (charMaxDigit - '0'));
                 if ((strPIN[i] - '0') > (charMaxDigit - '0'))
                 {
-                    errorMessage = "PIN has digits outside of the valid range";
+                    errorMessage = Strings.PIN_has_digits_outside_of_the_valid_range;
                     return false;
                 }
             }
@@ -324,7 +324,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
 
             if (isDirty)
             {
-                if (!DialogUtils.Confirm(this, "Changes not saved.\nQuit anyway?"))
+                if (!DialogUtils.Confirm(this, Strings.Changes_not_saved_Quit_anyway))
                 {
                     cancel = false;
                 }
@@ -352,7 +352,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
                 return;
             }
 
-            if (DialogUtils.Confirm(this, "Your new PIN is " + pin + "\nSave changes?"))
+            if (DialogUtils.Confirm(this, Strings.Your_new_PIN_is + pin + Strings.Save_changes))
             {
                 var prefs = updateSettingsFromUI();
                 if (prefs != null)

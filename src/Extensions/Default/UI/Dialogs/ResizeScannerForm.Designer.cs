@@ -89,7 +89,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
             this.lblDefault.Size = new System.Drawing.Size(30, 30);
             this.lblDefault.TabIndex = 89;
             this.lblDefault.TabStop = false;
-            this.lblDefault.Text = "a";
+            this.lblDefault.Text = Strings.a;
             this.lblDefault.UseVisualStyleBackColor = true;
             // 
             // BorderPanel
@@ -107,7 +107,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
             this.labelToolTip.Name = "labelToolTip";
             this.labelToolTip.Size = new System.Drawing.Size(248, 36);
             this.labelToolTip.TabIndex = 91;
-            this.labelToolTip.Text = "Back";
+            this.labelToolTip.Text = Strings.Back;
             this.labelToolTip.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ResizeScannerForm
@@ -123,7 +123,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
             this.Controls.Add(this.lblBack);
             this.Controls.Add(this.BorderPanel);
             this.Name = "ResizeScannerForm";
-            this.Text = "ACAT Scanner Design";
+            this.Text = Strings.ACAT_Scanner_Design;
             this.ResumeLayout(false);
 
         }

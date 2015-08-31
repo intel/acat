@@ -324,7 +324,7 @@
             this.MinimizeBox = false;
             this.Name = "FileBrowserScanner";
             this.ShowIcon = false;
-            this.Text = "File Browser";
+            this.Text = Strings.File_Browser;
             this.TopMost = true;
             this.Load += new System.EventHandler(this.FileBrowserScanner_Load);
             this.ScannerBorder.ResumeLayout(false);

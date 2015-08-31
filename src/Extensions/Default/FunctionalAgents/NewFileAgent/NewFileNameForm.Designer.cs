@@ -51,7 +51,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(175, 24);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Enter File Name:";
+            this.label1.Text = Strings.Enter_File_Name;
             // 
             // label2
             // 
@@ -61,7 +61,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(141, 24);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Name of File:";
+            this.label2.Text = Strings.Name_of_File;
             // 
             // labelNameOfFile
             // 

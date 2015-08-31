@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Edit_Add_Abbreviation" xml:space="preserve">
+    <value>Edit / Add Abbreviation</value>
+  </data>
+  <data name="String37" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="Please_enter_an_abbreviation" xml:space="preserve">
+    <value>Please enter an abbreviation!</value>
+  </data>
+  <data name="N" xml:space="preserve">
+    <value>N</value>
+  </data>
+  <data name="Abbreviations" xml:space="preserve">
+    <value>Abbreviations</value>
+  </data>
+  <data name="Add_Abbreviation" xml:space="preserve">
+    <value>Add Abbreviation</value>
+  </data>
+  <data name="Can_Save_Abbr_for" xml:space="preserve">
+    <value>Can't Save. Abbr for '</value>
+  </data>
+  <data name="SuspensionPoints" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="Add_Abbreviation1" xml:space="preserve">
+    <value>Add Abbreviation </value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="You_are_changing_existing_abbr" xml:space="preserve">
+    <value>You are changing existing abbr </value>
+  </data>
+  <data name="Expansion" xml:space="preserve">
+    <value>Expansion</value>
+  </data>
+  <data name="Undo_Change" xml:space="preserve">
+    <value>Undo Change?</value>
+  </data>
+  <data name="NEXT_PAGE" xml:space="preserve">
+    <value>.	------------- NEXT PAGE  -------------</value>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>Page </value>
+  </data>
+  <data name="ABBREVIATIONS_LIST_EMPTY" xml:space="preserve">
+    <value>-------- ABBREVIATIONS LIST EMPTY --------</value>
+  </data>
+  <data name="Expansion_is_empty" xml:space="preserve">
+    <value>Expansion is empty</value>
+  </data>
+  <data name="NOT_FOUND_ADD_THIS_ABBREVIATION" xml:space="preserve">
+    <value>.  -------- NOT FOUND.  ADD THIS ABBREVIATION --------</value>
+  </data>
+  <data name="Spoken" xml:space="preserve">
+    <value>Spoken</value>
+  </data>
+  <data name="String6" xml:space="preserve">
+    <value>N</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete </value>
+  </data>
+  <data name="PREVIOUS_PAGE" xml:space="preserve">
+    <value>.	------------- PREVIOUS PAGE  -------------</value>
+  </data>
+  <data name="Written" xml:space="preserve">
+    <value>Written</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Abbreviations_Editor" xml:space="preserve">
+    <value>Abbreviations Editor</value>
+  </data>
+  <data name="Abbreviation" xml:space="preserve">
+    <value>Abbreviation</value>
+  </data>
+  <data name="Clear_filter" xml:space="preserve">
+    <value>Clear filter?</value>
+  </data>
+  <data name="Cancel_and_Quit" xml:space="preserve">
+    <value>Cancel and Quit?</value>
+  </data>
+  <data name="Close_and_Exit" xml:space="preserve">
+    <value>Close and Exit?</value>
+  </data>
+  <data name="SORT1" xml:space="preserve">
+    <value>.	------------- SORT Z-A -------------</value>
+  </data>
+  <data name="String34" xml:space="preserve">
+    <value>?</value>
+  </data>
+  <data name="QuestionMark" xml:space="preserve">
+    <value>?</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="already_exists" xml:space="preserve">
+    <value>' already exists</value>
+  </data>
+  <data name="Edit_Delete_Abbreviation" xml:space="preserve">
+    <value>Edit/Delete Abbreviation</value>
+  </data>
+  <data name="Mode" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="Save_Abbreviation_and_Quit" xml:space="preserve">
+    <value>Save Abbreviation and Quit?</value>
+  </data>
+  <data name="SORT" xml:space="preserve">
+    <value>.	------------- SORT A-Z -------------</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value> . Continue?</value>
+  </data>
+  <data name="of" xml:space="preserve">
+    <value> of </value>
+  </data>
+</root>

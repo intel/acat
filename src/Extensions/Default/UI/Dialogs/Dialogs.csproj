@@ -123,6 +123,11 @@
       <DependentUpon>MuteScreenSettingsForm.cs</DependentUpon>
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
     <Compile Include="TalkWindowForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -224,6 +229,13 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MouseGridSettingsForm.resx">
       <DependentUpon>MouseGridSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Strings.pt.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="TalkWindowForm.resx">
       <DependentUpon>TalkWindowForm.cs</DependentUpon>

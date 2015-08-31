@@ -41,7 +41,7 @@
             this.buttonNo.Name = "buttonNo";
             this.buttonNo.Size = new System.Drawing.Size(75, 34);
             this.buttonNo.TabIndex = 0;
-            this.buttonNo.Text = "No";
+            this.buttonNo.Text = Strings.No;
             this.buttonNo.UseVisualStyleBackColor = true;
             this.buttonNo.Click += new System.EventHandler(this.buttonNo_Click);
             // 
@@ -52,7 +52,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(328, 29);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Delete ACAT install folder and all its contents? ";
+            this.label1.Text = Strings.Delete_ACAT_install_folder_and_all_its_contents;
             // 
             // label2
             // 
@@ -61,7 +61,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(353, 25);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Select \"Yes\" if you want to remove ACAT permanently.";
+            this.label2.Text = Strings.Select_Yes_if_you_want_to_remove_ACAT_permanently;
             // 
             // label3
             // 
@@ -70,8 +70,8 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(328, 55);
             this.label3.TabIndex = 3;
-            this.label3.Text = "Select \"No\" if you are going to install another version and would like to retain " +
-    "your preferences and Word prediction data files, ";
+            this.label3.Text = Strings.Select_No_if_you_are_going_to_install_another_version_and_would_like_to_retain +
+    Strings.your_preferences_and_Word_prediction_data_files;
             // 
             // buttonYes
             // 
@@ -79,7 +79,7 @@
             this.buttonYes.Name = "buttonYes";
             this.buttonYes.Size = new System.Drawing.Size(75, 34);
             this.buttonYes.TabIndex = 4;
-            this.buttonYes.Text = "Yes";
+            this.buttonYes.Text = Strings.Yes;
             this.buttonYes.UseVisualStyleBackColor = true;
             this.buttonYes.Click += new System.EventHandler(this.buttonYes_Click);
             // 
@@ -95,7 +95,7 @@
             this.Controls.Add(this.buttonNo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form1";
-            this.Text = "ACAT Uninstall";
+            this.Text = Strings.ACAT_Uninstall;
             this.ResumeLayout(false);
 
         }

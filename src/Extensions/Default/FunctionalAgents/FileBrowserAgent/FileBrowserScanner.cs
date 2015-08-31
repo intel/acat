@@ -185,7 +185,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.FileBrowser
         public FileBrowserScanner()
         {
             InitializeComponent();
-            ActionVerb = "Open";
+            ActionVerb = Strings.Open;
             PanelClass = "FileBrowserScanner";
 
             _allFilesList = new List<FileInfo>();
@@ -1098,7 +1098,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.FileBrowser
                 FileOperation operation = FileOperation.None;
                 if (SelectActionOpen)
                 {
-                    if (DialogUtils.ConfirmScanner(ActionVerb + " " + itemTag.FInfo.Name + "?"))
+                    if (DialogUtils.ConfirmScanner(ActionVerb + " " + itemTag.FInfo.Name + Strings.String13))
                     {
                         operation = FileOperation.Open;
                     }
@@ -1155,7 +1155,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.FileBrowser
                 if (!_fileList.Any())
                 {
                     (list[0] as TabStopScannerButton).SetTabStops(0.0f, new float[] { 25, 400 });
-                    list[0].SetText("------------- NO FILES FOUND -------------");
+                    list[0].SetText(Strings.NO_FILES_FOUND);
                     return;
                 }
 
@@ -1169,17 +1169,17 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.FileBrowser
                     list[ii].UserData = new ItemTag(ItemTag.ItemType.OrderBy);
                     if (_sortOrder == SortOrder.Date)
                     {
-                        list[ii].SetText(displayIndex + ".\t------------- SORT BY NAME -------------");
+                        list[ii].SetText(displayIndex + Strings.SORT_BY_NAME);
                     }
                     else
                     {
-                        list[ii].SetText(displayIndex + ".\t------------- SORT BY DATE -------------");
+                        list[ii].SetText(displayIndex + Strings.SORT_BY_DATE);
                     }
                 }
                 else
                 {
                     list[ii].UserData = new ItemTag(ItemTag.ItemType.PreviousPage);
-                    list[ii].SetText(displayIndex + ".\t------------- PREVIOUS PAGE  -------------");
+                    list[ii].SetText(displayIndex + Strings.PREVIOUS_PAGE);
                 }
 
                 ii++;
@@ -1192,7 +1192,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.FileBrowser
                     String name = _fileList[jj].Name;
                     if (name.Length > MaxFileNameChars)
                     {
-                        name = name.Substring(0, MaxFileNameChars) + "...";
+                        name = name.Substring(0, MaxFileNameChars) + Strings.String14;
                     }
 
                     list[ii].SetText(displayIndex + ".\t" + name + "\t" + _fileList[jj].LastWriteTime.ToString(Common.AppPreferences.FileBrowserDateFormat));
@@ -1205,7 +1205,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.FileBrowser
                     displayIndex = (ii + 1) % 10;
                     (list[ii] as TabStopScannerButton).SetTabStops(0.0f, new float[] { 25, 400 });
                     list[ii].UserData = new ItemTag(ItemTag.ItemType.NextPage);
-                    list[ii].SetText(displayIndex + ".\t------------- NEXT PAGE  -------------");
+                    list[ii].SetText(displayIndex + Strings.NEXT_PAGE);
                     ii++;
                 }
 
@@ -1299,7 +1299,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.FileBrowser
 
             if (_pageNumberWidget != null)
             {
-                var text = (_fileList.Any()) ? "Page " + (_pageNumber + 1) + " of " + _numPages : String.Empty;
+                var text = (_fileList.Any()) ? Strings.Page + (_pageNumber + 1) + Strings.of + _numPages : String.Empty;
                 _pageNumberWidget.SetText(text);
             }
         }

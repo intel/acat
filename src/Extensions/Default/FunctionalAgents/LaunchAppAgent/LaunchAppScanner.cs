@@ -315,7 +315,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LaunchApp
         {
             Invoke(new MethodInvoker(delegate()
             {
-                if (SearchFilter.Text.Length > 0 && DialogUtils.ConfirmScanner("Clear filter?"))
+                if (SearchFilter.Text.Length > 0 && DialogUtils.ConfirmScanner(Strings.Clear_filter))
                 {
                     SearchFilter.Text = String.Empty;
                 }
@@ -651,7 +651,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LaunchApp
                 case ItemTag.ItemType.App:
                     if (itemTag.ApplicationInfo != null)
                     {
-                        if (DialogUtils.ConfirmScanner("Launch " + itemTag.ApplicationInfo.Name + "?"))
+                        if (DialogUtils.ConfirmScanner(Strings.Launch + itemTag.ApplicationInfo.Name + Strings.String11))
                         {
                             if (EvtLaunchApp != null)
                             {
@@ -833,7 +833,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LaunchApp
                 if (!_appsList.Any())
                 {
                     (list[0] as TabStopScannerButton).SetTabStops(0.0f, new float[] { 25 });
-                    list[0].SetText("------------- APPS LIST IS EMPTY -------------");
+                    list[0].SetText(Strings.APPS_LIST_IS_EMPTY);
                     return;
                 }
 
@@ -847,17 +847,17 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LaunchApp
                     list[ii].UserData = new ItemTag(ItemTag.ItemType.OrderBy);
                     if (_sortOrder == SortOrder.Ascending)
                     {
-                        list[ii].SetText(displayIndex + ".\t------------- SORT Z-A -------------");
+                        list[ii].SetText(displayIndex + Strings.SORT1);
                     }
                     else
                     {
-                        list[ii].SetText(displayIndex + ".\t------------- SORT A-Z -------------");
+                        list[ii].SetText(displayIndex + Strings.SORT);
                     }
                 }
                 else
                 {
                     list[ii].UserData = new ItemTag(ItemTag.ItemType.PreviousPage);
-                    list[ii].SetText(displayIndex + ".\t------------- PREVIOUS PAGE  -------------");
+                    list[ii].SetText(displayIndex + Strings.PREVIOUS_PAGE);
                 }
 
                 ii++;
@@ -870,7 +870,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LaunchApp
                     String title = _appsList[jj].Name;
                     if (title.Length > MaxWindowTitleLength)
                     {
-                        title = title.Substring(0, MaxWindowTitleLength) + "...";
+                        title = title.Substring(0, MaxWindowTitleLength) + Strings.String12;
                     }
 
                     list[ii].SetText(displayIndex + ".\t" + title);
@@ -883,7 +883,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LaunchApp
                     displayIndex = (ii + 1) % 10;
                     (list[ii] as TabStopScannerButton).SetTabStops(0.0f, new float[] { 25, 400 });
                     list[ii].UserData = new ItemTag(ItemTag.ItemType.NextPage);
-                    list[ii].SetText(displayIndex + ".\t------------- NEXT PAGE  -------------");
+                    list[ii].SetText(displayIndex + Strings.NEXT_PAGE);
                     ii++;
                 }
 
@@ -1002,7 +1002,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.LaunchApp
 
             if (_pageNumberWidget != null)
             {
-                String text = _appsList.Any() ? "Page " + (_pageNumber + 1) + " of " + _numPages : String.Empty;
+                String text = _appsList.Any() ? Strings.Page + (_pageNumber + 1) + Strings.of + _numPages : String.Empty;
                 _pageNumberWidget.SetText(text);
             }
         }

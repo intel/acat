@@ -85,7 +85,7 @@
             this.lblRestoreDefaults.Size = new System.Drawing.Size(152, 47);
             this.lblRestoreDefaults.TabIndex = 166;
             this.lblRestoreDefaults.TabStop = false;
-            this.lblRestoreDefaults.Text = "Defaults";
+            this.lblRestoreDefaults.Text = Strings.Defaults;
             this.lblRestoreDefaults.UseVisualStyleBackColor = true;
             // 
             // lblBack
@@ -95,7 +95,7 @@
             this.lblBack.Size = new System.Drawing.Size(152, 47);
             this.lblBack.TabIndex = 165;
             this.lblBack.TabStop = false;
-            this.lblBack.Text = "Cancel";
+            this.lblBack.Text = Strings.Cancel;
             this.lblBack.UseVisualStyleBackColor = true;
             // 
             // lblOK
@@ -105,7 +105,7 @@
             this.lblOK.Size = new System.Drawing.Size(152, 47);
             this.lblOK.TabIndex = 164;
             this.lblOK.TabStop = false;
-            this.lblOK.Text = "OK";
+            this.lblOK.Text = Strings.OK;
             this.lblOK.UseVisualStyleBackColor = true;
             // 
             // lblStartFromLastCursorPos
@@ -115,7 +115,7 @@
             this.lblStartFromLastCursorPos.Name = "lblStartFromLastCursorPos";
             this.lblStartFromLastCursorPos.Size = new System.Drawing.Size(295, 29);
             this.lblStartFromLastCursorPos.TabIndex = 160;
-            this.lblStartFromLastCursorPos.Text = "Start from last cursor position";
+            this.lblStartFromLastCursorPos.Text = Strings.Start_from_last_cursor_position;
             // 
             // pbStartFromLastCursorPos
             // 
@@ -124,7 +124,7 @@
             this.pbStartFromLastCursorPos.Name = "pbStartFromLastCursorPos";
             this.pbStartFromLastCursorPos.Size = new System.Drawing.Size(34, 28);
             this.pbStartFromLastCursorPos.TabIndex = 162;
-            this.pbStartFromLastCursorPos.Text = "N";
+            this.pbStartFromLastCursorPos.Text = Strings.N;
             // 
             // smaxLineWidth
             // 
@@ -168,7 +168,7 @@
             this.lblLineWidth.Name = "lblLineWidth";
             this.lblLineWidth.Size = new System.Drawing.Size(170, 24);
             this.lblLineWidth.TabIndex = 129;
-            this.lblLineWidth.Text = "Line Width";
+            this.lblLineWidth.Text = Strings.Line_Width;
             this.lblLineWidth.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ltbLineWidthMore
@@ -189,7 +189,7 @@
             this.lblHorizontalSweeps.Name = "lblHorizontalSweeps";
             this.lblHorizontalSweeps.Size = new System.Drawing.Size(170, 24);
             this.lblHorizontalSweeps.TabIndex = 128;
-            this.lblHorizontalSweeps.Text = "Mouse Sweeps";
+            this.lblHorizontalSweeps.Text = Strings.Mouse_Sweeps;
             this.lblHorizontalSweeps.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tbHorizontalSweeps
@@ -207,7 +207,7 @@
             this.lblHorizontalSpeed.Name = "lblHorizontalSpeed";
             this.lblHorizontalSpeed.Size = new System.Drawing.Size(170, 24);
             this.lblHorizontalSpeed.TabIndex = 127;
-            this.lblHorizontalSpeed.Text = "Mouse Speed";
+            this.lblHorizontalSpeed.Text = Strings.Mouse_Speed;
             this.lblHorizontalSpeed.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // sminHorizontalSweeps
@@ -226,7 +226,7 @@
             this.lblVerticalSweeps.Name = "lblVerticalSweeps";
             this.lblVerticalSweeps.Size = new System.Drawing.Size(170, 24);
             this.lblVerticalSweeps.TabIndex = 126;
-            this.lblVerticalSweeps.Text = "Vertical Sweeps";
+            this.lblVerticalSweeps.Text = Strings.Vertical_Sweeps;
             this.lblVerticalSweeps.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tbHorizontalSpeed
@@ -255,7 +255,7 @@
             this.lblVerticalSpeed.Name = "lblVerticalSpeed";
             this.lblVerticalSpeed.Size = new System.Drawing.Size(170, 24);
             this.lblVerticalSpeed.TabIndex = 125;
-            this.lblVerticalSpeed.Text = "Vertical Speed";
+            this.lblVerticalSpeed.Text = Strings.Vertical_Speed;
             this.lblVerticalSpeed.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tbVerticalSweeps
@@ -482,7 +482,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(204, 24);
             this.label1.TabIndex = 161;
-            this.label1.Text = "Mouse Grid Settings";
+            this.label1.Text = Strings.Mouse_Grid_Settings;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // MouseGridSettingsForm

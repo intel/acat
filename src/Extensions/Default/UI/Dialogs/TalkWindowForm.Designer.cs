@@ -52,7 +52,7 @@
             this.labelTalk.Name = "labelTalk";
             this.labelTalk.Size = new System.Drawing.Size(59, 29);
             this.labelTalk.TabIndex = 2;
-            this.labelTalk.Text = "Talk";
+            this.labelTalk.Text = Strings.Talk;
             // 
             // textBox
             // 
@@ -80,7 +80,7 @@
             this.labelClose.Name = "labelClose";
             this.labelClose.Size = new System.Drawing.Size(39, 30);
             this.labelClose.TabIndex = 7;
-            this.labelClose.Text = "X";
+            this.labelClose.Text = Strings.X;
             this.labelClose.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.labelClose.Click += new System.EventHandler(this.labelClose_Click);
             // 
@@ -156,7 +156,7 @@
             this.labelSpeaker.Name = "labelSpeaker";
             this.labelSpeaker.Size = new System.Drawing.Size(33, 30);
             this.labelSpeaker.TabIndex = 13;
-            this.labelSpeaker.Text = "F";
+            this.labelSpeaker.Text = Strings.F;
             this.labelSpeaker.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // trackBarVolume
@@ -189,7 +189,7 @@
             this.MaximizeBox = false;
             this.Name = "TalkWindowForm";
             this.RightToLeftLayout = true;
-            this.Text = "ACAT Talk Window";
+            this.Text = Strings.ACAT_Talk_Window;
             this.TopMost = true;
             this.BorderPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.trackBarVolume)).EndInit();

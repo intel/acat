@@ -85,7 +85,7 @@
             this.lblRestoreDefaults.Size = new System.Drawing.Size(152, 47);
             this.lblRestoreDefaults.TabIndex = 169;
             this.lblRestoreDefaults.TabStop = false;
-            this.lblRestoreDefaults.Text = "Defaults";
+            this.lblRestoreDefaults.Text = Strings.Defaults;
             this.lblRestoreDefaults.UseVisualStyleBackColor = true;
             // 
             // lblBack
@@ -95,7 +95,7 @@
             this.lblBack.Size = new System.Drawing.Size(152, 47);
             this.lblBack.TabIndex = 168;
             this.lblBack.TabStop = false;
-            this.lblBack.Text = "Cancel";
+            this.lblBack.Text = Strings.Cancel;
             this.lblBack.UseVisualStyleBackColor = true;
             // 
             // lblOK
@@ -105,7 +105,7 @@
             this.lblOK.Size = new System.Drawing.Size(152, 47);
             this.lblOK.TabIndex = 167;
             this.lblOK.TabStop = false;
-            this.lblOK.Text = "OK";
+            this.lblOK.Text = Strings.OK;
             this.lblOK.UseVisualStyleBackColor = true;
             // 
             // lblStartFromLastCursorPos
@@ -115,7 +115,7 @@
             this.lblStartFromLastCursorPos.Name = "lblStartFromLastCursorPos";
             this.lblStartFromLastCursorPos.Size = new System.Drawing.Size(295, 29);
             this.lblStartFromLastCursorPos.TabIndex = 163;
-            this.lblStartFromLastCursorPos.Text = "Start from last cursor position";
+            this.lblStartFromLastCursorPos.Text = Strings.Start_from_last_cursor_position;
             // 
             // pbStartFromLastCursorPos
             // 
@@ -124,7 +124,7 @@
             this.pbStartFromLastCursorPos.Name = "pbStartFromLastCursorPos";
             this.pbStartFromLastCursorPos.Size = new System.Drawing.Size(34, 28);
             this.pbStartFromLastCursorPos.TabIndex = 165;
-            this.pbStartFromLastCursorPos.Text = "N";
+            this.pbStartFromLastCursorPos.Text = Strings.N;
             // 
             // smaxLineWidth
             // 
@@ -168,7 +168,7 @@
             this.lblLineWidth.Name = "lblLineWidth";
             this.lblLineWidth.Size = new System.Drawing.Size(174, 24);
             this.lblLineWidth.TabIndex = 132;
-            this.lblLineWidth.Text = "Line Width";
+            this.lblLineWidth.Text = Strings.Line_Width;
             // 
             // ltbLineWidthMore
             // 
@@ -188,7 +188,7 @@
             this.lblRadialSweeps.Name = "lblRadialSweeps";
             this.lblRadialSweeps.Size = new System.Drawing.Size(174, 24);
             this.lblRadialSweeps.TabIndex = 131;
-            this.lblRadialSweeps.Text = "Mouse Sweeps";
+            this.lblRadialSweeps.Text = Strings.Mouse_Sweeps;
             // 
             // tbRadialSweeps
             // 
@@ -205,7 +205,7 @@
             this.lblRadialSpeed.Name = "lblRadialSpeed";
             this.lblRadialSpeed.Size = new System.Drawing.Size(174, 24);
             this.lblRadialSpeed.TabIndex = 130;
-            this.lblRadialSpeed.Text = "Mouse Speed";
+            this.lblRadialSpeed.Text = Strings.Mouse_Speed;
             // 
             // sminRadialSweeps
             // 
@@ -223,7 +223,7 @@
             this.lblRotatingSweeps.Name = "lblRotatingSweeps";
             this.lblRotatingSweeps.Size = new System.Drawing.Size(174, 24);
             this.lblRotatingSweeps.TabIndex = 129;
-            this.lblRotatingSweeps.Text = "Rotating Sweeps";
+            this.lblRotatingSweeps.Text = Strings.Rotating_Sweeps;
             // 
             // tbRadialSpeed
             // 
@@ -251,7 +251,7 @@
             this.lblRotatingSpeed.Name = "lblRotatingSpeed";
             this.lblRotatingSpeed.Size = new System.Drawing.Size(158, 24);
             this.lblRotatingSpeed.TabIndex = 128;
-            this.lblRotatingSpeed.Text = "Rotating Speed";
+            this.lblRotatingSpeed.Text = Strings.Rotating_Speed;
             // 
             // tbRotatingSweeps
             // 
@@ -468,7 +468,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(224, 24);
             this.label1.TabIndex = 161;
-            this.label1.Text = "Mouse Radar Settings";
+            this.label1.Text = Strings.Mouse_Radar_Settings;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // groupBox1

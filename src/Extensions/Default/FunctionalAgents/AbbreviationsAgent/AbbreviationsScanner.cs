@@ -325,7 +325,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.Abbreviations
         {
             Invoke(new MethodInvoker(delegate()
             {
-                if (SearchFilter.Text.Length > 0 && DialogUtils.ConfirmScanner("Clear filter?"))
+                if (SearchFilter.Text.Length > 0 && DialogUtils.ConfirmScanner(Strings.Clear_filter))
                 {
                     SearchFilter.Text = String.Empty;
                 }
@@ -735,7 +735,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.Abbreviations
         {
             if (EvtAddAbbreviation != null)
             {
-                if (DialogUtils.ConfirmScanner("Add Abbreviation " + Windows.GetText(SearchFilter) + "?"))
+                if (DialogUtils.ConfirmScanner(Strings.Add_Abbreviation1 + Windows.GetText(SearchFilter) + Strings.String34))
                 {
                     Invoke(new MethodInvoker(() => EvtAddAbbreviation(Windows.GetText(SearchFilter))));
                 }
@@ -921,12 +921,12 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.Abbreviations
                     var filter = Windows.GetText(SearchFilter).Trim();
                     if (!String.IsNullOrEmpty(filter))
                     {
-                        list[0].SetText(displayIndex + ".  -------- NOT FOUND.  ADD THIS ABBREVIATION --------");
+                        list[0].SetText(displayIndex + Strings.NOT_FOUND_ADD_THIS_ABBREVIATION);
                         list[0].UserData = new ItemTag(ItemTag.ItemType.AddNew);
                     }
                     else
                     {
-                        list[0].SetText("-------- ABBREVIATIONS LIST EMPTY --------");
+                        list[0].SetText(Strings.ABBREVIATIONS_LIST_EMPTY);
                         list[0].UserData = new ItemTag(ItemTag.ItemType.Info);
                     }
 
@@ -941,17 +941,17 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.Abbreviations
                     list[ii].UserData = new ItemTag(ItemTag.ItemType.OrderBy);
                     if (_sortOrder == SortOrder.AtoZ)
                     {
-                        list[ii].SetText(displayIndex + ".\t------------- SORT Z-A -------------");
+                        list[ii].SetText(displayIndex + Strings.SORT1);
                     }
                     else
                     {
-                        list[ii].SetText(displayIndex + ".\t------------- SORT A-Z -------------");
+                        list[ii].SetText(displayIndex + Strings.SORT);
                     }
                 }
                 else
                 {
                     list[ii].UserData = new ItemTag(ItemTag.ItemType.PreviousPage);
-                    list[ii].SetText(displayIndex + ".\t------------- PREVIOUS PAGE  -------------");
+                    list[ii].SetText(displayIndex + Strings.PREVIOUS_PAGE);
                 }
 
                 ii++;
@@ -965,13 +965,13 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.Abbreviations
                     var word = _abbreviationsList[jj].Mnemonic;
                     if (word.Length > MaxAbbrCharacters)
                     {
-                        word = word.Substring(0, MaxAbbrCharacters) + "...";
+                        word = word.Substring(0, MaxAbbrCharacters) + Strings.String37;
                     }
 
                     var replaceWith = System.Text.RegularExpressions.Regex.Replace(_abbreviationsList[jj].Expansion, "\n", " ");
                     if (replaceWith.Length > 40)
                     {
-                        replaceWith = replaceWith.Substring(0, 40) + "...";
+                        replaceWith = replaceWith.Substring(0, 40) + Strings.String37;
                     }
 
                     list[ii].SetText(displayIndex + ".\t" + word + "\t" + _abbreviationsList[jj].Mode.ToString() + "\t" + replaceWith);
@@ -984,7 +984,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.Abbreviations
                     displayIndex = (ii + 1) % 10;
                     (list[ii] as TabStopScannerButton).SetTabStops(0.0f, new float[] { 25, 400 });
                     list[ii].UserData = new ItemTag(ItemTag.ItemType.NextPage);
-                    list[ii].SetText(displayIndex + ".\t------------- NEXT PAGE  -------------");
+                    list[ii].SetText(displayIndex + Strings.NEXT_PAGE);
                     ii++;
                 }
 
@@ -1105,7 +1105,7 @@ namespace ACAT.Extensions.Hawking.FunctionalAgents.Abbreviations
 
             if (_pageNumberWidget != null)
             {
-                var text = _abbreviationsList.Any() ? "Page " + (_pageNumber + 1) + " of " + _numPages : String.Empty;
+                var text = _abbreviationsList.Any() ? Strings.Page + (_pageNumber + 1) + Strings.of + _numPages : String.Empty;
                 _pageNumberWidget.SetText(text);
             }
         }

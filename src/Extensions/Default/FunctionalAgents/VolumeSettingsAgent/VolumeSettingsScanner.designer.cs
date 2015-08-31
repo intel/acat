@@ -318,7 +318,7 @@
             this.BTest.Name = "BTest";
             this.BTest.Size = new System.Drawing.Size(169, 38);
             this.BTest.TabIndex = 6;
-            this.BTest.Text = "Test";
+            this.BTest.Text = Strings.Test;
             this.BTest.UseMnemonic = false;
             this.BTest.UseVisualStyleBackColor = true;
             // 
@@ -333,7 +333,7 @@
             this.Title.Name = "Title";
             this.Title.Size = new System.Drawing.Size(169, 38);
             this.Title.TabIndex = 7;
-            this.Title.Text = "Volume";
+            this.Title.Text = Strings.Volume;
             this.Title.UseMnemonic = false;
             this.Title.UseVisualStyleBackColor = true;
             // 

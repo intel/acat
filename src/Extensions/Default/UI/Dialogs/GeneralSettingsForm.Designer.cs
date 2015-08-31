@@ -96,7 +96,7 @@
             this.pbExpandAbbreviationsOnSeparator.Name = "pbExpandAbbreviationsOnSeparator";
             this.pbExpandAbbreviationsOnSeparator.Size = new System.Drawing.Size(34, 28);
             this.pbExpandAbbreviationsOnSeparator.TabIndex = 140;
-            this.pbExpandAbbreviationsOnSeparator.Text = "N";
+            this.pbExpandAbbreviationsOnSeparator.Text = Strings.N;
             // 
             // lblExpandAbbreviationsOnSeparator
             // 
@@ -105,7 +105,7 @@
             this.lblExpandAbbreviationsOnSeparator.Name = "lblExpandAbbreviationsOnSeparator";
             this.lblExpandAbbreviationsOnSeparator.Size = new System.Drawing.Size(390, 29);
             this.lblExpandAbbreviationsOnSeparator.TabIndex = 139;
-            this.lblExpandAbbreviationsOnSeparator.Text = "Expand abbreviations on separator";
+            this.lblExpandAbbreviationsOnSeparator.Text = Strings.Expand_abbreviations_on_separator;
             this.lblExpandAbbreviationsOnSeparator.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pbScannerAutoSaveLastPosition
@@ -116,7 +116,7 @@
             this.pbScannerAutoSaveLastPosition.Name = "pbScannerAutoSaveLastPosition";
             this.pbScannerAutoSaveLastPosition.Size = new System.Drawing.Size(56, 38);
             this.pbScannerAutoSaveLastPosition.TabIndex = 117;
-            this.pbScannerAutoSaveLastPosition.Text = "N";
+            this.pbScannerAutoSaveLastPosition.Text = Strings.N;
             this.pbScannerAutoSaveLastPosition.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pbEnableDebugTraceLogging
@@ -126,7 +126,7 @@
             this.pbEnableDebugTraceLogging.Name = "pbEnableDebugTraceLogging";
             this.pbEnableDebugTraceLogging.Size = new System.Drawing.Size(34, 28);
             this.pbEnableDebugTraceLogging.TabIndex = 133;
-            this.pbEnableDebugTraceLogging.Text = "N";
+            this.pbEnableDebugTraceLogging.Text = Strings.N;
             // 
             // lblScannerAutoSaveLastPosition
             // 
@@ -135,7 +135,7 @@
             this.lblScannerAutoSaveLastPosition.Name = "lblScannerAutoSaveLastPosition";
             this.lblScannerAutoSaveLastPosition.Size = new System.Drawing.Size(390, 29);
             this.lblScannerAutoSaveLastPosition.TabIndex = 115;
-            this.lblScannerAutoSaveLastPosition.Text = "Auto-save scanner\'s last position";
+            this.lblScannerAutoSaveLastPosition.Text = Strings.Auto_save_scanner_last_position;
             this.lblScannerAutoSaveLastPosition.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pbRetainTalkWindowText
@@ -145,7 +145,7 @@
             this.pbRetainTalkWindowText.Name = "pbRetainTalkWindowText";
             this.pbRetainTalkWindowText.Size = new System.Drawing.Size(34, 28);
             this.pbRetainTalkWindowText.TabIndex = 131;
-            this.pbRetainTalkWindowText.Text = "N";
+            this.pbRetainTalkWindowText.Text = Strings.N;
             // 
             // lblHideScannersOnIdle
             // 
@@ -154,7 +154,7 @@
             this.lblHideScannersOnIdle.Name = "lblHideScannersOnIdle";
             this.lblHideScannersOnIdle.Size = new System.Drawing.Size(338, 29);
             this.lblHideScannersOnIdle.TabIndex = 124;
-            this.lblHideScannersOnIdle.Text = "Hide scanners on idle";
+            this.lblHideScannersOnIdle.Text = Strings.Hide_scanners_on_idle;
             this.lblHideScannersOnIdle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pbShowTalkWindowOnStartup
@@ -164,7 +164,7 @@
             this.pbShowTalkWindowOnStartup.Name = "pbShowTalkWindowOnStartup";
             this.pbShowTalkWindowOnStartup.Size = new System.Drawing.Size(34, 28);
             this.pbShowTalkWindowOnStartup.TabIndex = 129;
-            this.pbShowTalkWindowOnStartup.Text = "N";
+            this.pbShowTalkWindowOnStartup.Text = Strings.N;
             // 
             // lblEnableDebugTraceLogging
             // 
@@ -183,7 +183,7 @@
             this.pbShowGlass.Name = "pbShowGlass";
             this.pbShowGlass.Size = new System.Drawing.Size(34, 28);
             this.pbShowGlass.TabIndex = 127;
-            this.pbShowGlass.Text = "N";
+            this.pbShowGlass.Text = Strings.N;
             // 
             // lblShowGlass
             // 
@@ -192,7 +192,7 @@
             this.lblShowGlass.Name = "lblShowGlass";
             this.lblShowGlass.Size = new System.Drawing.Size(361, 29);
             this.lblShowGlass.TabIndex = 126;
-            this.lblShowGlass.Text = "Show glass under Talk window";
+            this.lblShowGlass.Text = Strings.Show_glass_under_Talk_window;
             this.lblShowGlass.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblShowTalkWindowOnStartup
@@ -202,7 +202,7 @@
             this.lblShowTalkWindowOnStartup.Name = "lblShowTalkWindowOnStartup";
             this.lblShowTalkWindowOnStartup.Size = new System.Drawing.Size(390, 29);
             this.lblShowTalkWindowOnStartup.TabIndex = 128;
-            this.lblShowTalkWindowOnStartup.Text = "Show Talk window on startup";
+            this.lblShowTalkWindowOnStartup.Text = Strings.Show_Talk_window_on_startup;
             this.lblShowTalkWindowOnStartup.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pbHideScannersOnIdle
@@ -212,7 +212,7 @@
             this.pbHideScannersOnIdle.Name = "pbHideScannersOnIdle";
             this.pbHideScannersOnIdle.Size = new System.Drawing.Size(34, 28);
             this.pbHideScannersOnIdle.TabIndex = 125;
-            this.pbHideScannersOnIdle.Text = "N";
+            this.pbHideScannersOnIdle.Text = Strings.N;
             // 
             // lblRetainTalkWindowText
             // 
@@ -221,7 +221,7 @@
             this.lblRetainTalkWindowText.Name = "lblRetainTalkWindowText";
             this.lblRetainTalkWindowText.Size = new System.Drawing.Size(382, 29);
             this.lblRetainTalkWindowText.TabIndex = 130;
-            this.lblRetainTalkWindowText.Text = "Retain Talk window text on close";
+            this.lblRetainTalkWindowText.Text = Strings.Retain_Talk_window_text_on_close;
             this.lblRetainTalkWindowText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblRestoreDefaults
@@ -270,7 +270,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(177, 24);
             this.label1.TabIndex = 161;
-            this.label1.Text = "General Settings";
+            this.label1.Text = Strings.General_Settings;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pbEnableAuditLog
@@ -289,7 +289,7 @@
             this.lblEnableAuditLog.Name = "lblEnableAuditLog";
             this.lblEnableAuditLog.Size = new System.Drawing.Size(382, 29);
             this.lblEnableAuditLog.TabIndex = 141;
-            this.lblEnableAuditLog.Text = "Enable audit log";
+            this.lblEnableAuditLog.Text = Strings.Enable_audit_log;
             this.lblEnableAuditLog.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // GeneralSettingsForm

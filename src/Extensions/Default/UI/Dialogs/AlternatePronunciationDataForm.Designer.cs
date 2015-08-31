@@ -63,12 +63,12 @@
             // 
             // chTerm
             // 
-            this.chTerm.Text = "Original Term";
+            this.chTerm.Text = Strings_2.Original_Term;
             this.chTerm.Width = 212;
             // 
             // chAlternate
             // 
-            this.chAlternate.Text = "Alternative Pronunciation";
+            this.chAlternate.Text = Strings.Alternative_Pronunciation;
             this.chAlternate.Width = 406;
             // 
             // panel1
@@ -91,7 +91,7 @@
             this.lblCancel.Size = new System.Drawing.Size(152, 47);
             this.lblCancel.TabIndex = 4;
             this.lblCancel.TabStop = false;
-            this.lblCancel.Text = "Cancel";
+            this.lblCancel.Text = Strings.Cancel;
             this.lblCancel.UseVisualStyleBackColor = true;
             // 
             // lblOK
@@ -101,7 +101,7 @@
             this.lblOK.Size = new System.Drawing.Size(152, 47);
             this.lblOK.TabIndex = 3;
             this.lblOK.TabStop = false;
-            this.lblOK.Text = "OK";
+            this.lblOK.Text = Strings_2.OK;
             this.lblOK.UseVisualStyleBackColor = true;
             // 
             // lblDelete
@@ -111,7 +111,7 @@
             this.lblDelete.Size = new System.Drawing.Size(123, 47);
             this.lblDelete.TabIndex = 2;
             this.lblDelete.TabStop = false;
-            this.lblDelete.Text = "Delete";
+            this.lblDelete.Text = Strings.Delete;
             this.lblDelete.UseVisualStyleBackColor = true;
             // 
             // lblEdit
@@ -121,7 +121,7 @@
             this.lblEdit.Size = new System.Drawing.Size(123, 47);
             this.lblEdit.TabIndex = 1;
             this.lblEdit.TabStop = false;
-            this.lblEdit.Text = "Edit";
+            this.lblEdit.Text = Strings.Edit;
             this.lblEdit.UseVisualStyleBackColor = true;
             // 
             // lblAdd
@@ -131,7 +131,7 @@
             this.lblAdd.Size = new System.Drawing.Size(123, 47);
             this.lblAdd.TabIndex = 0;
             this.lblAdd.TabStop = false;
-            this.lblAdd.Text = "Add";
+            this.lblAdd.Text = Strings.Add;
             this.lblAdd.UseVisualStyleBackColor = true;
             // 
             // Title
@@ -144,7 +144,7 @@
             this.Title.Size = new System.Drawing.Size(866, 38);
             this.Title.TabIndex = 95;
             this.Title.TabStop = false;
-            this.Title.Text = "Alternative Pronunciations";
+            this.Title.Text = Strings.Alternative_Pronunciations;
             this.Title.UseVisualStyleBackColor = false;
             // 
             // AlternatePronunciationDataForm
@@ -156,7 +156,7 @@
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AlternatePronunciationDataForm";
-            this.Text = "Aster Abbreviations";
+            this.Text = Strings.Aster_Abbreviations;
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 

@@ -92,7 +92,7 @@ namespace ACAT.Applications.ACATApp
             object[] attributes = assembly.GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
             var appName = (attributes.Length != 0) ? ((AssemblyTitleAttribute)attributes[0]).Title : String.Empty;
 
-            var appVersion = "Version " + assembly.GetName().Version.ToString();
+            var appVersion = Strings.Version + assembly.GetName().Version.ToString();
             attributes = assembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
             var appCopyright = (attributes.Length != 0) ? ((AssemblyCopyrightAttribute)attributes[0]).Copyright : String.Empty;
 
@@ -124,13 +124,13 @@ namespace ACAT.Applications.ACATApp
             {
                 if (!Context.Init(Context.StartupFlags.Minimal))
                 {
-                    MessageBox.Show("Context initialization error");
+                    MessageBox.Show(Strings.Context_initialization_error);
                     return;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Context Init exception " + ex);
+                MessageBox.Show(Strings.Context_Init_exception + ex);
                 return;
             }
 
@@ -190,9 +190,9 @@ namespace ACAT.Applications.ACATApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Unable to create user. Error executing batchfile " +
+                MessageBox.Show(Strings.Unable_to_create_user_Error_executing_batchfile +
                                     batchFileName + 
-                                    ".\nError: " + 
+                                    Strings.Error + 
                                     ex);
                 retVal = false;
             }
@@ -223,7 +223,7 @@ namespace ACAT.Applications.ACATApp
 
             if (!ProfileManager.ProfileExists(ProfileManager.CurrentProfile))
             {
-                MessageBox.Show("Could not find profile " + ProfileManager.CurrentProfile);
+                MessageBox.Show(Strings.Could_not_find_profile + ProfileManager.CurrentProfile);
                 return false;
             }
 
@@ -244,7 +244,7 @@ namespace ACAT.Applications.ACATApp
             Common.AppPreferences = ACATPreferences.Load();
             if (Common.AppPreferences == null)
             {
-                MessageBox.Show("Unable to read preferences from " + FileUtils.AppPreferencesDir);
+                MessageBox.Show(Strings.Unable_to_read_preferences_from + FileUtils.AppPreferencesDir);
                 return false;
             }
 

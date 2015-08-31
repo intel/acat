@@ -56,7 +56,7 @@
             this.lblExpansion.Name = "lblExpansion";
             this.lblExpansion.Size = new System.Drawing.Size(117, 24);
             this.lblExpansion.TabIndex = 96;
-            this.lblExpansion.Text = "Expansion";
+            this.lblExpansion.Text = Strings.Expansion;
             // 
             // tbExpansion
             // 
@@ -74,7 +74,7 @@
             this.lblSpoken.Name = "lblSpoken";
             this.lblSpoken.Size = new System.Drawing.Size(94, 29);
             this.lblSpoken.TabIndex = 2;
-            this.lblSpoken.Text = "Spoken";
+            this.lblSpoken.Text = Strings.Spoken;
             this.lblSpoken.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblFinished
@@ -84,7 +84,7 @@
             this.lblFinished.Size = new System.Drawing.Size(114, 47);
             this.lblFinished.TabIndex = 88;
             this.lblFinished.TabStop = false;
-            this.lblFinished.Text = "OK";
+            this.lblFinished.Text = Strings.OK;
             this.lblFinished.UseVisualStyleBackColor = true;
             // 
             // lblAbbreviation
@@ -95,7 +95,7 @@
             this.lblAbbreviation.Name = "lblAbbreviation";
             this.lblAbbreviation.Size = new System.Drawing.Size(139, 24);
             this.lblAbbreviation.TabIndex = 91;
-            this.lblAbbreviation.Text = "Abbreviation";
+            this.lblAbbreviation.Text = Strings.Abbreviation;
             // 
             // boxType
             // 
@@ -116,7 +116,7 @@
             this.lblWritten.Name = "lblWritten";
             this.lblWritten.Size = new System.Drawing.Size(94, 29);
             this.lblWritten.TabIndex = 1;
-            this.lblWritten.Text = "Written";
+            this.lblWritten.Text = Strings.Written;
             this.lblWritten.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pbTypeSpoken
@@ -126,7 +126,7 @@
             this.pbTypeSpoken.Name = "pbTypeSpoken";
             this.pbTypeSpoken.Size = new System.Drawing.Size(39, 29);
             this.pbTypeSpoken.TabIndex = 67;
-            this.pbTypeSpoken.Text = "N";
+            this.pbTypeSpoken.Text = Strings.String6;
             this.pbTypeSpoken.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pbTypeWritten
@@ -136,7 +136,7 @@
             this.pbTypeWritten.Name = "pbTypeWritten";
             this.pbTypeWritten.Size = new System.Drawing.Size(39, 29);
             this.pbTypeWritten.TabIndex = 66;
-            this.pbTypeWritten.Text = "N";
+            this.pbTypeWritten.Text = Strings.String6;
             this.pbTypeWritten.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblType
@@ -147,7 +147,7 @@
             this.lblType.Name = "lblType";
             this.lblType.Size = new System.Drawing.Size(65, 24);
             this.lblType.TabIndex = 94;
-            this.lblType.Text = "Mode";
+            this.lblType.Text = Strings.Mode;
             // 
             // tbAbbreviation
             // 
@@ -164,7 +164,7 @@
             this.lblCancel.Size = new System.Drawing.Size(114, 47);
             this.lblCancel.TabIndex = 90;
             this.lblCancel.TabStop = false;
-            this.lblCancel.Text = "Cancel";
+            this.lblCancel.Text = Strings.Cancel;
             this.lblCancel.UseVisualStyleBackColor = true;
             // 
             // labelTitle
@@ -174,7 +174,7 @@
             this.labelTitle.Name = "labelTitle";
             this.labelTitle.Size = new System.Drawing.Size(226, 24);
             this.labelTitle.TabIndex = 161;
-            this.labelTitle.Text = "Edit / Add Abbreviation";
+            this.labelTitle.Text = Strings.Edit_Add_Abbreviation;
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // groupBox1
@@ -201,7 +201,7 @@
             this.Controls.Add(this.tbAbbreviation);
             this.Controls.Add(this.groupBox1);
             this.Name = "AbbreviationEditorForm";
-            this.Text = "Abbreviations Editor";
+            this.Text = Strings.Abbreviations_Editor;
             this.boxType.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

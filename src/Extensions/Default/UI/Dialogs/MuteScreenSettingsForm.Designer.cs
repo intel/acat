@@ -55,7 +55,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
             this.lblCancel.Size = new System.Drawing.Size(111, 47);
             this.lblCancel.TabIndex = 139;
             this.lblCancel.TabStop = false;
-            this.lblCancel.Text = "Cancel";
+            this.lblCancel.Text = Strings.Cancel;
             this.lblCancel.UseVisualStyleBackColor = true;
             // 
             // lblOK
@@ -65,7 +65,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
             this.lblOK.Size = new System.Drawing.Size(111, 47);
             this.lblOK.TabIndex = 138;
             this.lblOK.TabStop = false;
-            this.lblOK.Text = "OK";
+            this.lblOK.Text = Strings.OK;
             this.lblOK.UseVisualStyleBackColor = true;
             // 
             // svalMaxDigit
@@ -95,7 +95,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
             this.lblPINCode.Name = "lblPINCode";
             this.lblPINCode.Size = new System.Drawing.Size(47, 26);
             this.lblPINCode.TabIndex = 136;
-            this.lblPINCode.Text = "PIN";
+            this.lblPINCode.Text = Strings.PIN;
             this.lblPINCode.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // smaxMaxDigit
@@ -146,7 +146,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
             this.lblMaxDigit.Name = "lblMaxDigit";
             this.lblMaxDigit.Size = new System.Drawing.Size(135, 26);
             this.lblMaxDigit.TabIndex = 130;
-            this.lblMaxDigit.Text = "Digits: 0  to  ";
+            this.lblMaxDigit.Text = Strings.Digits_to;
             this.lblMaxDigit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tbPINCode
@@ -176,7 +176,7 @@ namespace ACAT.Extensions.Default.UI.Dialogs
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(146, 24);
             this.label1.TabIndex = 161;
-            this.label1.Text = "Mute Settings";
+            this.label1.Text = Strings.Mute_Settings;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // AsterMutePrefsForm

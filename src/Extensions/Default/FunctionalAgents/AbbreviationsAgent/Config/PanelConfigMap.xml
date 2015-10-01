@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+    <ConfigMapEntry panelClass="AbbreviationsScanner" configName="AbbreviationsScanner" formId="D174DAD7-A9FD-49CB-9DE1-7EB856109A79" configFile="AbbreviationsScanner.xml"/>
+    <ConfigMapEntry panelClass="AbbreviationEditDeleteConfirm" configName="AbbreviationEditDeleteConfirm" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="AbbreviationEditDeleteConfirm.xml"/>
+  </ConfigMapEntries>
+</ACAT>

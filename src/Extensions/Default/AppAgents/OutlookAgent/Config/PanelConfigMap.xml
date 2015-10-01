@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+    <ConfigMapEntry panelClass="OutlookContextMenu" configName="OutlookContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="OutlookContextMenu.xml"/>
+    <ConfigMapEntry panelClass="OutlookAddressBookContextMenu" configName="OutlookAddressBookContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="OutlookAddressBookContextMenu.xml"/>
+    <ConfigMapEntry panelClass="OutlookNewEmailContextMenu" configName="OutlookNewEmailContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="OutlookNewEmailContextMenu.xml"/>
+    <ConfigMapEntry panelClass="OutlookBrowseEmailContextMenu" configName="OutlookBrowseEmailContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="OutlookBrowseEmailContextMenu.xml"/>
+    <ConfigMapEntry panelClass="OutlookEmailActionContextMenu" configName="OutlookEmailActionContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="OutlookEmailActionContextMenu.xml"/>
+    <ConfigMapEntry panelClass="OutlookMailBoxesContextMenu" configName="OutlookMailBoxesContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="OutlookMailBoxesContextMenu.xml"/>
+    <ConfigMapEntry panelClass="OutlookOpenNoteContextMenu" configName="OutlookOpenNoteContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="OutlookOpenNoteContextMenu.xml"/>
+    <ConfigMapEntry panelClass="OutlookOpenAppointmentContextMenu" configName="OutlookOpenAppointmentContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="OutlookOpenAppointmentContextMenu.xml"/>
+    <ConfigMapEntry panelClass="OutlookOpenContactContextMenu" configName="OutlookOpenContactContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="OutlookOpenContactContextMenu.xml"/>
+    <ConfigMapEntry panelClass="OutlookOpenTaskContextMenu" configName="OutlookOpenTaskContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="OutlookOpenTaskContextMenu.xml"/>
+  </ConfigMapEntries>
+</ACAT>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LaunchAppSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Applications>
+    <AppInfo>
+      <Name>Internet Explorer</Name>
+      <Path>IExplore.exe</Path>
+      <CommandLine />
+      <Action>StartNew</Action>
+    </AppInfo>
+    <AppInfo>
+      <Name>My Documents</Name>
+      <Path>explorer.exe</Path>
+      <CommandLine>@mydocuments</CommandLine>
+      <Action>StartNew</Action>
+    </AppInfo>
+    <AppInfo>
+      <Name>My Pictures</Name>
+      <Path>explorer.exe</Path>
+      <CommandLine>@mypictures</CommandLine>
+      <Action>StartNew</Action>
+    </AppInfo>
+    <AppInfo>
+      <Name>My Music</Name>
+      <Path>explorer.exe</Path>
+      <CommandLine>@mymusic</CommandLine>
+      <Action>StartNew</Action>
+    </AppInfo>
+    <AppInfo>
+      <Name>Notepad</Name>
+      <Path>notepad.exe</Path>
+      <CommandLine />
+      <Action>StartNew</Action>
+    </AppInfo>
+    <AppInfo>
+      <Name>Google</Name>
+      <Path>IExplore.exe</Path>
+      <CommandLine>google.com</CommandLine>
+      <Action>StartNew</Action>
+    </AppInfo>
+  </Applications>
+</LaunchAppSettings>

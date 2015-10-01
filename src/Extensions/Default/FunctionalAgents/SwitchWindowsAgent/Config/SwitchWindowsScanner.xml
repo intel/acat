@@ -1,0 +1,109 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+  <!ENTITY usebold "false">
+  <!ENTITY buttonFontName "Arial">
+]>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="SearchFilter" label=" " value="@unknown" fontname="Tahoma" fontsize="22" mouseClickActuate="false" bold="&usebold;"/>
+    <WidgetAttribute name="SortOrderIcon" label=" " value="@unknown" fontname="ACAT Icon" fontsize="18" mouseClickActuate="false" bold="&usebold;"/>
+    <WidgetAttribute name="PageNumber" label=" " value="@unknown" fontname="Arial" fontsize="18" mouseClickActuate="false" bold="&usebold;"/>
+
+    <WidgetAttribute name="ButtonClose" label="&#x75;" value="@Quit"  fontname="ACAT Icon" bold="&usebold;" fontsize="16"/>
+    <WidgetAttribute name="ButtonPageUp" label="&#x79;" value="@WindowListPrevPage" fontname="ACAT Alpha" fontsize="22"  bold="&usebold;"/>
+    <WidgetAttribute name="ButtonPageDown" label="&#x7A;" value="@WindowListNextPage" fontname="ACAT Alpha" fontsize="22"  bold="&usebold;"/>
+    <WidgetAttribute name="ButtonSearch" label="2" value="@WindowListSearch" fontname="ACAT Icon" fontsize="22"  bold="&usebold;"/>
+    <WidgetAttribute name="ButtonSearchClear" label="0" value="@WindowListClearFilter" fontname="ACAT Icon" fontsize="22"  bold="&usebold;"/>
+    <WidgetAttribute name="ButtonSort" label="A-Z" value="@WindowListSort" fontname="Arial" fontsize="22"  bold="&usebold;"/>
+
+    <WidgetAttribute name="Item1" label=" " value="@Item1" fontname="Arial" fontsize="20"  bold="&usebold;"/>
+    <WidgetAttribute name="Item2" label=" " value="@Item2" fontname="Arial" fontsize="20"  bold="&usebold;"/>
+    <WidgetAttribute name="Item3" label=" " value="@Item3" fontname="Arial" fontsize="20"  bold="&usebold;"/>
+    <WidgetAttribute name="Item4" label=" " value="@Item4" fontname="Arial" fontsize="20"  bold="&usebold;"/>
+    <WidgetAttribute name="Item5" label=" " value="@Item5" fontname="Arial" fontsize="20"  bold="&usebold;"/>
+    <WidgetAttribute name="Item6" label=" " value="@Item6" fontname="Arial" fontsize="20"  bold="&usebold;"/>
+    <WidgetAttribute name="Item7" label=" " value="@Item7" fontname="Arial" fontsize="20"  bold="&usebold;"/>
+    <WidgetAttribute name="Item8" label=" " value="@Item8" fontname="Arial" fontsize="20"  bold="&usebold;"/>
+    <WidgetAttribute name="Item9" label=" " value="@Item9" fontname="Arial" fontsize="20"  bold="&usebold;"/>
+    <WidgetAttribute name="Item10" label=" " value="@Item10" fontname="Arial" fontsize="20"  bold="&usebold;"/>
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="WinControlWidget" name="TopStatusBar" colorScheme="HighContrast">
+      <Widget class="TextBoxWidget" name="SearchFilter" colorScheme="HighContrast" roundedCorners="false"/>
+      <Widget class="LabelWidget" name="SortOrderIcon" colorScheme="HighContrast" roundedCorners="false"/>
+      <Widget class="LabelWidget" name="PageNumber" colorScheme="HighContrast" roundedCorners="false"/>
+    </Widget>
+
+    <Widget class="BoxWidget" name="OptionsPanel">
+      <Widget class="ScannerButton" name="ButtonClose"/>
+      <Widget class="ScannerButton" name="ButtonPageUp" subclass="PreviousPage" enabled="contextual"/>
+      <Widget class="ScannerButton" name="ButtonPageDown" subclass="NextPage" enabled="contextual"  />
+      <Widget class="ScannerButton" name="ButtonSearch" subclass="Search" enabled="contextual"/>
+      <Widget class="ScannerButton" name="ButtonSearchClear" subclass="ClearFilter" enabled="contextual" />
+      <Widget class="ScannerButton" name="ButtonSort" subclass="Sort" enabled="contextual"/>
+    </Widget>
+
+    <Widget class="BoxWidget" name="WindowList">
+      <Widget class="TabStopScannerButton" name="Item1" colorScheme="WordListItemButton"/>
+      <Widget class="TabStopScannerButton" name="Item2" colorScheme="WordListItemButton"/>
+      <Widget class="TabStopScannerButton" name="Item3" colorScheme="WordListItemButton"/>
+      <Widget class="TabStopScannerButton" name="Item4" colorScheme="WordListItemButton"/>
+      <Widget class="TabStopScannerButton" name="Item5" colorScheme="WordListItemButton"/>
+      <Widget class="TabStopScannerButton" name="Item6" colorScheme="WordListItemButton"/>
+      <Widget class="TabStopScannerButton" name="Item7" colorScheme="WordListItemButton"/>
+      <Widget class="TabStopScannerButton" name="Item8" colorScheme="WordListItemButton"/>
+      <Widget class="TabStopScannerButton" name="Item9" colorScheme="WordListItemButton"/>
+      <Widget class="TabStopScannerButton" name="Item10" colorScheme="WordListItemButton"/>
+    </Widget>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopLevelRotation"
+           start="true"
+           onEnd="transition(TopLevelRotation)"
+           iterations="@HalfScanIterations">
+      <Widget name="OptionsPanel" onSelect="transition(OptionsRotation)"/>
+      <Widget name="WindowList" onSelect="transition(WindowListRotation)" />
+    </Animation>
+
+    <Animation name="OptionsRotation"
+               onEnd="transition(TopLevelRotation)"
+               onSelect="stop();actuate(@SelectedWidget);"
+               hesitateTime="@HesitateTime"
+               iterations="@ColumnScanIterations">
+      <Widget name="ButtonClose" />
+      <Widget name="ButtonPageUp" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="ButtonPageDown" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)"/>
+      <Widget name="ButtonSearch" />
+      <Widget name="ButtonSearchClear" />
+      <Widget name="ButtonSort"/>
+    </Animation>
+    
+    <Animation name="WindowListRotation"
+               onEnd="transition(TopLevelRotation)"
+               onSelect="stop();actuate(@SelectedWidget);"
+               hesitateTime="@HesitateTime"
+               iterations="@RowScanIterations">
+      <Widget name="Item1" />
+      <Widget name="Item2" />
+      <Widget name="Item3" />
+      <Widget name="Item4" />
+      <Widget name="Item5" />
+      <Widget name="Item6" />
+      <Widget name="Item7" />
+      <Widget name="Item8" />
+      <Widget name="Item9" />
+      <Widget name="Item10" />
+    </Animation>
+
+    <Animation name="ButtonPressed"
+      onEnter=""
+      iterations="1"
+      onEnd="transition(TopLevelRotation)">
+      <Widget name="@SelectedWidget" hesitateTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+    </Animation>
+  </Animations>
+</ACAT>
+

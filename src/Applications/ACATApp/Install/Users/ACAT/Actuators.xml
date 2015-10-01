@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ACAT>
+  <Actuators>
+    <Actuator name="Keyboard" id="D91A1877-C92B-4D7E-9AB6-F01F30B12DF9" enabled="true">
+      <Switch name="S9" source="F12" enabled="true" beepFile="beep.wav" minHoldTime="@MinActuationHoldTime"/>
+      <Switch name="H1" source="Ctrl+T" enabled="true"/>
+      <Switch name="H2" source="Ctrl+Alt+M" enabled="true"/>
+      <Switch name="H3" source="Ctrl+Alt+C" enabled="true"/>
+      <Switch name="H4" source="Ctrl+Alt+OemComma" enabled="true"/>
+      <Switch name="H5" source="Ctrl+Alt+OemPeriod" enabled="true"/>
+      <Switch name="H6" source="Ctrl+Alt+OemQuestion" enabled="true"/>
+    </Actuator>
+
+    <Actuator name="CameraActuator" id="A5B9BFF9-0A35-41AC-8989-69A3D60F4435" enabled="true">
+      <Switch name="CT" source="CT" enabled="true" minHoldTime="@MinActuationHoldTime"/>
+      <Switch name="MP" source="MP" enabled="true" minHoldTime="@MinActuationHoldTime"/>
+      <Switch name="ER" source="ER" enabled="true" minHoldTime="@MinActuationHoldTime"/>
+      <Switch name="EM" source="EM" enabled="true" minHoldTime="@MinActuationHoldTime"/>
+    </Actuator>
+
+    <Actuator name="BlinkSwitchActuator" id="CBEF136B-66EF-40E4-BF8F-46FA2FB7D689" enabled="true">
+      <Switch name="CT" source="CT" enabled="true" minHoldTime="@MinActuationHoldTime" actuate="true"/>
+    </Actuator>
+  </Actuators>
+</ACAT>

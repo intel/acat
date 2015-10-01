@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+    <ConfigMapEntry panelClass="VolumeSettingsScanner" configName="VolumeSettingsScanner" formId="48694D06-DF49-4175-ADAC-E4533EB29E17" configFile="VolumeSettingsScanner.xml"/>
+  </ConfigMapEntries>
+</ACAT>

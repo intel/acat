@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+  <!ENTITY usebold "false">
+  <!ENTITY buttonFontName "Arial">
+]>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="ContextMenuTitle" label="" value="" fontsize="20" fontname="&buttonFontName;" mouseClickActuate="false"/>
+
+    <WidgetAttribute name="ItemIcon1" label=" " value="@CmdGoBack" fontsize="20" fontname="&buttonFontName;" />
+    <WidgetAttribute name="ItemText1" label="&#x75;" value="@CmdGoBack" fontsize="18" fontname="ACAT Icon" />
+
+    <WidgetAttribute name="ItemIcon2" label="&#x37;" value="@GotoInbox" fontsize="20" fontname="ACAT Icon" />
+    <WidgetAttribute name="ItemText2" label="Inbox" value="@GotoInbox" fontsize="18" fontname="&buttonFontName;" />
+
+    <WidgetAttribute name="ItemIcon3" label="&#x65;" value="@ShowFolders" fontsize="20" fontname="ACAT Icon" />
+    <WidgetAttribute name="ItemText3" label="Folders" value="@ShowFolders" fontsize="18" fontname="&buttonFontName;" />
+
+    <WidgetAttribute name="ItemIcon4" label="&#xA2;" value="@GotoCalendar" fontsize="20" fontname="ACAT Icon" />
+    <WidgetAttribute name="ItemText4" label="Calendar" value="@GotoCalendar" fontsize="18" fontname="&buttonFontName;" />
+
+    <WidgetAttribute name="ItemIcon5" label="&#x7C;" value="@GotoTasks" fontsize="20" fontname="ACAT Icon" />
+    <WidgetAttribute name="ItemText5" label="Tasks" value="@GotoTasks" fontsize="18" fontname="&buttonFontName;" />
+
+    <WidgetAttribute name="ItemIcon6" label="&#x42;" value="@GotoContacts" fontsize="20" fontname="ACAT Icon" />
+    <WidgetAttribute name="ItemText6" label="Contacts" value="@GotoContacts" fontsize="18" fontname="&buttonFontName;" />
+
+    <WidgetAttribute name="ItemIcon7" label="&#x35;" value="@GotoNotes" fontsize="20" fontname="ACAT Icon" />
+    <WidgetAttribute name="ItemText7" label="Notes" value="@GotoNotes" fontsize="18" fontname="&buttonFontName;" />
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="RowWidget" name="TitleRow">
+      <Widget class="ScannerButton" name="ContextMenuTitle" colorScheme="ContextMenuTitle"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row1">
+      <Widget class="ContextMenuIcon" name="ItemIcon1"/>
+      <Widget class="ContextMenuText" name="ItemText1"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row2">
+      <Widget class="ContextMenuIcon" name="ItemIcon2"/>
+      <Widget class="ContextMenuText" name="ItemText2"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row3">
+      <Widget class="ContextMenuIcon" name="ItemIcon3"/>
+      <Widget class="ContextMenuText" name="ItemText3"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row4">
+      <Widget class="ContextMenuIcon" name="ItemIcon4"/>
+      <Widget class="ContextMenuText" name="ItemText4"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row5">
+      <Widget class="ContextMenuIcon" name="ItemIcon5"/>
+      <Widget class="ContextMenuText" name="ItemText5"/>
+    </Widget>
+
+
+    <Widget class="RowWidget" name="Row6">
+      <Widget class="ContextMenuIcon" name="ItemIcon6"/>
+      <Widget class="ContextMenuText" name="ItemText6"/>
+    </Widget>
+
+    <Widget class="RowWidget" name="Row7">
+      <Widget class="ContextMenuIcon" name="ItemIcon7"/>
+      <Widget class="ContextMenuText" name="ItemText7"/>
+    </Widget>
+  </Layout>
+  
+  <Animations>
+    <Animation name="TopLevelRotation"
+               start="true"
+               onEnter=""
+               autoStart="true"
+               steppingTime="@TabScanTime"
+               iterations="@RowScanIterations">
+      <Widget name="Row1" onSelect="actuate(ItemText1);transition(TopLevelRotation)"/>
+      <Widget name="Row2" onSelect="actuate(ItemText2);transition(TopLevelRotation)"/>
+      <Widget name="Row3" onSelect="actuate(ItemText3);transition(TopLevelRotation)"/>
+      <Widget name="Row4" onSelect="actuate(ItemText4);transition(TopLevelRotation)"/>
+      <Widget name="Row5" onSelect="actuate(ItemText5);transition(TopLevelRotation)"/>
+      <Widget name="Row6" onSelect="actuate(ItemText6);transition(TopLevelRotation)"/>
+      <Widget name="Row7" onSelect="actuate(ItemText7);transition(TopLevelRotation)"/>
+    </Animation>
+  </Animations>
+</ACAT>

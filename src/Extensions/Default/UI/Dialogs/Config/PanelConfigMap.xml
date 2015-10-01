@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" ?>
-
-<ACAT>
-  <ConfigMapEntries>
-    <ConfigMapEntry panelClass="YesNoDialog" configName="YesNoDialog" formId="640B79F7-0574-45A5-9A8C-50F87C62B08A" configFile="YesNoDialogForm.xml"/>
-    <ConfigMapEntry panelClass="TalkWindow" configName="TalkWindow" formId="BF1C93D7-3962-4A52-A56D-668149D116AE" configFile="TalkWindowForm.xml"/>
-  </ConfigMapEntries>
-</ACAT>

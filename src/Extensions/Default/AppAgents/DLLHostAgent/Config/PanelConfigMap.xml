@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" ?>
-
-<ACAT>
-  <ConfigMapEntries>
-    <ConfigMapEntry panelClass="WindowsPhotoViewerContextMenu" configName="WindowsPhotoViewerContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="WindowsPhotoViewerContextMenu.xml"/>
-    <ConfigMapEntry panelClass="PhotoViewerZoomMenu" configName="PhotoViewerZoomMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="PhotoViewerZoomMenu.xml"/>
-    <ConfigMapEntry panelClass="PhotoViewerRotateMenu" configName="PhotoViewerRotateMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="PhotoViewerRotateMenu.xml"/>
-  </ConfigMapEntries>
-</ACAT>

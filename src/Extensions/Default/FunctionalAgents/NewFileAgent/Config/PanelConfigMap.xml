@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+    <ConfigMapEntry panelClass="FileChoiceMenu" configName="FileChoiceMenu" formId="52BDBBA8-A855-42A1-AC3C-03945DAD3686" configFile="FileChoiceMenu.xml"/>
+  </ConfigMapEntries>
+</ACAT>

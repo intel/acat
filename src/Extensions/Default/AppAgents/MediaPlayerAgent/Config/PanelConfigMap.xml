@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+    <ConfigMapEntry panelClass="MediaPlayerContextMenu" configName="MediaPlayerContextMenu" formId="1FEA0089-747A-4037-AA79-675D067FEA2C" configFile="MediaPlayerContextMenu.xml"/>
+  </ConfigMapEntries>
+</ACAT>

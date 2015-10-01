@@ -1,0 +1,19 @@
+<ACAT>
+  <PanelConfigs name="AlphabetAbc" description="AlphabetScanner with ABC layout">
+    <PanelConfig panelClass="Alphabet" configName="AlphabetScannerAbc"/>
+    <PanelConfig panelClass="AlphabetMinimal" configName="AlphabetScannerAbcMinimal"/>
+  </PanelConfigs>
+  
+  <PanelConfigs name="AlphabetQwerty" description="AlphabetScanner with Qwerty layout">
+    <PanelConfig panelClass="Alphabet" configName="AlphabetQwerty"/>
+    <PanelConfig panelClass="AlphabetMinimal" configName="AlphabetQwertyMinimal"/>
+  </PanelConfigs>
+  
+  <PanelConfigs name="Default" description="Default configuration">
+    <PanelConfig panelClass="Cursor" configName="CursorScanner"/>
+    <PanelConfig panelClass="FunctionKey" configName="FunctionKeyScanner"/>
+    <PanelConfig panelClass="Mouse" configName="MouseScanner"/>
+    <PanelConfig panelClass="Number" configName="NumberScanner"/>
+    <PanelConfig panelClass="Punctuation" configName="PunctuationsScanner"/>
+  </PanelConfigs >
+</ACAT>

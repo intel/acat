@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<ACAT>
+  <Abbreviations>
+    <Abbreviation word="**1" replaceWith="Yes" mode="Speak" />
+    <Abbreviation word="**2" replaceWith="No" mode="Speak" />
+    <Abbreviation word="**3" replaceWith="Thank you" mode="Speak" />
+    <Abbreviation word="**4" replaceWith="Good bye" mode="Speak"/>
+   </Abbreviations>
+</ACAT>

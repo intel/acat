@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+    <ConfigMapEntry panelClass="PhraseSpeakScanner" configName="PhraseSpeakScanner" formId="D80D5448-13D7-472A-AF73-4C326F1CACAE" configFile="PhraseSpeakScanner.xml"/>
+  </ConfigMapEntries>
+</ACAT>

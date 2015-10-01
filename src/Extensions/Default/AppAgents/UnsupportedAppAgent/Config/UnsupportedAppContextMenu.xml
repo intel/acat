@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+  <!ENTITY usebold "false">
+  <!ENTITY buttonFontName "Arial">
+]>
+    
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="ContextMenuTitle" label="" value="" fontsize="20" fontname="&buttonFontName;" mouseClickActuate="false" bold="&usebold;"/>
+    <WidgetAttribute name="ItemIcon1" label=" " value="@CmdGoBack" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText1" label="&#x75;" value="@CmdGoBack" fontsize="18" fontname="ACAT Icon"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemIcon2" label="&#x0161;" value="@WindowPosSizeMenu" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText2" label="Window" value="@WindowPosSizeMenu" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>
+  </WidgetAttributes>
+
+
+  <Layout>
+    <Widget class="RowWidget" name="TitleRow">
+      <Widget class="ScannerButton" name="ContextMenuTitle" colorScheme="ContextMenuTitle"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row1">
+      <Widget class="ContextMenuIcon" name="ItemIcon1"/>
+      <Widget class="ContextMenuText" name="ItemText1"/>
+    </Widget>
+      
+    <Widget class="RowWidget" name="Row2">
+      <Widget class="ContextMenuIcon" name="ItemIcon2"/>
+      <Widget class="ContextMenuText" name="ItemText2"/>
+    </Widget>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopLevelRotation"
+               start="true"
+               onEnter=""
+               autoStart="true"
+               steppingTime="@TabScanTime"
+               iterations="@RowScanIterations">
+      <Widget name="Row1" onSelect="actuate(ItemText1);transition(TopLevelRotation)"/>
+      <Widget name="Row2" onSelect="actuate(ItemText2);transition(TopLevelRotation)"/>
+    </Animation>
+  </Animations>
+</ACAT>
+
+

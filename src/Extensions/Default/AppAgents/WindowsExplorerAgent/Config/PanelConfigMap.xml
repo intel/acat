@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+    <ConfigMapEntry panelClass="WindowsExplorerContextMenu" configName="WindowsExplorerContextMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="WindowsExplorerContextMenu.xml"/>
+    <ConfigMapEntry panelClass="WindowsExplorerNavigateMenu" configName="WindowsExplorerNavigateMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="WindowsExplorerNavigateMenu.xml"/>
+    <ConfigMapEntry panelClass="WindowsExplorerFileOpsMenu" configName="WindowsExplorerFileOpsMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="WindowsExplorerFileOpsMenu.xml"/>
+    <ConfigMapEntry panelClass="WindowsExplorerClipboardMenu" configName="WindowsExplorerClipboardMenu" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="WindowsExplorerClipboardMenu.xml"/>
+  </ConfigMapEntries>
+</ACAT>

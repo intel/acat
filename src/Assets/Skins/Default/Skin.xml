@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ACAT>
+  <!--Configure various color settings here. The colors
+    can be specified either as a value of the Colors enum
+    (Black, Red, White etc) or as an RGB (#FFF20, #333745 etc).
+    For each element, you have the choice of specifying a 
+    color or a background image.  If the background image is
+    specified, the color element is ignored.  All image
+    files are to be stored in the folder for the theme.
+    background:           Background color of the widget in 
+                          its normal state
+    foreground:           Foreground color of the widget in
+                          its normal state
+    highlightBackground:  Background color of a highlighted 
+                          widget
+    highlightForeground:  Foreground color of a highlighted 
+                          widget
+    highlightSelectedBackground:  Background color of a highlighted 
+                          widget that is currently selected.
+    highlightSelectedForeground:  Foreground color of a highlighted 
+                          widget that is currently selected.
+                          
+    Each ColorScheme element has a "name" attribute which refers
+    to the type of Widget the scheme applies to.
+  -->
+
+  <Skin>
+    <ColorSchemes>
+	
+		
+      <ColorScheme name="Scanner"
+        background="White"
+        foreground="Black"
+        highlightSelectedBackground="Blue"
+        highlightSelectedForeground="White"
+        highlightBackground="#FFF200"
+        highlightForeground="Black"/>
+		
+	  <ColorScheme name="ScannerButton"
+        background="LightGray"
+		foreground="Black"
+        highlightSelectedBackground="Blue"
+        highlightSelectedForeground="White"
+		backgroundImage="ScannerButton.png"
+        highlightBackground="#FFF200"
+		highlightForeground="Black"/>
+			
+      <ColorScheme name="DisabledScannerButton"
+        background="LightGray"
+        foreground="Gray"
+        highlightSelectedBackground="Black"
+        highlightSelectedForeground="White"
+        highlightBackground="#FFF200"
+        highlightForeground="Gray"/>
+
+      <ColorScheme name="WordListItemButton"
+        background="White"
+        foreground="Black"
+        highlightSelectedBackground="Black"
+        highlightSelectedForeground="White"
+        highlightBackground="#FFF200"
+        highlightForeground="Black"/>
+
+      <ColorScheme name="ContextMenuIconButton"
+        background="#21409A"
+        backgroundImage="contextIconNormal.png"
+        foreground="White"
+        highlightSelectedBackground="Black"
+        highlightSelectedForeground="White"
+        highlightBackground="#FFF200"
+        highlightBackgroundImage="contextIconHighlight.png"
+	      highlightSelectedBackgroundImage="contextIconHighlightSelected.png"
+        highlightForeground="Black"/>
+
+      <ColorScheme name="DisabledContextMenuIconButton"
+        background="#21409A"
+        backgroundImage="contextIconNormal.png"
+        foreground="Gray"
+        highlightSelectedBackground="Black"
+        highlightSelectedForeground="White"
+        highlightBackground="#FFF200"
+        highlightBackgroundImage="contextIconHighlight.png"
+        highlightForeground="Gray"/>
+
+      <ColorScheme name="ContextMenuTextButton"
+        background="#21409A"
+        backgroundImage="contextTextNormal.png"
+        foreground="White"
+        highlightSelectedBackground="contextTextHighlightSelected.png"
+        highlightSelectedForeground="White"
+        highlightBackground="#FFF200"
+        highlightBackgroundImage="contextTextHighlight.png"
+	      highlightSelectedBackgroundImage="contextTextHighlightSelected.png"
+        highlightForeground="Black"/>
+
+      <ColorScheme name="DisabledContextMenuTextButton"
+        background="#21409A"
+        backgroundImage="contextTextNormal.png"
+        foreground="Gray"
+        highlightSelectedBackground="Black"
+        highlightSelectedForeground="White"
+        highlightBackground="#FFF200"
+        highlightBackgroundImage="contextTextHighlight.png"
+        highlightForeground="Gray"/>
+
+
+      <ColorScheme name="ColorCodedRegion1"
+        background="#3C3C3C"
+        foreground="Black"
+		backgroundImage="ScannerButtonColorCoded.png"
+        highlightSelectedBackground="Black"
+        highlightSelectedForeground="White"
+        highlightBackground="#FFF200"
+        highlightForeground="Black"/>
+
+      <ColorScheme name="DisabledColorCodedRegion1"
+        background="#3C3C3C"
+        foreground="Gray"
+		backgroundImage="ScannerButtonColorCoded.png"
+        highlightSelectedBackground="Black"
+        highlightSelectedForeground="White"
+        highlightBackground="#FFF200"
+        highlightForeground="Gray"/>
+
+      <ColorScheme name="ColorCodedRegion2"
+        background="#3C3C3C"
+        foreground="Black"
+		backgroundImage="ScannerButtonColorCoded1.png"
+        highlightSelectedBackground="Black"
+        highlightSelectedForeground="White"
+        highlightBackground="#FFF200"
+        highlightForeground="Black"/>
+
+      <ColorScheme name="DisabledColorCodedRegion2"
+        background="#3C3C3C"
+        foreground="Gray"
+		backgroundImage="ScannerButtonColorCoded2.png"
+        highlightSelectedBackground="Black"
+        highlightSelectedForeground="White"
+        highlightBackground="#FFF200"
+        highlightForeground="Gray"/>
+		
+		<ColorScheme name="ColorCodedRegion3"
+        background="#3C3C3C"
+        foreground="Black"
+		backgroundImage="ScannerButtonColorCoded2.png"
+        highlightSelectedBackground="Black"
+        highlightSelectedForeground="White"
+        highlightBackground="#FFF200"
+        highlightForeground="Black"/>
+
+      <ColorScheme name="DisabledColorCodedRegion3"
+        background="#3C3C3C"
+        foreground="Gray"
+		backgroundImage="ScannerButtonColorCoded1.png"
+        highlightSelectedBackground="Black"
+        highlightSelectedForeground="White"
+        highlightBackground="#FFF200"
+        highlightForeground="Gray"/>
+
+      <ColorScheme name="Dialog"
+        background="White"
+        foreground="Black"
+        highlightSelectedBackground="Gray"
+        highlightSelectedForeground="White"
+        highlightBackground="Black"
+        highlightForeground="White"/>
+
+      <ColorScheme name="DialogWindowTitle"
+        background="Navy"
+        backgroundImage="dialogWindowTitle.png"                     
+        foreground="Black"/>
+
+      <ColorScheme name="ContextMenuTitle"
+        background="Black"
+        backgroundImage="contextMenuTitle.png"
+        foreground="Black"/>
+
+      <ColorScheme name="Button"
+        background="Gainsboro"
+        foreground="Black"
+        highlightSelectedBackground="Gray"
+        highlightSelectedForeground="White"
+        highlightBackground="Black"
+        highlightForeground="White"/>
+
+      <ColorScheme name="HighContrast"
+        background="#303030"
+        foreground="White"/>
+
+      <ColorScheme name="Mute"
+        background="Black"
+        foreground="Gray"
+        highlightSelectedBackground="DarkMagenta"
+        highlightSelectedForeground="Black"
+        highlightBackground="DarkSlateGray"
+        highlightForeground="DarkMagenta"/>
+
+      <ColorScheme name="TalkWindow"
+                    background="#383838"
+                    foreground="White"/>
+    </ColorSchemes>
+  </Skin>
+ </ACAT>

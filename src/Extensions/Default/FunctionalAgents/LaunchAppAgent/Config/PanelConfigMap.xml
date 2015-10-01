@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+    <ConfigMapEntry panelClass="LaunchAppScanner" configName="LaunchAppScanner" formId="D946E1D6-5D67-40E6-B27F-F8D062DE5450" configFile="LaunchAppScanner.xml"/>
+  </ConfigMapEntries>
+</ACAT>

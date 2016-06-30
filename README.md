@@ -1,4 +1,4 @@
-## ACAT Release v0.98 binaries now available [here] (https://github.com/01org/acat/releases)
+## New pre-release of ACAT v0.99 now available [here] (https://github.com/01org/acat/releases)
 
 
 ##Introduction

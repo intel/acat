@@ -1,4 +1,4 @@
-## New pre-release of ACAT v0.99.1 now available [here] (https://github.com/01org/acat/releases)
+## New pre-release of ACAT v1.00.0 now available [here] (https://github.com/01org/acat/releases)
 
 
 ##Introduction

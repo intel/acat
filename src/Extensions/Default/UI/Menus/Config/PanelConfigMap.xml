@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" ?>
-
-<ACAT>
-  <ConfigMapEntries>
-    <ConfigMapEntry panelClass="ToolsMenu" configName="ToolsMenu" formId="ABF847DF-ECBC-4361-96E9-D2DD3D031D73" configFile="ToolsMenu.xml"/>
-    <ConfigMapEntry panelClass="SettingsMenu" configName="SettingsMenu" formId="5FE98886-D943-4E27-8380-BBB42D95D21E" configFile="SettingsMenu.xml"/>
-    <ConfigMapEntry panelClass="WindowPosSizeMenu" configName="WindowPosSizeMenu" formId="9144567C-7821-425A-904F-4601A89AE3FD" configFile="WindowPosSizeMenu.xml"/>
-  </ConfigMapEntries>
-</ACAT>

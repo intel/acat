@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Aster.ActuatorManagement.ActuatorBase" Collapsed="true">
+    <Position X="2.75" Y="4.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAggAQACGIEAIQAAIAAAARBAAEAACAAAAACAAgAAAA=</HashCode>
+      <FileName>ActuatorBase.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_switches" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.863" />
+  </Class>
+  <Class Name="Aster.ActuatorManagement.ActuatorManager" Collapsed="true">
+    <Position X="7" Y="2.5" Width="1.5" />
+    <NestedTypes>
+      <Delegate Name="Aster.ActuatorManagement.ActuatorManager.SwitchActivated" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ActuatorManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="Aster.ActuatorManagement.ActuatorManager.SwitchHook" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ActuatorManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAIkRQAAACIEACSQAAAgAAgAAAAAAAIARwCCMAgAGAA=</HashCode>
+      <FileName>ActuatorManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Actuators" />
+      <Property Name="SwitchConfigMap" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Aster.ActuatorManagement.Actuators" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAACAEQAAAAAAAAgAAAACIACCAAgABAAAAAAA=</HashCode>
+      <FileName>Actuators.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Collection" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Aster.ActuatorManagement.ActuatorSwitchBase" Collapsed="true">
+    <Position X="0.75" Y="6.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAIgAAAAqIkAAAAMIkCACQAAKAAAAAAAAQCAAIAAAQ=</HashCode>
+      <FileName>ActuatorSwitchBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Aster.ActuatorManagement.ActuatorSwitchEventArgs" Collapsed="true">
+    <Position X="10.5" Y="8.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ActuatorSwitchEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aster.ActuatorManagement.SwitchConfig">
+    <Position X="9.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgBAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SwitchMap\SwitchConfig.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_switchMapTable" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Aster.ActuatorManagement.SwitchElement" Collapsed="true">
+    <Position X="11.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAIACBAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SwitchMap\SwitchElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aster.ActuatorManagement.SwitchMap" Collapsed="true">
+    <Position X="11.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAIAADAAAAAAAgAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>SwitchMap\SwitchMap.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_actuatorsTable" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Aster.ActuatorManagement.SwitchMapActuator" Collapsed="true">
+    <Position X="11.25" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAgCAAAAAAAAAACAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>SwitchMap\SwitchMapActuator.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_switchTable" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Aster.InputActuators.KeyboardActuator" Collapsed="true">
+    <Position X="3.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAChAAAACCEUQQAAEAAAAAAAAAAAAAAACAICAAgAAAA=</HashCode>
+      <FileName>KeyboardActuator\KeyboardActuator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aster.InputActuators.KeyboardSwitch" Collapsed="true">
+    <Position X="1" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAACEEAAAAAAAAAAAAAgAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>KeyboardActuator\KeyboardSwitch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Aster.ActuatorManagement.IActuatorSwitch" Collapsed="true">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIgAAAAoIAAAAAMAkCAAQAAIAAAAAAAAQCAAAAAAQ=</HashCode>
+      <FileName>Interfaces\IActuatorSwitch.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Aster.ActuatorManagement.IActuator" Collapsed="true">
+    <Position X="3" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAggAAACEIAAIQAAIAAAARAAAAAAAAAAAACAAgAAAA=</HashCode>
+      <FileName>Interfaces\IActuator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="System.Collections.Generic.IEnumerable&lt;T&gt;" Collapsed="true">
+    <Position X="7" Y="4.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Enum Name="Aster.ActuatorManagement.State" Collapsed="true">
+    <Position X="4" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAIAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IActuator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Aster.ActuatorManagement.SwitchAction" Collapsed="true">
+    <Position X="5.75" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAABI=</HashCode>
+      <FileName>Interfaces\IActuatorSwitch.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="Aster.ActuatorManagement.SwitchActivated" Collapsed="true">
+    <Position X="5.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IActuator.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Aster.ActuatorManagement.SwitchDeactivated" Collapsed="true">
+    <Position X="7.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IActuator.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Aster.ActuatorManagement.SwitchTriggered" Collapsed="true">
+    <Position X="4" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IActuator.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Aster.ActuatorManagement.AcceptTimeExpired" Collapsed="true">
+    <Position X="2.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IActuatorSwitch.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

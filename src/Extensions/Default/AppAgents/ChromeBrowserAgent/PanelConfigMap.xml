@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+	  <ConfigMapEntry panelClass="ChromeBrowserContextMenu" configName="ChromeBrowserContextMenu" configId="B8892C5E-852B-487E-8B84-F575D7E552B6" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="ChromeBrowserContextMenu.xml"/>
+    <ConfigMapEntry panelClass="ChromeBrowserZoomMenu" configName="ChromeBrowserZoomMenu" configId="404158DA-CB4B-4E7A-89E6-3E71FE488AB3" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="ChromeBrowserZoomMenu.xml"/>
+    <ConfigMapEntry panelClass="ChromeBrowserMenu" configName="ChromeBrowserMenu" configId="E131489E-960E-44B7-BFFE-FD1050DAA066" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="ChromeBrowserMenu.xml"/>
+  </ConfigMapEntries>
+</ACAT>

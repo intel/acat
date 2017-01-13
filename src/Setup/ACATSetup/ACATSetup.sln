@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "ACATSetup", "ACATSetup.isproj", "{316D16D6-9C43-438E-BADD-9CF289F6862F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		CD_ROM|Default = CD_ROM|Default
+		DVD-5|Default = DVD-5|Default
+		SingleImage|Default = SingleImage|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{316D16D6-9C43-438E-BADD-9CF289F6862F}.CD_ROM|Default.ActiveCfg = CD_ROM
+		{316D16D6-9C43-438E-BADD-9CF289F6862F}.CD_ROM|Default.Build.0 = CD_ROM
+		{316D16D6-9C43-438E-BADD-9CF289F6862F}.DVD-5|Default.ActiveCfg = DVD-5
+		{316D16D6-9C43-438E-BADD-9CF289F6862F}.DVD-5|Default.Build.0 = DVD-5
+		{316D16D6-9C43-438E-BADD-9CF289F6862F}.SingleImage|Default.ActiveCfg = SingleImage
+		{316D16D6-9C43-438E-BADD-9CF289F6862F}.SingleImage|Default.Build.0 = SingleImage
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

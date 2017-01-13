@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+    <ConfigMapEntry panelClass="PhraseSpeakScanner" configName="PhraseSpeakScanner" configId="1C308676-BEA2-4F7B-ADA8-8C3A34D0A69A" formId="D80D5448-13D7-472A-AF73-4C326F1CACAE" configFile="PhraseSpeakScanner.xml"/>
+    <ConfigMapEntry panelClass="PhraseSpeakScanner" configName="PhraseSpeakScannerAlt" configId="2BE12ADA-88A2-4029-B8F7-8E74209B585B" formId="D80D5448-13D7-472A-AF73-4C326F1CACAE" configFile="PhraseSpeakScannerAlt.xml"/>
+    <ConfigMapEntry panelClass="PhraseListEditForm" configName="PhraseListEditor" configId="A0B129BF-2306-4721-A315-91CCAF1A8782" formId="4308B7FF-FEE5-4E03-AB16-7BCB54C923AA" configFile="PhraseListEditForm.xml"/>
+    <ConfigMapEntry panelClass="PhraseEditorForm" configName="PhraseEditor" configId="4F996002-60E7-468D-B8BD-1AFF1AE0B868" formId="158493C6-C195-4482-83F5-231BE4CB897C" configFile="PhraseEditorForm.xml"/>
+  </ConfigMapEntries>
+</ACAT>

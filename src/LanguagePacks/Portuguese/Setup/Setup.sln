@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "Setup", "Setup.isproj", "{5B79ADEB-DE7B-426F-BA22-31E1A52E9A1A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		CD_ROM|Default = CD_ROM|Default
+		DVD-5|Default = DVD-5|Default
+		SingleImage|Default = SingleImage|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5B79ADEB-DE7B-426F-BA22-31E1A52E9A1A}.CD_ROM|Default.ActiveCfg = CD_ROM
+		{5B79ADEB-DE7B-426F-BA22-31E1A52E9A1A}.CD_ROM|Default.Build.0 = CD_ROM
+		{5B79ADEB-DE7B-426F-BA22-31E1A52E9A1A}.DVD-5|Default.ActiveCfg = DVD-5
+		{5B79ADEB-DE7B-426F-BA22-31E1A52E9A1A}.DVD-5|Default.Build.0 = DVD-5
+		{5B79ADEB-DE7B-426F-BA22-31E1A52E9A1A}.SingleImage|Default.ActiveCfg = SingleImage
+		{5B79ADEB-DE7B-426F-BA22-31E1A52E9A1A}.SingleImage|Default.Build.0 = SingleImage
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

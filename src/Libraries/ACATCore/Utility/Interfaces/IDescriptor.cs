@@ -1,0 +1,53 @@
+﻿////////////////////////////////////////////////////////////////////////////
+// <copyright file="IDescriptor.cs" company="Intel Corporation">
+//
+// Copyright (c) 2013-2017 Intel Corporation 
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// </copyright>
+////////////////////////////////////////////////////////////////////////////
+
+using System;
+
+namespace ACAT.Lib.Core.Utility
+{
+    /// <summary>
+    /// Represents the name, a brief description and a GUID
+    /// for a class. Every class that is dynamically discovered
+    /// and loaded must implement this interface.  Examples are
+    /// scanners, application agents, word predictors, actuators etc.
+    /// </summary>
+    public interface IDescriptor
+    {
+        /// <summary>
+        /// A brief description
+        /// </summary>
+        String Description { get; }
+
+        /// <summary>
+        /// GUID used as a unique ID
+        /// </summary>
+        Guid Id { get; }
+
+        /// <summary>
+        /// Name of the module
+        /// </summary>
+        String Name { get; }
+
+        /// <summary>
+        /// Category of the module
+        /// </summary>
+        String Category { get; }
+    }
+}

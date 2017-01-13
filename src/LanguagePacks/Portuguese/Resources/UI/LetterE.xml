@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+  <!ENTITY usebold "false">
+  <!ENTITY buttonFontName "Arial">
+]>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="B1" label="" value="" fontname="&buttonFontName;" fontsize="22" bold="&usebold;" />
+    <WidgetAttribute name="B2" label="e" value="e" fontname="&buttonFontName;" fontsize="22" bold="&usebold;" />
+    <WidgetAttribute name="B3" label="&#xe9;" value="&#xe9;" shiftValue="&#xc9;" fontname="&buttonFontName;" fontsize="22"  bold="&usebold;" />
+    <WidgetAttribute name="B4" label="&#xea;" value="&#xea;" shiftValue="&#xca;" fontname="&buttonFontName;" fontsize="22"  bold="&usebold;" />
+    <WidgetAttribute name="B5" label="l" value="@CmdGoBack" fontname="ACAT Icon" fontsize="22" bold="&usebold;" />
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="ScannerButton" name="B1" colorScheme="ColorCodedRegion2"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+    <Widget class="ScannerButton" name="B2" colorScheme="ColorCodedRegion2"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+    <Widget class="ScannerButton" name="B3" colorScheme="ColorCodedRegion2"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+    <Widget class="ScannerButton" name="B4" colorScheme="ColorCodedRegion2"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+    <Widget class="ScannerButton" name="B5" colorScheme="ColorCodedRegion2"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopLevelRotation"
+                  iterations="@StripScannerColumnIterations"
+                  autoStart="true"
+                  start="true"
+                  firstPauseTime="@FirstPauseTime"
+                  onEnd="close()"
+                  onSelect="actuate(@SelectedWidget)">
+      <Widget name="B1" onSelect="Transition(ButtonPressed)"/>
+      <Widget name="B2"/>
+      <Widget name="B3"/>
+      <Widget name="B4"/>
+      <Widget name="B5"/>
+    </Animation>
+
+    <Animation name="ButtonPressed"
+                onEnter=""
+                iterations="1"
+                onEnd="transition(TopLevelRotation)">
+      <Widget name="@SelectedWidget" firstPauseTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+    </Animation>
+  </Animations>
+</ACAT>
+

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+	
+	  <ConfigMapEntry panelClass="Alphabet" configName="AlphabetQwerty" configId="73F38B4F-A95A-46EC-A59F-4D4BAC44DAD6" formId="3FA65CCE-EB23-461A-AEE1-70339446BEA9" configFile="AlphabetScannerQwerty.xml"/>
+    <ConfigMapEntry panelClass="Alphabet" configName="AlphabetScannerAbc" configId="21F975F2-1E1A-4636-9E30-E81B4C423983" formId="8AA9056F-84A8-4E7F-9704-061CB4FAB68D" configFile="AlphabetScannerAbc.xml"/>
+    <ConfigMapEntry panelClass="Alphabet" configName="AlphabetScannerAlternate" configId="A4B7D99D-DFBC-4B05-AAFB-0377D1D0EF47" formId="D4A507B2-2EA5-49BC-96A8-B00D287F6406" configFile="AlphabetScannerAlternate.xml"/>
+    <ConfigMapEntry panelClass="Alphabet" configName="AlphabetScannerAbcAlternate" configId="B0994D02-1763-4C45-881E-037506BE3CA5" formId="D4A507B2-2EA5-49BC-96A8-B00D287F6406" configFile="AlphabetScannerAbcAlternate.xml"/>
+    
+    <ConfigMapEntry panelClass="AlphabetMinimal" configName="AlphabetQwertyMinimal" configId="EB791B2B-EE9C-4E05-B012-302FF8B81FF1" formId="D37C3E46-8E54-46E5-8657-3D43DBDB3003" configFile="AlphabetScannerQwertyMinimal.xml"/>
+    <ConfigMapEntry panelClass="AlphabetMinimal" configName="AlphabetScannerAbcMinimal" configId="3F87331B-DC3E-45BC-9B99-59AC7EA0DDC0" formId="BB2B224F-9B63-46D2-9905-17CDAC3067F4" configFile="AlphabetScannerAbcMinimal.xml"/>
+    <ConfigMapEntry panelClass="AlphabetMinimal" configName="AlphabetScannerAlternateMinimal" configId="B7300534-DA4B-42B1-84EF-7DF7D8963E7B" formId="32D2A726-43A9-40D7-81A3-86C6C9EF4530" configFile="AlphabetScannerAlternateMinimal.xml"/>
+    <ConfigMapEntry panelClass="AlphabetMinimal" configName="AlphabetScannerAbcAlternateMinimal" configId="1506E3D9-6F5C-4489-85C0-64DB9BFD9E70" formId="32D2A726-43A9-40D7-81A3-86C6C9EF4530" configFile="AlphabetScannerAbcAlternateMinimal.xml"/>
+
+    <ConfigMapEntry panelClass="TalkApplicationScanner" configName="TalkApplicationScannerQwerty" configId="C9E9950A-1502-4544-9C23-4F9878E29F61" formId="D9A5B53F-7119-445B-BDEA-F76EC53077F1" configFile="TalkApplicationScannerQwerty.xml"/>
+    <ConfigMapEntry panelClass="TalkApplicationScanner" configName="TalkApplicationScannerAbc" configId="47165306-3625-4AFC-906F-A7CD64660CE8" formId="86B57FA0-2EF3-4C07-81E7-6796AE9B7B59" configFile="TalkApplicationScannerAbc.xml"/>
+    <ConfigMapEntry panelClass="TalkApplicationScanner" configName="TalkApplicationScannerAlternate" configId="CCD87BFE-16CE-4BE6-8A3B-EA856182EEC1" formId="44DD722B-2BA2-42F4-9AE6-B13108A6F025" configFile="TalkApplicationScannerAlternate.xml"/>
+    <ConfigMapEntry panelClass="TalkApplicationScanner" configName="TalkApplicationScannerAbcAlternate" configId="6F1A3394-875B-437D-93C0-1690018CEAD0" formId="44DD722B-2BA2-42F4-9AE6-B13108A6F025" configFile="TalkApplicationScannerAbcAlternate.xml"/>
+
+    <ConfigMapEntry panelClass="Punctuation" configName="PunctuationsScanner" configId="A2F14CEE-2A3F-4201-8A4E-44A7CC044BD0" formId="478CE93F-A391-435C-B5B3-2AFC32CD99A7" configFile="PunctuationsScanner.xml"/>
+    
+    <ConfigMapEntry panelClass="Brackets" configName="Brackets" configId="E2F14CEE-2A3F-4301-8A4E-44A7CC044AD0" formId="83FACD42-3678-4D14-9350-22B0E69D0D01" configFile="Brackets.xml"/>
+    <ConfigMapEntry panelClass="LetterA" configName="LetterA" configId="6D97DA47-49A4-43F7-8BF8-F6CB5041A79C" formId="83FACD42-3678-4D14-9350-22B0E69D0D01" configFile="LetterA.xml"/>
+    <ConfigMapEntry panelClass="LetterE" configName="LetterE" configId="F08ABD9A-54EF-44CA-8405-7093814CFC8F" formId="83FACD42-3678-4D14-9350-22B0E69D0D01" configFile="LetterE.xml"/>
+    <ConfigMapEntry panelClass="LetterI" configName="LetterI" configId="E056A226-0B5C-48A7-86A6-C0CD4CF9C1B0" formId="83FACD42-3678-4D14-9350-22B0E69D0D01" configFile="LetterI.xml"/>
+    <ConfigMapEntry panelClass="LetterN" configName="LetterN" configId="72A88B1A-0F7E-475C-BC4C-D433E6968547" formId="83FACD42-3678-4D14-9350-22B0E69D0D01" configFile="LetterN.xml"/>
+    <ConfigMapEntry panelClass="LetterO" configName="LetterO" configId="F5438B63-B077-49C4-A4D0-E3373FD55579" formId="83FACD42-3678-4D14-9350-22B0E69D0D01" configFile="LetterO.xml"/>
+    <ConfigMapEntry panelClass="LetterU" configName="LetterU" configId="D827B23D-C0B2-4233-BA60-1DEBA8DE54BE" formId="83FACD42-3678-4D14-9350-22B0E69D0D01" configFile="LetterU.xml"/>
+    <ConfigMapEntry panelClass="QuestionMark" configName="QuestionMark" configId="F2F14CEF-3A3F-4301-8A4E-44A7CC044AD0" formId="83FACD42-3678-4D14-9350-22B0E69D0D01" configFile="QuestionMark.xml"/>
+
+  </ConfigMapEntries>
+</ACAT>

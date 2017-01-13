@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="lblBack" label="&#x75;" value="goBack"  fontname="ACAT Icon" fontsize="22"  toolTip="Exit" bold="false"/>
+    <WidgetAttribute name="lblIncrease" label="$" value="ScannerZoomIn"  fontsize="22"  fontname="ACAT Icon"  toolTip="ZoomIn" bold="false"/>
+    <WidgetAttribute name="lblDecrease" label="#" value="ScannerZoomOut"  fontsize="22" fontname="ACAT Icon"  toolTip="ZoomOut" bold="false"/>
+    <WidgetAttribute name="lblMove" label="[" value="ScannerMove"  fontsize="22"  fontname="ACAT Icon"  toolTip="Reposition" bold="false"/>
+    <WidgetAttribute name="lblDefault" label="C" value="ScannerRestoreDefaults"  fontsize="22"  fontname="ACAT Icon"  toolTip="RestoreDefaults" bold="false"/>
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="ButtonControlWidget" name="lblBack" />
+    <Widget class="ButtonControlWidget" name="lblDecrease" />
+    <Widget class="ButtonControlWidget" name="lblIncrease" />
+    <Widget class="ButtonControlWidget" name="lblDefault" />
+    <Widget class="ButtonControlWidget" name="lblMove" />
+  </Layout>
+
+  <Animations>
+    <Animation  name="animTopLevel"
+                start="true"
+                onEnter=""
+                firstPauseTime="@FirstPauseTime"
+                scanTime="@MenuDialogScanTime"
+                iterations="@GridScanIterations">
+      <Widget name="lblBack" onSelect="actuate(@SelectedWidget)"/>
+      <Widget name="lblIncrease" onSelect="actuate(@SelectedWidget);transition(animIncrease);"/>
+      <Widget name="lblDecrease" onSelect="actuate(@SelectedWidget);transition(animDecrease);"/>
+      <Widget name="lblMove" onSelect="actuate(@SelectedWidget);"/>
+      <Widget name="lblDefault" onSelect="actuate(@SelectedWidget);"/>
+    </Animation>
+
+    <Animation  name="animDecrease"
+                onEnter=""
+                onEnd="transition(animTopLevel)"
+                scanTime="@MenuDialogScanTime"
+                iterations="2">
+      <Widget name="lblDecrease" firstPauseTime="@FirstPauseTime" onSelect="actuate(@SelectedWidget);transition(animDecrease)"/>
+    </Animation>
+
+    <Animation  name="animIncrease"
+                onEnter=""
+                onEnd="transition(animTopLevel)"
+                scanTime="@MenuDialogScanTime"
+                iterations="2">
+      <Widget name="lblIncrease" firstPauseTime="@FirstPauseTime" onSelect="actuate(@SelectedWidget);transition(animIncrease)"/>
+    </Animation>
+  </Animations>
+</ACAT>
+

@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+  <!ENTITY usebold "false">
+  <!ENTITY buttonFontName "Arial">
+]>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="ContextMenuTitle" label="" value="" fontsize="20" fontname="Arial" mouseClickActuate="false" bold="&usebold;"/>
+    
+    <WidgetAttribute name="ItemIcon1" label=" " value="@exitLectureManager" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText1" label="&#x75;" value="@exitLectureManager" fontsize="18" fontname="ACAT Icon"  bold="&usebold;"/>
+    
+    <WidgetAttribute name="ItemIcon2" label="F" value="@SpeakMenu" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText2" label="LMSpeak" value="@SpeakMenu" fontsize="18" fontname="Arial"  bold="&usebold;"/>
+
+    <WidgetAttribute name="ItemIcon3" label="F" value="@ToggleMode" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText3" label="LMSetMode" value="@ToggleMode" fontsize="18" fontname="Arial"  bold="&usebold;"/>
+    
+    <WidgetAttribute name="ItemIcon4" label=" " value="@LMTopOfDoc" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText4" label="LMTop" value="@LMTopOfDoc" fontsize="18" fontname="Arial"  bold="&usebold;"/>
+
+    <WidgetAttribute name="ItemIcon5" label=" " value="@LMForward" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText5" label="LMForward" value="@LMForward" fontsize="18" fontname="Arial"  bold="&usebold;"/>
+
+    <WidgetAttribute name="ItemIcon6" label=" " value="@LMBackward" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText6" label="LMBack" value="@LMBackward" fontsize="18" fontname="Arial"  bold="&usebold;"/>
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="RowWidget" name="TitleRow">
+      <Widget class="ScannerButton" name="ContextMenuTitle" colorScheme="ContextMenuTitle"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row1">
+      <Widget class="ContextMenuIcon" name="ItemIcon1" />
+      <Widget class="ContextMenuText" name="ItemText1"  />
+    </Widget>
+      
+    <Widget class="RowWidget" name="Row2">
+      <Widget class="ContextMenuIcon" name="ItemIcon2" enabled="contextual"/>
+      <Widget class="ContextMenuText" name="ItemText2" enabled="contextual"/>
+    </Widget>
+        
+    <Widget class="RowWidget" name="Row3">
+      <Widget class="ContextMenuIcon" name="ItemIcon3" />
+      <Widget class="ContextMenuText" name="ItemText3" />
+    </Widget>
+      
+    <Widget class="RowWidget" name="Row4">
+      <Widget class="ContextMenuIcon" name="ItemIcon4" enabled="contextual"/>
+      <Widget class="ContextMenuText" name="ItemText4" enabled="contextual"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row5">
+      <Widget class="ContextMenuIcon" name="ItemIcon5"/>
+      <Widget class="ContextMenuText" name="ItemText5" />
+    </Widget>
+  
+    <Widget class="RowWidget" name="Row6">
+      <Widget class="ContextMenuIcon" name="ItemIcon6"/>
+      <Widget class="ContextMenuText" name="ItemText6"/>
+    </Widget>
+  </Layout>
+  
+  <Animations>
+    <Animation name="TopLevelRotation"
+               start="true"
+               onEnter=""
+               firstPauseTime="@FirstPauseTime"
+               autoStart="true"
+               scanTime="@MenuDialogScanTime"
+               iterations="@RowScanIterations">
+      <Widget name="Row1" onSelect="actuate(ItemText1)"/>
+      <Widget name="Row2" onSelect="actuate(ItemText2)"/>
+      <Widget name="Row3" onSelect="actuate(ItemText3)"/>
+      <Widget name="Row4" onSelect="actuate(ItemText4)"/>
+      <Widget name="Row5" onSelect="select(ItemText5); actuate(ItemText5); transition(ButtonPressed)"/>
+      <Widget name="Row6" onSelect="select(ItemText6); actuate(ItemText6); transition(ButtonPressed)"/>
+    </Animation>
+
+    <Animation name="ButtonPressed"
+               onEnter=""
+               iterations="1"
+               onEnd="transition(TopLevelRotation)">
+      <Widget name="@SelectedWidget" firstPauseTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+    </Animation>
+  </Animations>
+</ACAT>
+
+

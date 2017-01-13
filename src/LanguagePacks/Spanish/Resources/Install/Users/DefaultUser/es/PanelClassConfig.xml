@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AppPanelClassConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <PanelClassConfigs>
+    <PanelClassConfig>
+      <AppName>ACAT Application</AppName>
+      <AppId>ACATApp</AppId>
+      <AppDescription>The fully-featured ACAT Application</AppDescription>
+      <PanelClassConfigMaps>
+        <PanelClassConfigMap>
+          <PanelClassConfigMapEntries>
+            <PanelClassConfigMapEntry>
+              <PanelClass>Alphabet</PanelClass>
+              <ConfigId>21F975F2-1E1A-4636-9E30-E81B4C423983</ConfigId>
+            </PanelClassConfigMapEntry>
+            <PanelClassConfigMapEntry>
+              <PanelClass>AlphabetMinimal</PanelClass>
+              <ConfigId>3F87331B-DC3E-45BC-9B99-59AC7EA0DDC0</ConfigId>
+            </PanelClassConfigMapEntry>
+            <PanelClassConfigMapEntry>
+              <PanelClass>TalkApplicationScanner</PanelClass>
+              <ConfigId>47165306-3625-4AFC-906F-A7CD64660CE8</ConfigId>
+            </PanelClassConfigMapEntry>
+          </PanelClassConfigMapEntries>
+          <Name>AlphabetAbc</Name>
+          <Description>AlphabetScanner with ABC layout</Description>
+          <Default>false</Default>
+        </PanelClassConfigMap>
+        <PanelClassConfigMap>
+          <PanelClassConfigMapEntries>
+            <PanelClassConfigMapEntry>
+              <PanelClass>Alphabet</PanelClass>
+              <ConfigId>73F38B4F-A95A-46EC-A59F-4D4BAC44DAD6</ConfigId>
+            </PanelClassConfigMapEntry>
+            <PanelClassConfigMapEntry>
+              <PanelClass>AlphabetMinimal</PanelClass>
+              <ConfigId>EB791B2B-EE9C-4E05-B012-302FF8B81FF1</ConfigId>
+            </PanelClassConfigMapEntry>
+            <PanelClassConfigMapEntry>
+              <PanelClass>TalkApplicationScanner</PanelClass>
+              <ConfigId>C9E9950A-1502-4544-9C23-4F9878E29F61</ConfigId>
+            </PanelClassConfigMapEntry>
+          </PanelClassConfigMapEntries>
+          <Name>AlphabetQwerty</Name>
+          <Description>AlphabetScanner with Qwerty layout</Description>
+          <Default>true</Default>
+        </PanelClassConfigMap>
+        <PanelClassConfigMap>
+          <PanelClassConfigMapEntries>
+            <PanelClassConfigMapEntry>
+              <PanelClass>Alphabet</PanelClass>
+              <ConfigId>A4B7D99D-DFBC-4B05-AAFB-0377D1D0EF47</ConfigId>
+            </PanelClassConfigMapEntry>
+            <PanelClassConfigMapEntry>
+              <PanelClass>AlphabetMinimal</PanelClass>
+              <ConfigId>B7300534-DA4B-42B1-84EF-7DF7D8963E7B</ConfigId>
+            </PanelClassConfigMapEntry>
+            <PanelClassConfigMapEntry>
+              <PanelClass>TalkApplicationScanner</PanelClass>
+              <ConfigId>CCD87BFE-16CE-4BE6-8A3B-EA856182EEC1</ConfigId>
+            </PanelClassConfigMapEntry>
+          </PanelClassConfigMapEntries>
+          <Name>Alternate</Name>
+          <Description>AlphabetScanner with alternate layout</Description>
+          <Default>false</Default>
+        </PanelClassConfigMap>
+        <PanelClassConfigMap>
+          <PanelClassConfigMapEntries>
+            <PanelClassConfigMapEntry>
+              <PanelClass>Alphabet</PanelClass>
+              <ConfigId>B0994D02-1763-4C45-881E-037506BE3CA5</ConfigId>
+            </PanelClassConfigMapEntry>
+            <PanelClassConfigMapEntry>
+              <PanelClass>AlphabetMinimal</PanelClass>
+              <ConfigId>1506E3D9-6F5C-4489-85C0-64DB9BFD9E70</ConfigId>
+            </PanelClassConfigMapEntry>
+            <PanelClassConfigMapEntry>
+              <PanelClass>TalkApplicationScanner</PanelClass>
+              <ConfigId>6F1A3394-875B-437D-93C0-1690018CEAD0</ConfigId>
+            </PanelClassConfigMapEntry>
+          </PanelClassConfigMapEntries>
+          <Name>AlternateABC</Name>
+          <Description>AlphabetScanner ABC with alternate layout</Description>
+          <Default>false</Default>
+        </PanelClassConfigMap>
+      </PanelClassConfigMaps>
+    </PanelClassConfig>
+    <PanelClassConfig>
+      <AppName>ACAT Talk Application</AppName>
+      <AppId>ACATTalk</AppId>
+      <AppDescription>Reduced functionality which supports the Talk window to communicate</AppDescription>
+      <PanelClassConfigMaps>
+        <PanelClassConfigMap>
+          <PanelClassConfigMapEntries>
+            <PanelClassConfigMapEntry>
+              <PanelClass>TalkApplicationScanner</PanelClass>
+              <ConfigId>47165306-3625-4AFC-906F-A7CD64660CE8</ConfigId>
+            </PanelClassConfigMapEntry>
+          </PanelClassConfigMapEntries>
+          <Name>TalkApplicationABC</Name>
+          <Description>Talk application with the ABC layout</Description>
+          <Default>false</Default>
+        </PanelClassConfigMap>
+        <PanelClassConfigMap>
+          <PanelClassConfigMapEntries>
+            <PanelClassConfigMapEntry>
+              <PanelClass>TalkApplicationScanner</PanelClass>
+              <ConfigId>C9E9950A-1502-4544-9C23-4F9878E29F61</ConfigId>
+            </PanelClassConfigMapEntry>
+          </PanelClassConfigMapEntries>
+          <Name>TalkApplicationQwerty</Name>
+          <Description>Talk application with the QWERTY layout</Description>
+          <Default>false</Default>
+        </PanelClassConfigMap>
+        <PanelClassConfigMap>
+          <PanelClassConfigMapEntries>
+            <PanelClassConfigMapEntry>
+              <PanelClass>TalkApplicationScanner</PanelClass>
+              <ConfigId>CCD87BFE-16CE-4BE6-8A3B-EA856182EEC1</ConfigId>
+            </PanelClassConfigMapEntry>
+          </PanelClassConfigMapEntries>
+          <Name>TalkApplicationAlternate</Name>
+          <Description>Talk application with an Alternate layout</Description>
+          <Default>false</Default>
+        </PanelClassConfigMap>
+        <PanelClassConfigMap>
+          <PanelClassConfigMapEntries>
+            <PanelClassConfigMapEntry>
+              <PanelClass>TalkApplicationScanner</PanelClass>
+              <ConfigId>6F1A3394-875B-437D-93C0-1690018CEAD0</ConfigId>
+            </PanelClassConfigMapEntry>
+          </PanelClassConfigMapEntries>
+          <Name>TalkApplicationAlternateABC</Name>
+          <Description>Talk application (Abc) with an Alternate layout</Description>
+          <Default>false</Default>
+        </PanelClassConfigMap>
+      </PanelClassConfigMaps>
+    </PanelClassConfig>
+  </PanelClassConfigs>
+</AppPanelClassConfig>

@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+	  <ConfigMapEntry panelClass="DialogContextMenu" configName="DialogContextMenu" configId="C5DF3CB2-C78E-4137-B729-4C5EA589A440" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868"  configFile="DialogContextMenu.xml"/>
+  </ConfigMapEntries>
+</ACAT>

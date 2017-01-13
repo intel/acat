@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+  <!ENTITY usebold "false">
+  <!ENTITY buttonFontName "Arial">
+]>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="buttonAdd" label="Add" value="buttonAdd"  fontname="&buttonFontName;" bold="&usebold;" fontsize="14" />
+    <WidgetAttribute name="buttonInsert" label="Insert" value="buttonInsert"  fontname="&buttonFontName;" bold="&usebold;" fontsize="14" />
+    <WidgetAttribute name="buttonMoveUp" label="MoveUp" value="buttonMoveUp"  fontname="&buttonFontName;" bold="&usebold;" fontsize="14" />
+    <WidgetAttribute name="buttonMoveDown" label="MoveDown" value="buttonMoveDown"  fontname="&buttonFontName;" bold="&usebold;" fontsize="14" />
+    <WidgetAttribute name="buttonEdit" label="Edit" value="buttonEdit"  fontname="&buttonFontName;" bold="&usebold;" fontsize="14" />
+    <WidgetAttribute name="buttonDelete" label="Delete" value="buttonDelete" fontname="&buttonFontName;" bold="&usebold;"  fontsize="14" />
+
+    <WidgetAttribute name="buttonUp" label="&#xA6;" value="buttonUp"  fontname="ACAT Icon" bold="&usebold;" fontsize="20" />
+    <WidgetAttribute name="buttonDown" label="&#xA5;" value="buttonDown"  fontname="ACAT Icon" bold="&usebold;" fontsize="20" />
+    <WidgetAttribute name="buttonPageUp" label="&#x79;" value="buttonPageUp"  fontname="ACAT Alpha" bold="&usebold;" fontsize="20" />
+    <WidgetAttribute name="buttonPageDown" label="&#x7A;" value="buttonPageDown"  fontname="ACAT Alpha" bold="&usebold;" fontsize="20" />
+
+    <WidgetAttribute name="buttonOK" label="OK" value="buttonOK"  fontsize="14" />
+    <WidgetAttribute name="buttonCancel" label="Cancel" value="buttonCancel"  fontsize="14" />
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="RowWidget" name="tableTopRow">
+      <Widget class="ButtonControlWidget" name="buttonAdd" />
+      <Widget class="ButtonControlWidget" name="buttonInsert" />
+      <Widget class="ButtonControlWidget" name="buttonMoveUp" />
+      <Widget class="ButtonControlWidget" name="buttonMoveDown" />
+      <Widget class="ButtonControlWidget" name="buttonEdit" />
+      <Widget class="ButtonControlWidget" name="buttonDelete" />
+    </Widget>
+
+    <Widget class="WinControlWidget" name="tableSide">
+      <Widget class="ButtonControlWidget" name="buttonUp" />
+      <Widget class="ButtonControlWidget" name="buttonDown" />
+      <Widget class="ButtonControlWidget" name="buttonPageUp" />
+      <Widget class="ButtonControlWidget" name="buttonPageDown" />
+    </Widget>
+
+    <Widget class="ButtonControlWidget" name="buttonOK" />
+    <Widget class="ButtonControlWidget" name="buttonCancel" />
+  </Layout>
+
+  <Animations>
+    <Animation  name="TopLevelRotation"
+                start="true"
+                onEnter=""
+                scanTime="@MenuDialogScanTime"
+                iterations="@GridScanIterations">
+      <Widget name="tableTopRow" onSelect="transition(TopRowButtonScan);"/>
+      <Widget name="tableSide" onSelect="transition(SideButtonScan)"/>
+      <Widget name="buttonOK" onSelect="actuate(@SelectedWidget)" />
+      <Widget name="buttonCancel" onSelect="actuate(@SelectedWidget)"/>
+    </Animation>
+
+    <Animation  name="TopRowButtonScan"
+                onEnter=""
+                scanTime="@MenuDialogScanTime"
+                firstPauseTime="@FirstPauseTime"
+                iterations="@ColumnScanIterations"
+                onEnd="transition(TopLevelRotation)">
+      <Widget name="buttonAdd" onSelect="actuate(@SelectedWidget)" />
+      <Widget name="buttonInsert" onSelect="actuate(@SelectedWidget)" />
+      <Widget name="buttonMoveUp" onSelect="actuate(@SelectedWidget); transition(ButtonPressed)" />
+      <Widget name="buttonMoveDown" onSelect="actuate(@SelectedWidget); transition(ButtonPressed)" />
+      <Widget name="buttonEdit" onSelect="actuate(@SelectedWidget)" />
+      <Widget name="buttonDelete" onSelect="actuate(@SelectedWidget)" />
+    </Animation>
+
+    <Animation  name="SideButtonScan"
+                onEnter=""
+                scanTime="@MenuDialogScanTime"
+                firstPauseTime="@FirstPauseTime"
+                iterations="@ColumnScanIterations"
+                onEnd="transition(TopLevelRotation)">
+      <Widget name="buttonUp" onSelect="actuate(@SelectedWidget); transition(ButtonPressed)" />
+      <Widget name="buttonDown" onSelect="actuate(@SelectedWidget); transition(ButtonPressed)" />
+      <Widget name="buttonPageUp" onSelect="actuate(@SelectedWidget); transition(ButtonPressed)" />
+      <Widget name="buttonPageDown" onSelect="actuate(@SelectedWidget); transition(ButtonPressed)" />
+    </Animation>
+
+    <Animation name="ButtonPressed"
+              onEnter=""
+              iterations="1"
+              onEnd="transition(TopLevelRotation)">
+      <Widget name="@SelectedWidget" firstPauseTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+    </Animation>
+  </Animations>
+</ACAT>
+

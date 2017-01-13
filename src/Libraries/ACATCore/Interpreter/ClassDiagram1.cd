@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Aster.Interpreter.ActionVerb" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAQ=</HashCode>
+      <FileName>ActionVerb.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aster.Interpreter.Interpret" Collapsed="true">
+    <Position X="2.75" Y="3" Width="1.5" />
+    <NestedTypes>
+      <Delegate Name="Aster.Interpreter.Interpret.Select" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Interpret.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="Aster.Interpreter.Interpret.Beep" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Interpret.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="Aster.Interpreter.Interpret.Highlight" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Interpret.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="Aster.Interpreter.Interpret.Actuate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Interpret.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="Aster.Interpreter.Interpret.Run" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Interpret.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="Aster.Interpreter.Interpret.Transition" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Interpret.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="Aster.Interpreter.Interpret.HighlightSelected" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Interpret.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="Aster.Interpreter.Interpret.Close" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Interpret.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="Aster.Interpreter.Interpret.Action" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Interpret.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="Aster.Interpreter.Interpret.Launch" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Interpret.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="Aster.Interpreter.Interpret.Stop" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Interpret.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AABAAwAAAAAAQAQAABIAAAEgAACgAgFAQIBEIAgAQAA=</HashCode>
+      <FileName>Interpret.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_scripts" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Aster.Interpreter.InterpreterEventArgs" Collapsed="true">
+    <Position X="6" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>InterpreterEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aster.Interpreter.InterpreterRunEventArgs" Collapsed="true">
+    <Position X="6" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>InterpreterRunEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aster.Interpreter.Lexer" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="Aster.Interpreter.Lexer.ParseState" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Lexer.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAgAAQAAAIAAAAAAAAAEAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Lexer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aster.Interpreter.PCode" Collapsed="true">
+    <Position X="4.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAARgAAA=</HashCode>
+      <FileName>PCode.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="ActionVerbList" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Aster.Interpreter.Scripts">
+    <Position X="0.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Scripts.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_lexer" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Aster.Interpreter.Variables" Collapsed="true">
+    <Position X="6" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAABBhAAAAAJCAAgAAAACAAQAAAAADAAAA=</HashCode>
+      <FileName>Variables.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

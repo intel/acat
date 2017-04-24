@@ -172,14 +172,14 @@
                    firstPauseTime="@WordPredictionFirstPauseTime"
                    onEnd="transition(TopLevelRotation)">
       <Widget name="BUndoLastAction" onSelect="actuate(@SelectedWidget);transition(TopLevelRotation)"/>
-      <Widget name="PWLItem1" onSelect="actuate(PWLItem2);transition(TopLevelRotation)"/>
-      <Widget name="PWLItem2" onSelect="actuate(PWLItem3);transition(TopLevelRotation)"/>
-      <Widget name="PWLItem3" onSelect="actuate(PWLItem4);transition(TopLevelRotation)"/>
-      <Widget name="PWLItem4" onSelect="actuate(PWLItem5);transition(TopLevelRotation)"/>
-      <Widget name="PWLItem5" onSelect="actuate(PWLItem6);transition(TopLevelRotation)"/>
-      <Widget name="PWLItem6" onSelect="actuate(PWLItem7);transition(TopLevelRotation)"/>
-      <Widget name="PWLItem7" onSelect="actuate(PWLItem8);transition(TopLevelRotation)"/>
-      <Widget name="PWLItem8" onSelect="actuate(PWLItem9);transition(TopLevelRotation)"/>
+      <Widget name="PWLItem1" onSelect="actuate(PWLItem1);transition(TopLevelRotation)"/>
+      <Widget name="PWLItem2" onSelect="actuate(PWLItem2);transition(TopLevelRotation)"/>
+      <Widget name="PWLItem3" onSelect="actuate(PWLItem3);transition(TopLevelRotation)"/>
+      <Widget name="PWLItem4" onSelect="actuate(PWLItem4);transition(TopLevelRotation)"/>
+      <Widget name="PWLItem5" onSelect="actuate(PWLItem5);transition(TopLevelRotation)"/>
+      <Widget name="PWLItem6" onSelect="actuate(PWLItem6);transition(TopLevelRotation)"/>
+      <Widget name="PWLItem7" onSelect="actuate(PWLItem7);transition(TopLevelRotation)"/>
+      <Widget name="PWLItem8" onSelect="actuate(PWLItem8);transition(TopLevelRotation)"/>
     </Animation>
 
     <Animation name="RowRotationKeyboardBox"

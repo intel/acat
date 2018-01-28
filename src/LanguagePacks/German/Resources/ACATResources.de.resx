@@ -1236,31 +1236,31 @@
     <value>Tippen Sie dieses Wort</value>
   </data>
   <data name="TryoutWord1" xml:space="preserve">
-    <value>Tee</value>
+    <value>henne</value>
     <comment>First word in the ACATTryoutApp. The letters in the word should be one of the letters in the ACATryout keyboard panel</comment>
   </data>
   <data name="TryoutWord2" xml:space="preserve">
-    <value>essen</value>
+    <value>see</value>
     <comment>Second word in the ACATTryoutApp.  The letters in the word should be one of the letters in the ACATryout keyboard panel</comment>
   </data>
   <data name="TryoutWord3" xml:space="preserve">
-    <value>aß</value>
+    <value>sehne</value>
     <comment>Third word in the ACATTryoutApp. The letters in the word should be one of the letters in the ACATryout keyboard panel</comment>
   </data>
   <data name="TryoutWord4" xml:space="preserve">
-    <value>tab</value>
+    <value>hessen</value>
     <comment>Fourth word in the ACATTryoutApp.  The letters in the word should be one of the letters in the ACATryout keyboard panel</comment>
   </data>
   <data name="TryoutWord5" xml:space="preserve">
-    <value>wetten</value>
+    <value>sense</value>
     <comment>Fifth word in the ACATTryoutApp.  The letters in the word should be one of the letters in the ACATryout keyboard panel</comment>
   </data>
   <data name="TryoutWord6" xml:space="preserve">
-    <value>wettete</value>
+    <value>essen</value>
     <comment>Sixth word in the ACATTryoutApp.  The letters in the word should be one of the letters in the ACATryout keyboard panel</comment>
   </data>
   <data name="TryoutWord7" xml:space="preserve">
-    <value>Beete</value>
+    <value>sehen</value>
     <comment>Seventh word in the ACATTryoutApp.  The letters in the word should be one of the letters in the ACATryout keyboard panel</comment>
   </data>
   <data name="UnableCreateUserErrorExecutingBatchfile" xml:space="preserve">

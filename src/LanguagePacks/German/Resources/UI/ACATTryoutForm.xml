@@ -1,10 +1,10 @@
 <?xml version="1.0" ?> 
 
 <ACAT>
-	<WidgetAttributes>
+  <WidgetAttributes>
     <WidgetAttribute name="B1" label="s" value="s" fontname="Arial" fontsize="52" bold="true" />
-    <WidgetAttribute name="B2" label="e" value="e" fontname="Arial" fontsize="52" bold="true" />
-    <WidgetAttribute name="B3" label="r" value="r" fontname="Arial" fontsize="52" bold="true" />
+    <WidgetAttribute name="B2" label="n" value="n" fontname="Arial" fontsize="52" bold="true" />
+    <WidgetAttribute name="B3" label="e" value="e" fontname="Arial" fontsize="52" bold="true" />
     <WidgetAttribute name="B4" label="h" value="h" fontname="Arial" fontsize="52" bold="true" />
     <WidgetAttribute name="buttonBackspace" label="I" value="backspace" fontname="ACAT Alpha" fontsize="44" bold="true" />
     <WidgetAttribute name="buttonReset" label="0" value="reset" fontname="ACAT Icon" fontsize="44" bold="true" />

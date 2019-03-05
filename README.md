@@ -1,4 +1,4 @@
-## Official release of ACAT v1.00.0 now available [here] (https://github.com/01org/acat/releases)
+## Official release of ACAT v1.50.0 now available [here] (https://github.com/01org/acat/releases)
 
 
 ##Introduction
@@ -8,7 +8,7 @@ ACAT was originally developed by researchers at Intel Labs for Professor Stephen
 
 Our hope is that, by open sourcing this configurable platform, developers will continue to expand on this system by adding new user interfaces, new sensing modalities, word prediction and many other features. ACAT is designed to run on Microsoft Windows* machines and can interface to different sensor inputs such as infrared switches, camera, push buttons, and more. 
 
-ACAT is written in C# using Microsoft Visual Studio 2012 and .NET 4.5 and runs on Microsoft Windows 7 or later. Word prediction functionality is powered by [Presage](http://presage.sourceforge.net/), an intelligent predictive text engine created by Matteo Vescovi. 
+ACAT is written in C# using Microsoft Visual Studio 2015 and .NET 4.5 and runs on Microsoft Windows 7 or later. Word prediction functionality is powered by [Presage](http://presage.sourceforge.net/), an intelligent predictive text engine created by Matteo Vescovi. 
 
 ##Project Website
 Click [here](http://01.org/acat) for the ACAT project website.

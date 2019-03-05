@@ -53,6 +53,11 @@ namespace ACAT.Extensions.Default.FunctionalAgents.SwitchWindowsAgent
         private EnumWindows.WindowInfo _windowInfo;
 
         /// <summary>
+        /// To prevent reentrancy in the form_EvtDone event handler 
+        /// </summary>
+        private volatile bool _inDone;
+
+        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         public SwitchWindowsAgent()
@@ -187,10 +192,19 @@ namespace ACAT.Extensions.Default.FunctionalAgents.SwitchWindowsAgent
         /// </summary>
         private void _form_EvtDone()
         {
+            if (_inDone)
+            {
+                return;
+            }
+
+            _inDone = true;
+
             if (confirm(R.GetString("CloseQ")))
             {
                 quit();
             }
+
+            _inDone = false;
         }
 
         /// <summary>

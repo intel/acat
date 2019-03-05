@@ -54,6 +54,7 @@ namespace ACAT.Lib.Core.Extensions.Base.AppAgents.WordPadAgent
             Settings = WordPadAgentSettings.Load();
 
             autoSwitchScanners = Settings.AutoSwitchScannerEnable;
+            snapWindowDockAlphabetScanner = Settings.SnapWindowDockAlphabetScanner;
         }
 
         /// <summary>

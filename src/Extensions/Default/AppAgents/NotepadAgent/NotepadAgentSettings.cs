@@ -1,5 +1,5 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="MSWordAgentSettings.cs" company="Intel Corporation">
+// <copyright file="NotepadAgentSettings.cs" company="Intel Corporation">
 //
 // Copyright (c) 2013-2017 Intel Corporation 
 //
@@ -59,13 +59,13 @@ using System.Xml.Serialization;
 
 #endregion SupressStyleCopWarnings
 
-namespace ACAT.Lib.Core.Extensions.Base.AppAgents.MSWordAgent
+namespace ACAT.Lib.Core.Extensions.Base.AppAgents.NotepadAgent
 {
     /// <summary>
     /// Settings for the Microsoft Agent
     /// </summary>
     [Serializable]
-    public class MSWordAgentSettings : AppAgentsPreferencesBase
+    public class  NotepadAgentSettings : AppAgentsPreferencesBase
     {
         /// <summary>
         /// Name of the settings file
@@ -80,26 +80,20 @@ namespace ACAT.Lib.Core.Extensions.Base.AppAgents.MSWordAgent
         public bool SnapWindowDockAlphabetScanner = true;
 
         /// <summary>
-        /// Set to true to automatically unprotect Word docs that are protected.
-        /// </summary>
-        [BoolDescriptor("Automatically unprotect when opening protected Word documents", false)]
-        public bool AutoUnprotectWordDocs { get; set; }
-        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public MSWordAgentSettings()
+        public NotepadAgentSettings()
         {
             AutoSwitchScannerEnable = true;
-            AutoUnprotectWordDocs = false;
         }
 
         /// <summary>
         /// Load settings
         /// </summary>
         /// <returns>settings object</returns>
-        public static MSWordAgentSettings Load()
+        public static NotepadAgentSettings Load()
         {
-            return PreferencesBase.Load<MSWordAgentSettings>(PreferencesFilePath);
+            return PreferencesBase.Load<NotepadAgentSettings>(PreferencesFilePath);
         }
 
         /// <summary>

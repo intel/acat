@@ -5,6 +5,7 @@
 	  <ConfigMapEntry panelClass="ToolsMenu" configName="ToolsMenu" configId="B161A090-AA5F-4CC7-9338-24E4860E10A2" formId="ABF847DF-ECBC-4361-96E9-D2DD3D031D73" configFile="ToolsMenu.xml"/>
     <ConfigMapEntry panelClass="SettingsMenu" configName="SettingsMenu" configId="6E9037F0-8E41-4AA6-9E70-D2348CF6EE40" formId="5FE98886-D943-4E27-8380-BBB42D95D21E" configFile="SettingsMenu.xml"/>
     <ConfigMapEntry panelClass="WindowPosSizeMenu" configName="WindowPosSizeMenu" configId="5E92814C-480A-4DB7-8C2B-40B98BA30156" formId="9144567C-7821-425A-904F-4601A89AE3FD" configFile="WindowPosSizeMenu.xml"/>
+    <ConfigMapEntry panelClass="DualMonitorMenu" configName="DualMonitorMenu" configId="04FE600D-79F8-4DE4-8990-AB1FD739334C" formId="7A810F5D-06CB-47EE-A766-4574E3C2CDBC" configFile="DualMonitorMenu.xml"/>
     <ConfigMapEntry panelClass="MainMenu" configName="MainMenu" configId="EA60C02D-37CA-418F-889B-7767F18A7F00" formId="148257A1-A8B7-4E75-93F0-56AFCD5B2A3E" configFile="MainMenu.xml"/>
 
     <ConfigMapEntry panelClass="AboutBoxForm" configName="AboutBox" configId="BBD7B545-7AF4-4027-B095-34BB585B281E" formId="F9A367F9-F9C4-4CF6-BDE7-6995675E1BE4" configFile="AboutBoxForm.xml"/>

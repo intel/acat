@@ -393,6 +393,7 @@
     <Compile Include="Utility\BlockingQueue.cs" />
     <Compile Include="PreferencesManagement\Interfaces\IPreferences.cs" />
     <Compile Include="PreferencesManagement\Interfaces\ISupportsPreferences.cs" />
+    <Compile Include="Utility\DualMonitor.cs" />
     <Compile Include="Utility\Kernel32Interop.cs" />
     <Compile Include="Utility\CoreGlobals.cs" />
     <Compile Include="Utility\KeyToChar.cs" />

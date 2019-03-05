@@ -2758,6 +2758,7 @@
 		<row><td>dialogcontrolagent.dll</td><td>DialogControlAgent.dll</td><td>DIALOG~1.DLL|DialogControlAgent.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Projects\ACAT\Applications\SetupFiles\Extensions\Default\AppAgents\DialogControlAgent\DialogControlAgent.dll</td><td>1</td><td/></row>
 		<row><td>dialogs.dll</td><td>Dialogs.dll</td><td>Dialogs.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Projects\ACAT\Applications\SetupFiles\Extensions\Default\UI\Dialogs\Dialogs.dll</td><td>1</td><td/></row>
 		<row><td>dllhostagent.dll</td><td>DLLHostAgent.dll</td><td>DLLHOS~1.DLL|DLLHostAgent.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Projects\ACAT\Applications\SetupFiles\Extensions\Default\AppAgents\DLLHostAgent\DLLHostAgent.dll</td><td>1</td><td/></row>
+		<row><td>dualmonitormenu.xml</td><td>ISX_DEFAULTCOMPONENT10</td><td>DUALMO~1.XML|DualMonitorMenu.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\sprasad1\Documents\GitHub\acat\src\Applications\ACATApp\bin\Release\en\DualMonitorMenu.xml</td><td>1</td><td/></row>
 		<row><td>edgebrowsercontextmenu.xml</td><td>ISX_DEFAULTCOMPONENT10</td><td>EDGEBR~1.XML|EdgeBrowserContextMenu.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Projects\ACAT\Applications\SetupFiles\en\EdgeBrowserContextMenu.xml</td><td>1</td><td/></row>
 		<row><td>edgebrowsermenu.xml</td><td>ISX_DEFAULTCOMPONENT10</td><td>EDGEBR~1.XML|EdgeBrowserMenu.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Projects\ACAT\Applications\SetupFiles\en\EdgeBrowserMenu.xml</td><td>1</td><td/></row>
 		<row><td>edgebrowserzoommenu.xml</td><td>ISX_DEFAULTCOMPONENT10</td><td>EDGEBR~1.XML|EdgeBrowserZoomMenu.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Projects\ACAT\Applications\SetupFiles\en\EdgeBrowserZoomMenu.xml</td><td>1</td><td/></row>
@@ -3919,7 +3920,7 @@
 		<col def="I2">Encoded</col>
 		<col def="S0">Comment</col>
 		<col def="I4">TimeStamp</col>
-		<row><td>COMPANY_NAME</td><td>1033</td><td>Intel® Corporation</td><td>0</td><td/><td>-349920526</td></row>
+		<row><td>COMPANY_NAME</td><td>1033</td><td>Intel Corporation</td><td>0</td><td/><td>564637965</td></row>
 		<row><td>DN_AlwaysInstall</td><td>1033</td><td>Always Install</td><td>0</td><td/><td>-618586326</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>-618586326</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION40CLIENT</td><td>1033</td><td>Microsoft .NET Framework 4.0 Client Package or greater needs to be installed for this installation to continue.</td><td>0</td><td/><td>-618570481</td></row>
@@ -5132,7 +5133,7 @@
 		<row><td>ID_STRING197</td><td>1033</td><td>Aster</td><td>0</td><td/><td>438492306</td></row>
 		<row><td>ID_STRING198</td><td>1033</td><td>Aster Launchpad</td><td>0</td><td/><td>438441138</td></row>
 		<row><td>ID_STRING199</td><td>1033</td><td>Aster</td><td>0</td><td/><td>438475571</td></row>
-		<row><td>ID_STRING2</td><td>1033</td><td>Intel® Corporation</td><td>0</td><td/><td>-349955342</td></row>
+		<row><td>ID_STRING2</td><td>1033</td><td>Intel Corporation</td><td>0</td><td/><td>564643020</td></row>
 		<row><td>ID_STRING20</td><td>1033</td><td>Aster Launchpad</td><td>0</td><td/><td>-1281270815</td></row>
 		<row><td>ID_STRING200</td><td>1033</td><td>Aster Launchpad</td><td>0</td><td/><td>438485811</td></row>
 		<row><td>ID_STRING201</td><td>1033</td><td>Aster</td><td>0</td><td/><td>1512222571</td></row>
@@ -6526,7 +6527,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>ProductCode</td><td>{410FA4CC-036E-4F4F-8353-88FCDBA8D9D4}</td><td/></row>
 		<row><td>ProductName</td><td>Assistive Context-Aware Toolkit (ACAT)</td><td/></row>
-		<row><td>ProductVersion</td><td>1.01.0000</td><td/></row>
+		<row><td>ProductVersion</td><td>1.50.0000</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>

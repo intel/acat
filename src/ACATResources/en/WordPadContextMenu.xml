@@ -23,8 +23,8 @@
     <WidgetAttribute name="ItemIcon5" label="i" value="@SaveFile" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
     <WidgetAttribute name="ItemText5" label="Save" value="@SaveFile" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>
 
-    <WidgetAttribute name="ItemIcon6" label="&#x161;" value="@CmdSnapWindowToggle" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
-    <WidgetAttribute name="ItemText6" label="MaxSnap" value="@CmdSnapWindowToggle" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemIcon6" label="&#x161;" value="@CmdSnapMaxDockWindowToggle" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText6" label="MaxSnap" value="@CmdSnapMaxDockWindowToggle" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>
 
     <WidgetAttribute name="ItemIcon7" label="X" value="@CmdCloseWindow" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>
     <WidgetAttribute name="ItemText7" label="Close" value="@CmdCloseWindow" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>

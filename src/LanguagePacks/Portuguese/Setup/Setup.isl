@@ -2715,7 +2715,7 @@
 		<col def="I2">Encoded</col>
 		<col def="S0">Comment</col>
 		<col def="I4">TimeStamp</col>
-		<row><td>COMPANY_NAME</td><td>1033</td><td>Intel® Corporation</td><td>0</td><td/><td>-1524350745</td></row>
+		<row><td>COMPANY_NAME</td><td>1033</td><td>Intel Corporation</td><td>0</td><td/><td>564617741</td></row>
 		<row><td>DN_AlwaysInstall</td><td>1033</td><td>Always Install</td><td>0</td><td/><td>-1524343610</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>-1524343610</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_OS</td><td>1033</td><td>The operating system is not adequate for running [ProductName].</td><td>0</td><td/><td>-1524343610</td></row>
@@ -3816,7 +3816,7 @@
 		<row><td>IDS__TargetReq_DESC_RAM</td><td>1033</td><td>The amount of RAM is not adequate for running [ProductName].</td><td>0</td><td/><td>-1524343610</td></row>
 		<row><td>IDS__TargetReq_DESC_RESOLUTION</td><td>1033</td><td>The screen resolution is not adequate for running [ProductName].</td><td>0</td><td/><td>-1524343610</td></row>
 		<row><td>ID_STRING1</td><td>1033</td><td>http://01.org/acat</td><td>0</td><td/><td>-1524340505</td></row>
-		<row><td>ID_STRING2</td><td>1033</td><td>Intel® Corporation</td><td>0</td><td/><td>-1524336954</td></row>
+		<row><td>ID_STRING2</td><td>1033</td><td>Intel Corporation</td><td>0</td><td/><td>564618124</td></row>
 		<row><td>ID_STRING3</td><td>1033</td><td>ACAT-Portuguese</td><td>0</td><td/><td>-1524324697</td></row>
 		<row><td>ID_STRING4</td><td>1033</td><td>http://01.org/acat</td><td>0</td><td/><td>-1524326169</td></row>
 		<row><td>ID_STRING5</td><td>1033</td><td>ACAT</td><td>0</td><td/><td>-1524326681</td></row>
@@ -4445,7 +4445,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>ProductCode</td><td>{D45E54DC-6424-4760-82E2-AE995CE443FA}</td><td/></row>
 		<row><td>ProductName</td><td>Assistive Context-Aware Toolkit (ACAT) - Portuguese Language Pack</td><td/></row>
-		<row><td>ProductVersion</td><td>1.00.0000</td><td/></row>
+		<row><td>ProductVersion</td><td>1.50.0000</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>

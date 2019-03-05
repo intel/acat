@@ -26,6 +26,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Automation;
 
 namespace ACAT.Lib.Core.Utility
 {
@@ -46,6 +47,7 @@ namespace ACAT.Lib.Core.Utility
         private const int WM_GETICON = 0x7F;
         private static String _taskbarWinClass = "Shell_TrayWnd";
         private static float _dpiX = 0.0f;
+        private static int _widestScannerWidth = 0; // width of the widest scanner
 
         private static WindowsVersion _windowsVersion = WindowsVersion.Unknown;
 
@@ -175,6 +177,21 @@ namespace ACAT.Lib.Core.Utility
             Cloak,
             Cloaked,
             FreezeRepresentation
+        }
+
+        /// <summary>
+        /// Gets or set the width of the widest scanner
+        /// </summary>
+        public static int WidestScannerWidth
+        {
+            get { return _widestScannerWidth; }
+            set
+            {
+                if (value > _widestScannerWidth)
+                {
+                    _widestScannerWidth = value;
+                }
+            }
         }
 
         /// <summary>
@@ -335,6 +352,170 @@ namespace ACAT.Lib.Core.Utility
                                         (repositionTop) ? (Screen.PrimaryScreen.WorkingArea.Height - form.Height)/2 : form.Top);
                     break;
             }
+        }
+
+        /// <summary>
+        /// Docks the current foreground application window with the scanner
+        /// </summary>
+        /// <param name="scannerPosition">Position of the scanner</param>
+        /// <param name="handle">Handle to the window</param>
+        /// <param name="scannerForm">The scanner form</param>
+        public static void DockAppWindowWithScanner(WindowPosition scannerPosition, IntPtr handle, Form scannerForm)
+        {
+            int screenOffset = 0;
+            int moveX = 0;
+            int moveY = 0;  // not really using Y-axis yet but something to keep in mind for the future
+
+            if (handle != IntPtr.Zero)
+            {
+                Rectangle r = Screen.PrimaryScreen.WorkingArea;
+
+                if (r.Width > 0 && r.Height > 0)
+                {
+                    switch (scannerPosition)
+                    {
+                        case WindowPosition.BottomRight:
+                        case WindowPosition.TopRight:
+                            moveX = 0;
+                            moveY = 0;
+                            break;
+
+                        case WindowPosition.BottomLeft:
+                        case WindowPosition.TopLeft:
+                            moveX = scannerForm.Width;
+                            moveY = 0;
+                            break;
+                    }
+
+                    Log.Debug("screenOffset=" + screenOffset + " moveX=" + moveX.ToString() + " moveY=" + moveY.ToString());
+                    User32Interop.SetWindowPos(handle.ToInt32(), 0, moveX, moveY, (r.Width - scannerForm.Width), r.Height, 0x0040 | 0x0004);
+                }
+            }
+            else
+            {
+                Log.Debug("fgWnd is zero");
+            }
+        }
+
+
+        public static void DockWindow(IntPtr fgWindow, Form panel, Windows.WindowPosition scannerPosition)
+        {
+            Log.Debug("fgWindow is null is : " + (fgWindow == IntPtr.Zero));
+
+            if (fgWindow == IntPtr.Zero)
+            {
+                return;
+            }
+
+            Process process = WindowActivityMonitor.GetProcessForWindow(fgWindow);
+            if (process.ProcessName == Process.GetCurrentProcess().ProcessName)
+            {
+                Log.Debug("#$#$#$#$   This is an ACAT Window!!!!!");
+                return;
+            }
+
+            if (panel != null)
+            {
+                Log.Debug("#$#$#$#$  Calling IsDialog");
+
+                if (!IsDialog(fgWindow))
+                {
+                    Log.Debug("#$#$#$#$  Returned from IsDialog");
+
+                    Log.Debug("#$#$#$#$  Calling DockAppWindowWithScanner for form " + (panel as Form).Name);
+                    DockAppWindowWithScanner(scannerPosition, fgWindow, panel);
+                }
+                else
+                {
+                    Log.Debug("#$#$#$#$  Window is a dialog. will not dock");
+                }
+            }
+        }
+        public static void DockWindowWithLargestScanner(IntPtr fgWindow, Form panel, Windows.WindowPosition scannerPosition)
+        {
+            Log.Debug("#$#$#$#$  fgWindow is null is : " + (fgWindow == IntPtr.Zero));
+
+            if (fgWindow == IntPtr.Zero)
+            {
+                return;
+            }
+
+            if (WidestScannerWidth == 0)
+            {
+                DockWindow(fgWindow, panel, scannerPosition);
+                return;
+            }
+
+            Process process = WindowActivityMonitor.GetProcessForWindow(fgWindow);
+            if (process.ProcessName == Process.GetCurrentProcess().ProcessName)
+            {
+                Log.Debug("#$#$#$#$   This is an ACAT Window!!!!!");
+                return;
+            }
+
+            if (panel != null)
+            {
+                if (!IsDialog(fgWindow))
+                {
+                    User32Interop.RECT rect;
+                    User32Interop.GetWindowRect(fgWindow, out rect);
+
+                    int moveX = 0;
+                    int moveY = 0;
+
+                    Rectangle r = Screen.PrimaryScreen.WorkingArea;
+
+                    if (r.Width > 0 && r.Height > 0)
+                    {
+                        switch (scannerPosition)
+                        {
+                            case WindowPosition.BottomRight:
+                            case WindowPosition.TopRight:
+                                moveX = 0;
+                                moveY = 0;
+                                break;
+
+                            case WindowPosition.BottomLeft:
+                            case WindowPosition.TopLeft:
+                                moveX = WidestScannerWidth;
+                                moveY = 0;
+                                break;
+                        }
+
+                        User32Interop.SetWindowPos(fgWindow.ToInt32(), 0, moveX, moveY, (r.Width - WidestScannerWidth), r.Height, 0x0040 | 0x0004);
+                    }
+                }
+                else
+                {
+                    Log.Debug("Window is a dialog. will not dock");
+                }
+            }
+        }
+
+        public static bool IsDialog(IntPtr handle)
+        {
+            if (handle == IntPtr.Zero)
+            {
+                return false;
+            }
+
+            bool retVal = false;
+
+            AutomationElement window = AutomationElement.FromHandle(handle);
+            object objPattern;
+            if (window.Current.ControlType == ControlType.Menu)
+            {
+                retVal = true;
+            }
+            else if (window.TryGetCurrentPattern(WindowPattern.Pattern, out objPattern))
+            {
+                WindowPattern windowPattern = objPattern as WindowPattern;
+                retVal = (!windowPattern.Current.CanMinimize && !windowPattern.Current.CanMaximize) || windowPattern.Current.IsModal;
+            }
+
+            Log.Debug("returning " + retVal);
+
+            return retVal;
         }
 
         /// <summary>
@@ -1637,6 +1818,50 @@ namespace ACAT.Lib.Core.Utility
                 {
                     RestoreWindow(fgWindow);
                     SetForegroundWindowSizePercent(scannerPosition, percent);
+                }
+                else
+                {
+                    MaximizeWindow(fgWindow);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Toggles the window size of the foreground window between maximizing and
+        /// docking with the scanner
+        /// </summary>
+        /// <param name="scanner">The scanner to dock to</param>
+        /// <param name="scannerPosition">Position of the scanner</param>
+        /// <param name="dockWithLargestScanner">Set to true if dock to the largest scanner</param>
+        public static void ToggleForegroundWindowMaximizeDock(Form scanner, Windows.WindowPosition scannerPosition, bool dockWithLargestScanner = false)
+        {
+            IntPtr fgWindow = GetForegroundWindow();
+
+            if (fgWindow != IntPtr.Zero)
+            {
+                Process process = WindowActivityMonitor.GetProcessForWindow(fgWindow);
+                if (process.ProcessName == Process.GetCurrentProcess().ProcessName)
+                {
+                    Log.Debug("This is an ACAT WIndow!");
+                    return;
+                }
+
+                if (IsDialog(fgWindow))
+                {
+                    return;
+                }
+
+                if (IsMaximized(fgWindow))
+                {
+                    RestoreWindow(fgWindow);
+                    if (dockWithLargestScanner)
+                    {
+                        DockWindowWithLargestScanner(fgWindow, scanner, scannerPosition);
+                    }
+                    else
+                    {
+                        DockWindow(fgWindow, scanner, scannerPosition);
+                    }
                 }
                 else
                 {

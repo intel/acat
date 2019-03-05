@@ -48,6 +48,11 @@ namespace ACAT.Extensions.Default.FunctionalAgents.PhraseSpeakAgent
         private PhraseSpeakScanner _phraseSpeakScanner;
 
         /// <summary>
+        /// To prevent reentrancy in PhraseSpeakFormEvtDone()
+        /// </summary>
+        private volatile bool _inDone;
+
+        /// <summary>
         /// Initializes a new instance of the class
         /// </summary>
         public PhraseSpeakAgent()
@@ -268,10 +273,19 @@ namespace ACAT.Extensions.Default.FunctionalAgents.PhraseSpeakAgent
         /// <param name="flag">Quit if false</param>
         private void PhraseSpeakFormEvtDone(bool flag)
         {
+            if (_inDone)
+            {
+                return;
+            }
+
+            _inDone = true;
+
             if (!flag)
             {
                 quit();
             }
+
+            _inDone = false;
         }
 
         /// <summary>

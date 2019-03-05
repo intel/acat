@@ -651,6 +651,11 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="arg">event args</param>
         private void ScannerCommon_EvtScannerShow(object sender, ScannerShowEventArg arg)
         {
+            if (arg.Scanner.PanelClass == "Alphabet")
+            {
+                Windows.WidestScannerWidth = arg.Scanner.Form.Width;
+            }
+
             if (EvtScannerShow != null)
             {
                 EvtScannerShow(sender, arg);

@@ -339,7 +339,7 @@
 		<col def="S0">ISDotNetInstallerArgsCommit</col>
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
-		<row><td>ACATResources.resources.dll</td><td>{70454D8E-71D3-4F8F-B183-E7F049F254BB}</td><td>FR</td><td>2</td><td/><td>acatresources.resources.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ACATResources.resources.dll</td><td>{7E99C104-BB32-40B5-9D3F-638810FB362A}</td><td>FR</td><td>2</td><td/><td>acatresources.resources.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td>{37D895B9-7F04-4E40-B4D6-CDA0AA61502F}</td><td>FR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{F9B4E4BD-61C0-458C-8D69-9026E7194208}</td><td>EXTENSIONS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT10</td><td>{C86C7A21-910C-4264-8BA3-821AB28215AB}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -2116,7 +2116,7 @@
 		<col def="S0">FTPLocation</col>
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
-		<row><td>ACATResources.resources.dll</td><td/><td/><td>_4F898F68_B424_4489_AD47_E4FE843B35DE_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ACATResources.resources.dll</td><td/><td/><td>_65FAA062_D6BD_4EA8_B423_ECFF94AA6D51_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_EA9E32C8_94D7_4731_BF0C_F5987DA797F0_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_59533C48_4F6A_4DD6_A599_B832488070D9_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT10</td><td/><td/><td>_AF50646E_8F7E_4B7D_862C_E69367C94EEB_FILTER</td><td/><td/><td/><td/></row>
@@ -4472,7 +4472,7 @@ RABWAEQALQA1AAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>ProductCode</td><td>{55BA1109-7817-4007-85E0-928BB0681742}</td><td/></row>
 		<row><td>ProductName</td><td>Assistive Context-Aware Toolkit (ACAT) - French Language Pack</td><td/></row>
-		<row><td>ProductVersion</td><td>1.00.0000</td><td/></row>
+		<row><td>ProductVersion</td><td>1.50.0000</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>

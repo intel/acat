@@ -42,6 +42,11 @@ namespace ACAT.Lib.Extension.AppAgents.MSWord
     public class MSWordTextControlAgent : TextControlAgentBase
     {
         /// <summary>
+        /// Automatically unprotect word docs when opened
+        /// </summary>
+        internal bool autoUnprotectWordDocs;
+
+        /// <summary>
         /// Don't go below this zoom level
         /// </summary>
         private const int MinZoomLevel = 10;
@@ -1588,6 +1593,26 @@ namespace ACAT.Lib.Extension.AppAgents.MSWord
                 _wordApp = (Word.Application)Marshal.GetActiveObject("Word.Application");
                 _wordApp.Application.WindowSelectionChange += Application_WindowSelectionChange;
                 _wordNavigator.WordApp = _wordApp;
+
+                if (autoUnprotectWordDocs)
+                {
+                    try
+                    {
+                        if (_wordApp.ActiveProtectedViewWindow != null)
+                        {
+                            Log.Debug("Unprotecting document");
+                            _wordApp.ActiveProtectedViewWindow.Edit();
+                        }
+                        else
+                        {
+                            Log.Debug("Document is already unprotected");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Debug("Unprotect document Exception " + ex);
+                    }
+                }
             }
             catch (Exception ex)
             {

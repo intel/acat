@@ -23,9 +23,9 @@
 
     <WidgetAttribute name="ItemIcon5" label="i" value="@SaveFile" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
     <WidgetAttribute name="ItemText5" label="Save" value="@SaveFile" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>
-    
-    <WidgetAttribute name="ItemIcon6" label="&#x161;" value="@CmdSnapWindowToggle" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
-    <WidgetAttribute name="ItemText6" label="MaxSnap" value="@CmdSnapWindowToggle" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>
+
+    <WidgetAttribute name="ItemIcon6" label="&#x161;" value="@CmdSnapMaxDockWindowToggle" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText6" label="MaxSnap" value="@CmdSnapMaxDockWindowToggle" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>
 
     <WidgetAttribute name="ItemIcon7" label="X" value="@CmdCloseWindow" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>
     <WidgetAttribute name="ItemText7" label="Close" value="@CmdCloseWindow" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>
@@ -87,8 +87,7 @@
       <Widget name="Row5" onSelect="actuate(ItemText5);transition(TopLevelRotation)"/>
       <Widget name="Row6" onSelect="actuate(ItemText6);transition(TopLevelRotation)"/>
       <Widget name="Row7" onSelect="actuate(ItemText7);transition(TopLevelRotation)"/>
-      <Widget name="Row8" onSelect="actuate(ItemText8);transition(TopLevelRotation)"/>
-    </Animation>
+      </Animation>
 
     <Animation name="ButtonPressed"
                 onEnter=""

@@ -189,6 +189,43 @@ namespace ACAT.Lib.Extension.CommandHandlers
                                                                 Common.AppPreferences.WindowSnapSizePercent);
                     break;
 
+                case "CmdDualMonitorMenu":
+                    {
+                        if (DualMonitor.MultipleMonitors && !Context.AppTalkWindowManager.IsTalkWindowVisible)
+                        {
+                            var panel = Context.AppPanelManager.CreatePanel("DualMonitorMenu", R.GetString("DualMonitorMenu")) as IPanel;
+                            if (panel != null)
+                            {
+                                Context.AppPanelManager.Show(Context.AppPanelManager.GetCurrentForm(), panel);
+                            }
+                        }
+                    }
+
+                    break;
+
+                case "CmdMoveToOtherMonitor":
+                    {
+                        if (DualMonitor.MultipleMonitors && !Context.AppTalkWindowManager.IsTalkWindowVisible)
+                        {
+                            DualMonitor.MoveWindowToOtherMonitor(fgHandle);
+                        }
+
+
+                    }
+
+                    break;
+
+                case "CmdMaxInOtherMonitor":
+                    {
+                        if (DualMonitor.MultipleMonitors && !Context.AppTalkWindowManager.IsTalkWindowVisible)
+                        {
+                            DualMonitor.MaximizeWindowInOtherMonitor(fgHandle);
+                        }
+                    }
+
+                    break;
+
+
                 default:
                     handled = false;
                     break;

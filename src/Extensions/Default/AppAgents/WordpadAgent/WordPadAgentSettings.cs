@@ -38,6 +38,12 @@ namespace ACAT.Lib.Core.Extensions.Base.AppAgents.WordPadAgent
         public static String PreferencesFilePath;
 
         /// <summary>
+        /// Dock with the Alphabet scanner when window is snapped
+        /// </summary>
+        [BoolDescriptor("Dock with the Alphabet scanner when window is snapped", true)]
+        public bool SnapWindowDockAlphabetScanner = true;
+
+        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         public WordPadAgentSettings()

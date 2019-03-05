@@ -1383,4 +1383,13 @@
     <value>Esto es una prueba. Uno dos tres cuatro cinco.</value>
     <comment>This is the test string to test the volume/rate/pitch of text-to-speech. </comment>
   </data>
+  <data name="DualMonitorMenu" xml:space="preserve">
+    <value>Segundo monitor</value>
+  </data>
+  <data name="MaximizeInOtherMonitor" xml:space="preserve">
+    <value>Max en el otro</value>
+  </data>
+  <data name="MoveToOtherMonitor" xml:space="preserve">
+    <value>Mover al otro</value>
+  </data>
 </root>

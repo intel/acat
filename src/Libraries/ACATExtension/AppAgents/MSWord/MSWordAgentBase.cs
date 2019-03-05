@@ -50,6 +50,16 @@ namespace ACAT.Lib.Extension.AppAgents.MSWord
         protected bool isWordInstalled;
 
         /// <summary>
+        /// Automatically unprotect protected word docs when they are opened
+        /// </summary>
+        protected bool autoUnprotectWordDocs;
+
+        /// <summary>
+        /// Snap window to alphabe scanner
+        /// </summary>
+        protected bool snapWindowDockAlphabetScanner;
+
+        /// <summary>
         /// List of features supported by this agent. These
         /// widgets will be enabled in the scanners.
         /// </summary>
@@ -249,6 +259,18 @@ namespace ACAT.Lib.Extension.AppAgents.MSWord
                     //DialogUtils.Toast("Saved");
                     break;
 
+                case "CmdSnapMaxDockWindowToggle":
+                    if (snapWindowDockAlphabetScanner)
+                    {
+                        Windows.ToggleForegroundWindowMaximizeDock(Context.AppPanelManager.GetCurrentForm() as Form,
+                            Context.AppWindowPosition, true);
+                    }
+                    else
+                    {
+                        Windows.ToggleSnapForegroundWindow(Context.AppWindowPosition, Common.AppPreferences.WindowSnapSizePercent);
+                    }
+                    break;
+
                 case "MSWordLectureManager":
                     if (_textInterface is MSWordTextControlAgent)
                     {
@@ -283,6 +305,7 @@ namespace ACAT.Lib.Extension.AppAgents.MSWord
             if (_textInterface == null)
             {
                 _textInterface = new MSWordTextControlAgent();
+                (_textInterface as MSWordTextControlAgent).autoUnprotectWordDocs = autoUnprotectWordDocs;
                 setTextInterface(_textInterface);
                 _textInterface.EvtTextChanged += _textInterface_EvtTextChanged;
             }

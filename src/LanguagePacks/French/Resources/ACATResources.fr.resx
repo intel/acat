@@ -1386,4 +1386,13 @@
   <data name="ZoomOut" xml:space="preserve">
     <value>Zoom arrière</value>
   </data>
+  <data name="DualMonitorMenu" xml:space="preserve">
+    <value>Double moniteur</value>
+  </data>
+  <data name="MaximizeInOtherMonitor" xml:space="preserve">
+    <value>Max dans l'autre</value>
+  </data>
+  <data name="MoveToOtherMonitor" xml:space="preserve">
+    <value>Passer à autre</value>
+  </data>
 </root>

@@ -377,6 +377,7 @@ namespace ACAT.Lib.Core.PanelManagement
             {
                 var control = panel.GetControlFromPosition(columnIndex, rowIndex);
                 panel.Controls.Remove(control);
+                control.Dispose();
             }
 
             for (int i = rowIndex + 1; i < panel.RowCount; i++)

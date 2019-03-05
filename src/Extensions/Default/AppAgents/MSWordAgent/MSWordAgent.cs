@@ -55,6 +55,8 @@ namespace ACAT.Lib.Core.Extensions.Base.AppAgents.MSWordAgent
             Settings = MSWordAgentSettings.Load();
 
             autoSwitchScanners = Settings.AutoSwitchScannerEnable;
+            autoUnprotectWordDocs = Settings.AutoUnprotectWordDocs;
+            snapWindowDockAlphabetScanner = Settings.SnapWindowDockAlphabetScanner;
         }
 
         /// <summary>

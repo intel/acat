@@ -62,6 +62,19 @@ namespace ACAT.Lib.Extension.AppAgents.Notepad
         private int _wordPredictionContext;
 
         /// <summary>
+        /// If set to true, the agent will autoswitch the
+        /// scanners depending on which element has focus.
+        /// Eg: Alphabet scanner if an edit text window has focus,
+        /// the contextual menu if the main document has focus
+        /// </summary>
+        protected bool autoSwitchScanners = true;
+
+        /// <summary>
+        /// Snap window to alphabet scanner
+        /// </summary>
+        protected bool snapWindowDockAlphabetScanner;
+
+        /// <summary>
         /// Returns list of processes supported by this agent
         /// </summary>
         public override IEnumerable<AgentProcessInfo> ProcessesSupported
@@ -163,6 +176,18 @@ namespace ACAT.Lib.Extension.AppAgents.Notepad
 
                 case "SwitchAppWindow":
                     DialogUtils.ShowTaskSwitcher(_notepadProcessName);
+                    break;
+
+                case "CmdSnapMaxDockWindowToggle":
+                    if (snapWindowDockAlphabetScanner)
+                    {
+                        Windows.ToggleForegroundWindowMaximizeDock(Context.AppPanelManager.GetCurrentForm() as Form,
+                            Context.AppWindowPosition, true);
+                    }
+                    else
+                    {
+                        Windows.ToggleSnapForegroundWindow(Context.AppWindowPosition, Common.AppPreferences.WindowSnapSizePercent);
+                    }
                     break;
 
                 default:

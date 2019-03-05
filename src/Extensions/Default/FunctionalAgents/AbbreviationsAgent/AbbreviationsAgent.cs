@@ -66,6 +66,11 @@ namespace ACAT.Extensions.Default.FunctionalAgents.AbbreviationsAgent
         private bool _editDeleteMenuShown;
 
         /// <summary>
+        /// To prevent reentrancy in AbbrFormEvtDone()
+        /// </summary>
+        private volatile bool _inDone;
+
+        /// <summary>
         /// Get confirmation from the user
         /// </summary>
         /// <param name="prompt">prompt to display</param>
@@ -265,11 +270,20 @@ namespace ACAT.Extensions.Default.FunctionalAgents.AbbreviationsAgent
         /// <param name="dontQuit">Don't quit if true</param>
         private void AbbrFormEvtDone(bool dontQuit)
         {
+            if (_inDone)
+            {
+                return;
+            }
+
+            _inDone = true;
+
             // don't you love double negatives?
             if (!dontQuit)
             {
                 quit();
             }
+
+            _inDone = false;
         }
 
         /// <summary>

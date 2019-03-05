@@ -73,6 +73,11 @@ namespace ACAT.Extensions.Default.FunctionalAgents.FileBrowserAgent
         private bool _autoLaunchFile;
 
         /// <summary>
+        /// To prevent reentrancy in the form_EvtDone event handler 
+        /// </summary>
+        private volatile bool _inDone;
+
+        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         public FileBrowserAgent()
@@ -343,10 +348,19 @@ namespace ACAT.Extensions.Default.FunctionalAgents.FileBrowserAgent
         /// <param name="flag">set to false to not quit</param>
         private void _form_EvtDone(bool flag)
         {
+            if (_inDone)
+            {
+                return;
+            }
+
+            _inDone = true;
+
             if (!flag)
             {
                 quitFileBrowser();
             }
+
+            _inDone = false;
         }
 
         /// <summary>

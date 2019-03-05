@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+﻿/////////////////+++++++++++++++++++++++++++++++++++///////////////////////////////////////////////////////////
 // <copyright file="WindowOverlapWatchdog.cs" company="Intel Corporation">
 //
 // Copyright (c) 2013-2017 Intel Corporation 
@@ -55,7 +55,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// Timer to check for overlap
         /// </summary>
-        private Timer _timer;
+        private System.Timers.Timer _timer;
 
         /// <summary>
         /// The form
@@ -71,8 +71,8 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             _window = window;
             _force = force;
-            _timer = new Timer { Enabled = true, Interval = Interval };
-            _timer.Tick += timer_Tick;
+            _timer = new System.Timers.Timer { Enabled = true, Interval = Interval };
+            _timer.Elapsed += timer_Elapsed;
             window.VisibleChanged += window_VisibleChanged;
         }
 
@@ -90,13 +90,17 @@ namespace ACAT.Lib.Core.PanelManagement
 
             if (_timer != null)
             {
-                _timer.Tick -= timer_Tick;
+                _timer.Elapsed-= timer_Elapsed;
                 _timer.Stop();
                 _timer.Dispose();
                 _timer = null;
             }
 
-            _window = null;
+            if (_window != null)
+            {
+                _window.VisibleChanged -= window_VisibleChanged;
+                _window = null;
+            }
         }
 
         /// <summary>
@@ -182,6 +186,8 @@ namespace ACAT.Lib.Core.PanelManagement
                 }
             }
 
+            cache.Clear();
+
             return false;
         }
 
@@ -213,7 +219,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
-        private void timer_Tick(object sender, EventArgs e)
+        private void timer_Elapsed(object sender, EventArgs e)
         {
             try
             {

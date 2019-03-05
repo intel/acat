@@ -106,6 +106,12 @@
       <DependentUpon>MainMenu.cs</DependentUpon>
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="DualMonitorMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DualMonitorMenu.Designer.cs">
+      <DependentUpon>DualMonitorMenu.cs</DependentUpon>
+    </Compile>
     <Compile Include="WindowPosSizeMenu.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -70,6 +70,9 @@ namespace ACAT.Lib.Extension.CommandHandlers
             Commands.Add(new AppWindowManagementHandler("CmdRestoreWindow"));
             Commands.Add(new AppWindowManagementHandler("CmdSnapWindow"));
             Commands.Add(new AppWindowManagementHandler("CmdSnapWindowToggle"));
+            Commands.Add(new AppWindowManagementHandler("CmdDualMonitorMenu")); 
+            Commands.Add(new AppWindowManagementHandler("CmdMoveToOtherMonitor")); 
+            Commands.Add(new AppWindowManagementHandler("CmdMaxInOtherMonitor"));
 
             Commands.Add(new TalkWindowHandler("CmdTalkWindowShow"));
             Commands.Add(new TalkWindowHandler("CmdTalkWindowToggle"));

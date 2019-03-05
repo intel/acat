@@ -1065,6 +1065,7 @@ namespace ACAT.Lib.Core.PanelManagement
             {
                 PositionSizeController.ScaleForm();
                 PositionSizeController.SetPositionAndNotify();
+                Context.AppTalkWindowManager.SetTalkWindowPosition(ScannerForm);
             }
         }
 

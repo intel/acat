@@ -1374,4 +1374,13 @@
   <data name="TriggerToStop" xml:space="preserve">
     <value>Accione o interruptor para parar</value>
   </data>
+  <data name="DualMonitorMenu" xml:space="preserve">
+    <value>Segundo monitor</value>
+  </data>
+  <data name="MaximizeInOtherMonitor" xml:space="preserve">
+    <value>Max no outro</value>
+  </data>
+  <data name="MoveToOtherMonitor" xml:space="preserve">
+    <value>Mover para o outro</value>
+  </data>
 </root>

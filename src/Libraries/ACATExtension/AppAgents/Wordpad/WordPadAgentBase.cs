@@ -44,6 +44,11 @@ namespace ACAT.Lib.Extension.AppAgents.Wordpad
         protected bool autoSwitchScanners = true;
 
         /// <summary>
+        /// Snap window to alphabet scanner
+        /// </summary>
+        protected bool snapWindowDockAlphabetScanner;
+
+        /// <summary>
         /// Name of the WordPad process
         /// </summary>
         private const String WordPadProcessName = "wordpad";
@@ -176,9 +181,16 @@ namespace ACAT.Lib.Extension.AppAgents.Wordpad
 
                     break;
 
-                case "CmdSnapWindow":
-                    Windows.SetForegroundWindowSizePercent(Context.AppWindowPosition,
-                                                    Common.AppPreferences.WindowSnapSizePercent);
+                case "CmdSnapMaxDockWindowToggle":
+                    if (snapWindowDockAlphabetScanner)
+                    {
+                        Windows.ToggleForegroundWindowMaximizeDock(Context.AppPanelManager.GetCurrentForm() as Form,
+                            Context.AppWindowPosition, true);
+                    }
+                    else
+                    {
+                        Windows.ToggleSnapForegroundWindow(Context.AppWindowPosition, Common.AppPreferences.WindowSnapSizePercent);
+                    }
                     break;
 
                 default:

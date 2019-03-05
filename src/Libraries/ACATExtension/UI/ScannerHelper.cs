@@ -76,6 +76,11 @@ namespace ACAT.Lib.Extension
                         arg.Enabled = false;
                         arg.Handled = true;
                         break;
+
+                    case "CmdDualMonitorMenu":
+                        arg.Enabled = DualMonitor.MultipleMonitors;
+                        arg.Handled = true;
+                        break;
                 }
             }
 

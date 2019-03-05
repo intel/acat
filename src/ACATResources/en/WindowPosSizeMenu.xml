@@ -29,8 +29,11 @@
     <WidgetAttribute name="ItemIcon7" label="1" value="@CmdSwitchApps" fontsize="20" fontname="ACAT Icon"  bold="&usebold;" />
     <WidgetAttribute name="ItemText7" label="WindowSwitch" value="@CmdSwitchApps" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;" />
 
-    <WidgetAttribute name="ItemIcon8" label="l" value="@CmdCloseWindow" fontsize="20" fontname="ACAT Icon"  bold="&usebold;" />
-    <WidgetAttribute name="ItemText8" label="Close" value="@CmdCloseWindow" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;" />
+    <WidgetAttribute name="ItemIcon8" label="&#xAE;" value="@CmdDualMonitorMenu" fontsize="22" fontname="ACAT Icon"  bold="&usebold;" />
+    <WidgetAttribute name="ItemText8" label="DualMonitorMenu" value="@CmdDualMonitorMenu" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;" />
+
+    <WidgetAttribute name="ItemIcon9" label="l" value="@CmdCloseWindow" fontsize="20" fontname="ACAT Icon"  bold="&usebold;" />
+    <WidgetAttribute name="ItemText9" label="Close" value="@CmdCloseWindow" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;" />
   </WidgetAttributes>
 
   <Layout>
@@ -77,6 +80,11 @@
       <Widget class="ContextMenuIcon" name="ItemIcon8"/>
       <Widget class="ContextMenuText" name="ItemText8"/>
     </Widget>
+
+    <Widget class="RowWidget" name="Row9">
+      <Widget class="ContextMenuIcon" name="ItemIcon9"/>
+      <Widget class="ContextMenuText" name="ItemText9"/>
+    </Widget>
   </Layout>
 
   <Animations>
@@ -95,6 +103,7 @@
       <Widget name="Row6" onSelect="actuate(ItemText6);transition(TopLevelRotation)"/>
       <Widget name="Row7" onSelect="actuate(ItemText7);transition(TopLevelRotation)"/>
       <Widget name="Row8" onSelect="actuate(ItemText8);"/>
+      <Widget name="Row9" onSelect="actuate(ItemText9);"/>
     </Animation>
 
     <Animation name="ConfirmSelection"

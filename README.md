@@ -1,4 +1,4 @@
-## Official release of ACAT v1.50.0 now available [here] (https://github.com/01org/acat/releases)
+## Official release of ACAT v1.50.0 is now available [here] (https://github.com/01org/acat/releases)
 
 
 ##Introduction

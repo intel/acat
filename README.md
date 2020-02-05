@@ -12,7 +12,7 @@ ACAT is written in C# using Microsoft Visual Studio 2015 and .NET 4.5 and runs o
 
 ## Project Website
 Click [here](http://01.org/acat) for the ACAT project website.
-Documentation can be found [here](https://01.org/acat/documentation-list)
+Documentation can be found [here](https://01.org/acat/documentation)
 
 ## Licensing
 ACAT is distributed under the Apache License, Version 2.0.  

@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="urn:Presage/2015/03/10" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="PresageService" targetNamespace="urn:Presage/2015/03/10" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="NetNamedPipeBinding_Presage_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <msb:BinaryEncoding xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1">
+        </msb:BinaryEncoding>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <msf:WindowsTransportSecurity xmlns:msf="http://schemas.microsoft.com/ws/2006/05/framing/policy">
+                  <msf:ProtectionLevel>EncryptAndSign</msf:ProtectionLevel>
+                </msf:WindowsTransportSecurity>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256>
+                </sp:Basic256>
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict>
+                </sp:Strict>
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <wsam:Addressing>
+          <wsp:Policy>
+            <wsam:AnonymousResponses>
+            </wsam:AnonymousResponses>
+          </wsp:Policy>
+        </wsam:Addressing>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="urn:Presage/2015/03/10/Imports">
+      <xsd:import namespace="urn:Presage/2015/03/10" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="Presage_predict_InputMessage">
+    <wsdl:part name="parameters" element="tns:predict" />
+  </wsdl:message>
+  <wsdl:message name="Presage_predict_OutputMessage">
+    <wsdl:part name="parameters" element="tns:predictResponse" />
+  </wsdl:message>
+  <wsdl:message name="Presage_context_InputMessage">
+    <wsdl:part name="parameters" element="tns:context" />
+  </wsdl:message>
+  <wsdl:message name="Presage_context_OutputMessage">
+    <wsdl:part name="parameters" element="tns:contextResponse" />
+  </wsdl:message>
+  <wsdl:message name="Presage_context_change_InputMessage">
+    <wsdl:part name="parameters" element="tns:context_change" />
+  </wsdl:message>
+  <wsdl:message name="Presage_context_change_OutputMessage">
+    <wsdl:part name="parameters" element="tns:context_changeResponse" />
+  </wsdl:message>
+  <wsdl:message name="Presage_prefix_InputMessage">
+    <wsdl:part name="parameters" element="tns:prefix" />
+  </wsdl:message>
+  <wsdl:message name="Presage_prefix_OutputMessage">
+    <wsdl:part name="parameters" element="tns:prefixResponse" />
+  </wsdl:message>
+  <wsdl:message name="Presage_learn_InputMessage">
+    <wsdl:part name="parameters" element="tns:learn" />
+  </wsdl:message>
+  <wsdl:message name="Presage_learn_OutputMessage">
+    <wsdl:part name="parameters" element="tns:learnResponse" />
+  </wsdl:message>
+  <wsdl:message name="Presage_completion_InputMessage">
+    <wsdl:part name="parameters" element="tns:completion" />
+  </wsdl:message>
+  <wsdl:message name="Presage_completion_OutputMessage">
+    <wsdl:part name="parameters" element="tns:completionResponse" />
+  </wsdl:message>
+  <wsdl:message name="Presage_get_config_InputMessage">
+    <wsdl:part name="parameters" element="tns:get_config" />
+  </wsdl:message>
+  <wsdl:message name="Presage_get_config_OutputMessage">
+    <wsdl:part name="parameters" element="tns:get_configResponse" />
+  </wsdl:message>
+  <wsdl:message name="Presage_set_config_InputMessage">
+    <wsdl:part name="parameters" element="tns:set_config" />
+  </wsdl:message>
+  <wsdl:message name="Presage_set_config_OutputMessage">
+    <wsdl:part name="parameters" element="tns:set_configResponse" />
+  </wsdl:message>
+  <wsdl:message name="Presage_save_config_InputMessage">
+    <wsdl:part name="parameters" element="tns:save_config" />
+  </wsdl:message>
+  <wsdl:message name="Presage_save_config_OutputMessage">
+    <wsdl:part name="parameters" element="tns:save_configResponse" />
+  </wsdl:message>
+  <wsdl:portType name="Presage">
+    <wsdl:operation name="predict">
+      <wsdl:input wsam:Action="urn:Presage/2015/03/10/Presage/predict" message="tns:Presage_predict_InputMessage" />
+      <wsdl:output wsam:Action="urn:Presage/2015/03/10/Presage/predictResponse" message="tns:Presage_predict_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="context">
+      <wsdl:input wsam:Action="urn:Presage/2015/03/10/Presage/context" message="tns:Presage_context_InputMessage" />
+      <wsdl:output wsam:Action="urn:Presage/2015/03/10/Presage/contextResponse" message="tns:Presage_context_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="context_change">
+      <wsdl:input wsam:Action="urn:Presage/2015/03/10/Presage/context_change" message="tns:Presage_context_change_InputMessage" />
+      <wsdl:output wsam:Action="urn:Presage/2015/03/10/Presage/context_changeResponse" message="tns:Presage_context_change_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="prefix">
+      <wsdl:input wsam:Action="urn:Presage/2015/03/10/Presage/prefix" message="tns:Presage_prefix_InputMessage" />
+      <wsdl:output wsam:Action="urn:Presage/2015/03/10/Presage/prefixResponse" message="tns:Presage_prefix_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="learn">
+      <wsdl:input wsam:Action="urn:Presage/2015/03/10/Presage/learn" message="tns:Presage_learn_InputMessage" />
+      <wsdl:output wsam:Action="urn:Presage/2015/03/10/Presage/learnResponse" message="tns:Presage_learn_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="completion">
+      <wsdl:input wsam:Action="urn:Presage/2015/03/10/Presage/completion" message="tns:Presage_completion_InputMessage" />
+      <wsdl:output wsam:Action="urn:Presage/2015/03/10/Presage/completionResponse" message="tns:Presage_completion_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="get_config">
+      <wsdl:input wsam:Action="urn:Presage/2015/03/10/Presage/get_config" message="tns:Presage_get_config_InputMessage" />
+      <wsdl:output wsam:Action="urn:Presage/2015/03/10/Presage/get_configResponse" message="tns:Presage_get_config_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="set_config">
+      <wsdl:input wsam:Action="urn:Presage/2015/03/10/Presage/set_config" message="tns:Presage_set_config_InputMessage" />
+      <wsdl:output wsam:Action="urn:Presage/2015/03/10/Presage/set_configResponse" message="tns:Presage_set_config_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="save_config">
+      <wsdl:input wsam:Action="urn:Presage/2015/03/10/Presage/save_config" message="tns:Presage_save_config_InputMessage" />
+      <wsdl:output wsam:Action="urn:Presage/2015/03/10/Presage/save_configResponse" message="tns:Presage_save_config_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="NetNamedPipeBinding_Presage" type="tns:Presage">
+    <wsp:PolicyReference URI="#NetNamedPipeBinding_Presage_policy">
+    </wsp:PolicyReference>
+    <soap12:binding transport="http://schemas.microsoft.com/soap/named-pipe" />
+    <wsdl:operation name="predict">
+      <soap12:operation soapAction="urn:Presage/2015/03/10/Presage/predict" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="context">
+      <soap12:operation soapAction="urn:Presage/2015/03/10/Presage/context" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="context_change">
+      <soap12:operation soapAction="urn:Presage/2015/03/10/Presage/context_change" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="prefix">
+      <soap12:operation soapAction="urn:Presage/2015/03/10/Presage/prefix" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="learn">
+      <soap12:operation soapAction="urn:Presage/2015/03/10/Presage/learn" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="completion">
+      <soap12:operation soapAction="urn:Presage/2015/03/10/Presage/completion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_config">
+      <soap12:operation soapAction="urn:Presage/2015/03/10/Presage/get_config" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="set_config">
+      <soap12:operation soapAction="urn:Presage/2015/03/10/Presage/set_config" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="save_config">
+      <soap12:operation soapAction="urn:Presage/2015/03/10/Presage/save_config" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PresageService">
+    <wsdl:port name="NetNamedPipeBinding_Presage" binding="tns:NetNamedPipeBinding_Presage">
+      <soap12:address location="net.pipe://localhost/PresageService/v1/presage" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>net.pipe://localhost/PresageService/v1/presage</wsa10:Address>
+        <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
+          <Upn>sprasad1@amr.corp.intel.com</Upn>
+        </Identity>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

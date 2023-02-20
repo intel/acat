@@ -1,0 +1,48 @@
+<?xml version="1.0" ?> 
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="B1" label="s" value="s" fontname="Arial" fontsize="52" bold="true" />
+    <WidgetAttribute name="B2" label="n" value="n" fontname="Arial" fontsize="52" bold="true" />
+    <WidgetAttribute name="B3" label="e" value="e" fontname="Arial" fontsize="52" bold="true" />
+    <WidgetAttribute name="B4" label="h" value="h" fontname="Arial" fontsize="52" bold="true" />
+    <WidgetAttribute name="buttonBackspace" label="I" value="backspace" fontname="ACAT Alpha" fontsize="44" bold="true" />
+    <WidgetAttribute name="buttonReset" label="0" value="reset" fontname="ACAT Icon" fontsize="44" bold="true" />
+    <WidgetAttribute name="buttonExit" label="Exit" value="exit" fontname="Arial" fontsize="28" bold="true" />
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="ButtonControlWidget" name="B1" colorScheme="Dialog"/>
+    <Widget class="ButtonControlWidget" name="B2" colorScheme="Dialog"/>
+    <Widget class="ButtonControlWidget" name="B3" colorScheme="Dialog"/>
+    <Widget class="ButtonControlWidget" name="B4" colorScheme="Dialog"/>
+    <Widget class="ButtonControlWidget" name="buttonBackspace" colorScheme="Dialog"/>
+    <Widget class="ButtonControlWidget" name="buttonReset" colorScheme="Dialog"/>
+    <Widget class="ButtonControlWidget" name="buttonExit" colorScheme="Dialog"/>
+  </Layout>
+  
+	<Animations> 
+		<Animation name="TopLevelRotation" 
+               start="true" 
+               onEnter=""
+               scanTime="@ScanTime"
+               firstPauseTime="@FirstPauseTime"
+               iterations="@GridScanIterations">
+      <Widget name="B1" onSelect="actuate(B1);transition(TopLevelRotation)"/>
+      <Widget name="B2" onSelect="actuate(B2);transition(TopLevelRotation)"/>
+      <Widget name="B3" onSelect="actuate(B3);transition(TopLevelRotation)"/>
+      <Widget name="B4" onSelect="actuate(B4);transition(TopLevelRotation)"/>
+      <Widget name="buttonBackspace" onSelect="actuate(buttonBackspace);transition(ButtonPressed)"/>
+      <Widget name="buttonReset" onSelect="actuate(buttonReset);transition(TopLevelRotation)"/>
+      <Widget name="buttonExit" onSelect="actuate(buttonExit)"/>
+    </Animation>
+
+    <Animation name="ButtonPressed"
+               onEnter=""
+               iterations="1"
+               onEnd="transition(TopLevelRotation)">
+      <Widget name="@SelectedWidget" firstPauseTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+    </Animation>
+  </Animations>
+</ACAT>
+

@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" ?>
+
+<ACAT>
+  <ConfigMapEntries>
+	
+	  <ConfigMapEntry panelClass="Alphabet" configName="AlphabetQwerty" configId="332E5374-DCBC-4E83-B7D2-1A7171751D54" formId="3FA65CCE-EB23-461A-AEE1-70339446BEA9" configFile="AlphabetScannerQwerty.xml"/>
+    <ConfigMapEntry panelClass="Alphabet" configName="AlphabetScannerAbc" configId="6EF15641-66DA-4135-A6B2-28C2979D3D9E" formId="8AA9056F-84A8-4E7F-9704-061CB4FAB68D" configFile="AlphabetScannerAbc.xml"/>
+    <ConfigMapEntry panelClass="Alphabet" configName="AlphabetScannerAlternate" configId="3B333B44-8644-4985-8E36-50DE89EDED6C" formId="D4A507B2-2EA5-49BC-96A8-B00D287F6406" configFile="AlphabetScannerAlternate.xml"/>
+    <ConfigMapEntry panelClass="Alphabet" configName="AlphabetScannerAbcAlternate" configId="2B01CC80-BE76-4AEC-830F-3977079F6CDF" formId="D4A507B2-2EA5-49BC-96A8-B00D287F6406" configFile="AlphabetScannerAbcAlternate.xml"/>
+    
+    <ConfigMapEntry panelClass="AlphabetMinimal" configName="AlphabetQwertyMinimal" configId="5DD5E9BD-D424-4521-9FB4-C7FB3B085E19" formId="D37C3E46-8E54-46E5-8657-3D43DBDB3003" configFile="AlphabetScannerQwertyMinimal.xml"/>
+    <ConfigMapEntry panelClass="AlphabetMinimal" configName="AlphabetScannerAbcMinimal" configId="ACBCA55E-9BC7-4FF4-8B66-AE14F5B22A52" formId="BB2B224F-9B63-46D2-9905-17CDAC3067F4" configFile="AlphabetScannerAbcMinimal.xml"/>
+    <ConfigMapEntry panelClass="AlphabetMinimal" configName="AlphabetScannerAlternateMinimal" configId="B340F2F9-B2BA-4A3F-9383-EA1C7B9C31F0" formId="32D2A726-43A9-40D7-81A3-86C6C9EF4530" configFile="AlphabetScannerAlternateMinimal.xml"/>
+    <ConfigMapEntry panelClass="AlphabetMinimal" configName="AlphabetScannerAbcAlternateMinimal" configId="B2C4C9B4-CF8B-41FB-ACAD-43FEEEA30FB6" formId="32D2A726-43A9-40D7-81A3-86C6C9EF4530" configFile="AlphabetScannerAbcAlternateMinimal.xml"/>
+
+    <ConfigMapEntry panelClass="TalkApplicationScanner" configName="TalkApplicationScannerQwerty" configId="32005871-BEDB-4037-8FEB-AE3CAA1362EA" formId="D9A5B53F-7119-445B-BDEA-F76EC53077F1" configFile="TalkApplicationScannerQwerty.xml"/>
+    <ConfigMapEntry panelClass="TalkApplicationScanner" configName="TalkApplicationScannerAbc" configId="47165306-3625-4AFC-906F-A7CD64660CE8" formId="86B57FA0-2EF3-4C07-81E7-6796AE9B7B59" configFile="TalkApplicationScannerAbc.xml"/>
+    <ConfigMapEntry panelClass="TalkApplicationScanner" configName="TalkApplicationScannerAlternate" configId="639ABF13-C9F4-42F0-B7DF-D4257120D6AE" formId="44DD722B-2BA2-42F4-9AE6-B13108A6F025" configFile="TalkApplicationScannerAlternate.xml"/>
+    <ConfigMapEntry panelClass="TalkApplicationScanner" configName="TalkApplicationScannerAbcAlternate" configId="625BCFFD-F8D9-4FE8-A0D1-564497CC21A5" formId="44DD722B-2BA2-42F4-9AE6-B13108A6F025" configFile="TalkApplicationScannerAbcAlternate.xml"/>
+
+    <ConfigMapEntry panelClass="LetterA" configName="LetterA" configId="B1DE8D9A-D24E-4361-BB28-D50588B1CAB0" formId="83FACD42-3678-4D14-9350-22B0E69D0D01" configFile="LetterA.xml"/>
+    <ConfigMapEntry panelClass="LetterE" configName="LetterE" configId="DBCF5D7B-FEB1-4E0D-BBAF-D15BD424A026" formId="83FACD42-3678-4D14-9350-22B0E69D0D01" configFile="LetterE.xml"/>
+    <ConfigMapEntry panelClass="LetterI" configName="LetterI" configId="CE156170-71DF-424D-8843-34E7724095BD" formId="83FACD42-3678-4D14-9350-22B0E69D0D01" configFile="LetterI.xml"/>
+    <ConfigMapEntry panelClass="LetterC" configName="LetterC" configId="11C7F40B-098B-4362-BF00-248955A390AF" formId="83FACD42-3678-4D14-9350-22B0E69D0D01" configFile="LetterC.xml"/>
+    <ConfigMapEntry panelClass="LetterO" configName="LetterO" configId="EE0F8E39-E46F-45E8-AEB5-5A265651EF9A" formId="83FACD42-3678-4D14-9350-22B0E69D0D01" configFile="LetterO.xml"/>
+    <ConfigMapEntry panelClass="LetterU" configName="LetterU" configId="72F596C3-9D24-46DE-A275-0ACD965EB5A0" formId="83FACD42-3678-4D14-9350-22B0E69D0D01" configFile="LetterU.xml"/>
+    <ConfigMapEntry panelClass="LetterS" configName="LetterS" configId="C31F1E15-6FF1-4505-A173-2EC01693646A" formId="83FACD42-3678-4D14-9350-22B0E69D0D01" configFile="LetterS.xml"/>
+  </ConfigMapEntries>
+</ACAT>

@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" ?>
-
-<ACAT>
-  <ConfigMapEntries>
-    <ConfigMapEntry panelClass="CalculatorScanner" configName="CalculatorScanner" configId="C38D1832-A083-4F4A-B5E5-487968F0F553" formId="3E4969B0-DEBC-4327-95D0-C3471774409A" configFile="CalculatorScanner.xml"/>
-  </ConfigMapEntries>
-</ACAT>

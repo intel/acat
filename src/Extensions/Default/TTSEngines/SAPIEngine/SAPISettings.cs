@@ -1,21 +1,13 @@
-﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="SAPISettings.cs" company="Intel Corporation">
+﻿///////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// SAPISettings.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Microsoft Speech Synth Text to speech settings
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.PreferencesManagement;
@@ -55,6 +47,13 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         }
 
         /// <summary>
+        /// Gets or sets whether a puncutation should be appended if it
+        /// is not already there.
+        /// </summary>
+        [BoolDescriptor("Auto append sentence terminator?", false)]
+        public bool AutoAppendPunctuation { get; set; }
+
+        /// <summary>
         /// Preferred Gender of the voice
         /// </summary>
         public VoiceGender Gender { get; set; }
@@ -73,18 +72,19 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// <summary>
         /// Gets or sets whether to use alternate pronunciations
         /// </summary>
+        [BoolDescriptor("Use alternate pronunciations?", false)]
         public bool UseAlternatePronunciations { get; set; }
+
+        /// <summary>
+        /// Gets or sets the voice for TTS
+        /// </summary>
+        public String Voice { get; set; }
 
         /// <summary>
         /// Gets or sets the volume
         /// </summary>
         [IntDescriptor("Volume setting", 0, 100)]
         public int Volume { get; set; }
-
-        /// <summary>
-        /// Gets or sets the voice for TTS
-        /// </summary>
-        public String Voice { get; set; }
 
         /// <summary>
         /// Loads settings from file

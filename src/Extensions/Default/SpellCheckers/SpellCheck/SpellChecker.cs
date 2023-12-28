@@ -1,21 +1,18 @@
-﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="SpellChecker.cs" company="Intel Corporation">
+﻿///////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// SpellChecker.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// A rudimentary spell checker class. Has a small spell dictionary.
+// Checks spelling and replaces the misspelt word
+// with the right word.
+// Also does auto-correction.  Capitalizes words that appear
+// after a sentence terminator (such as '.', '!' etc).  Inserts
+// spaces after a terminator.
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Extensions;
@@ -30,14 +27,6 @@ using System.Xml;
 
 namespace ACAT.Extensions.Default.SpellCheckers
 {
-    /// <summary>
-    /// A rudimentary spell checker class. Has a small spell dictionary.
-    /// Checks spelling and replaces the misspelt word
-    /// with the right word.
-    /// Also does auto-correction.  Capitalizes words that appear
-    /// after a sentence terminator (such as '.', '!' etc).  Inserts
-    /// spaces after a terminator.
-    /// </summary>
     [DescriptorAttribute("9DB43B3D-A407-4FC5-8025-89497E5B9767",
                         "ACAT SpellChecker",
                         "ACAT's Default Spell Checker.")]
@@ -104,6 +93,7 @@ namespace ACAT.Extensions.Default.SpellCheckers
 
             try
             {
+                Log.Debug("Spellcheck filename is " + spellingFile);
                 if (!String.IsNullOrEmpty(spellingFile) && File.Exists(spellingFile))
                 {
                     doc.Load(spellingFile);

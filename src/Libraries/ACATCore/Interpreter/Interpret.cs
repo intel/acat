@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="Interpret.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Utility;
@@ -42,6 +29,7 @@ namespace ACAT.Lib.Core.Interpreter
     /// </summary>
     public class Interpret
     {
+#pragma warning disable IDE0051
         /// <summary>
         /// The XML file has a Scripts section where script
         /// functions can be defined and resused elsewhere
@@ -264,10 +252,7 @@ namespace ACAT.Lib.Core.Interpreter
         /// <returns>true on success</returns>
         private bool actuate(List<String> args)
         {
-            if (EvtActuateNotify != null)
-            {
-                EvtActuateNotify(this, new InterpreterEventArgs(args));
-            }
+            EvtActuateNotify?.Invoke(this, new InterpreterEventArgs(args));
 
             return true;
         }
@@ -290,10 +275,7 @@ namespace ACAT.Lib.Core.Interpreter
         /// <returns>true on success</returns>
         private bool close(List<String> args)
         {
-            if (EvtCloseNotify != null)
-            {
-                EvtCloseNotify(this, new InterpreterEventArgs(args));
-            }
+            EvtCloseNotify?.Invoke(this, new InterpreterEventArgs(args));
 
             return true;
         }
@@ -305,10 +287,7 @@ namespace ACAT.Lib.Core.Interpreter
         /// <returns>true on success</returns>
         private bool highlight(List<String> args)
         {
-            if (EvtHighlightNotify != null)
-            {
-                EvtHighlightNotify(this, new InterpreterEventArgs(args));
-            }
+            EvtHighlightNotify?.Invoke(this, new InterpreterEventArgs(args));
 
             return true;
         }
@@ -320,10 +299,7 @@ namespace ACAT.Lib.Core.Interpreter
         /// <returns>true on success</returns>
         private bool highlightSelected(List<String> args)
         {
-            if (EvtHighlightSelectedNotify != null)
-            {
-                EvtHighlightSelectedNotify(this, new InterpreterEventArgs(args));
-            }
+            EvtHighlightSelectedNotify?.Invoke(this, new InterpreterEventArgs(args));
 
             return true;
         }
@@ -335,10 +311,7 @@ namespace ACAT.Lib.Core.Interpreter
         /// <returns>true on success</returns>
         private bool launch(List<String> args)
         {
-            if (EvtLaunchNotify != null)
-            {
-                EvtLaunchNotify(this, new InterpreterEventArgs(args));
-            }
+            EvtLaunchNotify?.Invoke(this, new InterpreterEventArgs(args));
 
             return true;
         }
@@ -406,7 +379,7 @@ namespace ACAT.Lib.Core.Interpreter
                     // then invoke the event
 
                     bool handled = false;
-                    notifyRunCommandHookSubscribers(new InterpreterRunEventArgs(scriptName), ref  handled);
+                    notifyRunCommandHookSubscribers(new InterpreterRunEventArgs(scriptName), ref handled);
 
                     if (!handled)
                     {
@@ -425,20 +398,14 @@ namespace ACAT.Lib.Core.Interpreter
         /// <returns>true on success</returns>
         private bool select(List<String> args)
         {
-            if (EvtSelectNotify != null)
-            {
-                EvtSelectNotify(this, new InterpreterEventArgs(args));
-            }
+            EvtSelectNotify?.Invoke(this, new InterpreterEventArgs(args));
 
             return true;
         }
 
         private bool showPopup(List<String> args)
         {
-            if (EvtShowPopup != null)
-            {
-                EvtShowPopup(this, new InterpreterEventArgs(args));
-            }
+            EvtShowPopup?.Invoke(this, new InterpreterEventArgs(args));
 
             return true;
         }
@@ -449,10 +416,7 @@ namespace ACAT.Lib.Core.Interpreter
         /// <returns>true on success</returns>
         private bool stop(List<String> args)
         {
-            if (EvtStopNotify != null)
-            {
-                EvtStopNotify(this, new InterpreterEventArgs(args));
-            }
+            EvtStopNotify?.Invoke(this, new InterpreterEventArgs(args));
 
             return true;
         }
@@ -464,12 +428,10 @@ namespace ACAT.Lib.Core.Interpreter
         /// <returns>true on success</returns>
         private bool transition(List<String> args)
         {
-            if (EvtTransitionNotify != null)
-            {
-                EvtTransitionNotify(this, new InterpreterEventArgs(args));
-            }
+            EvtTransitionNotify?.Invoke(this, new InterpreterEventArgs(args));
 
             return true;
         }
+#pragma warning restore IDE0051
     }
 }

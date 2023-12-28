@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="CmdScope.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
@@ -63,15 +50,15 @@ namespace ACAT.Lib.Core.CommandManagement
             NotSpecified,
 
             /// <summary>
-            /// Valid anywhere in ACAT - in scanners, 
-            /// menus, dialogs 
+            /// Valid anywhere in ACAT - in scanners,
+            /// menus, dialogs
             /// </summary>
             Global,
 
             /// <summary>
             /// Valid only for the specified PanelCategory i.e.
             /// Scanner, Menu, Dialog etc.  The ScopeValue contains
-            /// the value "Scanner", "Menu" etc.  The value should be 
+            /// the value "Scanner", "Menu" etc.  The value should be
             /// one of the valid values of the PanelCategory enum
             /// </summary>
             PanelCategory,
@@ -83,8 +70,8 @@ namespace ACAT.Lib.Core.CommandManagement
             PanelClass,
 
             /// <summary>
-            /// Valid only for a specific panelinstance i.e., a specific 
-            /// combination of the panel class and the animation file.  In 
+            /// Valid only for a specific panelinstance i.e., a specific
+            /// combination of the panel class and the animation file.  In
             /// this case, the ScopeValue should contain the ConfigId
             /// (which is a GUID) from PanelConfigMap.xml
             /// </summary>

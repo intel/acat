@@ -1,21 +1,17 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="Abbreviation.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// Abbreviation.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Represents an abbreviation.  The abbreviation has a mnemonic,
+// the expansion and the mode of expansion - "Write" or "Speak".
+// In the first case, the abbreviation is expanded to its full form
+// in the textual form.  In the second case, the expansion is converted
+// to speech.
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Utility;
@@ -24,13 +20,6 @@ using System.Text.RegularExpressions;
 
 namespace ACAT.Lib.Core.AbbreviationsManagement
 {
-    /// <summary>
-    /// Represents an abbreviation.  The abbreviation has a mnemonic,
-    /// the expansion and the mode of expansion - "Write" or "Speak".
-    /// In the first case, the abbreviation is expanded to its full form
-    /// in the textual form.  In the second case, the expansion is converted
-    /// to speech.
-    /// </summary>
     public class Abbreviation : IDisposable
     {
         /// <summary>

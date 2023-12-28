@@ -1,24 +1,25 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="PreferencesEditForm.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// PreferencesEditForm.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// A generic preferences editor for a class that
+// has fields and properties which are intergers,
+// strings, bool or floats. Picks those fields and
+// properties which are qualified by custom attributes
+// (BoolDescritpor, IntDescriptor etc). Displays the
+// settings as a gridview. Does validation of data
+// to make sure it is within range etc.
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Lib.Core.PanelManagement;
+using ACAT.Lib.Core.Utility;
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -29,8 +30,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
     /// <summary>
     /// A generic preferences editor for a class that
     /// has fields and properties which are intergers,
-    /// strings, bool or floats.  Pickes those fields and
-    /// properties which are  qualified by custom attributes
+    /// strings, bool or floats. Picks those fields and
+    /// properties which are qualified by custom attributes
     /// (BoolDescritpor, IntDescriptor etc). Displays the
     /// settings as a gridview. Does validation of data
     /// to make sure it is within range etc.
@@ -50,7 +51,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <summary>
         /// Did the user change anything in the form
         /// </summary>
-        private bool _isDirty = false;
+        public bool _isDirty = false;
 
         /// <summary>
         /// Aspect ratio of form at design time
@@ -58,14 +59,26 @@ namespace ACAT.Lib.Core.PreferencesManagement
         private float _designTimeAspectRatio = 0.0f;
 
         /// <summary>
-        /// Has first call to OnClientSizeChanged been made?
+        /// Has first call to OnClientSizeChanged been made?                                   
         /// </summary>
         private bool _firstClientChangedCall = true;
 
         /// <summary>
         /// Whether the text should be wrapped or not
         /// </summary>
-        private bool _wrapText = true;
+        public bool _wrapText = true;
+
+        /// <summary>
+        /// Delegate for the event triggered when the user makes a change to a preference setting 
+        /// </summary>
+        /// <param name="sender">event sender</param>
+        /// <param name="arg">event args</param>
+        public delegate void NotifyPreferencesChangeMade();
+
+        /// <summary>
+        /// Event raised when the user makes a change to a preference setting 
+        /// </summary>
+        public event NotifyPreferencesChangeMade EvtPreferencesChangeMade;
 
         /// <summary>
         /// Initializes an instance of the class
@@ -83,7 +96,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         public ISupportsPreferences SupportsPreferencesObj { get; set; }
 
         /// <summary>
-        /// Gets or sets the title of the form
+        /// Gets or sets the title / text for header of settings column of the form
         /// </summary>
         public String Title { get; set; }
 
@@ -273,70 +286,55 @@ namespace ACAT.Lib.Core.PreferencesManagement
             dataGridView.Rows[rowNum].Tag = property;
         }
 
+
+
         /// <summary>
-        /// User canceled. Confirm and close
+        /// Check if form filled correctly, if not, return false
+        /// If validated, check if changes have been made to form and if so prompt user asking if they want to save
+        /// </summary>
+        /// <returns></returns>
+        public bool validateAndSave()
+        {
+
+            // Update preferences based on latest values then save
+            updatePreferences();
+
+            // Save preferences
+            Preferences.Save();
+
+            return true;
+
+        }
+
+
+        /// <summary>
+        /// User clicked wrap text checkbox
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
-        private void buttonCancel_Click(object sender, EventArgs e)
+        public void checkBoxWrapText_CheckedChanged(object sender, EventArgs e)
         {
-            if (!_isDirty || confirm("Changes not saved. Quit anyway?") == DialogResult.Yes)
+            if (sender.GetType() == typeof(CheckBox))
             {
-                DialogResult = DialogResult.Cancel;
-                Close();
+                _wrapText = ((CheckBox)sender).Checked;
+                wrapText(_wrapText);
             }
+
         }
 
         /// <summary>
-        /// Restore default values for all the settings
+        /// User clicked Defaults button
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
-        private void buttonDefaults_Click(object sender, EventArgs e)
+        public void buttonDefaults_Click(object sender, EventArgs e)
         {
-            if (confirm("Restore default settings?") == DialogResult.Yes)
+            if (ConfirmBox.ShowDialog("Restore default settings?", this, true))
             {
                 _isDirty = true;
                 refreshGridView(DefaultPreferences);
+                EvtPreferencesChangeMade();
             }
-        }
-
-        /// <summary>
-        /// User clicked OK. Confirm, save preferences and close
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void buttonOK_Click(object sender, EventArgs e)
-        {
-            if (_isDirty && confirm("Save changes?") == DialogResult.Yes)
-            {
-                updatePreferences();
-
-                Preferences.Save();
-            }
-
-            DialogResult = DialogResult.OK;
-
-            Close();
-        }
-
-        /// <summary>
-        /// Wrap / unwrap text
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void checkBoxWrapText_CheckedChanged(object sender, EventArgs e)
-        {
-            _wrapText = checkBoxWrapText.Checked;
-            wrapText(_wrapText);
-        }
-
-        /// <summary>
-        /// Clears the status label
-        /// </summary>
-        private void clearStatus()
-        {
-            showStatus(String.Empty);
         }
 
         /// <summary>
@@ -344,22 +342,19 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// </summary>
         /// <param name="prompt">prompt to display</param>
         /// <returns>Yes or no</returns>
-        private DialogResult confirm(String prompt)
+        private bool confirm(String prompt)
         {
-            return MessageBox.Show(prompt,
-                                    Text,
-                                    MessageBoxButtons.YesNo,
-                                    MessageBoxIcon.Question);
+            return ConfirmBox.ShowDialog(prompt.ToString(), this, true);
         }
 
         /// <summary>
-        /// clear status
+        /// Occurs when edit mode stopped for the current selected cell
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
         private void dataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            clearStatus();
+            
         }
 
         /// <summary>
@@ -373,6 +368,10 @@ namespace ACAT.Lib.Core.PreferencesManagement
         {
             var senderGrid = (DataGridView)sender;
             e.Cancel = false;
+            String name = null;
+            String newVal = null;
+            String prevVal = null;
+            String defaultVal = null;
 
             var cell = senderGrid[e.ColumnIndex, e.RowIndex];
             if (e.ColumnIndex == 2 && e.RowIndex >= 0 && cell is DataGridViewTextBoxCell)
@@ -380,11 +379,19 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 var textBox = cell as DataGridViewTextBoxCell;
                 String value = textBox.EditedFormattedValue as string;
 
+                // Cell is PropertyInfo
                 if (senderGrid.Rows[e.RowIndex].Tag is PropertyInfo)
                 {
                     PropertyInfo property = senderGrid.Rows[e.RowIndex].Tag as PropertyInfo;
+                    name = property.Name;
+                    prevVal = property.GetValue(Preferences, null).ToString();
+                    defaultVal = getDefaultValue(name);
+
+                    // Property is integer type
                     if (isInt(property))
                     {
+
+                        // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
                         int intValue;
                         if (Int32.TryParse(value, out intValue))
                         {
@@ -394,18 +401,50 @@ namespace ACAT.Lib.Core.PreferencesManagement
                                 if (intValue < intDescriptor.MinValue || intValue > intDescriptor.MaxValue)
                                 {
                                     e.Cancel = true;
-                                    showStatus("Out of range");
+                                    showErrorStatus(name, "Out of range");
+                                    newVal = prevVal;
                                 }
                             }
                         }
                         else
                         {
                             e.Cancel = true;
-                            showStatus("Must be numeric");
+                            showErrorStatus(name, "Must be numeric");
+                            newVal = prevVal;
+                        }
+
+                        // If previous cell value not valid, set to default value
+                        if (String.IsNullOrEmpty(newVal))
+                        {
+                            newVal = defaultVal;
+                        }
+                        else if (!String.IsNullOrEmpty(newVal))
+                        {
+                            int intValue2;
+                            if (Int32.TryParse(newVal, out intValue2))
+                            {
+                                var intDescriptor = getIntAttribute(property);
+                                if (intDescriptor != null)
+                                {
+                                    if (intValue2 < intDescriptor.MinValue || intValue2 > intDescriptor.MaxValue)
+                                    {
+                                        newVal = defaultVal;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                newVal = defaultVal;
+                            }
                         }
                     }
+
+
+                    // Property is float type
                     else if (isFloat(property))
                     {
+
+                        // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
                         try
                         {
                             var floatDescriptor = getFloatAttribute(property);
@@ -413,21 +452,55 @@ namespace ACAT.Lib.Core.PreferencesManagement
                             if (floatValue < floatDescriptor.MinValue || floatValue > floatDescriptor.MaxValue)
                             {
                                 e.Cancel = true;
-                                showStatus("Out of range");
+                                showErrorStatus(name, "Out of range");
+                                newVal = prevVal;
                             }
                         }
                         catch
                         {
                             e.Cancel = true;
-                            showStatus("Must be numeric");
+                            showErrorStatus(name, "Must be numeric");
+                            newVal = prevVal;
                         }
+
+                        // If previous cell value not valid, set to default value
+                        if (String.IsNullOrEmpty(newVal))
+                        {
+                            newVal = defaultVal;
+                        }
+                        else if (!String.IsNullOrEmpty(newVal))
+                        {
+                            try
+                            {
+                                var floatDescriptor = getFloatAttribute(property);
+                                var floatValue = float.Parse(newVal, CultureInfo.InvariantCulture.NumberFormat);
+                                if (floatValue < floatDescriptor.MinValue || floatValue > floatDescriptor.MaxValue)
+                                {
+                                    newVal = defaultVal;
+                                }
+                            }
+                            catch
+                            {
+                                newVal = defaultVal;
+                            }
+                        }
+
                     }
                 }
+
+                // Cell is FieldInfo
                 else if (senderGrid.Rows[e.RowIndex].Tag is FieldInfo)
                 {
                     FieldInfo fieldInfo = senderGrid.Rows[e.RowIndex].Tag as FieldInfo;
+                    name = fieldInfo.Name;
+                    prevVal = fieldInfo.GetValue(Preferences).ToString();
+                    defaultVal = getDefaultValue(name);
+
+                    // Field is integer type
                     if (isInt(fieldInfo))
                     {
+
+                        // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
                         int intValue;
                         if (Int32.TryParse(value, out intValue))
                         {
@@ -437,18 +510,49 @@ namespace ACAT.Lib.Core.PreferencesManagement
                                 if (intValue < intDescriptor.MinValue || intValue > intDescriptor.MaxValue)
                                 {
                                     e.Cancel = true;
-                                    showStatus("Out of range");
+                                    showErrorStatus(name, "Out of range");
+                                    newVal = prevVal;
                                 }
                             }
                         }
                         else
                         {
                             e.Cancel = true;
-                            showStatus("Must be numeric");
+                            showErrorStatus(name, "Must be numeric");
+                            newVal = prevVal;
+                        }
+
+                        // If previous cell value not valid, set to default value
+                        if (String.IsNullOrEmpty(newVal))
+                        {
+                            newVal = defaultVal;
+                        }
+                        else if (!String.IsNullOrEmpty(newVal))
+                        {
+                            int intValue2;
+                            if (Int32.TryParse(newVal, out intValue2))
+                            {
+                                var intDescriptor = getIntAttribute(fieldInfo);
+                                if (intDescriptor != null)
+                                {
+                                    if (intValue2 < intDescriptor.MinValue || intValue2 > intDescriptor.MaxValue)
+                                    {
+                                        newVal = defaultVal;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                newVal = defaultVal;
+                            }
                         }
                     }
+
+                    // Field is float type
                     else if (isFloat(fieldInfo))
                     {
+
+                        // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
                         try
                         {
                             var floatDescriptor = getFloatAttribute(fieldInfo);
@@ -456,23 +560,55 @@ namespace ACAT.Lib.Core.PreferencesManagement
                             if (floatValue < floatDescriptor.MinValue || floatValue > floatDescriptor.MaxValue)
                             {
                                 e.Cancel = true;
-                                showStatus("Out of range");
+                                showErrorStatus(name, "Out of range");
+                                newVal = prevVal;
                             }
                         }
                         catch
                         {
                             e.Cancel = true;
-                            showStatus("Must be numeric");
+                            showErrorStatus(name, "Must be numeric");
+                            newVal = prevVal;
+                        }
+
+                        // If previous cell value not valid, set to default value
+                        if (String.IsNullOrEmpty(newVal))
+                        {
+                            newVal = defaultVal;
+                        }
+                        else if (!String.IsNullOrEmpty(newVal))
+                        {
+                            try
+                            {
+                                var floatDescriptor = getFloatAttribute(fieldInfo);
+                                var floatValue = float.Parse(newVal, CultureInfo.InvariantCulture.NumberFormat);
+                                if (floatValue < floatDescriptor.MinValue || floatValue > floatDescriptor.MaxValue)
+                                {
+                                    newVal = defaultVal;
+                                }
+                            }
+                            catch
+                            {
+                                newVal = defaultVal;
+                            }
                         }
                     }
                 }
             }
 
-            if (!e.Cancel)
+
+            if (e.Cancel)
             {
-                clearStatus();
+                if (!String.IsNullOrEmpty(name) && !String.IsNullOrEmpty(newVal))
+                {
+                    ((DataGridViewTextBoxCell)cell).Value = newVal;
+                    ((DataGridView)sender).RefreshEdit();
+                }
+
             }
+
         }
+
 
         /// <summary>
         /// Something changed. Set dirty flag
@@ -482,6 +618,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         private void DataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             _isDirty = true;
+            EvtPreferencesChangeMade();
         }
 
         /// <summary>
@@ -492,7 +629,9 @@ namespace ACAT.Lib.Core.PreferencesManagement
         private void DataGridView_CurrentCellDirtyStateChanged(object sender, EventArgs e)
         {
             _isDirty = true;
+            EvtPreferencesChangeMade();
         }
+
 
         /// <summary>
         /// Returns the custom attribute for a boolean field
@@ -722,6 +861,10 @@ namespace ACAT.Lib.Core.PreferencesManagement
             DefaultColumn.Width = dataGridView.Width / 5;
             RangeColumn.Width = dataGridView.Width / 5;
 
+
+            dataGridView.Sort(SettingColumn, ListSortDirection.Ascending);
+            SettingColumn.HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending;
+
             DescriptionColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
             ValueColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
             DefaultColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -729,8 +872,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
             dataGridView.CellValidating += dataGridView_CellValidating;
             dataGridView.CellEndEdit += dataGridView_CellEndEdit;
-            dataGridView.CellValueChanged += DataGridView_CellValueChanged;
-            dataGridView.CurrentCellDirtyStateChanged += DataGridView_CurrentCellDirtyStateChanged;
         }
 
         /// <summary>
@@ -842,19 +983,28 @@ namespace ACAT.Lib.Core.PreferencesManagement
             if (!String.IsNullOrEmpty(Title))
             {
                 Text = Title;
+                SettingColumn.HeaderText = Title;
             }
 
-            checkBoxWrapText.Checked = _wrapText;
-
+            // Get Preferences and DefaultPreferences
             Preferences = SupportsPreferencesObj.GetPreferences();
             DefaultPreferences = SupportsPreferencesObj.GetDefaultPreferences();
-            if (DefaultPreferences == null)
-            {
-                buttonDefaults.Enabled = false;
-            }
 
-            refreshGridView(Preferences);
+            _isDirty = false;
+
+            // Refresh grid view and set handlers which change _dirty flag after form has been fully painted / shown
+            Paint += (s, args) =>
+            {
+                refreshGridView(Preferences);
+
+                if (dataGridView != null)
+                {
+                    dataGridView.CellValueChanged += DataGridView_CellValueChanged;
+                    dataGridView.CurrentCellDirtyStateChanged += DataGridView_CurrentCellDirtyStateChanged;
+                }
+            };
         }
+
 
         /// <summary>
         /// Populates the grid view with preferences data
@@ -862,7 +1012,20 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <param name="prefs">preferences</param>
         private void refreshGridView(IPreferences prefs)
         {
-            dataGridView.Rows.Clear();
+            // Do Clear of datagrid rows in try/catch block - sometimes throws exception
+            bool clearSuccessful = true;
+            try
+            {
+                dataGridView.Rows.Clear();
+            }
+            catch
+            {
+                Log.Debug("PreferencesEditForm | refreshGridView | clearSuccessful == false");
+                clearSuccessful = false;
+            }
+            if (!clearSuccessful)
+                return;
+
 
             wrapText(_wrapText);
 
@@ -870,7 +1033,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
             foreach (var memberInfo in members)
             {
                 var name = memberInfo.Name;
-
                 MemberInfo[] member = prefs.GetType().GetMember(name);
                 if (member.Length == 0)
                 {
@@ -913,7 +1075,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                                 addFloatRow(prefs, fieldInfo, floatDescriptor);
                             }
                         }
-
                         break;
 
                     case MemberTypes.Property:
@@ -941,6 +1102,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                             {
                                 addStringRow(prefs, property, stringDescriptor);
                             }
+
                         }
                         else if (isFloat(property))
                         {
@@ -953,6 +1115,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
                         break;
                 }
+
             }
 
             if (dataGridView.Rows.Count == 0)
@@ -962,15 +1125,29 @@ namespace ACAT.Lib.Core.PreferencesManagement
             }
 
             dataGridView.AutoResizeRows();
+
+            // Sort first column ascending everytime grid is refreshed
+            dataGridView.Sort(SettingColumn, ListSortDirection.Ascending);
+            SettingColumn.HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending;
+
+            if (dataGridView.Rows.Count > 0)
+            {
+                dataGridView.CurrentCell = dataGridView.Rows[0].Cells[0];
+                dataGridView.Rows[0].Selected = true;
+            }
         }
 
         /// <summary>
-        /// Displays a status mesage
+        /// Displays a error status mesage
         /// </summary>
         /// <param name="status">text of the status</param>
-        private void showStatus(String status)
+        private void showErrorStatus(String settingName, String status)
         {
-            labelStatus.Text = status;
+            ConfirmBoxSingleOption confirmBoxSingleOption = new ConfirmBoxSingleOption();
+            confirmBoxSingleOption.Prompt = "Error\n"+ settingName+"\n"+ status;
+            confirmBoxSingleOption.DecisionPrompt = "OK";
+            confirmBoxSingleOption.ShowDialog(this);
+            confirmBoxSingleOption.Dispose();
         }
 
         /// <summary>
@@ -1060,5 +1237,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             DescriptionColumn.DefaultCellStyle.WrapMode = (onOff) ? DataGridViewTriState.True : DataGridViewTriState.False;
             dataGridView.AutoResizeRows();
         }
+
+
     }
 }

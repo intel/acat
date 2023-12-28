@@ -34,11 +34,11 @@
             // labelMessage
             // 
             this.labelMessage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labelMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelMessage.Font = new System.Drawing.Font("Montserrat Medium", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelMessage.ForeColor = System.Drawing.Color.Ivory;
             this.labelMessage.Location = new System.Drawing.Point(8, 8);
             this.labelMessage.Name = "labelMessage";
-            this.labelMessage.Size = new System.Drawing.Size(290, 56);
+            this.labelMessage.Size = new System.Drawing.Size(380, 100);
             this.labelMessage.TabIndex = 1;
             this.labelMessage.Text = "This is a test message";
             this.labelMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -48,7 +48,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(306, 71);
+            this.ClientSize = new System.Drawing.Size(400, 117);
             this.Controls.Add(this.labelMessage);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "ToastForm";

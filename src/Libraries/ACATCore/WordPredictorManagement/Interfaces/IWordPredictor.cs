@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="IWordPredictor.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Utility;
@@ -26,6 +13,58 @@ using System.Globalization;
 namespace ACAT.Lib.Core.WordPredictionManagement
 {
     /// <summary>
+    /// Word prediction mode changed
+    /// </summary>
+    /// <param name="newMode">The new Mode</param>
+    public delegate void ModeChangedDelegate(WordPredictionModes newMode);
+
+    /// <summary>
+    /// Contains the probabilities for the next letters
+    /// </summary>
+    /// <param name="letterList">List of letters and probs</param>
+    /// <param name="lettersChanged">has the list changed?</param>
+    public delegate void NextLetterProbabilitiesDelegate(List<KeyValuePair<string, double>> letterList, bool lettersChanged);
+
+    /// <summary>
+    /// Contains the probabilities for the next word
+    /// </summary>
+    /// <param name="wordList">list of words with probabilities</param>
+    /// <param name="wordsChanged">has the word list changed?</param>
+    public delegate void NextWordProbabilitiesDelegate(List<KeyValuePair<string, double>> wordList, bool wordsChanged);
+
+    /// <summary>
+    /// Handles async responses from ConvAssist
+    /// </summary>
+    /// <param name="response">Response object</param>
+    public delegate void WordPredictionAsyncResponseDelegate(WordPredictionResponse response);
+
+    /// <summary>
+    /// Modes in which the predictor can work
+    /// </summary>
+    public enum WordPredictionModes
+    {
+        None,
+        Sentence,
+        Shorthand,
+        CannedPhrases
+    }
+
+    public enum WordPredictorMessageTypes
+    {
+        None,
+        SetParam,
+        NextWordPredictionRequest,
+        NextWordPredictionResponse,
+        NextSentencePredictionRequest,
+        NextSentencePredictionResponse,
+        LearnWords,
+        LearnCanned,
+        LearnShorthand,
+        LearnSentence,
+        ForceQuitApp,
+    }
+
+    /// <summary>
     /// Interface to Word prediction engines.  A word predictor predicts
     /// the next word using the previous n-words as context.  Some word predictors
     /// also support learning where the engine tunes its internal model for
@@ -34,6 +73,26 @@ namespace ACAT.Lib.Core.WordPredictionManagement
     /// </summary>
     public interface IWordPredictor : IDisposable
     {
+        /// <summary>
+        /// Event to indicate mode has changed
+        /// </summary>
+        event ModeChangedDelegate EvtModeChanged;
+
+        /// <summary>
+        /// Event to notify next letter probabilities
+        /// </summary>
+        event NextLetterProbabilitiesDelegate EvtNotifyNextLetterProbabilities;
+
+        /// <summary>
+        /// Event to notify next word probabilities
+        /// </summary>
+        event NextWordProbabilitiesDelegate EvtNotifyNextWordProbabilities;
+
+        /// <summary>
+        /// Event to notify response received from ConvAssist
+        /// </summary>
+        event WordPredictionAsyncResponseDelegate EvtWordPredictionAsyncResponse;
+
         /// <summary>
         /// Returns a descriptor which contains a user readable name, a
         /// short textual description and a unique GUID.
@@ -63,6 +122,14 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// </summary>
         bool SupportsLearning { get; }
 
+        bool SupportsPredictSync { get; }
+
+        /// <summary>
+        /// Gets the current mode for the predictor
+        /// </summary>
+        /// <returns></returns>
+        WordPredictionModes GetMode();
+
         /// <summary>
         /// Initialize the word predictor.  Language is optional,
         /// if not specified, use the current culture
@@ -72,13 +139,19 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         bool Init(CultureInfo ci);
 
         /// <summary>
+        /// Execute post init operations.
+        /// </summary>
+        /// <returns>true on success</returns>
+        bool PostInit();
+
+        /// <summary>
         /// Add the text to the word prediction models for better
         /// prediction.  The text would typically represent something
         /// the user typed.
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        bool Learn(String text);
+        bool Learn(String text, WordPredictorMessageTypes RequestType);
 
         /// <summary>
         /// Call this on a context switch to a document.  Creates
@@ -101,6 +174,8 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// <returns>true on success, false on failure</returns>
         bool LoadSettings(String configFileDirectory);
 
+        WordPredictionResponse Predict(WordPredictionRequest req);
+
         /// <summary>
         /// Returns a list of next word predictions based on the context
         /// from the previous words in the sentence.  The number of words
@@ -109,7 +184,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// <param name="prevNWords">Previous words in the sentence</param>
         /// <param name="lastWord">current word (may be partially spelt out</param>
         /// <returns>A list of predicted words</returns>
-        IEnumerable<String> Predict(String prevNWords, String lastWord);
+        bool PredictAsync(WordPredictionRequest req);
 
         /// <summary>
         /// Save the word predictor settings to a file that is maintained
@@ -118,6 +193,12 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// <param name="configFileDirectory">Directory where the settings are stored</param>
         /// <returns>true on success, false on failure</returns>
         bool SaveSettings(String configFileDirectory);
+
+        /// <summary>
+        /// Set the mode in which the predictor will work
+        /// </summary>
+        /// <param name="wordPredictionMode"></param>
+        void SetMode(WordPredictionModes wordPredictionMode);
 
         /// <summary>
         /// Unload context

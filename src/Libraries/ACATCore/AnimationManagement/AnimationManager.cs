@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="AnimationManager.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.ActuatorManagement;
@@ -32,6 +19,77 @@ using System.Media;
 
 namespace ACAT.Lib.Core.AnimationManagement
 {
+    /// <summary>
+    /// Enmeration of the different modes for manual scanning
+    /// </summary>
+    public enum ManualScanModes
+    {
+        /// <summary>
+        /// Undefined
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// Scan horizontal in the left direction
+        /// </summary>
+        ScanLeft,
+
+        /// <summary>
+        /// Scan horizontal in the right direction
+        /// </summary>
+        ScanRight,
+
+        /// <summary>
+        /// Scan vertical in the upward direction
+        /// </summary>
+        ScanUp,
+
+        /// <summary>
+        /// Scan vertical in the downward direction
+        /// </summary>
+        ScanDown,
+
+        /// <summary>
+        /// Move scan one widget to the left
+        /// </summary>
+        MoveLeft,
+
+        /// <summary>
+        /// Move scan one widget to the right
+        /// </summary>
+        MoveRight,
+
+        /// <summary>
+        /// Move scan one widget above
+        /// </summary>
+        MoveUp,
+
+        /// <summary>
+        /// Move scan one widget down
+        /// </summary>
+        MoveDown,
+
+        /// <summary>
+        /// Stop scanning
+        /// </summary>
+        Stop,
+
+        /// <summary>
+        /// Pause scanning
+        /// </summary>
+        Pause,
+
+        /// <summary>
+        /// Resume scanning
+        /// </summary>
+        Resume,
+
+        /// <summary>
+        /// Toggle between Pause and Resume
+        /// </summary>
+        TogglePause
+    }
+
     /// <summary>
     /// Manages the display states of the various widgets, starts and stops
     /// animations and and also handles transitions between animations.
@@ -181,6 +239,14 @@ namespace ACAT.Lib.Core.AnimationManagement
             return (_player != null) ? _player.State : PlayerState.Unknown;
         }
 
+        public void HighlightDefaultHome()
+        {
+            if (CoreGlobals.AppPreferences.EnableManualScan)
+            {
+                _player.HighlightDefaultHome();
+            }
+        }
+
         /// <summary>
         /// Allcoate resources, parse the config file which contains all the
         /// animations and create a list of animation objects. Subscribe to
@@ -189,11 +255,13 @@ namespace ACAT.Lib.Core.AnimationManagement
         /// </summary>
         /// <param name="panelConfigMapEntry">Config object for the panel</param>
         /// <returns>true on success</returns>
-        public bool Init(PanelConfigMapEntry panelConfigMapEntry)
+        public bool Init(PanelConfigMapEntry panelConfigMapEntry, Widget panelWidget = null)
         {
             _panelConfigMapEntry = panelConfigMapEntry;
 
-            _panelClass = (panelConfigMapEntry != null) ? panelConfigMapEntry.PanelClass : String.Empty;
+            _currentPanel = panelWidget;
+
+            _panelClass = panelConfigMapEntry.PanelClass;
 
             bool retVal = _animationsCollection.Load(panelConfigMapEntry.ConfigFileName);
             if (retVal)
@@ -302,8 +370,15 @@ namespace ACAT.Lib.Core.AnimationManagement
         {
             if (_player != null)
             {
-                _firstAnimation.OnStart = true;
-                _player.Resume(_firstAnimation);
+                if (CoreGlobals.AppPreferences.EnableAutoStartScan)
+                {
+                    _firstAnimation.OnStart = true;
+                    _player.Resume(_firstAnimation);
+                }
+                else
+                {
+                    _player.Resume();
+                }
             }
         }
 
@@ -385,27 +460,34 @@ namespace ACAT.Lib.Core.AnimationManagement
             // get all the animations for the specified animation name.
             var animations = getAnimations(animationName);
 
-            if (animations == null)
+            if (!CoreGlobals.AppPreferences.EnableAutoStartScan)
             {
-                Log.Error("Could not find animations entry for panel " + panelWidget.Name);
-                return;
+                Transition();
             }
-
-            // transition to the one that is marked as "first"
-            var firstAnimation = animations.GetFirst();
-            if (firstAnimation == null)
+            else
             {
-                return;
+                if (animations == null)
+                {
+                    Log.Error("Could not find animations entry for panel " + panelWidget.Name);
+                    return;
+                }
+
+                // transition to the one that is marked as "first"
+                var firstAnimation = animations.GetFirst();
+                if (firstAnimation == null)
+                {
+                    return;
+                }
+
+                foreach (var animation in animations.Values)
+                {
+                    animation.EvtResolveWidgetChildren += animation_EvtResolveWidgetChildren;
+                }
+
+                _firstAnimation = firstAnimation;
+
+                Transition(firstAnimation);
             }
-
-            foreach (var animation in animations.Values)
-            {
-                animation.EvtResolveWidgetChildren += animation_EvtResolveWidgetChildren;
-            }
-
-            _firstAnimation = firstAnimation;
-
-            Transition(firstAnimation);
         }
 
         /// <summary>
@@ -468,12 +550,26 @@ namespace ACAT.Lib.Core.AnimationManagement
         /// animation object
         /// </summary>
         /// <param name="animation">target animation object</param>
-        public void Transition(Animation animation)
+        public void Transition(Animation animation = null)
         {
             try
             {
-                Log.Debug("Transition( " + animation.Name + "). _currentPanel: " + _currentPanel.Name);
-                _player.Transition(animation);
+                if (!CoreGlobals.AppPreferences.EnableManualScan)
+                {
+                    if (animation != null)
+                    {
+                        Log.Debug("Transition( " + animation.Name + "). _currentPanel: " + _currentPanel.Name);
+                        _player.Transition(animation);
+                    }
+                    else
+                    {
+                        _player.Transition(null);
+                    }
+                }
+                else
+                {
+                    _player.TransitionManualScan();
+                }
             }
             catch (Exception ex)
             {
@@ -566,7 +662,7 @@ namespace ACAT.Lib.Core.AnimationManagement
             IActuatorSwitch switchObj = e.SwitchObj;
             try
             {
-                if (_player == null || _currentPanel == null)
+                if (_currentPanel == null)
                 {
                     return;
                 }
@@ -577,7 +673,7 @@ namespace ACAT.Lib.Core.AnimationManagement
                 if (_currentPanel.UIControl is System.Windows.Forms.Form)
                 {
                     bool visible = Windows.GetVisible(_currentPanel.UIControl);
-                    Log.Debug("Form: " + _currentPanel.UIControl.Name + ", playerState: " + _player.State + ", visible: " + visible);
+                    Log.Debug("Form: " + _currentPanel.UIControl.Name + ", visible: " + visible);
                     if (!visible)
                     {
                         return;
@@ -592,13 +688,57 @@ namespace ACAT.Lib.Core.AnimationManagement
                     return;
                 }
 
+                var manualScanMode = (!CoreGlobals.AppPreferences.EnableManualScan)
+                    ? ManualScanModes.None
+                    : mapTriggerScanMode(switchObj.GetTriggerScanMode());
+
+                if (_player == null)
+                {
+                    if (String.Compare(onTrigger, SwitchSetting.TriggerCommand, true) != 0)
+                    {
+                        runSwitchMappedCommand(switchObj);
+                    }
+                    return;
+                }
+
+                Log.Debug("playerState: " + _player.State);
+
                 // execute action if the player is in the right state.
                 if (_player.State != PlayerState.Stopped &&
                     _player.State != PlayerState.Unknown &&
                     _player.State != PlayerState.Paused &&
+                    manualScanMode == ManualScanModes.None &&
                     String.Compare(onTrigger, SwitchSetting.TriggerCommand, true) != 0)
                 {
                     runSwitchMappedCommand(switchObj);
+                    return;
+                }
+
+                if (CoreGlobals.AppPreferences.EnableManualScan)
+                {
+                    Log.Debug("HOOO form: " + _currentPanel.UIControl.Name + " Player state: " + _player.State);
+
+                    if (_player.State == PlayerState.Paused)
+                    {
+                        Log.Debug(_currentPanel.Name + ": Player is paused. Returning");
+                        return;
+                    }
+
+                    if (switchObj.IsSelectTriggerSwitch())
+                    {
+                        var widget = _player.HighlightedWidget;
+                        if (widget != null)
+                        {
+                            Log.Debug("Actuate. widgetname: " + widget.Name + " Text: " + widget.GetText());
+                            _player.Interrupt();
+                            _player.ManualScanActuateWidget(widget);
+                        }
+                    }
+                    else
+                    {
+                        _player.TransitionManualScan(manualScanMode);
+                    }
+
                     return;
                 }
 
@@ -618,7 +758,7 @@ namespace ACAT.Lib.Core.AnimationManagement
 
                 playBeep(switchObj);
 
-                AnimationWidget highlightedWidget = _player.HighlightedWidget;
+                AnimationWidget highlightedWidget = _player.HighlightedAnimationWidget;
                 Animation currentAnimation = _player.CurrentAnimation;
 
                 highlightedWidget = _switchDownHighlightedWidget;
@@ -632,7 +772,7 @@ namespace ACAT.Lib.Core.AnimationManagement
 
                 if (highlightedWidget == null)
                 {
-                    highlightedWidget = _player.HighlightedWidget;
+                    highlightedWidget = _player.HighlightedAnimationWidget;
                     currentAnimation = _player.CurrentAnimation;
                 }
 
@@ -699,7 +839,7 @@ namespace ACAT.Lib.Core.AnimationManagement
             if (_player != null)
             {
                 _switchDownAnimation = _player.CurrentAnimation;
-                var widget = _player.HighlightedWidget;
+                var widget = _player.HighlightedAnimationWidget;
                 if (widget != null)
                 {
                     Log.Debug("Highlighted widget: " + widget.UIWidget.Name);
@@ -982,6 +1122,69 @@ namespace ACAT.Lib.Core.AnimationManagement
         }
 
         /// <summary>
+        /// Maps the switch trigger scan mode to a scan mode
+        /// </summary>
+        /// <param name="triggerScanMode">The switch trigger scan mode</param>
+        /// <returns>scan mode</returns>
+        private ManualScanModes mapTriggerScanMode(TriggerScanModes triggerScanMode)
+        {
+            var scanMode = ManualScanModes.None;
+
+            switch (triggerScanMode)
+            {
+                case TriggerScanModes.TriggerScanLeft:
+                    scanMode = ManualScanModes.ScanLeft;
+                    break;
+
+                case TriggerScanModes.TriggerScanRight:
+                    scanMode = ManualScanModes.ScanRight;
+                    break;
+
+                case TriggerScanModes.TriggerScanUp:
+                    scanMode = ManualScanModes.ScanUp;
+                    break;
+
+                case TriggerScanModes.TriggerScanDown:
+                    scanMode = ManualScanModes.ScanDown;
+                    break;
+
+                case TriggerScanModes.TriggerMoveLeft:
+                    scanMode = ManualScanModes.MoveLeft;
+                    break;
+
+                case TriggerScanModes.TriggerMoveRight:
+                    scanMode = ManualScanModes.MoveRight;
+                    break;
+
+                case TriggerScanModes.TriggerMoveUp:
+                    scanMode = ManualScanModes.MoveUp;
+                    break;
+
+                case TriggerScanModes.TriggerMoveDown:
+                    scanMode = ManualScanModes.MoveDown;
+                    break;
+
+                case TriggerScanModes.TriggerStop:
+                    scanMode = ManualScanModes.Stop;
+                    break;
+
+                case TriggerScanModes.TriggerPause:
+                    scanMode = ManualScanModes.Pause;
+                    break;
+
+                case TriggerScanModes.TriggerResume:
+                    scanMode = ManualScanModes.Resume;
+                    break;
+
+                case TriggerScanModes.TriggerPauseToggle:
+                    scanMode = ManualScanModes.TogglePause;
+                    break;
+            }
+
+            return scanMode;
+        }
+
+        /// <summary>
         /// Plays a beep associated with the switch.  If none, plays
         /// the default beep
         /// </summary>
@@ -1075,7 +1278,12 @@ namespace ACAT.Lib.Core.AnimationManagement
                 {
                     Log.Debug("arg.handled is false for " + onTrigger);
 
-                    var cmdDescriptor = CommandManager.Instance.AppCommandTable.Get(onTrigger);
+                    var strTrigger = onTrigger;
+                    if (strTrigger[0] == '@')
+                    {
+                        strTrigger = strTrigger.Substring(1);
+                    }
+                    var cmdDescriptor = CommandManager.Instance.AppCommandTable.Get(strTrigger);
                     if (cmdDescriptor != null && !cmdDescriptor.EnableSwitchMap)
                     {
                         Log.Debug("EnableswitchMap is not enabled for " + onTrigger);

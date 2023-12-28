@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="NullWordPredictor.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Extensions;
@@ -36,6 +23,8 @@ namespace ACAT.Lib.Core.WordPredictionManagement
                             "Disable word prediction")]
     public class NullWordPredictor : IWordPredictor, ISupportsPreferences, IExtension
     {
+        protected WordPredictionModes _wordPredictionMode = WordPredictionModes.Sentence;
+
         /// <summary>
         /// Used to invoke methods/properties in the agent
         /// </summary>
@@ -58,6 +47,14 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         {
             _invoker = new ExtensionInvoker(this);
         }
+
+        public event ModeChangedDelegate EvtModeChanged;
+
+        public event NextLetterProbabilitiesDelegate EvtNotifyNextLetterProbabilities;
+
+        public event NextWordProbabilitiesDelegate EvtNotifyNextWordProbabilities;
+
+        public event WordPredictionAsyncResponseDelegate EvtWordPredictionAsyncResponse;
 
         /// <summary>
         /// Gets the descriptor for this class
@@ -92,6 +89,8 @@ namespace ACAT.Lib.Core.WordPredictionManagement
                 return false;
             }
         }
+
+        public bool SupportsPredictSync => true;
 
         /// <summary>
         /// Gets whether this supports a custom settings dialog
@@ -132,6 +131,15 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         }
 
         /// <summary>
+        /// Gets the current mode for the predictor
+        /// </summary>
+        /// <returns></returns>
+        public WordPredictionModes GetMode()
+        {
+            return _wordPredictionMode;
+        }
+
+        /// <summary>
         /// Returns the preferences object for the word predictor
         /// </summary>
         /// <returns>preferences object</returns>
@@ -151,11 +159,20 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         }
 
         /// <summary>
+        /// Post Init 
+        /// </summary>
+        /// <returns>true</returns>
+        public bool PostInit()
+        {
+            return true;
+        }
+
+        /// <summary>
         /// Doesn't learn anything :-)
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public bool Learn(String text)
+        public bool Learn(String text, WordPredictorMessageTypes RequestType)
         {
             return true;
         }
@@ -200,6 +217,16 @@ namespace ACAT.Lib.Core.WordPredictionManagement
             return new List<String>();
         }
 
+        public WordPredictionResponse Predict(WordPredictionRequest req)
+        {
+            return new WordPredictionResponse(req, new List<String>(), true);
+        }
+
+        public bool PredictAsync(WordPredictionRequest req)
+        {
+            return false;
+        }
+
         /// <summary>
         ///  Save settings into the specified directory
         /// </summary>
@@ -208,6 +235,16 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         public bool SaveSettings(String configFileDirectory)
         {
             return true;
+        }
+
+        /// <summary>
+        /// Set the mode in which the predictor will work
+        /// </summary>
+        /// <param name="wordPredictionMode"></param>
+        public void SetMode(WordPredictionModes wordPredictionMode)
+        {
+            _wordPredictionMode = wordPredictionMode;
+            EvtModeChanged?.Invoke(wordPredictionMode);
         }
 
         /// <summary>

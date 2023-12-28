@@ -1,21 +1,19 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="ActuatorEx.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// ActuatorEx.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// This is a wrapper class for the Actuator.  It has helper functions
+// to handler user interaction for calibration.  It displays the calibration
+// form while the actuator is calibrating. This class can be extended to add
+// addtional functions.
+// Since actuator initialization and calibration are asynchronous, this class
+// handles them synchronously, so to the caller, the functions appear to act
+// in a synchronous manner.
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Utility;
@@ -62,6 +60,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         private Worker _bgWorker;
 
+        private RequestCalibrationReason _calibrationReason = RequestCalibrationReason.None;
+
         /// <summary>
         /// The calibration form object
         /// </summary>
@@ -71,6 +71,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// Has initialization completed?
         /// </summary>
         private ManualResetEvent initDoneEvent = new ManualResetEvent(false);
+
+        private ManualResetEvent postInitDoneEvent = new ManualResetEvent(false);
 
         /// <summary>
         /// Initializes an instance of the class
@@ -85,6 +87,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// Gets/sets whether an error ocurred during initialization
         /// </summary>
         public bool InitError { get; set; }
+
+        public bool PostInitError { get; set; }
 
         /// <summary>
         /// Closes calibration form
@@ -143,6 +147,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="enableConfigure">should the config button be enabled</param>
         public void OnError(String message, bool enableConfigure = true)
         {
+            // var errorForm = new ActuatorErrorForm
             var errorForm = new ActuatorErrorForm
             {
                 EnableConfigure = enableConfigure,
@@ -150,7 +155,10 @@ namespace ACAT.Lib.Core.ActuatorManagement
                 SourceActuator = this.SourceActuator,
                 Prompt = message
             };
+
             errorForm.ShowDialog();
+
+            errorForm.Dispose();
         }
 
         /// <summary>
@@ -163,11 +171,32 @@ namespace ACAT.Lib.Core.ActuatorManagement
             initDoneEvent.Set();
         }
 
+        public void OnPostInitDone(bool success = true)
+        {
+            PostInitError = !success;
+            postInitDoneEvent.Set();
+        }
+
+        public void PostInit()
+        {
+            if (!SourceActuator.PostInit())
+            {
+                PostInitError = true;
+            }
+
+            Log.Debug("Before Wait");
+
+            WaitForPostInit();
+
+            Log.Debug("After Wait");
+        }
+
         /// <summary>
         /// Invoked to request start of calibration
         /// </summary>
-        public void RequestCalibration()
+        public void RequestCalibration(RequestCalibrationReason reason)
         {
+            _calibrationReason = reason;
             _calibrationDoneEvent.Reset();
         }
 
@@ -176,7 +205,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         public void StartCalibration()
         {
-            SourceActuator.StartCalibration();
+            SourceActuator.StartCalibration(_calibrationReason);
         }
 
         /// <summary>
@@ -228,6 +257,13 @@ namespace ACAT.Lib.Core.ActuatorManagement
             Log.Debug("initdone is done");
         }
 
+        public void WaitForPostInit()
+        {
+            Log.Debug("Waiting for postinitdone");
+            postInitDoneEvent.WaitOne();
+            Log.Debug("postinitdone is done");
+        }
+
         /// <summary>
         /// The work handler function for the background worker.  Displays
         /// the calibration form as a dialog
@@ -237,6 +273,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         private void bgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             var worker = sender as Worker;
+            // calibrationForm = new CalibrationForm
             calibrationForm = new CalibrationForm
             {
                 Caption = worker.Caption,

@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="CommandDescriptors.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.CommandManagement;
@@ -50,33 +37,33 @@ namespace ACATExtension.CommandHandlers
             _cmdDescriptorTable = new CmdDescriptorTable();
 
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdUndoLastEditChange", "Undo the last editing change", true));
-            _cmdDescriptorTable.Add(new CmdDescriptor("CmdRestartScanning", "Restart scanning sequence", true));
-            _cmdDescriptorTable.Add(new CmdDescriptor("CmdContextMenu", "Display the Contextual menu for the active application", true));
-            _cmdDescriptorTable.Add(new CmdDescriptor("CmdPhraseSpeak", "Select a phrase from a list of preferred phrases and convert it to speech", true));
-            _cmdDescriptorTable.Add(new CmdDescriptor("CmdAutocompleteWithFirstWord", "Auto-complete by selecting the first word in the word list", true));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdRestartScanning", "Restart scanning sequence", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdContextMenu", "Display the Contextual menu for the active application", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdPhraseSpeak", "Select a phrase from a list of preferred phrases and convert it to speech", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdAutocompleteWithFirstWord", "Auto-complete by selecting the first word in the word list", false));
 
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdMainMenu", "Display the Main menu"));
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdSettingsMenu", "Display the Settings menu"));
-            _cmdDescriptorTable.Add(new CmdDescriptor("CmdToolsMenu", "Display the Tools Menu", true));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdToolsMenu", "Display the Tools Menu", false));
 
-            _cmdDescriptorTable.Add(new CmdDescriptor("CmdSwitchApps", "Switch between windows of all active applications", true));
-            _cmdDescriptorTable.Add(new CmdDescriptor("CmdSwitchWindows", "Switch between windows for the foreground application", true));
-            _cmdDescriptorTable.Add(new CmdDescriptor("CmdFileBrowserFileOpen", "Display the ACAT File Browser to open files", true));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdSwitchApps", "Switch between windows of all active applications", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdSwitchWindows", "Switch between windows for the foreground application", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdFileBrowserFileOpen", "Display the ACAT File Browser to open files", false));
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdFileBrowserFileDelete", "Display the ACAT File Browser to delete files"));
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdCreateFile", "Create a new text file or Word document"));
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdLockScreen", "Lock the display, use a PIN to unlock"));
-            _cmdDescriptorTable.Add(new CmdDescriptor("CmdLaunchApp", "Lanuch an application from a list of preferred applications", true));
-            
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdLaunchApp", "Lanuch an application from a list of preferred applications", false));
+
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdShowAbbreviationSettings", "Display dialog to add/delete/update abbreviations"));
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdLectureManager", "Start Lecture Manager to deliver speeches"));
 
-            _cmdDescriptorTable.Add(new CmdDescriptor("CmdWindowPosSizeMenu", "Close the active application window", true));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdWindowPosSizeMenu", "Close the active application window", false));
 
-            _cmdDescriptorTable.Add(new CmdDescriptor("CmdTalkWindowToggle", "Show/Hide the Talk window", true));
-            _cmdDescriptorTable.Add(new CmdDescriptor("CmdTalkWindowClear", "Clear the text in the Talk window", true));
-            _cmdDescriptorTable.Add(new CmdDescriptor("CmdTalkWindowShow", "Show the Talk window", true));
-            _cmdDescriptorTable.Add(new CmdDescriptor("CmdTalkWindowClose", "Close the Talk window", true));
-            _cmdDescriptorTable.Add(new CmdDescriptor("CmdTalkApp", "Show the Talk application window", true));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdTalkWindowToggle", "Show/Hide the Talk window", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdTalkWindowClear", "Clear the text in the Talk window", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdTalkWindowShow", "Show the Talk window", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdTalkWindowClose", "Close the Talk window", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdTalkApp", "Show the Talk application window", false));
 
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdAutoPositionScanner", "Select the position of the scanner window"));
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdPositionScannerTopRight", "Move scanner window to the top right corner of the display"));
@@ -91,7 +78,6 @@ namespace ACATExtension.CommandHandlers
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdCopy", "Copy selection to clipboard (Ctrl-C)"));
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdPaste", "Paste selection from clipboard (Ctrl-V"));
 
-            
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdUndo", "Undo (Ctrl-Z)"));
 
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdPrevChar", "Move cursor left (Left arrow)"));
@@ -102,6 +88,13 @@ namespace ACATExtension.CommandHandlers
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdNextWord", "Move cursor to start of the next word"));
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdPrevPara", "Move cursor to start of the previous paragraph"));
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdNextPara", "Move cursor to start of the next paragraph"));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdPrevSentence", "Move cursor to start of the previous sentence"));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdNextSentence", "Move cursor to start of the next next sentence"));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdDelPrevWord", "Delete the previous word"));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdDelNextWord", "Delete the next word"));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdDelPrevSentence", "Delete the previous sentence"));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdDelNextSentence", "Delete the next sentence"));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdBackSpace", "Delete previous character"));
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdPrevPage", "Page Up"));
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdNextPage", "Page Down"));
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdHome", "The Home key"));
@@ -156,17 +149,30 @@ namespace ACATExtension.CommandHandlers
 
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdDeletePrevChar", "Delete the previous character (Backspace)", true));
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdDeleteNextChar", "Delete the next character (Del)"));
-            _cmdDescriptorTable.Add(new CmdDescriptor("CmdDeletePrevWord", "Delete the previous word", true));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdSmartDeletePrevWord", "Delete the previous word smartly", true));
 
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdSwitchLanguage", "Display dialog to switch language"));
 
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdExitAppWithConfirm", "Exit application after user confirmation"));
             _cmdDescriptorTable.Add(new CmdDescriptor("CmdExitApp", "Exit application without confirmation"));
-            _cmdDescriptorTable.Add(new CmdDescriptor("CmdGoBack", "Close scanner and go back to the previous scanner", true));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdGoBack", "Close scanner and go back to the previous scanner", false));
 
-            _cmdDescriptorTable.Add(new CmdDescriptor("CmdScannerZoomIn", "Make the scanner larger", true));
-            _cmdDescriptorTable.Add(new CmdDescriptor("CmdScannerZoomOut", "Make the scanner smaller", true));
-            _cmdDescriptorTable.Add(new CmdDescriptor("CmdScannerZoomDefault", "Restore default scanner size", true));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdScannerZoomIn", "Make the scanner larger", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdScannerZoomOut", "Make the scanner smaller", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdScannerZoomDefault", "Restore default scanner size", false));
+
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdScanMoveLeft", "Manual Scanning - Move highlight to adjacent left", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdScanMoveRight", "Manual Scanning - Move highlight adjacent right", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdScanMoveUp", "Manual Scanning - Move highlight adjacent up", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdScanMoveDown", "Manual Scanning - Move highlight adjacent down", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdScanBeginLeft", "Manual Scanning - Begin scanning to the left", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdScanBeginRight", "Manual Scanning - Begin scanning to the right", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdScanBeginUp", "Manual Scanning - Begin scanning upwards", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdScanBeginDown", "Manual Scanning - Begin scanning downwards", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdScanStop", "Manual Scanning - Stop scanning", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdScanPause", "Pause scanning. Ignore switch triggers", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdScanResume", "Resume scanning. Process switch triggers", false));
+            _cmdDescriptorTable.Add(new CmdDescriptor("CmdScanPauseToggle", "Toggle Pause/Resume scanning", false));
 
             CommandManager.Instance.AppCommandTable = _cmdDescriptorTable;
         }

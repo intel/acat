@@ -34,163 +34,147 @@
   <Theme description="The default theme with high contrast">
     <ColorSchemes>
        <ColorScheme name="Scanner"
-        background="#1D1D1D"
-        foreground="Ivory"
+        background="#232433"
+        foreground="White"
         highlightSelectedBackground="Blue"
         highlightSelectedForeground="White"
-        highlightBackground="#FFF200"
-        highlightForeground="#1D1D1D"/>
-		
+        highlightBackground="#ffaa00"
+        highlightForeground="#232433"/>
+        <!--highlightBackground="#FFAA00"
+        highlightForeground="White"/>-->
+        
+
     <ColorScheme name="ScannerButton"
-        background="#333333"
-        foreground="Ivory"
+        background="#232433"
+        foreground="White"
         highlightSelectedBackground="Blue"
         highlightSelectedForeground="White"
-        highlightBackground="#FFF200"
-		    highlightForeground="Black"/>
-			
-      <ColorScheme name="DisabledScannerButton"
-        background="#A4A4A4"
+        highlightBackground="#ffaa00"
+        highlightForeground="#232433"/>
+        <!--highlightBackground="#FFAA00"
+        highlightForeground="#232433"/>-->
+        
+
+     <ColorScheme name="DisabledScannerButton"
+        background="#585453"
         foreground="Gray"
         highlightSelectedBackground="Black"
         highlightSelectedForeground="White"
-        highlightBackground="#FFF200"
+        highlightBackground="#FFB100"
         highlightForeground="Gray"/>
 
       <ColorScheme name="WordListItemButton"
-        background="#505050"
-        foreground="Ivory"
-        highlightSelectedBackground="Black"
-        highlightSelectedForeground="White"
-        highlightBackground="#FFF200"
-        highlightForeground="Black"/>
-
-      <ColorScheme name="ContextMenuTitle"
-        background="Black"
-        backgroundImage="contextMenuTitle.png"
-        foreground="Black"/>
-
-      <ColorScheme name="ContextMenuIconButton"
-        background="#21409A"
-        backgroundImage="contextIconNormal.png"
+        background="#232433"
         foreground="White"
         highlightSelectedBackground="Black"
         highlightSelectedForeground="White"
-        highlightBackground="#FFF200"
-        highlightBackgroundImage="contextIconHighlight.png"
-	      highlightSelectedBackgroundImage="contextIconHighlightSelected.png"
-        highlightForeground="Black"/>
-
-      <ColorScheme name="DisabledContextMenuIconButton"
-        background="#21409A"
-        backgroundImage="contextIconNormal.png"
-        foreground="Gray"
-        highlightSelectedBackground="Black"
-        highlightSelectedForeground="White"
-        highlightBackground="#FFF200"
-        highlightBackgroundImage="contextIconHighlight.png"
-        highlightForeground="Gray"/>
-
-      <ColorScheme name="ContextMenuTextButton"
-        background="#21409A"
-        backgroundImage="contextTextNormal.png"
-        foreground="White"
-        highlightSelectedBackground="contextTextHighlightSelected.png"
-        highlightSelectedForeground="White"
-        highlightBackground="#FFF200"
-        highlightBackgroundImage="contextTextHighlight.png"
-	      highlightSelectedBackgroundImage="contextTextHighlightSelected.png"
-        highlightForeground="Black"/>
-
-      <ColorScheme name="DisabledContextMenuTextButton"
-        background="#21409A"
-        backgroundImage="contextTextNormal.png"
-        foreground="Gray"
-        highlightSelectedBackground="Black"
-        highlightSelectedForeground="White"
-        highlightBackground="#FFF200"
-        highlightBackgroundImage="contextTextHighlight.png"
-        highlightForeground="Gray"/>
-
-      <ColorScheme name="ColorCodedRegion1"
-        background="#646464"
-        foreground="Ivory"
-        highlightSelectedBackground="Black"
-        highlightSelectedForeground="White"
-        highlightBackground="#FFF200"
-        highlightForeground="Black"/>
-
-      <ColorScheme name="DisabledColorCodedRegion1"
-        background="#A4A4A4"
-        foreground="Gray"
-        highlightSelectedBackground="Black"
-        highlightSelectedForeground="White"
-        highlightBackground="#FFF200"
-        highlightForeground="Gray"/>
-
-      <ColorScheme name="ColorCodedRegion2"
-        background="#333333"
-        foreground="Ivory"
-        highlightSelectedBackground="Black"
-        highlightSelectedForeground="White"
-        highlightBackground="#FFF200"
-        highlightForeground="Black"/>
-
-      <ColorScheme name="DisabledColorCodedRegion2"
-        background="#A4A4A4"
-        foreground="Gray"
-        highlightSelectedBackground="Black"
-        highlightSelectedForeground="White"
-        highlightBackground="#FFF200"
-        highlightForeground="Gray"/>
-		
-		<ColorScheme name="ColorCodedRegion3"
-        background="#646464"
-        foreground="Ivory"
-        highlightSelectedBackground="Black"
-        highlightSelectedForeground="White"
-        highlightBackground="#FFF200"
-        highlightForeground="Black"/>
-
-      <ColorScheme name="DisabledColorCodedRegion3"
-        background="#A4A4A4"
-        foreground="Gray"
-        highlightSelectedBackground="Black"
-        highlightSelectedForeground="White"
-        highlightBackground="#FFF200"
-        highlightForeground="Gray"/>
+        highlightBackground="#ffaa00"
+        highlightForeground="#232433"/>
+        <!--highlightBackground="#FFB100"
+        highlightForeground="Black"/>-->
 
       <ColorScheme name="Dialog"
-        background="White"
-        foreground="Black"
+        background="#232433"
+        foreground="White"
         highlightSelectedBackground="Gray"
         highlightSelectedForeground="White"
-        highlightBackground="Black"
-        highlightForeground="White"/>
+        highlightBackground="#ffaa00"
+        highlightForeground="#232433"/>
+        
+      <ColorScheme name="Menu"
+        background="#232433"
+        foreground="White"
+        highlightSelectedBackground="Gray"
+        highlightSelectedForeground="White"
+        highlightBackground="#ffaa00"
+        highlightForeground="#232433"/>
+        
+        <ColorScheme name="MenuTitle"
+        background="#232433"
+        foreground="White"
+        highlightBackground="#ffaa00"
+        highlightForeground="#232433"/>
+        
+        
 
       <ColorScheme name="Button"
-        background="Gainsboro"
-        foreground="Black"
-        highlightSelectedBackground="Gray"
+        background="#232433"
+        foreground="White"
+        highlightSelectedBackground="Blue"
         highlightSelectedForeground="White"
-        highlightBackground="Black"
-        highlightForeground="White"/>
+        highlightBackground="#FFAA00"
+        highlightForeground="#232433"/>
 
       <ColorScheme name="HighContrast"
         background="#484848"
         foreground="White"/>
-
-      <ColorScheme name="Mute"
-        background="Black"
-        foreground="White"
-        highlightSelectedBackground="DarkMagenta"
-        highlightSelectedForeground="White"
-        highlightBackground="Khaki"
-        highlightForeground="Black"/>
-
+      
       <ColorScheme name="TalkWindow"
-        background="#696969"
-        foreground="White"/>
-    </ColorSchemes>
+        background="#C1C2D3"
+        foreground="#232433"/>
+		
+<!--BCI Colors-->
+<!--
+Note if any change is needed
+Colors for the BCI layout has to be carefully selected since the colors need to have contrast between the background color and the highlighting color
+foreground = animations colors 
+highlightSelectedForeground = Edges colors
+
+         background="#232433"                   IN USE BACKGROUND
+         foreground="#ffaa00"                   IN USE ANIMATIONS
+         highlightSelectedBackground="Black"    IN USE FOR STRINGS INSIDE BUTTONS 
+         highlightSelectedForeground="#ffffff"  IN USE BORDERS AND IN USE FOR STRINGS INSIDE BUTTONS
+         highlightBackground="#FFB100"
+         highlightForeground="#C1C2D3"/>          IN USE PROGRESS BARS COLOR, TEXT BOX AND LABEL PROMPT
+
+
+HighlightSelectedBackground and HighlightForeground need to be a contrast between this colors
+
+-->
+
+
+		<!--Default-->
+	   <ColorScheme name="BCIColorCodedRegionDefault"
+         background="#232433"
+         foreground="#FFAA00"
+         highlightSelectedBackground="Black"
+         highlightSelectedForeground="#ffffff"
+         highlightBackground="#FFB100"
+         highlightForeground="#C1C2D3"/>
+		
+	  <ColorScheme name="BCIColorCodedRegion1"
+        background="#232433"
+        foreground="#FFAA00"
+        highlightSelectedBackground="Black"
+        highlightSelectedForeground="#ffffff"
+        highlightBackground="#FFB100"
+        highlightForeground="#C1C2D3"/>
+
+	  <ColorScheme name="BCIColorCodedRegion2"
+		background="#232433"
+		foreground="#FFAA00"
+		highlightSelectedBackground="Black"
+		highlightSelectedForeground="#FFFF7F"
+		highlightBackground="#FFB100"
+		highlightForeground="#C1C2D3"/>
+
+	  <ColorScheme name="BCIColorCodedRegion3"
+		background="#232433"
+		foreground="#FFAA00"
+		highlightSelectedBackground="Black"
+		highlightSelectedForeground="#009900"
+		highlightBackground="#FFB100"
+		highlightForeground="#C1C2D3"/>
+
+	  <ColorScheme name="BCIColorCodedRegion4"
+        background="#232433"
+        foreground="#FFAA00"
+        highlightSelectedBackground="Black"
+        highlightSelectedForeground="#0099FF"
+        highlightBackground="#FFB100"
+        highlightForeground="#C1C2D3"/>
+
+
+	</ColorSchemes>
   </Theme>
  </ACAT>

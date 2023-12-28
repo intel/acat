@@ -1,32 +1,32 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="IActuator.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// IActuator.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Actutators must implement this interface.  An actuator contains one or
+// more switches and raises events when the switches are actuated.
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Extensions;
+using ACAT.Lib.Core.Onboarding;
 using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace ACAT.Lib.Core.ActuatorManagement
 {
+    /// <summary>
+    /// Delegate for the event raised when an actuator wants to send custom data
+    /// to the application
+    /// </summary>
+    /// <param name="opcode">operation code</param>
+    /// <param name="response">response to be sent (typically JSON)</param>
+    public delegate void IoctlResponse(int opcode, String response);
+
     /// <summary>
     /// Delegate for the event raised when a switch is engaged. This is the
     /// start of the switch activation event.  For instance, for a keyboard switch,
@@ -53,6 +53,13 @@ namespace ACAT.Lib.Core.ActuatorManagement
     /// <param name="e">event arguement</param>
     public delegate void SwitchTriggered(object sender, ActuatorSwitchEventArgs e);
 
+    public enum RequestCalibrationReason
+    {
+        None,
+        SensorInitiated,
+        AppRequested
+    }
+
     /// <summary>
     /// Represents the state of the actuator
     /// </summary>
@@ -69,6 +76,11 @@ namespace ACAT.Lib.Core.ActuatorManagement
     /// </summary>
     public interface IActuator : ISupportsPreferences, IExtension, IDisposable
     {
+        /// <summary>
+        /// Raised when the actuator wants to send custom data to the application
+        /// </summary>
+        event IoctlResponse EvtIoctlResponse;
+
         /// <summary>
         /// Raised when one of the switches in this actuator is engaged
         /// </summary>
@@ -94,6 +106,14 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         String Name { get; }
 
+        String OnboardingImageFileName { get; }
+
+        bool ShowTryoutOnStartup { get; }
+
+        bool SupportsScanTimingsConfigureDialog { get; }
+
+        bool SupportsTryout { get; }
+
         /// <summary>
         /// Gets a collection of switches that are a part of this actuator
         /// </summary>
@@ -105,11 +125,29 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <returns>Switch object</returns>
         IActuatorSwitch CreateSwitch();
 
+        IOnboardingExtension GetOnboardingExtension();
+
+        /// <summary>
+        /// Returns the current state of the actuator
+        /// </summary>
+        /// <returns></returns>
+        State GetState();
+
+        IEnumerable<String> GetSupportedKeyboardConfigs();
+
         /// <summary>
         /// Initializes the actuator
         /// </summary>
         /// <returns>true on success</returns>
         bool Init();
+
+        /// <summary>
+        /// IO Control - Actuator specific data sent by an application
+        /// </summary>
+        /// <param name="opcode">operation code</param>
+        /// <param name="request">Data (typically a JSON script fragment)</param>
+        /// <returns></returns>
+        bool IoctlRequest(int opcode, String request);
 
         /// <summary>
         /// Parses the XML node that contains all the info for this actuator
@@ -151,6 +189,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         void Pause();
 
+        bool PostInit();
+
         /// <summary>
         /// Unloads the specified switch
         /// </summary>
@@ -163,9 +203,19 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         void Resume();
 
+        bool ShowScanTimingsConfigureDialog();
+
+        bool ShowTryoutDialog();
+
         /// <summary>
         /// Starts calibration of the actuator
         /// </summary>
-        void StartCalibration();
+        void StartCalibration(RequestCalibrationReason reason);
+
+        /// <summary>
+        /// Indicates whether the actuator supports calibration or not
+        /// </summary>
+        /// <returns>true if it does, false otherwise</returns>
+        bool SupportsCalibration();
     }
 }

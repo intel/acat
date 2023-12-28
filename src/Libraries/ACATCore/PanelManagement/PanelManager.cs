@@ -1,23 +1,11 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="PanelManager.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Lib.Core.UserControlManagement;
 using ACAT.Lib.Core.Utility;
 using System;
 using System.Collections.Generic;
@@ -79,6 +67,11 @@ namespace ACAT.Lib.Core.PanelManagement
         private readonly Stack<PanelStack> _stack = new Stack<PanelStack>();
 
         /// <summary>
+        /// Is calibration in progress?
+        /// </summary>
+        private bool _actuatorCalibrationInProgress;
+
+        /// <summary>
         /// Has this object been disposed
         /// </summary>
         private bool _disposed;
@@ -97,10 +90,30 @@ namespace ACAT.Lib.Core.PanelManagement
             getTopOfStack();
         }
 
+        public delegate void AlphabetScannerWidthChanged(int width);
+
+        /// <summary>
+        /// Deleagate for notification of start of calibration by an actuator
+        /// </summary>
+        /// <param name="args">Calibration notifaction object</param>
+        public delegate void CalibrationStartNotify(ActuatorManagement.CalibrationNotifyEventArgs args);
+
+        public event AlphabetScannerWidthChanged EvtAlphabetScannerWidthChanged;
+
         /// <summary>
         /// Inovked when the application quits
         /// </summary>
         public event EventHandler EvtAppQuit;
+
+        /// <summary>
+        /// Event raised to indicate end of calibration
+        /// </summary>
+        public event EventHandler EvtCalibrationEndNotify;
+
+        /// <summary>
+        /// Event raised to indicate start of calibration
+        /// </summary>
+        public event CalibrationStartNotify EvtCalibrationStartNotify;
 
         /// <summary>
         /// Event raised when the desktop size or the resolution changes
@@ -129,6 +142,8 @@ namespace ACAT.Lib.Core.PanelManagement
         /// directories.
         /// </summary>
         public event EventHandler EvtStartupAddForms;
+
+        public event EventHandler EvtStartupAddUserControls;
 
         /// <summary>
         /// Returns the singleton instance of the PanelManager
@@ -250,7 +265,7 @@ namespace ACAT.Lib.Core.PanelManagement
 
                 panelStack.EvtScannerClosed -= panelStack_EvtScannerClosed;
 
-                if (_stack.Count > 0)
+                if (_stack.Count > 0 && !_actuatorCalibrationInProgress)
                 {
                     panelStack = getTopOfStack();
 
@@ -286,12 +301,24 @@ namespace ACAT.Lib.Core.PanelManagement
         }
 
         /// <summary>
+        /// Creates a panel with the specified panel title and startup args
+        /// </summary>
+        /// <param name="panelTitle">Title for the panel</param>
+        /// <param name="startupArg">startup arguments for the panel</param>
+        /// <returns></returns>
+        public Form CreatePanel(String panelTitle, StartupArg startupArg)
+        {
+            return getTopOfStack().CreatePanel(startupArg.PanelClass, panelTitle, startupArg);
+        }
+
+        /// <summary>
         /// Creates the panel with the specified panel class
         /// </summary>
         /// <param name="panelClass">the panel class</param>
         /// <param name="panelTitle">panel title</param>
         /// <param name="startupArg">statrtup arg for the panel</param>
         /// <returns>the form for the panel</returns>
+
         public Form CreatePanel(String panelClass, String panelTitle, StartupArg startupArg)
         {
             return getTopOfStack().CreatePanel(panelClass, panelTitle, startupArg);
@@ -370,6 +397,12 @@ namespace ACAT.Lib.Core.PanelManagement
             PanelConfigMap.Reset();
 
             var retVal = PanelConfigMap.Load(extensionDirs);
+            if(!retVal)
+                return false;
+
+            retVal = UserControlConfigMap.Load(extensionDirs);
+            if (!retVal)
+                return false;
 
             PanelConfigMap.Load(Preferences.ApplicationAssembly);
 
@@ -378,13 +411,19 @@ namespace ACAT.Lib.Core.PanelManagement
                 EvtStartupAddForms(this, new EventArgs());
             }
 
+            EvtStartupAddUserControls?.Invoke(this, new EventArgs());
+
             PanelConfigMap.CleanupOrphans();
+
+            UserControlConfigMap.CleanupOrphans();
 
             if (!String.IsNullOrEmpty(CoreGlobals.AppPreferences.PreferredPanelConfigNames))
             {
                 PanelConfigMap.SetDefaultPanelConfig(CoreGlobals.AppPreferences.PreferredPanelConfigNames.Trim());
             }
 
+            Context.AppActuatorManager.EvtCalibrationStartNotify += AppActuatorManager_EvtCalibrationStartNotify;
+            Context.AppActuatorManager.EvtCalibrationEndNotify += AppActuatorManager_EvtCalibrationEndNotify;
             return retVal;
         }
 
@@ -554,6 +593,45 @@ namespace ACAT.Lib.Core.PanelManagement
             _disposed = true;
         }
 
+        private void AppActuatorManager_EvtCalibrationEndNotify(object sender, EventArgs e)
+        {
+            _actuatorCalibrationInProgress = false;
+
+            Log.Debug("Resuming WindowActivityMonitor");
+
+            WindowActivityMonitor.Resume();
+
+            var panelStack = _stack.Peek();
+
+            if (panelStack.IsPaused)
+            {
+                panelStack.Resume();
+                EvtCalibrationEndNotify?.Invoke(this, e);
+            }
+
+            // this is only for ACAT App
+            //EnumWindows.RestoreFocusToTopWindowOnDesktop();
+
+            //WindowActivityMonitor.GetActiveWindowAsync();
+        }
+
+        private void AppActuatorManager_EvtCalibrationStartNotify(ActuatorManagement.CalibrationNotifyEventArgs args)
+        {
+            _actuatorCalibrationInProgress = true;
+
+            Log.Debug("Pausing WindowActivityMonitor");
+
+            WindowActivityMonitor.Pause();
+
+            var panelStack = _stack.Peek();
+
+            if (!panelStack.IsPaused)
+            {
+                panelStack.Pause();
+                EvtCalibrationStartNotify?.Invoke(args);
+            }
+        }
+
         /// <summary>
         /// Foreground window focus changed.  Let the active
         /// scanner know about this
@@ -654,6 +732,10 @@ namespace ACAT.Lib.Core.PanelManagement
             if (arg.Scanner.PanelClass == "Alphabet")
             {
                 Windows.WidestScannerWidth = arg.Scanner.Form.Width;
+                if (EvtAlphabetScannerWidthChanged != null)
+                {
+                    EvtAlphabetScannerWidthChanged(arg.Scanner.Form.Width);
+                }
             }
 
             if (EvtScannerShow != null)

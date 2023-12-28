@@ -425,7 +425,7 @@
     <value>Mail</value>
   </data>
   <data name="MainMenu" xml:space="preserve">
-    <value>Main Menu</value>
+    <value>MAIN MENU</value>
   </data>
   <data name="MoveWindow" xml:space="preserve">
     <value>Move Window</value>
@@ -1390,5 +1390,51 @@
   </data>
   <data name="MoveToOtherMonitor" xml:space="preserve">
     <value>Move to other</value>
+  </data>
+  <data name="DisclaimerConvAssist" xml:space="preserve">
+    <value>ACAT presents predictive sentence completion suggestions for users to choose from in order to reduce typing effort. This model is designed only for communication support and does not offer medical advice. 
+
+The AI model that generates these predictions is based on OpenAI's GPT2 model [Radford. A, Language Models are Unsupervised Multitask Learners, 2019, OpenAI]  that has been specifically fine-tuned on an Alternative and Augmentative Communication (AAC) dataset, to support ACAT’s assistive usage.
+
+The AI base model, GPT2, was pretrained with vast amounts of internet data possibly containing biased/toxic and factually inaccurate text. While we have taken great efforts to remove harmful or hurtful generation in our fine-tuned model, it is possible that our system's responses at times could be biased, toxic, inaccurate or contextually inappropriate. 
+
+Users retain full control of whether to choose from the AI generated content or not and also have the ability to edit and confirm all responses to ensure they reflect their intended message. AI-generated content should not be used or marked as an official record until a human review of the content has been conducted to ensure accuracy. Users assume all risks associated with the use of ACAT (AI component). Neither the developers nor Intel are responsible for any inaccuracies, errors, biases in the AI-generated content. 
+
+Take caution around incorrect attribution/explanation. AI-generated content isn’t always reliable. It doesn’t always correlate with a human explanation and cannot be relied on for definitive explanations. It is your responsibility to fact check information with traceable, reliable sources.  
+
+Be skeptical of tone. It is users’ responsibility to edit for tone as well as facts. 
+
+Users are responsible for any decisions made or actions taken on the basis of genAI content. 
+
+Intel is committed to the respect of human rights and avoiding complicity in human rights abuses, a policy reflected in the Intel Global Human Rights Principles. Accordingly, by accessing the Intel material on this platform you agree that you will not use the material in a product or application that causes or contributes to a violation of an internationally recognized human right. For more information, please see Intel's Global Human Rights Principles at: https://www.intel.com/content/www/us/en/policy/policy-human-rights.html</value>
+  </data>
+  <data name="DisclaimerBCI" xml:space="preserve">
+    <value>BCI Hardware - Cyton Board
+
+The Cyton Board is not a medical device nor is it intended for medical diagnosis and provided to you "as is," and we make no express or implied warranties whatsoever with respect to its functionality, operability, or use, including, without limitation, any implied warranties, fitness for a particular purpose, or infringement. We expressly disclaim any liability whatsoever for any direct, indirect, consequential, incidental or special damages, including, without limitation, lost revenues, lost profits, losses resulting from business interruption or loss of data, regardless of the form of action or legal theory under which the liability may be asserted, even if advised of the possibility of such damages.
+
+BCI Hardware - Evaluation Board
+
+Evaluation Board/Kit Important Notice: OpenBCI, Inc. provides the enclosed product(s) under the following conditions: This evaluation board/kit is intended for use for ENGINEERING DEVELOPMENT, DEMONSTRATION, OR EVALUATION PURPOSES ONLY and is not considered by OpenBCI, Inc. to be a finished end-product fit for general consumer use. Persons handling the product(s) must have electronics training and observe good engineering practice standards. As such, the goods being provided are not intended to be complete in terms of required design-, marketing-, and/or manufacturing-related protective considerations, including product safety and environmental measures typically found in end products that incorporate such semiconductor components or circuit boards. This evaluation board/kit does not fall within the scope of the European Union directives regarding electromagnetic compatibility, restricted substances (RoHS), recycling (WEEE), FCC, CE or UL, and therefore may not meet the technical requirements of these directives or other related directives.
+
+BCI Hardware - Electrode Cap
+
+The OpenBCI Electrode Cap is not a medical device nor is it intended for medical diagnosis and provided to you "as is," and we make no express or implied warranties whatsoever with respect to its functionality, operability, or use, including, without limitation, any implied warranties, fitness for a particular purpose, or infringement. We expressly disclaim any liability whatsoever for any direct, indirect, consequential, incidental or special damages, including, without limitation, lost revenues, lost profits, losses resulting from business interruption or loss of data, regardless of the form of action or legal theory under which the liability may be asserted, even if advised of the possibility of such damages.</value>
+  </data>
+  <data name="PDFLoaderHtml" xml:space="preserve">
+    <value>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;link rel="icon" type="image/x-icon" href="$ASSETS_IMAGES_DIR/ACATTalk.ico"&gt;
+    &lt;title&gt;ACAT Users guide&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;object data="FILE_PATH" type="application/pdf" width="100%" height="1024px"&gt;
+        &lt;p&gt;Unable to display PDF file.&lt;/p&gt;
+      &lt;/object&gt;
+&lt;/body&gt;
+&lt;/html&gt;</value>
   </data>
 </root>

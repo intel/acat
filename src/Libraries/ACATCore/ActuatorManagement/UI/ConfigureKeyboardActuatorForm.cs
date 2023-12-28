@@ -1,24 +1,19 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="ConfigureKeyboardActuatorForm.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// ConfigureKeyboardActuatorForm.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Displays a list of switches for an acutator to enable configure
+// settings for each of the switches.  User can enable/disable
+// switches, turn on/off whether the switch should act as a trigger.
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.ActuatorManagement.UI;
+using ACAT.Lib.Core.PanelManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -96,6 +91,16 @@ namespace ACAT.Lib.Core.ActuatorManagement
         public String SwitchNameColumnHeaderText { get; set; }
 
         /// <summary>
+        /// Gets or sets the title of the form
+        /// </summary>
+        public String Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets the column header for the trigger column
+        /// </summary>
+        public String TriggerColumnHeaderText { get; set; }
+
+        /// <summary>
         /// Client size changed
         /// </summary>
         /// <param name="e">event args</param>
@@ -108,16 +113,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
                 _firstClientChangedCall = false;
             }
         }
-
-        /// <summary>
-        /// Gets or sets the title of the form
-        /// </summary>
-        public String Title { get; set; }
-
-        /// <summary>
-        /// Gets or sets the column header for the trigger column
-        /// </summary>
-        public String TriggerColumnHeaderText { get; set; }
 
         /// <summary>
         /// Adds a new row to the datagrid representing a new
@@ -168,7 +163,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
                 var command = editKeyboardActuatorForm.MappedCommand;
 
-                var switchSetting = new SwitchSetting(switchName, "Keyboard shortcut", command) {Source = source};
+                var switchSetting = new SwitchSetting(switchName, "Keyboard shortcut", command) { Source = source };
 
                 if (editKeyboardActuatorForm.IsTriggerSelect)
                 {
@@ -191,9 +186,11 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="e">event args</param>
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            if (!_isDirty || MessageBox.Show("Changes not saved. Quit anyway?",
+            /*if (!_isDirty || MessageBox.Show("Changes not saved. Quit anyway?",
                 Text, MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question) == DialogResult.Yes)
+                MessageBoxIcon.Question) == DialogResult.Yes)*/
+
+            if (!_isDirty || ConfirmBox.ShowDialog("Changes not saved. Quit anyway?", null, false))
             {
                 DialogResult = DialogResult.Cancel;
                 Close();
@@ -209,10 +206,12 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             if (validate())
             {
-                if (_isDirty &&
+                /*if (_isDirty &&
                     MessageBox.Show("Save changes?",
                         Text, MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question) == DialogResult.Yes)
+                        MessageBoxIcon.Question) == DialogResult.Yes)*/
+
+                if (_isDirty && ConfirmBox.ShowDialog("Save changes?", null, false))
                 {
                     updateDataFromUIAndSave();
                     DialogResult = DialogResult.OK;
@@ -223,41 +222,14 @@ namespace ACAT.Lib.Core.ActuatorManagement
         }
 
         /// <summary>
-        /// Generate a switch name
-        /// </summary>
-        /// <returns>generated name</returns>
-        String generateSwitchName()
-        {
-            var switchBaseName = "Shortcut";
-
-            if (Actuator.Switches.Count == 0)
-            {
-                return switchBaseName + "1";
-            }
-
-            int index = 1;
-
-            while (true)
-            {
-                var name = switchBaseName + index;
-                if (!switchNameExists(name))
-                {
-                    return name;
-                }
-
-                index++;
-            }
-        }
-
-        /// <summary>
-        /// User clicked in a cell in the datagrid view. Handle it 
+        /// User clicked in a cell in the datagrid view. Handle it
         /// depending on which cell the click was detected
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
         private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            var senderGrid = (DataGridView) sender;
+            var senderGrid = (DataGridView)sender;
 
             if (e.RowIndex < 0)
             {
@@ -297,9 +269,9 @@ namespace ACAT.Lib.Core.ActuatorManagement
             {
                 var row = dataGridView2.Rows[e.RowIndex];
 
-                var checkCell = (DataGridViewCheckBoxCell) row.Cells[e.ColumnIndex];
+                var checkCell = (DataGridViewCheckBoxCell)row.Cells[e.ColumnIndex];
 
-                bool isChecked = (Boolean) checkCell.Value;
+                bool isChecked = (Boolean)checkCell.Value;
                 if (isChecked)
                 {
                     for (int ii = 0; ii < senderGrid.Rows.Count; ii++)
@@ -346,7 +318,34 @@ namespace ACAT.Lib.Core.ActuatorManagement
         }
 
         /// <summary>
-        /// User wants to edit a switch. Display the switch edit form 
+        /// Generate a switch name
+        /// </summary>
+        /// <returns>generated name</returns>
+        private String generateSwitchName()
+        {
+            var switchBaseName = "Shortcut";
+
+            if (Actuator.Switches.Count == 0)
+            {
+                return switchBaseName + "1";
+            }
+
+            int index = 1;
+
+            while (true)
+            {
+                var name = switchBaseName + index;
+                if (!switchNameExists(name))
+                {
+                    return name;
+                }
+
+                index++;
+            }
+        }
+
+        /// <summary>
+        /// User wants to edit a switch. Display the switch edit form
         /// and update the datagridview with the edited data
         /// </summary>
         /// <param name="e">event args</param>
@@ -361,7 +360,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             var checkBoxCell = (dataGridView2.Rows[e.RowIndex].Cells[TriggerColumn.Name]) as DataGridViewCheckBoxCell;
             if (checkBoxCell.Value != null)
             {
-                editKeyboardActuatorForm.IsTriggerSelect = (bool) checkBoxCell.Value;
+                editKeyboardActuatorForm.IsTriggerSelect = (bool)checkBoxCell.Value;
             }
 
             if (!editKeyboardActuatorForm.IsTriggerSelect)
@@ -412,10 +411,12 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             var shortcut = dataGridView2.Rows[e.RowIndex].Cells[ShortcutColumn.Name].Value as String;
 
-            var result = MessageBox.Show("Delete shortcut " + shortcut, Text, MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
+            //var result = MessageBox.Show("Delete shortcut " + shortcut, Text, MessageBoxButtons.YesNo,
+            //MessageBoxIcon.Question);
+            bool result = ConfirmBox.ShowDialog("Delete shortcut " + shortcut.ToString() + " ?", null, false);
 
-            if (result == DialogResult.No)
+            //if (result == DialogResult.No)
+            if (!result)
             {
                 return;
             }
@@ -437,9 +438,9 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             var row = dataGridView2.Rows[e.RowIndex];
 
-            var checkCell = (DataGridViewCheckBoxCell) row.Cells[e.ColumnIndex];
+            var checkCell = (DataGridViewCheckBoxCell)row.Cells[e.ColumnIndex];
 
-            bool isChecked = (Boolean) checkCell.Value;
+            bool isChecked = (Boolean)checkCell.Value;
             if (isChecked)
             {
                 row.Cells[CommandColumn.Name].Value = _unmappedValue;
@@ -471,6 +472,21 @@ namespace ACAT.Lib.Core.ActuatorManagement
         }
 
         /// <summary>
+        /// Checks if all the shortcuts are unique
+        /// </summary>
+        /// <returns>true if there are no duplicates</returns>
+        private bool noDuplicateShortcuts()
+        {
+            List<String> array = new List<string>();
+            for (int ii = 0; ii < dataGridView2.Rows.Count; ii++)
+            {
+                array.Add(dataGridView2[ShortcutColumn.Name, ii].Value as String);
+            }
+
+            return (array.Distinct().Count() == array.Count());
+        }
+
+        /// <summary>
         /// OnLoad handler for the form. Init the UI and populate
         /// the datagridview
         /// </summary>
@@ -480,7 +496,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             if (Actuator == null)
             {
-                MessageBox.Show("Error.  Actuator to configure is null");
+                // MessageBox.Show("Error.  Actuator to configure is null");
+                bool result = ConfirmBox.ShowDialog("Error. Actuator to configure is null", null, false);
                 Close();
             }
 
@@ -536,7 +553,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         private void setColumnWidthPercent(DataGridViewColumn column, int percent)
         {
             int w = dataGridView2.Width - SystemInformation.VerticalScrollBarWidth;
-            column.Width = (w*percent)/100;
+            column.Width = (w * percent) / 100;
         }
 
         /// <summary>
@@ -561,7 +578,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         /// <param name="name">name to check</param>
         /// <returns>true if it does</returns>
-        bool switchNameExists(String name)
+        private bool switchNameExists(String name)
         {
             foreach (var actuatorSwitch in Actuator.Switches)
             {
@@ -590,9 +607,9 @@ namespace ACAT.Lib.Core.ActuatorManagement
                     continue;
                 }
 
-                switchSetting.Enabled = (Boolean) dataGridView2[EnableColumn.Name, ii].Value;
+                switchSetting.Enabled = (Boolean)dataGridView2[EnableColumn.Name, ii].Value;
 
-                bool isTrigger = (Boolean) dataGridView2[TriggerColumn.Name, ii].Value;
+                bool isTrigger = (Boolean)dataGridView2[TriggerColumn.Name, ii].Value;
 
                 if (isTrigger)
                 {
@@ -640,13 +657,14 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
             if (!noDuplicateShortcuts())
             {
-                MessageBox.Show("Error! Duplicate shortcuts found. Shorcuts have to be unique", Actuator.Name);
+                // MessageBox.Show("Error! Duplicate shortcuts found. Shorcuts have to be unique", Actuator.Name);
+                bool result = ConfirmBox.ShowDialog("Error! Duplicate shortcuts found. Shorcuts have to be unique. Actuator: " + Actuator.Name.ToString(), null, false);
                 return false;
             }
 
             for (int ii = 0; ii < dataGridView2.Rows.Count; ii++)
             {
-                if ((Boolean) dataGridView2[TriggerColumn.Name, ii].Value)
+                if ((Boolean)dataGridView2[TriggerColumn.Name, ii].Value)
                 {
                     ok = true;
                     break;
@@ -655,14 +673,15 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
             if (!ok)
             {
-                MessageBox.Show("Warning! You have not set any of the switches to select on trigger", Actuator.Name);
+                // MessageBox.Show("Warning! You have not set any of the switches to select on trigger", Actuator.Name);
+                bool result = ConfirmBox.ShowDialog("Warning! You have not set any of the switches to select on trigger. Actuator: " + Actuator.Name.ToString(), null, false);
             }
 
             ok = false;
 
             for (int ii = 0; ii < dataGridView2.Rows.Count; ii++)
             {
-                if ((Boolean) dataGridView2[EnableColumn.Name, ii].Value)
+                if ((Boolean)dataGridView2[EnableColumn.Name, ii].Value)
                 {
                     ok = true;
                 }
@@ -670,25 +689,11 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
             if (!ok)
             {
-                MessageBox.Show("Warning! You have disabled all switches", Actuator.Name);
+                //MessageBox.Show("Warning! You have disabled all switches", Actuator.Name);
+                bool result = ConfirmBox.ShowDialog("Warning! You have disabled all switches. Actuator: " + Actuator.Name.ToString(), null, false);
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Checks if all the shortcuts are unique
-        /// </summary>
-        /// <returns>true if there are no duplicates</returns>
-        private bool noDuplicateShortcuts()
-        {
-            List<String> array = new List<string>();
-            for (int ii = 0; ii < dataGridView2.Rows.Count; ii++)
-            {
-                array.Add(dataGridView2[ShortcutColumn.Name, ii].Value as String);
-            }
-
-            return (array.Distinct().Count() == array.Count());
         }
     }
 }

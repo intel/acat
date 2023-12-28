@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="TTSManager.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Extensions;
@@ -49,7 +36,7 @@ namespace ACAT.Lib.Core.TTSManagement
         /// <summary>
         /// The root directory where all the TTS engines are located.
         /// </summary>
-        static public String TTSRootDir = "TTSEngines";
+        public static String TTSRootDir = "TTSEngines";
 
         /// <summary>
         /// Upper bound for the volume
@@ -157,6 +144,84 @@ namespace ACAT.Lib.Core.TTSManagement
         }
 
         /// <summary>
+        /// Returns form that displays preferences selection form for text-to-speech engines and allows configuration.
+        /// User can enable/disable text-to-speech engines and also configure settings for each text-to-speech engine.
+        /// </summary>
+        public Form GetPreferencesSelectionForm(IntPtr parentControlHandle)
+        {
+            if (!ResourceUtils.IsInstalledCulture(CultureInfo.DefaultThreadCurrentUICulture))
+            {
+                return null;
+            }
+
+            var ci = CultureInfo.DefaultThreadCurrentUICulture;
+
+            List<Type> ttsEngineTypeList = new List<Type>();
+
+            // Add all the text-to-speech engines for the selected language
+            ttsEngineTypeList.AddRange(_ttsEngines.Get(ci.Name).ToList());
+
+            if (String.Compare(ci.Name, ci.TwoLetterISOLanguageName, true) != 0)
+            {
+                ttsEngineTypeList.AddRange(_ttsEngines.Get(ci.TwoLetterISOLanguageName).ToList());
+            }
+
+            // Get names of text-to-speech engines added thus far
+            List<String> ttsEngineTypeNameList = ttsEngineTypeList.Select(type => type.Name).ToList();
+
+            // Get culture neutral text-to-speech engines and only add if engine not already added for specific language
+            foreach (Type ttsEngineNeutralCultureType in _ttsEngines.Get(null).ToList())
+            {
+                if (!ttsEngineTypeNameList.Contains(ttsEngineNeutralCultureType.Name))
+                {
+                    ttsEngineTypeList.Add(ttsEngineNeutralCultureType);
+                }
+            }
+
+            // Add NullTTSEngine
+            ttsEngineTypeList.Add(typeof(NullTTSEngine));
+
+            // Now create a list of all the text-to-speech engine objects
+            List<object> objList = ttsEngineTypeList.Select(type => Activator.CreateInstance(type)).ToList();
+
+            var categories = objList.Select(ttsEngine => new PreferencesCategory(ttsEngine)).ToList();
+
+            var preferredGuid = _ttsEngines.GetPreferredOrDefaultByCulture(ci);
+            if (Equals(preferredGuid, Guid.Empty))
+            {
+                preferredGuid = _ttsEngines.GetPreferredOrDefaultByCulture(null);
+            }
+
+            foreach (var category in categories)
+            {
+                category.Enable = false;
+            }
+
+            foreach (var category in categories)
+            {
+                var iExtension = category.PreferenceObj as IExtension;
+                category.Enable = (iExtension != null && iExtension.Descriptor.Id == preferredGuid);
+                if (category.Enable)
+                {
+                    break;
+                }
+            }
+
+            // Create and return the form for the user to select default text-to-speech engine, change settings etc.
+            var form = new PreferencesCategorySelectForm
+            {
+                PreferencesCategories = categories,
+                EnableColumnHeaderText = "Default",
+                CategoryColumnHeaderText = "TTS Engine",
+                Title = "Text-to-speech - " + ci.DisplayName,
+                AllowMultiEnable = false,
+                ParentControlHandle = parentControlHandle
+            };
+
+            return form;
+        }
+
+        /// <summary>
         /// Initializes the TTS manager
         /// </summary>
         /// <param name="extensionDirs">Directories to search</param>
@@ -190,6 +255,23 @@ namespace ACAT.Lib.Core.TTSManagement
             }
 
             return retVal;
+        }
+
+        /// <summary>
+        /// Saves preferences in text-to-speech settings
+        /// </summary>
+        public void SavePreferences(object sender, IEnumerable<PreferencesCategory> preferencesCategories)
+        {
+            var ci = CultureInfo.DefaultThreadCurrentUICulture;
+
+            foreach (var category in preferencesCategories)
+            {
+                if (category.Enable && category.PreferenceObj is IExtension)
+                {
+                    _ttsEngines.SetPreferred(ci.Name, ((IExtension)category.PreferenceObj).Descriptor.Id);
+                    break;
+                }
+            }
         }
 
         /// <summary>
@@ -271,84 +353,6 @@ namespace ACAT.Lib.Core.TTSManagement
             int volSetting = (int)Math.Round(currentValue, 0);
 
             ActiveEngine.SetVolume(volSetting);
-        }
-
-        /// <summary>
-        /// Displays the preferences dialog for TTS Engines.
-        /// First displays the dialog that lets the user select the
-        /// culture (language) and then displays all the TTS Engines
-        /// discovered for that culture. The user can select the
-        /// preferred Engine, change settings etc.
-        /// </summary>
-        public void ShowPreferences()
-        {
-            if (!ResourceUtils.IsInstalledCulture(CultureInfo.DefaultThreadCurrentUICulture))
-            {
-                return;
-            }
-
-            var ci = CultureInfo.DefaultThreadCurrentUICulture;
-
-            List<Type> wpTypeList = new List<Type>();
-
-            // add all the spellcheckers for the selected language
-            wpTypeList.AddRange(_ttsEngines.Get(ci.Name).ToList());
-
-            if (String.Compare(ci.Name, ci.TwoLetterISOLanguageName, true) != 0)
-            {
-                wpTypeList.AddRange(_ttsEngines.Get(ci.TwoLetterISOLanguageName).ToList());
-            }
-
-            wpTypeList.AddRange(_ttsEngines.Get(null).ToList());
-            wpTypeList.Add(typeof(NullTTSEngine));
-
-            //Now create a list of all the text-to-speech objects
-            List<object> objList = wpTypeList.Select(type => Activator.CreateInstance(type)).ToList();
-
-            var categories = objList.Select(ttsEngine => new PreferencesCategory(ttsEngine)).ToList();
-
-            var preferredGuid = _ttsEngines.GetPreferredOrDefaultByCulture(ci);
-            if (Equals(preferredGuid, Guid.Empty))
-            {
-                preferredGuid = _ttsEngines.GetPreferredOrDefaultByCulture(null);
-            }
-
-            foreach (var category in categories)
-            {
-                category.Enable = false;
-            }
-
-            foreach (var category in categories)
-            {
-                var iExtension = category.PreferenceObj as IExtension;
-                category.Enable = (iExtension != null && iExtension.Descriptor.Id == preferredGuid);
-                if (category.Enable)
-                {
-                    break;
-                }
-            }
-
-            // display the form for the user to select default word predictor,
-            // change settings etc
-            var form1 = new PreferencesCategorySelectForm
-            {
-                PreferencesCategories = categories,
-                EnableColumnHeaderText = "Default",
-                CategoryColumnHeaderText = "TTS Engine",
-                Title = "Text-to-speech - " + ci.DisplayName,
-                AllowMultiEnable = false
-            };
-
-            if (form1.ShowDialog() == DialogResult.OK)
-            {
-                foreach (var category in form1.PreferencesCategories)
-                {
-                    if (category.Enable && category.PreferenceObj is IExtension)
-                    {
-                        _ttsEngines.SetPreferred(ci.Name, ((IExtension)category.PreferenceObj).Descriptor.Id);
-                    }
-                }
-            }
         }
 
         /// <summary>

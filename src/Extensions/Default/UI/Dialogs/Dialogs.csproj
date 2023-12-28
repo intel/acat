@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ACAT.Extensions.Default.UI.Dialogs</RootNamespace>
     <AssemblyName>Dialogs</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -86,72 +86,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutBoxForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AboutBoxForm.Designer.cs">
-      <DependentUpon>AboutBoxForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ShowLicenseForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ShowLicenseForm.Designer.cs">
-      <DependentUpon>ShowLicenseForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="YesNoDialogForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="YesNoDialogForm.Designer.cs">
-      <DependentUpon>YesNoDialogForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GeneralSettingsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GeneralSettingsForm.Designer.cs">
-      <DependentUpon>GeneralSettingsForm.cs</DependentUpon>
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="ACATTryoutForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ACATTryoutForm.designer.cs">
-      <DependentUpon>ACATTryoutForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenLockForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ScreenLockForm.Designer.cs">
-      <DependentUpon>ScreenLockForm.cs</DependentUpon>
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="ScreenLockSettingsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ScreenLockSettingsForm.Designer.cs">
-      <DependentUpon>ScreenLockSettingsForm.cs</DependentUpon>
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="TalkWindowForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TalkWindowForm.Designer.cs">
-      <DependentUpon>TalkWindowForm.cs</DependentUpon>
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="WordPredictionSettingsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WordPredictionSettingsForm.designer.cs">
-      <DependentUpon>WordPredictionSettingsForm.cs</DependentUpon>
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="ScannerSettingsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ScannerSettingsForm.designer.cs">
-      <DependentUpon>ScannerSettingsForm.cs</DependentUpon>
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
     <Compile Include="TimedDialogForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -159,83 +93,12 @@
       <DependentUpon>TimedDialogForm.cs</DependentUpon>
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="WindowMoveResizeScannerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WindowMoveResizeScannerForm.Designer.cs">
-      <DependentUpon>WindowMoveResizeScannerForm.cs</DependentUpon>
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="ResizeScannerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ResizeScannerForm.Designer.cs">
-      <DependentUpon>ResizeScannerForm.cs</DependentUpon>
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="MouseGridSettingsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MouseGridSettingsForm.designer.cs">
-      <DependentUpon>MouseGridSettingsForm.cs</DependentUpon>
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="TextToSpeechSettingsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TextToSpeechSettingsForm.designer.cs">
-      <DependentUpon>TextToSpeechSettingsForm.cs</DependentUpon>
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AboutBoxForm.resx">
-      <DependentUpon>AboutBoxForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ShowLicenseForm.resx">
-      <Generator>ResXFileCodeGeneratorEx</Generator>
-      <DependentUpon>ShowLicenseForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="YesNoDialogForm.resx">
-      <DependentUpon>YesNoDialogForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GeneralSettingsForm.resx">
-      <DependentUpon>GeneralSettingsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ACATTryoutForm.resx">
-      <DependentUpon>ACATTryoutForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ScreenLockForm.resx">
-      <DependentUpon>ScreenLockForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ScreenLockSettingsForm.resx">
-      <DependentUpon>ScreenLockSettingsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MouseGridSettingsForm.resx">
-      <DependentUpon>MouseGridSettingsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TalkWindowForm.resx">
-      <DependentUpon>TalkWindowForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WordPredictionSettingsForm.resx">
-      <DependentUpon>WordPredictionSettingsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ScannerSettingsForm.resx">
-      <DependentUpon>ScannerSettingsForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="TimedDialogForm.resx">
       <DependentUpon>TimedDialogForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WindowMoveResizeScannerForm.resx">
-      <DependentUpon>WindowMoveResizeScannerForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TextToSpeechSettingsForm.resx">
-      <DependentUpon>TextToSpeechSettingsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ResizeScannerForm.resx">
-      <DependentUpon>ResizeScannerForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="MenuPanelBase.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.AgentManagement;
@@ -124,7 +111,8 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// Gets the PanelCommon object
         /// </summary>
-        public IPanelCommon PanelCommon { get { return scannerCommon; } }
+        public IPanelCommon PanelCommon
+        { get { return scannerCommon; } }
 
         /// <summary>
         /// Gets the scannerCommon object
@@ -175,7 +163,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         /// <param name="arg">argument</param>
         /// <returns>true on success</returns>
-        public bool CheckCommandEnabled(CommandEnabledArg arg)
+        public virtual bool CheckCommandEnabled(CommandEnabledArg arg)
         {
             return false;
         }
@@ -249,7 +237,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         /// <param name="widget">widget actuated</param>
         /// <param name="handled">was this handled here?</param>
-        public virtual void OnWidgetActuated(Widget widget, ref bool handled)
+        public virtual void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
         {
             handled = false;
         }
@@ -273,7 +261,7 @@ namespace ACAT.Lib.Core.PanelManagement
 
             if (scannerCommon != null)
             {
-                Widget widget = PanelCommon.RootWidget.Finder.FindChild("ContextMenuTitle");
+                Widget widget = PanelCommon.RootWidget.Finder.FindChild("MenuTitle");
                 if (widget != null)
                 {
                     widget.SetText(title);
@@ -355,13 +343,17 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             setFormHeight();
 
-            scannerCommon.OnLoad(false);
+            scannerCommon.OnLoad();
 
             SetTitle(Title);
 
             PanelCommon.AnimationManager.Start(rootWidget);
 
             OnLoad();
+        }
+
+        private void MenuTitle_Click(object sender, EventArgs e)
+        {
         }
 
         /// <summary>
@@ -376,6 +368,15 @@ namespace ACAT.Lib.Core.PanelManagement
             for (int columnIndex = 0; columnIndex < panel.ColumnCount; columnIndex++)
             {
                 var control = panel.GetControlFromPosition(columnIndex, rowIndex);
+                var widget = ScannerCommon.RootWidget.Finder.FindChild(control.Handle);
+                if (widget != null)
+                {
+                    var parent = widget.Parent;
+                    if (parent != null)
+                    {
+                        parent.Remove(widget);
+                    }
+                }
                 panel.Controls.Remove(control);
                 control.Dispose();
             }

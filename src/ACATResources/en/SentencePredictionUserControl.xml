@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+    <!ENTITY characterButtonFontName "Montserrat SemiBold">
+    <!ENTITY characterButtonFontSize "22">
+    <!ENTITY usebold "false">
+]>
+
+<ACAT>
+    <WidgetAttributes>
+        <WidgetAttribute name="SPLItem1" label=" " value="@SPLItem1" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
+        <WidgetAttribute name="SPLItem2" label=" " value="@SPLItem2" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
+        <WidgetAttribute name="SPLItem3" label=" " value="@SPLItem3" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
+        <WidgetAttribute name="SPLItem4" label=" " value="@SPLItem4" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
+        <WidgetAttribute name="SPLItem5" label=" " value="@SPLItem15" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
+    </WidgetAttributes>
+
+    <Layout>
+        <Widget class="SentenceListWidget"  name="SentencePredictionBox">
+            <Widget class="SentenceListItemWidget" name="SPLItem1" colorScheme="ScannerButton" />
+            <Widget class="SentenceListItemWidget" name="SPLItem2" colorScheme="ScannerButton" />
+            <Widget class="SentenceListItemWidget" name="SPLItem3" colorScheme="ScannerButton" />
+            <Widget class="SentenceListItemWidget" name="SPLItem4" colorScheme="ScannerButton" />
+            <Widget class="SentenceListItemWidget" name="SPLItem5" colorScheme="ScannerButton" />
+        </Widget>
+    </Layout>
+
+    <Animations>
+        <Animation name="TopLevelRotation"
+                 start="true"
+                 iterations="1">
+            <Widget name="SentencePredictionBox" onSelect="transition(RowRotationSentencePrediction)"/>
+        </Animation>
+
+        <Animation name="RowRotationSentencePrediction"
+                   iterations="@RowScanIterations"
+                   firstPauseTime="@FirstPauseTime"
+                   onSelect="actuate(@SelectedWidget); transition(TopLevelRotation)"
+                   onEnd="transition(TopLevelRotation)">
+            <Widget name="SPLItem1" />
+            <Widget name="SPLItem2" />
+            <Widget name="SPLItem3" />
+            <Widget name="SPLItem4" />
+            <Widget name="SPLItem5" />
+        </Animation>
+    </Animations>
+</ACAT>
+

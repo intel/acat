@@ -1,21 +1,8 @@
-﻿/////////////////+++++++++++++++++++++++++++++++++++///////////////////////////////////////////////////////////
-// <copyright file="WindowOverlapWatchdog.cs" company="Intel Corporation">
+﻿////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Utility;
@@ -62,6 +49,8 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         private Form _window;
 
+        private Int32 _windowHandle;
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -71,9 +60,15 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             _window = window;
             _force = force;
-            _timer = new System.Timers.Timer { Enabled = true, Interval = Interval };
-            _timer.Elapsed += timer_Elapsed;
             window.VisibleChanged += window_VisibleChanged;
+            init();
+        }
+
+        public WindowOverlapWatchdog(Int32 windowHandle, bool force = false)
+        {
+            _windowHandle = windowHandle;
+            _force = force;
+            init();
         }
 
         /// <summary>
@@ -90,7 +85,7 @@ namespace ACAT.Lib.Core.PanelManagement
 
             if (_timer != null)
             {
-                _timer.Elapsed-= timer_Elapsed;
+                _timer.Elapsed -= timer_Elapsed;
                 _timer.Stop();
                 _timer.Dispose();
                 _timer = null;
@@ -108,7 +103,10 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public void Pause()
         {
-            Log.Debug("PAUSSE!!  for " + _window.Name);
+            if (_window != null)
+            {
+                Log.Debug("PAUSE!!  for " + _window.Name);
+            }
 
             stopTimer();
             _isPaused = true;
@@ -119,10 +117,21 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public void Resume()
         {
-            Log.Debug("RESUME!!  for " + _window.Name);
+            if (_window != null)
+            {
+                Log.Debug("RESUME!!  for " + _window.Name);
+            }
 
             _isPaused = false;
             startTimer();
+        }
+
+        private void init()
+        {
+            _timer = new System.Timers.Timer();
+            _timer.Elapsed += timer_Elapsed;
+            _timer.Interval = Interval;
+            _timer.Start();
         }
 
         /// <summary>
@@ -134,12 +143,17 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <returns>true if it is</returns>
         private bool isObscuredWindow()
         {
-            if (_window == null || _window.Handle == IntPtr.Zero || !Windows.GetVisible(_window))
+            if (_window == null && _windowHandle == 0)
             {
                 return false;
             }
 
-            IntPtr windowHandle = _window.Handle;
+            if (_window != null && (_window.Handle == IntPtr.Zero || !Windows.GetVisible(_window)))
+            {
+                return false;
+            }
+
+            IntPtr windowHandle = (_window != null) ? _window.Handle : new IntPtr(_windowHandle);
 
             // to keep track of whether we have already visited this window
             var cache = new HashSet<IntPtr> { windowHandle };
@@ -161,7 +175,12 @@ namespace ACAT.Lib.Core.PanelManagement
                 {
                     try
                     {
-                        Control ctl = Form.FromHandle(windowHandle);
+                        Control ctl = null;
+                        if (_window != null)
+                        {
+                            ctl = Form.FromHandle(windowHandle);
+                        }
+
                         isScanner = (ctl is Form) && (ctl is IScannerPanel);
                         if (isScanner)
                         {
@@ -221,15 +240,29 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="e">event args</param>
         private void timer_Elapsed(object sender, EventArgs e)
         {
+            if (_window == null && _windowHandle == 0)
+            {
+                return;
+            }
+
             try
             {
-                if (isObscuredWindow())
+                if (_window != null && _window.IsDisposed)
                 {
-                    _window.Invoke(new MethodInvoker(delegate
-                    {
-                        _window.TopMost = false;
-                        _window.TopMost = true;
-                    }));
+                    return;
+                }
+
+                if (_window != null)
+                {
+                    //Log.Debug("Setting topmost for " + _window.Name);
+                    Windows.SetTopMost(_window, false);
+                    Windows.SetTopMost(_window, true);
+                }
+                else
+                {
+                    //Log.Debug("Setting topmost for non Form" + _windowHandle);
+                    uint flags = (uint)User32Interop.SetWindowPosFlags.SWP_NOMOVE | (uint)User32Interop.SetWindowPosFlags.SWP_NOSIZE;
+                    User32Interop.SetWindowPos(_windowHandle, (int)User32Interop.HWND_TOPMOST, 0, 0, 0, 0, flags);
                 }
             }
             catch (Exception ex)
@@ -250,6 +283,7 @@ namespace ACAT.Lib.Core.PanelManagement
                 return;
             }
 
+            Log.Debug("Visibility changed for " + _window.Name + " To " + Windows.GetVisible(_window));
             if (Windows.GetVisible(_window))
             {
                 if (!_isPaused)

@@ -1,20 +1,8 @@
-﻿// <copyright file="PanelConfigMap.cs" company="Intel Corporation">
+﻿////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.AgentManagement;
@@ -27,6 +15,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Forms;
 using System.Xml;
 
 namespace ACAT.Lib.Core.PanelManagement
@@ -41,6 +30,8 @@ namespace ACAT.Lib.Core.PanelManagement
     /// </summary>
     public class PanelConfigMap
     {
+
+        private static volatile bool _DLLError = false;
         /// <summary>
         /// Name of the panel class config file. This file contains a
         /// list of panel configurations to use
@@ -60,9 +51,11 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         private static Dictionary<String, Dictionary<String, String>> _configFileLocationMap;
 
+        private static Dictionary<String, AppPanelClassConfig> _cultureAppPanelClassConfig;
         private static Dictionary<String, List<Guid>> _cultureConfigIdMapTable;
 
         private static Dictionary<String, PanelClassConfig> _culturePanelClassConfigMapTable;
+        private static AppPanelClassConfig _currentAppPanelClassConfig = null;
 
         /// <summary>
         /// Caches the class Type of forms
@@ -156,18 +149,45 @@ namespace ACAT.Lib.Core.PanelManagement
         /// culture folder
         /// </summary>
         /// <returns>default panelclassconfigmap, null if not found</returns>
-        public static PanelClassConfigMap GetDefaultPanelConfig()
+        ///
+        public static PanelClassConfigMap GetDefaultPanelClassConfigMap()
         {
-            PanelClassConfig panelClassConfig;
+            PanelClassConfig panelClassConfig = null;
 
-            if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.Name, out panelClassConfig) ||
-                _culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, out panelClassConfig) ||
-                _culturePanelClassConfigMapTable.TryGetValue(DefaultCulture, out panelClassConfig))
+            if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.Name, out panelClassConfig))
             {
-                return panelClassConfig.GetDefaultClassConfigMap();
+                _currentAppPanelClassConfig = _cultureAppPanelClassConfig[CultureInfo.DefaultThreadCurrentUICulture.Name];
+            }
+            else if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, out panelClassConfig))
+            {
+                _currentAppPanelClassConfig = _cultureAppPanelClassConfig[CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName];
+            }
+            else if (_culturePanelClassConfigMapTable.TryGetValue(DefaultCulture, out panelClassConfig))
+            {
+                _currentAppPanelClassConfig = _cultureAppPanelClassConfig[DefaultCulture];
             }
 
-            return null;
+            return panelClassConfig?.GetDefaultClassConfigMap();
+        }
+
+        public static PanelClassConfig GetPanelClassConfigForApp()
+        {
+            PanelClassConfig panelClassConfig = null;
+
+            if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.Name, out panelClassConfig))
+            {
+                _currentAppPanelClassConfig = _cultureAppPanelClassConfig[CultureInfo.DefaultThreadCurrentUICulture.Name];
+            }
+            else if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, out panelClassConfig))
+            {
+                _currentAppPanelClassConfig = _cultureAppPanelClassConfig[CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName];
+            }
+            else if (_culturePanelClassConfigMapTable.TryGetValue(DefaultCulture, out panelClassConfig))
+            {
+                _currentAppPanelClassConfig = _cultureAppPanelClassConfig[DefaultCulture];
+            }
+
+            return panelClassConfig;
         }
 
         /// <summary>
@@ -222,13 +242,13 @@ namespace ACAT.Lib.Core.PanelManagement
 
             _masterPanelConfigMapTable = new Dictionary<Guid, PanelConfigMapEntry>();
 
-            loadPanelClassConfig(CultureInfo.DefaultThreadCurrentUICulture.Name);
-            loadPanelClassConfig(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName);
-            loadPanelClassConfig(DefaultCulture);
+            LoadPanelClassConfig();
 
             _cultureConfigIdMapTable = new Dictionary<string, List<Guid>>();
 
             _configFileLocationMap = new Dictionary<string, Dictionary<string, string>>();
+
+            _cultureAppPanelClassConfig = new Dictionary<string, AppPanelClassConfig>();
 
             _formsCache = new Hashtable();
 
@@ -243,12 +263,18 @@ namespace ACAT.Lib.Core.PanelManagement
             {
                 String extensionDir = dir + "\\" + AgentManager.AppAgentsRootDir;
                 load(extensionDir);
+                if(_DLLError)
+                    return false;
 
                 extensionDir = dir + "\\" + AgentManager.FunctionalAgentsRootDir;
                 load(extensionDir);
+                if (_DLLError)
+                    return false;
 
                 extensionDir = dir + "\\" + PanelManager.UiRootDir;
                 load(extensionDir);
+                if (_DLLError)
+                    return false;
             }
 
             // load the panels from the default culture (which is English)
@@ -319,6 +345,13 @@ namespace ACAT.Lib.Core.PanelManagement
             return loadTypesFromAssembly(assembly);
         }
 
+        public static void LoadPanelClassConfig()
+        {
+            loadPanelClassConfig(CultureInfo.DefaultThreadCurrentUICulture.Name);
+            loadPanelClassConfig(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName);
+            loadPanelClassConfig(DefaultCulture);
+        }
+
         public static void Reset()
         {
             if (_cultureConfigIdMapTable != null)
@@ -345,11 +378,34 @@ namespace ACAT.Lib.Core.PanelManagement
                 _culturePanelClassConfigMapTable = null;
             }
 
+            if (_cultureAppPanelClassConfig != null)
+            {
+                _cultureAppPanelClassConfig.Clear();
+                _cultureAppPanelClassConfig = null;
+            }
+
+            if (_loadConfigFileLocationMap != null)
+            {
+                _loadConfigFileLocationMap.Clear();
+                _loadConfigFileLocationMap = null;
+            }
+
+            if (_loadPanelConfigMapTable != null)
+            {
+                _loadPanelConfigMapTable.Clear();
+                _loadPanelConfigMapTable = null;
+            }
+
             if (_formsCache != null)
             {
                 _formsCache.Clear();
                 _formsCache = null;
             }
+        }
+
+        public static bool SavePanelClassConfig()
+        {
+            return (_currentAppPanelClassConfig != null) && _currentAppPanelClassConfig.Save();
         }
 
         /// <summary>
@@ -409,6 +465,13 @@ namespace ACAT.Lib.Core.PanelManagement
             var removeList = new List<PanelConfigMapEntry>();
             foreach (var mapEntry in _masterPanelConfigMapTable.Values)
             {
+#if DEBUG
+                if (mapEntry.ConfigId.Equals(new Guid("C753E412-0A2C-40A2-B47C-954C620573ED")))
+                {
+                    Log.Debug("Breakpoint");
+                }
+#endif
+
                 Log.Debug("Looking up " + mapEntry.ToString());
                 if (_formsCache.ContainsKey(mapEntry.FormId))
                 {
@@ -473,6 +536,13 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="mapEntry">map entry to add</param>
         private static void addToMapTable(List<Guid> configIdTable, PanelConfigMapEntry mapEntry)
         {
+#if DEBUG
+            if (mapEntry.ConfigId.Equals(new Guid("C753E412-0A2C-40A2-B47C-954C620573ED")))
+            {
+                Log.Debug("Breakpoint");
+            }
+#endif
+
             if (!configIdTable.Contains(mapEntry.ConfigId))
             {
                 configIdTable.Add(mapEntry.ConfigId);
@@ -493,6 +563,13 @@ namespace ACAT.Lib.Core.PanelManagement
             if (typeof(IPanel).IsAssignableFrom(type))
             {
                 var guid = GetFormId(type);
+
+#if DEBUG
+                if (guid.Equals(new Guid("61E8A29A-5076-4047-A9F5-89E7E4903407")))
+                {
+                    Log.Debug("Breakpoint");
+                }
+#endif
                 if (guid != Guid.Empty)
                 {
                     AddFormToCache(guid, type);
@@ -603,7 +680,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="resursive">Recursively search?</param>
         private static void load(String dir, bool resursive = true)
         {
-            if (Directory.Exists(dir))
+            if (Directory.Exists(dir) && !_DLLError)
             {
                 var walker = new DirectoryWalker(dir, "*.*");
                 Log.Debug("Walking dir " + dir);
@@ -618,18 +695,28 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="language"></param>
         private static void loadPanelClassConfig(String language)
         {
+            if (_cultureAppPanelClassConfig == null)
+            {
+                _cultureAppPanelClassConfig = new Dictionary<string, AppPanelClassConfig>();
+            }
+
+            if (_culturePanelClassConfigMapTable == null)
+            {
+                _culturePanelClassConfigMapTable = new Dictionary<string, PanelClassConfig>();
+            }
+
             var panelClassConfigFilePath = Path.Combine(UserManager.CurrentUserDir, language, PanelClassConfigFileName);
 
             if (File.Exists(panelClassConfigFilePath) && !_culturePanelClassConfigMapTable.ContainsKey(language))
             {
-                var appPanelClassConfig = AppPanelClassConfig.Load<AppPanelClassConfig>(panelClassConfigFilePath);
+                var appPanelClassConfig = AppPanelClassConfig.Load(panelClassConfigFilePath);
+                _cultureAppPanelClassConfig[language] = appPanelClassConfig;
 
-                var panelClassConfig = appPanelClassConfig.Find(CoreGlobals.AppPreferences.AppId);
+                var panelClassConfig = appPanelClassConfig.Find(CoreGlobals.AppId);
 
-                //var panelClassConfig = PanelClassConfig.Load<PanelClassConfig>(panelClassConfigFilePath);//
                 if (panelClassConfig != null && panelClassConfig.PanelClassConfigMaps.Count > 0)
                 {
-                    _culturePanelClassConfigMapTable.Add(language, panelClassConfig);
+                    _culturePanelClassConfigMapTable[language] = panelClassConfig;
                 }
             }
         }
@@ -674,11 +761,32 @@ namespace ACAT.Lib.Core.PanelManagement
             try
             {
                 Log.Debug("Found dll " + dllName);
-                if (dllName.ToLower().Contains("scanners.dll"))
+
+                var retVal = VerifyDigitalSignature.ValidateCertificate(dllName);
+                if (retVal && !_DLLError)
                 {
-                    Log.Debug("HAHA");
+                    try
+                    {
+                        VerifyDigitalSignature.Verify(dllName);
+                    }
+                    catch (Exception ex)
+                    {
+                        ConfirmBoxSingleOption confirmBoxSingleOption = new ConfirmBoxSingleOption
+                        {
+                            Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n Status Error: ERPCM",
+                            DecisionPrompt = "ok",
+                            LabelFont = 10
+                        };
+                        confirmBoxSingleOption.BringToFront();
+                        confirmBoxSingleOption.TopMost = true;
+                        confirmBoxSingleOption.ShowDialog();
+                        confirmBoxSingleOption.Dispose();
+                        _DLLError = true;
+                    }
                 }
-                loadTypesFromAssembly(Assembly.LoadFile(dllName));
+                if (!_DLLError)
+                    loadTypesFromAssembly(Assembly.LoadFile(dllName));
+                
             }
             catch (Exception ex)
             {

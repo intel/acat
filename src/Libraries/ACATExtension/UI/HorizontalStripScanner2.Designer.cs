@@ -28,7 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // HorizontalStripScanner2
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.ClientSize = new System.Drawing.Size(1266, 87);
+            this.Name = "HorizontalStripScanner2";
+            this.ResumeLayout(false);
+
         }
 
         #endregion

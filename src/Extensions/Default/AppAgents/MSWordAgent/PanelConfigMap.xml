@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" ?>
-
-<ACAT>
-  <ConfigMapEntries>
-    <ConfigMapEntry panelClass="MSWordContextMenu" configName="MSWordContextMenu" configId="FCE47177-8BFF-40D5-8B58-443E4B726887" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="MSWordContextMenu.xml"/>
-  </ConfigMapEntries>
-</ACAT>

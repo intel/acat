@@ -1,25 +1,17 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="IActuatorSwitch.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// IActuator.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Interface for an actuator switch.  All switches must implement this
+// interface.
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Media;
 
@@ -41,6 +33,79 @@ namespace ACAT.Lib.Core.ActuatorManagement
         Down,
         Up,
         Trigger
+    }
+
+    /// <summary>
+    /// Enmeration of the different switch triggers for scanning for manual scan.
+    /// Actuator switches can be configured as a trigger for one of these modes
+    /// the mode
+    /// </summary>
+    public enum TriggerScanModes
+    {
+        /// <summary>
+        /// Undefined
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// Scan horizontal in the left direction
+        /// </summary>
+        TriggerScanLeft,
+
+        /// <summary>
+        /// Scan horizontal in the right direction
+        /// </summary>
+        TriggerScanRight,
+
+        /// <summary>
+        /// Scan vertical in the upward direction
+        /// </summary>
+        TriggerScanUp,
+
+        /// <summary>
+        /// Scan vertical in the downward direction
+        /// </summary>
+        TriggerScanDown,
+
+        /// <summary>
+        /// Move scan one widget to the left
+        /// </summary>
+        TriggerMoveLeft,
+
+        /// <summary>
+        /// Move scan one widget to the right
+        /// </summary>
+        TriggerMoveRight,
+
+        /// <summary>
+        /// Move scan one widget above
+        /// </summary>
+        TriggerMoveUp,
+
+        /// <summary>
+        /// Move scan one widget down
+        /// </summary>
+        TriggerMoveDown,
+
+        /// <summary>
+        /// Stop scanning
+        /// </summary>
+        TriggerStop,
+
+        /// <summary>
+        /// Pause scanning
+        /// </summary>
+        TriggerPause,
+
+        /// <summary>
+        /// Resume scanning
+        /// </summary>
+        TriggerResume,
+
+        /// <summary>
+        /// Pause/Resume toggle
+        /// </summary>
+        TriggerPauseToggle
     }
 
     /// <summary>
@@ -135,10 +200,23 @@ namespace ACAT.Lib.Core.ActuatorManagement
         long Timestamp { get; set; }
 
         /// <summary>
+        /// If this switch is configured as a trigger for manual scanning, returns
+        /// the scan mode
+        /// </summary>
+        /// <returns></returns>
+        TriggerScanModes GetTriggerScanMode();
+
+        /// <summary>
         /// Initialize the actuator switch
         /// </summary>
         /// <returns>true on success</returns>
         bool Init();
+
+        /// <summary>
+        /// Is this switch configured as a select trigger?
+        /// </summary>
+        /// <returns></returns>
+        bool IsSelectTriggerSwitch();
 
         /// <summary>
         /// XML node that contains attributes for the switch

@@ -1,35 +1,26 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="KeyboardActuator.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// KeyboardActuator.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
+// A keyboard actuator looks for specific keydown and keyup events
+// and rasies switch activation events.  Each key (Eg F5, F6 etc) has a
+// corresponding switch object and the event is propogated through the
+// switch object.
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.ActuatorManagement;
+using ACAT.Lib.Core.Onboarding;
 using ACAT.Lib.Core.Utility;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace ACAT.Lib.Core.InputActuators
 {
-    /// <summary>
-    /// A keyboard actuator looks for specific keydown and keyup events
-    /// and rasies switch activation events.  Each key (Eg F5, F6 etc) has a
-    /// corresponding switch object and the event is propogated through the switch object.
-    /// </summary>
     [DescriptorAttribute("D91A1877-C92B-4D7E-9AB6-F01F30B12DF9",
                         "Keyboard Actuator",
                         "Handles Keyboard and Mouse input")]
@@ -70,6 +61,46 @@ namespace ACAT.Lib.Core.InputActuators
         /// </summary>
         public event MouseEventHandler EvtMouseDown;
 
+        public override String OnboardingImageFileName
+        {
+            get
+            {
+                return FileUtils.GetImagePath("KeyboardSwitch.png");
+            }
+        }
+
+        public override bool ShowTryoutOnStartup
+        {
+            get
+            {
+                return CoreGlobals.AppPreferences.ShowSwitchTryoutOnStartup;
+            }
+        }
+
+        /// <summary>
+        /// Gets whether this supports a custom settings dialog
+        /// </summary>
+        public override bool SupportsPreferencesDialog
+        {
+            get { return true; }
+        }
+
+        public override bool SupportsScanTimingsConfigureDialog
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public override bool SupportsTryout
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         /// <summary>
         /// Class factory to create a keyboard switch object
         /// </summary>
@@ -77,6 +108,16 @@ namespace ACAT.Lib.Core.InputActuators
         public override IActuatorSwitch CreateSwitch()
         {
             return new KeyboardSwitch();
+        }
+
+        public override IOnboardingExtension GetOnboardingExtension()
+        {
+            return new OnboardingHardwareSwitchSetup(OnboardingHardwareSwitchSetup.SwitchType.Keyboard);
+        }
+
+        public override IEnumerable<String> GetSupportedKeyboardConfigs()
+        {
+            return new List<String>() { "TalkApplicationABC", "TalkApplicationQwerty", "TalkApplicationAlternate", "TalkApplicationAlternateABC" };
         }
 
         /// <summary>
@@ -114,11 +155,33 @@ namespace ACAT.Lib.Core.InputActuators
         /// <returns>true on success</returns>
         public override bool ShowPreferencesDialog()
         {
-            var prefChooseForm = new ConfigureKeyboardActuatorForm {Actuator = this};
+            // var prefChooseForm = new ConfigureKeyboardActuatorForm {Actuator = this};
+            var prefChooseForm = new ConfigureKeyboardActuatorForm { Actuator = this };
 
             prefChooseForm.ShowDialog();
 
+            prefChooseForm.Dispose();
+
             return true;
+        }
+
+        public override bool ShowScanTimingsConfigureDialog()
+        {
+            return ShowDefaultScanTimingsConfigureDialog();
+        }
+
+        public override bool ShowTryoutDialog()
+        {
+            return ShowDefaultTryoutDialog();
+        }
+
+        /// <summary>
+        /// Indicates whether the actuator supports calibration or not
+        /// </summary>
+        /// <returns>true if it does, false otherwise</returns>
+        public override bool SupportsCalibration()
+        {
+            return false;
         }
 
         /// <summary>
@@ -195,8 +258,8 @@ namespace ACAT.Lib.Core.InputActuators
                 return;
             }
 
-            var s = String.Format("Keydown {0}.  Alt: {1} Ctrl: {2}", e.KeyCode, e.Alt, e.Control);
-            Log.Debug(s);
+            
+            Log.Debug("Keydown: " + e.KeyCode.ToString());
 
             // check if this is one of the keys we recognize.  If so, trigger
             // a switch-activated event
@@ -252,9 +315,16 @@ namespace ACAT.Lib.Core.InputActuators
         /// <param name="e">args</param>
         private void KeyboardHook_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (EvtKeyPress != null)
+            try
             {
-                EvtKeyPress(sender, e);
+                if (EvtKeyPress != null)
+                {
+                    EvtKeyPress(sender, e);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Debug(ex.ToString());
             }
         }
 
@@ -290,14 +360,6 @@ namespace ACAT.Lib.Core.InputActuators
                     EvtKeyUp(this, e);
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets whether this supports a custom settings dialog
-        /// </summary>
-        public override bool SupportsPreferencesDialog
-        {
-            get { return true; }
         }
 
         /// <summary>
@@ -351,10 +413,13 @@ namespace ACAT.Lib.Core.InputActuators
         {
             if (actuatorState == State.Running)
             {
-                _keyboardHook.EvtKeyDown -= KeyboardHook_KeyDown;
-                _keyboardHook.EvtKeyUp -= KeyboardHook_KeyUp;
-                _keyboardHook.EvtKeyPress -= KeyboardHook_KeyPress;
-                _keyboardHook.RemoveHook();
+                if (_keyboardHook != null)
+                {
+                    _keyboardHook.EvtKeyDown -= KeyboardHook_KeyDown;
+                    _keyboardHook.EvtKeyUp -= KeyboardHook_KeyUp;
+                    _keyboardHook.EvtKeyPress -= KeyboardHook_KeyPress;
+                    _keyboardHook.RemoveHook();
+                }
 
                 _mouseHook.EvtMouseDown -= MouseHook_MouseDown;
                 _mouseHook.RemoveHook();

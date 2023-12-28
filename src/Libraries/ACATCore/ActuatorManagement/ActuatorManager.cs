@@ -1,21 +1,20 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="ActuatorManager.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// ActuatorManager.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Manages all the actuators.  Responsible for reading the
+// ActuatorSettings config file, parsing it, and creating the
+// actuators through the Actuators class.  This class
+// receives all the switch trigger events, maintains a list
+// of switches that are currently held, checks when the
+// switches are released, whether the hold time was >
+// than the accept time and if so, trigger the switch events.
+// This is a singleton class
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Audit;
@@ -29,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace ACAT.Lib.Core.ActuatorManagement
 {
@@ -65,24 +65,24 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// List of switches that are currentlu active i.e., those for which
         /// a "switch down" event has been raised
         /// </summary>
-        private readonly Dictionary<String, IActuatorSwitch> _activeSwitches;
+        private Dictionary<String, IActuatorSwitch> _activeSwitches;
 
         /// <summary>
         /// List of switches whose 'actuate' attribute is false.  These switches
         /// will not trigger an action.  Their actions will be merely audited in
         /// the audit log
         /// </summary>
-        private readonly Dictionary<String, IActuatorSwitch> _nonActuateSwitches;
+        private Dictionary<String, IActuatorSwitch> _nonActuateSwitches;
 
         /// <summary>
         /// Object to synchronize multithread access
         /// </summary>
-        private readonly Object _syncObjectSwitches;
+        private Object _syncObjectSwitches;
 
         /// <summary>
         /// Queue to hold calibration requests from actuators
         /// </summary>
-        private readonly BlockingQueue<object> calibrationQueue = new BlockingQueue<object>();
+        private BlockingQueue<object> calibrationQueue;
 
         /// <summary>
         /// Maintains a list of actuators
@@ -114,16 +114,32 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         private Thread _thread;
 
+        
         /// <summary>
         /// Prevents a default instance of ActuatorManager class from being created
         /// </summary>
         private ActuatorManager()
         {
-            _activeSwitches = new Dictionary<String, IActuatorSwitch>();
-            _nonActuateSwitches = new Dictionary<String, IActuatorSwitch>();
-
-            _syncObjectSwitches = new object();
+            //_activeSwitches = new Dictionary<String, IActuatorSwitch>();
+            //_nonActuateSwitches = new Dictionary<String, IActuatorSwitch>();
+            //_syncObjectSwitches = new object();
         }
+
+        /// <summary>
+        /// Deleagate for notification of start of calibration by an actuator
+        /// </summary>
+        /// <param name="args">Calibration notifaction object</param>
+        public delegate void CalibrationStartNotify(CalibrationNotifyEventArgs args);
+
+        /// <summary>
+        /// Event raised to indicate start of calibration
+        /// </summary>
+        public event CalibrationStartNotify EvtCalibrationStartNotify;
+
+        /// <summary>
+        /// Event raised to indicate end of calibration
+        /// </summary>
+        public event EventHandler EvtCalibrationEndNotify;
 
         /// <summary>
         /// For events related to actuator switch triggers
@@ -213,15 +229,49 @@ namespace ACAT.Lib.Core.ActuatorManagement
         }
 
         /// <summary>
+        /// Returns the acutator object corresponding to
+        /// the specified GUID
+        /// </summary>
+        /// <param name="id">ID of the acutator</param>
+        /// <returns>actuator object, null if not found</returns>
+        public IActuator GetActuator(Guid id)
+        {
+            foreach (var actuator in _actuators.ActuatorList)
+            {
+                var descAttribute = DescriptorAttribute.GetDescriptor(actuator.GetType());
+
+                if (descAttribute != null)
+                {
+                    if (id.Equals(descAttribute.Id))
+                    {
+                        return actuator;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Initializes the manager.
         /// </summary>
         /// <param name="extensionDirs">Directories to search</param>
         /// <returns>true on success</returns>
         public bool Init(IEnumerable<String> extensionDirs)
         {
+            _activeSwitches = new Dictionary<String, IActuatorSwitch>();
+            _nonActuateSwitches = new Dictionary<String, IActuatorSwitch>();
+            _syncObjectSwitches = new object();
+
+
+            calibrationQueue = new BlockingQueue<object>();
+
+            _exitThread = false;
+
             _initInProgress = true;
 
             _thread = new Thread(calibrationHandlerThread) { IsBackground = true };
+            _thread.SetApartmentState(ApartmentState.STA);
             _thread.Start();
 
             bool retVal = init();
@@ -229,6 +279,27 @@ namespace ACAT.Lib.Core.ActuatorManagement
             _initInProgress = false;
 
             Context.AppPanelManager.EvtAppQuit += AppPanelManager_EvtAppQuit;
+
+            return retVal;
+        }
+
+        public bool PostInit()
+        {
+            bool retVal = true;
+
+            foreach (var actuatorEx in _actuators.Collection)
+            {
+                actuatorEx.PostInit();
+                if (actuatorEx.PostInitError)
+                {
+                    retVal = false;
+                }
+            }
+
+            foreach (var actuatorEx in _actuators.Collection)
+            {
+                actuatorEx.WaitForCalibration();
+            }
 
             return retVal;
         }
@@ -356,6 +427,16 @@ namespace ACAT.Lib.Core.ActuatorManagement
             }
         }
 
+        public void OnPostInitDone(IActuator source, bool success = true)
+        {
+            var aex = _actuators.find(source);
+            if (aex != null)
+            {
+                aex.OnPostInitDone(success);
+            }
+        }
+
+
         /// <summary>
         /// Pauses all the acutators.  No events will be triggered
         /// </summary>
@@ -386,15 +467,34 @@ namespace ACAT.Lib.Core.ActuatorManagement
             return _actuators.AddSwitch(actuator, switchSetting);
         }
 
+        public IActuator GetCalibrationSupportedActuator()
+        {
+            foreach (var actuator in _actuators.Collection)
+            {
+                if (actuator.SourceActuator.SupportsCalibration())
+                {
+                    return actuator.SourceActuator;
+                }
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// All calibration requests are queued and handled in the order
         /// they were requested.  Actuators should call this function to
         /// indicate that they want to calibrate
         /// </summary>
         /// <param name="source">the requesting actuator</param>
-        public void RequestCalibration(IActuator source)
+        public void RequestCalibration(IActuator source, RequestCalibrationReason reason)
         {
             Log.Debug("Entered RequestCalibration for " + source.Name);
+
+            if (!source.SupportsCalibration())
+            {
+                Log.Debug(source.Name + ": Does not support calibration. returning");
+                return;
+            }
 
             if (calibrationQueue.Contains(source) || isCalibratingActuator(source))
             {
@@ -406,7 +506,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
             if (aex != null)
             {
-                aex.RequestCalibration();
+                aex.RequestCalibration(reason);
                 Log.Debug("Enqueing calibration request for " + source.Name);
 
                 calibrationQueue.Enqueue(aex);
@@ -425,15 +525,24 @@ namespace ACAT.Lib.Core.ActuatorManagement
         }
 
         /// <summary>
-        /// Displays preferences dialog for actuators.  User can enable/disable
-        /// actuators and also configure switches for the actuator.  Uses the
-        /// PreferencesCagegorySelectForm for configuring the actuators
+        /// Get actuator configuration
         /// </summary>
-        public void ShowPreferences()
+        /// <returns></returns>
+        public ActuatorConfig GetActuatorConfig()
+        {
+            ActuatorConfig.ActuatorSettingsFileName = UserManager.GetFullPath(ActuatorSettingsFileName);
+            return ActuatorConfig.Load();
+        }
+
+        /// <summary>
+        /// Returns form that displays preferences selection form for actuators and allows configuration.
+        /// User can enable/disable actuators and also configure settings for each actuator.  
+        /// </summary>
+        public Form GetPreferencesSelectionForm(IntPtr parentControlHandle)
         {
             if (_actuators == null)
             {
-                return;
+                return null;
             }
 
             var list = new List<PreferencesCategory>();
@@ -444,19 +553,28 @@ namespace ACAT.Lib.Core.ActuatorManagement
                 list.Add(new PreferencesCategory(actuator, true, actuator.Enabled));
             }
 
+            // Create and return the form for the user to select which actuators are enabled, change settings etc.
             var form = new PreferencesCategorySelectForm
             {
                 PreferencesCategories = list,
                 CategoryColumnHeaderText = "Actuator",
-                Title = "Actuators"
+                Title = "Actuators",
+                ParentControlHandle = parentControlHandle,
+                DisallowEnable = true
             };
 
-            form.ShowDialog();
+            return form;
+        }
 
+        /// <summary>
+        /// Saves preferences in actuator settings
+        /// </summary>
+        public void SavePreferences(object sender, IEnumerable<PreferencesCategory> preferencesCategories)
+        {
             ActuatorConfig.ActuatorSettingsFileName = UserManager.GetFullPath(ActuatorSettingsFileName);
             var actuatorSettings = ActuatorConfig.Load();
 
-            foreach (var category in form.PreferencesCategories)
+            foreach (var category in preferencesCategories)
             {
                 if (category.PreferenceObj is IExtension)
                 {
@@ -518,6 +636,125 @@ namespace ACAT.Lib.Core.ActuatorManagement
         }
 
         /// <summary>
+        /// Call this to notify that calibration is about to start
+        /// </summary>
+        /// <param name="args">Argument for the notifcation</param>
+        public void NotifyStartCalibration(CalibrationNotifyEventArgs args)
+        {
+            EvtCalibrationStartNotify?.Invoke(args);
+        }
+
+        /// <summary>
+        /// Call this to notify that calibartion has ended
+        /// </summary>
+        public void NotifyEndCalibration()
+        {
+            EvtCalibrationEndNotify?.Invoke(this, new EventArgs());
+        }
+
+        public IActuator GetKeyboardActuator()
+        {
+            return GetActuator(typeof(KeyboardActuator));
+        }
+
+        public IActuator GetSwitchInterfaceActuator()
+        {
+            return GetActuator(typeof(SwitchInterfaceActuator));
+        }
+
+
+        public bool CheckScanTimingConfigureEnable()
+        {
+            var keyboardActuator = Context.AppActuatorManager.GetKeyboardActuator();
+
+            foreach (var actuator in Context.AppActuatorManager.Actuators)
+            {
+                if (keyboardActuator != null && actuator != keyboardActuator)
+                {
+                    if (actuator.SupportsScanTimingsConfigureDialog)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            if (keyboardActuator != null &&
+                keyboardActuator.SupportsScanTimingsConfigureDialog)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
+        public void ShowTryoutDialog(bool startup = false)
+        {
+            var keyboardActuator = Context.AppActuatorManager.GetKeyboardActuator();
+
+            bool dialogShown = false;
+
+            foreach (var actuator in Context.AppActuatorManager.Actuators)
+            {
+                if (keyboardActuator != null && actuator != keyboardActuator)
+                {
+                    if (actuator.SupportsTryout)
+                    {
+                        if (startup && !actuator.ShowTryoutOnStartup)
+                        {
+                            return;
+                        }
+
+                        if (actuator.ShowTryoutDialog())
+                        {
+                            dialogShown = true;
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+            if (!dialogShown && Context.AppActuatorManager.Actuators.Count() == 1 && keyboardActuator != null &&
+                keyboardActuator.SupportsTryout &&
+               (!startup || keyboardActuator.ShowTryoutOnStartup))
+            {
+                keyboardActuator.ShowTryoutDialog();
+            }
+        }
+
+        public void ShowScanTimingsConfigureDialog()
+        {
+            var keyboardActuator = Context.AppActuatorManager.GetKeyboardActuator();
+
+            bool dialogShown = false;
+
+            foreach (var actuator in Context.AppActuatorManager.Actuators)
+            {
+                if (keyboardActuator != null && actuator != keyboardActuator)
+                {
+                    if (actuator.SupportsScanTimingsConfigureDialog)
+                    {
+                        if (actuator.ShowScanTimingsConfigureDialog())
+                        {
+                            dialogShown = true;
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+            if (!dialogShown && Context.AppActuatorManager.Actuators.Count() == 1 && keyboardActuator != null &&
+                keyboardActuator.SupportsScanTimingsConfigureDialog)
+               
+            {
+                keyboardActuator.ShowScanTimingsConfigureDialog();
+            }
+        }
+
+
+        /// <summary>
         /// Action to execute when the user intitiates it
         /// </summary>
         /// <param name="source">source actuator</param>
@@ -540,16 +777,26 @@ namespace ACAT.Lib.Core.ActuatorManagement
                 if (disposing)
                 {
                     _exitThread = true;
-                    calibrationQueue.Clear();
-                    calibrationQueue.Enqueue("Stop");
-                    Log.Debug("Calling thread.join");
 
-                    _thread.Join(2000);
+                    if (calibrationQueue != null)
+                    {
+                        calibrationQueue.Clear();
+                        calibrationQueue.Enqueue("Stop");
+                    }
+
+
+                    if (_thread != null)
+                    {
+                        Log.Debug("Calling thread.join");
+                        _thread.Join(2000);
+                    }
+
                     Log.Debug("Exited thread");
 
                     if (_actuators != null)
                     {
                         _actuators.Dispose();
+                        _actuators = null;
                     }
                 }
 
@@ -567,6 +814,45 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             bool handled = false;
 
+
+            var actuator = switchObj.Actuator;
+            var action = switchObj.GetTriggerScanMode();
+
+            switch (action)
+            {
+                case TriggerScanModes.TriggerPause:
+                    actuator.Pause();
+                    handled = true;
+                    break;
+
+                case TriggerScanModes.TriggerResume:
+                    actuator.Resume();
+                    handled = true;
+                    break;
+
+                case TriggerScanModes.TriggerPauseToggle:
+                    if (actuator.GetState() == State.Running)
+                    {
+                        actuator.Pause();
+                        handled = true;
+                    }
+                    else
+                    {
+                        actuator.Resume();
+                        handled = true;
+                    }
+                    break;
+            }
+
+            if (handled)
+            {
+                return;
+            }
+
+            if (actuator.GetState() != State.Running)
+            {
+                return;
+            }
             notifySwitchHooks(switchObj, ref handled);
 
             if (!handled)
@@ -653,6 +939,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
                     actuator.WaitForCalibration();
                 }
             }
+            return;
         }
 
         /// <summary>
@@ -682,7 +969,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
                     {
                         if (!switches.ContainsKey(switchObj.Name))
                         {
-                            Log.Debug("switches does not contain " + switchObj.Name + ". adding it");
+                            Log.Debug("SWITCH DOWN switches does not contain " + switchObj.Name + ". adding it");
 
                             // add it to the current list of active switches
                             switches.Add(switchObj.Name, switchObj);
@@ -693,7 +980,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
                         }
                         else
                         {
-                            Log.Debug("switches already contains " + switchObj.Name);
+                            Log.Debug("SWITCH DOWN switches already contains " + switchObj.Name);
                         }
                     }
 
@@ -706,7 +993,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
                         switchObj.RegisterSwitchUp();
                         if (switches.ContainsKey(switchObj.Name))
                         {
-                            Log.Debug("switches contains " + switchObj.Name);
+                            Log.Debug("SWITCH UP switches contains " + switchObj.Name);
                             var activeSwitch = switches[switchObj.Name];
 
                             elapsedTime = (activeSwitch != null && activeSwitch.AcceptTimer.IsRunning) ?
@@ -714,18 +1001,27 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
                             bool accepted = false;
 
+                            Log.Debug("SWITCH UP Acauate: " + switchObj.Actuate);
+                            Log.Debug("SWITCH UP Acticeswitch != null is " + (activeSwitch != null));
+
+                            if (activeSwitch != null)
+                            {
+                                Log.Debug("SWITCH UP Accepttimer is running " + activeSwitch.AcceptTimer.IsRunning);
+                                Log.Debug("SWITCH UP Elapsed milli: " + activeSwitch.AcceptTimer.ElapsedMilliseconds);
+                            }
+
                             if (switchObj.Actuate &&
                                 activeSwitch != null &&
                                 activeSwitch.AcceptTimer.IsRunning &&
                                 activeSwitch.AcceptTimer.ElapsedMilliseconds >= CoreGlobals.AppPreferences.MinActuationHoldTime)
                             {
-                                Log.Debug("Switch accepted!");
+                                Log.Debug("SWITCH UP Switch accepted! ElapsedMilliseconds: " + activeSwitch.AcceptTimer.ElapsedMilliseconds);
                                 accepted = true;
                                 switchActivated = switchObj;
                             }
                             else
                             {
-                                Log.Debug("Switch not found or actuate is false or timer not running or elapsedTime < accept time");
+                                Log.Debug("SWITCH UP Switch not found or actuate is false or timer not running or elapsedTime < accept time");
                             }
 
                             switches.Remove(switchObj.Name);
@@ -743,7 +1039,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
                         }
                         else
                         {
-                            Log.Debug("switches does not contain " + switchObj.Name);
+                            Log.Debug("SWITCH UP switches does not contain " + switchObj.Name);
                         }
                     }
 
@@ -838,10 +1134,12 @@ namespace ACAT.Lib.Core.ActuatorManagement
                 actuatorEx.SourceActuator.EvtSwitchTriggered += actuator_EvtSwitchTriggered;
             }
 
+            /*
             foreach (var actuatorEx in _actuators.Collection)
             {
                 actuatorEx.WaitForCalibration();
             }
+            */
 
             foreach (var actuatorEx in _actuators.Collection)
             {

@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="ITTSEngine.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Extensions;
@@ -120,6 +107,12 @@ namespace ACAT.Lib.Core.TTSManagement
         /// Gets the current status of the speech engine
         /// </summary>
         StatusFlags Status { get; }
+
+        /// <summary>
+        /// Get/sets whether alternate pronunciations should be used or not
+        /// before TTS
+        /// </summary>
+        bool UseAlternatePronunciations { get; set; }
 
         /// <summary>
         /// Gets or sets the voice to use
@@ -227,6 +220,22 @@ namespace ACAT.Lib.Core.TTSManagement
         /// <param name="bookmark">Bookmark</param>
         /// <returns></returns>
         bool SpeakAsync(String text, out int bookmark);
+
+        /// <summary>
+        /// Converts text to speech with text in the SSML format
+        /// </summary>
+        /// <param name="ssml">SSML formatted text</param>
+        /// <returns>true on success, false on error</returns>
+        bool SpeakSsml(String ssml, String text, String ttsPlaceHolder);
+
+        /// <summary>
+        /// Converts TTS asynchronously.  Bookmark is sent back as an
+        /// event arg when speech completes. Text to speak is in the SSML format
+        /// </summary>
+        /// <param name="ssml">Text to convert (SSML format)</param>
+        /// <param name="bookmark">Bookmark</param>
+        /// <returns></returns>
+        bool SpeakSsmlAsync(String ssml, String text, String ttsPlaceHolder, out int bookmark);
 
         /// <summary>
         /// Stops the speech. All items are

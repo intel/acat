@@ -1,21 +1,19 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="WinsockClientActuatorBase.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// WinsockClientActuatorBase.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Represents the base class for an actuator that receives
+// trigger events from a TCP/IP socket server.  ACAT in this case
+// acts as a client and the source app for the trigger acts as
+// the TCP server. Does a lot of the heavy lifting such as trying
+// to connect to the server, receiving and parsing the data packet
+// and raising events for switch triggers. Data packet is a string.
+// Refer to WinsockCommon class for the data format.
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.ActuatorManagement;

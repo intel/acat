@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="ScannerCommon.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.AbbreviationsManagement;
@@ -23,7 +10,6 @@ using ACAT.Lib.Core.AgentManagement;
 using ACAT.Lib.Core.AnimationManagement;
 using ACAT.Lib.Core.Audit;
 using ACAT.Lib.Core.Interpreter;
-using ACAT.Lib.Core.TalkWindowManagement;
 using ACAT.Lib.Core.ThemeManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WidgetManagement;
@@ -96,6 +82,11 @@ namespace ACAT.Lib.Core.PanelManagement
         private bool _firstCallToClientSizeChanged = true;
 
         /// <summary>
+        /// is the scanner made invisible due to calibration of actuator?
+        /// </summary>
+        private bool _hideScannerOnCalibration;
+
+        /// <summary>
         /// Tracks scanner idle time.  If the user hasn't activated
         /// the scanner in this time, the scanner makes itself invisible
         /// (behavior is configurable)
@@ -118,19 +109,9 @@ namespace ACAT.Lib.Core.PanelManagement
         private Widget _rootWidget;
 
         /// <summary>
-        /// Is the scanner opacity != 1.0?
-        /// </summary>
-        private bool _scannerFaded;
-
-        /// <summary>
         /// The status bar object for the scanner
         /// </summary>
         private ScannerStatusBar _scannerStatusBar;
-
-        /// <summary>
-        /// Did we pause the talk window?
-        /// </summary>
-        private bool _talkWindowPaused;
 
         /// <summary>
         /// The widget manager object.  Maintains a list of all
@@ -157,7 +138,6 @@ namespace ACAT.Lib.Core.PanelManagement
             ScannerForm.ShowInTaskbar = false;
             PositionSizeController = new ScannerPositionSizeController(this);
             TextController = new TextController();
-            KeepTalkWindowActive = false;
             HideScannerOnIdle = CoreGlobals.AppPreferences.HideScannerOnIdle;
             _syncLock = new SyncLock();
         }
@@ -202,7 +182,8 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// Gets the Animation Manager object
         /// </summary>
-        public AnimationManager AnimationManager { get { return _animationManager; } }
+        public AnimationManager AnimationManager
+        { get { return _animationManager; } }
 
         /// <summary>
         /// Gets the panel config id for this scanner
@@ -239,16 +220,11 @@ namespace ACAT.Lib.Core.PanelManagement
         }
 
         /// <summary>
-        /// Gets or sets the keep talk window property
-        /// When this scanner goes inactive and a new one replaces it, whether
-        /// to hide the talk window or keep it in its current state.
-        /// </summary>
-        public bool KeepTalkWindowActive { get; set; }
-
-        /// <summary>
         /// Helps with managing the position and size of the scanner panel
         /// </summary>
         public ScannerPositionSizeController PositionSizeController { get; private set; }
+
+        public ScannerPositionSizeController2 PositionSizeController2 { get; private set; }
 
         /// <summary>
         /// Gets or sets the preview mode of the scanner.  This mode
@@ -284,7 +260,8 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// Gets the widget that reprensents the form
         /// </summary>
-        public Widget RootWidget { get { return _rootWidget; } }
+        public Widget RootWidget
+        { get { return _rootWidget; } }
 
         /// <summary>
         /// Gets the parent scanner form
@@ -340,7 +317,8 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// Gets the WidgetManager objet
         /// </summary>
-        public WidgetManager WidgetManager { get { return _widgetManager; } }
+        public WidgetManager WidgetManager
+        { get { return _widgetManager; } }
 
         /// <summary>
         /// Autocompletes the partially entered word at the
@@ -391,8 +369,8 @@ namespace ACAT.Lib.Core.PanelManagement
         public void FadeScanner()
         {
             _windowOverlapWatchdog.Pause();
-            Windows.SetOpacity(ScannerForm, 0.7f);
-            _scannerFaded = true;
+            //Windows.SetOpacity(ScannerForm, 0.7f);
+            //_scannerFaded = true;
         }
 
         /// <summary>
@@ -439,17 +417,6 @@ namespace ACAT.Lib.Core.PanelManagement
         }
 
         /// <summary>
-        /// Hides the talk window
-        /// </summary>
-        public void HideTalkWindow()
-        {
-            if (Context.AppTalkWindowManager.IsTalkWindowActive)
-            {
-                ScannerForm.Invoke(new MethodInvoker(() => Context.AppTalkWindowManager.ToggleTalkWindow()));
-            }
-        }
-
-        /// <summary>
         /// Performs initialization.  Reads the config file for the form, creates
         /// the animation manager, widget manager, loads in  all the widgets,
         /// subscribes to events
@@ -460,10 +427,6 @@ namespace ACAT.Lib.Core.PanelManagement
         public bool Initialize(StartupArg startupArg)
         {
             Log.Debug("Entered from Initialize");
-
-            Glass.Enable = false;
-
-            Glass.EvtShowGlass += Glass_EvtShowGlass;
 
             Context.AppPanelManager.EvtPanelPreShow += AppPanelManager_EvtPanelPreShow;
 
@@ -482,8 +445,6 @@ namespace ACAT.Lib.Core.PanelManagement
             ScannerForm.SizeChanged += ScannerForm_SizeChanged;
 
             CoreGlobals.AppPreferences.EvtPreferencesChanged += AppPreferences_EvtPreferencesChanged;
-
-            subscribeTalkWindowManager();
 
             ScannerForm.Shown += form_Shown;
             ScannerForm.VisibleChanged += form_VisibleChanged;
@@ -505,7 +466,7 @@ namespace ACAT.Lib.Core.PanelManagement
                 retVal = initAnimationManager(panelConfigMapEntry);
             }
 
-            if (retVal)
+            if (retVal && HideScannerOnIdle)
             {
                 createIdleTimer();
             }
@@ -520,6 +481,9 @@ namespace ACAT.Lib.Core.PanelManagement
 
                 WindowActivityMonitor.EvtWindowMonitorHeartbeat += WindowActivityMonitor_EvtWindowMonitorHeartbeat;
             }
+
+            Context.AppPanelManager.EvtCalibrationStartNotify += AppPanelManager_EvtCalibrationStartNotify;
+            Context.AppPanelManager.EvtCalibrationEndNotify += AppPanelManager_EvtCalibrationEndNotify;
 
             Log.Debug("Returning from Initialize " + retVal);
 
@@ -559,8 +523,6 @@ namespace ACAT.Lib.Core.PanelManagement
                 if (Context.AppQuit)
                 {
                     Windows.ShowTaskbar();
-                    Context.AppTalkWindowManager.Dispose();
-                    Glass.HideGlass();
                 }
             }
             catch (Exception ex)
@@ -604,8 +566,6 @@ namespace ACAT.Lib.Core.PanelManagement
 
             Context.AppPanelManager.EvtPanelPreShow -= AppPanelManager_EvtPanelPreShow;
 
-            Glass.EvtShowGlass -= Glass_EvtShowGlass;
-
             CoreGlobals.AppPreferences.EvtPreferencesChanged -= AppPreferences_EvtPreferencesChanged;
 
             Log.Debug(ScannerForm.Name + ", _syncObj.Status: " + _syncLock.Status + ", hashcode: " + _syncLock.GetHashCode());
@@ -621,9 +581,12 @@ namespace ACAT.Lib.Core.PanelManagement
             Log.Debug("Setting _syncLock.Status to CLOSING " + ScannerForm.Name);
             _syncLock.Status = SyncLock.StatusValues.Closing;
 
-            Log.Debug("Before animationmangoer.stop");
-            _animationManager.Stop();
-            Log.Debug("After animationmangoer.stop");
+            if (_animationManager != null)
+            {
+                Log.Debug("Before animationmangoer.stop");
+                _animationManager.Stop();
+                Log.Debug("After animationmangoer.stop");
+            }
 
             Log.Debug("Unsubscribe to EvtHeartbeat for " + ScannerForm.Name);
             WindowActivityMonitor.EvtWindowMonitorHeartbeat -= WindowActivityMonitor_EvtWindowMonitorHeartbeat;
@@ -635,7 +598,8 @@ namespace ACAT.Lib.Core.PanelManagement
 
             unsubscribeEvents();
 
-            unsubscribeTalkWindowManager();
+            Context.AppPanelManager.EvtCalibrationStartNotify -= AppPanelManager_EvtCalibrationStartNotify;
+            Context.AppPanelManager.EvtCalibrationEndNotify -= AppPanelManager_EvtCalibrationEndNotify;
 
             Log.Debug("Exiting FormClosing for " + ScannerForm.Name);
         }
@@ -644,9 +608,8 @@ namespace ACAT.Lib.Core.PanelManagement
         /// Call this function in the OnLoad event handler for the form.
         /// Initializates the controllers, sets scanner position
         /// </summary>
-        /// <param name="resetTalkWindowPosition"></param>
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
-        public void OnLoad(bool resetTalkWindowPosition = true)
+        public void OnLoad()
         {
             restoreAspectRatio();
 
@@ -655,12 +618,8 @@ namespace ACAT.Lib.Core.PanelManagement
             TextController.OnLoad();
 
             PositionSizeController.ScaleForm();
-            Windows.SetWindowPosition(ScannerForm, Context.AppWindowPosition);
 
-            if (resetTalkWindowPosition)
-            {
-                Context.AppTalkWindowManager.SetTalkWindowPosition(ScannerForm);
-            }
+            Windows.SetWindowPosition(ScannerForm, Context.AppWindowPosition);
 
             updateStatusBar();
 
@@ -693,24 +652,6 @@ namespace ACAT.Lib.Core.PanelManagement
                 AnimationManager.Pause();
 
                 setDisplayStateOnPause(mode);
-
-                if (!KeepTalkWindowActive &&
-                    Context.AppPanelManager.PreShowPanelDisplayMode != DisplayModeTypes.Popup)
-                {
-                    if (!Context.AppTalkWindowManager.IsPaused && Context.AppTalkWindowManager.IsTalkWindowActive)
-                    {
-                        ScannerForm.Invoke(new MethodInvoker(delegate
-                        {
-                            Context.AppTalkWindowManager.Pause();
-
-                            _talkWindowPaused = true;
-                        }));
-                    }
-                    else
-                    {
-                        _talkWindowPaused = false;
-                    }
-                }
             }
             catch (Exception ex)
             {
@@ -742,19 +683,6 @@ namespace ACAT.Lib.Core.PanelManagement
 
                 if (!DialogMode)
                 {
-                    if (!KeepTalkWindowActive)
-                    {
-                        Log.Debug(ScannerForm.Name + ", _talkWindowPaused : " + _talkWindowPaused);
-                        if (_talkWindowPaused)
-                        {
-                            Log.Debug(ScannerForm.Name + ", Resuming talk window: " + _talkWindowPaused);
-
-                            Context.AppTalkWindowManager.Resume();
-
-                            _talkWindowPaused = false;
-                        }
-                    }
-
                     PositionSizeController.SetPositionAndNotify();
                 }
             }
@@ -762,6 +690,16 @@ namespace ACAT.Lib.Core.PanelManagement
             {
                 Log.Debug(ex.ToString());
             }
+        }
+
+        public void PauseOverlapWatchdog()
+        {
+            _windowOverlapWatchdog?.Pause();
+        }
+
+        public void ResumeOverlapWatchdog()
+        {
+            _windowOverlapWatchdog?.Resume();
         }
 
         /// <summary>
@@ -811,12 +749,7 @@ namespace ACAT.Lib.Core.PanelManagement
                 Windows.SetVisible(ScannerForm, true);
                 Windows.SetTopMost(ScannerForm);
 
-                if (_scannerFaded)
-                {
-                    Windows.SetOpacity(ScannerForm, 1.0f);
-                    _windowOverlapWatchdog.Resume();
-                    _scannerFaded = false;
-                }
+                ResumeOverlapWatchdog();
             }
         }
 
@@ -895,9 +828,28 @@ namespace ACAT.Lib.Core.PanelManagement
             {
                 actuateVirtualKey(button.GetWidgetAttribute(), widget.Value);
             }
-            else
+            else if (!Context.AppAgentMgr.TextChangedNotifications.OnHold())
             {
-                actuateKey(button.GetWidgetAttribute(), widget.Value[0]);
+                if (widget.Value.Length > 1)
+                {
+                    CoreGlobals.Stopwatch1.Reset();
+                    CoreGlobals.Stopwatch1.Start();
+                    Context.AppAgentMgr.TextChangedNotifications.Hold();
+                    SendKeys.SendWait(widget.Value + " ");
+                    Context.AppAgentMgr.TextChangedNotifications.Release();
+                    CoreGlobals.Stopwatch1.Stop();
+                    Log.Debug("TimeElapsed 1: " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                }
+                else
+                {
+                    CoreGlobals.Stopwatch1.Reset();
+                    CoreGlobals.Stopwatch1.Start();
+
+                    actuateKey(button.GetWidgetAttribute(), widget.Value[0]);
+
+                    CoreGlobals.Stopwatch1.Stop();
+                    Log.Debug("TimeElapsed 2 : " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                }
             }
 
             ActuatedWidget = null;
@@ -938,11 +890,7 @@ namespace ACAT.Lib.Core.PanelManagement
             Log.Debug("VirtualKey: " + value);
 
             Keys key = TextController.MapVirtualKey(value);
-            if (key == Keys.Escape && Context.AppTalkWindowManager.IsTalkWindowVisible)
-            {
-                Context.AppTalkWindowManager.CloseTalkWindow();
-            }
-            else if (key == Keys.Escape && _dialogMode)
+            if (key == Keys.Escape && _dialogMode)
             {
                 ScannerForm.Close();
             }
@@ -1055,6 +1003,65 @@ namespace ACAT.Lib.Core.PanelManagement
         }
 
         /// <summary>
+        /// Event handler for end of calibration
+        /// </summary>
+        /// <param name="sender">event sender</param>
+        /// <param name="e">event args</param>
+        private void AppPanelManager_EvtCalibrationEndNotify(object sender, EventArgs e)
+        {
+            if ((Context.AppPanelManager.GetCurrentForm() as Form) != ScannerForm)
+            {
+                return;
+            }
+
+            Log.Debug("CALIBTEST ScannerCommon Calibration end notify for " + ScannerForm.Name);
+
+            _windowOverlapWatchdog.Resume();
+
+            if (_hideScannerOnCalibration)
+            {
+                Windows.SetVisible(ScannerForm, true);
+                _hideScannerOnCalibration = false;
+            }
+            else
+            {
+                Log.Debug("CALIBTEST ScannerCommon calling Onresume for " + ScannerForm.Name);
+                (ScannerForm as IScannerPanel).OnResume();
+            }
+        }
+
+        /// <summary>
+        /// Event handler for beginning of calibration
+        /// </summary>
+        /// <param name="args">event args</param>
+        private void AppPanelManager_EvtCalibrationStartNotify(ActuatorManagement.CalibrationNotifyEventArgs args)
+        {
+            Log.Debug("ScannerCommon: Calibration start notify for " + ScannerForm.Name);
+
+            if ((Context.AppPanelManager.GetCurrentForm() as Form) != ScannerForm)
+            {
+                Log.Debug("Form is not the current form. returning " + ScannerForm.Name + " CurrentForm is " + (Context.AppPanelManager.GetCurrentForm() as Form).Name);
+                return;
+            }
+
+            if (ScannerForm != null && Windows.GetVisible(ScannerForm))
+            {
+                _windowOverlapWatchdog.Pause();
+                if (args.HideScanner)
+                {
+                    Windows.SetVisible(ScannerForm, false);
+                    _hideScannerOnCalibration = true;
+                }
+                else
+                {
+                    Log.Debug("Calling onPause for " + ScannerForm.Name);
+
+                    (ScannerForm as IScannerPanel).OnPause();
+                }
+            }
+        }
+
+        /// <summary>
         /// Event handler for when the display settings change (connect to a monitor etc)
         /// </summary>
         /// <param name="sender">event sender</param>
@@ -1065,7 +1072,6 @@ namespace ACAT.Lib.Core.PanelManagement
             {
                 PositionSizeController.ScaleForm();
                 PositionSizeController.SetPositionAndNotify();
-                Context.AppTalkWindowManager.SetTalkWindowPosition(ScannerForm);
             }
         }
 
@@ -1088,37 +1094,6 @@ namespace ACAT.Lib.Core.PanelManagement
         private void AppPreferences_EvtPreferencesChanged()
         {
             HideScannerOnIdle = CoreGlobals.AppPreferences.HideScannerOnIdle;
-        }
-
-        /// <summary>
-        /// Event handler called when the talk window is cleared
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void AppTalkWindowManager_EvtTalkWindowCleared(object sender, EventArgs e)
-        {
-            TextController.OnTextCleared();
-            KeyStateTracker.ClearAll();
-        }
-
-        /// <summary>
-        /// Event handler for the event raised when the talk window is closed
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void AppTalkWindowManager_EvtTalkWindowClosed(object sender, EventArgs e)
-        {
-            _talkWindowPaused = false;
-        }
-
-        /// <summary>
-        /// Handler for the event raised when the talk window is created
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void AppTalkWindowManager_EvtTalkWindowCreated(object sender, TalkWindowCreatedEventArgs e)
-        {
-            Context.AppTalkWindowManager.SetTalkWindowPosition(ScannerForm);
         }
 
         /// <summary>
@@ -1188,25 +1163,15 @@ namespace ACAT.Lib.Core.PanelManagement
                 ScannerForm.Height += 1;
                 ScannerForm.Height -= 1;
 
+                if (_scannerPanel.PanelClass == "Alphabet")
+                {
+                    Log.Debug("form_visibleChanged " + ScannerForm.Width);
+                }
                 notifyScannerShow();
             }
             else
             {
                 Context.AppAgentMgr.EvtScannerHitTest -= AppAgent_EvtScannerHitTest;
-            }
-        }
-
-        /// <summary>
-        /// Handler for the event raised when the translucent
-        /// glass is displayed
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void Glass_EvtShowGlass(object sender, EventArgs e)
-        {
-            if (!_syncLock.IsClosing() && Windows.GetVisible(ScannerForm))
-            {
-                Windows.SetTopMost(ScannerForm);
             }
         }
 
@@ -1448,6 +1413,10 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="e">event args</param>
         private void ScannerForm_SizeChanged(object sender, EventArgs e)
         {
+            if (_scannerPanel.PanelClass == "Alphabet")
+            {
+                Log.Debug("ScannerForm_SizeChanged " + ScannerForm.Width);
+            }
             notifyScannerShow();
         }
 
@@ -1468,19 +1437,8 @@ namespace ACAT.Lib.Core.PanelManagement
                     HideScanner();
                     break;
 
-                case PauseDisplayMode.FadeScanner:
-                    FadeScanner();
-                    break;
-
-                case PauseDisplayMode.Default:
-                    if (Context.AppPanelManager.PreShowPanelDisplayMode == DisplayModeTypes.Popup)
-                    {
-                        FadeScanner();
-                    }
-                    else
-                    {
-                        HideScanner();
-                    }
+                default:
+                    PauseOverlapWatchdog();
                     break;
             }
         }
@@ -1504,7 +1462,7 @@ namespace ACAT.Lib.Core.PanelManagement
             {
                 foreach (Widget widget in _rootWidget.WidgetLayout.ContextualWidgets)
                 {
-                    ////Log.Debug("Widget: " + widget.Name + ", subclass: " + widget.SubClass);
+                    //Log.Debug("Widget: " + widget.Name + ", subclass: " + widget.SubClass);
                     if (widget.IsCommand)
                     {
                         var arg = new CommandEnabledArg(monitorInfo, widget.Command, widget);
@@ -1524,20 +1482,10 @@ namespace ACAT.Lib.Core.PanelManagement
                             break;
                         }
 
-                        ////Log.Debug("widget.Enabled set to : " + widget.Enabled + " for feature " + widget.SubClass);
+                        Log.Debug("widget.Enabled set to : " + widget.Enabled + " for feature " + widget.SubClass);
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Subscribe to events from the talk window manager
-        /// </summary>
-        private void subscribeTalkWindowManager()
-        {
-            Context.AppTalkWindowManager.EvtTalkWindowCreated += AppTalkWindowManager_EvtTalkWindowCreated;
-            Context.AppTalkWindowManager.EvtTalkWindowCleared += AppTalkWindowManager_EvtTalkWindowCleared;
-            Context.AppTalkWindowManager.EvtTalkWindowClosed += AppTalkWindowManager_EvtTalkWindowClosed;
         }
 
         /// <summary>
@@ -1599,22 +1547,13 @@ namespace ACAT.Lib.Core.PanelManagement
             ScannerForm.VisibleChanged -= form_VisibleChanged;
             ScannerForm.SizeChanged -= ScannerForm_SizeChanged;
 
-            Context.AppTalkWindowManager.EvtTalkWindowCreated -= AppTalkWindowManager_EvtTalkWindowCreated;
-
-            AnimationManager.Interpreter.EvtCloseNotify -= Interpreter_EvtCloseNotify;
-            AnimationManager.Interpreter.EvtRun -= Interpreter_EvtRun;
+            if (AnimationManager != null)
+            {
+                AnimationManager.Interpreter.EvtCloseNotify -= Interpreter_EvtCloseNotify;
+                AnimationManager.Interpreter.EvtRun -= Interpreter_EvtRun;
+            }
 
             KeyStateTracker.EvtKeyStateChanged -= KeyStateTracker_EvtKeyStateChanged;
-        }
-
-        /// <summary>
-        /// Unsubscribes fom events
-        /// </summary>
-        private void unsubscribeTalkWindowManager()
-        {
-            Context.AppTalkWindowManager.EvtTalkWindowCreated -= AppTalkWindowManager_EvtTalkWindowCreated;
-            Context.AppTalkWindowManager.EvtTalkWindowCleared -= AppTalkWindowManager_EvtTalkWindowCleared;
-            Context.AppTalkWindowManager.EvtTalkWindowClosed -= AppTalkWindowManager_EvtTalkWindowClosed;
         }
 
         /// <summary>
@@ -1635,7 +1574,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
-        private void widget_EvtActuated(object sender, WidgetEventArgs e)
+        private void widget_EvtActuated(object sender, WidgetActuatedEventArgs e)
         {
             if (PreviewMode || _isPaused)
             {
@@ -1645,7 +1584,7 @@ namespace ACAT.Lib.Core.PanelManagement
             var widget = e.SourceWidget;
 
             bool handled = false;
-            _scannerPanel.OnWidgetActuated(e.SourceWidget, ref handled);
+            _scannerPanel.OnWidgetActuated(e, ref handled);
 
             if (!handled && widget is IButtonWidget)
             {
@@ -1685,7 +1624,15 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             if (form == ScannerForm)
             {
-                Context.AppWindowPosition = position;
+                if (PositionSizeController.AutoPosition)
+                {
+                    Context.AppWindowPosition = position;
+                }
+
+                if (_scannerPanel.PanelClass == "Alphabet")
+                {
+                    Log.Debug("WindowPosChanged" + ScannerForm.Width);
+                }
                 notifyScannerShow();
             }
         }

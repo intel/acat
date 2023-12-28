@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="DialogUtils.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.AgentManagement;
@@ -74,8 +61,8 @@ namespace ACAT.Lib.Extension
                 if (form is IExtension)
                 {
                     var invoker = (form as IExtension).GetInvoker();
-                    bool? yesNo = invoker != null ? invoker.GetBoolValue("Choice").Value : false;
-                    retVal = (yesNo != null) ? yesNo.Value : false;
+                    bool? yesNo = invoker != null && invoker.GetBoolValue("Choice").Value;
+                    retVal = (yesNo != null) && yesNo.Value;
                 }
             }
 
@@ -144,32 +131,38 @@ namespace ACAT.Lib.Extension
         /// Displays the About box
         /// </summary>
         /// <param name="parentForm">parent form</param>
-        /// <param name="logo">filename of the logo to display</param>
         /// <param name="appName">Name of the assembly</param>
         /// <param name="versionInfo">version information</param>
         /// <param name="companyInfo">company information</param>
         /// <param name="copyrightInfo">copyright info</param>
         /// <param name="attributions">3rd party attributions</param>
-        public static void ShowAboutBox(Form parentForm, String logo, String appName,
+        public static void ShowAboutBox(Form parentForm, String appName,
                                         String versionInfo, String companyInfo, String copyrightInfo,
                                         IEnumerable<String> attributions)
         {
+            if (parentForm is IPanel)
+            {
+                (parentForm as IPanel).OnPause();
+            }
             parentForm.Invoke(new MethodInvoker(delegate
             {
-                Form dlg = Context.AppPanelManager.CreatePanel("AboutBoxForm");
-                if (dlg is IExtension)
+                var dlg = new AboutBoxForm("About ACAT")
                 {
-                    ExtensionInvoker invoker = (dlg as IExtension).GetInvoker();
-                    invoker.SetValue("Logo", logo);
-                    invoker.SetValue("AppName", appName);
-                    invoker.SetValue("VersionInfo", versionInfo);
-                    invoker.SetValue("CompanyInfo", companyInfo);
-                    invoker.SetValue("CopyrightInfo", copyrightInfo);
-                    invoker.SetValue("Attributions", attributions);
-                    invoker.SetValue("ShowButton", true);
-                    Context.AppPanelManager.ShowDialog(dlg as IPanel);
-                }
+                    AppName = appName,
+                    VersionInfo = versionInfo,
+                    UrlInfo = companyInfo,
+                    CopyrightInfo = copyrightInfo,
+                    Attributions = attributions
+                };
+                dlg.ShowDialog(parentForm);
+
+                dlg.Dispose();
             }));
+
+            if (parentForm is IPanel)
+            {
+                (parentForm as IPanel).OnResume();
+            }
         }
 
         /// <summary>
@@ -272,7 +265,6 @@ namespace ACAT.Lib.Extension
         {
             try
             {
-                //Context.AppTalkWindowManager.CloseTalkWindow();
                 Form taskSwitcherForm = Context.AppPanelManager.CreatePanel("TaskSwitcherForm");
                 if (taskSwitcherForm != null)
                 {
@@ -292,37 +284,6 @@ namespace ACAT.Lib.Extension
         }
 
         /// <summary>
-        /// Shows the TimedDialog window
-        /// </summary>
-        /// <param name="parentForm">parent form</param>
-        /// <param name="message">message to display</param>
-        public static void ShowTimedDialog(Form parentForm, String message)
-        {
-            ShowTimedDialog(parentForm, "Message", message);
-        }
-
-        /// <summary>
-        /// Shows the TimedDialog window
-        /// </summary>
-        /// <param name="parentForm">parent form</param>
-        /// <param name="title">title of the dialog</param>
-        /// <param name="message">message to display</param>
-        public static void ShowTimedDialog(Form parentForm, String title, String message)
-        {
-            if (parentForm != null)
-            {
-                parentForm.Invoke(new MethodInvoker(delegate
-                {
-                    showTimedDialog(title, message);
-                }));
-            }
-            else
-            {
-                showTimedDialog(title, message);
-            }
-        }
-
-        /// <summary>
         /// Displays a toast message centered in the parent form.
         /// </summary>
         /// <param name="message">message to display</param>
@@ -334,6 +295,7 @@ namespace ACAT.Lib.Extension
 
             toast.StartPosition = FormStartPosition.CenterParent;
             toast.ShowDialog(panel);
+            toast.Dispose();
         }
 
         /// <summary>
@@ -389,24 +351,6 @@ namespace ACAT.Lib.Extension
         }
 
         /// <summary>
-        /// Shows the TimedDialog window
-        /// </summary>
-        /// <param name="title">title of the dialog</param>
-        /// <param name="message">message to display</param>
-        private static void showTimedDialog(String title, String message)
-        {
-            Form dlg = Context.AppPanelManager.CreatePanel("TimedDialogForm");
-            if (dlg is IExtension)
-            {
-                ExtensionInvoker invoker = (dlg as IExtension).GetInvoker();
-                invoker.SetValue("MessageText", message);
-                invoker.SetValue("TitleText", title);
-                invoker.SetValue("ShowButton", true);
-                Context.AppPanelManager.ShowDialog(dlg as IPanel);
-            }
-        }
-
-        /// <summary>
         /// Creates the yes/no scanner form and shows it as a dialog.
         /// Returns the result of the user choice
         /// </summary>
@@ -425,8 +369,8 @@ namespace ACAT.Lib.Extension
                 if (form is IExtension)
                 {
                     var invoker = (form as IExtension).GetInvoker();
-                    bool? yesNo = invoker != null ? invoker.GetBoolValue("Choice").Value : false;
-                    retVal = (yesNo != null) ? yesNo.Value : false;
+                    bool? yesNo = invoker != null && invoker.GetBoolValue("Choice").Value;
+                    retVal = (yesNo != null) && yesNo.Value;
                 }
             }
 

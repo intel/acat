@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="Pronunciations.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.UserManagement;
@@ -137,8 +124,6 @@ namespace ACAT.Lib.Core.TTSManagement
                 return false;
             }
 
-            Log.Debug("pronunciationsFile=" + filePath);
-
             var doc = new XmlDocument();
 
             try
@@ -146,16 +131,14 @@ namespace ACAT.Lib.Core.TTSManagement
                 _pronunciationList.Clear();
 
                 Log.Debug("Found pronuncation file " + filePath);
+
                 doc.Load(filePath);
 
                 var xmlNodes = doc.SelectNodes("/ACAT/Pronunciations/Pronunciation");
 
-                Log.Debug("xmlNodes count=" + xmlNodes.Count);
-
                 // load all the pronunciations
                 foreach (XmlNode node in xmlNodes)
                 {
-                    Log.Debug("adding node:" + node);
                     createAndAddPronunciation(node);
                 }
             }
@@ -191,7 +174,7 @@ namespace ACAT.Lib.Core.TTSManagement
         /// <returns>pronunciation object, null if not found</returns>
         public Pronunciation Lookup(String word)
         {
-            var w = word.ToLower();
+            var w = word.ToLower().Trim();
             return Exists(w) ? _pronunciationList[w] : null;
         }
 
@@ -234,6 +217,8 @@ namespace ACAT.Lib.Core.TTSManagement
             var strWord = new StringBuilder();
             Pronunciation pronunciation;
 
+            Log.Debug("inputString: " + inputString);
+
             foreach (char ch in inputString)
             {
                 if (Char.IsLetterOrDigit(ch) || ch == '\'' || ch == '’')
@@ -243,6 +228,7 @@ namespace ACAT.Lib.Core.TTSManagement
                 else
                 {
                     word = strWord.ToString();
+
                     strOutput.Append(((pronunciation = Lookup(word)) != null) ? pronunciation.AltPronunciation : word);
 
                     strWord = new StringBuilder();

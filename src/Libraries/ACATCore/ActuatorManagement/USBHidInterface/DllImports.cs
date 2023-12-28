@@ -1,25 +1,16 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="DLLImports.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// DLLImports.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// pInvoke functions into Windows USB and HID functions
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace ACAT.Lib.Core.ActuatorManagement
@@ -41,11 +32,12 @@ namespace ACAT.Lib.Core.ActuatorManagement
         public const uint GENERIC_WRITE = 0x40000000;
         public const int INVALID_HANDLE_VALUE = -1;
         public const int OPEN_EXISTING = 3;
+
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool CancelSynchronousIo(IntPtr threadHandle);
 
         [DllImport("kernel32.dll")]
-        static public extern int CloseHandle(int hObject);
+        public static extern int CloseHandle(int hObject);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern int CreateFile(
@@ -111,9 +103,9 @@ namespace ACAT.Lib.Core.ActuatorManagement
         public static extern int SetupDiEnumDeviceInterfaces(
             int DeviceInfoSet,
             int DeviceInfoData,
-            ref  GUID lpHidGuid,
+            ref GUID lpHidGuid,
             int MemberIndex,
-            ref  SP_DEVICE_INTERFACE_DATA lpDeviceInterfaceData);
+            ref SP_DEVICE_INTERFACE_DATA lpDeviceInterfaceData);
 
         [DllImport("setupapi.dll", SetLastError = true)]
         public static extern int SetupDiGetClassDevs(
@@ -141,7 +133,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             IntPtr bPtr);
 
         [DllImport("kernel32.dll")]
-        static public extern int WriteFile(int hFile, ref byte lpBuffer,
+        public static extern int WriteFile(int hFile, ref byte lpBuffer,
                         int nNumberOfBytesToWrite, ref int lpNumberOfBytesWritten, int lpOverlapped);
 
         [StructLayout(LayoutKind.Sequential)]
@@ -150,6 +142,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             public int Data1;
             public UInt16 Data2;
             public UInt16 Data3;
+
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
             public byte[] data4;
         }
@@ -162,8 +155,10 @@ namespace ACAT.Lib.Core.ActuatorManagement
             public UInt16 InputReportByteLength;
             public UInt16 OutputReportByteLength;
             public UInt16 FeatureReportByteLength;
+
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 17)]
             public UInt16[] Reserved;
+
             public UInt16 NumLinkCollectionNodes;
             public UInt16 NumInputButtonCaps;
             public UInt16 NumbInputValueCaps;
@@ -180,6 +175,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         public struct PSP_DEVICE_INTERFACE_DETAIL_DATA
         {
             public int cbSize;
+
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
             public string DevicePath;
         }

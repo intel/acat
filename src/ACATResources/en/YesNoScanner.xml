@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" ?>
 <!DOCTYPE ACAT [
   <!ENTITY usebold "false">
-  <!ENTITY buttonFontName "Arial">
+  <!ENTITY buttonFontName "Montserrat SemiBold">
 ]>
 
 <ACAT>
   <WidgetAttributes>
-    <WidgetAttribute name="Prompt" label=" " value=" " fontsize="18" fontname="&buttonFontName;" mouseClickActuate="false" bold="&usebold;" />
+    <WidgetAttribute name="Prompt" label=" " value=" " fontsize="18" fontname="&buttonFontName;" mouseClickActuate="false" bold="&usebold;" roundedCorners="false"/>
     <WidgetAttribute name="ItemText1" label=" " value=" " fontsize="18" fontname="&buttonFontName;"  mouseClickActuate="false" bold="&usebold;" />
-    <WidgetAttribute name="ItemText2" label="No" value="@CmdNo" fontsize="18" fontname="&buttonFontName;" bold="&usebold;" />
+    <WidgetAttribute name="ItemText2" label="No" value="@CmdNo" fontsize="18" fontname="&buttonFontName;" bold="&usebold;" extendedAttributes="gazeTiming=longer;"/>
     <WidgetAttribute name="ItemText3" label=" " value=" " fontsize="18" fontname="&buttonFontName;"  mouseClickActuate="false" bold="&usebold;" />
-    <WidgetAttribute name="ItemText4" label="Yes" value="@CmdYes" fontsize="18" fontname="&buttonFontName;" bold="&usebold;" />
+    <WidgetAttribute name="ItemText4" label="Yes" value="@CmdYes" fontsize="18" fontname="&buttonFontName;" bold="&usebold;" extendedAttributes="gazeTiming=longer;"/>
   </WidgetAttributes>
 
   <Layout>
     <Widget class="RowWidget" name="PromptRow">
-      <Widget class="ContextMenuText" name="Prompt" colorScheme="ContextMenuTitle"/>
+      <Widget class="LabelWidget" name="Prompt"   />
     </Widget>
     
     <Widget class="ScannerButton" name="ItemText1"/>

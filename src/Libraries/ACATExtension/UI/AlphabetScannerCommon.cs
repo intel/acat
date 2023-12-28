@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="AlphabetScannerCommon.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.ACATResources;
@@ -45,6 +32,11 @@ namespace ACAT.Lib.Extension
     public class AlphabetScannerCommon : IDisposable
     {
         /// <summary>
+        /// Widget that represents the alphabet scanner
+        /// </summary>
+        public Widget _rootWidget;
+
+        /// <summary>
         /// The parent alphabet scanner form
         /// </summary>
         private readonly Form _form;
@@ -66,14 +58,14 @@ namespace ACAT.Lib.Extension
         private bool _disposed;
 
         /// <summary>
-        /// Widget that represents the alphabet scanner
+        /// Widget that holds the prediction letter list
         /// </summary>
-        private Widget _rootWidget;
+        private LetterListWidget _letterListWidgetWidget;
 
         /// <summary>
         /// The ScannerCommon object for the alphabet scanner
         /// </summary>
-        private ScannerCommon _scannerCommon;
+        private readonly ScannerCommon _scannerCommon;
 
         /// <summary>
         /// The scanner helper object for the alphabet scanner
@@ -127,6 +119,11 @@ namespace ACAT.Lib.Extension
         public CmdDispatcher Dispatcher { get; private set; }
 
         /// <summary>
+        /// Gets or sets how many predicted letters to display
+        /// </summary>
+        public int LetterPredictionLetterCountMax { get; set; }
+
+        /// <summary>
         /// Gets the PanelClass of the scanner. Call this in
         /// the PanelClass getter in the Alphabet scanner.
         /// </summary>
@@ -135,7 +132,8 @@ namespace ACAT.Lib.Extension
         /// <summary>
         /// Gets the PanelCommon object
         /// </summary>
-        public IPanelCommon PanelCommon { get { return _scannerCommon; } }
+        public IPanelCommon PanelCommon
+        { get { return _scannerCommon; } }
 
         /// <summary>
         /// Gets the current setting of preview mode.
@@ -305,6 +303,7 @@ namespace ACAT.Lib.Extension
 
             _currentWordWidget = (CurrentWordWidget)_rootWidget.Finder.FindChild(typeof(CurrentWordWidget));
             _wordListWidgetWidget = (WordListWidget)_rootWidget.Finder.FindChild(typeof(WordListWidget));
+            _letterListWidgetWidget = (LetterListWidget)_rootWidget.Finder.FindChild(typeof(LetterListWidget));
             KeyStateTracker.EvtKeyStateChanged += KeyStateTracker_EvtKeyStateChanged;
 
             if (!_scannerCommon.PreviewMode)
@@ -319,6 +318,10 @@ namespace ACAT.Lib.Extension
             if (WordPredictionWordCountMax <= 0 && _wordListWidgetWidget != null)
             {
                 WordPredictionWordCountMax = _wordListWidgetWidget.Children.Count();
+            }
+            if (LetterPredictionLetterCountMax <= 0 && _letterListWidgetWidget != null)
+            {
+                LetterPredictionLetterCountMax = _letterListWidgetWidget.Children.Count();
             }
 
             refreshWordPredictionsAndSetCurrentWord();
@@ -346,11 +349,6 @@ namespace ACAT.Lib.Extension
             _scannerCommon.OnResume();
 
             refreshWordPredictionsAndSetCurrentWord();
-
-            if (!_scannerCommon.DialogMode)
-            {
-                _scannerCommon.KeepTalkWindowActive = false;
-            }
         }
 
         /// <summary>
@@ -359,14 +357,42 @@ namespace ACAT.Lib.Extension
         /// </summary>
         /// <param name="widget">widget that was actuated</param>
         /// <param name="handled">set to true if handled</param>
-        public virtual void OnWidgetActuated(Widget widget, ref bool handled)
+        public virtual void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
         {
-            if (widget is WordListItemWidget)
+            if (e.SourceWidget is WordListItemWidget)
             {
+                CoreGlobals.Stopwatch1.Reset();
+                CoreGlobals.Stopwatch1.Start();
+
                 _form.Invoke(new MethodInvoker(delegate
                 {
-                    autoComplete(widget as WordListItemWidget);
+                    autoComplete(e.SourceWidget as WordListItemWidget);
                 }));
+
+                CoreGlobals.Stopwatch1.Stop();
+
+                Log.Debug("TimeElapsed 3 : " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+
+                handled = true;
+            }
+            else
+            {
+                handled = false;
+            }
+            if (e.SourceWidget is LetterListItemWidget)
+            {
+                CoreGlobals.Stopwatch1.Reset();
+                CoreGlobals.Stopwatch1.Start();
+
+                _form.Invoke(new MethodInvoker(delegate
+                {
+                    autoComplete(e.SourceWidget as LetterListItemWidget);
+                }));
+
+                CoreGlobals.Stopwatch1.Stop();
+
+                Log.Debug("TimeElapsed 3 : " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+
                 handled = true;
             }
             else
@@ -502,11 +528,11 @@ namespace ACAT.Lib.Extension
             Log.Debug("returning");
         }
 
-        private void autoComplete(WordListItemWidget wordListWidget)
+        private void autoComplete(WordListItemWidget wordListItemWidget)
         {
-            Log.Debug("wordListItemName : " + wordListWidget.Name + ", value: " + wordListWidget.Value);
+            Log.Debug("wordListItemName : " + wordListItemWidget.Name + ", value: " + wordListItemWidget.Value);
 
-            var wordSelected = wordListWidget.Value.Trim();
+            var wordSelected = wordListItemWidget.Value.Trim();
 
             if (!String.IsNullOrEmpty(wordSelected))
             {
@@ -514,49 +540,22 @@ namespace ACAT.Lib.Extension
                 KeyStateTracker.ClearCtrl();
 
                 _scannerCommon.AutoCompleteWord(wordSelected);
-                AuditLog.Audit(new AuditEventAutoComplete(wordListWidget.Name));
+                AuditLog.Audit(new AuditEventAutoComplete(wordListItemWidget.Name));
             }
         }
 
-        /// <summary>
-        /// Checks if the word is in the list
-        /// </summary>
-        /// <param name="list">list of words</param>
-        /// <param name="count">how many words?</param>
-        /// <param name="word">word to check</param>
-        /// <returns>true if it does</returns>
-        private bool contains(IEnumerable<String> list, int count, String word)
+        private void autoComplete(LetterListItemWidget letterListItemWidget)
         {
-            for (int ii = 0; ii < count && ii < list.Count(); ii++)
-            {
-                if (String.Compare(word, list.ElementAt(ii), true) == 0)
-                {
-                    return true;
-                }
-            }
+            Log.Debug("leterListItemName : " + letterListItemWidget.Name + ", value: " + letterListItemWidget.Value);
 
-            return false;
-        }
+            var letterSelected = letterListItemWidget.Value.Trim();
 
-        /// <summary>
-        /// Formats the prediction word with the index
-        /// </summary>
-        /// <param name="index">index of the word in the list</param>
-        /// <param name="word">the word itself</param>
-        /// <returns>formatted word</returns>
-        private String formatWord(int index, String word)
-        {
-            string text;
-            if (EvtFormatPreditionWord != null)
+            if (!String.IsNullOrEmpty(letterSelected))
             {
-                text = EvtFormatPreditionWord(index, word);
+                KeyStateTracker.ClearAlt();
+                KeyStateTracker.ClearCtrl();
+                _scannerCommon.TextController.HandleAlphaNumericChar(null, letterListItemWidget.Value[0]);
             }
-            else
-            {
-                text = (index % 10) + ": " + word;
-            }
-
-            return text;
         }
 
         /// <summary>
@@ -590,11 +589,19 @@ namespace ACAT.Lib.Extension
         {
             // we try it twice in case there is an AgentContext exception
             // the first time around
+
+            CoreGlobals.Stopwatch3.Reset();
+            CoreGlobals.Stopwatch3.Start();
+
             if (!tryRefreshWordPredictionsAndSetCurrentWord())
             {
                 Log.Debug("AgentContextException.  Retrying refreshing word prediction");
                 tryRefreshWordPredictionsAndSetCurrentWord();
             }
+
+            CoreGlobals.Stopwatch3.Stop();
+
+            Log.Debug("TimeElapsed for tryRefreshWordPredictionsAndSetCurrentWord: " + CoreGlobals.Stopwatch3.ElapsedMilliseconds);
         }
 
         /// <summary>
@@ -628,7 +635,7 @@ namespace ACAT.Lib.Extension
         {
             bool retVal = true;
 
-            if (_wordListWidgetWidget == null)
+            if (_wordListWidgetWidget == null && _letterListWidgetWidget == null)
             {
                 return true;
             }
@@ -659,17 +666,13 @@ namespace ACAT.Lib.Extension
                         _currentWordWidget.SetCurrentWord(String.Empty);
                     }
 
-                    _wordListWidgetWidget.ClearEntries();
+                    if (_wordListWidgetWidget != null)
+                    {
+                        _wordListWidgetWidget.ClearEntries();
+                    }
 
-                    if (Common.AppPreferences.SeedWordPredictionOnNewSentence)
-                    {
-                        nwords = " ";
-                        wordAtCaret = String.Empty;
-                    }
-                    else
-                    {
-                        return retVal;
-                    }
+                    nwords = " ";
+                    wordAtCaret = String.Empty;
                 }
 
                 Log.Debug("wordatcaret length: " + wordAtCaret.Length);
@@ -685,69 +688,9 @@ namespace ACAT.Lib.Extension
                     wordAtCaret = wordAtCaret.Substring(1);
                 }
 
-                var predictedWordList = Context.AppWordPredictionManager.ActiveWordPredictor.Predict(nwords, wordAtCaret);
-
-                Log.Debug("predictedWordList count: " + predictedWordList.Count());
-
-                // check if the current word is a possessive word. If not, we need to create
-                // a possessive version of the word and add it as the last word
-                // in the predicton list.
-                var possessiveWord = String.Empty;
-
-                if (!String.IsNullOrEmpty(wordAtCaret) &&
-                    R.IsCurrentCultureEnglish() &&
-                    Context.AppAgentMgr.CurrentEditingMode == EditingMode.Edit &&
-                    !wordAtCaret.EndsWith("'s", StringComparison.InvariantCultureIgnoreCase) &&
-                    (charAtCaret == '\0' || charAtCaret == 0x0D || charAtCaret == 0x0A ||
-                    TextUtils.IsPunctuationOrWhiteSpace(charAtCaret) ||
-                    TextUtils.IsTerminatorOrWhiteSpace(charAtCaret)))
+                if (_wordListWidgetWidget != null)
                 {
-                    possessiveWord = wordAtCaret + "'s";
-                }
-
-                int ii = 0;
-
-                foreach (var word in predictedWordList)
-                {
-                    if (ii >= predictedWordList.Count() || ii >= WordPredictionWordCountMax)
-                    {
-                        break;
-                    }
-
-                    Log.Debug("setting Word for " + ii + ":  " + word);
-
-                    var text = formatWord(ii + 1, word);
-
-                    _wordListWidgetWidget.Children.ElementAt(ii).SetText(text);
-                    _wordListWidgetWidget.Children.ElementAt(ii).Value = word;
-                    ii++;
-                }
-
-                // if there is a possessive form of the word, add
-                // it to the list.
-                if (!String.IsNullOrEmpty(possessiveWord) &&
-                    !contains(predictedWordList, ii, possessiveWord))
-                {
-                    if (ii == 0)
-                    {
-                        ii++;
-                    }
-
-                    int index = ii - 1;
-
-                    var text = formatWord(index + 1, possessiveWord);
-
-                    _wordListWidgetWidget.Children.ElementAt(index).SetText(text);
-                    _wordListWidgetWidget.Children.ElementAt(index).Value = possessiveWord;
-                }
-
-                // if we had less than max words, clear out the remaining word list items
-                _wordListWidgetWidget.ClearEntries(ii);
-
-                if (_currentWordWidget != null)
-                {
-                    Log.Debug("Calling SetCurrentWord with : [" + wordAtCaret + "]");
-                    _currentWordWidget.SetCurrentWord(wordAtCaret);
+                    _wordListWidgetWidget.ClearEntries();
                 }
             }
             catch (Exception ex)
@@ -826,14 +769,11 @@ namespace ACAT.Lib.Extension
                     case "CmdMouseScanner":
                     case "CmdNumberScanner":
                     case "CmdFunctionKeyScanner":
-                        // don't close the talk window
-                        _alphabetScannerCommon._scannerCommon.KeepTalkWindowActive = true;
                         base.Execute(ref handled);
                         break;
 
                     case "CmdWindowPosSizeMenu":
                         {
-                            Context.AppTalkWindowManager.CloseTalkWindow();
                             var panel = Context.AppPanelManager.CreatePanel("WindowPosSizeMenu", R.GetString("Window")) as IPanel;
                             if (panel != null)
                             {

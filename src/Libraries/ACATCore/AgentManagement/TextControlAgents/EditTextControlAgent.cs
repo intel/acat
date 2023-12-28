@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="EditTextControlAgent.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Utility;
@@ -149,6 +136,16 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
             }
         }
 
+        public override void ScrollToCaret()
+        {
+            User32Interop.SendMessage(_handleTextWindow, (int)User32Interop.EM_SCROLLCARET, 0, 0);
+        }
+
+        public override void SelectText(int start, int end)
+        {
+            User32Interop.SendMessage(_handleTextWindow, (int)User32Interop.EM_SETSEL, start, end);
+        }
+
         /// <summary>
         /// Sets the caret position in the output window
         /// </summary>
@@ -206,7 +203,13 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
         /// <param name="e">event args</param>
         private void onTextChanged(object sender, AutomationEventArgs e)
         {
+            CoreGlobals.Stopwatch2.Reset();
+            CoreGlobals.Stopwatch2.Start();
+
             triggerTextChanged(this);
+            CoreGlobals.Stopwatch2.Stop();
+
+            Log.Debug("onTextChanged() TimeElapsed: " + CoreGlobals.Stopwatch2.ElapsedMilliseconds);
         }
 
         /// <summary>

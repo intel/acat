@@ -1,23 +1,11 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="SpellCheckers.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.Utility;
 using System;
@@ -65,7 +53,10 @@ namespace ACAT.Lib.Core.SpellCheckManagement
         /// Has this object been disposed
         /// </summary>
         private bool _disposed;
-
+        /// <summary>
+        /// If one of the dll found has an error with the certificate
+        /// </summary>
+        private static volatile bool _DLLError = false;
         /// <summary>
         /// Initializes an instance of the class
         /// </summary>
@@ -220,6 +211,8 @@ namespace ACAT.Lib.Core.SpellCheckManagement
                 var extensionDir = dir + "\\" + SpellCheckManager.SpellCheckersRootName;
                 loadSpellCheckerTypesIntoCache(extensionDir, null, recursive);
             }
+            if (_DLLError)
+                return false;
 
             var languageDirs = ResourceUtils.GetInstalledLanugageDirectories();
             foreach (string dir in languageDirs)
@@ -276,13 +269,20 @@ namespace ACAT.Lib.Core.SpellCheckManagement
         /// <returns>true on success</returns>
         public bool SetPreferred(String language, Guid guid)
         {
-            bool retVal = _preferredSpellCheckers.SetAsDefault(language, guid);
-            if (retVal)
+            try
             {
-                retVal = _preferredSpellCheckers.Save();
-            }
+                bool retVal = _preferredSpellCheckers.SetAsDefault(language, guid);
+                if (retVal)
+                {
+                    retVal = _preferredSpellCheckers.Save();
+                }
 
-            return retVal;
+                return retVal;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -354,18 +354,45 @@ namespace ACAT.Lib.Core.SpellCheckManagement
         {
             try
             {
-                var wordPredictorAssembly = Assembly.LoadFile(dllName);
-                foreach (var type in wordPredictorAssembly.GetTypes())
+
+                var retVal = VerifyDigitalSignature.ValidateCertificate(dllName);
+                if (retVal && !_DLLError)
                 {
-                    if (typeof(ISpellChecker).IsAssignableFrom(type))
+                    try
                     {
-                        var attr = DescriptorAttribute.GetDescriptor(type);
-                        if (attr != null && attr.Id != Guid.Empty)
+                        VerifyDigitalSignature.Verify(dllName);
+                    }
+                    catch (Exception ex)
+                    {
+                        ConfirmBoxSingleOption confirmBoxSingleOption = new ConfirmBoxSingleOption
                         {
-                            Add(attr.Id, _dirWalkCurrentCulture, type);
+                            Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n Status Error: ERSC",
+                            DecisionPrompt = "ok",
+                            LabelFont = 10
+                        };
+                        confirmBoxSingleOption.BringToFront();
+                        confirmBoxSingleOption.TopMost = true;
+                        confirmBoxSingleOption.ShowDialog();
+                        confirmBoxSingleOption.Dispose();
+                        _DLLError = true;
+                    }
+                }
+                if (!_DLLError)
+                {
+                    var wordPredictorAssembly = Assembly.LoadFile(dllName);
+                    foreach (var type in wordPredictorAssembly.GetTypes())
+                    {
+                        if (typeof(ISpellChecker).IsAssignableFrom(type))
+                        {
+                            var attr = DescriptorAttribute.GetDescriptor(type);
+                            if (attr != null && attr.Id != Guid.Empty)
+                            {
+                                Add(attr.Id, _dirWalkCurrentCulture, type);
+                            }
                         }
                     }
                 }
+
             }
             catch (Exception ex)
             {

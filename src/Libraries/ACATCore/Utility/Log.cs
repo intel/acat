@@ -1,22 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////
-// <copyright file="Log.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
+
 
 #define DbgView
 
@@ -38,6 +26,8 @@ namespace ACAT.Lib.Core.Utility
     /// </summary>
     public class Log
     {
+        private static DateTime? prevMessageTimeStamp = null;
+
         /// <summary>
         // set  this to true if you don't want to trigger the assertions in this file
         /// </summary>
@@ -51,7 +41,7 @@ namespace ACAT.Lib.Core.Utility
         /// <summary>
         /// Used for synchronization
         /// </summary>
-        private static Mutex mutex;
+        //private static Mutex mutex;
 
         /// <summary>
         /// Where log files are stored
@@ -61,7 +51,7 @@ namespace ACAT.Lib.Core.Utility
         /// <summary>
         /// Name of the log file
         /// </summary>
-        private const string LogFileName = "ACATLog.txt";
+        private static string LogFileName = "ACATLog.txt";
 
         /// <summary>
         /// Full path to the log file in which the debug messages are stored
@@ -92,8 +82,24 @@ namespace ACAT.Lib.Core.Utility
                 logFileFolder = SmartPath.ApplicationPath;
             }
 
+            if (!String.IsNullOrEmpty(GlobalPreferences.LogFileName))
+            {
+                LogFileName = GlobalPreferences.LogFileName;
+            }
+            else if (!String.IsNullOrEmpty(CoreGlobals.AppId))
+            {
+                LogFileName = CoreGlobals.AppId + "_Log.txt";
+            }
+            else
+            {
+                LogFileName = "ACATLog.txt";
+            }
+
+
             logFileFullPath = Path.Combine(logFileFolder, LogFileName);
 
+            logFileFullPath = Path.ChangeExtension(logFileFullPath, null) + CoreGlobals.LogFileSuffix + ".txt";
+            /*
             mutex = new Mutex(false, MutexName);
             try
             {
@@ -114,6 +120,7 @@ namespace ACAT.Lib.Core.Utility
             {
                 mutex.ReleaseMutex();
             }
+            */
         } // end method
 
         /// <summary>
@@ -121,10 +128,27 @@ namespace ACAT.Lib.Core.Utility
         /// </summary>
         public static void SetupListeners()
         {
+            if (CoreGlobals.AppPreferences.EnableLogs)
+            {
+                CoreGlobals.AppPreferences.DebugLogMessagesToFile = true;
+                CoreGlobals.AppPreferences.DebugMessagesEnable = true;
+                CoreGlobals.AppPreferences.AuditLogEnable = true;
+            }
+            else
+            {
+                CoreGlobals.AppPreferences.DebugLogMessagesToFile = false;
+                CoreGlobals.AppPreferences.DebugMessagesEnable = false;
+                CoreGlobals.AppPreferences.AuditLogEnable = false;
+
+                //TODO:
+                // cleanup logs folder if the flag is turned off
+            }
+
 #if !DEBUG
             if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugMessagesEnable)
             {
 #endif
+
             if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugLogMessagesToFile)
             {
                 var listener = new TextWriterTraceListener(logFileFullPath, "ACATDebugListener");
@@ -162,6 +186,7 @@ namespace ACAT.Lib.Core.Utility
         /// <summary>
         /// Logs a debug message
         /// <param name="message">Message to log.</param>
+        [DebuggerStepThrough]
         public static void Debug(string message)
         {
 #if !DEBUG
@@ -366,10 +391,31 @@ namespace ACAT.Lib.Core.Utility
         /// <param name="prefix">DEBUG, INFO, etc</param>
         /// <param name="stackFrame">Stackframe of the calling method</param>
         /// <returns></returns>
+        [DebuggerStepThrough]
         private static String formatClassNameAndMethod(String prefix, StackFrame stackFrame)
         {
+            DateTime nowUtc = DateTime.UtcNow;
+            DateTime now = DateTime.Now;
+
+            string strNow = now.ToString("h:mm:ss tt");
+
+            if (prevMessageTimeStamp == null)
+            {
+                prevMessageTimeStamp = nowUtc;
+            }
+
+            var elapsed = nowUtc - Process.GetCurrentProcess().StartTime.ToUniversalTime();
+            
             MethodBase methodBase = stackFrame.GetMethod();
-            return prefix + ":[" + stackFrame.GetMethod().DeclaringType.Namespace + "][" +
+
+            var elapsedSincePrev = nowUtc - prevMessageTimeStamp;
+
+
+            var prefix2 = "[" + strNow + ", " + ((int) (elapsed.TotalMilliseconds / 1000)) + "." + (int)(elapsed.TotalMilliseconds % 1000) + ", " + elapsedSincePrev?.Seconds + "." + elapsedSincePrev?.Milliseconds + " " + prefix + "] ";
+
+            prevMessageTimeStamp = nowUtc;
+
+            return prefix2 + ":[" + stackFrame.GetMethod().DeclaringType.Namespace + "][" +
                         stackFrame.GetMethod().DeclaringType.Name + "." + methodBase.Name + "] ";
         }
     }

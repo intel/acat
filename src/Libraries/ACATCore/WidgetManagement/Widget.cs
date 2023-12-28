@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="Widget.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Interpreter;
@@ -24,6 +11,7 @@ using ACAT.Lib.Core.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -44,6 +32,8 @@ namespace ACAT.Lib.Core.WidgetManagement
     /// <param name="widget">source widget</param>
     /// <param name="handled">did the subscirber handle it?</param>
     public delegate void HighlightOnDelegate(Widget widget, out bool handled);
+
+    public delegate void WidgetActuatedEventDelegate(object sender, WidgetActuatedEventArgs e);
 
     /// <summary>
     /// Used for widget notification events (eg actuation, child added)
@@ -164,6 +154,11 @@ namespace ACAT.Lib.Core.WidgetManagement
             {
                 widgetName = string.Empty;
             }
+
+            Left = new List<Widget>();
+            Right = new List<Widget>();
+            Above = new List<Widget>();
+            Below = new List<Widget>();
         }
 
         /// <summary>
@@ -179,7 +174,7 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// <summary>
         /// Event raised which this widget is actuated
         /// </summary>
-        public event WidgetEventDelegate EvtActuated;
+        public event WidgetActuatedEventDelegate EvtActuated;
 
         /// <summary>
         /// Event raised when a child is added to
@@ -231,6 +226,11 @@ namespace ACAT.Lib.Core.WidgetManagement
         }
 
         /// <summary>
+        /// Widget above
+        /// </summary>
+        public List<Widget> Above { get; internal set; }
+
+        /// <summary>
         /// Should this widget be added for animations?
         /// </summary>
         public bool AddForAnimation { get; protected set; }
@@ -277,6 +277,11 @@ namespace ACAT.Lib.Core.WidgetManagement
         }
 
         /// <summary>
+        /// Widget below
+        /// </summary>
+        public List<Widget> Below { get; internal set; }
+
+        /// <summary>
         /// Returns an array of children
         /// </summary>
         public IEnumerable<Widget> Children
@@ -308,6 +313,11 @@ namespace ACAT.Lib.Core.WidgetManagement
         public bool DefaultEnabled { get; set; }
 
         /// <summary>
+        /// Is this the default home button for manual scanning?
+        /// </summary>
+        public bool DefaultHome { get; internal set; }
+
+        /// <summary>
         /// Gets or sets the colorscheme for the widget when it
         /// is disabled
         /// </summary>
@@ -323,7 +333,7 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// its descendents.  If the widgets and its descendents
         /// highlight is on, it also turns them off
         /// </summary>
-        public bool Enabled
+        public virtual bool Enabled
         {
             get
             {
@@ -486,6 +496,27 @@ namespace ACAT.Lib.Core.WidgetManagement
         }
 
         /// <summary>
+        /// Gets highlight selected background color.  Uses layout
+        /// color scheme if this widget doesn't have a specific one
+        /// </summary>
+        public Color HighlightSelectedBackgroundColor2
+        {
+            get
+            {
+                if (Enabled)
+                {
+                    return (Colors != null) ?
+                            Colors.HighlightSelectedBackground2 :
+                            WidgetLayout.Colors.HighlightSelectedBackground2;
+                }
+
+                return (DisabledButtonColors != null) ?
+                    DisabledButtonColors.HighlightSelectedBackground2 :
+                    WidgetLayout.DisabledButtonColors.HighlightSelectedBackground2;
+            }
+        }
+
+        /// <summary>
         /// Gets the background image to be used in the selected state
         /// </summary>
         public Image HighlightSelectedBackgroundImage
@@ -523,6 +554,27 @@ namespace ACAT.Lib.Core.WidgetManagement
                 return (DisabledButtonColors != null) ?
                         DisabledButtonColors.HighlightSelectedForeground :
                         WidgetLayout.DisabledButtonColors.HighlightSelectedForeground;
+            }
+        }
+
+        /// <summary>
+        /// Returns highlight selected foreground color.  Uses layout
+        /// color scheme if this widget doesn't have a specific one
+        /// </summary>
+        public Color HighlightSelectedForegroundColor2
+        {
+            get
+            {
+                if (Enabled)
+                {
+                    return (Colors != null) ?
+                            Colors.HighlightSelectedForeground2 :
+                            WidgetLayout.Colors.HighlightSelectedForeground2;
+                }
+
+                return (DisabledButtonColors != null) ?
+                        DisabledButtonColors.HighlightSelectedForeground2 :
+                        WidgetLayout.DisabledButtonColors.HighlightSelectedForeground2;
             }
         }
 
@@ -565,6 +617,11 @@ namespace ACAT.Lib.Core.WidgetManagement
         public XmlNode LayoutXmlNode { get; set; }
 
         /// <summary>
+        /// Widget to the left
+        /// </summary>
+        public List<Widget> Left { get; internal set; }
+
+        /// <summary>
         /// Gets the name of the widget.
         /// </summary>
         public String Name
@@ -583,9 +640,7 @@ namespace ACAT.Lib.Core.WidgetManagement
                 if (this is IButtonWidget)
                 {
                     IButtonWidget button = (IButtonWidget)this;
-                    return (button.GetWidgetAttribute() != null) ?
-                            button.GetWidgetAttribute().OnMouseClick :
-                            null;
+                    return button.GetWidgetAttribute()?.OnMouseClick;
                 }
 
                 return null;
@@ -602,6 +657,49 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// Gets the parent of this widget (null if no parent)
         /// </summary>
         public Widget Parent { get; internal set; }
+
+        /// <summary>
+        /// Widget to the right
+        /// </summary>
+        public List<Widget> Right { get; internal set; }
+
+        /// <summary>
+        /// Returns background color for a widget that is selected (toggleState = true).
+        /// Uses layoutcolor scheme if this widget doesn't have a specific one
+        /// </summary>
+        public Color SelectedBackgroundColor
+        {
+            get
+            {
+                if (Enabled)
+                {
+                    return System.Drawing.ColorTranslator.FromHtml("#FFB100");
+                }
+
+                return (DisabledButtonColors != null) ?
+                        DisabledButtonColors.Foreground :
+                        WidgetLayout.DisabledButtonColors.Foreground;
+            }
+        }
+
+        /// <summary>
+        /// Returns foreground color for a widget that is selected (toggleState = true).
+        /// Uses layoutcolor scheme if this widget doesn't have a specific one
+        /// </summary>
+        public Color SelectedForegroundColor
+        {
+            get
+            {
+                if (Enabled)
+                {
+                    return Color.White;
+                }
+
+                return (DisabledButtonColors != null) ?
+                        DisabledButtonColors.Foreground :
+                        WidgetLayout.DisabledButtonColors.Foreground;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the widget subclass.
@@ -650,22 +748,25 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// Widget was actuated.  Trigger an event to inform
         /// the subscribers about this
         /// </summary>
-        public virtual void Actuate()
+        public virtual void Actuate(bool repeatActuate = false)
         {
-            Log.Debug(widgetName);
+            Log.Debug("LARAM " + widgetName + "!!!!!!!!!!!!!!!!" + " repeatActuate =  " + repeatActuate);
 
             if (!Enabled)
             {
-                Log.Debug(widgetName + " is not enabled.  Will not actuate");
-            }
-            else if (EvtActuated != null)
-            {
-                Log.Debug("EvtActuated is not null.  Calling actuate for " + widgetName);
-                EvtActuated(this, new WidgetEventArgs(this));
+                Log.Debug("LARAM " + widgetName + " is not enabled.  Will not actuate");
             }
             else
             {
-                Log.Debug("EvtActuated is null for " + widgetName);
+                if (EvtActuated != null)
+                {
+                    Log.Debug("LARAM EvtActuated is not null.  Calling actuate for " + widgetName);
+                    EvtActuated(this, new WidgetActuatedEventArgs(this, repeatActuate));
+                }
+                else
+                {
+                    Log.Debug("LARAM EvtActuated is null for " + widgetName);
+                }
             }
         }
 
@@ -693,10 +794,7 @@ namespace ACAT.Lib.Core.WidgetManagement
                 _contextualWidgets.Add(widget);
             }
 
-            if (EvtChildAdded != null)
-            {
-                EvtChildAdded(this, new WidgetEventArgs(widget));
-            }
+            EvtChildAdded?.Invoke(this, new WidgetEventArgs(widget));
         }
 
         /// <summary>
@@ -880,6 +978,9 @@ namespace ACAT.Lib.Core.WidgetManagement
         public virtual void Load(XmlNode node)
         {
             SubClass = XmlUtils.GetXMLAttrString(node, "subclass");
+
+            DefaultHome = XmlUtils.GetXMLAttrBool(node, "defaultHome", false);
+
             String colorScheme = XmlUtils.GetXMLAttrString(node, "colorScheme");
             if (!String.IsNullOrEmpty(colorScheme))
             {
@@ -908,6 +1009,19 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// </summary>
         public virtual void PostLoad()
         {
+        }
+
+        public void Remove(Widget child)
+        {
+            if (_children.Contains(child))
+            {
+                _children.Remove(child);
+
+                if (_contextualWidgets.Contains(child))
+                {
+                    _contextualWidgets.Remove(child);
+                }
+            }
         }
 
         /// <summary>
@@ -944,6 +1058,29 @@ namespace ACAT.Lib.Core.WidgetManagement
                 _layout.RootWidget.UIControl.Invoke(new MethodInvoker(delegate
                 {
                     selectedHighlightOn();
+                }));
+            }
+            catch
+            {
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Uses color scheme to highlight the selected widget and
+        /// all its descendent children.  So this is a recursive function.  For
+        /// eg, if a box is to be highlighted, this also highlights all
+        /// the rows and buttons
+        /// </summary>
+        /// <returns>true</returns>
+        public bool SelectedHighlightOn2()
+        {
+            try
+            {
+                _layout.RootWidget.UIControl.Invoke(new MethodInvoker(delegate
+                {
+                    selectedHighlightOn2();
                 }));
             }
             catch
@@ -1054,9 +1191,7 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// <returns></returns>
         protected virtual bool highlightOff()
         {
-            bool handled;
-
-            notifyEvtHighlightOff(out handled);
+            notifyEvtHighlightOff(out bool handled);
             IsHighlightOn = false;
 
             if (!handled)
@@ -1087,10 +1222,7 @@ namespace ACAT.Lib.Core.WidgetManagement
         {
             bool handled = false;
 
-            if (EvtHighlightOn != null)
-            {
-                EvtHighlightOn(this, out handled);
-            }
+            EvtHighlightOn?.Invoke(this, out handled);
 
             IsHighlightOn = true;
 
@@ -1180,10 +1312,7 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// </summary>
         protected void notifyValueChanged()
         {
-            if (EvtValueChanged != null)
-            {
-                EvtValueChanged(this, new WidgetEventArgs(this));
-            }
+            EvtValueChanged?.Invoke(this, new WidgetEventArgs(this));
         }
 
         /// <summary>
@@ -1226,12 +1355,37 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// <returns></returns>
         protected virtual bool selectedHighlightOn()
         {
+            Debug.WriteLine("!!!!!" + "selectedHighlightOn");
             IsSelectedHighlightOn = true;
 
             if (UIControl != null)
             {
                 UIControl.BackColor = HighlightSelectedBackgroundColor;
                 UIControl.ForeColor = HighlightSelectedForegroundColor;
+            }
+
+            foreach (Widget widget in _children)
+            {
+                widget.selectedHighlightOn();
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Turn selected highlight on for this widget and recursively for
+        /// all its children.  Override this to handle highlighting
+        /// in the derived class
+        /// </summary>
+        /// <returns></returns>
+        protected virtual bool selectedHighlightOn2()
+        {
+            IsSelectedHighlightOn = true;
+
+            if (UIControl != null)
+            {
+                UIControl.BackColor = HighlightSelectedBackgroundColor2;
+                UIControl.ForeColor = HighlightSelectedForegroundColor2;
             }
 
             foreach (Widget widget in _children)

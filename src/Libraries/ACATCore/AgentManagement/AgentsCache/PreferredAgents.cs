@@ -1,21 +1,9 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="PreferredAgents.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Utility;
@@ -35,14 +23,14 @@ namespace ACAT.Lib.Core.AgentManagement
     /// such as notepad could have multiple agents which are loaded
     /// from different folders. This config file tells ACAT which of
     /// those to use.
-    /// 
+    ///
     /// Eg of PreferredAgents.xml file
     /// <ACAT>
     ///   <PreferredAgents>
     ///     <PreferredAgent agentId="EC2EA972-934B-4EE0-A909-3EA0140AC738"/>
     ///     <PreferredAgent agentId="E9B930AD-CB35-478C-BDA6-D7FC43349019"/>
     ///   </PreferredAgents>
-     /// </ACAT>
+    /// </ACAT>
 
     /// </summary>
     internal class PreferredAgents : IDisposable
@@ -76,15 +64,15 @@ namespace ACAT.Lib.Core.AgentManagement
 
         /// <summary>
         /// Looks up the list of preferred list and returns the
-        /// agent corresponding to the name specified
+        /// agent corresponding to the category specified
         /// </summary>
-        /// <param agentName>Name of the agent</param>
+        /// <param agentName>Category of the agent</param>
         /// <returns></returns>
-        public IApplicationAgent GetPreferredAgentByName(String agentName)
+        public IApplicationAgent GetPreferredAgentByCategory(String category)
         {
             foreach (IApplicationAgent agent in _preferredAgents.Values)
             {
-                if (String.Compare(agentName, agent.Name, true) == 0)
+                if (String.Compare(category, agent.Descriptor.Category, true) == 0)
                 {
                     return agent;
                 }
@@ -95,15 +83,15 @@ namespace ACAT.Lib.Core.AgentManagement
 
         /// <summary>
         /// Looks up the list of preferred list and returns the
-        /// agent corresponding to the category specified
+        /// agent corresponding to the name specified
         /// </summary>
-        /// <param agentName>Category of the agent</param>
+        /// <param agentName>Name of the agent</param>
         /// <returns></returns>
-        public IApplicationAgent GetPreferredAgentByCategory(String category)
+        public IApplicationAgent GetPreferredAgentByName(String agentName)
         {
             foreach (IApplicationAgent agent in _preferredAgents.Values)
             {
-                if (String.Compare(category, agent.Descriptor.Category, true) == 0)
+                if (String.Compare(agentName, agent.Name, true) == 0)
                 {
                     return agent;
                 }

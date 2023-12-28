@@ -1,21 +1,14 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="ActuatorSetting.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// ActuatorSettings.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Holds settings for an actuator and for all the switches that belong to
+// the actuator
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
@@ -32,6 +25,11 @@ namespace ACAT.Lib.Core.ActuatorManagement
     public class ActuatorSetting
     {
         /// <summary>
+        /// Description for the actuator
+        /// </summary>
+        public String Description;
+
+        /// <summary>
         /// Is the actuator enabled or not?
         /// </summary>
         public bool Enabled;
@@ -40,6 +38,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// ID of the actuator
         /// </summary>
         public Guid Id;
+
+        public String ImageFileName;
 
         /// <summary>
         /// Name of the actuator
@@ -64,18 +64,20 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
         /// <summary>
         /// Initializes an instance of the class for an actuator
-        /// 
+        ///
         /// </summary>
         /// <param name="name">name of the actuator</param>
         /// <param name="id">actuator id</param>
         /// <param name="enabled">is the actuator enabled?</param>
         /// <param name="switchSettings">settings for switches</param>
-        public ActuatorSetting(String name, Guid id, bool enabled = true,
+        public ActuatorSetting(String name, Guid id, String description = "", String imageFileName = "", bool enabled = true,
             IEnumerable<SwitchSetting> switchSettings = null)
         {
             Name = name;
             Id = id;
             Enabled = enabled;
+            Description = description;
+            ImageFileName = imageFileName;
             SwitchSettings = (switchSettings != null) ? switchSettings.ToList() : new List<SwitchSetting>();
         }
 

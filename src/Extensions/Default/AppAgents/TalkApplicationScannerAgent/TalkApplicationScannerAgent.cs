@@ -1,21 +1,13 @@
-﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="TalkApplicationScannerAgent.cs" company="Intel Corporation">
+﻿///////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// TalkApplicationScannerAgent.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Application agent for the ACAT application.
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.AgentManagement;
@@ -29,10 +21,6 @@ using System.Windows.Forms;
 
 namespace ACAT.Extensions.Default.AppAgents.TalkApplicationScannerAgent
 {
-    /// <summary>
-    /// Application agent for the ACAT Talk application and for
-    /// Talk Window with Embedded Scanner
-    /// </summary>
     [DescriptorAttribute("AAF2B6C4-2F31-403D-BF45-7C35FA8B4FFC",
                             "Talk Application Agent",
                             "Manages interactions with the Talk Window with Embedded Scanner")]
@@ -94,7 +82,7 @@ namespace ACAT.Extensions.Default.AppAgents.TalkApplicationScannerAgent
 
             return controls.SelectMany(ctrl => GetAll(ctrl, type))
                                       .Concat(controls)
-                                      .Where(c => c.GetType() == type);
+                                      .Where(c => (c.GetType().IsSubclassOf(type) || c.GetType().IsAssignableFrom(type)));
         }
 
         /// <summary>
@@ -179,7 +167,8 @@ namespace ACAT.Extensions.Default.AppAgents.TalkApplicationScannerAgent
 
             bool handled = false;
 
-            _textInterface = new EditTextControlAgent(handle, automationElement, ref handled);
+            //_textInterface = new EditTextControlAgent(handle, automationElement, ref handled);
+            _textInterface = new TalkApplicationTextControlAgent(textBoxControl, handle, automationElement, ref handled);
             _textInterface.EvtTextChanged += _textInterface_EvtTextChanged;
             setTextInterface(_textInterface);
 

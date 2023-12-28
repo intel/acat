@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="AgentManager.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.ActuatorManagement;
@@ -216,7 +203,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <summary>
         /// To prevent reentrancy
         /// </summary>
-        private volatile bool _inActivateAppAgent;
+        private long _inActivateAppAgent = 0;
 
         /// <summary>
         /// The keyboard actuator object
@@ -314,6 +301,7 @@ namespace ACAT.Lib.Core.AgentManagement
         public EditingMode CurrentEditingMode
         {
             get { return _currentEditingMode; }
+            set { _currentEditingMode = value; }
         }
 
         /// <summary>
@@ -822,6 +810,8 @@ namespace ACAT.Lib.Core.AgentManagement
             };
 
             form.ShowDialog();
+
+            form.Dispose();
         }
 
         /// <summary>
@@ -858,6 +848,8 @@ namespace ACAT.Lib.Core.AgentManagement
             };
 
             form.ShowDialog();
+
+            form.Dispose();
         }
 
         [DllImport("kernel32.dll")]
@@ -962,7 +954,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <param name="monitorInfo">Foreground window/process info</param>
         private void activateAppAgent(WindowActivityMonitorInfo monitorInfo)
         {
-            if (_inActivateAppAgent)
+            if (inActivateAppAgent)
             {
                 Log.Debug("Already inside. returning");
                 return;
@@ -971,7 +963,7 @@ namespace ACAT.Lib.Core.AgentManagement
             Log.Debug("Before syncsetagent");
             lock (_syncActivateAgent)
             {
-                _inActivateAppAgent = true;
+                inActivateAppAgent = true;
                 Log.Debug("After syncsetagent");
                 try
                 {
@@ -1092,7 +1084,10 @@ namespace ACAT.Lib.Core.AgentManagement
                         agent = _genericAppAgent;
                         try
                         {
-                            agent.OnFocusChanged(monitorInfo, ref handled);
+                            if (agent != null)
+                            {
+                                agent.OnFocusChanged(monitorInfo, ref handled);
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -1118,7 +1113,7 @@ namespace ACAT.Lib.Core.AgentManagement
                 }
                 finally
                 {
-                    _inActivateAppAgent = false;
+                    inActivateAppAgent = false;
                 }
             }
 
@@ -1642,6 +1637,18 @@ namespace ACAT.Lib.Core.AgentManagement
         private void WindowActivityMonitor_EvtFocusChanged(WindowActivityMonitorInfo monitorInfo)
         {
             onFocusChanged(monitorInfo);
+        }
+
+        private bool inActivateAppAgent
+        {
+            get
+            {
+                return Interlocked.Read(ref _inActivateAppAgent) == 1;
+            }
+            set
+            {
+                Interlocked.Exchange(ref _inActivateAppAgent, Convert.ToInt64(value));
+            }
         }
     }
 }

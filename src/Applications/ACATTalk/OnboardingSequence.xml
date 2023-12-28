@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OnboardingSequence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <OnboardingSequenceItems>
+    <OnboardingSequenceItem>
+      <Id>6d8da00e-5035-4b7f-a646-ed9f840a13bf</Id>
+    </OnboardingSequenceItem>
+    <OnboardingSequenceItem>
+      <Id>301dbc87-c98c-491a-a2ee-d17863eab831</Id>
+    </OnboardingSequenceItem>
+    <OnboardingSequenceItem>
+      <Id>65b95de3-bf5a-4ae8-b44d-f5e7950ab8d6</Id>
+    </OnboardingSequenceItem>
+    <OnboardingSequenceItem>
+      <Id>e03754b3-85af-4f43-855e-47e20f7400c2</Id>
+    </OnboardingSequenceItem>
+  </OnboardingSequenceItems>
+</OnboardingSequence>

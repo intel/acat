@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="ColorScheme.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Utility;
@@ -59,9 +46,19 @@ namespace ACAT.Lib.Core.ThemeManagement
         private readonly Color _defaultSelectedBackground = Color.Black;
 
         /// <summary>
+        /// Default bg color to use for selected element if not defined in the config file
+        /// </summary>
+        private readonly Color _defaultSelectedBackground2 = Color.Red;
+
+        /// <summary>
         /// Default fg color to use for selected element if not defined in the config file
         /// </summary>
         private readonly Color _defaultSelectedForeground = Color.White;
+
+        /// <summary>
+        /// Default fg color to use for selected element if not defined in the config file
+        /// </summary>
+        private readonly Color _defaultSelectedForeground2 = Color.White;
 
         /// <summary>
         /// Background color of an unselected, unhighlighed element
@@ -99,6 +96,11 @@ namespace ACAT.Lib.Core.ThemeManagement
         private Color _highlightSelectedBackground;
 
         /// <summary>
+        /// Background color of a selected element
+        /// </summary>
+        private Color _highlightSelectedBackground2;
+
+        /// <summary>
         /// Background image to use in the selected state
         /// </summary>
         private Image _highlightSelectedBackgroundImage;
@@ -107,6 +109,11 @@ namespace ACAT.Lib.Core.ThemeManagement
         /// Foreground color of a selected element
         /// </summary>
         private Color _highlightSelectedForeground;
+
+        /// <summary>
+        /// Foreground color of a selected element
+        /// </summary>
+        private Color _highlightSelectedForeground2;
 
         /// <summary>
         /// Foreground color of a highlighed element
@@ -127,6 +134,8 @@ namespace ACAT.Lib.Core.ThemeManagement
             _hightlightForeground = _defaultHighlightForeground;
             _highlightSelectedBackground = _defaultSelectedBackground;
             _highlightSelectedForeground = _defaultSelectedForeground;
+            _highlightSelectedBackground2 = _defaultSelectedBackground2;
+            _highlightSelectedForeground2 = _defaultSelectedForeground2;
             _backgroundImage = null;
             _highlightBackgroundImage = null;
             _highlightSelectedBackgroundImage = null;
@@ -245,6 +254,22 @@ namespace ACAT.Lib.Core.ThemeManagement
         }
 
         /// <summary>
+        /// Gets or sets bg color for  the selected state
+        /// </summary>
+        public Color HighlightSelectedBackground2
+        {
+            get
+            {
+                return _highlightSelectedBackground2;
+            }
+
+            set
+            {
+                _highlightSelectedBackground2 = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets bg image for the selected state
         /// </summary>
         public Image HighlightSelectedBackgroundImage
@@ -273,6 +298,22 @@ namespace ACAT.Lib.Core.ThemeManagement
             set
             {
                 _highlightSelectedForeground = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets  fg color of selected element
+        /// </summary>
+        public Color HighlightSelectedForeground2
+        {
+            get
+            {
+                return _highlightSelectedForeground2;
+            }
+
+            set
+            {
+                _highlightSelectedForeground2 = value;
             }
         }
 

@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="WindowActivityMonitor.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Audit;
@@ -95,6 +82,10 @@ namespace ACAT.Lib.Core.Utility
         /// Raised for heartbeat subscribers
         /// </summary>
         public static event ActivityMonitorDelegate EvtWindowMonitorHeartbeat;
+
+        private static volatile bool _ispaused = false;
+
+        private static Form _form;
 
         /// <summary>
         /// Disposes resources
@@ -262,10 +253,20 @@ namespace ACAT.Lib.Core.Utility
         /// </summary>
         public static void Pause()
         {
+            _ispaused = true;
+
+            if (_form == null)
+            {
+                return;
+            }
+
             if (_timer != null)
             {
-                _timer.Stop();
-                _currentHwnd = IntPtr.Zero;
+                _form.Invoke(new MethodInvoker(delegate
+                {
+                    _timer.Stop();
+                    _currentHwnd = IntPtr.Zero;
+                }));
             }
         }
 
@@ -274,12 +275,23 @@ namespace ACAT.Lib.Core.Utility
         /// </summary>
         public static void Resume()
         {
+            _ispaused = false;
+
+            if (_form == null)
+            {
+                return;
+            }
+
             try
             {
-                if (_timer != null)
+                _form.Invoke(new MethodInvoker(delegate
                 {
-                    _timer.Start();
-                }
+
+                    if (_timer != null)
+                    {
+                        _timer.Start();
+                    }
+                }));
             }
             catch (Exception ex)
             {
@@ -293,11 +305,27 @@ namespace ACAT.Lib.Core.Utility
         /// <returns>true</returns>
         public static bool Start()
         {
+            if (_form == null)
+            {
+                _form = new Form();
+                _form.Visible = false;
+                _form.Show();
+                _form.Visible = false;
+            }
+
+
+
             if (_timer == null)
             {
-                _timer = new Timer { Interval = Interval };
-                _timer.Tick += _timer_Tick;
-                _timer.Start();
+                _form.Invoke(new MethodInvoker(delegate
+                {
+                    _timer = new Timer { Interval = Interval };
+                    _timer.Tick += _timer_Tick;
+                    _timer.Start();
+                }));
+
+
+                
             }
 
             return true;
@@ -311,11 +339,19 @@ namespace ACAT.Lib.Core.Utility
         /// <param name="e">event arg</param>
         private static void _timer_Tick(object sender, EventArgs e)
         {
-            // prevent re-entrancy
-            if (!tryEnter(_timerSync))
+            if(_ispaused)
             {
                 return;
             }
+
+            // prevent re-entrancy
+            if (!tryEnter(_timerSync))
+            {
+                Log.Debug("TryEnter failed!! Returning");
+                return;
+            }
+
+            Log.Debug("tryenter sucess!");
 
             getActiveWindow();
 
@@ -347,6 +383,11 @@ namespace ACAT.Lib.Core.Utility
         private static void getActiveWindow(bool flag = false)
         {
             AutomationElement focusedElement = null;
+
+            if (_ispaused)
+            {
+                return;
+            }
 
             try
             {
@@ -428,7 +469,7 @@ namespace ACAT.Lib.Core.Utility
                             AuditLog.Audit(new AuditEventActiveWindowChange(process.ProcessName, title));
                         }
 
-                        if (EvtFocusChanged != null)
+                        if (EvtFocusChanged != null && !_ispaused)
                         {
                             EvtFocusChanged(monitorInfo);
                         }
@@ -442,6 +483,11 @@ namespace ACAT.Lib.Core.Utility
                 }
 
                 _currentHwnd = foregroundWindow;
+
+                if (_heartbeatToggle && CoreGlobals.AppPreferences.DisableSystemSleepMode)
+                {
+                    Kernel32Interop.SetThreadExecutionState(Kernel32Interop.EXECUTION_STATE.ES_SYSTEM_REQUIRED | Kernel32Interop.EXECUTION_STATE.ES_DISPLAY_REQUIRED);
+                }
 
                 // raise the heartbeat event
                 if (EvtWindowMonitorHeartbeat != null && focusedElement != null && _heartbeatToggle)

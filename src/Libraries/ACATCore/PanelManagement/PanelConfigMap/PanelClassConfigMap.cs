@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="PanelClassConfigMap.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
@@ -52,6 +39,10 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public String Description;
 
+        public String DisplayNameLong;
+
+        public String DisplayNameShort;
+
         /// <summary>
         /// A name for this configuration
         /// </summary>
@@ -62,6 +53,8 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public List<PanelClassConfigMapEntry> PanelClassConfigMapEntries = new List<PanelClassConfigMapEntry>();
 
+        public String ScreenshotFileName;
+
         /// <summary>
         /// Initializes an instance of the class
         /// </summary>
@@ -70,6 +63,9 @@ namespace ACAT.Lib.Core.PanelManagement
             Name = String.Empty;
             Description = String.Empty;
             Default = false;
+            ScreenshotFileName = String.Empty;
+            DisplayNameShort = String.Empty;
+            DisplayNameLong = String.Empty;
         }
 
         /// <summary>
@@ -78,11 +74,13 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="name">name of the configuration</param>
         /// <param name="description">description</param>
         /// <param name="isDefault">is this the default?</param>
-        public PanelClassConfigMap(String name, String description, bool isDefault = false)
+        public PanelClassConfigMap(String name, String description, String displayNameShort = "", String displayNameLong = "", bool isDefault = false)
         {
             Name = name;
             Description = description;
             Default = isDefault;
+            DisplayNameShort = displayNameShort;
+            DisplayNameLong = displayNameLong;
         }
 
         /// <summary>

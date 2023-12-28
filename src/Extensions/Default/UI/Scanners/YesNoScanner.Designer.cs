@@ -30,12 +30,12 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.Row1 = new System.Windows.Forms.TableLayoutPanel();
-            this.ItemText1 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemText2 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemText3 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemText4 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemText1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ItemText2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ItemText3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ItemText4 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.PromptRow = new System.Windows.Forms.TableLayoutPanel();
-            this.Prompt = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
+            this.Prompt = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.Row1.SuspendLayout();
             this.PromptRow.SuspendLayout();
@@ -56,7 +56,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(400, 169);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(558, 223);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // Row1
@@ -71,39 +71,51 @@
             this.Row1.Controls.Add(this.ItemText3, 2, 0);
             this.Row1.Controls.Add(this.ItemText4, 3, 0);
             this.Row1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Row1.Location = new System.Drawing.Point(0, 112);
+            this.Row1.Location = new System.Drawing.Point(0, 148);
             this.Row1.Margin = new System.Windows.Forms.Padding(0);
             this.Row1.Name = "Row1";
             this.Row1.RowCount = 1;
             this.Row1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.Row1.Size = new System.Drawing.Size(400, 57);
+            this.Row1.Size = new System.Drawing.Size(558, 75);
             this.Row1.TabIndex = 3;
+            this.Row1.Paint += new System.Windows.Forms.PaintEventHandler(this.Row1_Paint);
             // 
             // ItemText1
             // 
-            this.ItemText1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ItemText1.BorderColor = System.Drawing.Color.DimGray;
+            this.ItemText1.BorderRadiusBottomLeft = 0;
+            this.ItemText1.BorderRadiusBottomRight = 0;
+            this.ItemText1.BorderRadiusTopLeft = 0;
+            this.ItemText1.BorderRadiusTopRight = 0;
+            this.ItemText1.BorderWidth = 0F;
             this.ItemText1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ItemText1.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
+            this.ItemText1.FlatAppearance.BorderSize = 0;
             this.ItemText1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ItemText1.Location = new System.Drawing.Point(4, 4);
-            this.ItemText1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ItemText1.Location = new System.Drawing.Point(0, 0);
+            this.ItemText1.Margin = new System.Windows.Forms.Padding(0);
             this.ItemText1.Name = "ItemText1";
-            this.ItemText1.Size = new System.Drawing.Size(92, 49);
+            this.ItemText1.Size = new System.Drawing.Size(139, 75);
             this.ItemText1.TabIndex = 0;
             this.ItemText1.Text = ".";
             this.ItemText1.UseMnemonic = false;
             this.ItemText1.UseVisualStyleBackColor = true;
+            this.ItemText1.Click += new System.EventHandler(this.scannerRoundedButtonControl1_Click);
             // 
             // ItemText2
             // 
-            this.ItemText2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ItemText2.BorderColor = System.Drawing.Color.DimGray;
+            this.ItemText2.BorderRadiusBottomLeft = 0;
+            this.ItemText2.BorderRadiusBottomRight = 0;
+            this.ItemText2.BorderRadiusTopLeft = 0;
+            this.ItemText2.BorderRadiusTopRight = 0;
+            this.ItemText2.BorderWidth = 0F;
             this.ItemText2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ItemText2.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
+            this.ItemText2.FlatAppearance.BorderSize = 0;
             this.ItemText2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ItemText2.Location = new System.Drawing.Point(104, 4);
-            this.ItemText2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ItemText2.Location = new System.Drawing.Point(139, 0);
+            this.ItemText2.Margin = new System.Windows.Forms.Padding(0);
             this.ItemText2.Name = "ItemText2";
-            this.ItemText2.Size = new System.Drawing.Size(92, 49);
+            this.ItemText2.Size = new System.Drawing.Size(139, 75);
             this.ItemText2.TabIndex = 1;
             this.ItemText2.Text = ".";
             this.ItemText2.UseMnemonic = false;
@@ -111,14 +123,19 @@
             // 
             // ItemText3
             // 
-            this.ItemText3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ItemText3.BorderColor = System.Drawing.Color.DimGray;
+            this.ItemText3.BorderRadiusBottomLeft = 0;
+            this.ItemText3.BorderRadiusBottomRight = 0;
+            this.ItemText3.BorderRadiusTopLeft = 0;
+            this.ItemText3.BorderRadiusTopRight = 0;
+            this.ItemText3.BorderWidth = 0F;
             this.ItemText3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ItemText3.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
+            this.ItemText3.FlatAppearance.BorderSize = 0;
             this.ItemText3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ItemText3.Location = new System.Drawing.Point(204, 4);
-            this.ItemText3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ItemText3.Location = new System.Drawing.Point(278, 0);
+            this.ItemText3.Margin = new System.Windows.Forms.Padding(0);
             this.ItemText3.Name = "ItemText3";
-            this.ItemText3.Size = new System.Drawing.Size(92, 49);
+            this.ItemText3.Size = new System.Drawing.Size(139, 75);
             this.ItemText3.TabIndex = 2;
             this.ItemText3.Text = ".";
             this.ItemText3.UseMnemonic = false;
@@ -126,14 +143,19 @@
             // 
             // ItemText4
             // 
-            this.ItemText4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ItemText4.BorderColor = System.Drawing.Color.DimGray;
+            this.ItemText4.BorderRadiusBottomLeft = 0;
+            this.ItemText4.BorderRadiusBottomRight = 0;
+            this.ItemText4.BorderRadiusTopLeft = 0;
+            this.ItemText4.BorderRadiusTopRight = 0;
+            this.ItemText4.BorderWidth = 0F;
             this.ItemText4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ItemText4.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
+            this.ItemText4.FlatAppearance.BorderSize = 0;
             this.ItemText4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ItemText4.Location = new System.Drawing.Point(304, 4);
-            this.ItemText4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ItemText4.Location = new System.Drawing.Point(417, 0);
+            this.ItemText4.Margin = new System.Windows.Forms.Padding(0);
             this.ItemText4.Name = "ItemText4";
-            this.ItemText4.Size = new System.Drawing.Size(92, 49);
+            this.ItemText4.Size = new System.Drawing.Size(141, 75);
             this.ItemText4.TabIndex = 3;
             this.ItemText4.Text = ".";
             this.ItemText4.UseMnemonic = false;
@@ -153,30 +175,25 @@
             this.tableLayoutPanel1.SetRowSpan(this.PromptRow, 2);
             this.PromptRow.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.PromptRow.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 66F));
-            this.PromptRow.Size = new System.Drawing.Size(400, 112);
+            this.PromptRow.Size = new System.Drawing.Size(558, 148);
             this.PromptRow.TabIndex = 1;
             // 
             // Prompt
             // 
-            this.Prompt.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Prompt.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Prompt.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.Prompt.FlatAppearance.BorderSize = 0;
-            this.Prompt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Prompt.Location = new System.Drawing.Point(0, 0);
-            this.Prompt.Margin = new System.Windows.Forms.Padding(0);
+            this.Prompt.Location = new System.Drawing.Point(3, 0);
             this.Prompt.Name = "Prompt";
             this.PromptRow.SetRowSpan(this.Prompt, 2);
-            this.Prompt.Size = new System.Drawing.Size(400, 112);
-            this.Prompt.TabIndex = 1;
-            this.Prompt.UseMnemonic = false;
-            this.Prompt.UseVisualStyleBackColor = true;
+            this.Prompt.Size = new System.Drawing.Size(552, 148);
+            this.Prompt.TabIndex = 0;
+            this.Prompt.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // YesNoScanner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(400, 169);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.ClientSize = new System.Drawing.Size(558, 223);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "YesNoScanner";
@@ -193,10 +210,10 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel Row1;
         private System.Windows.Forms.TableLayoutPanel PromptRow;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl Prompt;
-        private Lib.Core.WidgetManagement.ScannerButtonControl ItemText1;
-        private Lib.Core.WidgetManagement.ScannerButtonControl ItemText2;
-        private Lib.Core.WidgetManagement.ScannerButtonControl ItemText3;
-        private Lib.Core.WidgetManagement.ScannerButtonControl ItemText4;
+        private System.Windows.Forms.Label Prompt;
+        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ItemText1;
+        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ItemText2;
+        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ItemText3;
+        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ItemText4;
     }
 }

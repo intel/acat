@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="ShowDialogsHandler.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.ACATResources;
@@ -106,7 +93,7 @@ namespace ACAT.Lib.Extension.CommandHandlers
             object[] attributes = ACATPreferences.ApplicationAssembly.GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
             var appName = (attributes.Length != 0) ? ((AssemblyTitleAttribute)attributes[0]).Title : String.Empty;
 
-            var version = ACATPreferences.ApplicationAssembly.GetName().Version.ToString();
+            var version = ACATPreferences.ApplicationAssembly.GetName().Version.Major + "." + ACATPreferences.ApplicationAssembly.GetName().Version.Minor;
             var versionInfo = String.Format(R.GetString("Version"), version);
 
             attributes = ACATPreferences.ApplicationAssembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
@@ -116,7 +103,7 @@ namespace ACAT.Lib.Extension.CommandHandlers
 
             var companyName = (attributes.Length != 0) ? ((AssemblyCompanyAttribute)attributes[0]).Company : String.Empty;
 
-            DialogUtils.ShowAboutBox(parentForm, "AboutBoxLogo.png", appName, versionInfo, companyName, copyrightInfo, Attributions.GetAll());
+            DialogUtils.ShowAboutBox(parentForm, appName, versionInfo, companyName, copyrightInfo, Attributions.GetAll());
         }
 
         /// <summary>

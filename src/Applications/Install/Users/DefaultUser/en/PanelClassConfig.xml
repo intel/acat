@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AppPanelClassConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <PanelClassConfigs>
+    <PanelClassConfig>
+      <AppDescription>Reduced functionality which supports the Talk window to communicate</AppDescription>
+      <AppId>ACATTalk</AppId>
+      <AppName>ACAT Talk Application</AppName>
+      <PanelClassConfigMaps>
+        <PanelClassConfigMap>
+          <Default>true</Default>
+          <Description>An alphabetically arranged keyboard with predictive text/sentences to help you communicate</Description>
+          <Name>TalkApplicationABC</Name>
+          <ScreenshotFileName>ABCKeyboardLayout.png</ScreenshotFileName>
+          <DisplayNameShort>Alphabetical</DisplayNameShort>
+          <DisplayNameLong> ABC Keyboard Layout</DisplayNameLong>
+          <PanelClassConfigMapEntries>
+            <PanelClassConfigMapEntry>
+              <ConfigId>de5b9e7c-610f-463f-94f1-6b8dda9a35b3</ConfigId>
+              <PanelClass>TalkApplicationScanner</PanelClass>
+            </PanelClassConfigMapEntry>
+          </PanelClassConfigMapEntries>
+        </PanelClassConfigMap>
+        <PanelClassConfigMap>
+          <Default>false</Default>
+          <Description>A full QWERTY keyboard with predictive text/sentences to help you communicate</Description>
+          <Name>TalkApplicationQwerty</Name>
+          <ScreenshotFileName>QWERTYKeyboardLayout.png</ScreenshotFileName>
+          <DisplayNameShort>QWERTY</DisplayNameShort>
+          <DisplayNameLong> QWERTY Keyboard Layout</DisplayNameLong>
+          <PanelClassConfigMapEntries>
+            <PanelClassConfigMapEntry>
+              <ConfigId>f802386c-31ca-4a0d-bc6f-78e71c730d11</ConfigId>
+              <PanelClass>TalkApplicationScanner</PanelClass>
+            </PanelClassConfigMapEntry>
+          </PanelClassConfigMapEntries>
+        </PanelClassConfigMap>
+      </PanelClassConfigMaps>
+    </PanelClassConfig>
+  </PanelClassConfigs>
+</AppPanelClassConfig>

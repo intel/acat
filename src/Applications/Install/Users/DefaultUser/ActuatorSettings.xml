@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ActuatorConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ActuatorSettings>
+    <ActuatorSetting>
+      <Description>Use the computer keyboard as a switch to control ACAT. You can find more details &lt;a href=$ACAT_USER_GUIDE#KeyboardSwitch&gt;here&lt;/a&gt;.</Description>
+      <Enabled>true</Enabled>
+      <Id>d91a1877-c92b-4d7e-9ab6-f01f30b12df9</Id>
+      <ImageFileName>KeyboardSwitch.jpg</ImageFileName>
+      <Name>Keyboard</Name>
+      <SwitchSettings>
+        <SwitchSetting>
+          <Actuate>true</Actuate>
+          <BeepFile>beep.wav</BeepFile>
+          <Command>@Trigger</Command>
+          <Description />
+          <Enabled>true</Enabled>
+          <MinHoldTime>@MinActuationHoldTime</MinHoldTime>
+          <Name>Trigger</Name>
+          <Source>F12</Source>
+        </SwitchSetting>
+        <SwitchSetting>
+          <Actuate>true</Actuate>
+          <BeepFile />
+          <Command>@CmdActuatorToggleCalibrationWindow</Command>
+          <Description />
+          <Enabled>true</Enabled>
+          <MinHoldTime />
+          <Name>Shortcut7</Name>
+          <Source>Ctrl+Alt+W</Source>
+        </SwitchSetting>
+      </SwitchSettings>
+    </ActuatorSetting>
+    <ActuatorSetting>
+      <Description>Uses your webcam as a switch to control ACAT. (Click &lt;a href=$ASSETS_VIDEOS_DIR#ACATCameraSwitchDemo.mp4&gt;here&lt;/a&gt; for a demonstration video). You can find more details &lt;a href=$ACAT_USER_GUIDE#CameraSwitch&gt;here&lt;/a&gt;.</Description>
+      <Enabled>false</Enabled>
+      <Id>7da7f870-80dc-47b4-994c-5f46a4dfe538</Id>
+      <ImageFileName>WebcamSwitch.jpg</ImageFileName>
+      <Name>Camera</Name>
+      <SwitchSettings>
+        <SwitchSetting>
+          <Actuate>true</Actuate>
+          <BeepFile />
+          <Command>@Trigger</Command>
+          <Description>Cheek twitch gesture</Description>
+          <Enabled>true</Enabled>
+          <MinHoldTime>@MinActuationHoldTime</MinHoldTime>
+          <Name>Cheek Twitch</Name>
+          <Source>CT</Source>
+        </SwitchSetting>
+        <SwitchSetting>
+          <Actuate>true</Actuate>
+          <BeepFile />
+          <Command>@Trigger</Command>
+          <Description>Eyebrow raise gesture</Description>
+          <Enabled>false</Enabled>
+          <MinHoldTime>@MinActuationHoldTime</MinHoldTime>
+          <Name>Eyebrow Raise</Name>
+          <Source>ER</Source>
+        </SwitchSetting>
+      </SwitchSettings>
+    </ActuatorSetting>
+    <ActuatorSetting>
+      <Enabled>false</Enabled>
+      <Id>fe3de70b-8084-46c1-bab1-905b215c7738</Id>
+      <Name>Sample Actuator</Name>
+      <SwitchSettings>
+        <SwitchSetting>
+          <Actuate>true</Actuate>
+          <BeepFile />
+          <Command>@Trigger</Command>
+          <Description />
+          <Enabled>true</Enabled>
+          <MinHoldTime>@MinActuationHoldTime</MinHoldTime>
+          <Name>G1</Name>
+          <Source>G1</Source>
+        </SwitchSetting>
+        <SwitchSetting>
+          <Actuate>true</Actuate>
+          <BeepFile />
+          <Command />
+          <Description />
+          <Enabled>true</Enabled>
+          <MinHoldTime>@MinActuationHoldTime</MinHoldTime>
+          <Name>G2</Name>
+          <Source>G2</Source>
+        </SwitchSetting>
+        <SwitchSetting>
+          <Actuate>true</Actuate>
+          <BeepFile />
+          <Command />
+          <Description />
+          <Enabled>true</Enabled>
+          <MinHoldTime>@MinActuationHoldTime</MinHoldTime>
+          <Name>G3</Name>
+          <Source>G3</Source>
+        </SwitchSetting>
+      </SwitchSettings>
+    </ActuatorSetting>
+    <ActuatorSetting>
+      <Description>There are many off-the-shelf switch options available to fit your needs. You can find more details &lt;a href=$ACAT_USER_GUIDE#ExternalSwitch&gt;here&lt;/a&gt;.</Description>
+      <Enabled>false</Enabled>
+      <Id>790324b9-c733-49ca-9a28-c49357bb7c14</Id>
+      <ImageFileName>HardwareSwitch.png</ImageFileName>
+      <Name>External</Name>
+      <SwitchSettings>
+        <SwitchSetting>
+          <Actuate>true</Actuate>
+          <BeepFile>beep.wav</BeepFile>
+          <Command>@Trigger</Command>
+          <Description />
+          <Enabled>true</Enabled>
+          <MinHoldTime>@MinActuationHoldTime</MinHoldTime>
+          <Name>Trigger</Name>
+          <Source>F12</Source>
+        </SwitchSetting>
+      </SwitchSettings>
+    </ActuatorSetting>
+  </ActuatorSettings>
+</ActuatorConfig>

@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="OutlineWindow.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Utility;
@@ -99,40 +86,51 @@ namespace ACAT.Lib.Core.PanelManagement
                 penWidth = PenWidth;
             }
 
-            var pen = new Pen(_lineColor, penWidth);
-            var formGraphics = _form.CreateGraphics();
-
-            var x = (float)rectangle.X;
-            if (x < penWidth)
+            Pen pen = null;
+            Graphics formGraphics = null;
+            try
             {
-                x = penWidth;
-            }
+                pen = new Pen(_lineColor, penWidth);
+                formGraphics = _form.CreateGraphics();
 
-            var y = (float)rectangle.Y;
-            if (y < penWidth)
+                var x = (float)rectangle.X;
+                if (x < penWidth)
+                {
+                    x = penWidth;
+                }
+
+                var y = (float)rectangle.Y;
+                if (y < penWidth)
+                {
+                    y = penWidth;
+                }
+
+                if (rectangle.Right > (Screen.PrimaryScreen.WorkingArea.Width - penWidth))
+                {
+                    rectangle.Width = rectangle.Width - (rectangle.Right - Screen.PrimaryScreen.WorkingArea.Width) - 3 * penWidth;
+                }
+
+                if (rectangle.Bottom > Screen.PrimaryScreen.WorkingArea.Height - penWidth)
+                {
+                    rectangle.Height = rectangle.Height - (rectangle.Bottom - Screen.PrimaryScreen.WorkingArea.Height) - penWidth;
+                }
+
+                var width = (rectangle.X > 0) ? (float)rectangle.Width : (float)rectangle.Width + (float)rectangle.X;
+                var height = (rectangle.Y > 0) ? (float)rectangle.Height : (float)rectangle.Height + (float)rectangle.Y;
+
+                Log.Debug("Draw rectangle " + x + " " + y + " " + width + " " + height);
+
+                formGraphics.DrawRectangle(pen, x, y, width, height);
+            }
+            catch
             {
-                y = penWidth;
-            }
 
-            if (rectangle.Right > (Screen.PrimaryScreen.WorkingArea.Width - penWidth))
+            }
+            finally
             {
-                rectangle.Width = rectangle.Width - (rectangle.Right - Screen.PrimaryScreen.WorkingArea.Width) - 3 * penWidth;
+                pen?.Dispose();
+                formGraphics?.Dispose();
             }
-
-            if (rectangle.Bottom > Screen.PrimaryScreen.WorkingArea.Height - penWidth)
-            {
-                rectangle.Height = rectangle.Height - (rectangle.Bottom - Screen.PrimaryScreen.WorkingArea.Height) - penWidth;
-            }
-
-            var width = (rectangle.X > 0) ? (float)rectangle.Width : (float)rectangle.Width + (float)rectangle.X;
-            var height = (rectangle.Y > 0) ? (float)rectangle.Height : (float)rectangle.Height + (float)rectangle.Y;
-
-            Log.Debug("Draw rectangle " + x + " " + y + " " + width + " " + height);
-
-            formGraphics.DrawRectangle(pen, x, y, width, height);
-
-            pen.Dispose();
-            formGraphics.Dispose();
         }
 
         /// <summary>

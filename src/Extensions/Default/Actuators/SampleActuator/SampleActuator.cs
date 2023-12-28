@@ -1,21 +1,15 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="SampleActuator.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// SampleActuator.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// This is a sample actuator class. It subscribes to events
+// from the sampe input sensor class and notifies ACAT
+// about these events.
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.ActuatorManagement;
@@ -25,11 +19,6 @@ using System;
 
 namespace ACAT.Extensions.Default.Actuators.SampleActuator
 {
-    /// <summary>
-    /// This is a sample actuator class. It subscribes to events
-    /// from the sampe input sensor class and notifies ACAT
-    /// about these events.
-    /// </summary>
     [DescriptorAttribute("FE3DE70B-8084-46C1-BAB1-905B215C7738",
                             "Sample Actuator",
                             "Skeleton sample code for a sample actuator")]

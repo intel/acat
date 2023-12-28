@@ -1,4 +1,3 @@
-Contact: webadmin@linux.intel.com
 ## Official release of ACAT 2.0 is now available [here](https://github.com/intel/acat/releases)
 ### This release includes:
 - Enhanced language models that are specifically fine-tuned for [AAC](https://en.wikipedia.org/wiki/Augmentative_and_alternative_communication) with word and sentence predictions to improve typing efficiency and provide a personalized user experience

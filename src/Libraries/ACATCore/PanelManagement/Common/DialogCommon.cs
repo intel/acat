@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="DialogCommon.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.AgentManagement;
@@ -121,7 +108,8 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// Gets the Animation Manager object
         /// </summary>
-        public AnimationManager AnimationManager { get { return _animationManager; } }
+        public AnimationManager AnimationManager
+        { get { return _animationManager; } }
 
         /// <summary>
         /// Get/sets whether a scanner will be docked to the dialog
@@ -145,12 +133,16 @@ namespace ACAT.Lib.Core.PanelManagement
         /// Gets the object that manages the size and position
         /// of the panel
         /// </summary>
-        public ScannerPositionSizeController PositionSizeController { get { return null; } }
+        public ScannerPositionSizeController PositionSizeController
+        { get { return null; } }
+
+        public ScannerPositionSizeController2 PositionSizeController2 { get; }
 
         /// <summary>
         /// Gets the widget that reprensents the form
         /// </summary>
-        public Widget RootWidget { get { return _rootWidget; } }
+        public Widget RootWidget
+        { get { return _rootWidget; } }
 
         /// <summary>
         /// Returns the synchronization object
@@ -163,7 +155,8 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// Gets the WidgetManager object
         /// </summary>
-        public WidgetManager WidgetManager { get { return _widgetManager; } }
+        public WidgetManager WidgetManager
+        { get { return _widgetManager; } }
 
         /// <summary>
         /// Sets the style of the form.  No sys menu
@@ -515,7 +508,7 @@ namespace ACAT.Lib.Core.PanelManagement
                     position = Windows.WindowPosition.MiddleRight;
                 }
 
-                if (((IPanel) arg.Scanner).PanelCommon.DisplayMode != DisplayModeTypes.Popup)
+                if (((IPanel)arg.Scanner).PanelCommon.DisplayMode != DisplayModeTypes.Popup)
                 {
                     Windows.DockWithScanner(_form, arg.Scanner as Form, position, false);
                 }
@@ -577,7 +570,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// widget requires a scanner to interact (text boxes may require the
         /// alphabet scanner for eg) activates the scanner
         /// </summary>
-        private void widget_EvtActuated(object sender, WidgetEventArgs e)
+        private void widget_EvtActuated(object sender, WidgetActuatedEventArgs e)
         {
             Widget widget = e.SourceWidget;
 
@@ -621,7 +614,7 @@ namespace ACAT.Lib.Core.PanelManagement
                 form != _form &&
                 Windows.GetOpacity(_form) != 0.0f)
             {
-                if (((IPanel) form).PanelCommon.DisplayMode != DisplayModeTypes.Popup)
+                if (((IPanel)form).PanelCommon.DisplayMode != DisplayModeTypes.Popup)
                 {
                     Windows.DockWithScanner(_form, form, Context.AppWindowPosition, false);
                 }

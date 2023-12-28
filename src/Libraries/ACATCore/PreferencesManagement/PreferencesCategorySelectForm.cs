@@ -1,29 +1,23 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="PreferencesCategorySelectForm.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// PreferencesCategorySelectForm.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Displays a list of categories allowing the user to enable/disable
+// a category, change settings for a category etc. The category could
+// be a word predictor, a spellchecker, actuator etc.
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Extensions;
+using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace ACAT.Lib.Core.PreferencesManagement
@@ -40,7 +34,10 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// </summary>
         public IEnumerable<PreferencesCategory> PreferencesCategories;
 
-        private bool _isDirty = false;
+        /// <summary>
+        /// Did the user change anything in the form
+        /// </summary>
+        public bool _isDirty = false;
 
         /// <summary>
         /// Initializes an instance of the class
@@ -107,39 +104,72 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// </summary>
         private bool _firstClientChangedCall = true;
 
-
-        private void buttonCancel_Click(object sender, EventArgs e)
-        {
-            if (!_isDirty || MessageBox.Show("Changes not saved. Quit anyway?",
-                                                Text,
-                                                MessageBoxButtons.YesNo,
-                                                MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                DialogResult = DialogResult.Cancel;
-                Close();
-            }
-        }
+        /// <summary>
+        /// Gets or sets the handle of the parent control for the form
+        /// </summary>
+        public IntPtr ParentControlHandle { get; set; }
 
         /// <summary>
-        /// User clicked OK.  Get data from the UI and quit
+        /// Delegate for the event triggered when the user saves 
+        /// new preferences
         /// </summary>
         /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void buttonOK_Click(object sender, EventArgs e)
-        {
-            if (validate())
-            {
-                if (_isDirty &&
-                    MessageBox.Show("Save changes?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
-                    DialogResult.Yes)
-                {
-                    updateDataFromUI();
-                    DialogResult = DialogResult.OK;
-                }
+        /// <param name="arg">event args</param>
+        public delegate void NotifySavePreferencesCategories(object sender, IEnumerable<PreferencesCategory> preferencesCategories);
 
-                Close();
+        /// <summary>
+        /// Event raised when the user selects Done and then elects to save changes
+        /// </summary>
+        public event NotifySavePreferencesCategories EvtSavePreferences;
+
+        /// <summary>
+        /// Delegate for the event triggered when the user makes a change to a preference setting 
+        /// </summary>
+        /// <param name="sender">event sender</param>
+        /// <param name="arg">event args</param>
+        public delegate void NotifyPreferencesChangeMade();
+
+        /// <summary>
+        /// Event raised when the user makes a change to a preference setting 
+        /// </summary>
+        public event NotifyPreferencesChangeMade EvtPreferencesChangeMade;
+
+        /// <summary>
+        /// Event raised when preferences cateogry selected - show custom Preferences dialog or default Preferences edit form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="preferencesCategory"></param>
+        public delegate void PreferencesCategorySelected(object sender, ISupportsPreferences preferencesCategory);
+        public event PreferencesCategorySelected EvtPreferencesCategorySelected;
+
+
+        /// <summary>
+        ///  Check if form filled correctly, if not, return false
+        ///  If form validated, send event notifying that preferences are to be saved
+        /// </summary>
+        /// <returns></returns>
+        public bool validateAndSave()
+        {
+            // Form not validated / filled correctly - immediately return false
+            if (!validate())
+            {
+                return false; // return false - keep form open
             }
+
+            // Form validated / filled correctly
+            updateDataFromUI();
+            DialogResult = DialogResult.OK;
+
+            // Send event notification that preferences are to be saved
+            if (EvtSavePreferences != null)
+            {
+                EvtSavePreferences(this, this.PreferencesCategories);
+            }
+
+            return true; 
+
         }
+
 
         /// <summary>
         /// Client size changed
@@ -179,37 +209,15 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 var category = tag as PreferencesCategory;
                 if (category.PreferenceObj is ISupportsPreferences)
                 {
-                    var supportsPreferences = category.PreferenceObj as ISupportsPreferences;
 
-                    if (supportsPreferences.SupportsPreferencesDialog)
-                    {
-                        Hide();
-                        supportsPreferences.ShowPreferencesDialog();
-                        Show();
-                    }
-                    else
-                    {
-                        var prefs = supportsPreferences.GetPreferences();
-                        if (prefs != null)
-                        {
-                            Hide();
+                    // Call event notifying that new preferences cateogry selected - handler set in ACATConfigMainForm.cs
+                    EvtPreferencesCategorySelected(this, (ISupportsPreferences)category.PreferenceObj);
+                    return;
 
-                            var title = (category.PreferenceObj is IExtension)
-                                ? (category.PreferenceObj as IExtension).Descriptor.Name
-                                : String.Empty;
-
-                            var form = new PreferencesEditForm
-                            {
-                                Title = title,
-                                SupportsPreferencesObj = (ISupportsPreferences)category.PreferenceObj
-                            };
-                            form.ShowDialog();
-                            Show();
-                        }
-                    }
                 }
             }
         }
+
 
         /// <summary>
         /// If the user clicked on the Enable column, and if AllowMultiEnable
@@ -246,6 +254,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
                 dataGridView2.Invalidate();
             }
+
         }
 
         /// <summary>
@@ -261,6 +270,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             }
 
             _isDirty = true;
+            EvtPreferencesChangeMade();
         }
 
         /// <summary>
@@ -281,7 +291,14 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
             dataGridView2.CellContentClick += dataGridView2_CellContentClick;
             dataGridView2.CellValueChanged += dataGridView2_CellValueChanged;
-            dataGridView2.CurrentCellDirtyStateChanged += dataGridView2_CurrentCellDirtyStateChanged;
+
+            Paint += (s, args) =>
+            {
+                if (dataGridView2 != null)
+                {
+                    dataGridView2.CurrentCellDirtyStateChanged += dataGridView2_CurrentCellDirtyStateChanged;
+                }
+            };
         }
 
         /// <summary>
@@ -299,8 +316,9 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 ClientSize = new System.Drawing.Size(ClientSize.Width, (int)(_designTimeAspectRatio * ClientSize.Width));
             }
 
-            TopMost = false;
-            TopMost = true;
+            Activate();
+
+            CenterToScreen();
 
             if (!String.IsNullOrEmpty(Title))
             {
@@ -310,7 +328,9 @@ namespace ACAT.Lib.Core.PreferencesManagement
             initializeUI();
 
             refreshDataGridView();
+
         }
+
 
         /// <summary>
         /// Refreshes the Gridview with data from the Categories
@@ -342,7 +362,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     supportsCustomDialog = (category.PreferenceObj as ISupportsPreferences).SupportsPreferencesDialog;
                 }
 
-                // if there are no preferences, replace the button cell
+                // If there are no preferences, replace the button cell
                 // with a read-only textbox cell
                 if (prefs == null && !supportsCustomDialog)
                 {
@@ -350,6 +370,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     dataGridView2[ConfigureColumn.Name, rowNum] = textBoxCell;
                     textBoxCell.ReadOnly = true;
                 }
+                // Cell is "Setup" button
                 else
                 {
                     (dataGridView2[ConfigureColumn.Name, rowNum] as DataGridViewButtonCell).Value = "Setup";
@@ -362,10 +383,18 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 }
             }
 
+            // Sort first column ascending everytime grid is refreshed
             dataGridView2.Sort(CategoryNameColumn, ListSortDirection.Ascending);
             dataGridView2.AutoResizeRows();
 
+            // Wrap text everytime grid is refreshed
             wrapText(true);
+
+            if (dataGridView2.Rows.Count > 0)
+            {
+                dataGridView2.CurrentCell = dataGridView2.Rows[0].Cells[0];
+                dataGridView2.Rows[0].Selected = true;
+            }
         }
 
         /// <summary>
@@ -403,10 +432,10 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
             if (ShowEnable)
             {
-                CategoryNameColumn.Width = (dataGridView2.Width - w)*3/8;
-                DescriptionColumn.Width = (dataGridView2.Width - w)*3/8;
-                EnableColumn.Width = (dataGridView2.Width - w)/8;
-                ConfigureColumn.Width = (dataGridView2.Width - w)/8;
+                CategoryNameColumn.Width = (dataGridView2.Width - w) * 3 / 8;
+                DescriptionColumn.Width = (dataGridView2.Width - w) * 3 / 8;
+                EnableColumn.Width = (dataGridView2.Width - w) / 8;
+                ConfigureColumn.Width = (dataGridView2.Width - w) / 8;
                 EnableColumn.Resizable = DataGridViewTriState.False;
             }
             else
@@ -436,7 +465,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 var category = dataGridView2.Rows[ii].Tag as PreferencesCategory;
                 if (category != null)
                 {
-                    category.Enable = (Boolean) dataGridView2[EnableColumn.Name, ii].Value;
+                    category.Enable = (Boolean)dataGridView2[EnableColumn.Name, ii].Value;
                 }
             }
         }
@@ -461,7 +490,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 }
             }
 
-            MessageBox.Show("You must enable at least one as default");
+            ConfirmBox.ShowDialog("You must enable at least one as default", this, true);
+
             return false;
         }
 
@@ -469,11 +499,28 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// Turns wrapping on /off in the rows
         /// </summary>
         /// <param name="onOff">turn it on /off</param>
-        private void wrapText(bool onOff)
+        public void wrapText(bool onOff)
         {
             DataGridViewTextBoxColumn tbc = dataGridView2.Columns[1] as DataGridViewTextBoxColumn;
             tbc.DefaultCellStyle.WrapMode = (onOff) ? DataGridViewTriState.True : DataGridViewTriState.False;
             dataGridView2.AutoResizeRows();
         }
+
+
+        /// <summary>
+        /// User clicked wrap text checkbox
+        /// </summary>
+        /// <param name="sender">event sender</param>
+        /// <param name="e">event args</param>
+        public void checkBoxWrapText_CheckedChanged(object sender, EventArgs e)
+        {
+            if (sender.GetType() == typeof(CheckBox))
+            {
+                bool doWrapText = ((CheckBox)sender).Checked;
+                wrapText(doWrapText);
+            }
+
+        }
+
     }
 }

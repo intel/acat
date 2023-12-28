@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="TextUtils.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
@@ -167,6 +154,208 @@ namespace ACAT.Lib.Core.Utility
             }
         }
 
+        public static string EmbedEllipses(string input, int length)
+        {
+            if (input.Length <= length)
+            {
+                return input;
+            }
+
+            int ellipsesLength = 3;
+            int maxTextLen = length - ellipsesLength;
+
+            int remainingContentLength = maxTextLen / 2;
+
+            string beginning = getTextBeginning(input, remainingContentLength);
+            string end = getTextEnd(input, remainingContentLength);
+
+            return $"{beginning}...{end}";
+        }
+
+        /// <summary>
+        /// Given an input string with multiple paragraphs (crlf delimted), returns the
+        /// paragraph which has the caret
+        /// </summary>
+        /// <param name="inputString">String with sentences</param>
+        /// <param name="caretPos">Where is the caret positioned?</param>
+        /// <param name="paragraphAtCaret">Returns the paragraph at the caret position</param>
+        /// <returns>0-based index of the start of the paragraph</returns>
+        public static int GetEntireParagraphAtCaret(String inputString, int caretPos, out String paragraphAtCaret)
+        {
+            try
+            {
+                paragraphAtCaret = String.Empty;
+
+                if (String.IsNullOrEmpty(inputString.Trim()))
+                {
+                    return -1;
+                }
+
+                // work backwards from the caret position till
+                // we hit the previous new line or
+                // the beginning of the string
+                int len = inputString.Length;
+                int index = (caretPos >= len) ? len - 1 : caretPos;
+
+                while (index >= 0)
+                {
+                    if (inputString[index] == '\n')
+                    {
+                        break;
+                    }
+
+                    index--;
+                }
+
+                int startPos = index + 1;
+
+                Log.Debug("startPos = " + startPos);
+
+                index = startPos;
+
+                // now find the end of the paragraph
+                while (index < inputString.Length && inputString[index] != '\n')
+                {
+                    index++;
+                }
+
+                int endPos = index - 1;
+
+                Log.Debug("endPos = " + endPos);
+
+                int count = endPos - startPos + 1;
+
+                Log.Debug("count = " + count);
+
+                paragraphAtCaret = (count > 0) ? inputString.Substring(startPos, count) : String.Empty;
+
+                Log.Debug("para: [" + paragraphAtCaret + "]");
+
+                return startPos;
+            }
+            catch (Exception ex)
+            {
+                Log.Debug(ex.ToString());
+                paragraphAtCaret = String.Empty;
+                return 0;
+            }
+        }
+
+        // Get start index of the next paragraph
+        // Iterate forward until next paragraph is found
+        public static int GetIndexNextParagraph(String text, int caretPos)
+        {
+            int currentCaretPos = caretPos;
+
+            if (currentCaretPos >= text.Length)
+            {
+                return currentCaretPos;
+            }
+
+            char ch = text[currentCaretPos];
+            if (ch == '\n' || ch == '\r')
+            {
+                while (currentCaretPos < text.Length - 1)
+                {
+                    ch = text[currentCaretPos];
+                    if (ch == '\n' || ch == '\r' || ch == ' ')
+                    {
+                        currentCaretPos++;
+                    }
+                    else
+                    {
+                        return currentCaretPos;
+                    }
+                }
+            }
+            else
+            {
+                while (currentCaretPos < text.Length - 1)
+                {
+                    ch = text[currentCaretPos];
+                    if (ch == '\n' || ch == '\r')
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        currentCaretPos++;
+                    }
+                }
+
+                while (currentCaretPos < text.Length - 1)
+                {
+                    ch = text[currentCaretPos];
+                    if (IsWordElement(ch))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        currentCaretPos++;
+                    }
+                }
+            }
+
+            return (currentCaretPos == text.Length - 1) ? currentCaretPos + 1 : currentCaretPos;
+        }
+
+        // Get start index of the next sentence
+        // Iterate forward until next sentence is found
+        public static int GetIndexNextSentence(String text, int caretPos)
+        {
+            int currentCaretPos = caretPos;
+
+            if (currentCaretPos >= text.Length)
+            {
+                return currentCaretPos;
+            }
+
+            char ch = text[currentCaretPos];
+            if (IsSentenceTerminator(ch) || ch == '\n' || ch == '\r')
+            {
+                while (currentCaretPos < text.Length - 1)
+                {
+                    ch = text[currentCaretPos];
+                    if (IsSentenceTerminator(ch) || ch == '\n' || ch == '\r' || ch == ' ')
+                    {
+                        currentCaretPos++;
+                    }
+                    else
+                    {
+                        return currentCaretPos;
+                    }
+                }
+            }
+            else
+            {
+                while (currentCaretPos < text.Length - 1)
+                {
+                    ch = text[currentCaretPos];
+                    if (!IsSentenceTerminator(ch) && ch != '\n' && ch != '\r')
+                    {
+                        currentCaretPos++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                while (currentCaretPos < text.Length - 1)
+                {
+                    ch = text[currentCaretPos];
+                    if (IsWordElement(ch))
+                    {
+                        break;
+                    }
+                    currentCaretPos++;
+                }
+            }
+
+            return (currentCaretPos == text.Length - 1) ? currentCaretPos + 1 : currentCaretPos;
+        }
+
         /// <summary>
         /// Given an input string with multiple paragraphs (crlf delimted), returns the
         /// paragraph which has the caret
@@ -186,7 +375,7 @@ namespace ACAT.Lib.Core.Utility
                     return -1;
                 }
 
-                // work backwards from the caret position til
+                // work backwards from the caret position till
                 // we hit the previous new line or
                 // the beginning of the string
                 int len = inputString.Length;
@@ -273,8 +462,6 @@ namespace ACAT.Lib.Core.Utility
                 index--;
             }
 
-            offset = caretPos;
-
             while (index >= 0 && inputString[index] != 0x0D && inputString[index] != 0x0A && Char.IsWhiteSpace(inputString[index]))
             {
                 index--;
@@ -312,8 +499,7 @@ namespace ACAT.Lib.Core.Utility
                 //Log.Debug("inputstring: [" + inputString + "]");
 
                 // first get the current sentence
-                String sentenceAtCaret;
-                int startPos = GetSentenceAtCaret(inputString, caretPos, out sentenceAtCaret);
+                int startPos = GetSentenceAtCaret(inputString, caretPos, out string sentenceAtCaret);
                 if (startPos < 0)
                 {
                     Log.Debug("returning " + startPos);
@@ -328,9 +514,8 @@ namespace ACAT.Lib.Core.Utility
 
                 //Log.Debug("sentence: [" + sentenceAtCaret + "]");
 
-                String w;
                 //Log.Debug("Calling getwordatcaret. InputString: [" + inputString + "]");
-                int wordPos = GetWordAtCaret(inputString, caretPos, out w);
+                int wordPos = GetWordAtCaret(inputString, caretPos, out string w);
                 Log.Debug("startPos: " + startPos + "wordPos: " + wordPos + " wordPos-startPos: " + (wordPos - startPos));
                 Log.Debug("Getwordatcaret returned [" + w + "]");
                 int count = wordPos - startPos;
@@ -476,15 +661,57 @@ namespace ACAT.Lib.Core.Utility
                 int index = caretPos;
                 offset = caretPos;
                 int endPos = caretPos;
+                Log.Debug("endPos: " + endPos);
 
                 while (index >= 0 && Char.IsWhiteSpace(inputString[index]))
                 {
                     index--;
                 }
 
+                Log.Debug("HARRIS Before: index: " + index + " char:  [" + inputString[index] + "]");
+
+                /*
+                while (index >= 0 && (IsTerminator(inputString[index]) || inputString[index] == '-'))
+                {
+                    index--;
+                }
+                */
+
                 while (index >= 0 && IsTerminator(inputString[index]))
                 {
                     index--;
+                }
+
+                int countDash = 0;
+                while (index >= 0 && inputString[index] == '-')
+                {
+                    countDash++;
+                    index--;
+                }
+
+                Log.Debug("HARRIS After index: " + index + " char:  [" + inputString[index] + "]");
+                Log.Debug("HARRIS Count dash: " + countDash);
+
+                if (countDash > 1)
+                {
+                    while (index >= 0 && Char.IsWhiteSpace(inputString[index]))
+                    {
+                        index--;
+                    }
+
+                    if (index < 0)
+                    {
+                        index = 0;
+                    }
+                    else
+                    {
+                        index++;
+                    }
+
+                    offset = index;
+                    count = endPos - offset + 1;
+
+                    return true;
                 }
 
                 if (index < 0)
@@ -493,7 +720,124 @@ namespace ACAT.Lib.Core.Utility
                 }
                 else
                 {
-                    while (index >= 0 && !Char.IsWhiteSpace(inputString[index]) && !TextUtils.IsSentenceTerminator(inputString[index]))
+                    while (index >= 0 && inputString[index] != '-' && !Char.IsWhiteSpace(inputString[index]) && !TextUtils.IsSentenceTerminator(inputString[index]))
+                    {
+                        index--;
+                    }
+
+                    index++;
+                }
+
+                offset = index;
+                count = endPos - offset + 1;
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Log.Debug(ex.ToString());
+                offset = 0;
+                count = 0;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Works backwards from the caret position and finds the index of the previous word,
+        /// and also returns the size of the word
+        /// </summary>
+        /// <param name="inputString">input text string</param>
+        /// <param name="caretPos">cursor position</param>
+        /// <param name="offset">Offset of the previous word (0 if beginning reached)</param>
+        /// <param name="count">size of the previous word</param>
+        /// <returns></returns>
+        public static bool GetPrevWordOffsetAutoComplete(String inputString, int caretPos, out int offset, out int count)
+        {
+            try
+            {
+                count = 0;
+                offset = caretPos;
+
+                if (String.IsNullOrEmpty(inputString))
+                {
+                    return true;
+                }
+
+                caretPos--;
+                int len = inputString.Length;
+                if (caretPos >= len)
+                {
+                    caretPos = len - 1;
+                }
+                else if (caretPos < 0)
+                {
+                    return false;
+                }
+
+                int index = caretPos;
+                offset = caretPos;
+                int endPos = caretPos;
+                Log.Debug("endPos: " + endPos);
+
+                while (index >= 0 && Char.IsWhiteSpace(inputString[index]))
+                {
+                    index--;
+                }
+
+                Log.Debug("HARRIS Before: index: " + index + " char:  [" + inputString[index] + "]");
+
+                /*
+                while (index >= 0 && (IsTerminator(inputString[index]) || inputString[index] == '-'))
+                {
+                    index--;
+                }
+                */
+
+                while (index >= 0 && IsTerminator(inputString[index]))
+                {
+                    index--;
+                }
+
+                int countDash = 0;
+                while (index >= 0 && inputString[index] == '-')
+                {
+                    countDash++;
+                    index--;
+                }
+
+                Log.Debug("HARRIS After index: " + index + " char:  [" + inputString[index] + "]");
+                Log.Debug("HARRIS Count dash: " + countDash);
+
+                if (countDash > 1)
+                {
+                    while (index >= 0 && Char.IsWhiteSpace(inputString[index]))
+                    {
+                        index--;
+                    }
+
+                    if (index < 0)
+                    {
+                        index = 0;
+                    }
+                    else
+                    {
+                        index++;
+                    }
+
+                    offset = index;
+                    count = endPos - offset + 1;
+
+                    return true;
+                }
+
+                if (index < 0)
+                {
+                    index = 0;
+                }
+                else
+                {
+                    //while (index >= 0 && inputString[index] != '-' && !Char.IsWhiteSpace(inputString[index]) && !TextUtils.IsSentenceTerminator(inputString[index]))
+                    while (index >= 0 && IsWordElement(inputString[index]))
                     {
                         index--;
                     }
@@ -578,6 +922,103 @@ namespace ACAT.Lib.Core.Utility
                 sentenceAtCaret = String.Empty;
                 return 0;
             }
+        }
+
+        // Get start index of the current or previous paragraph
+        // If caret is in the middle of a paragraph, returns start index of current paragraph
+        // If caret in between paragraphs or at the start of one, return start index of previous paragraph
+        public static int GetStartIndexCurrOrPrevParagraph(String text, int caretPos)
+        {
+            if (text.Length == 0)
+            {
+                return 0;
+            }
+
+            int currentCaretPos = caretPos - 1;
+            if (currentCaretPos < 0)
+            {
+                currentCaretPos = 0;
+            }
+
+            char ch = text[currentCaretPos];
+            if (ch == '\r' || ch == '\n')
+            {
+                while (currentCaretPos > 0)
+                {
+                    if (IsWordElement(text[currentCaretPos]))
+                    {
+                        break;
+                    }
+                    currentCaretPos--;
+                }
+            }
+
+            while (currentCaretPos > 0)
+            {
+                ch = text[currentCaretPos];
+                if (ch == '\r' || ch == '\n')
+                {
+                    break;
+                }
+                currentCaretPos--;
+            }
+
+            while (currentCaretPos < text.Length - 1)
+            {
+                if (IsWordElement(text[currentCaretPos]))
+                {
+                    break;
+                }
+                currentCaretPos++;
+            }
+
+            return currentCaretPos;
+        }
+
+        // Get start index of the current or previous sentence
+        // If caret is in the middle of a sentence, returns start index of current sentence
+        // If caret in between sentences or at the start of one, return start index of previous sentence
+        public static int GetStartIndexCurrOrPrevSentence(String text, int caretPos)
+        {
+            int currentCaretPos = caretPos - 1;
+            if (currentCaretPos < 0)
+            {
+                currentCaretPos = 0;
+            }
+
+            int initialCaretPos = currentCaretPos;
+
+            while (currentCaretPos > 0)
+            {
+                char ch = text[currentCaretPos];
+                if (IsWordElement(ch))
+                {
+                    break;
+                }
+                currentCaretPos--;
+            }
+
+            while (currentCaretPos > 0)
+            {
+                char ch = text[currentCaretPos];
+                if (IsSentenceTerminator(ch) || ch == '\n')
+                {
+                    currentCaretPos++;
+                    break;
+                }
+                currentCaretPos--;
+            }
+
+            while (currentCaretPos < initialCaretPos && currentCaretPos < text.Length - 1)
+            {
+                if (IsWordElement(text[currentCaretPos]))
+                {
+                    break;
+                }
+                currentCaretPos++;
+            }
+
+            return currentCaretPos;
         }
 
         /// <summary>
@@ -802,8 +1243,35 @@ namespace ACAT.Lib.Core.Utility
         public static bool IsWordElement(char c)
         {
             // 0x2019 is a closed single quote
-            var retVal = Char.IsLetterOrDigit(c) || c == '\'' || c == '-' || c == 0x2019;
+            //var retVal = Char.IsLetterOrDigit(c) || c == '\'' || c == '-' || c == 0x2019;
+            var retVal = Char.IsLetterOrDigit(c) || c == '\'' || c == 0x2019;
             return retVal;
+        }
+
+        private static string getTextBeginning(string input, int maxLength)
+        {
+            int lastSpaceIndex = input.LastIndexOf(' ', maxLength);
+            if (lastSpaceIndex != -1)
+            {
+                return input.Substring(0, lastSpaceIndex);
+            }
+            else
+            {
+                return input.Substring(0, maxLength);
+            }
+        }
+
+        private static string getTextEnd(string input, int maxLength)
+        {
+            int firstSpaceIndex = input.IndexOf(' ', input.Length - maxLength);
+            if (firstSpaceIndex != -1)
+            {
+                return input.Substring(firstSpaceIndex + 1);
+            }
+            else
+            {
+                return input.Substring(input.Length - maxLength);
+            }
         }
 
         /// <summary>
@@ -818,10 +1286,12 @@ namespace ACAT.Lib.Core.Utility
         {
             int startPos = caretPos;
 
+            Log.Debug("Enter startPos: " + startPos);
             while (startPos >= 0)
             {
                 if (!IsWordElement(inputString[startPos]))
                 {
+                    Log.Debug("Breaking. No word element at : " + startPos);
                     break;
                 }
 
@@ -830,21 +1300,29 @@ namespace ACAT.Lib.Core.Utility
 
             startPos++;
 
+            Log.Debug("1 startPos: " + startPos);
+
             if (startPos < 0)
             {
                 startPos = 0;
             }
 
             int endPos = caretPos;
+
+            Log.Debug("endPos: " + endPos);
+
             while (endPos < inputString.Length)
             {
                 if (!IsWordElement(inputString[endPos]))
                 {
+                    Log.Debug("Breaking. No word element at : " + endPos);
                     break;
                 }
 
                 endPos++;
             }
+
+            Log.Debug("After loop endPos : " + endPos);
 
             if (endPos > inputString.Length)
             {
@@ -854,7 +1332,13 @@ namespace ACAT.Lib.Core.Utility
             Log.Debug("getWordAt: startpos, endpos = " + startPos + ", " + endPos);
 
             int count = endPos - startPos;
+
+            Log.Debug("count:  " + count);
+            Log.Debug("Calling substring: " + startPos + ", " + (endPos - startPos));
+
             wordAtCaret = (count > 0) ? inputString.Substring(startPos, endPos - startPos) : String.Empty;
+
+            Log.Debug("returning startPos : " + startPos);
 
             return startPos;
         }

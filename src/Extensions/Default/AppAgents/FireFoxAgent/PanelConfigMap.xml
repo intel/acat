@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" ?>
-
-<ACAT>
-  <ConfigMapEntries>
-	  <ConfigMapEntry panelClass="FireFoxBrowserContextMenu" configName="FireFoxBrowserContextMenu" configId="F87E32BE-C891-42EB-BA37-53A6B1902B1C" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="FireFoxBrowserContextMenu.xml"/>
-    <ConfigMapEntry panelClass="FireFoxBrowserZoomMenu" configName="FireFoxBrowserZoomMenu" configId="6CBDC812-65F9-40C6-A39D-CE001E3E19A5" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="FireFoxBrowserZoomMenu.xml"/>
-  </ConfigMapEntries>
-</ACAT>

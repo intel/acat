@@ -1,23 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿////////////////////////////////////////////////////////////////////////////
+//
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+//
+//
+// SwitchCommandMapForm.cs
+//
+// Configure switch command mapping
+//
+////////////////////////////////////////////////////////////////////////////
+
 using ACAT.Lib.Core.CommandManagement;
+using ACAT.Lib.Core.PanelManagement;
+using System;
+using System.Windows.Forms;
 
 namespace ACAT.Lib.Core.ActuatorManagement
 {
     public partial class SwitchCommandMapForm : Form
     {
-        /// <summary>
-        /// Wrap text in rows?
-        /// </summary>
-        private bool _wrapText = true;
-
         /// <summary>
         /// Aspect ratio of form at design time
         /// </summary>
@@ -29,11 +30,9 @@ namespace ACAT.Lib.Core.ActuatorManagement
         private bool _firstClientChangedCall = true;
 
         /// <summary>
-        /// Gets or sets the title of the form
+        /// Wrap text in rows?
         /// </summary>
-        public String Title { get; set; }
-
-        public String SelectedCommand { get; private set; }
+        private bool _wrapText = true;
 
         public SwitchCommandMapForm()
         {
@@ -43,6 +42,13 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
             Load += SwitchCommandMapForm_Load;
         }
+
+        public String SelectedCommand { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the title of the form
+        /// </summary>
+        public String Title { get; set; }
 
         /// <summary>
         /// Client size changed
@@ -58,7 +64,94 @@ namespace ACAT.Lib.Core.ActuatorManagement
             }
         }
 
-        void SwitchCommandMapForm_Load(object sender, EventArgs e)
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void buttonOK_Click(object sender, EventArgs e)
+        {
+            if (dataGridView2.SelectedRows.Count > 0)
+            {
+                var row = dataGridView2.SelectedRows[0];
+
+                SelectedCommand = row.Cells[0].Value as String;
+
+                // MessageBox.Show("Selected Command: " + SelectedCommand, Text);
+                bool result = ConfirmBox.ShowDialog("Selected Command: " + SelectedCommand, null, false);
+            }
+            Close();
+        }
+
+        private void checkBoxWrapText_CheckedChanged(object sender, EventArgs e)
+        {
+            _wrapText = checkBoxWrapText.Checked;
+            wrapText(_wrapText);
+        }
+
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dataGridView2.SelectedCells.Count > 0)
+            {
+                int selectedrowindex = dataGridView2.SelectedCells[0].RowIndex;
+
+                DataGridViewRow selectedRow = dataGridView2.Rows[selectedrowindex];
+                dataGridView2.Rows[selectedrowindex].Selected = true;
+            }
+        }
+
+        /// <summary>
+        /// Initializes the UI elements in the datagrid view such as widths
+        /// of columns, column header text etc
+        /// </summary>
+        private void initializeUI()
+        {
+            dataGridView2.AutoResizeRows();
+
+            //SwitchNameColumn.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
+            dataGridView2.ScrollBars = ScrollBars.Vertical;
+            dataGridView2.RowHeadersVisible = false;
+            dataGridView2.SelectionChanged += dataGridView1_SelectionChanged;
+
+            setColumnWidths();
+        }
+
+        /// <summary>
+        /// Refreshes the Gridview with data from the switches
+        /// </summary>
+        private void refreshDataGridView()
+        {
+            foreach (var cmdDescriptor in CommandManager.Instance.AppCommandTable.CmdDescriptors)
+            {
+                if (cmdDescriptor.EnableSwitchMap)
+                {
+                    dataGridView2.Rows.Add(cmdDescriptor.Command, cmdDescriptor.Description);
+                }
+            }
+
+            dataGridView2.AutoResizeRows();
+
+            wrapText(true);
+
+            if (dataGridView2.Rows.Count > 0)
+            {
+                dataGridView2.Rows[0].Selected = true;
+            }
+        }
+
+        /// <summary>
+        /// Sets the widths of the columns in the datagrid
+        /// </summary>
+        private void setColumnWidths()
+        {
+            int w = dataGridView2.Width - SystemInformation.VerticalScrollBarWidth;
+
+            CommandColumn.Width = w / 3;
+            DescriptionColumn.Width = 2 * w / 3;
+        }
+
+        private void SwitchCommandMapForm_Load(object sender, EventArgs e)
         {
             float currentAspectRatio = (float)ClientSize.Height / ClientSize.Width;
 
@@ -84,102 +177,15 @@ namespace ACAT.Lib.Core.ActuatorManagement
             refreshDataGridView();
         }
 
-        private void checkBoxWrapText_CheckedChanged(object sender, EventArgs e)
-        {
-            _wrapText = checkBoxWrapText.Checked;
-            wrapText(_wrapText);
-        }
-
-        /// <summary>
-        /// Initializes the UI elements in the datagrid view such as widths
-        /// of columns, column header text etc
-        /// </summary>
-        private void initializeUI()
-        {
-            dataGridView1.AutoResizeRows();
-
-            //SwitchNameColumn.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-
-            dataGridView1.ScrollBars = ScrollBars.Vertical;
-            dataGridView1.RowHeadersVisible = false;
-            dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
-
-            setColumnWidths();
-        }
-
-        void dataGridView1_SelectionChanged(object sender, EventArgs e)
-        {
-            if (dataGridView1.SelectedCells.Count > 0)
-            {
-                int selectedrowindex = dataGridView1.SelectedCells[0].RowIndex;
-
-                DataGridViewRow selectedRow = dataGridView1.Rows[selectedrowindex];
-                dataGridView1.Rows[selectedrowindex].Selected = true;
-            }
-        }
-
-
-        /// <summary>
-        /// Sets the widths of the columns in the datagrid
-        /// </summary>
-        private void setColumnWidths()
-        {
-            int w = dataGridView1.Width - SystemInformation.VerticalScrollBarWidth;
-
-            CommandColumn.Width = w / 3;
-            DescriptionColumn.Width = 2* w / 3;
-        }
-
-        /// <summary>
-        /// Refreshes the Gridview with data from the switches
-        /// </summary>
-        private void refreshDataGridView()
-        {
-            foreach (var cmdDescriptor in CommandManager.Instance.AppCommandTable.CmdDescriptors)
-            {
-                if (cmdDescriptor.EnableSwitchMap)
-                {
-                    dataGridView1.Rows.Add(cmdDescriptor.Command, cmdDescriptor.Description);
-                }
-            }
-
-            dataGridView1.AutoResizeRows();
-
-            wrapText(true);
-
-            if (dataGridView1.Rows.Count > 0)
-            {
-                dataGridView1.Rows[0].Selected = true;
-            }
-        }
-
         /// <summary>
         /// Wraps text in rows
         /// </summary>
         /// <param name="onOff">whether to wrap or not</param>
         private void wrapText(bool onOff)
         {
-            DataGridViewTextBoxColumn tbc = dataGridView1.Columns[1] as DataGridViewTextBoxColumn;
+            DataGridViewTextBoxColumn tbc = dataGridView2.Columns[1] as DataGridViewTextBoxColumn;
             tbc.DefaultCellStyle.WrapMode = (onOff) ? DataGridViewTriState.True : DataGridViewTriState.False;
-            dataGridView1.AutoResizeRows();
-        }
-
-        private void buttonOK_Click(object sender, EventArgs e)
-        {
-            if (dataGridView1.SelectedRows.Count > 0)
-            {
-                var row = dataGridView1.SelectedRows[0];
-
-                SelectedCommand = row.Cells[0].Value as String;
-
-                MessageBox.Show("Selected Command: " + SelectedCommand, Text);
-            }
-            Close();
-        }
-
-        private void buttonCancel_Click(object sender, EventArgs e)
-        {
-            Close();
+            dataGridView2.AutoResizeRows();
         }
     }
 }

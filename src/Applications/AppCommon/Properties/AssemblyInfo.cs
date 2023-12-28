@@ -8,11 +8,12 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Assistive Context-Aware Toolkit (ACAT)")]
 [assembly: AssemblyDescription("Assistive Context-Aware Toolkit (ACAT)")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("http://01.org/acat")]
+[assembly: AssemblyCompany("https://www.intel.com/content/www/us/en/developer/tools/open/acat/overview.html")]
 [assembly: AssemblyProduct("Assistive Context-Aware Toolkit (ACAT)")]
 [assembly: AssemblyCopyright("Licensed and distributed under the Apache License v2.0 by Intel Corporation")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -32,5 +33,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.50.0.0")]
-[assembly: AssemblyFileVersion("1.50.0.0")]
+[assembly: AssemblyVersion("2.00")]
+[assembly: AssemblyFileVersion("2.00")]

@@ -1,24 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="DockScanner.cs" company="Intel Corporation">
-//
-// Copyright (c) 2013-2017 Intel Corporation 
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
-////////////////////////////////////////////////////////////////////////////
-
-using ACAT.Lib.Core.Utility;
+﻿using ACAT.Lib.Core.Utility;
 using System;
 using System.Windows.Automation;
 using System.Windows.Forms;
@@ -159,6 +139,26 @@ namespace ACAT.Lib.Core.PanelManagement
         }
 
         /// <summary>
+        /// Handles docking of the form to the center of the parent window
+        /// </summary>
+        private void handleDockCenter()
+        {
+            User32Interop.RECT windowRect;
+            User32Interop.GetWindowRect(_windowHandleDockTo, out windowRect);
+
+            switch (_dockPosition)
+            {
+                case Windows.WindowPosition.TopCenter:
+                    _form.Top = windowRect.top;
+                    break;
+
+                case Windows.WindowPosition.BottomCenter:
+                    _form.Top = windowRect.bottom - _form.Height;
+                    break;
+            }
+        }
+
+        /// <summary>
         /// Handles docking of the form to the left of the parent window
         /// </summary>
         private void handleDockLeft()
@@ -171,11 +171,15 @@ namespace ACAT.Lib.Core.PanelManagement
             int parentHeight = windowRect.bottom - windowRect.top;
             int spaceLeftHoriz = windowRect.left - screenLeft;
 
-            if (spaceLeftHoriz < _form.Width)
+            var control = Control.FromHandle(_windowHandleDockTo);
+            if (control == null || control is Form)
             {
-                var parentFormLeft = _form.Width;
-                User32Interop.MoveWindow(_windowHandleDockTo, parentFormLeft, windowRect.top, parentWidth, parentHeight, true);
-                User32Interop.GetWindowRect(_windowHandleDockTo, out windowRect);
+                if (spaceLeftHoriz < _form.Width)
+                {
+                    var parentFormLeft = _form.Width;
+                    User32Interop.MoveWindow(_windowHandleDockTo, parentFormLeft, windowRect.top, parentWidth, parentHeight, true);
+                    User32Interop.GetWindowRect(_windowHandleDockTo, out windowRect);
+                }
             }
 
             _form.Left = windowRect.left - _form.Width;
@@ -209,11 +213,15 @@ namespace ACAT.Lib.Core.PanelManagement
             int parentHeight = windowRect.bottom - windowRect.top;
             int spaceLeftHoriz = screenWidth - windowRect.right;
 
-            if (spaceLeftHoriz < _form.Width)
+            var control = Control.FromHandle(_windowHandleDockTo);
+            if (control == null || control is Form)
             {
-                var parentFormLeft = (screenWidth - _form.Width - parentWidth);
-                User32Interop.MoveWindow(_windowHandleDockTo, parentFormLeft, windowRect.top, parentWidth, parentHeight, true);
-                User32Interop.GetWindowRect(_windowHandleDockTo, out windowRect);
+                if (spaceLeftHoriz < _form.Width)
+                {
+                    var parentFormLeft = (screenWidth - _form.Width - parentWidth);
+                    User32Interop.MoveWindow(_windowHandleDockTo, parentFormLeft, windowRect.top, parentWidth, parentHeight, true);
+                    User32Interop.GetWindowRect(_windowHandleDockTo, out windowRect);
+                }
             }
 
             _form.Left = windowRect.right;
@@ -264,12 +272,27 @@ namespace ACAT.Lib.Core.PanelManagement
                 case Windows.WindowPosition.BottomLeft:
                     handleDockLeft();
                     break;
+
+                case Windows.WindowPosition.BottomCenter:
+                case Windows.WindowPosition.TopCenter:
+                    handleDockCenter();
+                    break;
             }
 
             int screenHeight = Screen.FromControl(_form).Bounds.Height;
             if ((_form.Top + _form.Height) > screenHeight)
             {
                 _form.Top = screenHeight - _form.Height;
+            }
+
+            if (_form.Top < 0)
+            {
+                _form.Top = 0;
+            }
+
+            if (_form.Left < 0)
+            {
+                _form.Left = 0;
             }
         }
     }

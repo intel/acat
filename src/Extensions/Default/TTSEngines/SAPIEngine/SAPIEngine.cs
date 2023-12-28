@@ -1,21 +1,14 @@
-﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="SAPIEngine.cs" company="Intel Corporation">
+﻿///////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// SAPIEngine.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Converts text to speech by sending the text string to the
+// Microsoft Speech Synthesizer
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Extensions;
@@ -31,15 +24,16 @@ using System.Speech.Synthesis;
 
 namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
 {
-    /// <summary>
-    /// Converts text to speech by sending the text string to the
-    /// Microsoft Speech Synthesizer
-    /// </summary>
     [DescriptorAttribute("B7AB6188-AE23-40E3-9E6A-F8AA8A81E2BF",
                         "Speech Synthesizer TTS Engine",
                         "Text to Speech based on the Microsoft Speech Synthesizer")]
     public class SAPIEngine : ExtensionInvoker, ITTSEngine, ISupportsPreferences
     {
+        /// <summary>
+        /// Name of the settings file
+        /// </summary>
+        internal const String SettingsFileName = "SAPIEngineSettings.xml";
+
         /// <summary>
         /// Settings for this engine
         /// </summary>
@@ -64,11 +58,6 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// Minimum value of speech volume
         /// </summary>
         private const int MinVolume = 0;
-
-        /// <summary>
-        /// Name of the settings file
-        /// </summary>
-        internal const String SettingsFileName = "SAPIEngineSettings.xml";
 
         /// <summary>
         /// Has this object been disposed
@@ -107,12 +96,13 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         {
             SAPISettings.PreferencesFilePath = UserManager.GetFullPath(SettingsFileName);
             SAPISettings = SAPISettings.Load();
-
+            UseAlternatePronunciations = SAPISettings.UseAlternatePronunciations;
             Synthesizer.SetOutputToDefaultAudioDevice();
             Synthesizer.BookmarkReached += speechSynthesizer_BookmarkReached;
+            Synthesizer.SpeakCompleted += Synthesizer_SpeakCompleted;
         }
 
-#pragma warning disable
+//#pragma warning disable
 
         /// <summary>
         /// Triggered when bookmark reached after async text to speech
@@ -134,7 +124,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// </summary>
         public event TTSVoiceChanged EvtVoiceChanged;
 
-#pragma warning enable
+//#pragma warning enable
 
         /// <summary>
         /// Gets or sets the culture info for the voice to use
@@ -144,7 +134,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public new IDescriptor Descriptor
         {
             get { return DescriptorAttribute.GetDescriptor(GetType()); }
         }
@@ -180,6 +170,12 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         }
 
         /// <summary>
+        /// Get/sets whether alternate pronunciations should be used or not
+        /// before TTS
+        /// </summary>
+        public bool UseAlternatePronunciations { get; set; }
+
+        /// <summary>
         /// Gets or sets the voice to use. Not supported
         /// </summary>
         public String Voice
@@ -195,7 +191,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// </summary>
         private SpeechSynthesizer Synthesizer
         {
-            get { return _speechSynthesizer ?? (_speechSynthesizer = new SpeechSynthesizer {Rate = 0, Volume = 100}); }
+            get { return _speechSynthesizer ?? (_speechSynthesizer = new SpeechSynthesizer { Rate = 0, Volume = 100 }); }
         }
 
         /// <summary>
@@ -418,8 +414,10 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// <returns>true on success</returns>
         public virtual bool ShowPreferencesDialog()
         {
+            // var form = new SettingsForm();
             var form = new SettingsForm();
             form.ShowDialog();
+            form.Dispose();
 
             return true;
         }
@@ -433,13 +431,15 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// <returns>true on success</returns>
         public bool Speak(String text)
         {
-            Log.Debug("Entering...text=" + text);
+            Log.Debug("Entering...");
 
             try
             {
                 if (!IsMuted())
                 {
-                    Synthesizer.SpeakAsync(replaceWithAltPronunciations(text));
+                    text = autoAppendPunctuation(replaceWithAltPronunciations(text));
+                    Log.Debug("Speaking text");
+                    Synthesizer.SpeakAsync(text);
                 }
             }
             catch (Exception ex)
@@ -468,10 +468,91 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
                 if (!IsMuted())
                 {
                     var promptBuilder = new PromptBuilder();
-                    promptBuilder.AppendText(replaceWithAltPronunciations(text));
+                    text = autoAppendPunctuation(replaceWithAltPronunciations(text));
+                    Log.Debug("Speaking text");
+                    promptBuilder.AppendText(autoAppendPunctuation(text));
+
                     promptBuilder.AppendBookmark(bookmark.ToString());
 
                     Synthesizer.SpeakAsync(promptBuilder);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Debug(ex.ToString());
+                retVal = false;
+            }
+
+            return retVal;
+        }
+
+        /// <summary>
+        /// Convert the string to speech by sending it to the
+        /// So the function returns immediately.
+        /// </summary>
+        /// <param name="ssml">Text to convert (SSML format)</param>
+        /// <returns>true on success</returns>
+        public bool SpeakSsml(String ssml, String text, String ttsPlaceHolderString)
+        {
+            Log.Debug("Entering...");
+
+            try
+            {
+                if (!IsMuted())
+                {
+                    text = autoAppendPunctuation(replaceWithAltPronunciations(text));
+                    ssml = ssml.Replace(ttsPlaceHolderString, text);
+
+                    Log.Debug("Speaking text");
+                    Synthesizer.SpeakSsmlAsync(ssml);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Debug("exception caught! ex=" + ex.Message);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Sends the string to the speech syncth to speak
+        /// async. Returns a bookmark. When the bookmark is
+        /// reached, an event raised.
+        /// </summary>
+        /// <param name="ssml">String to convert (SSML format)</param>
+        /// <param name="bookmark">returns bookmark</param>
+        /// <returns>true on success</returns>
+        public bool SpeakSsmlAsync(String ssml, String text, String ttsPlaceHolderString, out int bookmark)
+        {
+            bool retVal = true;
+
+            bookmark = _nextBookmark++;
+            try
+            {
+                if (!IsMuted())
+                {
+                    // this doesn't work
+                    //var promptBuilder = new PromptBuilder();
+                    //promptBuilder.AppendSsmlMarkup(ssml);
+                    //promptBuilder.AppendBookmark(bookmark.ToString());
+                    //Synthesizer.SpeakAsync(promptBuilder);
+
+                    //Prompt prompt = new Prompt(ssml, SynthesisTextFormat.Ssml);
+                    text = autoAppendPunctuation(replaceWithAltPronunciations(text));
+                    ssml = ssml.Replace(ttsPlaceHolderString, text);
+
+                    Log.Debug("Speaking text");
+
+                    TTSPrompt prompt = new TTSPrompt(ssml, SynthesisTextFormat.Ssml);
+                    prompt.Bookmark = bookmark;
+                    Synthesizer.SpeakAsync(prompt);
+
+                    Log.Debug("Returned from speakasync");
+                }
+                else
+                {
+                    retVal = false;
                 }
             }
             catch (Exception ex)
@@ -548,6 +629,30 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         }
 
         /// <summary>
+        /// If there is no puncuation at the end, appends it, if the settings
+        /// parameter is true
+        /// </summary>
+        /// <param name="inputString">input string</param>
+        /// <returns>output string</returns>
+        private String autoAppendPunctuation(String inputString)
+        {
+            inputString = inputString.Trim();
+            if (!SAPISettings.AutoAppendPunctuation || inputString.Length == 0)
+            {
+                return inputString;
+            }
+
+            char ch = inputString[inputString.Length - 1];
+            if (TextUtils.IsSentenceTerminator(ch))
+            {
+                return inputString;
+            }
+
+            /// TODO:  The period should be language sensitive
+            return inputString + ".";
+        }
+
+        /// <summary>
         /// Disposes the speech synth object
         /// </summary>
         private void disposeSpeechSynthesizer()
@@ -573,6 +678,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
 
             _pronunciations = new Pronunciations();
 
+            Log.Debug("Loading pronunciations. Filename is " + SAPISettings.PronunciationsFile);
             return _pronunciations.Load(ci, SAPISettings.PronunciationsFile);
         }
 
@@ -607,7 +713,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// <returns>string with alternate pronunciations</returns>
         private String replaceWithAltPronunciations(String inputString)
         {
-            return SAPISettings.UseAlternatePronunciations ?
+            return UseAlternatePronunciations ?
                     _pronunciations.ReplaceWithAlternatePronunciations(inputString) :
                     inputString;
         }
@@ -636,7 +742,6 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
             {
                 Log.Debug("Error setting TTS settings " + ex);
             }
-            
         }
 
         /// <summary>
@@ -655,6 +760,64 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
             catch (Exception ex)
             {
                 Log.Debug("Invalid bookmark " + e.Bookmark + ", exception: " + ex);
+            }
+        }
+
+        private void Synthesizer_SpeakCompleted(object sender, SpeakCompletedEventArgs e)
+        {
+            int bookmark = -1;
+            if (e.Prompt is TTSPrompt)
+            {
+                bookmark = (e.Prompt as TTSPrompt).Bookmark;
+            }
+
+            notifyBookmarkReached(bookmark);
+        }
+
+        private class TTSPrompt : Prompt
+        {
+            //
+            // Summary:
+            //     Creates a new instance of the System.Speech.Synthesis.Prompt class and specifies
+            //     the text to be spoken.
+            //
+            // Parameters:
+            //   textToSpeak:
+            //     The text to be spoken.
+            public TTSPrompt(string textToSpeak) : base(textToSpeak)
+            {
+            }
+
+            //
+            // Summary:
+            //     Creates a new instance of the System.Speech.Synthesis.Prompt class from a System.Speech.Synthesis.PromptBuilder
+            //     object.
+            //
+            // Parameters:
+            //   promptBuilder:
+            //     The content to be spoken.
+            public TTSPrompt(PromptBuilder promptBuilder) : base(promptBuilder)
+            {
+            }
+
+            //
+            // Summary:
+            //     Creates a new instance of the System.Speech.Synthesis.Prompt class and specifies
+            //     the text to be spoken and whether its format is plain text or markup language.
+            //
+            // Parameters:
+            //   textToSpeak:
+            //     The text to be spoken.
+            //
+            //   media:
+            //     A value that specifies the format of the text.
+            public TTSPrompt(string textToSpeak, SynthesisTextFormat media) : base(textToSpeak, media)
+            {
+            }
+
+            public int Bookmark
+            {
+                set; get;
             }
         }
     }

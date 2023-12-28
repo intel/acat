@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+  <!ENTITY usebold "false">
+  <!ENTITY buttonFontName "Montserrat SemiBold">
+  <!ENTITY functionButtonFontName "ACAT FONT 1">
+  <!ENTITY characterButtonBlackFontName "Montserrat Black">
+  <!ENTITY functionButtonFontSize "54">
+  <!ENTITY characterButtonFontSize "46">
+  <!ENTITY promptFontSize "64">
+]>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="Prompt" label=" " value=" " fontsize="&promptFontSize;" fontname="&buttonFontName;" mouseClickActuate="false" bold="&usebold;" roundedCorners="false"/>
+    <WidgetAttribute name="ItemText0" label="j" value="@CmdGoBack" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;"  />
+    <WidgetAttribute name="ItemText1" label=" " value=" " fontsize="18" fontname="&buttonFontName;"  mouseClickActuate="false" bold="&usebold;" />
+    <WidgetAttribute name="ItemText2" label="No" value="@CmdNo" fontname="&characterButtonBlackFontName;" italic="true" fontsize="&characterButtonFontSize;"  bold="false"  />
+    <WidgetAttribute name="ItemText3" label=" " value=" " fontsize="18" fontname="&buttonFontName;"  mouseClickActuate="false" bold="&usebold;" />
+    <WidgetAttribute name="ItemText4" label="Yes" value="@CmdYes" fontname="&characterButtonBlackFontName;" italic="true" fontsize="&characterButtonFontSize;"  bold="false"  />
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="RowWidget" name="PromptRow">
+      <Widget class="LabelWidget" name="Prompt"   />
+    </Widget>
+
+    <Widget class="ScannerButton" name="ItemText0"/>
+    <Widget class="ScannerButton" name="ItemText1"/>
+    <Widget class="ScannerButton" name="ItemText2"/>
+    <Widget class="ScannerButton" name="ItemText3"/>
+    <Widget class="ScannerButton" name="ItemText4"/>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopLevelRotation"
+               start="true"
+               onEnter=""
+               scanTime="@MenuDialogScanTime"
+               iterations="@GridScanIterations">
+      <Widget name="ItemText0" onSelect="actuate(ItemText0)"/>
+      <Widget name="ItemText1" />
+      <Widget name="ItemText2" onSelect="actuate(ItemText2);stop();"/>
+      <Widget name="ItemText3" />
+      <Widget name="ItemText4" onSelect="actuate(ItemText4);stop();" />
+    </Animation>
+  </Animations>
+</ACAT>

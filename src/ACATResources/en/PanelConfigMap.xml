@@ -2,53 +2,20 @@
 
 <ACAT>
   <ConfigMapEntries>
-	  <ConfigMapEntry panelClass="ToolsMenu" configName="ToolsMenu" configId="B161A090-AA5F-4CC7-9338-24E4860E10A2" formId="ABF847DF-ECBC-4361-96E9-D2DD3D031D73" configFile="ToolsMenu.xml"/>
-    <ConfigMapEntry panelClass="SettingsMenu" configName="SettingsMenu" configId="6E9037F0-8E41-4AA6-9E70-D2348CF6EE40" formId="5FE98886-D943-4E27-8380-BBB42D95D21E" configFile="SettingsMenu.xml"/>
-    <ConfigMapEntry panelClass="WindowPosSizeMenu" configName="WindowPosSizeMenu" configId="5E92814C-480A-4DB7-8C2B-40B98BA30156" formId="9144567C-7821-425A-904F-4601A89AE3FD" configFile="WindowPosSizeMenu.xml"/>
-    <ConfigMapEntry panelClass="DualMonitorMenu" configName="DualMonitorMenu" configId="04FE600D-79F8-4DE4-8990-AB1FD739334C" formId="7A810F5D-06CB-47EE-A766-4574E3C2CDBC" configFile="DualMonitorMenu.xml"/>
-    <ConfigMapEntry panelClass="MainMenu" configName="MainMenu" configId="EA60C02D-37CA-418F-889B-7767F18A7F00" formId="148257A1-A8B7-4E75-93F0-56AFCD5B2A3E" configFile="MainMenu.xml"/>
+     <ConfigMapEntry panelClass="MainMenu" configName="MainMenu" configId="EA60C02D-37CA-418F-889B-7767F18A7F00" formId="148257A1-A8B7-4E75-93F0-56AFCD5B2A3E" configFile="MainMenu.xml"/>
 
-    <ConfigMapEntry panelClass="AboutBoxForm" configName="AboutBox" configId="BBD7B545-7AF4-4027-B095-34BB585B281E" formId="F9A367F9-F9C4-4CF6-BDE7-6995675E1BE4" configFile="AboutBoxForm.xml"/>
-    <ConfigMapEntry panelClass="GeneralSettingsForm" configName="GeneralSettings" configId="52A06E6C-A7E5-4321-9B16-AB7164D2C48E" formId="216A2E8D-15A7-4995-B2D3-C0D3B4D42374" configFile="GeneralSettingsForm.xml"/>
-    <ConfigMapEntry panelClass="ScannerSettingsForm" configName="ScannerSettings" configId="B98FAC5E-602A-4FB7-AA0E-4D290F599C6A" formId="3BC26865-9D90-4DFD-BFAB-D7E69DDFA789" configFile="ScannerSettingsForm.xml"/>
-    <ConfigMapEntry panelClass="WordPredictionSettingsForm" configName="WordPredictionSettings" configId="E2775C52-5678-42D4-9133-E251BF01DFDB" formId="DF4867B5-C812-44A9-8DFB-1D6D9DC4A81A" configFile="WordPredictionSettingsForm.xml"/>
-    <ConfigMapEntry panelClass="MouseGridSettingsForm" configName="MouseGridSettings" configId="BECD9B15-C63F-40E0-8BC0-3AC6016D2E07" formId="71049A94-0435-4739-AE2C-77E2BD3CB0F0" configFile="MouseGridSettingsForm.xml"/>
-    <ConfigMapEntry panelClass="TextToSpeechSettingsForm" configName="TextToSpeechSettings" configId="6075B89B-C9DE-415B-B798-2DC3FC283F99" formId="0E2822DB-938C-4A45-AC0E-B2744E179944" configFile="TextToSpeechSettingsForm.xml"/>
-    <ConfigMapEntry panelClass="ScreenLockSettingsForm" configName="ScreenLockSettings" configId="141F7D9E-78DF-40D9-9B6E-0DE516A61CAD" formId="F3774E1D-E15A-4E5F-90B2-1851FAE93D3C" configFile="ScreenLockSettingsForm.xml"/>
-    <ConfigMapEntry panelClass="ResizeScannerForm" configName="ResizeScanner" configId="3F5E55AD-D7FE-46DC-BEEB-06D9540A234D" formId="7310C2B3-94DD-4356-824E-8D475832CE34" configFile="ResizeScannerForm.xml"/>
-    <ConfigMapEntry panelClass="TimedDialogForm" configName="TimedDialog" configId="700B77F0-8BF1-4364-9050-085B6C199F6A" formId="22C1D68A-574F-4512-A0C3-579EA9AADD61" configFile="TimedDialogForm.xml"/>
-    <ConfigMapEntry panelClass="ScreenLockForm" configName="ScreenLock" configId="77AD14BC-E606-419D-A653-1F4303665359" formId="303AF1A4-C097-4C84-B031-96A10935E0A6" configFile="ScreenLockForm.xml"/>
-    <ConfigMapEntry panelClass="WindowMoveResizeScannerForm" configName="WindowMoveResizeScanner" configId="D3AE896E-4F73-4220-BF70-05A1C0D13658" formId="AB688D22-7302-48C8-92A0-1F47EE38147E" configFile="WindowMoveResizeScannerForm.xml"/>
+    <ConfigMapEntry panelClass="TalkApplicationScanner" configName="TalkApplicationScannerQwerty" configId="F802386C-31CA-4A0D-BC6F-78E71C730D11" formId="D9A5B53F-7119-445B-BDEA-F76EC53077F1" configFile="TalkApplicationScannerQwerty.xml" userControls="keyboard=KeyboardQwertyUserControl; wordPrediction=WordPredictionUserControl; sentencePrediction=SentencePredictionUserControl; numeric=KeyboardNumberUserControl; edit=KeyboardEditUserControl"/>
+    <ConfigMapEntry panelClass="TalkApplicationScanner" configName="TalkApplicationScannerAbc" configId="DE5B9E7C-610F-463F-94F1-6B8DDA9A35B3" formId="D9A5B53F-7119-445B-BDEA-F76EC53077F1" configFile="TalkApplicationScannerQwerty.xml" userControls="keyboard=KeyboardAbcUserControl; wordPrediction=WordPredictionUserControl; sentencePrediction=SentencePredictionUserControl; numeric=KeyboardNumberNumericKeypadUserControl; edit=KeyboardEditUserControl"/>
 
-    <ConfigMapEntry panelClass="ACATTryoutForm" configName="ACATTryout" configId="78CD21C4-8D97-4CA3-AF84-EACF06D2E482" formId="CE2553C4-8055-4CAC-BAE0-4C1A0E8E8774" configFile="ACATTryoutForm.xml"/>
-
-    <ConfigMapEntry panelClass="Alphabet" configName="AlphabetQwerty" configId="90475F6A-BA27-4CFD-ABDE-BF00DE84D110" formId="3FA65CCE-EB23-461A-AEE1-70339446BEA9" configFile="AlphabetScannerQwerty.xml"/>
-    <ConfigMapEntry panelClass="Alphabet" configName="AlphabetScannerAbc" configId="7C71627D-0A4F-4C49-8DB3-F412FC029596" formId="8AA9056F-84A8-4E7F-9704-061CB4FAB68D" configFile="AlphabetScannerAbc.xml"/>
-    <ConfigMapEntry panelClass="Alphabet" configName="AlphabetScannerAlternate" configId="80505E23-121B-426C-AEE8-6EFFC8E1907B" formId="D4A507B2-2EA5-49BC-96A8-B00D287F6406" configFile="AlphabetScannerAlternate.xml"/>
-    <ConfigMapEntry panelClass="Alphabet" configName="AlphabetScannerAbcAlternate" configId="A6A498AB-F1F1-44EF-A18F-1C1F3A4158D4" formId="D4A507B2-2EA5-49BC-96A8-B00D287F6406" configFile="AlphabetScannerAbcAlternate.xml"/>
-
-    <ConfigMapEntry panelClass="AlphabetMinimal" configName="AlphabetQwertyMinimal" configId="8786DC25-90C7-4961-A7C6-9C73D9DD8433" formId="D37C3E46-8E54-46E5-8657-3D43DBDB3003" configFile="AlphabetScannerQwertyMinimal.xml"/>
-    <ConfigMapEntry panelClass="AlphabetMinimal" configName="AlphabetScannerAbcMinimal" configId="8CCA92F6-58B1-46E9-BD19-45611FB7C760" formId="BB2B224F-9B63-46D2-9905-17CDAC3067F4" configFile="AlphabetScannerAbcMinimal.xml"/>
-    <ConfigMapEntry panelClass="AlphabetMinimal" configName="AlphabetScannerAlternateMinimal" configId="DD5D4998-931C-4783-A9C2-CF8A30FC0ACF" formId="32D2A726-43A9-40D7-81A3-86C6C9EF4530" configFile="AlphabetScannerAlternateMinimal.xml"/>
-    <ConfigMapEntry panelClass="AlphabetMinimal" configName="AlphabetScannerAbcAlternateMinimal" configId="E1188AB5-DEC4-4140-92AA-2EEC89B45A42" formId="32D2A726-43A9-40D7-81A3-86C6C9EF4530" configFile="AlphabetScannerAbcAlternateMinimal.xml"/>
-
-    <ConfigMapEntry panelClass="TalkApplicationScanner" configName="TalkApplicationScannerQwerty" configId="F802386C-31CA-4A0D-BC6F-78E71C730D11" formId="D9A5B53F-7119-445B-BDEA-F76EC53077F1" configFile="TalkApplicationScannerQwerty.xml"/>
-    <ConfigMapEntry panelClass="TalkApplicationScanner" configName="TalkApplicationScannerAbc" configId="8B323A2F-381B-4F86-9C38-5425426F329E" formId="86B57FA0-2EF3-4C07-81E7-6796AE9B7B59" configFile="TalkApplicationScannerAbc.xml"/>
-    <ConfigMapEntry panelClass="TalkApplicationScanner" configName="TalkApplicationScannerAlternate" configId="A7277544-887D-46CF-866E-009973EFCCB2" formId="44DD722B-2BA2-42F4-9AE6-B13108A6F025" configFile="TalkApplicationScannerAlternate.xml"/>
-    <ConfigMapEntry panelClass="TalkApplicationScanner" configName="TalkApplicationScannerAbcAlternate" configId="F756BB97-2C1A-47D8-8033-114E5847A944" formId="44DD722B-2BA2-42F4-9AE6-B13108A6F025" configFile="TalkApplicationScannerAbcAlternate.xml"/>
-
-    <ConfigMapEntry panelClass="Mouse" configName="MouseScanner" configId="3BFBA375-13F7-461B-A7C7-57BFFA9D21AD" formId="802B03F0-1294-4D06-A601-2CEBFBFA5D9C" configFile="MouseScanner.xml"/>
-    <ConfigMapEntry panelClass="Punctuation" configName="PunctuationsScanner" configId="97602FA0-796D-49ED-A680-0198FC7B5668" formId="478CE93F-A391-435C-B5B3-2AFC32CD99A7" configFile="PunctuationsScanner.xml"/>
-    <ConfigMapEntry panelClass="Cursor" configName="CursorScanner" configId="3049359E-345B-4EBA-B78B-48DFE30DD6A3" formId="E2FAC808-D05A-435B-84DA-5F9A7B65A94C" configFile="CursorNavigationScanner.xml"/>
-    <ConfigMapEntry panelClass="Number" configName="NumberScanner" configId="8BE3F2BE-1A2B-4F7D-9E74-7A8180137D16" formId="A2FAC295-9A8F-4214-B55C-BB611F09B252" configFile="NumbersScanner.xml"/>
-    <ConfigMapEntry panelClass="FunctionKey" configName="FunctionKeyScanner" configId="DEAB1521-0CAE-4049-88D3-2ACFB394A03F" formId="889D0562-78F4-47BC-A879-DB6572227D01" configFile="FunctionKeyScanner.xml"/>
-    <ConfigMapEntry panelClass="SwitchLanguageScanner" configName="SwitchLanguageScanner" configId="1C794ACF-2E29-4382-AF91-52DB6C650E09" formId="FFC04277-CDAE-4A18-BB00-D941A18268E4" configFile="SwitchLanguageScanner.xml"/>
-    <ConfigMapEntry panelClass="Currency" configName="Currency" configId="FD7AE074-C5B6-4CA8-A19B-86FCAA756FB2" formId="83FACD42-3678-4D14-9350-22B0E69D0D01" configFile="CurrencyScanner.xml"/>
-
-    <ConfigMapEntry panelClass="AbbreviationEditorForm" configName="AbbreviationEditor" configId="40755A80-03B7-4252-A731-DB962A27C466" formId="5D03D10B-48B4-412D-9442-C93E65D96BA6" configFile="AbbreviationEditorForm.xml"/>
-    
+      
+    <ConfigMapEntry panelClass="DefaultTryoutScanner" configName="DefaultTryoutScannerConfig" configId="C753E412-0A2C-40A2-B47C-954C620573ED" formId="6889D5CA-2D64-4123-AB0E-179D3C41560C" configFile="UserControlContainerForm.xml" userControls="embedUserControl=UserControlDefaultTryout"/>
+    <ConfigMapEntry panelClass="ScreenLockScanner" configName="ScreenLockConfig" configId="C0DE0ECD-8974-4DF8-BF64-8F4BB183C696" formId="6889D5CA-2D64-4123-AB0E-179D3C41560C" configFile="UserControlContainerForm.xml" userControls="embedUserControl=UserControlScreenLock"/>
+    <ConfigMapEntry panelClass="ScanTimeAdjustScanner" configName="ScanTimeAdjustScannerConfig" configId="BB30AF8C-D30E-44E9-8734-3AAF83290DEB" formId="D6AE907B-CB4B-417E-9FCC-E587D976FFD7" configFile="ScanTimeAdjustForm.xml"/>
     <ConfigMapEntry panelClass="YesNoScanner" configName="YesNoScanner" configId="CA51B4CD-0D90-49B1-87FB-91ED898BF427" formId="81C9DA24-C9DD-44D6-B3A6-7364C4109CAA" configFile="YesNoScanner.xml"/>
-    <ConfigMapEntry panelClass="YesNoScannerNarrow" configName="YesNoScannerNarrow" configId="C677FE3D-AEFC-43DD-8C2B-B4D2C81DDB24" formId="056E5553-66C7-4B60-A931-D7FED719DAF2" configFile="YesNoScanner.xml"/>
-	  <ConfigMapEntry panelClass="YesNoDialog" configName="YesNoDialog" configId="2EB8482A-286A-4963-AED8-04C51684CC00" formId="640B79F7-0574-45A5-9A8C-50F87C62B08A" configFile="YesNoDialogForm.xml"/>
+    <ConfigMapEntry panelClass="YesNoResponseScanner" configName="YesNoResponseScanner" configId="8352D92F-CC6C-44C7-890B-C5EE160D1A77" formId="BF9D82F4-B43F-4188-B8AD-D0EE2F5D7E2B" configFile="YesNoResponseScanner.xml"/>
+    <ConfigMapEntry panelClass="WordPredictionSetModeScanner" configName="WordPredictionSetModeScanner" configId="4A25F384-618E-4DB2-9AF2-802CDAAD3284" formId="954E418F-B206-457C-B7A5-7C32B4D85E76" configFile="WordPredictionSetModeScanner.xml"/>
+	<ConfigMapEntry panelClass="DefaultInterfaceScanner" configName="DefaultInterfaceScannerConfig" configId="80DD3A6D-297F-42E0-9BA6-07FAAD6E5CD8" formId="6889D5CA-2D64-4123-AB0E-179D3C41560C" configFile="UserControlContainerForm.xml" userControls="embedUserControl=UserControlDefaultTalkInterface"/>
+	  
+	  
   </ConfigMapEntries>
 </ACAT>

@@ -1,26 +1,13 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="SplashScreen.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Utility;
 using System;
-using System.Drawing;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace ACAT.Lib.Core.PanelManagement
@@ -31,50 +18,32 @@ namespace ACAT.Lib.Core.PanelManagement
     /// </summary>
     public partial class SplashScreen : Form
     {
+        private const int maxPeriods = 6;
+
         /// <summary>
         /// Make sure nothing overlaps this form
         /// </summary>
         private readonly WindowOverlapWatchdog _watchDog;
 
-        /// <summary>
-        /// Index of the image in the image list
-        /// </summary>
-        private int _imageIndex;
+        private int _count = 0;
 
         /// <summary>
         /// Timer used to udpate info on the form
         /// </summary>
         private Timer _timer;
 
+        //String starting = "Starting.";
+        private String starting = ".";
+
         /// <summary>
         /// Initializes a new instance of the class..  Parameters
         /// can be used to cutomize the screen
         /// </summary>
-        /// <param name="line1">First line</param>
-        /// <param name="line2">Second line</param>
-        /// <param name="line3">Third line</param>
-        /// <param name="line4">Fourth line</param>
-        /// <param name="image">Path to bitmap</param>
-        public SplashScreen(String line1, String line2, String line3, String line4, String image)
+        public SplashScreen()
         {
             InitializeComponent();
 
-            this.labelLine1.Text = line1;
-            this.labelLine2.Text = line2;
-            this.labelLine3.Text = line3;
-            this.labelLine4.Text = line4;
-
-            Windows.SetWindowPosition(this, Windows.WindowPosition.BottomRight);
-
-            try
-            {
-                var img = Image.FromFile(image);
-                var bitmap = ImageUtils.ImageOpacity(img, 1.0F, new Rectangle(0, 0, img.Width, img.Height));
-                splashPictureBox.BackgroundImage = bitmap;
-            }
-            catch
-            {
-            }
+            Windows.SetWindowPosition(this, Windows.WindowPosition.CenterScreen);
 
             FormClosing += Form1_FormClosing;
 
@@ -82,9 +51,7 @@ namespace ACAT.Lib.Core.PanelManagement
 
             TopMost = true;
 
-            pictureBoxStatus.BackgroundImageLayout = ImageLayout.Stretch;
-
-            _watchDog = new WindowOverlapWatchdog(this);
+            //_watchDog = new WindowOverlapWatchdog(this);
 
             Load += SplashScreen_Load;
             Shown += SplashScreen_Shown;
@@ -109,8 +76,19 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="e">event args</param>
         private void _timer_Tick(object sender, EventArgs e)
         {
-            pictureBoxStatus.BackgroundImage = imageList.Images[_imageIndex];
-            _imageIndex = (_imageIndex + 1) % imageList.Images.Count;
+            String str;
+            _count = (++_count % maxPeriods);
+            if (_count == 0)
+            {
+                str = starting;
+            }
+            else
+            {
+                str = labelStarting.Text.Trim();
+                str += " .";
+            }
+
+            labelStarting.Text = str;
         }
 
         /// <summary>
@@ -135,6 +113,28 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="e">event args</param>
         private void SplashScreen_Load(object sender, EventArgs e)
         {
+            var assembly = Assembly.GetEntryAssembly();
+            // get appname and copyright information
+            object[] attributes = assembly.GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
+
+            var appName = (attributes.Length != 0) ?
+                            ((AssemblyTitleAttribute)attributes[0]).Title :
+                            String.Empty;
+
+            var appVersion = "Version " + assembly.GetName().Version.Major + "." + assembly.GetName().Version.Minor;
+
+            labelAppNameAndVersion.Text = appName + "\r\n" + appVersion;
+
+            attributes = assembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
+
+            var appCopyright = (attributes.Length != 0)
+                ? ((AssemblyCopyrightAttribute)attributes[0]).Copyright
+                : String.Empty;
+
+            labelLicense.Text = appCopyright;
+
+            labelStarting.Text = starting;
+
             startTimer();
         }
 

@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="AppWindowManagementHandler.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.ACATResources;
@@ -174,8 +161,8 @@ namespace ACAT.Lib.Extension.CommandHandlers
 
                     Dispatcher.Scanner.Form.Invoke(new MethodInvoker(delegate
                     {
-                        Windows.SetForegroundWindowSizePercent(Context.AppWindowPosition,
-                                                                Common.AppPreferences.WindowSnapSizePercent);
+                        Windows.DockWindowWithLargestScanner(fgHandle, null, Context.AppWindowPosition);
+                        //Windows.SetForegroundWindowSizePercent(Context.AppWindowPosition, Common.AppPreferences.WindowSnapSizePercent);
                     }));
                     break;
 
@@ -185,13 +172,14 @@ namespace ACAT.Lib.Extension.CommandHandlers
                         break;
                     }
 
-                    Windows.ToggleSnapForegroundWindow(Context.AppWindowPosition,
-                                                                Common.AppPreferences.WindowSnapSizePercent);
+                    Windows.ToggleForegroundWindowMaximizeDock(Context.AppPanelManager.GetCurrentForm() as Form, Context.AppWindowPosition, true);
+                    //Windows.ToggleSnapForegroundWindow(Context.AppWindowPosition,
+                    ///Common.AppPreferences.WindowSnapSizePercent);
                     break;
 
                 case "CmdDualMonitorMenu":
                     {
-                        if (DualMonitor.MultipleMonitors && !Context.AppTalkWindowManager.IsTalkWindowVisible)
+                        if (DualMonitor.MultipleMonitors)
                         {
                             var panel = Context.AppPanelManager.CreatePanel("DualMonitorMenu", R.GetString("DualMonitorMenu")) as IPanel;
                             if (panel != null)
@@ -205,26 +193,23 @@ namespace ACAT.Lib.Extension.CommandHandlers
 
                 case "CmdMoveToOtherMonitor":
                     {
-                        if (DualMonitor.MultipleMonitors && !Context.AppTalkWindowManager.IsTalkWindowVisible)
+                        if (DualMonitor.MultipleMonitors)
                         {
                             DualMonitor.MoveWindowToOtherMonitor(fgHandle);
                         }
-
-
                     }
 
                     break;
 
                 case "CmdMaxInOtherMonitor":
                     {
-                        if (DualMonitor.MultipleMonitors && !Context.AppTalkWindowManager.IsTalkWindowVisible)
+                        if (DualMonitor.MultipleMonitors)
                         {
                             DualMonitor.MaximizeWindowInOtherMonitor(fgHandle);
                         }
                     }
 
                     break;
-
 
                 default:
                     handled = false;
@@ -261,11 +246,10 @@ namespace ACAT.Lib.Extension.CommandHandlers
 
             if (!Windows.IsApplicationFrameHostProcessWindow(fgHandle))
             {
-                object objPattern;
                 Log.Debug("controltype: " + window.Current.ControlType.ProgrammaticName);
 
                 bool retVal = false;
-                if (window.TryGetCurrentPattern(WindowPattern.Pattern, out objPattern))
+                if (window.TryGetCurrentPattern(WindowPattern.Pattern, out object objPattern))
                 {
                     var windowPattern = objPattern as WindowPattern;
                     retVal = (windowPattern.Current.CanMaximize) && !windowPattern.Current.IsModal;
@@ -305,11 +289,10 @@ namespace ACAT.Lib.Extension.CommandHandlers
 
             if (!Windows.IsApplicationFrameHostProcessWindow(fgHandle))
             {
-                object objPattern;
                 Log.Debug("controltype: " + window.Current.ControlType.ProgrammaticName);
 
                 bool retVal = false;
-                if (window.TryGetCurrentPattern(WindowPattern.Pattern, out objPattern))
+                if (window.TryGetCurrentPattern(WindowPattern.Pattern, out object objPattern))
                 {
                     var windowPattern = objPattern as WindowPattern;
                     retVal = (windowPattern.Current.CanMinimize) && !windowPattern.Current.IsModal;

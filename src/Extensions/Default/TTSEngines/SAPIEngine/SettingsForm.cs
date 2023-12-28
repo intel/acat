@@ -1,27 +1,21 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="SettingsForm.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// SettingsForm.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Configure TTS Engine settings form
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.PreferencesManagement;
 using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.Utility;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Speech.Synthesis;
 using System.Windows.Forms;
@@ -67,8 +61,21 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
 
             Load += SettingsForm_Load;
             FormClosing += SettingsForm_FormClosing;
-            comboBoxGender.SelectedIndexChanged += ComboBoxGender_SelectedIndexChanged;
             comboBoxSelectVoice.SelectedIndexChanged += ComboBoxSelectVoice_SelectedIndexChanged;
+        }
+
+        /// <summary>
+        /// Client size changed
+        /// </summary>
+        /// <param name="e">event args</param>
+        protected override void OnClientSizeChanged(EventArgs e)
+        {
+            base.OnClientSizeChanged(e);
+            if (_firstClientChangedCall)
+            {
+                _designTimeAspectRatio = (float)ClientSize.Height / ClientSize.Width;
+                _firstClientChangedCall = false;
+            }
         }
 
         /// <summary>
@@ -90,20 +97,6 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         }
 
         /// <summary>
-        /// Client size changed
-        /// </summary>
-        /// <param name="e">event args</param>
-        protected override void OnClientSizeChanged(EventArgs e)
-        {
-            base.OnClientSizeChanged(e);
-            if (_firstClientChangedCall)
-            {
-                _designTimeAspectRatio = (float)ClientSize.Height / ClientSize.Width;
-                _firstClientChangedCall = false;
-            }
-        }
-
-        /// <summary>
         /// User clicked the Defaults button.  Restore defaults and
         /// update the UI
         /// </summary>
@@ -119,14 +112,6 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
             var settings = new SAPISettings();
 
             updateUI(settings);
-
-            checkBoxSelectVoice.Checked = false;
-            if (comboBoxSelectVoice.Items.Count > 0)
-            {
-                comboBoxSelectVoice.SelectedIndex = 0;
-            }
-
-            comboBoxGender.SelectedIndex = 0;
         }
 
         /// <summary>
@@ -142,8 +127,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
                 return;
             }
 
-            if (checkBoxSelectVoice.Checked &&
-                    comboBoxSelectVoice.Items.Count > 0 &&
+            if (comboBoxSelectVoice.Items.Count > 0 &&
                     comboBoxSelectVoice.SelectedItem != null)
             {
                 var voice = comboBoxSelectVoice.SelectedItem as String;
@@ -153,21 +137,8 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
                 }
                 else
                 {
-                    MessageBox.Show("Must select voice", Text);
+                    bool result = ConfirmBox.ShowDialog("Must select voice", null, false);
                     return;
-                }
-            }
-            else
-            {
-                var gender = comboBoxGender.SelectedItem as String;
-                if (!String.IsNullOrEmpty(gender))
-                {
-                    var voiceGender = stringToVoiceGender(gender);
-                    if (voiceGender != VoiceGender.NotSet)
-                    {
-                        _settings.Gender = voiceGender;
-                        _settings.Voice = String.Empty;
-                    }
                 }
             }
 
@@ -175,10 +146,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
 
             if (Windows.GetOSVersion() == Windows.WindowsVersion.Win7)
             {
-                MessageBox.Show("You are running Windows 7. Text to speech voice selection may not work",
-                                    Text,
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Warning);
+                bool result = ConfirmBox.ShowDialog("You are running Windows 7. Text to speech voice selection may not work", null, false);
             }
 
             Close();
@@ -192,17 +160,21 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// <param name="e">event args</param>
         private void buttonSettings_Click(object sender, EventArgs e)
         {
+            this.TopMost = false;
             Hide();
 
-            var form = new PreferencesEditForm
+            PreferencesEditForm2 form = new PreferencesEditForm2
             {
                 Title = Text,
                 SupportsPreferencesObj = new SAPIEngine()
             };
 
+            form.TopMost = true;
             form.ShowDialog();
 
             Show();
+
+            this.TopMost = true;
 
             _settings = SAPISettings.Load();
         }
@@ -245,10 +217,40 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// <returns>true if yes</returns>
         private bool confirm(String prompt)
         {
-            return MessageBox.Show(prompt,
-                                        Text,
-                                        MessageBoxButtons.YesNo,
-                                        MessageBoxIcon.Question) == DialogResult.Yes;
+            this.TopMost = false;
+            Hide();
+
+            bool result = ConfirmBox.ShowDialog(prompt.ToString(), null, false);
+
+            Show();
+            this.TopMost = true;
+
+            return result;
+        }
+
+        private void loadVoices(bool currentCulture = true)
+        {
+            comboBoxSelectVoice.Items.Clear();
+
+            IEnumerable<InstalledVoice> ins = currentCulture
+                ? _speechSynthesizer.GetInstalledVoices(CultureInfo.DefaultThreadCurrentUICulture)
+                : _speechSynthesizer.GetInstalledVoices();
+
+            foreach (InstalledVoice iv in ins)
+            {
+                String voiceName = iv.VoiceInfo.Name.ToString();
+                String gender = " ";
+                if (voiceName.ToUpper().Contains("DAVID"))
+                {
+                    gender += "(Male)";
+                }
+                else if (voiceName.ToUpper().Contains("ZIRA"))
+                {
+                    gender += "(Female)";
+                }
+                voiceName += gender;
+                comboBoxSelectVoice.Items.Add(voiceName);
+            }
         }
 
         /// <summary>
@@ -256,8 +258,6 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// </summary>
         private void setComboBoxStates()
         {
-            comboBoxSelectVoice.Enabled = checkBoxSelectVoice.Checked;
-            comboBoxGender.Enabled = !checkBoxSelectVoice.Checked;
         }
 
         /// <summary>
@@ -284,6 +284,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
                 ClientSize = new System.Drawing.Size(ClientSize.Width, (int)(_designTimeAspectRatio * ClientSize.Width));
             }
 
+            TopMost = false;
             TopMost = true;
 
             CenterToScreen();
@@ -301,33 +302,15 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
 
             _speechSynthesizer = new SpeechSynthesizer();
 
-            var ins = _speechSynthesizer.GetInstalledVoices(CultureInfo.DefaultThreadCurrentUICulture);
-
-            foreach (InstalledVoice iv in ins)
-            {
-                comboBoxSelectVoice.Items.Add(iv.VoiceInfo.Name);
-            }
-
-            if (comboBoxSelectVoice.Items.Count == 0)
-            {
-                checkBoxSelectVoice.Checked = false;
-                checkBoxSelectVoice.Enabled = false;
-            }
+            loadVoices(false);
 
             comboBoxSelectVoice.DropDownStyle = ComboBoxStyle.DropDownList;
-
-            comboBoxGender.Items.Clear();
-
-            comboBoxGender.Items.Add(VoiceGender.Female.ToString());
-            comboBoxGender.Items.Add(VoiceGender.Male.ToString());
-
-            comboBoxGender.DropDownStyle = ComboBoxStyle.DropDownList;
 
             updateUI(_settings);
 
             _dirty = false;
         }
-        
+
         /// <summary>
         /// Converts a string representation of the gender to
         /// the enum. Returns NotSet if string is invalid
@@ -371,10 +354,6 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
             {
                 comboBoxSelectVoice.SelectedIndex = (selectedIndex >= 0) ? selectedIndex : 0;
             }
-
-            checkBoxSelectVoice.Checked = (selectedIndex >= 0);
-
-            comboBoxGender.SelectedIndex = (settings.Gender == VoiceGender.Female) ? 0 : 1;
 
             setComboBoxStates();
         }

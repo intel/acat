@@ -1,26 +1,16 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="ActuatorErrorForm.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// ActuatorErrorForm.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// This form displays an actuator error
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.ComponentModel;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace ACAT.Lib.Core.ActuatorManagement
@@ -31,11 +21,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
     public partial class ActuatorErrorForm : Form
     {
         /// <summary>
-        /// Thickness of the line for the border
-        /// </summary>
-        private const int BorderThickness = 1;
-
-        /// <summary>
         /// Initializes a new instance of teh class
         /// </summary>
         public ActuatorErrorForm()
@@ -44,7 +29,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
             ShowInTaskbar = false;
             Load += OnLoad;
-            BorderPanel.Paint += BorderPanelOnPaint;
         }
 
         /// <summary>
@@ -87,29 +71,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
                 labelPrompt.Text = prompt;
                 labelCaption.Text = caption;
             }));
-        }
-
-        /// <summary>
-        /// Paint handler.  Paint the border around the form
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void BorderPanelOnPaint(object sender, PaintEventArgs e)
-        {
-            if (BorderPanel.BorderStyle == BorderStyle.FixedSingle)
-            {
-                const int thickness = BorderThickness;
-                const int halfThickness = thickness / 2;
-                using (var pen = new Pen(Color.Black, thickness))
-                {
-                    e.Graphics.DrawRectangle(
-                        pen,
-                        new Rectangle(halfThickness,
-                        halfThickness,
-                        BorderPanel.ClientSize.Width - thickness,
-                        BorderPanel.ClientSize.Height - thickness));
-                }
-            }
         }
 
         /// <summary>

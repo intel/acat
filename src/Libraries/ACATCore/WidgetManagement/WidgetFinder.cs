@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="WidgetFinder.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
@@ -360,6 +347,55 @@ namespace ACAT.Lib.Core.WidgetManagement
                     }
 
                     if ((retVal = child.Finder.FindChild(handle)) != null)
+                    {
+                        return retVal;
+                    }
+                }
+            }
+
+            return retVal;
+        }
+
+        /// <summary>
+        /// Recursively finds the default home widget for manual scanning
+        /// </summary>
+        /// <returns>Child, null if not found</returns>
+        public Widget FindDefaultHome()
+        {
+            Widget retVal = null;
+
+            if (!_widget.Children.Any())
+            {
+                return null;
+            }
+
+            try
+            {
+                // first check if this is a direct child
+                foreach (Widget child in _widget.Children)
+                {
+                    if (child.DefaultHome)
+                    {
+                        retVal = child;
+                        break;
+                    }
+                }
+            }
+            catch
+            {
+            }
+
+            // now recursively descend and check its children
+            if (retVal == null)
+            {
+                foreach (Widget child in _widget.Children)
+                {
+                    if (child.DefaultHome)
+                    {
+                        return child;
+                    }
+
+                    if ((retVal = child.Finder.FindDefaultHome()) != null)
                     {
                         return retVal;
                     }

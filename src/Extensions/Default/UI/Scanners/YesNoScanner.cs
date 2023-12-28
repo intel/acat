@@ -1,21 +1,16 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="YesNoScanner.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// YesNoScanner.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Scanner that displays a Yes/No dialog with a prompt. The strings
+// Yes and No are displayed in the scanner. This scanner has blank
+// spaces between the yes and the no to give the user time to make
+// the choice
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.ActuatorManagement;
@@ -92,11 +87,6 @@ namespace ACAT.Extensions.Default.UI.Menus
         private ScannerHelper _scannerHelper;
 
         /// <summary>
-        /// Title of the scanner
-        /// </summary>
-        private String _title = String.Empty;
-
-        /// <summary>
         /// Text for  the "Yes" button
         /// </summary>
         private String _yesText;
@@ -112,11 +102,10 @@ namespace ACAT.Extensions.Default.UI.Menus
 
             InitializeComponent();
 
-            Load += ContextMenu_Load;
-            FormClosing += ContextMenu_FormClosing;
+            Load += YesNoScanner_Load;
+            FormClosing += YesNoScanner_FormClosing;
 
             Choice = false;
-            _title = panelTitle;
             PanelClass = panelClass;
             Caption = String.Empty;
 
@@ -127,7 +116,7 @@ namespace ACAT.Extensions.Default.UI.Menus
             if (actuator is KeyboardActuator)
             {
                 _keyboardActuator = actuator as KeyboardActuator;
-                _keyboardActuator.EvtKeyPress += _keyboardActuator_EvtKeyPress;
+                _keyboardActuator.EvtKeyPress += keyboardActuator_EvtKeyPress;
             }
         }
 
@@ -173,7 +162,8 @@ namespace ACAT.Extensions.Default.UI.Menus
         /// <summary>
         /// Gets the PanelCommon object
         /// </summary>
-        public IPanelCommon PanelCommon { get { return scannerCommon; } }
+        public IPanelCommon PanelCommon
+        { get { return scannerCommon; } }
 
         /// <summary>
         /// Gets the scanner common object
@@ -307,7 +297,7 @@ namespace ACAT.Extensions.Default.UI.Menus
         /// </summary>
         /// <param name="widget">widget actuated</param>
         /// <param name="handled">was this handled</param>
-        public virtual void OnWidgetActuated(Widget widget, ref bool handled)
+        public virtual void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
         {
             handled = false;
         }
@@ -340,7 +330,7 @@ namespace ACAT.Extensions.Default.UI.Menus
             _scannerHelper.OnFormClosing(e);
             scannerCommon.OnFormClosing(e);
 
-            _keyboardActuator.EvtKeyPress -= _keyboardActuator_EvtKeyPress;
+            _keyboardActuator.EvtKeyPress -= keyboardActuator_EvtKeyPress;
             base.OnFormClosing(e);
         }
 
@@ -360,66 +350,6 @@ namespace ACAT.Extensions.Default.UI.Menus
             }
 
             base.WndProc(ref m);
-        }
-
-        /// <summary>
-        /// Key press handler
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void _keyboardActuator_EvtKeyPress(object sender, KeyPressEventArgs e)
-        {
-            char yesChar = string.IsNullOrEmpty(_yesText) ? '\0' : Char.ToLower(_yesText[0]);
-            char noChar = string.IsNullOrEmpty(_noText) ? '\0' : Char.ToLower(_noText[0]);
-
-            if (e.KeyChar == 27 || (noChar != '\0' && Char.ToLower(e.KeyChar) == noChar))
-            {
-                e.Handled = true;
-                Choice = false;
-                Close();
-            }
-            else if (yesChar != '\0' && Char.ToLower(e.KeyChar) == yesChar)
-            {
-                e.Handled = true;
-                Choice = true;
-                Windows.CloseForm(this);
-            }
-        }
-
-        /// <summary>
-        /// Close and dispose scanner
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void ContextMenu_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            scannerCommon.OnClosing();
-            scannerCommon.Dispose();
-        }
-
-        /// <summary>
-        /// Form loader. Initialize variables
-        /// </summary>
-        private void ContextMenu_Load(object sender, EventArgs e)
-        {
-            Log.Debug();
-
-            scannerCommon.OnLoad(false);
-            Widget widget = PanelCommon.RootWidget.Finder.FindChild("ContextMenuTitle");
-            if (widget != null)
-            {
-                widget.SetText(_title);
-            }
-
-            widget = PanelCommon.RootWidget.Finder.FindChild("Prompt");
-            if (widget != null && !String.IsNullOrEmpty(Caption))
-            {
-                widget.SetText(Caption);
-            }
-
-            getYesNoText();
-
-            PanelCommon.AnimationManager.Start(rootWidget);
         }
 
         /// <summary>
@@ -451,6 +381,68 @@ namespace ACAT.Extensions.Default.UI.Menus
             }
         }
 
+        /// <summary>
+        /// Key press handler
+        /// </summary>
+        /// <param name="sender">event sender</param>
+        /// <param name="e">event args</param>
+        private void keyboardActuator_EvtKeyPress(object sender, KeyPressEventArgs e)
+        {
+            char yesChar = string.IsNullOrEmpty(_yesText) ? '\0' : Char.ToLower(_yesText[0]);
+            char noChar = string.IsNullOrEmpty(_noText) ? '\0' : Char.ToLower(_noText[0]);
+
+            if (e.KeyChar == 27 || (noChar != '\0' && Char.ToLower(e.KeyChar) == noChar))
+            {
+                e.Handled = true;
+                Choice = false;
+                Close();
+            }
+            else if (yesChar != '\0' && Char.ToLower(e.KeyChar) == yesChar)
+            {
+                e.Handled = true;
+                Choice = true;
+                Windows.CloseForm(this);
+            }
+        }
+
+        private void Row1_Paint(object sender, PaintEventArgs e)
+        {
+        }
+
+        private void scannerRoundedButtonControl1_Click(object sender, EventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Close and dispose scanner
+        /// </summary>
+        /// <param name="sender">event sender</param>
+        /// <param name="e">event args</param>
+        private void YesNoScanner_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            scannerCommon.OnClosing();
+            scannerCommon.Dispose();
+        }
+
+        /// <summary>
+        /// Form loader. Initialize variables
+        /// </summary>
+        private void YesNoScanner_Load(object sender, EventArgs e)
+        {
+            Log.Debug();
+
+            scannerCommon.OnLoad();
+
+            var widget = PanelCommon.RootWidget.Finder.FindChild("Prompt");
+            if (widget != null && !String.IsNullOrEmpty(Caption))
+            {
+                widget.SetText(Caption);
+            }
+
+            getYesNoText();
+
+            PanelCommon.AnimationManager.Start(rootWidget);
+        }
         /// <summary>
         /// Handles commands. We have yes and no.  Sets
         /// the choice and closes the scanner

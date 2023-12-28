@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="HorizontalStripScannerBase.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.AgentManagement;
@@ -61,7 +48,9 @@ namespace ACAT.Lib.Core.PanelManagement
 
         public HorizontalStripScannerBase()
         {
+            this.MinimumSize = new System.Drawing.Size(30, 30);
             InitializeComponent();
+            this.MinimumSize = new System.Drawing.Size(30, 30);
             _dispatcher = new RunCommandDispatcher(this);
         }
 
@@ -79,8 +68,7 @@ namespace ACAT.Lib.Core.PanelManagement
             Load += HorizontalStripScanner_Load;
             FormClosing += HorizontalStripScanner_FormClosing;
             _dispatcher = new RunCommandDispatcher(this);
-            //Text = title;
-            Text = String.Empty;
+            Text = title;
         }
 
         /// <summary>
@@ -119,7 +107,8 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// Gets the PanelCommon object
         /// </summary>
-        public IPanelCommon PanelCommon { get { return _scannerCommon; } }
+        public IPanelCommon PanelCommon
+        { get { return _scannerCommon; } }
 
         /// <summary>
         /// Gets the scannerCommon object
@@ -241,7 +230,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         /// <param name="widget">widget actuated</param>
         /// <param name="handled">was this handled here?</param>
-        public virtual void OnWidgetActuated(Widget widget, ref bool handled)
+        public virtual void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
         {
             handled = false;
         }
@@ -302,7 +291,7 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             setFormWidth();
 
-            _scannerCommon.OnLoad(false);
+            _scannerCommon.OnLoad();
 
             PanelCommon.AnimationManager.Start(_rootWidget);
         }

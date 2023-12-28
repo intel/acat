@@ -1,28 +1,14 @@
 ////////////////////////////////////////////////////////////////////////////
-// <copyright file="AuditLog.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 
 namespace ACAT.Lib.Core.Audit
 {
@@ -35,36 +21,14 @@ namespace ACAT.Lib.Core.Audit
     public class AuditLog
     {
         /// <summary>
-        /// Audit log file extension
-        /// </summary>
-        private const string FileExtension = ".csv";
-
-        /// <summary>
-        /// Create a new file if the log file length exceeds
-        /// this threshold
-        /// </summary>
-        private const int FileLengthThreshold = 2 * 1024 * 1024;
-
-        /// <summary>
-        /// Name of the audit log file
-        /// </summary>
-        private const string LogFileName = "ACATAuditLog.csv";
-
-        /// <summary>
-        /// Name of the mutex used for synchronization
-        /// </summary>
-        private const string MutexName = @"Global\ACAT_AuditLogging";
-
-        /// <summary>
-        /// Where to put the log file
-        /// </summary>
-        private static readonly string LogFileFolder = SmartPath.ApplicationPath + "\\AuditLogs";
-
-        /// <summary>
         /// Full path to the log file
         /// </summary>
         private static readonly String LogFileFullPath;
 
+        /// <summary>
+        /// Where to put the log file
+        /// </summary>
+        //private static readonly string LogFileFolder = SmartPath.ApplicationPath + "\\AuditLogs";
         /// <summary>
         /// Used for synchronization
         /// </summary>
@@ -86,35 +50,48 @@ namespace ACAT.Lib.Core.Audit
         private static List<String> _enableFilter;
 
         /// <summary>
-        /// Used for synchronization
+        /// Name of the audit log file
         /// </summary>
-        private static Mutex objMutex;
+        private static readonly string LogFileName;
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         static AuditLog()
         {
-            Log.Debug("Entering...LogFileFolder=" + LogFileFolder);
+            string logFileFolder = FileUtils.GetLogsDir();
 
             loadFilters();
 
             try
             {
-                if (!Directory.Exists(LogFileFolder))
+                if (!Directory.Exists(logFileFolder))
                 {
-                    Log.Debug("Creating Audit directory.");
-                    Directory.CreateDirectory(LogFileFolder);
+                    Log.Debug("Creating log directory.");
+                    Directory.CreateDirectory(logFileFolder);
                 }
             }
             catch
             {
-                LogFileFolder = SmartPath.ApplicationPath;
+                logFileFolder = SmartPath.ApplicationPath;
             }
 
-            LogFileFullPath = Path.Combine(LogFileFolder, LogFileName);
+            if (!String.IsNullOrEmpty(CoreGlobals.AppId))
+            {
+                LogFileName = CoreGlobals.AppId + "_Audit" + ".csv";
+            }
+            else
+            {
+                LogFileName = "ACATAuditLog.csv";
+            }
+
+            LogFileFullPath = Path.Combine(logFileFolder, LogFileName);
+
+            LogFileFullPath = Path.Combine(logFileFolder, Path.GetFileNameWithoutExtension(LogFileName) + CoreGlobals.LogFileSuffix + Path.GetExtension(LogFileName));
+
             Log.Debug("LogFileFullPath=" + LogFileFullPath);
 
+            /*
             objMutex = new Mutex(false, MutexName);
 
             try
@@ -141,6 +118,7 @@ namespace ACAT.Lib.Core.Audit
                 Log.Debug("Releasing mutex...");
                 objMutex.ReleaseMutex();
             }
+            */
         } // end method
 
         /// <summary>
@@ -173,13 +151,27 @@ namespace ACAT.Lib.Core.Audit
 
                 if (doAudit)
                 {
+                    StreamWriter sw = null;
+
                     lock (ObjSync)
                     {
-                        var sw = new StreamWriter(LogFileFullPath, true);
-                        sw.WriteLine(auditEvent.ToString());
-                        sw.Flush();
-                        sw.Close();
+                        try
+                        {
+                            sw = new StreamWriter(LogFileFullPath, true);
+                            sw.WriteLine(auditEvent.ToString());
+                        }
+                        catch
+                        {
+
+                        }
+                        finally
+                        {
+                            sw?.Flush();
+                            sw?.Close();
+                            sw?.Dispose();
+                        }
                     }
+
                 }
             }
         }

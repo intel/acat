@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="Layout.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.ThemeManagement;
@@ -47,7 +34,7 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// <summary>
         /// Name of the color scheme for the widgets in this layout.  Is read
         /// from the config file
-        /// </summary>
+        /// </summary>Hi
         private String _colorSchemeName;
 
         /// <summary>
@@ -228,6 +215,8 @@ namespace ACAT.Lib.Core.WidgetManagement
                 retVal = false;
             }
 
+            resolveNeighbors(rootWidget);
+
             return retVal;
         }
 
@@ -349,6 +338,33 @@ namespace ACAT.Lib.Core.WidgetManagement
         }
 
         /// <summary>
+        /// Returns a list of widgets corresponding to the comma-delimited widget
+        /// names
+        /// </summary>
+        /// <param name="widgetNames">List of names of widgets</param>
+        /// <param name="widgetList">Adds the widgets to this list</param>
+        private void getWidgetList(String widgetNames, List<Widget> widgetList)
+        {
+            if (String.IsNullOrEmpty(widgetNames))
+            {
+                return;
+            }
+
+            var nameList = widgetNames.Split(',');
+            if (nameList.Length > 0)
+            {
+                foreach (var name in nameList)
+                {
+                    var widget = RootWidget.Finder.FindChild(name);
+                    if (widget != null)
+                    {
+                        widgetList.Add(widget);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Recursively loads all the child widgets for the specified
         /// root widget
         /// </summary>
@@ -380,6 +396,24 @@ namespace ACAT.Lib.Core.WidgetManagement
 
                     childWidget.PostLoad();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Finds all the neighbors for the child widgets of the parentWidget.
+        /// Function is recursive
+        /// </summary>
+        /// <param name="parentWidget">The parent widget</param>
+        private void resolveNeighbors(Widget parentWidget)
+        {
+            foreach (var widget in parentWidget.Children)
+            {
+                getWidgetList(XmlUtils.GetXMLAttrString(widget.LayoutXmlNode, "left"), widget.Left);
+                getWidgetList(XmlUtils.GetXMLAttrString(widget.LayoutXmlNode, "right"), widget.Right);
+                getWidgetList(XmlUtils.GetXMLAttrString(widget.LayoutXmlNode, "above"), widget.Above);
+                getWidgetList(XmlUtils.GetXMLAttrString(widget.LayoutXmlNode, "below"), widget.Below);
+
+                resolveNeighbors(widget);
             }
         }
     }

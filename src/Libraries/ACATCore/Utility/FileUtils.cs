@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="FileUtils.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.UserManagement;
@@ -65,20 +52,22 @@ namespace ACAT.Lib.Core.Utility
         /// </summary>
         private const String ImagesDir = "Images";
 
+        private const String VideosDir = "Videos";
+
         /// <summary>
         /// Folder under which log files are stored
         /// </summary>
         private const String LogsDir = "Logs";
 
         /// <summary>
-        /// Folder under which all the theme files are stored
-        /// </summary>
-        private const String ThemesDir = "Themes";
-
-        /// <summary>
         /// Folder in which all ACAT sounds files are stored
         /// </summary>
         private const String SoundsDir = "Sounds";
+
+        /// <summary>
+        /// Folder under which all the theme files are stored
+        /// </summary>
+        private const String ThemesDir = "Themes";
 
         /// <summary>
         /// Folder under which all the user files are stored
@@ -432,6 +421,16 @@ namespace ACAT.Lib.Core.Utility
             return Path.Combine(SmartPath.ApplicationPath, prefName);
         }
 
+        public static String GetFullPathRelativeToHome(String prefName)
+        {
+            return Path.Combine(GetHomeDir(), prefName);
+        }
+
+        public static String GetHomeDir()
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ACAT");
+        }
+
         /// <summary>
         /// Returns the fully qualified path to the specified image file.
         /// First checks the User's image folder.  If it doesn't find the
@@ -454,13 +453,18 @@ namespace ACAT.Lib.Core.Utility
             return Path.Combine(GetAssetsDir(), ImagesDir);
         }
 
+        public static String GetVideosDir()
+        {
+            return Path.Combine(GetAssetsDir(), VideosDir);
+        }
+
         /// <summary>
         /// Returns path to where ACAT log files will be stored
         /// </summary>
         /// <returns>fully qualified path</returns>
         public static String GetLogsDir()
         {
-            return Path.Combine(ACATPath, LogsDir);
+            return Path.Combine(GetHomeDir(), LogsDir);
         }
 
         /// <summary>
@@ -500,28 +504,6 @@ namespace ACAT.Lib.Core.Utility
         }
 
         /// <summary>
-        /// Returns the global ACAT themes folder
-        /// </summary>
-        /// <returns>fully qualified path</returns>
-        public static String GetThemesDir()
-        {
-            return Path.Combine(GetAssetsDir(), ThemesDir);
-        }
-
-        /// <summary>
-        /// For the specified imaagefile, gets the fully
-        /// qualified path to it for the specified theme
-        /// </summary>
-        /// <param name="theme">theme name</param>
-        /// <param name="imageFile">image file name</param>
-        /// <returns>full path to the image file</returns>
-        public static String GetThemeImagePath(string theme, string imageFile)
-        {
-            var fullPath = Path.Combine(GetUserThemesDir(), theme, imageFile);
-            return File.Exists(fullPath) ? fullPath : Path.Combine(GetThemesDir(), theme, imageFile);
-        }
-
-        /// <summary>
         /// Returns the fully qualified path to the specified sound file.
         /// First checks the User's sounds folder.  If it doesn't find the
         /// file there, returns the path to the global ACAT sounds folder
@@ -541,6 +523,28 @@ namespace ACAT.Lib.Core.Utility
         public static String GetSoundsDir()
         {
             return Path.Combine(GetAssetsDir(), SoundsDir);
+        }
+
+        /// <summary>
+        /// For the specified imaagefile, gets the fully
+        /// qualified path to it for the specified theme
+        /// </summary>
+        /// <param name="theme">theme name</param>
+        /// <param name="imageFile">image file name</param>
+        /// <returns>full path to the image file</returns>
+        public static String GetThemeImagePath(string theme, string imageFile)
+        {
+            var fullPath = Path.Combine(GetUserThemesDir(), theme, imageFile);
+            return File.Exists(fullPath) ? fullPath : Path.Combine(GetThemesDir(), theme, imageFile);
+        }
+
+        /// <summary>
+        /// Returns the global ACAT themes folder
+        /// </summary>
+        /// <returns>fully qualified path</returns>
+        public static String GetThemesDir()
+        {
+            return Path.Combine(GetAssetsDir(), ThemesDir);
         }
 
         /// <summary>
@@ -569,17 +573,7 @@ namespace ACAT.Lib.Core.Utility
         /// <returns>fully qualified path</returns>
         public static String GetUsersDir()
         {
-            return Path.Combine(ACATPath, UsersDir);
-        }
-
-        /// <summary>
-        /// Returns path to the themes folder relative to the
-        /// current user's USER folder
-        /// </summary>
-        /// <returns>fully qualified path</returns>
-        public static String GetUserThemesDir()
-        {
-            return Path.Combine(UserManager.GetFullPath(AssetsDir), ThemesDir);
+            return Path.Combine(GetHomeDir(), UsersDir);
         }
 
         /// <summary>
@@ -590,6 +584,16 @@ namespace ACAT.Lib.Core.Utility
         public static String GetUserSoundsDir()
         {
             return Path.Combine(UserManager.GetFullPath(AssetsDir), SoundsDir);
+        }
+
+        /// <summary>
+        /// Returns path to the themes folder relative to the
+        /// current user's USER folder
+        /// </summary>
+        /// <returns>fully qualified path</returns>
+        public static String GetUserThemesDir()
+        {
+            return Path.Combine(UserManager.GetFullPath(AssetsDir), ThemesDir);
         }
 
         /// <summary>
@@ -617,9 +621,9 @@ namespace ACAT.Lib.Core.Utility
         /// <summary>
         /// Logs assembly info to the debug output
         /// </summary>
-        public static void LogAssemblyInfo()
+        public static void LogAssemblyInfo(Assembly executingAssembly = null)
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = executingAssembly ?? Assembly.GetExecutingAssembly();
 
             // get appname and copyright information
             object[] attributes = assembly.GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
@@ -628,12 +632,8 @@ namespace ACAT.Lib.Core.Utility
                 : String.Empty;
 
             var appVersion = "Version " + assembly.GetName().Version;
-            attributes = assembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
-            var appCopyright = (attributes.Length != 0)
-                ? ((AssemblyCopyrightAttribute)attributes[0]).Copyright
-                : String.Empty;
 
-            Log.Info("***** " + appName + ". " + appVersion + ". " + appCopyright + " *****");
+            Log.Info("***** " + appName + ". " + appVersion + ". " + DateTime.Now.ToString() + " *****");
         }
 
         /// <summary>
@@ -642,14 +642,15 @@ namespace ACAT.Lib.Core.Utility
         /// <param name="executable">path to the executable</param>
         /// <returns>true on success</returns>
         [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
-        public static bool Run(String executable)
+        public static bool Run(String executable, ProcessWindowStyle style = ProcessWindowStyle.Normal)
         {
             bool retVal = true;
 
-            Log.Debug(executable);
+            Log.Debug("Run " + executable);
 
             var startInfo = new ProcessStartInfo();
             startInfo.FileName = executable;
+            startInfo.WindowStyle = style;
 
             //Start the process.
             try

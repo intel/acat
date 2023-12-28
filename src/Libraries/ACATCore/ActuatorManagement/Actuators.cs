@@ -1,23 +1,19 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="Actuators.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// Actuators.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Contains a collection of actuators in the system.  Creates
+// the actuator objects by loading the Actuator settings file,
+// looks into the Actuators extension directory, loads the DLL's
+// and caches the Type of the actuator objects
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
 using System;
 using System.Collections.Generic;
@@ -55,7 +51,10 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// Has this object been disposed
         /// </summary>
         private bool _disposed = false;
-
+        /// <summary>
+        /// If one of the dll found has an error with the certificate
+        /// </summary>
+        private static volatile bool _DLLError = false;
         /// <summary>
         /// Initializes the Actuator object
         /// </summary>
@@ -92,8 +91,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
         }
 
         /// <summary>
-        /// Adds the specified switch to the specified actuator. 
-        /// Notifies the actuator about the switch.  Also adds the 
+        /// Adds the specified switch to the specified actuator.
+        /// Notifies the actuator about the switch.  Also adds the
         /// switch to the settings file and saves the settings file
         /// </summary>
         /// <param name="actuator">atuator to add to</param>
@@ -178,7 +177,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <summary>
         /// Loads actuator settigns from the settings file.
         /// Walks through the extensions dirs, looks for actuators in there
-        /// and caches the Types of the actuators. 
+        /// and caches the Types of the actuators.
         /// Configures the actuators with the settings from the settings file.
         /// Also if any acutators were discovered that are not in the settings file,
         /// adds them to the settings file and saves it.
@@ -190,13 +189,15 @@ namespace ACAT.Lib.Core.ActuatorManagement
         public bool Load(IEnumerable<String> extensionDirs, String configFile, bool loadAll = false)
         {
             addKeyboardActuatorToCache();
+            addSwitchInterfaceActuatorTocache();
 
             foreach (string dir in extensionDirs)
             {
                 String extensionDir = dir + "\\" + ActuatorManager.ActuatorsRootDir;
                 loadActuatorTypesIntoCache(extensionDir);
             }
-
+            if(_DLLError)
+                return false;   
             if (!File.Exists(configFile))
             {
                 return false;
@@ -205,7 +206,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             ActuatorConfig.ActuatorSettingsFileName = configFile;
             Config = ActuatorConfig.Load();
 
-            // walk through the settings file create and configure 
+            // walk through the settings file create and configure
             // actuators
             foreach (var actuatorSetting in Config.ActuatorSettings)
             {
@@ -242,7 +243,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
                 }
             }
 
-            // now go through all the actuators that are not in the 
+            // now go through all the actuators that are not in the
             // settings file and add them to the settings file
 
             bool isDirty = false;
@@ -417,6 +418,15 @@ namespace ACAT.Lib.Core.ActuatorManagement
             }
         }
 
+        private void addSwitchInterfaceActuatorTocache()
+        {
+            var attr = DescriptorAttribute.GetDescriptor(typeof(InputActuators.SwitchInterfaceActuator));
+            if (attr != null)
+            {
+                addActuatorToCache(attr.Id, typeof(InputActuators.SwitchInterfaceActuator));
+            }
+        }
+
         /// <summary>
         /// Recursively descends into the directory and loads all the
         /// actuator types in each of the actuator DLLs
@@ -438,18 +448,45 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             try
             {
-                var inputActuatorsAssembly = Assembly.LoadFrom(dllName);
-                foreach (Type type in inputActuatorsAssembly.GetTypes())
+
+                var retVal = VerifyDigitalSignature.ValidateCertificate(dllName);
+                if (retVal && !_DLLError)
                 {
-                    if (typeof(ActuatorBase).IsAssignableFrom(type))
+                    try
                     {
-                        var attr = DescriptorAttribute.GetDescriptor(type);
-                        if (attr != null && attr.Id != Guid.Empty)
+                        VerifyDigitalSignature.Verify(dllName);
+                    }
+                    catch (Exception ex)
+                    {
+                        ConfirmBoxSingleOption confirmBoxSingleOption = new ConfirmBoxSingleOption
                         {
-                            addActuatorToCache(attr.Id, type);
+                            Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n Status Error: ERA",
+                            DecisionPrompt = "ok",
+                            LabelFont = 10
+                        };
+                        confirmBoxSingleOption.BringToFront();
+                        confirmBoxSingleOption.TopMost = true;
+                        confirmBoxSingleOption.ShowDialog();
+                        confirmBoxSingleOption.Dispose();
+                        _DLLError = true;
+                    }
+                }
+                if (!_DLLError)
+                {
+                    var inputActuatorsAssembly = Assembly.LoadFrom(dllName);
+                    foreach (Type type in inputActuatorsAssembly.GetTypes())
+                    {
+                        if (typeof(ActuatorBase).IsAssignableFrom(type))
+                        {
+                            var attr = DescriptorAttribute.GetDescriptor(type);
+                            if (attr != null && attr.Id != Guid.Empty)
+                            {
+                                addActuatorToCache(attr.Id, type);
+                            }
                         }
                     }
                 }
+                
             }
             catch (Exception ex)
             {

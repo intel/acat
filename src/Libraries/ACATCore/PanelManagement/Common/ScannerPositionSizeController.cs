@@ -1,28 +1,14 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="ScannerPositionSizeController.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WidgetManagement;
 using System;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace ACAT.Lib.Core.PanelManagement
@@ -135,6 +121,14 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public event EventHandler EvtAutoRepositionScannerStop;
 
+        public enum ResizeType
+        {
+            None,
+            Vertical,
+            Horizontal,
+            Both
+        }
+
         /// <summary>
         /// Gets or sets whether the position of the scanner is in
         /// the default position or whether the caller is going to
@@ -148,6 +142,8 @@ namespace ACAT.Lib.Core.PanelManagement
         /// on the display.
         /// </summary>
         public Windows.WindowPosition ManualPosition { get; set; }
+
+        public ResizeType ResizeToFitDesktop { get; set; }
 
         /// <summary>
         /// Gets or sets the scaler factor
@@ -259,7 +255,7 @@ namespace ACAT.Lib.Core.PanelManagement
             prefs.ScannerPosition = CoreGlobals.AppPreferences.ScannerPosition = Context.AppWindowPosition;
             prefs.Save();
 
-            AutoPosition = true; 
+            AutoPosition = true;
 
             CoreGlobals.AppPreferences.NotifyPreferencesChanged();
             Log.Debug("scale factor saved is:" + prefs.ScannerScaleFactor);
@@ -294,11 +290,16 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public void ScaleForm()
         {
-            ScaleFactor = CoreGlobals.AppPreferences.ScannerScaleFactor / (float)IntMultiplier;
-            ScaleForm(ScaleFactor);
+            if (ResizeToFitDesktop != ResizeType.None)
+            {
+                resizeScannerToFitDesktop(CoreGlobals.AppPreferences.ScannerScaleFactor / (float)IntMultiplier);
+            }
+            else
+            {
+                ScaleFactor = CoreGlobals.AppPreferences.ScannerScaleFactor / (float)IntMultiplier;
+                ScaleForm(ScaleFactor);
+            }
         }
-
-
 
         /// <summary>
         /// Scales the scanner to indicated scale factor
@@ -310,13 +311,16 @@ namespace ACAT.Lib.Core.PanelManagement
 
             var newSize = new Size(Convert.ToInt32(_originalSize.Width * scaleFactor), Convert.ToInt32(_originalSize.Height * scaleFactor));
 
-            Log.Debug(_form.Name + "," + "scalefactor: " + scaleFactor + 
-                        "orig/new width: " + _originalSize.Width + ", " + newSize.Width + 
+            Log.Debug(_form.Name + "," + "scalefactor: " + scaleFactor +
+                        "orig/new width: " + _originalSize.Width + ", " + newSize.Width +
                         "orig/new height: " + _originalSize.Height + ", " + newSize.Height);
 
             //_rootWidget.Dump();
 
             _rootWidget.SetScaleFactor(scaleFactor);
+
+            int desktopHeight = Screen.PrimaryScreen.WorkingArea.Height;
+
             _form.Size = newSize;
 
             Log.Debug("Exit");
@@ -437,6 +441,57 @@ namespace ACAT.Lib.Core.PanelManagement
         private void FormOnResizeBegin(object sender, EventArgs eventArgs)
         {
             _resizeBeginSize = _form.Size;
+        }
+
+        private void resizeScannerToFitDesktop(float scaleFactor)
+        {
+            _form.Invoke(new MethodInvoker(delegate
+            {
+                Log.Debug("Enter. scaleFactor: " + scaleFactor);
+
+                var newSize = new Size(Convert.ToInt32(_originalSize.Width * scaleFactor), Convert.ToInt32(_originalSize.Height * scaleFactor));
+
+                _rootWidget.SetScaleFactor(scaleFactor);
+
+                switch (ResizeToFitDesktop)
+                {
+                    case ResizeType.Vertical:
+
+                        int desktopHeight = Screen.PrimaryScreen.WorkingArea.Height;
+                        if (newSize.Height > desktopHeight)
+                            newSize.Height = desktopHeight;
+
+                        float ratio = ((float)newSize.Width / newSize.Height);
+
+                        newSize = new Size((int)((float)desktopHeight * ratio), desktopHeight);
+                        _form.Size = newSize;
+
+                        _form.Top = 0;
+
+                        //Windows.WidestScannerWidth = Width;
+                        switch (Context.AppWindowPosition)
+                        {
+                            case Windows.WindowPosition.TopRight:
+                            case Windows.WindowPosition.MiddleRight:
+                            case Windows.WindowPosition.BottomRight:
+
+                                _form.Left = Screen.PrimaryScreen.WorkingArea.Width - _form.Width;
+                                break;
+
+                            case Windows.WindowPosition.MiddleLeft:
+                            case Windows.WindowPosition.TopLeft:
+                            case Windows.WindowPosition.BottomLeft:
+                                _form.Left = 0;
+                                break;
+
+                            case Windows.WindowPosition.TopCenter:
+                            case Windows.WindowPosition.BottomCenter:
+                                _form.Left = (Screen.PrimaryScreen.WorkingArea.Width - _form.Width) / 2;
+                                break;
+                        }
+                        break;
+                }
+            }));
         }
 
         /// <summary>

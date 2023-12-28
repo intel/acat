@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ACAT.Lib.Core</RootNamespace>
     <AssemblyName>ACATCore</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -69,11 +69,20 @@
     <Reference Include="ACATResources">
       <HintPath>..\..\Redistributable\ACATResources.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Redistributable\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.Cryptography.Pkcs, Version=7.0.0.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\Redistributable\System.Security.Cryptography.Pkcs.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -88,10 +97,8 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbbreviationsManagement\Phrase.cs" />
     <Compile Include="AbbreviationsManagement\Abbreviation.cs" />
     <Compile Include="AbbreviationsManagement\AbbreviationReplaceEventArgs.cs" />
-    <Compile Include="AbbreviationsManagement\Phrases.cs" />
     <Compile Include="AbbreviationsManagement\Abbreviations.cs" />
     <Compile Include="AbbreviationsManagement\AbbreviationTTSEventArgs.cs" />
     <Compile Include="AbbreviationsManagement\AbbreviationsManager.cs" />
@@ -99,6 +106,21 @@
     <Compile Include="ActuatorManagement\ActuatorEx.cs" />
     <Compile Include="ActuatorManagement\ActuatorManager.cs" />
     <Compile Include="ActuatorManagement\Actuators.cs" />
+    <Compile Include="ActuatorManagement\CalibrationNotifyEventArgs.cs" />
+    <Compile Include="ActuatorManagement\KeyboardActuator\OnboardingHardwareSwitchSetup.cs" />
+    <Compile Include="ActuatorManagement\KeyboardActuator\SwitchInterfaceActuator.cs" />
+    <Compile Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchSetup.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchSetup.Designer.cs">
+      <DependentUpon>UserControlHardwareSwitchSetup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchTest.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchTest.Designer.cs">
+      <DependentUpon>UserControlHardwareSwitchTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="ActuatorManagement\Settings\ActuatorSetting.cs" />
     <Compile Include="ActuatorManagement\Settings\ActuatorConfig.cs" />
     <Compile Include="ActuatorManagement\ActuatorSwitchBase.cs" />
@@ -118,12 +140,6 @@
     <Compile Include="ActuatorManagement\UI\ActuatorErrorForm.designer.cs">
       <DependentUpon>ActuatorErrorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ActuatorManagement\UI\EditKeyboardActuatorSwitchForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ActuatorManagement\UI\EditKeyboardActuatorSwitchForm.Designer.cs">
-      <DependentUpon>EditKeyboardActuatorSwitchForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="ActuatorManagement\UI\CalibrationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,6 +151,12 @@
     </Compile>
     <Compile Include="ActuatorManagement\UI\ConfigureSwitchesForm.Designer.cs">
       <DependentUpon>ConfigureSwitchesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ActuatorManagement\UI\EditKeyboardActuatorSwitchForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ActuatorManagement\UI\EditKeyboardActuatorSwitchForm.Designer.cs">
+      <DependentUpon>EditKeyboardActuatorSwitchForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ActuatorManagement\UI\ConfigureKeyboardActuatorForm.cs">
       <SubType>Form</SubType>
@@ -189,6 +211,7 @@
     <Compile Include="AgentManagement\UnsupportedAppAgent.cs" />
     <Compile Include="AnimationManagement\Animation.cs" />
     <Compile Include="AnimationManagement\AnimationManager.cs" />
+    <Compile Include="AnimationManagement\AnimationManager2.cs" />
     <Compile Include="AnimationManagement\AnimationMouseClickEventArgs.cs" />
     <Compile Include="AnimationManagement\AnimationPlayer.cs" />
     <Compile Include="AnimationManagement\Animations.cs" />
@@ -205,11 +228,11 @@
     <Compile Include="Audit\AuditEventAutoComplete.cs" />
     <Compile Include="Audit\AuditEventBase.cs" />
     <Compile Include="Audit\AuditEventFocusChanged.cs" />
+    <Compile Include="Audit\AuditEventManualScanExperiments.cs" />
     <Compile Include="Audit\AuditEventMouseMover.cs" />
     <Compile Include="Audit\AuditEventScannerActivity.cs" />
     <Compile Include="Audit\AuditEventScreenLock.cs" />
     <Compile Include="Audit\AuditEventSwitchActuate.cs" />
-    <Compile Include="Audit\AuditEventTalkWindow.cs" />
     <Compile Include="Audit\AuditEventTextToSpeech.cs" />
     <Compile Include="Audit\AuditEventUISwitchDetect.cs" />
     <Compile Include="Audit\AuditLog.cs" />
@@ -219,23 +242,101 @@
     <Compile Include="CommandManagement\CmdScopeMapEntry.cs" />
     <Compile Include="CommandManagement\CmdScopeTable.cs" />
     <Compile Include="CommandManagement\CommandManager.cs" />
+    <Compile Include="Onboarding\IOnboardingExtension.cs" />
+    <Compile Include="Onboarding\IOnboardingUserControl.cs" />
+    <Compile Include="Onboarding\IOnboardingWizard.cs" />
+    <Compile Include="Onboarding\OnboardingExtensionBase.cs" />
+    <Compile Include="Onboarding\OnboardingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Onboarding\OnboardingForm.Designer.cs">
+      <DependentUpon>OnboardingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Onboarding\OnboardingSequence.cs" />
+    <Compile Include="Onboarding\OnboardingSequenceItem.cs" />
+    <Compile Include="Onboarding\OnboardingWizard.cs" />
+    <Compile Include="PanelManagement\Common\ScannerCommon2.cs" />
+    <Compile Include="PanelManagement\Common\ScannerPositionSizeController2.cs" />
     <Compile Include="PanelManagement\PanelConfigMap\AppPanelClassConfig.cs" />
     <Compile Include="PanelManagement\PanelConfigMap\PanelClassConfig.cs" />
     <Compile Include="PanelManagement\PanelConfigMap\PanelClassConfigMap.cs" />
     <Compile Include="PanelManagement\PanelConfigMap\PanelClassConfigMapEntry.cs" />
+    <Compile Include="PanelManagement\UI\ConfirmBox2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ConfirmBox2.Designer.cs">
+      <DependentUpon>ConfirmBox2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ConfirmBoxTwoOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ConfirmBoxTwoOptions.Designer.cs">
+      <DependentUpon>ConfirmBoxTwoOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ConfirmBoxMultiOption.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ConfirmBoxMultiOption.Designer.cs">
+      <DependentUpon>ConfirmBoxMultiOption.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ConfirmBoxTimer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ConfirmBoxTimer.Designer.cs">
+      <DependentUpon>ConfirmBoxTimer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ConfirmBoxSingleOption.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ConfirmBoxSingleOption.Designer.cs">
+      <DependentUpon>ConfirmBoxSingleOption.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ConfirmBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ConfirmBox.Designer.cs">
+      <DependentUpon>ConfirmBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ListBoxUserControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ListBoxUserControl.Designer.cs">
+      <DependentUpon>ListBoxUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PanelManagement\UI\PromptTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ToastForm2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ToastForm2.Designer.cs">
+      <DependentUpon>ToastForm2.cs</DependentUpon>
+    </Compile>
     <Compile Include="PanelManagement\UI\ToastForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PanelManagement\UI\ToastForm.Designer.cs">
       <DependentUpon>ToastForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PreferencesManagement\BoolDescriptorAttribute.cs" />
-    <Compile Include="PreferencesManagement\FloatDescriptorAttribute.cs" />
-    <Compile Include="ThemeManagement\ThemeSelectForm.cs">
+    <Compile Include="PanelManagement\UI\WebBrowserForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ThemeManagement\ThemeSelectForm.Designer.cs">
-      <DependentUpon>ThemeSelectForm.cs</DependentUpon>
+    <Compile Include="PanelManagement\UI\WebBrowserForm.Designer.cs">
+      <DependentUpon>WebBrowserForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PreferencesManagement\ACATConfigMainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PreferencesManagement\ACATConfigMainForm.Designer.cs">
+      <DependentUpon>ACATConfigMainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PreferencesManagement\BoolDescriptorAttribute.cs" />
+    <Compile Include="PreferencesManagement\FloatDescriptorAttribute.cs" />
+    <Compile Include="PreferencesManagement\PreferencesEditForm2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PreferencesManagement\PreferencesEditForm2.Designer.cs">
+      <DependentUpon>PreferencesEditForm2.cs</DependentUpon>
     </Compile>
     <Compile Include="PreferencesManagement\LanguageSelectForm.cs">
       <SubType>Form</SubType>
@@ -294,25 +395,11 @@
       <DependentUpon>MenuPanelBase.cs</DependentUpon>
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="PanelManagement\UI\Glass.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PanelManagement\UI\Glass.Designer.cs">
-      <DependentUpon>Glass.cs</DependentUpon>
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
     <Compile Include="PanelManagement\UI\SplashScreen.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PanelManagement\UI\SplashScreen.designer.cs">
       <DependentUpon>SplashScreen.cs</DependentUpon>
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="PanelManagement\UI\TimedMessageBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PanelManagement\UI\TimedMessageBox.designer.cs">
-      <DependentUpon>TimedMessageBox.cs</DependentUpon>
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="PanelManagement\Common\PostExitCommand.cs" />
@@ -331,7 +418,6 @@
     <Compile Include="PanelManagement\Interfaces\IScannerPanel.cs" />
     <Compile Include="PanelManagement\Interfaces\IScannerPreview.cs" />
     <Compile Include="PanelManagement\Interfaces\ISupportsStatusBar.cs" />
-    <Compile Include="PanelManagement\Interfaces\ITalkWindow.cs" />
     <Compile Include="PanelManagement\Interfaces\ITextController.cs" />
     <Compile Include="PanelManagement\PanelConfigMap\PanelConfigMap.cs" />
     <Compile Include="PanelManagement\PanelConfigMap\PanelConfigMapEntry.cs">
@@ -349,26 +435,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="PreferencesManagement\PreferencesCategoriesForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PreferencesManagement\PreferencesCategoriesForm.Designer.cs">
-      <DependentUpon>PreferencesCategoriesForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="SpellCheckManagement\Interfaces\ISpellChecker.cs" />
     <Compile Include="SpellCheckManagement\NullSpellChecker.cs" />
     <Compile Include="SpellCheckManagement\PreferredSpellChecker.cs" />
     <Compile Include="SpellCheckManagement\PreferredSpellCheckers.cs" />
     <Compile Include="SpellCheckManagement\SpellCheckers.cs" />
     <Compile Include="SpellCheckManagement\SpellCheckManager.cs" />
-    <Compile Include="TalkWindowManagement\TalkWindowBase.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TalkWindowManagement\TalkWindowCreatedEventArgs.cs" />
-    <Compile Include="TalkWindowManagement\TalkWindowManager.cs">
-      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="TalkWindowManagement\TalkWindowVisibilityChangedEventArgs.cs" />
     <Compile Include="ThemeManagement\ColorScheme.cs" />
     <Compile Include="ThemeManagement\ColorSchemes.cs" />
     <Compile Include="ThemeManagement\Theme.cs" />
@@ -386,24 +458,49 @@
     <Compile Include="TTSManagement\TTSStatusChangedEventArgs.cs" />
     <Compile Include="TTSManagement\TTSValue.cs" />
     <Compile Include="TTSManagement\TTSVoiceChangedEventArgs.cs" />
+    <Compile Include="UserControlManagement\IUserControl.cs" />
+    <Compile Include="UserControlManagement\IUserControlCommon.cs" />
+    <Compile Include="UserControlManagement\UserControlConfigMap.cs" />
+    <Compile Include="UserControlManagement\UserControlConfigMapEntry.cs" />
+    <Compile Include="UserControlManagement\UserControlKeyboardCommon.cs" />
+    <Compile Include="UserControlManagement\UserControlManager.cs" />
     <Compile Include="UserManagement\ProfileManager.cs" />
     <Compile Include="UserManagement\UserManager.cs" />
+    <Compile Include="Utility\Disclaimers.cs" />
     <Compile Include="Utility\Attributions.cs" />
+    <Compile Include="Utility\AudioController.cs" />
     <Compile Include="Utility\AutomationEventManager.cs" />
     <Compile Include="Utility\BlockingQueue.cs" />
     <Compile Include="PreferencesManagement\Interfaces\IPreferences.cs" />
     <Compile Include="PreferencesManagement\Interfaces\ISupportsPreferences.cs" />
+    <Compile Include="Utility\CachedLog.cs" />
+    <Compile Include="Utility\CryptoInterop.cs" />
+    <Compile Include="Utility\DataDictionary.cs" />
     <Compile Include="Utility\DualMonitor.cs" />
+    <Compile Include="Utility\FontCheck.cs" />
+    <Compile Include="Utility\HtmlUtils.cs" />
     <Compile Include="Utility\Kernel32Interop.cs" />
     <Compile Include="Utility\CoreGlobals.cs" />
     <Compile Include="Utility\KeyToChar.cs" />
+    <Compile Include="Utility\KeyValuePairs.cs" />
     <Compile Include="Utility\LanguageSettings.cs" />
+    <Compile Include="Utility\MicroSecondTimer.cs" />
     <Compile Include="Utility\Mouse\GridMouseMover.cs" />
     <Compile Include="Utility\Mouse\MouseGridScanWindow.xaml.cs">
       <DependentUpon>MouseGridScanWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\NamedPipe\MessageReceivedArgs.cs" />
+    <Compile Include="Utility\NamedPipe\PipeClient.cs" />
+    <Compile Include="Utility\NamedPipe\PipeClientState.cs" />
+    <Compile Include="Utility\NamedPipe\PipeSererState.cs" />
+    <Compile Include="Utility\NamedPipe\PipeServer.cs" />
+    <Compile Include="Utility\PerfMon.cs" />
+    <Compile Include="Utility\PerfMonData.cs" />
     <Compile Include="Utility\Preferences.cs" />
     <Compile Include="Utility\ResourceUtils.cs" />
+    <Compile Include="Utility\ScannerFocus.cs" />
+    <Compile Include="Utility\SoundManager.cs" />
+    <Compile Include="Utility\VerifyDigitalSignature.cs" />
     <Compile Include="Utility\XmlUtils.cs" />
     <Compile Include="Utility\DescriptorAttribute.cs" />
     <Compile Include="Utility\DirectoryWalker.cs">
@@ -438,6 +535,7 @@
     <Compile Include="Utility\Windows.cs" />
     <Compile Include="Utility\EnumWindows.cs" />
     <Compile Include="WidgetManagement\Interfaces\IBoxWidget.cs" />
+    <Compile Include="WidgetManagement\Interfaces\IToggleButtonWidget.cs" />
     <Compile Include="WidgetManagement\Interfaces\IButtonWidget.cs" />
     <Compile Include="WidgetManagement\Interfaces\IRowWidget.cs" />
     <Compile Include="WidgetManagement\Layout\WidgetAttribute.cs" />
@@ -450,7 +548,32 @@
       <DependentUpon>ScannerButtonControl.cs</DependentUpon>
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="WidgetManagement\ScannerProgressBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WidgetManagement\ScannerProgressBar.Designer.cs">
+      <DependentUpon>ScannerProgressBar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WidgetManagement\ScannerRoundedButtonControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WidgetManagement\ScannerRoundedButtonControl.Designer.cs">
+      <DependentUpon>ScannerRoundedButtonControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WidgetManagement\ScannerTableLayout.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WidgetManagement\ScannerTableLayout.Designer.cs">
+      <DependentUpon>ScannerTableLayout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WidgetManagement\ScannerPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WidgetManagement\ScannerPanel.Designer.cs">
+      <DependentUpon>ScannerPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="WidgetManagement\Widget.cs" />
+    <Compile Include="WidgetManagement\WidgetEventActuatedArgs.cs" />
     <Compile Include="WidgetManagement\WidgetEventArg.cs" />
     <Compile Include="WidgetManagement\WidgetFinder.cs" />
     <Compile Include="WidgetManagement\WidgetManager.cs" />
@@ -464,6 +587,8 @@
     <Compile Include="Widgets\LabelWidget.cs" />
     <Compile Include="Widgets\ImageWidgetBase.cs" />
     <Compile Include="Widgets\RowWidget.cs" />
+    <Compile Include="Widgets\ScannerButtonSpaced.cs" />
+    <Compile Include="Widgets\ScannerButtonToggle.cs" />
     <Compile Include="Widgets\ScannerButton.cs" />
     <Compile Include="Widgets\ScannerButtonBase.cs" />
     <Compile Include="Widgets\SliderWidget.cs" />
@@ -471,6 +596,10 @@
     <Compile Include="Widgets\TextBoxWidget.cs" />
     <Compile Include="Widgets\CheckBoxWidget.cs" />
     <Compile Include="Widgets\WinControlWidget.cs" />
+    <Compile Include="Widgets\LetterListItemWidget.cs" />
+    <Compile Include="Widgets\LetterListWidget.cs" />
+    <Compile Include="Widgets\SentenceListWidget.cs" />
+    <Compile Include="Widgets\SentenceListItemWidget.cs" />
     <Compile Include="Widgets\WordListWidget.cs" />
     <Compile Include="Widgets\WordListItemWidget.cs" />
     <Compile Include="WordPredictorManagement\Interfaces\IWordPredictor.cs" />
@@ -478,6 +607,8 @@
     <Compile Include="WordPredictorManagement\PreferredWordPredictor.cs" />
     <Compile Include="WordPredictorManagement\PreferredWordPredictors.cs" />
     <Compile Include="WordPredictorManagement\WordPredictionManager.cs" />
+    <Compile Include="WordPredictorManagement\WordPredictionRequest.cs" />
+    <Compile Include="WordPredictorManagement\WordPredictionResponse.cs" />
     <Compile Include="WordPredictorManagement\WordPredictors.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
@@ -493,18 +624,27 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ActuatorManagement\UI\EditKeyboardActuatorSwitchForm.resx">
-      <Generator>ResXFileCodeGeneratorEx</Generator>
-      <DependentUpon>EditKeyboardActuatorSwitchForm.cs</DependentUpon>
+    <EmbeddedResource Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchSetup.resx">
+      <DependentUpon>UserControlHardwareSwitchSetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchTest.resx">
+      <DependentUpon>UserControlHardwareSwitchTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActuatorManagement\UI\ActuatorErrorForm.resx">
+      <DependentUpon>ActuatorErrorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ActuatorManagement\UI\CalibrationForm.resx">
-      <Generator>ResXFileCodeGeneratorEx</Generator>
       <DependentUpon>CalibrationForm.cs</DependentUpon>
+      <Generator>ResXFileCodeGeneratorEx</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="ActuatorManagement\UI\ConfigureSwitchesForm.resx">
       <DependentUpon>ConfigureSwitchesForm.cs</DependentUpon>
       <Generator>ResXFileCodeGeneratorEx</Generator>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActuatorManagement\UI\EditKeyboardActuatorSwitchForm.resx">
+      <Generator>ResXFileCodeGeneratorEx</Generator>
+      <DependentUpon>EditKeyboardActuatorSwitchForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ActuatorManagement\UI\ConfigureKeyboardActuatorForm.resx">
       <Generator>ResXFileCodeGeneratorEx</Generator>
@@ -515,6 +655,27 @@
       <Generator>ResXFileCodeGeneratorEx</Generator>
       <DependentUpon>SwitchCommandMapForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Onboarding\OnboardingForm.resx">
+      <DependentUpon>OnboardingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PanelManagement\UI\ConfirmBox2.resx">
+      <DependentUpon>ConfirmBox2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PanelManagement\UI\ConfirmBoxTwoOptions.resx">
+      <DependentUpon>ConfirmBoxTwoOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PanelManagement\UI\ConfirmBoxMultiOption.resx">
+      <DependentUpon>ConfirmBoxMultiOption.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PanelManagement\UI\ConfirmBoxTimer.resx">
+      <DependentUpon>ConfirmBoxTimer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PanelManagement\UI\ConfirmBoxSingleOption.resx">
+      <DependentUpon>ConfirmBoxSingleOption.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PanelManagement\UI\ConfirmBox.resx">
+      <DependentUpon>ConfirmBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PanelManagement\UI\HorizontalStripScannerBase.resx">
       <Generator>ResXFileCodeGeneratorEx</Generator>
       <DependentUpon>HorizontalStripScannerBase.cs</DependentUpon>
@@ -522,22 +683,25 @@
     <EmbeddedResource Include="PanelManagement\UI\MenuPanelBase.resx">
       <DependentUpon>MenuPanelBase.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PanelManagement\UI\Glass.resx">
-      <DependentUpon>Glass.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="PanelManagement\UI\SplashScreen.resx">
       <DependentUpon>SplashScreen.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PanelManagement\UI\TimedMessageBox.resx">
-      <DependentUpon>TimedMessageBox.cs</DependentUpon>
+    <EmbeddedResource Include="PanelManagement\UI\ToastForm2.resx">
+      <DependentUpon>ToastForm2.cs</DependentUpon>
+      <Generator>ResXFileCodeGeneratorEx</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="PanelManagement\UI\ToastForm.resx">
       <Generator>ResXFileCodeGeneratorEx</Generator>
       <DependentUpon>ToastForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ThemeManagement\ThemeSelectForm.resx">
-      <DependentUpon>ThemeSelectForm.cs</DependentUpon>
-      <Generator>ResXFileCodeGeneratorEx</Generator>
+    <EmbeddedResource Include="PanelManagement\UI\WebBrowserForm.resx">
+      <DependentUpon>WebBrowserForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PreferencesManagement\ACATConfigMainForm.resx">
+      <DependentUpon>ACATConfigMainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PreferencesManagement\PreferencesEditForm2.resx">
+      <DependentUpon>PreferencesEditForm2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PreferencesManagement\LanguageSelectForm.resx">
       <Generator>ResXFileCodeGeneratorEx</Generator>
@@ -555,10 +719,13 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="PreferencesManagement\PreferencesCategoriesForm.resx">
-      <Generator>ResXFileCodeGeneratorEx</Generator>
-      <DependentUpon>PreferencesCategoriesForm.cs</DependentUpon>
+    <EmbeddedResource Include="WidgetManagement\ScannerButtonControl.resx">
+      <DependentUpon>ScannerButtonControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WidgetManagement\ScannerTableLayout.resx">
+      <DependentUpon>ScannerTableLayout.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -570,14 +737,8 @@
   <ItemGroup>
     <EmbeddedResource Include="MouseCursor.png" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="PanelManagement\UI\Images\Splash1.png" />
-    <Content Include="PanelManagement\UI\Images\Splash2.png" />
-    <Content Include="PanelManagement\UI\Images\Splash3.png" />
-    <Content Include="PanelManagement\UI\Images\Splash4.png" />
-    <Content Include="PanelManagement\UI\Images\Splash5.png" />
-    <Content Include="PanelManagement\UI\Images\SplashScreenBg.png" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ACAT Menus")]
 [assembly: AssemblyDescription("Assistive Context-Aware Toolkit (ACAT)")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("http://01.org/acat")]
+[assembly: AssemblyCompany("https://www.intel.com/content/www/us/en/developer/tools/open/acat/overview.html")]
 [assembly: AssemblyProduct("Assistive Context-Aware Toolkit (ACAT)")]
 [assembly: AssemblyCopyright("Licensed and distributed under the Apache License v2.0 by Intel Corporation")]
 [assembly: AssemblyTrademark("")]

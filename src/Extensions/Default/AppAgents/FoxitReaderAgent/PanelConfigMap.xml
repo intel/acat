@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" ?>
-
-<ACAT>
-  <ConfigMapEntries>
-	  <ConfigMapEntry panelClass="FoxitReaderContextMenu" configName="FoxitReaderContextMenu" configId="A4619A46-C036-4B65-9D09-C3ECA8BB5EA2" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="FoxitReaderContextMenu.xml"/>
-    <ConfigMapEntry panelClass="FoxitReaderZoomMenu" configName="FoxitReaderZoomMenu" configId="FB19A608-18DB-4150-9D91-0D4FAF25A742" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="FoxitReaderZoomMenu.xml"/>
-  </ConfigMapEntries>
-</ACAT>

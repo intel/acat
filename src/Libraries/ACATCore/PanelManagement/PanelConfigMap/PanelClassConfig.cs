@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="PanelClassConfig.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
@@ -72,18 +59,12 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="configMapName">name to look for</param>
         /// <returns>panelclassconfigmap object if found null otherwise</returns>
 
-        public PanelClassConfigMap Find(string configMapName)
-        {
-            return PanelClassConfigMaps.FirstOrDefault(panelClassConfigMap =>
-                    String.Compare(panelClassConfigMap.Name, configMapName, true) == 0);
-        }
-
         public PanelClassConfigMap Add(String configMapName, String description, bool isDefault)
         {
             var panelClassConfigMap = Find(configMapName);
             if (panelClassConfigMap == null)
             {
-                panelClassConfigMap = new PanelClassConfigMap(configMapName, description, isDefault);
+                panelClassConfigMap = new PanelClassConfigMap(configMapName, description, String.Empty, String.Empty, isDefault);
                 PanelClassConfigMaps.Add(panelClassConfigMap);
             }
             else
@@ -96,11 +77,15 @@ namespace ACAT.Lib.Core.PanelManagement
             return panelClassConfigMap;
         }
 
-
+        public PanelClassConfigMap Find(string configMapName)
+        {
+            return PanelClassConfigMaps.FirstOrDefault(panelClassConfigMap =>
+                    String.Compare(panelClassConfigMap.Name, configMapName, true) == 0);
+        }
 
         /// <summary>
-        /// Returns the PanelClassConfigMap object for the ap that is marked as 
-        /// default. 
+        /// Returns the PanelClassConfigMap object for the ap that is marked as
+        /// default.
         /// </summary>
         /// <returns>object if found null otherwise</returns>
         public PanelClassConfigMap GetDefaultClassConfigMap()
@@ -134,7 +119,7 @@ namespace ACAT.Lib.Core.PanelManagement
         }
 
         /// <summary>
-        /// Sets the specified configMapName as the default 
+        /// Sets the specified configMapName as the default
         /// configuration for the app
         /// </summary>
         /// <param name="configMapName">name of the config map</param>
@@ -159,7 +144,5 @@ namespace ACAT.Lib.Core.PanelManagement
 
             return retVal; ;
         }
-
-
     }
 }

@@ -1,30 +1,15 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="Common.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.PanelManagement;
+using ACAT.Lib.Core.UserControlManagement;
 using ACAT.Lib.Core.Utility;
 using System;
-using System.IO;
 using System.Reflection;
-using ACAT.Lib.Core.CommandManagement;
-using ACAT.Lib.Core.UserManagement;
 
 namespace ACAT.Lib.Extension
 {
@@ -44,6 +29,8 @@ namespace ACAT.Lib.Extension
         /// </summary>
         public static void Init()
         {
+            AppPreferences.DefaultScanTimingsConfigurePanelName = "ScanTimeAdjustScanner";
+            AppPreferences.DefaultTryoutPanelName = "DefaultTryoutScanner";
             var assembly = Assembly.GetExecutingAssembly();
             Log.Debug("Assembly name: " + assembly.FullName);
         }
@@ -53,12 +40,12 @@ namespace ACAT.Lib.Extension
         /// </summary>
         public static void PreInit()
         {
-
             // Load private fonts
             Fonts.LoadFontsFromDir(FileUtils.GetFontsDir());
             Fonts.LoadFontsFromDir(FileUtils.GetUserFontsDir());
 
             Context.AppPanelManager.EvtStartupAddForms += AppPanelManager_EvtStartupAddForms;
+            Context.AppPanelManager.EvtStartupAddUserControls += AppPanelManager_EvtStartupAddUserControls;
         }
 
         /// <summary>
@@ -82,8 +69,21 @@ namespace ACAT.Lib.Extension
             Context.AppPanelManager.AddFormToCache(typeof(MenuPanel));
             Context.AppPanelManager.AddFormToCache(typeof(HorizontalStripScanner));
             Context.AppPanelManager.AddFormToCache(typeof(HorizontalStripScanner2));
+            Context.AppPanelManager.AddFormToCache(typeof(UserControlContainerForm));
+            Context.AppPanelManager.AddFormToCache(typeof(ScanTimeAdjustForm));
         }
 
-        
+        private static void AppPanelManager_EvtStartupAddUserControls(object sender, EventArgs e)
+        {
+            var guid = UserControlConfigMap.GetUserControlId(typeof(UserControlDefaultTryout));
+            UserControlConfigMap.AddUserControlToCache(guid, typeof(UserControlDefaultTryout));
+
+
+            guid = UserControlConfigMap.GetUserControlId(typeof(UserControlLayoutInterface));
+            UserControlConfigMap.AddUserControlToCache(guid, typeof(UserControlLayoutInterface));
+
+            guid = UserControlConfigMap.GetUserControlId(typeof(UserControlScreenLock));
+            UserControlConfigMap.AddUserControlToCache(guid, typeof(UserControlScreenLock));
+        }
     }
 }

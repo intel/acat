@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+    <!ENTITY usebold "false">
+    <!ENTITY characterButtonFontName "Montserrat SemiBold">
+    <!ENTITY characterButtonBoldFontName "Montserrat ExtraBold">
+    <!ENTITY characterButtonBlackFontName "Montserrat Black">
+    <!ENTITY functionButtonFontName "ACAT FONT 1">
+    <!ENTITY characterButtonFontSize "22">
+    <!ENTITY functionButtonFontSize "32">
+]>
+
+<ACAT>
+    <WidgetAttributes>
+            <WidgetAttribute name="B1" label="1" value="1" fontname="Arial" fontsize="72" bold="true" />
+            <WidgetAttribute name="B2" label="2" value="2" fontname="Arial" fontsize="72" bold="true" />
+            <WidgetAttribute name="B3" label="3" value="3" fontname="Arial" fontsize="72" bold="true" />
+            <WidgetAttribute name="B4" label="4" value="4" fontname="Arial" fontsize="72" bold="true" />
+            <WidgetAttribute name="B5" label="5" value="5" fontname="Arial" fontsize="72" bold="true" />
+    </WidgetAttributes>
+
+    <Layout>
+        <Widget class="ScannerButton" name="B1" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="B2" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="B3" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="B4" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="B5" colorScheme="ScannerButton"/>
+    </Layout>
+
+    <Animations>
+        <Animation name="ScreenLockTopLevelRotation"
+                start="true"
+                onEnter=""
+                scanTime="@ScanTime"
+                firstPauseTime="@FirstPauseTime"
+                iterations="1">
+            <Widget name="B1" onSelect="actuate(B1);transition(ScreenLockTopLevelRotation)"/>
+            <Widget name="B2" onSelect="actuate(B2);transition(ScreenLockTopLevelRotation)"/>
+            <Widget name="B3" onSelect="actuate(B3);transition(ScreenLockTopLevelRotation)"/>
+            <Widget name="B4" onSelect="actuate(B4);transition(ScreenLockTopLevelRotation)"/>
+            <Widget name="B5" onSelect="actuate(B5);transition(ScreenLockTopLevelRotation)"/>
+        </Animation>    
+    </Animations>
+</ACAT>
+

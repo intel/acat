@@ -1,26 +1,13 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="CheckEnabledArgs.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
-using System;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WidgetManagement;
+using System;
 
 namespace ACAT.Lib.Core.AgentManagement
 {
@@ -43,11 +30,16 @@ namespace ACAT.Lib.Core.AgentManagement
         {
             Handled = false;
             Enabled = false;
-            Command  = command;
+            Command = command;
             MonitorInfo = monitorInfo;
             Widget = widget;
         }
-        
+
+        /// <summary>
+        /// Gets the command
+        /// </summary>
+        public String Command { get; private set; }
+
         /// <summary>
         /// Gets or sets the Enabled state of the widget
         /// </summary>
@@ -62,11 +54,6 @@ namespace ACAT.Lib.Core.AgentManagement
         /// Gets or sets active window info
         /// </summary>
         public WindowActivityMonitorInfo MonitorInfo { get; private set; }
-
-        /// <summary>
-        /// Gets the command
-        /// </summary>
-        public String Command{ get; private set; }
 
         /// <summary>
         /// Optional, if a widget is associated with the command

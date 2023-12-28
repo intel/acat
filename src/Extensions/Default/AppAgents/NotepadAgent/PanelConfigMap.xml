@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" ?>
-
-<ACAT>
-  <ConfigMapEntries>
-    <ConfigMapEntry panelClass="NotepadContextMenu" configName="NotepadContextMenu" configId="9F79B3F3-EE99-4587-9352-8746362921AF" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868"  configFile="NotepadContextMenu.xml"/>
-  </ConfigMapEntries>
-</ACAT>

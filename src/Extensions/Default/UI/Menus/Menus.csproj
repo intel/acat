@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ACAT.Extensions.Default.UI.Menus</RootNamespace>
     <AssemblyName>Menus</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -71,6 +71,7 @@
     </Reference>
     <Reference Include="ACATResources">
       <HintPath>..\..\..\..\Redistributable\ACATResources.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -86,37 +87,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ToolsMenu.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ToolsMenu.Designer.cs">
-      <DependentUpon>ToolsMenu.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SettingsMenu.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SettingsMenu.Designer.cs">
-      <DependentUpon>SettingsMenu.cs</DependentUpon>
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
     <Compile Include="MainMenu.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainMenu.Designer.cs">
       <DependentUpon>MainMenu.cs</DependentUpon>
-      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="DualMonitorMenu.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DualMonitorMenu.Designer.cs">
-      <DependentUpon>DualMonitorMenu.cs</DependentUpon>
-    </Compile>
-    <Compile Include="WindowPosSizeMenu.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WindowPosSizeMenu.Designer.cs">
-      <DependentUpon>WindowPosSizeMenu.cs</DependentUpon>
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

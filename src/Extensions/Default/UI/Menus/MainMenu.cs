@@ -1,24 +1,19 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="MainMenu.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// MainMenu.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Form for the main menu for the application. Some of the commands
+// are handled by the command dispatcher in the base class
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.ACATResources;
+using ACAT.Lib.Core.ActuatorManagement;
+using ACAT.Lib.Core.AgentManagement;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
 using ACAT.Lib.Core.Utility;
@@ -28,15 +23,14 @@ using System.Windows.Forms;
 
 namespace ACAT.Extensions.Default.UI.Menus
 {
-    /// <summary>
-    /// Form for the main menu for the application. Commands
-    /// are handled by the command dispatcher in the base class
-    /// </summary>
     [DescriptorAttribute("148257A1-A8B7-4E75-93F0-56AFCD5B2A3E",
                         "MainMenu",
                         "Main AppMenu")]
     public partial class MainMenu : MenuPanel
     {
+        private IActuator _calibrationSupporedActuator;
+        private bool _enableScanTimingConfigure = false;
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -47,6 +41,34 @@ namespace ACAT.Extensions.Default.UI.Menus
         {
             // add commands that are not supported by the base class
             commandDispatcher.Commands.Add(new CommandHandler("Exit"));
+            commandDispatcher.Commands.Add(new CommandHandler("CmdAdjustScanSpeed"));
+            commandDispatcher.Commands.Add(new CommandHandler("CmdCalibrateActuator"));
+            _enableScanTimingConfigure = Context.AppActuatorManager.CheckScanTimingConfigureEnable();
+
+            _calibrationSupporedActuator = Context.AppActuatorManager.GetCalibrationSupportedActuator();
+
+            Load += MainMenu_Load;
+        }
+
+        /// <summary>
+        /// Invoked to check if a scanner button should be enabled.  Uses context
+        /// to determine the 'enabled' state.
+        /// </summary>
+        /// <param name="arg">info about the scanner button</param>
+        public override bool CheckCommandEnabled(CommandEnabledArg arg)
+        {
+            if (arg.Command == "CmdAdjustScanSpeed")
+            {
+                arg.Enabled = _enableScanTimingConfigure;
+                arg.Handled = true;
+            }
+            else if (arg.Command == "CmdCalibrateActuator")
+            {
+                arg.Enabled = (_calibrationSupporedActuator != null);
+                arg.Handled = true;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -63,13 +85,18 @@ namespace ACAT.Extensions.Default.UI.Menus
             }));
         }
 
+        private void MainMenu_Load(object sender, EventArgs e)
+        {
+            CenterToScreen();
+        }
+
         /// <summary>
         /// Quits the application.
         /// </summary>
         private void quitApplication()
         {
             Context.AppQuit = true;
-
+            Close();
             if (Owner != null)
             {
                 Owner.Close();
@@ -111,6 +138,17 @@ namespace ACAT.Extensions.Default.UI.Menus
                 {
                     case "Exit":
                         form.confirmAndQuitApplication();
+                        break;
+
+                    case "CmdAdjustScanSpeed":
+                        Context.AppActuatorManager.ShowScanTimingsConfigureDialog();
+                        break;
+
+                    case "CmdCalibrateActuator":
+                        if (form._calibrationSupporedActuator != null)
+                        {
+                            Context.AppActuatorManager.RequestCalibration(form._calibrationSupporedActuator, RequestCalibrationReason.AppRequested);
+                        }
                         break;
 
                     default:

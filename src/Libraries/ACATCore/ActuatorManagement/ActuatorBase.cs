@@ -1,24 +1,23 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="ActuatorBase.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// ActuatorBase.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Base class for all the actuators.  Actuators are input mechanisms
+// to the application.  An actuator contains a list
+// of switches, each of which act as a trigger to drive the UI. For
+// instance, a keyboard actuator will use input from the keyboard as
+// triggers.  Soft actuators can also be implemented that use sockets
+// to send triggers to the UI.
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Extensions;
+using ACAT.Lib.Core.Onboarding;
+using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.PreferencesManagement;
 using ACAT.Lib.Core.Utility;
 using System;
@@ -64,6 +63,11 @@ namespace ACAT.Lib.Core.ActuatorManagement
         }
 
         /// <summary>
+        /// Raised when the actuator wants to send custom data to the application
+        /// </summary>
+        public event IoctlResponse EvtIoctlResponse;
+
+        /// <summary>
         /// Triggered when one of the switches in this actuator is engaged.
         /// </summary>
         public event SwitchActivated EvtSwitchActivated;
@@ -100,12 +104,44 @@ namespace ACAT.Lib.Core.ActuatorManagement
             get { return Descriptor.Name; }
         }
 
+        public virtual String OnboardingImageFileName
+        {
+            get
+            {
+                return String.Empty;
+            }
+        }
+
+        public virtual bool ShowTryoutOnStartup
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// Gets whether this supports a custom settings dialog
         /// </summary>
         public virtual bool SupportsPreferencesDialog
         {
             get { return false; }
+        }
+
+        public virtual bool SupportsScanTimingsConfigureDialog
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public virtual bool SupportsTryout
+        {
+            get
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -171,6 +207,11 @@ namespace ACAT.Lib.Core.ActuatorManagement
             return _invoker;
         }
 
+        public virtual IOnboardingExtension GetOnboardingExtension()
+        {
+            return null;
+        }
+
         /// <summary>
         /// Returns the preferences object for the actuator
         /// </summary>
@@ -181,16 +222,43 @@ namespace ACAT.Lib.Core.ActuatorManagement
         }
 
         /// <summary>
+        /// Returns the current state of the actuator
+        /// </summary>
+        /// <returns>Current state</returns>
+        public State GetState()
+        {
+            return actuatorState;
+        }
+
+        public virtual IEnumerable<String> GetSupportedKeyboardConfigs()
+        {
+            return null;
+        }
+
+        /// <summary>
         /// Allow derived classes to allocate resources
         /// </summary>
         /// <returns>true on success</returns>
         public virtual bool Init()
         {
+            ActuatorManager.Instance.OnInitDone(this);
+
             return true;
         }
 
         /// <summary>
-        /// Loads switch settings from the specified settings 
+        /// Invoked by an application to send custom data to the actuator
+        /// </summary>
+        /// <param name="opcode">operation code</param>
+        /// <param name="request">data (typically JSON string)</param>
+        /// <returns>true on success</returns>
+        public virtual bool IoctlRequest(int opcode, String request)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Loads switch settings from the specified settings
         /// object. Creates the switches with attributes from the
         /// switchSettings and adds the switches to the _switches
         /// dictionary
@@ -206,19 +274,22 @@ namespace ACAT.Lib.Core.ActuatorManagement
             foreach (var switchSetting in switchSettings)
             {
                 var actuatorSwitch = CreateSwitch();
-                Log.Debug("name=" + switchSetting.Name);
-                if (!_switches.ContainsKey(switchSetting.Name))
+                if (actuatorSwitch != null)
                 {
-                    if (actuatorSwitch.Load(switchSetting) && actuatorSwitch.Init())
+                    Log.Debug("name=" + switchSetting.Name);
+                    if (!_switches.ContainsKey(switchSetting.Name))
                     {
-                        Log.Debug("Adding switch " + actuatorSwitch.Name);
-                        actuatorSwitch.Actuator = this;
-                        _switches.Add(actuatorSwitch.Name, actuatorSwitch);
+                        if (actuatorSwitch.Load(switchSetting) && actuatorSwitch.Init())
+                        {
+                            Log.Debug("Adding switch " + actuatorSwitch.Name);
+                            actuatorSwitch.Actuator = this;
+                            _switches.Add(actuatorSwitch.Name, actuatorSwitch);
+                        }
                     }
-                }
-                else
-                {
-                    Log.Error("Warning.  Switch " + actuatorSwitch.Name + " defined more than once");
+                    else
+                    {
+                        Log.Error("Warning.  Switch " + actuatorSwitch.Name + " defined more than once");
+                    }
                 }
             }
 
@@ -257,7 +328,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         }
 
         /// <summary>
-        /// This function is invoked to enable the actuator to 
+        /// This function is invoked to enable the actuator to
         /// register its switches
         /// </summary>
         public virtual void OnRegisterSwitches()
@@ -270,6 +341,13 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         public virtual void Pause()
         {
+        }
+
+        public virtual bool PostInit()
+        {
+            ActuatorManager.Instance.OnPostInitDone(this);
+
+            return true;
         }
 
         /// <summary>
@@ -305,11 +383,30 @@ namespace ACAT.Lib.Core.ActuatorManagement
             return true;
         }
 
+        public virtual bool ShowScanTimingsConfigureDialog()
+        {
+            return false;
+        }
+
+        public virtual bool ShowTryoutDialog()
+        {
+            return false;
+        }
+
         /// <summary>
         /// Starts calibration of the actuator
         /// </summary>
-        public virtual void StartCalibration()
+        public virtual void StartCalibration(RequestCalibrationReason reason)
         {
+        }
+
+        /// <summary>
+        /// Indicates whether the actuator supports calibration or not
+        /// </summary>
+        /// <returns>true if it does, false otherwise</returns>
+        public virtual bool SupportsCalibration()
+        {
+            return false;
         }
 
         /// <summary>
@@ -396,6 +493,11 @@ namespace ACAT.Lib.Core.ActuatorManagement
             ActuatorManager.Instance.OnInitDone(this);
         }
 
+        protected void OnPostInitDone(bool success = true)
+        {
+            ActuatorManager.Instance.OnPostInitDone(this, success);
+        }
+
         /// <summary>
         /// Helper function to trigger an event that a switch was engaged.  This
         /// function is called by the derived classes
@@ -473,6 +575,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
             bool actuate = true;
             parsedGesture = String.Empty;
 
+            Log.Debug(strData);
+
             var tokens = strData.Split(';');
             foreach (var token in tokens)
             {
@@ -530,9 +634,56 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// The Actuator should call this function to request that it
         /// wants calibration done.
         /// </summary>
-        protected void RequestCalibration()
+        protected void RequestCalibration(RequestCalibrationReason reason)
         {
-            ActuatorManager.Instance.RequestCalibration(this);
+            ActuatorManager.Instance.RequestCalibration(this, reason);
+        }
+
+        /// <summary>
+        /// Sends a response back to the client through an event
+        /// </summary>
+        /// <param name="opcode">operation code</param>
+        /// <param name="response">data to be sent</param>
+        protected virtual void SendIoctlResponse(int opcode, String response)
+        {
+            if (EvtIoctlResponse != null)
+            {
+                EvtIoctlResponse(opcode, response);
+            }
+        }
+
+        protected bool ShowDefaultScanTimingsConfigureDialog()
+        {
+            if (String.IsNullOrEmpty(CoreGlobals.AppPreferences.DefaultScanTimingsConfigurePanelName))
+            {
+                return false;
+            }
+
+            var form = PanelManager.Instance.CreatePanel(CoreGlobals.AppPreferences.DefaultScanTimingsConfigurePanelName, "Adjust Scanning Speed");
+            if (form != null)
+            {
+                Context.AppPanelManager.ShowDialog(form as IPanel);
+                return true;
+            }
+
+            return false;
+        }
+
+        protected bool ShowDefaultTryoutDialog()
+        {
+            if (String.IsNullOrEmpty(CoreGlobals.AppPreferences.DefaultTryoutPanelName))
+            {
+                return false;
+            }
+
+            var form = PanelManager.Instance.CreatePanel(CoreGlobals.AppPreferences.DefaultTryoutPanelName, "Switch Tryout");
+            if (form != null)
+            {
+                Context.AppPanelManager.ShowDialog(form as IPanel);
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>

@@ -1,25 +1,13 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="DualMonitor.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2019 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
-
+using ACAT.Lib.Core.PanelManagement;
 using System;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace ACAT.Lib.Core.Utility
@@ -37,6 +25,43 @@ namespace ACAT.Lib.Core.Utility
             get { return Screen.AllScreens.Length > 1; }
         }
 
+        public static void CheckAndDisplayScaleFactorWarning()
+        {
+            if (!CoreGlobals.AppPreferences.ShowDisplayScaleMessageOnStartup)
+            {
+                return;
+            }
+
+            var tuple = GetDisplayWidthAndScaling();
+            if (tuple.Item1 > 0 && tuple.Item1 <= 1920 && tuple.Item2 != 1.0 && tuple.Item2 != 1.25)
+            {
+                var prompt = String.Format("Display scaling is {0}%.  ACAT is optimized for 100% and 125% scaling. Some screens may not display properly.", tuple.Item2 * 100); ;
+                var ret = ConfirmBoxSingleOption.ShowDialog(prompt, "OK", null, true);
+                if (ret)
+                {
+                    CoreGlobals.AppPreferences.ShowDisplayScaleMessageOnStartup = false;
+                    CoreGlobals.AppPreferences.Save();
+                }
+            }
+        }
+
+        public static Tuple<int, float> GetDisplayWidthAndScaling()
+        {
+            foreach (Screen screen in Screen.AllScreens)
+            {
+                if (screen.Primary)
+                {
+                    User32Interop.DEVMODE dm = new User32Interop.DEVMODE();
+                    dm.dmSize = (short)Marshal.SizeOf(typeof(User32Interop.DEVMODE));
+                    User32Interop.EnumDisplaySettings(screen.DeviceName, -1, ref dm);
+
+                    return new Tuple<int, float>(dm.dmPelsWidth, (float)Math.Round(Decimal.Divide(dm.dmPelsWidth, screen.Bounds.Width), 2));
+                }
+            }
+
+            return new Tuple<int, float>(0, 0.0f);
+        }
+
         /// <summary>
         /// Returns the Screen object with contains the window represented
         /// by handle
@@ -46,6 +71,23 @@ namespace ACAT.Lib.Core.Utility
         public static Screen GetMonitorForHandle(IntPtr handle)
         {
             return Screen.FromHandle(handle);
+        }
+
+        /// <summary>
+        /// Returns the primary monitor Screen object
+        /// </summary>
+        /// <returns>Screen object for the primary monitor, null if not found</returns>
+        public static Screen GetPrimaryMonitor()
+        {
+            foreach (var scr in Screen.AllScreens)
+            {
+                if (scr.Primary)
+                {
+                    return scr;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -71,23 +113,6 @@ namespace ACAT.Lib.Core.Utility
         }
 
         /// <summary>
-        /// Returns the primary monitor Screen object
-        /// </summary>
-        /// <returns>Screen object for the primary monitor, null if not found</returns>
-        public static Screen GetPrimaryMonitor()
-        {
-            foreach (var scr in Screen.AllScreens)
-            {
-                if (scr.Primary)
-                {
-                    return scr;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
         /// Maximizes the specified window in the monitor other than the
         /// one it is currently in
         /// </summary>
@@ -102,6 +127,11 @@ namespace ACAT.Lib.Core.Utility
             var scr = GetMonitorForHandle(handle);
 
             var other = scr.Primary ? GetSecondaryMonitor() : GetPrimaryMonitor();
+
+            if (other == null)
+            {
+                return;
+            }
 
             if (Windows.IsMaximized(handle))
             {
@@ -129,6 +159,11 @@ namespace ACAT.Lib.Core.Utility
             var scr = GetMonitorForHandle(handle);
 
             var other = scr.Primary ? GetSecondaryMonitor() : GetPrimaryMonitor();
+
+            if (other == null)
+            {
+                return;
+            }
 
             if (Windows.IsMaximized(handle))
             {

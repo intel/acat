@@ -1,26 +1,20 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="ActuatorSwitchBase.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// ActuatorSwitchBase.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Represents the attributes of a switch object. Note that
+// the acutal action of the switch is handled in the Actuators.
+// The Switch objects just enacapusate the attributes.
+// This is the base class for all the actuator switches.
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Utility;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Media;
@@ -35,6 +29,12 @@ namespace ACAT.Lib.Core.ActuatorManagement
     /// </summary>
     public class ActuatorSwitchBase : IActuatorSwitch
     {
+        /// <summary>
+        /// The command verb to be used for a switch that
+        /// is used for selection
+        /// </summary>
+        public const String TriggerCommand = "@Trigger";
+
         /// <summary>
         /// Used for synchronization
         /// </summary>
@@ -234,12 +234,100 @@ namespace ACAT.Lib.Core.ActuatorManagement
         }
 
         /// <summary>
+        /// Returns the trigger scanmode for this switch if is configured as
+        /// a scan trigger.  TriggerScanModes.None  if it is not configured
+        /// as a scan trigger.
+        /// </summary>
+        /// <returns>The scan trigger mode</returns>
+        public TriggerScanModes GetTriggerScanMode()
+        {
+            if (String.IsNullOrEmpty(Command))
+            {
+                return TriggerScanModes.None;
+            }
+
+            var cmd = (Command[0] == '@') ? Command.Substring(1) : Command;
+
+            if (string.Compare(cmd, "CmdScanMoveLeft", true) == 0)
+            {
+                return TriggerScanModes.TriggerMoveLeft;
+            }
+
+            if (string.Compare(cmd, "CmdScanMoveRight", true) == 0)
+            {
+                return TriggerScanModes.TriggerMoveRight;
+            }
+
+            if (string.Compare(cmd, "CmdScanMoveUp", true) == 0)
+            {
+                return TriggerScanModes.TriggerMoveUp;
+            }
+
+            if (string.Compare(cmd, "CmdScanMoveDown", true) == 0)
+            {
+                return TriggerScanModes.TriggerMoveDown;
+            }
+
+            if (string.Compare(cmd, "CmdScanBeginLeft", true) == 0)
+            {
+                return TriggerScanModes.TriggerScanLeft;
+            }
+
+            if (string.Compare(cmd, "CmdScanBeginRight", true) == 0)
+            {
+                return TriggerScanModes.TriggerScanRight;
+            }
+
+            if (string.Compare(cmd, "CmdScanBeginUp", true) == 0)
+            {
+                return TriggerScanModes.TriggerScanUp;
+            }
+
+            if (string.Compare(cmd, "CmdScanBeginDown", true) == 0)
+            {
+                return TriggerScanModes.TriggerScanDown;
+            }
+
+            if (string.Compare(cmd, "CmdScanStop", true) == 0)
+            {
+                return TriggerScanModes.TriggerStop;
+            }
+
+            if (string.Compare(cmd, "CmdScanPause", true) == 0)
+            {
+                return TriggerScanModes.TriggerPause;
+            }
+
+            if (string.Compare(cmd, "CmdScanResume", true) == 0)
+            {
+                return TriggerScanModes.TriggerResume;
+            }
+
+            if (string.Compare(cmd, "CmdScanPauseToggle", true) == 0)
+            {
+                return TriggerScanModes.TriggerPauseToggle;
+            }
+
+            return TriggerScanModes.None;
+        }
+
+        /// <summary>
         /// Override this to do init for derived classes
         /// </summary>
         /// <returns>true on success</returns>
         public virtual bool Init()
         {
             return true;
+        }
+
+        /// <summary>
+        /// Returns true if the switch is configured as a
+        /// trigger to select a highlighed widget
+        /// </summary>
+        /// <returns>true if it is</returns>
+        public bool IsSelectTriggerSwitch()
+        {
+            return string.Compare(Command, TriggerCommand, true) == 0;
         }
 
         /// <summary>

@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" ?>
-
-<ACAT>
-  <ConfigMapEntries>
-    <ConfigMapEntry panelClass="MenuContextMenu" configName="MenuContextMenu" configId="4C8C0726-6E80-451A-A8D5-8373D2897DC3" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868"  configFile="MenuContextMenu.xml"/>
-  </ConfigMapEntries>
-</ACAT>

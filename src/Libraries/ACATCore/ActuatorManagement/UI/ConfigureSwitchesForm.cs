@@ -1,23 +1,18 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="ConfigureSwitchesForm.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// ConfigureSwitchesForm.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Displays a list of switches for an acutator to enable configure
+// settings for each of the switches.  User can enable/disable
+// switches, turn on/off whether the switch should act as a trigger.
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Lib.Core.PanelManagement;
 using System;
 using System.Windows.Forms;
 
@@ -30,15 +25,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
     /// </summary>
     public partial class ConfigureSwitchesForm : Form
     {
-        /// <summary>
-        /// Has anything changed?
-        /// </summary>
-        private bool _isDirty = false;
-
-        /// <summary>
-        /// Wrap text in rows?
-        /// </summary>
-        private bool _wrapText = true;
+        private const String _unmappedValue = "--";
 
         /// <summary>
         /// Aspect ratio of form at design time
@@ -49,6 +36,16 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// Has first call to OnClientSizeChanged been made?
         /// </summary>
         private bool _firstClientChangedCall = true;
+
+        /// <summary>
+        /// Has anything changed?
+        /// </summary>
+        private bool _isDirty = false;
+
+        /// <summary>
+        /// Wrap text in rows?
+        /// </summary>
+        private bool _wrapText = true;
 
         /// <summary>
         /// Initializes an instance of the class
@@ -120,8 +117,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
             }
         }
 
-        private const String _unmappedValue = "--";
-
         /// <summary>
         /// Cancels out of the dialog
         /// </summary>
@@ -129,9 +124,11 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="e">event args</param>
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            if (!_isDirty || MessageBox.Show("Changes not saved. Quit anyway?",
+            /*if (!_isDirty || MessageBox.Show("Changes not saved. Quit anyway?",
                                 Text, MessageBoxButtons.YesNo,
-                                MessageBoxIcon.Question) == DialogResult.Yes)
+                                MessageBoxIcon.Question) == DialogResult.Yes)*/
+
+            if (!_isDirty || ConfirmBox.ShowDialog("Changes not saved. Quit anyway?", null, false))
             {
                 DialogResult = DialogResult.Cancel;
                 Close();
@@ -147,10 +144,11 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             if (validate())
             {
-                if (_isDirty &&
-                    MessageBox.Show("Save changes?", 
-                                        Text, MessageBoxButtons.YesNo, 
-                                        MessageBoxIcon.Question) == DialogResult.Yes)
+                /*if (_isDirty &&
+                    MessageBox.Show("Save changes?",
+                                        Text, MessageBoxButtons.YesNo,
+                                        MessageBoxIcon.Question) == DialogResult.Yes)*/
+                if (_isDirty && ConfirmBox.ShowDialog("Save changes?", null, false))
                 {
                     updateDataFromUIAndSave();
                     DialogResult = DialogResult.OK;
@@ -169,6 +167,52 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             _wrapText = checkBoxWrapText.Checked;
             wrapText(_wrapText);
+        }
+
+        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var senderGrid = (DataGridView)sender;
+
+            if (senderGrid.Columns[e.ColumnIndex] == TriggerColumn)
+            {
+                var row = dataGridView2.Rows[e.RowIndex];
+                var checkCell = (DataGridViewCheckBoxCell)row.Cells[e.ColumnIndex];
+
+                bool isChecked = (Boolean)checkCell.Value;
+                if (isChecked)
+                {
+                    row.Cells[CommandColumn.Name].Value = _unmappedValue;
+                }
+                else if (row.Cells[CommandColumn.Name].Tag is String)
+                {
+                    row.Cells[CommandColumn.Name].Value = row.Cells[CommandColumn.Name].Tag;
+                }
+            }
+            else if (e.RowIndex >= 0 && senderGrid.Columns[e.ColumnIndex] == MapColumn)
+            {
+                var switchName = dataGridView2.Rows[e.RowIndex].Cells[SwitchNameColumn.Name].Value;
+
+                Hide();
+
+                // var switchCommandMapForm = new SwitchCommandMapForm {Title = "Map Command to Switch " + switchName};
+                var switchCommandMapForm = new SwitchCommandMapForm { Title = "Map Command to Switch " + switchName };
+                switchCommandMapForm.ShowDialog();
+
+                Show();
+
+                if (!String.IsNullOrEmpty(switchCommandMapForm.SelectedCommand))
+                {
+                    dataGridView2.Rows[e.RowIndex].Cells[CommandColumn.Name].Value = formatCommandForDisplay(switchCommandMapForm.SelectedCommand);
+
+                    dataGridView2.Rows[e.RowIndex].Cells[CommandColumn.Name].Tag = dataGridView2.Rows[e.RowIndex].Cells[CommandColumn.Name].Value;
+
+                    dataGridView2.Rows[e.RowIndex].Cells[TriggerColumn.Name].Value = false;
+
+                    _isDirty = true;
+                }
+
+                switchCommandMapForm.Dispose();
+            }
         }
 
         /// <summary>
@@ -223,6 +267,16 @@ namespace ACAT.Lib.Core.ActuatorManagement
             _isDirty = true;
         }
 
+        private String formatCommandForDisplay(String command)
+        {
+            if (command.StartsWith("@") && command.Length > 1)
+            {
+                command = command.Substring(1);
+            }
+
+            return command;
+        }
+
         /// <summary>
         /// Initializes the UI elements in the datagrid view such as widths
         /// of columns, column header text etc
@@ -245,59 +299,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
             dataGridView2.CellContentClick += dataGridView2_CellContentClick;
         }
 
-        void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            var senderGrid = (DataGridView)sender;
-
-            if (senderGrid.Columns[e.ColumnIndex] == TriggerColumn)
-            {
-                var row = dataGridView2.Rows[e.RowIndex];
-                var checkCell = (DataGridViewCheckBoxCell)row.Cells[e.ColumnIndex];
-
-                bool isChecked = (Boolean)checkCell.Value;
-                if (isChecked)
-                {
-                    row.Cells[CommandColumn.Name].Value = _unmappedValue;
-                }
-                else if (row.Cells[CommandColumn.Name].Tag is String)
-                {
-                    row.Cells[CommandColumn.Name].Value = row.Cells[CommandColumn.Name].Tag;
-                }
-            }
-            else if (e.RowIndex >= 0 && senderGrid.Columns[e.ColumnIndex] == MapColumn)
-            {
-                var switchName = dataGridView2.Rows[e.RowIndex].Cells[SwitchNameColumn.Name].Value;
-
-                Hide();
-
-                var switchCommandMapForm = new SwitchCommandMapForm {Title = "Map Command to Switch " + switchName};
-                switchCommandMapForm.ShowDialog();
-
-                Show();
-
-                if (!String.IsNullOrEmpty(switchCommandMapForm.SelectedCommand))
-                {
-                    dataGridView2.Rows[e.RowIndex].Cells[CommandColumn.Name].Value = formatCommandForDisplay(switchCommandMapForm.SelectedCommand);
-
-                    dataGridView2.Rows[e.RowIndex].Cells[CommandColumn.Name].Tag = dataGridView2.Rows[e.RowIndex].Cells[CommandColumn.Name].Value; 
-
-                    dataGridView2.Rows[e.RowIndex].Cells[TriggerColumn.Name].Value = false;
-
-                    _isDirty = true;
-                }
-            }
-        }
-
-        private String formatCommandForDisplay(String command)
-        {
-            if (command.StartsWith("@") && command.Length > 1)
-            {
-                command = command.Substring(1);
-            }
-
-            return command;
-        }
-
         /// <summary>
         /// OnLoad handler for the form. Init the UI and populate
         /// the datagridview
@@ -308,7 +309,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             if (Actuator == null)
             {
-                MessageBox.Show("Error.  Actuator to configure is null");
+                // MessageBox.Show("Error.  Actuator to configure is null");
+                bool result = ConfirmBox.ShowDialog("Error. Actuator to configure is null", null, false);
                 Close();
             }
 
@@ -362,12 +364,11 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
                 (dataGridView2[TriggerColumn.Name, rowNum] as DataGridViewCheckBoxCell).Value = switchSetting.IsTriggerSwitch();
 
-                dataGridView2[CommandColumn.Name, rowNum].Value = (switchSetting.IsTriggerSwitch() || String.IsNullOrEmpty(switchSetting.Command)) ? 
-                                                                    _unmappedValue : 
+                dataGridView2[CommandColumn.Name, rowNum].Value = (switchSetting.IsTriggerSwitch() || String.IsNullOrEmpty(switchSetting.Command)) ?
+                                                                    _unmappedValue :
                                                                     formatCommandForDisplay(switchSetting.Command);
 
-                dataGridView2[CommandColumn.Name, rowNum].Tag = dataGridView2[CommandColumn.Name, rowNum].Value; 
-
+                dataGridView2[CommandColumn.Name, rowNum].Tag = dataGridView2[CommandColumn.Name, rowNum].Value;
 
                 (dataGridView2[MapColumn.Name, rowNum] as DataGridViewButtonCell).Value = "Map";
             }
@@ -403,6 +404,12 @@ namespace ACAT.Lib.Core.ActuatorManagement
             }
         }
 
+        private void setColumnWidthPercent(DataGridViewColumn column, int percent)
+        {
+            int w = dataGridView2.Width - SystemInformation.VerticalScrollBarWidth;
+            column.Width = (w * percent) / 100;
+        }
+
         /// <summary>
         /// Sets the widths of the columns in the datagrid
         /// </summary>
@@ -418,12 +425,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
             setColumnWidthPercent(MapColumn, 10);
 
             dataGridView2.AllowUserToResizeColumns = false;
-        }
-
-        private void setColumnWidthPercent(DataGridViewColumn column, int percent)
-        {
-            int w = dataGridView2.Width - SystemInformation.VerticalScrollBarWidth;
-            column.Width = (w*percent)/100;
         }
 
         /// <summary>
@@ -446,7 +447,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
                 switchSetting.Enabled = (Boolean)dataGridView2[EnableColumn.Name, ii].Value;
 
-                bool isTrigger = (Boolean) dataGridView2[TriggerColumn.Name, ii].Value;
+                bool isTrigger = (Boolean)dataGridView2[TriggerColumn.Name, ii].Value;
 
                 if (isTrigger)
                 {
@@ -487,7 +488,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
             if (!ok)
             {
-                MessageBox.Show("Warning! You have not set any of the switches to select on trigger", Actuator.Name);
+                // MessageBox.Show("Warning! You have not set any of the switches to select on trigger", Actuator.Name);
+                bool result = ConfirmBox.ShowDialog("Warning! You have not set any of the switches to select on trigger. Actuator: " + Actuator.Name.ToString(), null, false);
             }
 
             ok = false;
@@ -502,7 +504,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
             if (!ok)
             {
-                MessageBox.Show("Warning! You have disabled all switches", Actuator.Name);
+                // MessageBox.Show("Warning! You have disabled all switches", Actuator.Name);
+                bool result = ConfirmBox.ShowDialog("Warning! You have disabled all switches. Actuator: " + Actuator.Name.ToString(), null, false);
             }
 
             return true;

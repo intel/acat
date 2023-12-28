@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="Context.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.AbbreviationsManagement;
@@ -23,7 +10,6 @@ using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.AgentManagement;
 using ACAT.Lib.Core.CommandManagement;
 using ACAT.Lib.Core.SpellCheckManagement;
-using ACAT.Lib.Core.TalkWindowManagement;
 using ACAT.Lib.Core.ThemeManagement;
 using ACAT.Lib.Core.TTSManagement;
 using ACAT.Lib.Core.Utility;
@@ -84,11 +70,6 @@ namespace ACAT.Lib.Core.PanelManagement
         private static StartupFlags _startupFlags = StartupFlags.All;
 
         /// <summary>
-        /// The Talk window manager
-        /// </summary>
-        private static TalkWindowManager _talkManager;
-
-        /// <summary>
         /// Initializes the singleton instance of the class
         /// </summary>
         static Context()
@@ -127,6 +108,9 @@ namespace ACAT.Lib.Core.PanelManagement
             SpellChecker = 16,
             Abbreviations = 32,
             AgentManager = 64,
+            PerfMon = 128,
+            NoUI = 256,
+            NoActuator = 512,
             All = 0xffff
         }
 
@@ -189,14 +173,6 @@ namespace ACAT.Lib.Core.PanelManagement
         }
 
         /// <summary>
-        /// Gets the ACAT TalkWindowManager object
-        /// </summary>
-        public static TalkWindowManager AppTalkWindowManager
-        {
-            get { return _talkManager; }
-        }
-
-        /// <summary>
         /// Gets the ACAT Theme Manager object
         /// </summary>
         public static ThemeManager AppThemeManager
@@ -242,6 +218,16 @@ namespace ACAT.Lib.Core.PanelManagement
         }
 
         /// <summary>
+        /// Gets or sets the command name for the keyboardLayout
+        /// </summary>
+        public static string KeyboardLayout { get; set; }
+
+        /// <summary>
+        /// Gets or sets if the Keyboard layout has been requested to change
+        /// </summary>
+        public static bool RestartKeyboardLayout { get; set; }
+
+        /// <summary>
         /// Gets or sets whether the talk windows should be displayed
         /// when the application is launched
         /// </summary>
@@ -273,39 +259,62 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public static void Dispose()
         {
-            if (AppActuatorManager != null)
+            PerfMon.StopLogging();
+
+            if (!isEnabled(StartupFlags.NoActuator))
             {
-                AppActuatorManager.Dispose();
+                if (AppActuatorManager != null)
+                {
+                    AppActuatorManager.Dispose();
+                }
             }
 
-            if (AppPanelManager != null)
+            if (!isEnabled(StartupFlags.NoUI))
             {
-                AppPanelManager.Dispose();
+                if (AppPanelManager != null)
+                {
+                    AppPanelManager.Dispose();
+                }
             }
 
-            if (AppWordPredictionManager != null)
+            if (isEnabled(StartupFlags.WordPrediction))
             {
-                AppWordPredictionManager.Dispose();
+                if (AppWordPredictionManager != null)
+                {
+                    AppWordPredictionManager.Dispose();
+                }
             }
 
-            if (AppTTSManager != null)
+            if (isEnabled(StartupFlags.TextToSpeech))
             {
-                AppTTSManager.Dispose();
+                if (AppTTSManager != null)
+                {
+                    AppTTSManager.Dispose();
+                }
             }
 
-            if (AppSpellCheckManager != null)
+            if (isEnabled(StartupFlags.SpellChecker))
             {
-                AppSpellCheckManager.Dispose();
+                if (AppSpellCheckManager != null)
+                {
+                    AppSpellCheckManager.Dispose();
+                }
             }
 
-            if (AppAbbreviationsManager != null)
+            if (isEnabled(StartupFlags.Abbreviations))
             {
-                AppAbbreviationsManager.Dispose();
+                if (AppAbbreviationsManager != null)
+                {
+                    AppAbbreviationsManager.Dispose();
+                }
             }
 
-            if (AppAgentMgr != null)
+            if (isEnabled(StartupFlags.AgentManager))
             {
-                AppAgentMgr.Dispose();
+                if (AppAgentMgr != null)
+                {
+                    AppAgentMgr.Dispose();
+                }
             }
 
             if (AppAutomationEventManger != null)
@@ -340,18 +349,21 @@ namespace ACAT.Lib.Core.PanelManagement
 
             AppWindowPosition = CoreGlobals.AppPreferences.ScannerPosition;
 
-            AppCommandManager.Init();
+            bool retVal = AppCommandManager.Init();
 
-            bool retVal = createThemeManager();
-
-            if (retVal)
+            if (retVal && !isEnabled(StartupFlags.NoUI))
             {
-                retVal = createPanelManager();
-            }
+                retVal = createThemeManager();
 
-            if (retVal)
-            {
-                retVal = initWidgetManager();
+                if (retVal)
+                {
+                    retVal = createPanelManager();
+                }
+
+                if (retVal)
+                {
+                    retVal = initWidgetManager();
+                }
             }
 
             if (retVal)
@@ -374,8 +386,6 @@ namespace ACAT.Lib.Core.PanelManagement
                 retVal = createAbbreviationsManager();
             }
 
-            createTalkWindowManager();
-
             if (retVal)
             {
                 retVal = createAgentManager();
@@ -384,6 +394,11 @@ namespace ACAT.Lib.Core.PanelManagement
             if (retVal)
             {
                 retVal = createActuatorManager();
+            }
+
+            if (retVal)
+            {
+                startPerformanceMonitor();
             }
 
             if (_initWarning)
@@ -411,7 +426,26 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             if (isEnabled(StartupFlags.AgentManager))
             {
-                AppAgentMgr.PostInit();
+                if (!AppAgentMgr.PostInit())
+                {
+                    return false;
+                }
+            }
+
+            if (AppActuatorManager != null)
+            {
+                if (!AppActuatorManager.PostInit())
+                {
+                    return false;
+                }
+            }
+
+            if (AppWordPredictionManager != null)
+            {
+                if (!AppWordPredictionManager.PostInit())
+                {
+                    return false;
+                }
             }
 
             if (isEnabled(StartupFlags.WindowsActivityMonitor))
@@ -459,16 +493,21 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <returns>true on success</returns>
         private static bool createActuatorManager()
         {
-            bool retVal = AppActuatorManager.LoadExtensions(ExtensionDirs);
+            bool retVal = true;
 
-            if (retVal)
+            if (!isEnabled(StartupFlags.NoActuator))
             {
-                retVal = AppActuatorManager.Init(ExtensionDirs);
-            }
+                retVal = AppActuatorManager.LoadExtensions(ExtensionDirs);
 
-            if (!retVal)
-            {
-                setCompletionStatus("Error initializing actuator manager");
+                if (retVal)
+                {
+                    retVal = AppActuatorManager.Init(ExtensionDirs);
+                }
+
+                if (!retVal)
+                {
+                    setCompletionStatus("Error initializing actuator manager");
+                }
             }
 
             return retVal;
@@ -545,14 +584,6 @@ namespace ACAT.Lib.Core.PanelManagement
             }
 
             return retVal;
-        }
-
-        /// <summary>
-        /// Creates the talk window manager
-        /// </summary>
-        private static void createTalkWindowManager()
-        {
-            _talkManager = TalkWindowManager.Instance;
         }
 
         /// <summary>
@@ -712,6 +743,22 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             _completionStatus = (fatal) ? "Fatal error. " + status : status;
             _isFatal = fatal;
+        }
+
+        private static void startPerformanceMonitor()
+        {
+            if (!isEnabled(StartupFlags.PerfMon))
+            {
+                return;
+            }
+
+            PerfMon.Enable = CoreGlobals.AppPreferences.PerMonEnable;
+            PerfMon.EnablePerfMonCpu = CoreGlobals.AppPreferences.PerMonCPUEnable;
+            PerfMon.EnablePerfMonMemory = CoreGlobals.AppPreferences.PerMonMemoryEnable;
+            if (CoreGlobals.AppPreferences.PerfMonLogInterval >= 0)
+            {
+                PerfMon.StartLogging(CoreGlobals.AppPreferences.PerfMonLogInterval * 1000);
+            }
         }
     }
 }

@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="Preferences.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
@@ -39,24 +26,9 @@ namespace ACAT.Lib.Core.Utility
         public static Assembly ApplicationAssembly;
 
         [NonSerialized, XmlIgnore]
-        public String AppId;
-
-        [NonSerialized, XmlIgnore]
         public String AppName = "ACAT";
 
-        [NonSerialized, XmlIgnore]
-        public bool EnableGlass = false;
-
-        [NonSerialized, XmlIgnore]
-        public float GlassOpacity = 0.8f;
-
-        [NonSerialized, XmlIgnore]
-        public bool GlassFadeIn = false;
-
         // Scanner settings
-        [IntDescriptor("Scan time for ACAT Menus and Dialogs (in msecs)", 100, 3000)]
-        public int MenuDialogScanTime = 1000;
-
         [IntDescriptor("First repeat time for sticky buttons (in msecs)", 200, 3000)]
         public int FirstRepeatTime = 1000;
 
@@ -76,12 +48,6 @@ namespace ACAT.Lib.Core.Utility
 
         public String Theme = "Default";
 
-        [BoolDescriptor("If the scanner is repositioned, save its position")]
-        public bool AutoSaveScannerLastPosition = false;
-
-        [BoolDescriptor("If the scanner is resized, save its size")]
-        public bool AutoSaveScannerScaleFactor = true;
-
         [BoolDescriptor("Include disabled buttons in the scanning cycle", true)]
         public bool ScanDisabledElements = true;
 
@@ -90,24 +56,17 @@ namespace ACAT.Lib.Core.Utility
         public String PreferredPanelConfigNames = "AlphabetQwerty";
 
         [IntDescriptor("Minimum hold time for the actuator switch to trigger (in msecs)", 0, 2000)]
-        public int MinActuationHoldTime = 50;
-
-        public bool HideWindowsTaskBar = false;
-
-        [BoolDescriptor("Auto-hide scanner if the acutator is not triggered for a specified period (see HideOnIdleTimeout) (in msecs)", true)]
-        public bool HideScannerOnIdle = false;
-
-        [IntDescriptor("Hide the scanner if no actuator switch trigger is detected for this length of time ", 3000, 60000)]
-        public int HideOnIdleTimeout = 5000;
+        public int MinActuationHoldTime = 0;
 
         [BoolDescriptor("Expand an abbreviation only if a space, comma or a period is inserted after the abbreviation")]
         public bool ExpandAbbreviationsOnSeparator = false;
 
-        [BoolDescriptor("Log debug trace messages to a file.  DebugMessagesEnable must also be set to true.  Use with caution.  This will slow down the app and also consume disk space.  Use only for troubleshooting")]
-        public bool DebugLogMessagesToFile = false;
+        [BoolDescriptor("Log application messages to a file. Use with caution. This will slow down the app and also consume disk space.  Use only for troubleshooting")]
+        public bool EnableLogs = false;
 
-        [BoolDescriptor("Enable debug trace messages. Use the DebugView utility to view the messages  (Use with caution.  This will slow down the app)")]
+        public bool DebugLogMessagesToFile = false;
         public bool DebugMessagesEnable = false;
+
         public bool DebugAssertOnError = false;
 
         [BoolDescriptor("Enable audit logging of important events.  Use with caution.  This will slow down the app.  Use only for troubleshooting)")]
@@ -115,21 +74,98 @@ namespace ACAT.Lib.Core.Utility
 
         public String AuditLogFilter = "*";
 
-        [BoolDescriptor("Retain the text in the Talk window when its closed and restore it when the Talk window is displayed the next time")]
-        public bool RetainTalkWindowContentsOnHide = true;
-
-        [FloatDescriptor("Size of the font in the Talk window.  Set to 0 for default font size", 0, 72)]
-        public float TalkWindowFontSize = 0.0f;
-
-        [BoolDescriptor("Snap Talk window to vertically stretch from the top of the display to the bottom")]
-        public bool SnapTalkWindow = false;
-
         [BoolDescriptor("Enable Text-to-speech")]
         public bool EnableTextToSpeech = true;
+        
+        [BoolDescriptor("Enable Performance Monitor to monitor and log Memory and CPU utilization statistics")]
+        public bool PerMonEnable = false;
 
-        public String Extensions = "Default";
+        [BoolDescriptor("Monitor and log CPU utilization")]
+        public bool PerMonCPUEnable = false;
+
+        [BoolDescriptor("Monitor and log memory utilization")]
+        public bool PerMonMemoryEnable = false;
+
+        [IntDescriptor("How often to monitor and log Performance Monitor statistics (in seconds) ", 5, 3600, 15)]
+        public int PerfMonLogInterval = 60;
+
+        [BoolDescriptor("Include empty grid elements in the grid level scanning sequence")]
+        public bool TopLevelScanIncludeEmptyGrids = true;
+
+        [BoolDescriptor("Display the actuator switch dialog on startup")]
+        public bool ShowSwitchTryoutOnStartup = true;
+
+        [BoolDescriptor("Display the ACAT Talk application interface description on startup")]
+        public bool ShowTalkInterfaceDescOnStartup = true;
+
+        [IntDescriptor("Number of times the grid (top level) is scanned", 1, 10)]
+        public int GridScanIterations = 4;
+
+        [IntDescriptor("Number of times the rows in a grid are scanned", 1, 10)]
+        public int RowScanIterations = 1;
+
+        [IntDescriptor("Number of times the buttons in a row are scanned", 1, 10)]
+        public int ColumnScanIterations = 1;
+
+        [BoolDescriptor("Prevent the system from going to sleep and the display from turning off")]
+        public bool DisableSystemSleepMode = false;
+
+        [BoolDescriptor("Check display scale factor is set to 100% or 125% and display warning if it is not")]
+        public bool ShowDisplayScaleMessageOnStartup = true;
+
+
+        public bool OnboardingComplete = false;
+
+        public bool FirstTimeUser = true;
+
+        public String Extensions = "Default,BCI";
 
         public String Language = String.Empty;
+
+        public String DefaultScanTimingsConfigurePanelName = String.Empty;
+
+        public String DefaultTryoutPanelName = String.Empty;
+
+        //[BoolDescriptor("Auto-hide scanner if the acutator is not triggered for a specified period (see HideOnIdleTimeout) (in msecs)", true)]
+        public bool HideScannerOnIdle = false;
+
+        //[IntDescriptor("Hide the scanner if no actuator switch trigger is detected for this length of time ", 3000, 60000)]
+        public int HideOnIdleTimeout = 5000;
+
+
+        [BoolDescriptor("Enable in App sounds")]
+        public bool EnableSounds = true;
+
+        // unused variables for ACAT Talk. These will be used in ACAT App
+        //[BoolDescriptor("Manual scan mode. User controls the direction of the highlight", false)]
+        public bool EnableManualScan = false;
+
+        //[IntDescriptor("Scan time for ACAT Menus and Dialogs (in msecs)", 100, 3000)]
+        public int MenuDialogScanTime = 1000;
+
+        //[IntDescriptor("Pre-actuate pause time (in msecs) (only for manual scan)", 2000, 2000)]
+        public int ManualScanPreActuatePauseTime = 2000;
+
+        //[IntDescriptor("Actuate pause time (in msecs) (only for manual scan)", 2000, 2000)]
+        public int ManualScanActuatePauseTime = 2000;
+
+        //[BoolDescriptor("Enables delayed acutate when scanning stops in the manual scan mode", true)]
+        public bool ManualScanDelayedActuateEnable = true;
+
+        //[BoolDescriptor("Highlights the home button after actuation in the manual scan mode", true)]
+        public bool ManualScanHighlightDefaultHomePostActuate = true;
+
+        //[BoolDescriptor("Retain the text in the Talk window when its closed and restore it when the Talk window is displayed the next time")]
+        public bool RetainTalkWindowContentsOnHide = true;
+
+        //[BoolDescriptor("If the scanner is repositioned, save its position")]
+        public bool AutoSaveScannerLastPosition = false;
+
+        //[BoolDescriptor("If the scanner is resized, save its size")]
+        public bool AutoSaveScannerScaleFactor = true;
+
+        //[BoolDescriptor("Start scanning automatically", true)]
+        public bool EnableAutoStartScan = true;
 
         /// <summary>
         /// Returns a string representation of the settings

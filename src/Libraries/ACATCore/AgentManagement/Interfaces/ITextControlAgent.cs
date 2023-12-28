@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="ITextControlAgent.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
@@ -62,14 +49,14 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
         /// </summary>
         IKeyboard Keyboard { get; }
 
-        bool CheckInsertOrReplaceWord(out int insertOrReplaceOffset, out String wordToReplace);
-
         /// <summary>
         /// Invoked to contextually check if a button on the scanner
         /// needs to be enabled or not
         /// </summary>
         /// <param name="arg">contextual info about the button</param>
         void CheckCommandEnabled(CommandEnabledArg arg);
+
+        bool CheckInsertOrReplaceWord(out int insertOrReplaceOffset, out String wordToReplace);
 
         /// <summary>
         /// Clears text in window
@@ -95,6 +82,14 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
         /// <param name="offset">Where to start</param>
         /// <param name="count">How many chars to delete</param>
         void Delete(int offset, int count);
+
+        void DelNextSentence();
+
+        void DelNextWord();
+
+        void DelPrevSentence();
+
+        void DelPrevWord();
 
         /// <summary>
         /// Indicates whether to enable smart punctuations
@@ -200,6 +195,8 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
         /// <param name="count">length of the previous word</param>
         /// <returns>true on success</returns>
         bool GetPrevWordOffset(out int offset, out int count);
+
+        bool GetPrevWordOffsetAutoComplete(out int offset, out int count);
 
         /// <summary>
         /// Returns highlighted text (if any)
@@ -335,6 +332,8 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
         /// </summary>
         void Resume();
 
+        void ScrollToCaret();
+
         /// <summary>
         /// Highlight all the text (equivalent to pressing
         /// Ctrl-A)
@@ -381,6 +380,8 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
         /// </summary>
         /// <returns>true on success</returns>
         bool SelectSentenceAtCaret();
+
+        void SelectText(int start, int end);
 
         /// <summary>
         /// Sets the caret position in the text window

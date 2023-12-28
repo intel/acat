@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="TextControlAgentBase.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.PanelManagement;
@@ -67,7 +54,14 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
             "CmdSelectModeToggle",
             "CmdDeletePrevChar",
             "CmdDeleteNextChar",
-            "CmdEnterKey"
+            "CmdEnterKey",
+            "CmdNextPara",
+            "CmdPrevPara",
+            "CmdDelPrevWord",
+            "CmdSmartDeletePrevWord",
+            "CmdDelNextWord",
+            "CmdDelPrevSentence",
+            "CmdDelNextSentence"
         };
 
         /// <summary>
@@ -111,15 +105,6 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
             get { return _selectMode; }
         }
 
-        public virtual bool CheckInsertOrReplaceWord(out int insertOrReplaceOffset, out String wordToReplace)
-        {
-            return TextUtils.CheckInsertOrReplaceWord(
-                                    GetText(),
-                                    GetCaretPos(),
-                                    out insertOrReplaceOffset,
-                                    out wordToReplace);
-        }
-
         /// <summary>
         /// Checks if the command should to be enabled or not. Check
         /// our supported features list.
@@ -132,6 +117,15 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
                 arg.Handled = true;
                 arg.Enabled = true;
             }
+        }
+
+        public virtual bool CheckInsertOrReplaceWord(out int insertOrReplaceOffset, out String wordToReplace)
+        {
+            return TextUtils.CheckInsertOrReplaceWord(
+                                    GetText(),
+                                    GetCaretPos(),
+                                    out insertOrReplaceOffset,
+                                    out wordToReplace);
         }
 
         /// <summary>
@@ -190,6 +184,278 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
             {
                 AgentManager.Instance.TextChangedNotifications.Release();
             }
+        }
+
+        public virtual void DelNextSentence()
+        {
+            int currentCaretPos = GetCaretPos();
+            String text = GetText();
+
+            if (currentCaretPos >= text.Length)
+            {
+                return;
+            }
+
+            Context.AppAgentMgr.TextChangedNotifications.Hold();
+
+            char ch;
+            while (currentCaretPos > 0)
+            {
+                ch = text[currentCaretPos];
+                if (ch == '\r' || ch == '\n' || TextUtils.IsSentenceTerminator(ch))
+                {
+                    break;
+                }
+                currentCaretPos--;
+            }
+
+            int start;
+            if (currentCaretPos > 0)
+            {
+                start = TextUtils.GetIndexNextSentence(text, currentCaretPos);
+                currentCaretPos = start;
+            }
+            else
+            {
+                start = 0;
+            }
+
+            while (currentCaretPos < text.Length - 1)
+            {
+                ch = text[currentCaretPos];
+                if (ch == '\r' || ch == '\n' || TextUtils.IsSentenceTerminator(ch))
+                {
+                    break;
+                }
+                currentCaretPos++;
+            }
+
+            SetCaretPos(start);
+
+            var end = TextUtils.GetIndexNextSentence(text, start);
+
+            SelectText(start, end);
+
+            Keyboard.Send(Keys.Delete);
+
+            ScrollToCaret();
+
+            Context.AppAgentMgr.TextChangedNotifications.Release();
+        }
+
+        public void DelNextWord()
+        {
+            int currentCaretPos = GetCaretPos();
+
+            if (currentCaretPos < 0)
+            {
+                currentCaretPos = 0;
+            }
+
+            String text = GetText();
+
+            if (currentCaretPos >= text.Length)
+            {
+                return;
+            }
+
+            char ch = text[currentCaretPos];
+
+            int start;
+            if (ch != ' ' && ch != '\r' && ch != '\n' && !TextUtils.IsSentenceTerminator(ch))
+            {
+                while (currentCaretPos > 0)
+                {
+                    ch = text[currentCaretPos];
+                    if (ch == '\n' || ch == '\r' || ch == ' ' || TextUtils.IsSentenceTerminator(ch))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        currentCaretPos--;
+                    }
+                }
+                start = (currentCaretPos > 0) ? ++currentCaretPos : currentCaretPos;
+            }
+            else
+            {
+                start = currentCaretPos;
+                while (currentCaretPos < text.Length - 1)
+                {
+                    ch = text[currentCaretPos];
+
+                    if (ch != ' ' && ch != '\r' && ch != '\n')
+                    {
+                        break;
+                    }
+
+                    currentCaretPos++;
+                }
+            }
+
+            ch = text[currentCaretPos];
+
+            while (ch != ' ' && ch != '\r' & ch != '\n' && !TextUtils.IsSentenceTerminator(ch))
+            {
+                currentCaretPos++;
+                if (currentCaretPos >= text.Length)
+                {
+                    break;
+                }
+                ch = text[currentCaretPos];
+            }
+
+            var end = currentCaretPos;
+
+            AgentManager.Instance.TextChangedNotifications.Hold();
+
+            SelectText(start, end);
+
+            Keyboard.Send(Keys.Delete);
+
+            ScrollToCaret();
+
+            Context.AppAgentMgr.TextChangedNotifications.Release();
+        }
+
+        // From Sai email 3/20/23
+        // Del Prev Sentence: If the cursor is within a sentence, delete the sentence. Then delete the previous sentence each time the button is clicked and continue till all the previous sentences in the text are deleted.
+        public virtual void DelPrevSentence()
+        {
+            String text = GetText();
+            if (text.Length == 0)
+            {
+                return;
+            }
+
+            Context.AppAgentMgr.TextChangedNotifications.Hold();
+
+            Goto(GoToItem.PreviousSentence);
+            int start = GetCaretPos();
+
+            int end = TextUtils.GetIndexNextSentence(text, start);
+
+            if (end == start)
+            {
+                return;
+            }
+
+            /*
+
+            for(int i = 0; i < (end - start) + 1; i++)
+            {
+                Keyboard.Send(Keys.Delete);
+            }
+            */
+
+            SetCaretPos(start);
+
+            SelectText(start, end);
+
+            Keyboard.Send(Keys.Delete);
+
+            ScrollToCaret();
+
+            Context.AppAgentMgr.TextChangedNotifications.Release();
+        }
+
+        public virtual void DelPrevWord()
+        {
+            if (GetCaretPos() == 0)
+            {
+                return;
+            }
+
+            int currentCaretPos = GetCaretPos() - 1;
+            int initialCaretPos = -1;
+
+            String text = GetText();
+
+            char ch = text[currentCaretPos];
+            if (GetCaretPos() == text.Length || ch == '\r' || ch == '\n' || ch == ' ')
+            {
+                initialCaretPos = currentCaretPos + 1;
+            }
+
+            while (currentCaretPos > 0)
+            {
+                ch = text[currentCaretPos];
+                if (ch == '\n' || ch == '\r' || ch == ' ')
+                {
+                    currentCaretPos--;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            if (currentCaretPos > 0)
+            {
+                currentCaretPos--;
+            }
+
+            while (currentCaretPos > 0)
+            {
+                ch = text[currentCaretPos];
+                if (ch == ' ' || ch == '\r' || ch == '\n' || TextUtils.IsSentenceTerminator(ch))
+                {
+                    break;
+                }
+                else
+                {
+                    currentCaretPos--;
+                }
+            }
+
+            if (currentCaretPos > 0)
+            {
+                currentCaretPos++;
+            }
+
+            var start = currentCaretPos;
+
+            SetCaretPos(start);
+
+            if (initialCaretPos == -1)
+            {
+                while (currentCaretPos < text.Length - 1)
+                {
+                    ch = text[currentCaretPos];
+                    if (ch == ' ' || ch == '\r' || ch == '\n' || TextUtils.IsSentenceTerminator(ch))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        currentCaretPos++;
+                    }
+                }
+            }
+            else
+            {
+                currentCaretPos = initialCaretPos;
+            }
+
+            var end = currentCaretPos;
+
+            AgentManager.Instance.TextChangedNotifications.Hold();
+
+            /*
+            for (int ii = 0; ii < (end - start) + 1; ii++)
+            {
+                Keyboard.Send(Keys.Delete);
+            }
+            */
+
+            SelectText(start, end);
+
+            Keyboard.Send(Keys.Delete);
+
+            ScrollToCaret();
+
+            Context.AppAgentMgr.TextChangedNotifications.Release();
         }
 
         /// <summary>
@@ -293,6 +559,17 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
             return false;
         }
 
+        /// <summary>
+        /// Returns the current paragraph starting from the beginning
+        /// of the para to the end of the paragraph
+        /// </summary>
+        /// <param name="paragraph">the para text</param>
+        /// <returns>offset of the paragraph</returns>
+        public virtual int GetEntireParagraphAtCaret(out String paragraph)
+        {
+            return TextUtils.GetEntireParagraphAtCaret(GetText(), GetCaretPos(), out paragraph);
+        }
+
         public virtual void GetParagraphAfterCaret(out String sentence)
         {
             sentence = String.Empty;
@@ -382,6 +659,11 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
         public virtual bool GetPrevWordOffset(out int offset, out int count)
         {
             return TextUtils.GetPrevWordOffset(GetText(), GetCaretPos(), out offset, out count);
+        }
+
+        public virtual bool GetPrevWordOffsetAutoComplete(out int offset, out int count)
+        {
+            return TextUtils.GetPrevWordOffsetAutoComplete(GetText(), GetCaretPos(), out offset, out count);
         }
 
         /// <summary>
@@ -532,6 +814,22 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
                 case GoToItem.NextWord:
                     handleGoToNextWord();
                     break;
+
+                case GoToItem.PreviousParagaph:
+                    handleGotoPrevPara();
+                    break;
+
+                case GoToItem.NextParagraph:
+                    handleGotoNextPara();
+                    break;
+
+                case GoToItem.PreviousSentence:
+                    handleGotoPrevSentence();
+                    break;
+
+                case GoToItem.NextSentence:
+                    handleGotoNextSentence();
+                    break;
             }
 
             return true;
@@ -560,7 +858,7 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
 
                 if (KeyStateTracker.IsCapsLockOn())
                 {
-                    word = word.ToLower();
+                    word = word.ToUpper();
                 }
 
                 sendWait(word);
@@ -591,8 +889,7 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
         /// <returns>true if so</returns>
         public virtual bool IsPreviousWordAtCaretTheFirstWord()
         {
-            String word;
-            int startPos = GetPreviousWordAtCaret(out word);
+            int startPos = GetPreviousWordAtCaret(out _);
 
             return TextUtils.IsPrevSentenceTerminator(GetText(), startPos);
         }
@@ -618,7 +915,6 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
                 char ch = KeyToChar.GetChar(keyEventArgs.KeyCode);
                 if (TextUtils.IsSentenceTerminator(ch))
                 {
-                    Log.Debug("NARAM");
                     OnSentenceTerminator();
                 }
             }
@@ -682,7 +978,7 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
         /// <param name="word">Word to insert at the 'offset'</param>
         public virtual void Replace(int offset, int count, String word)
         {
-            Log.Debug("offset = " + offset + " count " + count + " word " + word);
+            Log.Debug("HARRIS offset = " + offset + " count " + count + " word " + word);
 
             try
             {
@@ -698,13 +994,13 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
                     Keyboard.Send(Keys.Delete);
                 }
 
-                Log.Debug("Sending back");
+                Log.Debug("HARRIS Sending back");
 
                 SendKeys.SendWait("{BACKSPACE " + count + "}");
 
                 if (KeyStateTracker.IsCapsLockOn())
                 {
-                    word = word.ToLower();
+                    word = word.ToUpper();
                 }
 
                 Log.Debug("Sending word " + word);
@@ -725,6 +1021,10 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
         /// Override this to resume
         /// </summary>
         public virtual void Resume()
+        {
+        }
+
+        public virtual void ScrollToCaret()
         {
         }
 
@@ -795,6 +1095,10 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
         public virtual bool SelectSentenceAtCaret()
         {
             return false;
+        }
+
+        public virtual void SelectText(int start, int end)
+        {
         }
 
         /// <summary>
@@ -1015,8 +1319,7 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
                 return;
             }
 
-            String str;
-            GetSentenceAtCaret(out str);
+            GetSentenceAtCaret(out string str);
             var trimmed = str.Trim();
             if (String.IsNullOrEmpty(trimmed))
             {
@@ -1025,7 +1328,7 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
             }
 
             Log.Debug("Learn : [" + trimmed + "]");
-            WordPredictionManager.Instance.ActiveWordPredictor.Learn(trimmed);
+            WordPredictionManager.Instance.ActiveWordPredictor.Learn(trimmed, WordPredictorMessageTypes.None);
         }
 
         /// <summary>
@@ -1106,10 +1409,7 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
         /// <param name="textInterface">text agent</param>
         protected void triggerTextChanged(ITextControlAgent textInterface)
         {
-            if (EvtTextChanged != null)
-            {
-                EvtTextChanged(this, new TextChangedEventArgs(textInterface));
-            }
+            EvtTextChanged?.Invoke(this, new TextChangedEventArgs(textInterface));
         }
 
         /// <summary>
@@ -1299,6 +1599,24 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
             }
         }
 
+        private void handleGotoNextPara()
+        {
+            int newCaretPos = TextUtils.GetIndexNextParagraph(GetText(), GetCaretPos());
+
+            SetCaretPos(newCaretPos);
+
+            ScrollToCaret();
+        }
+
+        private void handleGotoNextSentence()
+        {
+            int newCaretPos = TextUtils.GetIndexNextSentence(GetText(), GetCaretPos());
+
+            SetCaretPos(newCaretPos);
+
+            ScrollToCaret();
+        }
+
         /// <summary>
         /// Navigates to the next word in the text control
         /// </summary>
@@ -1376,6 +1694,24 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
                 AgentManager.Instance.Keyboard.Send(KeyStateTracker.GetExtendedKeys(), Keys.PageUp);
                 KeyStateTracker.KeyTriggered(Keys.PageUp);
             }
+        }
+
+        private void handleGotoPrevPara()
+        {
+            int newCaretPos = TextUtils.GetStartIndexCurrOrPrevParagraph(GetText(), GetCaretPos());
+
+            SetCaretPos(newCaretPos);
+
+            ScrollToCaret();
+        }
+
+        private void handleGotoPrevSentence()
+        {
+            int newCaretPos = TextUtils.GetStartIndexCurrOrPrevSentence(GetText(), GetCaretPos());
+
+            SetCaretPos(newCaretPos);
+
+            ScrollToCaret();
         }
 
         /// <summary>

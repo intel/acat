@@ -1,26 +1,12 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="LanguageSelectForm.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Utility;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
@@ -42,7 +28,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// Has first call to OnClientSizeChanged been made?
         /// </summary>
         private bool _firstClientChangedCall = true;
-
 
         /// <summary>
         /// Initializes an instance of the class
@@ -81,8 +66,11 @@ namespace ACAT.Lib.Core.PreferencesManagement
             var form = new LanguageSelectForm();
             if (form.ShowDialog() == DialogResult.Cancel || form.SelectedCulture == null)
             {
+                form.Dispose();
                 return null;
             }
+
+            form.Dispose();
 
             IsDefault = form.checkBoxSetAsDefault.Checked;
 
@@ -123,6 +111,58 @@ namespace ACAT.Lib.Core.PreferencesManagement
         private void buttonOK_Click(object sender, EventArgs e)
         {
             selectAndClose();
+        }
+
+        /// <summary>
+        /// Returns the index of the culture in the listview that
+        /// corresponds to the current culture.  -1 if culture is not found
+        /// </summary>
+        /// <returns>index</returns>
+        private int getCurrentLanguageIndex()
+        {
+            if (listBoxLanguages.Items.Count == 0)
+            {
+                return -1;
+            }
+
+            // no culture is set, set it to "en"
+            if (CultureInfo.DefaultThreadCurrentUICulture == null)
+            {
+                foreach (ListViewItem item in listBoxLanguages.Items)
+                {
+                    var culture = item.Tag as CultureInfo;
+                    if (String.Compare(culture.TwoLetterISOLanguageName, "en", true) == 0 &&
+                        (String.Compare(culture.Name, "en", true) == 0 ||
+                         String.Compare(culture.Name, "en-US", true) == 0))
+                    {
+                        return item.Index;
+                    }
+                }
+
+                return 0;
+            }
+
+            foreach (ListViewItem item in listBoxLanguages.Items)
+            {
+                var culture = item.Tag as CultureInfo;
+                if (String.Compare(culture.Name, CultureInfo.DefaultThreadCurrentUICulture.Name, true) == 0)
+                {
+                    return item.Index;
+                }
+            }
+
+            foreach (ListViewItem item in listBoxLanguages.Items)
+            {
+                var culture = item.Tag as CultureInfo;
+
+                if (String.Compare(culture.TwoLetterISOLanguageName,
+                        CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, true) == 0)
+                {
+                    return item.Index;
+                }
+            }
+
+            return -1;
         }
 
         /// <summary>
@@ -176,59 +216,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
             }
 
             listBoxLanguages.HideSelection = false;
-        }
-
-        /// <summary>
-        /// Returns the index of the culture in the listview that
-        /// corresponds to the current culture.  -1 if culture is not found
-        /// </summary>
-        /// <returns>index</returns>
-        private int getCurrentLanguageIndex()
-        {
-            if (listBoxLanguages.Items.Count == 0)
-            {
-                return -1;
-            }
-
-            // no culture is set, set it to "en"
-            if (CultureInfo.DefaultThreadCurrentUICulture == null)
-            {
-                foreach (ListViewItem item in listBoxLanguages.Items)
-                {
-                    var culture = item.Tag as CultureInfo;
-                    if (String.Compare(culture.TwoLetterISOLanguageName, "en", true) == 0 &&
-                        (String.Compare(culture.Name, "en", true) == 0 ||
-                         String.Compare(culture.Name, "en-US", true) == 0))
-                    {
-                        return item.Index;
-                    }
-                }
-
-                return 0;
-            }
-
-            foreach (ListViewItem item in listBoxLanguages.Items)
-            {
-                var culture = item.Tag as CultureInfo;
-                if (String.Compare(culture.Name, CultureInfo.DefaultThreadCurrentUICulture.Name, true) == 0)
-                {
-                    return item.Index;
-                }
-            }
-
-
-            foreach(ListViewItem item in listBoxLanguages.Items)
-            {
-                var culture = item.Tag as CultureInfo;
-
-                if (String.Compare(culture.TwoLetterISOLanguageName,
-                        CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, true) == 0)
-                {
-                    return item.Index;
-                }
-            }
-
-            return -1;
         }
 
         /// <summary>

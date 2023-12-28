@@ -1,28 +1,16 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="SwitchSetting.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// SwitchSetting.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Represents the settings for a single switch of an actuator
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
-
-using ACAT.Lib.Core.CommandManagement;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ACAT.Lib.Core.ActuatorManagement
 {
@@ -40,7 +28,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         public const String TriggerCommand = "@Trigger";
 
         /// <summary>
-        /// Should the switch be actuated?  if set to 
+        /// Should the switch be actuated?  if set to
         /// false, it will not trigger, but log an audit
         /// log event.
         /// </summary>
@@ -107,11 +95,11 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="minHoldTIme">minimum hold time</param>
         /// <param name="enabled">is it enabled or not</param>
         /// <param name="actuate">whether to actuate or not</param>
-        public SwitchSetting(String name, 
-                            String description, 
-                            String command, 
-                            String minHoldTIme = "@MinActuationHoldTime", 
-                            bool enabled = true, 
+        public SwitchSetting(String name,
+                            String description,
+                            String command,
+                            String minHoldTIme = "@MinActuationHoldTime",
+                            bool enabled = true,
             bool actuate = true)
         {
             Name = name;
@@ -146,7 +134,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         }
 
         /// <summary>
-        /// Returns true if the switch is configured as a 
+        /// Returns true if the switch is configured as a
         /// trigger
         /// </summary>
         /// <returns>true if it is</returns>

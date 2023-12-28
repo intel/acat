@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="AutomationEventManager.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
@@ -51,7 +38,7 @@ namespace ACAT.Lib.Core.Utility
         /// <summary>
         /// Maps a window handle to its WindowElement object (see below)
         /// </summary>
-        static private readonly Hashtable WindowTable = new Hashtable();
+        private static readonly Hashtable WindowTable = new Hashtable();
 
         /// <summary>
         /// Queue on which add/remove requests are added. They are
@@ -99,7 +86,7 @@ namespace ACAT.Lib.Core.Utility
         /// <param name="autoEvent">the event to add</param>
         /// <param name="element">the automation element for the control</param>
         /// <param name="eventHandler">the event handler for the event</param>
-        static public void AddAutomationEventHandler(IntPtr hWnd,
+        public static void AddAutomationEventHandler(IntPtr hWnd,
                                         AutomationEvent autoEvent,
                                         AutomationElement element,
                                         AutomationEventHandler eventHandler)
@@ -148,7 +135,7 @@ namespace ACAT.Lib.Core.Utility
         /// <param name="property">the property to track</param>
         /// <param name="element">the element in the window to track</param>
         /// <param name="eventHandler">the event handler</param>
-        static public void AddAutomationPropertyChangedEventHandler(IntPtr hWnd,
+        public static void AddAutomationPropertyChangedEventHandler(IntPtr hWnd,
                                                             AutomationProperty property,
                                                             AutomationElement element,
                                                             AutomationPropertyChangedEventHandler eventHandler)
@@ -179,7 +166,7 @@ namespace ACAT.Lib.Core.Utility
         /// specified window
         /// </summary>
         /// <param name="hwnd">window handle</param>
-        static public void RemoveAllAutomationEventHandlers(IntPtr hwnd)
+        public static void RemoveAllAutomationEventHandlers(IntPtr hwnd)
         {
             Log.Debug(hwnd.ToString());
 
@@ -211,7 +198,7 @@ namespace ACAT.Lib.Core.Utility
         /// <param name="hWnd">window handle</param>
         /// <param name="autoEvent">the event to remove</param>
         /// <param name="element">the automation element</param>
-        static public void RemoveAutomationEventHandler(IntPtr hWnd, AutomationEvent autoEvent, AutomationElement element)
+        public static void RemoveAutomationEventHandler(IntPtr hWnd, AutomationEvent autoEvent, AutomationElement element)
         {
             Log.Debug("hWnd=" + hWnd);
             if (hWnd != IntPtr.Zero)
@@ -242,7 +229,7 @@ namespace ACAT.Lib.Core.Utility
         /// <param name="property">the property to remove</param>
         /// <param name="element">the control in the window</param>
         /// <param name="eventHandler">the eveht handler to remove</param>
-        static public void RemoveAutomationPropertyChangedEventHandler(IntPtr hWnd,
+        public static void RemoveAutomationPropertyChangedEventHandler(IntPtr hWnd,
                                                                 AutomationProperty property,
                                                                 AutomationElement element,
                                                                 AutomationPropertyChangedEventHandler eventHandler)
@@ -361,26 +348,33 @@ namespace ACAT.Lib.Core.Utility
             {
                 Log.Debug();
 
-                if (disposing)
+                try
                 {
-                    _done = true;
+                    if (disposing)
+                    {
+                        _done = true;
 
-                    var item = new DoneEventHandlerItem();
+                        var item = new DoneEventHandlerItem();
 
-                    _queue.Enqueue(item);
+                        _queue.Enqueue(item);
 
-                    Log.Debug("Aborting thread...");
-                    _thread.Abort();
-                    Log.Debug("Returned from abort");
-                    // Wait until oThread finishes. Join also has overloads
-                    // that take a millisecond interval or a TimeSpan object.
+                        Log.Debug("Aborting thread...");
+                        _thread.Abort();
+                        Log.Debug("Returned from abort");
+                        // Wait until oThread finishes. Join also has overloads
+                        // that take a millisecond interval or a TimeSpan object.
 
-                    Log.Debug("Calling Join");
-                    _thread.Join();
-                    Log.Debug("REturned from join");
+                        Log.Debug("Calling Join");
+                        _thread.Join();
+                        Log.Debug("REturned from join");
 
-                    // dispose all managed resources.
-                    Automation.RemoveAllEventHandlers();
+                        // dispose all managed resources.
+                        Automation.RemoveAllEventHandlers();
+                    }
+                }
+                catch
+                {
+
                 }
 
                 // Release unmanaged resources.

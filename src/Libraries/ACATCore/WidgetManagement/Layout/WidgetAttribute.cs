@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="WidgetAttribute.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.ACATResources;
@@ -53,6 +40,7 @@ namespace ACAT.Lib.Core.WidgetManagement
             FontName = CoreGlobals.AppPreferences.FontName;
             FontSize = CoreGlobals.AppPreferences.FontSize;
             FontBold = true;
+            FontItalic = false;
             Name = String.Empty;
             Label = String.Empty;
             Value = String.Empty;
@@ -66,10 +54,17 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// </summary>
         public ContentAlignment? Alignment { get; set; }
 
+        public KeyValuePairs ExtendedAttributes { get; private set; }
+
         /// <summary>
         /// Whether to display the text as bold
         /// </summary>
         public bool FontBold { get; set; }
+
+        /// <summary>
+        /// Whether to display the text as italic
+        /// </summary>
+        public bool FontItalic { get; set; }
 
         /// <summary>
         /// The font to use to display this on the UI
@@ -187,6 +182,7 @@ namespace ACAT.Lib.Core.WidgetManagement
             FontSize = XmlUtils.GetXMLAttrInt(node, "fontsize", FontSize);
             FontName = XmlUtils.GetXMLAttrString(node, "fontname", FontName);
             FontBold = XmlUtils.GetXMLAttrBool(node, "bold", FontBold);
+            FontItalic = XmlUtils.GetXMLAttrBool(node, "italic", FontItalic);
             IsVirtualKey = XmlUtils.GetXMLAttrBool(node, "virtualkey", false);
             ToolTip = XmlUtils.GetXMLAttrString(node, "toolTip", String.Empty);
             ShiftValue = XmlUtils.GetXMLAttrString(node, "shiftValue", String.Empty);
@@ -205,6 +201,14 @@ namespace ACAT.Lib.Core.WidgetManagement
             Alignment = Enum.IsDefined(typeof(ContentAlignment), align) ?
                                 (ContentAlignment)Enum.Parse(typeof(ContentAlignment), align) :
                                 (ContentAlignment?)null;
+
+            ExtendedAttributes = new KeyValuePairs();
+
+            var extendedAttr = XmlUtils.GetXMLAttrString(node, "extendedAttributes");
+            if (!String.IsNullOrEmpty(extendedAttr))
+            {
+                ExtendedAttributes.Parse(extendedAttr);
+            }
         }
 
         /// <summary>

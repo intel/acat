@@ -1,21 +1,8 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="SliderWidget.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.ACATResources;
@@ -97,11 +84,6 @@ namespace ACAT.Lib.Core.Widgets
         /// Default init value
         /// </summary>
         private const int DefaultInitialSliderValue = 1;
-
-        /// <summary>
-        /// How many ticks?
-        /// </summary>
-        private const int DefaultTickCount = 100;
 
         /// <summary>
         /// The control that displays the current value (could
@@ -285,7 +267,7 @@ namespace ACAT.Lib.Core.Widgets
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
-        private void _decrementWidget_EvtActuated(object sender, WidgetEventArgs e)
+        private void _decrementWidget_EvtActuated(object sender, WidgetActuatedEventArgs e)
         {
             _sliderTickPosition = Windows.GetTrackBarValueInt(_trackBar);
             if (_sliderTickPosition > _minTicks)
@@ -303,7 +285,7 @@ namespace ACAT.Lib.Core.Widgets
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
-        private void _incrementWidget_EvtActuated(object sender, WidgetEventArgs e)
+        private void _incrementWidget_EvtActuated(object sender, WidgetActuatedEventArgs e)
         {
             _sliderTickPosition = Windows.GetTrackBarValueInt(_trackBar);
             if (_sliderTickPosition < _maxTicks)

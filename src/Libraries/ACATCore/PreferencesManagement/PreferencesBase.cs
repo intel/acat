@@ -1,21 +1,16 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="PreferencesBase.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// PreferencesBase.cs
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Use this as the base class for any derived class that
+// needs to be serialzied or deserialzed to/from an XML
+// file.  Contains useful helper functions to instantiate
+// a class by deserializing from the xml file.
 //
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Utility;
@@ -51,7 +46,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <param name="preferencesFile">Name of the preferences file</param>
         /// <param name="loadDefaultsOnFail">true: If the file doesn't exist, use defaults, false: return null</param>
         /// <returns>Preferences read or null</returns>
-        public static T Load<T>(String preferencesFile, bool loadDefaultsOnFail = true) where T : new()
+        public static T Load<T>(String preferencesFile, bool loadDefaultsOnFail = true, bool saveAfterLoad = true) where T : new()
         {
             T preferences = default(T);
 
@@ -71,7 +66,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 }
             }
 
-            if (preferences != null)
+            if (preferences != null && saveAfterLoad)
             {
                 if (!XmlUtils.XmlFileSave<T>(preferences, preferencesFile))
                 {

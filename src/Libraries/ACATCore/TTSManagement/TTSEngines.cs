@@ -1,23 +1,11 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="TTSEngines.cs" company="Intel Corporation">
 //
-// Copyright (c) 2013-2017 Intel Corporation 
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.Utility;
 using System;
@@ -63,7 +51,10 @@ namespace ACAT.Lib.Core.TTSManagement
         /// Has this object been disposed
         /// </summary>
         private bool _disposed;
-
+        /// <summary>
+        /// If one of the dll found has an error with the certificate
+        /// </summary>
+        private static volatile bool _DLLError = false;
         /// <summary>
         /// The object that holds the preferred TTS Engines
         /// </summary>
@@ -248,6 +239,8 @@ namespace ACAT.Lib.Core.TTSManagement
                 var extensionDir = dir + "\\" + TTSManager.TTSRootDir;
                 loadTTSEngineTypesIntoCache(extensionDir, null, recursive);
             }
+            if (_DLLError)
+                return false;
 
             var languageDirs = ResourceUtils.GetInstalledLanugageDirectories();
             foreach (string dir in languageDirs)
@@ -262,7 +255,9 @@ namespace ACAT.Lib.Core.TTSManagement
                     var extensionRoot = Path.Combine(extensionDir, root);
                     extensionRoot = Path.Combine(extensionRoot, TTSManager.TTSRootDir);
 
-                    loadTTSEngineTypesIntoCache(extensionRoot, language, recursive);
+                    loadTTSEngineTypesIntoCache(extensionRoot, language, recursive); 
+                    if (_DLLError)
+                        return false;
                 }
             }
 
@@ -381,18 +376,44 @@ namespace ACAT.Lib.Core.TTSManagement
         {
             try
             {
-                Assembly ttsEngineAssembly = Assembly.LoadFile(dllName);
-                foreach (Type type in ttsEngineAssembly.GetTypes())
+                var retVal = VerifyDigitalSignature.ValidateCertificate(dllName);
+                if (retVal && !_DLLError)
                 {
-                    if (typeof(ITTSEngine).IsAssignableFrom(type))
+                    try
                     {
-                        DescriptorAttribute attr = DescriptorAttribute.GetDescriptor(type);
-                        if (attr != null && attr.Id != Guid.Empty)
+                        VerifyDigitalSignature.Verify(dllName);
+                    }
+                    catch (Exception ex)
+                    {
+                        ConfirmBoxSingleOption confirmBoxSingleOption = new ConfirmBoxSingleOption
                         {
-                            Add(attr.Id, _dirWalkCurrentCulture, type);
+                            Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n Status Error: ERTTS",
+                            DecisionPrompt = "ok",
+                            LabelFont = 10
+                        };
+                        confirmBoxSingleOption.BringToFront();
+                        confirmBoxSingleOption.TopMost = true;
+                        confirmBoxSingleOption.ShowDialog();
+                        confirmBoxSingleOption.Dispose();
+                        _DLLError = true;
+                    }
+                }
+                if (!_DLLError)
+                {
+                    Assembly ttsEngineAssembly = Assembly.LoadFile(dllName);
+                    foreach (Type type in ttsEngineAssembly.GetTypes())
+                    {
+                        if (typeof(ITTSEngine).IsAssignableFrom(type))
+                        {
+                            DescriptorAttribute attr = DescriptorAttribute.GetDescriptor(type);
+                            if (attr != null && attr.Id != Guid.Empty)
+                            {
+                                Add(attr.Id, _dirWalkCurrentCulture, type);
+                            }
                         }
                     }
                 }
+
             }
             catch (Exception ex)
             {

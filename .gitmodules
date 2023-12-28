@@ -1,0 +1,3 @@
+[submodule "src/ConvAssist"]
+	path = src/ConvAssist
+	url = https://github.com/IntelLabs/ConvAssist.git

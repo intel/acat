@@ -10,11 +10,11 @@ Contact: webadmin@linux.intel.com
 ## Background
 The Assistive Context-Aware Toolkit (ACAT) is an open-source platform created at Intel Labs. It is designed to enhance communication for individuals with restricted speech and typing capabilities. It achieves this by providing functionalities like keyboard simulation, word/sentence prediction, and speech synthesis.
 
-ACAT was originally developed by researchers in Intel Labs for Professor Stephen Hawking. Professor Hawking was instrumental to the design process and was a key contributor to the project design and validation. After Intel deployed the system to Professor Hawking, Intel turned its attention to the larger community and continued to make ACAT more configurable to support a larger set of users.
+ACAT was originally developed by researchers in Intel Labs for Professor Stephen Hawking. He was instrumental to the design process and was a key contributor to the project design and validation. After deploying the system to Professor Hawking, Intel turned its attention to the larger community and continued to make ACAT more configurable to support a larger set of users.
 
-By making this configurable platform open source, developers can continue to expand its capabilities by adding new user interfaces, new sensing modalities, language prediction, and other features. 
+By making this configurable platform open source, the goal is to encourage developers  to continue to expanding its capabilities by adding new user interfaces, new sensing modalities, language prediction, and other features.
 
-ACAT is written developed in C# using Microsoft Visual Studio* 2022 and .NET 4.8.1. It runs on Windows® 10 (20H2 or higher) and 11.
+ACAT is developed in C# using Microsoft Visual Studio* 2022 and .NET 4.8.1. It runs on Windows® 10 (20H2 or higher) and 11.
 
 ## Project Website
 Click [here](https://www.intel.com/content/www/us/en/developer/tools/open/acat/overview.html) for the ACAT project website.

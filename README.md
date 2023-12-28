@@ -15,8 +15,12 @@ By making this configurable platform open source, the goal is to encourage devel
 
 ACAT is developed in C# using Microsoft Visual Studio* 2022 and .NET 4.8.1. It runs on Windows® 10 (20H2 or higher) and 11.
 
+## Versioning
+The master branch on Github will always contain the most recent release of ACAT.
+
+## License
+ACAT is distributed under the Apache License, Version 2.0.  k
+
 ## Project Website
 Click [here](https://www.intel.com/content/www/us/en/developer/tools/open/acat/overview.html) for the ACAT project website.
 
-## Licensing
-ACAT is distributed under the Apache License, Version 2.0.  

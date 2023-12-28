@@ -18,3 +18,4 @@ src/Applications/Install/en/WordPredictors/ConvAssist/aac_gpt2/* filter=lfs diff
 src/Applications/Install/en/WordPredictors/ConvAssist/DialoGPT-medium/* filter=lfs diff=lfs merge=lfs -text
 src/Applications/Install/en/WordPredictors/ConvAssist/multi-qa-MiniLM-L6-cos-v1/* filter=lfs diff=lfs merge=lfs -text
 src/Assets/Videos/* filter=lfs diff=lfs merge=lfs -text
+src/Setup/* filter=lfs diff=lfs merge=lfs -text

@@ -19,7 +19,7 @@ ACAT is developed in C# using Microsoft Visual Studio* 2022 and .NET 4.8.1. It r
 The master branch on Github will always contain the most recent release of ACAT.
 
 ## License
-ACAT is distributed under the Apache License, Version 2.0.  k
+ACAT is distributed under the Apache License, Version 2.0.
 
 ## Project Website
 Click [here](https://www.intel.com/content/www/us/en/developer/tools/open/acat/overview.html) for the ACAT project website.

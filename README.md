@@ -18,6 +18,18 @@ ACAT is developed in C# using Microsoft Visual Studio* 2022 and .NET 4.8.1. It r
 ## Versioning
 The master branch on Github will always contain the most recent release of ACAT.
 
+## Cloning the repo
+This repo uses Large File Storage (LFS) and includes submodules. You may run into problems if you use GitHub Desktop to clone it. As a workaround, use Git from the command line.
+
+Clone the repo:  
+**$ git clone https://github.com/intel/acat.git**
+
+If you are cloning for the first time:  
+**$ git submodule update --init --recursive**
+
+Pull in all the latest changes for the submodules:  
+**$ git pull origin master --recurse-submodules**
+
 ## License
 ACAT is distributed under the Apache License, Version 2.0.
 

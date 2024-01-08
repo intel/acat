@@ -36,3 +36,6 @@ ACAT is distributed under the Apache License, Version 2.0.
 ## Project Website
 Click [here](https://www.intel.com/content/www/us/en/developer/tools/open/acat/overview.html) for the ACAT project website.
 
+## Contact the team
+Click <a href="mailto:ACAT@intel.com">here</a> to contact the ACAT team.
+

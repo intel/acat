@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8CA216C6-7476-4696-BA70-FB86A2920EBF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EEGProcessing</RootNamespace>
+    <AssemblyName>EEGProcessing</AssemblyName>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ACATCore">
+      <HintPath>..\..\..\..\Redistributable\ACATCore.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ACATExtension">
+      <HintPath>..\..\..\..\Redistributable\ACATExtension.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Accord">
+      <HintPath>..\External\Accord.3.8.0\lib\net45\Accord.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Controls">
+      <HintPath>..\External\Accord.Controls.3.8.0\lib\net45\Accord.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.MachineLearning">
+      <HintPath>..\External\Accord.MachineLearning.3.8.0\lib\net45\Accord.MachineLearning.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Math">
+      <HintPath>..\External\Accord.Math.3.8.0\lib\net45\Accord.Math.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Math.Core">
+      <HintPath>..\External\Accord.Math.3.8.0\lib\net45\Accord.Math.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Statistics">
+      <HintPath>..\External\Accord.Statistics.3.8.0\lib\net45\Accord.Statistics.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="ZedGraph">
+      <HintPath>..\External\ZedGraph.5.1.7\lib\net35-Client\ZedGraph.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classifiers\ClassifierUtils.cs" />
+    <Compile Include="Classifiers\KfoldCrossValidate.cs" />
+    <Compile Include="Classifiers\NormalKDE.cs" />
+    <Compile Include="DataLoader\DataParser.cs" />
+    <Compile Include="DecisionMaker.cs" />
+    <Compile Include="DimReduction\DimReductChanSel.cs" />
+    <Compile Include="DimReduction\DimReductDownSample.cs" />
+    <Compile Include="DimReduction\DimReductPCA.cs" />
+    <Compile Include="DimReduction\DimReductRDA.cs" />
+    <Compile Include="FeatureExtraction.cs" />
+    <Compile Include="Filters\BandpassFilter.cs" />
+    <Compile Include="Forms\DisplayPosteriorProbsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DisplayPosteriorProbsForm.Designer.cs">
+      <DependentUpon>DisplayPosteriorProbsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\GraphDisplayerForm1x2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GraphDisplayerForm1x2.designer.cs">
+      <DependentUpon>GraphDisplayerForm1x2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\GraphDisplayerForm2x1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GraphDisplayerForm2x1.designer.cs">
+      <DependentUpon>GraphDisplayerForm2x1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TimedGraphDisplayerForm1x2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TimedGraphDisplayerForm1x2.designer.cs">
+      <DependentUpon>TimedGraphDisplayerForm1x2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Globals.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\FileReader.cs" />
+    <Compile Include="Utilities\Plots.cs" />
+    <Compile Include="Utilities\Utilities.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\DisplayPosteriorProbsForm.resx">
+      <DependentUpon>DisplayPosteriorProbsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GraphDisplayerForm1x2.resx">
+      <DependentUpon>GraphDisplayerForm1x2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GraphDisplayerForm2x1.resx">
+      <DependentUpon>GraphDisplayerForm2x1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TimedGraphDisplayerForm1x2.resx">
+      <DependentUpon>TimedGraphDisplayerForm1x2.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="License-LGPL.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\BCIControl\BCIControl.csproj">
+      <Project>{defaa2be-c13e-4350-9efa-9370755b63d3}</Project>
+      <Name>BCIControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EEGSettings\EEGSettings.csproj">
+      <Project>{1761f46f-2543-45a2-b5d8-0591c078d9c6}</Project>
+      <Name>EEGSettings</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

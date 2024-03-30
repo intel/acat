@@ -1125,6 +1125,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             bool retVal = true;
 
+            _disposed = false;
+
             foreach (var actuatorEx in _actuators.Collection)
             {
                 actuatorEx.Init();

@@ -29,6 +29,7 @@ using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Extension;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -294,6 +295,86 @@ namespace ACAT.Applications
             }
         }
 
+        public static void CheckDisplayScalingAndResolution()
+        {
+            if (!Common.AppPreferences.ShowDisplayScaleMessageOnStartup)
+            {
+                return;
+            }
+
+            var tuple = DualMonitor.GetDisplayWidthAndScaling();
+
+            String prompt = String.Empty;
+
+            if (tuple.Item1 != 1920)
+            {
+                prompt = String.Format("The monitor's horizontal resolution is currently set to {0} pixels, which may " +
+                                        " cause display issues with the ACAT user interface. The ACAT UI is tailored " +
+                                        "for Full HD monitors with a horizontal resolution of 1920 pixels.\r\n\r\n" +
+                                        "To resolve any potential display inconsistencies, we recommend adjusting " +
+                                        "your monitor's resolution to 1920 pixels wide, if supported.\r\n\r\n" +
+                                        "For guidance on changing the display resolution, please refer to the ACAT User Guide.", tuple.Item1);
+            }
+            else if (tuple.Item2 != 100 && tuple.Item2 != 125)
+            {
+                prompt = String.Format("The monitor's display scaling is currently set to {0}% which may cause display issues " +
+                                        " with the ACAT user interface.  The ACAT UI is tailored for display scaling " +
+                                        "values of 100% and 125%.\r\n\r\n To resolve any potential display inconsistencies, " +
+                                        "we recommend adjusting your monitor's display scaling to 100% or 125%.\r\n\r\n" + "" +
+                                        "For guidance on changing the display scaling, please refer to the ACAT User Guide.", tuple.Item2); ;
+            }
+
+            if (!String.IsNullOrEmpty(prompt))
+            {
+                Common.AppPreferences.ShowDisplayScaleMessageOnStartup = !ConfirmBoxLargeSingleOption.ShowDialog(prompt, "OK", null, true);
+
+                Common.AppPreferences.Save();
+            }
+        }
+
+        public static bool CheckFontsInstalled()
+        {
+            string fontPath = SmartPath.ApplicationPath + "\\Assets\\Fonts";
+
+            if (!FontCheck.IsMontserratFontInstalled())
+            {
+                MessageBox.Show("Montserrat fonts are not installed on this system.\nPlease install them and restart ACAT.\nThe fonts can be found here: " + fontPath,
+                                    "ACAT",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                return false;
+            }
+
+            String fontName = "ACAT Font 1";
+            if (!FontCheck.IsFontInstalled(fontName))
+            {
+                MessageBox.Show("Font \"" + fontName + "\" is not installed on this system.\nPlease install it and restart ACAT.\nThe font can be found here: " + fontPath,
+                                    "ACAT",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                return false;
+            }
+
+            return true;
+        }
+
+        public static void UpgradeFromPreviousVersion(bool freshInstallForUser)
+        {
+            var prevVersion = VersionInfo.GetPreviousInstalledVersion();
+            var currentVersion = VersionInfo.GetCurrentVersion();
+
+            if (prevVersion.Item1 == 2 && currentVersion.Item1 == 3)
+            {
+                if (!freshInstallForUser)
+                {
+                    upgradeFromRel2ToRel3();
+                }
+            }
+
+            VersionInfo.SaveCurrentVersion();
+            VersionInfo.SaveCurrentVersionForUser();
+        }
+
         /// <summary>
         /// Sets the paths to the settings file for the app
         /// </summary>
@@ -301,6 +382,82 @@ namespace ACAT.Applications
         {
             ACATPreferences.PreferencesFilePath = ProfileManager.GetFullPath("Settings.xml");
             ACATPreferences.DefaultPreferencesFilePath = ProfileManager.GetFullPath("DefaultSettings.xml");
+        }
+
+        private static void upgradeFromRel2ToRel3()
+        {
+            var prevVersion = VersionInfo.GetPreviousInstalledVersionForUser();
+            var currentVersion = VersionInfo.GetCurrentVersion();
+
+            if (prevVersion.Item1 == 2 && currentVersion.Item1 == 3)
+            {
+                addBCIActuatorSetting();
+
+                addPanelClassConfigMapForBCI();
+            }
+        }
+
+        private static void addBCIActuatorSetting()
+        {
+            var config = ActuatorManager.Instance.GetActuatorConfig();
+
+            var actuatorSettings = config.ActuatorSettings;
+
+            var guid = new Guid("77809D19-F450-4D36-A633-D818400B3D9A");
+            foreach (var setting in actuatorSettings)
+            {
+                if (Guid.Equals(guid, setting.Id))
+                {
+                    return;
+                }
+            }
+
+            var bciActuatorSetting = new ActuatorSetting
+            {
+                Description = "Brain Computer Interface (BCI) is technology that reads brain waves to help you interact " +
+                                                "with your computer. Click &lt;a href=$ASSETS_VIDEOS_DIR#ACATOverviewBCI.mp4&gt;here&lt;/a&gt; for " +
+                                                "a demonstration of BCI. You can find more details &lt;a href=$ACAT_USER_GUIDE#BCISwitch&gt;here&lt;/a&gt;",
+                Enabled = false,
+                Id = new Guid("77809D19-F450-4D36-A633-D818400B3D9A"),
+                ImageFileName = "BCISwitch.png",
+                Name = "BCI"
+            };
+
+            var switchSetting = new SwitchSetting
+            {
+                Actuate = true,
+                Command = "@Trigger",
+                Description = String.Empty,
+                MinHoldTime = "@MinActuationHoldTime",
+                Name = "R1",
+                Source = "R1"
+            };
+
+            bciActuatorSetting.SwitchSettings.Add(switchSetting);
+
+            actuatorSettings.Add(bciActuatorSetting);
+
+            config.Save();
+        }
+
+        private static void addPanelClassConfigMapForBCI()
+        {
+            var panelClassConfigMap = new PanelClassConfigMap();
+            panelClassConfigMap.Default = false;
+            panelClassConfigMap.Description = "An alphabetically arranged keyboard with predictive text/sentences to help you communicate";
+            panelClassConfigMap.Name = "TalkApplicationBCIScannerABC";
+            panelClassConfigMap.ScreenshotFileName = "ABCKeyboardLayout.png";
+            panelClassConfigMap.DisplayNameShort = "Alphabetical";
+            panelClassConfigMap.DisplayNameLong = "ABC Keyboard Layout";
+
+            var panelClassConfigMapEntry = new PanelClassConfigMapEntry();
+            panelClassConfigMapEntry.ConfigId = new Guid("18f8796a-c0e2-4d4b-ac20-1e76e0a57bcd");
+            panelClassConfigMapEntry.PanelClass = "TalkApplicationScanner";
+
+            panelClassConfigMap.PanelClassConfigMapEntries.Add(panelClassConfigMapEntry);
+
+
+            PanelConfigMap.AddPanelClassConfigMap(CoreGlobals.AppId, "en", panelClassConfigMap);
         }
     }
 }

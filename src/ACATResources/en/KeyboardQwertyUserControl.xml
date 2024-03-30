@@ -179,7 +179,7 @@
                       onEnd="transition(TopLevelRotation)"
                       firstPauseTime="@FirstPauseTime"
                       onSelect="actuate(@SelectedWidget); transition(TopLevelRotation)">
-            <Widget name="B6" onSelect="actuate(@SelectedWidget);"/>
+            <Widget name="B6"/>
             <Widget name="B7"/>
             <Widget name="B8"/>
             <Widget name="B9"/>

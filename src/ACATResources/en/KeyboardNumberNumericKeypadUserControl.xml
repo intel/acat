@@ -57,7 +57,7 @@
         <WidgetAttribute name="B37" label="b" value="@CmdSpeak" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="&usebold;"  />
         <WidgetAttribute name="B38" label="a" value="@CmdTalkWindowClear" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;"  />
         <WidgetAttribute name="B39" label="Edit" value="@CmdEditScanner" fontname="&characterButtonBlackFontName;" fontsize="&characterButtonFontSize;"  italic="true" bold="&usebold;" />
-        <WidgetAttribute name="B40" label="j" value="@CmdGoBack"  fontname="&functionButtonFontName;" bold="&usebold;" fontsize="&functionButtonFontSize;" />
+		<WidgetAttribute name="B40" label="Back" value="@CmdGoBack" fontname="&characterButtonBlackFontName;" italic="true" fontsize="&characterButtonFontSize;"  bold="false"  />
     </WidgetAttributes>
 
     <Layout>

@@ -1,0 +1,16 @@
+﻿[*.cs]
+
+# CS4014: Because this call is not awaited, execution of the current method continues before the call is completed
+dotnet_diagnostic.CS4014.severity = suggestion
+
+# CS0067: The event 'ACATConfigMainForm.EvtLanguageChanged' is never used
+dotnet_diagnostic.CS0067.severity = suggestion
+
+root = true
+
+[*.{cs,vb}]
+dotnet_diagnostic.IDE1006.severity=silent
+dotnet_diagnostic.IDE0019.severity=silent
+dotnet_diagnostic.IDE0020.severity=silent
+dotnet_diagnostic.IDE0038.severity=silent
+dotnet_diagnostic.IDE0060.severity=silent

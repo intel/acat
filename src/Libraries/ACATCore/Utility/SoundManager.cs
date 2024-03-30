@@ -40,6 +40,8 @@ namespace ACAT.Lib.Core.Utility
             CaregiverAttention = 2,
             OpenEyes = 3,
             Click,
+            OpenEyesCalibration,
+            CloseEyesCalibration,
         }
 
         /// <summary>
@@ -80,6 +82,16 @@ namespace ACAT.Lib.Core.Utility
                         case SoundType.Click:
                             var soundC = _soundsPlayer[SoundType.Click];
                             soundC.Play();
+                            break;
+
+                        case SoundType.OpenEyesCalibration:
+                            var soundOEC = _soundsPlayer[SoundType.OpenEyesCalibration];
+                            soundOEC.Play();
+                            break;
+
+                        case SoundType.CloseEyesCalibration:
+                            var soundCEC = _soundsPlayer[SoundType.CloseEyesCalibration];
+                            soundCEC.Play();
                             break;
 
                         default:
@@ -136,6 +148,8 @@ namespace ACAT.Lib.Core.Utility
                 { SoundType.CaregiverAttention, new SoundPlayer(@"C:\windows\media\Ring01.wav") },
                 { SoundType.OpenEyes, new SoundPlayer(@"C:\windows\media\Speech On.wav") },
                 { SoundType.Click, new SoundPlayer(FileUtils.GetSoundPath("click.wav")) },
+                { SoundType.OpenEyesCalibration, new SoundPlayer(FileUtils.GetSoundPath("eyesopen.wav")) },
+                { SoundType.CloseEyesCalibration, new SoundPlayer(FileUtils.GetSoundPath("eyesclosed.wav")) },
             };
             _isSoundsInitialized = true;
         }

@@ -185,3 +185,38 @@ rem ------------------------------------------------
 set TARGETDIR=%INSTALLDIR%\Docs
 if not exist %TARGETDIR% mkdir %TARGETDIR%
 xcopy /s /y /e /i Docs\*.* %TARGETDIR% 
+
+rem ------------------------------------------------
+@echo Deploying 3rd Party files
+rem ------------------------------------------------
+set TARGETDIR=%INSTALLDIR%\3rdParty
+if not exist %TARGETDIR% mkdir %TARGETDIR%
+xcopy /s /y /e /i 3rdParty\*.* %TARGETDIR% 
+
+
+rem ------------------------------------------------
+@echo Deploying BCI Extensions
+rem ------------------------------------------------
+
+set SOURCEDIR=Extensions\BCI\Actuators\BCIActuator
+set BCIEXTERNALSRCDIR=Extensions\BCI\Actuators\External
+set TARGETDIR=%INSTALLDIR%\Extensions\BCI\Actuators\BCIActuator
+if not exist %TARGETDIR% mkdir %TARGETDIR%
+copy .\%SOURCEDIR%\bin\%CONFIG%\*.dll %TARGETDIR%
+copy .\%BCIEXTERNALSRCDIR%\brainflow.5.5.0\*.dll %TARGETDIR%
+copy .\%BCIEXTERNALSRCDIR%\brainflow.5.5.0\*.so %TARGETDIR%
+copy .\%BCIEXTERNALSRCDIR%\brainflow.5.5.0\*.dylib %TARGETDIR%
+
+set LANGUAGE=en
+set BASEDIR=Extensions\BCI\UI
+set SOURCEDIR=%BASEDIR%\%LANGUAGE%\Scanners
+set TARGETDIR=%INSTALLDIR%\%LANGUAGE%\%BASEDIR%\Scanners
+if not exist %TARGETDIR% mkdir %TARGETDIR%
+if exist .\%SOURCEDIR%\bin\%CONFIG%\*.dll copy .\%SOURCEDIR%\bin\%CONFIG%\*.dll %TARGETDIR%
+if exist .\%SOURCEDIR%\Config\*.xml copy .\%SOURCEDIR%\Config\*.xml %TARGETDIR%
+
+set SOURCEDIR=%BASEDIR%\%LANGUAGE%\UserControls
+set TARGETDIR=%INSTALLDIR%\%LANGUAGE%\%BASEDIR%\UserControls
+if not exist %TARGETDIR% mkdir %TARGETDIR%
+if exist .\%SOURCEDIR%\bin\%CONFIG%\*.dll copy .\%SOURCEDIR%\bin\%CONFIG%\*.dll %TARGETDIR%
+if exist .\%SOURCEDIR%\Config\*.xml copy .\%SOURCEDIR%\Config\*.xml %TARGETDIR%

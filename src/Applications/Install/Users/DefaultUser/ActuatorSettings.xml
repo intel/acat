@@ -115,5 +115,24 @@
         </SwitchSetting>
       </SwitchSettings>
     </ActuatorSetting>
+	<ActuatorSetting>
+      <Enabled>false</Enabled>
+      <Id>77809d19-f450-4d36-a633-d818400b3d9a</Id>
+      <Name>BCI</Name>
+      <Description>Brain Computer Interface (BCI) is technology that reads brain waves to help you interact with your computer. Click &lt;a href=$ASSETS_VIDEOS_DIR#ACATOverviewBCI.mp4&gt;here&lt;/a&gt; for a demonstration of BCI. You can find more details &lt;a href=$ACAT_USER_GUIDE#BCISwitch&gt;here&lt;/a&gt;</Description>
+      <ImageFileName>BCISwitch.png</ImageFileName>
+      <SwitchSettings>
+        <SwitchSetting>
+          <Actuate>true</Actuate>
+          <BeepFile />
+          <Command>@Trigger</Command>
+          <Description />
+          <Enabled>true</Enabled>
+          <MinHoldTime>@MinActuationHoldTime</MinHoldTime>
+          <Name>R1</Name>
+          <Source>R1</Source>
+        </SwitchSetting>
+      </SwitchSettings>
+    </ActuatorSetting>
   </ActuatorSettings>
 </ActuatorConfig>

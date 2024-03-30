@@ -339,7 +339,10 @@ namespace ACAT.Lib.Core.ThemeManagement
             colorScheme.SetBackground(color);
 
             String imageFileName = XmlUtils.GetXMLAttrString(node, "backgroundImage");
-            colorScheme.BackgroundImage = loadImage(Path.Combine(imageDir, imageFileName));
+            if (!String.IsNullOrEmpty(imageFileName))
+            {
+                colorScheme.BackgroundImage = loadImage(Path.Combine(imageDir, imageFileName));
+            }
 
             color = XmlUtils.GetXMLAttrString(node, "foreground");
             colorScheme.SetForeground(color);
@@ -348,7 +351,10 @@ namespace ACAT.Lib.Core.ThemeManagement
             colorScheme.SetHighlightBackground(color);
 
             imageFileName = XmlUtils.GetXMLAttrString(node, "highlightBackgroundImage");
-            colorScheme.HighlightBackgroundImage = loadImage(Path.Combine(imageDir, imageFileName));
+            if (!String.IsNullOrEmpty(imageFileName))
+            {
+                colorScheme.HighlightBackgroundImage = loadImage(Path.Combine(imageDir, imageFileName));
+            }
 
             color = XmlUtils.GetXMLAttrString(node, "highlightForeground");
             colorScheme.SetHighlightForeground(color);
@@ -357,7 +363,10 @@ namespace ACAT.Lib.Core.ThemeManagement
             colorScheme.SetHighlightSelectedBackground(color);
 
             imageFileName = XmlUtils.GetXMLAttrString(node, "highlightSelectedBackgroundImage");
-            colorScheme.HighlightSelectedBackgroundImage = loadImage(Path.Combine(imageDir, imageFileName));
+            if (!String.IsNullOrEmpty(imageFileName))
+            {
+                colorScheme.HighlightSelectedBackgroundImage = loadImage(Path.Combine(imageDir, imageFileName));
+            }
 
             color = XmlUtils.GetXMLAttrString(node, "highlightSelectedForeground");
             colorScheme.SetHighlightSelectedForeground(color);

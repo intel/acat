@@ -107,7 +107,7 @@ namespace ACAT.Lib.Core.Utility
                 }
                 catch (Exception ex)
                 {
-                    Log.Exception(ex);
+                    Log.Debug("Language detect: Skipping folder " + dir + ". " + ex.Message);
                 }
             }
 

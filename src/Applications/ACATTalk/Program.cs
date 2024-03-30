@@ -19,6 +19,7 @@ using ACAT.Lib.Core.AgentManagement;
 using ACAT.Lib.Core.Audit;
 using ACAT.Lib.Core.Onboarding;
 using ACAT.Lib.Core.PanelManagement;
+using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Extension;
 using ACATExtension.CommandHandlers;
@@ -59,7 +60,7 @@ namespace ACAT.Applications.ACATTalk
                 return;
             }
 
-            if (!checkFontsInstalled())
+            if (!AppCommon.CheckFontsInstalled())
             {
                 return;
             }
@@ -74,6 +75,8 @@ namespace ACAT.Applications.ACATTalk
             AppCommon.SetUserName();
             AppCommon.SetProfileName();
 
+            bool freshInstallForUser = !UserManager.UserExists(UserManager.CurrentUser);
+            
             if (!AppCommon.CreateUserAndProfile())
             {
                 return;
@@ -84,12 +87,9 @@ namespace ACAT.Applications.ACATTalk
                 return;
             }
 
-            DualMonitor.CheckAndDisplayScaleFactorWarning();
-
-            if (Environment.OSVersion.Version.Major >= 6)
-            {
-                User32Interop.SetProcessDPIAware();
-            }
+            User32Interop.SetProcessDPIAware();
+            
+            AppCommon.CheckDisplayScalingAndResolution();
 
             Common.AppPreferences.AppName = "ACAT Talk";
 
@@ -100,7 +100,11 @@ namespace ACAT.Applications.ACATTalk
 
             Log.SetupListeners();
 
+            Log.Debug("ACAT Talk Application Launch");
+
             AuditLog.Audit(new AuditEvent("Application", "start"));
+
+            AppCommon.UpgradeFromPreviousVersion(freshInstallForUser);
 
             CommandDescriptors.Init();
 
@@ -116,7 +120,7 @@ namespace ACAT.Applications.ACATTalk
             }
 
 #elif BCI
-            Common.AppPreferences.PreferredPanelConfigNames = "TalkApplicationBCI5x5";
+            Common.AppPreferences.PreferredPanelConfigNames = "TalkApplicationBCIScannerABC";
 #else
             Common.AppPreferences.PreferredPanelConfigNames = "TalkApplicationAbc";
 #endif
@@ -159,6 +163,7 @@ namespace ACAT.Applications.ACATTalk
 
             if (!Context.PostInit())
             {
+                Context.Dispose();
                 return;
             }
 
@@ -210,6 +215,8 @@ namespace ACAT.Applications.ACATTalk
 
                 AppCommon.ExitMessageClose();
 
+                Log.Debug("ACATTalk Application shutdown");
+
                 Log.Close();
             }
             catch (Exception ex)
@@ -220,31 +227,7 @@ namespace ACAT.Applications.ACATTalk
             AppCommon.OnExit();
         }
 
-        private static bool checkFontsInstalled()
-        {
-            string fontPath = SmartPath.ApplicationPath + "\\Assets\\Fonts";
-
-            if (!FontCheck.IsMontserratFontInstalled())
-            {
-                MessageBox.Show("Montserrat fonts are not installed on this system.\nPlease install them and restart ACAT.\nThe fonts can be found here: " + fontPath,
-                                    "ACAT",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error);
-                return false;
-            }
-
-            String fontName = "ACAT Font 1";
-            if (!FontCheck.IsFontInstalled(fontName))
-            {
-                MessageBox.Show("Font \"" + fontName + "\" is not installed on this system.\nPlease install it and restart ACAT.\nThe font can be found here: " + fontPath,
-                                    "ACAT",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error);
-                return false;
-            }
-
-            return true;
-        }
+        
 
         private static void showTalkInterfaceDescription()
         {
@@ -378,5 +361,6 @@ namespace ACAT.Applications.ACATTalk
         }
 
 #endif
+        
     }
 }

@@ -18,6 +18,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Net;
+using System.Web;
 
 namespace ACAT.Lib.Extension.Onboarding
 {
@@ -157,7 +158,7 @@ namespace ACAT.Lib.Extension.Onboarding
             var desc = _actuatorSettings[listBoxActuators.SelectedIndex].Description;
             if (!String.IsNullOrEmpty(desc))
             {
-                String html = String.Format(_htmlTemplate, headStyle, bodyStyle, textStyle, desc);
+                String html = String.Format(_htmlTemplate, headStyle, bodyStyle, textStyle, HttpUtility.HtmlDecode(desc));
                 Log.Debug(html);
 
                 html = html.Replace(CoreGlobals.MacroACATUserGuide, HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName));

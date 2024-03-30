@@ -14,7 +14,7 @@
        <UserControlConfigMapEntry name="UserControlScreenLock" configName="UserControlScreenLockConfig" configId="528B5A46-7870-4DD3-8AA1-5FF25E0FFA30" userControlId="4D767749-D9C6-450E-A1D6-169074F2F66A" configFile="UserControlScreenLock.xml"/>
 	   <UserControlConfigMapEntry name="UserControlDefaultTalkInterface" configName="userControlDefaultTalkInterfaceConfig" configId="F1EF13CF-56C9-4BA6-A282-4025F97AE486" userControlId="30D1EF21-E8F5-4E78-8D98-C8E93B992A81" configFile="UserControlTalkInterfaceDesc.xml"/>
 
-       <UserControlConfigMapEntry name="KeyboardModesUserControlBCI" configName="KeyboardModesUserControlBCIConfigBCI" configId="90C4D43E-FD6C-4957-8DA5-50C463B44708" userControlId="D8A1D029-C512-46E0-9D87-A2D156B5BCA8" configFile="KeyboardModesUserControlBCI.xml"/>
+	   <UserControlConfigMapEntry name="KeyboardModesUserControlBCI" configName="KeyboardModesUserControlBCIConfigBCI" configId="90C4D43E-FD6C-4957-8DA5-50C463B44708" userControlId="D8A1D029-C512-46E0-9D87-A2D156B5BCA8" configFile="KeyboardModesUserControlBCI.xml"/>
 	   <UserControlConfigMapEntry name="MenuUserControlBCI" configName="MenuUserControlBCIConfigBCI" configId="D79E3752-32FA-42F3-8A48-FD79D2EE291B" userControlId="4F0E7278-1495-4AF6-B609-E91A2421FCB0" configFile="MenuUserControlBCI.xml"/>
 	   <UserControlConfigMapEntry name="KeyboardEditUserControlBCI" configName="KeyboardEditUserControlConfigBCI" configId="B9A15C19-F79F-4B92-81AD-E163BB4DB494" userControlId="D279E786-8295-4A0D-B7A0-810D09C9012D" configFile="KeyboardEditUserControlBCI.xml"/>
 	   <UserControlConfigMapEntry name="WordPredictionUserControlBCI" configName="WordPredictionUserControlConfig" configId="545F057B-0E07-4362-8DCB-AA1F098BB5E4" userControlId="531C7B62-A09F-4772-8C7E-915E2C0AD015" configFile="WordPredictionUserControlBCI.xml"/>
@@ -22,10 +22,13 @@
 	   <UserControlConfigMapEntry name="KeyboardQWERTYUserControlBCI" configName="KeyboardQWERTYUserControlBCIConfig" configId="4BF1E253-5719-4581-96AF-7447006FA522" userControlId="102267E3-DC56-427C-AAC9-51736260DA9B" configFile="KeyboardQWERTYUserControlBCI.xml"/>
 	   <UserControlConfigMapEntry name="KeyboardABCUserControlBCI" configName="KeyboardABCUserControlBCIConfig" configId="8418B51B-BB47-4B49-9C1B-9AE4FA921375" userControlId="79BF6DA3-0505-4356-BF68-FAE63A051C12" configFile="KeyboardABCUserControlBCI2.xml"/>
 	   <UserControlConfigMapEntry name="NumericUserControlBCI" configName="NumericUserControlBCIConfig" configId="F3095099-95D0-4AF5-B4FD-AC3BB6DD9391" userControlId="E7F572D0-7913-4186-B144-A196663E4C25" configFile="NumericUserControlBCI.xml"/>
-	   <UserControlConfigMapEntry name="KeyboardYesNoUserControlBCI" configName="KeyboardYesNoUserControlBCIConfig" configId="F9E48FDA-F1D6-4A2E-BD58-BE98721F8931" userControlId="F9FD764A-6FA0-4EC5-8820-7C8AF48C9205" configFile="KeyboardYesNoUserControlBCI.xml"/>
-	   <UserControlConfigMapEntry name="TTSYesNoUserControlBCI" configName="TTSYesNoUserControlBCIConfigBCI" configId="94148C14-FB7D-4CAD-922F-1252F80596EE" userControlId="E460BA55-E9EC-4D8D-93DF-9511DEA414D0" configFile="TTSYesNoUserControlBCI.xml"/>
+	   <!-->UserControlConfigMapEntry name="KeyboardYesNoUserControlBCI" configName="KeyboardYesNoUserControlBCIConfig" configId="F9E48FDA-F1D6-4A2E-BD58-BE98721F8931" userControlId="F9FD764A-6FA0-4EC5-8820-7C8AF48C9205" configFile="KeyboardYesNoUserControlBCI.xml"/-->
+	   <UserControlConfigMapEntry name="KeyboardYesNoUserControlBCI" configName="KeyboardYesNoUserControlBCIConfig" configId="1C5819A7-D497-4EA4-A922-16F21193EB3C" userControlId="F8718D14-9904-4BF8-A095-446178BDC780" configFile="KeyboardYesNoUserControlBCI2.xml"/>
+	   <!-->UserControlConfigMapEntry name="TTSYesNoUserControlBCI" configName="TTSYesNoUserControlBCIConfigBCI" configId="94148C14-FB7D-4CAD-922F-1252F80596EE" userControlId="E460BA55-E9EC-4D8D-93DF-9511DEA414D0" configFile="TTSYesNoUserControlBCI.xml"/-->
+	   <UserControlConfigMapEntry name="TTSYesNoUserControlBCI" configName="TTSYesNoUserControlBCIConfigBCI" configId="DB511BF4-03B2-4377-89B6-CA5BD95BFD0D" userControlId="E0B51282-FB40-4842-8006-AFFA564D7F6F" configFile="TTSYesNoUserControlBCI2.xml"/>
 	   <UserControlConfigMapEntry name="KeyboardLockUserControlBCI" configName="KeyboardLockUserControlBCIConfigBCI" configId="BE224AAB-5D9B-4090-93F2-1C6AC6FEC620" userControlId="897132FF-F395-4B46-B4FC-AEEF6EF34B70" configFile="KeyboardLockUserControlBCI.xml"/>
 	   <UserControlConfigMapEntry name="KeyboardNumberUserControl" configName="KeyboardNumberUserControlConfig" configId="EDA046C3-49F4-4C7B-BF75-ADBFC79C8ACC" userControlId="F8E111D9-796A-4FE0-AC1E-7CD24839FD78" configFile="KeyboardNumbersUserControl.xml"/>
+
 
    </UserControlConfigMapEntries>
 </ACAT>

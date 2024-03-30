@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FF74AF7D-5C3B-4E1D-A3EC-100D00128F7C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BCIInterfaceUtilities</RootNamespace>
+    <AssemblyName>BCIInterfaceUtilities</AssemblyName>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ACATCore">
+      <HintPath>..\..\..\..\Redistributable\ACATCore.dll</HintPath>
+    </Reference>
+    <Reference Include="ColorSlider">
+      <HintPath>..\..\..\..\Redistributable\ColorSlider.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Redistributable\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BCIR.cs" />
+    <Compile Include="ConfirmBoxCalibrationModes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfirmBoxCalibrationModes.Designer.cs">
+      <DependentUpon>ConfirmBoxCalibrationModes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfirmBoxCalibrationHelp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfirmBoxCalibrationHelp.Designer.cs">
+      <DependentUpon>ConfirmBoxCalibrationHelp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfirmBoxTriggerBoxSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfirmBoxTriggerBoxSettings.Designer.cs">
+      <DependentUpon>ConfirmBoxTriggerBoxSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OtherTestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OtherTestForm.Designer.cs">
+      <DependentUpon>OtherTestForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RemapCalibrationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RemapCalibrationForm.Designer.cs">
+      <DependentUpon>RemapCalibrationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfirmBoxSingleOption.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfirmBoxSingleOption.Designer.cs">
+      <DependentUpon>ConfirmBoxSingleOption.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfirmBoxThreeOption.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfirmBoxThreeOption.Designer.cs">
+      <DependentUpon>ConfirmBoxThreeOption.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomToolTip.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomToolTip.Designer.cs">
+      <DependentUpon>CustomToolTip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CalibrationEyesSettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CalibrationEyesSettingsForm.Designer.cs">
+      <DependentUpon>CalibrationEyesSettingsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CalibrationEyesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CalibrationEyesForm.Designer.cs">
+      <DependentUpon>CalibrationEyesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BCIInterfaceUtils.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ResourcesUtils\BCIInterfaceResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BCIInterfaceResource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ConfirmBoxCalibrationModes.resx">
+      <DependentUpon>ConfirmBoxCalibrationModes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfirmBoxCalibrationHelp.resx">
+      <DependentUpon>ConfirmBoxCalibrationHelp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfirmBoxTriggerBoxSettings.resx">
+      <DependentUpon>ConfirmBoxTriggerBoxSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OtherTestForm.resx">
+      <DependentUpon>OtherTestForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RemapCalibrationForm.resx">
+      <DependentUpon>RemapCalibrationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfirmBoxSingleOption.resx">
+      <DependentUpon>ConfirmBoxSingleOption.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfirmBoxThreeOption.resx">
+      <DependentUpon>ConfirmBoxThreeOption.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomToolTip.resx">
+      <DependentUpon>CustomToolTip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CalibrationEyesSettingsForm.resx">
+      <DependentUpon>CalibrationEyesSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CalibrationEyesForm.resx">
+      <DependentUpon>CalibrationEyesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResourcesUtils\BCIInterfaceResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>BCIInterfaceResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\ACATResources\ACATResources.csproj">
+      <Project>{A0990D4E-F25B-430C-BDA3-40A72560B877}</Project>
+      <Name>ACATResources</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\BCIControl\BCIControl.csproj">
+      <Project>{DEFAA2BE-C13E-4350-9EFA-9370755B63D3}</Project>
+      <Name>BCIControl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

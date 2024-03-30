@@ -174,6 +174,11 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <returns>string representation</returns>
         public override string ToString()
         {
+            if (FormType == null)
+            {
+                Log.Debug("FORM TYPE IS NULL");
+            }
+
             return "PanelConfigMapEntry. configName: " + ConfigName +
                     ", formId: " + FormId +
                     ", configFile: " + ConfigFileName +

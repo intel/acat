@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -317,6 +318,17 @@ namespace ACAT.Lib.Core.Utility
 
         [DllImport("user32.dll")]
         public static extern IntPtr WindowFromPoint(int xPoint, int yPoint);
+
+        /// <summary>
+        /// Retrieves a handle to the display monitor that contains a specified point.
+        /// </summary>
+        /// <param name="pt"> Specifies the point of interest in virtual-screen coordinates. </param>
+        /// <param name="dwFlags"> Determines the function's return value if the point is not contained within any display monitor. </param>
+        /// <returns> If the point is contained by a display monitor, the return value is an HMONITOR handle to that display monitor. </returns>
+        /// <remarks>
+        /// </remarks>
+        [DllImport("User32.dll")]
+        internal static extern IntPtr MonitorFromPoint([In] Point pt, [In] uint dwFlags);
 
         [StructLayout(LayoutKind.Sequential)]
         public struct DEVMODE

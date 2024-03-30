@@ -33,14 +33,14 @@ namespace ACAT.Lib.Core.PanelManagement
 
         public static bool ShowDialog(String prompt, int secondsCounter, Form parent = null)
         {
-            var confirmBoxSingleOption = new ConfirmBoxTimer();
-            confirmBoxSingleOption.Prompt = prompt;
-            confirmBoxSingleOption.SecondsCounter = secondsCounter;
-            confirmBoxSingleOption.ShowDialog(parent);
+            var confirmBoxTimer = new ConfirmBoxTimer();
+            confirmBoxTimer.Prompt = prompt;
+            confirmBoxTimer.SecondsCounter = secondsCounter;
+            confirmBoxTimer.ShowDialog(parent);
 
-            var result = confirmBoxSingleOption.Result;
+            var result = confirmBoxTimer.Result;
 
-            confirmBoxSingleOption.Dispose();
+            confirmBoxTimer.Dispose();
 
             return result;
         }

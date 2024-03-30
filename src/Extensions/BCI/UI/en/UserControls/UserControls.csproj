@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0F38EE30-BF4C-4CFF-B795-C16828520DEA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UserControls</RootNamespace>
+    <AssemblyName>UserControls</AssemblyName>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ACATCore">
+      <HintPath>..\..\..\..\..\Redistributable\ACATCore.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ACATExtension">
+      <HintPath>..\..\..\..\..\Redistributable\ACATExtension.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="KeyboardABCUserControlBCI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="KeyboardABCUserControlBCI.Designer.cs">
+      <DependentUpon>KeyboardABCUserControlBCI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KeyboardEditUserControlBCI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="KeyboardEditUserControlBCI.Designer.cs">
+      <DependentUpon>KeyboardEditUserControlBCI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KeyboardLockUserControlBCI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="KeyboardLockUserControlBCI.Designer.cs">
+      <DependentUpon>KeyboardLockUserControlBCI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KeyboardModesUserControlBCI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="KeyboardModesUserControlBCI.Designer.cs">
+      <DependentUpon>KeyboardModesUserControlBCI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KeyboardQWERTYUserControlBCI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="KeyboardQWERTYUserControlBCI.Designer.cs">
+      <DependentUpon>KeyboardQWERTYUserControlBCI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KeyboardYesNoUserControlBCI2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="KeyboardYesNoUserControlBCI2.Designer.cs">
+      <DependentUpon>KeyboardYesNoUserControlBCI2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KeyboardYesNoUserControlBCI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="KeyboardYesNoUserControlBCI.Designer.cs">
+      <DependentUpon>KeyboardYesNoUserControlBCI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LEDStatusUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LEDStatusUserControl.Designer.cs">
+      <DependentUpon>LEDStatusUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenuUserControlBCI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MenuUserControlBCI.Designer.cs">
+      <DependentUpon>MenuUserControlBCI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NumericUserControlBCI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="NumericUserControlBCI.Designer.cs">
+      <DependentUpon>NumericUserControlBCI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PhrasesUserControlBCI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PhrasesUserControlBCI.Designer.cs">
+      <DependentUpon>PhrasesUserControlBCI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScreenLockTextBoxUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ScreenLockTextBoxUserControl.Designer.cs">
+      <DependentUpon>ScreenLockTextBoxUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TTSYesNoUserControlBCI2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TTSYesNoUserControlBCI2.Designer.cs">
+      <DependentUpon>TTSYesNoUserControlBCI2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TTSYesNoUserControlBCI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TTSYesNoUserControlBCI.Designer.cs">
+      <DependentUpon>TTSYesNoUserControlBCI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WordPredictionUserControlBCI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WordPredictionUserControlBCI.Designer.cs">
+      <DependentUpon>WordPredictionUserControlBCI.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="KeyboardABCUserControlBCI.resx">
+      <DependentUpon>KeyboardABCUserControlBCI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KeyboardEditUserControlBCI.resx">
+      <DependentUpon>KeyboardEditUserControlBCI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KeyboardLockUserControlBCI.resx">
+      <DependentUpon>KeyboardLockUserControlBCI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KeyboardModesUserControlBCI.resx">
+      <DependentUpon>KeyboardModesUserControlBCI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KeyboardQWERTYUserControlBCI.resx">
+      <DependentUpon>KeyboardQWERTYUserControlBCI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KeyboardYesNoUserControlBCI2.resx">
+      <DependentUpon>KeyboardYesNoUserControlBCI2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KeyboardYesNoUserControlBCI.resx">
+      <DependentUpon>KeyboardYesNoUserControlBCI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LEDStatusUserControl.resx">
+      <DependentUpon>LEDStatusUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenuUserControlBCI.resx">
+      <DependentUpon>MenuUserControlBCI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NumericUserControlBCI.resx">
+      <DependentUpon>NumericUserControlBCI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PhrasesUserControlBCI.resx">
+      <DependentUpon>PhrasesUserControlBCI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScreenLockTextBoxUserControl.resx">
+      <DependentUpon>ScreenLockTextBoxUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TTSYesNoUserControlBCI2.resx">
+      <DependentUpon>TTSYesNoUserControlBCI2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TTSYesNoUserControlBCI.resx">
+      <DependentUpon>TTSYesNoUserControlBCI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WordPredictionUserControlBCI.resx">
+      <DependentUpon>WordPredictionUserControlBCI.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\AnimationSharp\AnimationSharp.csproj">
+      <Project>{9b1d5877-a3c0-4afd-8565-3fb32ffcd753}</Project>
+      <Name>AnimationSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\BCIControl\BCIControl.csproj">
+      <Project>{defaa2be-c13e-4350-9efa-9370755b63d3}</Project>
+      <Name>BCIControl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

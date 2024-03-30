@@ -36,7 +36,9 @@
         <WidgetAttribute name="B21" label="k" value="@CmdUndoLastEditChange" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="&usebold;"  />
         <WidgetAttribute name="B22" label="E" value="@CmdTopOfDoc" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
         <WidgetAttribute name="B23" label="D" value="@CmdEndOfDoc" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
-        <WidgetAttribute name="B24" label="j" value="@CmdGoBack" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;"  />
+		<WidgetAttribute name="B24" label="Back" value="@CmdGoBack" fontname="&characterButtonBlackFontName;" italic="true" fontsize="&characterButtonFontSize;"  bold="false"  />
+		
+		
 
     </WidgetAttributes>
 

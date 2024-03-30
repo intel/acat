@@ -34,6 +34,20 @@
             </PanelClassConfigMapEntry>
           </PanelClassConfigMapEntries>
         </PanelClassConfigMap>
+		<PanelClassConfigMap>
+          <Default>false</Default>
+          <Description>An alphabetically arranged keyboard with predictive text/sentences to help you communicate</Description>
+          <Name>TalkApplicationBCIScannerABC</Name>
+          <ScreenshotFileName>ABCKeyboardLayout.png</ScreenshotFileName>
+          <DisplayNameShort>Alphabetical</DisplayNameShort>
+          <DisplayNameLong> ABC Keyboard Layout</DisplayNameLong>
+          <PanelClassConfigMapEntries>
+            <PanelClassConfigMapEntry>
+              <ConfigId>18f8796a-c0e2-4d4b-ac20-1e76e0a57bcd</ConfigId>
+              <PanelClass>TalkApplicationScanner</PanelClass>
+            </PanelClassConfigMapEntry>
+          </PanelClassConfigMapEntries>
+        </PanelClassConfigMap>
       </PanelClassConfigMaps>
     </PanelClassConfig>
   </PanelClassConfigs>

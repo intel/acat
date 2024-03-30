@@ -87,6 +87,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -215,6 +216,12 @@
     <Compile Include="UI\TalkWindowTextBoxPromptUserControl.Designer.cs">
       <DependentUpon>TalkWindowTextBoxPromptUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\TalkWindowTextBoxPromptUserControlLabel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\TalkWindowTextBoxPromptUserControlLabel.Designer.cs">
+      <DependentUpon>TalkWindowTextBoxPromptUserControlLabel.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\TalkWindowTextBoxUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -292,6 +299,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\TalkWindowTextBoxPromptUserControl.resx">
       <DependentUpon>TalkWindowTextBoxPromptUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\TalkWindowTextBoxPromptUserControlLabel.resx">
+      <DependentUpon>TalkWindowTextBoxPromptUserControlLabel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\TalkWindowTextBoxUserControl.resx">
       <DependentUpon>TalkWindowTextBoxUserControl.cs</DependentUpon>

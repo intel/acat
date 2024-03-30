@@ -1,0 +1,146 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+  <!ENTITY usebold "false">
+  <!ENTITY functionButtonFontName "acat font 1">
+  <!ENTITY functionButtonFontSize "35">
+  <!ENTITY characterButtonFontName "montserrat semibold">
+  <!ENTITY characterButtonFontSize "30">
+  <!ENTITY predTextFontName "montserrat">
+  <!ENTITY predTextButtonFontSize "14">
+  <!ENTITY buttonFontName "Arial">
+
+]>
+
+<ACAT>
+	
+  <WidgetAttributes>
+
+
+	  <WidgetAttribute name="B1" label="" value="" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"   bold="&usebold;" />
+	  <WidgetAttribute name="B2" label="" value="" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
+	  <WidgetAttribute name="B3" label="" value="" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
+	  <WidgetAttribute name="B4" label="" value="" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
+	  <WidgetAttribute name="B5" label="" value="" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
+	  <WidgetAttribute name="B6" label="" value="" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
+
+	  <WidgetAttribute name="B7" label="" value="" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
+	  <WidgetAttribute name="B8" label="" value="" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
+	  <WidgetAttribute name="B9" label="ABC" value="@CmdKeyboardMain" fontname="&characterButtonFontName;" italic="true" fontsize="35"  bold="true" />
+	  <WidgetAttribute name="B10" label="e" value="@CmdEntryModeTyping" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
+	  <WidgetAttribute name="B11" label="f" value="@CmdEntryModePhrase" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
+	  <WidgetAttribute name="B12" label="d" value="@CmdEntryModeShortHand" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
+
+	  <WidgetAttribute name="B13" label="" value="" virtualkey="true" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
+	  <WidgetAttribute name="B14" label="" value="" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
+	  <WidgetAttribute name="B15" label="" value="" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;"  />
+	  <WidgetAttribute name="B16" label="" value="" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;"  />
+	  <WidgetAttribute name="B17" label="" value="" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;"/>
+	  <WidgetAttribute name="B18" label="" value="" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
+	
+
+  </WidgetAttributes>
+
+  <Layout>
+	  <Widget class="WinControlWidget"  name="Keyboard">
+		  
+		  <Widget class="ScannerButton" name="B1" />
+		  <Widget class="ScannerButton" name="B2" />
+		  <Widget class="ScannerButton" name="B3" />
+		  <Widget class="ScannerButton" name="B4" />
+		  <Widget class="ScannerButton" name="B5" />
+		  <Widget class="ScannerButton" name="B6" />
+		  <Widget class="ScannerButton" name="B7" />
+		  <Widget class="ScannerButton" name="B8" />
+		  <Widget class="ScannerButton" name="B9" />
+		  <Widget class="ScannerButton" name="B10" colorScheme="ColorCodedRegion5"  enabled="contextual" defaultEnabled="true"/>		  
+		  <Widget class="ScannerButton" name="B11" colorScheme="ColorCodedRegion5"  enabled="contextual" defaultEnabled="true"/>
+		  <Widget class="ScannerButton" name="B12" colorScheme="ColorCodedRegion5"  enabled="contextual" defaultEnabled="true"/>
+		  <Widget class="ScannerButton" name="B13" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B14" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B15" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B16" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B17" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B18" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  
+	  </Widget>
+
+	  
+	  <Layouts name="ProgressBarsBoxMapping">
+		  <Widget name="PBMain1" tagID="1"/>
+	  </Layouts>
+	  <Layouts name="ProgressBarsMapping">
+		  <Widget name="PB8" tagID="1"/>
+		  <Widget name="PB9" tagID="2"/>
+		  <Widget name="PB10" tagID="3"/>
+		  <Widget name="PB11" tagID="4"/>
+		  <Widget name="PB12" tagID="5"/>
+	  </Layouts>
+	  <!--First level main layout-->
+	  <Layouts name="KeyboardBoxMapping">
+		  <Widget name="B8" tagID="1"/>
+		  <Widget name="B9" tagID="2"/>
+		  <Widget name="B10" tagID="3"/>
+		  <Widget name="B11" tagID="4"/>
+		  <Widget name="B12" tagID="5"/>
+	  </Layouts>
+	  <Layouts name="KeyboardType">
+		  <Widget name="Menus"/>
+	  </Layouts>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopLevelRotation"
+               start="true"
+               iterations="@GridScanIterations">
+    </Animation>
+	<Animation name="KeyboardSequences">
+		<Animation name="Column">
+			<Widget name="B8" tagID="1"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B9" tagID="2"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B10" tagID="3"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B11" tagID="4"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B12" tagID="5"/>
+		</Animation>
+	</Animation>
+	
+	  <Animation name="ButtonPressed"
+		   onEnter=""
+		   iterations="-1"
+		   onEnd="transition(TopLevelRotation)">
+		  <Widget name="@SelectedWidget" firstPauseTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+	  </Animation>
+	  
+	  
+
+    <Animation name="FunctionRotation"
+                iterations="@RowScanIterations"
+               firstPauseTime="@FirstPauseTime"
+               onEnd="transition(TopLevelRotation)">
+      
+    </Animation>
+
+    <Animation name="KeyboardRotation"
+                iterations="@RowScanIterations"
+               firstPauseTime="@FirstPauseTime"
+               onEnd="transition(TopLevelRotation)">
+
+    </Animation>
+
+    <Animation name="SpeechRotation"
+                iterations="@RowScanIterations"
+               firstPauseTime="@FirstPauseTime"
+               onEnd="transition(TopLevelRotation)">
+
+    </Animation>
+
+
+  </Animations>
+</ACAT>

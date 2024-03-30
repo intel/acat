@@ -2,25 +2,22 @@
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
-// 
+//
 // Handles the HTML files to open local files in a web browser
 //
 ////////////////////////////////////////////////////////////////////////////
 
-
-using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace ACAT.Lib.Core.Utility
 {
     public class HtmlUtils
     {
         /// <summary>
-        /// Paths of the browsers exe 
+        /// Paths of the browsers exe
         /// </summary>
         private static string _chromeBrowserPath = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
 
@@ -36,6 +33,7 @@ namespace ACAT.Lib.Core.Utility
             FILENAME,
             PARAMETER,
         };
+
         /// <summary>
         /// Loads and launch a html document
         /// Modify sections of the document and create a temporary html file to be open by a browser and display a video or a PDF
@@ -46,16 +44,14 @@ namespace ACAT.Lib.Core.Utility
         {
             try
             {
-                
                 string htmlsPath = SmartPath.DocsPath;
                 string htmlContent = string.Empty;
-
 
                 if (htmlData.Length != 5)
                 {
                     return;
                 }
-                
+
                 htmlData[(int)HtmlDataArrayIndex.FILENAME] = ReplaceDash(htmlData[(int)HtmlDataArrayIndex.FILENAME]);
 
                 switch (htmlData[(int)HtmlDataArrayIndex.FILETYPE])
@@ -77,13 +73,13 @@ namespace ACAT.Lib.Core.Utility
                         if (File.Exists(Path.Combine(pdfPath, htmlData[(int)HtmlDataArrayIndex.FILENAME])))
                         {
                             htmlData[(int)HtmlDataArrayIndex.PARAMETER] = ReplaceDash(htmlData[(int)HtmlDataArrayIndex.PARAMETER]);
-                                
+
                             htmlContent = htmlContent
                                 .Replace(CoreGlobals.MacroAssetsImagesDir, FileUtils.GetImagesDir())
                                 .Replace("FILE_PATH", "file:///" + (EncodeString(pdfPath) + "/" + htmlData[(int)HtmlDataArrayIndex.FILENAME]) +
                                             "#" + htmlData[(int)HtmlDataArrayIndex.PARAMETER]);
                         }
-                        
+
                         break;
 
                     case "Video":
@@ -157,8 +153,6 @@ namespace ACAT.Lib.Core.Utility
                     };
                     processStartInfo.WorkingDirectory = Path.GetDirectoryName(tempFilePathLogs);
                     Process.Start(processStartInfo);
-
-
                 }
                 else
                 {
@@ -170,16 +164,15 @@ namespace ACAT.Lib.Core.Utility
                     processStartInfo.WorkingDirectory = Path.GetDirectoryName(tempFilePathLogs);
                     Process.Start(processStartInfo);
                 }
-
-             }
+            }
             catch (Exception ex)
             {
                 Log.Debug("Error loading HTML script: " + ex.Message);
             }
-
         }
+
         /// <summary>
-        /// Custom encoder for html URL path for local files 
+        /// Custom encoder for html URL path for local files
         /// The encoder is for special characters so the browser can read local files when opening a html
         /// </summary>
         /// <param name="text"></param>

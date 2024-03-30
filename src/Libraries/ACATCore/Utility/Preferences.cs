@@ -62,7 +62,7 @@ namespace ACAT.Lib.Core.Utility
         public bool ExpandAbbreviationsOnSeparator = false;
 
         [BoolDescriptor("Log application messages to a file. Use with caution. This will slow down the app and also consume disk space.  Use only for troubleshooting")]
-        public bool EnableLogs = false;
+        public bool EnableLogs = true;
 
         public bool DebugLogMessagesToFile = false;
         public bool DebugMessagesEnable = false;
@@ -70,7 +70,7 @@ namespace ACAT.Lib.Core.Utility
         public bool DebugAssertOnError = false;
 
         [BoolDescriptor("Enable audit logging of important events.  Use with caution.  This will slow down the app.  Use only for troubleshooting)")]
-        public bool AuditLogEnable = false;
+        public bool AuditLogEnable = true;
 
         public String AuditLogFilter = "*";
 
@@ -113,6 +113,8 @@ namespace ACAT.Lib.Core.Utility
         [BoolDescriptor("Check display scale factor is set to 100% or 125% and display warning if it is not")]
         public bool ShowDisplayScaleMessageOnStartup = true;
 
+        [BoolDescriptor("Display calibration window help")]
+        public bool ShowCalibrationHelp = true;
 
         public bool OnboardingComplete = false;
 

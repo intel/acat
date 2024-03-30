@@ -15,6 +15,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -436,6 +437,42 @@ namespace ACAT.Lib.Core.PanelManagement
         }
 
         /// <summary>
+        /// Add a new entry to the PanelClassConfig and save the file
+        /// </summary>
+        /// <param name="appId"></param>
+        /// <param name="language"></param>
+        /// <param name="panelClassConfigMap"></param>
+        /// <returns></returns>
+        public static bool AddPanelClassConfigMap(String appId, String language, PanelClassConfigMap panelClassConfigMap)
+        {
+            var panelClassConfigFilePath = Path.Combine(UserManager.CurrentUserDir, language, PanelClassConfigFileName);
+
+            if (File.Exists(panelClassConfigFilePath))
+            {
+                var appPanelClassConfig = AppPanelClassConfig.Load(panelClassConfigFilePath);
+
+                var panelClassConfig = appPanelClassConfig.Find(CoreGlobals.AppId);
+
+                if (panelClassConfig != null)
+                {
+                    var result = panelClassConfig.PanelClassConfigMaps.Find(mapEntry => String.Compare(mapEntry.Name, panelClassConfigMap.Name, true) == 0);
+
+                    if (result != null)
+                    {
+                        return false;
+                    }
+
+                    panelClassConfig.PanelClassConfigMaps.Add(panelClassConfigMap);
+                    appPanelClassConfig.Save();
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Adds the specified Type to the cache keyed by the Guid.
         /// </summary>
         /// <param name="guid">Guid for the scanner</param>
@@ -687,6 +724,7 @@ namespace ACAT.Lib.Core.PanelManagement
                 walker.Walk(new OnFileFoundDelegate(onFileFound));
             }
         }
+
 
         /// <summary>
         /// For this application, load the panel configurations to use from

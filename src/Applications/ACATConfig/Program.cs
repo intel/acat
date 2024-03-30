@@ -15,6 +15,7 @@
 using ACAT.Applications;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Extension;
 using ACATExtension.CommandHandlers;
@@ -69,6 +70,11 @@ namespace ACATConfig
                 return;
             }
 
+            if (!AppCommon.CheckFontsInstalled())
+            {
+                return;
+            }
+
             CoreGlobals.AppId = "ACATConfig";
 
             FileUtils.LogAssemblyInfo();
@@ -77,6 +83,8 @@ namespace ACATConfig
 
             AppCommon.SetUserName();
             AppCommon.SetProfileName();
+
+            bool freshInstallForUser = !UserManager.UserExists(UserManager.CurrentUser);
 
             if (!AppCommon.CreateUserAndProfile())
             {
@@ -88,9 +96,13 @@ namespace ACATConfig
                 return;
             }
 
-            DualMonitor.CheckAndDisplayScaleFactorWarning();
+            User32Interop.SetProcessDPIAware();
+
+            AppCommon.CheckDisplayScalingAndResolution();
 
             Log.SetupListeners();
+
+            AppCommon.UpgradeFromPreviousVersion(freshInstallForUser);
 
             CommandDescriptors.Init();
 

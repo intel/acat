@@ -1437,4 +1437,35 @@ The OpenBCI Electrode Cap is not a medical device nor is it intended for medical
 &lt;/body&gt;
 &lt;/html&gt;</value>
   </data>
+  <data name="BCIOnboardingBottomHtmlText" xml:space="preserve">
+    <value>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+  &lt;style&gt;
+    a:link{color: rgb(255, 170, 0);}
+  &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body style="background-color:#232433;"&gt;
+    &lt;p style="font-family:'Montserrat Medium'; font-size:24px; color:white; text-align: center;"&gt;
+    For complete instructions on setup, watch this &lt;a href="$ASSETS_VIDEOS_DIR#ACATOverviewBCI.mp4"&gt;video&lt;/a&gt; or review the &lt;a href=$ACAT_USER_GUIDE#TableOfContents&gt;setup guide&lt;/a&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</value>
+  </data>
+  <data name="BCICalibrationHtmlText" xml:space="preserve">
+    <value>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+  &lt;style&gt;
+    a:link{color: rgb(255, 170, 0);}
+  &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body style="background-color:#232433;"&gt;
+    &lt;p style="font-family:'Montserrat Medium'; font-size:14px; color:white; text-align: center;"&gt;
+Calibrating BCI is crucial for understanding the patterns in your brain signals when selecting a highlighted item on the screen. ACAT requires completing three distinct calibrations, each with a minimum score. 
+Ensure the scanning speed is adjusted to a level that is comfortable for you.&lt;br/&gt;For complete instructions, watch this &lt;a href="$ASSETS_VIDEOS_DIR#ACATOverviewBCI.mp4"&gt;video&lt;/a&gt; or review the &lt;a href=$ACAT_USER_GUIDE#BCICalibration&gt;setup guide&lt;/a&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</value>
+  </data>
 </root>

@@ -490,7 +490,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Could not get types from assembly " + dllName + ". Exception : " + ex.ToString());
+                //Log.Debug("Could not get types from assembly " + dllName + ". Exception : " + ex.ToString());
             }
         }
     }

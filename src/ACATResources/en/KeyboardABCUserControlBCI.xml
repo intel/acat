@@ -1,0 +1,379 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+  <!ENTITY usebold "false">
+  <!ENTITY functionButtonFontName "acat font 1">
+  <!ENTITY functionButtonFontSize "35">
+  <!ENTITY characterButtonFontName "montserrat semibold">
+  <!ENTITY characterButtonFontSize "30">
+  <!ENTITY predTextFontName "montserrat">
+  <!ENTITY predTextButtonFontSize "14">
+  <!ENTITY buttonFontName "Arial">
+
+]>
+
+<ACAT>
+	
+  <WidgetAttributes>
+
+	<WidgetAttribute name="B1" label="A" value="a" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B2" label="B" value="b" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B3" label="C" value="c" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B4" label="D" value="d" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B5" label="E" value="e" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B6" label="F" value="f" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B7" label="G" value="g" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B8" label="," value="," fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B9" label="h" value="@CmdEnterKey" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
+	<WidgetAttribute name="B10" label="." value="." fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+
+	  
+	<WidgetAttribute name="B11" label="H" value="h" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B12" label="I" value="i" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B13" label="J" value="j" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B14" label="K" value="k" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B15" label="L" value="l" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B16" label="M" value="m" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B17" label="N" value="n" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B18" label="y" value="@CmdDelPrevWord" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="&usebold;" />
+	<WidgetAttribute name="B19" label="w" value="@Back" virtualkey="true" fontname="&functionButtonFontName;"   fontsize="&functionButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B20" label="a" value="@CmdTalkWindowClear" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
+
+	  
+	<WidgetAttribute name="B21" label="O" value="o"  fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;"   extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B22" label="P" value="p" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B23" label="Q" value="q" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B24" label="R" value="r" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B25" label="S" value="s" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B26" label="T" value="t"  fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;"   extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B27" label="U" value="u" fontname="&characterButtonFontName;"   fontsize="&characterButtonFontSize;"  bold="&usebold;"  />
+	<WidgetAttribute name="B28" label="k" value="@CmdUndoLastEditChange" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="false"/>
+	<WidgetAttribute name="B29" label="b" value="@CmdSpeak"  fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;"  />
+	<WidgetAttribute name="B30" label="l" value="@CmdKeyboardScannerNum" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;"   extendedAttributes="gazeTiming=long;"/>
+
+
+	<WidgetAttribute name="B31" label="V" value="v"  fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;"   extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B32" label="W" value="w"  fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B33" label="X" value="x"  fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;" />
+	<WidgetAttribute name="B34" label="Y" value="y" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B35" label="Z" value="z" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B36" label="m" value=" " fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B37" label="" value="" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B38" label="SHIFT" value="@CmdShiftKey" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B39" label="!" value="!"  fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;"   extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B40" label="?" value="?"  fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;"   extendedAttributes="gazeRepeatEnable=true;"/>
+	
+
+  </WidgetAttributes>
+
+  <Layout>
+	  <Widget class="WinControlWidget"  name="Keyboard">
+		  
+		  <Widget class="ScannerButton" name="B1" />
+		  <Widget class="ScannerButton" name="B2" />
+		  <Widget class="ScannerButton" name="B3" />
+		  <Widget class="ScannerButton" name="B4" />
+		  <Widget class="ScannerButton" name="B5" />
+		  <Widget class="ScannerButton" name="B6" />
+		  <Widget class="ScannerButton" name="B7" />
+		  <Widget class="ScannerButton" name="B8" />
+		  <Widget class="ScannerButton" name="B9" />
+		  <Widget class="ScannerButton" name="B10" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>		  
+		  <Widget class="ScannerButton" name="B11" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B12" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B13" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B14" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B15" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B16" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B17" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B18" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B19" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B20" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>		  
+		  <Widget class="ScannerButton" name="B21" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B22" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B23" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B24" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B25" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B26" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B27" colorScheme="ColorCodedRegion5"/>}
+		  <Widget class="ScannerButton" name="B28" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B29" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+		  <Widget class="ScannerButton" name="B30" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>		  
+		  <Widget class="ScannerButton" name="B31" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion5"/>
+		  <Widget class="ScannerButton" name="B32" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion5"/>
+		  <Widget class="ScannerButton" name="B33" colorScheme="ColorCodedRegion5" enabled="contextual" defaultEnabled="true"/>
+		  <Widget class="ScannerButton" name="B34" colorScheme="ColorCodedRegion5" enabled="contextual" defaultEnabled="true"/>
+		  <Widget class="ScannerButton" name="B35" colorScheme="ColorCodedRegion5"  disabledButtonColorScheme="DisabledColorCodedRegion5"/>
+		  <Widget class="ScannerButton" name="B36" colorScheme="ColorCodedRegion5" disabledButtonColorScheme="DisabledColorCodedRegion5"/>
+		  <Widget class="ScannerButton" name="B37" colorScheme="ColorCodedRegion5" disabledButtonColorScheme="DisabledColorCodedRegion5"/>
+		  <Widget class="ScannerButton" name="B38" />
+		  <Widget class="ScannerButton" name="B39" />
+		  <Widget class="ScannerButton" name="B40" />
+		  
+	  </Widget>
+
+	  
+	  <Layouts name="ProgressBarsBoxMapping">
+		  <Widget name="PBMain1" tagID="1"/>
+		  <Widget name="PBMain2" tagID="2"/>
+	  </Layouts>
+
+	  <Layouts name="ProgressBarsMapping">
+		  <Widget name="PB1" tagID="1"/>
+		  <Widget name="PB2" tagID="2"/>
+		  <Widget name="PB3" tagID="3"/>
+		  <Widget name="PB4" tagID="4"/>
+		  <Widget name="PB5" tagID="5"/>
+		  <Widget name="PB6" tagID="6"/>
+		  <Widget name="PB7" tagID="7"/>
+		  <Widget name="PB11" tagID="8"/>
+		  <Widget name="PB12" tagID="9"/>
+		  <Widget name="PB13" tagID="10"/>
+		  <Widget name="PB14" tagID="11"/>
+		  <Widget name="PB15" tagID="12"/>
+		  <Widget name="PB16" tagID="13"/>
+		  <Widget name="PB17" tagID="14"/>
+		  <Widget name="PB21" tagID="15"/>
+		  <Widget name="PB22" tagID="16"/>
+		  <Widget name="PB23" tagID="17"/>
+		  <Widget name="PB24" tagID="18"/>
+		  <Widget name="PB25" tagID="19"/>
+		  <Widget name="PB26" tagID="20"/>
+		  <Widget name="PB27" tagID="21"/>
+		  <Widget name="PB31" tagID="22"/>
+		  <Widget name="PB32" tagID="23"/>
+		  <Widget name="PB33" tagID="24"/>
+		  <Widget name="PB34" tagID="25"/>
+		  <Widget name="PB35" tagID="26"/>
+		  <Widget name="PB36" tagID="27"/>
+		  <Widget name="PB37" tagID="28"/>
+	  </Layouts>
+	  <Layouts name="ProgressBarsMapping">
+		  <Widget name="PB8" tagID="1"/>
+		  <Widget name="PB9" tagID="2"/>
+		  <Widget name="PB10" tagID="3"/>
+		  <Widget name="PB18" tagID="4"/>
+		  <Widget name="PB19" tagID="5"/>
+		  <Widget name="PB20" tagID="6"/>
+		  <Widget name="PB28" tagID="7"/>
+		  <Widget name="PB29" tagID="8"/>
+		  <Widget name="PB30" tagID="9"/>
+		  <Widget name="PB38" tagID="10"/>
+		  <Widget name="PB39" tagID="11"/>
+		  <Widget name="PB40" tagID="12"/>
+	  </Layouts>
+	  <!--First level main layout-->
+	  <Layouts name="KeyboardBoxMapping">
+		  <Widget name="B1" tagID="1"/>
+		  <Widget name="B2" tagID="2"/>
+		  <Widget name="B3" tagID="3"/>
+		  <Widget name="B4" tagID="4"/>
+		  <Widget name="B5" tagID="5"/>
+		  <Widget name="B6" tagID="6"/>
+		  <Widget name="B7" tagID="7"/>
+		  <Widget name="B11" tagID="8"/>
+		  <Widget name="B12" tagID="9"/>
+		  <Widget name="B13" tagID="10"/>
+		  <Widget name="B14" tagID="11"/>
+		  <Widget name="B15" tagID="12"/>
+		  <Widget name="B16" tagID="13"/>
+		  <Widget name="B17" tagID="14"/>
+		  <Widget name="B21" tagID="15"/>
+		  <Widget name="B22" tagID="16"/>
+		  <Widget name="B23" tagID="17"/>
+		  <Widget name="B24" tagID="18"/>
+		  <Widget name="B25" tagID="19"/>
+		  <Widget name="B26" tagID="20"/>
+		  <Widget name="B27" tagID="21"/>
+		  <Widget name="B31" tagID="22"/>
+		  <Widget name="B32" tagID="23"/>
+		  <Widget name="B33" tagID="24"/>
+		  <Widget name="B34" tagID="25"/>
+		  <Widget name="B35" tagID="26"/>
+		  <Widget name="B36" tagID="27"/>
+		  <Widget name="B37" tagID="28"/>
+	  </Layouts>
+	  <Layouts name="KeyboardBoxMapping">
+		  <Widget name="B8" tagID="1"/>
+		  <Widget name="B9" tagID="2"/>
+		  <Widget name="B10" tagID="3"/>
+		  <Widget name="B18" tagID="4"/>
+		  <Widget name="B19" tagID="5"/>
+		  <Widget name="B20" tagID="6"/>
+		  <Widget name="B28" tagID="7"/>
+		  <Widget name="B29" tagID="8"/>
+		  <Widget name="B30" tagID="9"/>
+		  <Widget name="B38" tagID="10"/>
+		  <Widget name="B39" tagID="11"/>
+		  <Widget name="B40" tagID="12"/>
+	  </Layouts>
+	  <Layouts name="CalibrationMapping">
+		  <Widget name="Box" tagID="1"/>
+	  </Layouts>
+	  <Layouts name="KeyboardType">
+		  <Widget name="Keyboard"/>
+	  </Layouts>
+	  <Layouts name="KeyboardType">
+		  <Widget name="Menus"/>
+	  </Layouts>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopLevelRotation"
+               start="true"
+               iterations="@GridScanIterations">
+    </Animation>
+	<Animation name="KeyboardSequences">
+		<Animation name="Row">
+			<Widget name="B1" tagID="1"/>
+			<Widget name="B2" tagID="2"/>
+			<Widget name="B3" tagID="3"/>
+			<Widget name="B4" tagID="4"/>
+			<Widget name="B5" tagID="5"/>
+			<Widget name="B6" tagID="6"/>
+			<Widget name="B7" tagID="7"/>
+		</Animation>
+		<Animation name="Row">
+			<Widget name="B11" tagID="8"/>
+			<Widget name="B12" tagID="9"/>
+			<Widget name="B13" tagID="10"/>
+			<Widget name="B14" tagID="11"/>
+			<Widget name="B15" tagID="12"/>
+			<Widget name="B16" tagID="13"/>
+			<Widget name="B17" tagID="14"/>
+		</Animation>
+		<Animation name="Row">
+			<Widget name="B21" tagID="15"/>
+			<Widget name="B22" tagID="16"/>
+			<Widget name="B23" tagID="17"/>
+			<Widget name="B24" tagID="18"/>
+			<Widget name="B25" tagID="19"/>
+			<Widget name="B26" tagID="20"/>
+			<Widget name="B27" tagID="21"/>
+		</Animation>
+		<Animation name="Row">
+			<Widget name="B31" tagID="22"/>
+			<Widget name="B32" tagID="23"/>
+			<Widget name="B33" tagID="24"/>
+			<Widget name="B34" tagID="25"/>
+			<Widget name="B35" tagID="26"/>
+			<Widget name="B36" tagID="27"/>
+			<Widget name="B37" tagID="28"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B1" tagID="1"/>
+			<Widget name="B11" tagID="8"/>
+			<Widget name="B21" tagID="15"/>
+			<Widget name="B31" tagID="22"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B2" tagID="2"/>
+			<Widget name="B12" tagID="9"/>
+			<Widget name="B22" tagID="16"/>
+			<Widget name="B32" tagID="23"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B3" tagID="3"/>
+			<Widget name="B13" tagID="10"/>
+			<Widget name="B23" tagID="17"/>
+			<Widget name="B33" tagID="24"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B4" tagID="4"/>
+			<Widget name="B14" tagID="11"/>
+			<Widget name="B24" tagID="18"/>
+			<Widget name="B34" tagID="25"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B5" tagID="5"/>
+			<Widget name="B15" tagID="12"/>
+			<Widget name="B25" tagID="19"/>
+			<Widget name="B35" tagID="26"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B6" tagID="6"/>
+			<Widget name="B16" tagID="13"/>
+			<Widget name="B26" tagID="20"/>
+			<Widget name="B36" tagID="27"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B7" tagID="7"/>
+			<Widget name="B17" tagID="14"/>
+			<Widget name="B27" tagID="21"/>
+			<Widget name="B37" tagID="28"/>
+		</Animation>
+	</Animation>
+	<Animation name="KeyboardSequences">
+		<Animation name="Row">
+			<Widget name="B8" tagID="1"/>
+			<Widget name="B9" tagID="2"/>
+			<Widget name="B10" tagID="3"/>
+		</Animation>
+		<Animation name="Row">
+			<Widget name="B18" tagID="4"/>
+			<Widget name="B19" tagID="5"/>
+			<Widget name="B20" tagID="6"/>
+		</Animation>
+		<Animation name="Row">
+			<Widget name="B28" tagID="7"/>
+			<Widget name="B29" tagID="8"/>
+			<Widget name="B30" tagID="9"/>
+		</Animation>
+		<Animation name="Row">
+			<Widget name="B38" tagID="10"/>
+			<Widget name="B39" tagID="11"/>
+			<Widget name="B40" tagID="12"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B8" tagID="1"/>
+			<Widget name="B18" tagID="4"/>
+			<Widget name="B28" tagID="7"/>
+			<Widget name="B38" tagID="10"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B9" tagID="2"/>
+			<Widget name="B19" tagID="5"/>
+			<Widget name="B29" tagID="8"/>
+			<Widget name="B39" tagID="11"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B10" tagID="3"/>
+			<Widget name="B20" tagID="6"/>
+			<Widget name="B30" tagID="9"/>
+			<Widget name="B40" tagID="12"/>
+		</Animation>
+	</Animation>
+	
+	    
+	  <Animation name="ButtonPressed"
+		   onEnter=""
+		   iterations="-1"
+		   onEnd="transition(TopLevelRotation)">
+		  <Widget name="@SelectedWidget" firstPauseTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+	  </Animation>
+	  
+	  
+
+    <Animation name="FunctionRotation"
+                iterations="@RowScanIterations"
+               firstPauseTime="@FirstPauseTime"
+               onEnd="transition(TopLevelRotation)">
+      
+    </Animation>
+
+    <Animation name="KeyboardRotation"
+                iterations="@RowScanIterations"
+               firstPauseTime="@FirstPauseTime"
+               onEnd="transition(TopLevelRotation)">
+
+    </Animation>
+
+    <Animation name="SpeechRotation"
+                iterations="@RowScanIterations"
+               firstPauseTime="@FirstPauseTime"
+               onEnd="transition(TopLevelRotation)">
+
+    </Animation>
+
+
+  </Animations>
+</ACAT>

@@ -7,6 +7,7 @@
 
 using ACAT.Lib.Core.PanelManagement;
 using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -25,27 +26,7 @@ namespace ACAT.Lib.Core.Utility
             get { return Screen.AllScreens.Length > 1; }
         }
 
-        public static void CheckAndDisplayScaleFactorWarning()
-        {
-            if (!CoreGlobals.AppPreferences.ShowDisplayScaleMessageOnStartup)
-            {
-                return;
-            }
-
-            var tuple = GetDisplayWidthAndScaling();
-            if (tuple.Item1 > 0 && tuple.Item1 <= 1920 && tuple.Item2 != 1.0 && tuple.Item2 != 1.25)
-            {
-                var prompt = String.Format("Display scaling is {0}%.  ACAT is optimized for 100% and 125% scaling. Some screens may not display properly.", tuple.Item2 * 100); ;
-                var ret = ConfirmBoxSingleOption.ShowDialog(prompt, "OK", null, true);
-                if (ret)
-                {
-                    CoreGlobals.AppPreferences.ShowDisplayScaleMessageOnStartup = false;
-                    CoreGlobals.AppPreferences.Save();
-                }
-            }
-        }
-
-        public static Tuple<int, float> GetDisplayWidthAndScaling()
+        public static Tuple<int, uint> GetDisplayWidthAndScaling()
         {
             foreach (Screen screen in Screen.AllScreens)
             {
@@ -55,11 +36,12 @@ namespace ACAT.Lib.Core.Utility
                     dm.dmSize = (short)Marshal.SizeOf(typeof(User32Interop.DEVMODE));
                     User32Interop.EnumDisplaySettings(screen.DeviceName, -1, ref dm);
 
-                    return new Tuple<int, float>(dm.dmPelsWidth, (float)Math.Round(Decimal.Divide(dm.dmPelsWidth, screen.Bounds.Width), 2));
+                    var dpiScaling = (uint) Math.Round(DpiScaling.ScaleFactor(null, new Point(0, 0)), 0);
+                    return new Tuple<int, uint>(dm.dmPelsWidth, dpiScaling);
                 }
             }
 
-            return new Tuple<int, float>(0, 0.0f);
+            return new Tuple<int, uint>(0, 0);
         }
 
         /// <summary>

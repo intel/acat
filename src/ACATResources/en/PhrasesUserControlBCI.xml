@@ -1,0 +1,113 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+	<!ENTITY usebold "false">
+	<!ENTITY functionButtonFontName "acat font 1">
+	<!ENTITY functionButtonFontSize "35">
+	<!ENTITY characterButtonFontName "montserrat semibold">
+	<!ENTITY characterButtonFontSize "28">
+	<!ENTITY predTextFontName "montserrat">
+	<!ENTITY predTextButtonFontSize "14">
+	<!ENTITY buttonFontName "Arial">
+
+]>
+
+<ACAT>
+
+	<WidgetAttributes>
+		<WidgetAttribute name="SPLItem1" label=" " value="@SPLItem1" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
+		<WidgetAttribute name="SPLItem2" label=" " value="@SPLItem2" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
+		<WidgetAttribute name="SPLItem3" label=" " value="@SPLItem3" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
+		<WidgetAttribute name="SPLItem4" label=" " value="@SPLItem4" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
+		<WidgetAttribute name="SPLItem5" label="Back" value="" fontname="&characterButtonFontName;" italic="true" fontsize="30"  bold="true" />
+	</WidgetAttributes>
+
+	<Layout>
+		<Widget class="SentenceListWidget"  name="SentencePredictionBox">
+			<Widget class="SentenceListItemWidget" name="SPLItem1" colorScheme="ScannerButton" />
+			<Widget class="SentenceListItemWidget" name="SPLItem2" colorScheme="ScannerButton" />
+			<Widget class="SentenceListItemWidget" name="SPLItem3" colorScheme="ScannerButton" />
+			<Widget class="SentenceListItemWidget" name="SPLItem4" colorScheme="ScannerButton" />
+		</Widget>
+		<Widget class="WinControlWidget"  name="Keyboard">
+			<Widget class="ScannerButton" name="SPLItem5" />
+		</Widget>
+		<Layouts name="ProgressBarsBoxMapping">
+			<Widget name="PBMain1" tagID="1"/>
+		</Layouts>
+		<Layouts name="ProgressBarsMapping">
+			<Widget name="PB1" tagID="1"/>
+			<Widget name="PB2" tagID="2"/>
+			<Widget name="PB3" tagID="3"/>
+			<Widget name="PB4" tagID="4"/>
+			<Widget name="PB5" tagID="5"/>
+		</Layouts>
+		<Layouts name="KeyboardBoxMapping">
+			<Widget name="SPLItem1" tagID="1" borderColor="BCIColorCodedRegion1"/>
+			<Widget name="SPLItem2" tagID="2" borderColor="BCIColorCodedRegion1"/>
+			<Widget name="SPLItem3" tagID="3" borderColor="BCIColorCodedRegion1"/>
+			<Widget name="SPLItem4" tagID="4" borderColor="BCIColorCodedRegion1"/>
+			<Widget name="SPLItem5" tagID="5" borderColor="BCIColorCodedRegion1"/>
+		</Layouts>
+		<Layouts name="KeyboardType">
+			<Widget name="Sentences"/>
+		</Layouts>
+	</Layout>
+
+	<Animations>
+		<Animation name="TopLevelRotation"
+				   start="true"
+				   iterations="@GridScanIterations">
+		</Animation>
+
+		<!--First level main layout-->
+		<Animation name="KeyboardSequences">
+			<Animation name="Row">
+				<Widget name="SPLItem1" tagID="1"/>
+			</Animation>
+			<Animation name="Row">
+				<Widget name="SPLItem2" tagID="2"/>
+			</Animation>
+			<Animation name="Row">
+				<Widget name="SPLItem3" tagID="3"/>
+			</Animation>
+			<Animation name="Row">
+				<Widget name="SPLItem4" tagID="4"/>
+			</Animation>
+			<Animation name="Row">
+				<Widget name="SPLItem5" tagID="5"/>
+			</Animation>
+		</Animation>
+		
+		<Animation name="ButtonPressed"
+			 onEnter=""
+			 iterations="-1"
+			 onEnd="transition(TopLevelRotation)">
+			<Widget name="@SelectedWidget" firstPauseTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+		</Animation>
+
+
+
+		<Animation name="FunctionRotation"
+					iterations="@RowScanIterations"
+				   firstPauseTime="@FirstPauseTime"
+				   onEnd="transition(TopLevelRotation)">
+
+		</Animation>
+
+		<Animation name="KeyboardRotation"
+					iterations="@RowScanIterations"
+				   firstPauseTime="@FirstPauseTime"
+				   onEnd="transition(TopLevelRotation)">
+
+		</Animation>
+
+		<Animation name="SpeechRotation"
+					iterations="@RowScanIterations"
+				   firstPauseTime="@FirstPauseTime"
+				   onEnd="transition(TopLevelRotation)">
+
+		</Animation>
+
+
+	</Animations>
+</ACAT>

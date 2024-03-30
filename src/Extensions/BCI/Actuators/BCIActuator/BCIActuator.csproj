@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E969CC07-051E-4C48-9B8C-D6616243FB28}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BCIActuator</RootNamespace>
+    <AssemblyName>BCIActuator</AssemblyName>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ACATCore">
+      <HintPath>..\..\..\..\Redistributable\ACATCore.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ACATExtension">
+      <HintPath>..\..\..\..\Redistributable\ACATExtension.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Redistributable\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BCIActuator.cs" />
+    <Compile Include="InputSensor.cs" />
+    <Compile Include="InputSensorSwitchEventArgs.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SampleActuatorSwitch.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\ACATResources\ACATResources.csproj">
+      <Project>{A0990D4E-F25B-430C-BDA3-40A72560B877}</Project>
+      <Name>ACATResources</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\BCIControl\BCIControl.csproj">
+      <Project>{defaa2be-c13e-4350-9efa-9370755b63d3}</Project>
+      <Name>BCIControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EEGDataAcquisition\EEGDataAcquisition.csproj">
+      <Project>{7079e2bd-d443-4d8f-ac83-8ccfa64a1149}</Project>
+      <Name>EEGDataAcquisition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EEGProcessing\EEGProcessing.csproj">
+      <Project>{8ca216c6-7476-4696-ba70-fb86a2920ebf}</Project>
+      <Name>EEGProcessing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EEGSettings\EEGSettings.csproj">
+      <Project>{1761f46f-2543-45a2-b5d8-0591c078d9c6}</Project>
+      <Name>EEGSettings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EEGUtilities\EEGUtils.csproj">
+      <Project>{4b6b654f-50af-4291-a464-11d73c1afdf7}</Project>
+      <Name>EEGUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SensorUI\SensorUI.csproj">
+      <Project>{380fc7b3-d784-422a-8d85-510a9e8698c6}</Project>
+      <Name>SensorUI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

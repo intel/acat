@@ -1,0 +1,154 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+	<!ENTITY usebold "false">
+	<!ENTITY functionButtonFontName "acat font 1">
+	<!ENTITY functionButtonFontSize "12">
+	<!ENTITY characterButtonFontName "montserrat semibold">
+	<!ENTITY characterButtonFontSize "16">
+	<!ENTITY characterButtonFontSizeCRG "50">
+	<!ENTITY predTextFontName "montserrat">
+	<!ENTITY predTextButtonFontSize "28">
+	<!ENTITY buttonFontName "Arial">
+
+]>
+
+<ACAT>
+
+	<WidgetAttributes>
+		<WidgetAttribute name="BtnCRG" label="" value="" fontname="&characterButtonFontName;" italic="true" fontsize="&characterButtonFontSizeCRG;"  bold="true"  />
+		<WidgetAttribute name="PWLItem1" label=" " value="@PWLItem1" fontname="&predTextFontName;" fontsize="&predTextButtonFontSize;" bold="&usebold;" extendedAttributes="gazeTiming=long;"/>
+		<WidgetAttribute name="PWLItem2" label=" " value="@PWLItem2" fontname="&predTextFontName;" fontsize="&predTextButtonFontSize;" bold="&usebold;" extendedAttributes="gazeTiming=long;"/>
+		<WidgetAttribute name="PWLItem3" label=" " value="@PWLItem3" fontname="&predTextFontName;" fontsize="&predTextButtonFontSize;" bold="&usebold;" extendedAttributes="gazeTiming=long;"/>
+		<WidgetAttribute name="PWLItem4" label=" " value="@PWLItem4" fontname="&predTextFontName;" fontsize="&predTextButtonFontSize;" bold="&usebold;" extendedAttributes="gazeTiming=long;"/>
+		<WidgetAttribute name="PWLItem5" label=" " value="@PWLItem5" fontname="&predTextFontName;" fontsize="&predTextButtonFontSize;" bold="&usebold;" extendedAttributes="gazeTiming=long;"/>
+		<WidgetAttribute name="PWLItem6" label=" " value="@PWLItem6" fontname="&predTextFontName;" fontsize="&predTextButtonFontSize;" bold="&usebold;" extendedAttributes="gazeTiming=long;"/>
+		<WidgetAttribute name="PWLItem7" label=" " value="@PWLItem7" fontname="&predTextFontName;" fontsize="&predTextButtonFontSize;" bold="&usebold;" extendedAttributes="gazeTiming=long;"/>
+		<WidgetAttribute name="PWLItem8" label=" " value="@PWLItem8" fontname="&predTextFontName;" fontsize="&predTextButtonFontSize;" bold="&usebold;" extendedAttributes="gazeTiming=long;"/>
+		<WidgetAttribute name="PWLItem9" label=" " value="@PWLItem9" fontname="&predTextFontName;" fontsize="&predTextButtonFontSize;" bold="&usebold;" extendedAttributes="gazeTiming=long;"/>
+		<WidgetAttribute name="PWLItem10" label="Back" value="" fontname="&predTextFontName;" fontsize="30" bold="true" italic="true" extendedAttributes="gazeTiming=long;"/>
+	</WidgetAttributes>
+
+	<Layout>
+		<Widget class="WinControlWidget"  name="Keyboard">
+			<Widget class="ScannerButton" name="BtnCRG" />
+		</Widget>
+		<Widget class="WordListWidget" name="WordPredictionBox1">
+			<Widget class="WordListItemWidget" name="PWLItem1" colorScheme="ColorCodedRegion9"  disabledButtonColorScheme="DisabledColorCodedRegion9"/>
+			<Widget class="WordListItemWidget" name="PWLItem2" colorScheme="ColorCodedRegion9"  disabledButtonColorScheme="DisabledColorCodedRegion9"/>
+			<Widget class="WordListItemWidget" name="PWLItem3" colorScheme="ColorCodedRegion9"  disabledButtonColorScheme="DisabledColorCodedRegion9"/>
+			<Widget class="WordListItemWidget" name="PWLItem4" colorScheme="ColorCodedRegion9"  disabledButtonColorScheme="DisabledColorCodedRegion9"/>
+			<Widget class="WordListItemWidget" name="PWLItem5" colorScheme="ColorCodedRegion9"  disabledButtonColorScheme="DisabledColorCodedRegion9"/>
+			<Widget class="WordListItemWidget" name="PWLItem6" colorScheme="ColorCodedRegion9"  disabledButtonColorScheme="DisabledColorCodedRegion9"/>
+			<Widget class="WordListItemWidget" name="PWLItem7" colorScheme="ColorCodedRegion9"  disabledButtonColorScheme="DisabledColorCodedRegion9"/>
+			<Widget class="WordListItemWidget" name="PWLItem8" colorScheme="ColorCodedRegion9"  disabledButtonColorScheme="DisabledColorCodedRegion9"/>
+			<Widget class="WordListItemWidget" name="PWLItem9" colorScheme="ColorCodedRegion9"  disabledButtonColorScheme="DisabledColorCodedRegion9"/>
+		</Widget>
+		<Widget class="WinControlWidget"  name="Keyboard">
+			<Widget class="ScannerButton" name="PWLItem10" />
+		</Widget>
+		<Layouts name="ProgressBarsBoxMapping">
+			<Widget name="PBMain1" tagID="1"/>
+		</Layouts>
+		<Layouts name="ProgressBarsMapping">
+			<Widget name="PB1" tagID="1"/>
+			<Widget name="PB2" tagID="2"/>
+			<Widget name="PB3" tagID="3"/>
+			<Widget name="PB4" tagID="4"/>
+			<Widget name="PB5" tagID="5"/>
+			<Widget name="PB6" tagID="6"/>
+			<Widget name="PB7" tagID="7"/>
+			<Widget name="PB8" tagID="8"/>
+			<Widget name="PB9" tagID="9"/>
+			<Widget name="PB10" tagID="10"/>
+		</Layouts>
+		<Layouts name="KeyboardBoxMapping">
+			<Widget name="PWLItem1" tagID="1" borderColor="BCIColorCodedRegion1"/>
+			<Widget name="PWLItem2" tagID="2" borderColor="BCIColorCodedRegion1"/>
+			<Widget name="PWLItem3" tagID="3" borderColor="BCIColorCodedRegion1"/>
+			<Widget name="PWLItem4" tagID="4" borderColor="BCIColorCodedRegion1"/>
+			<Widget name="PWLItem5" tagID="5" borderColor="BCIColorCodedRegion1"/>
+			<Widget name="PWLItem6" tagID="6" borderColor="BCIColorCodedRegion1"/>
+			<Widget name="PWLItem7" tagID="7" borderColor="BCIColorCodedRegion1"/>
+			<Widget name="PWLItem8" tagID="8" borderColor="BCIColorCodedRegion1"/>
+			<Widget name="PWLItem9" tagID="9" borderColor="BCIColorCodedRegion1"/>
+			<Widget name="PWLItem10" tagID="10" borderColor="BCIColorCodedRegion1"/>
+		</Layouts>
+		<Layouts name="KeyboardType">
+			<Widget name="Words"/>
+		</Layouts>
+	</Layout>
+
+	<Animations>
+		<Animation name="TopLevelRotation"
+				   start="true"
+				   iterations="@GridScanIterations">
+		</Animation>
+
+		<!--First level main layout-->
+		<Animation name="KeyboardSequences">
+			<Animation name="Row">
+				<Widget name="PWLItem1" tagID="1"/>
+			</Animation>
+			<Animation name="Row">
+				<Widget name="PWLItem2" tagID="2"/>
+			</Animation>
+			<Animation name="Row">
+				<Widget name="PWLItem3" tagID="3"/>
+			</Animation>
+			<Animation name="Row">
+				<Widget name="PWLItem4" tagID="4"/>
+			</Animation>
+			<Animation name="Row">
+				<Widget name="PWLItem5" tagID="5"/>
+			</Animation>
+			<Animation name="Row">
+				<Widget name="PWLItem6" tagID="6"/>
+			</Animation>
+			<Animation name="Row">
+				<Widget name="PWLItem7" tagID="7"/>
+			</Animation>
+			<Animation name="Row">
+				<Widget name="PWLItem8" tagID="8"/>
+			</Animation>
+			<Animation name="Row">
+				<Widget name="PWLItem9" tagID="9"/>
+			</Animation>
+			<Animation name="Row">
+				<Widget name="PWLItem10" tagID="10"/>
+			</Animation>
+
+		</Animation>
+		
+		<Animation name="ButtonPressed"
+			 onEnter=""
+			 iterations="-1"
+			 onEnd="transition(TopLevelRotation)">
+			<Widget name="@SelectedWidget" firstPauseTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+		</Animation>
+
+
+
+		<Animation name="FunctionRotation"
+					iterations="@RowScanIterations"
+				   firstPauseTime="@FirstPauseTime"
+				   onEnd="transition(TopLevelRotation)">
+
+		</Animation>
+
+		<Animation name="KeyboardRotation"
+					iterations="@RowScanIterations"
+				   firstPauseTime="@FirstPauseTime"
+				   onEnd="transition(TopLevelRotation)">
+
+		</Animation>
+
+		<Animation name="SpeechRotation"
+					iterations="@RowScanIterations"
+				   firstPauseTime="@FirstPauseTime"
+				   onEnd="transition(TopLevelRotation)">
+
+		</Animation>
+
+
+	</Animations>
+</ACAT>

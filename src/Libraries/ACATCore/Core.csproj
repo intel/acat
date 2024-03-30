@@ -72,6 +72,7 @@
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Redistributable\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -266,6 +267,12 @@
     </Compile>
     <Compile Include="PanelManagement\UI\ConfirmBox2.Designer.cs">
       <DependentUpon>ConfirmBox2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ConfirmBoxLargeSingleOption.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ConfirmBoxLargeSingleOption.Designer.cs">
+      <DependentUpon>ConfirmBoxLargeSingleOption.cs</DependentUpon>
     </Compile>
     <Compile Include="PanelManagement\UI\ConfirmBoxTwoOptions.cs">
       <SubType>Form</SubType>
@@ -476,6 +483,7 @@
     <Compile Include="Utility\CachedLog.cs" />
     <Compile Include="Utility\CryptoInterop.cs" />
     <Compile Include="Utility\DataDictionary.cs" />
+    <Compile Include="Utility\DpiScaling.cs" />
     <Compile Include="Utility\DualMonitor.cs" />
     <Compile Include="Utility\FontCheck.cs" />
     <Compile Include="Utility\HtmlUtils.cs" />
@@ -501,6 +509,7 @@
     <Compile Include="Utility\ScannerFocus.cs" />
     <Compile Include="Utility\SoundManager.cs" />
     <Compile Include="Utility\VerifyDigitalSignature.cs" />
+    <Compile Include="Utility\VersionInfo.cs" />
     <Compile Include="Utility\XmlUtils.cs" />
     <Compile Include="Utility\DescriptorAttribute.cs" />
     <Compile Include="Utility\DirectoryWalker.cs">
@@ -660,6 +669,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PanelManagement\UI\ConfirmBox2.resx">
       <DependentUpon>ConfirmBox2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PanelManagement\UI\ConfirmBoxLargeSingleOption.resx">
+      <DependentUpon>ConfirmBoxLargeSingleOption.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PanelManagement\UI\ConfirmBoxTwoOptions.resx">
       <DependentUpon>ConfirmBoxTwoOptions.cs</DependentUpon>

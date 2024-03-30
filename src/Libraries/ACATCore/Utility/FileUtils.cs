@@ -118,8 +118,6 @@ namespace ACAT.Lib.Core.Utility
 
         public static Assembly AssemblyResolve(Assembly executingAssembly, ResolveEventArgs args)
         {
-            Log.IsNull("Requesting asembly ", args.RequestingAssembly);
-
             if (args.RequestingAssembly == null || String.IsNullOrEmpty(args.RequestingAssembly.Location))
             {
                 return null;

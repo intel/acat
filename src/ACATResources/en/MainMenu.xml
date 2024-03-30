@@ -14,7 +14,7 @@
     <WidgetAttribute name="MenuTitle" label="" value="" fontsize="22" fontname="&characterButtonBoldFontName;"  bold="&usebold;"/>
 
     <WidgetAttribute name="ItemIcon1" label="j" value="@CmdGoBack" fontsize="&functionButtonFontSize;" fontname="&functionButtonFontName;"  bold="&usebold;" />
-    <WidgetAttribute name="ItemText1" label="Return" value="@CmdGoBack" fontsize="&characterButtonFontSize;" fontname="&characterButtonFontName;"  bold="&usebold;" />
+    <WidgetAttribute name="ItemText1" label="Back" value="@CmdGoBack" fontsize="&characterButtonFontSize;" fontname="&characterButtonFontName;"  bold="&usebold;" />
 
     <WidgetAttribute name="ItemIcon2" label="Q" value="@CmdLockScreen" fontsize="&functionButtonFontSize;" fontname="&functionButtonFontName;" bold="&usebold;" />
     <WidgetAttribute name="ItemText2" label="Lock Screen" value="@CmdLockScreen" fontsize="&characterButtonFontSize;" fontname="&characterButtonFontName;"  bold="&usebold;" />

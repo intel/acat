@@ -319,9 +319,6 @@
       <DependentUpon>UserControlDefaultTryout.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>call "$(SolutionDir)deployRedist.bat" "$(TargetDir)\$(TargetFileName)" "$(SolutionDir)"</PostBuildEvent>

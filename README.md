@@ -1,10 +1,6 @@
-## Official release of ACAT 2.0 is now available [here](https://github.com/intel/acat/releases)
+## Official release of ACAT 3.0 is now available [here](https://github.com/intel/acat/releases)
 ### This release includes:
-- Enhanced language models that are specifically fine-tuned for [AAC](https://en.wikipedia.org/wiki/Augmentative_and_alternative_communication) with word and sentence predictions to improve typing efficiency and provide a personalized user experience
-- Multiple typing modes for faster communication
-- Revamped and modernized user interface design
-- Wizard-based user onboarding
-- Modular software architecture for easier extensibility
+- Support for Brain Computer Interface (BCI) input modality that aims to bridge the communication gap for locked-in users. The sensing is based on a non-invasive, relatively low-cost <a href="https://openbci.com/">OpenBCI</a> EEG Kit.
 
 ## Background
 The Assistive Context-Aware Toolkit (ACAT) is an open-source platform created at Intel Labs. It is designed to enhance communication for individuals with restricted speech and typing capabilities. It achieves this by providing functionalities like keyboard simulation, word/sentence prediction, and speech synthesis.

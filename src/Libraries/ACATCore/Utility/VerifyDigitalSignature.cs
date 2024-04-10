@@ -16,6 +16,7 @@ namespace ACAT.Lib.Core.Utility
 {
     public class VerifyDigitalSignature
     {
+#if ENABLE_DIGITAL_VERIFICATION
         private static string[] _dllFiles =
         {
             "acatresources.resources.dll",
@@ -36,9 +37,17 @@ namespace ACAT.Lib.Core.Utility
             "SpellCheck.dll",
             "SAPIEngine.dll",
             "TTSClient.dll",
-            "ConvAssist.dll"
+            "ConvAssist.dll",
+            "BCIControl.dll",
+            "BCIActuator.dll",
+            "EEGDataAcquisition.dll",
+            "EEGProcessing.dll",
+            "EEGSettings.dll",
+            "SensorUI.dll",
+            "animationsharp.dll",
+            "BCIInterfaceUtilities.dll"
         };
-
+#endif
         /// <summary>
         /// If the DLL needs to validate if it has an active certificate
         /// </summary>
@@ -46,7 +55,7 @@ namespace ACAT.Lib.Core.Utility
         /// <returns>True to verify</returns>
         public static bool ValidateCertificate(string fileName)
         {
-#if ENABLE_DIGITAL_VERIFICATION            
+#if ENABLE_DIGITAL_VERIFICATION
             foreach(string str in _dllFiles)
             {
                 if (fileName.ToLower().Contains(str.ToLower()) && str.Length > 0)

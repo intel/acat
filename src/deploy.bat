@@ -187,14 +187,6 @@ if not exist %TARGETDIR% mkdir %TARGETDIR%
 xcopy /s /y /e /i Docs\*.* %TARGETDIR% 
 
 rem ------------------------------------------------
-@echo Deploying 3rd Party files
-rem ------------------------------------------------
-set TARGETDIR=%INSTALLDIR%\3rdParty
-if not exist %TARGETDIR% mkdir %TARGETDIR%
-xcopy /s /y /e /i 3rdParty\*.* %TARGETDIR% 
-
-
-rem ------------------------------------------------
 @echo Deploying BCI Extensions
 rem ------------------------------------------------
 

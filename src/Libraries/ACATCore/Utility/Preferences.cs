@@ -62,7 +62,7 @@ namespace ACAT.Lib.Core.Utility
         public bool ExpandAbbreviationsOnSeparator = false;
 
         [BoolDescriptor("Log application messages to a file. Use with caution. This will slow down the app and also consume disk space.  Use only for troubleshooting")]
-        public bool EnableLogs = true;
+        public bool EnableLogs = false;
 
         public bool DebugLogMessagesToFile = false;
         public bool DebugMessagesEnable = false;
@@ -70,7 +70,7 @@ namespace ACAT.Lib.Core.Utility
         public bool DebugAssertOnError = false;
 
         [BoolDescriptor("Enable audit logging of important events.  Use with caution.  This will slow down the app.  Use only for troubleshooting)")]
-        public bool AuditLogEnable = true;
+        public bool AuditLogEnable = false;
 
         public String AuditLogFilter = "*";
 

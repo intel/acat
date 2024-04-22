@@ -404,7 +404,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         }
 
         /// <summary>
-        /// Task in charge to adjust the UI controls to scale and fit corretly 
+        /// Task in charge to adjust the UI controls to scale and fit corretly
         /// </summary>
         /// <returns></returns>
         public async Task ControlsUIAdjustment()
@@ -414,6 +414,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                 await Task.Delay(100);//Since SharpDx transparency Mode did not worked to show the TextBox the UI had to be force to be shaped and assemble to match the UI from The final design version
                 if (_formShown)
                 {
+                    //This way is to have the UI fully load and the controls are fit into full screen so we can get the latest values and modify them 
                     int height = this.Height - mainPanel.Height - statusStrip.Height - 25;
                     int unit = height / 11;
                     scannerTableLayoutKeyboard.Height = unit * 4;
@@ -466,6 +467,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// <returns>true on cussess</returns>
         public bool Initialize(StartupArg startupArg)
         {
+            //STEP - 0
             _panelClass = startupArg.PanelClass;
             _scannerHelper = new ScannerHelper(this, startupArg);
             bool retVal = _scannerCommon.Initialize(startupArg);
@@ -491,6 +493,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// <returns></returns>
         public async Task InitializeBCI()
         {
+            //STEP - 0
             await Task.Delay(50);
             _scannerCommon.UserControlManager.AddUserControlByKeyOrName(scannerPanelWordPredictions, "wordPrediction", "WordPredictionUserControlBCI");
             _scannerCommon.UserControlManager.AddUserControlByKeyOrName(scannerPanelSentences, "sentencePrediction", "PhrasesUserControlBCI");
@@ -965,28 +968,28 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                 {
                     case BCIState.None:
                         break;
-                    case BCIState.UIRefresh:
+                    case BCIState.UIRefresh://1 Init state
                         Log.Debug("BCI LOG | BCI Init state: " + BCIState.UIRefresh);
                         _BCIState = BCIState.UIRefresh;
                         _ = ControlsUIAdjustment().ConfigureAwait(false);
                         break;
-                    case BCIState.Initializing:
+                    case BCIState.Initializing://2 Init state
                         Log.Debug("BCI LOG | BCI Init state: " + BCIState.Initializing);
                         _BCIState = BCIState.Initializing;
                         _ = InitializeBCI().ConfigureAwait(false);
                         break;
-                    case BCIState.ReqCalibrationStatus:
+                    case BCIState.ReqCalibrationStatus://3 Init state
                         _BCIState = BCIState.ReqCalibrationStatus;
                         Log.Debug("BCI LOG | BCI Init state: " + BCIState.ReqCalibrationStatus);
                         _ = BCIRequestCalibrationStatus().ConfigureAwait(false);
                         break;
-                    case BCIState.StartBCIReqParams:
+                    case BCIState.StartBCIReqParams://4 Init state
                         //STEP - 4
                         Log.Debug("BCI LOG | BCI Init state: " + BCIState.StartBCIReqParams);
                         _BCIState = BCIState.StartBCIReqParams;
                         _ = BCIStartBCIReqParams().ConfigureAwait(false);
                         break;
-                    case BCIState.BCIStartSession:
+                    case BCIState.BCIStartSession://5 Init state
                         Log.Debug("BCI LOG | BCI Init state: " + BCIState.BCIStartSession);
                         _BCIState = BCIState.BCIStartSession;
                         _ = BCIStartSession().ConfigureAwait(false);
@@ -995,7 +998,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error in BCI Init state: " + BCIState.UIRefresh + "Messagge: " + ex.Message);
+                Log.Debug("BCI LOG | Error in BCI Init state: " + bCIState + "  Messagge: " + ex.Message);
             }
         }
 

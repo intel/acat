@@ -78,6 +78,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SharpDXColors.cs" />
     <Compile Include="BCIEvents.cs" />
+    <Compile Include="Utility\CachedLogBCI.cs" />
     <Compile Include="Utility\SharpDXUtils.cs" />
   </ItemGroup>
   <ItemGroup>

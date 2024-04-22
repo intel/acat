@@ -89,7 +89,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <summary>
         /// Log object
         /// </summary>
-        private CachedLog _cachedLog;
+        private CachedLogBCI _cachedLog;
 
         /// <summary>
         /// Index for the box used for the calibration layout
@@ -536,7 +536,6 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             _sequenceDone = false;
             BCIMode bCIMode = new BCIMode();
             bCIMode.BciCalibrationMode = bCIScanSections;
-            CreateSequencesLog();
             bCIMode.BciMode = BCIModes.CALIBRATION;
             if (bCIScanSections == BCIScanSections.Box)//Sets the amount of objects into an array so calibration does not repeat targets
                 BCIUtils.SetTargetValuesForCalibration(_flashingSequenceBoxList.Length);
@@ -608,12 +607,31 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <summary>
         /// Create sequences log for BCI
         /// </summary>
-        public void CreateSequencesLog(string name = null)
+        public void CreateSequencesLog(string path, string name = null)
         {
-            if (name == null)
-                _cachedLog = new CachedLog(_sessionMode.ToString() + "_" + _ScanningSection.ToString());
-            else
-                _cachedLog = new CachedLog(name);
+            try
+            {
+                string baseFileName = string.Empty;
+                if (_cachedLog != null)
+                    CloseSequencesLog();
+                if (String.IsNullOrEmpty(name))
+                {
+                    //This is to avoid if a log is created right after another and share the same name but only changes the time it was created by a few seconds, avoid append the new log into the old log since the name is the same 
+                    //Part of the name goes up to minutes not seconds so it have the possibility that the name is the same only applies in the log folder
+                    //This is to when the log is saved in the same folder
+                    Random rand = new Random();
+                    int randomIndex = rand.Next(1, 300);
+                    baseFileName = _sessionMode.ToString() + "_" + (_triggerTestActive ? "" : _ScanningSection.ToString()) + "_" + randomIndex;
+                    _cachedLog = new CachedLogBCI(baseFileName, path);
+                }
+                else
+                    _cachedLog = new CachedLogBCI(name, path);
+            }
+            catch(Exception ex)
+            {
+                Log.Debug("BCI LOG | Exception in CreateSequencesLog() " + ex.Message);
+            }
+
         }
 
         /// <summary>
@@ -877,7 +895,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
 
         public void SetParametersTriggerTest(int interval, int repetitions)
         {
-            _TriggerTestInterval = interval;//Save the parameters so when the timer of the trigger test is defines it contains the values from the config form
+            _TriggerTestInterval = interval;//Save the parameters so when the timer of the trigger test starts it contains the values from the config form
             _TriggerTestRepetitions = repetitions;
         }
 
@@ -901,7 +919,10 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         public void TriggerTestRequest()
         {
             _sessionMode = BCIModes.TRIGGERTEST;
-            CreateSequencesLog(BCIModes.TRIGGERTEST.ToString());
+            _triggerTestActive = true;
+            BCIMode bCIMode = new BCIMode { BciMode = BCIModes.TRIGGERTEST };
+            var strBciMode = JsonConvert.SerializeObject(bCIMode);
+            _actuator.IoctlRequest((int)OpCodes.StartSession, strBciMode);
             _actuator.IoctlRequest((int)OpCodes.TriggerTestStart, string.Empty);
         }
 
@@ -915,7 +936,6 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             _currEpochCount = 0;
             _isBoxScannig = true;
             _numberOfSequences = _amountOfKeyboards;
-            CreateSequencesLog();
             BCIMode bCIMode = new BCIMode { BciMode = BCIModes.TYPING };
             var strBciMode = JsonConvert.SerializeObject(bCIMode);
             _actuator.IoctlRequest((int)OpCodes.StartSession, strBciMode);
@@ -1247,10 +1267,14 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         private void ActuatorResponseStartSessionResult(String response)
         {
             Log.Debug("BCI LOG | StartSessionResult | Section " + _ScanningSection);
-            if (_readStartSesionResult)
+            var bciSessionResult = JsonConvert.DeserializeObject<BCIStartSessionResult>(response);
+            SensorErrorState = bciSessionResult.Error;
+            CreateSequencesLog(bciSessionResult.SessionDirectory);
+            Log.Debug("BCI LOG | Scanning Log created in: | Path " + bciSessionResult.SessionDirectory);
+            Log.Debug("BCI LOG | bciSessionResult.Error | Status " + bciSessionResult.Error);
+            //_readStartSesionResult flag is for Eyes/Clsoed Calibration form that also has the start session request with this we avoid the event handler to run scanning when Eyes Form is active and here has the event subscribed active
+            if (_readStartSesionResult && !_triggerTestActive)
             {
-                var bciSessionResult = JsonConvert.DeserializeObject<BCIStartSessionResult>(response);
-                SensorErrorState = bciSessionResult.Error;
                 _StartSequences = true;
                 if (bciSessionResult.SensorReady && (_endCalibration || _repeatCalibration))
                 {
@@ -1268,6 +1292,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             var bciTriggerTestResult = JsonConvert.DeserializeObject<BCITriggerTestResult>(response);
             CloseSequencesLog();
             Log.Debug("BCI LOG | TriggerTestResult | DutyCycleAvg " + bciTriggerTestResult.DutyCycleAvg.ToString());
+            //Trigger event to call a UI message box from a higher level
             _mainForm.Invoke(new MethodInvoker(delegate
             {
                 EvtBCICalibrationComplete?.Invoke("Average Duty Cycle: " + bciTriggerTestResult.DutyCycleAvg.ToString());
@@ -1391,13 +1416,13 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     }
                     if (_sessionMode == BCIModes.TYPING && !_stopAnimation && !_changeUserControl)
                         SetValueProbabilityBars();
-                    DrawMatrix();
+                    DrawMatrix();//draw the base UI, all elements in the UI all buttons and text
                     if (_sessionMode != BCIModes.TRIGGERTEST)
                     {
                         ChangeColorButtonsSequence(buttonIDs, colorRect, highlightOn, _activeKeyboard);
                         if (_sessionMode == BCIModes.CALIBRATION)
                         {
-                            if (!_isBoxScannig)
+                            if (!_isBoxScannig)//Draw the elements of a keyboard
                                 _sharpDX_d2dRenderTarget.DrawRoundedRectangle(_rectanglesButtonsRoundList[_activeKeyboard][FindIndexFromID(_currentCalibrationTarget.id)], SharpDXColors.SolidColorBrushTarget, _BorderWidth);
                             else
                             {//To draw the buttons that being used as target in Box calibration
@@ -1604,6 +1629,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                             drawArea = false;
                         }
                         RoundedRectangle roundedRectangle = SharpDXUtils.GetRoundedRectangle(rect, _RadiusCornersButtons);
+                        //to draw the buttons as a disable option (grey kind of color)
                         if (_widgets[ii][i].Enabled)
                         {
                             if (!_stopAnimation && drawArea && !_changeUserControl)
@@ -1622,7 +1648,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         }
                         i++;
                     }
-                    //For the CRG Section
+                    //For the CRG Section, here in the future for any upcoming chabe can be added here either the shape, text or color
                     if (_rectangleExtraButtonCRG.Bottom != 0 && _rectangleExtraButtonCRG.Top != 0 && _rectangleExtraButtonCRG.Left != 0 && _rectangleExtraButtonCRG.Right != 0 && _offsetCRG != 0 && _buttonTextFormatCRG != null && CRGText != null)
                     {
                         if (!_stopAnimation && !_changeUserControl)
@@ -1631,6 +1657,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         if (!_stopAnimation && !_changeUserControl)
                             _sharpDX_d2dRenderTarget.DrawText(CRGText, _buttonTextFormatCRG, rectCRG, SharpDXColors.SolidColorBrushButtonTextOff);
                     }
+                    //This is for the trigger box
                     if (!_stopAnimation && !_changeUserControl)
                     {
                         _sharpDX_d2dRenderTarget.DrawRectangle(_rectangleExtraButton, SharpDXColors.SolidColorBrushExtraBoxOn);
@@ -1665,6 +1692,8 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         {
             try
             {
+                //this measure is to avoid a timer still running and we are able to make changes to the objects used by SharpDX, there were times where the stope and/abort the timer remain active 
+                // and makeing a change fall into an exception 
                 StopTimers();
                 Thread.Sleep(20);
                 AbortTimers();
@@ -2047,6 +2076,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     {
                         _UpdateButtonsStrings = false;
                         SetDataObjectsSharpDX(_TempBoxesData, _tempwidgets);
+                        //null objects after is to avoid if another call the reset fall into here and change the SharpDX objects
                         _TempBoxesData = null;
                         _tempwidgets = null;
                     }
@@ -2068,7 +2098,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             _changeUserControl = false;
             _stopAnimation = false;
             if (_StartSequences)
-            {
+            {// if delay is to have a time before animations starts
                 if (delayAfterLayoutChange)
                     _ = ResetWaitingDelay();
                 else
@@ -2345,7 +2375,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         {
                             while (true)//loop until get a target ID 
                             {
-                                target = BCIUtils.GetRandomID();
+                                target = BCIUtils.GetRandomID();//Id's were prev defined in the class so it can get an id that does not repeat 
                                 if (_ScanningSection == BCIScanSections.Box)
                                 {
                                     _currentCalibrationTarget = new ButtonsData { id = target + 1, text = "BOX " + (target + 1), name = "BOX" + (target + 1) };
@@ -2532,73 +2562,73 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     }
                 }
                 _slotTrialTimerCount++;
-                if (_slotTrialTimerCount == 1)
+                if (_slotTrialTimerCount == 1)//Trigger box white, buttons highlighted (orange)
                 {
-                    if (_currtButtonCount < _numberOfSequences)//Trigger and row/columns highlight
+                    if (_currtButtonCount < _numberOfSequences)
                     {
                         if (!_stopAnimation && !_changeUserControl)
                         {
                             if (!_isBoxScannig)
                             {
-                                ChangeColorButtons(_flashingSequenceList[_activeKeyboard][_currtButtonCount].ToList(), true, true, 0); //turn on all
+                                ChangeColorButtons(_flashingSequenceList[_activeKeyboard][_currtButtonCount].ToList(), true, true, 0); 
                                 NewEntryLog(true, true, _flashingSequenceIDList[_activeKeyboard][_currtButtonCount].ToList(), _currtButtonCount);
                             }
                             else
                             {
                                 _activeKeyboard = _currtButtonCount;
-                                ChangeColorButtons(_flashingSequenceBoxList[_currtButtonCount].ToList(), true, true, 0); //turn on all
+                                ChangeColorButtons(_flashingSequenceBoxList[_currtButtonCount].ToList(), true, true, 0); 
                                 NewEntryLog(true, true, _flashingSequenceIDBoxList[_currtButtonCount].ToList(), _currtButtonCount);
                             }
                             ActuatorRequestMarker("1");
                         }
                     }
                 }
-                else if (_slotTrialTimerCount == 3)//trigger switch and row/columns maintain highlight
+                else if (_slotTrialTimerCount == 3)//Trigger box black, buttons highlighted (orange)
                 {
                     if (!_stopAnimation && !_changeUserControl)
                     {
                         if (!_isBoxScannig)
                         {
-                            ChangeColorButtons(_flashingSequenceList[_activeKeyboard][_currtButtonCount].ToList(), true, true, 0, true); //turn on
+                            ChangeColorButtons(_flashingSequenceList[_activeKeyboard][_currtButtonCount].ToList(), true, true, 0, true); 
                             NewEntryLog(true, false, _flashingSequenceIDList[_activeKeyboard][_currtButtonCount].ToList(), _currtButtonCount);
                         }
                         else
                         {
-                            ChangeColorButtons(_flashingSequenceBoxList[_currtButtonCount].ToList(), true, true, 0, true); //turn on all
+                            ChangeColorButtons(_flashingSequenceBoxList[_currtButtonCount].ToList(), true, true, 0, true); 
                             NewEntryLog(true, false, _flashingSequenceIDBoxList[_currtButtonCount].ToList(), _currtButtonCount);
                         }
                         ActuatorRequestMarker("0");
                     }
                 }
-                else if (_slotTrialTimerCount == 4)
+                else if (_slotTrialTimerCount == 4)//Trigger box black, buttons not highlighted. 
                 {
 
                     if (!_stopAnimation && !_changeUserControl)
                     {
                         if (!_isBoxScannig)
                         {
-                            ChangeColorButtons(_flashingSequenceList[_activeKeyboard][_currtButtonCount].ToList(), false, true, 0, true); //turn off
+                            ChangeColorButtons(_flashingSequenceList[_activeKeyboard][_currtButtonCount].ToList(), false, true, 0, true); 
                             NewEntryLog(false, false, _flashingSequenceIDList[_activeKeyboard][_currtButtonCount].ToList(), _currtButtonCount);
                         }
                         else
                         {
 
-                            ChangeColorButtons(_flashingSequenceBoxList[_currtButtonCount].ToList(), false, true, 0, true); //turn off all
+                            ChangeColorButtons(_flashingSequenceBoxList[_currtButtonCount].ToList(), false, true, 0, true); 
                             NewEntryLog(false, false, _flashingSequenceIDBoxList[_currtButtonCount].ToList(), _currtButtonCount);
                         }
                     }
                     _currtButtonCount += 1;
                     _slotTrialTimerCount = 0;
-                    if (_currtButtonCount == _numberOfSequences) // End of sequence
+                    if (_currtButtonCount == _numberOfSequences) // End of sequence,rotation
                     {
-                        if (_currSeqCount == 1)
+                        if (_currSeqCount == 1)// for the actuator request to add the marker latter as the first sequence
                             _firstSequence = true;
-                        if (!_isBoxScannig && _sessionMode == BCIModes.TYPING)
+                        if (!_isBoxScannig && _sessionMode == BCIModes.TYPING)//in calibration this is not neccessary
                             ActuatorRequestValueProbs();
                         ActuatorRequestEndRepetition();
                         _sequenceDone = true;
                         _trialTimer.Stop();
-                        if (SensorErrorState.ErrorCode != BCIErrorCodes.Status_Ok)
+                        if (SensorErrorState.ErrorCode != BCIErrorCodes.Status_Ok)//if and error was returned then it wont continue with animations 
                         {
                             Log.Debug("BCI LOG | Error entered in loop | ErrorCode: " + SensorErrorState.ErrorCode);
                             SoundManager.playSound(SoundManager.SoundType.CaregiverAttention);
@@ -2614,7 +2644,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                                 ProcessEndSequence();
 
                             switch (_sessionMode)
-                            {
+                            {//this is to trigger events that need a UI iteraction so the forms are called from a higher level and not this class
                                 case BCIModes.CALIBRATION://if apply it Need to be called at the end of the sequences so it ensures to be triggered when the timers is at the final step and not during 
                                     if (_endCalibration)
                                     {
@@ -2659,7 +2689,6 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <param name="e"></param>
         private void TriggerTestTimer_Tick(object sender, MicroTimerEventArgs e)
         {
-            _triggerTestActive = true;
             try
             {
                 _slotTrialTimerCount++;
@@ -2748,7 +2777,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// </summary>
         /// <returns></returns>
         private async Task UpdateStringsFromButtons()
-        {
+        {//this is to get the latest string from the buttons since sharpDX uses a string to draw instead of the Windows control that updates automatically has to be manually obtained 
             await Task.Delay(10);
             while (!_finishTask)
             {

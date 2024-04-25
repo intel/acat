@@ -11,7 +11,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-#define ONBOARDING
 //#define ENABLE_DIGITAL_VERIFICATION
 
 using ACAT.ACATResources;
@@ -54,7 +53,7 @@ namespace ACAT.Applications.ACATTalk
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            if (!validateACATCoreLibraryCertificates())
+            if (!validateACATCoreLibraryCertificates() || !validateConvAssistCertificate() || !validateACATWatchCertificate())
             {
                 MessageBox.Show("Please reinstall ACAT and retry", "ACAT", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -110,20 +109,11 @@ namespace ACAT.Applications.ACATTalk
 
             Common.AppPreferences.PreferredPanelConfigNames = String.Empty;
 
-            // to enable onboarding, uncomment the #define ONBOARDING at the top of the file
-            // to enable BCI, comment out the #define ONBOARDING statement and uncomment #define BCI
-#if ONBOARDING
 
             if (!doOnboarding())
             {
                 return;
             }
-
-#elif BCI
-            Common.AppPreferences.PreferredPanelConfigNames = "TalkApplicationBCIScannerABC";
-#else
-            Common.AppPreferences.PreferredPanelConfigNames = "TalkApplicationAbc";
-#endif
 
             Splash splash = new Splash(2000);
             splash.Show();
@@ -289,16 +279,50 @@ namespace ACAT.Applications.ACATTalk
 #endif
         }
 
+        private static bool validateConvAssistCertificate()
+        {
 #if ENABLE_DIGITAL_VERIFICATION
-        private static bool validateCertificate(String dllPath)
+
+            var appPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var convAssistPath = Path.Combine(appPath, "ConvAssistApp", "ConvAssist.exe");
+            if (!validateCertificate(convAssistPath))
+            {
+                return false;
+            }
+
+            return true;
+#else
+            return true;
+#endif
+        }
+
+        private static bool validateACATWatchCertificate()
+        {
+#if ENABLE_DIGITAL_VERIFICATION
+
+            var appPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var acatWatchPath = Path.Combine(appPath, "ACATWatch.exe");
+            if (!validateCertificate(acatWatchPath))
+            {
+                return false;
+            }
+
+            return true;
+#else
+            return true;
+#endif
+        }
+
+#if ENABLE_DIGITAL_VERIFICATION
+        private static bool validateCertificate(String filePath)
         {
             try
             {
-                Verify(dllPath);
+                Verify(filePath);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Digital signature verification failed for the following DLL.\n\n" + dllPath + "\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show("Digital signature verification failed for the following file.\n\n" + filePath + "\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return false;
             }
 

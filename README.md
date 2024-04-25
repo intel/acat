@@ -1,4 +1,4 @@
-## Official release of ACAT 3.0 is now available [here](https://github.com/intel/acat/releases)
+## Official release of ACAT 3.10 is now available [here](https://github.com/intel/acat/releases)
 ### This release includes:
 - Support for Brain Computer Interface (BCI) input modality that aims to bridge the communication gap for locked-in users. The sensing is based on a non-invasive, relatively low-cost <a href="https://openbci.com/">OpenBCI</a> EEG Kit.
 

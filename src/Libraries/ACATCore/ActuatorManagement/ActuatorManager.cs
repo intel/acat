@@ -287,6 +287,11 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             bool retVal = true;
 
+            if (_actuators == null)
+            {
+                return retVal;
+            }
+
             foreach (var actuatorEx in _actuators.Collection)
             {
                 actuatorEx.PostInit();

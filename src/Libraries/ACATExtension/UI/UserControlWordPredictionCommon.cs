@@ -535,7 +535,10 @@ namespace ACAT.Lib.Extension
             // check if the current word is a possessive word. If not, we need to create
             // a possessive version of the word and add it as the last word
             // in the predicton list.
+            
             var possessiveWord = String.Empty;
+
+            /*
             var wordAtCaret = response.Request.CurrentWord;  // check if it is the same
 
             var charAtCaret = '\0';
@@ -556,7 +559,7 @@ namespace ACAT.Lib.Extension
             {
                 possessiveWord = wordAtCaret + "'s";
             }
-
+            */
             int ii = 0;
             if (_wordListWidgetWidget != null)
             {
@@ -602,11 +605,13 @@ namespace ACAT.Lib.Extension
                 _wordListWidgetWidget.ClearEntries(ii);
             }
 
+            /*
             if (_currentWordWidget != null)
             {
                 Log.Debug("Calling SetCurrentWord with : [" + wordAtCaret + "]");
                 _currentWordWidget.SetCurrentWord(wordAtCaret);
             }
+            */
             // Validation for the character predictions if there any value the proceed to add the element to the childs
             if (_letterListWidgetWidget != null)
             {
@@ -752,7 +757,7 @@ namespace ACAT.Lib.Extension
 
                 if (_predictionTypes.Contains(PredictionTypes.Words))
                 {
-                    request = new WordPredictionRequest(nwords, wordAtCaret, PredictionTypes.Words, Context.AppWordPredictionManager.ActiveWordPredictor.GetMode());
+                    request = new WordPredictionRequest(nwords + wordAtCaret, PredictionTypes.Words, Context.AppWordPredictionManager.ActiveWordPredictor.GetMode());
                     if (Context.AppWordPredictionManager.ActiveWordPredictor.SupportsPredictSync)
                     {
                         var response = Context.AppWordPredictionManager.ActiveWordPredictor.Predict(request);
@@ -766,7 +771,7 @@ namespace ACAT.Lib.Extension
 
                 if (_predictionTypes.Contains(PredictionTypes.Sentences) && Common.AppPreferences.UseSentencePrediction)
                 {
-                    request = new WordPredictionRequest(nwords, wordAtCaret, PredictionTypes.Sentences, Context.AppWordPredictionManager.ActiveWordPredictor.GetMode());
+                    request = new WordPredictionRequest(nwords + wordAtCaret, PredictionTypes.Sentences, Context.AppWordPredictionManager.ActiveWordPredictor.GetMode());
                     if (Context.AppWordPredictionManager.ActiveWordPredictor.SupportsPredictSync)
                     {
                         var response = Context.AppWordPredictionManager.ActiveWordPredictor.Predict(request);

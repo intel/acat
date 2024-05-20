@@ -12,7 +12,9 @@ namespace ACAT.Lib.Core.WordPredictionManagement
     public enum PredictionTypes
     {
         Words,
-        Sentences
+        Sentences,
+        Keywords,
+        CRGResponses
     }
 
     /// <summary>
@@ -20,17 +22,20 @@ namespace ACAT.Lib.Core.WordPredictionManagement
     /// </summary>
     public class WordPredictionRequest
     {
-        public WordPredictionRequest(String prevWords, String currentWord, PredictionTypes predictionType, WordPredictionModes mode)
+        public WordPredictionRequest(String context, PredictionTypes predictionType, WordPredictionModes mode, String keyword = null)
         {
-            PrevWords = prevWords;
-            CurrentWord = currentWord;
+            Context = context;
             PredictionType = predictionType;
             WordPredictionMode = mode;
+            Keyword = keyword;
         }
 
-        public String CurrentWord { get; }
+        public String Context { get; }
         public PredictionTypes PredictionType { get; }
-        public String PrevWords { get; }
         public WordPredictionModes WordPredictionMode { get; }
+        
+        public String Keyword { get; }
+
+
     }
 }

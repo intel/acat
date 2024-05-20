@@ -63,6 +63,8 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         LearnSentence,
         ForceQuitApp,
         NotReady
+        CRGKeywordPredictionRequest,
+        CRGSentencePredictionRequest
     }
 
     /// <summary>

@@ -11,6 +11,7 @@ ACAT is developed in C# using Microsoft Visual Studio* 2022 and .NET 4.8.1. It r
 
 ## Versioning
 The master branch on Github will always contain the most recent release of ACAT.
+The dev branch contains commits from the ACAT development team towards upcoming releases of ACAT. Do not clone the dev branch as it has changes that are still in flux and the solution may not be stable.
 
 The dev branch contains commits from the ACAT development team towards upcoming releases of ACAT. Do not clone the dev branch as it has changes that are still in flux and the solution may not be stable.
 

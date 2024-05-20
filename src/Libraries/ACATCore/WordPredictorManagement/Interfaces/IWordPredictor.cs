@@ -62,6 +62,8 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         LearnShorthand,
         LearnSentence,
         ForceQuitApp,
+        CRGKeywordPredictionRequest,
+        CRGSentencePredictionRequest
     }
 
     /// <summary>

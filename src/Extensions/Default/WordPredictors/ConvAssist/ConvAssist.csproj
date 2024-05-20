@@ -69,10 +69,12 @@
     <Compile Include="ConvAssistMessage.cs" />
     <Compile Include="ConvAssistSetParam.cs" />
     <Compile Include="ConvAssistWordPredictor.cs" />
+    <Compile Include="CRGResponsePredictionRequestHandler.cs" />
     <Compile Include="SentencePredictionsRequestHandler.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WordAndCharacterPredictionResponse.cs" />
+    <Compile Include="CRGKeywordPredictionRequestHandler.cs" />
     <Compile Include="WordPredictionsRequestHandler.cs" />
   </ItemGroup>
   <ItemGroup>

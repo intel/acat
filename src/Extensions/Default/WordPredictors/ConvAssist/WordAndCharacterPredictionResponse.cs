@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
 {
@@ -42,6 +43,11 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// </summary>
         public String PredictedWords;
 
+        public String PredictedKeywords;
+
+        public String PredictedCRGSentence;
+
+
         /// <summary>
         /// Prediction request type
         /// </summary>
@@ -52,7 +58,9 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                                                     String words, 
                                                     String characters, 
                                                     String charactersSentence, 
-                                                    String sentences)
+                                                    String sentences,
+                                                    String keywords = null,
+                                                    String crgResponses = null)
         {
             MessageType = msgType;
             PredictionType = predType;
@@ -60,6 +68,8 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             NextCharacters = characters;
             NextCharactersSentence = charactersSentence;
             PredictedSentence = sentences;
+            PredictedKeywords = keywords;
+            PredictedCRGSentence = crgResponses;
         }
 
         public WordAndCharacterPredictionResponse()

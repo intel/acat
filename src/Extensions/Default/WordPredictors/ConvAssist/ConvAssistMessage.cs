@@ -21,6 +21,8 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         public String Data;
         public WordPredictorMessageTypes MessageType;
         public WordPredictionModes PredictionType;
+        bool CRG;
+        String Keyword;
 
         // this is the JSON representation of the data
         /// <summary>
@@ -29,11 +31,13 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <param name="msgType"></param>
         /// <param name="PredictionMode"></param>
         /// <param name="message"></param>
-        public ConvAssistMessage(WordPredictorMessageTypes msgType, WordPredictionModes PredictionMode, String message)
+        public ConvAssistMessage(WordPredictorMessageTypes msgType, WordPredictionModes PredictionMode, String message, bool crg = false, String keyword = null)
         {
             MessageType = msgType;
             PredictionType = PredictionMode;
             Data = message;
+            CRG = crg;
+            Keyword = keyword;  
         }
     }
 }

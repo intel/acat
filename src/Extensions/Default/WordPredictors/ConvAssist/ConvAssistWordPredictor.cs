@@ -69,7 +69,11 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         private readonly ManualResetEvent mevent = new ManualResetEvent(false);
         private readonly Stack<object> sentenceStack;
         private readonly Stack<object> wpStack;
-        private SentencePredictionsRequestHandler _sentencePredictionsRequestHandler;
+        private readonly Stack<object> keyWordStack;
+        private readonly Stack<object> crgResponsesStack;
+        private readonly SentencePredictionsRequestHandler _sentencePredictionsRequestHandler;
+        private readonly CRGKeywordPredictionRequestHandler _crgKeywordPredictionRequestHandler;
+        private readonly CRGResponsePredictionRequestHandler _crgResponsePredictionRequestHandler;
 
         /// <summary>
         /// The preferences object
@@ -99,9 +103,13 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
 
             _wordPredictionsRequestHandler = new WordPredictionsRequestHandler(this);
             _sentencePredictionsRequestHandler = new SentencePredictionsRequestHandler(this);
+            _crgKeywordPredictionRequestHandler = new CRGKeywordPredictionRequestHandler(this);
+            _crgResponsePredictionRequestHandler = new CRGResponsePredictionRequestHandler(this); 
 
             wpStack = new Stack<object>();
             sentenceStack = new Stack<object>();
+            keyWordStack = new Stack<object>();
+            crgResponsesStack = new Stack<object>();
 
             cts.Token.Register(() => Close(false));
         }
@@ -234,6 +242,16 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 sentenceStack.Push(req);
                 mevent.Set();
             }
+            else if (req.PredictionType == PredictionTypes.Keywords)
+            {
+                keyWordStack.Push(req);
+                mevent.Set();
+            }
+            else if (req.PredictionType == PredictionTypes.CRGResponses)
+            {
+                crgResponsesStack.Push(req);
+                mevent.Set();
+            }
             else
             {
                 return false;
@@ -264,7 +282,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         {
             ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.NextSentencePredictionRequest, mode, text);
             string jsonMessage = JsonConvert.SerializeObject(message);
-            //var answer = namedPipe.WriteSync(text, 150);
+
             return namedPipe.WriteSync(jsonMessage, 10000);
         }
 
@@ -277,9 +295,41 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         {
             ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.NextWordPredictionRequest, mode, text);
             string jsonMessage = JsonConvert.SerializeObject(message);
-            //var answer = namedPipe.WriteSync(text, 150);
+
             return namedPipe.WriteSync(jsonMessage, 10000);
         }
+
+        /// <summary>
+        /// Send a request message syncronously for keyword prediction
+        /// </summary>
+        /// <param name="text">Text to send to the client</param>
+        /// <returns>CRG Keywords</returns>
+        public string SendMessageConvAssistCRGKeywordPrediction(string text, WordPredictionModes mode)
+        {
+            ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.CRGKeywordPredictionRequest, mode, text);
+            string jsonMessage = JsonConvert.SerializeObject(message);
+            
+            return namedPipe.WriteSync(jsonMessage, 10000);
+        }
+
+        /// <summary>
+        /// Send a request message syncronously for CRG response prediction
+        /// </summary>
+        /// <param name="text">Text to send to the client</param>
+        /// <returns>CRG Keywords</returns>
+        public string SendMessageConvAssistCRGResponsePrediction(string text, String keyword, WordPredictionModes mode)
+        {
+            if (keyword == null)
+            {
+                keyword = string.Empty;
+            }
+
+            ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.CRGSentencePredictionRequest, mode, text, true, keyword);
+            string jsonMessage = JsonConvert.SerializeObject(message);
+
+            return namedPipe.WriteSync(jsonMessage, 10000);
+        }
+
 
         /// <summary>
         /// Adds the specified text to the user's personal
@@ -348,7 +398,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <returns>A list of predicted words</returns>
         private WordPredictionResponse ProcessPredictionRequest(WordPredictionRequest request)
         {
-            Log.Debug("Predict for: " + request.PrevWords + " " + request.CurrentWord);
+            Log.Debug("Predict for: " + request.Context);
             WordPredictionResponse response = null;
 
             try
@@ -360,14 +410,26 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                     return new WordPredictionResponse(request, new List<String>(), false);
                 }
 
-                if (request.PredictionType == PredictionTypes.Words)
+                switch(request.PredictionType)
                 {
-                    response = _wordPredictionsRequestHandler.ProcessPredictionRequest(request);
+                    case PredictionTypes.Words:
+                        response = _wordPredictionsRequestHandler.ProcessPredictionRequest(request);
+                        break;
+
+                    case PredictionTypes.Sentences:
+                        response = _sentencePredictionsRequestHandler.ProcessPredictionRequest(request);
+                        break;
+
+                    case PredictionTypes.Keywords:
+                        response = _crgKeywordPredictionRequestHandler.ProcessPredictionRequest(request);
+                        break;
+
+                    case PredictionTypes.CRGResponses:
+                        response = _crgResponsePredictionRequestHandler.ProcessPredictionRequest(request);
+                        break;  
                 }
-                else if (request.PredictionType == PredictionTypes.Sentences)
-                {
-                    response = _sentencePredictionsRequestHandler.ProcessPredictionRequest(request);
-                }
+                
+                
             }
             catch (Exception ex)
             {
@@ -401,7 +463,10 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 WordPredictionRequest item = null;
                 WordPredictionResponse response;
 
-                if (wpStack.Count == 0 && sentenceStack.Count == 0)
+                if (wpStack.Count == 0 && 
+                    sentenceStack.Count == 0 &&
+                    keyWordStack.Count == 0 && 
+                    crgResponsesStack.Count == 0)
                 {
                     mevent.WaitOne();
                 }
@@ -442,15 +507,60 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                     }
                 }
 
+                if (item != null)
+                {
+                    response = ProcessPredictionRequest(item);
+
+                    notifyPredictionResults(response);
+                }
+
+                lock (_syncObj)
+                {
+                    if (keyWordStack.Count > 0)
+                    {
+                        item = keyWordStack.Pop() as WordPredictionRequest;
+                        if (item == null)
+                        {
+                            mevent.Reset();
+                            return;
+                        }
+                        keyWordStack.Clear();
+                    }
+                }
+
+                if (item != null)
+                {
+                    response = ProcessPredictionRequest(item);
+
+                    notifyPredictionResults(response);
+                }
+
+                lock (_syncObj)
+                {
+                    if (crgResponsesStack.Count > 0)
+                    {
+                        item = crgResponsesStack.Pop() as WordPredictionRequest;
+                        if (item == null)
+                        {
+                            mevent.Reset();
+                            return;
+                        }
+                        crgResponsesStack.Clear();
+                    }
+                }
+
+                if (item != null)
+                {
+                    response = ProcessPredictionRequest(item);
+
+                    notifyPredictionResults(response);
+                }
+
                 if (item == null)
                 {
                     mevent.Reset();
                     return;
                 }
-
-                response = ProcessPredictionRequest(item);
-
-                notifyPredictionResults(response);
 
                 mevent.Reset();
             }

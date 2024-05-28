@@ -169,10 +169,18 @@ namespace ACAT.Lib.Core.Utility
 
             try
             {
-                using (TextReader outputStream = new StreamReader(filename))
+                if (!FileUtils.VerifyNotJunctionOrSymlink(filename))
                 {
-                    var xml = new XmlSerializer(typeof(T));
-                    retVal = (T)xml.Deserialize(outputStream);
+                    throw new Exception("It's a Trap!");
+                }
+
+                using (FileStream fileStream = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Read, FileShare.None))
+                {
+                    using (TextReader outputStream = new StreamReader(fileStream))
+                    {
+                        var xml = new XmlSerializer(typeof(T));
+                        retVal = (T)xml.Deserialize(outputStream);
+                    }
                 }
             }
             catch (Exception e)
@@ -195,13 +203,20 @@ namespace ACAT.Lib.Core.Utility
         public static bool XmlFileSave<T>(T o, string filename)
         {
             bool retVal = true;
+            if (!FileUtils.VerifyNotJunctionOrSymlink(filename))
+            {
+                throw new Exception("It's a Trap!");
+            }
 
             try
             {
-                using (TextWriter outputStream = new StreamWriter(filename))
+                using (FileStream fileStream = new FileStream(filename, FileMode.Open, FileAccess.Write, FileShare.None))
                 {
-                    var xml = new XmlSerializer(typeof(T));
-                    xml.Serialize(outputStream, o);
+                    using (TextWriter outputStream = new StreamWriter(fileStream))
+                    {
+                        var xml = new XmlSerializer(typeof(T));
+                        xml.Serialize(outputStream, o);
+                    }
                 }
             }
             catch (Exception e)

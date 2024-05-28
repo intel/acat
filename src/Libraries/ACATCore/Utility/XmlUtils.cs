@@ -169,6 +169,11 @@ namespace ACAT.Lib.Core.Utility
 
             try
             {
+                if (!FileUtils.VerifyNotJunctionOrSymlink(filename))
+                {
+                    throw new Exception("It's a Trap!");
+                }
+
                 using (FileStream fileStream = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Read, FileShare.None))
                 {
                     using (TextReader outputStream = new StreamReader(fileStream))
@@ -198,6 +203,10 @@ namespace ACAT.Lib.Core.Utility
         public static bool XmlFileSave<T>(T o, string filename)
         {
             bool retVal = true;
+            if (!FileUtils.VerifyNotJunctionOrSymlink(filename))
+            {
+                throw new Exception("It's a Trap!");
+            }
 
             try
             {

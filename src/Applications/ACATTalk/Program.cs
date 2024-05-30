@@ -220,13 +220,10 @@ namespace ACAT.Applications.ACATTalk
             AppCommon.OnExit();
         }
 
-<<<<<<< HEAD
         /// <summary>
         /// A fatal error has occurred.  Try and gracefully exit ACAT
         /// </summary>
         /// <param name="reason"></param>
-=======
->>>>>>> 7b3da18 (FIxed PSIRT issue with symlinks and junctions)
         private static void CoreGlobals_EvtFatalError(string reason)
         {
             splash?.Close();

@@ -52,5 +52,26 @@ namespace ACAT.Lib.Core.Utility
         /// Application sepecific preferences
         /// </summary>
         public static Preferences AppPreferences { get; set; }
+
+        /// <summary>
+        /// Delegate for the fatal error event
+        /// </summary>
+        /// <param name="reason"></param>
+        public delegate void FatalErrorDelegate(String reason);
+
+        /// <summary>
+        /// Triggered when there is a fatal error and the system must exit
+        /// </summary>
+        public static event FatalErrorDelegate EvtFatalError;
+
+        /// <summary>
+        /// Call this to trigger a fatal error which will cause ACAT
+        /// to exit immediately.  Use this only for unrecoverable error
+        /// </summary>
+        /// <param name="reason"></param>
+        public static void OnFatalError(String reason)
+        {
+            EvtFatalError?.Invoke(reason);
+        }
     }
 }

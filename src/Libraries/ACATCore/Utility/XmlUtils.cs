@@ -19,6 +19,8 @@ namespace ACAT.Lib.Core.Utility
     /// </summary>
     public class XmlUtils
     {
+        private static String fatalError = "Fatal error.\n {0} is a junction/symlink. Cannot perform file I/O on it.\n" +
+                                                    "ACAT will exit now.\nPlease re-install ACAT and retry.";
         /// <summary>
         /// Returns value for an xml attribute. If the attr was
         /// not found in the xml node, returns the default value.
@@ -171,7 +173,9 @@ namespace ACAT.Lib.Core.Utility
             {
                 if (!FileUtils.VerifyNotJunctionOrSymlink(filename))
                 {
-                    throw new Exception("It's a Trap!");
+                    var message = String.Format(fatalError, filename);
+                    CoreGlobals.OnFatalError(message);
+                    return default;
                 }
 
                 using (FileStream fileStream = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Read, FileShare.None))
@@ -203,9 +207,12 @@ namespace ACAT.Lib.Core.Utility
         public static bool XmlFileSave<T>(T o, string filename)
         {
             bool retVal = true;
+
             if (!FileUtils.VerifyNotJunctionOrSymlink(filename))
             {
-                throw new Exception("It's a Trap!");
+                var message = String.Format(fatalError, filename);
+                CoreGlobals.OnFatalError(message);
+                return false;
             }
 
             try

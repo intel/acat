@@ -23,6 +23,7 @@ using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Extension;
 using ACATExtension.CommandHandlers;
 using System;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 #if ENABLE_DIGITAL_VERIFICATION
 using System.ComponentModel;
@@ -39,6 +40,8 @@ namespace ACAT.Applications.ACATTalk
     /// </summary>
     internal static class Program
     {
+        static Splash splash = null;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -66,6 +69,8 @@ namespace ACAT.Applications.ACATTalk
 
             CoreGlobals.AppId = "ACATTalk";
             CoreGlobals.ACATUserGuideFileName = "ACAT User Guide.pdf";
+
+            CoreGlobals.EvtFatalError += CoreGlobals_EvtFatalError;
 
             FileUtils.LogAssemblyInfo();
 
@@ -115,7 +120,7 @@ namespace ACAT.Applications.ACATTalk
                 return;
             }
 
-            Splash splash = new Splash(2000);
+            splash = new Splash(2000);
             splash.Show();
 
             Context.PreInit();
@@ -146,10 +151,9 @@ namespace ACAT.Applications.ACATTalk
             Context.AppAgentMgr.EnableContextualMenusForMenus = false;
             Context.AppAgentMgr.DefaultAgentForContextSwitchDisable = Context.AppAgentMgr.NullAgent;
 
-            if (splash != null)
-            {
-                splash.Close();
-            }
+            splash?.Close();
+
+            splash = null;
 
             if (!Context.PostInit())
             {
@@ -193,6 +197,7 @@ namespace ACAT.Applications.ACATTalk
                     MessageBox.Show(String.Format(R.GetString("InvalidFormName"), "TalkApplicationScanner"), R.GetString("Error"));
                     return;
                 }
+
                 AppCommon.ExitMessageShow();
 
                 AuditLog.Audit(new AuditEvent("Application", "stop"));
@@ -217,7 +222,29 @@ namespace ACAT.Applications.ACATTalk
             AppCommon.OnExit();
         }
 
-        
+        private static void CoreGlobals_EvtFatalError(string reason)
+        {
+            splash?.Close();
+
+            ScannerFocus.Stop();
+
+            if (Context.AppPanelManager != null  && Context.AppPanelManager.GetCurrentForm() != null &&
+                Context.AppPanelManager.GetCurrentForm().PanelCommon != null && Context.AppPanelManager.GetCurrentForm().PanelCommon.RootWidget != null)
+            {
+                Context.AppPanelManager.GetCurrentForm().OnPause();
+                var form = Context.AppPanelManager.GetCurrentForm().PanelCommon.RootWidget.UIControl as Form;
+                ConfirmBoxLargeSingleOption.ShowDialog(reason, "OK", form);
+                
+            }
+            else
+            {
+                ConfirmBoxLargeSingleOption.ShowDialog(reason, "OK");
+            }
+
+            Application.ExitThread();
+
+            Environment.FailFast(reason);
+        }
 
         private static void showTalkInterfaceDescription()
         {
@@ -241,9 +268,10 @@ namespace ACAT.Applications.ACATTalk
             onboardingSequence.OnboardingSequenceItems.Add(new OnboardingSequenceItem(new Guid("65b95de3-bf5a-4ae8-b44d-f5e7950ab8d6")));
             onboardingSequence.OnboardingSequenceItems.Add(new OnboardingSequenceItem(new Guid("e03754b3-85af-4f43-855e-47e20f7400c2")));
 
-            var onboardingForm = new OnboardingForm();
-
-            onboardingForm.Sequence = onboardingSequence;
+            var onboardingForm = new OnboardingForm
+            {
+                Sequence = onboardingSequence
+            };
 
             Application.Run(onboardingForm);
 

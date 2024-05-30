@@ -794,5 +794,67 @@ namespace ACAT.Lib.Core.Utility
                 }
             }
         }
+
+        /// <summary>
+        /// Checks if the specified path is a junction or symlink
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>true if it is</returns>
+        public static bool IsJunctionOrSymlink(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return false;
+            }
+
+            if (!File.Exists(path) && !Directory.Exists(path))
+            {
+                //The File or directory doesn't exist
+                return false;
+            }
+
+
+            FileAttributes attributes = GetFileAttributes(path);
+
+            if ((attributes & FileAttributes.ReparsePoint) == FileAttributes.ReparsePoint)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Returns true if the filePath is a real file,
+        /// not a symlink or junction.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static bool VerifyNotJunctionOrSymlink(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return true;
+            }
+
+            // Check if the file itself is a junction or symlink
+            if (IsJunctionOrSymlink(filePath))
+            {
+                return false;
+            }
+
+            // Check if the parent directory is a junction or symlink
+            string directoryPath = Path.GetDirectoryName(filePath);
+            if (IsJunctionOrSymlink(directoryPath))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern FileAttributes GetFileAttributes(string fileName);
+
     }
 }

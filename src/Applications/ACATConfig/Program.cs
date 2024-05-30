@@ -34,6 +34,8 @@ namespace ACATConfig
     /// </summary>
     internal static class Program
     {
+        private static Splash splash = null;
+
         /// <summary>
         /// Event handler to indicate language changed. Save
         /// the settings.
@@ -77,6 +79,8 @@ namespace ACATConfig
 
             CoreGlobals.AppId = "ACATConfig";
 
+            CoreGlobals.EvtFatalError += CoreGlobals_EvtFatalError;
+
             FileUtils.LogAssemblyInfo();
 
             AppCommon.LoadGlobalSettings();
@@ -114,7 +118,7 @@ namespace ACATConfig
             Common.PreInit();
             Common.Init();
 
-            Splash splash = new Splash(1000);
+            splash = new Splash(1000);
             splash.Show();
 
             splash.Close();
@@ -122,6 +126,34 @@ namespace ACATConfig
             var form = new ACATConfigMainForm();
             form.EvtLanguageChanged += form_EvtLanguageChanged;
             Application.Run(form);
+        }
+
+        /// <summary>
+        /// A fatal error has occurred.  Try and gracefully exit ACAT
+        /// </summary>
+        /// <param name="reason"></param>
+        private static void CoreGlobals_EvtFatalError(string reason)
+        {
+            splash?.Close();
+
+            ScannerFocus.Stop();
+
+            if (Context.AppPanelManager != null && Context.AppPanelManager.GetCurrentForm() != null &&
+                Context.AppPanelManager.GetCurrentForm().PanelCommon != null && Context.AppPanelManager.GetCurrentForm().PanelCommon.RootWidget != null)
+            {
+                Context.AppPanelManager.GetCurrentForm().OnPause();
+                var form = Context.AppPanelManager.GetCurrentForm().PanelCommon.RootWidget.UIControl as Form;
+                ConfirmBoxLargeSingleOption.ShowDialog(reason, "OK", form);
+
+            }
+            else
+            {
+                ConfirmBoxLargeSingleOption.ShowDialog(reason, "OK");
+            }
+
+            Application.ExitThread();
+
+            Environment.FailFast(reason);
         }
 
         private static bool validateACATCoreLibraryCertificates()

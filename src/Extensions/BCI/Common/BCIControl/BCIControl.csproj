@@ -55,7 +55,6 @@
     <Compile Include="BCICalibrationEnd.cs" />
     <Compile Include="BCICalibrationInput.cs" />
     <Compile Include="BCILogEntryClassifierLoad.cs" />
-    <Compile Include="BCIUserInputParameters.cs" />
     <Compile Include="BCIParameters.cs" />
     <Compile Include="BCIScanSections.cs" />
     <Compile Include="BCICalibrationResult.cs" />

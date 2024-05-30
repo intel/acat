@@ -20,7 +20,7 @@ namespace ACAT.Lib.Core.Utility
     public class XmlUtils
     {
         private static String fatalError = "Fatal error.\n {0} is a junction/symlink. Cannot perform file I/O on it.\n" +
-                                                    "ACAT will exit now.\nPlease re-install ACAT and retry.";
+                                                    "ACAT will exit now.\nPlease delete this file, re-install ACAT and retry.";
         /// <summary>
         /// Returns value for an xml attribute. If the attr was
         /// not found in the xml node, returns the default value.

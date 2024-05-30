@@ -222,6 +222,10 @@ namespace ACAT.Applications.ACATTalk
             AppCommon.OnExit();
         }
 
+        /// <summary>
+        /// A fatal error has occurred.  Try and gracefully exit ACAT
+        /// </summary>
+        /// <param name="reason"></param>
         private static void CoreGlobals_EvtFatalError(string reason)
         {
             splash?.Close();

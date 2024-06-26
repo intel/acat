@@ -33,7 +33,7 @@ namespace ACAT.Lib.Core.PanelManagement
         private Timer _timer;
 
         //String starting = "Starting.";
-        private String starting = ".";
+        private readonly String starting = ".";
 
         /// <summary>
         /// Initializes a new instance of the class..  Parameters
@@ -98,10 +98,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="e">event args</param>
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (_watchDog != null)
-            {
-                _watchDog.Dispose();
-            }
+            _watchDog?.Dispose();
 
             _timer.Dispose();
         }

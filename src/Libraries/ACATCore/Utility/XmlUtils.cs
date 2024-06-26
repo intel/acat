@@ -178,13 +178,10 @@ namespace ACAT.Lib.Core.Utility
                     return default;
                 }
 
-                using (FileStream fileStream = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Read, FileShare.None))
+                using (TextReader outputStream = new StreamReader(filename))
                 {
-                    using (TextReader outputStream = new StreamReader(fileStream))
-                    {
-                        var xml = new XmlSerializer(typeof(T));
-                        retVal = (T)xml.Deserialize(outputStream);
-                    }
+                    var xml = new XmlSerializer(typeof(T));
+                    retVal = (T)xml.Deserialize(outputStream);
                 }
             }
             catch (Exception e)
@@ -217,13 +214,10 @@ namespace ACAT.Lib.Core.Utility
 
             try
             {
-                using (FileStream fileStream = new FileStream(filename, FileMode.Open, FileAccess.Write, FileShare.None))
+                using (TextWriter outputStream = new StreamWriter(filename))
                 {
-                    using (TextWriter outputStream = new StreamWriter(fileStream))
-                    {
-                        var xml = new XmlSerializer(typeof(T));
-                        xml.Serialize(outputStream, o);
-                    }
+                    var xml = new XmlSerializer(typeof(T));
+                    xml.Serialize(outputStream, o);
                 }
             }
             catch (Exception e)

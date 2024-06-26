@@ -80,7 +80,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// </summary>
         internal static Settings settings;
 
-        private WordPredictionsRequestHandler _wordPredictionsRequestHandler;
+        private readonly WordPredictionsRequestHandler _wordPredictionsRequestHandler;
 
         /// <summary>
         /// Named Pipe object
@@ -278,9 +278,9 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// </summary>
         /// <param name="text">Text to send to the client</param>
         /// <returns>Sentences predictions</returns>
-        public string SendMessageConvAssistSentencePrediction(string text, WordPredictionModes mode)
+        public string SendMessageConvAssistSentencePrediction(string text, WordPredictionModes mode, bool crg = false)
         {
-            ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.NextSentencePredictionRequest, mode, text);
+            ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.NextSentencePredictionRequest, mode, text, crg);
             string jsonMessage = JsonConvert.SerializeObject(message);
 
             return namedPipe.WriteSync(jsonMessage, 10000);
@@ -291,9 +291,9 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// </summary>
         /// <param name="text">Text to send to the client</param>
         /// <returns>Words and letters predictions</returns>
-        public string SendMessageConvAssistWordPrediction(string text, WordPredictionModes mode)
+        public string SendMessageConvAssistWordPrediction(string text, WordPredictionModes mode, bool crg = false)
         {
-            ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.NextWordPredictionRequest, mode, text);
+            ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.NextWordPredictionRequest, mode, text, crg);
             string jsonMessage = JsonConvert.SerializeObject(message);
 
             return namedPipe.WriteSync(jsonMessage, 10000);
@@ -306,7 +306,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <returns>CRG Keywords</returns>
         public string SendMessageConvAssistCRGKeywordPrediction(string text, WordPredictionModes mode)
         {
-            ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.CRGKeywordPredictionRequest, mode, text);
+            ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.CRGKeywordPredictionRequest, mode, text, true, String.Empty);
             string jsonMessage = JsonConvert.SerializeObject(message);
             
             return namedPipe.WriteSync(jsonMessage, 10000);

@@ -169,5 +169,30 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 throw new TimeoutException("The task did not complete within the given time.");
             }
         }
+
+        public static String RemoveEnclosingCharacters(String str, char ch)
+        {
+            if (str.StartsWith(ch.ToString()) && str.EndsWith(ch.ToString()))
+            {
+                return str.Substring(1, str.Length - 2);
+            }
+
+            return str;
+        }
+
+        public static String RemoveEnclosingQuotes(String str)
+        {
+            if (str.StartsWith("'") || str.StartsWith("\""))
+            {
+                str = str.Substring(1);
+            }
+
+            if (str.EndsWith("'") || str.EndsWith("\""))
+            {
+                str = str.Substring(0, str.Length - 1);
+            }   
+            
+            return str;
+        }
     }
 }

@@ -41,7 +41,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <summary>
         /// Word predictor object
         /// </summary>
-        private ConvAssistWordPredictor WordPredictor;
+        private readonly ConvAssistWordPredictor WordPredictor;
 
         public CRGKeywordPredictionRequestHandler(ConvAssistWordPredictor wordPredictor)
         {
@@ -57,32 +57,31 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <param name="currentWord">current word (may be partially spelt out</param>
         /// <param name="success">true if the function was successsful</param>
         /// <returns>A list of predicted words</returns>
-        public WordPredictionResponse ProcessPredictionRequest(WordPredictionRequest request)
+        public WordPredictionResponse ProcessPredictionRequest2(WordPredictionRequest request)
         {
-            List<String> keywords = new List<string>();
-
-            keywords.Add("&CRGKEYWORDS");
-            keywords.Add("AAAA");
-            keywords.Add("BBBB");
-            keywords.Add("CCCC");
-            keywords.Add("DDDD");
+            List<String> keywords = new List<string>
+            {
+                "&CRGKEYWORDS",
+                "AAAA",
+                "BBBB",
+                "CCCC",
+                "DDDD"
+            };
 
             return new WordPredictionResponse(request, keywords, true);
         }
 
 
-        public WordPredictionResponse ProcessPredictionRequest2(WordPredictionRequest request)
+        public WordPredictionResponse ProcessPredictionRequest(WordPredictionRequest request)
         {
             Log.Debug("Predict for: " + request.Context);
-            string[] prediction = { "" };
-            var result = new List<string>();
-            WordPredictionResponse response = null;
-
+            List<string> result;
             if (request.PredictionType != PredictionTypes.Keywords)
             {
                 return new WordPredictionResponse(request, new List<String>(), false);
             }
 
+            WordPredictionResponse response;
             try
             {
                 if (_prevMode != WordPredictor.GetMode() ||
@@ -158,19 +157,21 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             var retVal = new List<string>();
             response = JsonConvert.DeserializeObject<WordAndCharacterPredictionResponse>(jsonResponse);
             List<string> predictResponses = new List<string>();
-            
+
             if (response != null)
             {
-                predictResponses = response.PredictedKeywords.Split('(', ')').Where((item, index) => index % 2 != 0).ToList();
+                response.PredictedKeywords = response.PredictedKeywords.Replace("[", String.Empty).Replace("]", String.Empty);
+                predictResponses = response.PredictedKeywords.Split(',').ToList();
             }
 
             var pref = (wordPredictor as ISupportsPreferences).GetPreferences();
             if ((pref as Settings).UseDefaultEncoding)
             {
-                for(int ii = 0; ii < predictResponses.Count(); ii++)
+                for (int ii = 0; ii < predictResponses.Count(); ii++)
                 {
-                    predictResponses[ii] = ConvAssistUtils.UTF8EncodingToDefault(predictResponses[ii]);
-                }   
+                    predictResponses[ii] = ConvAssistUtils.UTF8EncodingToDefault(predictResponses[ii].Trim());
+                    predictResponses[ii] = ConvAssistUtils.RemoveEnclosingQuotes(predictResponses[ii]);
+                }
             }
 
             retVal.Add("&CRGKEYWORDS");

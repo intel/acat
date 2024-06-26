@@ -1434,8 +1434,8 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.labelASRResponse.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelASRResponse.Location = new System.Drawing.Point(817, 150);
             this.labelASRResponse.Name = "labelASRResponse";
-            this.tableLayoutPanel1.SetRowSpan(this.labelASRResponse, 3);
-            this.labelASRResponse.Size = new System.Drawing.Size(586, 90);
+            this.tableLayoutPanel1.SetRowSpan(this.labelASRResponse, 4);
+            this.labelASRResponse.Size = new System.Drawing.Size(586, 120);
             this.labelASRResponse.TabIndex = 68;
             // 
             // checkBoxTTS

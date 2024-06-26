@@ -60,6 +60,9 @@ namespace ACAT.Lib.Core.PanelManagement
         private void ConfirmBox_Load(object sender, EventArgs e)
         {
             CenterToScreen();
+
+            TopMost = true;
+
             labelPrompt.Text = Prompt;
             if (LabelFont != 0)
             {

@@ -43,7 +43,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <summary>
         /// Word predictor object
         /// </summary>
-        private ConvAssistWordPredictor WordPredictor;
+        private readonly ConvAssistWordPredictor WordPredictor;
 
         public CRGResponsePredictionRequestHandler(ConvAssistWordPredictor wordPredictor)
         {
@@ -51,7 +51,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         }
 
 
-        public WordPredictionResponse ProcessPredictionRequest(WordPredictionRequest request)
+        public WordPredictionResponse ProcessPredictionRequest2(WordPredictionRequest request)
         {
             List<String> keywords = new List<string>();
 
@@ -76,18 +76,16 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <param name="currentWord">current word (may be partially spelt out</param>
         /// <param name="success">true if the function was successsful</param>
         /// <returns>A list of predicted words</returns>
-        public WordPredictionResponse ProcessPredictionRequest2(WordPredictionRequest request)
+        public WordPredictionResponse ProcessPredictionRequest(WordPredictionRequest request)
         {
             Log.Debug("Predict for: " + request.Context);
-            string[] prediction = { "" };
-            var result = new List<string>();
-            WordPredictionResponse response = null;
-
+            List<string> result;
             if (request.PredictionType != PredictionTypes.CRGResponses)
             {
                 return new WordPredictionResponse(request, new List<String>(), false);
             }
 
+            WordPredictionResponse response;
             try
             {
                 if (_prevMode != WordPredictor.GetMode() ||
@@ -170,7 +168,8 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
 
             if (answer != null)
             {
-                predictResponses = answer.PredictedKeywords.Split('(', ')').Where((item, index) => index % 2 != 0).ToList();
+                answer.PredictedCRGSentence = answer.PredictedCRGSentence.Replace("[", String.Empty).Replace("]", String.Empty);
+                predictResponses = answer.PredictedCRGSentence.Split(',').ToList();
             }
 
             var pref = (wordPredictor as ISupportsPreferences).GetPreferences();
@@ -178,7 +177,8 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             {
                 for (int ii = 0; ii < predictResponses.Count(); ii++)
                 {
-                    predictResponses[ii] = ConvAssistUtils.UTF8EncodingToDefault(predictResponses[ii]);
+                    predictResponses[ii] = ConvAssistUtils.UTF8EncodingToDefault(predictResponses[ii].Trim());
+                    predictResponses[ii] = ConvAssistUtils.RemoveEnclosingQuotes(predictResponses[ii]);
                 }
             }
 

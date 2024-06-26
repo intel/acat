@@ -24,6 +24,18 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         public ConvAssistMessageTypes MessageType;
 
         /// <summary>
+        /// Prediction request type
+        /// </summary>
+        public ConvAssistPredictionTypes PredictionType;
+
+        /// <summary>
+        /// Prediction result (Words)
+        /// </summary>
+        public String PredictedWords;
+
+        public String PredictedKeywords;
+
+        /// <summary>
         /// Prediction result (Letters)
         /// </summary>
         public String NextCharacters;
@@ -38,21 +50,9 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// </summary>
         public String PredictedSentence;
 
-        /// <summary>
-        /// Prediction result (Words)
-        /// </summary>
-        public String PredictedWords;
-
-        public String PredictedKeywords;
-
         public String PredictedCRGSentence;
 
-
-        /// <summary>
-        /// Prediction request type
-        /// </summary>
-        public ConvAssistPredictionTypes PredictionType;
-
+                
         public WordAndCharacterPredictionResponse(ConvAssistMessageTypes msgType, 
                                                     ConvAssistPredictionTypes predType, 
                                                     String words, 

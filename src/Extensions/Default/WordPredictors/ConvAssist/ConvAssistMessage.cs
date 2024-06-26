@@ -21,8 +21,8 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         public String Data;
         public WordPredictorMessageTypes MessageType;
         public WordPredictionModes PredictionType;
-        bool CRG;
-        String Keyword;
+        public readonly bool CRG;
+        public readonly String Keyword;
 
         // this is the JSON representation of the data
         /// <summary>

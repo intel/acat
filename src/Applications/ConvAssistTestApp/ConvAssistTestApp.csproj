@@ -35,9 +35,11 @@
   <ItemGroup>
     <Reference Include="ACATCore">
       <HintPath>..\..\Redistributable\ACATCore.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="ACATExtension">
       <HintPath>..\..\Redistributable\ACATExtension.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="AppCommon">
       <HintPath>..\..\Redistributable\AppCommon.dll</HintPath>
@@ -45,6 +47,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
+    <Reference Include="System.Text.Json, Version=7.0.0.3, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -56,6 +60,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ASRClient.cs" />
+    <Compile Include="ASRResponse.cs" />
+    <Compile Include="ASRResponseRaw.cs" />
     <Compile Include="DialogContext.cs" />
     <Compile Include="DialogTurn.cs" />
     <Compile Include="MainForm.cs">
@@ -78,6 +85,7 @@
     <Compile Include="ShowDialogHistoryForm.Designer.cs">
       <DependentUpon>ShowDialogHistoryForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="StartMessage.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -111,4 +119,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>call "$(SolutionDir)deploy.bat" ..\..\..\.. $(Configuration)</PostBuildEvent>
+  </PropertyGroup>
 </Project>

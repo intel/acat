@@ -71,6 +71,7 @@ namespace ACAT.Applications.ConvAssistTestApp
             Common.PreInit();
 
             if (!Context.Init(Context.StartupFlags.Minimal |
+                                Context.StartupFlags.TextToSpeech |
                                 Context.StartupFlags.WordPrediction |
                                 Context.StartupFlags.NoActuator |
                                 Context.StartupFlags.NoUI))
@@ -85,10 +86,7 @@ namespace ACAT.Applications.ConvAssistTestApp
                 }
             }
 
-            if (splash != null)
-            {
-                splash.Close();
-            }
+            splash?.Close();
 
             if (!Context.PostInit())
             {

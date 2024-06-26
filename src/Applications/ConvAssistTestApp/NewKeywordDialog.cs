@@ -17,9 +17,8 @@ namespace ACAT.Applications.ConvAssistTestApp
 {
     public partial class NewKeywordDialog : Form
     {
-        private Color buttonBackColor;
         public String NewKeyword;
-
+        private readonly Color buttonBackColor;
         public NewKeywordDialog()
         {
             InitializeComponent();
@@ -42,23 +41,18 @@ namespace ACAT.Applications.ConvAssistTestApp
             Close();
         }
 
+        private void enableAddButton(bool enabled)
+        {
+            buttonAdd.Enabled = enabled;
+            buttonAdd.BackColor = (enabled) ? buttonBackColor : Color.LightGray;
+        }
+
         private void NewKeywordDialog_Load(object sender, EventArgs e)
         {
             CenterToParent();
             textBox1.KeyPress += TextBox1_KeyPress;
             enableAddButton(false);
             textBox1.TextChanged += TextBox1_TextChanged;
-        }
-
-        private void TextBox1_TextChanged(object sender, EventArgs e)
-        {
-            enableAddButton(!String.IsNullOrEmpty(textBox1.Text.Trim()));
-        }
-
-        private void enableAddButton(bool enabled)
-        {
-            buttonAdd.Enabled = enabled;
-            buttonAdd.BackColor = (enabled) ? buttonBackColor : Color.LightGray;
         }
 
         private void TextBox1_KeyPress(object sender, KeyPressEventArgs e)
@@ -77,6 +71,11 @@ namespace ACAT.Applications.ConvAssistTestApp
                 this.DialogResult = DialogResult.Cancel;
                 this.Close();
             }
+        }
+
+        private void TextBox1_TextChanged(object sender, EventArgs e)
+        {
+            enableAddButton(!String.IsNullOrEmpty(textBox1.Text.Trim()));
         }
     }
 }

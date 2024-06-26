@@ -1,8 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿////////////////////////////////////////////////////////////////////////////
+//
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+//
+//
+// Dialog.cs
+//
+// Holds a text of dialog
+//
+////////////////////////////////////////////////////////////////////////////
+
+using System;
 
 namespace ACAT.Applications.ConvAssistTestApp
 {
@@ -14,13 +22,13 @@ namespace ACAT.Applications.ConvAssistTestApp
 
     internal class DialogTurn
     {
-        public DialogTurnType TurnType { get; set; }
-        public String Text { get; set; }
-
         public DialogTurn(DialogTurnType turnType, String text)
         {
             TurnType = turnType;
             Text = text;
         }
+
+        public String Text { get; set; }
+        public DialogTurnType TurnType { get; set; }
     }
 }

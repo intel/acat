@@ -30,10 +30,11 @@ namespace ACAT.Applications.ConvAssistTestApp
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.checkBoxASR = new System.Windows.Forms.CheckBox();
+            this.buttonRefresh = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.buttonClearHistory = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.buttonShowHistory = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.label1 = new System.Windows.Forms.Label();
-            this.buittonClearASR = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.labelASR = new System.Windows.Forms.Label();
             this.buttonCRGResponse10 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.buttonCRGResponse9 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
@@ -76,7 +77,6 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.buttonWord4 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.buttonWord3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.buttonWord2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.buttonClearText = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.buttonSentence1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.buttonLearn = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.radioButtonCannedPhrase = new System.Windows.Forms.RadioButton();
@@ -89,7 +89,9 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.textBoxASR = new System.Windows.Forms.RichTextBox();
             this.labelTurns = new System.Windows.Forms.Label();
             this.numericUpDownTurns = new System.Windows.Forms.NumericUpDown();
-            this.buttonRefresh = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.labelConvAssistRequest = new System.Windows.Forms.Label();
+            this.labelASRResponse = new System.Windows.Forms.Label();
+            this.checkBoxTTS = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTurns)).BeginInit();
             this.SuspendLayout();
@@ -117,12 +119,12 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5F));
-            this.tableLayoutPanel1.Controls.Add(this.buttonRefresh, 17, 3);
-            this.tableLayoutPanel1.Controls.Add(this.buttonClearHistory, 13, 3);
-            this.tableLayoutPanel1.Controls.Add(this.buttonShowHistory, 11, 3);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 1, 6);
-            this.tableLayoutPanel1.Controls.Add(this.buittonClearASR, 18, 6);
-            this.tableLayoutPanel1.Controls.Add(this.labelASR, 11, 6);
+            this.tableLayoutPanel1.Controls.Add(this.checkBoxASR, 13, 3);
+            this.tableLayoutPanel1.Controls.Add(this.buttonRefresh, 18, 1);
+            this.tableLayoutPanel1.Controls.Add(this.buttonClearHistory, 16, 1);
+            this.tableLayoutPanel1.Controls.Add(this.buttonShowHistory, 15, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 1, 9);
+            this.tableLayoutPanel1.Controls.Add(this.labelASR, 11, 9);
             this.tableLayoutPanel1.Controls.Add(this.buttonCRGResponse10, 14, 28);
             this.tableLayoutPanel1.Controls.Add(this.buttonCRGResponse9, 14, 27);
             this.tableLayoutPanel1.Controls.Add(this.buttonCRGResponse8, 14, 26);
@@ -164,19 +166,21 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.tableLayoutPanel1.Controls.Add(this.buttonWord4, 1, 22);
             this.tableLayoutPanel1.Controls.Add(this.buttonWord3, 1, 21);
             this.tableLayoutPanel1.Controls.Add(this.buttonWord2, 1, 20);
-            this.tableLayoutPanel1.Controls.Add(this.buttonClearText, 8, 6);
             this.tableLayoutPanel1.Controls.Add(this.buttonSentence1, 4, 19);
-            this.tableLayoutPanel1.Controls.Add(this.buttonLearn, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.buttonLearn, 11, 1);
             this.tableLayoutPanel1.Controls.Add(this.radioButtonCannedPhrase, 7, 1);
             this.tableLayoutPanel1.Controls.Add(this.radioButtonShorthand, 4, 1);
             this.tableLayoutPanel1.Controls.Add(this.radioButtonSentence, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.buttonWord1, 1, 19);
-            this.tableLayoutPanel1.Controls.Add(this.textBoxInput, 1, 7);
-            this.tableLayoutPanel1.Controls.Add(this.checkBoxCRG, 11, 1);
+            this.tableLayoutPanel1.Controls.Add(this.textBoxInput, 1, 10);
+            this.tableLayoutPanel1.Controls.Add(this.checkBoxCRG, 13, 1);
             this.tableLayoutPanel1.Controls.Add(this.label2, 1, 18);
-            this.tableLayoutPanel1.Controls.Add(this.textBoxASR, 11, 7);
-            this.tableLayoutPanel1.Controls.Add(this.labelTurns, 16, 2);
-            this.tableLayoutPanel1.Controls.Add(this.numericUpDownTurns, 16, 3);
+            this.tableLayoutPanel1.Controls.Add(this.textBoxASR, 11, 10);
+            this.tableLayoutPanel1.Controls.Add(this.labelTurns, 17, 0);
+            this.tableLayoutPanel1.Controls.Add(this.numericUpDownTurns, 17, 1);
+            this.tableLayoutPanel1.Controls.Add(this.labelConvAssistRequest, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.labelASRResponse, 11, 5);
+            this.tableLayoutPanel1.Controls.Add(this.checkBoxTTS, 9, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -218,6 +222,44 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1485, 922);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
+            // checkBoxASR
+            // 
+            this.checkBoxASR.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.checkBoxASR, 2);
+            this.checkBoxASR.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxASR.ForeColor = System.Drawing.Color.White;
+            this.checkBoxASR.Location = new System.Drawing.Point(965, 93);
+            this.checkBoxASR.Name = "checkBoxASR";
+            this.tableLayoutPanel1.SetRowSpan(this.checkBoxASR, 2);
+            this.checkBoxASR.Size = new System.Drawing.Size(93, 37);
+            this.checkBoxASR.TabIndex = 67;
+            this.checkBoxASR.Text = "ASR";
+            this.checkBoxASR.UseVisualStyleBackColor = true;
+            // 
+            // buttonRefresh
+            // 
+            this.buttonRefresh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
+            this.buttonRefresh.BorderColor = System.Drawing.Color.DimGray;
+            this.buttonRefresh.BorderRadiusBottomLeft = 0;
+            this.buttonRefresh.BorderRadiusBottomRight = 0;
+            this.buttonRefresh.BorderRadiusTopLeft = 0;
+            this.buttonRefresh.BorderRadiusTopRight = 0;
+            this.buttonRefresh.BorderWidth = 0F;
+            this.tableLayoutPanel1.SetColumnSpan(this.buttonRefresh, 2);
+            this.buttonRefresh.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonRefresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonRefresh.Location = new System.Drawing.Point(1340, 40);
+            this.buttonRefresh.Margin = new System.Windows.Forms.Padding(8, 10, 0, 10);
+            this.buttonRefresh.Name = "buttonRefresh";
+            this.tableLayoutPanel1.SetRowSpan(this.buttonRefresh, 2);
+            this.buttonRefresh.Size = new System.Drawing.Size(145, 40);
+            this.buttonRefresh.TabIndex = 65;
+            this.buttonRefresh.Text = "Refresh";
+            this.buttonRefresh.UseMnemonic = false;
+            this.buttonRefresh.UseVisualStyleBackColor = false;
+            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
+            // 
             // buttonClearHistory
             // 
             this.buttonClearHistory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
@@ -227,17 +269,16 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.buttonClearHistory.BorderRadiusTopLeft = 0;
             this.buttonClearHistory.BorderRadiusTopRight = 0;
             this.buttonClearHistory.BorderWidth = 0F;
-            this.tableLayoutPanel1.SetColumnSpan(this.buttonClearHistory, 2);
             this.buttonClearHistory.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonClearHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonClearHistory.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonClearHistory.Location = new System.Drawing.Point(970, 100);
-            this.buttonClearHistory.Margin = new System.Windows.Forms.Padding(8, 10, 0, 10);
+            this.buttonClearHistory.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonClearHistory.Location = new System.Drawing.Point(1184, 40);
+            this.buttonClearHistory.Margin = new System.Windows.Forms.Padding(0, 10, 10, 10);
             this.buttonClearHistory.Name = "buttonClearHistory";
             this.tableLayoutPanel1.SetRowSpan(this.buttonClearHistory, 2);
-            this.buttonClearHistory.Size = new System.Drawing.Size(140, 40);
+            this.buttonClearHistory.Size = new System.Drawing.Size(64, 40);
             this.buttonClearHistory.TabIndex = 61;
-            this.buttonClearHistory.Text = "Clear History";
+            this.buttonClearHistory.Text = "Clear";
             this.buttonClearHistory.UseMnemonic = false;
             this.buttonClearHistory.UseVisualStyleBackColor = false;
             this.buttonClearHistory.Click += new System.EventHandler(this.buttonClearHistory_Click);
@@ -251,17 +292,16 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.buttonShowHistory.BorderRadiusTopLeft = 0;
             this.buttonShowHistory.BorderRadiusTopRight = 0;
             this.buttonShowHistory.BorderWidth = 0F;
-            this.tableLayoutPanel1.SetColumnSpan(this.buttonShowHistory, 2);
             this.buttonShowHistory.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonShowHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonShowHistory.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonShowHistory.Location = new System.Drawing.Point(814, 100);
+            this.buttonShowHistory.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonShowHistory.Location = new System.Drawing.Point(1110, 40);
             this.buttonShowHistory.Margin = new System.Windows.Forms.Padding(0, 10, 10, 10);
             this.buttonShowHistory.Name = "buttonShowHistory";
             this.tableLayoutPanel1.SetRowSpan(this.buttonShowHistory, 2);
-            this.buttonShowHistory.Size = new System.Drawing.Size(138, 40);
+            this.buttonShowHistory.Size = new System.Drawing.Size(64, 40);
             this.buttonShowHistory.TabIndex = 60;
-            this.buttonShowHistory.Text = "History";
+            this.buttonShowHistory.Text = "Hist";
             this.buttonShowHistory.UseMnemonic = false;
             this.buttonShowHistory.UseVisualStyleBackColor = false;
             this.buttonShowHistory.Click += new System.EventHandler(this.buttonShowHistory_Click);
@@ -270,39 +310,15 @@ namespace ACAT.Applications.ConvAssistTestApp
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.tableLayoutPanel1.SetColumnSpan(this.label1, 2);
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.label1.Location = new System.Drawing.Point(77, 186);
+            this.label1.Location = new System.Drawing.Point(77, 276);
             this.label1.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(142, 24);
+            this.label1.Size = new System.Drawing.Size(68, 24);
             this.label1.TabIndex = 59;
-            this.label1.Text = "Text Input";
-            // 
-            // buittonClearASR
-            // 
-            this.buittonClearASR.BackColor = System.Drawing.Color.LightGray;
-            this.buittonClearASR.BorderColor = System.Drawing.Color.DimGray;
-            this.buittonClearASR.BorderRadiusBottomLeft = 0;
-            this.buittonClearASR.BorderRadiusBottomRight = 0;
-            this.buittonClearASR.BorderRadiusTopLeft = 0;
-            this.buittonClearASR.BorderRadiusTopRight = 0;
-            this.buittonClearASR.BorderWidth = 0F;
-            this.buittonClearASR.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buittonClearASR.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buittonClearASR.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buittonClearASR.ForeColor = System.Drawing.Color.Black;
-            this.buittonClearASR.Location = new System.Drawing.Point(1362, 180);
-            this.buittonClearASR.Margin = new System.Windows.Forms.Padding(30, 0, 0, 0);
-            this.buittonClearASR.Name = "buittonClearASR";
-            this.buittonClearASR.Size = new System.Drawing.Size(44, 30);
-            this.buittonClearASR.TabIndex = 57;
-            this.buittonClearASR.Text = "X";
-            this.buittonClearASR.UseMnemonic = false;
-            this.buittonClearASR.UseVisualStyleBackColor = false;
-            this.buittonClearASR.Click += new System.EventHandler(this.buittonClearASR_Click);
+            this.label1.Text = "Talk";
             // 
             // labelASR
             // 
@@ -311,7 +327,7 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.labelASR.Dock = System.Windows.Forms.DockStyle.Fill;
             this.labelASR.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelASR.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.labelASR.Location = new System.Drawing.Point(817, 186);
+            this.labelASR.Location = new System.Drawing.Point(817, 276);
             this.labelASR.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
             this.labelASR.Name = "labelASR";
             this.labelASR.Size = new System.Drawing.Size(68, 24);
@@ -1202,29 +1218,6 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.buttonWord2.UseMnemonic = false;
             this.buttonWord2.UseVisualStyleBackColor = true;
             // 
-            // buttonClearText
-            // 
-            this.buttonClearText.BackColor = System.Drawing.Color.LightGray;
-            this.buttonClearText.BorderColor = System.Drawing.Color.DimGray;
-            this.buttonClearText.BorderRadiusBottomLeft = 0;
-            this.buttonClearText.BorderRadiusBottomRight = 0;
-            this.buttonClearText.BorderRadiusTopLeft = 0;
-            this.buttonClearText.BorderRadiusTopRight = 0;
-            this.buttonClearText.BorderWidth = 0F;
-            this.buttonClearText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonClearText.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonClearText.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonClearText.ForeColor = System.Drawing.Color.Black;
-            this.buttonClearText.Location = new System.Drawing.Point(622, 180);
-            this.buttonClearText.Margin = new System.Windows.Forms.Padding(30, 0, 0, 0);
-            this.buttonClearText.Name = "buttonClearText";
-            this.buttonClearText.Size = new System.Drawing.Size(44, 30);
-            this.buttonClearText.TabIndex = 10;
-            this.buttonClearText.Text = "X";
-            this.buttonClearText.UseMnemonic = false;
-            this.buttonClearText.UseVisualStyleBackColor = false;
-            this.buttonClearText.Click += new System.EventHandler(this.buttonClearText_Click);
-            // 
             // buttonSentence1
             // 
             this.buttonSentence1.BorderColor = System.Drawing.Color.LightGray;
@@ -1256,15 +1249,14 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.buttonLearn.BorderRadiusTopLeft = 0;
             this.buttonLearn.BorderRadiusTopRight = 0;
             this.buttonLearn.BorderWidth = 0F;
-            this.tableLayoutPanel1.SetColumnSpan(this.buttonLearn, 2);
             this.buttonLearn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonLearn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonLearn.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonLearn.Location = new System.Drawing.Point(74, 100);
+            this.buttonLearn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonLearn.Location = new System.Drawing.Point(814, 40);
             this.buttonLearn.Margin = new System.Windows.Forms.Padding(0, 10, 0, 10);
             this.buttonLearn.Name = "buttonLearn";
             this.tableLayoutPanel1.SetRowSpan(this.buttonLearn, 2);
-            this.buttonLearn.Size = new System.Drawing.Size(148, 40);
+            this.buttonLearn.Size = new System.Drawing.Size(74, 40);
             this.buttonLearn.TabIndex = 6;
             this.buttonLearn.Text = "Learn";
             this.buttonLearn.UseMnemonic = false;
@@ -1274,16 +1266,16 @@ namespace ACAT.Applications.ConvAssistTestApp
             // radioButtonCannedPhrase
             // 
             this.radioButtonCannedPhrase.AutoSize = true;
-            this.tableLayoutPanel1.SetColumnSpan(this.radioButtonCannedPhrase, 4);
+            this.tableLayoutPanel1.SetColumnSpan(this.radioButtonCannedPhrase, 2);
             this.radioButtonCannedPhrase.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.radioButtonCannedPhrase.ForeColor = System.Drawing.Color.White;
             this.radioButtonCannedPhrase.Location = new System.Drawing.Point(521, 33);
             this.radioButtonCannedPhrase.Name = "radioButtonCannedPhrase";
             this.tableLayoutPanel1.SetRowSpan(this.radioButtonCannedPhrase, 2);
-            this.radioButtonCannedPhrase.Size = new System.Drawing.Size(234, 37);
+            this.radioButtonCannedPhrase.Size = new System.Drawing.Size(134, 37);
             this.radioButtonCannedPhrase.TabIndex = 5;
             this.radioButtonCannedPhrase.TabStop = true;
-            this.radioButtonCannedPhrase.Text = "Canned Phrase";
+            this.radioButtonCannedPhrase.Text = "Canned";
             this.radioButtonCannedPhrase.UseVisualStyleBackColor = true;
             // 
             // radioButtonShorthand
@@ -1343,21 +1335,21 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.tableLayoutPanel1.SetColumnSpan(this.textBoxInput, 8);
             this.textBoxInput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBoxInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxInput.Location = new System.Drawing.Point(77, 213);
+            this.textBoxInput.Location = new System.Drawing.Point(77, 303);
             this.textBoxInput.Name = "textBoxInput";
-            this.tableLayoutPanel1.SetRowSpan(this.textBoxInput, 8);
+            this.tableLayoutPanel1.SetRowSpan(this.textBoxInput, 7);
             this.textBoxInput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.textBoxInput.Size = new System.Drawing.Size(586, 234);
+            this.textBoxInput.Size = new System.Drawing.Size(586, 204);
             this.textBoxInput.TabIndex = 0;
             this.textBoxInput.Text = "";
             // 
             // checkBoxCRG
             // 
             this.checkBoxCRG.AutoSize = true;
-            this.tableLayoutPanel1.SetColumnSpan(this.checkBoxCRG, 3);
+            this.tableLayoutPanel1.SetColumnSpan(this.checkBoxCRG, 2);
             this.checkBoxCRG.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxCRG.ForeColor = System.Drawing.Color.White;
-            this.checkBoxCRG.Location = new System.Drawing.Point(817, 33);
+            this.checkBoxCRG.Location = new System.Drawing.Point(965, 33);
             this.checkBoxCRG.Name = "checkBoxCRG";
             this.tableLayoutPanel1.SetRowSpan(this.checkBoxCRG, 2);
             this.checkBoxCRG.Size = new System.Drawing.Size(99, 37);
@@ -1386,11 +1378,11 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.tableLayoutPanel1.SetColumnSpan(this.textBoxASR, 8);
             this.textBoxASR.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBoxASR.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxASR.Location = new System.Drawing.Point(817, 213);
+            this.textBoxASR.Location = new System.Drawing.Point(817, 303);
             this.textBoxASR.Name = "textBoxASR";
-            this.tableLayoutPanel1.SetRowSpan(this.textBoxASR, 8);
+            this.tableLayoutPanel1.SetRowSpan(this.textBoxASR, 7);
             this.textBoxASR.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.textBoxASR.Size = new System.Drawing.Size(586, 234);
+            this.textBoxASR.Size = new System.Drawing.Size(586, 204);
             this.textBoxASR.TabIndex = 1;
             this.textBoxASR.Text = "";
             // 
@@ -1400,7 +1392,7 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.labelTurns.Dock = System.Windows.Forms.DockStyle.Fill;
             this.labelTurns.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTurns.ForeColor = System.Drawing.Color.White;
-            this.labelTurns.Location = new System.Drawing.Point(1184, 60);
+            this.labelTurns.Location = new System.Drawing.Point(1258, 0);
             this.labelTurns.Margin = new System.Windows.Forms.Padding(0);
             this.labelTurns.Name = "labelTurns";
             this.labelTurns.Size = new System.Drawing.Size(74, 30);
@@ -1413,36 +1405,53 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.numericUpDownTurns.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.numericUpDownTurns.Dock = System.Windows.Forms.DockStyle.Fill;
             this.numericUpDownTurns.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDownTurns.Location = new System.Drawing.Point(1192, 100);
+            this.numericUpDownTurns.Location = new System.Drawing.Point(1266, 40);
             this.numericUpDownTurns.Margin = new System.Windows.Forms.Padding(8, 10, 3, 15);
             this.numericUpDownTurns.Name = "numericUpDownTurns";
             this.tableLayoutPanel1.SetRowSpan(this.numericUpDownTurns, 3);
             this.numericUpDownTurns.Size = new System.Drawing.Size(63, 31);
             this.numericUpDownTurns.TabIndex = 64;
             // 
-            // buttonRefresh
+            // labelConvAssistRequest
             // 
-            this.buttonRefresh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.buttonRefresh.BorderColor = System.Drawing.Color.DimGray;
-            this.buttonRefresh.BorderRadiusBottomLeft = 0;
-            this.buttonRefresh.BorderRadiusBottomRight = 0;
-            this.buttonRefresh.BorderRadiusTopLeft = 0;
-            this.buttonRefresh.BorderRadiusTopRight = 0;
-            this.buttonRefresh.BorderWidth = 0F;
-            this.tableLayoutPanel1.SetColumnSpan(this.buttonRefresh, 2);
-            this.buttonRefresh.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonRefresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonRefresh.Location = new System.Drawing.Point(1258, 100);
-            this.buttonRefresh.Margin = new System.Windows.Forms.Padding(0, 10, 15, 15);
-            this.buttonRefresh.Name = "buttonRefresh";
-            this.tableLayoutPanel1.SetRowSpan(this.buttonRefresh, 2);
-            this.buttonRefresh.Size = new System.Drawing.Size(133, 35);
-            this.buttonRefresh.TabIndex = 65;
-            this.buttonRefresh.Text = "Refresh";
-            this.buttonRefresh.UseMnemonic = false;
-            this.buttonRefresh.UseVisualStyleBackColor = false;
-            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
+            this.labelConvAssistRequest.AutoSize = true;
+            this.labelConvAssistRequest.BackColor = System.Drawing.Color.DarkGray;
+            this.tableLayoutPanel1.SetColumnSpan(this.labelConvAssistRequest, 8);
+            this.labelConvAssistRequest.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelConvAssistRequest.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelConvAssistRequest.Location = new System.Drawing.Point(77, 90);
+            this.labelConvAssistRequest.Name = "labelConvAssistRequest";
+            this.tableLayoutPanel1.SetRowSpan(this.labelConvAssistRequest, 6);
+            this.labelConvAssistRequest.Size = new System.Drawing.Size(586, 180);
+            this.labelConvAssistRequest.TabIndex = 66;
+            // 
+            // labelASRResponse
+            // 
+            this.labelASRResponse.AutoSize = true;
+            this.labelASRResponse.BackColor = System.Drawing.Color.DarkGray;
+            this.tableLayoutPanel1.SetColumnSpan(this.labelASRResponse, 8);
+            this.labelASRResponse.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelASRResponse.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelASRResponse.Location = new System.Drawing.Point(817, 150);
+            this.labelASRResponse.Name = "labelASRResponse";
+            this.tableLayoutPanel1.SetRowSpan(this.labelASRResponse, 3);
+            this.labelASRResponse.Size = new System.Drawing.Size(586, 90);
+            this.labelASRResponse.TabIndex = 68;
+            // 
+            // checkBoxTTS
+            // 
+            this.checkBoxTTS.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.checkBoxTTS, 2);
+            this.checkBoxTTS.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxTTS.ForeColor = System.Drawing.Color.White;
+            this.checkBoxTTS.Location = new System.Drawing.Point(669, 33);
+            this.checkBoxTTS.Name = "checkBoxTTS";
+            this.tableLayoutPanel1.SetRowSpan(this.checkBoxTTS, 2);
+            this.checkBoxTTS.Size = new System.Drawing.Size(85, 35);
+            this.checkBoxTTS.TabIndex = 69;
+            this.checkBoxTTS.Text = "TTS";
+            this.checkBoxTTS.UseVisualStyleBackColor = true;
+            this.checkBoxTTS.CheckedChanged += new System.EventHandler(this.checkBoxTTS_CheckedChanged);
             // 
             // MainForm
             // 
@@ -1471,7 +1480,6 @@ namespace ACAT.Applications.ConvAssistTestApp
         private System.Windows.Forms.RadioButton radioButtonShorthand;
         private Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonLearn;
         private Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonWord1;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonClearText;
         private Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonSentence1;
         private Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonWord3;
         private Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonWord2;
@@ -1518,7 +1526,6 @@ namespace ACAT.Applications.ConvAssistTestApp
         private Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonCRGResponse3;
         private Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonCRGResponse2;
         private System.Windows.Forms.Label labelASR;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl buittonClearASR;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RichTextBox textBoxASR;
         private Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonShowHistory;
@@ -1526,6 +1533,10 @@ namespace ACAT.Applications.ConvAssistTestApp
         private System.Windows.Forms.Label labelTurns;
         private System.Windows.Forms.NumericUpDown numericUpDownTurns;
         private Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonRefresh;
+        private System.Windows.Forms.Label labelConvAssistRequest;
+        private System.Windows.Forms.CheckBox checkBoxASR;
+        private System.Windows.Forms.Label labelASRResponse;
+        private System.Windows.Forms.CheckBox checkBoxTTS;
     }
 }
 

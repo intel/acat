@@ -1,4 +1,16 @@
-﻿using System;
+﻿////////////////////////////////////////////////////////////////////////////
+//
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+//
+//
+// DialogContext.cs
+//
+// Maintains a history of the dialog
+//
+////////////////////////////////////////////////////////////////////////////
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -48,7 +60,7 @@ namespace ACAT.Applications.ConvAssistTestApp
 
             for (int ii = startIndex; ii < Turns.Count; ii++)
             {
-                sb.Append(Turns[ii].TurnType + ":\t" + Turns[ii].Text + "\n");
+                sb.Append(Turns[ii].TurnType + ":" + Turns[ii].Text + "\n");
             }
 
             return sb.ToString();

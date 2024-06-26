@@ -22,12 +22,13 @@ namespace ACAT.Lib.Core.WordPredictionManagement
     /// </summary>
     public class WordPredictionRequest
     {
-        public WordPredictionRequest(String context, PredictionTypes predictionType, WordPredictionModes mode, String keyword = null)
+        public WordPredictionRequest(String context, PredictionTypes predictionType, WordPredictionModes mode, bool crg = false, String keyword = null)
         {
             Context = context;
             PredictionType = predictionType;
             WordPredictionMode = mode;
             Keyword = keyword;
+            CRG = crg;
         }
 
         public String Context { get; }
@@ -35,6 +36,8 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         public WordPredictionModes WordPredictionMode { get; }
         
         public String Keyword { get; }
+
+        public bool CRG { get;  }
 
 
     }

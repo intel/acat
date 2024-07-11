@@ -92,6 +92,7 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.labelConvAssistRequest = new System.Windows.Forms.Label();
             this.labelASRResponse = new System.Windows.Forms.Label();
             this.checkBoxTTS = new System.Windows.Forms.CheckBox();
+            this.comboBoxASRModel = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTurns)).BeginInit();
             this.SuspendLayout();
@@ -181,6 +182,7 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.tableLayoutPanel1.Controls.Add(this.labelConvAssistRequest, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.labelASRResponse, 11, 5);
             this.tableLayoutPanel1.Controls.Add(this.checkBoxTTS, 9, 1);
+            this.tableLayoutPanel1.Controls.Add(this.comboBoxASRModel, 15, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -1453,6 +1455,30 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.checkBoxTTS.UseVisualStyleBackColor = true;
             this.checkBoxTTS.CheckedChanged += new System.EventHandler(this.checkBoxTTS_CheckedChanged);
             // 
+            // comboBoxASRModel
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.comboBoxASRModel, 2);
+            this.comboBoxASRModel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxASRModel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxASRModel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxASRModel.FormattingEnabled = true;
+            this.comboBoxASRModel.Items.AddRange(new object[] {
+            "tiny.en",
+            "small.en",
+            "base.en",
+            "large.en",
+            "medium.en",
+            "large-v1",
+            "large-v2",
+            "large-v3",
+            "distil-large-v2",
+            "distil-medium.en",
+            "distil-small.en"});
+            this.comboBoxASRModel.Location = new System.Drawing.Point(1113, 93);
+            this.comboBoxASRModel.Name = "comboBoxASRModel";
+            this.comboBoxASRModel.Size = new System.Drawing.Size(142, 28);
+            this.comboBoxASRModel.TabIndex = 70;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1537,6 +1563,7 @@ namespace ACAT.Applications.ConvAssistTestApp
         private System.Windows.Forms.CheckBox checkBoxASR;
         private System.Windows.Forms.Label labelASRResponse;
         private System.Windows.Forms.CheckBox checkBoxTTS;
+        private System.Windows.Forms.ComboBox comboBoxASRModel;
     }
 }
 

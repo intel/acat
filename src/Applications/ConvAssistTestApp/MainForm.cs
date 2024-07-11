@@ -351,6 +351,8 @@ namespace ACAT.Applications.ConvAssistTestApp
 
             Windows.SetVisible(checkBoxASR, on);
 
+            Windows.SetVisible(comboBoxASRModel, on);
+
             Windows.SetVisible(labelASRResponse, on);
 
             if (!on)
@@ -537,6 +539,8 @@ namespace ACAT.Applications.ConvAssistTestApp
             checkBoxCRG.Checked = false;
 
             crgOn(checkBoxCRG.Checked);
+
+            comboBoxASRModel.SelectedIndex = 0;
 
             radioButtonSentence.Checked = true;
 
@@ -1077,10 +1081,12 @@ namespace ACAT.Applications.ConvAssistTestApp
         {
             if (checkBoxASR.Checked)
             {
+                comboBoxASRModel.Enabled = false;
                 Task.Run(() => connectASR());
             }
             else
             {
+                comboBoxASRModel.Enabled = true;
                 Task.Run(() => disconnectASR());
             }
         }
@@ -1118,7 +1124,16 @@ namespace ACAT.Applications.ConvAssistTestApp
                 asrClient.EvtMessageReceived += AsrClient_EvtMessageReceived;
                 asrClient.EvtRawMessageReceived += AsrClient_EvtRawMessageReceived;
 
-                var msg = new StartMessage(true, 0, "tiny.en", false);
+                String model = String.Empty;
+
+                Invoke(new MethodInvoker(delegate
+                {
+                    model = comboBoxASRModel.SelectedItem.ToString();
+                }));
+
+                MessageBox.Show(model);
+
+                var msg = new StartMessage(true, 0, model, false);
 
                 var json = JsonSerializer.Serialize(msg);
                 asrClient.SendAsync(json).GetAwaiter().GetResult();

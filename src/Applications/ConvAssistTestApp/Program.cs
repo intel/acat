@@ -74,6 +74,7 @@ namespace ACAT.Applications.ConvAssistTestApp
                                 Context.StartupFlags.TextToSpeech |
                                 Context.StartupFlags.WordPrediction |
                                 Context.StartupFlags.NoActuator |
+                                Context.StartupFlags.DialogSense |
                                 Context.StartupFlags.NoUI))
             {
                 splash.Close();

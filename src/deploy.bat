@@ -150,6 +150,17 @@ if not exist %TARGETDIR% mkdir %TARGETDIR%
 copy .\%SOURCEDIR%\bin\%CONFIG%\*.dll %TARGETDIR%
 
 rem ------------------------------------------------
+@echo Deploying DialogSenseAgent dlls
+rem ------------------------------------------------
+
+
+set SOURCEDIR=Extensions\Default\DialogSenseAgents\DialogSenseAgentASR
+set TARGETDIR=%INSTALLDIR%\%SOURCEDIR%
+if not exist %TARGETDIR% mkdir %TARGETDIR%
+copy .\%SOURCEDIR%\bin\%CONFIG%\DialogSenseAgentASR.dll %TARGETDIR%
+
+
+rem ------------------------------------------------
 @echo Deploying ACAT UserControls
 rem ------------------------------------------------
 

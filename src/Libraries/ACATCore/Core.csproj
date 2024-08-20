@@ -243,6 +243,14 @@
     <Compile Include="CommandManagement\CmdScopeMapEntry.cs" />
     <Compile Include="CommandManagement\CmdScopeTable.cs" />
     <Compile Include="CommandManagement\CommandManager.cs" />
+    <Compile Include="DialogSenseManagement\DialogTranscript.cs" />
+    <Compile Include="DialogSenseManagement\DialogSenseAgents.cs" />
+    <Compile Include="DialogSenseManagement\DialogSenseManager.cs" />
+    <Compile Include="DialogSenseManagement\DialogTurn.cs" />
+    <Compile Include="DialogSenseManagement\Interfaces\IDialogSenseAgent.cs" />
+    <Compile Include="DialogSenseManagement\NullDialogSenseAgent.cs" />
+    <Compile Include="DialogSenseManagement\PreferredDialogSenseAgent.cs" />
+    <Compile Include="DialogSenseManagement\PreferredDialogSenseAgents.cs" />
     <Compile Include="Onboarding\IOnboardingExtension.cs" />
     <Compile Include="Onboarding\IOnboardingUserControl.cs" />
     <Compile Include="Onboarding\IOnboardingWizard.cs" />

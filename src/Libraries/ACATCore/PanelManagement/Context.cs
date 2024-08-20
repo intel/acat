@@ -9,6 +9,7 @@ using ACAT.Lib.Core.AbbreviationsManagement;
 using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.AgentManagement;
 using ACAT.Lib.Core.CommandManagement;
+using ACAT.Lib.Core.DialogSenseManagement;
 using ACAT.Lib.Core.SpellCheckManagement;
 using ACAT.Lib.Core.ThemeManagement;
 using ACAT.Lib.Core.TTSManagement;
@@ -48,6 +49,7 @@ namespace ACAT.Lib.Core.PanelManagement
         private static readonly ThemeManager _themeManager;
         private static readonly TTSManager _ttsManager;
         private static readonly WordPredictionManager _wordPredictionManager;
+        private static readonly DialogSenseManager _dialogSenseManager;
 
         /// <summary>
         /// Error message if there was an error during initialization
@@ -86,6 +88,7 @@ namespace ACAT.Lib.Core.PanelManagement
             _automationEventManager = AutomationEventManager.Instance;
             _wordPredictionManager = WordPredictionManager.Instance;
             _spellCheckManager = SpellCheckManager.Instance;
+            _dialogSenseManager = DialogSenseManager.Instance;
             _themeManager = ThemeManager.Instance;
             _commandManager = CommandManager.Instance;
         }
@@ -111,6 +114,7 @@ namespace ACAT.Lib.Core.PanelManagement
             PerfMon = 128,
             NoUI = 256,
             NoActuator = 512,
+            DialogSense = 1024,
             All = 0xffff
         }
 
@@ -170,6 +174,14 @@ namespace ACAT.Lib.Core.PanelManagement
         public static SpellCheckManager AppSpellCheckManager
         {
             get { return _spellCheckManager; }
+        }
+
+        /// <summary>
+        /// Gets the ACAT DialogSense Manager
+        /// </summary>
+        public static DialogSenseManager AppDialogSenseManager
+        {
+            get { return _dialogSenseManager; }
         }
 
         /// <summary>
@@ -301,6 +313,14 @@ namespace ACAT.Lib.Core.PanelManagement
                 }
             }
 
+            if (isEnabled(StartupFlags.DialogSense))
+            {
+                if (AppDialogSenseManager != null)
+                {
+                    AppDialogSenseManager.Dispose();
+                }
+            }
+
             if (isEnabled(StartupFlags.Abbreviations))
             {
                 if (AppAbbreviationsManager != null)
@@ -379,6 +399,11 @@ namespace ACAT.Lib.Core.PanelManagement
             if (retVal)
             {
                 retVal = createSpellCheckManager();
+            }
+
+            if (retVal)
+            {
+                retVal = createDialogSenseManager();
             }
 
             if (retVal)
@@ -585,6 +610,40 @@ namespace ACAT.Lib.Core.PanelManagement
 
             return retVal;
         }
+
+        /// <summary>
+        /// Creates the singleton instance of the DialogSense manager
+        /// </summary>
+        /// <returns>true on success</returns>
+        private static bool createDialogSenseManager()
+        {
+            bool retVal = true;
+
+            if (isEnabled(StartupFlags.DialogSense))
+            {
+                retVal = AppDialogSenseManager.LoadExtensions(ExtensionDirs);
+                if (retVal)
+                {
+                    retVal = AppDialogSenseManager.Init(ExtensionDirs);
+                }
+
+                if (retVal)
+                {
+                    retVal = AppDialogSenseManager.SetActiveDialogSenseAgent();
+                    if (!retVal)
+                    {
+                        setCompletionStatus("Error setting active DialogSense agent");
+                    }
+                }
+                else
+                {
+                    setCompletionStatus("Error initializing DialogSense Manager");
+                }
+            }
+
+            return retVal;
+        }
+
 
         /// <summary>
         /// Creates the singleton instance of the Theme manager

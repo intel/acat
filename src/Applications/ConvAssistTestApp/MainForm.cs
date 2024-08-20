@@ -10,6 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Lib.Core.DialogSenseManagement;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.TTSManagement;
 using ACAT.Lib.Core.Utility;
@@ -37,13 +38,13 @@ namespace ACAT.Applications.ConvAssistTestApp
         private readonly List<string> predictedResponseList = new List<string>();
         private readonly List<Control> sentenceListButtons = new List<Control>();
         private readonly List<Control> wordListButtons = new List<Control>();
-        private readonly DialogContext _dialogContext = new DialogContext();
+        
         private readonly Color buttonBackColor;
         private bool crgMode = false;
         private Color keywordButtonBackColor;
         private int numTurns = 4;
-        private ASRClient asrClient;
         private bool ttsEnabled;
+        private IDialogSenseAgent _activeDialogSenseAgent;
 
         public MainForm()
         {
@@ -63,7 +64,7 @@ namespace ACAT.Applications.ConvAssistTestApp
 
             FormClosing += MainForm_FormClosing;
 
-            asrClient = new ASRClient();
+            _activeDialogSenseAgent = Context.AppDialogSenseManager.ActiveDialogSenseAgent;
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -223,7 +224,7 @@ namespace ACAT.Applications.ConvAssistTestApp
 
         private void buttonShowHistory_Click(object sender, EventArgs e)
         {
-            var dialog = _dialogContext.ToString();
+            var dialog = _activeDialogSenseAgent.DialogTranscript.ToString();
 
             dialog = dialog.Replace("\n", "\r\n\r\n");
 
@@ -269,7 +270,7 @@ namespace ACAT.Applications.ConvAssistTestApp
 
             clearCRGResponseList();
 
-            _dialogContext.Clear();
+            _activeDialogSenseAgent.DialogTranscript.Clear();
 
             predictedKeywordList.Clear();
 
@@ -365,7 +366,7 @@ namespace ACAT.Applications.ConvAssistTestApp
 
         private void crgRequestKeywords()
         {
-            var dialog = _dialogContext.ToString(numTurns);
+            var dialog = _activeDialogSenseAgent.DialogTranscript.ToString(numTurns);
 
             Windows.SetText(labelConvAssistRequest, dialog);
             var request = new WordPredictionRequest(dialog,
@@ -386,7 +387,7 @@ namespace ACAT.Applications.ConvAssistTestApp
 
         private void crgRequestResponses(String keyword = null)
         {
-            var dialog = _dialogContext.ToString(numTurns);
+            var dialog = _activeDialogSenseAgent.DialogTranscript.ToString(numTurns);
 
             var request = new WordPredictionRequest(dialog,
                                                         PredictionTypes.CRGResponses,
@@ -873,7 +874,7 @@ namespace ACAT.Applications.ConvAssistTestApp
             {
                 TextUtils.GetParagraphAtCaret(Windows.GetText(textBoxInput), Windows.GetCaretPosition(textBoxInput) - 2, out String paragraph);
 
-                _dialogContext.AddTurn(new DialogTurn(DialogTurnType.User, paragraph.Trim()));
+                _activeDialogSenseAgent.DialogTranscript.AddTurn(new DialogTurn(DialogTurnType.User, paragraph.Trim()));
 
                 if (ttsEnabled)
                 {
@@ -974,7 +975,7 @@ namespace ACAT.Applications.ConvAssistTestApp
 
                 if (crgMode)
                 {
-                    predictionContext = _dialogContext.ToString(numTurns);
+                    predictionContext = _activeDialogSenseAgent.DialogTranscript.ToString(numTurns);
                     if (!String.IsNullOrEmpty(prevWords))
                     {
                         predictionContext += "User:" + prevWords + "\n";
@@ -1104,7 +1105,7 @@ namespace ACAT.Applications.ConvAssistTestApp
 
         private bool isASRConnected()
         {
-            return asrClient != null && asrClient.IsConnected();
+            return _activeDialogSenseAgent!= null && _activeDialogSenseAgent.IsConnected();
         }
 
         private bool connectASR()
@@ -1116,14 +1117,11 @@ namespace ACAT.Applications.ConvAssistTestApp
 
             try
             {
-                asrClient = new ASRClient();
-
                 setASRResponseText("Connecting to ASR...");
-                asrClient.ConnectAsync().GetAwaiter().GetResult();
+                _activeDialogSenseAgent.ConnectAsync().GetAwaiter().GetResult();
 
-                asrClient.EvtMessageReceived += AsrClient_EvtMessageReceived;
-                asrClient.EvtRawMessageReceived += AsrClient_EvtRawMessageReceived;
-
+                _activeDialogSenseAgent.EvtMessageReceived += DialogSenseAgent_EvtMessageReceived;
+                    
                 String model = String.Empty;
 
                 Invoke(new MethodInvoker(delegate
@@ -1136,7 +1134,7 @@ namespace ACAT.Applications.ConvAssistTestApp
                 var msg = new StartMessage(true, 0, model, false);
 
                 var json = JsonSerializer.Serialize(msg);
-                asrClient.SendAsync(json).GetAwaiter().GetResult();
+                _activeDialogSenseAgent.SendAsync(json).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -1155,18 +1153,22 @@ namespace ACAT.Applications.ConvAssistTestApp
             return true;
         }
 
-        private void AsrClient_EvtRawMessageReceived(object sender, ASRResponseRaw e)
+        private void DialogSenseAgent_EvtMessageReceived(object sender, string message)
         {
-            setASRResponseText(e.RawResponse);
-        }
+            setASRResponseText(message);
 
-        private void AsrClient_EvtMessageReceived(object sender, ASRResponse e)
-        {
+            if (message.Contains("ACAT VAD ASR"))
+            {
+                return;
+            }
+            
+            var receivedMessage = JsonSerializer.Deserialize<ASRResponse>(message);
+
             var text = Windows.GetText(textBoxASR);
 
             text = text.TrimEnd();
 
-            text += "\n" + e.text + "\n";
+            text += "\n" + receivedMessage.text + "\n";
 
             Windows.SetText(textBoxASR, text);
 
@@ -1189,9 +1191,8 @@ namespace ACAT.Applications.ConvAssistTestApp
 
             try
             {
-                asrClient.EvtMessageReceived -= AsrClient_EvtMessageReceived;
-                asrClient.EvtRawMessageReceived -= AsrClient_EvtRawMessageReceived;
-                asrClient.Disconnect();
+                _activeDialogSenseAgent.EvtMessageReceived -= DialogSenseAgent_EvtMessageReceived;
+                _activeDialogSenseAgent.Disconnect();
 
                 setASRResponseText("Disconnected from ASR.");
             }
@@ -1199,10 +1200,6 @@ namespace ACAT.Applications.ConvAssistTestApp
             {
                 //MessageBox.Show("Error disconnnecting from ASR. " + ex.ToString());
                 return false;
-            }
-            finally
-            {
-                asrClient = null;
             }
 
             Invoke(new MethodInvoker(delegate
@@ -1217,7 +1214,7 @@ namespace ACAT.Applications.ConvAssistTestApp
         {
             TextUtils.GetParagraphAtCaret(Windows.GetText(textBoxASR), Windows.GetCaretPosition(textBoxASR) - 2, out String paragraph);
 
-            _dialogContext.AddTurn(new DialogTurn(DialogTurnType.Other, paragraph.Trim()));
+            _activeDialogSenseAgent.DialogTranscript.AddTurn(new DialogTurn(DialogTurnType.Other, paragraph.Trim()));
 
             crgRequestKeywords();
 

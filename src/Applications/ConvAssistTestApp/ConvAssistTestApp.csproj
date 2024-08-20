@@ -60,11 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ASRClient.cs" />
     <Compile Include="ASRResponse.cs" />
-    <Compile Include="ASRResponseRaw.cs" />
-    <Compile Include="DialogContext.cs" />
-    <Compile Include="DialogTurn.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

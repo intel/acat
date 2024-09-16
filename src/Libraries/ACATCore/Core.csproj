@@ -617,6 +617,7 @@
     <Compile Include="Widgets\LetterListWidget.cs" />
     <Compile Include="Widgets\SentenceListWidget.cs" />
     <Compile Include="Widgets\SentenceListItemWidget.cs" />
+    <Compile Include="Widgets\PhraseListItemWidget.cs" />
     <Compile Include="Widgets\WordListWidget.cs" />
     <Compile Include="Widgets\WordListItemWidget.cs" />
     <Compile Include="WordPredictorManagement\Interfaces\IWordPredictor.cs" />

@@ -134,8 +134,8 @@ namespace ACAT.Applications.ACATTalk
                                 Context.StartupFlags.AgentManager |
                                 Context.StartupFlags.SpellChecker |
                                 Context.StartupFlags.WindowsActivityMonitor |
-                                Context.StartupFlags.Abbreviations |
-                                Context.StartupFlags.DialogSense))
+                                Context.StartupFlags.Abbreviations))// |
+                                //Context.StartupFlags.DialogSense))
             {
                 splash.Close();
                 splash = null;

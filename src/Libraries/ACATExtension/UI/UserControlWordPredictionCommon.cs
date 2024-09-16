@@ -9,6 +9,7 @@ using ACAT.ACATResources;
 using ACAT.Lib.Core.AgentManagement;
 using ACAT.Lib.Core.Audit;
 using ACAT.Lib.Core.PanelManagement;
+using ACAT.Lib.Core.TTSManagement;
 using ACAT.Lib.Core.UserControlManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WidgetManagement;
@@ -223,6 +224,17 @@ namespace ACAT.Lib.Extension
 
                 handled = true;
             }
+            else if (e.SourceWidget is PhraseListItemWidget)
+            {
+                _form.Invoke(new MethodInvoker(delegate
+                {
+                    speakPhrase(e.SourceWidget.Value.Trim());
+                }));
+
+                handled = true;
+
+                return;
+            }
             else
             {
                 handled = false;
@@ -349,6 +361,15 @@ namespace ACAT.Lib.Extension
                 AuditLog.Audit(new AuditEventAutoComplete(wordListItemWidget.Name));
             }
         }
+
+        private void speakPhrase(String phrase)
+        {
+            if (!String.IsNullOrEmpty(phrase))
+            {
+                TTSManager.Instance.ActiveEngine.Speak(phrase);
+            }
+        }
+
 
         private void autoComplete(LetterListItemWidget letterListItemWidget)
         {

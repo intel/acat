@@ -14,12 +14,13 @@
 
         <WidgetAttribute name="B1" label="  Y/N" value="@CmdYesNoResponse" fontname="&characterButtonBlackFontName;" italic="true" fontsize="&characterButtonFontSize;"  bold="false"  />
         <WidgetAttribute name="B2" label="h" value="@CmdEnterKey" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
-        <WidgetAttribute name="B3" label="P" value="@CmdSaveToCanned" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"   bold="&usebold;" />
+        <!--<WidgetAttribute name="B3" label="P" value="@CmdSaveToCanned" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"   bold="&usebold;" />-->
+		<WidgetAttribute name="B3" label="k" value="@CmdUndoLastEditChange" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="&usebold;"  />
 
-        <WidgetAttribute name="B4" label="y" value="@CmdDelPrevWord" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;"  />
-        <WidgetAttribute name="B5" label="w" value="@CmdBackSpace" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
-        <WidgetAttribute name="B6" label="k" value="@CmdUndoLastEditChange" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="&usebold;"  />
-
+		<WidgetAttribute name="B4" label="L&amp;R" value="@CmdToggleLnR" fontname="&characterButtonBlackFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;"  />
+		<WidgetAttribute name="B5" label="y" value="@CmdDelPrevWord" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;"  />
+        <WidgetAttribute name="B6" label="w" value="@CmdBackSpace" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
+        
         <WidgetAttribute name="B7" label="Mode" value="@CmdEntryModeSelect" fontname="&characterButtonBlackFontName;" italic="true" fontsize="&characterButtonFontSize;"  bold="false"  />
         <WidgetAttribute name="B8" label="b" value="@CmdSpeak" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="&usebold;"  />
         <WidgetAttribute name="B9" label="a" value="@CmdTalkWindowClear" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;"  />
@@ -73,7 +74,7 @@
             </Widget>
 
             <Widget class="RowWidget" name="RowL2">
-                <Widget class="ScannerButton" name="B4" colorScheme="ScannerButton"  enabled="contextual" defaultEnabled="true"/>
+                <Widget class="ScannerButton" name="B4" colorScheme="ScannerButton"  enabled="false" defaultEnabled="false"/>
                 <Widget class="ScannerButton" name="B5" colorScheme="ScannerButton"  enabled="contextual" defaultEnabled="true"/>
                 <Widget class="ScannerButton" name="B6" colorScheme="ScannerButton"  enabled="contextual" defaultEnabled="true"/>
             </Widget>

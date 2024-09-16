@@ -53,6 +53,16 @@
         highlightForeground="#232433"/>
         <!--highlightBackground="#FFAA00"
         highlightForeground="#232433"/>-->
+
+    <ColorScheme name="PhraseButton"
+        background="#FFE7FF"
+        foreground="Black"
+        highlightSelectedBackground="Blue"
+        highlightSelectedForeground="White"
+        highlightBackground="#ffaa00"
+        highlightForeground="#232433"/>
+		<!--highlightBackground="#FFAA00"
+        highlightForeground="#232433"/>-->
         
 
      <ColorScheme name="DisabledScannerButton"
@@ -112,6 +122,8 @@
       <ColorScheme name="TalkWindow"
         background="#C1C2D3"
         foreground="#232433"/>
+		
+		
 		
 <!--BCI Colors-->
 <!--

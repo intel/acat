@@ -1,7 +1,7 @@
 ﻿
 namespace ACAT.Extensions.Default.UI.UserControls
 {
-    partial class WordPredictionUserControl
+    partial class WordPredictionUserControl2
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,7 +29,6 @@ namespace ACAT.Extensions.Default.UI.UserControls
         /// </summary>
         private void InitializeComponent()
         {
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.WordPredictionBox = new System.Windows.Forms.TableLayoutPanel();
             this.PWLItem1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.PWLItem2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
@@ -41,31 +40,8 @@ namespace ACAT.Extensions.Default.UI.UserControls
             this.PWLItem8 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.PWLItem9 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.PWLItem10 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.PhrasesBox = new System.Windows.Forms.TableLayoutPanel();
-            this.Phrase1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.Phrase2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.Phrase3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.Phrase4 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.Phrase5 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.tableLayoutPanel1.SuspendLayout();
             this.WordPredictionBox.SuspendLayout();
-            this.PhrasesBox.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 66.66666F));
-            this.tableLayoutPanel1.Controls.Add(this.WordPredictionBox, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.PhrasesBox, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(655, 375);
-            this.tableLayoutPanel1.TabIndex = 0;
             // 
             // WordPredictionBox
             // 
@@ -84,7 +60,7 @@ namespace ACAT.Extensions.Default.UI.UserControls
             this.WordPredictionBox.Controls.Add(this.PWLItem9, 1, 3);
             this.WordPredictionBox.Controls.Add(this.PWLItem10, 1, 4);
             this.WordPredictionBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.WordPredictionBox.Location = new System.Drawing.Point(221, 3);
+            this.WordPredictionBox.Location = new System.Drawing.Point(0, 0);
             this.WordPredictionBox.Name = "WordPredictionBox";
             this.WordPredictionBox.RowCount = 5;
             this.WordPredictionBox.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
@@ -92,8 +68,8 @@ namespace ACAT.Extensions.Default.UI.UserControls
             this.WordPredictionBox.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.WordPredictionBox.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.WordPredictionBox.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.WordPredictionBox.Size = new System.Drawing.Size(431, 369);
-            this.WordPredictionBox.TabIndex = 1;
+            this.WordPredictionBox.Size = new System.Drawing.Size(655, 375);
+            this.WordPredictionBox.TabIndex = 0;
             // 
             // PWLItem1
             // 
@@ -109,7 +85,7 @@ namespace ACAT.Extensions.Default.UI.UserControls
             this.PWLItem1.Location = new System.Drawing.Point(3, 3);
             this.PWLItem1.Name = "PWLItem1";
             this.PWLItem1.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.PWLItem1.Size = new System.Drawing.Size(209, 67);
+            this.PWLItem1.Size = new System.Drawing.Size(321, 69);
             this.PWLItem1.TabIndex = 0;
             this.PWLItem1.Text = "scannerRoundedButtonControl1";
             this.PWLItem1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -127,10 +103,10 @@ namespace ACAT.Extensions.Default.UI.UserControls
             this.PWLItem2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PWLItem2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PWLItem2.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PWLItem2.Location = new System.Drawing.Point(3, 76);
+            this.PWLItem2.Location = new System.Drawing.Point(3, 78);
             this.PWLItem2.Name = "PWLItem2";
             this.PWLItem2.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.PWLItem2.Size = new System.Drawing.Size(209, 67);
+            this.PWLItem2.Size = new System.Drawing.Size(321, 69);
             this.PWLItem2.TabIndex = 1;
             this.PWLItem2.Text = "scannerRoundedButtonControl2";
             this.PWLItem2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -148,10 +124,10 @@ namespace ACAT.Extensions.Default.UI.UserControls
             this.PWLItem3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PWLItem3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PWLItem3.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PWLItem3.Location = new System.Drawing.Point(3, 149);
+            this.PWLItem3.Location = new System.Drawing.Point(3, 153);
             this.PWLItem3.Name = "PWLItem3";
             this.PWLItem3.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.PWLItem3.Size = new System.Drawing.Size(209, 67);
+            this.PWLItem3.Size = new System.Drawing.Size(321, 69);
             this.PWLItem3.TabIndex = 2;
             this.PWLItem3.Text = "scannerRoundedButtonControl3";
             this.PWLItem3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -169,10 +145,10 @@ namespace ACAT.Extensions.Default.UI.UserControls
             this.PWLItem4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PWLItem4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PWLItem4.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PWLItem4.Location = new System.Drawing.Point(3, 222);
+            this.PWLItem4.Location = new System.Drawing.Point(3, 228);
             this.PWLItem4.Name = "PWLItem4";
             this.PWLItem4.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.PWLItem4.Size = new System.Drawing.Size(209, 67);
+            this.PWLItem4.Size = new System.Drawing.Size(321, 69);
             this.PWLItem4.TabIndex = 3;
             this.PWLItem4.Text = "scannerRoundedButtonControl4";
             this.PWLItem4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -190,10 +166,10 @@ namespace ACAT.Extensions.Default.UI.UserControls
             this.PWLItem5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PWLItem5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PWLItem5.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PWLItem5.Location = new System.Drawing.Point(3, 295);
+            this.PWLItem5.Location = new System.Drawing.Point(3, 303);
             this.PWLItem5.Name = "PWLItem5";
             this.PWLItem5.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.PWLItem5.Size = new System.Drawing.Size(209, 71);
+            this.PWLItem5.Size = new System.Drawing.Size(321, 69);
             this.PWLItem5.TabIndex = 4;
             this.PWLItem5.Text = "scannerRoundedButtonControl5";
             this.PWLItem5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -211,10 +187,10 @@ namespace ACAT.Extensions.Default.UI.UserControls
             this.PWLItem6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PWLItem6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PWLItem6.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PWLItem6.Location = new System.Drawing.Point(218, 3);
+            this.PWLItem6.Location = new System.Drawing.Point(330, 3);
             this.PWLItem6.Name = "PWLItem6";
             this.PWLItem6.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.PWLItem6.Size = new System.Drawing.Size(210, 67);
+            this.PWLItem6.Size = new System.Drawing.Size(322, 69);
             this.PWLItem6.TabIndex = 5;
             this.PWLItem6.Text = "scannerRoundedButtonControl6";
             this.PWLItem6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -232,10 +208,10 @@ namespace ACAT.Extensions.Default.UI.UserControls
             this.PWLItem7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PWLItem7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PWLItem7.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PWLItem7.Location = new System.Drawing.Point(218, 76);
+            this.PWLItem7.Location = new System.Drawing.Point(330, 78);
             this.PWLItem7.Name = "PWLItem7";
             this.PWLItem7.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.PWLItem7.Size = new System.Drawing.Size(210, 67);
+            this.PWLItem7.Size = new System.Drawing.Size(322, 69);
             this.PWLItem7.TabIndex = 6;
             this.PWLItem7.Text = "scannerRoundedButtonControl7";
             this.PWLItem7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -253,10 +229,10 @@ namespace ACAT.Extensions.Default.UI.UserControls
             this.PWLItem8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PWLItem8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PWLItem8.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PWLItem8.Location = new System.Drawing.Point(218, 149);
+            this.PWLItem8.Location = new System.Drawing.Point(330, 153);
             this.PWLItem8.Name = "PWLItem8";
             this.PWLItem8.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.PWLItem8.Size = new System.Drawing.Size(210, 67);
+            this.PWLItem8.Size = new System.Drawing.Size(322, 69);
             this.PWLItem8.TabIndex = 7;
             this.PWLItem8.Text = "scannerRoundedButtonControl8";
             this.PWLItem8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -274,10 +250,10 @@ namespace ACAT.Extensions.Default.UI.UserControls
             this.PWLItem9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PWLItem9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PWLItem9.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PWLItem9.Location = new System.Drawing.Point(218, 222);
+            this.PWLItem9.Location = new System.Drawing.Point(330, 228);
             this.PWLItem9.Name = "PWLItem9";
             this.PWLItem9.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.PWLItem9.Size = new System.Drawing.Size(210, 67);
+            this.PWLItem9.Size = new System.Drawing.Size(322, 69);
             this.PWLItem9.TabIndex = 8;
             this.PWLItem9.Text = "scannerRoundedButtonControl9";
             this.PWLItem9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -295,160 +271,31 @@ namespace ACAT.Extensions.Default.UI.UserControls
             this.PWLItem10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PWLItem10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PWLItem10.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PWLItem10.Location = new System.Drawing.Point(218, 295);
+            this.PWLItem10.Location = new System.Drawing.Point(330, 303);
             this.PWLItem10.Name = "PWLItem10";
             this.PWLItem10.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.PWLItem10.Size = new System.Drawing.Size(210, 71);
+            this.PWLItem10.Size = new System.Drawing.Size(322, 69);
             this.PWLItem10.TabIndex = 9;
             this.PWLItem10.Text = "scannerRoundedButtonControl10";
             this.PWLItem10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.PWLItem10.UseMnemonic = false;
             this.PWLItem10.UseVisualStyleBackColor = true;
             // 
-            // PhrasesBox
-            // 
-            this.PhrasesBox.ColumnCount = 1;
-            this.PhrasesBox.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.PhrasesBox.Controls.Add(this.Phrase5, 0, 4);
-            this.PhrasesBox.Controls.Add(this.Phrase4, 0, 3);
-            this.PhrasesBox.Controls.Add(this.Phrase3, 0, 2);
-            this.PhrasesBox.Controls.Add(this.Phrase2, 0, 1);
-            this.PhrasesBox.Controls.Add(this.Phrase1, 0, 0);
-            this.PhrasesBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PhrasesBox.Location = new System.Drawing.Point(3, 3);
-            this.PhrasesBox.Name = "PhrasesBox";
-            this.PhrasesBox.RowCount = 5;
-            this.PhrasesBox.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.PhrasesBox.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.PhrasesBox.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.PhrasesBox.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.PhrasesBox.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.PhrasesBox.Size = new System.Drawing.Size(212, 369);
-            this.PhrasesBox.TabIndex = 2;
-            // 
-            // Phrase1
-            // 
-            this.Phrase1.BorderColor = System.Drawing.Color.DimGray;
-            this.Phrase1.BorderRadiusBottomLeft = 12;
-            this.Phrase1.BorderRadiusBottomRight = 12;
-            this.Phrase1.BorderRadiusTopLeft = 12;
-            this.Phrase1.BorderRadiusTopRight = 12;
-            this.Phrase1.BorderWidth = 3F;
-            this.Phrase1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Phrase1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Phrase1.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Phrase1.Location = new System.Drawing.Point(3, 3);
-            this.Phrase1.Name = "Phrase1";
-            this.Phrase1.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.Phrase1.Size = new System.Drawing.Size(206, 67);
-            this.Phrase1.TabIndex = 1;
-            this.Phrase1.Text = ".";
-            this.Phrase1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Phrase1.UseMnemonic = false;
-            this.Phrase1.UseVisualStyleBackColor = true;
-            // 
-            // Phrase2
-            // 
-            this.Phrase2.BorderColor = System.Drawing.Color.DimGray;
-            this.Phrase2.BorderRadiusBottomLeft = 12;
-            this.Phrase2.BorderRadiusBottomRight = 12;
-            this.Phrase2.BorderRadiusTopLeft = 12;
-            this.Phrase2.BorderRadiusTopRight = 12;
-            this.Phrase2.BorderWidth = 3F;
-            this.Phrase2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Phrase2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Phrase2.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Phrase2.Location = new System.Drawing.Point(3, 76);
-            this.Phrase2.Name = "Phrase2";
-            this.Phrase2.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.Phrase2.Size = new System.Drawing.Size(206, 67);
-            this.Phrase2.TabIndex = 2;
-            this.Phrase2.Text = ".";
-            this.Phrase2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Phrase2.UseMnemonic = false;
-            this.Phrase2.UseVisualStyleBackColor = true;
-            // 
-            // Phrase3
-            // 
-            this.Phrase3.BorderColor = System.Drawing.Color.DimGray;
-            this.Phrase3.BorderRadiusBottomLeft = 12;
-            this.Phrase3.BorderRadiusBottomRight = 12;
-            this.Phrase3.BorderRadiusTopLeft = 12;
-            this.Phrase3.BorderRadiusTopRight = 12;
-            this.Phrase3.BorderWidth = 3F;
-            this.Phrase3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Phrase3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Phrase3.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Phrase3.Location = new System.Drawing.Point(3, 149);
-            this.Phrase3.Name = "Phrase3";
-            this.Phrase3.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.Phrase3.Size = new System.Drawing.Size(206, 67);
-            this.Phrase3.TabIndex = 3;
-            this.Phrase3.Text = ".";
-            this.Phrase3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Phrase3.UseMnemonic = false;
-            this.Phrase3.UseVisualStyleBackColor = true;
-            // 
-            // Phrase4
-            // 
-            this.Phrase4.BorderColor = System.Drawing.Color.DimGray;
-            this.Phrase4.BorderRadiusBottomLeft = 12;
-            this.Phrase4.BorderRadiusBottomRight = 12;
-            this.Phrase4.BorderRadiusTopLeft = 12;
-            this.Phrase4.BorderRadiusTopRight = 12;
-            this.Phrase4.BorderWidth = 3F;
-            this.Phrase4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Phrase4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Phrase4.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Phrase4.Location = new System.Drawing.Point(3, 222);
-            this.Phrase4.Name = "Phrase4";
-            this.Phrase4.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.Phrase4.Size = new System.Drawing.Size(206, 67);
-            this.Phrase4.TabIndex = 4;
-            this.Phrase4.Text = ".";
-            this.Phrase4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Phrase4.UseMnemonic = false;
-            this.Phrase4.UseVisualStyleBackColor = true;
-            // 
-            // Phrase5
-            // 
-            this.Phrase5.BorderColor = System.Drawing.Color.DimGray;
-            this.Phrase5.BorderRadiusBottomLeft = 12;
-            this.Phrase5.BorderRadiusBottomRight = 12;
-            this.Phrase5.BorderRadiusTopLeft = 12;
-            this.Phrase5.BorderRadiusTopRight = 12;
-            this.Phrase5.BorderWidth = 3F;
-            this.Phrase5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Phrase5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Phrase5.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Phrase5.Location = new System.Drawing.Point(3, 295);
-            this.Phrase5.Name = "Phrase5";
-            this.Phrase5.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.Phrase5.Size = new System.Drawing.Size(206, 71);
-            this.Phrase5.TabIndex = 5;
-            this.Phrase5.Text = ".";
-            this.Phrase5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Phrase5.UseMnemonic = false;
-            this.Phrase5.UseVisualStyleBackColor = true;
-            // 
             // WordPredictionUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.WordPredictionBox);
             this.Name = "WordPredictionUserControl";
             this.Size = new System.Drawing.Size(655, 375);
-            this.tableLayoutPanel1.ResumeLayout(false);
             this.WordPredictionBox.ResumeLayout(false);
-            this.PhrasesBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel WordPredictionBox;
         private Lib.Core.WidgetManagement.ScannerRoundedButtonControl PWLItem1;
         private Lib.Core.WidgetManagement.ScannerRoundedButtonControl PWLItem2;
@@ -460,11 +307,5 @@ namespace ACAT.Extensions.Default.UI.UserControls
         private Lib.Core.WidgetManagement.ScannerRoundedButtonControl PWLItem8;
         private Lib.Core.WidgetManagement.ScannerRoundedButtonControl PWLItem9;
         private Lib.Core.WidgetManagement.ScannerRoundedButtonControl PWLItem10;
-        private System.Windows.Forms.TableLayoutPanel PhrasesBox;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl Phrase5;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl Phrase4;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl Phrase3;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl Phrase2;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl Phrase1;
     }
 }

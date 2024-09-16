@@ -15,13 +15,16 @@
 using ACAT.Lib.Core.AnimationManagement;
 using ACAT.Lib.Core.Audit;
 using ACAT.Lib.Core.PanelManagement;
+using ACAT.Lib.Core.ThemeManagement;
 using ACAT.Lib.Core.TTSManagement;
 using ACAT.Lib.Core.UserControlManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Lib.Core.Widgets;
 using ACAT.Lib.Core.WordPredictionManagement;
 using ACAT.Lib.Extension;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace ACAT.Extensions.Default.UI.UserControls
@@ -80,8 +83,13 @@ namespace ACAT.Extensions.Default.UI.UserControls
 
             _keyboardCommon.AnimationManager.EvtPlayerStateChanged += AnimationManager_EvtPlayerStateChanged;
 
+            Context.AppWordPredictionManager.ActiveWordPredictor.EvtModeChanged += ActiveWordPredictor_EvtModeChanged;
+
+            setColorScheme();
+
             return retVal;
         }
+
 
         public void OnLoad()
         {
@@ -151,6 +159,35 @@ namespace ACAT.Extensions.Default.UI.UserControls
             {
                 WordPredictionManager.Instance.ActiveWordPredictor.Learn(text, WordPredictorMessageTypes.LearnCanned);
             }
+        }
+
+        private void ActiveWordPredictor_EvtModeChanged(WordPredictionModes newMode)
+        {
+            setColorScheme();
+        }
+
+        private void setColorScheme()
+        {
+            List<Widget> widgets = new List<Widget>();
+            _keyboardCommon.RootWidget.Finder.FindAllChildren(typeof(SentenceListItemWidget), widgets);
+
+            if (Context.AppWordPredictionManager.ActiveWordPredictor.GetMode() == WordPredictionModes.CannedPhrases)
+            {
+                foreach (Widget widget in widgets)
+                {
+                    widget.Colors = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(ColorSchemes.PhraseSchemeName);
+                    widget.HighlightOff();
+                }
+            }
+            else
+            {
+
+                foreach (Widget widget in widgets)
+                {
+                    widget.Colors = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(ColorSchemes.ScannerButtonSchemeName);
+                    widget.HighlightOff();
+                }
+            }   
         }
     }
 }

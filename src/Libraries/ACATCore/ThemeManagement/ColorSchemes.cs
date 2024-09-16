@@ -81,6 +81,11 @@ namespace ACAT.Lib.Core.ThemeManagement
         /// </summary>
         public static String WordListItemSchemeName = "WordListItemButton";
 
+        public static String PhraseSchemeName = "PhraseButton";
+
+        public static String ScannerButtonSchemeName = "ScannerButton";
+
+
         /// <summary>
         /// Maps the name of a color scheme to the color scheme object
         /// </summary>

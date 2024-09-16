@@ -16,14 +16,7 @@
         <WidgetAttribute name="PWLItem8" label=" " value="@PWLItem8" fontname="&buttonFontName;" fontsize="24"  bold="&usebold;"/>
         <WidgetAttribute name="PWLItem9" label=" " value="@PWLItem9" fontname="&buttonFontName;" fontsize="24"  bold="&usebold;"/>
         <WidgetAttribute name="PWLItem10" label=" " value="@PWLItem10" fontname="&buttonFontName;" fontsize="24"  bold="&usebold;"/>
-
-		<WidgetAttribute name="Phrase1" label="Thank you" value="Thank you" fontname="&buttonFontName;" fontsize="24"  bold="&usebold;"/>
-		<WidgetAttribute name="Phrase2" label="Yes" value="Yes" fontname="&buttonFontName;" fontsize="24"  bold="&usebold;"/>
-		<WidgetAttribute name="Phrase3" label="No" value="No" fontname="&buttonFontName;" fontsize="24"  bold="&usebold;"/>
-		<WidgetAttribute name="Phrase4" label="Please repeat" value="Please repeat" fontname="&buttonFontName;" fontsize="24"  bold="&usebold;"/>
-		<WidgetAttribute name="Phrase5" label="Louder please" value="Louder please" fontname="&buttonFontName;" fontsize="24"  bold="&usebold;"/>
-
-	</WidgetAttributes>
+    </WidgetAttributes>
 
     <Layout>
 
@@ -39,44 +32,15 @@
             <Widget class="WordListItemWidget" name="PWLItem9" colorScheme="ScannerButton"  />
             <Widget class="WordListItemWidget" name="PWLItem10" colorScheme="ScannerButton"  />
         </Widget>
-
-		<Widget class="WinControlWidget" name="PhrasesBox">
-			<Widget class="PhraseListItemWidget" name="Phrase1" colorScheme="PhraseButton"  />
-			<Widget class="PhraseListItemWidget" name="Phrase2" colorScheme="PhraseButton"  />
-			<Widget class="PhraseListItemWidget" name="Phrase3" colorScheme="PhraseButton"  />
-			<Widget class="PhraseListItemWidget" name="Phrase4" colorScheme="PhraseButton"  />
-			<Widget class="PhraseListItemWidget" name="Phrase5" colorScheme="PhraseButton"  />
-		</Widget>
     </Layout>
 
     <Animations>
         <Animation name="TopLevelRotationWP"
                    start="true"
                    iterations="1">
-			<Widget name="PhrasesBox" onSelect="transition(PhrasesRotation)"/>
-			<Widget name="WordPredictionBox" onSelect="transition(WordListRotation)"/>
+            <Widget name="WordPredictionBox" onSelect="transition(WordListRotation)"/>
         </Animation>
-<!--
-		<Animation name="SecondLevelAnimation"
-                       iterations="4"
-                       firstPauseTime="@WordPredictionFirstPauseTime"
-                       onEnd="transition(TopLevelRotationWP)">
-			<Widget name="PhrasesBox" onSelect="transition(PhrasesRotation)"/>
-			<Widget name="WordPredictionBox" onSelect="transition(WordListRotation)"/>
-		</Animation>
--->
-		<Animation name="PhrasesRotation"
-                       iterations="@WordPredictionScanIterations"
-                       firstPauseTime="@WordPredictionFirstPauseTime"
-                       onSelect="actuate(@SelectedWidget); transition(TopLevelRotationWP)"
-                       onEnd="transition(TopLevelRotationWP)">
-			<Widget name="Phrase1"/>
-			<Widget name="Phrase2"/>
-			<Widget name="Phrase3"/>
-			<Widget name="Phrase4"/>
-			<Widget name="Phrase5"/>
-		</Animation>
-		
+
         <Animation name="WordListRotation"
                        iterations="@WordPredictionScanIterations"
                        firstPauseTime="@WordPredictionFirstPauseTime"

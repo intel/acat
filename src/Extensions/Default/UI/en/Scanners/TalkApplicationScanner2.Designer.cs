@@ -1,6 +1,6 @@
 ﻿namespace ACAT.Extensions.Default.UI.Scanners
 {
-    partial class TalkApplicationScanner
+    partial class TalkApplicationScanner2
     {
         /// <summary>
         /// Required designer variable.
@@ -28,18 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TalkApplicationScanner));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TalkApplicationScanner2));
             this.ScannerBorder = new System.Windows.Forms.TableLayoutPanel();
             this.panelKeyboard = new System.Windows.Forms.Panel();
             this.tableLayoutTop = new System.Windows.Forms.TableLayoutPanel();
+            this.panelWordPrediction = new System.Windows.Forms.Panel();
+            this.panelSentencePrediction = new System.Windows.Forms.Panel();
+            this.panelTextBox = new System.Windows.Forms.Panel();
             this.labelCurrentTypingMode = new System.Windows.Forms.Label();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.panelWordPrediction = new System.Windows.Forms.Panel();
-            this.panelSentencePrediction = new System.Windows.Forms.Panel();
-            this.panelTextBox = new System.Windows.Forms.Panel();
             this.ScannerBorder.SuspendLayout();
             this.tableLayoutTop.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -74,48 +74,74 @@
             // 
             // tableLayoutTop
             // 
+            this.tableLayoutTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.tableLayoutTop.ColumnCount = 2;
             this.tableLayoutTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutTop.Controls.Add(this.labelCurrentTypingMode, 1, 0);
-            this.tableLayoutTop.Controls.Add(this.panelWordPrediction, 0, 0);
-            this.tableLayoutTop.Controls.Add(this.panelSentencePrediction, 0, 7);
-            this.tableLayoutTop.Controls.Add(this.panelTextBox, 1, 2);
+            this.tableLayoutTop.Controls.Add(this.panelWordPrediction, 0, 2);
+            this.tableLayoutTop.Controls.Add(this.panelSentencePrediction, 1, 0);
+            this.tableLayoutTop.Controls.Add(this.panelTextBox, 1, 5);
+            this.tableLayoutTop.Controls.Add(this.labelCurrentTypingMode, 0, 0);
             this.tableLayoutTop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutTop.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutTop.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutTop.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutTop.Name = "tableLayoutTop";
-            this.tableLayoutTop.RowCount = 14;
-            this.tableLayoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.142857F));
-            this.tableLayoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.142857F));
-            this.tableLayoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.142857F));
-            this.tableLayoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.142857F));
-            this.tableLayoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.142857F));
-            this.tableLayoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.142857F));
-            this.tableLayoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.142857F));
-            this.tableLayoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.142857F));
-            this.tableLayoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.142857F));
-            this.tableLayoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.142857F));
-            this.tableLayoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.142857F));
-            this.tableLayoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.142857F));
-            this.tableLayoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.142857F));
-            this.tableLayoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.142857F));
-            this.tableLayoutTop.Size = new System.Drawing.Size(1178, 641);
+            this.tableLayoutTop.RowCount = 7;
+            this.tableLayoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.tableLayoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.tableLayoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.tableLayoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.tableLayoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.tableLayoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.tableLayoutTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
+            this.tableLayoutTop.Size = new System.Drawing.Size(1184, 647);
             this.tableLayoutTop.TabIndex = 6;
+            // 
+            // panelWordPrediction
+            // 
+            this.panelWordPrediction.BackColor = System.Drawing.Color.Black;
+            this.panelWordPrediction.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelWordPrediction.Location = new System.Drawing.Point(0, 184);
+            this.panelWordPrediction.Margin = new System.Windows.Forms.Padding(0);
+            this.panelWordPrediction.Name = "panelWordPrediction";
+            this.tableLayoutTop.SetRowSpan(this.panelWordPrediction, 5);
+            this.panelWordPrediction.Size = new System.Drawing.Size(592, 463);
+            this.panelWordPrediction.TabIndex = 0;
+            // 
+            // panelSentencePrediction
+            // 
+            this.panelSentencePrediction.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelSentencePrediction.Location = new System.Drawing.Point(592, 0);
+            this.panelSentencePrediction.Margin = new System.Windows.Forms.Padding(0);
+            this.panelSentencePrediction.Name = "panelSentencePrediction";
+            this.tableLayoutTop.SetRowSpan(this.panelSentencePrediction, 5);
+            this.panelSentencePrediction.Size = new System.Drawing.Size(592, 460);
+            this.panelSentencePrediction.TabIndex = 2;
+            // 
+            // panelTextBox
+            // 
+            this.panelTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.panelTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelTextBox.Location = new System.Drawing.Point(619, 472);
+            this.panelTextBox.Margin = new System.Windows.Forms.Padding(27, 12, 10, 6);
+            this.panelTextBox.Name = "panelTextBox";
+            this.tableLayoutTop.SetRowSpan(this.panelTextBox, 2);
+            this.panelTextBox.Size = new System.Drawing.Size(555, 169);
+            this.panelTextBox.TabIndex = 3;
             // 
             // labelCurrentTypingMode
             // 
             this.labelCurrentTypingMode.AutoSize = true;
-            this.labelCurrentTypingMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.labelCurrentTypingMode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelCurrentTypingMode.Font = new System.Drawing.Font("Montserrat", 24F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCurrentTypingMode.Font = new System.Drawing.Font("Montserrat Black", 24F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelCurrentTypingMode.ForeColor = System.Drawing.Color.Gainsboro;
-            this.labelCurrentTypingMode.Location = new System.Drawing.Point(592, 0);
+            this.labelCurrentTypingMode.Location = new System.Drawing.Point(4, 0);
+            this.labelCurrentTypingMode.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelCurrentTypingMode.Name = "labelCurrentTypingMode";
             this.tableLayoutTop.SetRowSpan(this.labelCurrentTypingMode, 2);
-            this.labelCurrentTypingMode.Size = new System.Drawing.Size(583, 90);
-            this.labelCurrentTypingMode.TabIndex = 0;
-            this.labelCurrentTypingMode.Text = "Test";
-            this.labelCurrentTypingMode.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelCurrentTypingMode.Size = new System.Drawing.Size(584, 184);
+            this.labelCurrentTypingMode.TabIndex = 4;
+            this.labelCurrentTypingMode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // statusStrip
             // 
@@ -158,34 +184,7 @@
             this.toolStripStatusLabel3.Size = new System.Drawing.Size(131, 17);
             this.toolStripStatusLabel3.Text = "toolStripStatusLabel3";
             // 
-            // panelWordPrediction
-            // 
-            this.panelWordPrediction.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelWordPrediction.Location = new System.Drawing.Point(3, 3);
-            this.panelWordPrediction.Name = "panelWordPrediction";
-            this.tableLayoutTop.SetRowSpan(this.panelWordPrediction, 7);
-            this.panelWordPrediction.Size = new System.Drawing.Size(583, 309);
-            this.panelWordPrediction.TabIndex = 1;
-            // 
-            // panelSentencePrediction
-            // 
-            this.panelSentencePrediction.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelSentencePrediction.Location = new System.Drawing.Point(3, 318);
-            this.panelSentencePrediction.Name = "panelSentencePrediction";
-            this.tableLayoutTop.SetRowSpan(this.panelSentencePrediction, 7);
-            this.panelSentencePrediction.Size = new System.Drawing.Size(583, 320);
-            this.panelSentencePrediction.TabIndex = 2;
-            // 
-            // panelTextBox
-            // 
-            this.panelTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelTextBox.Location = new System.Drawing.Point(592, 93);
-            this.panelTextBox.Name = "panelTextBox";
-            this.tableLayoutTop.SetRowSpan(this.panelTextBox, 12);
-            this.panelTextBox.Size = new System.Drawing.Size(583, 545);
-            this.panelTextBox.TabIndex = 3;
-            // 
-            // TalkApplicationScanner
+            // TalkApplicationScanner2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -198,7 +197,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "TalkApplicationScanner";
+            this.Name = "TalkApplicationScanner2";
             this.Text = "Talk App";
             this.TopMost = true;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -221,9 +220,9 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
         private System.Windows.Forms.Panel panelKeyboard;
         private System.Windows.Forms.TableLayoutPanel tableLayoutTop;
-        private System.Windows.Forms.Label labelCurrentTypingMode;
         private System.Windows.Forms.Panel panelWordPrediction;
         private System.Windows.Forms.Panel panelSentencePrediction;
         private System.Windows.Forms.Panel panelTextBox;
+        private System.Windows.Forms.Label labelCurrentTypingMode;
     }
 }

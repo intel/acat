@@ -55,7 +55,8 @@
         <WidgetAttribute name="B32" label="    B" value="b" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;"  />
         <WidgetAttribute name="B33" label="    N" value="n" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
         <WidgetAttribute name="B34" label="    M" value="m" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
-        <WidgetAttribute name="B35" label="P" value="@CmdSaveToCanned" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"   bold="&usebold;" />
+        <!--<WidgetAttribute name="B35" label="P" value="@CmdSaveToCanned" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"   bold="&usebold;" />-->
+		<WidgetAttribute name="B35" label="L&amp;R" value="@CmdToggleLnR" fontname="&characterButtonBlackFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;"  />
 
         <WidgetAttribute name="B36" label="b" value="@CmdSpeak" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="&usebold;"  />
         <WidgetAttribute name="B37" label="k" value="@CmdUndoLastEditChange" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="&usebold;"  />
@@ -122,7 +123,7 @@
                 <Widget class="ScannerButton" name="B32" colorScheme="ScannerButton"/>
                 <Widget class="ScannerButton" name="B33" colorScheme="ScannerButton"/>
                 <Widget class="ScannerButton" name="B34" colorScheme="ScannerButton"/>
-                <Widget class="ScannerButton" name="B35" colorScheme="ScannerButton"  enabled="contextual" defaultEnabled="false"/>
+				<Widget class="ScannerButton" name="B35" colorScheme="ScannerButton"  enabled="false" defaultEnabled="false"/>
             </Widget>
 
             <Widget class="RowWidget" name="RowR4">

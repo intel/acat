@@ -89,6 +89,12 @@
     <Compile Include="SentencePredictionUserControl.Designer.cs">
       <DependentUpon>SentencePredictionUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="WordPredictionUserControl2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WordPredictionUserControl2.Designer.cs">
+      <DependentUpon>WordPredictionUserControl2.cs</DependentUpon>
+    </Compile>
     <Compile Include="WordPredictionUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -114,6 +120,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SentencePredictionUserControl.resx">
       <DependentUpon>SentencePredictionUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WordPredictionUserControl2.resx">
+      <DependentUpon>WordPredictionUserControl2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WordPredictionUserControl.resx">
       <DependentUpon>WordPredictionUserControl.cs</DependentUpon>

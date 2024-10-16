@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Lib.Core.Audit;
 using ACAT.Lib.Core.Interpreter;
 using ACAT.Lib.Core.ThemeManagement;
 using ACAT.Lib.Core.Utility;
@@ -758,6 +759,14 @@ namespace ACAT.Lib.Core.WidgetManagement
             }
             else
             {
+                if (this is IButtonWidget)
+                {
+                    IButtonWidget button = (IButtonWidget)this;
+                    var value = (button.GetWidgetAttribute() != null) ? button.GetWidgetAttribute().Value : String.Empty;
+                    value = value ?? String.Empty;
+                    AuditLog.Audit(new AuditEventWidgetActuate(widgetName, value));
+                }
+                
                 if (EvtActuated != null)
                 {
                     Log.Debug("LARAM EvtActuated is not null.  Calling actuate for " + widgetName);

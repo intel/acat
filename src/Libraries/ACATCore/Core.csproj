@@ -233,6 +233,7 @@
     <Compile Include="Audit\AuditEventMouseMover.cs" />
     <Compile Include="Audit\AuditEventScannerActivity.cs" />
     <Compile Include="Audit\AuditEventScreenLock.cs" />
+    <Compile Include="Audit\AuditEventWidgetActuate.cs" />
     <Compile Include="Audit\AuditEventSwitchActuate.cs" />
     <Compile Include="Audit\AuditEventTextToSpeech.cs" />
     <Compile Include="Audit\AuditEventUISwitchDetect.cs" />

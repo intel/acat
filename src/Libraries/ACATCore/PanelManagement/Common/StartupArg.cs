@@ -61,11 +61,6 @@ namespace ACAT.Lib.Core.PanelManagement
         public String PanelClass { get; set; }
 
         /// <summary>
-        /// When the form closes, whether it should exit ACAT
-        /// </summary>
-        public bool QuitAppOnFormClose { get; set; }
-
-        /// <summary>
         /// Initializes the class
         /// </summary>
         private void init()
@@ -75,7 +70,6 @@ namespace ACAT.Lib.Core.PanelManagement
             DialogMode = false;
             Arg = null;
             AutoPosition = true;
-            QuitAppOnFormClose = false;
         }
     }
 }

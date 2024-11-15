@@ -93,6 +93,9 @@ namespace ACAT.Extensions.Default.UI.Scanners
 
             _dimScanner = true;
 
+            CoreGlobals.LnRMode = false;
+            CoreGlobals.SwitchLnR = false;
+
             _dispatcher = new Dispatcher(this);
         }
 
@@ -870,6 +873,14 @@ namespace ACAT.Extensions.Default.UI.Scanners
                         }
                         break;
 
+                    case "CmdToggleLnR":
+                        if (DialogUtils.ConfirmScanner(form, "Turn L&&R mode on?"))
+                        {
+                            CoreGlobals.SwitchLnR = true;
+                            Windows.CloseForm(form);
+                        }
+                        break;
+
                     default:
                         handled = false;
                         break;
@@ -930,6 +941,7 @@ namespace ACAT.Extensions.Default.UI.Scanners
                 Commands.Add(new CommandHandler("CmdEntryModeSelect"));
                 Commands.Add(new CommandHandler("CmdSaveToCanned"));
                 Commands.Add(new CommandHandler("CmdYesNoResponse"));
+                Commands.Add(new CommandHandler("CmdToggleLnR"));
             }
         }
     }

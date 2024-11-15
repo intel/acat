@@ -37,6 +37,10 @@ namespace ACAT.Lib.Core.Utility
 
         public static string MacroAssetsImagesDir = "$ASSETS_IMAGES_DIR";
 
+        public static bool LnRMode = false;
+
+        public static bool SwitchLnR = false;
+
         /// <summary>
         /// Default factory settings for the preferences
         /// </summary>

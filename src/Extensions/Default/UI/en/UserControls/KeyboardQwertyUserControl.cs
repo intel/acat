@@ -12,6 +12,7 @@
 
 using ACAT.Lib.Core.AnimationManagement;
 using ACAT.Lib.Core.PanelManagement;
+using ACAT.Lib.Core.ThemeManagement;
 using ACAT.Lib.Core.UserControlManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WidgetManagement;
@@ -72,6 +73,15 @@ namespace ACAT.Extensions.Default.UI.Scanners.UserControls
         {
             _keyboardCommon.OnLoad();
             _keyboardCommon.AnimationManager.OnLoad(_keyboardCommon.RootWidget);
+
+            if (CoreGlobals.LnRMode)
+            {
+                var widget = _keyboardCommon.RootWidget.Finder.FindChild("ButtonLnR");
+                if (widget != null)
+                {
+                    widget.Colors = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(ColorSchemes.LnRResponseButtonSchemeName);
+                }
+            }
         }
 
         public void OnPause()

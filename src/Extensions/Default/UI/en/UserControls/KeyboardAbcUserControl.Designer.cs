@@ -36,7 +36,7 @@ namespace ACAT.Extensions.Default.UI.Scanners.UserControls
             this.B2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.B3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.RowL2 = new System.Windows.Forms.TableLayoutPanel();
-            this.B4 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonLnR = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.B5 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.B6 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.RowL3 = new System.Windows.Forms.TableLayoutPanel();
@@ -227,7 +227,7 @@ namespace ACAT.Extensions.Default.UI.Scanners.UserControls
             this.RowL2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.RowL2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.RowL2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.RowL2.Controls.Add(this.B4, 0, 0);
+            this.RowL2.Controls.Add(this.ButtonLnR, 0, 0);
             this.RowL2.Controls.Add(this.B5, 1, 0);
             this.RowL2.Controls.Add(this.B6, 2, 0);
             this.RowL2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -239,24 +239,24 @@ namespace ACAT.Extensions.Default.UI.Scanners.UserControls
             this.RowL2.Size = new System.Drawing.Size(453, 84);
             this.RowL2.TabIndex = 1;
             // 
-            // B4
+            // ButtonLnR
             // 
-            this.B4.BorderColor = System.Drawing.Color.DimGray;
-            this.B4.BorderRadiusBottomLeft = 12;
-            this.B4.BorderRadiusBottomRight = 12;
-            this.B4.BorderRadiusTopLeft = 12;
-            this.B4.BorderRadiusTopRight = 12;
-            this.B4.BorderWidth = 3F;
-            this.B4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.B4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.B4.ForeColor = System.Drawing.Color.White;
-            this.B4.Location = new System.Drawing.Point(3, 3);
-            this.B4.Name = "B4";
-            this.B4.Size = new System.Drawing.Size(145, 78);
-            this.B4.TabIndex = 0;
-            this.B4.Text = ".";
-            this.B4.UseMnemonic = false;
-            this.B4.UseVisualStyleBackColor = true;
+            this.ButtonLnR.BorderColor = System.Drawing.Color.DimGray;
+            this.ButtonLnR.BorderRadiusBottomLeft = 12;
+            this.ButtonLnR.BorderRadiusBottomRight = 12;
+            this.ButtonLnR.BorderRadiusTopLeft = 12;
+            this.ButtonLnR.BorderRadiusTopRight = 12;
+            this.ButtonLnR.BorderWidth = 3F;
+            this.ButtonLnR.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ButtonLnR.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ButtonLnR.ForeColor = System.Drawing.Color.White;
+            this.ButtonLnR.Location = new System.Drawing.Point(3, 3);
+            this.ButtonLnR.Name = "ButtonLnR";
+            this.ButtonLnR.Size = new System.Drawing.Size(145, 78);
+            this.ButtonLnR.TabIndex = 0;
+            this.ButtonLnR.Text = ".";
+            this.ButtonLnR.UseMnemonic = false;
+            this.ButtonLnR.UseVisualStyleBackColor = true;
             // 
             // B5
             // 
@@ -1141,7 +1141,7 @@ namespace ACAT.Extensions.Default.UI.Scanners.UserControls
         private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B1;
         private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B2;
         private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B3;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B4;
+        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonLnR;
         private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B5;
         private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B6;
         private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B7;

@@ -87,6 +87,8 @@ namespace ACAT.Lib.Core.ThemeManagement
 
         public static String ScannerButtonSchemeName = "ScannerButton";
 
+        public static String LnRResponseButtonSchemeName = "LnRResponseButton";
+
 
         /// <summary>
         /// Maps the name of a color scheme to the color scheme object

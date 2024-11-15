@@ -17,7 +17,7 @@
         <!--<WidgetAttribute name="B3" label="P" value="@CmdSaveToCanned" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"   bold="&usebold;" />-->
 		<WidgetAttribute name="B3" label="k" value="@CmdUndoLastEditChange" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="&usebold;"  />
 
-		<WidgetAttribute name="B4" label="L&amp;R" value="@CmdToggleLnR" fontname="&characterButtonBlackFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;"  />
+		<WidgetAttribute name="ButtonLnR" label="L&amp;R" value="@CmdToggleLnR" fontname="&characterButtonBlackFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;"  />
 		<WidgetAttribute name="B5" label="y" value="@CmdDelPrevWord" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;"  />
         <WidgetAttribute name="B6" label="w" value="@CmdBackSpace" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
         
@@ -74,7 +74,7 @@
             </Widget>
 
             <Widget class="RowWidget" name="RowL2">
-                <Widget class="ScannerButton" name="B4" colorScheme="ScannerButton"  enabled="false" defaultEnabled="false"/>
+                <Widget class="ScannerButton" name="ButtonLnR" colorScheme="ScannerButton"/>
                 <Widget class="ScannerButton" name="B5" colorScheme="ScannerButton"  enabled="contextual" defaultEnabled="true"/>
                 <Widget class="ScannerButton" name="B6" colorScheme="ScannerButton"  enabled="contextual" defaultEnabled="true"/>
             </Widget>
@@ -177,7 +177,7 @@
                       onEnd="transition(TopLevelRotation)"
                       firstPauseTime="@FirstPauseTime"
                       onSelect="actuate(@SelectedWidget); transition(TopLevelRotation)">
-            <Widget name="B4" onSelect="actuate(@SelectedWidget); transition(ButtonPressed)"/>
+            <Widget name="ButtonLnR" />
             <Widget name="B5" onSelect="actuate(@SelectedWidget); transition(ButtonPressed)"/>
             <Widget name="B6"/>
 

@@ -54,6 +54,9 @@ namespace ACAT.Lib.Core.AgentManagement
     /// <returns>return true if handled</returns>
     public delegate bool ScannerHitTest(int x, int y);
 
+    public delegate void EditingModeSet(EditingMode oldMode, EditingMode newMode);
+
+
     /// <summary>
     /// Completion code of the Agent before it exits
     /// </summary>
@@ -111,6 +114,8 @@ namespace ACAT.Lib.Core.AgentManagement
         /// Root directory from which functional agents will be loaded
         /// </summary>
         public static String FunctionalAgentsRootDir = "FunctionalAgents";
+
+        public event EditingModeSet EvtEditingModeSet;
 
         /// <summary>
         /// Agent to handle Dialogs
@@ -300,8 +305,17 @@ namespace ACAT.Lib.Core.AgentManagement
         /// </summary>
         public EditingMode CurrentEditingMode
         {
-            get { return _currentEditingMode; }
-            set { _currentEditingMode = value; }
+            get 
+            { 
+                return _currentEditingMode; 
+            }
+            set 
+            {
+                var prevMode = _currentEditingMode;
+                _currentEditingMode = value; 
+
+                EvtEditingModeSet?.BeginInvoke(prevMode, value, null, null);
+            }
         }
 
         /// <summary>
@@ -1336,15 +1350,15 @@ namespace ACAT.Lib.Core.AgentManagement
                 TextController.IsKeyDown(Keys.LControlKey) ||
                 TextController.IsKeyDown(Keys.RControlKey))
             {
-                _currentEditingMode = EditingMode.Edit;
+                CurrentEditingMode = EditingMode.Edit;
             }
             else if (TextUtils.IsPrintable(keyEventArgs.KeyCode))
             {
-                _currentEditingMode = EditingMode.TextEntry;
+                CurrentEditingMode = EditingMode.TextEntry;
             }
             else
             {
-                _currentEditingMode = EditingMode.Edit;
+                CurrentEditingMode = EditingMode.Edit;
             }
 
             Log.Debug("_currentEditingMode: " + _currentEditingMode);

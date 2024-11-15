@@ -86,6 +86,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TalkApplicationScannerLnR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TalkApplicationScannerLnR.Designer.cs">
+      <DependentUpon>TalkApplicationScannerLnR.cs</DependentUpon>
+    </Compile>
     <Compile Include="TalkApplicationScanner2.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +113,10 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="TalkApplicationScannerLnR.resx">
+      <DependentUpon>TalkApplicationScannerLnR.cs</DependentUpon>
+      <Generator>ResXFileCodeGeneratorEx</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Include="TalkApplicationScanner2.resx">
       <DependentUpon>TalkApplicationScanner2.cs</DependentUpon>
       <Generator>ResXFileCodeGeneratorEx</Generator>

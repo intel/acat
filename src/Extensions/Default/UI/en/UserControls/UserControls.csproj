@@ -83,11 +83,23 @@
     <Compile Include="KeyboardQwertyUserControl.Designer.cs">
       <DependentUpon>KeyboardQwertyUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="SentencePredictionLnRUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SentencePredictionLnRUserControl.Designer.cs">
+      <DependentUpon>SentencePredictionLnRUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="SentencePredictionUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="SentencePredictionUserControl.Designer.cs">
       <DependentUpon>SentencePredictionUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WordPredictionUserControlLnR.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WordPredictionUserControlLnR.Designer.cs">
+      <DependentUpon>WordPredictionUserControlLnR.cs</DependentUpon>
     </Compile>
     <Compile Include="WordPredictionUserControl2.cs">
       <SubType>UserControl</SubType>
@@ -118,8 +130,14 @@
     <EmbeddedResource Include="KeyboardQwertyUserControl.resx">
       <DependentUpon>KeyboardQwertyUserControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SentencePredictionLnRUserControl.resx">
+      <DependentUpon>SentencePredictionLnRUserControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SentencePredictionUserControl.resx">
       <DependentUpon>SentencePredictionUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WordPredictionUserControlLnR.resx">
+      <DependentUpon>WordPredictionUserControlLnR.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WordPredictionUserControl2.resx">
       <DependentUpon>WordPredictionUserControl2.cs</DependentUpon>

@@ -80,7 +80,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         {
             Log.Debug("Predict for: " + request.Context);
             List<string> result;
-            if (request.PredictionType != PredictionTypes.CRGResponses)
+            if (request.PredictionType != PredictionTypes.LnRResponses)
             {
                 return new WordPredictionResponse(request, new List<String>(), false);
             }

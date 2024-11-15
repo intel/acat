@@ -7,46 +7,54 @@
       <AppName>ACAT Talk Application</AppName>
       <PanelClassConfigMaps>
         <PanelClassConfigMap>
-          <Default>true</Default>
+          <Default>false</Default>
           <Description>An alphabetically arranged keyboard with predictive text/sentences to help you communicate</Description>
-          <Name>TalkApplicationABC</Name>
-          <ScreenshotFileName>ABCKeyboardLayout.png</ScreenshotFileName>
-          <DisplayNameShort>Alphabetical</DisplayNameShort>
           <DisplayNameLong> ABC Keyboard Layout</DisplayNameLong>
+          <DisplayNameShort>Alphabetical</DisplayNameShort>
+          <Name>TalkApplicationABC</Name>
           <PanelClassConfigMapEntries>
             <PanelClassConfigMapEntry>
               <ConfigId>de5b9e7c-610f-463f-94f1-6b8dda9a35b3</ConfigId>
               <PanelClass>TalkApplicationScanner</PanelClass>
             </PanelClassConfigMapEntry>
+            <PanelClassConfigMapEntry>
+              <ConfigId>0ad3ce96-6be6-4e25-bf19-48ada3067834</ConfigId>
+              <PanelClass>TalkApplicationScannerLnR</PanelClass>
+            </PanelClassConfigMapEntry>
           </PanelClassConfigMapEntries>
+          <ScreenshotFileName>ABCKeyboardLayout.png</ScreenshotFileName>
         </PanelClassConfigMap>
         <PanelClassConfigMap>
-          <Default>false</Default>
+          <Default>true</Default>
           <Description>A full QWERTY keyboard with predictive text/sentences to help you communicate</Description>
-          <Name>TalkApplicationQwerty</Name>
-          <ScreenshotFileName>QWERTYKeyboardLayout.png</ScreenshotFileName>
-          <DisplayNameShort>QWERTY</DisplayNameShort>
           <DisplayNameLong> QWERTY Keyboard Layout</DisplayNameLong>
+          <DisplayNameShort>QWERTY</DisplayNameShort>
+          <Name>TalkApplicationQwerty</Name>
           <PanelClassConfigMapEntries>
             <PanelClassConfigMapEntry>
               <ConfigId>f802386c-31ca-4a0d-bc6f-78e71c730d11</ConfigId>
               <PanelClass>TalkApplicationScanner</PanelClass>
             </PanelClassConfigMapEntry>
+            <PanelClassConfigMapEntry>
+              <ConfigId>7865890a-8ef1-43b9-96d9-58c07c2be7eb</ConfigId>
+              <PanelClass>TalkApplicationScannerLnR</PanelClass>
+            </PanelClassConfigMapEntry>
           </PanelClassConfigMapEntries>
+          <ScreenshotFileName>QWERTYKeyboardLayout.png</ScreenshotFileName>
         </PanelClassConfigMap>
-		<PanelClassConfigMap>
+        <PanelClassConfigMap>
           <Default>false</Default>
           <Description>An alphabetically arranged keyboard with predictive text/sentences to help you communicate</Description>
-          <Name>TalkApplicationBCIScannerABC</Name>
-          <ScreenshotFileName>ABCKeyboardLayout.png</ScreenshotFileName>
-          <DisplayNameShort>Alphabetical</DisplayNameShort>
           <DisplayNameLong> ABC Keyboard Layout</DisplayNameLong>
+          <DisplayNameShort>Alphabetical</DisplayNameShort>
+          <Name>TalkApplicationBCI5x5</Name>
           <PanelClassConfigMapEntries>
             <PanelClassConfigMapEntry>
               <ConfigId>18f8796a-c0e2-4d4b-ac20-1e76e0a57bcd</ConfigId>
               <PanelClass>TalkApplicationScanner</PanelClass>
             </PanelClassConfigMapEntry>
           </PanelClassConfigMapEntries>
+          <ScreenshotFileName>ABCKeyboardLayout.png</ScreenshotFileName>
         </PanelClassConfigMap>
       </PanelClassConfigMaps>
     </PanelClassConfig>

@@ -23,6 +23,13 @@ namespace ACAT.Lib.Core.DialogSenseManagement
 {
     public class DialogSenseManager
     {
+        public event EventHandler EvtRefreshKeywords;
+
+        public delegate void RefreshResponsesDelegate(object sender, String keyword);
+
+        public event RefreshResponsesDelegate EvtRefreshResponses;
+
+
         /// <summary>
         /// Name of the folder under which the DialogSense DLLs are located
         /// </summary>
@@ -312,6 +319,16 @@ namespace ACAT.Lib.Core.DialogSenseManagement
         public IDialogSenseAgent GetPreferredAgent(DialogSenseSource source)
         {
             return (_activeDialogSenseAgent == null) ? DialogSenseAgents.NullDialogSenseAgent : _activeDialogSenseAgent;
+        }
+
+        public void TriggerRefreshKeywords()
+        {
+            EvtRefreshKeywords?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void TriggerRefreshResponses(object sender, String keyword = null)
+        {
+            EvtRefreshResponses?.Invoke(sender, keyword);
         }
 
         /// <summary>

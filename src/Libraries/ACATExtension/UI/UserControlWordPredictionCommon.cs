@@ -8,6 +8,7 @@
 using ACAT.ACATResources;
 using ACAT.Lib.Core.AgentManagement;
 using ACAT.Lib.Core.Audit;
+using ACAT.Lib.Core.DialogSenseManagement;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.TTSManagement;
 using ACAT.Lib.Core.UserControlManagement;
@@ -54,18 +55,27 @@ namespace ACAT.Lib.Extension
         /// <summary>
         /// Widget that holds the prediction letter list
         /// </summary>
-        private LetterListWidget _letterListWidgetWidget;
+        private LetterListWidget _letterListWidget;
 
         private readonly PredictionTypes[] _predictionTypes;
 
         private SentenceListWidget _sentenceListWidget;
+
+        private SentenceLnRListWidget _sentenceLnRListWidget;
 
         private readonly TextController _textController;
 
         /// <summary>
         /// Widget that holds the prediction word list
         /// </summary>
-        private WordListWidget _wordListWidgetWidget;
+        private WordListWidget _wordListWidget;
+
+        private KeywordListWidget _keywordListWidget;
+
+
+        private IDialogSenseAgent _activeDialogSenseAgent;
+
+        private int numTurns = 4;
 
         /// <summary>
         /// Constructor. Initialize the various controls and
@@ -85,10 +95,15 @@ namespace ACAT.Lib.Extension
 
         public int SentencePredictionCountMax { get; set; }
 
+        public int SentenceLnRPredictionCountMax { get; set; }
+
         /// <summary>
         /// Gets or sets how many predicted words to display
         /// </summary>
         public int WordPredictionWordCountMax { get; set; }
+
+        public int KeywordPredictionCountMax { get; set; }
+
 
         /// <summary>
         /// Autocompletes by selecting the first word in the
@@ -149,6 +164,14 @@ namespace ACAT.Lib.Extension
             Context.AppWordPredictionManager.ActiveWordPredictor.EvtWordPredictionAsyncResponse -= ActiveWordPredictor_EvtWordPredictionAsyncResponse;
             Context.AppWordPredictionManager.ActiveWordPredictor.EvtModeChanged -= ActiveWordPredictor_EvtModeChanged;
             KeyStateTracker.EvtKeyStateChanged -= KeyStateTracker_EvtKeyStateChanged;
+
+            if (!isNullDialogSenseAgent() &&
+                (_predictionTypes.Contains(PredictionTypes.Keywords) || _predictionTypes.Contains(PredictionTypes.LnRResponses)))
+            {
+                _activeDialogSenseAgent.EvtMessageReceived -= _activeDialogSenseAgent_EvtMessageReceived;
+                Context.AppDialogSenseManager.EvtRefreshKeywords -= AppDialogSenseManager_EvtRefreshKeywords;
+                Context.AppDialogSenseManager.EvtRefreshResponses -= AppDialogSenseManager_EvtRefreshResponses;
+            }
         }
 
         /// <summary>
@@ -157,27 +180,45 @@ namespace ACAT.Lib.Extension
         /// </summary>
         public void OnLoad()
         {
+            _activeDialogSenseAgent = Context.AppDialogSenseManager.ActiveDialogSenseAgent;
+
             subscribeToEvents();
 
             _currentWordWidget = (CurrentWordWidget)_rootWidget.Finder.FindChild(typeof(CurrentWordWidget));
-            _wordListWidgetWidget = (WordListWidget)_rootWidget.Finder.FindChild(typeof(WordListWidget));
+            _wordListWidget = (WordListWidget)_rootWidget.Finder.FindChild(typeof(WordListWidget));
             _sentenceListWidget = (SentenceListWidget)_rootWidget.Finder.FindChild(typeof(SentenceListWidget));
-            _letterListWidgetWidget = (LetterListWidget)_rootWidget.Finder.FindChild(typeof(LetterListWidget));
+            _sentenceLnRListWidget = (SentenceLnRListWidget)_rootWidget.Finder.FindChild(typeof(SentenceLnRListWidget));
+            _letterListWidget = (LetterListWidget)_rootWidget.Finder.FindChild(typeof(LetterListWidget));
+            _keywordListWidget = (KeywordListWidget)_rootWidget.Finder.FindChild(typeof(KeywordListWidget));
 
-            if (WordPredictionWordCountMax <= 0 && _wordListWidgetWidget != null)
+            if (WordPredictionWordCountMax <= 0 && _wordListWidget != null)
             {
-                WordPredictionWordCountMax = _wordListWidgetWidget.Children.Count();
+                WordPredictionWordCountMax = _wordListWidget.Children.Count();
             }
-            if (LetterPredictionLetterCountMax <= 0 && _letterListWidgetWidget != null)
+
+            if (LetterPredictionLetterCountMax <= 0 && _letterListWidget != null)
             {
-                LetterPredictionLetterCountMax = _letterListWidgetWidget.Children.Count();
+                LetterPredictionLetterCountMax = _letterListWidget.Children.Count();
             }
+
             if (SentencePredictionCountMax <= 0 && _sentenceListWidget != null)
             {
                 SentencePredictionCountMax = _sentenceListWidget.Children.Count();
             }
 
+            if (SentenceLnRPredictionCountMax <= 0 && _sentenceLnRListWidget != null)
+            {
+                SentenceLnRPredictionCountMax = _sentenceLnRListWidget.Children.Count();
+            }
+
+            if (KeywordPredictionCountMax <= 0 && _keywordListWidget != null)
+            {
+                KeywordPredictionCountMax = _keywordListWidget.Children.Count();
+            }
+
             refreshWordPredictionsAndSetCurrentWord();
+
+            //requestLnR();
         }
 
         /// <summary>
@@ -232,14 +273,8 @@ namespace ACAT.Lib.Extension
                 }));
 
                 handled = true;
-
-                return;
             }
-            else
-            {
-                handled = false;
-            }
-            if (e.SourceWidget is LetterListItemWidget)
+            else if (e.SourceWidget is LetterListItemWidget)
             {
                 CoreGlobals.Stopwatch1.Reset();
                 CoreGlobals.Stopwatch1.Start();
@@ -255,11 +290,7 @@ namespace ACAT.Lib.Extension
 
                 handled = true;
             }
-            else
-            {
-                handled = false;
-            }
-            if (e.SourceWidget is SentenceListItemWidget)
+            else if (e.SourceWidget is SentenceListItemWidget)
             {
                 CoreGlobals.Stopwatch1.Reset();
                 CoreGlobals.Stopwatch1.Start();
@@ -269,6 +300,37 @@ namespace ACAT.Lib.Extension
                     autoComplete(e.SourceWidget as SentenceListItemWidget);
                 }));
 
+                CoreGlobals.Stopwatch1.Stop();
+
+                Log.Debug("TimeElapsed 3 : " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+
+                handled = true;
+            }
+            else if (e.SourceWidget is SentenceLnRListItemWidget)
+            {
+                CoreGlobals.Stopwatch1.Reset();
+                CoreGlobals.Stopwatch1.Start();
+
+                _form.Invoke(new MethodInvoker(delegate
+                {
+                    handleLnRResponseSelection(e.SourceWidget as SentenceLnRListItemWidget);
+                }));
+
+                CoreGlobals.Stopwatch1.Stop();
+
+                Log.Debug("TimeElapsed 3 : " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+
+                handled = true;
+            }
+            else if (e.SourceWidget is KeywordListItemWidget)
+            {
+                CoreGlobals.Stopwatch1.Reset();
+                CoreGlobals.Stopwatch1.Start();
+
+                Context.AppDialogSenseManager.TriggerRefreshResponses(this, e.SourceWidget.GetText().Trim()); 
+               
+                //requestLnRResponses(e.SourceWidget.GetText().Trim());
+                
                 CoreGlobals.Stopwatch1.Stop();
 
                 Log.Debug("TimeElapsed 3 : " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
@@ -311,13 +373,35 @@ namespace ACAT.Lib.Extension
 
         private void ActiveWordPredictor_EvtWordPredictionAsyncResponse(WordPredictionResponse response)
         {
-            if (response.Request.PredictionType == PredictionTypes.Words)
+            switch(response.Request.PredictionType)
             {
-                processWordPredictionResponse(response);
-            }
-            else if (response.Request.PredictionType == PredictionTypes.Sentences)
-            {
-                processSentencePredictionResponse(response);
+                case PredictionTypes.Words:
+                    if (_predictionTypes.Contains(PredictionTypes.Words))
+                    {
+                        processWordPredictionResponse(response);
+                    }
+                    break;
+
+                case PredictionTypes.Sentences:
+                    if (_predictionTypes.Contains(PredictionTypes.Sentences))
+                    {
+                        processSentencePredictionResponse(response);
+                    }
+                    break;
+
+                case PredictionTypes.Keywords:
+                    if (_predictionTypes.Contains(PredictionTypes.Keywords))
+                    {
+                        processLnRKeywordResponse(response);
+                    }
+                    break;
+
+                case PredictionTypes.LnRResponses:
+                    if (_predictionTypes.Contains(PredictionTypes.LnRResponses))
+                    {
+                        processLnRSentenceResponse(response);
+                    }
+                    break;  
             }
         }
 
@@ -397,6 +481,23 @@ namespace ACAT.Lib.Extension
                 KeyStateTracker.ClearCtrl();
                 _textController.AutoCompleteWord(wordSelected);
                 AuditLog.Audit(new AuditEventAutoComplete(sentenceListItemWidget.Name));
+            }
+        }
+
+        private void handleLnRResponseSelection(SentenceLnRListItemWidget  widget)
+        {
+            Log.Debug("sentenceListItemName : " + widget.Name + ", value: " + widget.Value);
+
+            var responseSelected = widget.Value.Trim();
+
+            if (!String.IsNullOrEmpty(responseSelected))
+            {
+                KeyStateTracker.ClearAlt();
+                KeyStateTracker.ClearCtrl();
+
+                _textController.ClearText();
+                _textController.AutoCompleteWord(responseSelected);
+                AuditLog.Audit(new AuditEventAutoComplete(widget.Name));
             }
         }
 
@@ -582,7 +683,7 @@ namespace ACAT.Lib.Extension
             }
             */
             int ii = 0;
-            if (_wordListWidgetWidget != null)
+            if (_wordListWidget != null)
             {
                 foreach (var word in predictedWordList)
                 {
@@ -592,10 +693,10 @@ namespace ACAT.Lib.Extension
                     }
 
                     Log.Debug("setting Word for " + ii + ":  " + word + " ");
-                    if (_wordListWidgetWidget.Children.ElementAt(ii) is WordListItemWidget)
+                    if (_wordListWidget.Children.ElementAt(ii) is WordListItemWidget)
                     {
-                        _wordListWidgetWidget.Children.ElementAt(ii).SetText(word);
-                        _wordListWidgetWidget.Children.ElementAt(ii).Value = word;
+                        _wordListWidget.Children.ElementAt(ii).SetText(word);
+                        _wordListWidget.Children.ElementAt(ii).Value = word;
                     }
                     ii++;
                 }
@@ -615,15 +716,15 @@ namespace ACAT.Lib.Extension
                         ii++;
                     }
 
-                    if (_wordListWidgetWidget.Children.ElementAt(index) is WordListItemWidget)
+                    if (_wordListWidget.Children.ElementAt(index) is WordListItemWidget)
                     {
-                        _wordListWidgetWidget.Children.ElementAt(index).SetText(possessiveWord);
-                        _wordListWidgetWidget.Children.ElementAt(index).Value = possessiveWord;
+                        _wordListWidget.Children.ElementAt(index).SetText(possessiveWord);
+                        _wordListWidget.Children.ElementAt(index).Value = possessiveWord;
                     }
                 }
 
                 // if we had less than max words, clear out the remaining word list items
-                _wordListWidgetWidget.ClearEntries(ii);
+                _wordListWidget.ClearEntries(ii);
             }
 
             /*
@@ -634,7 +735,7 @@ namespace ACAT.Lib.Extension
             }
             */
             // Validation for the character predictions if there any value the proceed to add the element to the childs
-            if (_letterListWidgetWidget != null)
+            if (_letterListWidget != null)
             {
                 ii = 0;
                 foreach (var letter in predictedLettersList)
@@ -644,19 +745,143 @@ namespace ACAT.Lib.Extension
                         break;
                     }
                     Log.Debug("setting letter for " + ii + ":  " + letter.Trim('\'') + " ");
-                    if (_letterListWidgetWidget.Children.ElementAt(ii) is LetterListItemWidget)
+                    if (_letterListWidget.Children.ElementAt(ii) is LetterListItemWidget)
                     {
                         string textValue = letter.Trim('\'', ' ');
                         if (textValue.Length > 0)
                         {
-                            _letterListWidgetWidget.Children.ElementAt(ii).SetText(letter.Trim('\''));
-                            _letterListWidgetWidget.Children.ElementAt(ii).Value = letter.Trim('\'');
+                            _letterListWidget.Children.ElementAt(ii).SetText(letter.Trim('\''));
+                            _letterListWidget.Children.ElementAt(ii).Value = letter.Trim('\'');
                         }
                     }
                     ii++;
                 }
                 // if we had less than max words, clear out the remaining word list items
-                _letterListWidgetWidget.ClearEntries(ii);
+                _letterListWidget.ClearEntries(ii);
+            }
+        }
+
+        private void processLnRKeywordResponse(WordPredictionResponse response)
+        {
+            List<string> predictedWordsList1 = new List<string>();
+            List<string> predictedLettersList1 = new List<string>();
+
+            var predictedWordList = response.Results;
+
+            try
+            {
+                string type = string.Empty;
+                try
+                {
+                    foreach (var element in predictedWordList)
+                    {
+                        if (element[0] == '&')
+                        {
+                            type = element;
+                        }
+
+                        switch (type)
+                        {
+                            case "&CRGKEYWORDS":
+                                if (!element.Equals(type))
+                                    predictedWordsList1.Add(element);
+                                break;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug(ex.ToString());
+                }
+                predictedWordList = predictedWordsList1;
+            }
+            catch (Exception ex)
+            {
+                Log.Debug(ex.ToString());
+            }
+            Log.Debug("keywordList count: " + predictedWordList.Count());
+
+            int ii = 0;
+
+            if (_keywordListWidget != null)
+            {
+                foreach (var word in predictedWordList)
+                {
+                    if (ii >= predictedWordList.Count() || ii >= KeywordPredictionCountMax)
+                    {
+                        break;
+                    }
+
+                    Log.Debug("setting keyword for " + ii + ":  " + word + " ");
+                    if (_keywordListWidget.Children.ElementAt(ii) is KeywordListItemWidget)
+                    {
+                        _keywordListWidget.Children.ElementAt(ii).SetText(word);
+                        _keywordListWidget.Children.ElementAt(ii).Value = word;
+                    }
+                    ii++;
+                }
+                
+
+                // if we had less than max words, clear out the remaining word list items
+                _keywordListWidget.ClearEntries(ii);
+            }
+        }
+
+
+        private void processLnRSentenceResponse(WordPredictionResponse response)
+        {
+            List<string> predictedSentenceList1 = new List<string>();
+
+            var predictedSentenceList = response.Results;
+
+            try
+            {
+                string type = string.Empty;
+                try
+                {
+                    foreach (var element in predictedSentenceList)
+                    {
+                        if (element[0] == '&')
+                            type = element;
+                        switch (type)
+                        {
+                            case "&CRGRESPONSES":
+                                if (!element.Equals(type))
+                                    predictedSentenceList1.Add(element);
+                                predictedSentenceList = predictedSentenceList1;
+                                break;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug(ex.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Debug(ex.ToString());
+            }
+
+            if (_sentenceLnRListWidget != null)
+            {
+                int ii = 0;
+                foreach (var sentence in predictedSentenceList)
+                {
+                    if (ii >= predictedSentenceList.Count() || ii >= SentenceLnRPredictionCountMax)
+                    {
+                        break;
+                    }
+                    if (_sentenceLnRListWidget.Children.ElementAt(ii) is SentenceLnRListItemWidget)
+                    {
+                        _sentenceLnRListWidget.Children.ElementAt(ii).SetText(sentence);
+                        _sentenceLnRListWidget.Children.ElementAt(ii).Value = sentence;
+                    }
+                    ii++;
+                }
+
+                // if we had less than max sentences, clear out the remaining sentence list items
+                _sentenceLnRListWidget.ClearEntries(ii);
             }
         }
 
@@ -684,7 +909,23 @@ namespace ACAT.Lib.Extension
             Context.AppWordPredictionManager.ActiveWordPredictor.EvtWordPredictionAsyncResponse += ActiveWordPredictor_EvtWordPredictionAsyncResponse;
             Context.AppAgentMgr.EvtTextChanged += AppAgent_EvtTextChanged;
             Context.AppWordPredictionManager.ActiveWordPredictor.EvtModeChanged += ActiveWordPredictor_EvtModeChanged;
+            if (!isNullDialogSenseAgent() && 
+                (_predictionTypes.Contains(PredictionTypes.Keywords) || _predictionTypes.Contains(PredictionTypes.LnRResponses)))
+            {
+                //_activeDialogSenseAgent.EvtMessageReceived += _activeDialogSenseAgent_EvtMessageReceived;
+                Context.AppDialogSenseManager.EvtRefreshKeywords += AppDialogSenseManager_EvtRefreshKeywords;
+                Context.AppDialogSenseManager.EvtRefreshResponses += AppDialogSenseManager_EvtRefreshResponses;
+            }
             KeyStateTracker.EvtKeyStateChanged += KeyStateTracker_EvtKeyStateChanged;
+        }
+
+        
+
+        private void _activeDialogSenseAgent_EvtMessageReceived(object sender, string message)
+        {
+            Log.Debug("DUMDUM: " + message);
+
+            requestLnR();
         }
 
         /// <summary>
@@ -696,7 +937,7 @@ namespace ACAT.Lib.Extension
         {
             bool retVal = true;
 
-            if (_wordListWidgetWidget == null && _letterListWidgetWidget == null && _sentenceListWidget == null)
+            if (_wordListWidget == null && _letterListWidget == null && _sentenceListWidget == null)
             {
                 return true;
             }
@@ -727,9 +968,9 @@ namespace ACAT.Lib.Extension
                         _currentWordWidget.SetCurrentWord(String.Empty);
                     }
 
-                    if (_wordListWidgetWidget != null)
+                    if (_wordListWidget != null)
                     {
-                        _wordListWidgetWidget.ClearEntries();
+                        _wordListWidget.ClearEntries();
                     }
 
                     nwords = " ";
@@ -756,6 +997,7 @@ namespace ACAT.Lib.Extension
                     wordAtCaret = wordAtCaret.Substring(1);
                 }
 
+                bool makeSentencePrediction = false;
                 if (_sentenceListWidget != null)
                 {
                     bool ellipses = false;
@@ -772,6 +1014,8 @@ namespace ACAT.Lib.Extension
                     {
                         _sentenceListWidget.ClearEntries();
                     }
+
+                    makeSentencePrediction = ellipses;
                 }
 
                 WordPredictionRequest request;
@@ -790,7 +1034,7 @@ namespace ACAT.Lib.Extension
                     }
                 }
 
-                if (_predictionTypes.Contains(PredictionTypes.Sentences) && Common.AppPreferences.UseSentencePrediction)
+                if (_predictionTypes.Contains(PredictionTypes.Sentences) && Common.AppPreferences.UseSentencePrediction && makeSentencePrediction)
                 {
                     request = new WordPredictionRequest(nwords + wordAtCaret, PredictionTypes.Sentences, Context.AppWordPredictionManager.ActiveWordPredictor.GetMode());
                     if (Context.AppWordPredictionManager.ActiveWordPredictor.SupportsPredictSync)
@@ -812,6 +1056,83 @@ namespace ACAT.Lib.Extension
 
             Log.Debug("Returning");
             return retVal;
+        }
+
+        private bool isNullDialogSenseAgent() => _activeDialogSenseAgent == null ||
+                _activeDialogSenseAgent == DialogSenseAgents.NullDialogSenseAgent;
+
+        private void requestLnR()
+        {
+            if (_predictionTypes.Contains(PredictionTypes.Keywords))
+            {
+                requestLnRKeywords();
+            }
+
+            if (_predictionTypes.Contains(PredictionTypes.LnRResponses))
+            {
+                requestLnRResponses();
+            }
+        }
+
+        private void requestLnRKeywords(String keyword = null)
+        {
+            _keywordListWidget?.ClearEntriesWithEllipses();
+
+            var dialog = _activeDialogSenseAgent.DialogTranscript.ToString(numTurns);
+
+            Log.Debug("DUMDUM: RequestKeywords" + dialog);
+
+            var request = new WordPredictionRequest(dialog,
+                                             PredictionTypes.Keywords,
+                                             Context.AppWordPredictionManager.ActiveWordPredictor.GetMode(), true, keyword);
+
+            if (Context.AppWordPredictionManager.ActiveWordPredictor.SupportsPredictSync)
+            {
+                var response = Context.AppWordPredictionManager.ActiveWordPredictor.Predict(request);
+                processLnRKeywordResponse(response);
+            }
+            else
+            {
+                Context.AppWordPredictionManager.ActiveWordPredictor.PredictAsync(request);
+            }
+        }
+
+        private void requestLnRResponses(String keyword = null)
+        {
+            _sentenceLnRListWidget?.ClearEntriesWithEllipses();
+
+            var dialog = _activeDialogSenseAgent.DialogTranscript.ToString(numTurns);
+
+            Log.Debug("DUMDUM: RequestResonses" + dialog);
+            var request = new WordPredictionRequest(dialog,
+                                                        PredictionTypes.LnRResponses,
+                                                        Context.AppWordPredictionManager.ActiveWordPredictor.GetMode(), true, keyword);
+
+            if (Context.AppWordPredictionManager.ActiveWordPredictor.SupportsPredictSync)
+            {
+                var response = Context.AppWordPredictionManager.ActiveWordPredictor.Predict(request);
+                processLnRSentenceResponse(response);
+            }
+            else
+            {
+                Context.AppWordPredictionManager.ActiveWordPredictor.PredictAsync(request);
+            }
+        }
+
+        private void AppDialogSenseManager_EvtRefreshResponses(object sender, String keyword)
+        {
+            if (sender != this && _predictionTypes.Contains(PredictionTypes.LnRResponses))
+            {
+                requestLnRResponses(keyword);
+            }
+        }
+
+        private void AppDialogSenseManager_EvtRefreshKeywords(object sender, EventArgs e)
+        {
+            if (_predictionTypes.Contains(PredictionTypes.Keywords))
+            {
+                requestLnRKeywords();
+            }
         }
     }
 }

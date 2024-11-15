@@ -31,27 +31,11 @@ namespace ACAT.Applications.ConvAssistTestApp
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.checkBoxASR = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.labelASR = new System.Windows.Forms.Label();
-            this.labelCRGResponses = new System.Windows.Forms.Label();
-            this.labelKeywords = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.radioButtonCannedPhrase = new System.Windows.Forms.RadioButton();
-            this.radioButtonShorthand = new System.Windows.Forms.RadioButton();
-            this.radioButtonSentence = new System.Windows.Forms.RadioButton();
-            this.textBoxInput = new System.Windows.Forms.RichTextBox();
-            this.checkBoxCRG = new System.Windows.Forms.CheckBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBoxASR = new System.Windows.Forms.RichTextBox();
-            this.labelTurns = new System.Windows.Forms.Label();
-            this.numericUpDownTurns = new System.Windows.Forms.NumericUpDown();
-            this.labelConvAssistRequest = new System.Windows.Forms.Label();
-            this.labelASRResponse = new System.Windows.Forms.Label();
-            this.checkBoxTTS = new System.Windows.Forms.CheckBox();
-            this.comboBoxASRModel = new System.Windows.Forms.ComboBox();
             this.buttonRefresh = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.buttonClearHistory = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.buttonShowHistory = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.label1 = new System.Windows.Forms.Label();
+            this.labelASR = new System.Windows.Forms.Label();
             this.buttonCRGResponse10 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.buttonCRGResponse9 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.buttonCRGResponse8 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
@@ -71,6 +55,9 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.buttonKeyword2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.buttonKeyword1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.buttonCRGResponse1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.labelCRGResponses = new System.Windows.Forms.Label();
+            this.labelKeywords = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.buttonAddNewKeyword = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.buttonSentence10 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.buttonSentence9 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
@@ -92,7 +79,20 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.buttonWord2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.buttonSentence1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.buttonLearn = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.radioButtonCannedPhrase = new System.Windows.Forms.RadioButton();
+            this.radioButtonShorthand = new System.Windows.Forms.RadioButton();
+            this.radioButtonSentence = new System.Windows.Forms.RadioButton();
             this.buttonWord1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.textBoxInput = new System.Windows.Forms.RichTextBox();
+            this.checkBoxCRG = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.textBoxASR = new System.Windows.Forms.RichTextBox();
+            this.labelTurns = new System.Windows.Forms.Label();
+            this.numericUpDownTurns = new System.Windows.Forms.NumericUpDown();
+            this.labelConvAssistRequest = new System.Windows.Forms.Label();
+            this.labelASRResponse = new System.Windows.Forms.Label();
+            this.checkBoxTTS = new System.Windows.Forms.CheckBox();
+            this.comboBoxASRModel = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTurns)).BeginInit();
             this.SuspendLayout();
@@ -238,271 +238,6 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.checkBoxASR.Text = "ASR";
             this.checkBoxASR.UseVisualStyleBackColor = true;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.label1.Location = new System.Drawing.Point(77, 276);
-            this.label1.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(68, 24);
-            this.label1.TabIndex = 59;
-            this.label1.Text = "Talk";
-            // 
-            // labelASR
-            // 
-            this.labelASR.AutoSize = true;
-            this.labelASR.BackColor = System.Drawing.Color.Transparent;
-            this.labelASR.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelASR.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelASR.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.labelASR.Location = new System.Drawing.Point(817, 276);
-            this.labelASR.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
-            this.labelASR.Name = "labelASR";
-            this.labelASR.Size = new System.Drawing.Size(68, 24);
-            this.labelASR.TabIndex = 56;
-            this.labelASR.Text = "ASR";
-            // 
-            // labelCRGResponses
-            // 
-            this.labelCRGResponses.AutoSize = true;
-            this.labelCRGResponses.BackColor = System.Drawing.Color.Transparent;
-            this.tableLayoutPanel1.SetColumnSpan(this.labelCRGResponses, 3);
-            this.labelCRGResponses.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelCRGResponses.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelCRGResponses.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.labelCRGResponses.Location = new System.Drawing.Point(1039, 540);
-            this.labelCRGResponses.Margin = new System.Windows.Forms.Padding(3, 0, 3, 5);
-            this.labelCRGResponses.Name = "labelCRGResponses";
-            this.labelCRGResponses.Size = new System.Drawing.Size(216, 25);
-            this.labelCRGResponses.TabIndex = 35;
-            this.labelCRGResponses.Text = "CRG RESPONSES";
-            // 
-            // labelKeywords
-            // 
-            this.labelKeywords.AutoSize = true;
-            this.labelKeywords.BackColor = System.Drawing.Color.Transparent;
-            this.tableLayoutPanel1.SetColumnSpan(this.labelKeywords, 2);
-            this.labelKeywords.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelKeywords.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelKeywords.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.labelKeywords.Location = new System.Drawing.Point(817, 540);
-            this.labelKeywords.Margin = new System.Windows.Forms.Padding(3, 0, 3, 5);
-            this.labelKeywords.Name = "labelKeywords";
-            this.labelKeywords.Size = new System.Drawing.Size(142, 25);
-            this.labelKeywords.TabIndex = 34;
-            this.labelKeywords.Text = "KEYWORDS";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.tableLayoutPanel1.SetColumnSpan(this.label3, 3);
-            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.label3.Location = new System.Drawing.Point(299, 540);
-            this.label3.Margin = new System.Windows.Forms.Padding(3, 0, 3, 5);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(216, 25);
-            this.label3.TabIndex = 33;
-            this.label3.Text = "SENTENCES";
-            // 
-            // radioButtonCannedPhrase
-            // 
-            this.radioButtonCannedPhrase.AutoSize = true;
-            this.tableLayoutPanel1.SetColumnSpan(this.radioButtonCannedPhrase, 2);
-            this.radioButtonCannedPhrase.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButtonCannedPhrase.ForeColor = System.Drawing.Color.White;
-            this.radioButtonCannedPhrase.Location = new System.Drawing.Point(521, 33);
-            this.radioButtonCannedPhrase.Name = "radioButtonCannedPhrase";
-            this.tableLayoutPanel1.SetRowSpan(this.radioButtonCannedPhrase, 2);
-            this.radioButtonCannedPhrase.Size = new System.Drawing.Size(134, 37);
-            this.radioButtonCannedPhrase.TabIndex = 5;
-            this.radioButtonCannedPhrase.TabStop = true;
-            this.radioButtonCannedPhrase.Text = "Canned";
-            this.radioButtonCannedPhrase.UseVisualStyleBackColor = true;
-            // 
-            // radioButtonShorthand
-            // 
-            this.radioButtonShorthand.AutoSize = true;
-            this.tableLayoutPanel1.SetColumnSpan(this.radioButtonShorthand, 3);
-            this.radioButtonShorthand.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButtonShorthand.ForeColor = System.Drawing.Color.White;
-            this.radioButtonShorthand.Location = new System.Drawing.Point(299, 33);
-            this.radioButtonShorthand.Name = "radioButtonShorthand";
-            this.tableLayoutPanel1.SetRowSpan(this.radioButtonShorthand, 2);
-            this.radioButtonShorthand.Size = new System.Drawing.Size(166, 37);
-            this.radioButtonShorthand.TabIndex = 4;
-            this.radioButtonShorthand.TabStop = true;
-            this.radioButtonShorthand.Text = "Shorthand";
-            this.radioButtonShorthand.UseVisualStyleBackColor = true;
-            // 
-            // radioButtonSentence
-            // 
-            this.radioButtonSentence.AutoSize = true;
-            this.tableLayoutPanel1.SetColumnSpan(this.radioButtonSentence, 3);
-            this.radioButtonSentence.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButtonSentence.ForeColor = System.Drawing.Color.White;
-            this.radioButtonSentence.Location = new System.Drawing.Point(77, 33);
-            this.radioButtonSentence.Name = "radioButtonSentence";
-            this.tableLayoutPanel1.SetRowSpan(this.radioButtonSentence, 2);
-            this.radioButtonSentence.Size = new System.Drawing.Size(155, 37);
-            this.radioButtonSentence.TabIndex = 2;
-            this.radioButtonSentence.TabStop = true;
-            this.radioButtonSentence.Text = "Sentence";
-            this.radioButtonSentence.UseVisualStyleBackColor = true;
-            // 
-            // textBoxInput
-            // 
-            this.tableLayoutPanel1.SetColumnSpan(this.textBoxInput, 8);
-            this.textBoxInput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxInput.Location = new System.Drawing.Point(77, 303);
-            this.textBoxInput.Name = "textBoxInput";
-            this.tableLayoutPanel1.SetRowSpan(this.textBoxInput, 7);
-            this.textBoxInput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.textBoxInput.Size = new System.Drawing.Size(586, 204);
-            this.textBoxInput.TabIndex = 0;
-            this.textBoxInput.Text = "";
-            // 
-            // checkBoxCRG
-            // 
-            this.checkBoxCRG.AutoSize = true;
-            this.tableLayoutPanel1.SetColumnSpan(this.checkBoxCRG, 2);
-            this.checkBoxCRG.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxCRG.ForeColor = System.Drawing.Color.White;
-            this.checkBoxCRG.Location = new System.Drawing.Point(965, 33);
-            this.checkBoxCRG.Name = "checkBoxCRG";
-            this.tableLayoutPanel1.SetRowSpan(this.checkBoxCRG, 2);
-            this.checkBoxCRG.Size = new System.Drawing.Size(99, 37);
-            this.checkBoxCRG.TabIndex = 30;
-            this.checkBoxCRG.Text = "CRG";
-            this.checkBoxCRG.UseVisualStyleBackColor = true;
-            this.checkBoxCRG.CheckedChanged += new System.EventHandler(this.checkBoxCRG_CheckedChanged);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.tableLayoutPanel1.SetColumnSpan(this.label2, 2);
-            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.label2.Location = new System.Drawing.Point(77, 540);
-            this.label2.Margin = new System.Windows.Forms.Padding(3, 0, 3, 5);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(142, 25);
-            this.label2.TabIndex = 32;
-            this.label2.Text = "NEXT WORD";
-            // 
-            // textBoxASR
-            // 
-            this.tableLayoutPanel1.SetColumnSpan(this.textBoxASR, 8);
-            this.textBoxASR.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxASR.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxASR.Location = new System.Drawing.Point(817, 303);
-            this.textBoxASR.Name = "textBoxASR";
-            this.tableLayoutPanel1.SetRowSpan(this.textBoxASR, 7);
-            this.textBoxASR.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.textBoxASR.Size = new System.Drawing.Size(586, 204);
-            this.textBoxASR.TabIndex = 1;
-            this.textBoxASR.Text = "";
-            // 
-            // labelTurns
-            // 
-            this.labelTurns.AutoSize = true;
-            this.labelTurns.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelTurns.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTurns.ForeColor = System.Drawing.Color.White;
-            this.labelTurns.Location = new System.Drawing.Point(1258, 0);
-            this.labelTurns.Margin = new System.Windows.Forms.Padding(0);
-            this.labelTurns.Name = "labelTurns";
-            this.labelTurns.Size = new System.Drawing.Size(74, 30);
-            this.labelTurns.TabIndex = 62;
-            this.labelTurns.Text = "Turns: ";
-            this.labelTurns.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // numericUpDownTurns
-            // 
-            this.numericUpDownTurns.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.numericUpDownTurns.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.numericUpDownTurns.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDownTurns.Location = new System.Drawing.Point(1266, 40);
-            this.numericUpDownTurns.Margin = new System.Windows.Forms.Padding(8, 10, 3, 15);
-            this.numericUpDownTurns.Name = "numericUpDownTurns";
-            this.tableLayoutPanel1.SetRowSpan(this.numericUpDownTurns, 3);
-            this.numericUpDownTurns.Size = new System.Drawing.Size(63, 31);
-            this.numericUpDownTurns.TabIndex = 64;
-            // 
-            // labelConvAssistRequest
-            // 
-            this.labelConvAssistRequest.AutoSize = true;
-            this.labelConvAssistRequest.BackColor = System.Drawing.Color.DarkGray;
-            this.tableLayoutPanel1.SetColumnSpan(this.labelConvAssistRequest, 8);
-            this.labelConvAssistRequest.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelConvAssistRequest.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelConvAssistRequest.Location = new System.Drawing.Point(77, 90);
-            this.labelConvAssistRequest.Name = "labelConvAssistRequest";
-            this.tableLayoutPanel1.SetRowSpan(this.labelConvAssistRequest, 6);
-            this.labelConvAssistRequest.Size = new System.Drawing.Size(586, 180);
-            this.labelConvAssistRequest.TabIndex = 66;
-            // 
-            // labelASRResponse
-            // 
-            this.labelASRResponse.AutoSize = true;
-            this.labelASRResponse.BackColor = System.Drawing.Color.DarkGray;
-            this.tableLayoutPanel1.SetColumnSpan(this.labelASRResponse, 8);
-            this.labelASRResponse.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelASRResponse.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelASRResponse.Location = new System.Drawing.Point(817, 150);
-            this.labelASRResponse.Name = "labelASRResponse";
-            this.tableLayoutPanel1.SetRowSpan(this.labelASRResponse, 4);
-            this.labelASRResponse.Size = new System.Drawing.Size(586, 120);
-            this.labelASRResponse.TabIndex = 68;
-            // 
-            // checkBoxTTS
-            // 
-            this.checkBoxTTS.AutoSize = true;
-            this.tableLayoutPanel1.SetColumnSpan(this.checkBoxTTS, 2);
-            this.checkBoxTTS.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxTTS.ForeColor = System.Drawing.Color.White;
-            this.checkBoxTTS.Location = new System.Drawing.Point(669, 33);
-            this.checkBoxTTS.Name = "checkBoxTTS";
-            this.tableLayoutPanel1.SetRowSpan(this.checkBoxTTS, 2);
-            this.checkBoxTTS.Size = new System.Drawing.Size(85, 35);
-            this.checkBoxTTS.TabIndex = 69;
-            this.checkBoxTTS.Text = "TTS";
-            this.checkBoxTTS.UseVisualStyleBackColor = true;
-            this.checkBoxTTS.CheckedChanged += new System.EventHandler(this.checkBoxTTS_CheckedChanged);
-            // 
-            // comboBoxASRModel
-            // 
-            this.tableLayoutPanel1.SetColumnSpan(this.comboBoxASRModel, 2);
-            this.comboBoxASRModel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.comboBoxASRModel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxASRModel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBoxASRModel.FormattingEnabled = true;
-            this.comboBoxASRModel.Items.AddRange(new object[] {
-            "tiny.en",
-            "small.en",
-            "base.en",
-            "large.en",
-            "medium.en",
-            "large-v1",
-            "large-v2",
-            "large-v3",
-            "distil-large-v2",
-            "distil-medium.en",
-            "distil-small.en"});
-            this.comboBoxASRModel.Location = new System.Drawing.Point(1113, 93);
-            this.comboBoxASRModel.Name = "comboBoxASRModel";
-            this.comboBoxASRModel.Size = new System.Drawing.Size(142, 28);
-            this.comboBoxASRModel.TabIndex = 70;
-            // 
             // buttonRefresh
             // 
             this.buttonRefresh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
@@ -572,6 +307,34 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.buttonShowHistory.UseMnemonic = false;
             this.buttonShowHistory.UseVisualStyleBackColor = false;
             this.buttonShowHistory.Click += new System.EventHandler(this.buttonShowHistory_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
+            this.label1.Location = new System.Drawing.Point(77, 276);
+            this.label1.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(68, 24);
+            this.label1.TabIndex = 59;
+            this.label1.Text = "Talk";
+            // 
+            // labelASR
+            // 
+            this.labelASR.AutoSize = true;
+            this.labelASR.BackColor = System.Drawing.Color.Transparent;
+            this.labelASR.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelASR.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelASR.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
+            this.labelASR.Location = new System.Drawing.Point(817, 276);
+            this.labelASR.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
+            this.labelASR.Name = "labelASR";
+            this.labelASR.Size = new System.Drawing.Size(68, 24);
+            this.labelASR.TabIndex = 56;
+            this.labelASR.Text = "ASR";
             // 
             // buttonCRGResponse10
             // 
@@ -990,6 +753,51 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.buttonCRGResponse1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonCRGResponse1.UseMnemonic = false;
             this.buttonCRGResponse1.UseVisualStyleBackColor = true;
+            // 
+            // labelCRGResponses
+            // 
+            this.labelCRGResponses.AutoSize = true;
+            this.labelCRGResponses.BackColor = System.Drawing.Color.Transparent;
+            this.tableLayoutPanel1.SetColumnSpan(this.labelCRGResponses, 3);
+            this.labelCRGResponses.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelCRGResponses.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCRGResponses.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
+            this.labelCRGResponses.Location = new System.Drawing.Point(1039, 540);
+            this.labelCRGResponses.Margin = new System.Windows.Forms.Padding(3, 0, 3, 5);
+            this.labelCRGResponses.Name = "labelCRGResponses";
+            this.labelCRGResponses.Size = new System.Drawing.Size(216, 25);
+            this.labelCRGResponses.TabIndex = 35;
+            this.labelCRGResponses.Text = "CRG RESPONSES";
+            // 
+            // labelKeywords
+            // 
+            this.labelKeywords.AutoSize = true;
+            this.labelKeywords.BackColor = System.Drawing.Color.Transparent;
+            this.tableLayoutPanel1.SetColumnSpan(this.labelKeywords, 2);
+            this.labelKeywords.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelKeywords.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelKeywords.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
+            this.labelKeywords.Location = new System.Drawing.Point(817, 540);
+            this.labelKeywords.Margin = new System.Windows.Forms.Padding(3, 0, 3, 5);
+            this.labelKeywords.Name = "labelKeywords";
+            this.labelKeywords.Size = new System.Drawing.Size(142, 25);
+            this.labelKeywords.TabIndex = 34;
+            this.labelKeywords.Text = "KEYWORDS";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.tableLayoutPanel1.SetColumnSpan(this.label3, 3);
+            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
+            this.label3.Location = new System.Drawing.Point(299, 540);
+            this.label3.Margin = new System.Windows.Forms.Padding(3, 0, 3, 5);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(216, 25);
+            this.label3.TabIndex = 33;
+            this.label3.Text = "SENTENCES";
             // 
             // buttonAddNewKeyword
             // 
@@ -1457,6 +1265,51 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.buttonLearn.UseVisualStyleBackColor = false;
             this.buttonLearn.Click += new System.EventHandler(this.buttonLearn_Click);
             // 
+            // radioButtonCannedPhrase
+            // 
+            this.radioButtonCannedPhrase.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.radioButtonCannedPhrase, 2);
+            this.radioButtonCannedPhrase.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioButtonCannedPhrase.ForeColor = System.Drawing.Color.White;
+            this.radioButtonCannedPhrase.Location = new System.Drawing.Point(521, 33);
+            this.radioButtonCannedPhrase.Name = "radioButtonCannedPhrase";
+            this.tableLayoutPanel1.SetRowSpan(this.radioButtonCannedPhrase, 2);
+            this.radioButtonCannedPhrase.Size = new System.Drawing.Size(134, 37);
+            this.radioButtonCannedPhrase.TabIndex = 5;
+            this.radioButtonCannedPhrase.TabStop = true;
+            this.radioButtonCannedPhrase.Text = "Canned";
+            this.radioButtonCannedPhrase.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonShorthand
+            // 
+            this.radioButtonShorthand.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.radioButtonShorthand, 3);
+            this.radioButtonShorthand.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioButtonShorthand.ForeColor = System.Drawing.Color.White;
+            this.radioButtonShorthand.Location = new System.Drawing.Point(299, 33);
+            this.radioButtonShorthand.Name = "radioButtonShorthand";
+            this.tableLayoutPanel1.SetRowSpan(this.radioButtonShorthand, 2);
+            this.radioButtonShorthand.Size = new System.Drawing.Size(166, 37);
+            this.radioButtonShorthand.TabIndex = 4;
+            this.radioButtonShorthand.TabStop = true;
+            this.radioButtonShorthand.Text = "Shorthand";
+            this.radioButtonShorthand.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonSentence
+            // 
+            this.radioButtonSentence.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.radioButtonSentence, 3);
+            this.radioButtonSentence.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioButtonSentence.ForeColor = System.Drawing.Color.White;
+            this.radioButtonSentence.Location = new System.Drawing.Point(77, 33);
+            this.radioButtonSentence.Name = "radioButtonSentence";
+            this.tableLayoutPanel1.SetRowSpan(this.radioButtonSentence, 2);
+            this.radioButtonSentence.Size = new System.Drawing.Size(155, 37);
+            this.radioButtonSentence.TabIndex = 2;
+            this.radioButtonSentence.TabStop = true;
+            this.radioButtonSentence.Text = "Sentence";
+            this.radioButtonSentence.UseVisualStyleBackColor = true;
+            // 
             // buttonWord1
             // 
             this.buttonWord1.BorderColor = System.Drawing.Color.LightGray;
@@ -1478,6 +1331,153 @@ namespace ACAT.Applications.ConvAssistTestApp
             this.buttonWord1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonWord1.UseMnemonic = false;
             this.buttonWord1.UseVisualStyleBackColor = true;
+            // 
+            // textBoxInput
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.textBoxInput, 8);
+            this.textBoxInput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxInput.Location = new System.Drawing.Point(77, 303);
+            this.textBoxInput.Name = "textBoxInput";
+            this.tableLayoutPanel1.SetRowSpan(this.textBoxInput, 7);
+            this.textBoxInput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.textBoxInput.Size = new System.Drawing.Size(586, 204);
+            this.textBoxInput.TabIndex = 0;
+            this.textBoxInput.Text = "";
+            // 
+            // checkBoxCRG
+            // 
+            this.checkBoxCRG.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.checkBoxCRG, 2);
+            this.checkBoxCRG.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxCRG.ForeColor = System.Drawing.Color.White;
+            this.checkBoxCRG.Location = new System.Drawing.Point(965, 33);
+            this.checkBoxCRG.Name = "checkBoxCRG";
+            this.tableLayoutPanel1.SetRowSpan(this.checkBoxCRG, 2);
+            this.checkBoxCRG.Size = new System.Drawing.Size(99, 37);
+            this.checkBoxCRG.TabIndex = 30;
+            this.checkBoxCRG.Text = "CRG";
+            this.checkBoxCRG.UseVisualStyleBackColor = true;
+            this.checkBoxCRG.CheckedChanged += new System.EventHandler(this.checkBoxCRG_CheckedChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.tableLayoutPanel1.SetColumnSpan(this.label2, 2);
+            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
+            this.label2.Location = new System.Drawing.Point(77, 540);
+            this.label2.Margin = new System.Windows.Forms.Padding(3, 0, 3, 5);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(142, 25);
+            this.label2.TabIndex = 32;
+            this.label2.Text = "NEXT WORD";
+            // 
+            // textBoxASR
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.textBoxASR, 8);
+            this.textBoxASR.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxASR.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxASR.Location = new System.Drawing.Point(817, 303);
+            this.textBoxASR.Name = "textBoxASR";
+            this.tableLayoutPanel1.SetRowSpan(this.textBoxASR, 7);
+            this.textBoxASR.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.textBoxASR.Size = new System.Drawing.Size(586, 204);
+            this.textBoxASR.TabIndex = 1;
+            this.textBoxASR.Text = "";
+            // 
+            // labelTurns
+            // 
+            this.labelTurns.AutoSize = true;
+            this.labelTurns.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelTurns.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTurns.ForeColor = System.Drawing.Color.White;
+            this.labelTurns.Location = new System.Drawing.Point(1258, 0);
+            this.labelTurns.Margin = new System.Windows.Forms.Padding(0);
+            this.labelTurns.Name = "labelTurns";
+            this.labelTurns.Size = new System.Drawing.Size(74, 30);
+            this.labelTurns.TabIndex = 62;
+            this.labelTurns.Text = "Turns: ";
+            this.labelTurns.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // numericUpDownTurns
+            // 
+            this.numericUpDownTurns.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.numericUpDownTurns.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.numericUpDownTurns.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numericUpDownTurns.Location = new System.Drawing.Point(1266, 40);
+            this.numericUpDownTurns.Margin = new System.Windows.Forms.Padding(8, 10, 3, 15);
+            this.numericUpDownTurns.Name = "numericUpDownTurns";
+            this.tableLayoutPanel1.SetRowSpan(this.numericUpDownTurns, 3);
+            this.numericUpDownTurns.Size = new System.Drawing.Size(63, 31);
+            this.numericUpDownTurns.TabIndex = 64;
+            // 
+            // labelConvAssistRequest
+            // 
+            this.labelConvAssistRequest.AutoSize = true;
+            this.labelConvAssistRequest.BackColor = System.Drawing.Color.DarkGray;
+            this.tableLayoutPanel1.SetColumnSpan(this.labelConvAssistRequest, 8);
+            this.labelConvAssistRequest.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelConvAssistRequest.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelConvAssistRequest.Location = new System.Drawing.Point(77, 90);
+            this.labelConvAssistRequest.Name = "labelConvAssistRequest";
+            this.tableLayoutPanel1.SetRowSpan(this.labelConvAssistRequest, 6);
+            this.labelConvAssistRequest.Size = new System.Drawing.Size(586, 180);
+            this.labelConvAssistRequest.TabIndex = 66;
+            // 
+            // labelASRResponse
+            // 
+            this.labelASRResponse.AutoSize = true;
+            this.labelASRResponse.BackColor = System.Drawing.Color.DarkGray;
+            this.tableLayoutPanel1.SetColumnSpan(this.labelASRResponse, 8);
+            this.labelASRResponse.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelASRResponse.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelASRResponse.Location = new System.Drawing.Point(817, 150);
+            this.labelASRResponse.Name = "labelASRResponse";
+            this.tableLayoutPanel1.SetRowSpan(this.labelASRResponse, 4);
+            this.labelASRResponse.Size = new System.Drawing.Size(586, 120);
+            this.labelASRResponse.TabIndex = 68;
+            // 
+            // checkBoxTTS
+            // 
+            this.checkBoxTTS.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.checkBoxTTS, 2);
+            this.checkBoxTTS.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxTTS.ForeColor = System.Drawing.Color.White;
+            this.checkBoxTTS.Location = new System.Drawing.Point(669, 33);
+            this.checkBoxTTS.Name = "checkBoxTTS";
+            this.tableLayoutPanel1.SetRowSpan(this.checkBoxTTS, 2);
+            this.checkBoxTTS.Size = new System.Drawing.Size(85, 35);
+            this.checkBoxTTS.TabIndex = 69;
+            this.checkBoxTTS.Text = "TTS";
+            this.checkBoxTTS.UseVisualStyleBackColor = true;
+            this.checkBoxTTS.CheckedChanged += new System.EventHandler(this.checkBoxTTS_CheckedChanged);
+            // 
+            // comboBoxASRModel
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.comboBoxASRModel, 2);
+            this.comboBoxASRModel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxASRModel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxASRModel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxASRModel.FormattingEnabled = true;
+            this.comboBoxASRModel.Items.AddRange(new object[] {
+            "tiny.en",
+            "small.en",
+            "base.en",
+            "large.en",
+            "medium.en",
+            "large-v1",
+            "large-v2",
+            "large-v3",
+            "distil-large-v2",
+            "distil-medium.en",
+            "distil-small.en"});
+            this.comboBoxASRModel.Location = new System.Drawing.Point(1113, 93);
+            this.comboBoxASRModel.Name = "comboBoxASRModel";
+            this.comboBoxASRModel.Size = new System.Drawing.Size(142, 28);
+            this.comboBoxASRModel.TabIndex = 70;
             // 
             // MainForm
             // 

@@ -63,7 +63,26 @@
         highlightForeground="#232433"/>
 		<!--highlightBackground="#FFAA00"
         highlightForeground="#232433"/>-->
-        
+		
+	<ColorScheme name="KeywordButton"
+        background="#B1FFFF"
+        foreground="Black"
+        highlightSelectedBackground="Blue"
+        highlightSelectedForeground="White"
+        highlightBackground="#ffaa00"
+        highlightForeground="#232433"/>
+		<!--highlightBackground="#FFAA00"
+        highlightForeground="#232433"/>-->
+
+	<ColorScheme name="LnRResponseButton"
+        background="#B1FFFF"
+        foreground="Black"
+        highlightSelectedBackground="Blue"
+        highlightSelectedForeground="White"
+        highlightBackground="#ffaa00"
+        highlightForeground="#232433"/>
+		<!--highlightBackground="#FFAA00"
+        highlightForeground="#232433"/>-->
 
      <ColorScheme name="DisabledScannerButton"
         background="#585453"

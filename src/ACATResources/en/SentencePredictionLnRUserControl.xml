@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+    <!ENTITY characterButtonFontName "Montserrat SemiBold">
+    <!ENTITY characterButtonFontSize "22">
+    <!ENTITY usebold "false">
+]>
+
+<ACAT>
+    <WidgetAttributes>
+        <WidgetAttribute name="LnRResponseItem1" label=" " value="@LnRResponse1" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
+        <WidgetAttribute name="LnRResponseItem2" label=" " value="@LnRResponse2" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
+        <WidgetAttribute name="LnRResponseItem3" label=" " value="@LnRResponse3" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
+        <WidgetAttribute name="LnRResponseItem4" label=" " value="@LnRResponse4" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
+        <WidgetAttribute name="LnRResponseItem5" label=" " value="@LnRResponse5" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
+    </WidgetAttributes>
+
+    <Layout>
+        <Widget class="SentenceLnRListWidget"  name="LnRResponseBox">
+            <Widget class="SentenceLnRListItemWidget" name="LnRResponseItem1" colorScheme="LnRResponseButton" />
+            <Widget class="SentenceLnRListItemWidget" name="LnRResponseItem2" colorScheme="LnRResponseButton" />
+            <Widget class="SentenceLnRListItemWidget" name="LnRResponseItem3" colorScheme="LnRResponseButton" />
+            <Widget class="SentenceLnRListItemWidget" name="LnRResponseItem4" colorScheme="LnRResponseButton" />
+            <Widget class="SentenceLnRListItemWidget" name="LnRResponseItem5" colorScheme="LnRResponseButton" />
+        </Widget>
+    </Layout>
+
+    <Animations>
+        <Animation name="TopLevelRotation"
+                 start="true"
+                 iterations="1">
+            <Widget name="LnRResponseBox" onSelect="transition(RowRotationSentencePrediction)"/>
+        </Animation>
+
+        <Animation name="RowRotationSentencePrediction"
+                   iterations="@RowScanIterations"
+                   firstPauseTime="@FirstPauseTime"
+                   onSelect="actuate(@SelectedWidget); transition(TopLevelRotation)"
+                   onEnd="transition(TopLevelRotation)">
+            <Widget name="LnRResponseItem1" />
+            <Widget name="LnRResponseItem2" />
+            <Widget name="LnRResponseItem3" />
+            <Widget name="LnRResponseItem4" />
+            <Widget name="LnRResponseItem5" />
+        </Animation>
+    </Animations>
+</ACAT>
+

@@ -117,7 +117,7 @@ namespace ACAT.Lib.Core.InputActuators
 
         public override IEnumerable<String> GetSupportedKeyboardConfigs()
         {
-            return new List<String>() { "TalkApplicationABC", "TalkApplicationQwerty", "TalkApplicationAlternate", "TalkApplicationAlternateABC" };
+            return new List<String>() { "TalkApplicationAbc", "TalkApplicationQwerty", "TalkApplicationAbcLnR", "TalkApplicationQwertyLnR" };
         }
 
         /// <summary>

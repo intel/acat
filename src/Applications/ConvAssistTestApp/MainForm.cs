@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -90,7 +90,7 @@ namespace ACAT.Applications.ConvAssistTestApp
             {
                 processSentencePredictionResponse(response);
             }
-            else if (response.Request.PredictionType == PredictionTypes.Keywords || response.Request.PredictionType == PredictionTypes.CRGResponses)
+            else if (response.Request.PredictionType == PredictionTypes.Keywords || response.Request.PredictionType == PredictionTypes.LnRResponses)
             {
                 processCRGResponse(response);
             }
@@ -355,12 +355,12 @@ namespace ACAT.Applications.ConvAssistTestApp
             Windows.SetVisible(comboBoxASRModel, on);
 
             Windows.SetVisible(labelASRResponse, on);
-
+/*
             if (!on)
             {
                 disconnectASR();
             }
-
+*/
             clearHistory();
         }
 
@@ -390,7 +390,7 @@ namespace ACAT.Applications.ConvAssistTestApp
             var dialog = _activeDialogSenseAgent.DialogTranscript.ToString(numTurns);
 
             var request = new WordPredictionRequest(dialog,
-                                                        PredictionTypes.CRGResponses,
+                                                        PredictionTypes.LnRResponses,
                                                         Context.AppWordPredictionManager.ActiveWordPredictor.GetMode(), true, keyword);
 
             clearCRGResponseList(true);
@@ -1083,7 +1083,7 @@ namespace ACAT.Applications.ConvAssistTestApp
             if (checkBoxASR.Checked)
             {
                 comboBoxASRModel.Enabled = false;
-                Task.Run(() => connectASR());
+                //Task.Run(() => connectASR());
             }
             else
             {
@@ -1120,7 +1120,7 @@ namespace ACAT.Applications.ConvAssistTestApp
                 setASRResponseText("Connecting to ASR...");
                 _activeDialogSenseAgent.ConnectAsync().GetAwaiter().GetResult();
 
-                _activeDialogSenseAgent.EvtMessageReceived += DialogSenseAgent_EvtMessageReceived;
+                _activeDialogSenseAgent.EvtJsonMessageReceived += DialogSenseAgent_EvtJsonMessageReceived;
                     
                 String model = String.Empty;
 
@@ -1131,9 +1131,9 @@ namespace ACAT.Applications.ConvAssistTestApp
 
                 MessageBox.Show(model);
 
-                var msg = new StartMessage(true, 0, model, false);
+                    var msg = new StartMessage(true, 0, model, false);
 
-                var json = JsonSerializer.Serialize(msg);
+                var json = JsonConvert.SerializeObject(msg);
                 _activeDialogSenseAgent.SendAsync(json).GetAwaiter().GetResult();
             }
             catch (Exception ex)
@@ -1153,16 +1153,16 @@ namespace ACAT.Applications.ConvAssistTestApp
             return true;
         }
 
-        private void DialogSenseAgent_EvtMessageReceived(object sender, string message)
+        private void DialogSenseAgent_EvtJsonMessageReceived(object sender, string jsonMessage)
         {
-            setASRResponseText(message);
+            setASRResponseText(jsonMessage);
 
-            if (message.Contains("ACAT VAD ASR"))
+            if (jsonMessage.Contains("ACAT VAD ASR"))
             {
                 return;
             }
             
-            var receivedMessage = JsonSerializer.Deserialize<ASRResponse>(message);
+            var receivedMessage = JsonConvert.DeserializeObject<ASRResponse>(jsonMessage);
 
             var text = Windows.GetText(textBoxASR);
 
@@ -1191,7 +1191,7 @@ namespace ACAT.Applications.ConvAssistTestApp
 
             try
             {
-                _activeDialogSenseAgent.EvtMessageReceived -= DialogSenseAgent_EvtMessageReceived;
+                _activeDialogSenseAgent.EvtMessageReceived -= DialogSenseAgent_EvtJsonMessageReceived;
                 _activeDialogSenseAgent.Disconnect();
 
                 setASRResponseText("Disconnected from ASR.");

@@ -721,6 +721,20 @@ namespace ACAT.Lib.Core.PanelManagement
             _lastAction = LastAction.Unknown;
         }
 
+        public void ClearText()
+        {
+            using (AgentContext context = Context.AppAgentMgr.ActiveContext())
+            {
+                Context.AppAgentMgr.TextChangedNotifications.Hold();
+
+                context.TextAgent().ClearText();
+
+                _lastAction = LastAction.Unknown;    
+
+                Context.AppAgentMgr.TextChangedNotifications.Release();
+            }
+        }
+
         /// <summary>
         /// Handler for the event that is raised when the focus in the
         /// application window changes.

@@ -14,7 +14,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         Words,
         Sentences,
         Keywords,
-        CRGResponses
+        LnRResponses
     }
 
     /// <summary>

@@ -22,6 +22,15 @@ namespace ACAT.Lib.Core.DialogSenseManagement
     {
         private List<DialogTurn> Turns;
 
+
+        public delegate void TurnAddedDelegate(DialogTurn turn);
+
+        public event TurnAddedDelegate EvtTurnAdded;
+
+        public delegate void TranscriptClearedDelegate();
+
+        public event TranscriptClearedDelegate EvtTranscriptCleared;
+
         public DialogTranscript()
         {
             Clear();
@@ -30,11 +39,15 @@ namespace ACAT.Lib.Core.DialogSenseManagement
         public void AddTurn(DialogTurn turn)
         {
             Turns.Add(turn);
+
+            EvtTurnAdded?.Invoke(turn);
         }
 
         public void Clear()
         {
             Turns = new List<DialogTurn>();
+
+            EvtTranscriptCleared?.Invoke();
         }
 
         public override String ToString()

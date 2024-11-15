@@ -53,6 +53,12 @@ namespace ACAT.Lib.Core.PanelManagement
             Closing += OnClosing;
             _timeout = timeOut;
             labelMessage.Text = message;
+            Shown += ToastForm_Shown;
+        }
+
+        private void ToastForm_Shown(object sender, EventArgs e)
+        {
+            Windows.SetTopMost(this);
         }
 
         /// <summary>
@@ -121,6 +127,8 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="e">event args</param>
         private void ToastForm_Load(object sender, EventArgs e)
         {
+            CenterToScreen();
+
             if (_timeout > 0)
             {
                 _timer = new System.Windows.Forms.Timer();

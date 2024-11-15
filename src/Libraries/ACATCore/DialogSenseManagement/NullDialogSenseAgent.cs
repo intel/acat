@@ -38,6 +38,9 @@ namespace ACAT.Lib.Core.DialogSenseManagement
 
         public event MessageReceivedEventHandler EvtMessageReceived;
 
+        public event JsonMessageReceivedEventHandler EvtJsonMessageReceived;
+
+
         public async Task ConnectAsync()
         {
             throw new NotImplementedException();

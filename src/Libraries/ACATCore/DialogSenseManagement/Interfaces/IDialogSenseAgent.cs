@@ -11,7 +11,10 @@ namespace ACAT.Lib.Core.DialogSenseManagement
         ASR = 1
     }
 
+    public delegate void JsonMessageReceivedEventHandler(object sender, String message);
+
     public delegate void MessageReceivedEventHandler(object sender, String message);
+
 
     public interface IDialogSenseAgent : IDisposable
     {
@@ -64,7 +67,10 @@ namespace ACAT.Lib.Core.DialogSenseManagement
         /// </summary>
         void Uninit();
 
+        event JsonMessageReceivedEventHandler EvtJsonMessageReceived;
+
         event MessageReceivedEventHandler EvtMessageReceived;
+
 
         DialogTranscript DialogTranscript { get; }
 

@@ -247,7 +247,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 keyWordStack.Push(req);
                 mevent.Set();
             }
-            else if (req.PredictionType == PredictionTypes.CRGResponses)
+            else if (req.PredictionType == PredictionTypes.LnRResponses)
             {
                 crgResponsesStack.Push(req);
                 mevent.Set();
@@ -424,7 +424,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                         response = _crgKeywordPredictionRequestHandler.ProcessPredictionRequest(request);
                         break;
 
-                    case PredictionTypes.CRGResponses:
+                    case PredictionTypes.LnRResponses:
                         response = _crgResponsePredictionRequestHandler.ProcessPredictionRequest(request);
                         break;  
                 }

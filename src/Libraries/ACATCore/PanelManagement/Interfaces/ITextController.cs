@@ -62,5 +62,10 @@ namespace ACAT.Lib.Core.PanelManagement
         /// insert punctuation, type a letter etc.
         /// </summary>
         void UndoLastEditChange();
+
+        /// <summary>
+        /// Clear text in the text box
+        /// </summary>
+        void ClearText();
     }
 }

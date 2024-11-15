@@ -22,6 +22,7 @@ using ACAT.Lib.Extension;
 using ACATExtension.CommandHandlers;
 using System;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using System.Windows.Forms;
 #if ENABLE_DIGITAL_VERIFICATION
 using System.ComponentModel;
@@ -132,8 +133,8 @@ namespace ACAT.Applications.ACATTalk
                                 Context.StartupFlags.AgentManager |
                                 Context.StartupFlags.SpellChecker |
                                 Context.StartupFlags.WindowsActivityMonitor |
-                                Context.StartupFlags.Abbreviations))// |
-                                //Context.StartupFlags.DialogSense))
+                                Context.StartupFlags.Abbreviations |
+                                Context.StartupFlags.DialogSense))
             {
                 splash.Close();
                 splash = null;
@@ -173,11 +174,13 @@ namespace ACAT.Applications.ACATTalk
                 showTalkInterfaceDescription();
 
                 var startupArg = new StartupArg("TalkApplicationScanner")
+                //var startupArg = new StartupArg("TalkApplicationScannerLnR")
                 {
                     QuitAppOnFormClose = false
                 };
 
                 var form = PanelManager.Instance.CreatePanel("TalkApplicationScanner", startupArg);
+                //var form = PanelManager.Instance.CreatePanel("TalkApplicationScannerLnR", startupArg);
                 if (form != null)
                 {
                     // Add ad-hoc agent that will handle the form
@@ -190,14 +193,50 @@ namespace ACAT.Applications.ACATTalk
 
                     Context.AppAgentMgr.AddAgent(form.Handle, agent);
                     Context.AppPanelManager.ShowDialog(form as IPanel);
+                    Context.AppAgentMgr.RemoveAgent(form.Handle);
+
                 }
                 else
                 {
                     MessageBox.Show(String.Format(R.GetString("InvalidFormName"), "TalkApplicationScanner"), R.GetString("Error"));
                     return;
                 }
+/*
+                var toast = new ToastModeless("Initializng L&R...");
+                toast.Show();
 
-                AppCommon.ExitMessageShow();
+                Thread.Sleep(3000);
+
+                toast.Close();
+
+                form = PanelManager.Instance.CreatePanel("TalkApplicationScanner", startupArg);
+                if (form != null)
+                {
+                    // Add ad-hoc agent that will handle the form
+                    IApplicationAgent agent = Context.AppAgentMgr.GetAgentByName("Talk Application Agent");
+                    if (agent == null)
+                    {
+                        MessageBox.Show("Could not find application agent for this application.");
+                        return;
+                    }
+
+                    Context.AppAgentMgr.AddAgent(form.Handle, agent);
+                    Context.AppPanelManager.ShowDialog(form as IPanel);
+                    Context.AppAgentMgr.RemoveAgent(form.Handle);
+
+                }
+                else
+                {
+                    MessageBox.Show(String.Format(R.GetString("InvalidFormName"), "TalkApplicationScanner"), R.GetString("Error"));
+                    return;
+                }
+*/
+
+                var toast = new ToastModeless(R.GetString("ExitingACAT"));
+
+                toast.Show();
+
+                //AppCommon.ExitMessageShow();
 
                 AuditLog.Audit(new AuditEvent("Application", "stop"));
 
@@ -207,7 +246,9 @@ namespace ACAT.Applications.ACATTalk
 
                 ScannerFocus.Stop();
 
-                AppCommon.ExitMessageClose();
+                //AppCommon.ExitMessageClose();
+
+                toast.Close();
 
                 Log.Debug("ACATTalk Application shutdown");
 

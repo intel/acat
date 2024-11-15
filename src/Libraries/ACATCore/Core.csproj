@@ -249,6 +249,7 @@
     <Compile Include="Onboarding\OnboardingWizard.cs" />
     <Compile Include="PanelManagement\Common\ScannerCommon2.cs" />
     <Compile Include="PanelManagement\Common\ScannerPositionSizeController2.cs" />
+    <Compile Include="PanelManagement\Common\ToastModeless.cs" />
     <Compile Include="PanelManagement\PanelConfigMap\AppPanelClassConfig.cs" />
     <Compile Include="PanelManagement\PanelConfigMap\PanelClassConfig.cs" />
     <Compile Include="PanelManagement\PanelConfigMap\PanelClassConfigMap.cs" />
@@ -586,11 +587,14 @@
     <Compile Include="Widgets\ImageWidget.cs" />
     <Compile Include="Widgets\LabelWidget.cs" />
     <Compile Include="Widgets\ImageWidgetBase.cs" />
+    <Compile Include="Widgets\KeywordListItemWidget.cs" />
     <Compile Include="Widgets\RowWidget.cs" />
     <Compile Include="Widgets\ScannerButtonSpaced.cs" />
     <Compile Include="Widgets\ScannerButtonToggle.cs" />
     <Compile Include="Widgets\ScannerButton.cs" />
     <Compile Include="Widgets\ScannerButtonBase.cs" />
+    <Compile Include="Widgets\SentenceLnRListWidget.cs" />
+    <Compile Include="Widgets\SentenceLnRListItemWidget.cs" />
     <Compile Include="Widgets\SliderWidget.cs" />
     <Compile Include="Widgets\TabStopScannerButton.cs" />
     <Compile Include="Widgets\TextBoxWidget.cs" />
@@ -601,6 +605,7 @@
     <Compile Include="Widgets\SentenceListWidget.cs" />
     <Compile Include="Widgets\SentenceListItemWidget.cs" />
     <Compile Include="Widgets\PhraseListItemWidget.cs" />
+    <Compile Include="Widgets\KeywordListWidget.cs" />
     <Compile Include="Widgets\WordListWidget.cs" />
     <Compile Include="Widgets\WordListItemWidget.cs" />
     <Compile Include="WordPredictorManagement\Interfaces\IWordPredictor.cs" />

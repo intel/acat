@@ -83,6 +83,8 @@ namespace ACAT.Lib.Core.ThemeManagement
 
         public static String PhraseSchemeName = "PhraseButton";
 
+        public static String KeywordSchemeName= "KeywordButton";
+
         public static String ScannerButtonSchemeName = "ScannerButton";
 
 

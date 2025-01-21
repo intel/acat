@@ -115,7 +115,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <summary>
         /// Gets the named-pipe server stream.
         /// </summary>
-        public NamedPipeServerStream NamedPipeServerStream { get; private set; }
+        public NamedPipeServerStream NamedPipeServer { get; private set; }
 
         public bool TaskFinished { get; private set; }
 
@@ -127,7 +127,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         {
             try
             {
-                if (NamedPipeServerStream != null && cancellationTokenSource != null)
+                if (NamedPipeServer != null && cancellationTokenSource != null)
                 {
                     Stop();
                     Dispose();
@@ -147,10 +147,13 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         {
             disposed = false;
             cancellationTokenSource = new CancellationTokenSource();
-            NamedPipeServerStream = new NamedPipeServerStream(PipeName, PipeDirection,
+            NamedPipeServer = new NamedPipeServerStream(PipeName, PipeDirection,
                                             1, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
             try
             {
+                //NamedPipeServer.WaitForConnection();
+                //Log.Debug("PipeServer created");
+                //OnConnection(null);
                 Start();
             }
             catch (Exception ex)
@@ -169,8 +172,8 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             if (!disposed)
             {
                 cancellationTokenSource.Dispose();
-                NamedPipeServerStream.Dispose();
-                NamedPipeServerStream = null;
+                NamedPipeServer.Dispose();
+                NamedPipeServer = null;
                 cancellationTokenSource = null;
                 disposed = true;
             }
@@ -331,18 +334,32 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// </summary>
         public void Start()
         {
-            Start(cancellationTokenSource.Token);
+            StartAsync(cancellationTokenSource.Token);
         }
 
         /// <summary>
         /// Starts the named pipe server.
         /// </summary>
         /// <param name="token"></param>
-        public void Start(CancellationToken token)
+        public async Task StartAsync(CancellationToken token)
         {
             if (!disposed)
             {
-                this.NamedPipeServerStream.BeginWaitForConnection(OnConnection, new PipeServerStateConvAssist(this.NamedPipeServerStream, token));
+                var tcs = new TaskCompletionSource<bool>();
+                this.NamedPipeServer.BeginWaitForConnection(ar =>
+                {
+                    try
+                    {
+                        //this.NamedPipeServer.EndWaitForConnection(ar);
+                        OnConnection(ar);
+                        tcs.SetResult(true);
+                    }
+                    catch (Exception ex)
+                    {
+                        tcs.SetException(ex);
+                    }
+                }, new PipeServerStateConvAssist(this.NamedPipeServer, token));
+                await tcs.Task;
             }
         }
 
@@ -362,7 +379,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         {
             if (!this.disposed)
             {
-                this.NamedPipeServerStream.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServerStream);
+                this.NamedPipeServer.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServer);
             }
         }
 
@@ -380,7 +397,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             if (!this.disposed)
             {
                 byte[] buffer = Encoding.UTF8.GetBytes(value);
-                this.NamedPipeServerStream.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServerStream);
+                this.NamedPipeServer.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServer);
             }
         }
 
@@ -402,7 +419,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             if (!this.disposed)
             {
                 byte[] buffer = Encoding.UTF8.GetBytes(value);
-                this.NamedPipeServerStream.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServerStream);
+                this.NamedPipeServer.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServer);
             }
 
             CancellationTokenSource source = new CancellationTokenSource(msDelay);
@@ -455,7 +472,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 if (!this.disposed)
                 {
                     byte[] buffer = Encoding.UTF8.GetBytes(value);
-                    this.NamedPipeServerStream.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServerStream);
+                    this.NamedPipeServer.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServer);
                 }
 
                 CancellationTokenSource source = new CancellationTokenSource(msDelay);

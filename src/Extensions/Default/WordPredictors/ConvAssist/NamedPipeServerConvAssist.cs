@@ -146,22 +146,20 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         public bool CreatePipeServer()
         {
             disposed = false;
+            bool success = false;
             cancellationTokenSource = new CancellationTokenSource();
             NamedPipeServer = new NamedPipeServerStream(PipeName, PipeDirection,
                                             1, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
             try
             {
-                //NamedPipeServer.WaitForConnection();
-                //Log.Debug("PipeServer created");
-                //OnConnection(null);
-                Start();
+                success = StartNamedPipeServer(cancellationToken).Result;
             }
             catch (Exception ex)
             {
                 Log.Debug("Exception in createPipeServer: " + ex);
-                return false;
             }
-            return true;
+
+            return success;
         }
 
         /// <summary>
@@ -330,27 +328,19 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         }
 
         /// <summary>
-        /// Starts the named pipe server
-        /// </summary>
-        public void Start()
-        {
-            StartAsync(cancellationTokenSource.Token);
-        }
-
-        /// <summary>
         /// Starts the named pipe server.
         /// </summary>
         /// <param name="token"></param>
-        public async Task StartAsync(CancellationToken token)
+        public async Task<bool> StartNamedPipeServer(CancellationToken token, int timeout_sec = 20)
         {
+            bool result = false;
             if (!disposed)
             {
                 var tcs = new TaskCompletionSource<bool>();
-                this.NamedPipeServer.BeginWaitForConnection(ar =>
+                NamedPipeServer.BeginWaitForConnection(ar =>
                 {
                     try
                     {
-                        //this.NamedPipeServer.EndWaitForConnection(ar);
                         OnConnection(ar);
                         tcs.SetResult(true);
                     }
@@ -358,8 +348,31 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                     {
                         tcs.SetException(ex);
                     }
-                }, new PipeServerStateConvAssist(this.NamedPipeServer, token));
-                await tcs.Task;
+                }, new PipeServerStateConvAssist(NamedPipeServer, token));
+                
+                try
+                {
+                    result = await WithTimeout(tcs.Task, TimeSpan.FromSeconds(timeout_sec));
+                }
+                catch (TimeoutException)
+                {
+                    Log.Debug("ConvAssist StartNamedPipeServer Timeout");
+                }
+            }
+
+            return result;
+        }
+        
+
+        private async Task<T> WithTimeout<T>(Task<T> task, TimeSpan timeout)
+        {
+            if (task == await Task.WhenAny(task, Task.Delay(timeout)))
+            {
+                return await task; // Task completed within timeout
+            }
+            else
+            {
+                throw new TimeoutException("The task did not complete within the given time.");
             }
         }
 
@@ -372,14 +385,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             if (!this.disposed)
             {
                 this.cancellationTokenSource.Cancel();
-            }
-        }
-
-        public void Write(byte[] buffer)
-        {
-            if (!this.disposed)
-            {
-                this.NamedPipeServer.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServer);
             }
         }
 
@@ -443,7 +448,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             {
                 source.Dispose();
             }
-            
+
             message = messageReceived;
             messageReceived = string.Empty;
             TaskFinished = true;
@@ -464,7 +469,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             string message = string.Empty;
             try
             {
-                Log.Debug("Pressaio WriteSync Lock on");
+                Log.Debug("ConvAssist WriteSync Lock on");
                 EnterCriticalSection(_syncObj);
                 TaskFinished = false;
                 //Variable set when the event from receiving data triggers
@@ -498,13 +503,13 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("Pressaio WriteSync " + ex);
+                Log.Debug("ConvAssist WriteSync " + ex);
             }
             finally
             {
                 ExitCriticalSection(_syncObj);
             }
-            Log.Debug("Pressaio WriteSync Lock off");
+            Log.Debug("ConvAssist WriteSync Lock off");
             return message;
         }
 
@@ -535,7 +540,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <param name="ar"></param>
         private void OnConnection(IAsyncResult ar)
         {
-            Log.Debug("Pressaio Establish connection");
+            Log.Debug("ConvAssist Establish connection");
             NumClientsConnected++;
             clientConected = true;
             PipeServer_EvtClientConnected();
@@ -570,7 +575,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
 
         private void PipeServer_EvtClientDisconnected()
         {
-            Log.Debug("Pressaio PipeServer_EvtClientDisconnected");
+            Log.Debug("ConvAssist PipeServer_EvtClientDisconnected");
             EvtClientDisconnected?.Invoke(null, new EventArgs());
             clientConected = false;
             clientAnswerParameters = false;
@@ -646,7 +651,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("Pressaio Error in writeCallback: " + ex.Message);
+                Log.Debug("ConvAssist Error in writeCallback: " + ex.Message);
             }
         }
     }

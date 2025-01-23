@@ -137,7 +137,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("Pressaio Predict Exception " + ex);
+                Log.Debug("ConvAssist Predict Exception " + ex);
 
                 _prevSentencePredictionResults = new List<string>();
                 response = new WordPredictionResponse(request, new List<String>(), false);
@@ -206,7 +206,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception sentencesLetters)
             {
-                Log.Debug("Pressaio Predict sentencesLetters " + sentencesLetters);
+                Log.Debug("ConvAssist Predict sentencesLetters " + sentencesLetters);
             }
             return retVal;
         }

@@ -217,7 +217,7 @@ namespace ACAT.Lib.Core.Utility
 
             try
             {
-                using (FileStream fileStream = new FileStream(filename, FileMode.Open, FileAccess.Write, FileShare.None))
+                using (FileStream fileStream = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None))
                 {
                     using (TextWriter outputStream = new StreamWriter(fileStream))
                     {

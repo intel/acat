@@ -143,7 +143,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             return true;
         }
 
-        public bool CreatePipeServer()
+        public bool CreatePipeServer(bool send_params = false)
         {
             disposed = false;
             bool success = false;
@@ -152,7 +152,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                                             1, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
             try
             {
-                success = StartNamedPipeServer(cancellationToken).Result;
+                success = StartNamedPipeServer(cancellationToken, send_params).Result;
             }
             catch (Exception ex)
             {
@@ -202,10 +202,9 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             return true;
         }
 
+
         public async Task SendParams()
         {
-            ///NOT IMPLEMENTED YET NEED EXE RELEASE OF CONVASSIST
-            await Task.Delay(25);
             try
             {
                 ConvAssistSetParam paramEnableLog = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.EnableLog, Common.AppPreferences.EnableLogs.ToString());
@@ -219,7 +218,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 Log.Debug("Error in param enable log: " + ex);
             }
 
-            await Task.Delay(25);
             try
             {
                 ConvAssistSetParam parampathLog = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.PathLog, FileUtils.GetLogsDir());
@@ -233,7 +231,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 Log.Debug("Error in param Log path: " + ex);
             }
 
-            await Task.Delay(25);
             try
             {
                 //SUGGESTIONS FOR WORD PREDCITONS PARAMETER
@@ -247,7 +244,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             {
                 Log.Debug("Error in paramSuggestions: " + ex);
             }
-            await Task.Delay(25);
+
             try
             {
                 //TEST GENERAL SENTENCE PREDICTION PARAMETER
@@ -261,7 +258,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             {
                 Log.Debug("Error in paramTestPred: " + ex);
             }
-            await Task.Delay(25);
+
             try
             {
                 //RETRIEVE FROM ACC PARAMETER
@@ -276,7 +273,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 Log.Debug("Error in paramRetrieveACC: " + ex);
             }
 
-            await Task.Delay(25);
             try
             {
                 //PATH STATIC
@@ -292,7 +288,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 Log.Debug("Error in paramPathStatic: " + ex);
             }
 
-            await Task.Delay(25);
             try
             {
                 //PATH PERSONALIZED
@@ -308,7 +303,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 Log.Debug("Error in paramPathPersonalized: " + ex);
             }
 
-            await Task.Delay(25);
             try
             {
                 //PATH FOR THE INI FILES FOR EACH MODE
@@ -325,13 +319,38 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             {
                 Log.Debug("Error in paramPath: " + ex);
             }
+
+            try
+            {
+                // ConvAssist needs some time to get ready.  Send a message to check if it is ready
+                ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.NextSentencePredictionRequest, WordPredictionModes.None, string.Empty);
+                string jsonMessage = JsonConvert.SerializeObject(message);
+
+                bool clientready = false;
+
+                while(!clientready) {
+                    var result = await WriteAsync(jsonMessage, 150);
+                    var resultObject = JsonConvert.DeserializeObject<WordAndCharacterPredictionResponse>(result);
+                    if (resultObject != null && resultObject.MessageType != WordAndCharacterPredictionResponse.ConvAssistMessageTypes.NotReady)
+                    {
+                        clientready = true;
+                        break;
+                    }
+
+                    await Task.Delay(1000);
+                }
+            }
+            catch (Exception ex) 
+            { 
+                Log.Debug("Error in wait for ConvAssist Ready: " + ex);
+            }
         }
 
         /// <summary>
         /// Starts the named pipe server.
         /// </summary>
         /// <param name="token"></param>
-        public async Task<bool> StartNamedPipeServer(CancellationToken token, int timeout_sec = 20)
+        public async Task<bool> StartNamedPipeServer(CancellationToken token, bool send_params = true, int timeout_sec = 20)
         {
             bool result = false;
             if (!disposed)
@@ -360,6 +379,12 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 }
             }
 
+            if (send_params)
+            {
+                await SendParams().ConfigureAwait(false);
+            }
+
+            PipeServer_EvtClientConnected();
             return result;
         }
         
@@ -543,7 +568,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             Log.Debug("ConvAssist Establish connection");
             NumClientsConnected++;
             clientConected = true;
-            PipeServer_EvtClientConnected();
             var pipeServerState = (PipeServerStateConvAssist)ar.AsyncState;
             if (pipeServerState.ExternalCancellationToken.IsCancellationRequested)
             {
@@ -570,7 +594,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         {
             EvtClientConnected?.Invoke(null, new EventArgs());
             clientConected = true;
-            _ = SendParams().ConfigureAwait(false);
         }
 
         private void PipeServer_EvtClientDisconnected()

@@ -158,7 +158,9 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
 
             // Start the ConvAssist Process
             string path = Path.Combine(FileUtils.ACATPath, ConvAssistAppFolder, ConvAssistAppName);
+            bool send_params = true;
 
+#if LAUNCH_CONVASSIST
             Process[] runningProcesses = Process.GetProcessesByName(ConvAssistName);
             if (runningProcesses.Length == 0) {
                 ProcessStartInfo convAssistInfo = new ProcessStartInfo
@@ -179,13 +181,15 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                         Thread.Sleep(100);
                     }
                 }
+                // Since we just started the process, we need to send the parameters
+                send_params = true;
             }
-
+#endif
             // Now start the named pipe server and wait for the client to connect
             string convAssistSettings = Path.Combine(UserManager.CurrentUserDir, CultureInfo.DefaultThreadCurrentUICulture.Name, "WordPredictors", "ConvAssist", "Settings");
 
             namedPipe = new NamedPipeServerConvAssist(PipeName, PipeDirection.InOut, convAssistSettings);
-            pipeCreated = namedPipe.CreatePipeServer();
+            pipeCreated = namedPipe.CreatePipeServer(send_params);
             
             if (pipeCreated)
             {

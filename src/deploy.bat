@@ -30,9 +30,8 @@ rem ------------------------------------------------
 :DeployConvAssist
 set SOURCEDIR=Applications\Install\ConvAssistApp
 set TARGETDIR=%INSTALLDIR%\ConvAssistApp
-set TARGETFILE=ConvAssist.exe
 if not exist %TARGETDIR% mkdir %TARGETDIR%
-copy %SOURCEDIR%\%TARGETFILE% %TARGETDIR%
+xcopy /s /y /e /i %SOURCEDIR%\*.* %TARGETDIR%
 
 :DeployAssets
 rem ------------------------------------------------

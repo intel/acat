@@ -160,7 +160,12 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             string path = Path.Combine(FileUtils.ACATPath, ConvAssistAppFolder, ConvAssistAppName);
             bool send_params = true;
 
-#if LAUNCH_CONVASSIST
+            // TODO: Either fix ConvAssist to handle getting params after already setup
+            // or add check to see if ConvAssist is already configured and don't
+            // send params if it is
+
+            // NOTE: When debugging ConvAssist, it will be running as a python process, not as an exe
+            // So, we don't need to start it here
             Process[] runningProcesses = Process.GetProcessesByName(ConvAssistName);
             if (runningProcesses.Length == 0) {
                 ProcessStartInfo convAssistInfo = new ProcessStartInfo
@@ -181,10 +186,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                         Thread.Sleep(100);
                     }
                 }
-                // Since we just started the process, we need to send the parameters
-                send_params = true;
             }
-#endif
             // Now start the named pipe server and wait for the client to connect
             string convAssistSettings = Path.Combine(UserManager.CurrentUserDir, CultureInfo.DefaultThreadCurrentUICulture.Name, "WordPredictors", "ConvAssist", "Settings");
 

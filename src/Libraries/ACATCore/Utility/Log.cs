@@ -12,7 +12,6 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Threading;
 
 namespace ACAT.Lib.Core.Utility
 {
@@ -31,7 +30,11 @@ namespace ACAT.Lib.Core.Utility
         /// <summary>
         // set  this to true if you don't want to trigger the assertions in this file
         /// </summary>
+#if DEBUG
+        private const bool AssertionMode = true;
+#else
         private const bool AssertionMode = false;
+#endif
 
         /// <summary>
         /// Used for synchronization

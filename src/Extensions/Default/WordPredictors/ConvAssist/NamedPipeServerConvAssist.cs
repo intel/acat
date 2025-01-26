@@ -350,7 +350,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// Starts the named pipe server.
         /// </summary>
         /// <param name="token"></param>
-        public async Task<bool> StartNamedPipeServer(CancellationToken token, bool send_params = true, int timeout_sec = 20)
+        public async Task<bool> StartNamedPipeServer(CancellationToken token, bool send_params = true, int timeout_sec = 180)
         {
             bool result = false;
             if (!disposed)

@@ -186,7 +186,8 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 {
                     while (!convAssist.Responding)
                     {
-                    Thread.Sleep(100);
+                        Thread.Sleep(100);
+                    }
                 }
             }
 #endif
@@ -203,7 +204,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
 
             return pipeCreated;
         }
-
+       
 
         /// <summary>
         /// Display disclaimer dialog

@@ -352,5 +352,7 @@ MigrationBackup/
 .ionide/
 
 src/Redistributable/
-ACATSetup.exe
-src/Applications/Install/ConvAssistApp/ConvAssist.exe
+
+# Installer Stuff
+src/Setup/ACATSetup*.exe
+src/Setup/*.nsi

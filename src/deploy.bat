@@ -32,7 +32,7 @@ set SOURCEDIR=Applications\Install\ConvAssistApp
 set TARGETDIR=%INSTALLDIR%\ConvAssistApp
 if not exist %TARGETDIR% mkdir %TARGETDIR%
 if not exist %SOURCEDIR%\ConvAssist\ (
-	powershell -Command "Expand-Archive -Path %SOURCEDIR%\ConvAssist.zip -Destination %SOURCEDIR%\ConvAssist"
+	powershell -Command "Expand-Archive -Path %SOURCEDIR%\ConvAssist.zip -Destination %SOURCEDIR%"
 )
 xcopy /s /y /e /i %SOURCEDIR%\ConvAssist\*.* %TARGETDIR%
 

@@ -356,3 +356,4 @@ src/Redistributable/
 # Installer Stuff
 src/Setup/ACATSetup*.exe
 src/Setup/*.nsi
+src/Applications/Install/ConvAssistApp/ConvAssist

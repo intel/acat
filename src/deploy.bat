@@ -27,11 +27,15 @@ rem ------------------------------------------------
 @echo Deploying ConvAssist
 rem ------------------------------------------------
 
-@REM :DeployConvAssist
-@REM set SOURCEDIR=Applications\Install\ConvAssistApp
-@REM set TARGETDIR=%INSTALLDIR%\ConvAssistApp
-@REM if not exist %TARGETDIR% mkdir %TARGETDIR%
-@REM xcopy /s /y /e /i %SOURCEDIR%\*.* %TARGETDIR%
+:DeployConvAssist
+set SOURCEDIR=Applications\Install\ConvAssistApp
+set TARGETDIR=%INSTALLDIR%\ConvAssistApp
+if not exist %TARGETDIR% mkdir %TARGETDIR%
+if not exist %SOURCEDIR%\ConvAssist\ (
+	echo ERROR: %SOURCEDIR%\ConvAssist does not exist
+	powershell -Command "Expand-Archive -Path %SOURCEDIR%\ConvAssist.zip -Destination %SOURCEDIR%\ConvAssist"
+)
+xcopy /s /y /e /i %SOURCEDIR%\ConvAssist\*.* %TARGETDIR%
 
 :DeployAssets
 rem ------------------------------------------------

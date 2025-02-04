@@ -30,7 +30,11 @@ rem ------------------------------------------------
 :DeployConvAssist
 set SOURCEDIR=Applications\Install\ConvAssistApp
 set TARGETDIR=%INSTALLDIR%\ConvAssistApp
-if not exist %TARGETDIR% mkdir %TARGETDIR%
+if not exist %TARGETDIR% (
+	mkdir %TARGETDIR%
+) else (
+	del /s /q %TARGETDIR%\*
+)
 if not exist %SOURCEDIR%\ConvAssist\ (
 	powershell -Command "Expand-Archive -Path %SOURCEDIR%\ConvAssist.zip -Destination %SOURCEDIR%"
 )

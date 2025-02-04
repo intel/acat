@@ -36,9 +36,9 @@ if not exist %TARGETDIR% (
 	del /s /q %TARGETDIR%\*
 )
 if not exist %SOURCEDIR%\ConvAssist\ (
-	powershell -Command "Expand-Archive -Path %SOURCEDIR%\ConvAssist.zip -Destination %SOURCEDIR%"
+	powershell -Command "Expand-Archive -Force -Path %SOURCEDIR%\ConvAssist.zip -Destination %SOURCEDIR%\ConvAssist"
 )
-xcopy /s /y /e /i %SOURCEDIR%\ConvAssist\*.* %TARGETDIR%
+xcopy /s /y /e /i %SOURCEDIR%\ConvAssist\* %TARGETDIR%
 
 :DeployAssets
 rem ------------------------------------------------

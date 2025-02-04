@@ -28,8 +28,7 @@
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\ACATApp\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
+        <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup />

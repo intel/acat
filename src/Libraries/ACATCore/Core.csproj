@@ -37,7 +37,7 @@
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
+    <DefineConstants>ENABLE_DIGITAL_VERIFICATION</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>

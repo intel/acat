@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
 {
@@ -155,6 +156,18 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             int length = Encoding.UTF8.GetBytes(input, 0, input.Length, _byteBuffer, 0);
 
             return Encoding.Default.GetString(_byteBuffer, 0, length);
+        }
+
+        public static async Task<T> WithTimeout<T>(Task<T> task, TimeSpan timeout)
+        {
+            if (task == await Task.WhenAny(task, Task.Delay(timeout)))
+            {
+                return await task; // Task completed within timeout
+            }
+            else
+            {
+                throw new TimeoutException("The task did not complete within the given time.");
+            }
         }
     }
 }

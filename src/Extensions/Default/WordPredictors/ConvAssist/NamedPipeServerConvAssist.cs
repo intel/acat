@@ -320,30 +320,31 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 Log.Debug("Error in paramPath: " + ex);
             }
 
-            try
+            // ConvAssist needs some time to get ready.  Send a message to check if it is ready
+            ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.NextSentencePredictionRequest, WordPredictionModes.None, string.Empty);
+            string jsonMessage = JsonConvert.SerializeObject(message);
+
+            bool clientready = false;
+            var tcs = new TaskCompletionSource<bool>();
+
+            Task.Run(async () =>
             {
-                // ConvAssist needs some time to get ready.  Send a message to check if it is ready
-                ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.NextSentencePredictionRequest, WordPredictionModes.None, string.Empty);
-                string jsonMessage = JsonConvert.SerializeObject(message);
-
-                bool clientready = false;
-
-                while(!clientready) {
+                while (!clientready)
+                {
                     var result = await WriteAsync(jsonMessage, 150);
                     var resultObject = JsonConvert.DeserializeObject<WordAndCharacterPredictionResponse>(result);
                     if (resultObject != null && resultObject.MessageType != WordAndCharacterPredictionResponse.ConvAssistMessageTypes.NotReady)
                     {
                         clientready = true;
+                        tcs.SetResult(true);
                         break;
                     }
-
                     await Task.Delay(1000);
                 }
-            }
-            catch (Exception ex) 
-            { 
-                Log.Debug("Error in wait for ConvAssist Ready: " + ex);
-            }
+            });
+                
+            bool timeout = await ConvAssistUtils.WithTimeout(tcs.Task, TimeSpan.FromSeconds(30));
+            
         }
 
         /// <summary>
@@ -352,7 +353,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <param name="token"></param>
         public async Task<bool> StartNamedPipeServer(CancellationToken token, bool send_params = true, int timeout_sec = 180)
         {
-            bool result = false;
+            bool success = false;
             if (!disposed)
             {
                 var tcs = new TaskCompletionSource<bool>();
@@ -371,35 +372,39 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 
                 try
                 {
-                    result = await WithTimeout(tcs.Task, TimeSpan.FromSeconds(timeout_sec));
+                    success = await ConvAssistUtils.WithTimeout(tcs.Task, TimeSpan.FromSeconds(timeout_sec));
                 }
                 catch (TimeoutException)
                 {
                     Log.Debug("ConvAssist StartNamedPipeServer Timeout");
                 }
+
+                if (success && send_params)
+                {
+                    try
+                    {
+                        await SendParams().ConfigureAwait(false);
+                        success = true;
+                    }
+                    catch (TimeoutException)
+                    {
+                        success = false;
+                        Log.Debug("ConvAssist SendParams Timeout");
+                    }
+                    catch (Exception ex)
+                    {
+                        success = false;
+                        Log.Debug("Error in sendParams: " + ex);
+                    }
+                }
+
+                PipeServer_EvtClientConnected();
             }
 
-            if (send_params)
-            {
-                await SendParams().ConfigureAwait(false);
-            }
 
-            PipeServer_EvtClientConnected();
-            return result;
+            return success;
         }
         
-
-        private async Task<T> WithTimeout<T>(Task<T> task, TimeSpan timeout)
-        {
-            if (task == await Task.WhenAny(task, Task.Delay(timeout)))
-            {
-                return await task; // Task completed within timeout
-            }
-            else
-            {
-                throw new TimeoutException("The task did not complete within the given time.");
-            }
-        }
 
         /// <summary>
         /// Stops the pipe server.

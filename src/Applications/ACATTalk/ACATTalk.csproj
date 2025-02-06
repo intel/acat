@@ -59,7 +59,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>..\ACATApp\bin\Release\</OutputPath>
-        <Optimize>true</Optimize>
+    <Optimize>true</Optimize>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
@@ -182,4 +182,9 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="CustomPostClean" AfterTargets="Clean">
+    <Message Text="Executing custom post-clean step..." Importance="high" />
+    <!-- Add your custom tasks here -->
+    <Delete Files="..\ACATApp\bin\$(Configuration)\*.*" />
+  </Target>
 </Project>

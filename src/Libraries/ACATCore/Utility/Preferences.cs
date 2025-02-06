@@ -122,10 +122,13 @@ namespace ACAT.Lib.Core.Utility
 
         public String Extensions = "Default,BCI";
 
+        [XmlElement(IsNullable = true)]
         public String Language = String.Empty;
 
+        [XmlElement(IsNullable = true)]
         public String DefaultScanTimingsConfigurePanelName = String.Empty;
 
+        [XmlElement(IsNullable = true)]
         public String DefaultTryoutPanelName = String.Empty;
 
         //[BoolDescriptor("Auto-hide scanner if the acutator is not triggered for a specified period (see HideOnIdleTimeout) (in msecs)", true)]

@@ -21,6 +21,9 @@ namespace ACAT.Lib.Core.Utility
     {
         private static String fatalError = "Fatal error.\n {0} is a junction/symlink. Cannot perform file I/O on it.\n" +
                                                     "ACAT will exit now.\nPlease delete this file, re-install ACAT and retry.";
+
+        private static readonly object _lock = new object();
+
         /// <summary>
         /// Returns value for an xml attribute. If the attr was
         /// not found in the xml node, returns the default value.
@@ -144,9 +147,12 @@ namespace ACAT.Lib.Core.Utility
             {
                 var serializer = new XmlSerializer(typeof(T));
 
-                using (TextReader reader = new StringReader(objectData))
+                lock (_lock)
                 {
-                    obj = (T)serializer.Deserialize(reader);
+                    using (TextReader reader = new StringReader(objectData))
+                    {
+                        obj = (T)serializer.Deserialize(reader);
+                    }
                 }
             }
             catch (Exception e)
@@ -171,19 +177,22 @@ namespace ACAT.Lib.Core.Utility
 
             try
             {
-                if (!FileUtils.VerifyNotJunctionOrSymlink(filename))
+                lock(_lock)
                 {
-                    var message = String.Format(fatalError, filename);
-                    CoreGlobals.OnFatalError(message);
-                    return default;
-                }
-
-                using (FileStream fileStream = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Read, FileShare.None))
-                {
-                    using (TextReader outputStream = new StreamReader(fileStream))
+                    if (!FileUtils.VerifyNotJunctionOrSymlink(filename))
                     {
-                        var xml = new XmlSerializer(typeof(T));
-                        retVal = (T)xml.Deserialize(outputStream);
+                        var message = String.Format(fatalError, filename);
+                        CoreGlobals.OnFatalError(message);
+                        return default;
+                    }
+
+                    using (FileStream fileStream = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Read, FileShare.None))
+                    {
+                        using (TextReader outputStream = new StreamReader(fileStream))
+                        {
+                            var xml = new XmlSerializer(typeof(T));
+                            retVal = (T)xml.Deserialize(outputStream);
+                        }
                     }
                 }
             }
@@ -206,30 +215,39 @@ namespace ACAT.Lib.Core.Utility
         /// <returns>true on success</returns>
         public static bool XmlFileSave<T>(T o, string filename)
         {
-            bool retVal = true;
+            // Only return success if the file was written successfully
+            bool retVal = false;
 
-            if (!FileUtils.VerifyNotJunctionOrSymlink(filename))
+            lock (_lock)
             {
-                var message = String.Format(fatalError, filename);
-                CoreGlobals.OnFatalError(message);
-                return false;
-            }
-
-            try
-            {
-                using (FileStream fileStream = new FileStream(filename, FileMode.Open, FileAccess.Write, FileShare.None))
+                if (!FileUtils.VerifyNotJunctionOrSymlink(filename))
                 {
-                    using (TextWriter outputStream = new StreamWriter(fileStream))
+                    var message = String.Format(fatalError, filename);
+                    CoreGlobals.OnFatalError(message);
+                    return false;
+                }
+
+                try
+                {
+                    var xmlobject = XmlUtils.XmlSerializeToString(o);
+                    var success = XmlUtils.XmlDeserializeFromString<T>(xmlobject, out var _);
+
+                    using (TextWriter writer = new StreamWriter(filename, false))
                     {
-                        var xml = new XmlSerializer(typeof(T));
-                        xml.Serialize(outputStream, o);
+                        writer.Write(xmlobject);
+                    }
+
+                    using (StreamReader inputStream = new StreamReader(filename))
+                    {
+                        var xmlContent = inputStream.ReadToEnd();
+                        retVal = XmlUtils.XmlDeserializeFromString<T>(xmlContent, out var _);
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                retVal = false;
-                Log.Error("XmlFileSave error.  FileName: " + filename + ". Error: " + e.ToString());
+                catch (Exception e)
+                {
+                    retVal = false;
+                    Log.Error("XmlFileSave error.  FileName: " + filename + ". Error: " + e.ToString());
+                }
             }
 
             return retVal;
@@ -246,9 +264,12 @@ namespace ACAT.Lib.Core.Utility
             var serializer = new XmlSerializer(typeof(T));
             var sb = new StringBuilder();
 
-            using (TextWriter writer = new StringWriter(sb))
+            lock(_lock)
             {
-                serializer.Serialize(writer, obj);
+                using (TextWriter writer = new StringWriter(sb))
+                {
+                    serializer.Serialize(writer, obj);
+                }
             }
 
             return sb.ToString();

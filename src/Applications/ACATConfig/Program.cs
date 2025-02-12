@@ -10,8 +10,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-//#define ENABLE_DIGITAL_VERIFICATION
-
 using ACAT.Applications;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.PreferencesManagement;
@@ -189,7 +187,7 @@ namespace ACATConfig
             catch (Exception ex)
             {
                 MessageBox.Show("Digital signature verification failed for the following DLL.\n\n" + dllPath + "\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                return false;
+            return false;
             }
 
             return true;

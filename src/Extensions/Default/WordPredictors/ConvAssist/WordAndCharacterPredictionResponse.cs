@@ -74,9 +74,10 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
 
         public enum ConvAssistMessageTypes
         {
-            None,
+            NotReady,
             SetParam,
             NextWordPredictionRequest,
+            ReadyForPredictions = 11,
         }
 
         public enum ConvAssistPredictionTypes

@@ -11,8 +11,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-//#define ENABLE_DIGITAL_VERIFICATION
-
 using ACAT.ACATResources;
 using ACAT.Lib.Core.AgentManagement;
 using ACAT.Lib.Core.Audit;

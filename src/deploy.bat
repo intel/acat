@@ -16,9 +16,11 @@ xcopy /s /y /e /i %SOURCEDIR%\*.* %TARGETDIR%
 set LANGUAGE=en
 
 set TARGETDIR=%INSTALLDIR%\%LANGUAGE%\WordPredictors\ConvAssist
-if exist %TARGETDIR% goto DeployConvAssist
 set SOURCEDIR=Applications\Install\%LANGUAGE%\WordPredictors\ConvAssist
-if not exist %SOURCEDIR% goto DeployAssets
+if not exist %SOURCEDIR% (
+	echo ERROR: %SOURCEDIR% does not exist
+	goto DeployConvAssist
+)
 xcopy /s /y /e /i %SOURCEDIR%\*.* %TARGETDIR% 
 
 rem ------------------------------------------------
@@ -28,10 +30,15 @@ rem ------------------------------------------------
 :DeployConvAssist
 set SOURCEDIR=Applications\Install\ConvAssistApp
 set TARGETDIR=%INSTALLDIR%\ConvAssistApp
-set TARGETFILE=ConvAssist.exe
-if exist %TARGETDIR%\%TARGETFILE% goto DeployAssets
-if not exist %TARGETDIR% mkdir %TARGETDIR%
-copy %SOURCEDIR%\%TARGETFILE% %TARGETDIR%
+if not exist %TARGETDIR% (
+	mkdir %TARGETDIR%
+) else (
+	del /s /q %TARGETDIR%\*
+)
+if not exist %SOURCEDIR%\ConvAssist\ (
+	powershell -Command "Expand-Archive -Force -Path %SOURCEDIR%\ConvAssist.zip -Destination %SOURCEDIR%\ConvAssist"
+)
+xcopy /s /y /e /i %SOURCEDIR%\ConvAssist\* %TARGETDIR%
 
 :DeployAssets
 rem ------------------------------------------------
@@ -196,8 +203,6 @@ set TARGETDIR=%INSTALLDIR%\Extensions\BCI\Actuators\BCIActuator
 if not exist %TARGETDIR% mkdir %TARGETDIR%
 copy .\%SOURCEDIR%\bin\%CONFIG%\*.dll %TARGETDIR%
 copy .\%BCIEXTERNALSRCDIR%\brainflow.5.5.0\*.dll %TARGETDIR%
-copy .\%BCIEXTERNALSRCDIR%\brainflow.5.5.0\*.so %TARGETDIR%
-copy .\%BCIEXTERNALSRCDIR%\brainflow.5.5.0\*.dylib %TARGETDIR%
 
 set LANGUAGE=en
 set BASEDIR=Extensions\BCI\UI

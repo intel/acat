@@ -65,6 +65,8 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         NotReady
         CRGKeywordPredictionRequest,
         CRGSentencePredictionRequest
+        CRGKeywordPredictionRequest,
+        CRGSentencePredictionRequest
     }
 
     /// <summary>

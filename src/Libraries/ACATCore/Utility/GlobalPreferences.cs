@@ -46,7 +46,7 @@ namespace ACAT.Lib.Core.Utility
         /// <returns>Preferences read or null</returns>
         public static GlobalPreferences Load(String prefFile, bool loadDefaultsOnFail = true)
         {
-            saveFactoryDefaultSettings();
+            //saveFactoryDefaultSettings();
 
             var retVal = XmlUtils.XmlFileLoad<GlobalPreferences>(prefFile);
 

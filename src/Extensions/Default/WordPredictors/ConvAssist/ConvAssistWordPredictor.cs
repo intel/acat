@@ -146,64 +146,65 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// </summary>
         /// <param name="ci">language for word prediction</param>
         /// <returns>true on success</returns>
+        /// 
+
         public override bool Init(CultureInfo ci)
         {
             Attributions.Add("CONVASSIST",
-                                "The ConvAssist predictive text functionality is derived from Pressagio, the " +
-                                "intelligent predictive text and characters. ");
+                    "The ConvAssist predictive text functionality is derived from Pressagio, the " +
+                    "intelligent predictive text and characters. ");
 
             Disclaimers.Add("ConvAssist", R.GetString("DisclaimerConvAssist"));
 
-            string filesPath = Path.Combine(UserManager.CurrentUserDir, CultureInfo.DefaultThreadCurrentUICulture.Name, "WordPredictors", "ConvAssist", "Settings");
-            namedPipe = new NamedPipeServerConvAssist(PipeName, PipeDirection.InOut, filesPath);
-            pipeCreated = namedPipe.CreatePipeServer();
-            if (!pipeCreated)
-                pipeCreated = namedPipe.CreatePipeServer();
+            // Start the ConvAssist Process
+            bool send_params = true;
 
-            // Initial validation, the client.exe running
-            Process[] ConvAssistExeProcess = Process.GetProcessesByName(ConvAssistName);
-            // Number  of processes
-            // 2 processes of ConvAssist.exe indicates that ConvAssist is running correctly.
-            // 0 ConvAssist is not running
-            switch (ConvAssistExeProcess.Length)
+            // TODO: Either fix ConvAssist to handle getting params after already setup
+            // or add check to see if ConvAssist is already configured and don't
+            // send params if it is
+
+#if !DEBUG_CONVASSIST
+            //NOTE: When debugging ConvAssist, it will be running as a python process, not as an exe
+            //So, we don't need to start it here
+            string path = Path.Combine(FileUtils.ACATPath, ConvAssistAppFolder, ConvAssistAppName);
+
+            Process[] runningProcesses = Process.GetProcessesByName(ConvAssistName);
+            if (runningProcesses.Length == 0)
             {
-                case 0:
-                    string filePath = Path.Combine(FileUtils.ACATPath, ConvAssistAppFolder, ConvAssistAppName);
-                    if (File.Exists(filePath))
+                ProcessStartInfo convAssistInfo = new ProcessStartInfo
+                {
+                    FileName = path,
+                    WorkingDirectory = Path.GetDirectoryName(path),
+                    Arguments = "",
+                    UseShellExecute = true,
+                    RedirectStandardOutput = false,
+                    RedirectStandardError = false,
+                    CreateNoWindow = false
+                };
+
+                using (Process convAssist = Process.Start(convAssistInfo))
+                {
+                    while (!convAssist.Responding)
                     {
-                        //Process.Start(filePath);
-                        var processStartInfo = new ProcessStartInfo
-                        {
-                            FileName = filePath,
-                            WorkingDirectory = Path.GetDirectoryName(filePath)
-                        };
-
-                        Process.Start(processStartInfo);
-                        int waitcounter = 0;
-                        //Wait for the .exe to fully load
-                        while (!namedPipe.clientConected)
-                        {
-                            if (waitcounter > settings.ConvAssistExeLoadWaitTime)
-                                break;
-                            Thread.Sleep(1000);
-                            waitcounter += 1;
-                        }
+                        Thread.Sleep(100);
                     }
-                    break;
+                }
             }
-            int counterToQuit = 0;
-            while (!namedPipe.clientAnswerParameters)
-            {
-                counterToQuit += 1;
-                Thread.Sleep(1000);
-                if (counterToQuit > settings.ConvAssistModuleLoadWaitTime)
-                    break;
-            }
+#endif
+            // Now start the named pipe server and wait for the client to connect
+            string convAssistSettings = Path.Combine(UserManager.CurrentUserDir, CultureInfo.DefaultThreadCurrentUICulture.Name, "WordPredictors", "ConvAssist", "Settings");
 
-            wordPredictionTask = Task.Factory.StartNew(WordPredictionTaskProcess, TaskCreationOptions.LongRunning);
+            namedPipe = new NamedPipeServerConvAssist(PipeName, PipeDirection.InOut, convAssistSettings);
+            pipeCreated = namedPipe.CreatePipeServer(send_params);
+            
+            if (pipeCreated)
+            {
+                wordPredictionTask = Task.Factory.StartNew(WordPredictionTaskProcess, TaskCreationOptions.LongRunning);
+            }
 
             return pipeCreated;
         }
+       
 
         /// <summary>
         /// Display disclaimer dialog

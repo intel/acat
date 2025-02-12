@@ -62,8 +62,8 @@ namespace ACAT.Lib.Extension
         [IntDescriptor("Number of times the words in the word prediction list are scanned", 1, 10)]
         public int WordPredictionScanIterations = 1;
 
-        [IntDescriptor("Number of words suggestions to compute probabilities", 15, 200)]
-        public int WordsSuggestions = 100;
+        [IntDescriptor("Number of words suggestions to compute probabilities", 5, 20)]
+        public int WordsSuggestions = 10;
 
         /// <summary>
         /// Loads the settings from the preferences path

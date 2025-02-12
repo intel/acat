@@ -5,8 +5,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-//#define ENABLE_DIGITAL_VERIFICATION
-
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;

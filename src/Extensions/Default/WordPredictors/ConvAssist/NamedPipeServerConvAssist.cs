@@ -115,7 +115,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <summary>
         /// Gets the named-pipe server stream.
         /// </summary>
-        public NamedPipeServerStream NamedPipeServerStream { get; private set; }
+        public NamedPipeServerStream NamedPipeServer { get; private set; }
 
         public bool TaskFinished { get; private set; }
 
@@ -127,7 +127,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         {
             try
             {
-                if (NamedPipeServerStream != null && cancellationTokenSource != null)
+                if (NamedPipeServer != null && cancellationTokenSource != null)
                 {
                     Stop();
                     Dispose();
@@ -143,22 +143,23 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             return true;
         }
 
-        public bool CreatePipeServer()
+        public bool CreatePipeServer(bool send_params = false)
         {
             disposed = false;
+            bool success = false;
             cancellationTokenSource = new CancellationTokenSource();
-            NamedPipeServerStream = new NamedPipeServerStream(PipeName, PipeDirection,
+            NamedPipeServer = new NamedPipeServerStream(PipeName, PipeDirection,
                                             1, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
             try
             {
-                Start();
+                success = StartNamedPipeServer(cancellationToken, send_params).Result;
             }
             catch (Exception ex)
             {
                 Log.Debug("Exception in createPipeServer: " + ex);
-                return false;
             }
-            return true;
+
+            return success;
         }
 
         /// <summary>
@@ -169,8 +170,8 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             if (!disposed)
             {
                 cancellationTokenSource.Dispose();
-                NamedPipeServerStream.Dispose();
-                NamedPipeServerStream = null;
+                NamedPipeServer.Dispose();
+                NamedPipeServer = null;
                 cancellationTokenSource = null;
                 disposed = true;
             }
@@ -201,10 +202,9 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             return true;
         }
 
+
         public async Task SendParams()
         {
-            ///NOT IMPLEMENTED YET NEED EXE RELEASE OF CONVASSIST
-            await Task.Delay(25);
             try
             {
                 ConvAssistSetParam paramEnableLog = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.EnableLog, Common.AppPreferences.EnableLogs.ToString());
@@ -218,7 +218,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 Log.Debug("Error in param enable log: " + ex);
             }
 
-            await Task.Delay(25);
             try
             {
                 ConvAssistSetParam parampathLog = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.PathLog, FileUtils.GetLogsDir());
@@ -232,7 +231,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 Log.Debug("Error in param Log path: " + ex);
             }
 
-            await Task.Delay(25);
             try
             {
                 //SUGGESTIONS FOR WORD PREDCITONS PARAMETER
@@ -246,7 +244,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             {
                 Log.Debug("Error in paramSuggestions: " + ex);
             }
-            await Task.Delay(25);
+
             try
             {
                 //TEST GENERAL SENTENCE PREDICTION PARAMETER
@@ -260,7 +258,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             {
                 Log.Debug("Error in paramTestPred: " + ex);
             }
-            await Task.Delay(25);
+
             try
             {
                 //RETRIEVE FROM ACC PARAMETER
@@ -275,7 +273,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 Log.Debug("Error in paramRetrieveACC: " + ex);
             }
 
-            await Task.Delay(25);
             try
             {
                 //PATH STATIC
@@ -291,7 +288,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 Log.Debug("Error in paramPathStatic: " + ex);
             }
 
-            await Task.Delay(25);
             try
             {
                 //PATH PERSONALIZED
@@ -307,7 +303,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 Log.Debug("Error in paramPathPersonalized: " + ex);
             }
 
-            await Task.Delay(25);
             try
             {
                 //PATH FOR THE INI FILES FOR EACH MODE
@@ -324,27 +319,92 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             {
                 Log.Debug("Error in paramPath: " + ex);
             }
-        }
 
-        /// <summary>
-        /// Starts the named pipe server
-        /// </summary>
-        public void Start()
-        {
-            Start(cancellationTokenSource.Token);
+            // ConvAssist needs some time to get ready.  Send a message to check if it is ready
+            ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.NextSentencePredictionRequest, WordPredictionModes.None, string.Empty);
+            string jsonMessage = JsonConvert.SerializeObject(message);
+
+            bool clientready = false;
+            var tcs = new TaskCompletionSource<bool>();
+
+            Task.Run(async () =>
+            {
+                while (!clientready)
+                {
+                    var result = await WriteAsync(jsonMessage, 150);
+                    var resultObject = JsonConvert.DeserializeObject<WordAndCharacterPredictionResponse>(result);
+                    if (resultObject != null && resultObject.MessageType != WordAndCharacterPredictionResponse.ConvAssistMessageTypes.NotReady)
+                    {
+                        clientready = true;
+                        tcs.SetResult(true);
+                        break;
+                    }
+                    await Task.Delay(1000);
+                }
+            });
+                
+            bool timeout = await ConvAssistUtils.WithTimeout(tcs.Task, TimeSpan.FromSeconds(30));
+            
         }
 
         /// <summary>
         /// Starts the named pipe server.
         /// </summary>
         /// <param name="token"></param>
-        public void Start(CancellationToken token)
+        public async Task<bool> StartNamedPipeServer(CancellationToken token, bool send_params = true, int timeout_sec = 180)
         {
+            bool success = false;
             if (!disposed)
             {
-                this.NamedPipeServerStream.BeginWaitForConnection(OnConnection, new PipeServerStateConvAssist(this.NamedPipeServerStream, token));
+                var tcs = new TaskCompletionSource<bool>();
+                NamedPipeServer.BeginWaitForConnection(ar =>
+                {
+                    try
+                    {
+                        OnConnection(ar);
+                        tcs.SetResult(true);
+                    }
+                    catch (Exception ex)
+                    {
+                        tcs.SetException(ex);
+                    }
+                }, new PipeServerStateConvAssist(NamedPipeServer, token));
+                
+                try
+                {
+                    success = await ConvAssistUtils.WithTimeout(tcs.Task, TimeSpan.FromSeconds(timeout_sec));
+                }
+                catch (TimeoutException)
+                {
+                    Log.Debug("ConvAssist StartNamedPipeServer Timeout");
+                }
+
+                if (success && send_params)
+                {
+                    try
+                    {
+                        await SendParams().ConfigureAwait(false);
+                        success = true;
+                    }
+                    catch (TimeoutException)
+                    {
+                        success = false;
+                        Log.Debug("ConvAssist SendParams Timeout");
+                    }
+                    catch (Exception ex)
+                    {
+                        success = false;
+                        Log.Debug("Error in sendParams: " + ex);
+                    }
+                }
+
+                PipeServer_EvtClientConnected();
             }
+
+
+            return success;
         }
+        
 
         /// <summary>
         /// Stops the pipe server.
@@ -355,14 +415,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             if (!this.disposed)
             {
                 this.cancellationTokenSource.Cancel();
-            }
-        }
-
-        public void Write(byte[] buffer)
-        {
-            if (!this.disposed)
-            {
-                this.NamedPipeServerStream.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServerStream);
             }
         }
 
@@ -380,7 +432,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             if (!this.disposed)
             {
                 byte[] buffer = Encoding.UTF8.GetBytes(value);
-                this.NamedPipeServerStream.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServerStream);
+                this.NamedPipeServer.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServer);
             }
         }
 
@@ -402,7 +454,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             if (!this.disposed)
             {
                 byte[] buffer = Encoding.UTF8.GetBytes(value);
-                this.NamedPipeServerStream.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServerStream);
+                this.NamedPipeServer.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServer);
             }
 
             CancellationTokenSource source = new CancellationTokenSource(msDelay);
@@ -426,7 +478,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             {
                 source.Dispose();
             }
-            
+
             message = messageReceived;
             messageReceived = string.Empty;
             TaskFinished = true;
@@ -447,7 +499,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             string message = string.Empty;
             try
             {
-                Log.Debug("Pressaio WriteSync Lock on");
+                Log.Debug("ConvAssist WriteSync Lock on");
                 EnterCriticalSection(_syncObj);
                 TaskFinished = false;
                 //Variable set when the event from receiving data triggers
@@ -455,7 +507,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 if (!this.disposed)
                 {
                     byte[] buffer = Encoding.UTF8.GetBytes(value);
-                    this.NamedPipeServerStream.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServerStream);
+                    this.NamedPipeServer.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServer);
                 }
 
                 CancellationTokenSource source = new CancellationTokenSource(msDelay);
@@ -481,13 +533,13 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("Pressaio WriteSync " + ex);
+                Log.Debug("ConvAssist WriteSync " + ex);
             }
             finally
             {
                 ExitCriticalSection(_syncObj);
             }
-            Log.Debug("Pressaio WriteSync Lock off");
+            Log.Debug("ConvAssist WriteSync Lock off");
             return message;
         }
 
@@ -518,10 +570,9 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <param name="ar"></param>
         private void OnConnection(IAsyncResult ar)
         {
-            Log.Debug("Pressaio Establish connection");
+            Log.Debug("ConvAssist Establish connection");
             NumClientsConnected++;
             clientConected = true;
-            PipeServer_EvtClientConnected();
             var pipeServerState = (PipeServerStateConvAssist)ar.AsyncState;
             if (pipeServerState.ExternalCancellationToken.IsCancellationRequested)
             {
@@ -548,12 +599,11 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         {
             EvtClientConnected?.Invoke(null, new EventArgs());
             clientConected = true;
-            _ = SendParams().ConfigureAwait(false);
         }
 
         private void PipeServer_EvtClientDisconnected()
         {
-            Log.Debug("Pressaio PipeServer_EvtClientDisconnected");
+            Log.Debug("ConvAssist PipeServer_EvtClientDisconnected");
             EvtClientDisconnected?.Invoke(null, new EventArgs());
             clientConected = false;
             clientAnswerParameters = false;
@@ -629,7 +679,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("Pressaio Error in writeCallback: " + ex.Message);
+                Log.Debug("ConvAssist Error in writeCallback: " + ex.Message);
             }
         }
     }

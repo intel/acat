@@ -593,16 +593,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
                     if (shownForm.GetType() == typeof(PreferencesEditForm))
                     {
-                        shownFormValidated = ((PreferencesEditForm)shownForm).Validate();
+                        _ = ((PreferencesEditForm)shownForm).Validate();
                     }
-
-                    /*
-                    if (!shownFormValidated)
-                    {
-                        Log.Debug("savePrefCloseAllShownForms | !shownFormValidated | break");
-                        break;
-                    }
-                    */
 
                     if (!saveButtonPressed)
                     {

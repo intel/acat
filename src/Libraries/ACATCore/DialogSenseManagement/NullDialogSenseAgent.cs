@@ -21,7 +21,7 @@ namespace ACAT.Lib.Core.DialogSenseManagement
         /// </summary>
         private bool _disposed;
 
-        private DialogTranscript _dialogTranscript;
+        private readonly DialogTranscript _dialogTranscript;
 
         public NullDialogSenseAgent()
         {
@@ -43,7 +43,7 @@ namespace ACAT.Lib.Core.DialogSenseManagement
 
         public async Task ConnectAsync()
         {
-            throw new NotImplementedException();
+            await Task.Run(() => throw new NotImplementedException());
         }
 
         public void Disconnect()
@@ -148,13 +148,13 @@ namespace ACAT.Lib.Core.DialogSenseManagement
         {
         }
 
-        DialogSenseSource GetDialogSenseSource 
-        { 
-            get
-            {
-                return DialogSenseSource.None;
-            }
-        }
+        //DialogSenseSource GetDialogSenseSource 
+        //{ 
+        //    get
+        //    {
+        //        return DialogSenseSource.None;
+        //    }
+        //}
 
         DialogSenseSource IDialogSenseAgent.GetDialogSenseSource => DialogSenseSource.None;
 

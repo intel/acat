@@ -48,7 +48,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <summary>
         /// Title of message box
         /// </summary>
-        private String _title = "ACAT Config";
+        private readonly String _title = "ACAT Config";
 
         /// <summary>
         /// Form that displays a list of ACAT modules (or categories) such as Agents,
@@ -60,11 +60,20 @@ namespace ACAT.Lib.Core.PreferencesManagement
             InitializeComponent();
             Load += ACATConfigMainForm_Load;
             Shown += ACATConfigMainForm_Shown;
-            _configCategoryList = new List<Tuple<String, CheckBox>>();
-            _configCategoryList.Add(new Tuple<String, CheckBox>(checkBoxCategoryGeneral.Text.ToString(), checkBoxCategoryGeneral));
-            _configCategoryList.Add(new Tuple<String, CheckBox>(checkBoxCategoryActuators.Text.ToString(), checkBoxCategoryActuators));
-            _configCategoryList.Add(new Tuple<String, CheckBox>(checkBoxCategoryTextToSpeech.Text.ToString(), checkBoxCategoryTextToSpeech));
-            _configCategoryList.Add(new Tuple<String, CheckBox>(checkBoxCategoryWordPrediction.Text.ToString(), checkBoxCategoryWordPrediction));
+            _configCategoryList = new List<Tuple<String, CheckBox>>
+            {
+                new Tuple<String, CheckBox>(checkBoxCategoryGeneral.Text.ToString(), checkBoxCategoryGeneral),
+                new Tuple<String, CheckBox>(checkBoxCategoryActuators.Text.ToString(), checkBoxCategoryActuators),
+                new Tuple<String, CheckBox>(checkBoxCategoryTextToSpeech.Text.ToString(), checkBoxCategoryTextToSpeech),
+                new Tuple<String, CheckBox>(checkBoxCategoryWordPrediction.Text.ToString(), checkBoxCategoryWordPrediction)
+            };
+            _configCategoryList = new List<Tuple<String, CheckBox>>
+            {
+                new Tuple<String, CheckBox>(checkBoxCategoryGeneral.Text.ToString(), checkBoxCategoryGeneral),
+                new Tuple<String, CheckBox>(checkBoxCategoryActuators.Text.ToString(), checkBoxCategoryActuators),
+                new Tuple<String, CheckBox>(checkBoxCategoryTextToSpeech.Text.ToString(), checkBoxCategoryTextToSpeech),
+                new Tuple<String, CheckBox>(checkBoxCategoryWordPrediction.Text.ToString(), checkBoxCategoryWordPrediction)
+            };
 
             SetNewFormButtonHandlers(); // Reset buttons to default states and clear all event handlers
 
@@ -196,7 +205,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 ClientSize = new System.Drawing.Size(ClientSize.Width, (int)(_designTimeAspectRatio * ClientSize.Width));
             }
 
-            var installedLanguages = ResourceUtils.EnumerateInstalledLanguages();
+            _ = ResourceUtils.EnumerateInstalledLanguages();
 
             TopMost = false;
             TopMost = true;
@@ -231,10 +240,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <param name="e"></param>
         private void buttonResetToDefault_Click(object sender, EventArgs e)
         {
-            if (EvtResetToDefaultButtonClicked != null)
-            {
-                EvtResetToDefaultButtonClicked(sender, e);
-            }
+            EvtResetToDefaultButtonClicked?.Invoke(sender, e);
         }
 
         /// <summary>
@@ -259,10 +265,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <param name="e"></param>
         private void checkBoxWrapText_Click(object sender, EventArgs e)
         {
-            if (EvtWrapTextCheckBoxClicked != null)
-            {
-                EvtWrapTextCheckBoxClicked(sender, e);
-            }
+            EvtWrapTextCheckBoxClicked?.Invoke(sender, e);
         }
 
         /// <summary>
@@ -551,8 +554,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             // Log.Debug("handlePreferencesEditFormClosing | _shownPreferenceForms: " + _shownPreferenceForms.ToString());
             if (_shownPreferenceForms != null && _shownPreferenceForms.Count > 0)
             {
-                Form formPopped = _shownPreferenceForms.Pop();
-                // Log.Debug("formPopped: " + formPopped.ToString());
+                _ = _shownPreferenceForms.Pop();
                 if (_shownPreferenceForms.Count > 0)
                 {
                     Form formNewTop = _shownPreferenceForms.Peek();
@@ -571,7 +573,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         private void savePrefCloseAllShownForms(bool saveButtonPressed = false)
         {
             bool shownFormDirty = false;
-            bool shownFormValidated = true;
+            //bool shownFormValidated = true;
             bool userSaveConfirmation = false;
 
             if (_shownPreferenceForms != null && _shownPreferenceForms.Count >= 1)

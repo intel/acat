@@ -1196,7 +1196,7 @@ namespace ACAT.Applications.ConvAssistTestApp
 
                 setASRResponseText("Disconnected from ASR.");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //MessageBox.Show("Error disconnnecting from ASR. " + ex.ToString());
                 return false;

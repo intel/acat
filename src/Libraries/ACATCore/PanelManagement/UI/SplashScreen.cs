@@ -51,7 +51,7 @@ namespace ACAT.Lib.Core.PanelManagement
 
             TopMost = true;
 
-            //_watchDog = new WindowOverlapWatchdog(this);
+            _watchDog = new WindowOverlapWatchdog(this);
 
             Load += SplashScreen_Load;
             Shown += SplashScreen_Shown;
@@ -171,5 +171,6 @@ namespace ACAT.Lib.Core.PanelManagement
             {
             }
         }
+
     }
 }

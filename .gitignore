@@ -230,6 +230,7 @@ ClientBin/
 *.pfx
 *.publishsettings
 orleans.codegen.cs
+.DS_Store
 
 # src/Applications/Install/ConvAssistApp/_internal
 src/Applications/Install/ConvAssistApp/ConvAssist

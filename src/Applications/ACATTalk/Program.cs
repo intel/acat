@@ -106,8 +106,6 @@ namespace ACAT.Applications.ACATTalk
 
             AuditLog.Audit(new AuditEvent("Application", "start"));
 
-            AppCommon.UpgradeFromPreviousVersion(freshInstallForUser);
-
             CommandDescriptors.Init();
 
             Common.AppPreferences.PreferredPanelConfigNames = String.Empty;

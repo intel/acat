@@ -99,7 +99,7 @@ jobs:
         makensis.exe ./NSIS_InstallerScript.nsi
       env:
         shell: powershell
-        working-dir: ${{ env:Installer_Dir }}
+        working-dir: ./src/Setup/
         Configuration: ${{ matrix.configuration }}
       
     # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact

@@ -28,11 +28,11 @@ jobs:
       with:
         fetch-depth: 0
 
-    # Install the .NET Core workload
-    - name: Install .NET Framework
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '4.8.x'
+    # # Install the .NET Core workload
+    # - name: Install .NET Framework
+    #   uses: actions/setup-dotnet@v4
+    #   with:
+    #     dotnet-version: '4.8.x'
 
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe

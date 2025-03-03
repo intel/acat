@@ -21,6 +21,7 @@ jobs:
     env:
       Solution_Name: acat.sln                         # Replace with your solution name, i.e. MyWpfApp.sln.
       Installer_Dir: src/Setup/
+      Solution_Dir: src/
 
     steps:
     - name: Checkout
@@ -48,11 +49,10 @@ jobs:
           
     # Build the full application
     - name: Build the Solution
-      #run: msbuild $env:Solution_Name /t:Build /p:Configuration=$env:Configuration
-      run: Get-Location
+      run: Write-Output $env:Solution_dir/$env:Solution_Name /t:Build /p:Configuration=$env:Configuration
+      # run: Get-Location
       env:
         shell: powershell
-        working-directory: ./src
         Configuration: ${{ matrix.configuration }}
 
     # Create the app package by building and packaging the Windows Application Packaging project

@@ -49,7 +49,9 @@ jobs:
           
     # Build the full application
     - name: Build the Solution
-      run: Write-Output $env:Solution_dir/$env:Solution_Name /t:Build /p:Configuration=$env:Configuration
+      run: |
+        cd src
+        msbuild $env:Solution_dir/$env:Solution_Name /t:Build /p:Configuration=$env:Configuration
       # run: Get-Location
       env:
         shell: powershell

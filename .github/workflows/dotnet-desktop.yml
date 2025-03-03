@@ -61,7 +61,7 @@ jobs:
     - name: Create the app package
       run: |
         cd $env:Solution_Dir/Setup
-        python installGenerator.py ../Applications/AcatApp/$env:Configuration/
+        python installGenerator.py $env:SolutionDir/src/Applications/AcatApp/bin/$env:Configuration/
         makensis.exe ./NSIS_InstallerScript.nsi
       env:
         shell: powershell

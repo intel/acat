@@ -48,25 +48,26 @@ jobs:
           
     # Build the full application
     - name: Build the Solution
-      run: msbuild $env:Solution_Name /t:Build /p:Configuration=$env:Configuration
+      #run: msbuild $env:Solution_Name /t:Build /p:Configuration=$env:Configuration
+      run: Get-Location
       env:
         shell: powershell
         working-dir: ./src
         Configuration: ${{ matrix.configuration }}
 
     # Create the app package by building and packaging the Windows Application Packaging project
-    - name: Create the app package
-      run: |
-        python installGenerator.py ../Applications/AcatApp/$env:Configuration/
-        makensis.exe ./NSIS_InstallerScript.nsi
-      env:
-        shell: powershell
-        working-dir: ./src/Setup/
-        Configuration: ${{ matrix.configuration }}
+    # - name: Create the app package
+    #   run: |
+    #     python installGenerator.py ../Applications/AcatApp/$env:Configuration/
+    #     makensis.exe ./NSIS_InstallerScript.nsi
+    #   env:
+    #     shell: powershell
+    #     working-dir: ./src/Setup/
+    #     Configuration: ${{ matrix.configuration }}
       
     # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: ACATSetup
-        path: ${{ env.Installer_Dir }}\ACATSetup.exe
+    # - name: Upload build artifacts
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: ACATSetup
+    #     path: ${{ env.Installer_Dir }}\ACATSetup.exe

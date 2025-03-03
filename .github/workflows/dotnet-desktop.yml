@@ -61,6 +61,7 @@ jobs:
       #   makensis.exe ./NSIS_InstallerScript.nsi
       run: |
         python installGenerator.py "D:\a\acat\acat\src\Applications\ACATApp\bin\Debug"
+        makensis.exe ./NSIS_InstallerScript.nsi
       working-directory: src/Setup
       env:
         shell: powershell

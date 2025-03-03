@@ -18,11 +18,6 @@ jobs:
     runs-on: windows-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
-    env:
-      Solution_Name: acat.sln                         # Replace with your solution name, i.e. MyWpfApp.sln.
-      Installer_Dir: src/Setup/
-      Solution_Dir: src/
-
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -50,9 +45,15 @@ jobs:
     # Build the full application
     - name: Build the Solution
       run: |
-        cd $env:Solution_Dir
-        msbuild $env:Solution_Name /t:Build /p:Configuration=$env:Configuration
+        msbuild acat.sln /t:Build /p:Configuration=$env:Configuration
       # run: Get-Location
+      env:
+        shell: powershell
+        Configuration: ${{ matrix.configuration }}
+        working-directory: src/
+
+    - name: Check output
+      run: dir src/Applications/ACATApp/bin/$env:Configuration
       env:
         shell: powershell
         Configuration: ${{ matrix.configuration }}
@@ -60,12 +61,11 @@ jobs:
     # Create the app package by building and packaging the Windows Application Packaging project
     - name: Create the app package
       run: |
-        cd $env:Solution_Dir/Setup
-        python installGenerator.py $env:SolutionDir/src/Applications/AcatApp/bin/$env:Configuration/
+        python installGenerator.py src/Applications/AcatApp/bin/$env:Configuration/
         makensis.exe ./NSIS_InstallerScript.nsi
       env:
         shell: powershell
-        working-dir: ./src/Setup/
+        working-directory: src/Setup
         Configuration: ${{ matrix.configuration }}
       
     # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact

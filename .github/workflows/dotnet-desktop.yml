@@ -52,7 +52,7 @@ jobs:
       run: Get-Location
       env:
         shell: powershell
-        working-dir: ./src
+        working-directory: ./src
         Configuration: ${{ matrix.configuration }}
 
     # Create the app package by building and packaging the Windows Application Packaging project

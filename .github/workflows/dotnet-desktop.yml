@@ -56,9 +56,11 @@ jobs:
 
     # Create the app package by building and packaging the Windows Application Packaging project
     - name: Create the app package
+      # run: |
+      #   python installGenerator.py $GITHUB_WORKSPACE/src/Applications/AcatApp/bin/${{ matrix.configuration }}
+      #   makensis.exe ./NSIS_InstallerScript.nsi
       run: |
-        python installGenerator.py $GITHUB_WORKSPACE/src/Applications/AcatApp/bin/${{ matrix.configuration }}
-        makensis.exe ./NSIS_InstallerScript.nsi
+        python installGenerator.py "D:\a\acat\acat\src\Applications\ACATApp\bin\Debug"
       working-directory: src/Setup
       env:
         shell: powershell

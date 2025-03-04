@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
   <PropertyGroup Condition="'$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '15.0'">
     <VisualStudioVersion>15.0</VisualStudioVersion>
   </PropertyGroup>
-
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x86">
       <Configuration>Debug</Configuration>
@@ -47,30 +45,62 @@
       <Platform>AnyCPU</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-
   <PropertyGroup>
     <WapProjPath Condition="'$(WapProjPath)'==''">$(MSBuildExtensionsPath)\Microsoft\DesktopBridge\</WapProjPath>
   </PropertyGroup>
-
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.props" />
-
   <PropertyGroup>
     <ProjectGuid>40714496-ed40-458c-9675-11eb0a872620</ProjectGuid>
     <TargetPlatformVersion>10.0.22621.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
-    
-    <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
-    <NoWarn>$(NoWarn);NU1702</NoWarn>    
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+    <NoWarn>$(NoWarn);NU1702</NoWarn>
+    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+    <PackageCertificateKeyFile>WapACAT_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxPackageDir>C:\Intel\ACAT\installer-enhancement_branchOutput\</AppxPackageDir>
+    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <AppxBundlePlatforms>neutral</AppxBundlePlatforms>
+    <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+    <EntryPointProjectUniqueName>..\Applications\ACATConfig\ACATConfig.csproj</EntryPointProjectUniqueName>
   </PropertyGroup>
-
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <AppxBundle>Always</AppxBundle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <AppxBundle>Always</AppxBundle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AppxBundle>Always</AppxBundle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <AppxBundle>Always</AppxBundle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <AppxBundle>Always</AppxBundle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <AppxBundle>Always</AppxBundle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <AppxBundle>Always</AppxBundle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AppxBundle>Always</AppxBundle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <AppxBundle>Always</AppxBundle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <AppxBundle>Always</AppxBundle>
+  </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    
   </ItemGroup>
-
   <ItemGroup>
     <Content Include="Images\SplashScreen.scale-200.png" />
     <Content Include="Images\LockScreenLogo.scale-200.png" />
@@ -80,11 +110,14 @@
     <Content Include="Images\StoreLogo.png" />
     <Content Include="Images\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
-
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.targets" />
-
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" PrivateAssets="all" />
   </ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\Applications\ACATConfig\ACATConfig.csproj" />
+    <ProjectReference Include="..\Applications\ACATTalk\ACATTalk.csproj" />
+    <ProjectReference Include="..\Applications\ACATWatch\ACATWatch.csproj" />
+    <ProjectReference Include="..\Applications\ConvAssistTerminate\ConvAssistTerminate.csproj" />
+  </ItemGroup>
 </Project>

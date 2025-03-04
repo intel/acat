@@ -9,7 +9,7 @@
   <Identity
     Name="0d80c6de-a096-4588-8526-60ad743ed446"
     Publisher="CN=jhunter"
-    Version="1.0.0.0" />
+    Version="0.1.1.0" />
 
   <Properties>
     <DisplayName>WapACAT</DisplayName>

@@ -23,6 +23,7 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
+    <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>

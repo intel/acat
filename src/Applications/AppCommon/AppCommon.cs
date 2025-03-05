@@ -19,21 +19,19 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.ACATResources;
-using ACAT.Lib.Core.AbbreviationsManagement;
 using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.ThemeManagement;
 using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Extension;
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+
 
 namespace ACAT.Applications
 {
@@ -205,14 +203,18 @@ namespace ACAT.Applications
         /// </summary>
         public static bool SetCulture()
         {
-            bool isDefault = false;
+            // Either get the default culture from the preferences
+            // or default to current system culture.
 
-            if (!String.IsNullOrEmpty(Common.AppPreferences.Language))
-            {
-                ResourceUtils.SetCulture(Common.AppPreferences.Language);
-                ResourceUtils.InstallLanguageForUser();
-                return true;
-            }
+            string culture = String.IsNullOrEmpty(Common.AppPreferences.Language) ? CultureInfo.CurrentCulture.Name : Common.AppPreferences.Language;
+
+            ResourceUtils.SetCulture(culture);
+            ResourceUtils.InstallLanguageForUser();
+            return true;
+
+            // TODO: Re-enable this code
+            /*
+             bool isDefault = false;
 
             var installedLanguages = ResourceUtils.EnumerateInstalledLanguages();
 
@@ -251,6 +253,7 @@ namespace ACAT.Applications
             ResourceUtils.InstallLanguageForUser();
 
             return true;
+            */
         }
 
         /// <summary>
@@ -297,38 +300,34 @@ namespace ACAT.Applications
 
         public static void CheckDisplayScalingAndResolution()
         {
-            if (!Common.AppPreferences.ShowDisplayScaleMessageOnStartup)
+            var cultures = R.GetAvailableCultures();
+
+            if (Common.AppPreferences.ShowDisplayScaleMessageOnStartup)
             {
-                return;
-            }
+                var tuple = DualMonitor.GetDisplayWidthAndScaling();
 
-            var tuple = DualMonitor.GetDisplayWidthAndScaling();
+                String prompt = String.Empty;
 
-            String prompt = String.Empty;
+                if (tuple.Item1 != 1920)
+                {
+                    prompt = string.Format(R.GetString("ResolutionWarning", CultureInfo.CurrentCulture.TwoLetterISOLanguageName), tuple.Item1);
+                    //prompt = String.Format(GlobalResources.GetString("DisplayWidthWarning", CultureInfo.CurrentCulture.TwoLetterISOLanguageName), tuple.Item1);
+                }
+                else if (tuple.Item2 != 100 && tuple.Item2 != 125)
+                {
+                    prompt = String.Format("The monitor's display scaling is currently set to {0}% which may cause display issues " +
+                                            " with the ACAT user interface.  The ACAT UI is tailored for display scaling " +
+                                            "values of 100% and 125%.\r\n\r\n To resolve any potential display inconsistencies, " +
+                                            "we recommend adjusting your monitor's display scaling to 100% or 125%.\r\n\r\n" + "" +
+                                            "For guidance on changing the display scaling, please refer to the ACAT User Guide.", tuple.Item2); ;
+                }
 
-            if (tuple.Item1 != 1920)
-            {
-                prompt = String.Format("The monitor's horizontal resolution is currently set to {0} pixels, which may " +
-                                        " cause display issues with the ACAT user interface. The ACAT UI is tailored " +
-                                        "for Full HD monitors with a horizontal resolution of 1920 pixels.\r\n\r\n" +
-                                        "To resolve any potential display inconsistencies, we recommend adjusting " +
-                                        "your monitor's resolution to 1920 pixels wide, if supported.\r\n\r\n" +
-                                        "For guidance on changing the display resolution, please refer to the ACAT User Guide.", tuple.Item1);
-            }
-            else if (tuple.Item2 != 100 && tuple.Item2 != 125)
-            {
-                prompt = String.Format("The monitor's display scaling is currently set to {0}% which may cause display issues " +
-                                        " with the ACAT user interface.  The ACAT UI is tailored for display scaling " +
-                                        "values of 100% and 125%.\r\n\r\n To resolve any potential display inconsistencies, " +
-                                        "we recommend adjusting your monitor's display scaling to 100% or 125%.\r\n\r\n" + "" +
-                                        "For guidance on changing the display scaling, please refer to the ACAT User Guide.", tuple.Item2); ;
-            }
+                if (!String.IsNullOrEmpty(prompt))
+                {
+                    Common.AppPreferences.ShowDisplayScaleMessageOnStartup = !ConfirmBoxLargeSingleOption.ShowDialog(prompt, "OK", null, true);
 
-            if (!String.IsNullOrEmpty(prompt))
-            {
-                Common.AppPreferences.ShowDisplayScaleMessageOnStartup = !ConfirmBoxLargeSingleOption.ShowDialog(prompt, "OK", null, true);
-
-                Common.AppPreferences.Save();
+                    Common.AppPreferences.Save();
+                }
             }
         }
 
@@ -338,7 +337,7 @@ namespace ACAT.Applications
 
             if (!FontCheck.IsMontserratFontInstalled())
             {
-                MessageBox.Show("Montserrat fonts are not installed on this system.\nPlease install them and restart ACAT.\nThe fonts can be found here: " + fontPath,
+                MessageBox.Show("Default fonts are not installed on this system.\nPlease install them and restart ACAT.\nThe fonts can be found here: " + fontPath,
                                     "ACAT",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Error);

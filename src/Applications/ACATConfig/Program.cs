@@ -98,6 +98,11 @@ namespace ACATConfig
                 return;
             }
 
+            if (!AppCommon.SetCulture())
+            {
+                return;
+            }
+
             User32Interop.SetProcessDPIAware();
 
             AppCommon.CheckDisplayScalingAndResolution();
@@ -107,11 +112,6 @@ namespace ACATConfig
             AppCommon.UpgradeFromPreviousVersion(freshInstallForUser);
 
             CommandDescriptors.Init();
-
-            if (!AppCommon.SetCulture())
-            {
-                return;
-            }
 
             Common.PreInit();
             Common.Init();

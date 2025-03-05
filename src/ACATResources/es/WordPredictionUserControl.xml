@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+    <!ENTITY usebold "false">
+    <!ENTITY buttonFontName "Montserrat SemiBold">
+]>
+
+<ACAT>
+    <WidgetAttributes>
+        <WidgetAttribute name="PWLItem1" label=" " value="@PWLItem1" fontname="&buttonFontName;" fontsize="24"  bold="&usebold;"/>
+        <WidgetAttribute name="PWLItem2" label=" " value="@PWLItem2" fontname="&buttonFontName;" fontsize="24"  bold="&usebold;"/>
+        <WidgetAttribute name="PWLItem3" label=" " value="@PWLItem3" fontname="&buttonFontName;" fontsize="24"  bold="&usebold;"/>
+        <WidgetAttribute name="PWLItem4" label=" " value="@PWLItem4" fontname="&buttonFontName;" fontsize="24"  bold="&usebold;"/>
+        <WidgetAttribute name="PWLItem5" label=" " value="@PWLItem5" fontname="&buttonFontName;" fontsize="24"  bold="&usebold;"/>
+        <WidgetAttribute name="PWLItem6" label=" " value="@PWLItem6" fontname="&buttonFontName;" fontsize="24"  bold="&usebold;"/>
+        <WidgetAttribute name="PWLItem7" label=" " value="@PWLItem7" fontname="&buttonFontName;" fontsize="24"  bold="&usebold;"/>
+        <WidgetAttribute name="PWLItem8" label=" " value="@PWLItem8" fontname="&buttonFontName;" fontsize="24"  bold="&usebold;"/>
+        <WidgetAttribute name="PWLItem9" label=" " value="@PWLItem9" fontname="&buttonFontName;" fontsize="24"  bold="&usebold;"/>
+        <WidgetAttribute name="PWLItem10" label=" " value="@PWLItem10" fontname="&buttonFontName;" fontsize="24"  bold="&usebold;"/>
+    </WidgetAttributes>
+
+    <Layout>
+
+        <Widget class="WordListWidget" name="WordPredictionBox">
+            <Widget class="WordListItemWidget" name="PWLItem1" colorScheme="ScannerButton"  />
+            <Widget class="WordListItemWidget" name="PWLItem2" colorScheme="ScannerButton"  />
+            <Widget class="WordListItemWidget" name="PWLItem3" colorScheme="ScannerButton"  />
+            <Widget class="WordListItemWidget" name="PWLItem4" colorScheme="ScannerButton"  />
+            <Widget class="WordListItemWidget" name="PWLItem5" colorScheme="ScannerButton"  />
+            <Widget class="WordListItemWidget" name="PWLItem6" colorScheme="ScannerButton"  />
+            <Widget class="WordListItemWidget" name="PWLItem7" colorScheme="ScannerButton"  />
+            <Widget class="WordListItemWidget" name="PWLItem8" colorScheme="ScannerButton"  />
+            <Widget class="WordListItemWidget" name="PWLItem9" colorScheme="ScannerButton"  />
+            <Widget class="WordListItemWidget" name="PWLItem10" colorScheme="ScannerButton"  />
+        </Widget>
+    </Layout>
+
+    <Animations>
+        <Animation name="TopLevelRotationWP"
+                   start="true"
+                   iterations="1">
+            <Widget name="WordPredictionBox" onSelect="transition(WordListRotation)"/>
+        </Animation>
+
+        <Animation name="WordListRotation"
+                       iterations="@WordPredictionScanIterations"
+                       firstPauseTime="@WordPredictionFirstPauseTime"
+                       onSelect="actuate(@SelectedWidget); transition(TopLevelRotationWP)"
+                       onEnd="transition(TopLevelRotationWP)">
+            <Widget name="PWLItem1"/>
+            <Widget name="PWLItem2"/>
+            <Widget name="PWLItem3"/>
+            <Widget name="PWLItem4"/>
+            <Widget name="PWLItem5"/>
+            <Widget name="PWLItem6"/>
+            <Widget name="PWLItem7"/>
+            <Widget name="PWLItem8"/>
+            <Widget name="PWLItem9"/>
+            <Widget name="PWLItem10"/>
+        </Animation>
+
+    </Animations>
+</ACAT>
+

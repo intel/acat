@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+    <!ENTITY usebold "false">
+    <!ENTITY characterButtonFontName "Montserrat SemiBold">
+    <!ENTITY characterButtonBoldFontName "Montserrat ExtraBold">
+    <!ENTITY functionButtonFontName "ACAT FONT 1">
+    <!ENTITY characterButtonFontSize "22">
+    <!ENTITY functionButtonFontSize "32">
+]>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="MenuTitleIcon" label="H" value="" fontsize="&functionButtonFontSize;" fontname="&functionButtonFontName;"  bold="&usebold;" />
+    <WidgetAttribute name="MenuTitle" label="" value="" fontsize="22" fontname="&characterButtonBoldFontName;"  bold="&usebold;"/>
+
+    <WidgetAttribute name="ItemIcon1" label="j" value="@CmdGoBack" fontsize="&functionButtonFontSize;" fontname="&functionButtonFontName;"  bold="&usebold;" />
+    <WidgetAttribute name="ItemText1" label="Back" value="@CmdGoBack" fontsize="&characterButtonFontSize;" fontname="&characterButtonFontName;"  bold="&usebold;" />
+
+    <WidgetAttribute name="ItemIcon2" label="Q" value="@CmdLockScreen" fontsize="&functionButtonFontSize;" fontname="&functionButtonFontName;" bold="&usebold;" />
+    <WidgetAttribute name="ItemText2" label="Lock Screen" value="@CmdLockScreen" fontsize="&characterButtonFontSize;" fontname="&characterButtonFontName;"  bold="&usebold;" />
+
+    <WidgetAttribute name="ItemIcon3" label="i" value="@CmdAdjustScanSpeed" fontsize="&functionButtonFontSize;" fontname="&functionButtonFontName;" bold="&usebold;" />
+    <WidgetAttribute name="ItemText3" label="Scan Speed" value="@CmdAdjustScanSpeed" fontsize="&characterButtonFontSize;" fontname="&characterButtonFontName;"  bold="&usebold;" />
+
+    <WidgetAttribute name="ItemIcon4" label="n" value="@Exit" fontsize="&functionButtonFontSize;" fontname="&functionButtonFontName;"  bold="&usebold;" />
+    <WidgetAttribute name="ItemText4" label="Exit Application" value="@Exit" fontsize="&characterButtonFontSize;" fontname="&characterButtonFontName;"  bold="&usebold;" />
+
+    <WidgetAttribute name="ItemIcon5" label="J" value="@CmdCalibrateActuator" fontsize="&functionButtonFontSize;" fontname="&functionButtonFontName;" bold="&usebold;" />
+    <WidgetAttribute name="ItemText5" label="Calibrate Switch" value="@CmdCalibrateActuator" fontsize="&characterButtonFontSize;" fontname="&characterButtonFontName;"  bold="&usebold;" />
+
+    <WidgetAttribute name="ItemIcon6" label="F" value="@CmdShowAboutBox" fontsize="&functionButtonFontSize;" fontname="&functionButtonFontName;" bold="&usebold;" />
+    <WidgetAttribute name="ItemText6" label="About" value="@CmdShowAboutBox" fontsize="&characterButtonFontSize;" fontname="&characterButtonFontName;"  bold="&usebold;" />
+
+    
+  </WidgetAttributes>
+
+  <Layout colorScheme="Dialog">
+    <Widget class="RowWidget" name="TitleRow">
+      <Widget class="ScannerButton" name="MenuTitleIcon" colorScheme="MenuTitle"/>
+      <Widget class="ScannerButton" name="MenuTitle" colorScheme="MenuTitle"/>
+    </Widget>
+
+      <Widget class="RowWidget" name="Row1">
+          <Widget class="ScannerButton" name="ItemIcon1" colorScheme="Menu"/>
+          <Widget class="ScannerButton" name="ItemText1" colorScheme="Menu"/>
+      </Widget>
+
+    <Widget class="RowWidget" name="Row2">
+        <Widget class="ScannerButton" name="ItemIcon2" colorScheme="Menu"/>
+        <Widget class="ScannerButton" name="ItemText2" colorScheme="Menu"/>
+    </Widget>
+      
+    <Widget class="RowWidget" name="Row3">
+      <Widget class="ScannerButton" name="ItemIcon3" colorScheme="Menu"  enabled="contextual" defaultEnabled="true"/>
+      <Widget class="ScannerButton" name="ItemText3" colorScheme="Menu"  enabled="contextual" defaultEnabled="true"/>
+    </Widget>
+
+    <Widget class="RowWidget" name="Row4">
+        <Widget class="ScannerButton" name="ItemIcon4" colorScheme="Menu"/>
+        <Widget class="ScannerButton" name="ItemText4" colorScheme="Menu"/>
+    </Widget>
+      
+    <Widget class="RowWidget" name="Row5">
+        <Widget class="ScannerButton" name="ItemIcon5" colorScheme="Menu"  enabled="contextual" defaultEnabled="true"/>
+        <Widget class="ScannerButton" name="ItemText5" colorScheme="Menu"  enabled="contextual" defaultEnabled="true"/>
+    </Widget>
+
+    <Widget class="RowWidget" name="Row6">
+      <Widget class="ScannerButton" name="ItemIcon6" colorScheme="Menu"/>
+      <Widget class="ScannerButton" name="ItemText6" colorScheme="Menu"/>
+    </Widget>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopLevelRotation"
+               start="true"
+               autoStart="true"
+               firstPauseTime="@FirstPauseTime"
+               onEnter="@RowScanIterations"
+               scanTime="@MenuDialogScanTime"
+               iterations="@GridScanIterations">
+      <Widget name="Row1" onSelect="actuate(ItemText1);transition(TopLevelRotation)"/>
+      <Widget name="Row2" onSelect="actuate(ItemText2);transition(TopLevelRotation)"/>
+      <Widget name="Row3" onSelect="actuate(ItemText3);transition(TopLevelRotation)"/>
+      <Widget name="Row4" onSelect="actuate(ItemText4);transition(TopLevelRotation)"/>
+    </Animation>
+  </Animations>
+</ACAT>

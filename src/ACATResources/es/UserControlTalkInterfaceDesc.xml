@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+
+<ACAT>
+    <WidgetAttributes>
+        <WidgetAttribute name="B1" label="b" value="b" fontname="Arial" fontsize="72" bold="true" />
+    </WidgetAttributes>
+
+    <Layout>
+        <Widget class="ScannerButton" name="B1" colorScheme="ScannerButton"/>
+    </Layout>
+
+    <Animations>
+        <Animation name="TopLevelRotation"
+                start="true"
+                onEnter=""
+                scanTime="@ScanTime"
+                firstPauseTime="@FirstPauseTime"
+                iterations="@GridScanIterations">
+            <Widget name="B1" onSelect="actuate(B1);transition(TopLevelRotation)"/>
+        </Animation>
+    </Animations>
+</ACAT>
+

@@ -21,11 +21,17 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 {
     internal partial class WebcamGestureSettingsUserControl : UserControl
     {
+        // TODO - Localize Me
         private const String ctHoldTimeHelp = "Set the value to the approximate time you tend to hold the gesture";
+        // TODO - Localize Me
         private const String ctSensitivityHelp = "Lower values will increase camera sensitivity to your cheek twitch​";
+        // TODO - Localize Me
         private const String erHoldTimeHelp = "Set the value to the approximate time you tend to hold the gesture";
+        // TODO - Localize Me
         private const String erSensitivityHelp = "Lower values will increase camera sensitivity to your eyebrow raise​";
+        // TODO - Localize Me
         private const String head = "Head";
+        // TODO - Localize Me
         private const String headSensitivityHelp = "Lower values increase camera sensitivity to head movements causing jitter in face regions.";
         private CameraActuator _cameraActuator;
         private int _ctIndex;

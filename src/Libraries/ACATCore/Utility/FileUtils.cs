@@ -494,11 +494,16 @@ namespace ACAT.Lib.Core.Utility
         /// .NET specifications for localization directory layout.
         /// </summary>
         /// <returns>Resources dir</returns>
-        public static String GetResourcesDir()
+        public static String GetResourcesDir(string culture = null)
         {
-            var dirName = Path.Combine(ACATPath, Thread.CurrentThread.CurrentUICulture.Name);
+            if (String.IsNullOrEmpty(culture))
+            {
+                culture = Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
+            }
 
-            return Directory.Exists(dirName) ? dirName : Path.Combine(ACATPath, Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName);
+            var dirName = Path.Combine(ACATPath, culture);
+
+            return Directory.Exists(dirName) ? dirName : Path.Combine(ACATPath, culture);
         }
 
         /// <summary>

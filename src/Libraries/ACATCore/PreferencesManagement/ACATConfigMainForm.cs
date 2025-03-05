@@ -571,7 +571,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         private void savePrefCloseAllShownForms(bool saveButtonPressed = false)
         {
             bool shownFormDirty = false;
-            bool shownFormValidated = true;
+            //bool shownFormValidated = true;
             bool userSaveConfirmation = false;
 
             if (_shownPreferenceForms != null && _shownPreferenceForms.Count >= 1)

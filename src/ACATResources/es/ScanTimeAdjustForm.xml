@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+    <!ENTITY usebold "false">
+    <!ENTITY characterButtonFontName "Montserrat SemiBold Italic">
+    <!ENTITY functionButtonFontName "ACAT FONT 1">
+    <!ENTITY characterButtonBlackFontName "Montserrat Black">
+    <!ENTITY characterButtonFontSize "14">
+    <!ENTITY functionButtonFontSize "32">]>
+
+<ACAT>
+    <WidgetAttributes>
+        <WidgetAttribute name="B2" label="Cancel" value="@CmdGoBack" fontname="&characterButtonBlackFontName;" italic="true" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
+        <WidgetAttribute name="B3" label="" value="" fontname="&functionButtonFontName;"  fontsize="&functionButtonFontSize;"  bold="&usebold;" />
+        <WidgetAttribute name="B4" label="L" value="@CmdScanSpeedUp" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
+        <WidgetAttribute name="B5" label="" value="" fontname="&functionButtonFontName;"  fontsize="&functionButtonFontSize;"  bold="&usebold;" />
+        <WidgetAttribute name="B6" label="N" value="@CmdScanSpeedDown" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
+        <WidgetAttribute name="B7" label="" value="" fontname="&functionButtonFontName;"  fontsize="&functionButtonFontSize;"  bold="&usebold;" />
+        <WidgetAttribute name="B8" label="OK" value="@CmdSaveScanSpeed"  fontname="&characterButtonBlackFontName;" italic="true" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
+    </WidgetAttributes>
+
+    <Layout>
+        <Widget class="ScannerButton" name="B2" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="B3" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="B4" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="B5" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="B6" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="B7" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="B8" colorScheme="ScannerButton"/>
+    </Layout>
+
+    <Animations>
+        <Animation name="TopLevelRotation"
+                      iterations="@GridScanIterations"
+                      autoStart="true"
+                      start="true"
+                      firstPauseTime="@FirstPauseTime">
+            <Widget name="B2" onSelect="actuate(@SelectedWidget)"/>
+            <Widget name="B3" />
+            <Widget name="B4" onSelect="actuate(@SelectedWidget); transition(ButtonPressed)"/>
+            <Widget name="B5" />
+            <Widget name="B6" onSelect="actuate(@SelectedWidget); transition(ButtonPressed)"/>
+            <Widget name="B7"/>
+            <Widget name="B8" onSelect="actuate(@SelectedWidget)"/>
+        </Animation>
+
+        <Animation name="ButtonPressed"
+                            onEnter=""
+                            iterations="1"
+                            onEnd="transition(TopLevelRotation)">
+            <Widget name="@SelectedWidget" firstPauseTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+        </Animation>
+
+    </Animations>
+</ACAT>
+

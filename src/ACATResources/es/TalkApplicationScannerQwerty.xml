@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+
+<ACAT>
+  <WidgetAttributes/>
+    
+  <Layout>
+    <Widget class="WinControlWidget"  name="panelWordPrediction"/>
+      <Widget class="WinControlWidget"  name="panelSentencePrediction"/>
+    <Widget class="WinControlWidget"  name="panelKeyboard"/>
+  </Layout>
+
+  <Animations/>
+   
+</ACAT>
+

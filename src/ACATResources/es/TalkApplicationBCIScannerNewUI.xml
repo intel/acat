@@ -1,0 +1,76 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+	<!ENTITY usebold "false">
+	<!ENTITY functionButtonFontName "TrebuchetMS">
+	<!ENTITY functionButtonFontSize "12">
+	<!ENTITY characterButtonFontName "montserrat">
+	<!ENTITY characterButtonFontSize "16">
+	<!ENTITY predTextFontName "montserrat">
+	<!ENTITY predTextButtonFontSize "14">
+	<!ENTITY buttonFontName "Arial">
+
+]>
+
+<ACAT>
+
+
+	<Parameters>
+		<Parameter name="cornerRadius" value="6"/>
+		<Parameter name="TypingTargetCount" value="0"/>
+		<Parameter name="TypingIterationsPerTarget" value="1"/>
+		<Parameter name="MinimumProgressBarsValue" value="10"/>
+		<Parameter name="borderWidth" value="1"/>
+		
+	</Parameters>
+
+	<WidgetAttributes>
+
+		
+
+	</WidgetAttributes>
+
+	<Layout>
+		<Widget class="WinControlWidget"  name="Keyboard">
+		
+		</Widget>
+	</Layout>
+
+	<Animations>
+		<Animation name="TopLevelRotation"
+				   start="true"
+				   iterations="@GridScanIterations">
+		</Animation>	
+
+		<Animation name="ButtonPressed"
+			 onEnter=""
+			 iterations="-1"
+			 onEnd="transition(TopLevelRotation)">
+			<Widget name="@SelectedWidget" firstPauseTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+		</Animation>
+
+
+
+		<Animation name="FunctionRotation"
+					iterations="@RowScanIterations"
+				   firstPauseTime="@FirstPauseTime"
+				   onEnd="transition(TopLevelRotation)">
+
+		</Animation>
+
+		<Animation name="KeyboardRotation"
+					iterations="@RowScanIterations"
+				   firstPauseTime="@FirstPauseTime"
+				   onEnd="transition(TopLevelRotation)">
+
+		</Animation>
+
+		<Animation name="SpeechRotation"
+					iterations="@RowScanIterations"
+				   firstPauseTime="@FirstPauseTime"
+				   onEnd="transition(TopLevelRotation)">
+
+		</Animation>
+
+
+	</Animations>
+</ACAT>

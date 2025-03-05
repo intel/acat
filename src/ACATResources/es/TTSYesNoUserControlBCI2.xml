@@ -1,0 +1,150 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+	<!ENTITY usebold "false">
+	<!ENTITY functionButtonFontName "acat font 1">
+	<!ENTITY functionButtonFontSize "35">
+	<!ENTITY characterButtonFontName "montserrat semibold">
+	<!ENTITY characterButtonFontSize "30">
+	<!ENTITY predTextFontName "montserrat">
+	<!ENTITY predTextButtonFontSize "14">
+	<!ENTITY buttonFontName "Arial">
+
+]>
+
+<ACAT>
+	
+  <WidgetAttributes>
+
+	<WidgetAttribute name="B1" label="" value="" fontname="&characterButtonFontName;"    fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B2" label="" value="" fontname="&characterButtonFontName;"    fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B3" label="ABC" value="@CmdKeyboardMain" fontname="&characterButtonFontName;" italic="true" fontsize="35"  bold="true" />
+	<WidgetAttribute name="B4" label="" value="" fontname="&characterButtonFontName;"    fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B5" label="" value="" fontname="&characterButtonFontName;"    fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
+
+	<WidgetAttribute name="B6" label="Yes" value="@CmdTTSYes" fontname="&characterButtonFontName;"    fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B7" label="" value="" fontname="&characterButtonFontName;"    fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B8" label="" value="" fontname="&characterButtonFontName;"    fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B9" label="No" value="@CmdTTSNo" fontname="&characterButtonFontName;"    fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
+	<WidgetAttribute name="B10" label="" value="" fontname="&characterButtonFontName;"    fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
+
+
+  </WidgetAttributes>
+
+  <Layout>
+	  <Widget class="WinControlWidget"  name="Keyboard">
+		  <Widget class="ScannerButton" name="B1" />
+		  <Widget class="ScannerButton" name="B2" />
+		  <Widget class="ScannerButton" name="B3" />
+		  <Widget class="ScannerButton" name="B4" />
+		  <Widget class="ScannerButton" name="B5" />
+		  <Widget class="ScannerButton" name="B6" />
+		  <Widget class="ScannerButton" name="B7" />
+		  <Widget class="ScannerButton" name="B8" />
+		  <Widget class="ScannerButton" name="B9" />
+		  <Widget class="ScannerButton" name="B10" />
+	  </Widget>
+
+	  <Layouts name="ProgressBarsBoxMapping">
+		  <Widget name="PBMain1" tagID="1"/>
+	  </Layouts>
+
+	  <Layouts name="ProgressBarsMapping">
+		  <Widget name="PB1" tagID="1"/>
+		  <Widget name="PB2" tagID="2"/>
+		  <Widget name="PB3" tagID="3"/>
+		  <Widget name="PB4" tagID="4"/>
+		  <Widget name="PB5" tagID="5"/>
+		  <Widget name="PB6" tagID="6"/>
+		  <Widget name="PB7" tagID="7"/>
+		  <Widget name="PB8" tagID="8"/>
+		  <Widget name="PB9" tagID="9"/>
+		  <Widget name="PB10" tagID="10"/>
+	  </Layouts>
+	  <Layouts name="KeyboardBoxMapping">
+		  <Widget name="B1" tagID="1"/>
+		  <Widget name="B2" tagID="2"/>
+		  <Widget name="B3" tagID="3"/>
+		  <Widget name="B4" tagID="4"/>
+		  <Widget name="B5" tagID="5"/>
+		  <Widget name="B6" tagID="6"/>
+		  <Widget name="B7" tagID="7"/>
+		  <Widget name="B8" tagID="8"/>
+		  <Widget name="B9" tagID="9"/>
+		  <Widget name="B10" tagID="10"/>
+	  </Layouts>
+	  <Layouts name="KeyboardType">
+		  <Widget name="Menus"/>
+	  </Layouts>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopLevelRotation"
+               start="true"
+               iterations="@GridScanIterations">
+    </Animation>
+	<Animation name="KeyboardSequences">
+		<Animation name="Column">
+			<Widget name="B1" tagID="1"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B2" tagID="2"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B3" tagID="3"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B4" tagID="4"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B5" tagID="5"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B6" tagID="6"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B7" tagID="7"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B8" tagID="8"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B9" tagID="9"/>
+		</Animation>
+		<Animation name="Column">
+			<Widget name="B10" tagID="10"/>
+		</Animation>
+	</Animation>
+   
+	  <Animation name="ButtonPressed"
+		   onEnter=""
+		   iterations="-1"
+		   onEnd="transition(TopLevelRotation)">
+		  <Widget name="@SelectedWidget" firstPauseTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+	  </Animation>
+	  
+	  
+
+    <Animation name="FunctionRotation"
+                iterations="@RowScanIterations"
+               firstPauseTime="@FirstPauseTime"
+               onEnd="transition(TopLevelRotation)">
+      
+    </Animation>
+
+    <Animation name="KeyboardRotation"
+                iterations="@RowScanIterations"
+               firstPauseTime="@FirstPauseTime"
+               onEnd="transition(TopLevelRotation)">
+
+    </Animation>
+
+    <Animation name="SpeechRotation"
+                iterations="@RowScanIterations"
+               firstPauseTime="@FirstPauseTime"
+               onEnd="transition(TopLevelRotation)">
+
+    </Animation>
+
+
+  </Animations>
+</ACAT>

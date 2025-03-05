@@ -19,6 +19,7 @@ namespace ACAT.Lib.Extension.Onboarding
                     "Welcome onboarding")]
     public class OnboardingWelcome : OnboardingExtensionBase
     {
+        // TODO - Localize Me
         private const String Step1 = "STEP 1";
         private IOnboardingWizard _wizard;
 

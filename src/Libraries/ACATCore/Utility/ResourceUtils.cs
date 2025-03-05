@@ -122,7 +122,7 @@ namespace ACAT.Lib.Core.Utility
             var defaultUserBaseDir = UserManager.BaseUserInstallDir + "\\" + UserManager.DefaultUserName;
             var installBaseDir = (String.IsNullOrEmpty(baseDir)) ? defaultUserBaseDir : baseDir;
             var srcDir = Path.Combine(SmartPath.ApplicationPath, installBaseDir,
-                CultureInfo.DefaultThreadCurrentUICulture.Name);
+                CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName);
             String language;
 
             if (Directory.Exists(srcDir))
@@ -203,69 +203,40 @@ namespace ACAT.Lib.Core.Utility
         }
 
         /// <summary>
-        /// Sets the specified culture as the default culture.
-        /// </summary>
-        /// <param name="ci"></param>
-        public static void SetCulture(CultureInfo ci)
-        {
-            CultureInfo.DefaultThreadCurrentCulture = ci;
-            CultureInfo.DefaultThreadCurrentUICulture = ci;
-        }
-
-        /// <summary>
         /// Set culture to the language specified
         /// </summary>
         /// <param name="language">language to set</param>
-        public static void SetCulture(String language)
+        public static void SetCulture(String language = "en")
         {
             try
             {
                 language = language.Trim();
-                var resourcesDir = FileUtils.GetResourcesDir();
+
+                // Check to make sure we have assets avaialable for the requested culture.
+                // If not, fallback to english.
+
+                CultureInfo culture = CultureInfo.CreateSpecificCulture(language);
+
+                var resourcesDir = FileUtils.GetResourcesDir(culture.TwoLetterISOLanguageName);
                 var resourceDll = Path.Combine(resourcesDir, ACATResourcesDLLName);
 
-                if (String.IsNullOrEmpty(language.Trim()))
-                {
-                    if (!Directory.Exists(resourcesDir) || !File.Exists(resourceDll))
-                    {
-                        SetEnglishCulture();
-                    }
-                    else
-                    {
-                        CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CurrentCulture;
-                        CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.CurrentCulture;
-                    }
-
-                    return;
-                }
-
-                var culture = CultureInfo.CreateSpecificCulture(language);
-                CultureInfo.DefaultThreadCurrentCulture = culture;
-                CultureInfo.DefaultThreadCurrentUICulture = culture;
-
-                resourcesDir = FileUtils.GetResourcesDir();
-                resourceDll = Path.Combine(resourcesDir, ACATResourcesDLLName);
-
+                //TODO: Code Smell
                 if (!Directory.Exists(resourcesDir) || !File.Exists(resourceDll))
                 {
-                    SetEnglishCulture();
+                    Log.Warn(language + " resources not found.  Will use English as the default");
+                    culture = CultureInfo.CreateSpecificCulture("en");
                 }
+
+                CultureInfo.DefaultThreadCurrentCulture = culture;
+                CultureInfo.DefaultThreadCurrentUICulture = culture;
             }
+
             catch (Exception ex)
             {
                 Log.Error("Error setting culture to " + language + ", " + ex + ", will use English as the default");
-                SetEnglishCulture();
+                CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CreateSpecificCulture("en");
+                CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.CreateSpecificCulture("en");
             }
-        }
-
-        /// <summary>
-        /// Sets the culture to English (which is the default)
-        /// </summary>
-        public static void SetEnglishCulture()
-        {
-            var enCulture = CultureInfo.CreateSpecificCulture("en");
-            CultureInfo.DefaultThreadCurrentCulture = enCulture;
-            CultureInfo.DefaultThreadCurrentUICulture = enCulture;
         }
     }
 }

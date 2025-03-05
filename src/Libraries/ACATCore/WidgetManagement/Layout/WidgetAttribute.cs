@@ -175,7 +175,7 @@ namespace ACAT.Lib.Core.WidgetManagement
             Label = XmlUtils.GetXMLAttrString(node, "label");
             if (Label.Length > 1)
             {
-                Label = R.GetString(Label);
+                Label = R.GetString(Label.Trim());
             }
 
             Value = XmlUtils.GetXMLAttrString(node, "value");

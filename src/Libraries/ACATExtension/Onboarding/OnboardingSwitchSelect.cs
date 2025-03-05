@@ -22,6 +22,7 @@ namespace ACAT.Lib.Extension.Onboarding
                     "Switch select onboarding")]
     public class OnboardingSwitchSelect : OnboardingExtensionBase
     {
+        // TODO - Localize Me
         private const String Step1 = "STEP 1";
         private IOnboardingWizard _wizard;
         private IActuator actuatorSelected = null;

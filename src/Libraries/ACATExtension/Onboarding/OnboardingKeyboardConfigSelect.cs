@@ -21,6 +21,7 @@ namespace ACAT.Lib.Extension.Onboarding
                         "Keyboard coniguration select onboarding")]
     public class OnboardingKeyboardConfigSelect : OnboardingExtensionBase
     {
+        // TODO - Localize Me
         private const String Step1 = "STEP 1";
         private IOnboardingWizard _wizard;
 

@@ -25,6 +25,7 @@ namespace ACAT.Lib.Core.UserControlManagement
     /// </summary>
     public class UserControlConfigMap
     {
+        // TODO - Localize Me
         private const String DefaultCulture = "en";
 
         /// <summary>

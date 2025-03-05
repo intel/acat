@@ -23,11 +23,17 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
     public partial class ConfigureActuatorForm : Form
     {
         public bool IsClosing;
+        // TODO - Localize Me
         private const String _calibrating = "Calibrating...\nPlease be still";
+        // TODO - Localize Me
         private const String _initializing = "Initializing\nPlease wait...";
+        // TODO - Localize Me
         private const String _switchingCamera = "Switching camera\nPlease wait...";
+        // TODO - Localize Me
         private const String textCalibratingNeutralFace = "In Calibration - System is calibrating for NEUTRAL face\n\nDO NOT do any head moverments or facial gestures\n\nStay still";
+        // TODO - Localize Me
         private const String textSelectCamera = "Practice the selected gestures a few times.\n\nACAT will indicate below if it detects a successful gesture.\n\nClick on Settings to adjust gesture sensitivity and hold times";
+        // TODO - Localize Me
         private const String textSetParameters = "1. Adjust settings.\n2. Click on Apply Changes\n3. Test your gestures until you’re comfortable with the settings.\n\nACAT will indicate below if it detects a successful gesture";
         private Color _buttonBackColor;
         private bool _gestureDetectedAtleastOnce = false;

@@ -444,10 +444,6 @@
   <data name="Notes" xml:space="preserve">
     <value>Notes</value>
   </data>
-  <data name="OutlookAttachFileWindowTitle" xml:space="preserve">
-    <value>Insert File</value>
-    <comment>This string should be verbatim what's on the title of the window when you attach a file to a new email</comment>
-  </data>
   <data name="PinCannotBeEmpty" xml:space="preserve">
     <value>PIN cannot be empty</value>
   </data>
@@ -1075,6 +1071,9 @@
   <data name="LMSentence" xml:space="preserve">
     <value>Sentence</value>
   </data>
+  <data name="Sentence" xml:space="preserve">
+    <value>Sentence</value>
+  </data>
   <data name="LMSetMode" xml:space="preserve">
     <value>Set Mode...</value>
   </data>
@@ -1122,186 +1121,6 @@
   <data name="WindowsPhotoViewer" xml:space="preserve">
     <value>Windows Photo Viewer</value>
     <comment>This is the title of the Windows Photo Viewer window.  Translate it appropriately after verifying on a computer with the culture installed</comment>
-  </data>
-  <data name="Outlook2010AddrBookAddToContactsButtonText" xml:space="preserve">
-    <value>Add to Contacts</value>
-    <comment>This has to exactly match the text on the "Add to contacts"button in the Address book. </comment>
-  </data>
-  <data name="Outlook2010AddrBookFirstNameFieldLabel" xml:space="preserve">
-    <value>First:</value>
-    <comment>This has to exactly match the label of the "First"name in the name field in the Address book window. ACATuses this string to  determine whether the field is the "First"name field</comment>
-  </data>
-  <data name="Outlook2010AddrBookLastNameFieldLabel" xml:space="preserve">
-    <value>Last:</value>
-    <comment>This has to exactly match the label of the "Last" name in the name field in the Address book window. ACATuses this string to  determine whether the field is the "Last"name field</comment>
-  </data>
-  <data name="Outlook2010AddrBookSearchFieldLabel" xml:space="preserve">
-    <value>Search:</value>
-    <comment>This has to exactly match the label of the field in the Address book window. ACATuses this string to  determine whether the field is the Search field</comment>
-  </data>
-  <data name="Outlook2010ApptSchedulingAddAttendeesButtonText" xml:space="preserve">
-    <value>Add Attendees...</value>
-    <comment>This has to exactly match the text of the Add Attendees button in the Scheduling tab in the Open Appointment window. </comment>
-  </data>
-  <data name="Outlook2010ApptSchedulingAllAttendeesList" xml:space="preserve">
-    <value>All Attendees</value>
-    <comment>This has to exactly match the label of the "All Attendees"list in the Scheduling tab in the Open Appointment window. </comment>
-  </data>
-  <data name="Outlook2010ApptSchedulingMeetingStartDateFieldLabel" xml:space="preserve">
-    <value>Meeting Start Date:</value>
-    <comment>This has to exactly match the text of the label of the Meeting Start Date field the Scheduling tab in the OPen Appointment window. </comment>
-  </data>
-  <data name="Outlook2010EmailTitleSuffixHTML" xml:space="preserve">
-    <value>- Message (HTML)</value>
-    <comment>This has to exactly match the suffix of the title of an email window for a HTML formatted email.  ACAT uses this string to determine whether the window is an email window.</comment>
-  </data>
-  <data name="Outlook2010EmailTitleSuffixPlainText" xml:space="preserve">
-    <value>- Message (Plain Text)</value>
-    <comment>This has to exactly match the suffix of the title of an email window for a Plain Text formatted email.  ACAT uses this string to determine whether the window is an email window.</comment>
-  </data>
-  <data name="Outlook2010EmailTitleSuffixRichText" xml:space="preserve">
-    <value>- Message (Rich Text)</value>
-    <comment>This has to exactly match the suffix of the title of an email window for a RichText formatted email.  ACAT uses this string to determine whether the window is an email window.</comment>
-  </data>
-  <data name="Outlook2010OpenAppointmentStartDateFieldLabel" xml:space="preserve">
-    <value>Start Date:</value>
-    <comment>This has to exactly match the label of the start date field in the open Appointment window. ACATuses this string to  determine whether the field is the start date field</comment>
-  </data>
-  <data name="Outlook2010OpenAppointmentSubjectFieldLabel" xml:space="preserve">
-    <value>Subject:</value>
-    <comment>This has to exactly match the label of the subject field in the open Appointment window. ACATuses this string to  determine whether the field is the Subject field</comment>
-  </data>
-  <data name="Outlook2010OpenContactCompanyFieldLabel" xml:space="preserve">
-    <value>Company:</value>
-    <comment>This has to exactly match the label of the Company field in the open Contact window. ACATuses this string to  determine whether the field is the Company field</comment>
-  </data>
-  <data name="Outlook2010OpenContactFullNameFieldLabel" xml:space="preserve">
-    <value>Full Name</value>
-    <comment>This has to exactly match the label of the Full Name field in the open Contact window. ACATuses this string to  determine whether the field is the Full Name field</comment>
-  </data>
-  <data name="Outlook2010OpenContactJobTitleFieldLabel" xml:space="preserve">
-    <value>Job Title:</value>
-    <comment>This has to exactly match the label of the Job Title field in the open Contact window. ACATuses this string to  determine whether the field is the Job Title field</comment>
-  </data>
-  <data name="Outlook2010OpenTaskPercentCompleteFieldLabel" xml:space="preserve">
-    <value>% Complete:</value>
-    <comment>This has to exactly match the label of the % complete field in the open Task window. ACATuses this string to  determine whether the field is the % Complete field</comment>
-  </data>
-  <data name="Outlook2010OpenTaskPriorityFieldLabel" xml:space="preserve">
-    <value>Priority:</value>
-    <comment>This has to exactly match the label of the Priority field in the open Task window. ACATuses this string to  determine whether the field is the Priority field</comment>
-  </data>
-  <data name="Outlook2010OpenTaskStatusFieldLabel" xml:space="preserve">
-    <value>Status:</value>
-    <comment>This has to exactly match the label of the Status field in the open Task window. ACATuses this string to  determine whether the field is the Status field</comment>
-  </data>
-  <data name="Outlook2010OpenTaskSubjectFieldLabel" xml:space="preserve">
-    <value>Subject:</value>
-    <comment>This has to exactly match the label of the Subject field in the open Task window. ACATuses this string to  determine whether the field is the Subject field</comment>
-  </data>
-  <data name="Outlook2010TitleAddressBook" xml:space="preserve">
-    <value>Address Book</value>
-    <comment>This has to exactly match the title of the Address Book  window in Outlook 2010.  ACATuses this string to  determine whether the window is the Address Book window.</comment>
-  </data>
-  <data name="Outlook2010TitleCalendarPrefix" xml:space="preserve">
-    <value>Calendar</value>
-    <comment>This has to exactly match the prefix of the title of the Calendar window in Outlook.  ACATuses this string to  determine whether the window is the Calendar window.</comment>
-  </data>
-  <data name="Outlook2010TitleContactsPrefix" xml:space="preserve">
-    <value>Contacts -</value>
-    <comment>This has to exactly match the prefix of the title of the Contacts window in Outlook.  ACATuses this string to  determine whether the window is the Contacts window.</comment>
-  </data>
-  <data name="Outlook2010TitleNotesPrefix" xml:space="preserve">
-    <value>Notes -</value>
-    <comment>This has to exactly match the prefix of the title of the Notes window in Outlook.  ACATuses this string to  determine whether the window is the Notes window.</comment>
-  </data>
-  <data name="Outlook2010TitleSuffix" xml:space="preserve">
-    <value>Microsoft Outlook</value>
-    <comment>This has to exactly match the suffix of the title of the Contacts, Notes and Tasks window.  ACATuses this string  to  determine whether the window is the Contacts, Notes or Tasks window.</comment>
-  </data>
-  <data name="Outlook2010TitleTasksPrefix" xml:space="preserve">
-    <value>Tasks -</value>
-    <comment>This has to exactly match the prefix of the title of the Tasks window in Outlook.  ACATuses this string to  determine whether the window is the Tasks window.</comment>
-  </data>
-  <data name="Outlook2010TitleTodoPrefix" xml:space="preserve">
-    <value>To-Do List</value>
-    <comment>This has to exactly match the prefix of the title of the To-do list window in Outlook.  ACATuses this string to  determine whether the window is the To-do list window.</comment>
-  </data>
-  <data name="Outlook2013AddrBookAddToContactsButtonText" xml:space="preserve">
-    <value>Add to Contacts</value>
-    <comment>This has to exactly match the text on the "Add to contacts"button in the Address book. </comment>
-  </data>
-  <data name="Outlook2013AddrBookFirstNameFieldLabel" xml:space="preserve">
-    <value>First:</value>
-    <comment>This has to exactly match the label of the "First"name in the name field in the Address book window. ACATuses this string to  determine whether the field is the "First"name field</comment>
-  </data>
-  <data name="Outlook2013AddrBookLastNameFieldLabel" xml:space="preserve">
-    <value>Last:</value>
-    <comment>This has to exactly match the label of the "Last" name in the name field in the Address book window. ACATuses this string to  determine whether the field is the "Last"name field</comment>
-  </data>
-  <data name="Outlook2013AddrBookSearchFieldLabel" xml:space="preserve">
-    <value>Search:</value>
-    <comment>This has to exactly match the label of the field in the Address book window. ACATuses this string to  determine whether the field is the Search field</comment>
-  </data>
-  <data name="Outlook2013EmailTitleSuffixHTML" xml:space="preserve">
-    <value>- Message (HTML)</value>
-    <comment>This has to exactly match the suffix of the title of an email window for a HTML formatted email.  ACAT uses this string to determine whether the window is an email window.</comment>
-  </data>
-  <data name="Outlook2013EmailTitleSuffixPlainText" xml:space="preserve">
-    <value>- Message (Plain Text)</value>
-    <comment>This has to exactly match the suffix of the title of an email window for a Plain Text formatted email.  ACAT uses this string to determine whether the window is an email window.</comment>
-  </data>
-  <data name="Outlook2013EmailTitleSuffixRichText" xml:space="preserve">
-    <value>- Message (Rich Text)</value>
-    <comment>This has to exactly match the suffix of the title of an email window for a RichText formatted email.  ACAT uses this string to determine whether the window is an email window.</comment>
-  </data>
-  <data name="Outlook2013OpenContactCompanyFieldLabel" xml:space="preserve">
-    <value>Company:</value>
-    <comment>This has to exactly match the label of the Company field in the open Contact window. ACATuses this string to  determine whether the field is the Company field</comment>
-  </data>
-  <data name="Outlook2013OpenContactFullNameFieldLabel" xml:space="preserve">
-    <value>Full Name</value>
-    <comment>This has to exactly match the label of the Full Name field in the open Contact window. ACATuses this string to  determine whether the field is the Full Name field</comment>
-  </data>
-  <data name="Outlook2013OpenContactJobTitleFieldLabel" xml:space="preserve">
-    <value>Job Title:</value>
-    <comment>This has to exactly match the label of the Job Title field in the open Contact window. ACATuses this string to  determine whether the field is the Job Title field</comment>
-  </data>
-  <data name="Outlook2013OpenTaskPercentCompleteFieldLabel" xml:space="preserve">
-    <value>% Complete:</value>
-    <comment>This has to exactly match the label of the % complete field in the open Task window. ACATuses this string to  determine whether the field is the % Complete field</comment>
-  </data>
-  <data name="Outlook2013OpenTaskPriorityFieldLabel" xml:space="preserve">
-    <value>Priority:</value>
-    <comment>This has to exactly match the label of the Priority field in the open Task window. ACATuses this string to  determine whether the field is the Priority field</comment>
-  </data>
-  <data name="Outlook2013OpenTaskStatusFieldLabel" xml:space="preserve">
-    <value>Status:</value>
-    <comment>This has to exactly match the label of the Status field in the open Task window. ACATuses this string to  determine whether the field is the Status field</comment>
-  </data>
-  <data name="Outlook2013TitleAddressBook" xml:space="preserve">
-    <value>Address Book</value>
-    <comment>This has to exactly match the title of the Address Book  window in Outlook 2010.  ACATuses this string to  determine whether the window is the Address Book window.</comment>
-  </data>
-  <data name="Outlook2013TitleCalendarPrefix" xml:space="preserve">
-    <value>Calendar -</value>
-    <comment>This has to exactly match the prefix of the title of the Calendar window in Outlook.  ACATuses this string to  determine whether the window is the Calendar window.</comment>
-  </data>
-  <data name="Outlook2013TitleContactsPrefix" xml:space="preserve">
-    <value>Contacts -</value>
-    <comment>This has to exactly match the prefix of the title of the Contacts window in Outlook.  ACATuses this string to  determine whether the window is the Contacts window.</comment>
-  </data>
-  <data name="Outlook2013TitleNotesPrefix" xml:space="preserve">
-    <value>Notes -</value>
-    <comment>This has to exactly match the prefix of the title of the Notes window in Outlook.  ACATuses this string to  determine whether the window is the Notes window.</comment>
-  </data>
-  <data name="Outlook2013TitleSuffix" xml:space="preserve">
-    <value>Outlook</value>
-    <comment>This has to exactly match the suffix of the title of the Contacts, Notes and Tasks window.  ACATuses this string  to  determine whether the window is the Contacts, Notes or Tasks window.</comment>
-  </data>
-  <data name="Outlook2013TitleTodoPrefix" xml:space="preserve">
-    <value>To-Do List</value>
-    <comment>This has to exactly match the prefix of the title of the To-do list window in Outlook.  ACATuses this string to  determine whether the window is the To-do list window.</comment>
   </data>
   <data name="ExitingACAT" xml:space="preserve">
     <value>Exiting ACAT...</value>
@@ -1467,5 +1286,117 @@ Ensure the scanning speed is adjusted to a level that is comfortable for you.&lt
     &lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</value>
+  </data>
+  <data name="ResolutionWarning" xml:space="preserve">
+    <value>The monitor's horizontal resolution is currently set to {0} pixels, which may cause display issues with the ACAT user interface. The ACAT UI is tailored for Full HD monitors with a horizontal resolution of 1920 pixels.
+
+To resolve any potential display inconsistencies, we recommend adjusting your monitor's resolution to 1920 pixels wide, if supported.
+
+For guidance on changing the display resolution, please refer to the ACAT User Guide.</value>
+  </data>
+  <data name="A" xml:space="preserve">
+    <value>A</value>
+  </data>
+  <data name="Z" xml:space="preserve">
+    <value>Z</value>
+  </data>
+  <data name="Y" xml:space="preserve">
+    <value>Y</value>
+  </data>
+  <data name="X" xml:space="preserve">
+    <value>X</value>
+  </data>
+  <data name="W" xml:space="preserve">
+    <value>W</value>
+  </data>
+  <data name="V" xml:space="preserve">
+    <value>V</value>
+  </data>
+  <data name="U" xml:space="preserve">
+    <value>U</value>
+  </data>
+  <data name="T" xml:space="preserve">
+    <value>T</value>
+  </data>
+  <data name="S" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="R" xml:space="preserve">
+    <value>R</value>
+  </data>
+  <data name="Q" xml:space="preserve">
+    <value>Q</value>
+  </data>
+  <data name="P" xml:space="preserve">
+    <value>P</value>
+  </data>
+  <data name="O" xml:space="preserve">
+    <value>O</value>
+  </data>
+  <data name="N" xml:space="preserve">
+    <value>N</value>
+  </data>
+  <data name="M" xml:space="preserve">
+    <value>M</value>
+  </data>
+  <data name="L" xml:space="preserve">
+    <value>L</value>
+  </data>
+  <data name="K" xml:space="preserve">
+    <value>K</value>
+  </data>
+  <data name="J" xml:space="preserve">
+    <value>J</value>
+  </data>
+  <data name="I" xml:space="preserve">
+    <value>I</value>
+  </data>
+  <data name="H" xml:space="preserve">
+    <value>H</value>
+  </data>
+  <data name="F" xml:space="preserve">
+    <value>F</value>
+  </data>
+  <data name="G" xml:space="preserve">
+    <value>G</value>
+  </data>
+  <data name="E" xml:space="preserve">
+    <value>E</value>
+  </data>
+  <data name="D" xml:space="preserve">
+    <value>D</value>
+  </data>
+  <data name="C" xml:space="preserve">
+    <value>C</value>
+  </data>
+  <data name="B" xml:space="preserve">
+    <value>B</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Scan Speed" xml:space="preserve">
+    <value>Scan Speed</value>
+  </data>
+  <data name="Exit Application" xml:space="preserve">
+    <value>Exit Application</value>
+  </data>
+  <data name="Mode" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="Y/N" xml:space="preserve">
+    <value>Y/N</value>
+  </data>
+  <data name="Calibrate Switch" xml:space="preserve">
+    <value>Calibrate Switch</value>
+  </data>
+  <data name="Lock Screen" xml:space="preserve">
+    <value>Lock Screen</value>
+  </data>
+  <data name="." xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="Shorthand" xml:space="preserve">
+    <value>Shorthand</value>
   </data>
 </root>

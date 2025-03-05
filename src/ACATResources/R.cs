@@ -19,8 +19,14 @@ namespace ACAT.ACATResources
     /// <summary>
     /// Access language dependent strings through this class
     /// </summary>
-    public class R
+    public static class R
     {
+        /// <summary>
+        /// .NET resourcemanager object
+        /// </summary>
+        private static readonly ResourceManager _resourceManager =
+            new ResourceManager(BaseName, Assembly.GetExecutingAssembly());
+
         public const String ResourcesDllName = "ACATResources.resources.dll";
 
         /// <summary>
@@ -28,20 +34,16 @@ namespace ACAT.ACATResources
         /// </summary>
         private const String BaseName = "ACATResources.ACATResources";
 
+
         /// <summary>
         /// Has the class been initialized?
         /// </summary>
-        private static bool _initDone = false;
+        //private static bool _initDone = false;
 
-        /// <summary>
-        /// .NET resourcemanager object
-        /// </summary>
-        private static ResourceManager _resourceManager;
-
-        public static ResourceManager ResourceManager
-        {
-            get { return _resourceManager; }
-        }
+        //public static ResourceManager ResourceManager
+        //{
+        //    get { return _resourceManager; }
+        //}
 
         /// <summary>
         /// Returns cultures available.  Looks for folders with the name of the
@@ -64,80 +66,15 @@ namespace ACAT.ACATResources
         /// </summary>
         /// <param name="name">string identifier</param>
         /// <returns>string from resource</returns>
-        public static string GetString(string name)
+        public static string GetString(string key, string culture = null)
         {
-            try
-            {
-                if (!_initDone)
-                {
-                    Init();
-                }
+            CultureInfo cultureInfo = string.IsNullOrEmpty(culture)
+                ? CultureInfo.CurrentUICulture
+                : new CultureInfo(culture);
 
-                return _resourceManager.GetString(name);
-            }
-            catch
-            {
-                return name;
-            }
-        }
-
-        /// <summary>
-        /// Returns the culture-specific string from the language resource file
-        /// identfiied by the 'name' string identifier.  If
-        /// resource is not found, returns 'name'
-        /// <param name="name">string identifier</param>
-        /// <param name="ci">culture</param>
-        /// <returns>string from resource</returns>
-        public static string GetString(string name, CultureInfo ci)
-        {
-            try
-            {
-                if (!_initDone)
-                {
-                    Init();
-                }
-
-                return _resourceManager.GetString(name, ci);
-            }
-            catch
-            {
-                return name;
-            }
-        }
-
-        /// <summary>
-        /// Returns the string from the installed OS UI cultureIf
-        /// resource is not found, returns 'name'
-        /// </summary>
-        /// <param name="name">string identifier</param>
-        /// <returns>string from resource</returns>
-        public static string GetString2(string name)
-        {
-            try
-            {
-                if (!_initDone)
-                {
-                    Init();
-                }
-
-                return GetString(name, CultureInfo.InstalledUICulture);
-            }
-            catch
-            {
-                return name;
-            }
-        }
-
-        /// <summary>
-        /// Initializes the class.  Creates the resource manager object
-        /// </summary>
-        public static void Init()
-        {
-            if (!_initDone)
-            {
-                _resourceManager = new ResourceManager(BaseName, Assembly.GetExecutingAssembly());
-                _initDone = true;
-            }
+            string localizedString = _resourceManager.GetString(key, cultureInfo) ?? $"[Missing: {key}]";
+            Console.WriteLine($"R.GetString({key}, {culture}) = {localizedString}");
+            return localizedString;
         }
 
         /// <summary>

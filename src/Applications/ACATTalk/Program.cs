@@ -88,17 +88,16 @@ namespace ACAT.Applications.ACATTalk
             {
                 return;
             }
+            if (!AppCommon.SetCulture())
+            {
+                return;
+            }
 
             User32Interop.SetProcessDPIAware();
             
             AppCommon.CheckDisplayScalingAndResolution();
 
             Common.AppPreferences.AppName = "ACAT Talk";
-
-            if (!AppCommon.SetCulture())
-            {
-                return;
-            }
 
             Log.SetupListeners();
 

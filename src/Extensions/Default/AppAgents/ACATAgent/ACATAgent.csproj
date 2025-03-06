@@ -60,14 +60,7 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ACATCore">
-      <HintPath>..\..\..\..\Redistributable\ACATCore.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ACATExtension">
-      <HintPath>..\..\..\..\Redistributable\ACATExtension.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="ACATCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -91,6 +84,12 @@
   <ItemGroup>
     <Analyzer Include="..\..\..\..\packages\Microsoft.CodeAnalysis.Analyzers.3.11.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\..\..\..\packages\Microsoft.CodeAnalysis.Analyzers.3.11.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Libraries\ACATExtension\Extension.csproj">
+      <Project>{17feda57-1f08-4e19-9dc3-a2c00ec792a3}</Project>
+      <Name>Extension</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

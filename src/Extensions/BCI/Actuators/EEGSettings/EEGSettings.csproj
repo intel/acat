@@ -50,11 +50,6 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ACATCore, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Redistributable\ACATCore.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -79,6 +74,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Libraries\ACATCore\Core.csproj">
+      <Project>{827ad764-63dd-4b12-974d-2b70cc877051}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\BCIControl\BCIControl.csproj">
       <Project>{defaa2be-c13e-4350-9efa-9370755b63d3}</Project>
       <Name>BCIControl</Name>

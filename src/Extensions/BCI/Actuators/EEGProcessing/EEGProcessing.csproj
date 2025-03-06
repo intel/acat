@@ -50,14 +50,8 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ACATCore">
-      <HintPath>..\..\..\..\Redistributable\ACATCore.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ACATExtension">
-      <HintPath>..\..\..\..\Redistributable\ACATExtension.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="ACATCore" />
+    <Reference Include="ACATExtension" />
     <Reference Include="Accord">
       <HintPath>..\External\Accord.3.8.0\lib\net45\Accord.dll</HintPath>
     </Reference>

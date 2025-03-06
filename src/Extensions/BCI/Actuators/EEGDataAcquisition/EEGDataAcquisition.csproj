@@ -50,23 +50,11 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ACATCore">
-      <HintPath>..\..\..\..\Redistributable\ACATCore.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ACATExtension">
-      <HintPath>..\..\..\..\Redistributable\ACATExtension.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Accord">
-      <HintPath>..\External\Accord.3.8.0\lib\net45\Accord.dll</HintPath>
-    </Reference>
-    <Reference Include="Accord.Math">
-      <HintPath>..\External\Accord.Math.3.8.0\lib\net45\Accord.Math.dll</HintPath>
-    </Reference>
-    <Reference Include="Accord.Math.Core">
-      <HintPath>..\External\Accord.Math.3.8.0\lib\net45\Accord.Math.Core.dll</HintPath>
-    </Reference>
+    <Reference Include="ACATCore" />
+    <Reference Include="ACATExtension" />
+    <Reference Include="Accord" />
+    <Reference Include="Accord.Math" />
+    <Reference Include="Accord.Math.Core" />
     <Reference Include="brainflow">
       <HintPath>..\External\brainflow.5.5.0\brainflow.dll</HintPath>
     </Reference>

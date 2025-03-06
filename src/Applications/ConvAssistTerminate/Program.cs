@@ -11,8 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////
 using ACAT.Lib.Core.Utility.NamedPipe;
 using ACAT.Lib.Core.WordPredictionManagement;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System.Text.Json;
 using System;
 using System.Diagnostics;
 using System.IO.Pipes;
@@ -184,7 +183,7 @@ namespace ACAT.Applications.ConvAssistTerminate
             {
                 Console.WriteLine("Sending Request to close ConvAssist");
                 ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.ForceQuitApp, WordPredictionModes.None, "NA");
-                string jsonMessage = JsonConvert.SerializeObject(message);
+                string jsonMessage = JsonSerializer.Serialize(message);
                 _pipeServer.Send(jsonMessage);
             }
             catch (Exception es)

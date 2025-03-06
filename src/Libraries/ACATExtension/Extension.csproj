@@ -63,24 +63,11 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ACATCore">
-      <HintPath>..\..\Redistributable\ACATCore.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ACATResources">
-      <HintPath>..\..\Redistributable\ACATResources.dll</HintPath>
-    </Reference>
+    <Reference Include="ACATCore" />
+    <Reference Include="ACATResources" />
     <Reference Include="ColorSlider">
       <HintPath>..\..\Redistributable\ColorSlider.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Office.Interop.Word">
-      <HintPath>..\..\..\..\..\..\Users\Peter Scott-Morgan 2\Downloads\Office (1)\Microsoft.Office.Interop.Word.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Office">
-      <HintPath>..\..\..\..\..\..\Users\Peter Scott-Morgan 2\Downloads\Office (1)\Office.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

@@ -53,21 +53,6 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ACATCore, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Redistributable\ACATCore.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ACATExtension, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Redistributable\ACATExtension.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ACATResources, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Redistributable\ACATResources.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Accord.Math, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\External\Accord.Math.3.8.0\lib\net45\Accord.Math.dll</HintPath>
@@ -317,6 +302,14 @@
     <None Include="Resources\SignalQualityGradients2\signalQualityGradient_3AcceptableChannels.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\ACATResources\ACATResources.csproj">
+      <Project>{a0990d4e-f25b-430c-bda3-40a72560b877}</Project>
+      <Name>ACATResources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Libraries\ACATCore\Core.csproj">
+      <Project>{827ad764-63dd-4b12-974d-2b70cc877051}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\BCIControl\BCIControl.csproj">
       <Project>{DEFAA2BE-C13E-4350-9EFA-9370755B63D3}</Project>
       <Name>BCIControl</Name>

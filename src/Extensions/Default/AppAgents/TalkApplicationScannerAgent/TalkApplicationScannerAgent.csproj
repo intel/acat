@@ -60,14 +60,8 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ACATCore">
-      <HintPath>..\..\..\..\Redistributable\ACATCore.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ACATExtension">
-      <HintPath>..\..\..\..\Redistributable\ACATExtension.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="ACATCore" />
+    <Reference Include="ACATExtension" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

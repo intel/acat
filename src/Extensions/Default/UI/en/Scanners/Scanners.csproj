@@ -63,14 +63,8 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ACATCore">
-      <HintPath>..\..\..\..\..\Redistributable\ACATCore.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ACATResources">
-      <HintPath>..\..\..\..\..\Redistributable\ACATResources.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="ACATCore" />
+    <Reference Include="ACATResources" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Speech" />

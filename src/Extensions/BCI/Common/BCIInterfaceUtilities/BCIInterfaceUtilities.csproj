@@ -49,11 +49,9 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ACATCore">
-      <HintPath>..\..\..\..\Redistributable\ACATCore.dll</HintPath>
-    </Reference>
-    <Reference Include="ColorSlider">
-      <HintPath>..\..\..\..\Redistributable\ColorSlider.dll</HintPath>
+    <Reference Include="ACATCore" />
+    <Reference Include="ColorSlider, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\lioncs.ColorSlider.1.0.0\lib\net452\ColorSlider.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

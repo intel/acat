@@ -1,0 +1,5 @@
+<Project>
+  <PropertyGroup>
+    <OutputPath>$(SolutionDir)\bin\$(Platform)\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+</Project>

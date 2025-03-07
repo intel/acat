@@ -59,7 +59,11 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ACATCore" />
+    <ProjectReference Include="$(SolutionDir)Libraries\ACATCore\Core.csproj">
+      <Project>{827ad764-63dd-4b12-974d-2b70cc877051}</Project>
+      <Name>Core</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

@@ -81,6 +81,7 @@
     <ProjectReference Include="..\..\Common\BCIControl\BCIControl.csproj">
       <Project>{defaa2be-c13e-4350-9efa-9370755b63d3}</Project>
       <Name>BCIControl</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

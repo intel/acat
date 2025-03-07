@@ -17,7 +17,7 @@ using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WidgetManagement;
-using Newtonsoft.Json;
+using System.Text.Json;
 using SharpDX.Direct2D1;
 using SharpDX.Direct3D11;
 using SharpDX.DirectWrite;
@@ -541,7 +541,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 BCIUtils.SetTargetValuesForCalibration(_flashingSequenceBoxList.Length);
             else
                 BCIUtils.SetTargetValuesForCalibration(_ButtonDataList[_CalibrationBox].Count);
-            var strBciMode = JsonConvert.SerializeObject(bCIMode);
+            var strBciMode = JsonSerializer.Serialize(bCIMode);
             _actuator.IoctlRequest((int)OpCodes.StartSession, strBciMode);
         }
         /// <summary>
@@ -559,7 +559,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 _sessionMode = BCIModes.TYPING;
                 ChangeColorButtons(_flashingSequenceBoxList[0].ToList(), false, true, 0);
                 var bciCalibrationEnd = new BCICalibrationEnd { DiscardCalibrationData = true };
-                var strCalEnd = JsonConvert.SerializeObject(bciCalibrationEnd);
+                var strCalEnd = JsonSerializer.Serialize(bciCalibrationEnd);
                 _actuator.IoctlRequest((int)OpCodes.CalibrationEnd, strCalEnd);
                 _mainForm.Invoke(new MethodInvoker(delegate { EvtBCICalibrationComplete?.Invoke("Calibration cancelled \nSelect calibration mode to start again"); }));
             }
@@ -781,7 +781,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 NumIterationsPerTarget = bCISimpleParameters.IterationsPertarget,
                 MinScoreRequired = bCISimpleParameters.MinScore,
             };
-            var strBciModeParams = JsonConvert.SerializeObject(bCIUserInputParameters);
+            var strBciModeParams = JsonSerializer.Serialize(bCIUserInputParameters);
             _actuator.IoctlRequest((int)OpCodes.RequestParameters, strBciModeParams);
         }
         /// <summary>
@@ -921,7 +921,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             _sessionMode = BCIModes.TRIGGERTEST;
             _triggerTestActive = true;
             BCIMode bCIMode = new BCIMode { BciMode = BCIModes.TRIGGERTEST };
-            var strBciMode = JsonConvert.SerializeObject(bCIMode);
+            var strBciMode = JsonSerializer.Serialize(bCIMode);
             _actuator.IoctlRequest((int)OpCodes.StartSession, strBciMode);
             _actuator.IoctlRequest((int)OpCodes.TriggerTestStart, string.Empty);
         }
@@ -937,7 +937,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             _isBoxScannig = true;
             _numberOfSequences = _amountOfKeyboards;
             BCIMode bCIMode = new BCIMode { BciMode = BCIModes.TYPING };
-            var strBciMode = JsonConvert.SerializeObject(bCIMode);
+            var strBciMode = JsonSerializer.Serialize(bCIMode);
             _actuator.IoctlRequest((int)OpCodes.StartSession, strBciMode);
         }
 
@@ -1009,7 +1009,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             {
                 Log.Debug("BCI LOG | Exception occurred during request to Actuator in ENDCAL: " + es.Message);
             }
-            var strCalEnd = JsonConvert.SerializeObject(bciCalibrationEnd);
+            var strCalEnd = JsonSerializer.Serialize(bciCalibrationEnd);
             _actuator?.IoctlRequest((int)OpCodes.CalibrationEnd, strCalEnd);
         }
 
@@ -1061,7 +1061,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             {
                 Log.Debug("BCI LOG | Exception occurred during request to Actuator in CAl: " + es.Message);
             }
-            var strCalRepEnd = JsonConvert.SerializeObject(bciCalibrationInput);
+            var strCalRepEnd = JsonSerializer.Serialize(bciCalibrationInput);
             _actuator?.IoctlRequest((int)OpCodes.CalibrationEndRepetition, strCalRepEnd);
         }
 
@@ -1121,7 +1121,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             {
                 Log.Debug("BCI LOG | Exception occurred during request to Actuator in TYPE: " + es.Message);
             }
-            var strTypRepEnd = JsonConvert.SerializeObject(bciTypingRepetitionEnd);
+            var strTypRepEnd = JsonSerializer.Serialize(bciTypingRepetitionEnd);
             _actuator?.IoctlRequest((int)OpCodes.TypingEndRepetition, strTypRepEnd);
         }
 
@@ -1178,7 +1178,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     if (nextProbs.Count != 0)
                     {
                         bciLanguageModelProbabilities.LanguageModelProbabilities = nextProbs;
-                        var strNextProb = JsonConvert.SerializeObject(bciLanguageModelProbabilities);
+                        var strNextProb = JsonSerializer.Serialize(bciLanguageModelProbabilities);
                         _actuator?.IoctlRequest((int)OpCodes.LanguageModelProbabilities, strNextProb);
                     }
                 }
@@ -1192,7 +1192,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         {
             try
             {
-                var bciCalibrationEndRepResult = JsonConvert.DeserializeObject<BCISensorStatus>(response);
+                var bciCalibrationEndRepResult = JsonSerializer.Deserialize<BCISensorStatus>(response);
                 SensorErrorState = bciCalibrationEndRepResult.Error;
                 AnimationManagerUtils.StatusSignal = (SignalStatus)bciCalibrationEndRepResult.StatusSignal;
             }
@@ -1207,7 +1207,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         private void ActuatorResponseCalibrationResult(String response)
         {
             Log.Debug("BCI LOG | CalibrationResult | AUC " + _AUC + " | Section " + _ScanningSection);
-            var bciCalibrationResult = JsonConvert.DeserializeObject<BCICalibrationResult>(response);
+            var bciCalibrationResult = JsonSerializer.Deserialize<BCICalibrationResult>(response);
             _AUC = bciCalibrationResult.AUC;
             if (bciCalibrationResult.CalibrationSuccessful)//Flags to let know the timer thread once is at the final process to do either one or the other event trigger
                 _endCalibration = true;
@@ -1221,7 +1221,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             try
             {
                 Log.Debug("BCI LOG | SendParameters | Section " + _ScanningSection);
-                var bciParameters = JsonConvert.DeserializeObject<BCIParameters>(response);
+                var bciParameters = JsonSerializer.Deserialize<BCIParameters>(response);
                 _DelayToGetReady = bciParameters.Scanning_DelayToGetReady;
                 _MinimumProgressBarsValue = (bciParameters.MinProbablityToDisplayBarOnTyping);
                 _CalibrationTargetCount = bciParameters.CalibrationParameters[_ScanningSection].TargetCount;
@@ -1267,7 +1267,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         private void ActuatorResponseStartSessionResult(String response)
         {
             Log.Debug("BCI LOG | StartSessionResult | Section " + _ScanningSection);
-            var bciSessionResult = JsonConvert.DeserializeObject<BCIStartSessionResult>(response);
+            var bciSessionResult = JsonSerializer.Deserialize<BCIStartSessionResult>(response);
             SensorErrorState = bciSessionResult.Error;
             CreateSequencesLog(bciSessionResult.SessionDirectory);
             Log.Debug("BCI LOG | Scanning Log created in: | Path " + bciSessionResult.SessionDirectory);
@@ -1289,7 +1289,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
 
         private void ActuatorResponseTriggerTestResult(String response)
         {
-            var bciTriggerTestResult = JsonConvert.DeserializeObject<BCITriggerTestResult>(response);
+            var bciTriggerTestResult = JsonSerializer.Deserialize<BCITriggerTestResult>(response);
             CloseSequencesLog();
             Log.Debug("BCI LOG | TriggerTestResult | DutyCycleAvg " + bciTriggerTestResult.DutyCycleAvg.ToString());
             //Trigger event to call a UI message box from a higher level
@@ -1307,7 +1307,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
 
         private void ActuatorResponseTypingEndRepetitionResult(String response)
         {
-            var bciTypingResult = JsonConvert.DeserializeObject<BCITypingRepetitionResult>(response);
+            var bciTypingResult = JsonSerializer.Deserialize<BCITypingRepetitionResult>(response);
             _isDecisionMade = bciTypingResult.DecidedFlag;
             _progressBarsProbs = bciTypingResult.PosteriorProbs;
             SensorErrorState = bciTypingResult.Error;

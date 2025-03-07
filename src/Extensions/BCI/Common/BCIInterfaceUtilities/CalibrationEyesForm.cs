@@ -15,7 +15,7 @@ using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
-using Newtonsoft.Json;
+using System.Text.Json;
 using static ACAT.Extensions.BCI.Common.BCIControl.BCICalibrationEyesClosedIterationEnd;
 using System.Drawing;
 using System.Windows.Forms;
@@ -116,7 +116,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 SetEnableStateButtons(false);
             CreateTimers();
             eyeOpen = false;
-            _bciActuator?.IoctlRequest((int)OpCodes.StartSession, JsonConvert.SerializeObject(bCIMode));
+            _bciActuator?.IoctlRequest((int)OpCodes.StartSession, JsonSerializer.Serialize(bCIMode));
             _Countertimer.Start();
             _timer.Start();
         }
@@ -302,7 +302,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 }));
 
                 BCICalibrationEyesClosedIterationEnd bCICalibrationEyesClosedIterationEnd = new BCICalibrationEyesClosedIterationEnd { BciEyesClosedMode = eyeOpen ? BCIEyesClosedModes.EyesOpened : BCIEyesClosedModes.EyesClosed,};
-                _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedIterationEnd, JsonConvert.SerializeObject(bCICalibrationEyesClosedIterationEnd));
+                _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedIterationEnd, JsonSerializer.Serialize(bCICalibrationEyesClosedIterationEnd));
             }
             else
             {

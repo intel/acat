@@ -9,7 +9,7 @@ using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.WidgetManagement;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -103,7 +103,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                     case var _ when scannerRoundedButtonControl.Name.Contains("TriggerTest"):
                         OptionResult = new Tuple<BCIMenuOptions.Options, BCISimpleParameters>(BCIMenuOptions.Options.TriggerTest, GetTriggerTestParameters());
                         BCITriggerTestParameters bciTriggerTestParameters = new BCITriggerTestParameters((int)customSliderNumberTargets.Value, (int)customSliderScanningTime.Value);
-                        var str = JsonConvert.SerializeObject(bciTriggerTestParameters);
+                        var str = JsonSerializer.Serialize(bciTriggerTestParameters);
                         _bciActuator?.IoctlRequest((int)OpCodes.TriggerTestSaveParameters, str);
                         break;
                 }
@@ -257,7 +257,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             switch (opcode)
             {
                 case (int)OpCodes.TriggerTestSendParameters:
-                    var triggerTestParams = JsonConvert.DeserializeObject<BCITriggerTestParameters>(response);
+                    var triggerTestParams = JsonSerializer.Deserialize<BCITriggerTestParameters>(response);
                     _ScanningTime = triggerTestParams.ScanTime;
                     _NumberRepetitions = triggerTestParams.NumRepetitions;
                     SetValuesSliders(_ScanningTime, _NumberRepetitions);

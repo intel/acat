@@ -13,7 +13,7 @@
 using ACAT.Lib.Core.PreferencesManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WordPredictionManagement;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -160,7 +160,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             StringBuilder resultFullPredictionWords = new StringBuilder();
             WordAndCharacterPredictionResponse answer = new WordAndCharacterPredictionResponse();
             var retVal = new List<string>();
-            answer = JsonConvert.DeserializeObject<WordAndCharacterPredictionResponse>(predictions);
+            answer = JsonSerializer.Deserialize<WordAndCharacterPredictionResponse>(predictions);
             List<string> predictWords = new List<string>();
             List<string> predictLetters = new List<string>();
             int i = 0;

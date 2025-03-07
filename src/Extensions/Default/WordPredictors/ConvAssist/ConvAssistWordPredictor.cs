@@ -16,7 +16,7 @@ using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WordPredictionManagement;
 using ACAT.Lib.Extension;
 using ACAT.ACATResources;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -250,7 +250,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         public string ConvAssistLearn(string text, WordPredictorMessageTypes requestType)
         {
             ConvAssistMessage message = new ConvAssistMessage(requestType, WordPredictionModes.None, text);
-            string jsonMessage = JsonConvert.SerializeObject(message);
+            string jsonMessage = JsonSerializer.Serialize(message);
             //var answer = namedPipe.WriteSync(text, 150);
             return namedPipe.WriteSync(jsonMessage, 10000);
         }
@@ -263,7 +263,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         public string SendMessageConvAssistSentencePrediction(string text, WordPredictionModes mode)
         {
             ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.NextSentencePredictionRequest, mode, text);
-            string jsonMessage = JsonConvert.SerializeObject(message);
+            string jsonMessage = JsonSerializer.Serialize(message);
             //var answer = namedPipe.WriteSync(text, 150);
             return namedPipe.WriteSync(jsonMessage, 10000);
         }
@@ -276,7 +276,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         public string SendMessageConvAssistWordPrediction(string text, WordPredictionModes mode)
         {
             ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.NextWordPredictionRequest, mode, text);
-            string jsonMessage = JsonConvert.SerializeObject(message);
+            string jsonMessage = JsonSerializer.Serialize(message);
             //var answer = namedPipe.WriteSync(text, 150);
             return namedPipe.WriteSync(jsonMessage, 10000);
         }

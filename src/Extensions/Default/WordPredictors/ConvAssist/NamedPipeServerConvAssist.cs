@@ -17,7 +17,7 @@ using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.Utility.NamedPipe;
 using ACAT.Lib.Core.WordPredictionManagement;
 using ACAT.Lib.Extension;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System;
 using System.Globalization;
 using System.IO;
@@ -208,9 +208,9 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             try
             {
                 ConvAssistSetParam paramEnableLog = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.EnableLog, Common.AppPreferences.EnableLogs.ToString());
-                string paramEnableLogstring = JsonConvert.SerializeObject(paramEnableLog);
+                string paramEnableLogstring = JsonSerializer.Serialize(paramEnableLog);
                 ConvAssistMessage messageparamEnableLog = new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, paramEnableLogstring);
-                string jsonMessageparamEnableLog = JsonConvert.SerializeObject(messageparamEnableLog);
+                string jsonMessageparamEnableLog = JsonSerializer.Serialize(messageparamEnableLog);
                 var resultEnableLog = await WriteAsync(jsonMessageparamEnableLog, 150);
             }
             catch (Exception ex)
@@ -221,9 +221,9 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             try
             {
                 ConvAssistSetParam parampathLog = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.PathLog, FileUtils.GetLogsDir());
-                string parampathLogstring = JsonConvert.SerializeObject(parampathLog);
+                string parampathLogstring = JsonSerializer.Serialize(parampathLog);
                 ConvAssistMessage messageparampathLog = new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, parampathLogstring);
-                string jsonMessageparampathLog = JsonConvert.SerializeObject(messageparampathLog);
+                string jsonMessageparampathLog = JsonSerializer.Serialize(messageparampathLog);
                 var resultpathLog = await WriteAsync(jsonMessageparampathLog, 150);
             }
             catch (Exception ex)
@@ -235,9 +235,9 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             {
                 //SUGGESTIONS FOR WORD PREDCITONS PARAMETER
                 ConvAssistSetParam paramSuggestions = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.Suggestions, Common.AppPreferences.WordsSuggestions.ToString());
-                string paramSuggestionsstring = JsonConvert.SerializeObject(paramSuggestions);
+                string paramSuggestionsstring = JsonSerializer.Serialize(paramSuggestions);
                 ConvAssistMessage messageparamSuggestions = new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, paramSuggestionsstring);
-                string jsonMessageparamSuggestions = JsonConvert.SerializeObject(messageparamSuggestions);
+                string jsonMessageparamSuggestions = JsonSerializer.Serialize(messageparamSuggestions);
                 var resultSuggestions = await WriteAsync(jsonMessageparamSuggestions, 250);
             }
             catch (Exception ex)
@@ -249,9 +249,9 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             {
                 //TEST GENERAL SENTENCE PREDICTION PARAMETER
                 ConvAssistSetParam paramTestPred = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.TestGeneralSentencePrediction, ConvAssistWordPredictor.settings.Test_GeneralSentencePrediction.ToString());
-                string paramTestPredstring = JsonConvert.SerializeObject(paramTestPred);
+                string paramTestPredstring = JsonSerializer.Serialize(paramTestPred);
                 ConvAssistMessage messageparamTestPred = new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, paramTestPredstring);
-                string jsonMessageparamTestPred = JsonConvert.SerializeObject(messageparamTestPred);
+                string jsonMessageparamTestPred = JsonSerializer.Serialize(messageparamTestPred);
                 var resultTestPred = await WriteAsync(jsonMessageparamTestPred, 250);
             }
             catch (Exception ex)
@@ -263,9 +263,9 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             {
                 //RETRIEVE FROM ACC PARAMETER
                 ConvAssistSetParam paramRetrieveACC = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.RetrieveACC, ConvAssistWordPredictor.settings.EnableSmallVocabularySentencePrediction.ToString());
-                string paramRetrieveACCstring = JsonConvert.SerializeObject(paramRetrieveACC);
+                string paramRetrieveACCstring = JsonSerializer.Serialize(paramRetrieveACC);
                 ConvAssistMessage messageparamRetrieveACC = new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, paramRetrieveACCstring);
-                string jsonMessageparamRetrieveACC = JsonConvert.SerializeObject(messageparamRetrieveACC);
+                string jsonMessageparamRetrieveACC = JsonSerializer.Serialize(messageparamRetrieveACC);
                 var resultRetrieveACC = await WriteAsync(jsonMessageparamRetrieveACC, 250);
             }
             catch (Exception ex)
@@ -278,9 +278,9 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 //PATH STATIC
                 string staticPath = Path.Combine(FileUtils.GetResourcesDir(), "WordPredictors", "ConvAssist");
                 ConvAssistSetParam paramRetrievePathStatic = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.PathStatic, staticPath);
-                string paramRetrievePathStaticstring = JsonConvert.SerializeObject(paramRetrievePathStatic);
+                string paramRetrievePathStaticstring = JsonSerializer.Serialize(paramRetrievePathStatic);
                 ConvAssistMessage messageparamRetrievePathStatic = new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, paramRetrievePathStaticstring);
-                string jsonMessageparamRetrievePathStatic = JsonConvert.SerializeObject(messageparamRetrievePathStatic);
+                string jsonMessageparamRetrievePathStatic = JsonSerializer.Serialize(messageparamRetrievePathStatic);
                 var resultRetrievePathStatic = await WriteAsync(jsonMessageparamRetrievePathStatic, 150);
             }
             catch (Exception ex)
@@ -293,9 +293,9 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 //PATH PERSONALIZED
                 string personalizedPath = Path.Combine(UserManager.CurrentUserDir, CultureInfo.DefaultThreadCurrentUICulture.Name, "WordPredictors", "ConvAssist", "Database");
                 ConvAssistSetParam paramRetrievePathPersonalized = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.PathPersonilized, personalizedPath);
-                string paramRetrievePathPersonalizedstring = JsonConvert.SerializeObject(paramRetrievePathPersonalized);
+                string paramRetrievePathPersonalizedstring = JsonSerializer.Serialize(paramRetrievePathPersonalized);
                 ConvAssistMessage messageparamRetrievePathPersonalized = new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, paramRetrievePathPersonalizedstring);
-                string jsonMessageparamRetrievePathPersonalized = JsonConvert.SerializeObject(messageparamRetrievePathPersonalized);
+                string jsonMessageparamRetrievePathPersonalized = JsonSerializer.Serialize(messageparamRetrievePathPersonalized);
                 var resultRetrievePathPersonalized = await WriteAsync(jsonMessageparamRetrievePathPersonalized, 150);
             }
             catch (Exception ex)
@@ -307,11 +307,11 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             {
                 //PATH FOR THE INI FILES FOR EACH MODE
                 ConvAssistSetParam paramPath = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.Path, _pathToFiles);
-                string paramPathstring = JsonConvert.SerializeObject(paramPath);
+                string paramPathstring = JsonSerializer.Serialize(paramPath);
                 ConvAssistMessage messageparamPath = new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, paramPathstring);
-                string jsonMessageparamPath = JsonConvert.SerializeObject(messageparamPath);
+                string jsonMessageparamPath = JsonSerializer.Serialize(messageparamPath);
                 var resultPath = await WriteAsync(jsonMessageparamPath, 60000);
-                var resultObject = JsonConvert.DeserializeObject<WordAndCharacterPredictionResponse>(resultPath);
+                var resultObject = JsonSerializer.Deserialize<WordAndCharacterPredictionResponse>(resultPath);
                 if (resultObject != null && resultObject.MessageType == WordAndCharacterPredictionResponse.ConvAssistMessageTypes.SetParam)
                     clientAnswerParameters = true;
             }
@@ -322,7 +322,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
 
             // ConvAssist needs some time to get ready.  Send a message to check if it is ready
             ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.NextSentencePredictionRequest, WordPredictionModes.None, string.Empty);
-            string jsonMessage = JsonConvert.SerializeObject(message);
+            string jsonMessage = JsonSerializer.Serialize(message);
 
             bool clientready = false;
             var tcs = new TaskCompletionSource<bool>();
@@ -332,7 +332,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 while (!clientready)
                 {
                     var result = await WriteAsync(jsonMessage, 150);
-                    var resultObject = JsonConvert.DeserializeObject<WordAndCharacterPredictionResponse>(result);
+                    var resultObject = JsonSerializer.Deserialize<WordAndCharacterPredictionResponse>(result);
                     if (resultObject != null && resultObject.MessageType != WordAndCharacterPredictionResponse.ConvAssistMessageTypes.NotReady)
                     {
                         clientready = true;

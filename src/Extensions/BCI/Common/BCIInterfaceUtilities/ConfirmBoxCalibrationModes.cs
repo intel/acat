@@ -11,7 +11,7 @@ using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WidgetManagement;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -135,7 +135,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             switch (opcode)
             {
                 case (int)OpCodes.SendParameters:
-                    _bCIParameters = JsonConvert.DeserializeObject<BCIParameters>(response);
+                    _bCIParameters = JsonSerializer.Deserialize<BCIParameters>(response);
                     TriggeFirstOptioFromMenu();
                     break;
             }
@@ -471,7 +471,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             {
                 _bciActuator.EvtIoctlResponse += BciActuator_EvtIoctlResponse;
             }
-            var strBciModeParams = JsonConvert.SerializeObject(new BCIUserInputParameters());
+            var strBciModeParams = JsonSerializer.Serialize(new BCIUserInputParameters());
             _bciActuator?.IoctlRequest((int)OpCodes.RequestParameters, strBciModeParams);
             DisplayCalibrationHelp();
         }

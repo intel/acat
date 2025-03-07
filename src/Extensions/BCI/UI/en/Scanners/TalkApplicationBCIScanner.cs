@@ -28,7 +28,7 @@ using ACAT.Lib.Core.WidgetManagement;
 using ACAT.Lib.Core.WordPredictionManagement;
 using ACAT.Lib.Extension.CommandHandlers;
 using ACAT.Lib.Extension;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -743,7 +743,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                     break;
                 case (int)OpCodes.SendCalibrationStatus:
                     //STEP - 1
-                    var bciCalibrationStatus = JsonConvert.DeserializeObject<BCICalibrationStatus>(response);
+                    var bciCalibrationStatus = JsonSerializer.Deserialize<BCICalibrationStatus>(response);
                     Log.Debug("BCI LOG | bciCalibrationStatus.OkToGoToTyping: " + bciCalibrationStatus.OkToGoToTyping);
                     if (_ShowMainOptions)//This window should only display once 
                     {

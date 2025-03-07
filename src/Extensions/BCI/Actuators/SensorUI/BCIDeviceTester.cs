@@ -19,7 +19,7 @@ using ACAT.Lib.Core.Audit;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WidgetManagement;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -576,7 +576,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
                     chnIdx += 1;
                 }
                 var bciLogEntry = new BCILogEntrySignalQuality(channelNames, enabledChannels, railingValues, impedanceValues, exitBCIOnboarding); // 5th param
-                var jsonString = JsonConvert.SerializeObject(bciLogEntry);
+                var jsonString = JsonSerializer.Serialize(bciLogEntry);
                 AuditLog.Audit(new AuditEvent("BCISignalQuality", jsonString));
 
                 // Based on the status of all electrodes

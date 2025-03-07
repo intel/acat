@@ -10,7 +10,7 @@ using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System;
@@ -139,7 +139,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             _Interval = _TempInterval;
             _MaxRepetitions = _TempMaxRepetitions;
             BCICalibrationEyesClosedParameters bCICalibrationEyesClosedParameters = new BCICalibrationEyesClosedParameters(_MaxRepetitions, _Interval);
-            var str = JsonConvert.SerializeObject(bCICalibrationEyesClosedParameters);
+            var str = JsonSerializer.Serialize(bCICalibrationEyesClosedParameters);
             _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedSaveParameters, str);
             ValidateParameters();
         }
@@ -196,7 +196,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             switch (opcode)
             {
                 case (int)OpCodes.CalibrationEyesClosedSendParameters:
-                    var bciParams = JsonConvert.DeserializeObject<BCICalibrationEyesClosedParameters>(response);
+                    var bciParams = JsonSerializer.Deserialize<BCICalibrationEyesClosedParameters>(response);
                     _MaxRepetitions = bciParams.NumRepetitions;
                     _Interval = bciParams.IntervalDuration;
                     _TempInterval = bciParams.IntervalDuration;

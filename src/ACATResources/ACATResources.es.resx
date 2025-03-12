@@ -120,78 +120,78 @@
   <data name="AbbreviationsListEmpty" xml:space="preserve">
     <value>-------- LISTA DE ABREVIATURAS VACÍA --------</value>
   </data>
-  <data name="Add" xml:space="preserve">
+  <data name="CalibrateNow" xml:space="preserve">
     <value>Añadir</value>
   </data>
-  <data name="AddAbbreviation" xml:space="preserve">
+  <data name="CalibrateOptional" xml:space="preserve">
     <value>Añadir Abreviatura</value>
   </data>
-  <data name="AddNewAbbreviation" xml:space="preserve">
+  <data name="CalibrationInProgrressPrompt" xml:space="preserve">
     <value>¿Añadir nueva abreviatura?</value>
   </data>
-  <data name="AppsListIsEmpty" xml:space="preserve">
+  <data name="HintBoxCalibrationScreen" xml:space="preserve">
     <value>------------- LISTA DE APLICACIONES VACÍA -------------</value>
   </data>
-  <data name="CancelAndQuit" xml:space="preserve">
+  <data name="HintCalibrationBeginACATEnalbed" xml:space="preserve">
     <value>¿Cancelar y Salir?</value>
   </data>
-  <data name="CantSaveAbbreviation" xml:space="preserve">
+  <data name="HintCalibrationBeginACATNotEnalbed" xml:space="preserve">
     <value>No se puede guardar. La abreviatura para '{0}' ya existe</value>
     <comment>{0} es la abreviatura</comment>
   </data>
-  <data name="ClearFileName" xml:space="preserve">
+  <data name="HintEyesOpenCloseCalibration" xml:space="preserve">
     <value>¿Borrar Nombre de Archivo?</value>
   </data>
-  <data name="ClearFilter" xml:space="preserve">
+  <data name="HintIterationstarget" xml:space="preserve">
     <value>¿Borrar Filtro?</value>
   </data>
-  <data name="CloseQ" xml:space="preserve">
+  <data name="HintKeyboardLeftCalibrationScreen" xml:space="preserve">
     <value>¿Cerrar?</value>
   </data>
-  <data name="CloseLM" xml:space="preserve">
+  <data name="HintKeyboardRightCalibrationScreen" xml:space="preserve">
     <value>¿Cerrar el Gestor de Conferencias?</value>
   </data>
-  <data name="CouldNotCreateFolder" xml:space="preserve">
+  <data name="HintMinimumScore" xml:space="preserve">
     <value>No se pudo crear la carpeta {0}</value>
     <comment>{0} es el nombre de la carpeta</comment>
   </data>
-  <data name="CreateNew" xml:space="preserve">
+  <data name="HintNumberTargets" xml:space="preserve">
     <value>Crear Nuevo</value>
   </data>
-  <data name="CreateNewFile" xml:space="preserve">
+  <data name="HintReMapCalibrations" xml:space="preserve">
     <value>Crear Nuevo Archivo</value>
   </data>
-  <data name="DeleteAbbr" xml:space="preserve">
+  <data name="HintScanningTime" xml:space="preserve">
     <value>¿Eliminar {0}?</value>
     <comment>{0} es la abreviatura que se va a eliminar</comment>
   </data>
-  <data name="DeleteFileQ" xml:space="preserve">
+  <data name="HintSentenceCalibrationScreen" xml:space="preserve">
     <value>¿Eliminar {0}?</value>
     <comment>{0} es el nombre del archivo a eliminar</comment>
   </data>
-  <data name="EditAbbreviation" xml:space="preserve">
+  <data name="HintSignalCheck" xml:space="preserve">
     <value>Editar Abreviatura</value>
   </data>
-  <data name="Error" xml:space="preserve">
+  <data name="HintTriggerCheck" xml:space="preserve">
     <value>Error</value>
   </data>
-  <data name="ExitWithoutCreating" xml:space="preserve">
+  <data name="HintWordCalibrationScreen" xml:space="preserve">
     <value>¿Salir sin crear?</value>
   </data>
-  <data name="ExpansionIsEmpty" xml:space="preserve">
+  <data name="IterationNumber" xml:space="preserve">
     <value>La expansión de la abreviatura está vacía</value>
   </data>
-  <data name="FileAlreadyExists" xml:space="preserve">
+  <data name="Of" xml:space="preserve">
     <value>El archivo ya existe</value>
   </data>
-  <data name="GoogleSearch" xml:space="preserve">
+  <data name="Recalibrate" xml:space="preserve">
     <value>Búsqueda en Google</value>
   </data>
-  <data name="LaunchAppQ" xml:space="preserve">
+  <data name="ScanningTime" xml:space="preserve">
     <value>¿Lanzar {0}?</value>
     <comment>{0} es el nombre de la aplicación a lanzar</comment>
   </data>
-  <data name="LectureMgr" xml:space="preserve">
+  <data name="StartTyping" xml:space="preserve">
     <value>Gestor de Conferencias</value>
     <comment>Gestor de Conferencias - título del menú contextual</comment>
   </data>
@@ -783,7 +783,7 @@
     <value>Pista Anterior</value>
   </data>
   <data name="Range0To" xml:space="preserve">
-    <value>Rango: 0 a </value>
+    <value>Rango: 0 a   </value>
   </data>
   <data name="Rename" xml:space="preserve">
     <value>Renombrar</value>
@@ -1357,7 +1357,7 @@ Para obtener instrucciones sobre cómo cambiar la resolución de la pantalla, co
     <value>F</value>
   </data>
   <data name="G" xml:space="preserve">
-    <value>g</value>
+    <value>G</value>
   </data>
   <data name="E" xml:space="preserve">
     <value>E</value>

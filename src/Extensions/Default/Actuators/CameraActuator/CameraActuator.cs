@@ -747,13 +747,16 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         /// <returns></returns>
         private void unInit()
         {
-            actuatorState = State.Stopped;
+            if (!(actuatorState == State.Stopped))
+            {
+                actuatorState = State.Stopped;
 
-            IsCalibrating = false;
+                IsCalibrating = false;
 
-            CameraSensor.visionCommand("action=EXITAPP", 0);
+                CameraSensor.visionCommand("action=EXITAPP", 0);
 
-            CameraSensor.quit();
+                CameraSensor.quit();
+            }
         }
 
         /// <summary>

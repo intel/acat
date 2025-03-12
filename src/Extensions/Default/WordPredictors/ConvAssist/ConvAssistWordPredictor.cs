@@ -9,23 +9,19 @@
 /// Creates and handles the channel of comunication between ACAT and ConvAssist
 //
 ////////////////////////////////////////////////////////////////////////////
-#define DEBUG_CONVASSIST
 using ACAT.Lib.Core.PreferencesManagement;
 using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WordPredictionManagement;
-using ACAT.Lib.Extension;
 using ACAT.ACATResources;
-using System.Text.Json;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.IO.Pipes;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
 {
@@ -64,6 +60,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// Used the synchronization for multiple calls
         /// </summary>
         private readonly object _syncObj = new object();
+        private readonly object _writeSyncObj = new object();
 
         private readonly CancellationTokenSource cts = new CancellationTokenSource();
         private readonly ManualResetEvent mevent = new ManualResetEvent(false);
@@ -321,22 +318,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
         }
 
-        private void EnterCriticalSection(object syncObj)
-        {
-            while (!TryEnter(_syncObj))
-            {
-                if (Application.MessageLoop)
-                {
-                    Application.DoEvents();
-                }
-            }
-        }
-
-        private void ExitCriticalSection(object syncObj)
-        {
-            Monitor.Exit(syncObj);
-        }
-
         /// <summary>
         /// Returns a list of next word predictions based on the context
         /// from the previous words in the sentence.  The number of words
@@ -353,30 +334,27 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
 
             try
             {
-                EnterCriticalSection(_syncObj);
+                lock (_writeSyncObj)
+                {
+                    if (!namedPipe.clientConected)
+                    {
+                        return new WordPredictionResponse(request, new List<String>(), false);
+                    }
 
-                if (!namedPipe.clientConected)
-                {
-                    return new WordPredictionResponse(request, new List<String>(), false);
-                }
-
-                if (request.PredictionType == PredictionTypes.Words)
-                {
-                    response = _wordPredictionsRequestHandler.ProcessPredictionRequest(request);
-                }
-                else if (request.PredictionType == PredictionTypes.Sentences)
-                {
-                    response = _sentencePredictionsRequestHandler.ProcessPredictionRequest(request);
+                    if (request.PredictionType == PredictionTypes.Words)
+                    {
+                        response = _wordPredictionsRequestHandler.ProcessPredictionRequest(request);
+                    }
+                    else if (request.PredictionType == PredictionTypes.Sentences)
+                    {
+                        response = _sentencePredictionsRequestHandler.ProcessPredictionRequest(request);
+                    }
                 }
             }
             catch (Exception ex)
             {
                 Log.Debug("ConvAssist Exception " + ex);
                 response = new WordPredictionResponse(request, new List<String>(), false);
-            }
-            finally
-            {
-                ExitCriticalSection(_syncObj);
             }
 
             return response;
@@ -463,11 +441,12 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 return;
             }
 
-            if (DisclaimerDialog.ShowDialog(R.GetString("DisclaimerConvAssist"), null, true))
-            {
-                settings.ShowDisclaimerOnStartup = false;
-                settings.Save();
-            }
+            //TODO: Move this out of the word predictor code and into UI
+            //if (DisclaimerDialog.ShowDialog(R.GetString("DisclaimerConvAssist"), null, true))
+            //{
+            //    settings.ShowDisclaimerOnStartup = false;
+            //    settings.Save();
+            //}
         }
     }
 }

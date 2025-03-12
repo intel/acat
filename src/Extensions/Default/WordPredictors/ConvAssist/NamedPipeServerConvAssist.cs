@@ -17,7 +17,6 @@ using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.Utility.NamedPipe;
 using ACAT.Lib.Core.WordPredictionManagement;
 using ACAT.Lib.Extension;
-using System.Text.Json;
 using System;
 using System.Globalization;
 using System.IO;
@@ -25,7 +24,6 @@ using System.IO.Pipes;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
 {
@@ -75,6 +73,8 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
 
         private CancellationTokenSource cancellationTokenSource;
         private bool disposed;
+
+        private static readonly object _writeSyncObj = new object();
 
         /// <summary>
         /// Direction of comunication
@@ -208,6 +208,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             try
             {
                 ConvAssistSetParam paramEnableLog = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.EnableLog, Common.AppPreferences.EnableLogs.ToString());
+                _ = System.Reflection.Assembly.LoadFrom("C:\\Users\\mbeale\\source\\repos\\acat\\src\\bin\\x86\\Debug\\Extensions\\Default\\WordPredictors\\ConvAssist\\System.Threading.Tasks.Extensions.dll");
                 string paramEnableLogstring = JsonSerializer.Serialize(paramEnableLog);
                 ConvAssistMessage messageparamEnableLog = new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, paramEnableLogstring);
                 string jsonMessageparamEnableLog = JsonSerializer.Serialize(messageparamEnableLog);
@@ -500,44 +501,42 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             try
             {
                 Log.Debug("ConvAssist WriteSync Lock on");
-                EnterCriticalSection(_syncObj);
-                TaskFinished = false;
-                //Variable set when the event from receiving data triggers
-                messageReceived = string.Empty;
-                if (!this.disposed)
+                lock (_writeSyncObj)
                 {
-                    byte[] buffer = Encoding.UTF8.GetBytes(value);
-                    this.NamedPipeServer.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServer);
-                }
-
-                CancellationTokenSource source = new CancellationTokenSource(msDelay);
-                try
-                {
-                    while (!source.IsCancellationRequested)
+                    TaskFinished = false;
+                    //Variable set when the event from receiving data triggers
+                    messageReceived = string.Empty;
+                    if (!this.disposed)
                     {
-                        if (messageReceived != string.Empty)
-                        {
-                            source.Cancel(true);
-                        }
-                        Thread.Sleep(10);
+                        byte[] buffer = Encoding.UTF8.GetBytes(value);
+                        this.NamedPipeServer.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServer);
                     }
-                }
-                catch
-                {
-                }
 
-                source.Dispose();
-                message = messageReceived;
-                messageReceived = string.Empty;
-                TaskFinished = true;
+                    CancellationTokenSource source = new CancellationTokenSource(msDelay);
+                    try
+                    {
+                        while (!source.IsCancellationRequested)
+                        {
+                            if (messageReceived != string.Empty)
+                            {
+                                source.Cancel(true);
+                            }
+                            Thread.Sleep(10);
+                        }
+                    }
+                    catch
+                    {
+                    }
+
+                    source.Dispose();
+                    message = messageReceived;
+                    messageReceived = string.Empty;
+                    TaskFinished = true;
+                }
             }
             catch (Exception ex)
             {
                 Log.Debug("ConvAssist WriteSync " + ex);
-            }
-            finally
-            {
-                ExitCriticalSection(_syncObj);
             }
             Log.Debug("ConvAssist WriteSync Lock off");
             return message;
@@ -546,22 +545,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         public void WriteToPipe(string data)
         {
             Write(data);
-        }
-
-        private void EnterCriticalSection(object syncObj)
-        {
-            while (!TryEnter(_syncObj))
-            {
-                if (Application.MessageLoop)
-                {
-                    Application.DoEvents();
-                }
-            }
-        }
-
-        private void ExitCriticalSection(object syncObj)
-        {
-            Monitor.Exit(syncObj);
         }
 
         /// <summary>

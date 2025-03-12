@@ -1,5 +1,5 @@
 <Project>
   <PropertyGroup>
-    <OutputPath>$(SolutionDir)\bin\$(Platform)\$(Configuration)\Extensions</OutputPath>
-  </PropertyGroup>
+    <OutputPath>$(SolutionDir)\bin\$(Platform)\$(Configuration)\$([System.String]::Copy($(MSBuildProjectDirectory)).Replace($(SolutionDir), ""))\</OutputPath>
+</PropertyGroup>
 </Project>

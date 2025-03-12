@@ -89,7 +89,7 @@ namespace ACAT.Lib.Extension
             customSliderScanningSpeed.MouseUp += CustomSliderScanningSpeed_MouseUp;
             customSliderScanningSpeed.Minimum = 1;
             customSliderScanningSpeed.Maximum = 100;
-            customSliderScanningSpeed.Value = (int)(Common.AppPreferences.ScanTime / 100);
+            customSliderScanningSpeed.Value = Common.AppPreferences.ScanTime / 100;
 
             checkBoxDontShowThisOnStartup.Checked = false;
 

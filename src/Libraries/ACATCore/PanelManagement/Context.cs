@@ -656,7 +656,7 @@ namespace ACAT.Lib.Core.PanelManagement
 
                 if (retVal)
                 {
-                    retVal = AppWordPredictionManager.SetActiveWordPredictor();
+                    retVal = AppWordPredictionManager.SetActiveWordPredictor(CultureInfo.CurrentUICulture);
                     if (!retVal)
                     {
                         setCompletionStatus("Error setting active word prediction engine");

@@ -8,7 +8,6 @@
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WidgetManagement;
 using System;
-using System.Diagnostics.CodeAnalysis;
 
 namespace ACAT.Lib.Extension
 {

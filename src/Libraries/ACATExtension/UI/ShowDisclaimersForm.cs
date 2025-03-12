@@ -9,7 +9,6 @@ using ACAT.ACATResources;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
 using System;
-using System.IO;
 using System.Text;
 using System.Windows.Forms;
 

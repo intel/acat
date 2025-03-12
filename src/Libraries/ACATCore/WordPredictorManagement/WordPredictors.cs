@@ -212,7 +212,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
             foreach (string dir in extensionDirs)
             {
                 var extensionDir = dir + "\\" + WordPredictionManager.WordPredictorsRootName;
-                loadWordPredictorsTypesIntoCache(extensionDir, null, recursive);
+                loadWordPredictorsTypesIntoCache(extensionDir, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, recursive);
             }
             if (_DLLError)
                 return false;
@@ -375,8 +375,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
                 }
                 if (!_DLLError)
                 {
-                    Assembly wordPredictorAssembly = Assembly.LoadFile(dllName);
-                    foreach (Type type in wordPredictorAssembly.GetTypes())
+                    foreach (Type type in Assembly.LoadFile(dllName).GetTypes())
                     {
                         if (typeof(IWordPredictor).IsAssignableFrom(type))
                         {
@@ -384,6 +383,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
                             if (attr != null && attr.Id != Guid.Empty)
                             {
                                 Add(attr.Id, _dirWalkCurrentCulture, type);
+                                break;
                             }
                         }
                     }

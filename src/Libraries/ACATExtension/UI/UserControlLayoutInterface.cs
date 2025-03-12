@@ -11,8 +11,6 @@ using ACAT.Lib.Core.UserControlManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WidgetManagement;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Windows.Forms;
 
 namespace ACAT.Lib.Extension

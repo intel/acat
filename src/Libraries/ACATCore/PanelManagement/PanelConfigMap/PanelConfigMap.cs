@@ -15,8 +15,8 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Documents;
-using System.Windows.Forms;
+//using System.Windows.Documents;
+//using System.Windows.Forms;
 using System.Xml;
 
 namespace ACAT.Lib.Core.PanelManagement

@@ -71,7 +71,7 @@ namespace ACAT.Lib.Extension.Onboarding
                 updateCountdown();
 
                 var font = buttonConfigure.Font;
-                buttonConfigure.Font = new Font(font.FontFamily, font.Size, FontStyle.Underline, GraphicsUnit.Point, ((byte)(0))); ;
+                buttonConfigure.Font = new Font(font.FontFamily, font.Size, FontStyle.Underline, GraphicsUnit.Point, 0); ;
 
                 _timer = new Timer
                 {
@@ -82,7 +82,7 @@ namespace ACAT.Lib.Extension.Onboarding
             else
             {
                 labelBlurb.Text = blurb;
-                buttonConfigure.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
+                buttonConfigure.BackColor = System.Drawing.Color.FromArgb(255, 170, 0);
                 buttonConfigure.ForeColor = System.Drawing.Color.Black;
             }
 

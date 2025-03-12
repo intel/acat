@@ -415,7 +415,7 @@ namespace ACAT.Lib.Extension
 
                 form.Top = 0;
                 form.Height = desktopHeight;
-                form.Width = (int)((float)form.Width * ratio);
+                form.Width = (int)(form.Width * ratio);
             }
         }
 

@@ -126,10 +126,8 @@ namespace ACAT.Lib.Core.PanelManagement
             highlightWindow(_automationElement);
         }
 
-        /// <summary>
-        /// Highlights the window
-        /// </summary>
-        /// <param name="focusedElement">automation element of window</param>
+        // ...
+
         private void highlightWindow(AutomationElement focusedElement)
         {
             Log.Debug();
@@ -143,7 +141,10 @@ namespace ACAT.Lib.Core.PanelManagement
                         {
                             if (focusedElement != null && _outlineWindow != null)
                             {
-                                _outlineWindow.Draw(focusedElement.Current.BoundingRectangle, 6);
+                                // Convert System.Windows.Rect to System.Drawing.Rectangle
+                                var rect = focusedElement.Current.BoundingRectangle;
+                                var drawingRect = new System.Drawing.Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height);
+                                _outlineWindow.Draw(drawingRect, 6);
                             }
                         }
                         catch (Exception exp)

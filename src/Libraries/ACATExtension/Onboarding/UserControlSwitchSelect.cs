@@ -5,20 +5,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.ACATResources;
 using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.Onboarding;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
-using ACAT.ACATResources;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Windows.Forms;
-using System.Net;
 using System.Web;
+using System.Windows.Forms;
 
 namespace ACAT.Lib.Extension.Onboarding
 {
@@ -158,7 +155,7 @@ namespace ACAT.Lib.Extension.Onboarding
             var desc = _actuatorSettings[listBoxActuators.SelectedIndex].Description;
             if (!String.IsNullOrEmpty(desc))
             {
-                String html = String.Format(_htmlTemplate, headStyle, bodyStyle, textStyle, HttpUtility.HtmlDecode(desc));
+                String html = String.Format(_htmlTemplate, headStyle, bodyStyle, textStyle, HtmlUtils.DecodeHtml(desc));
                 Log.Debug(html);
 
                 html = html.Replace(CoreGlobals.MacroACATUserGuide, HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName));

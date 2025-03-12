@@ -69,7 +69,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         /// <param name="rectangle">Rectangle to draw</param>
         /// <param name="penWidth">width of the pen</param>
-        public void Draw(System.Windows.Rect rectangle, int penWidth = 0)
+        public void Draw(Rectangle rectangle, int penWidth = 0)
         {
             Log.Debug(rectangle.ToString());
 

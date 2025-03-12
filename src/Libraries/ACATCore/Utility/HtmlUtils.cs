@@ -11,6 +11,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Web;
 
 namespace ACAT.Lib.Core.Utility
 {
@@ -203,6 +204,12 @@ namespace ACAT.Lib.Core.Utility
         private static string ReplaceDash(string text)
         {
             return text.Replace("-", " ");
+        }
+
+        public static object DecodeHtml(string desc)
+        {
+            //throw new NotImplementedException();
+            return HttpUtility.HtmlDecode(desc);
         }
     }
 }

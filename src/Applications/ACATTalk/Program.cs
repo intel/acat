@@ -21,7 +21,6 @@ using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Extension;
 using ACATExtension.CommandHandlers;
 using System;
-using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 #if ENABLE_DIGITAL_VERIFICATION
 using System.ComponentModel;
@@ -39,6 +38,11 @@ namespace ACAT.Applications.ACATTalk
     internal static class Program
     {
         static Splash splash = null;
+        static Guid welcome = new Guid("6d8da00e-5035-4b7f-a646-ed9f840a13bf");
+        static Guid switchselect = new Guid("301dbc87-c98c-491a-a2ee-d17863eab831");
+        static Guid keyboardconfig = new Guid("65b95de3-bf5a-4ae8-b44d-f5e7950ab8d6");
+        static Guid finish = new Guid("e03754b3-85af-4f43-855e-47e20f7400c2");
+
 
         /// <summary>
         /// The main entry point for the application.
@@ -264,10 +268,11 @@ namespace ACAT.Applications.ACATTalk
         private static bool doOnboarding()
         {
             var onboardingSequence = new OnboardingSequence();
-            onboardingSequence.OnboardingSequenceItems.Add(new OnboardingSequenceItem(new Guid("6d8da00e-5035-4b7f-a646-ed9f840a13bf")));
-            onboardingSequence.OnboardingSequenceItems.Add(new OnboardingSequenceItem(new Guid("301dbc87-c98c-491a-a2ee-d17863eab831")));
-            onboardingSequence.OnboardingSequenceItems.Add(new OnboardingSequenceItem(new Guid("65b95de3-bf5a-4ae8-b44d-f5e7950ab8d6")));
-            onboardingSequence.OnboardingSequenceItems.Add(new OnboardingSequenceItem(new Guid("e03754b3-85af-4f43-855e-47e20f7400c2")));
+
+            onboardingSequence.OnboardingSequenceItems.Add(new OnboardingSequenceItem(welcome));
+            onboardingSequence.OnboardingSequenceItems.Add(new OnboardingSequenceItem(switchselect));
+            onboardingSequence.OnboardingSequenceItems.Add(new OnboardingSequenceItem(keyboardconfig));
+            onboardingSequence.OnboardingSequenceItems.Add(new OnboardingSequenceItem(finish));
 
             var onboardingForm = new OnboardingForm
             {

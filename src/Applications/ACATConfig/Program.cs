@@ -83,6 +83,8 @@ namespace ACATConfig
 
             AppCommon.LoadGlobalSettings();
 
+
+
             AppCommon.SetUserName();
             AppCommon.SetProfileName();
 

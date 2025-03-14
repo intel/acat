@@ -1399,7 +1399,19 @@ For guidance on changing the display resolution, please refer to the ACAT User G
   <data name="Shorthand" xml:space="preserve">
     <value>Shorthand</value>
   </data>
-  <data name="foo" xml:space="preserve">
-    <value></value>
+  <data name="SymlinkFatalError" xml:space="preserve">
+    <value>Fatal error.\n {0} is a junction/symlink. Cannot perform file I/O on it.\n ACAT will exit now.\n Please delete this file, re-install ACAT and retry.</value>
+  </data>
+  <data name="StartingACAT" xml:space="preserve">
+    <value>Starting ACAT</value>
+  </data>
+  <data name="ZoomWarning" xml:space="preserve">
+    <value>The monitor's display scaling is currently set to {0}% which may cause display issues with the ACAT user interface.  The ACAT UI is tailored for display scaling values of 100% and 125%.\r\n\r\n To resolve any potential display inconsistencies, we recommend adjusting your monitor's display scaling to 100% or 125%.\r\n\r\n For guidance on changing the display scaling, please refer to the ACAT User Guide.</value>
+  </data>
+  <data name="EditAbbreviation" xml:space="preserve">
+    <value>Edit Abbreviation</value>
+  </data>
+  <data name="dontShowMessage" xml:space="preserve">
+    <value>Don't show this message again</value>
   </data>
 </root>

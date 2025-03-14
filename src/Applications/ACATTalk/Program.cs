@@ -71,8 +71,7 @@ namespace ACAT.Applications.ACATTalk
 
             CoreGlobals.AppId = "ACATTalk";
             CoreGlobals.ACATUserGuideFileName = "ACAT User Guide.pdf";
-
-            CoreGlobals.EvtFatalError += CoreGlobals_EvtFatalError;
+            global::ACAT.Lib.Core.Utility.FatalErrorHandler.EvtFatalError += CoreGlobals_EvtFatalError;
 
             FileUtils.LogAssemblyInfo();
 

@@ -1398,4 +1398,16 @@ Para obtener instrucciones sobre cómo cambiar la resolución de la pantalla, co
   <data name="Shorthand" xml:space="preserve">
     <value>Abreviatura</value>
   </data>
+  <data name="SymlinkFatalError" xml:space="preserve">
+    <value />
+  </data>
+  <data name="StartingACAT" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ZoomWarning" xml:space="preserve">
+    <value />
+  </data>
+  <data name="dontShowMessage" xml:space="preserve">
+    <value />
+  </data>
 </root>

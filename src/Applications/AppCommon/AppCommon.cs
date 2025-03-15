@@ -311,20 +311,15 @@ namespace ACAT.Applications
                 if (tuple.Item1 != 1920)
                 {
                     prompt = string.Format(R.GetString("ResolutionWarning", CultureInfo.CurrentCulture.TwoLetterISOLanguageName), tuple.Item1);
-                    //prompt = String.Format(GlobalResources.GetString("DisplayWidthWarning", CultureInfo.CurrentCulture.TwoLetterISOLanguageName), tuple.Item1);
                 }
                 else if (tuple.Item2 != 100 && tuple.Item2 != 125)
                 {
-                    prompt = String.Format("The monitor's display scaling is currently set to {0}% which may cause display issues " +
-                                            " with the ACAT user interface.  The ACAT UI is tailored for display scaling " +
-                                            "values of 100% and 125%.\r\n\r\n To resolve any potential display inconsistencies, " +
-                                            "we recommend adjusting your monitor's display scaling to 100% or 125%.\r\n\r\n" + "" +
-                                            "For guidance on changing the display scaling, please refer to the ACAT User Guide.", tuple.Item2); ;
+                    prompt = String.Format(R.GetString("ZoomWarning", CultureInfo.CurrentCulture.TwoLetterISOLanguageName), tuple.Item2);
                 }
 
                 if (!String.IsNullOrEmpty(prompt))
                 {
-                    Common.AppPreferences.ShowDisplayScaleMessageOnStartup = !ConfirmBoxLargeSingleOption.ShowDialog(prompt, "OK", null, true);
+                    Common.AppPreferences.ShowDisplayScaleMessageOnStartup = !ConfirmBoxLargeSingleOption.ShowDialog(prompt, R.GetString("OK"), null, true);
 
                     Common.AppPreferences.Save();
                 }

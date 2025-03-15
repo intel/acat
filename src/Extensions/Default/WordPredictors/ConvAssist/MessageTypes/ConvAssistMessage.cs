@@ -18,9 +18,12 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
     [Serializable]
     internal class ConvAssistMessage
     {
-        public String Data;
-        public WordPredictorMessageTypes MessageType;
-        public WordPredictionModes PredictionType;
+        public String Data { get; set; }
+        public WordPredictorMessageTypes MessageType { get; set; }
+        public WordPredictionModes PredictionType { get; set; }
+
+        // Parameterless constructor for deserialization
+        public ConvAssistMessage() { }
 
         // this is the JSON representation of the data
         /// <summary>

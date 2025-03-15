@@ -20,32 +20,35 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <summary>
         /// Type of message to send
         /// </summary>
-        public ConvAssistMessageTypes MessageType;
+        public ConvAssistMessageTypes MessageType { get; set; }
 
         /// <summary>
         /// Prediction result (Letters)
         /// </summary>
-        public String NextCharacters;
+        public String NextCharacters { get; set; }
 
         /// <summary>
         /// Prediction result (Letters from sentences)
         /// </summary>
-        public String NextCharactersSentence;
+        public String NextCharactersSentence { get; set; }
 
         /// <summary>
         /// Prediction result (Sentences)
         /// </summary>
-        public String PredictedSentence;
+        public String PredictedSentence { get; set; }
 
         /// <summary>
         /// Prediction result (Words)
         /// </summary>
-        public String PredictedWords;
+        public String PredictedWords { get; set; }
 
         /// <summary>
         /// Prediction request type
         /// </summary>
-        public ConvAssistPredictionTypes PredictionType;
+        public ConvAssistPredictionTypes PredictionType { get; set; }
+
+        // Parameterless constructor for deserialization
+        public WordAndCharacterPredictionResponse() { }
 
         public WordAndCharacterPredictionResponse(ConvAssistMessageTypes msgType, 
                                                     ConvAssistPredictionTypes predType, 
@@ -62,15 +65,15 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             PredictedSentence = sentences;
         }
 
-        public WordAndCharacterPredictionResponse()
-        {
-            MessageType = 0;
-            PredictionType = 0;
-            PredictedWords = string.Empty;
-            NextCharacters = string.Empty;
-            NextCharactersSentence = string.Empty;
-            PredictedSentence = string.Empty;
-        }
+        //public WordAndCharacterPredictionResponse()
+        //{
+        //    MessageType = 0;
+        //    PredictionType = 0;
+        //    PredictedWords = string.Empty;
+        //    NextCharacters = string.Empty;
+        //    NextCharactersSentence = string.Empty;
+        //    PredictedSentence = string.Empty;
+        //}
 
         public enum ConvAssistMessageTypes
         {

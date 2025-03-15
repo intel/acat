@@ -17,11 +17,13 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
     [Serializable]
     internal class ConvAssistSetParam
     {
-        public ConvAssistParameterType Parameter;
+        public ConvAssistParameterType Parameter { get; set; }
+        public string Value { get; set; }
 
-        public String Value;
+        // Parameterless constructor for deserialization
+        public ConvAssistSetParam() { }
 
-        public ConvAssistSetParam(ConvAssistParameterType param, String value)
+        public ConvAssistSetParam(ConvAssistParameterType param, string value)
         {
             Parameter = param;
             Value = value;
@@ -39,6 +41,16 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             Value = value.ToString();
         }
 
+        public float GetFloatValue()
+        {
+            return float.TryParse(Value, out float result) ? result : 0.0f;
+        }
+
+        public int GetIntValue()
+        {
+            return int.TryParse(Value, out int result) ? result : 0;
+        }
+
         public enum ConvAssistParameterType
         {
             None,
@@ -51,15 +63,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             PathLog,
             EnableLog,
         }
-
-        public float GetFloatValue()
-        {
-            return float.Parse(Value);
-        }
-
-        public int GetIntValue()
-        {
-            return Int32.Parse(Value);
-        }
     }
+
 }

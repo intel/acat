@@ -9,6 +9,9 @@
 /// Creates and handles the channel of comunication between ACAT and ConvAssist
 //
 ////////////////////////////////////////////////////////////////////////////
+#define DEBUG_CONVASSIST
+
+
 using ACAT.Lib.Core.PreferencesManagement;
 using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.Utility;
@@ -22,6 +25,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Threading;
 using System.Threading.Tasks;
+
 
 namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
 {

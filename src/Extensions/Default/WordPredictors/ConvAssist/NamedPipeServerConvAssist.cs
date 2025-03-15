@@ -208,7 +208,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             try
             {
                 ConvAssistSetParam paramEnableLog = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.EnableLog, Common.AppPreferences.EnableLogs.ToString());
-                _ = System.Reflection.Assembly.LoadFrom("C:\\Users\\mbeale\\source\\repos\\acat\\src\\bin\\x86\\Debug\\Extensions\\Default\\WordPredictors\\ConvAssist\\System.Threading.Tasks.Extensions.dll");
+
                 string paramEnableLogstring = JsonSerializer.Serialize(paramEnableLog);
                 ConvAssistMessage messageparamEnableLog = new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, paramEnableLogstring);
                 string jsonMessageparamEnableLog = JsonSerializer.Serialize(messageparamEnableLog);

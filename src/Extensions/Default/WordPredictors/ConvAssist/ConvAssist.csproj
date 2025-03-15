@@ -62,12 +62,12 @@
     <Compile Include="ConvAssistWordPredictorBase.cs" />
     <Compile Include="NamedPipeServerConvAssist.cs" />
     <Compile Include="PipeServerStateConvAssist.cs" />
-    <Compile Include="ConvAssistMessage.cs" />
-    <Compile Include="ConvAssistSetParam.cs" />
+    <Compile Include="MessageTypes\ConvAssistMessage.cs" />
+    <Compile Include="MessageTypes\ConvAssistSetParam.cs" />
     <Compile Include="ConvAssistWordPredictor.cs" />
     <Compile Include="SentencePredictionsRequestHandler.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="WordAndCharacterPredictionResponse.cs" />
+    <Compile Include="MessageTypes\WordAndCharacterPredictionResponse.cs" />
     <Compile Include="WordPredictionsRequestHandler.cs" />
   </ItemGroup>
   <ItemGroup>

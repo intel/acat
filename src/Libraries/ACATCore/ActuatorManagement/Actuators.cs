@@ -20,6 +20,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Remoting.Channels;
+using System.Windows.Forms.VisualStyles;
 
 namespace ACAT.Lib.Core.ActuatorManagement
 {
@@ -436,7 +438,18 @@ namespace ACAT.Lib.Core.ActuatorManagement
         private void loadActuatorTypesIntoCache(String dir, bool resursive = true)
         {
             var walker = new DirectoryWalker(dir, "*.dll");
-            walker.Walk(new OnFileFoundDelegate(onFileFound));
+        
+            walker.Walk(new OnDirectoryFoundDelegate(onDirFound), new OnFileFoundDelegate(onFileFound));
+        }
+
+        private void onDirFound(String dirName)
+        {
+            Log.Debug("Found directory " + dirName);
+            String[] skipdirs = { "external" };
+            foreach (var _ in skipdirs.Where(skipdir => dirName.ToLower().Contains(skipdir)).Select(skipdir => new { }))
+            {
+                return;
+            }
         }
 
         /// <summary>

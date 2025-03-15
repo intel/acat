@@ -294,8 +294,15 @@ namespace ACAT.Lib.Core.Onboarding
 
         private void loadOnboardingExtensionsIntoCache(String dir, bool resursive = true)
         {
+#if FIXME
             var walker = new DirectoryWalker(dir, "*.dll");
             walker.Walk(new OnFileFoundDelegate(onFileFound));
+#else
+            Log.Warn("FIXME: TOTAL HACK TO BYPASS TRYING TO LOAD EVERY DLL FOR ONBOARDING.");
+            onFileFound(".\\ACATCore.dll");
+            onFileFound(".\\ACATExtension.dll");
+
+#endif
         }
 
         /// <summary>

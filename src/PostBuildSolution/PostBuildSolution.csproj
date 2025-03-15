@@ -68,6 +68,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="$(SolutionDir)\Applications\Install\it\**\*" CopyToOutputDirectory="PreserveNewest">
+      <Link>it\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="$(SolutionDir)\Applications\Install\Users\**\*" CopyToOutputDirectory="PreserveNewest">
       <Link>Install\Users\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Content>

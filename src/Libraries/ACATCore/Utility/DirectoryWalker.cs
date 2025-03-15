@@ -170,6 +170,11 @@ namespace ACAT.Lib.Core.Utility
         /// <param name="dirPath">the folder</param>
         private void listFiles(string dirPath)
         {
+            if (dirPath.Contains("\\External"))
+            {
+                return;
+            }
+
             string[] filePaths = Directory.GetFiles(dirPath, _wildCard);
             if (filePaths.Length > 0)
             {

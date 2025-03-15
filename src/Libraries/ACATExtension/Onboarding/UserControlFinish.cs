@@ -24,7 +24,7 @@ namespace ACAT.Lib.Extension.Onboarding
         private readonly String _stepId;
         private Timer _timer;
         private readonly IOnboardingWizard _wizard;
-        private readonly String message = "Launching ACAT.";
+        private readonly String message = ACATResources.R.GetString("StartingACAT");
 
         public UserControlFinish(IOnboardingWizard wizard, IOnboardingExtension onboardingExtension, String stepId)
         {

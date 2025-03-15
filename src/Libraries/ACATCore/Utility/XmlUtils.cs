@@ -19,9 +19,6 @@ namespace ACAT.Lib.Core.Utility
     /// </summary>
     public class XmlUtils
     {
-        private static String fatalError = "Fatal error.\n {0} is a junction/symlink. Cannot perform file I/O on it.\n" +
-                                                    "ACAT will exit now.\nPlease delete this file, re-install ACAT and retry.";
-
         private static readonly object _lock = new object();
 
         /// <summary>
@@ -181,8 +178,7 @@ namespace ACAT.Lib.Core.Utility
                 {
                     if (!FileUtils.VerifyNotJunctionOrSymlink(filename))
                     {
-                        var message = String.Format(fatalError, filename);
-                        CoreGlobals.OnFatalError(message);
+                        FatalErrorHandler.SymlinkOrJunctionError(filename);
                         return default;
                     }
 
@@ -222,8 +218,7 @@ namespace ACAT.Lib.Core.Utility
             {
                 if (!FileUtils.VerifyNotJunctionOrSymlink(filename))
                 {
-                    var message = String.Format(fatalError, filename);
-                    CoreGlobals.OnFatalError(message);
+                    FatalErrorHandler.SymlinkOrJunctionError(filename);
                     return false;
                 }
 

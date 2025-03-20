@@ -25,7 +25,6 @@ using ACAT.Lib.Core.PreferencesManagement;
 using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Extension;
-using System.Text.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;

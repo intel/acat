@@ -10,7 +10,6 @@ using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
-using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System;

@@ -450,6 +450,7 @@
     <Compile Include="Utility\DataDictionary.cs" />
     <Compile Include="Utility\DpiScaling.cs" />
     <Compile Include="Utility\DualMonitor.cs" />
+    <Compile Include="Utility\FatalErrorHandler.cs" />
     <Compile Include="Utility\FontCheck.cs" />
     <Compile Include="Utility\HtmlUtils.cs" />
     <Compile Include="Utility\JsonSerializer.cs" />
@@ -584,8 +585,14 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchSetup.it.resx">
+      <DependentUpon>UserControlHardwareSwitchSetup.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchSetup.resx">
       <DependentUpon>UserControlHardwareSwitchSetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchTest.it.resx">
+      <DependentUpon>UserControlHardwareSwitchTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchTest.resx">
       <DependentUpon>UserControlHardwareSwitchTest.cs</DependentUpon>
@@ -643,8 +650,14 @@
       <Generator>ResXFileCodeGeneratorEx</Generator>
       <DependentUpon>HorizontalStripScannerBase.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="PanelManagement\UI\ListBoxUserControl.resx">
+      <DependentUpon>ListBoxUserControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PanelManagement\UI\MenuPanelBase.resx">
       <DependentUpon>MenuPanelBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PanelManagement\UI\PromptTextBox.resx">
+      <DependentUpon>PromptTextBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PanelManagement\UI\SplashScreen.resx">
       <DependentUpon>SplashScreen.cs</DependentUpon>

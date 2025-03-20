@@ -19,7 +19,6 @@ using ACAT.Lib.Core.Audit;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WidgetManagement;
-using System.Text.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

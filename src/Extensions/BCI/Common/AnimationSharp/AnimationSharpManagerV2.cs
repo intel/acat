@@ -17,7 +17,6 @@ using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WidgetManagement;
-using System.Text.Json;
 using SharpDX.Direct2D1;
 using SharpDX.Direct3D11;
 using SharpDX.DirectWrite;

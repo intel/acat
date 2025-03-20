@@ -74,35 +74,13 @@
       <Name>Extension</Name>
       <Private>False</Private>
     </ProjectReference>
-    <Reference Include="SharpDX">
-      <HintPath>..\..\..\..\..\Redistributable\SharpDX.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="SharpDX.Direct2D1">
-      <HintPath>..\..\..\..\..\Redistributable\SharpDX.Direct2D1.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="SharpDX.Direct3D11">
-      <HintPath>..\..\..\..\..\Redistributable\SharpDX.Direct3D11.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="SharpDX.DXGI">
-      <HintPath>..\..\..\..\..\Redistributable\SharpDX.DXGI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <ProjectReference Include="..\UserControls\UserControls.csproj">
+      <Project>{0F38EE30-BF4C-4CFF-B795-C16828520DEA}</Project>
+      <Name>UserControls</Name>
+    </ProjectReference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Speech" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="UIAutomationClient" />
-    <Reference Include="UIAutomationTypes" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="TalkApplicationBCIScanner.cs">
@@ -129,17 +107,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="Shell32">
-      <Guid>{50A7E9B0-70EF-11D1-B75A-00A0C90564FE}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\..\Common\AnimationSharp\AnimationSharp.csproj">
       <Project>{9b1d5877-a3c0-4afd-8565-3fb32ffcd753}</Project>
       <Name>AnimationSharp</Name>
@@ -153,11 +120,6 @@
     <ProjectReference Include="..\..\..\Common\BCIInterfaceUtilities\BCIInterfaceUtilities.csproj">
       <Project>{ff74af7d-5c3b-4e1d-a3ec-100d00128f7c}</Project>
       <Name>BCIInterfaceUtilities</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\UserControls\UserControls.csproj">
-      <Project>{0f38ee30-bf4c-4cff-b795-c16828520dea}</Project>
-      <Name>UserControls</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

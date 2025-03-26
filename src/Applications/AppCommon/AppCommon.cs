@@ -18,7 +18,7 @@
 // </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
+using ACATResources;
 using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.PreferencesManagement;
@@ -31,6 +31,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using ACAT.ACATResources;
 
 
 namespace ACAT.Applications
@@ -51,8 +52,8 @@ namespace ACAT.Applications
         {
             if (!UserManager.CreateUser(UserManager.CurrentUser))
             {
-                MessageBox.Show(String.Format(R.GetString("CouldNotCreateUserError"), UserManager.CurrentUser),
-                    R.GetString("ACATError"),
+                MessageBox.Show(String.Format(Resources.CouldNotCreateUserError, UserManager.CurrentUser),
+                    Resources.ACATError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
@@ -98,7 +99,7 @@ namespace ACAT.Applications
             {
                 try
                 {
-                    _exitMessageToastForm = new ToastForm(R.GetString("ExitingACAT"), -1);
+                    _exitMessageToastForm = new ToastForm(Resources.ExitingACAT, -1);
                     Windows.SetWindowPosition(_exitMessageToastForm, Windows.WindowPosition.CenterScreen);
                     _exitMessageToastForm.Show();
                 }
@@ -148,7 +149,7 @@ namespace ACAT.Applications
             Common.AppPreferences = ACATPreferences.Load();
             if (Common.AppPreferences == null)
             {
-                MessageBox.Show(String.Format(R.GetString("UnableToReadPreferences")), FileUtils.AppPreferencesDir);
+                MessageBox.Show(String.Format(Resources.UnableToReadPreferences), FileUtils.AppPreferencesDir);
                 return false;
             }
 
@@ -310,16 +311,16 @@ namespace ACAT.Applications
 
                 if (tuple.Item1 != 1920)
                 {
-                    prompt = string.Format(R.GetString("ResolutionWarning", CultureInfo.CurrentCulture.TwoLetterISOLanguageName), tuple.Item1);
+                    prompt = string.Format(Resources.ResolutionWarning, tuple.Item1);
                 }
                 else if (tuple.Item2 != 100 && tuple.Item2 != 125)
                 {
-                    prompt = String.Format(R.GetString("ZoomWarning", CultureInfo.CurrentCulture.TwoLetterISOLanguageName), tuple.Item2);
+                    prompt = String.Format(Resources.ZoomWarning, tuple.Item2);
                 }
 
                 if (!String.IsNullOrEmpty(prompt))
                 {
-                    Common.AppPreferences.ShowDisplayScaleMessageOnStartup = !ConfirmBoxLargeSingleOption.ShowDialog(prompt, R.GetString("OK"), null, true);
+                    Common.AppPreferences.ShowDisplayScaleMessageOnStartup = !ConfirmBoxLargeSingleOption.ShowDialog(prompt, Resources.OK, null, true);
 
                     Common.AppPreferences.Save();
                 }
@@ -450,8 +451,7 @@ namespace ACAT.Applications
 
             panelClassConfigMap.PanelClassConfigMapEntries.Add(panelClassConfigMapEntry);
 
-
-            PanelConfigMap.AddPanelClassConfigMap(CoreGlobals.AppId, "en", panelClassConfigMap);
+            PanelConfigMap.AddPanelClassConfigMap(CoreGlobals.AppId, CultureInfo.CurrentCulture.TwoLetterISOLanguageName, panelClassConfigMap);
         }
     }
 }

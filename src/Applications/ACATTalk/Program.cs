@@ -11,7 +11,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
+using ACATResources;
 using ACAT.Lib.Core.AgentManagement;
 using ACAT.Lib.Core.Audit;
 using ACAT.Lib.Core.Onboarding;
@@ -194,7 +194,7 @@ namespace ACAT.Applications.ACATTalk
                 }
                 else
                 {
-                    MessageBox.Show(String.Format(R.GetString("InvalidFormName"), "TalkApplicationScanner"), R.GetString("Error"));
+                    MessageBox.Show(String.Format(Resources.InvalidFormName, "TalkApplicationScanner"));
                     return;
                 }
 

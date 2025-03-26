@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
+using ACATResources;
 using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.Onboarding;
 using ACAT.Lib.Core.PanelManagement;
@@ -234,7 +234,7 @@ namespace ACAT.Lib.Extension.Onboarding
             {
                 list.Add("PDF");
                 list.Add("true");
-                list.Add(R.GetString("PDFLoaderHtml"));
+                list.Add(Resources.PDFLoaderHtml);
                 list.Add(param1);
                 list.Add(param2);
             }

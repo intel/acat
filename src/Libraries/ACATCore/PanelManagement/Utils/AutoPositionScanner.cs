@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
+using ACATResources;
 using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.InputActuators;
 using ACAT.Lib.Core.Utility;
@@ -93,7 +93,7 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             _form.Invoke(new MethodInvoker(delegate
             {
-                _toastForm = new ToastForm(R.GetString("TriggerToStop"), -1);
+                _toastForm = new ToastForm(Resources.TriggerToStop, -1);
                 Windows.SetWindowPosition(_toastForm, Windows.WindowPosition.CenterScreen);
                 _toastForm.Show();
 

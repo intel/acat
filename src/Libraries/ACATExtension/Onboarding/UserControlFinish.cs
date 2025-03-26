@@ -8,6 +8,7 @@
 using ACAT.Lib.Core.Onboarding;
 using System;
 using System.Windows.Forms;
+using ACATResources;
 
 namespace ACAT.Lib.Extension.Onboarding
 {
@@ -24,7 +25,7 @@ namespace ACAT.Lib.Extension.Onboarding
         private readonly String _stepId;
         private Timer _timer;
         private readonly IOnboardingWizard _wizard;
-        private readonly String message = ACATResources.R.GetString("StartingACAT");
+        private readonly String message = Resources.StartingACAT;
 
         public UserControlFinish(IOnboardingWizard wizard, IOnboardingExtension onboardingExtension, String stepId)
         {

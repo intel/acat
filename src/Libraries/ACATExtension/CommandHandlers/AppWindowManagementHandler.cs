@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
+using ACATResources;
 using ACAT.Lib.Core.AgentManagement;
 using ACAT.Lib.Core.Extensions;
 using ACAT.Lib.Core.PanelManagement;
@@ -68,7 +68,7 @@ namespace ACAT.Lib.Extension.CommandHandlers
                         win = new WindowHighlight(info.FgHwnd, Dispatcher.Scanner.Form);
                     }
 
-                    if (DialogUtils.ConfirmScanner(null, R.GetString("CloseHighlightedWindow")))
+                    if (DialogUtils.ConfirmScanner(null, Resources.CloseHighlightedWindow))
                     {
                         AgentManager.Instance.Keyboard.Send(Keys.LMenu, Keys.F4);
                     }
@@ -91,7 +91,7 @@ namespace ACAT.Lib.Extension.CommandHandlers
                         Form form = Context.AppPanelManager.CreatePanel("WindowMoveResizeScannerForm");
                         if (form != null)
                         {
-                            form.Text = R.GetString("MoveWindow");
+                            form.Text = Resources.MoveWindow;
 
                             var extension = form as IExtension;
                             if (extension != null)
@@ -115,7 +115,7 @@ namespace ACAT.Lib.Extension.CommandHandlers
                         Form form = Context.AppPanelManager.CreatePanel("WindowMoveResizeScannerForm");
                         if (form != null)
                         {
-                            form.Text = R.GetString("ResizeWindow");
+                            form.Text = Resources.ResizeWindow;
 
                             var extension = form as IExtension;
                             if (extension != null)
@@ -181,7 +181,7 @@ namespace ACAT.Lib.Extension.CommandHandlers
                     {
                         if (DualMonitor.MultipleMonitors)
                         {
-                            var panel = Context.AppPanelManager.CreatePanel("DualMonitorMenu", R.GetString("DualMonitorMenu")) as IPanel;
+                            var panel = Context.AppPanelManager.CreatePanel("DualMonitorMenu", Resources.DualMonitorMenu) as IPanel;
                             if (panel != null)
                             {
                                 Context.AppPanelManager.Show(Context.AppPanelManager.GetCurrentForm(), panel);

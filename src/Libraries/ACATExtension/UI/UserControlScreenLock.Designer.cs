@@ -1,4 +1,6 @@
 ﻿
+using ACATResources;
+
 namespace ACAT.Lib.Extension
 
 {
@@ -72,7 +74,7 @@ namespace ACAT.Lib.Extension
             this.tableLayoutPanelMain.SetRowSpan(this.label1, 2);
             this.label1.Size = new System.Drawing.Size(674, 128);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Screen Locked";
+            this.label1.Text = Resources.ScreenLocked;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelScanSpeedSelect3
@@ -89,7 +91,7 @@ namespace ACAT.Lib.Extension
             this.tableLayoutPanelMain.SetRowSpan(this.labelScanSpeedSelect3, 2);
             this.labelScanSpeedSelect3.Size = new System.Drawing.Size(510, 128);
             this.labelScanSpeedSelect3.TabIndex = 71;
-            this.labelScanSpeedSelect3.Text = "To unlock, use your switch to type the pin shown in the box";
+            this.labelScanSpeedSelect3.Text = Resources.ToUnlockUseYourSwitchToTypeThePinShownInTheBox;
             this.labelScanSpeedSelect3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanelMain
@@ -243,7 +245,7 @@ namespace ACAT.Lib.Extension
             this.buttonUnlock.Name = "buttonUnlock";
             this.buttonUnlock.Size = new System.Drawing.Size(164, 58);
             this.buttonUnlock.TabIndex = 82;
-            this.buttonUnlock.Text = "Unlock";
+            this.buttonUnlock.Text = Resources.buttonUnlock;
             this.buttonUnlock.UseMnemonic = false;
             this.buttonUnlock.UseVisualStyleBackColor = false;
             this.buttonUnlock.Click += new System.EventHandler(this.buttonDone_Click);

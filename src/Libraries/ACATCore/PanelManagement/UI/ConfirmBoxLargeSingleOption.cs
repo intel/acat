@@ -5,10 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Lib.Core.Properties;
 using System;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
+using R = ACATResources;
 
 namespace ACAT.Lib.Core.PanelManagement
 {
@@ -41,7 +43,7 @@ namespace ACAT.Lib.Core.PanelManagement
             confirmBox.Prompt = prompt;
             confirmBox.DecisionPrompt = decisionPrompt;
             confirmBox.DisplayCheckBox = displayCheckBox;
-            confirmBox.checkBoxDontShowThisMessage.Text = ACATResources.R.GetString("dontShowMessage", CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
+            confirmBox.checkBoxDontShowThisMessage.Text = R.Resources.dontShowMessage;
 
             confirmBox.ShowDialog(parent);
 

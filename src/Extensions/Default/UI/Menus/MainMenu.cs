@@ -11,7 +11,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
+using ACATResources;
 using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.AgentManagement;
 using ACAT.Lib.Core.PanelManagement;
@@ -37,7 +37,7 @@ namespace ACAT.Extensions.Default.UI.Menus
         /// <param name="panelClass">Panel class of the scanner</param>
         /// <param name="panelTitle">title of the panel (not used)</param>
         public MainMenu(String panelClass, String panelTitle)
-            : base(panelClass, R.GetString("MainMenu"))
+            : base(panelClass, Resources.MainMenu)
         {
             // add commands that are not supported by the base class
             commandDispatcher.Commands.Add(new CommandHandler("Exit"));
@@ -78,7 +78,7 @@ namespace ACAT.Extensions.Default.UI.Menus
         {
             Invoke(new MethodInvoker(delegate
             {
-                if (DialogUtils.ConfirmScanner(null, R.GetString("QuitApplication")))
+                if (DialogUtils.ConfirmScanner(null, Resources.QuitApplication))
                 {
                     quitApplication();
                 }

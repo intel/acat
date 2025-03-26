@@ -1,4 +1,6 @@
-﻿namespace ACAT.Lib.Extension
+﻿using ACATResources;
+
+namespace ACAT.Lib.Extension
 {
     partial class ScanTimeAdjustForm
     {
@@ -261,7 +263,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(876, 44);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Adjust Scanning Speed";
+            this.label1.Text = Resources.AdjustScanningSpeed;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ScanTimeAdjustForm

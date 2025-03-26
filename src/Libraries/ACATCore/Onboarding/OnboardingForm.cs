@@ -7,6 +7,7 @@
 
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
+using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -26,11 +27,11 @@ namespace ACAT.Lib.Core.Onboarding
         public OnboardingSequence Sequence { get; set; }
 
         public bool QuitOnboarding = false;
-        private const string buttonBackText = "Back";
-        private const string buttonCancelText = "Exit";
-        private const String buttonNextText = "Next";
-        private Dictionary<OnboardingButtonTypes, Tuple<Color, Color>> _buttonColors = new Dictionary<OnboardingButtonTypes, Tuple<Color, Color>>();
-        private Dictionary<Control, OnboardingButtonTypes> _buttonMap = new Dictionary<Control, OnboardingButtonTypes>();
+        private readonly string buttonBackText = Resources.buttonBack;
+        private readonly string buttonCancelText = Resources.buttonCancel;
+        private readonly string buttonNextText = Resources.buttonNext;
+        private readonly Dictionary<OnboardingButtonTypes, Tuple<Color, Color>> _buttonColors = new Dictionary<OnboardingButtonTypes, Tuple<Color, Color>>();
+        private readonly Dictionary<Control, OnboardingButtonTypes> _buttonMap = new Dictionary<Control, OnboardingButtonTypes>();
         private IOnboardingExtension _currentOnboardExtension = null;
         private IOnboardingUserControl _currentStep = null;
         private OnboardingWizard _onboardingWizard;

@@ -11,7 +11,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
+using ACATResources;
 using ACAT.Lib.Core.Utility;
 using System;
 using System.ComponentModel;
@@ -35,12 +35,12 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <summary>
         /// How much time has elapsed since calibration started
         /// </summary>
-        private readonly String _timeElapsedPrompt = R.GetString("TimeElapsed") + ": ";
+        private readonly String _timeElapsedPrompt = Resources.TimeElapsed + ": ";
 
         /// <summary>
         /// How much time is remaining until end of calibration
         /// </summary>
-        private readonly String _timeRemainingPrompt = R.GetString("TimeRemaining") + ": ";
+        private readonly String _timeRemainingPrompt = Resources.TimeRemaining + ": ";
 
         /// <summary>
         /// To track calibration time
@@ -280,7 +280,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         private void TimerOnTick(object sender, EventArgs eventArgs)
         {
             labelTimePrompt.Text = (_timerIncrement == -1) ? _timeRemainingPrompt : _timeElapsedPrompt;
-            labelTimePrompt.Text += _timerCount + " " + R.GetString("Secs");
+            labelTimePrompt.Text += _timerCount + " " + Resources.Secs;
 
             _timerCount += _timerIncrement;
 

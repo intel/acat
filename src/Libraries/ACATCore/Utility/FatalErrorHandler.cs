@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 ////////////////////////////////////////////////////////////////////////////
+using ACATResources;
 
 namespace ACAT.Lib.Core.Utility
 {
@@ -30,7 +31,7 @@ namespace ACAT.Lib.Core.Utility
 
         public static void SymlinkOrJunctionError(String filename)
         {
-            OnFatalError(String.Format(ACATResources.R.GetString("SymlinkOrJunctionError"), filename));
+            OnFatalError(String.Format(Resources.SymlinkFatalError, filename));
 
         }
     }

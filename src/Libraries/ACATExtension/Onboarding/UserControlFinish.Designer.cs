@@ -1,4 +1,6 @@
-﻿namespace ACAT.Lib.Extension.Onboarding
+﻿using ACATResources;
+
+namespace ACAT.Lib.Extension.Onboarding
 {
     partial class UserControlFinish
     {
@@ -40,7 +42,7 @@
             this.labelStartingACAT.Name = "labelStartingACAT";
             this.labelStartingACAT.Size = new System.Drawing.Size(459, 66);
             this.labelStartingACAT.TabIndex = 0;
-            this.labelStartingACAT.Text = "Starting ACAT....";
+            this.labelStartingACAT.Text = Resources.InitializeComponent_StartingACAT;
             // 
             // UserControlFinish
             // 

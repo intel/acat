@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" ?>
 <!DOCTYPE ACAT [
   <!ENTITY usebold "false">
-  <!ENTITY buttonFontName "Arial">
+  <!ENTITY buttonFontName "montserrat">
 ]>
 
 <ACAT>
   <WidgetAttributes>
-    <WidgetAttribute name="ContextMenuTitle" label="" value="" fontsize="20" fontname="Arial" mouseClickActuate="false" bold="&usebold;"/>
+    <WidgetAttribute name="ContextMenuTitle" label="" value="" fontsize="20" fontname="montserrat" mouseClickActuate="false" bold="&usebold;"/>
 
-    <WidgetAttribute name="ItemIcon1" label=" " value="@CancelEditDeletePhrase" fontsize="20" fontname="Arial"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemIcon1" label=" " value="@CancelEditDeletePhrase" fontsize="20" fontname="montserrat"  bold="&usebold;"/>
     <WidgetAttribute name="ItemText1" label="&#x75;" value="@CancelEditDeletePhrase" fontsize="18" fontname="ACAT Icon"  bold="&usebold;"/>
 
     <WidgetAttribute name="ItemIcon2" label="&#x68;" value="@EditPhrase" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
-    <WidgetAttribute name="ItemText2" label="Edit" value="@EditPhrase" fontsize="18" fontname="Arial"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText2" label="Edit" value="@EditPhrase" fontsize="18" fontname="montserrat"  bold="&usebold;"/>
 
     <WidgetAttribute name="ItemIcon3" label="&#x25;" value="@DeletePhrase" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
-    <WidgetAttribute name="ItemText3" label="Delete" value="@DeletePhrase" fontsize="18" fontname="Arial"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText3" label="Delete" value="@DeletePhrase" fontsize="18" fontname="montserrat"  bold="&usebold;"/>
   </WidgetAttributes>
 
   <Layout>

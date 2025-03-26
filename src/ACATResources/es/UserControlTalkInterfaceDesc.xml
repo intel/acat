@@ -2,7 +2,7 @@
 
 <ACAT>
     <WidgetAttributes>
-        <WidgetAttribute name="B1" label="b" value="b" fontname="Arial" fontsize="72" bold="true" />
+        <WidgetAttribute name="B1" label="b" value="b" fontname="montserrat" fontsize="72" bold="true" />
     </WidgetAttributes>
 
     <Layout>
@@ -20,4 +20,3 @@
         </Animation>
     </Animations>
 </ACAT>
-

@@ -14,7 +14,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 
-namespace ACAT.ACATResources
+namespace ACAT.ACATResources 
 {
     /// <summary>
     /// Access language dependent strings through this class
@@ -66,16 +66,16 @@ namespace ACAT.ACATResources
         /// </summary>
         /// <param name="name">string identifier</param>
         /// <returns>string from resource</returns>
-        public static string GetString(string key, string culture = null)
-        {
-            CultureInfo cultureInfo = string.IsNullOrEmpty(culture)
-                ? CultureInfo.CurrentUICulture
-                : new CultureInfo(culture);
+        //public static string GetString(string key, string culture = null)
+        //{
+        //    CultureInfo cultureInfo = string.IsNullOrEmpty(culture)
+        //        ? CultureInfo.CurrentUICulture
+        //        : new CultureInfo(culture);
 
-            string localizedString = _resourceManager.GetString(key, cultureInfo) ?? $"[Missing: {key}]";
-            Console.WriteLine($"R.GetString({key}, {culture}) = {localizedString}");
-            return localizedString;
-        }
+        //    string localizedString = _resourceManager.GetString(key, cultureInfo) ?? $"[Missing: {key}]";
+        //    Console.WriteLine($"R.GetString({key}, {culture}) = {localizedString}");
+        //    return localizedString;
+        //}
 
         /// <summary>
         /// Returns true if the current culture is English

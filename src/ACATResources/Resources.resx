@@ -118,564 +118,565 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AbbreviationsListEmpty" xml:space="preserve">
-    <value>-------- LISTA DE ABREVIATURAS VACÍA --------</value>
+    <value>-------- ABBREVIATIONS LIST EMPTY --------</value>
   </data>
   <data name="CalibrateNow" xml:space="preserve">
-    <value>Añadir</value>
+    <value>Add</value>
   </data>
   <data name="CalibrateOptional" xml:space="preserve">
-    <value>Añadir Abreviatura</value>
+    <value>Add Abbreviation</value>
   </data>
   <data name="CalibrationInProgrressPrompt" xml:space="preserve">
-    <value>¿Añadir nueva abreviatura?</value>
+    <value>Add new abbreviation?</value>
   </data>
   <data name="HintBoxCalibrationScreen" xml:space="preserve">
-    <value>------------- LISTA DE APLICACIONES VACÍA -------------</value>
+    <value>------------- APPS LIST IS EMPTY -------------</value>
   </data>
   <data name="HintCalibrationBeginACATEnalbed" xml:space="preserve">
-    <value>¿Cancelar y Salir?</value>
+    <value>Cancel and Quit?</value>
   </data>
   <data name="HintCalibrationBeginACATNotEnalbed" xml:space="preserve">
-    <value>No se puede guardar. La abreviatura para '{0}' ya existe</value>
-    <comment>{0} es la abreviatura</comment>
+    <value>Can't Save. Abbreviation for '{0}' already exists</value>
+    <comment>{0} is the abbreviation</comment>
   </data>
   <data name="HintEyesOpenCloseCalibration" xml:space="preserve">
-    <value>¿Borrar Nombre de Archivo?</value>
+    <value>Clear File Name?</value>
   </data>
   <data name="HintIterationstarget" xml:space="preserve">
-    <value>¿Borrar Filtro?</value>
+    <value>Clear Filter?</value>
   </data>
   <data name="HintKeyboardLeftCalibrationScreen" xml:space="preserve">
-    <value>¿Cerrar?</value>
+    <value>Close?</value>
   </data>
   <data name="HintKeyboardRightCalibrationScreen" xml:space="preserve">
-    <value>¿Cerrar el Gestor de Conferencias?</value>
+    <value>Close Lecture Manager?</value>
   </data>
   <data name="HintMinimumScore" xml:space="preserve">
-    <value>No se pudo crear la carpeta {0}</value>
-    <comment>{0} es el nombre de la carpeta</comment>
+    <value>Could not create folder {0}</value>
+    <comment>{0} is the name of the folder</comment>
   </data>
   <data name="HintNumberTargets" xml:space="preserve">
-    <value>Crear Nuevo</value>
+    <value>Create New</value>
   </data>
   <data name="HintReMapCalibrations" xml:space="preserve">
-    <value>Crear Nuevo Archivo</value>
+    <value>Create New File</value>
   </data>
   <data name="HintScanningTime" xml:space="preserve">
-    <value>¿Eliminar {0}?</value>
-    <comment>{0} es la abreviatura que se va a eliminar</comment>
+    <value>Delete {0}?</value>
+    <comment>{0} is the abbreviation that is to be deleted</comment>
   </data>
   <data name="HintSentenceCalibrationScreen" xml:space="preserve">
-    <value>¿Eliminar {0}?</value>
-    <comment>{0} es el nombre del archivo a eliminar</comment>
+    <value>Delete {0}?</value>
+    <comment>{0} is the name of the file to delete</comment>
   </data>
   <data name="HintSignalCheck" xml:space="preserve">
-    <value>Editar Abreviatura</value>
+    <value>Edit Abbreviation</value>
   </data>
   <data name="HintTriggerCheck" xml:space="preserve">
     <value>Error</value>
   </data>
   <data name="HintWordCalibrationScreen" xml:space="preserve">
-    <value>¿Salir sin crear?</value>
+    <value>Exit without creating?</value>
   </data>
   <data name="IterationNumber" xml:space="preserve">
-    <value>La expansión de la abreviatura está vacía</value>
+    <value>Abbreviation expansion is empty</value>
   </data>
   <data name="Of" xml:space="preserve">
-    <value>El archivo ya existe</value>
+    <value>File already exists</value>
   </data>
   <data name="Recalibrate" xml:space="preserve">
-    <value>Búsqueda en Google</value>
+    <value>Google Search</value>
   </data>
   <data name="ScanningTime" xml:space="preserve">
-    <value>¿Lanzar {0}?</value>
-    <comment>{0} es el nombre de la aplicación a lanzar</comment>
+    <value>Launch {0}?</value>
+    <comment>{0} is the name of the application to launch</comment>
   </data>
   <data name="StartTyping" xml:space="preserve">
-    <value>Gestor de Conferencias</value>
-    <comment>Gestor de Conferencias - título del menú contextual</comment>
+    <value>Lecture Mgr</value>
+    <comment>Lecture Manager - context menu title</comment>
   </data>
   <data name="LMNext" xml:space="preserve">
-    <value>Siguiente</value>
+    <value>Next</value>
   </data>
   <data name="LMPause" xml:space="preserve">
-    <value>Pausa</value>
+    <value>Pause</value>
   </data>
   <data name="LMPaused" xml:space="preserve">
-    <value>PAUSADO</value>
+    <value>PAUSED</value>
   </data>
   <data name="MediaPlayer" xml:space="preserve">
-    <value>Reproductor de Medios</value>
+    <value>Media Player</value>
   </data>
   <data name="MuteSpeaker" xml:space="preserve">
-    <value>¿Silenciar Altavoz?</value>
+    <value>Mute Speaker?</value>
   </data>
   <data name="NewFileFileType" xml:space="preserve">
-    <value>Tipo de Archivo</value>
+    <value>File Type</value>
   </data>
   <data name="NoActiveWindows" xml:space="preserve">
-    <value>------------- NO HAY VENTANAS ACTIVAS -------------</value>
+    <value>------------- NO ACTIVE WINDOWS -------------</value>
   </data>
   <data name="NoFilesFound" xml:space="preserve">
-    <value>------------- NO SE ENCONTRARON ARCHIVOS -------------</value>
+    <value>------------- NO FILES FOUND -------------</value>
   </data>
   <data name="None" xml:space="preserve">
-    <value>Ninguno</value>
+    <value>None</value>
   </data>
   <data name="NoProgramAssociatedWithFile" xml:space="preserve">
-    <value>No hay un programa asociado con el archivo. ¿Abrir de todos modos?</value>
+    <value>No program associated with file. Open anyway?</value>
   </data>
   <data name="Notepad" xml:space="preserve">
-    <value>Bloc de Notas</value>
-    <comment>Establezca esto en el título de la ventana de la aplicación Bloc de Notas. Se muestra en la barra de título del Bloc de Notas. Si dice "Bloc de Notas" en inglés, no traduzca esta cadena.</comment>
+    <value>Notepad</value>
+    <comment>Set this to the title of the Notepad application window.  It is displayed in the titlebar of Notepad.  If it says "Notepad" in English, don't translate this string.</comment>
   </data>
   <data name="OpenFileQ" xml:space="preserve">
-    <value>¿Abrir {0}?</value>
-    <comment>{0} es el nombre del archivo a abrir</comment>
+    <value>Open {0}?</value>
+    <comment>{0}is the name of the file to open</comment>
   </data>
   <data name="PageNofM" xml:space="preserve">
-    <value>Página {0} de {1}</value>
-    <comment>{0} es el número de página actual y {1} es el número total de páginas</comment>
+    <value>Page {0} of {1}</value>
+    <comment>{0} is the current page number and {1} is the total number of pages</comment>
   </data>
   <data name="PhotoViewer" xml:space="preserve">
-    <value>Visor de Fotos</value>
+    <value>Photo Viewer</value>
   </data>
   <data name="PhrasesListEmpty" xml:space="preserve">
-    <value>-------- LISTA DE FRASES VACÍA --------</value>
+    <value>-------- PHRASES LIST EMPTY --------</value>
   </data>
   <data name="PleaseEnterAnAbbreviation" xml:space="preserve">
-    <value>¡Por favor, introduzca una abreviatura!</value>
+    <value>Please enter an abbreviation!</value>
   </data>
   <data name="QuickSearch" xml:space="preserve">
-    <value>Búsqueda Rápida</value>
+    <value>Quick Search</value>
   </data>
   <data name="SearchTextEmpty" xml:space="preserve">
-    <value>El texto de búsqueda está vacío.</value>
+    <value>Search text is empty.</value>
   </data>
   <data name="SendSpeechControlSequence" xml:space="preserve">
-    <value>¿Enviar secuencia de control de voz?</value>
+    <value>Send speech control sequence?</value>
   </data>
   <data name="SetAll" xml:space="preserve">
-    <value>¿Establecer Todo?</value>
+    <value>Set All?</value>
   </data>
   <data name="SetParaMode" xml:space="preserve">
-    <value>¿Establecer Modo de Párrafo?</value>
+    <value>Set Paragraph Mode?</value>
   </data>
   <data name="SetSentenceMode" xml:space="preserve">
-    <value>¿Establecer Modo de Oración?</value>
+    <value>Set Sentence Mode?</value>
   </data>
   <data name="SetVolumeTo" xml:space="preserve">
-    <value>¿Establecer volumen a {0}?</value>
-    <comment>{0} es la configuración de volumen</comment>
+    <value>Set volume to {0}?</value>
+    <comment>{0} is the volume setting</comment>
   </data>
   <data name="ShowDesktop" xml:space="preserve">
-    <value>Mostrar Escritorio</value>
+    <value>Show Desktop</value>
   </data>
   <data name="SortOrderAlphabetical" xml:space="preserve">
-    <value>Orden de Clasificación: ALFABÉTICO</value>
+    <value>Sort Order:  ALPHABETICAL</value>
   </data>
   <data name="SortOrderChronological" xml:space="preserve">
-    <value>Orden de Clasificación: CRONOLÓGICO</value>
+    <value>Sort Order:  CHRONOLOGICAL</value>
   </data>
   <data name="SortOrderReverseAlphabetical" xml:space="preserve">
-    <value>Orden de Clasificación: ALFABÉTICO INVERSO</value>
+    <value>Sort Order:  REVERSE ALPHABETICAL</value>
   </data>
   <data name="SortOrderReverseChronological" xml:space="preserve">
-    <value>Orden de Clasificación: CRONOLÓGICO INVERSO</value>
+    <value>Sort Order:  REVERSE CHRONOLOGICAL</value>
   </data>
   <data name="Speak" xml:space="preserve">
-    <value>Hablar</value>
+    <value>Speak</value>
   </data>
   <data name="Speaking" xml:space="preserve">
-    <value>HABLANDO</value>
+    <value>SPEAKING</value>
   </data>
   <data name="SpeakingAll" xml:space="preserve">
-    <value>HABLANDO TODO</value>
+    <value>SPEAKING ALL</value>
   </data>
   <data name="SpeakingLeave" xml:space="preserve">
-    <value>Hablando. ¿Salir?</value>
+    <value>Speaking. Leave?</value>
   </data>
   <data name="SpeakingPara" xml:space="preserve">
-    <value>HABLANDO PÁRRAFO</value>
+    <value>SPEAKING PARAGRAPH</value>
   </data>
   <data name="SpeakingSentence" xml:space="preserve">
-    <value>HABLANDO ORACIÓN</value>
+    <value>SPEAKING SENTENCE</value>
   </data>
   <data name="SpeakNow" xml:space="preserve">
-    <value>¿Hablar Ahora?</value>
+    <value>Speak Now?</value>
   </data>
   <data name="TalkWindow" xml:space="preserve">
-    <value>Ventana de Habla</value>
+    <value>Talk Window</value>
   </data>
   <data name="Volume" xml:space="preserve">
-    <value>Volumen</value>
+    <value>Volume</value>
   </data>
   <data name="WikiSearch" xml:space="preserve">
-    <value>Búsqueda en Wiki</value>
+    <value>Wiki Search</value>
   </data>
   <data name="WindowNotFound" xml:space="preserve">
-    <value>Ventana No Encontrada</value>
+    <value>Window Not Found</value>
   </data>
   <data name="WindowsMediaPlayer" xml:space="preserve">
-    <value>Reproductor de Windows Media</value>
-    <comment>Establezca esto en el título de la ventana de la aplicación Reproductor de Windows Media. Se muestra en la barra de título del Reproductor de Windows Media. Si dice "Reproductor de Windows Media" en inglés, no traduzca esta cadena.</comment>
+    <value>Windows Media Player</value>
+    <comment>Set this to the title of the Windows Media Player application window.  It is displayed in the titlebar of Windows Media Player.  If it says "Windows Media Player" in English, don't translate this string.</comment>
   </data>
   <data name="Write" xml:space="preserve">
-    <value>Escribir</value>
+    <value>Write</value>
   </data>
   <data name="YouAreChangingExistingAbbr" xml:space="preserve">
-    <value>Está cambiando la abreviatura existente {0}. ¿Continuar?</value>
-    <comment>{0} es la abreviatura</comment>
+    <value>You are changing existing abbr {0}. Continue?</value>
+    <comment>{0} is the abbreviation</comment>
   </data>
   <data name="ACATError" xml:space="preserve">
-    <value>Error de ACAT</value>
+    <value>ACAT Error</value>
   </data>
   <data name="AddrBook" xml:space="preserve">
-    <value>Libreta de Direcciones</value>
-    <comment>Libreta de direcciones</comment>
+    <value>Addr. Book</value>
+    <comment>Address book</comment>
   </data>
   <data name="Appointment" xml:space="preserve">
-    <value>Cita</value>
+    <value>Appointment</value>
   </data>
   <data name="Calendar" xml:space="preserve">
-    <value>Calendario</value>
+    <value>Calendar</value>
   </data>
   <data name="ChangesNotSavedQuit" xml:space="preserve">
-    <value>Cambios no guardados. ¿Salir?</value>
+    <value>Changes not saved. Quit?</value>
   </data>
   <data name="ClearTalkWindow" xml:space="preserve">
-    <value>¿Borrar Ventana de Habla?</value>
+    <value>Clear Talk Window?</value>
   </data>
   <data name="CloseHighlightedWindow" xml:space="preserve">
-    <value>¿Cerrar la ventana resaltada?</value>
+    <value>Close the highlighted window?</value>
   </data>
   <data name="ConfirmDelete" xml:space="preserve">
-    <value>¿Confirmar Eliminación?</value>
+    <value>Confirm Delete?</value>
   </data>
   <data name="ConfirmSend" xml:space="preserve">
-    <value>¿Confirmar Envío?</value>
+    <value>Confirm Send?</value>
   </data>
   <data name="Contact" xml:space="preserve">
-    <value>Contacto</value>
+    <value>Contact</value>
   </data>
   <data name="Contacts" xml:space="preserve">
-    <value>Contactos</value>
+    <value>Contacts</value>
   </data>
   <data name="ContextInitializationError" xml:space="preserve">
-    <value>Error de inicialización de contexto</value>
+    <value>Context initialization error</value>
   </data>
   <data name="ContextInitializationErrorException" xml:space="preserve">
-    <value>Error de inicialización de contexto. Excepción: {0}</value>
-    <comment>{0} es el error</comment>
+    <value>Context initialization error.  Exception : {0}</value>
+    <comment>{0} is the error</comment>
   </data>
   <data name="CouldNotCreateUserError" xml:space="preserve">
-    <value>Error. No se pudo crear la carpeta para el usuario {0}.</value>
-    <comment>{0} es el nombre del usuario</comment>
+    <value>Error.  Could not create folder for user {0}.</value>
+    <comment>{0}is the name of the user</comment>
   </data>
   <data name="CouldNotFindProfile" xml:space="preserve">
-    <value>No se pudo encontrar el perfil {0}</value>
-    <comment>{0} es el nombre del perfil</comment>
+    <value>Could not find profile {0}</value>
+    <comment>{0}is the name of the profile</comment>
   </data>
   <data name="DocumentIsEmpty" xml:space="preserve">
-    <value>El documento está vacío</value>
+    <value>Document is empty</value>
   </data>
   <data name="Explorer" xml:space="preserve">
-    <value>Explorador</value>
-    <comment>Explorador de Windows</comment>
+    <value>Explorer</value>
+    <comment>Windows Explorer</comment>
   </data>
   <data name="ExplorerClipboard" xml:space="preserve">
-    <value>Portapapeles del Explorador</value>
+    <value>Explorer Clipboard</value>
   </data>
   <data name="ExplorerFileOps" xml:space="preserve">
-    <value>Operaciones de Archivos del Explorador</value>
-    <comment>Operaciones de Archivos</comment>
+    <value>Explorer File Ops</value>
+    <comment>File Operations</comment>
   </data>
   <data name="ExplorerNavigate" xml:space="preserve">
-    <value>Navegar en el Explorador</value>
+    <value>Explorer Navigate</value>
   </data>
   <data name="Good" xml:space="preserve">
-    <value>Bueno</value>
+    <value>Good</value>
   </data>
   <data name="InitializationError" xml:space="preserve">
-    <value>Error de Inicialización</value>
+    <value>Initialization Error</value>
   </data>
   <data name="InvalidFormName" xml:space="preserve">
-    <value>Nombre de formulario no válido {0}</value>
-    <comment>{0} es el nombre del formulario</comment>
+    <value>Invalid form name {0}</value>
+    <comment>{0}is the name of the form</comment>
   </data>
   <data name="InvalidPitchSetting" xml:space="preserve">
-    <value>Configuración de Tono no válida</value>
+    <value>Invalid Pitch setting</value>
   </data>
   <data name="InvalidRateSetting" xml:space="preserve">
-    <value>Configuración de Velocidad no válida</value>
+    <value>Invalid Rate setting</value>
   </data>
   <data name="InvalidVolumeSetting" xml:space="preserve">
-    <value>Configuración de Volumen no válida</value>
+    <value>Invalid Volume setting</value>
   </data>
   <data name="LectureManager" xml:space="preserve">
-    <value>Gestor de Conferencias</value>
+    <value>Lecture Manager</value>
   </data>
   <data name="LoadThisDocIntoLM" xml:space="preserve">
-    <value>¿Cargar este documento en el Gestor de Conferencias?</value>
+    <value>Load this document into Lecture Manager?</value>
   </data>
   <data name="LockTheScreen" xml:space="preserve">
-    <value>¿Bloquear la pantalla?</value>
+    <value>Lock the screen?</value>
   </data>
   <data name="Mail" xml:space="preserve">
-    <value>Correo</value>
+    <value>Mail</value>
   </data>
   <data name="MainMenu" xml:space="preserve">
-    <value>MENÚ PRINCIPAL</value>
+    <value>MAIN MENU</value>
   </data>
   <data name="MoveWindow" xml:space="preserve">
-    <value>Mover Ventana</value>
+    <value>Move Window</value>
   </data>
   <data name="Msecs" xml:space="preserve">
-    <value>msegs</value>
-    <comment>Milisegundos</comment>
+    <value>msecs</value>
+    <comment>Milliseconds</comment>
   </data>
   <data name="NewPinSaveChanges" xml:space="preserve">
-    <value>Su nuevo PIN es {0}\n¿Guardar cambios?</value>
-    <comment>{0} es el pin numérico</comment>
+    <value>Your new PIN is {0}\nSave changes?</value>
+    <comment>{0} is the numeric pin</comment>
   </data>
   <data name="Note" xml:space="preserve">
-    <value>Nota</value>
+    <value>Note</value>
   </data>
   <data name="Notes" xml:space="preserve">
-    <value>Notas</value>
+    <value>Notes</value>
   </data>
   <data name="PinCannotBeEmpty" xml:space="preserve">
-    <value>El PIN no puede estar vacío</value>
+    <value>PIN cannot be empty</value>
   </data>
   <data name="PinContainsNonNumeric" xml:space="preserve">
-    <value>El PIN contiene caracteres no numéricos</value>
+    <value>PIN contains non-numeric characters</value>
   </data>
   <data name="PinHasToBeWithinLimits" xml:space="preserve">
-    <value>La longitud del PIN debe estar entre {0} y {1} dígitos</value>
-    <comment>{0} es el límite inferior (mínimo) y {1} es el límite superior (máximo)</comment>
+    <value>PIN length has to be between {0} and {1} digits</value>
+    <comment>{0
+{0} is the lower limit (minimum)and {1}is the upper limit (maximum)</comment>
   </data>
   <data name="PinOutsideRange" xml:space="preserve">
-    <value>El PIN tiene dígitos fuera del rango válido</value>
+    <value>PIN has digits outside of the valid range</value>
   </data>
   <data name="QuitApplication" xml:space="preserve">
-    <value>¿Salir de la Aplicación?</value>
+    <value>Quit Application?</value>
   </data>
   <data name="RangeFromTo" xml:space="preserve">
-    <value>{0} a {1}</value>
-    <comment>{0} es el límite inferior del rango y {1} es el límite superior del rango</comment>
+    <value>{0} to {1}</value>
+    <comment>{0} is the lower limit of the range and {1} is the upper limit of the range</comment>
   </data>
   <data name="ResizeWindow" xml:space="preserve">
-    <value>Redimensionar Ventana</value>
+    <value>Resize Window</value>
   </data>
   <data name="RestoreDefaultSettings" xml:space="preserve">
-    <value>¿Restaurar configuraciones predeterminadas?</value>
+    <value>Restore default settings?</value>
   </data>
   <data name="SaveFontSetting" xml:space="preserve">
-    <value>¿Guardar Configuración de Fuente?</value>
+    <value>Save Font Setting?</value>
   </data>
   <data name="SaveSettings" xml:space="preserve">
-    <value>¿Guardar Configuraciones?</value>
+    <value>Save Settings?</value>
   </data>
   <data name="Secs" xml:space="preserve">
-    <value>segs</value>
-    <comment>Segundos</comment>
+    <value>secs</value>
+    <comment>Seconds</comment>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Configuraciones</value>
+    <value>Settings</value>
   </data>
   <data name="SwitchTo" xml:space="preserve">
-    <value>Cambiar A</value>
+    <value>Switch To</value>
   </data>
   <data name="TalkWindowTestString" xml:space="preserve">
-    <value>Esto es una muestra</value>
-    <comment>Cadena de prueba para seleccionar el tamaño de la fuente en la ventana de Habla</comment>
+    <value>This is a sample</value>
+    <comment>Test string to select the size of font in the Talk window</comment>
   </data>
   <data name="Task" xml:space="preserve">
-    <value>Tarea</value>
+    <value>Task</value>
   </data>
   <data name="Tasks" xml:space="preserve">
-    <value>Tareas</value>
+    <value>Tasks</value>
   </data>
   <data name="TimeElapsed" xml:space="preserve">
-    <value>Tiempo Transcurrido</value>
+    <value>Time Elapsed</value>
   </data>
   <data name="TimeRemaining" xml:space="preserve">
-    <value>Tiempo Restante</value>
+    <value>Time Remaining</value>
   </data>
   <data name="Tools" xml:space="preserve">
-    <value>Herramientas</value>
+    <value>Tools</value>
   </data>
   <data name="TryoutWord1" xml:space="preserve">
-    <value>té</value>
-    <comment>Primera palabra en la aplicación de prueba ACAT. Las letras de la palabra deben ser una de las letras en el panel del teclado de prueba de ACAT</comment>
+    <value>tea</value>
+    <comment>First word in the ACATTryoutApp. The letters in the word should be one of the letters in the ACATryout keyboard panel</comment>
   </data>
   <data name="TryoutWord2" xml:space="preserve">
-    <value>comer</value>
-    <comment>Segunda palabra en la aplicación de prueba ACAT. Las letras de la palabra deben ser una de las letras en el panel del teclado de prueba de ACAT</comment>
+    <value>eat</value>
+    <comment>Second word in the ACATTryoutApp.  The letters in the word should be one of the letters in the ACATryout keyboard panel</comment>
   </data>
   <data name="TryoutWord3" xml:space="preserve">
-    <value>comió</value>
-    <comment>Tercera palabra en la aplicación de prueba ACAT. Las letras de la palabra deben ser una de las letras en el panel del teclado de prueba de ACAT</comment>
+    <value>ate</value>
+    <comment>Third word in the ACATTryoutApp. The letters in the word should be one of the letters in the ACATryout keyboard panel</comment>
   </data>
   <data name="TryoutWord4" xml:space="preserve">
-    <value>pestaña</value>
-    <comment>Cuarta palabra en la aplicación de prueba ACAT. Las letras de la palabra deben ser una de las letras en el panel del teclado de prueba de ACAT</comment>
+    <value>tab</value>
+    <comment>Fourth word in the ACATTryoutApp.  The letters in the word should be one of the letters in the ACATryout keyboard panel</comment>
   </data>
   <data name="TryoutWord5" xml:space="preserve">
-    <value>apuesta</value>
-    <comment>Quinta palabra en la aplicación de prueba ACAT. Las letras de la palabra deben ser una de las letras en el panel del teclado de prueba de ACAT</comment>
+    <value>bet</value>
+    <comment>Fifth word in the ACATTryoutApp.  The letters in the word should be one of the letters in the ACATryout keyboard panel</comment>
   </data>
   <data name="TryoutWord6" xml:space="preserve">
-    <value>murciélago</value>
-    <comment>Sexta palabra en la aplicación de prueba ACAT. Las letras de la palabra deben ser una de las letras en el panel del teclado de prueba de ACAT</comment>
+    <value>bat</value>
+    <comment>Sixth word in the ACATTryoutApp.  The letters in the word should be one of the letters in the ACATryout keyboard panel</comment>
   </data>
   <data name="TryoutWord7" xml:space="preserve">
-    <value>remolacha</value>
-    <comment>Séptima palabra en la aplicación de prueba ACAT. Las letras de la palabra deben ser una de las letras en el panel del teclado de prueba de ACAT</comment>
+    <value>beet</value>
+    <comment>Seventh word in the ACATTryoutApp.  The letters in the word should be one of the letters in the ACATryout keyboard panel</comment>
   </data>
   <data name="UnableCreateUserErrorExecutingBatchfile" xml:space="preserve">
-    <value>No se puede crear el usuario. Error al ejecutar el archivo por lotes {0}.\nError: {1}</value>
-    <comment>{0} es el nombre del archivo por lotes, {1} es el error</comment>
+    <value>Unable to create user. Error executing batchfile {0}.\nError: {1}</value>
+    <comment>{0} is the name of the batch file, {1} is the error</comment>
   </data>
   <data name="UnableToReadPreferences" xml:space="preserve">
-    <value>No se pueden leer las preferencias de {0}</value>
-    <comment>{0} es el nombre del archivo de preferencias</comment>
+    <value>Unable to read preferences from {0}</value>
+    <comment>{0} is the name of the preferences file</comment>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>Versión {0}</value>
-    <comment>{0} es el número de versión</comment>
+    <value>Version {0}</value>
+    <comment>{0} is the version number</comment>
   </data>
   <data name="WordPad" xml:space="preserve">
     <value>WordPad</value>
   </data>
   <data name="Open" xml:space="preserve">
-    <value>Abrir</value>
+    <value>Open</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancelar</value>
+    <value>Cancel</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
   <data name="Yes" xml:space="preserve">
-    <value>Sí</value>
+    <value>Yes</value>
   </data>
   <data name="Close" xml:space="preserve">
-    <value>Cerrar</value>
+    <value>Close</value>
   </data>
   <data name="Find" xml:space="preserve">
-    <value>Buscar</value>
+    <value>Find</value>
   </data>
   <data name="MaxSnap" xml:space="preserve">
-    <value>Max / Ajustar</value>
+    <value>Max / Snap</value>
   </data>
   <data name="MouseScanner" xml:space="preserve">
-    <value>Escáner de Ratón</value>
+    <value>Mouse Scanner</value>
   </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
   <data name="PageDown" xml:space="preserve">
-    <value>Página Abajo</value>
+    <value>Page Down</value>
   </data>
   <data name="PageUp" xml:space="preserve">
-    <value>Página Arriba</value>
+    <value>Page Up</value>
   </data>
   <data name="SearchSlashURL" xml:space="preserve">
-    <value>Buscar/URL</value>
+    <value>Search/URL</value>
   </data>
   <data name="Zoom" xml:space="preserve">
     <value>Zoom</value>
   </data>
   <data name="ZoomFit" xml:space="preserve">
-    <value>Ajustar Zoom</value>
+    <value>Zoom Fit</value>
   </data>
   <data name="ZoomIn" xml:space="preserve">
-    <value>Acercar</value>
+    <value>Zoom In</value>
   </data>
   <data name="ZoomOut" xml:space="preserve">
-    <value>Alejar</value>
+    <value>Zoom Out</value>
   </data>
   <data name="About" xml:space="preserve">
-    <value>Acerca de</value>
+    <value>About</value>
   </data>
   <data name="Action" xml:space="preserve">
-    <value>Acción</value>
+    <value>Action</value>
   </data>
   <data name="BeepOnSelect" xml:space="preserve">
-    <value>Beep al Seleccionar</value>
+    <value>Beep On Select</value>
   </data>
   <data name="BrowserAddFavorites" xml:space="preserve">
-    <value>Añadir a Favoritos</value>
+    <value>Add Favorites</value>
   </data>
   <data name="BrowserBack" xml:space="preserve">
-    <value>Atrás</value>
+    <value>Back</value>
   </data>
   <data name="BrowserEmailLink" xml:space="preserve">
-    <value>Enviar Enlace por Correo</value>
+    <value>Email Link</value>
   </data>
   <data name="BrowserFavorites" xml:space="preserve">
-    <value>Favoritos</value>
+    <value>Favorites</value>
   </data>
   <data name="BrowserFwd" xml:space="preserve">
-    <value>Adelante</value>
+    <value>Forward</value>
   </data>
   <data name="BrowserHistory" xml:space="preserve">
-    <value>Historial</value>
+    <value>History</value>
   </data>
   <data name="BrowserHomePage" xml:space="preserve">
-    <value>Página de Inicio</value>
+    <value>Home Page</value>
   </data>
   <data name="BrowserRefresh" xml:space="preserve">
-    <value>Actualizar Página</value>
+    <value>Refresh Page</value>
   </data>
   <data name="ClearTalk" xml:space="preserve">
-    <value>Borrar</value>
+    <value>Clear</value>
   </data>
   <data name="Clipboard" xml:space="preserve">
-    <value>Portapapeles</value>
+    <value>Clipboard</value>
   </data>
   <data name="ClipboardCopy" xml:space="preserve">
-    <value>Copiar</value>
+    <value>Copy</value>
   </data>
   <data name="ClipboardCut" xml:space="preserve">
-    <value>Cortar</value>
+    <value>Cut</value>
   </data>
   <data name="ClipboardPaste" xml:space="preserve">
-    <value>Pegar</value>
+    <value>Paste</value>
   </data>
   <data name="CloseWindow" xml:space="preserve">
-    <value>Cerrar Ventana</value>
+    <value>Close Window</value>
   </data>
   <data name="ColumnIterations" xml:space="preserve">
-    <value>Columnas</value>
+    <value>Columns</value>
   </data>
   <data name="Defaults" xml:space="preserve">
-    <value>Predeterminados</value>
+    <value>Defaults</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Eliminar</value>
+    <value>Delete</value>
   </data>
   <data name="Down" xml:space="preserve">
-    <value>Abajo</value>
+    <value>Down</value>
   </data>
   <data name="EnableLearning" xml:space="preserve">
-    <value>Habilitar Aprendizaje</value>
+    <value>Enable Learning</value>
   </data>
   <data name="EmailAttach" xml:space="preserve">
-    <value>Adjuntar</value>
+    <value>Attach</value>
   </data>
   <data name="EmailAttendees" xml:space="preserve">
-    <value>Asistentes</value>
+    <value>Attendees</value>
   </data>
   <data name="EmailForward" xml:space="preserve">
-    <value>Reenviar</value>
+    <value>Forward</value>
   </data>
   <data name="EmailInbox" xml:space="preserve">
-    <value>Bandeja de Entrada</value>
+    <value>Inbox</value>
   </data>
   <data name="EmailSend" xml:space="preserve">
-    <value>Enviar</value>
+    <value>Send</value>
   </data>
   <data name="EnterKey" xml:space="preserve">
     <value>Enter</value>
@@ -684,573 +685,573 @@
     <value>Escape</value>
   </data>
   <data name="Exit" xml:space="preserve">
-    <value>Salir</value>
+    <value>Exit</value>
   </data>
   <data name="ExplorerBack" xml:space="preserve">
-    <value>Atrás</value>
+    <value>Back</value>
   </data>
   <data name="FastFwd" xml:space="preserve">
-    <value>Avance Rápido</value>
+    <value>Fast Fwd</value>
   </data>
   <data name="FileBrowser" xml:space="preserve">
-    <value>Explorador de Archivos</value>
+    <value>File Browser</value>
   </data>
   <data name="FileOperations" xml:space="preserve">
-    <value>Operaciones de Archivos</value>
+    <value>File Operations</value>
   </data>
   <data name="FirstPauseTime" xml:space="preserve">
-    <value>Primera Pausa</value>
+    <value>First Pause</value>
   </data>
   <data name="FirstRepeatTime" xml:space="preserve">
-    <value>Tiempo de Primera Repetición</value>
+    <value>First Repeat Time</value>
   </data>
   <data name="Folders" xml:space="preserve">
-    <value>Carpetas</value>
+    <value>Folders</value>
   </data>
   <data name="Google" xml:space="preserve">
     <value>Google</value>
   </data>
   <data name="GridIterations" xml:space="preserve">
-    <value>Cuadrícula</value>
+    <value>Grid</value>
   </data>
   <data name="LaunchApp" xml:space="preserve">
-    <value>Lanzar Aplicación</value>
+    <value>Launch App</value>
   </data>
   <data name="Left" xml:space="preserve">
-    <value>Izquierda</value>
+    <value>Left</value>
   </data>
   <data name="LockScreen" xml:space="preserve">
-    <value>Bloquear Pantalla</value>
+    <value>Lock Screen</value>
   </data>
   <data name="MaxDigit" xml:space="preserve">
-    <value>Dígito Máximo</value>
+    <value>Max Digit</value>
   </data>
   <data name="MenuDialogScanTime" xml:space="preserve">
-    <value>Escaneo de Menú / Diálogo</value>
+    <value>Menu / Dialog Scan</value>
   </data>
   <data name="MinActuationHoldTime" xml:space="preserve">
-    <value>Tiempo Mín. de Mantenimiento de Actuación</value>
+    <value>Min. Actuation Hold</value>
   </data>
   <data name="New" xml:space="preserve">
-    <value>Nuevo</value>
+    <value>New</value>
   </data>
   <data name="NewFile" xml:space="preserve">
-    <value>Nuevo Archivo</value>
+    <value>New File</value>
   </data>
   <data name="NewFolder" xml:space="preserve">
-    <value>Nueva Carpeta</value>
+    <value>New Folder</value>
   </data>
   <data name="NewWindow" xml:space="preserve">
-    <value>Nueva Ventana</value>
+    <value>New Window</value>
   </data>
   <data name="Next" xml:space="preserve">
-    <value>Siguiente</value>
+    <value>Next</value>
   </data>
   <data name="NextField" xml:space="preserve">
-    <value>Siguiente Campo</value>
+    <value>Next Field</value>
   </data>
   <data name="NextTrack" xml:space="preserve">
-    <value>Siguiente Pista</value>
+    <value>Next Track</value>
   </data>
   <data name="ParentDir" xml:space="preserve">
-    <value>Directorio Padre</value>
+    <value>Parent Dir</value>
   </data>
   <data name="PhotoRotate" xml:space="preserve">
-    <value>Rotar</value>
+    <value>Rotate</value>
   </data>
   <data name="PhotoRotateLeft" xml:space="preserve">
-    <value>Rotar a la Izquierda</value>
+    <value>Rotate Left</value>
   </data>
   <data name="PhotoRotateRight" xml:space="preserve">
-    <value>Rotar a la Derecha</value>
+    <value>Rotate Right</value>
   </data>
   <data name="Phrases" xml:space="preserve">
-    <value>Frases</value>
+    <value>Phrases</value>
   </data>
   <data name="PINCode" xml:space="preserve">
-    <value>Código PIN</value>
+    <value>PIN Code</value>
   </data>
   <data name="PlayPause" xml:space="preserve">
-    <value>Reproducir/Pausar</value>
+    <value>Play/Pause</value>
   </data>
   <data name="PrevField" xml:space="preserve">
-    <value>Campo Anterior</value>
+    <value>Prev Field</value>
   </data>
   <data name="Previous" xml:space="preserve">
-    <value>Anterior</value>
+    <value>Previous</value>
   </data>
   <data name="PrevTrack" xml:space="preserve">
-    <value>Pista Anterior</value>
+    <value>Prev Track</value>
   </data>
   <data name="Range0To" xml:space="preserve">
-    <value>Rango: 0 a   </value>
+    <value>Range: 0   to   </value>
   </data>
   <data name="Rename" xml:space="preserve">
-    <value>Renombrar</value>
+    <value>Rename</value>
   </data>
   <data name="Reply" xml:space="preserve">
-    <value>Responder</value>
+    <value>Reply</value>
   </data>
   <data name="ReplyAll" xml:space="preserve">
-    <value>Responder a Todos</value>
+    <value>Reply All</value>
   </data>
   <data name="Reposition" xml:space="preserve">
-    <value>Reposicionar</value>
+    <value>Reposition</value>
   </data>
   <data name="RestoreDefaults" xml:space="preserve">
-    <value>Restaurar Predeterminados</value>
+    <value>Restore Defaults</value>
   </data>
   <data name="Rewind" xml:space="preserve">
-    <value>Rebobinar</value>
+    <value>Rewind</value>
   </data>
   <data name="Right" xml:space="preserve">
-    <value>Derecha</value>
+    <value>Right</value>
   </data>
   <data name="RightClick" xml:space="preserve">
-    <value>Click Derecho</value>
+    <value>Right Click</value>
   </data>
   <data name="RowIterations" xml:space="preserve">
-    <value>Filas</value>
+    <value>Rows</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Guardar</value>
+    <value>Save</value>
   </data>
   <data name="ScanTime" xml:space="preserve">
-    <value>Escanear</value>
+    <value>Scan</value>
   </data>
   <data name="Search" xml:space="preserve">
-    <value>Buscar</value>
+    <value>Search</value>
   </data>
   <data name="Select" xml:space="preserve">
-    <value>Seleccionar</value>
+    <value>Select</value>
   </data>
   <data name="SelectField" xml:space="preserve">
-    <value>Seleccionar Campo</value>
+    <value>Select Field</value>
   </data>
   <data name="SettingsAbbr" xml:space="preserve">
-    <value>Abreviaturas</value>
+    <value>Abbreviations</value>
   </data>
   <data name="SettingsGeneral" xml:space="preserve">
     <value>General</value>
   </data>
   <data name="SettingsMouseScan" xml:space="preserve">
-    <value>Escaneo de Ratón</value>
+    <value>Mouse Scan</value>
   </data>
   <data name="SettingsScan" xml:space="preserve">
-    <value>Escanear</value>
+    <value>Scan</value>
   </data>
   <data name="SettingsScreenLock" xml:space="preserve">
-    <value>Bloqueo de Pantalla</value>
+    <value>Screen Lock</value>
   </data>
   <data name="SettingsSizePosition" xml:space="preserve">
-    <value>Tamaño/Posición</value>
+    <value>Size/Position</value>
   </data>
   <data name="SettingsTTS" xml:space="preserve">
-    <value>Texto a Voz</value>
+    <value>Text-to-Speech</value>
   </data>
   <data name="SettingsWordPrediction" xml:space="preserve">
-    <value>Predicción de Palabras</value>
+    <value>Word Prediction</value>
   </data>
   <data name="ShiftTab" xml:space="preserve">
     <value>Shift Tab</value>
   </data>
   <data name="SpaceKey" xml:space="preserve">
-    <value>Espacio</value>
+    <value>Space</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>Detener</value>
+    <value>Stop</value>
   </data>
   <data name="SwitchWindow" xml:space="preserve">
-    <value>Cambiar Ventana</value>
+    <value>Switch Win</value>
   </data>
   <data name="TabKey" xml:space="preserve">
     <value>Tab</value>
   </data>
   <data name="Test" xml:space="preserve">
-    <value>Prueba</value>
+    <value>Test</value>
   </data>
   <data name="Undo" xml:space="preserve">
-    <value>Deshacer</value>
+    <value>Undo</value>
   </data>
   <data name="Up" xml:space="preserve">
-    <value>Arriba</value>
+    <value>Up</value>
   </data>
   <data name="UseCorpusModel" xml:space="preserve">
-    <value>Usar Modelo de Corpus</value>
+    <value>Use Corpus Model</value>
   </data>
   <data name="Wikipedia" xml:space="preserve">
     <value>Wikipedia</value>
   </data>
   <data name="Window" xml:space="preserve">
-    <value>Ventana</value>
+    <value>Window</value>
   </data>
   <data name="WindowMaxRestore" xml:space="preserve">
-    <value>Maximizar/Restaurar</value>
+    <value>Max/Restore</value>
   </data>
   <data name="WindowMinimize" xml:space="preserve">
-    <value>Minimizar</value>
+    <value>Minimize</value>
   </data>
   <data name="WindowMove" xml:space="preserve">
-    <value>Mover</value>
+    <value>Move</value>
   </data>
   <data name="WindowResize" xml:space="preserve">
-    <value>Redimensionar</value>
+    <value>Resize</value>
   </data>
   <data name="WindowResizeDone" xml:space="preserve">
-    <value>Hecho</value>
+    <value>Done</value>
   </data>
   <data name="WindowSnap" xml:space="preserve">
-    <value>Ajustar</value>
+    <value>Snap</value>
   </data>
   <data name="WindowsStartMenu" xml:space="preserve">
-    <value>Menú de Inicio</value>
+    <value>Start Menu</value>
   </data>
   <data name="WindowSwitch" xml:space="preserve">
-    <value>Cambiar</value>
+    <value>Switch</value>
   </data>
   <data name="WordCount" xml:space="preserve">
-    <value>Conteo de Palabras</value>
+    <value>Word Count</value>
   </data>
   <data name="WordListFirstPauseTime" xml:space="preserve">
-    <value>Primera Pausa de Lista de Palabras</value>
+    <value>Word List First Pause</value>
   </data>
   <data name="WordPredictionIterations" xml:space="preserve">
-    <value>Predicción de Palabras</value>
+    <value>Word Prediction</value>
   </data>
   <data name="ZoomDefault" xml:space="preserve">
-    <value>Zoom Predeterminado</value>
+    <value>Zoom Default</value>
   </data>
   <data name="AutosaveScannersLastPosition" xml:space="preserve">
-    <value>Guardar automáticamente la última posición del escáner</value>
+    <value>Auto-save scanner's last position</value>
   </data>
   <data name="EnableAuditLog" xml:space="preserve">
-    <value>Habilitar registro de auditoría</value>
+    <value>Enable audit log</value>
   </data>
   <data name="EnableDebugTraceLogging" xml:space="preserve">
-    <value>Habilitar registro de trazas de depuración</value>
+    <value>Enable debug trace logging</value>
   </data>
   <data name="EnableVerticalRectangleScan" xml:space="preserve">
-    <value>Habilitar escaneo de rectángulo vertical</value>
+    <value>Enable Vertical Rectangle Scan</value>
   </data>
   <data name="ExpandAbbrOnSeparator" xml:space="preserve">
-    <value>Expandir abreviaturas en separador</value>
+    <value>Expand abbreviations on separator</value>
   </data>
   <data name="GeneralSettings" xml:space="preserve">
-    <value>Configuraciones Generales</value>
+    <value>General Settings</value>
   </data>
   <data name="HideScannersOnIdle" xml:space="preserve">
-    <value>Ocultar escáneres en inactividad</value>
+    <value>Hide scanners on idle</value>
   </data>
   <data name="MouseLineCycles" xml:space="preserve">
-    <value>Ciclos de Línea</value>
+    <value>Line Cycles</value>
   </data>
   <data name="MouseLineSpeed" xml:space="preserve">
-    <value>Velocidad de Línea</value>
+    <value>Line Speed</value>
   </data>
   <data name="MouseLineThickness" xml:space="preserve">
-    <value>Grosor de Línea</value>
+    <value>Line Thickness</value>
   </data>
   <data name="MouseRectangleCycles" xml:space="preserve">
-    <value>Ciclos de Rectángulo</value>
+    <value>Rectangle Cycles</value>
   </data>
   <data name="MouseRectangleSpeed" xml:space="preserve">
-    <value>Velocidad de Rectángulo</value>
+    <value>Rectangle Speed</value>
   </data>
   <data name="MouseScanSettings" xml:space="preserve">
-    <value>Configuraciones de Escaneo de Ratón</value>
+    <value>Mouse Scan Settings</value>
   </data>
   <data name="RetainTalkWindowTextOnClose" xml:space="preserve">
-    <value>Retener texto de la ventana de habla al cerrar</value>
+    <value>Retain Talk window text on close</value>
   </data>
   <data name="ScreenLockSettings" xml:space="preserve">
-    <value>Configuraciones de Bloqueo de Pantalla</value>
+    <value>Screen Lock Settings</value>
   </data>
   <data name="ShowGlassUnderTalkWindow" xml:space="preserve">
-    <value>Mostrar vidrio debajo de la ventana de habla</value>
+    <value>Show glass under Talk window</value>
   </data>
   <data name="ShowTalkWindowOnStartup" xml:space="preserve">
-    <value>Mostrar ventana de habla al iniciar</value>
+    <value>Show Talk window on startup</value>
   </data>
   <data name="TextToSpeechSettings" xml:space="preserve">
-    <value>Configuraciones de Texto a Voz</value>
+    <value>Text-to-Speech Settings</value>
   </data>
   <data name="TitleScanIterations" xml:space="preserve">
-    <value>Iteraciones de Escaneo</value>
+    <value>Scan Iterations</value>
   </data>
   <data name="TitleScanSettings" xml:space="preserve">
-    <value>Configuraciones de Escaneo</value>
+    <value>Scan Settings</value>
   </data>
   <data name="TitleTimingsMsecs" xml:space="preserve">
-    <value>Tiempos (en msegs)</value>
+    <value>Timings (in msecs)</value>
   </data>
   <data name="WordPredictionSettings" xml:space="preserve">
-    <value>Configuraciones de Predicción de Palabras</value>
+    <value>Word Prediction Settings</value>
   </data>
   <data name="Pitch" xml:space="preserve">
-    <value>Tono</value>
+    <value>Pitch</value>
   </data>
   <data name="Rate" xml:space="preserve">
-    <value>Velocidad</value>
+    <value>Rate</value>
   </data>
   <data name="ConfirmSwitchLanguage" xml:space="preserve">
-    <value>¿Cambiar a {0}?</value>
-    <comment>{0} es el idioma al que cambiar</comment>
+    <value>Switch to {0}?</value>
+    <comment>{0} is the language to switch to</comment>
   </data>
   <data name="ConfirmSwitchToWindow" xml:space="preserve">
-    <value>¿Cambiar a {0}?</value>
-    <comment>{0} es el título de la ventana a la que cambiar</comment>
+    <value>Switch to {0}?</value>
+    <comment>{0} is the title of the window to switch to</comment>
   </data>
   <data name="NoOtherLanguagesAreInstalled" xml:space="preserve">
-    <value>No hay otros idiomas instalados</value>
+    <value>No other languages are installed</value>
   </data>
   <data name="LanguagesListIsEmpty" xml:space="preserve">
-    <value>La lista está vacía</value>
+    <value>List is empty</value>
   </data>
   <data name="SwitchLanguage" xml:space="preserve">
-    <value>Cambiar Idioma</value>
+    <value>Switch Language</value>
   </data>
   <data name="Navigate" xml:space="preserve">
-    <value>Navegar</value>
+    <value>Navigate</value>
   </data>
   <data name="TryoutTypeThis" xml:space="preserve">
-    <value>Escriba esta palabra</value>
+    <value>Type this word</value>
   </data>
   <data name="ExitQuestion" xml:space="preserve">
-    <value>¿Salir?</value>
+    <value>Exit?</value>
   </data>
   <data name="Faster" xml:space="preserve">
-    <value>Más Rápido</value>
+    <value>Faster</value>
   </data>
   <data name="Language" xml:space="preserve">
-    <value>Idioma</value>
+    <value>Language</value>
   </data>
   <data name="ScanSpeed" xml:space="preserve">
-    <value>Velocidad de Escaneo</value>
+    <value>Scan Speed</value>
   </data>
   <data name="Slower" xml:space="preserve">
-    <value>Más Lento</value>
+    <value>Slower</value>
   </data>
   <data name="DeleteFile" xml:space="preserve">
-    <value>Eliminar Archivo</value>
+    <value>Delete File</value>
   </data>
   <data name="OpenFile" xml:space="preserve">
-    <value>Abrir Archivo</value>
+    <value>Open File</value>
   </data>
   <data name="CalibratingCameraRemainStill" xml:space="preserve">
-    <value>Calibrando cámara... Por favor, permanezca quieto</value>
+    <value>Calibrating camera...Please remain still</value>
   </data>
   <data name="InitializingCamera" xml:space="preserve">
-    <value>Inicializando cámara...</value>
+    <value>Initializing camera...</value>
   </data>
   <data name="NoCamerasFoundACATVisionDisabled" xml:space="preserve">
-    <value>¡No se encontraron cámaras! La visión ACAT estará desactivada</value>
+    <value>No cameras found! ACAT Vision will be disabled</value>
   </data>
   <data name="ShowVideo" xml:space="preserve">
-    <value>Mostrar Video</value>
+    <value>Show Video</value>
   </data>
   <data name="NoCameraSelectedVisionWillNotBeActivated" xml:space="preserve">
-    <value>No se seleccionó cámara. El sensor de visión ACAT no se activará</value>
+    <value>No camera selected.  ACAT Vision sensor will not be activated</value>
   </data>
   <data name="SelectedCamera" xml:space="preserve">
-    <value>Cámara Seleccionada: {0}</value>
-    <comment>{0} es el nombre de la cámara</comment>
+    <value>Selected Camera: {0}</value>
+    <comment>{0}is the name of the camera</comment>
   </data>
   <data name="LMAll" xml:space="preserve">
-    <value>Todo</value>
+    <value>All</value>
   </data>
   <data name="LMBack" xml:space="preserve">
-    <value>Atrás</value>
+    <value>Back</value>
   </data>
   <data name="LMForward" xml:space="preserve">
-    <value>Adelante</value>
+    <value>Forward</value>
   </data>
   <data name="LMParagraph" xml:space="preserve">
-    <value>Párrafo</value>
+    <value>Paragraph</value>
   </data>
   <data name="LMSentence" xml:space="preserve">
-    <value>Oración</value>
+    <value>Sentence</value>
   </data>
   <data name="Sentence" xml:space="preserve">
-    <value>Oración</value>
+    <value>Sentence</value>
   </data>
   <data name="LMSetMode" xml:space="preserve">
-    <value>Establecer Modo...</value>
+    <value>Set Mode...</value>
   </data>
   <data name="LMSpeak" xml:space="preserve">
-    <value>Hablar...</value>
+    <value>Speak...</value>
   </data>
   <data name="LMTop" xml:space="preserve">
-    <value>Superior</value>
+    <value>Top</value>
   </data>
   <data name="PhraseListEllipses" xml:space="preserve">
-    <value>Lista...</value>
+    <value>List...</value>
   </data>
   <data name="CreateFile" xml:space="preserve">
-    <value>Crear Archivo</value>
+    <value>Create File</value>
   </data>
   <data name="EnterCreateEscQuit" xml:space="preserve">
-    <value>Enter: Crear, ESC: Salir</value>
+    <value>Enter: Create, ESC: Quit</value>
   </data>
   <data name="EnterFileName" xml:space="preserve">
-    <value>Introduzca el Nombre del Archivo:</value>
+    <value>Enter File Name:</value>
   </data>
   <data name="NameOfFile" xml:space="preserve">
-    <value>Nombre del Archivo:</value>
+    <value>Name of File:</value>
   </data>
   <data name="SelectCamera" xml:space="preserve">
-    <value>Seleccionar Cámara</value>
+    <value>Select Camera</value>
   </data>
   <data name="TextFile" xml:space="preserve">
-    <value>Archivo de Texto</value>
+    <value>Text File</value>
   </data>
   <data name="WordDoc" xml:space="preserve">
-    <value>Documento de Word</value>
+    <value>Word Doc</value>
   </data>
   <data name="TalkApp" xml:space="preserve">
-    <value>Aplicación de Habla</value>
+    <value>Talk App</value>
   </data>
   <data name="MicrosoftWord" xml:space="preserve">
     <value>Microsoft Word</value>
-    <comment>Esto está en el título de un documento de Word, generalmente el nombre del archivo seguido de Microsoft Word. Tenga cuidado al traducir</comment>
+    <comment>This is in the title of a word document, usually the file name followed by Microsoft Word.  Take care while translating</comment>
   </data>
   <data name="ThisMessageBoxWillClose" xml:space="preserve">
-    <value>Este cuadro de mensaje se cerrará en {0} segundos</value>
-    <comment>{0} es el número de segundos</comment>
+    <value>This message box will close in {0} seconds</value>
+    <comment>{0} is the number of seconds</comment>
   </data>
   <data name="WindowsPhotoViewer" xml:space="preserve">
-    <value>Visor de Fotos de Windows</value>
-    <comment>Este es el título de la ventana del Visor de Fotos de Windows. Tradúzcalo adecuadamente después de verificar en una computadora con la cultura instalada</comment>
+    <value>Windows Photo Viewer</value>
+    <comment>This is the title of the Windows Photo Viewer window.  Translate it appropriately after verifying on a computer with the culture installed</comment>
   </data>
   <data name="ExitingACAT" xml:space="preserve">
-    <value>Saliendo de ACAT...</value>
+    <value>Exiting ACAT...</value>
   </data>
   <data name="StripScannerIterations" xml:space="preserve">
-    <value>Escáner de Tira</value>
+    <value>Strip Scanner</value>
   </data>
   <data name="Calculator" xml:space="preserve">
-    <value>Calculadora</value>
+    <value>Calculator</value>
   </data>
   <data name="WindowsAppCalculatorTitle" xml:space="preserve">
-    <value>Calculadora</value>
-    <comment>Esto se aplica a la aplicación Calculadora de Windows 10. Esta cadena debe coincidir con el título de la aplicación Calculadora de Windows en Windows 10. Tradúzcalo adecuadamente después de verificar en una computadora con la cultura instalada</comment>
+    <value>Calculator</value>
+    <comment>This applies to the Windows 10 Calculator app.  This string should match the title of the Windows Calculator app in Windows 10. Translate it appropriately after verifying on a computer with the culture installed</comment>
   </data>
   <data name="WindowsAppPhotosTitle" xml:space="preserve">
-    <value>Fotos</value>
-    <comment>Esto se aplica solo a la aplicación Fotos de Windows 10. Esta cadena debe coincidir con la cadena incrustada equivalente a "Fotos" en la barra de título de la aplicación Fotos. Tradúzcalo adecuadamente después de verificar en una computadora con la cultura instalada</comment>
+    <value>Photos</value>
+    <comment>This applies to the Windows 10 Photos app only  This string should match the embedded string equivalent to "Photos"in the titlebar of the Photos app.match what is displayed as the string "Photos" in the titlebar . Translate it appropriately after verifying on a computer with the culture installed</comment>
   </data>
   <data name="Edit" xml:space="preserve">
-    <value>Editar</value>
+    <value>Edit</value>
   </data>
   <data name="EditPhrases" xml:space="preserve">
-    <value>Editar Frases</value>
+    <value>Edit Phrases</value>
   </data>
   <data name="Favorite" xml:space="preserve">
-    <value>Favorito</value>
+    <value>Favorite</value>
   </data>
   <data name="Insert" xml:space="preserve">
-    <value>Insertar</value>
+    <value>Insert</value>
   </data>
   <data name="MoveDown" xml:space="preserve">
-    <value>Mover Abajo</value>
+    <value>Move Down</value>
   </data>
   <data name="MoveUp" xml:space="preserve">
-    <value>Mover Arriba</value>
+    <value>Move Up</value>
   </data>
   <data name="PhraseEditor" xml:space="preserve">
-    <value>Editor de Frases</value>
+    <value>Phrase Editor</value>
   </data>
   <data name="SaveAndQuit" xml:space="preserve">
-    <value>¿Guardar y Cerrar?</value>
+    <value>Save and Close?</value>
   </data>
   <data name="SettingsPhrases" xml:space="preserve">
-    <value>Frases</value>
+    <value>Phrases</value>
   </data>
   <data name="Sort" xml:space="preserve">
-    <value>Ordenar</value>
+    <value>Sort</value>
   </data>
   <data name="FavoritePhrase" xml:space="preserve">
-    <value>Frase Favorita</value>
+    <value>Favorite Phrase</value>
   </data>
   <data name="Phrase" xml:space="preserve">
-    <value>Frase</value>
+    <value>Phrase</value>
   </data>
   <data name="CloseTab" xml:space="preserve">
-    <value>Cerrar Pestaña</value>
+    <value>Close Tab</value>
   </data>
   <data name="MicrosoftEdge" xml:space="preserve">
     <value>Microsoft Edge</value>
-    <comment>Esto está en el título del navegador Microsoft Edge. Generalmente, el título es el nombre de la página web seguido de un guion, seguido de la frase "Microsoft Edge". La barra de título está oculta para Microsoft Edge. Puede que tenga que usar una herramienta de terceros como UISpy.exe para obtener el título. La traducción debe coincidir con lo que viene después del guion. Tradúzcalo adecuadamente después de verificar en una computadora con la cultura instalada. ACAT usa esta cadena para identificar la ventana de Microsoft Edge</comment>
+    <comment>This is in the title of the Microsoft Edge Browser.  Usually the title is the name of the web page followed by a hypen, followed by the phrase "Microsoft Edge".  The title bar is hidden for Microsoft Edge.  You may have to use a 3rd party tool such as UISpy.exe to get the title.  The translation should match whatever comes after the hyphen.  Translate it appropriately after verifying on a computer with the culture installed.  ACATuses this string to identify the Microsoft Edge window</comment>
   </data>
   <data name="NewTab" xml:space="preserve">
-    <value>Nueva Pestaña</value>
+    <value>New Tab</value>
   </data>
   <data name="NextTab" xml:space="preserve">
-    <value>Siguiente Pestaña</value>
+    <value>Next Tab</value>
   </data>
   <data name="PleaseWait" xml:space="preserve">
-    <value>Por favor, espere...</value>
+    <value>Please wait...</value>
   </data>
   <data name="TriggerToStop" xml:space="preserve">
-    <value>Disparador para detener</value>
+    <value>Trigger to stop</value>
   </data>
   <data name="SpeakError" xml:space="preserve">
-    <value>Error al Hablar</value>
+    <value>Speak Error</value>
   </data>
   <data name="TextToSpeechTestString" xml:space="preserve">
-    <value>Esta es una prueba. Uno dos tres cuatro cinco.</value>
-    <comment>Esta es la cadena de prueba para probar el volumen/velocidad/tono de texto a voz.</comment>
+    <value>This is a test. One two three four five.</value>
+    <comment>This is the test string to test the volume/rate/pitch of text-to-speech. </comment>
   </data>
   <data name="DualMonitorMenu" xml:space="preserve">
-    <value>Monitor Dual</value>
+    <value>Dual Monitor</value>
   </data>
   <data name="MaximizeInOtherMonitor" xml:space="preserve">
-    <value>Maximizar en otro</value>
+    <value>Maximize in other</value>
   </data>
   <data name="MoveToOtherMonitor" xml:space="preserve">
-    <value>Mover a otro</value>
+    <value>Move to other</value>
   </data>
   <data name="DisclaimerConvAssist" xml:space="preserve">
-    <value>ACAT presenta sugerencias de finalización de oraciones predictivas para que los usuarios elijan con el fin de reducir el esfuerzo de escritura. Este modelo está diseñado solo para soporte de comunicación y no ofrece asesoramiento médico.
+    <value>ACAT presents predictive sentence completion suggestions for users to choose from in order to reduce typing effort. This model is designed only for communication support and does not offer medical advice. 
 
-El modelo de IA que genera estas predicciones se basa en el modelo GPT2 de OpenAI [Radford. A, Language Models are Unsupervised Multitask Learners, 2019, OpenAI] que ha sido específicamente ajustado en un conjunto de datos de Comunicación Alternativa y Aumentativa (AAC), para apoyar el uso asistencial de ACAT.
+The AI model that generates these predictions is based on OpenAI's GPT2 model [Radford. A, Language Models are Unsupervised Multitask Learners, 2019, OpenAI]  that has been specifically fine-tuned on an Alternative and Augmentative Communication (AAC) dataset, to support ACAT’s assistive usage.
 
-El modelo base de IA, GPT2, fue preentrenado con grandes cantidades de datos de internet que posiblemente contienen texto sesgado/tóxico y fácticamente inexacto. Si bien hemos hecho grandes esfuerzos para eliminar la generación dañina o hiriente en nuestro modelo ajustado, es posible que las respuestas de nuestro sistema a veces puedan ser sesgadas, tóxicas, inexactas o contextualmente inapropiadas.
+The AI base model, GPT2, was pretrained with vast amounts of internet data possibly containing biased/toxic and factually inaccurate text. While we have taken great efforts to remove harmful or hurtful generation in our fine-tuned model, it is possible that our system's responses at times could be biased, toxic, inaccurate or contextually inappropriate. 
 
-Los usuarios mantienen el control total de si eligen o no el contenido generado por la IA y también tienen la capacidad de editar y confirmar todas las respuestas para asegurarse de que reflejen su mensaje deseado. El contenido generado por IA no debe usarse o marcarse como un registro oficial hasta que se haya realizado una revisión humana del contenido para garantizar su precisión. Los usuarios asumen todos los riesgos asociados con el uso de ACAT (componente de IA). Ni los desarrolladores ni Intel son responsables de ninguna inexactitud, error o sesgo en el contenido generado por IA.
+Users retain full control of whether to choose from the AI generated content or not and also have the ability to edit and confirm all responses to ensure they reflect their intended message. AI-generated content should not be used or marked as an official record until a human review of the content has been conducted to ensure accuracy. Users assume all risks associated with the use of ACAT (AI component). Neither the developers nor Intel are responsible for any inaccuracies, errors, biases in the AI-generated content. 
 
-Tenga precaución con la atribución/explicación incorrecta. El contenido generado por IA no siempre es confiable. No siempre se correlaciona con una explicación humana y no se puede confiar en él para explicaciones definitivas. Es su responsabilidad verificar la información con fuentes confiables y rastreables.
+Take caution around incorrect attribution/explanation. AI-generated content isn’t always reliable. It doesn’t always correlate with a human explanation and cannot be relied on for definitive explanations. It is your responsibility to fact check information with traceable, reliable sources.  
 
-Sea escéptico con el tono. Es responsabilidad de los usuarios editar tanto el tono como los hechos.
+Be skeptical of tone. It is users’ responsibility to edit for tone as well as facts. 
 
-Los usuarios son responsables de cualquier decisión tomada o acción realizada sobre la base del contenido generado por IA.
+Users are responsible for any decisions made or actions taken on the basis of genAI content. 
 
-Intel está comprometido con el respeto de los derechos humanos y evitar la complicidad en abusos de los derechos humanos, una política reflejada en los Principios Globales de Derechos Humanos de Intel. En consecuencia, al acceder al material de Intel en esta plataforma, acepta que no utilizará el material en un producto o aplicación que cause o contribuya a una violación de un derecho humano reconocido internacionalmente. Para obtener más información, consulte los Principios Globales de Derechos Humanos de Intel en: https://www.intel.com/content/www/us/en/policy/policy-human-rights.html</value>
+Intel is committed to the respect of human rights and avoiding complicity in human rights abuses, a policy reflected in the Intel Global Human Rights Principles. Accordingly, by accessing the Intel material on this platform you agree that you will not use the material in a product or application that causes or contributes to a violation of an internationally recognized human right. For more information, please see Intel's Global Human Rights Principles at: https://www.intel.com/content/www/us/en/policy/policy-human-rights.html</value>
   </data>
   <data name="DisclaimerBCI" xml:space="preserve">
-    <value>Hardware BCI - Placa Cyton
+    <value>BCI Hardware - Cyton Board
 
-La Placa Cyton no es un dispositivo médico ni está destinada para diagnóstico médico y se le proporciona "tal cual", y no hacemos ninguna garantía expresa o implícita con respecto a su funcionalidad, operatividad o uso, incluidas, entre otras, cualquier garantía implícita, idoneidad para un propósito particular o infracción. Renunciamos expresamente a cualquier responsabilidad por cualquier daño directo, indirecto, consecuente, incidental o especial, incluidos, entre otros, ingresos perdidos, ganancias perdidas, pérdidas resultantes de la interrupción del negocio o pérdida de datos, independientemente de la forma de acción o teoría legal bajo la cual se pueda afirmar la responsabilidad, incluso si se advierte de la posibilidad de tales daños.
+The Cyton Board is not a medical device nor is it intended for medical diagnosis and provided to you "as is," and we make no express or implied warranties whatsoever with respect to its functionality, operability, or use, including, without limitation, any implied warranties, fitness for a particular purpose, or infringement. We expressly disclaim any liability whatsoever for any direct, indirect, consequential, incidental or special damages, including, without limitation, lost revenues, lost profits, losses resulting from business interruption or loss of data, regardless of the form of action or legal theory under which the liability may be asserted, even if advised of the possibility of such damages.
 
-Hardware BCI - Placa de Evaluación
+BCI Hardware - Evaluation Board
 
-Aviso Importante de la Placa/Kit de Evaluación: OpenBCI, Inc. proporciona el(los) producto(s) adjunto(s) bajo las siguientes condiciones: Esta placa/kit de evaluación está destinada para su uso solo para PROPÓSITOS DE DESARROLLO DE INGENIERÍA, DEMOSTRACIÓN O EVALUACIÓN y no se considera por OpenBCI, Inc. como un producto final apto para el uso general del consumidor. Las personas que manejen el(los) producto(s) deben tener capacitación en electrónica y observar estándares de buenas prácticas de ingeniería. Como tal, los bienes proporcionados no están destinados a ser completos en términos de consideraciones de diseño, marketing y/o fabricación relacionadas con la protección, incluidas las medidas de seguridad del producto y ambientales que se encuentran típicamente en productos finales que incorporan tales componentes semiconductores o placas de circuito. Esta placa/kit de evaluación no está dentro del alcance de las directivas de la Unión Europea con respecto a la compatibilidad electromagnética, sustancias restringidas (RoHS), reciclaje (WEEE), FCC, CE o UL, y por lo tanto puede no cumplir con los requisitos técnicos de estas directivas u otras directivas relacionadas.
+Evaluation Board/Kit Important Notice: OpenBCI, Inc. provides the enclosed product(s) under the following conditions: This evaluation board/kit is intended for use for ENGINEERING DEVELOPMENT, DEMONSTRATION, OR EVALUATION PURPOSES ONLY and is not considered by OpenBCI, Inc. to be a finished end-product fit for general consumer use. Persons handling the product(s) must have electronics training and observe good engineering practice standards. As such, the goods being provided are not intended to be complete in terms of required design-, marketing-, and/or manufacturing-related protective considerations, including product safety and environmental measures typically found in end products that incorporate such semiconductor components or circuit boards. This evaluation board/kit does not fall within the scope of the European Union directives regarding electromagnetic compatibility, restricted substances (RoHS), recycling (WEEE), FCC, CE or UL, and therefore may not meet the technical requirements of these directives or other related directives.
 
-Hardware BCI - Gorro de Electrodos
+BCI Hardware - Electrode Cap
 
-El Gorro de Electrodos OpenBCI no es un dispositivo médico ni está destinado para diagnóstico médico y se le proporciona "tal cual", y no hacemos ninguna garantía expresa o implícita con respecto a su funcionalidad, operatividad o uso, incluidas, entre otras, cualquier garantía implícita, idoneidad para un propósito particular o infracción. Renunciamos expresamente a cualquier responsabilidad por cualquier daño directo, indirecto, consecuente, incidental o especial, incluidos, entre otros, ingresos perdidos, ganancias perdidas, pérdidas resultantes de la interrupción del negocio o pérdida de datos, independientemente de la forma de acción o teoría legal bajo la cual se pueda afirmar la responsabilidad, incluso si se advierte de la posibilidad de tales daños.</value>
+The OpenBCI Electrode Cap is not a medical device nor is it intended for medical diagnosis and provided to you "as is," and we make no express or implied warranties whatsoever with respect to its functionality, operability, or use, including, without limitation, any implied warranties, fitness for a particular purpose, or infringement. We expressly disclaim any liability whatsoever for any direct, indirect, consequential, incidental or special damages, including, without limitation, lost revenues, lost profits, losses resulting from business interruption or loss of data, regardless of the form of action or legal theory under which the liability may be asserted, even if advised of the possibility of such damages.</value>
   </data>
   <data name="PDFLoaderHtml" xml:space="preserve">
     <value>&lt;!DOCTYPE html&gt;
-&lt;html lang="es"&gt;
+&lt;html lang="en"&gt;
 &lt;head&gt;
     &lt;meta charset="UTF-8"&gt;
     &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
     &lt;link rel="icon" type="image/x-icon" href="$ASSETS_IMAGES_DIR/ACATTalk.ico"&gt;
-    &lt;title&gt;Guía del usuario de ACAT&lt;/title&gt;
+    &lt;title&gt;ACAT Users guide&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;
     &lt;object data="FILE_PATH" type="application/pdf" width="100%" height="1024px"&gt;
-        &lt;p&gt;No se puede mostrar el archivo PDF.&lt;/p&gt;
+        &lt;p&gt;Unable to display PDF file.&lt;/p&gt;
       &lt;/object&gt;
 &lt;/body&gt;
 &lt;/html&gt;</value>
@@ -1265,7 +1266,7 @@ El Gorro de Electrodos OpenBCI no es un dispositivo médico ni está destinado p
   &lt;/head&gt;
   &lt;body style="background-color:#232433;"&gt;
     &lt;p style="font-family:'Montserrat Medium'; font-size:24px; color:white; text-align: center;"&gt;
-    Para obtener instrucciones completas sobre la configuración, vea este &lt;a href="$ASSETS_VIDEOS_DIR#ACATOverviewBCI.mp4"&gt;video&lt;/a&gt; o revise la &lt;a href=$ACAT_USER_GUIDE#TableOfContents&gt;guía de configuración&lt;/a&gt;
+    For complete instructions on setup, watch this &lt;a href="$ASSETS_VIDEOS_DIR#ACATOverviewBCI.mp4"&gt;video&lt;/a&gt; or review the &lt;a href=$ACAT_USER_GUIDE#TableOfContents&gt;setup guide&lt;/a&gt;
     &lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</value>
@@ -1280,18 +1281,18 @@ El Gorro de Electrodos OpenBCI no es un dispositivo médico ni está destinado p
   &lt;/head&gt;
   &lt;body style="background-color:#232433;"&gt;
     &lt;p style="font-family:'Montserrat Medium'; font-size:14px; color:white; text-align: center;"&gt;
-Calibrar BCI es crucial para comprender los patrones en sus señales cerebrales al seleccionar un elemento resaltado en la pantalla. ACAT requiere completar tres calibraciones distintas, cada una con una puntuación mínima.
-Asegúrese de que la velocidad de escaneo esté ajustada a un nivel que sea cómodo para usted.&lt;br/&gt;Para obtener instrucciones completas, vea este &lt;a href="$ASSETS_VIDEOS_DIR#ACATOverviewBCI.mp4"&gt;video&lt;/a&gt; o revise la &lt;a href=$ACAT_USER_GUIDE#BCICalibration&gt;guía de configuración&lt;/a&gt;
+Calibrating BCI is crucial for understanding the patterns in your brain signals when selecting a highlighted item on the screen. ACAT requires completing three distinct calibrations, each with a minimum score. 
+Ensure the scanning speed is adjusted to a level that is comfortable for you.&lt;br/&gt;For complete instructions, watch this &lt;a href="$ASSETS_VIDEOS_DIR#ACATOverviewBCI.mp4"&gt;video&lt;/a&gt; or review the &lt;a href=$ACAT_USER_GUIDE#BCICalibration&gt;setup guide&lt;/a&gt;
     &lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</value>
   </data>
   <data name="ResolutionWarning" xml:space="preserve">
-    <value>La resolución horizontal del monitor está actualmente configurada en {0} píxeles, lo que puede causar problemas de visualización con la interfaz de usuario de ACAT. La interfaz de usuario de ACAT está diseñada para monitores Full HD con una resolución horizontal de 1920 píxeles.
+    <value>The monitor's horizontal resolution is currently set to {0} pixels, which may cause display issues with the ACAT user interface. The ACAT UI is tailored for Full HD monitors with a horizontal resolution of 1920 pixels.
 
-Para resolver posibles inconsistencias en la visualización, recomendamos ajustar la resolución de su monitor a 1920 píxeles de ancho, si es compatible.
+To resolve any potential display inconsistencies, we recommend adjusting your monitor's resolution to 1920 pixels wide, if supported.
 
-Para obtener instrucciones sobre cómo cambiar la resolución de la pantalla, consulte la Guía del Usuario de ACAT.</value>
+For guidance on changing the display resolution, please refer to the ACAT User Guide.</value>
   </data>
   <data name="A" xml:space="preserve">
     <value>A</value>
@@ -1372,42 +1373,128 @@ Para obtener instrucciones sobre cómo cambiar la resolución de la pantalla, co
     <value>B</value>
   </data>
   <data name="Back" xml:space="preserve">
-    <value>Atrás</value>
+    <value>Back</value>
   </data>
   <data name="Scan Speed" xml:space="preserve">
-    <value>Velocidad de Escaneo</value>
+    <value>Scan Speed</value>
   </data>
   <data name="Exit Application" xml:space="preserve">
-    <value>Salir de la Aplicación</value>
+    <value>Exit Application</value>
   </data>
   <data name="Mode" xml:space="preserve">
-    <value>Modo</value>
+    <value>Mode</value>
   </data>
   <data name="Y/N" xml:space="preserve">
-    <value>S/N</value>
+    <value>Y/N</value>
   </data>
   <data name="Calibrate Switch" xml:space="preserve">
-    <value>Calibrar Interruptor</value>
+    <value>Calibrate Switch</value>
   </data>
   <data name="Lock Screen" xml:space="preserve">
-    <value>Bloquear Pantalla</value>
+    <value>Lock Screen</value>
   </data>
   <data name="." xml:space="preserve">
     <value>.</value>
   </data>
   <data name="Shorthand" xml:space="preserve">
-    <value>Abreviatura</value>
+    <value>Shorthand</value>
   </data>
   <data name="SymlinkFatalError" xml:space="preserve">
-    <value />
+    <value>Fatal error.\n {0} is a junction/symlink. Cannot perform file I/O on it.\n ACAT will exit now.\n Please delete this file, re-install ACAT and retry.</value>
   </data>
   <data name="StartingACAT" xml:space="preserve">
-    <value />
+    <value>Starting ACAT</value>
   </data>
   <data name="ZoomWarning" xml:space="preserve">
-    <value />
+    <value>The monitor's display scaling is currently set to {0}% which may cause display issues with the ACAT user interface.  The ACAT UI is tailored for display scaling values of 100% and 125%.\r\n\r\n To resolve any potential display inconsistencies, we recommend adjusting your monitor's display scaling to 100% or 125%.\r\n\r\n For guidance on changing the display scaling, please refer to the ACAT User Guide.</value>
+  </data>
+  <data name="EditAbbreviation" xml:space="preserve">
+    <value>Edit Abbreviation</value>
   </data>
   <data name="dontShowMessage" xml:space="preserve">
-    <value />
+    <value>Don't show this message again</value>
+  </data>
+  <data name="buttonNext" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="buttonBack" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="buttonCancel" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="PleaseSelectYourSwitchType" xml:space="preserve">
+    <value>Please select your switch type</value>
+  </data>
+  <data name="InitializeComponent_StartingACAT" xml:space="preserve">
+    <value>Starting ACAT....</value>
+  </data>
+  <data name="InitializeComponent_ChooseKeyboardConfiguration" xml:space="preserve">
+    <value>Choose Keyboard Configuration</value>
+  </data>
+  <data name="InitializeComponent_WelcomeTo" xml:space="preserve">
+    <value>Welcome to</value>
+  </data>
+  <data name="InitializeComponent_ACAT" xml:space="preserve">
+    <value>ACAT</value>
+  </data>
+  <data name="InitializeComponent_AssistiveContextAwareToolkit" xml:space="preserve">
+    <value>Assistive Context Aware Toolkit</value>
+  </data>
+  <data name="InitializeComponent_Configure" xml:space="preserve">
+    <value>Configure</value>
+  </data>
+  <data name="InitializeComponent_Copyright" xml:space="preserve">
+    <value>Copyright</value>
+  </data>
+  <data name="InitializeComponent_AssistiveContextAwareToolkitACAT" xml:space="preserve">
+    <value>Assistive Context-Aware Toolkit (ACAT)</value>
+  </data>
+  <data name="InitializeComponent_Disclaimers" xml:space="preserve">
+    <value>Disclaimers</value>
+  </data>
+  <data name="InitializeComponent_Licenses" xml:space="preserve">
+    <value>Licenses</value>
+  </data>
+  <data name="DonTShowThisMessageAgain" xml:space="preserve">
+    <value>Don't show this message again</value>
+  </data>
+  <data name="Disclaimer" xml:space="preserve">
+    <value>Disclaimer</value>
+  </data>
+  <data name="AdjustScanningSpeed" xml:space="preserve">
+    <value>Adjust Scanning Speed</value>
+  </data>
+  <data name="SwitchScanningTryout" xml:space="preserve">
+    <value>Switch Scanning Tryout</value>
+  </data>
+  <data name="labelScanSpeedSelect" xml:space="preserve">
+    <value>Type the 3 letter word using your switch to select the letters from the bottom row.
+Adjust the scan speed using the slider.
+Click Next when you are comfortable using ​the switch scanning​.</value>
+  </data>
+  <data name="DonTShowThisAgain" xml:space="preserve">
+    <value>Don't show this again</value>
+  </data>
+  <data name="AppUILayout" xml:space="preserve">
+    <value>App UI Layout</value>
+  </data>
+  <data name="labelScanSpeedSelect3" xml:space="preserve">
+    <value>Shown below is the layout of the main window of the application.</value>
+  </data>
+  <data name="ScreenLocked" xml:space="preserve">
+    <value>Screen Locked</value>
+  </data>
+  <data name="ToUnlockUseYourSwitchToTypeThePinShownInTheBox" xml:space="preserve">
+    <value>To unlock, use your switch to type the pin shown in the box</value>
+  </data>
+  <data name="buttonUnlock" xml:space="preserve">
+    <value>Unlock</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="End" xml:space="preserve">
+    <value>End</value>
   </data>
 </root>

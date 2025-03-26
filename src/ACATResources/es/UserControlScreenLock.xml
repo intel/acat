@@ -11,11 +11,11 @@
 
 <ACAT>
     <WidgetAttributes>
-            <WidgetAttribute name="B1" label="1" value="1" fontname="Arial" fontsize="72" bold="true" />
-            <WidgetAttribute name="B2" label="2" value="2" fontname="Arial" fontsize="72" bold="true" />
-            <WidgetAttribute name="B3" label="3" value="3" fontname="Arial" fontsize="72" bold="true" />
-            <WidgetAttribute name="B4" label="4" value="4" fontname="Arial" fontsize="72" bold="true" />
-            <WidgetAttribute name="B5" label="5" value="5" fontname="Arial" fontsize="72" bold="true" />
+            <WidgetAttribute name="B1" label="1" value="1" fontname="montserrat" fontsize="72" bold="true" />
+            <WidgetAttribute name="B2" label="2" value="2" fontname="montserrat" fontsize="72" bold="true" />
+            <WidgetAttribute name="B3" label="3" value="3" fontname="montserrat" fontsize="72" bold="true" />
+            <WidgetAttribute name="B4" label="4" value="4" fontname="montserrat" fontsize="72" bold="true" />
+            <WidgetAttribute name="B5" label="5" value="5" fontname="montserrat" fontsize="72" bold="true" />
     </WidgetAttributes>
 
     <Layout>
@@ -41,4 +41,3 @@
         </Animation>    
     </Animations>
 </ACAT>
-

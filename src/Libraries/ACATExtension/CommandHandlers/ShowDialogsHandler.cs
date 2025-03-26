@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
+using ACATResources;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
 using ACAT.Lib.Core.Utility;
@@ -94,7 +94,7 @@ namespace ACAT.Lib.Extension.CommandHandlers
             var appName = (attributes.Length != 0) ? ((AssemblyTitleAttribute)attributes[0]).Title : String.Empty;
 
             var version = ACATPreferences.ApplicationAssembly.GetName().Version.Major + "." + ACATPreferences.ApplicationAssembly.GetName().Version.Minor;
-            var versionInfo = String.Format(R.GetString("Version"), version);
+            var versionInfo = String.Format(Resources.Version, version);
 
             attributes = ACATPreferences.ApplicationAssembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
             var copyrightInfo = (attributes.Length != 0) ? ((AssemblyCopyrightAttribute)attributes[0]).Copyright : String.Empty;

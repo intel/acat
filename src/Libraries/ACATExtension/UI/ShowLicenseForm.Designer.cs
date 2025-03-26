@@ -1,4 +1,6 @@
-﻿namespace ACAT.Lib.Extension
+﻿using ACATResources;
+
+namespace ACAT.Lib.Extension
 {
     partial class ShowLicenseForm
     {
@@ -93,7 +95,7 @@
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(111, 44);
             this.buttonOK.TabIndex = 0;
-            this.buttonOK.Text = "Close";
+            this.buttonOK.Text = Resources.Close;
             this.buttonOK.UseVisualStyleBackColor = false;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 

@@ -1,4 +1,5 @@
-﻿
+﻿using ACATResources;
+
 namespace ACAT.Lib.Extension.Onboarding
 {
     partial class UserControlKeyboardConfigSelect
@@ -95,7 +96,7 @@ namespace ACAT.Lib.Extension.Onboarding
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(912, 120);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Choose Keyboard Configuration";
+            this.label1.Text = Resources.InitializeComponent_ChooseKeyboardConfiguration;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel2

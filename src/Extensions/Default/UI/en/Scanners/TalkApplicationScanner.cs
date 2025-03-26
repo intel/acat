@@ -14,7 +14,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
+using ACATResources;
 using ACAT.Lib.Core.AgentManagement;
 using ACAT.Lib.Core.Audit;
 using ACAT.Lib.Core.PanelManagement;
@@ -791,7 +791,7 @@ namespace ACAT.Extensions.Default.UI.Scanners
 
                     case "CmdTalkWindowClear":
 
-                        if (DialogUtils.ConfirmScanner(form, R.GetString("ClearTalkWindow")))
+                        if (DialogUtils.ConfirmScanner(form, Resources.ClearTalkWindow))
                         {
                             Windows.SetText(form._textBoxTalkWindow, String.Empty);
                         }
@@ -822,7 +822,7 @@ namespace ACAT.Extensions.Default.UI.Scanners
                         break;
 
                     case "ExitApp":
-                        if (DialogUtils.ConfirmScanner(R.GetString("CloseQ")))
+                        if (DialogUtils.ConfirmScanner(Resources.Close))
                         {
                             Windows.CloseForm(form);
                         }

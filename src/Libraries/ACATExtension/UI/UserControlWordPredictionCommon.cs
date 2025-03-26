@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
+using ACATResources;
 using ACAT.Lib.Core.AgentManagement;
 using ACAT.Lib.Core.Audit;
 using ACAT.Lib.Core.PanelManagement;
@@ -14,6 +14,7 @@ using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WidgetManagement;
 using ACAT.Lib.Core.Widgets;
 using ACAT.Lib.Core.WordPredictionManagement;
+using ACAT.ACATResources;
 using System;
 using System.Collections.Generic;
 using System.Linq;

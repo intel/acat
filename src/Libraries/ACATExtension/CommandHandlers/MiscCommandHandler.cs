@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
+using ACATResources;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
 using System;
@@ -43,7 +43,7 @@ namespace ACAT.Lib.Extension.CommandHandlers
                     break;
 
                 case "CmdExitAppWithConfirm":
-                    if (DialogUtils.ConfirmScanner(null, R.GetString("QuitApplication")))
+                    if (DialogUtils.ConfirmScanner(null, Resources.QuitApplication))
                     {
                         quitApplication();
                     }

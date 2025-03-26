@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
+using ACATResources;
 using ACAT.Lib.Core.Utility;
 using System;
 using System.IO;
@@ -72,7 +72,7 @@ namespace ACAT.Lib.Extension
                 Close();
             }
 
-            buttonOK.Text = R.GetString(buttonOK.Text);
+            buttonOK.Text = Resources.ResourceManager.GetString(buttonOK.Text);
 
             try
             {

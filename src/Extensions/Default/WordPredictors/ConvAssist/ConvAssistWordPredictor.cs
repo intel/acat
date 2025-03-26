@@ -16,7 +16,7 @@ using ACAT.Lib.Core.PreferencesManagement;
 using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WordPredictionManagement;
-using ACAT.ACATResources;
+using ACATResources;
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -92,7 +92,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// </summary>
         public ConvAssistWordPredictor()
         {
-            Settings.PreferencesFilePath = getUserRelativePath("en", SettingsFileName, true);
+            Settings.PreferencesFilePath = getUserRelativePath(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, SettingsFileName, true);
 
             settings = Settings.Load();
 
@@ -155,7 +155,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                     "The ConvAssist predictive text functionality is derived from Pressagio, the " +
                     "intelligent predictive text and characters. ");
 
-            Disclaimers.Add("ConvAssist", R.GetString("DisclaimerConvAssist"));
+            Disclaimers.Add("ConvAssist", Resources.DisclaimerConvAssist);
 
             // Start the ConvAssist Process
             bool send_params = true;
@@ -446,7 +446,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
 
             //TODO: Move this out of the word predictor code and into UI
-            //if (DisclaimerDialog.ShowDialog(R.GetString("DisclaimerConvAssist"), null, true))
+            //if (DisclaimerDialog.ShowDialog(Resources.DisclaimerConvAssist, null, true))
             //{
             //    settings.ShowDisclaimerOnStartup = false;
             //    settings.Save();

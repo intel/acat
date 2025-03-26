@@ -1,4 +1,6 @@
-﻿namespace ACAT.Lib.Extension
+﻿using ACATResources;
+
+namespace ACAT.Lib.Extension
 
 {
     partial class UserControlDefaultTryout
@@ -75,7 +77,7 @@
             this.tableLayoutPanelMain.SetRowSpan(this.label1, 2);
             this.label1.Size = new System.Drawing.Size(831, 128);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Switch Scanning Tryout";
+            this.label1.Text = Resources.SwitchScanningTryout;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelScanSpeedSelect3
@@ -92,9 +94,7 @@
             this.tableLayoutPanelMain.SetRowSpan(this.labelScanSpeedSelect3, 2);
             this.labelScanSpeedSelect3.Size = new System.Drawing.Size(1024, 128);
             this.labelScanSpeedSelect3.TabIndex = 71;
-            this.labelScanSpeedSelect3.Text = "Type the 3 letter word using your switch to select the letters from the bottom ro" +
-    "w.\r\nAdjust the scan speed using the slider.\r\nClick Next when you are comfortable" +
-    " using ​the switch scanning​\r\n";
+            this.labelScanSpeedSelect3.Text = Resources.labelScanSpeedSelect;
             this.labelScanSpeedSelect3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanelMain
@@ -364,7 +364,7 @@
             this.scannerRoundedButtonControl1.Name = "scannerRoundedButtonControl1";
             this.scannerRoundedButtonControl1.Size = new System.Drawing.Size(181, 58);
             this.scannerRoundedButtonControl1.TabIndex = 82;
-            this.scannerRoundedButtonControl1.Text = "Next";
+            this.scannerRoundedButtonControl1.Text = Resources.LMNext;
             this.scannerRoundedButtonControl1.UseMnemonic = false;
             this.scannerRoundedButtonControl1.UseVisualStyleBackColor = false;
             this.scannerRoundedButtonControl1.Click += new System.EventHandler(this.buttonDone_Click);
@@ -380,7 +380,7 @@
             this.checkBoxDontShowThisOnStartup.Name = "checkBoxDontShowThisOnStartup";
             this.checkBoxDontShowThisOnStartup.Size = new System.Drawing.Size(366, 58);
             this.checkBoxDontShowThisOnStartup.TabIndex = 83;
-            this.checkBoxDontShowThisOnStartup.Text = "Don\'t show this again";
+            this.checkBoxDontShowThisOnStartup.Text = Resources.DonTShowThisAgain;
             this.checkBoxDontShowThisOnStartup.UseVisualStyleBackColor = true;
             // 
             // UserControlDefaultTryout

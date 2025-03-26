@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
+using ACATResources;
 using ACAT.Lib.Core.AgentManagement;
 using ACAT.Lib.Core.Audit;
 using ACAT.Lib.Core.PanelManagement;
@@ -774,7 +774,7 @@ namespace ACAT.Lib.Extension
 
                     case "CmdWindowPosSizeMenu":
                         {
-                            var panel = Context.AppPanelManager.CreatePanel("WindowPosSizeMenu", R.GetString("Window")) as IPanel;
+                            var panel = Context.AppPanelManager.CreatePanel("WindowPosSizeMenu", Resources.Window) as IPanel;
                             if (panel != null)
                             {
                                 Context.AppPanelManager.Show(form as IPanel, panel);

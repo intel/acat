@@ -1,0 +1,1857 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <metadata name="tableLayoutPanelMain.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="TriggerBox.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="buttonBack.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="buttonNext.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="buttonExit.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="panelSignalQualitySlider.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelBCISignalCheckDescription.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="labelBCISignalCheckDescription.Text" xml:space="preserve">
+    <value>BCI signal quality is an indicator of  how good the contact is between the electrodes on the cap and your scalp. 
+
+ACAT uses two metrics - “railing” and “impedance” - to check signal quality for each connected electrode. The slider below gives an indication of the overall quality</value>
+  </data>
+  <metadata name="tabPageRailing.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="tableLayoutRailingTest.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="tabPageImpedance.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="tableLayoutImpedanceTest.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelImpedanceTestInfo2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelImpedanceTestingState5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelImpedanceTestingState4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelImpedanceTestingState2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelImpedanceTestingState3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestR1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelImpedanceTestInfo1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelImpedanceTest.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestR8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestR7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestR6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestR5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestR1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestR2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestR3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestR4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label9.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label10.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label11.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label12.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label13.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label14.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestOp1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestOp2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestOp3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestOp4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestOp6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestOp5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestOp7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestOp8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsImpedanceTest1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsImpedanceTest2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsImpedanceTest4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsImpedanceTestOp5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsImpedanceTestOp6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsImpedanceTestOp7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsImpedanceTestOp8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelImpedanceImpedance.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestR2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestR3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestR4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestR5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestR6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestR7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestR8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestOp1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestOp2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestOp3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestOp4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestOp5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestOp6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestOp7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestOp8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelOptionalElectrodesImpedanceTest.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="buttonTestImpedance.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelImpedanceTestingState1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsImpedanceTest3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="tabPageQuality.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="tableLayoutQualityResults.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelBCISignalCheck.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="panelSignalQuality.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="scannerRoundedButtonControl1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapT3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapF7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapF3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapFp1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapFp2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapFz.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapF4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapF8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapC4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapCz.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapT5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapO2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapO1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCap11.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapT6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapGND.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapP4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapP3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapC3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapPz.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="panelSignalQuality.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        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
+</value>
+  </data>
+  <metadata name="tableLayoutRailingTest.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelRailingTestInfo3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelOptionalRailingTest.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelRailingTestInfo2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestOp8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestOp7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestOp6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestOp5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestOp4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestOp3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestOp2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelRailingTestInfo1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelRailingTest.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestR8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestR8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestR7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestR6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestR6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestR5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestR5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestR1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestR1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestR2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestR3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestR3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelElectrodeRailingRailingTest.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelRequiredRailingTest.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestR4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestR4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestR2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label66.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label67.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label68.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label69.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label70.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label71.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label72.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label73.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestOp1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestOp2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestOp3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestOp4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestOp6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestOp5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestOp7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestOp8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsIRailingTest1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsIRailingTest2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsIRailingTest4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsIRailingTest3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsIRailingTest5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsIRailingTest6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsIRailingTest7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsIRailingTest8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestOp1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestR7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelRailingTestInfo3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelOptionalRailingTest.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelRailingTestInfo2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestOp8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestOp7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestOp6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestOp5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestOp4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestOp3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestOp2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelRailingTestInfo1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelRailingTest.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestR8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestR8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestR7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestR6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestR6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestR5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestR5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestR1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestR1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestR2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestR3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestR3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelElectrodeRailingRailingTest.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelRequiredRailingTest.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestR4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestR4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestR2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label66.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label67.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label68.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label69.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label70.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label71.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label72.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label73.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestOp1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestOp2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestOp3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestOp4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestOp6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestOp5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestOp7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestOp8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsIRailingTest1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsIRailingTest2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsIRailingTest4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsIRailingTest3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsIRailingTest5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsIRailingTest6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsIRailingTest7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsIRailingTest8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="chartRailingTestOp1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeRailingTestR7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelImpedanceTestInfo2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelImpedanceTestingState5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelImpedanceTestingState4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelImpedanceTestingState2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelImpedanceTestingState3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestR1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelImpedanceTestInfo1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelImpedanceTest.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestR8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestR7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestR6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestR5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestR1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestR2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestR3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestR4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label9.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label10.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label11.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label12.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label13.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label14.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestOp1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestOp2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestOp3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestOp4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestOp6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestOp5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestOp7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeImpedanceTestOp8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsImpedanceTest1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsImpedanceTest2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsImpedanceTest4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsImpedanceTestOp5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsImpedanceTestOp6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsImpedanceTestOp7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsImpedanceTestOp8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelImpedanceImpedance.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestR2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestR3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestR4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestR5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestR6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestR7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestR8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestOp1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestOp2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestOp3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestOp4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestOp5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestOp6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestOp7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResImpedanceTestOp8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelOptionalElectrodesImpedanceTest.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="buttonTestImpedance.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelImpedanceTestingState1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsImpedanceTest3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="tableLayoutQualityResults.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label16.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelQualityResultsInfo1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelQualityResultsInfo2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsR1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsR8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsR7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsR6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsR5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsR1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsR2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsR3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsR4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label25.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label26.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label27.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label28.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label29.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label30.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label31.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label32.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsOp1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsOp2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsOp3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsOp4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsOp6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsOp5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsOp7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsOp8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsQualityResults1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsQualityResults2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsQualityResults4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsQualityResults3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsQualityResults5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsQualityResults6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsQualityResults7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsQualityResult8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelImpedanceQualityResults.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsR2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsR3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsR4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsR5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsR6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsR7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsR8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsOp1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsOp2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsOp3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsOp4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsOp5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsOp6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsOp7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsOp8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelOptionalElectrodesQualityResults.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelRailingQualityResults.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label47.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label48.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label50.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label51.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label52.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label65.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label74.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label75.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelPlusQualityResults1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelPlusQualityResults2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelPlusQualityResults3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelPlusQualityResults4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelPlusQualityResults5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelPlusQualityResults6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelPlusQualityResults7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelPlusQualityResults8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsR1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsR2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsR3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsR4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsR5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsR6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsR7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsR8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsOp1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsOp2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsOp3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsOp4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsOp5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsOp6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsOp7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsOp8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelQualityResults.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label16.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelQualityResultsInfo1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="labelQualityResultsInfo1.Text" xml:space="preserve">
+    <value>Summary of the signal checks per electrode
+
+The signal quality results are a combination of the railing and impedance metrics from the previous tabs
+
+If the quality is red go back to the previous tabs and follow the tips</value>
+  </data>
+  <metadata name="labelQualityResultsInfo2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsR1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsR8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsR7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsR6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsR5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsR1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsR2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsR3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsR4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label25.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label26.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label27.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label28.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label29.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label30.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label31.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label32.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsOp1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsOp2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsOp3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsOp4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsOp6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsOp5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsOp7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeQualityResultsOp8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsQualityResults1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsQualityResults2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsQualityResults4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsQualityResults3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsQualityResults5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsQualityResults6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsQualityResults7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelEqualsQualityResult8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelImpedanceQualityResults.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsR2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsR3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsR4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsR5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsR6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsR7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsR8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsOp1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsOp2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsOp3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsOp4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsOp5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsOp6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsOp7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnImpedanceResQualityResultsOp8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelOptionalElectrodesQualityResults.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelRailingQualityResults.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label47.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label48.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label50.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label51.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label52.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label65.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label74.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label75.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelPlusQualityResults1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelPlusQualityResults2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelPlusQualityResults3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelPlusQualityResults4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelPlusQualityResults5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelPlusQualityResults6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelPlusQualityResults7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelPlusQualityResults8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsR1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsR2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsR3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsR4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsR5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsR6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsR7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsR8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsOp1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsOp2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsOp3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsOp4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsOp5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsOp6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsOp7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnRailingResQualityResultsOp8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="labelQualityResults.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="scannerRoundedButtonControl1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapT3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapF7.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapF3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapFp1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapFp2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapFz.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapF4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapF8.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapC4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapCz.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapT5.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapO2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapO1.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCap11.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapT6.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapGND.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapP4.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapP3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapC3.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapPz.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label53.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="label59.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="btnElectrodeCapOp2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>68</value>
+  </metadata>
+</root>

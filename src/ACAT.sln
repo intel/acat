@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.7.34221.43
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.34407.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{A1CD68C8-CE85-4A15-BF82-6154CB6E4A77}"
 EndProject
@@ -271,6 +271,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserControls", "Extensions\
 		{827AD764-63DD-4B12-974D-2B70CC877051} = {827AD764-63DD-4B12-974D-2B70CC877051}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gTecSensorUI", "Extensions\BCI\Actuators\gTec_SensorUI\gTecSensorUI.csproj", "{85991714-E58E-4A19-B7D4-9D9AD10DB9EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -405,6 +407,10 @@ Global
 		{0F38EE30-BF4C-4CFF-B795-C16828520DEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F38EE30-BF4C-4CFF-B795-C16828520DEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F38EE30-BF4C-4CFF-B795-C16828520DEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85991714-E58E-4A19-B7D4-9D9AD10DB9EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85991714-E58E-4A19-B7D4-9D9AD10DB9EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85991714-E58E-4A19-B7D4-9D9AD10DB9EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85991714-E58E-4A19-B7D4-9D9AD10DB9EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -460,6 +466,7 @@ Global
 		{DF2F55C5-84D7-4B46-97DE-FFBA417802EB} = {437A14BE-7A02-443D-8E87-88CDF694A3DF}
 		{8BDB3D08-7EED-41D1-98FA-20571671097E} = {DF2F55C5-84D7-4B46-97DE-FFBA417802EB}
 		{0F38EE30-BF4C-4CFF-B795-C16828520DEA} = {DF2F55C5-84D7-4B46-97DE-FFBA417802EB}
+		{85991714-E58E-4A19-B7D4-9D9AD10DB9EC} = {C91C405B-E0B3-4308-9D3A-B3C8ABA4A36A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6C18E44C-06E3-46DB-9C9C-5B18BC658072}

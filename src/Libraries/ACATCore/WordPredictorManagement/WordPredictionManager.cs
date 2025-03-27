@@ -335,7 +335,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
 
                     if (!retVal)
                     {
-                        ci = new CultureInfo("en-US");
+                        ci = new CultureInfo("en");
                         guid = _wordPredictors.GetDefaultByCulture(ci);
                         if (!Equals(guid, Guid.Empty))
                         {

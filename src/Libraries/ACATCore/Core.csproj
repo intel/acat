@@ -585,8 +585,14 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchSetup.es.resx">
+      <DependentUpon>UserControlHardwareSwitchSetup.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchSetup.resx">
       <DependentUpon>UserControlHardwareSwitchSetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchTest.es.resx">
+      <DependentUpon>UserControlHardwareSwitchTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchTest.resx">
       <DependentUpon>UserControlHardwareSwitchTest.cs</DependentUpon>

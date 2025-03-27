@@ -15,7 +15,7 @@ using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.Onboarding;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
-using ACAT.ACATResources;
+using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -359,7 +359,7 @@ namespace ACAT.Lib.Core.InputActuators
             {
                 "PDF",
                 "true",
-                R.GetString("PDFLoaderHtml"),
+                Resources.PDFLoaderHtml,
                 CoreGlobals.ACATUserGuideFileName,
                 bookmark
             };

@@ -10,7 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
+using ACATResources;
 using ACAT.Extensions.BCI.Common.AnimationSharp;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Extensions.BCI.Common.BCIInterfaceUtilities;
@@ -1373,7 +1373,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             object[] attributes = ACATPreferences.ApplicationAssembly.GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
             var appName = (attributes.Length != 0) ? ((AssemblyTitleAttribute)attributes[0]).Title : String.Empty;
             var version = ACATPreferences.ApplicationAssembly.GetName().Version.Major + "." + ACATPreferences.ApplicationAssembly.GetName().Version.Minor;
-            var versionInfo = String.Format(R.GetString("Version"), version);
+            var versionInfo = String.Format(Resources.Version, version);
             attributes = ACATPreferences.ApplicationAssembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
             var copyrightInfo = (attributes.Length != 0) ? ((AssemblyCopyrightAttribute)attributes[0]).Copyright : String.Empty;
             attributes = ACATPreferences.ApplicationAssembly.GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);

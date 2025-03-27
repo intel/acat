@@ -12,7 +12,7 @@ using ACAT.Lib.Core.Utility;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System;
-using ACAT.ACATResources;
+using ACATResources;
 
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
@@ -399,7 +399,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             {
                 list.Add("PDF");
                 list.Add("true");
-                list.Add(R.GetString("PDFLoaderHtml"));
+                list.Add(Resources.PDFLoaderHtml);
                 list.Add(param1);
                 list.Add(param2);
             }

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="label1.Text" xml:space="preserve">
-    <value>Calibration is essential. BCI need to convert your thought into a trigger/switch. There are three calibrations below, each slightly different that you must complete wih a minimum score. You can adjust the scanning speed and try additional calibrations to help improve your accuracy. For more information this video or setup guide.</value>
+    <value>La calibración es esencial. La BCI necesita convertir tu pensamiento en un disparador/interruptor. Hay tres calibraciones a continuación, cada una ligeramente diferente, que debes completar con una puntuación mínima. Puedes ajustar la velocidad de escaneo y realizar calibraciones adicionales para mejorar tu precisión. Para más información, este video o guía de configuración.</value>
   </data>
 </root>

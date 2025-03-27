@@ -25,6 +25,7 @@ using ACAT.Lib.Core.PreferencesManagement;
 using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Extension;
+using BCIActuator;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -508,7 +509,13 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
             showDisclaimer();
 
-            TestBCIDevices();
+            // BCI Headset Selection
+
+            UserControlBCIBoardSelection _selectionForm = new UserControlBCIBoardSelection();
+            _selectionForm.EvtgtecUnicornSelected += startgTecUnicornTesting;
+            _selectionForm.EvtOpenBCISelected += startOpenBCITesting;
+            _selectionForm.Show();
+
             WindowActivityMonitor.Resume();
 
             OnPostInitDone();
@@ -517,6 +524,19 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             else
                 return true;
         }
+
+        void startgTecUnicornTesting()
+        {
+            Log.Debug("startgTecUnicornTesting");
+            // TestGtecDevice();
+        }
+
+        void startOpenBCITesting()
+        {
+            Log.Debug("startOpenBCITesting");
+            TestBCIDevices();
+        }
+
 
         /// <summary>
         /// Handles IoctRequest to interact with ACAT

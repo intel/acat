@@ -136,6 +136,9 @@
     <EmbeddedResource Include="ConfirmBoxCalibrationHelp.resx">
       <DependentUpon>ConfirmBoxCalibrationHelp.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ConfirmBoxTriggerBoxSettings.es.resx">
+      <DependentUpon>ConfirmBoxTriggerBoxSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ConfirmBoxTriggerBoxSettings.resx">
       <DependentUpon>ConfirmBoxTriggerBoxSettings.cs</DependentUpon>
     </EmbeddedResource>
@@ -164,6 +167,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="ResourcesUtils\BCIInterfaceResource.es.resx" />
     <EmbeddedResource Include="ResourcesUtils\BCIInterfaceResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>BCIInterfaceResource.Designer.cs</LastGenOutput>

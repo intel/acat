@@ -121,10 +121,10 @@
     <value>Calibrate now</value>
   </data>
   <data name="CalibrateOptional" xml:space="preserve">
-    <value>Calibrate Opt.</value>
+    <value>Calibrate Optional</value>
   </data>
   <data name="CalibrationInProgrressPrompt" xml:space="preserve">
-    <value>Calibration in progress. Please focus on the highlighted green target area</value>
+    <value>Calibration in progress. Please focus on the highlighted green target area.</value>
   </data>
   <data name="HintBoxCalibrationScreen" xml:space="preserve">
     <value>Box Mode Calibration: 
@@ -177,7 +177,7 @@ enables selection of medium sized regions on the Main Talk UI. With default valu
 enables selection of medium sized regions on the Main Talk UI. With default values, this calibration takes ~ 4 mins.</value>
   </data>
   <data name="IterationNumber" xml:space="preserve">
-    <value>Target # </value>
+    <value>Target #</value>
   </data>
   <data name="Of" xml:space="preserve">
     <value>of</value>

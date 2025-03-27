@@ -70,7 +70,7 @@ namespace BCIInterfaceUtilities.ResourcesUtils {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Calibrate Opt..
+        ///   Looks up a localized string similar to Calibrate Optional.
         /// </summary>
         internal static string CalibrateOptional {
             get {
@@ -79,7 +79,7 @@ namespace BCIInterfaceUtilities.ResourcesUtils {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Calibration in progress. Please focus on the highlighted green target area.
+        ///   Looks up a localized string similar to Calibration in progress. Please focus on the highlighted green target area..
         /// </summary>
         internal static string CalibrationInProgrressPrompt {
             get {
@@ -228,7 +228,7 @@ namespace BCIInterfaceUtilities.ResourcesUtils {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Target # .
+        ///   Looks up a localized string similar to Target #.
         /// </summary>
         internal static string IterationNumber {
             get {

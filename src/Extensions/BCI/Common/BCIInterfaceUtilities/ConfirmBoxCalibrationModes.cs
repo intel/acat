@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
+using ACATResources;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.PanelManagement;
@@ -78,7 +78,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             Load += ConfirmBox_Load;
 
             webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
-            var html = R.GetString("BCICalibrationHtmlText").Replace(CoreGlobals.MacroACATUserGuide, HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName));
+            var html = Resources.BCICalibrationHtmlText.Replace(CoreGlobals.MacroACATUserGuide, HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName));
             webBrowser.DocumentText = html;
         }
 
@@ -848,7 +848,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             {
                 list.Add("PDF");
                 list.Add("true");
-                list.Add(R.GetString("PDFLoaderHtml"));
+                list.Add(Resources.PDFLoaderHtml);
                 list.Add(param1);
                 list.Add(param2);
             }

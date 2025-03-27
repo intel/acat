@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,7 +117,78 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Calibration is essential. BCI need to convert your thought into a trigger/switch. There are three calibrations below, each slightly different that you must complete wih a minimum score. You can adjust the scanning speed and try additional calibrations to help improve your accuracy. For more information this video or setup guide.</value>
+  <data name="CalibrateNow" xml:space="preserve">
+    <value>Calibrar ahora</value>
+  </data>
+  <data name="CalibrateOptional" xml:space="preserve">
+    <value>Opciones de calibración</value>
+  </data>
+  <data name="CalibrationInProgrressPrompt" xml:space="preserve">
+    <value>Calibración en progreso. Por favor, concéntrate en el área objetivo resaltada en verde.</value>
+  </data>
+  <data name="HintBoxCalibrationScreen" xml:space="preserve">
+    <value>Calibración en modo caja: 
+Permite la selección de regiones de gran tamaño en la interfaz principal de conversación. Con valores predeterminados, esta calibración toma aproximadamente 2 minutos.</value>
+  </data>
+  <data name="HintCalibrationBeginACATEnalbed" xml:space="preserve">
+    <value>Opción de escritura habilitada</value>
+  </data>
+  <data name="HintCalibrationBeginACATNotEnalbed" xml:space="preserve">
+    <value>Debes completar las calibraciones antes de continuar</value>
+  </data>
+  <data name="HintEyesOpenCloseCalibration" xml:space="preserve">
+    <value>Recopilar datos de EEG para la futura detección de ojos abiertos y cerrados</value>
+  </data>
+  <data name="HintIterationstarget" xml:space="preserve">
+    <value>Número de iteraciones por objetivo</value>
+  </data>
+  <data name="HintKeyboardLeftCalibrationScreen" xml:space="preserve">
+    <value>Calibración del Modo Teclado:
+habilita la selección de regiones pequeñas en la interfaz principal de conversación. Con valores predeterminados, esta calibración toma aproximadamente 3 minutos.</value>
+  </data>
+  <data name="HintKeyboardRightCalibrationScreen" xml:space="preserve">
+    <value>(Opcional) Calibración del Modo Teclado:
+habilita la selección de regiones pequeñas en la interfaz principal de conversación. Con valores predeterminados, esta calibración toma aproximadamente 4 minutos.</value>
+  </data>
+  <data name="HintMinimumScore" xml:space="preserve">
+    <value>Puntuación mínima necesaria para una calibración exitosa</value>
+  </data>
+  <data name="HintNumberTargets" xml:space="preserve">
+    <value>Número de objetivos que se mostrarán durante la calibración</value>
+  </data>
+  <data name="HintReMapCalibrations" xml:space="preserve">
+    <value>Cambiar la asignación del modo de calibración a la región específica de la interfaz</value>
+  </data>
+  <data name="HintScanningTime" xml:space="preserve">
+    <value>El control de velocidad de escaneo determina qué tan rápido se resaltan las regiones en la pantalla</value>
+  </data>
+  <data name="HintSentenceCalibrationScreen" xml:space="preserve">
+    <value>Calibración en modo oración:
+permite la selección de regiones de tamaño medio en la interfaz principal de conversación. Con valores predeterminados, esta calibración toma aproximadamente 2 minutos.</value>
+  </data>
+  <data name="HintSignalCheck" xml:space="preserve">
+    <value>Vuelva a ejecutar la verificación de señal para comprobar la calidad de la señal</value>
+  </data>
+  <data name="HintTriggerCheck" xml:space="preserve">
+    <value>Vuelva a ejecutar la prueba de activación para verificar si el sensor de activación funciona correctamente</value>
+  </data>
+  <data name="HintWordCalibrationScreen" xml:space="preserve">
+    <value>(Opcional) Calibración en modo palabra:
+permite la selección de regiones de tamaño medio en la interfaz principal de conversación. Con valores predeterminados, esta calibración toma aproximadamente 4 minutos.</value>
+  </data>
+  <data name="IterationNumber" xml:space="preserve">
+    <value>Objetivo #</value>
+  </data>
+  <data name="Of" xml:space="preserve">
+    <value>de</value>
+  </data>
+  <data name="Recalibrate" xml:space="preserve">
+    <value>Recalibrar</value>
+  </data>
+  <data name="ScanningTime" xml:space="preserve">
+    <value>Tiempo de escaneo:</value>
+  </data>
+  <data name="StartTyping" xml:space="preserve">
+    <value>Comenzar a escribir</value>
   </data>
 </root>

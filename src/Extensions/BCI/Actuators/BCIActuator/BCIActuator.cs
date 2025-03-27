@@ -12,7 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////
 #define OPTICAL_SENSOR
 
-using ACAT.ACATResources;
+using ACATResources;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
@@ -478,7 +478,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <returns>true on success, false otherwise</returns>
         public override bool Init()
         {
-            Disclaimers.Add("BCI", R.GetString("DisclaimerBCI"));
+            Disclaimers.Add("BCI", Resources.DisclaimerBCI);
 
             CoreGlobals.ACATUserGuideFileName = "ACAT BCI User Guide.pdf";
 
@@ -2047,7 +2047,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                 return;
             }
 
-            if (DisclaimerDialog.ShowDialog(R.GetString("DisclaimerBCI"), null, true))
+            if (DisclaimerDialog.ShowDialog(Resources.DisclaimerBCI, null, true))
             {
                 BCIActuatorSettings.Settings.ShowDisclaimerOnStartup = false;
                 BCIActuatorSettings.Settings.Save();

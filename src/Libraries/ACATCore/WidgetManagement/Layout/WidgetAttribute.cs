@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
+using ACATResources;
 using ACAT.Lib.Core.Interpreter;
 using ACAT.Lib.Core.Utility;
 using System;
@@ -172,15 +172,23 @@ namespace ACAT.Lib.Core.WidgetManagement
         private void load(XmlNode node)
         {
             Name = XmlUtils.GetXMLAttrString(node, "name");
-            Label = XmlUtils.GetXMLAttrString(node, "label");
-            if (Label.Length > 1)
-            {
-                Label = R.GetString(Label.Trim());
-            }
+
 
             Value = XmlUtils.GetXMLAttrString(node, "value");
             FontSize = XmlUtils.GetXMLAttrInt(node, "fontsize", FontSize);
             FontName = XmlUtils.GetXMLAttrString(node, "fontname", FontName);
+
+            string label = XmlUtils.GetXMLAttrString(node, "label", "").Trim();
+
+            if (!FontName.Contains("ACAT") && label != null && label.Length > 1)
+            {
+                Label = Resources.ResourceManager.GetString(label) ?? label;
+            }
+            else
+            {
+                Label = label;
+            }
+
             FontBold = XmlUtils.GetXMLAttrBool(node, "bold", FontBold);
             FontItalic = XmlUtils.GetXMLAttrBool(node, "italic", FontItalic);
             IsVirtualKey = XmlUtils.GetXMLAttrBool(node, "virtualkey", false);

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,8 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label1.Text" xml:space="preserve">
-    <value>The hotkey is configured incorrectly. Go to the previous step to check.
-The switch is not held down long enough. Set the hold time to 0 and test, and then gradually increase it until you reach a value that works for you.</value>
+  <data name="labelPrompt.Text" xml:space="preserve">
+    <value>ACAT está configurado para activarse con la tecla de acceso rápido mostrada en verde. Debes configurar tu interruptor para que coincida con la tecla de acceso rápido de ACAT (consulta la guía del usuario para el interruptor). Alternativamente, puedes hacer clic en los botones de abajo para cambiar la tecla de acceso rápido de ACAT y que coincida con la combinación de teclas activada por el interruptor.</value>
   </data>
 </root>

@@ -166,6 +166,9 @@
     <EmbeddedResource Include="UserControlBCIErrorOpticalSensor.resx">
       <DependentUpon>UserControlBCIErrorOpticalSensor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UserControlBCISignalCheck.es.resx">
+      <DependentUpon>UserControlBCISignalCheck.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserControlBCISignalCheck.resx">
       <DependentUpon>UserControlBCISignalCheck.cs</DependentUpon>
     </EmbeddedResource>

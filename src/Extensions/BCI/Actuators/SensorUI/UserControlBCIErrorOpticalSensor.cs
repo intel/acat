@@ -10,7 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
+using ACATResources;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Lib.Core.Utility;
 using System;
@@ -76,7 +76,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             webBrowserTop.DocumentText = html;
 
             webBrowserBottom.DocumentCompleted += WebBrowserDesc_DocumentCompleted;
-            var htmlContent = R.GetString("BCIOnboardingBottomHtmlText");
+            var htmlContent = Resources.BCIOnboardingBottomHtmlText;
             html = htmlContent.Replace(CoreGlobals.MacroACATUserGuide, HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName));
             webBrowserBottom.DocumentText = html;
 

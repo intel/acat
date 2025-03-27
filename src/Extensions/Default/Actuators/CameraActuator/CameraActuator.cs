@@ -231,7 +231,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         {
             if (!Cameras.GetCameraNames().Any())
             {
-                //ConfirmBoxSingleOption.ShowDialog(R.GetString("NoCamerasFoundACATVisionDisabled"), "OK");
+                //ConfirmBoxSingleOption.ShowDialog(Resources.NoCamerasFoundACATVisionDisabled"), "OK;
                 ConfirmBoxSingleOption.ShowDialog("You have selected Camera as the input switch, but no cameras were found. Please connect a camera and retry.\nExiting.", "OK");
                 OnPostInitDone();
                 return false;

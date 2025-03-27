@@ -1,4 +1,4 @@
-﻿using ACAT.ACATResources;
+﻿using ACATResources;
 using ACAT.Lib.Core.Utility;
 using System;
 using System.Collections.Generic;
@@ -57,7 +57,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             {
                 list.Add("PDF");
                 list.Add("true");
-                list.Add(R.GetString("PDFLoaderHtml"));
+                list.Add(Resources.PDFLoaderHtml);
                 list.Add(param1);
                 list.Add(param2);
             }

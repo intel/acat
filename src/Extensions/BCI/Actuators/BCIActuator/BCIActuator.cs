@@ -514,7 +514,10 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             UserControlBCIBoardSelection _selectionForm = new UserControlBCIBoardSelection();
             _selectionForm.EvtgtecUnicornSelected += startgTecUnicornTesting;
             _selectionForm.EvtOpenBCISelected += startOpenBCITesting;
-            _selectionForm.Show();
+            _selectionForm.ShowDialog();
+
+            _selectionForm.Close();
+            _selectionForm.Dispose();
 
             WindowActivityMonitor.Resume();
 

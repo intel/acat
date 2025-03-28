@@ -10,10 +10,8 @@ using System.Windows.Forms;
 
 namespace BCIActuator
 {
-    public partial class UserControlBCIBoardSelection : UserControl
+    public partial class UserControlBCIBoardSelection : Form
     {
-        int headsetSelected = 0;
-
         /// <summary>
         /// Event sent when exiting out of device testing completely
         /// </summary>
@@ -22,10 +20,10 @@ namespace BCIActuator
         public event BCIDeviceSelected EvtgtecUnicornSelected;
         public event BCIDeviceSelected EvtOpenBCISelected;
 
+
         public UserControlBCIBoardSelection()
         {
             InitializeComponent();
-
         }
 
         private void buttonGtecUnicorn_Click(object sender, EventArgs e)

@@ -63,7 +63,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleActuatorSwitch.cs" />
     <Compile Include="UserControlBCIBoardSelection.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="UserControlBCIBoardSelection.Designer.cs">
       <DependentUpon>UserControlBCIBoardSelection.cs</DependentUpon>
@@ -99,11 +99,6 @@
       <Project>{380fc7b3-d784-422a-8d85-510a9e8698c6}</Project>
       <Name>SensorUI</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="UserControlBCIBoardSelection.resx">
-      <DependentUpon>UserControlBCIBoardSelection.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

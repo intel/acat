@@ -23,7 +23,7 @@ using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WidgetManagement;
 using Accord.Math;
 using brainflow;
-using SensorUI;
+using gTecSensorUI;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -31,7 +31,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
-namespace ACAT.Extensions.BCI.Actuators.SensorUI
+namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
     /// <summary>
     /// Makes sure the BCI signals are good before continuing onto calibration. 
@@ -333,15 +333,15 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
 
             // Load images for signal quality gradient / heatmap
             _signalQualityGradientImages = new Image[9];
-            _signalQualityGradientImages[0] = global::SensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel; // for heatmap - 0 is the same as 1 accepted channel
-            _signalQualityGradientImages[1] = global::SensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel;
-            _signalQualityGradientImages[2] = global::SensorUI.Properties.Resources.signalQualityGradient_2AcceptableChannels;
-            _signalQualityGradientImages[3] = global::SensorUI.Properties.Resources.signalQualityGradient_3AcceptableChannels;
-            _signalQualityGradientImages[4] = global::SensorUI.Properties.Resources.signalQualityGradient_4AcceptableChannels;
-            _signalQualityGradientImages[5] = global::SensorUI.Properties.Resources.signalQualityGradient_5AcceptableChannels;
-            _signalQualityGradientImages[6] = global::SensorUI.Properties.Resources.signalQualityGradient_6AcceptableChannels;
-            _signalQualityGradientImages[7] = global::SensorUI.Properties.Resources.signalQualityGradient_7AcceptableChannels;
-            _signalQualityGradientImages[8] = global::SensorUI.Properties.Resources.signalQualityGradient_8AcceptableChannels;
+            _signalQualityGradientImages[0] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel; // for heatmap - 0 is the same as 1 accepted channel
+            _signalQualityGradientImages[1] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel;
+            _signalQualityGradientImages[2] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_2AcceptableChannels;
+            _signalQualityGradientImages[3] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_3AcceptableChannels;
+            _signalQualityGradientImages[4] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_4AcceptableChannels;
+            _signalQualityGradientImages[5] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_5AcceptableChannels;
+            _signalQualityGradientImages[6] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_6AcceptableChannels;
+            _signalQualityGradientImages[7] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_7AcceptableChannels;
+            _signalQualityGradientImages[8] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_8AcceptableChannels;
 
             // Initialize colors so don't have to constantly create them
             COLOR_ACAT_DEFAULT_ORANGE = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
@@ -978,7 +978,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         /// <param name="data"></param>
         public void ProcessDataSignalCheck(double[,] data, double[,] filteredData)
         {
-            if (BCIDeviceTester._endSignalCheckTimer)
+            if (gTecDeviceTester._endSignalCheckTimer)
                 return;
 
             try

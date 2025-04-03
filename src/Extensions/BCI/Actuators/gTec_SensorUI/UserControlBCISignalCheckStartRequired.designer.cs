@@ -10,7 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-namespace ACAT.Extensions.BCI.Actuators.SensorUI
+namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
     /// <summary>
     /// User control which is displayed when the user is required to do a signal quality check

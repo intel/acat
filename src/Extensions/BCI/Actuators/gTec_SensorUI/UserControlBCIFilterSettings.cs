@@ -14,7 +14,7 @@ using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.BCI.Actuators.SensorUI
+namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
     /// <summary>
     /// User control which prompts the user for input to select the best filter setting

@@ -17,7 +17,8 @@ using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGUtils;
-using ACAT.Extensions.BCI.Actuators.SensorUI;
+using ACAT.Extensions.BCI.Actuators.gTecSensorUI;
+using ACAT.Extensions.BCI.Actuators.openBCISensorUI;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.Audit;
@@ -73,10 +74,18 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// </summary>
         public static BCITypingCalibrationMappings TypingCalibrationMappings = null;
 
+
+        // Probably want to make one parent DeviceTester class and children = OpenBCI, gTec device testers?
+
         /// <summary>
-        /// BCI device tester object
+        /// OpenBCI device tester
         /// </summary>
-        public BCIDeviceTester _bciDeviceTester = null;
+        public OpenBCIDeviceTester _bciDeviceTester = null;
+
+        /// <summary>
+        /// gTec device tester
+        /// </summary>
+        public gTecDeviceTester _gtecDeviceTester = null;
 
         /// <summary>
         /// Name of the file that stores the settings for
@@ -195,6 +204,12 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// This parameter is read from BCISettings
         /// </summary>
         private bool useSensor;
+
+        /// <summary>
+        /// Screen to select BCI board / headset (ex: gTec or OpenBCI)
+        /// </summary>
+        private UserControlBCIDeviceSelection _deviceSelectionForm;
+
 
         /// <summary>
         /// Initializes an instance of the class
@@ -510,14 +525,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             showDisclaimer();
 
             // BCI Headset Selection
-
-            UserControlBCIBoardSelection _selectionForm = new UserControlBCIBoardSelection();
-            _selectionForm.EvtgtecUnicornSelected += startgTecUnicornTesting;
-            _selectionForm.EvtOpenBCISelected += startOpenBCITesting;
-            _selectionForm.ShowDialog();
-
-            _selectionForm.Close();
-            _selectionForm.Dispose();
+            showBciBoardSelection();
 
             WindowActivityMonitor.Resume();
 
@@ -531,13 +539,41 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         void startgTecUnicornTesting()
         {
             Log.Debug("startgTecUnicornTesting");
+            closeBciBoardSelection();
+
             // TestGtecDevice();
         }
 
         void startOpenBCITesting()
         {
             Log.Debug("startOpenBCITesting");
+            closeBciBoardSelection();
             TestBCIDevices();
+        }
+
+        void showBciBoardSelection()
+        {
+            if (_deviceSelectionForm == null)
+            {
+                Log.Debug("showBciBoardSelection | Creating new _deviceSelectionForm");
+                _deviceSelectionForm = new UserControlBCIDeviceSelection();
+                _deviceSelectionForm.EvtgtecUnicornSelected += startgTecUnicornTesting;
+                _deviceSelectionForm.EvtOpenBCISelected += startOpenBCITesting;
+                _deviceSelectionForm.ShowDialog();
+            }
+        }
+
+        void closeBciBoardSelection()
+        {
+            if (_deviceSelectionForm != null && _deviceSelectionForm.IsDisposed == false)
+            {
+                Log.Debug("closeBciBoardSelection | Closing and disposing _deviceSelectionForm");
+                _deviceSelectionForm.EvtgtecUnicornSelected -= startgTecUnicornTesting;
+                _deviceSelectionForm.EvtOpenBCISelected -= startOpenBCITesting;
+                _deviceSelectionForm.Close();
+                _deviceSelectionForm.Dispose();
+                _deviceSelectionForm = null;
+            }
         }
 
 
@@ -711,8 +747,8 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         // private void bciDeviceTestingCompleted(object sender, System.Windows.Forms.FormClosedEventArgs e)
         private void bciDeviceTestingCompleted()
         {
-            // Set actuatorState based on BCIDeviceTester._ExitOnboardingEarly flag
-            actuatorState = (BCIDeviceTester.ExitOnboardingEarly) ? State.Stopped : State.Running;
+            // Set actuatorState based on OpenBCIDeviceTester._ExitOnboardingEarly flag
+            actuatorState = (OpenBCIDeviceTester.ExitOnboardingEarly) ? State.Stopped : State.Running;
             Log.Debug("\nbciDeviceTestingCompleted | actuatorState: " + actuatorState.ToString());
 
             SendIoctlResponse((int)OpCodes.CalibrationWindowClose, String.Empty);
@@ -2031,7 +2067,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// </summary>
         private void TestBCIDevices()
         {
-            _bciDeviceTester = new BCIDeviceTester();
+            _bciDeviceTester = new OpenBCIDeviceTester();
             _bciDeviceTester.EvtBCIDeviceTestingCompleted += bciDeviceTestingCompleted;
             _bciDeviceTester.initialize();
         }

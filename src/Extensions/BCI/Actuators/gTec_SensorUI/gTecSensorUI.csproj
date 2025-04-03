@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{85991714-E58E-4A19-B7D4-9D9AD10DB9EC}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>SensorUI</RootNamespace>
-    <AssemblyName>SensorUI</AssemblyName>
+    <RootNamespace>gTecSensorUI</RootNamespace>
+    <AssemblyName>gTecSensorUI</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -85,7 +85,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BCIDeviceTester.cs" />
+    <Compile Include="gTecDeviceTester.cs" />
     <Compile Include="EEGChannel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.Designer.cs">

@@ -16,7 +16,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 //
 ////////////////////////////////////////////////////////////////////////////
 
-namespace SensorUI
+namespace gTecSensorUI
 {
     /// <summary>
     /// Holds information for each channel / electrode including name, enabled status,

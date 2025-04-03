@@ -18,7 +18,7 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.BCI.Actuators.SensorUI
+namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
     /// <summary>
     /// User control which displays information on errors related to configuration 

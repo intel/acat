@@ -1,7 +1,7 @@
 ﻿
 namespace BCIActuator
 {
-    partial class UserControlBCIBoardSelection
+    partial class UserControlBCIDeviceSelection
     {
         /// <summary>
         /// Required designer variable.
@@ -29,11 +29,6 @@ namespace BCIActuator
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "UserControlBCIBoardSelection2";
-
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.labelTitle = new System.Windows.Forms.Label();
             this.buttonGtecUnicorn = new System.Windows.Forms.Button();
@@ -56,8 +51,8 @@ namespace BCIActuator
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 4F));
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 4F));
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 4F));
-            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 4F));
-            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 4F));
+            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 4.24581F));
+            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 4.022346F));
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 4F));
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 4F));
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 4F));
@@ -70,8 +65,8 @@ namespace BCIActuator
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 4F));
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 4F));
             this.tableLayoutPanelMain.Controls.Add(this.labelTitle, 12, 1);
-            this.tableLayoutPanelMain.Controls.Add(this.buttonGtecUnicorn, 2, 8);
-            this.tableLayoutPanelMain.Controls.Add(this.buttonOpenBCI, 4, 15);
+            this.tableLayoutPanelMain.Controls.Add(this.buttonGtecUnicorn, 2, 9);
+            this.tableLayoutPanelMain.Controls.Add(this.buttonOpenBCI, 13, 9);
             this.tableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
@@ -100,32 +95,33 @@ namespace BCIActuator
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(911, 514);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(895, 475);
             this.tableLayoutPanelMain.TabIndex = 0;
             // 
             // labelTitle
             // 
-            this.labelTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.labelTitle.AutoSize = true;
             this.tableLayoutPanelMain.SetColumnSpan(this.labelTitle, 24);
-            this.labelTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTitle.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.labelTitle.Location = new System.Drawing.Point(3, 42);
+            this.labelTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelTitle.Font = new System.Drawing.Font("Montserrat", 44F);
+            this.labelTitle.ForeColor = System.Drawing.Color.White;
+            this.labelTitle.Location = new System.Drawing.Point(3, 38);
             this.labelTitle.Name = "labelTitle";
-            this.tableLayoutPanelMain.SetRowSpan(this.labelTitle, 4);
-            this.labelTitle.Size = new System.Drawing.Size(905, 55);
+            this.tableLayoutPanelMain.SetRowSpan(this.labelTitle, 5);
+            this.labelTitle.Size = new System.Drawing.Size(889, 95);
             this.labelTitle.TabIndex = 0;
             this.labelTitle.Text = "Please Select BCI Headset";
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // buttonGtecUnicorn
             // 
-            this.tableLayoutPanelMain.SetColumnSpan(this.buttonGtecUnicorn, 10);
-            this.buttonGtecUnicorn.Location = new System.Drawing.Point(77, 171);
+            this.tableLayoutPanelMain.SetColumnSpan(this.buttonGtecUnicorn, 9);
+            this.buttonGtecUnicorn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonGtecUnicorn.Font = new System.Drawing.Font("Montserrat Medium", 16F, System.Drawing.FontStyle.Bold);
+            this.buttonGtecUnicorn.Location = new System.Drawing.Point(77, 174);
             this.buttonGtecUnicorn.Name = "buttonGtecUnicorn";
-            this.tableLayoutPanelMain.SetRowSpan(this.buttonGtecUnicorn, 3);
-            this.buttonGtecUnicorn.Size = new System.Drawing.Size(262, 40);
+            this.tableLayoutPanelMain.SetRowSpan(this.buttonGtecUnicorn, 5);
+            this.buttonGtecUnicorn.Size = new System.Drawing.Size(327, 89);
             this.buttonGtecUnicorn.TabIndex = 1;
             this.buttonGtecUnicorn.Text = "gTec (Unicorn)";
             this.buttonGtecUnicorn.UseVisualStyleBackColor = true;
@@ -133,26 +129,30 @@ namespace BCIActuator
             // 
             // buttonOpenBCI
             // 
-            this.tableLayoutPanelMain.SetColumnSpan(this.buttonOpenBCI, 10);
-            this.buttonOpenBCI.Location = new System.Drawing.Point(151, 318);
+            this.tableLayoutPanelMain.SetColumnSpan(this.buttonOpenBCI, 9);
+            this.buttonOpenBCI.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonOpenBCI.Font = new System.Drawing.Font("Montserrat Medium", 16F, System.Drawing.FontStyle.Bold);
+            this.buttonOpenBCI.Location = new System.Drawing.Point(486, 174);
             this.buttonOpenBCI.Name = "buttonOpenBCI";
-            this.tableLayoutPanelMain.SetRowSpan(this.buttonOpenBCI, 3);
-            this.buttonOpenBCI.Size = new System.Drawing.Size(262, 40);
+            this.tableLayoutPanelMain.SetRowSpan(this.buttonOpenBCI, 5);
+            this.buttonOpenBCI.Size = new System.Drawing.Size(327, 89);
             this.buttonOpenBCI.TabIndex = 2;
             this.buttonOpenBCI.Text = "Open BCI";
             this.buttonOpenBCI.UseVisualStyleBackColor = true;
             this.buttonOpenBCI.Click += new System.EventHandler(this.buttonOpenBCI_Click);
             // 
-            // UserControlBCIBoardSelection
+            // UserControlBCIDeviceSelection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(895, 475);
             this.Controls.Add(this.tableLayoutPanelMain);
-            this.Name = "UserControlBCIBoardSelection";
-            this.Size = new System.Drawing.Size(911, 514);
+            this.Name = "UserControlBCIDeviceSelection";
+            this.Text = "UserControlBCIBoardSelection2";
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.tableLayoutPanelMain.PerformLayout();
             this.ResumeLayout(false);
+
         }
 
         #endregion

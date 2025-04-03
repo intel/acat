@@ -17,10 +17,10 @@ using System;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ACAT.Extensions.BCI.Actuators.SensorUI.BCIDeviceTester;
-using static ACAT.Extensions.BCI.Actuators.SensorUI.UserControlBCISignalCheck;
+using static ACAT.Extensions.BCI.Actuators.gTecSensorUI.gTecDeviceTester;
+using static ACAT.Extensions.BCI.Actuators.gTecSensorUI.UserControlBCISignalCheck;
 
-namespace ACAT.Extensions.BCI.Actuators.SensorUI
+namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
     /// <summary>
     /// Main form / UI for BCI Onboarding and Signal Check
@@ -81,8 +81,8 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         /// <summary>
         /// Current devie testing state
         /// </summary>
-        //private static volatile BCIDeviceTester.DeviceTestingState _currentDeviceTestingState;
-        private BCIDeviceTester.DeviceTestingState _mainFormDeviceTestingState;
+        //private static volatile gTecDeviceTester.DeviceTestingState _currentDeviceTestingState;
+        private gTecDeviceTester.DeviceTestingState _mainFormDeviceTestingState;
 
         /// <summary>
         /// Delegate for button click events
@@ -122,7 +122,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         private int _timer_process_data_interval_ms = 10;
 
         // Form which acts as parent for / base for all possible user controls displayed during testing process
-        public SensorForm(BCIDeviceTester.DeviceTestingState initialState)
+        public SensorForm(gTecDeviceTester.DeviceTestingState initialState)
         {
             InitializeComponent();
             TriggerBox.BackColor = Color.Black;
@@ -135,41 +135,41 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             // Preinitialize all user control elements that can be possibly shown
             // Intensive resource controls (ex: Optical sensor, EEG display) have separate initialize() functions that are not called until
             // user controls actually added to form
-            _userControlTestBCIConnections = new UserControlTestBCIConnections(BCIDeviceTester.DeviceTestingState.Testing_BCIConnections.ToString());
+            _userControlTestBCIConnections = new UserControlTestBCIConnections(gTecDeviceTester.DeviceTestingState.Testing_BCIConnections.ToString());
             _userControlTestBCIConnections.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
 
-            _userControlBCIErrorCytonBoard = new UserControlBCIErrorCytonBoard(BCIDeviceTester.DeviceTestingState.ReceivedBCIError_CytonBoard.ToString());
+            _userControlBCIErrorCytonBoard = new UserControlBCIErrorCytonBoard(gTecDeviceTester.DeviceTestingState.ReceivedBCIError_CytonBoard.ToString());
             _userControlBCIErrorCytonBoard.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCIErrorCytonBoard.buttonRetry.Click += new System.EventHandler(this.buttonRetest_Click);
 
-            _userControlBCIErrorUsbDongle = new UserControlBCIErrorUsbDongle(BCIDeviceTester.DeviceTestingState.ReceivedBCIError_UsbDongle.ToString());
+            _userControlBCIErrorUsbDongle = new UserControlBCIErrorUsbDongle(gTecDeviceTester.DeviceTestingState.ReceivedBCIError_UsbDongle.ToString());
             _userControlBCIErrorUsbDongle.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCIErrorUsbDongle.buttonRetry.Click += new System.EventHandler(this.buttonRetest_Click);
 
-            _userControlBCIErrorPortConfig = new UserControlBCIErrorPortConfig(BCIDeviceTester.DeviceTestingState.ReceivedBCIError_PortConfig.ToString());
+            _userControlBCIErrorPortConfig = new UserControlBCIErrorPortConfig(gTecDeviceTester.DeviceTestingState.ReceivedBCIError_PortConfig.ToString());
             _userControlBCIErrorPortConfig.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
 
-            _userControlBCIErrorOpticalSensor = new UserControlBCIErrorOpticalSensor(BCIDeviceTester.DeviceTestingState.ReceivedBCIError_OpticalSensor.ToString());
+            _userControlBCIErrorOpticalSensor = new UserControlBCIErrorOpticalSensor(gTecDeviceTester.DeviceTestingState.ReceivedBCIError_OpticalSensor.ToString());
             _userControlBCIErrorOpticalSensor.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCIErrorOpticalSensor.buttonRetry.Click += new System.EventHandler(this.buttonRetest_Click);
 
-            _userControlBCISignalCheckStartRequired = new UserControlBCISignalCheckStartRequired(BCIDeviceTester.DeviceTestingState.BCISignalCheckStartRequired.ToString() + "_Required");
+            _userControlBCISignalCheckStartRequired = new UserControlBCISignalCheckStartRequired(gTecDeviceTester.DeviceTestingState.BCISignalCheckStartRequired.ToString() + "_Required");
             _userControlBCISignalCheckStartRequired.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCISignalCheckStartRequired.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
 
-            _userControlBCISignalCheckStartPrompt = new UserControlBCISignalCheckStartPrompt(BCIDeviceTester.DeviceTestingState.BCISignalCheckStartPrompt.ToString() + "_Prompt");
+            _userControlBCISignalCheckStartPrompt = new UserControlBCISignalCheckStartPrompt(gTecDeviceTester.DeviceTestingState.BCISignalCheckStartPrompt.ToString() + "_Prompt");
             _userControlBCISignalCheckStartPrompt.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCISignalCheckStartPrompt.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
 
-            _userControlPromptBCIFIlterSettings = new UserControlBCIFilterSettings(BCIDeviceTester.DeviceTestingState.PromptFilterSettings.ToString());
+            _userControlPromptBCIFIlterSettings = new UserControlBCIFilterSettings(gTecDeviceTester.DeviceTestingState.PromptFilterSettings.ToString());
             _userControlPromptBCIFIlterSettings.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlPromptBCIFIlterSettings.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
 
-            _userControlBCISignalCheck = new UserControlBCISignalCheck(BCIDeviceTester.DeviceTestingState.BCISignalCheck.ToString());
+            _userControlBCISignalCheck = new UserControlBCISignalCheck(gTecDeviceTester.DeviceTestingState.BCISignalCheck.ToString());
             _userControlBCISignalCheck.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCISignalCheck.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
 
-            _userControlBCIErrorOpticalSensorDetect = new UserControlBCIErrorOpticalSensorDetect(BCIDeviceTester.DeviceTestingState.OpticalSensorDetectError.ToString());
+            _userControlBCIErrorOpticalSensorDetect = new UserControlBCIErrorOpticalSensorDetect(gTecDeviceTester.DeviceTestingState.OpticalSensorDetectError.ToString());
             _userControlBCIErrorOpticalSensorDetect.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCIErrorOpticalSensorDetect.buttonRetry.Click += new System.EventHandler(this.buttonRetest_Click);
 
@@ -177,7 +177,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             // Default = Railing Test screen
             UserControlBCISignalCheck._currentBCISignalCheckMode = BCISignalCheckMode.TEST_RAILING;
 
-            if (!BCIDeviceTester._Testing_useSensor)
+            if (!gTecDeviceTester._Testing_useSensor)
             {
                 // Set Exit button on each user control screen to [Developer Mode] which iterates through all available screens on button press
                 modifyUserControlsForDebugMode();
@@ -194,7 +194,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         /// Replaces user control displayed in tableLayoutPanelContainer
         /// </summary>
         /// <param name="state"></param>
-        public void changeDeviceTestingState(BCIDeviceTester.DeviceTestingState state)
+        public void changeDeviceTestingState(gTecDeviceTester.DeviceTestingState state)
         {
             Log.Debug("SensorForm | changeDeviceTestingState | state: " + state.ToString());
 
@@ -312,7 +312,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
                 }
 
                 // Start task that will launch data processing / plotting (optical sensor or signal check screens)
-                if (BCIDeviceTester._Testing_useSensor)
+                if (gTecDeviceTester._Testing_useSensor)
                     TaskStartStopDataProcessing(state);
             }
         }
@@ -479,9 +479,9 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         {
             // Check flag to stop all timers (checked during possible timer tick)
             // Check flag to stop this particular timer
-            if (_stopTimers || BCIDeviceTester._endSignalCheckTimer)
+            if (_stopTimers || gTecDeviceTester._endSignalCheckTimer)
             {
-                Log.Debug("ProcessDataSignalCheck_Tick | _stopTimers | BCIDeviceTester._endSignalCheckTimer");
+                Log.Debug("ProcessDataSignalCheck_Tick | _stopTimers | gTecDeviceTester._endSignalCheckTimer");
                 startStopProcessDataTimer(false, DeviceTestingState.ExitBCITesting);
                 return;
             }

@@ -541,7 +541,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             Log.Debug("startgTecUnicornTesting");
             closeBciBoardSelection();
 
-            // TestGtecDevice();
+            TestGtecDevice();
         }
 
         void startOpenBCITesting()
@@ -2070,6 +2070,13 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             _bciDeviceTester = new OpenBCIDeviceTester();
             _bciDeviceTester.EvtBCIDeviceTestingCompleted += bciDeviceTestingCompleted;
             _bciDeviceTester.initialize();
+        }
+
+        private void TestGtecDevice()
+        {
+            _gtecDeviceTester = new gTecDeviceTester();
+            _gtecDeviceTester.EvtBCIDeviceTestingCompleted += bciDeviceTestingCompleted;
+            _gtecDeviceTester.initialize();
         }
 
         /// <summary>

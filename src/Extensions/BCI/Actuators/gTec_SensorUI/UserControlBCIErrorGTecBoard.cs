@@ -4,15 +4,14 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 //
-// UserControlBCIErrorPortConfig.cs
+// UserControlBCIErrorCytonBoard.cs
 //
-// User control which displays information on errors related to configuration
-// of the COM port for the BCI board
+// User control which displays information on errors related to connecting
+// to the BCI Cyton board
 //
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.ACATResources;
-using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Lib.Core.Utility;
 using System;
 using System.IO;
@@ -21,31 +20,23 @@ using System.Windows.Forms;
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
     /// <summary>
-    /// User control which displays information on errors related to configuration 
-    /// of the COM port for the BCI board
+    ///  User control which displays information on errors related to connecting to the BCI Cyton board
     /// </summary>
-    public partial class UserControlBCIErrorPortConfig : UserControl
+    public partial class UserControlBCIErrorCytonBoard : UserControl
     {
-        public String _currentBCIComPort = "x";
-
-        private String _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  <head>\r\n  <style>\r\n    a:link{color: rgb(255, 170, 0);}\r\n  </style>\r\n  </head>\r\n" +
+        private string _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  " +
+                                    "<head>\r\n  <style>\r\n    a:link{color: rgb(255, 170, 0);}\r\n  </style>\r\n  </head>\r\n  " +
                                     "<body style=\"background-color:#232433;\">\r\n    " +
                                     "<p style=\"font-family:'Montserrat Medium'; font-size:24px; color:white; text-align: center;\">\r\n    " +
-                                    "Your board is connected to <span style=\"font-family:'Montserrat Black'; color:white;\"><em>@@@</em></span>. " +
-                                    "The latency timer setting for <span style=\"font-family:'Montserrat Black';color:white;\"><em>@@@</em></span> is incorrect. " +
-                                    "To fix this error, please review <a href=$ACAT_USER_GUIDE#PortConfigError>instructions</a>.<br/> Exit ACAT, " +
-                                    "take corrective action, and restart ACAT.\r\n    </p>\r\n  </body>\r\n</html>";
+                                    "Review the <a href=$ACAT_USER_GUIDE#CytonBoardError>checklist</a> for Cyton board setup, take corrective action, and then click Retry\r\n" +
+                                    "</p>\r\n</body>\r\n</html>\r\n\r\n\r\n\r\n";
 
-        public UserControlBCIErrorPortConfig(String stepId)
+        public UserControlBCIErrorCytonBoard()
         {
             InitializeComponent();
 
-            // Get current BCI COM port to display in label info
-            _currentBCIComPort = BCIActuatorSettings.Settings.DAQ_ComPort;
-
             webBrowserTop.DocumentCompleted += WebBrowserDesc_DocumentCompleted;
             var html = _htmlText.Replace(CoreGlobals.MacroACATUserGuide, HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName));
-            html = html.Replace("@@@", _currentBCIComPort);
             webBrowserTop.DocumentText = html;
 
             webBrowserBottom.DocumentCompleted += WebBrowserDesc_DocumentCompleted;

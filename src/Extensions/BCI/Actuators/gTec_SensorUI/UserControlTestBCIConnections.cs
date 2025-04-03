@@ -20,16 +20,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     /// </summary>
     public partial class UserControlTestBCIConnections : UserControl
     {
-        /// <summary>
-        /// Unique ID for this step
-        /// </summary>
-        private String _stepId;
 
-        public UserControlTestBCIConnections(String stepId)
+        public UserControlTestBCIConnections()
         {
             InitializeComponent();
 
-            _stepId = stepId;
         }
     }
 }

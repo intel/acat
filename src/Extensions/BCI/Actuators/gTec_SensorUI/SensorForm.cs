@@ -42,16 +42,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         public UserControlBCIErrorUsbDongle _userControlBCIErrorUsbDongle;
 
-        /// <summary>
-        /// User control displayed after receiving port configuration error
-        /// </summary>
-        public UserControlBCIErrorPortConfig _userControlBCIErrorPortConfig;
-
-        /// <summary>
-        /// User control displayed after receieving optical sensor error
-        /// </summary>
-        public UserControlBCIErrorOpticalSensor _userControlBCIErrorOpticalSensor;
-
+       
         /// <summary>
         /// User control displayed for starting signal check process - when maximum time has elapsed
         /// since last test
@@ -76,7 +67,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         public UserControlBCISignalCheck _userControlBCISignalCheck;
 
-        public UserControlBCIErrorOpticalSensorDetect _userControlBCIErrorOpticalSensorDetect;
 
         /// <summary>
         /// Current devie testing state
@@ -125,7 +115,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public SensorForm(gTecDeviceTester.DeviceTestingState initialState)
         {
             InitializeComponent();
-            TriggerBox.BackColor = Color.Black;
+            
             this.WindowState = FormWindowState.Maximized;
 
             // Set initial / default values of static variables
@@ -135,23 +125,18 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // Preinitialize all user control elements that can be possibly shown
             // Intensive resource controls (ex: Optical sensor, EEG display) have separate initialize() functions that are not called until
             // user controls actually added to form
-            _userControlTestBCIConnections = new UserControlTestBCIConnections(gTecDeviceTester.DeviceTestingState.Testing_BCIConnections.ToString());
+            _userControlTestBCIConnections = new UserControlTestBCIConnections();
             _userControlTestBCIConnections.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
 
-            _userControlBCIErrorCytonBoard = new UserControlBCIErrorCytonBoard(gTecDeviceTester.DeviceTestingState.ReceivedBCIError_CytonBoard.ToString());
+            _userControlBCIErrorCytonBoard = new UserControlBCIErrorCytonBoard();
             _userControlBCIErrorCytonBoard.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCIErrorCytonBoard.buttonRetry.Click += new System.EventHandler(this.buttonRetest_Click);
 
-            _userControlBCIErrorUsbDongle = new UserControlBCIErrorUsbDongle(gTecDeviceTester.DeviceTestingState.ReceivedBCIError_UsbDongle.ToString());
+            _userControlBCIErrorUsbDongle = new UserControlBCIErrorUsbDongle();
             _userControlBCIErrorUsbDongle.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCIErrorUsbDongle.buttonRetry.Click += new System.EventHandler(this.buttonRetest_Click);
 
-            _userControlBCIErrorPortConfig = new UserControlBCIErrorPortConfig(gTecDeviceTester.DeviceTestingState.ReceivedBCIError_PortConfig.ToString());
-            _userControlBCIErrorPortConfig.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-
-            _userControlBCIErrorOpticalSensor = new UserControlBCIErrorOpticalSensor(gTecDeviceTester.DeviceTestingState.ReceivedBCIError_OpticalSensor.ToString());
-            _userControlBCIErrorOpticalSensor.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            _userControlBCIErrorOpticalSensor.buttonRetry.Click += new System.EventHandler(this.buttonRetest_Click);
+            
 
             _userControlBCISignalCheckStartRequired = new UserControlBCISignalCheckStartRequired(gTecDeviceTester.DeviceTestingState.BCISignalCheckStartRequired.ToString() + "_Required");
             _userControlBCISignalCheckStartRequired.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
@@ -165,13 +150,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _userControlPromptBCIFIlterSettings.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlPromptBCIFIlterSettings.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
 
-            _userControlBCISignalCheck = new UserControlBCISignalCheck(gTecDeviceTester.DeviceTestingState.BCISignalCheck.ToString());
+            _userControlBCISignalCheck = new UserControlBCISignalCheck();
             _userControlBCISignalCheck.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCISignalCheck.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
 
-            _userControlBCIErrorOpticalSensorDetect = new UserControlBCIErrorOpticalSensorDetect(gTecDeviceTester.DeviceTestingState.OpticalSensorDetectError.ToString());
-            _userControlBCIErrorOpticalSensorDetect.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            _userControlBCIErrorOpticalSensorDetect.buttonRetry.Click += new System.EventHandler(this.buttonRetest_Click);
+           
 
             // Set current signal check view mode for last screens
             // Default = Railing Test screen
@@ -196,7 +179,22 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="state"></param>
         public void changeDeviceTestingState(gTecDeviceTester.DeviceTestingState state)
         {
-            Log.Debug("SensorForm | changeDeviceTestingState | state: " + state.ToString());
+            UserControl newUserControl = null;
+
+            if (state == DeviceTestingState.TestingBluetoothPaired)
+            {
+                newUserControl = _userControlBCIErrorUsbDongle;
+                //((UserControlBCIErrorUsbDongle)newUserControl).pictureBoxTestBCIConnections.Refresh();
+            }
+
+            tableLayoutPanelContainer.Controls.Clear();
+            tableLayoutPanelContainer.Controls.Add(newUserControl, 0, 0);
+            tableLayoutPanelContainer.Refresh();
+
+
+
+
+            /*Log.Debug("SensorForm | changeDeviceTestingState | state: " + state.ToString());
 
             DeviceTestingState prevDeviceTestingState = _mainFormDeviceTestingState;
             UserControl newUserControl = null;
@@ -248,74 +246,78 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 newUserControl = _userControlBCIErrorOpticalSensorDetect;
             }
 
-            if (newUserControl != null)
-            {
-                // Every screen except last one - display in normal 1024 x 768 dimensions
-                if (state != DeviceTestingState.BCISignalCheck)
-                {
-                    tableLayoutPanelContainer.Controls.Clear();
-                    tableLayoutPanelContainer.Controls.Add(newUserControl, 0, 0);
-                    tableLayoutPanelContainer.Refresh();
-                }
+            */
 
-                // Last screen - BCI signal check screen created with special layout
-                // Basically remove everything in existing table layout panel and re-add to work with bigger format
-                else if (state == DeviceTestingState.BCISignalCheck)
-                {
-                    bool displayReminderGelElectrodes = false;
 
-                    //Previous selection was not a BCISignalCheck screen
-                    if (prevDeviceTestingState != DeviceTestingState.BCISignalCheck)
-                    {
-                        // Remove all controls tableLayoutPanelContainer and then tableLayoutPanelContainer itself
-                        tableLayoutPanelContainer.Controls.Clear();
-                        tableLayoutPanelMain.Controls.Clear();
-
-                        // Clear row and column styles
-                        tableLayoutPanelMain.RowStyles.Clear();
-                        tableLayoutPanelMain.ColumnStyles.Clear();
-
-                        // Set 1 column and row style such that user control will appear in the top right of primary screen (TriggerBox placed correctly)
-                        tableLayoutPanelMain.ColumnCount = 1;
-                        tableLayoutPanelMain.RowCount = 1;
-                        tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1920));
-                        tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1080));
-                        tableLayoutPanelMain.Controls.Add(newUserControl, 0, 0);
-
-                        newUserControl.Dock = DockStyle.Fill;
-                        tableLayoutPanelMain.Refresh();
-
-                        // Always start at railing test tab
-                        UserControlBCISignalCheck._currentBCISignalCheckMode = UserControlBCISignalCheck.BCISignalCheckMode.TEST_RAILING;
-
-                        // If accessing signal check for first time - display reminder to gel important electrodes
-                        displayReminderGelElectrodes = true;
-                    }
-
-                    if (UserControlBCISignalCheck._currentBCISignalCheckMode == UserControlBCISignalCheck.BCISignalCheckMode.TEST_RAILING)
-                    {
-                        _userControlBCISignalCheck.changeSignalCheckMode(BCISignalCheckMode.TEST_RAILING);
-
-                        if (displayReminderGelElectrodes)
+            /*            if (newUserControl != null)
                         {
-                            bool confirmed = ConfirmBoxSingleOption.ShowDialog("Please remember to add gel to GND and T4 electrodes, if you have not already", "OK", this, false);
-                        }
-                    }
-                    else if (UserControlBCISignalCheck._currentBCISignalCheckMode == UserControlBCISignalCheck.BCISignalCheckMode.TEST_IMPEDANCE)
-                    {
-                        _userControlBCISignalCheck.changeSignalCheckMode(BCISignalCheckMode.TEST_IMPEDANCE);
-                    }
-                    else if (UserControlBCISignalCheck._currentBCISignalCheckMode == UserControlBCISignalCheck.BCISignalCheckMode.TEST_QUALITY)
-                    {
-                        _userControlBCISignalCheck.changeSignalCheckMode(BCISignalCheckMode.TEST_QUALITY);
-                    }
-                }
+                            // Every screen except last one - display in normal 1024 x 768 dimensions
+                            if (state != DeviceTestingState.BCISignalCheck)
+                            {
+                                tableLayoutPanelContainer.Controls.Clear();
+                                tableLayoutPanelContainer.Controls.Add(newUserControl, 0, 0);
+                                tableLayoutPanelContainer.Refresh();
+                            }
 
-                // Start task that will launch data processing / plotting (optical sensor or signal check screens)
-                if (gTecDeviceTester._Testing_useSensor)
-                    TaskStartStopDataProcessing(state);
-            }
+                            // Last screen - BCI signal check screen created with special layout
+                            // Basically remove everything in existing table layout panel and re-add to work with bigger format
+                            else if (state == DeviceTestingState.BCISignalCheck)
+                            {
+                                bool displayReminderGelElectrodes = false;
+
+                                //Previous selection was not a BCISignalCheck screen
+                                if (prevDeviceTestingState != DeviceTestingState.BCISignalCheck)
+                                {
+                                    // Remove all controls tableLayoutPanelContainer and then tableLayoutPanelContainer itself
+                                    tableLayoutPanelContainer.Controls.Clear();
+                                    tableLayoutPanelMain.Controls.Clear();
+
+                                    // Clear row and column styles
+                                    tableLayoutPanelMain.RowStyles.Clear();
+                                    tableLayoutPanelMain.ColumnStyles.Clear();
+
+                                    // Set 1 column and row style such that user control will appear in the top right of primary screen (TriggerBox placed correctly)
+                                    tableLayoutPanelMain.ColumnCount = 1;
+                                    tableLayoutPanelMain.RowCount = 1;
+                                    tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1920));
+                                    tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1080));
+                                    tableLayoutPanelMain.Controls.Add(newUserControl, 0, 0);
+
+                                    newUserControl.Dock = DockStyle.Fill;
+                                    tableLayoutPanelMain.Refresh();
+
+                                    // Always start at railing test tab
+                                    UserControlBCISignalCheck._currentBCISignalCheckMode = UserControlBCISignalCheck.BCISignalCheckMode.TEST_RAILING;
+
+                                    // If accessing signal check for first time - display reminder to gel important electrodes
+                                    displayReminderGelElectrodes = true;
+                                }
+
+                                if (UserControlBCISignalCheck._currentBCISignalCheckMode == UserControlBCISignalCheck.BCISignalCheckMode.TEST_RAILING)
+                                {
+                                    _userControlBCISignalCheck.changeSignalCheckMode(BCISignalCheckMode.TEST_RAILING);
+
+                                    if (displayReminderGelElectrodes)
+                                    {
+                                        bool confirmed = ConfirmBoxSingleOption.ShowDialog("Please remember to add gel to GND and T4 electrodes, if you have not already", "OK", this, false);
+                                    }
+                                }
+                                else if (UserControlBCISignalCheck._currentBCISignalCheckMode == UserControlBCISignalCheck.BCISignalCheckMode.TEST_IMPEDANCE)
+                                {
+                                    _userControlBCISignalCheck.changeSignalCheckMode(BCISignalCheckMode.TEST_IMPEDANCE);
+                                }
+                                else if (UserControlBCISignalCheck._currentBCISignalCheckMode == UserControlBCISignalCheck.BCISignalCheckMode.TEST_QUALITY)
+                                {
+                                    _userControlBCISignalCheck.changeSignalCheckMode(BCISignalCheckMode.TEST_QUALITY);
+                                }
+                            }*/
+            /*
+                            // Start task that will launch data processing / plotting (optical sensor or signal check screens)
+                            if (gTecDeviceTester._Testing_useSensor)
+                                TaskStartStopDataProcessing(state);*/
+        
         }
+
 
         /// <summary>
         /// Start / stop timer which plots data
@@ -323,7 +325,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="state"></param>
         private void startStopPlotDataTimer(bool startPlotDataTimer, DeviceTestingState state)
         {
-            Log.Debug("startStopPlotDataTimer | startProcessDataTimer: " + startPlotDataTimer.ToString() +
+            /*Log.Debug("startStopPlotDataTimer | startProcessDataTimer: " + startPlotDataTimer.ToString() +
                 " | state: " + state.ToString());
 
             if (startPlotDataTimer)
@@ -365,7 +367,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 {
                     Log.Debug("startStopPlotDataTimer | Exception: " + e.ToString());
                 }
-            }
+            }*/
         }
 
         /// <summary>
@@ -374,7 +376,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="state"></param>
         private void startStopProcessDataTimer(bool startProcessDataTimer, DeviceTestingState state)
         {
-            Log.Debug("startStopProcessDataTimer | startProcessDataTimer: " + startProcessDataTimer.ToString() +
+            /*Log.Debug("startStopProcessDataTimer | startProcessDataTimer: " + startProcessDataTimer.ToString() +
                 " | state: " + state.ToString());
 
             if (startProcessDataTimer)
@@ -423,10 +425,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 {
                     Log.Debug("startStopProcessDataTimer | Exception: " + e.ToString());
                 }
-            }
+            }*/
+
         }
 
-        /// <summary>
+       /* /// <summary>
         /// Task in charge to start or stop data acquisition
         /// </summary>
         /// <returns></returns>
@@ -468,7 +471,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     startStopProcessDataTimer(false, state);
                 }));
             }
-        }
+        }*/
+
 
         /// <summary>
         /// Obtain, process, and plot BCI EEG data
@@ -503,44 +507,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
         }
 
-        /// <summary>
-        /// Update optical sensor data plot
-        /// Plot samples at every tick (this simulates data is received continuously)
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void PlotOpticalSensorData_Tick(object sender, EventArgs e)
-        {
-            // Check flag to stop all timers (checked during possible timer tick)
-            if (_stopTimers)
-            {
-                startStopPlotDataTimer(false, DeviceTestingState.ExitBCITesting);
-                return;
-            }
-
-            if (DAQ_OpenBCI.deviceInitialized)
-            {
-                // REMOVE ONLY FOR TESTING
-                DAQ_OpenBCI.InsertMarker(5.89f);
-
-                double[,] data = DAQ_OpenBCI.GetData();
-
-                if (data != null && data.Length > 0)
-                {
-                    int numSamples = data.GetLength(1);
-                    double[] opticalSensorData = new double[numSamples];
-                    for (int sampleIdx = 0; sampleIdx < numSamples; sampleIdx++)
-                    {
-                        opticalSensorData[sampleIdx] = 1 - data[DAQ_OpenBCI.indOpticalSensorChannel, sampleIdx]; // 1- data[DAQ_OpenBCI.indOpticalSensorChannel, sampleIdx]
-                    }
-
-                    Invoke(new Action(() =>
-                    {
-                        _userControlBCIErrorOpticalSensor.updateOpticalSensorDataPlot(opticalSensorData);
-                    }));
-                }
-            }
-        }
 
         /// <summary>
         /// Dispose all objects and task used by Signal monitor
@@ -591,10 +557,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     _userControlBCIErrorCytonBoard.Dispose();
                 if (_userControlBCIErrorUsbDongle != null)
                     _userControlBCIErrorUsbDongle.Dispose();
-                if (_userControlBCIErrorPortConfig != null)
-                    _userControlBCIErrorPortConfig.Dispose();
-                if (_userControlBCIErrorOpticalSensor != null)
-                    _userControlBCIErrorOpticalSensor.Dispose();
                 if (_userControlBCISignalCheckStartRequired != null)
                     _userControlBCISignalCheckStartRequired.Dispose();
                 if (_userControlBCISignalCheckStartPrompt != null)
@@ -667,16 +629,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _userControlBCIErrorUsbDongle.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 13F);
             _userControlBCIErrorUsbDongle.buttonExit.ForeColor = Color.Red;
             _userControlBCIErrorUsbDongle.buttonExit.Text = "[Developer Mode]";
-
-            _userControlBCIErrorPortConfig.buttonExit.AutoSize = true;
-            _userControlBCIErrorPortConfig.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 13F);
-            _userControlBCIErrorPortConfig.buttonExit.ForeColor = Color.Red;
-            _userControlBCIErrorPortConfig.buttonExit.Text = "[Developer Mode]";
-
-            _userControlBCIErrorOpticalSensor.buttonExit.AutoSize = true;
-            _userControlBCIErrorOpticalSensor.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 13F);
-            _userControlBCIErrorOpticalSensor.buttonExit.ForeColor = Color.Red;
-            _userControlBCIErrorOpticalSensor.buttonExit.Text = "[Developer Mode]";
 
             _userControlBCISignalCheckStartRequired.buttonExit.AutoSize = true;
             _userControlBCISignalCheckStartRequired.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 11F);

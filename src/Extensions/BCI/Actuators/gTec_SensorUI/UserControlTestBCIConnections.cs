@@ -13,7 +13,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.BCI.Actuators.SensorUI
+namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
     /// <summary>
     /// Displays "BCI Connecting..." gif while user waits for results from BCI device tests

@@ -16,7 +16,7 @@
 // https://github.com/OpenBCI/OpenBCI_GUI/blob/master/LICENSE
 ////////////////////////////////////////////////////////////////////////////
 
-namespace ACAT.Extensions.BCI.Actuators.SensorUI
+namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
     /// <summary>
     /// Makes sure the BCI signals are good before continuing onto calibration. 
@@ -560,7 +560,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.panelSignalQualitySlider.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelSignalQualitySlider.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelSignalQualitySlider.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.panelSignalQualitySlider.BackgroundImage = global::SensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel;
+            this.panelSignalQualitySlider.BackgroundImage = global::gTecSensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel;
             this.panelSignalQualitySlider.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.tableLayoutPanelMain.SetColumnSpan(this.panelSignalQualitySlider, 6);
             this.panelSignalQualitySlider.Location = new System.Drawing.Point(210, 595);

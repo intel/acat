@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace BCIActuator
 {
-    public partial class UserControlBCIBoardSelection : Form
+    public partial class UserControlBCIDeviceSelection : Form
     {
         /// <summary>
         /// Event sent when exiting out of device testing completely
@@ -21,7 +21,7 @@ namespace BCIActuator
         public event BCIDeviceSelected EvtOpenBCISelected;
 
 
-        public UserControlBCIBoardSelection()
+        public UserControlBCIDeviceSelection()
         {
             InitializeComponent();
         }

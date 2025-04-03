@@ -12,7 +12,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-namespace ACAT.Extensions.BCI.Actuators.SensorUI
+namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
 
     /// <summary>
@@ -142,7 +142,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             // tableLayoutPanelBCIError
             // 
             this.tableLayoutPanelBCIError.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.tableLayoutPanelBCIError.BackgroundImage = global::SensorUI.Resources.BCIUsbDongle;
+            this.tableLayoutPanelBCIError.BackgroundImage = global::gTecSensorUI.Resources.BCIUsbDongle;
             this.tableLayoutPanelBCIError.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.tableLayoutPanelBCIError.ColumnCount = 3;
             this.tableLayoutPanelMain.SetColumnSpan(this.tableLayoutPanelBCIError, 3);

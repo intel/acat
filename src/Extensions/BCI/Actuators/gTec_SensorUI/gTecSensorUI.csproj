@@ -99,23 +99,11 @@
     <Compile Include="SensorForm.designer.cs">
       <DependentUpon>SensorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControlBCIErrorOpticalSensorDetect.cs">
+    <Compile Include="UserControlBCIErrorGTecBoard.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControlBCIErrorOpticalSensorDetect.designer.cs">
-      <DependentUpon>UserControlBCIErrorOpticalSensorDetect.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControlBCIErrorPortConfig.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControlBCIErrorPortConfig.designer.cs">
-      <DependentUpon>UserControlBCIErrorPortConfig.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControlBCIErrorCytonBoard.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControlBCIErrorCytonBoard.designer.cs">
-      <DependentUpon>UserControlBCIErrorCytonBoard.cs</DependentUpon>
+    <Compile Include="UserControlBCIErrorGTecBoard.designer.cs">
+      <DependentUpon>UserControlBCIErrorGTecBoard.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControlBCIFilterSettings.cs">
       <SubType>UserControl</SubType>
@@ -128,12 +116,6 @@
     </Compile>
     <Compile Include="UserControlBCIErrorUsbDongle.designer.cs">
       <DependentUpon>UserControlBCIErrorUsbDongle.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControlBCIErrorOpticalSensor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControlBCIErrorOpticalSensor.designer.cs">
-      <DependentUpon>UserControlBCIErrorOpticalSensor.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControlBCISignalCheck.cs">
       <SubType>UserControl</SubType>
@@ -178,23 +160,14 @@
       <DependentUpon>SensorForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControlBCIErrorOpticalSensorDetect.resx">
-      <DependentUpon>UserControlBCIErrorOpticalSensorDetect.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControlBCIErrorPortConfig.resx">
-      <DependentUpon>UserControlBCIErrorPortConfig.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControlBCIErrorCytonBoard.resx">
-      <DependentUpon>UserControlBCIErrorCytonBoard.cs</DependentUpon>
+    <EmbeddedResource Include="UserControlBCIErrorGTecBoard.resx">
+      <DependentUpon>UserControlBCIErrorGTecBoard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControlBCIFilterSettings.resx">
       <DependentUpon>UserControlBCIFilterSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControlBCIErrorUsbDongle.resx">
       <DependentUpon>UserControlBCIErrorUsbDongle.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControlBCIErrorOpticalSensor.resx">
-      <DependentUpon>UserControlBCIErrorOpticalSensor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControlBCISignalCheck.resx">
       <DependentUpon>UserControlBCISignalCheck.cs</DependentUpon>

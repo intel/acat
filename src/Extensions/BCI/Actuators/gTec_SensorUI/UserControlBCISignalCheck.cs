@@ -75,11 +75,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public static OverallSignalQualityResult _AllElectrodesOverallSignalQualityResult;
 
         /// <summary>
-        /// Unique ID for this step
-        /// </summary>
-        private String _stepId;
-
-        /// <summary>
         /// Debugging flag - ignore optical sensor error checks
         /// </summary>
         private bool _Testing_BCIOnboardingIgnoreOpticalSensorChecks = false;
@@ -257,11 +252,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         /// <param name="stepId"></param>
         /// 
-        public UserControlBCISignalCheck(String stepId)
+        public UserControlBCISignalCheck()
         {
             InitializeComponent();
 
-            _stepId = stepId;
             buttonNext.Enabled = true;
             buttonNext.Visible = true;
 

@@ -4,20 +4,19 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 //
-// UserControlBCIErrorPortConfig.designer.cs
+// UserControlBCIErrorCytonBoard.designer.cs
 //
-// User control which displays information on errors related to configuration
-// of the COM port for the BCI board
+// User control which displays information on errors related to connecting
+// to the BCI Cyton board
 //
 ////////////////////////////////////////////////////////////////////////////
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
     /// <summary>
-    /// User control which displays information on errors related to configuration 
-    /// of the COM port for the BCI board
+    ///  User control which displays information on errors related to connecting to the BCI Cyton board
     /// </summary>
-    partial class UserControlBCIErrorPortConfig
+    partial class UserControlBCIErrorCytonBoard
     {
         /// <summary> 
         /// Required designer variable.
@@ -45,7 +44,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControlBCIErrorPortConfig));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControlBCIErrorCytonBoard));
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.buttonExit = new System.Windows.Forms.Button();
             this.labelTitle = new System.Windows.Forms.Label();
@@ -72,31 +71,30 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 26F));
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 26F));
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11F));
-            this.tableLayoutPanelMain.Controls.Add(this.buttonExit, 1, 12);
+            this.tableLayoutPanelMain.Controls.Add(this.buttonExit, 1, 11);
             this.tableLayoutPanelMain.Controls.Add(this.labelTitle, 1, 1);
-            this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanelBCIError, 1, 7);
-            this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanelSpacerBottom, 1, 13);
+            this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanelBCIError, 1, 6);
+            this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanelSpacerBottom, 1, 12);
             this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanelSpacerTop, 1, 0);
             this.tableLayoutPanelMain.Controls.Add(this.webBrowserTop, 1, 3);
-            this.tableLayoutPanelMain.Controls.Add(this.webBrowserBottom, 1, 9);
+            this.tableLayoutPanelMain.Controls.Add(this.webBrowserBottom, 1, 8);
             this.tableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanelMain.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
-            this.tableLayoutPanelMain.RowCount = 14;
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.396816F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.04663F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.396816F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 3.924957F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 3.924957F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 3.924957F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.396816F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 29.43718F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.396816F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 3.924957F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 3.924957F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.396816F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.510514F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.396816F));
+            this.tableLayoutPanelMain.RowCount = 13;
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.140637F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.25783F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.140636F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4.524978F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4.524978F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.140636F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 26.14432F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.140636F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4.524978F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4.177546F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.396867F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.654111F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.140636F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanelMain.Size = new System.Drawing.Size(1022, 766);
             this.tableLayoutPanelMain.TabIndex = 9;
@@ -112,10 +110,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.buttonExit.Font = new System.Drawing.Font("Montserrat Thin", 36F, System.Drawing.FontStyle.Underline);
             this.buttonExit.ForeColor = System.Drawing.Color.Silver;
             this.buttonExit.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.buttonExit.Location = new System.Drawing.Point(112, 664);
+            this.buttonExit.Location = new System.Drawing.Point(112, 657);
             this.buttonExit.Margin = new System.Windows.Forms.Padding(0);
             this.buttonExit.Name = "buttonExit";
-            this.buttonExit.Size = new System.Drawing.Size(128, 57);
+            this.buttonExit.Size = new System.Drawing.Size(128, 58);
             this.buttonExit.TabIndex = 76;
             this.buttonExit.Text = "Exit";
             this.buttonExit.UseCompatibleTextRendering = true;
@@ -127,14 +125,14 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.labelTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.tableLayoutPanelMain.SetColumnSpan(this.labelTitle, 3);
             this.labelTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelTitle.Font = new System.Drawing.Font("Montserrat", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTitle.Font = new System.Drawing.Font("Montserrat", 33.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTitle.ForeColor = System.Drawing.Color.White;
-            this.labelTitle.Location = new System.Drawing.Point(112, 41);
+            this.labelTitle.Location = new System.Drawing.Point(112, 47);
             this.labelTitle.Margin = new System.Windows.Forms.Padding(0);
             this.labelTitle.Name = "labelTitle";
-            this.labelTitle.Size = new System.Drawing.Size(795, 84);
+            this.labelTitle.Size = new System.Drawing.Size(795, 86);
             this.labelTitle.TabIndex = 6;
-            this.labelTitle.Text = "BCI Port Configuration Error";
+            this.labelTitle.Text = "BCI gTec Board Error";
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.labelTitle.UseCompatibleTextRendering = true;
             // 
@@ -151,13 +149,12 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelBCIError.Controls.Add(this.buttonRetry, 2, 0);
             this.tableLayoutPanelBCIError.Font = new System.Drawing.Font("Montserrat Medium", 19F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tableLayoutPanelBCIError.ForeColor = System.Drawing.Color.White;
-            this.tableLayoutPanelBCIError.Location = new System.Drawing.Point(112, 297);
+            this.tableLayoutPanelBCIError.Location = new System.Drawing.Point(112, 295);
             this.tableLayoutPanelBCIError.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanelBCIError.Name = "tableLayoutPanelBCIError";
             this.tableLayoutPanelBCIError.RowCount = 1;
             this.tableLayoutPanelBCIError.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelBCIError.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 225F));
-            this.tableLayoutPanelBCIError.Size = new System.Drawing.Size(795, 225);
+            this.tableLayoutPanelBCIError.Size = new System.Drawing.Size(795, 200);
             this.tableLayoutPanelBCIError.TabIndex = 70;
             this.tableLayoutPanelBCIError.Text = "Row for error visualization";
             // 
@@ -180,8 +177,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.buttonRetry.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
             this.buttonRetry.Image = ((System.Drawing.Image)(resources.GetObject("buttonRetry.Image")));
             this.buttonRetry.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonRetry.Location = new System.Drawing.Point(570, 82);
-            this.buttonRetry.Margin = new System.Windows.Forms.Padding(40, 0, 0, 0);
+            this.buttonRetry.Location = new System.Drawing.Point(555, 69);
+            this.buttonRetry.Margin = new System.Windows.Forms.Padding(25, 0, 0, 0);
             this.buttonRetry.Name = "buttonRetry";
             this.buttonRetry.Size = new System.Drawing.Size(199, 61);
             this.buttonRetry.TabIndex = 85;
@@ -198,12 +195,12 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelMain.SetColumnSpan(this.tableLayoutPanelSpacerBottom, 3);
             this.tableLayoutPanelSpacerBottom.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelSpacerBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanelSpacerBottom.Location = new System.Drawing.Point(112, 721);
+            this.tableLayoutPanelSpacerBottom.Location = new System.Drawing.Point(112, 715);
             this.tableLayoutPanelSpacerBottom.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanelSpacerBottom.Name = "tableLayoutPanelSpacerBottom";
             this.tableLayoutPanelSpacerBottom.RowCount = 1;
             this.tableLayoutPanelSpacerBottom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelSpacerBottom.Size = new System.Drawing.Size(795, 45);
+            this.tableLayoutPanelSpacerBottom.Size = new System.Drawing.Size(795, 51);
             this.tableLayoutPanelSpacerBottom.TabIndex = 74;
             // 
             // tableLayoutPanelSpacerTop
@@ -218,41 +215,41 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelSpacerTop.Name = "tableLayoutPanelSpacerTop";
             this.tableLayoutPanelSpacerTop.RowCount = 1;
             this.tableLayoutPanelSpacerTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelSpacerTop.Size = new System.Drawing.Size(795, 41);
+            this.tableLayoutPanelSpacerTop.Size = new System.Drawing.Size(795, 47);
             this.tableLayoutPanelSpacerTop.TabIndex = 73;
             // 
             // webBrowserTop
             // 
             this.tableLayoutPanelMain.SetColumnSpan(this.webBrowserTop, 3);
             this.webBrowserTop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowserTop.Location = new System.Drawing.Point(115, 169);
+            this.webBrowserTop.Location = new System.Drawing.Point(115, 183);
             this.webBrowserTop.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowserTop.Name = "webBrowserTop";
-            this.tableLayoutPanelMain.SetRowSpan(this.webBrowserTop, 4);
+            this.tableLayoutPanelMain.SetRowSpan(this.webBrowserTop, 3);
             this.webBrowserTop.ScrollBarsEnabled = false;
-            this.webBrowserTop.Size = new System.Drawing.Size(789, 125);
-            this.webBrowserTop.TabIndex = 77;
+            this.webBrowserTop.Size = new System.Drawing.Size(789, 109);
+            this.webBrowserTop.TabIndex = 81;
             // 
             // webBrowserBottom
             // 
             this.tableLayoutPanelMain.SetColumnSpan(this.webBrowserBottom, 3);
             this.webBrowserBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowserBottom.Location = new System.Drawing.Point(115, 566);
+            this.webBrowserBottom.Location = new System.Drawing.Point(115, 545);
             this.webBrowserBottom.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowserBottom.Name = "webBrowserBottom";
             this.tableLayoutPanelMain.SetRowSpan(this.webBrowserBottom, 3);
             this.webBrowserBottom.ScrollBarsEnabled = false;
-            this.webBrowserBottom.Size = new System.Drawing.Size(789, 95);
-            this.webBrowserBottom.TabIndex = 78;
+            this.webBrowserBottom.Size = new System.Drawing.Size(789, 109);
+            this.webBrowserBottom.TabIndex = 82;
             // 
-            // UserControlBCIErrorPortConfig
+            // UserControlBCIErrorCytonBoard
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.tableLayoutPanelMain);
             this.Margin = new System.Windows.Forms.Padding(0);
-            this.Name = "UserControlBCIErrorPortConfig";
+            this.Name = "UserControlBCIErrorCytonBoard";
             this.Size = new System.Drawing.Size(1022, 766);
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.tableLayoutPanelMain.PerformLayout();

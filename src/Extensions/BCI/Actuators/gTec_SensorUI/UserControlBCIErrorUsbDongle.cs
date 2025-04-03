@@ -32,7 +32,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                                     "Review the <a href=$ACAT_USER_GUIDE#USBDongleError>checklist</a> for Cyton board setup, take corrective action, and then click Retry\r\n" +
                                     "</p>\r\n  </body>\r\n</html>\r\n";
 
-        public UserControlBCIErrorUsbDongle(String stepId)
+        public UserControlBCIErrorUsbDongle()
         {
             InitializeComponent();
 

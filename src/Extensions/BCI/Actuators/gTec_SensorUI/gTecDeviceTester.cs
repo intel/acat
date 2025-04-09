@@ -27,7 +27,6 @@ using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition.DAQ_OpenBCI;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
@@ -36,6 +35,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     /// </summary>
     public class gTecDeviceTester
     {
+
+        DAQ_gTecBCI gTecBCI = null;
+
         /// <summary>
         /// Variables representing all the different states in testing process (state machine)
         /// </summary>
@@ -248,10 +250,14 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 return;
             }
 
+
+            gTecBCI = new DAQ_gTecBCI();
+
+            gTecBCI.InitDevice();
+
             // Set initial device testing states
             currentTestingState = DeviceTestingState.TestingBluetoothPaired;
 
-            
 
             ExitOnboardingEarly = false;
 

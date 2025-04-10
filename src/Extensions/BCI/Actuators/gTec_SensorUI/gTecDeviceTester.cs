@@ -251,9 +251,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
 
 
-            gTecBCI = new DAQ_gTecBCI();
+            //gTecBCI = new DAQ_gTecBCI();
 
-            gTecBCI.InitDevice();
+            //gTecBCI.InitDevice("UN-2023.05.61");
+
 
             // Set initial device testing states
             currentTestingState = DeviceTestingState.TestingBluetoothPaired;
@@ -290,7 +291,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             EvtChangeDeviceTestingState += _mainForm.changeDeviceTestingState;
 
             //// Enable button hidden / shown on last page depending on acceptable channels
-            //// EvtSetEnabledNextButton += _mainForm.enableNextButton;
+            // EvtSetEnabledNextButton += _mainForm.enableNextButton;
 
             // Event for displaying error message when no longer receiving data
             // _mainForm._userControlBCISignalCheck.ShowSensorErrorMsg_Event += showSensorErrorMessage;
@@ -321,42 +322,29 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             {
                 case DeviceTestingState.BCISignalCheckStartRequired:
 
-                    
                     break;
-
                 case DeviceTestingState.BCISignalCheckStartPrompt:
 
                     break;
-
                 case DeviceTestingState.PromptFilterSettings:
 
                     break;
-
                 case DeviceTestingState.TestingBluetoothPaired:
 
                     testBluetoothStatus();
-
                     break;
-
-
                 case DeviceTestingState.TestingBluetoothConnected:
 
                     break;
-
-
                 case DeviceTestingState.TestingSignalQuality:
 
                     break;
-
                 case DeviceTestingState.PerformingCalibration:
 
                     break;
-
-
                 case DeviceTestingState.ExitBCITesting:
 
                     break;
-
                 default:
                     break;
             }
@@ -397,6 +385,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _endTriggerBoxTask = true;
             _endTasks = true;
 
+            */
             // Release event handlers at this level
             EvtChangeDeviceTestingState = null;
 
@@ -405,7 +394,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             {
                 _mainForm.Close();
                 _mainForm.Dispose();
-            }*/
+            }
         }
 
         /// <summary>

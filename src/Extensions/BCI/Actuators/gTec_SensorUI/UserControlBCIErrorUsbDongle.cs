@@ -15,7 +15,10 @@
 using ACAT.ACATResources;
 using ACAT.Lib.Core.Utility;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
+using Gtec.Unicorn;
+using System.Threading.Tasks;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
@@ -25,38 +28,84 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     /// </summary>
     public partial class UserControlBCIErrorUsbDongle : UserControl
     {
-        private string _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  <head>\r\n  <style>\r\n" +
-                                    "a:link{color: rgb(255, 170, 0);}\r\n  </style>\r\n  </head>\r\n " +
-                                    "<body style=\"background-color:#232433;\">\r\n    " +
-                                    "<p style=\"font-family:'Montserrat Medium'; font-size:24px; color:white; text-align: center;\">\r\n    " +
-                                    "Review the <a href=$ACAT_USER_GUIDE#USBDongleError>checklist</a> for Cyton board setup, take corrective action, and then click Retry\r\n" +
-                                    "</p>\r\n  </body>\r\n</html>\r\n";
+        private Timer _updateTimer;
 
         public UserControlBCIErrorUsbDongle()
         {
             InitializeComponent();
 
-            webBrowserTop.DocumentCompleted += WebBrowserDesc_DocumentCompleted;
-            var html = _htmlText.Replace(CoreGlobals.MacroACATUserGuide, HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName));
-            webBrowserTop.DocumentText = html;
+            buttonNext.Enabled = false;
 
-            webBrowserBottom.DocumentCompleted += WebBrowserDesc_DocumentCompleted;
-            var htmlContent = R.GetString("BCIOnboardingBottomHtmlText");
-            html = htmlContent.Replace(CoreGlobals.MacroACATUserGuide, HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName));
-            webBrowserBottom.DocumentText = html;
+            listViewPairedDevices.SelectedIndexChanged += ListViewPairedDevices_SelectedIndexChanged;
+
+            _updateTimer = new Timer();
+            _updateTimer.Interval = 5000; // 5 seconds
+            _updateTimer.Tick += UpdateTimer_Tick;
+            _updateTimer.Start();
+
+            updatePairedDeviceList();
+            updateUnPairedDeviceList();
         }
 
-        private void WebBrowserDesc_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        private void ListViewPairedDevices_SelectedIndexChanged(object sender, EventArgs e)
         {
-            webBrowserBottom.Navigating -= WebBrowserDesc_Navigating;
-            webBrowserBottom.Navigating += WebBrowserDesc_Navigating;
-            webBrowserTop.Navigating -= WebBrowserDesc_Navigating;
-            webBrowserTop.Navigating += WebBrowserDesc_Navigating;
+            buttonNext.Enabled = listViewPairedDevices.SelectedItems.Count > 0;
         }
 
-        private void WebBrowserDesc_Navigating(object sender, WebBrowserNavigatingEventArgs e)
+        private void UpdateTimer_Tick(object sender, EventArgs e)
         {
-            Utils.HandleHelpNavigaion(e);
+            updatePairedDeviceList();
+            updateUnPairedDeviceList();
+        }
+
+        public async void updatePairedDeviceList()
+        {
+            listViewPairedDevices.Items.Clear();
+            try
+            {
+                IList<string> devices = await Task.Run(() => Unicorn.GetAvailableDevices(true));
+                if (devices.Count > 0)
+                {
+                    listViewPairedDevices.Invoke((Action)(() =>
+                    {
+                        foreach (string device in devices)
+                        {
+                            var listItem = new ListViewItem(device);
+                            listViewPairedDevices.Items.Add(listItem);
+                        }
+                    }));
+                }
+            }
+            catch (Gtec.Unicorn.DeviceException ex)
+            {
+                // Log or handle the exception
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+        }
+
+        public async void updateUnPairedDeviceList()
+        {
+            listViewUnPairedDevices.Items.Clear();
+            try
+            {
+                IList<string> devices = await Task.Run(() => Unicorn.GetAvailableDevices(false));
+                if (devices.Count > 0)
+                {
+                    listViewUnPairedDevices.Invoke((Action)(() =>
+                    {
+                        foreach (string device in devices)
+                        {
+                            var listItem = new ListViewItem(device);
+                            listViewUnPairedDevices.Items.Add(listItem);
+                        }
+                    }));
+                }
+            }
+            catch (Gtec.Unicorn.DeviceException ex)
+            {
+                // Log or handle the exception
+                MessageBox.Show($"Error: {ex.Message}");
+            }
         }
     }
 }

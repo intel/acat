@@ -148,7 +148,7 @@ namespace BCIActuator
             this.ClientSize = new System.Drawing.Size(895, 475);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.Name = "UserControlBCIDeviceSelection";
-            this.Text = "UserControlBCIBoardSelection2";
+            this.Text = "BCI Device Selection";
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.tableLayoutPanelMain.PerformLayout();
             this.ResumeLayout(false);

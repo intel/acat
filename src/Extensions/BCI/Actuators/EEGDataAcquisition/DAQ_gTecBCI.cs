@@ -634,7 +634,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             {
                 Log.Debug("Testing port " + serial_number);
                 BrainFlowInputParams input_params = new BrainFlowInputParams();
-                input_params.serial_number = serial_number;
+                //input_params.serial_number = serial_number;
 
                 DeviceObj = new BoardShim(boardID, input_params);
                 DeviceObj.prepare_session();

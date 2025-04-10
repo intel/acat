@@ -24,6 +24,8 @@ namespace BCIActuator
         public UserControlBCIDeviceSelection()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
+
         }
 
         private void buttonGtecUnicorn_Click(object sender, EventArgs e)

@@ -134,9 +134,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             _userControlBCIErrorUsbDongle = new UserControlBCIErrorUsbDongle();
             _userControlBCIErrorUsbDongle.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            _userControlBCIErrorUsbDongle.buttonRetry.Click += new System.EventHandler(this.buttonRetest_Click);
-
-            
 
             _userControlBCISignalCheckStartRequired = new UserControlBCISignalCheckStartRequired(gTecDeviceTester.DeviceTestingState.BCISignalCheckStartRequired.ToString() + "_Required");
             _userControlBCISignalCheckStartRequired.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
@@ -158,7 +155,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             // Set current signal check view mode for last screens
             // Default = Railing Test screen
-            UserControlBCISignalCheck._currentBCISignalCheckMode = BCISignalCheckMode.TEST_RAILING;
+            //UserControlBCISignalCheck._currentBCISignalCheckMode = BCISignalCheckMode.TEST_RAILING;
 
             if (!gTecDeviceTester._Testing_useSensor)
             {

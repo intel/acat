@@ -83,6 +83,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="UnicornDotNet">
+      <HintPath>..\..\..\..\..\..\Unicorn-Hybrid-Black-Windows-APIs\dotnet-api\Examples\Acquisition Example\Lib\x86\UnicornDotNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gTecDeviceTester.cs" />

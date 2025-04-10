@@ -47,18 +47,25 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControlBCIErrorUsbDongle));
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Device Name");
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("Device Name");
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.buttonExit = new System.Windows.Forms.Button();
             this.labelTitle = new System.Windows.Forms.Label();
-            this.tableLayoutPanelBCIError = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonRetry = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanelSpacerBottom = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelSpacerTop = new System.Windows.Forms.TableLayoutPanel();
-            this.webBrowserTop = new System.Windows.Forms.WebBrowser();
-            this.webBrowserBottom = new System.Windows.Forms.WebBrowser();
+            this.listViewPairedDevices = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.listViewUnPairedDevices = new System.Windows.Forms.ListView();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.buttonNext = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanelMain.SuspendLayout();
-            this.tableLayoutPanelBCIError.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanelMain
@@ -76,11 +83,15 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11F));
             this.tableLayoutPanelMain.Controls.Add(this.buttonExit, 1, 11);
             this.tableLayoutPanelMain.Controls.Add(this.labelTitle, 1, 1);
-            this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanelBCIError, 1, 6);
             this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanelSpacerBottom, 1, 12);
             this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanelSpacerTop, 1, 0);
-            this.tableLayoutPanelMain.Controls.Add(this.webBrowserTop, 1, 3);
-            this.tableLayoutPanelMain.Controls.Add(this.webBrowserBottom, 1, 8);
+            this.tableLayoutPanelMain.Controls.Add(this.label2, 1, 3);
+            this.tableLayoutPanelMain.Controls.Add(this.label3, 2, 3);
+            this.tableLayoutPanelMain.Controls.Add(this.label4, 3, 3);
+            this.tableLayoutPanelMain.Controls.Add(this.panel1, 1, 4);
+            this.tableLayoutPanelMain.Controls.Add(this.listViewPairedDevices, 2, 4);
+            this.tableLayoutPanelMain.Controls.Add(this.listViewUnPairedDevices, 3, 4);
+            this.tableLayoutPanelMain.Controls.Add(this.buttonNext, 3, 11);
             this.tableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanelMain.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
@@ -135,61 +146,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.labelTitle.Name = "labelTitle";
             this.labelTitle.Size = new System.Drawing.Size(795, 86);
             this.labelTitle.TabIndex = 6;
-            this.labelTitle.Text = "BCI USB Dongle Error";
+            this.labelTitle.Text = "GTec Unicorn Pairing";
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.labelTitle.UseCompatibleTextRendering = true;
-            // 
-            // tableLayoutPanelBCIError
-            // 
-            this.tableLayoutPanelBCIError.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.tableLayoutPanelBCIError.BackgroundImage = global::gTecSensorUI.Resources.BCIUsbDongle;
-            this.tableLayoutPanelBCIError.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.tableLayoutPanelBCIError.ColumnCount = 3;
-            this.tableLayoutPanelMain.SetColumnSpan(this.tableLayoutPanelBCIError, 3);
-            this.tableLayoutPanelBCIError.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanelBCIError.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanelBCIError.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanelBCIError.Controls.Add(this.buttonRetry, 2, 0);
-            this.tableLayoutPanelBCIError.Font = new System.Drawing.Font("Montserrat Medium", 19F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tableLayoutPanelBCIError.ForeColor = System.Drawing.Color.White;
-            this.tableLayoutPanelBCIError.Location = new System.Drawing.Point(112, 295);
-            this.tableLayoutPanelBCIError.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanelBCIError.Name = "tableLayoutPanelBCIError";
-            this.tableLayoutPanelBCIError.RowCount = 1;
-            this.tableLayoutPanelBCIError.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelBCIError.Size = new System.Drawing.Size(795, 200);
-            this.tableLayoutPanelBCIError.TabIndex = 70;
-            this.tableLayoutPanelBCIError.Text = "Row for error visualization";
-            // 
-            // buttonRetry
-            // 
-            this.buttonRetry.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonRetry.AutoSize = true;
-            this.buttonRetry.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.buttonRetry.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.buttonRetry.BorderColor = System.Drawing.Color.Transparent;
-            this.buttonRetry.BorderRadiusBottomLeft = 0;
-            this.buttonRetry.BorderRadiusBottomRight = 0;
-            this.buttonRetry.BorderRadiusTopLeft = 0;
-            this.buttonRetry.BorderRadiusTopRight = 0;
-            this.buttonRetry.BorderWidth = 0F;
-            this.buttonRetry.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.buttonRetry.FlatAppearance.BorderSize = 0;
-            this.buttonRetry.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonRetry.Font = new System.Drawing.Font("Montserrat", 28F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonRetry.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.buttonRetry.Image = ((System.Drawing.Image)(resources.GetObject("buttonRetry.Image")));
-            this.buttonRetry.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonRetry.Location = new System.Drawing.Point(555, 69);
-            this.buttonRetry.Margin = new System.Windows.Forms.Padding(25, 0, 0, 0);
-            this.buttonRetry.Name = "buttonRetry";
-            this.buttonRetry.Size = new System.Drawing.Size(199, 61);
-            this.buttonRetry.TabIndex = 85;
-            this.buttonRetry.Text = "Retry";
-            this.buttonRetry.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.buttonRetry.UseCompatibleTextRendering = true;
-            this.buttonRetry.UseMnemonic = false;
-            this.buttonRetry.UseVisualStyleBackColor = false;
             // 
             // tableLayoutPanelSpacerBottom
             // 
@@ -221,29 +180,127 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelSpacerTop.Size = new System.Drawing.Size(795, 47);
             this.tableLayoutPanelSpacerTop.TabIndex = 73;
             // 
-            // webBrowserTop
+            // listViewPairedDevices
             // 
-            this.tableLayoutPanelMain.SetColumnSpan(this.webBrowserTop, 3);
-            this.webBrowserTop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowserTop.Location = new System.Drawing.Point(115, 183);
-            this.webBrowserTop.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowserTop.Name = "webBrowserTop";
-            this.tableLayoutPanelMain.SetRowSpan(this.webBrowserTop, 3);
-            this.webBrowserTop.ScrollBarsEnabled = false;
-            this.webBrowserTop.Size = new System.Drawing.Size(789, 109);
-            this.webBrowserTop.TabIndex = 81;
+            this.listViewPairedDevices.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listViewPairedDevices.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.listViewPairedDevices.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listViewPairedDevices.HideSelection = false;
+            this.listViewPairedDevices.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem3});
+            this.listViewPairedDevices.Location = new System.Drawing.Point(380, 217);
+            this.listViewPairedDevices.Name = "listViewPairedDevices";
+            this.tableLayoutPanelMain.SetRowSpan(this.listViewPairedDevices, 3);
+            this.listViewPairedDevices.Size = new System.Drawing.Size(259, 275);
+            this.listViewPairedDevices.TabIndex = 86;
+            this.listViewPairedDevices.UseCompatibleStateImageBehavior = false;
+            this.listViewPairedDevices.View = System.Windows.Forms.View.List;
             // 
-            // webBrowserBottom
+            // columnHeader1
             // 
-            this.tableLayoutPanelMain.SetColumnSpan(this.webBrowserBottom, 3);
-            this.webBrowserBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowserBottom.Location = new System.Drawing.Point(115, 545);
-            this.webBrowserBottom.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowserBottom.Name = "webBrowserBottom";
-            this.tableLayoutPanelMain.SetRowSpan(this.webBrowserBottom, 3);
-            this.webBrowserBottom.ScrollBarsEnabled = false;
-            this.webBrowserBottom.Size = new System.Drawing.Size(789, 109);
-            this.webBrowserBottom.TabIndex = 82;
+            this.columnHeader1.Width = 300;
+            // 
+            // listViewUnPairedDevices
+            // 
+            this.listViewUnPairedDevices.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader2});
+            this.listViewUnPairedDevices.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listViewUnPairedDevices.HideSelection = false;
+            this.listViewUnPairedDevices.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem4});
+            this.listViewUnPairedDevices.Location = new System.Drawing.Point(645, 217);
+            this.listViewUnPairedDevices.Name = "listViewUnPairedDevices";
+            this.tableLayoutPanelMain.SetRowSpan(this.listViewUnPairedDevices, 3);
+            this.listViewUnPairedDevices.Size = new System.Drawing.Size(259, 275);
+            this.listViewUnPairedDevices.TabIndex = 87;
+            this.listViewUnPairedDevices.UseCompatibleStateImageBehavior = false;
+            this.listViewUnPairedDevices.View = System.Windows.Forms.View.List;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Location = new System.Drawing.Point(115, 217);
+            this.panel1.Name = "panel1";
+            this.tableLayoutPanelMain.SetRowSpan(this.panel1, 3);
+            this.panel1.Size = new System.Drawing.Size(259, 275);
+            this.panel1.TabIndex = 88;
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(9, 95);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(241, 74);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Please make sure to select CSR8510 A10 from Cambridge Silicon Radio Ltd. is the r" +
+    "ecommended Bluetooth adapter.";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.SystemColors.Control;
+            this.label2.Location = new System.Drawing.Point(115, 185);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(259, 23);
+            this.label2.TabIndex = 89;
+            this.label2.Text = "Bluetooth";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.SystemColors.Control;
+            this.label3.Location = new System.Drawing.Point(380, 185);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(259, 23);
+            this.label3.TabIndex = 90;
+            this.label3.Text = "Paired Devices";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.SystemColors.Control;
+            this.label4.Location = new System.Drawing.Point(645, 185);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(259, 23);
+            this.label4.TabIndex = 91;
+            this.label4.Text = "UnPaired Devices";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Width = 200;
+            // 
+            // buttonNext
+            // 
+            this.buttonNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonNext.AutoSize = true;
+            this.buttonNext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
+            this.buttonNext.BorderColor = System.Drawing.Color.Black;
+            this.buttonNext.BorderRadiusBottomLeft = 0;
+            this.buttonNext.BorderRadiusBottomRight = 0;
+            this.buttonNext.BorderRadiusTopLeft = 0;
+            this.buttonNext.BorderRadiusTopRight = 0;
+            this.buttonNext.BorderWidth = 2F;
+            this.buttonNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonNext.Font = new System.Drawing.Font("Montserrat Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonNext.Location = new System.Drawing.Point(795, 657);
+            this.buttonNext.Margin = new System.Windows.Forms.Padding(0);
+            this.buttonNext.Name = "buttonNext";
+            this.buttonNext.Size = new System.Drawing.Size(112, 48);
+            this.buttonNext.TabIndex = 92;
+            this.buttonNext.Text = "Next";
+            this.buttonNext.UseCompatibleTextRendering = true;
+            this.buttonNext.UseMnemonic = false;
+            this.buttonNext.UseVisualStyleBackColor = false;
             // 
             // UserControlBCIErrorUsbDongle
             // 
@@ -256,8 +313,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.Size = new System.Drawing.Size(1022, 766);
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.tableLayoutPanelMain.PerformLayout();
-            this.tableLayoutPanelBCIError.ResumeLayout(false);
-            this.tableLayoutPanelBCIError.PerformLayout();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -269,11 +325,17 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelMain;
         private System.Windows.Forms.Label labelTitle;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelSpacerTop;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelBCIError;
         public System.Windows.Forms.Button buttonExit;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelSpacerBottom;
-        public Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonRetry;
-        private System.Windows.Forms.WebBrowser webBrowserTop;
-        private System.Windows.Forms.WebBrowser webBrowserBottom;
+        private System.Windows.Forms.ListView listViewPairedDevices;
+        private System.Windows.Forms.ListView listViewUnPairedDevices;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        public System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        public Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonNext;
     }
 }

@@ -47,8 +47,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Device Name");
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("Device Name");
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.buttonExit = new System.Windows.Forms.Button();
             this.labelTitle = new System.Windows.Forms.Label();
@@ -188,8 +186,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.columnHeader1});
             this.listViewPairedDevices.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewPairedDevices.HideSelection = false;
-            this.listViewPairedDevices.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem3});
             this.listViewPairedDevices.Location = new System.Drawing.Point(380, 217);
             this.listViewPairedDevices.Name = "listViewPairedDevices";
             this.tableLayoutPanelMain.SetRowSpan(this.listViewPairedDevices, 3);
@@ -208,8 +204,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.columnHeader2});
             this.listViewUnPairedDevices.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewUnPairedDevices.HideSelection = false;
-            this.listViewUnPairedDevices.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem4});
             this.listViewUnPairedDevices.Location = new System.Drawing.Point(645, 217);
             this.listViewUnPairedDevices.Name = "listViewUnPairedDevices";
             this.tableLayoutPanelMain.SetRowSpan(this.listViewUnPairedDevices, 3);

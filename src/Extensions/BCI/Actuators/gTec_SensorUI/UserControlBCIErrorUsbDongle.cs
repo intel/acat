@@ -37,9 +37,12 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             buttonNext.Enabled = false;
 
             listViewPairedDevices.SelectedIndexChanged += ListViewPairedDevices_SelectedIndexChanged;
+            listViewUnPairedDevices.SelectedIndexChanged += ListViewPairedDevices_SelectedIndexChanged;
+
+            buttonNext.Click += buttonNext_Click;
 
             _updateTimer = new Timer();
-            _updateTimer.Interval = 5000; // 5 seconds
+            _updateTimer.Interval = 10000; // 10 seconds
             _updateTimer.Tick += UpdateTimer_Tick;
             _updateTimer.Start();
 
@@ -47,9 +50,38 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             updateUnPairedDeviceList();
         }
 
+        private void buttonNext_Click(object sender, EventArgs e)
+        {
+            string selectedDevice = "";
+
+            if (listViewPairedDevices.SelectedItems.Count > 0)
+            {
+                selectedDevice = listViewPairedDevices.SelectedItems[0].Text;
+            }
+
+            if (listViewUnPairedDevices.SelectedItems.Count > 0)
+            {
+                selectedDevice = listViewUnPairedDevices.SelectedItems[0].Text;
+            }
+
+            if (!string.IsNullOrEmpty(selectedDevice))
+            {
+                Log.Debug($"Selected device: {selectedDevice} , trying to connect...");
+                
+                Unicorn device = new Unicorn(selectedDevice);
+                
+                Log.Debug($"Device: {device} is connected...");
+
+                device.Dispose();
+                Log.Debug($"Device: {device} is disconnected...");
+            }   
+            
+        }
+
         private void ListViewPairedDevices_SelectedIndexChanged(object sender, EventArgs e)
         {
-            buttonNext.Enabled = listViewPairedDevices.SelectedItems.Count > 0;
+            bool enableButton = listViewPairedDevices.SelectedItems.Count > 0 || listViewUnPairedDevices.SelectedItems.Count > 0;
+            buttonNext.Enabled = enableButton;
         }
 
         private void UpdateTimer_Tick(object sender, EventArgs e)
@@ -60,12 +92,12 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
         public async void updatePairedDeviceList()
         {
-            listViewPairedDevices.Items.Clear();
             try
             {
                 IList<string> devices = await Task.Run(() => Unicorn.GetAvailableDevices(true));
                 if (devices.Count > 0)
                 {
+                    listViewPairedDevices.Items.Clear();
                     listViewPairedDevices.Invoke((Action)(() =>
                     {
                         foreach (string device in devices)
@@ -78,19 +110,18 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Gtec.Unicorn.DeviceException ex)
             {
-                // Log or handle the exception
-                MessageBox.Show($"Error: {ex.Message}");
+                Log.Debug($"Error: {ex.Message}");
             }
         }
 
         public async void updateUnPairedDeviceList()
         {
-            listViewUnPairedDevices.Items.Clear();
             try
             {
                 IList<string> devices = await Task.Run(() => Unicorn.GetAvailableDevices(false));
                 if (devices.Count > 0)
                 {
+                    listViewUnPairedDevices.Items.Clear();
                     listViewUnPairedDevices.Invoke((Action)(() =>
                     {
                         foreach (string device in devices)
@@ -103,8 +134,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Gtec.Unicorn.DeviceException ex)
             {
-                // Log or handle the exception
-                MessageBox.Show($"Error: {ex.Message}");
+                Log.Debug($"Error: {ex.Message}");
             }
         }
     }

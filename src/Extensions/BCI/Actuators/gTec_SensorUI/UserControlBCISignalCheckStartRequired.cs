@@ -24,7 +24,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// User control which is displayed when the user is required to do a signal quality check
         /// </summary>
         /// <param name="stepId"></param>
-        public UserControlBCISignalCheckStartRequired(String stepId)
+        //public UserControlBCISignalCheckStartRequired(String stepId)
+        public UserControlBCISignalCheckStartRequired()
         {
             InitializeComponent();
         }

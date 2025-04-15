@@ -19,7 +19,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     /// User control which displays information on errors related to connecting to the BCI board
     /// usb dongle which streams data from the BCI board through bluetooth
     /// </summary>
-    partial class UserControlBCIErrorUsbDongle
+    partial class UserControlBCIErrorDeviceDisconnected
     {
         /// <summary> 
         /// Required designer variable.

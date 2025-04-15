@@ -83,9 +83,6 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="UnicornDotNet">
-      <HintPath>..\..\..\..\..\..\Unicorn-Hybrid-Black-Windows-APIs\dotnet-api\Examples\Acquisition Example\Lib\x86\UnicornDotNet.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gTecDeviceTester.cs" />
@@ -96,51 +93,35 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SensorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="SensorForm.cs" />
     <Compile Include="SensorForm.designer.cs">
       <DependentUpon>SensorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControlBCIErrorGTecBoard.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UserControlBCIErrorGTecBoard.cs" />
     <Compile Include="UserControlBCIErrorGTecBoard.designer.cs">
       <DependentUpon>UserControlBCIErrorGTecBoard.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControlBCIFilterSettings.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UserControlBCIFilterSettings.cs" />
     <Compile Include="UserControlBCIFilterSettings.designer.cs">
       <DependentUpon>UserControlBCIFilterSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControlBCIErrorUsbDongle.cs">
-      <SubType>UserControl</SubType>
+    <Compile Include="UserControlBCIErrorDeviceDisconnected.cs" />
+    <Compile Include="UserControlBCIErrorDeviceDisconnected.designer.cs">
+      <DependentUpon>UserControlBCIErrorDeviceDisconnected.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControlBCIErrorUsbDongle.designer.cs">
-      <DependentUpon>UserControlBCIErrorUsbDongle.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControlBCISignalCheck.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UserControlBCISignalCheck.cs" />
     <Compile Include="UserControlBCISignalCheck.designer.cs">
       <DependentUpon>UserControlBCISignalCheck.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControlBCISignalCheckStartPrompt.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UserControlBCISignalCheckStartPrompt.cs" />
     <Compile Include="UserControlBCISignalCheckStartPrompt.designer.cs">
       <DependentUpon>UserControlBCISignalCheckStartPrompt.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControlBCISignalCheckStartRequired.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UserControlBCISignalCheckStartRequired.cs" />
     <Compile Include="UserControlBCISignalCheckStartRequired.designer.cs">
       <DependentUpon>UserControlBCISignalCheckStartRequired.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControlTestBCIConnections.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UserControlTestBCIConnections.cs" />
     <Compile Include="UserControlTestBCIConnections.designer.cs">
       <DependentUpon>UserControlTestBCIConnections.cs</DependentUpon>
     </Compile>
@@ -169,8 +150,8 @@
     <EmbeddedResource Include="UserControlBCIFilterSettings.resx">
       <DependentUpon>UserControlBCIFilterSettings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControlBCIErrorUsbDongle.resx">
-      <DependentUpon>UserControlBCIErrorUsbDongle.cs</DependentUpon>
+    <EmbeddedResource Include="UserControlBCIErrorDeviceDisconnected.resx">
+      <DependentUpon>UserControlBCIErrorDeviceDisconnected.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControlBCISignalCheck.resx">
       <DependentUpon>UserControlBCISignalCheck.cs</DependentUpon>

@@ -6,8 +6,8 @@
 //
 // gTecDeviceTester.cs
 //
-// Tests BCI devices - connections to the hardware (cyton board, optical sensor),
-// displays errors accordingly, and begins signal quality check
+// Tests BCI device - connections to the gTec board, displays errors accordingly, and begins signal quality check
+// 
 //
 ////////////////////////////////////////////////////////////////////////////
 
@@ -31,7 +31,7 @@ using System.Windows.Forms;
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
     /// <summary>
-    /// Tests BCI devices - connections to the hardware (cyton board, optical sensor), displays errors accordingly, and begins signal quality check
+    /// Tests BCI device - connections to the gTec board, displays errors accordingly, and begins signal quality check
     /// </summary>
     public class gTecDeviceTester
     {
@@ -39,15 +39,12 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         DAQ_gTecBCI gTecBCI = null;
 
         /// <summary>
-        /// Variables representing all the different states in testing process (state machine)
+        /// Enums representing the different states in the testing process
         /// </summary>
         public enum DeviceTestingState
         {
-            BCISignalCheckStartRequired, // Notifies user that maximum time has elapsed since last signal quality check, new one is needed
-            BCISignalCheckStartPrompt, // Prompts user if they need to do signal check based on a couple questions
-            PromptFilterSettings, // Prompts user to set BCI filter settings (50Hz / 60Hz)
+            TestSignalCheckRequired, // Tests if signal check is required (max time has passed or user failed previous signal check)
 
-            TestingBluetoothPaired,
             TestingBluetoothConnected,
             TestingSignalQuality,
             PerformingCalibration,
@@ -55,14 +52,20 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             ExitBCITesting, // Exit BCI testing process completely
         }
 
-        private DeviceTestingState currentTestingState;
+        private DeviceTestingState _currentTestingState;
 
-
-        public enum DeviceErrorState
+        /// <summary>
+        /// Enums representing the different results from the testing process
+        /// </summary>
+        public enum TestResultState
         {
-            // 1 page for below
-            BluetoothPairedError,
-            BluetoothConnectionError,
+            SignalCheckRequired_MaxTimeElapsed, // Go to screen telling user that signal check required because maximum time between signal checks has elapsed
+            SignalCheckRequired_FailedRecentSignalCheck,  // Go to screen telling user that signal check required because they failed their most recent one
+
+            PromptUser_DoSignalCheck, // Prompts user if they need to do signal check based on a couple questions
+            PromptUser_FilterSettings, // Prompts user to set BCI filter settings (50Hz / 60Hz)
+
+            ErrorBluetoothDisconnected,
             LostConnectionError,
 
             SignalQualityError,
@@ -70,44 +73,19 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             
         }
 
-        private DeviceErrorState currentErrorState;
+        private TestResultState _currentResultState;
 
-
-        /*        /// <summary>
-                /// List of windows / states to visit during debugging process
-                /// </summary>
-                private DeviceTestingState[] _DebugStates = new DeviceTestingState[12] {
-                    DeviceTestingState.Testing_BCIConnections,
-                    DeviceTestingState.ReceivedBCIError_UsbDongle,
-                    DeviceTestingState.ReceivedBCIError_CytonBoard,
-                    DeviceTestingState.ReceivedBCIError_PortConfig,
-                    DeviceTestingState.ReceivedBCIError_OpticalSensor,
-                    DeviceTestingState.BCISignalCheckStartRequired,
-                    DeviceTestingState.BCISignalCheckStartPrompt,
-                    DeviceTestingState.PromptFilterSettings,
-                    DeviceTestingState.BCISignalCheck,
-                    DeviceTestingState.BCISignalCheck,
-                    DeviceTestingState.BCISignalCheck,
-                    DeviceTestingState.ExitBCITesting
-                };
-        */
 
         /// <summary>
         /// Current device testing state
         /// </summary>
-        public static DeviceTestingState _deviceTestingState;
+        // public static DeviceTestingState _deviceTestingState;
 
         /// <summary>
         /// Read from BCIActuatorSettings (Testing_useSensor). Setting to false enables debugging with dummy sensor
         /// </summary>
         public static bool _Testing_useSensor = true;
-
         public static int _Testing_useSensor_TestIndex = 0;
-
-        /// <summary>
-        /// Whether or not to skip optical sensor checks (sensor not currently attached) during BCI Onboarding
-        /// </summary>
-        private bool _Testing_BCIOnboardingIgnoreOpticalSensorChecks = false;
 
         /// <summary>
         /// Main form showing different user controls with information
@@ -121,87 +99,26 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public bool _FormFullySHown = false;
 
         /// <summary>
-        /// Box in upper left hand corner where optical sensor placed
-        /// </summary>
-        public ScannerRoundedButtonControl _triggerBox;
-
-        /// <summary>
-        /// Time used to switch color for the trigger box
-        /// </summary>
-        private int _triggerBoxSwitchDelayMsec = 600;
-
-        /// <summary>
-        /// Amount of iteration for the test in the trigger box
-        /// </summary>
-        private int _triggerBoxNumTestIterations = 10;
-
-        /// <summary>
-        /// Start trigger box test
-        /// </summary>
-        private bool _requestTestTriggerBox = false;
-
-        /// <summary>
-        /// Minimum amount of time to wait on initial "Connecting..." screen
-        /// Just for some consistency in user experience - so they can always see "Connecting..." screen
-        /// </summary>
-        public double _minTimeShowConnectingScreen = 4; // 1, 3, 5, 7, 10
-
-        /// <summary>
         /// Maximum amount of time after not receiving data (after initially receiving good data) to throw error
         /// </summary>
         public const double THRESHOLD_ERROR_NO_DATA_SEC = 5.0;
 
         /// <summary>
-        /// DateTime last received good BCI / signal status check data
-        /// </summary>
-        public static DateTime dateTimeLastReceivedOKSignalStatus = DateTime.MinValue;
-
-        /// <summary>
         /// Event sent when it's time to change the screen displaying testing information to the user
         /// </summary>
-        /// <param name="status"></param>
-        /// <param name="result"></param>
-        /// <param name="Testing_useSensor"></param>
-        public delegate void ChangeDeviceTestingState(DeviceTestingState state);
-
-        public event ChangeDeviceTestingState EvtChangeDeviceTestingState;
+        public delegate void DelegateUpdateTestingStatus(TestResultState state, Dictionary<String, object> resultParams);
+        public event DelegateUpdateTestingStatus EvtUpdateTestingStatus;
 
         /// <summary>
         /// Event sent when exiting out of device testing completely
         /// </summary>
         public delegate void BCIDeviceTestingCompleted();
-
         public event BCIDeviceTestingCompleted EvtBCIDeviceTestingCompleted;
-
-        /// <summary>
-        /// Flag to end all device testing async functions / tasks at this level
-        /// </summary>
-        private static bool _endTasks = false;
-
-        /// <summary>
-        /// Flag to end async task toggling the trigger box
-        /// </summary>
-        private static bool _endTriggerBoxTask = false;
 
         /// <summary>
         /// Flag to end getting BCI data and pushing data to graphs
         /// </summary>
         public static bool _endSignalCheckTimer = false;
-
-        /// <summary>
-        /// Flag set to true when DAQ initialization task has ended
-        /// </summary>
-        private static bool _initDAQTaskStopped = false;
-
-        /// <summary>
-        /// Flag set to true when trigger box task has ended
-        /// </summary>
-        private static bool _triggerBoxTaskStopped = false;
-
-        /// <summary>
-        /// Flag set to true when optical sensor has been disconnected
-        /// </summary>
-        private volatile bool _opticalSensorDisconnected = false;
 
         /// <summary>
         /// Whether Exit was selected and then confirmed from any screen - left Onboarding without completion
@@ -235,6 +152,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 _mainForm.Dispose();
             }
 
+            // Get test flag saying whether we are actually using the sensor or not
             try
             {
                 _Testing_useSensor = BCIActuatorSettings.Settings.Testing_UseSensor;
@@ -244,36 +162,26 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 Log.Exception(ex);
             }
 
+            // If flag set to exit onboarding early, then send event EvtBCIDeviceTestingCompleted and do not continue this function
             if (ExitOnboardingEarly)
             {
                 EvtBCIDeviceTestingCompleted();
                 return;
             }
-
-
-            //gTecBCI = new DAQ_gTecBCI();
-
-            //gTecBCI.InitDevice("UN-2023.05.61");
-
-
-            // Set initial device testing states
-            currentTestingState = DeviceTestingState.TestingBluetoothPaired;
-
-
             ExitOnboardingEarly = false;
-
-            dateTimeLastReceivedOKSignalStatus = DateTime.MinValue;
-
 
             // Unset flags that will end async tasks and timers
             _endSignalCheckTimer = false;
-            _endTriggerBoxTask = false;
-            _endTasks = false;
+
 
             // Create main form
             //_mainForm = new SensorForm(_deviceTestingState);
 
-            _mainForm = new SensorForm(currentTestingState);
+            _mainForm = new SensorForm(_currentTestingState);
+
+            // Set initial device testing states
+            _currentTestingState = DeviceTestingState.TestingBluetoothConnected;
+
 
             // Set handlers for main events
             if (_Testing_useSensor)
@@ -288,7 +196,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
 
             // Event called when there is a new screen to be shown during connecting process (ex: got error or completed connecting successfully)
-            EvtChangeDeviceTestingState += _mainForm.changeDeviceTestingState;
+            EvtUpdateTestingStatus += _mainForm.updateTestingStatus;
 
             //// Enable button hidden / shown on last page depending on acceptable channels
             // EvtSetEnabledNextButton += _mainForm.enableNextButton;
@@ -306,49 +214,89 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _mainForm.ShowDialog();
         }
 
-        public void changeDeviceTestingState()
+        public void executeDeviceTest()
         {
-
-            /*BCISignalCheckStartRequired, // Notifies user that maximum time has elapsed since last signal quality check, new one is needed
-            BCISignalCheckStartPrompt, // Prompts user if they need to do signal check based on a couple questions
-            PromptFilterSettings, // Prompts user to set BCI filter settings (50Hz / 60Hz)
-            TestingBluetoothPaired,
-            TestingBluetoothConnected,
-            TestingSignalQuality,
-            PerformingCalibration,
-            ExitBCITesting, // Exit BCI testing process completely*/
-
-            switch (currentTestingState)
+            switch (_currentTestingState)
             {
-                case DeviceTestingState.BCISignalCheckStartRequired:
+                case DeviceTestingState.TestSignalCheckRequired: // Notifies user that maximum time has elapsed since last signal quality check, new one is needed
+                     
+                    // Always check time last impedance test was run (all electrodes tested) and update UI accordingly
+                    long timestampPrevImpedanceTest = BCIActuatorSettings.Settings.SignalQuality_TimeOfLastImpedanceCheck;
+                    long timestampNow = DateTimeOffset.Now.ToUnixTimeSeconds();
+                    long secDiff = timestampNow - timestampPrevImpedanceTest;
+                    double minElapsedPrevSignalQualityCheck = ((double)secDiff) / 60;
+                    double maxTimeMins = (double)BCIActuatorSettings.Settings.SignalQuality_MaxTimeMinsElapsedSinceLastImpedanceCheck​;
+                    bool maxTimeHasElapsed = false;
+                    if (minElapsedPrevSignalQualityCheck >= maxTimeMins)
+                        maxTimeHasElapsed = true;
+                    Log.Debug(String.Format("changeDeviceTestingState | _currentTestingState == DeviceTestingState.TestSignalCheckRequired" +
+                        "\ntimestampPrevImpedanceTest: {0}, timestampNow: {1}, secDiff: {2}", timestampPrevImpedanceTest.ToString(), timestampNow.ToString(), secDiff.ToString()));
+                    Log.Debug(String.Format("minElapsedPrevSignalQualityCheck: {0}, maxTimeMins: {1}, maxTimeHasElapsed: {2}", minElapsedPrevSignalQualityCheck.ToString(), maxTimeMins.ToString(), maxTimeHasElapsed.ToString()));
+
+                    // Always check if user passed the last overall signal quality check that was executed
+                    // If max time has not passed, but user did not pass their most recent overall signal quality check,
+                    // user must do tests and calibration (SignalControl_RecheckNeeded = true)
+                    bool userPassedLastSignalQualityCheck = BCIActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck;
+
+                    // Initialize parameters and set processing variables / UI elements in main signal check screen accordingly
+                    _mainForm._userControlBCISignalCheck.initializeBCISignalCheck(maxTimeHasElapsed, maxTimeMins, minElapsedPrevSignalQualityCheck, userPassedLastSignalQualityCheck);
+
+
+                    // Go to screen telling user that signal check required because maximum time between signal checks has elapsed
+                    if (maxTimeHasElapsed)
+                    {
+                        _currentResultState = TestResultState.SignalCheckRequired_MaxTimeElapsed;
+
+                        // Update label with maximum time that has already passed since previous test
+                        //_mainForm._userControlBCISignalCheckStartRequired.labelMinsElapsedSignalCheckStartRequired.Text = String.Format("{0:0} minutes", maxTimeMins);
+                        Dictionary<String, object> resultParms = new Dictionary<String, object>();
+                        resultParms["maxTimeMins"] = maxTimeMins;
+                        updateTestingStatus(_currentResultState, resultParms);
+                    }
+                    
+                    // Go to screen telling user that signal check required because they failed their most recent one
+                    else if (!maxTimeHasElapsed && !userPassedLastSignalQualityCheck)
+                    {
+                        _currentResultState = TestResultState.SignalCheckRequired_FailedRecentSignalCheck;
+                       
+                        // Update label telling user they failed previous signal quality check
+                        //_mainForm._userControlBCISignalCheckStartRequired.labelInfo1SignalCheckStartRequired.Text = "You did not pass your most recent signal quality check";
+                        //_mainForm._userControlBCISignalCheckStartRequired.labelMinsElapsedSignalCheckStartRequired.Text = "";
+                        //_mainForm._userControlBCISignalCheckStartRequired.labelInfo2SignalCheckStartRequired.Text = "";
+                        updateTestingStatus(_currentResultState, null);
+                    }
+
+                    // Go to screen asking user if they want to do a signal quality check
+                    else if (!maxTimeHasElapsed && userPassedLastSignalQualityCheck)
+                    {
+                        _currentResultState = TestResultState.PromptUser_DoSignalCheck;
+                        updateTestingStatus(_currentResultState, null);
+                    }
 
                     break;
-                case DeviceTestingState.BCISignalCheckStartPrompt:
 
-                    break;
-                case DeviceTestingState.PromptFilterSettings:
 
-                    break;
-                case DeviceTestingState.TestingBluetoothPaired:
+                case DeviceTestingState.TestingBluetoothConnected:
+
+                    //gTecBCI = new DAQ_gTecBCI();
+
+                    //gTecBCI.InitDevice("UN-2023.05.61");
 
                     testBluetoothStatus();
                     break;
-                case DeviceTestingState.TestingBluetoothConnected:
 
-                    break;
                 case DeviceTestingState.TestingSignalQuality:
 
                     break;
                 case DeviceTestingState.PerformingCalibration:
 
                     break;
-                case DeviceTestingState.ExitBCITesting:
+                case DeviceTestingState.ExitBCITesting: // Exit BCI testing process completely
 
                     break;
                 default:
                     break;
             }
-
 
         }
 
@@ -358,7 +306,14 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         public void testBluetoothStatus()
         {
+            bool devicePairedConnected = true;
 
+            if (!devicePairedConnected)
+            {
+                _currentResultState = TestResultState.ErrorBluetoothDisconnected;
+                updateTestingStatus(_currentResultState, null);
+
+            }
 
 
         }
@@ -382,12 +337,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             // Set flags that will end async tasks and timers
             _endSignalCheckTimer = true;
-            _endTriggerBoxTask = true;
-            _endTasks = true;
 
             */
             // Release event handlers at this level
-            EvtChangeDeviceTestingState = null;
+            EvtUpdateTestingStatus = null;
 
             // Close main form - has it's own form closed handler that releases resources owned by it
             if (_mainForm != null)
@@ -404,7 +357,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="e"></param>
         private void _mainForm_EvtFormClosed(object sender, System.Windows.Forms.FormClosedEventArgs e)
         {
-            Log.Debug("gTecDeviceTester | _mainForm_EvtFormClosed | _deviceTestingState: " + _deviceTestingState.ToString());
+            Log.Debug("gTecDeviceTester | _mainForm_EvtFormClosed | _currentTestingState: " + _currentTestingState.ToString());
 
         }
 
@@ -415,11 +368,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="newDeviceTestingState"></param>
         private void startSignalQualityTestingState(DeviceTestingState newDeviceTestingState)
         {
-/*            // Always update _deviceTestingState which is checked / used in changeDeviceTestingState (main form)
-            _deviceTestingState = newDeviceTestingState;
+/*            // Always update _currentTestingState which is checked / used in updateTestingStatus (main form)
+            _currentTestingState = newDeviceTestingState;
 
-            // Start at BCISignalCheckStartRequired (first signal quality checking state)
-            if (newDeviceTestingState == DeviceTestingState.BCISignalCheckStartRequired)
+            // Start at TestSignalCheckRequired (first signal quality checking state)
+            if (newDeviceTestingState == DeviceTestingState.TestSignalCheckRequired)
             {
                 // Always check time last impedance test was run (all electrodes tested) and update UI accordingly
                 long timestampPrevImpedanceTest = BCIActuatorSettings.Settings.SignalQuality_TimeOfLastImpedanceCheck;
@@ -430,7 +383,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 bool maxTimeHasElapsed = false;
                 if (minElapsedPrevSignalQualityCheck >= maxTimeMins)
                     maxTimeHasElapsed = true;
-                Log.Debug(String.Format("startSignalQualityTestingState | newDeviceTestingState == DeviceTestingState.BCISignalCheckStartRequired" +
+                Log.Debug(String.Format("startSignalQualityTestingState | newDeviceTestingState == DeviceTestingState.TestSignalCheckRequired" +
                     "\ntimestampPrevImpedanceTest: {0}, timestampNow: {1}, secDiff: {2}", timestampPrevImpedanceTest.ToString(), timestampNow.ToString(), secDiff.ToString()));
                 Log.Debug(String.Format("minElapsedPrevSignalQualityCheck: {0}, maxTimeMins: {1}, maxTimeHasElapsed: {2}", minElapsedPrevSignalQualityCheck.ToString(), maxTimeMins.ToString(), maxTimeHasElapsed.ToString()));
 
@@ -452,7 +405,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     _mainForm._userControlBCISignalCheckStartRequired.labelMinsElapsedSignalCheckStartRequired.Text = String.Format("{0:0} minutes", maxTimeMins);
 
                     // Go to BCI signal check start required screen
-                    changeDeviceTestingState(DeviceTestingState.BCISignalCheckStartRequired);
+                    updateTestingStatus(DeviceTestingState.TestSignalCheckRequired);
                 }
                 else if (!maxTimeHasElapsed && !userPassedLastSignalQualityCheck)
                 {
@@ -462,7 +415,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     _mainForm._userControlBCISignalCheckStartRequired.labelInfo2SignalCheckStartRequired.Text = "";
 
                     // Go to BCI signal check start required screen
-                    changeDeviceTestingState(DeviceTestingState.BCISignalCheckStartRequired);
+                    updateTestingStatus(DeviceTestingState.TestSignalCheckRequired);
                 }
                 else if (!maxTimeHasElapsed && userPassedLastSignalQualityCheck)
                 {
@@ -473,7 +426,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             else if (newDeviceTestingState == DeviceTestingState.BCISignalCheckStartPrompt)
             {
                 // Go to BCI signal check start prompt screen
-                changeDeviceTestingState(DeviceTestingState.BCISignalCheckStartPrompt);
+                updateTestingStatus(DeviceTestingState.BCISignalCheckStartPrompt);
             }
             else if (newDeviceTestingState == DeviceTestingState.PromptFilterSettings)
             {
@@ -488,7 +441,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 if (showFilterSettings)
                 {
                     // Display filter settings screen
-                    changeDeviceTestingState(DeviceTestingState.PromptFilterSettings);
+                    updateTestingStatus(DeviceTestingState.PromptFilterSettings);
                 }
                 else
                 {
@@ -499,7 +452,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             else if (newDeviceTestingState == DeviceTestingState.BCISignalCheck)
             {
                 // Go to main signal quality testing state
-                changeDeviceTestingState(DeviceTestingState.BCISignalCheck);
+                updateTestingStatus(DeviceTestingState.BCISignalCheck);
             }*/
         }
 
@@ -516,7 +469,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             Log.Debug("gTecDeviceTester | finishSignalQualityTestingState | currentDeviceTestingState: " + currentDeviceTestingState.ToString());
 
             // Next button selected from BCI signal check start required screen
-            if (currentDeviceTestingState == DeviceTestingState.BCISignalCheckStartRequired)
+            if (currentDeviceTestingState == DeviceTestingState.TestSignalCheckRequired)
             {
                 startSignalQualityTestingState(DeviceTestingState.PromptFilterSettings);
             }
@@ -673,11 +626,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
         /// <summary>
         /// Retest BCI connections
-        /// Runs appropriate test / action based on _deviceTestingState
+        /// Runs appropriate test / action based on _currentTestingState
         /// </summary>
         private void retestBCIConnections()
         {
-            Log.Debug("retestBCIConnections(). deviceTestingState: " + _deviceTestingState);
+            Log.Debug("retestBCIConnections(). _currentTestingState: " + _currentTestingState);
 
             /*// If already on Optical sensor error screen -> retest button does not check all BCI connections from the beginning, tests optical sensor right away
             // _requestTestTriggerBox goes to correct user control when test completed
@@ -691,7 +644,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             {
                 // If trying Retest from connection error screen or lost connection after initially established
                 // or cannot connect to optical sensor COM port - start retesting process again from the beginning
-                changeDeviceTestingState(DeviceTestingState.Testing_BCIConnections); // display "connecting" screen
+                updateTestingStatus(DeviceTestingState.Testing_BCIConnections); // display "connecting" screen
 
                 // Start startBCIDeviceTesting() function from separate non-UI thread
                 Thread t = new Thread(() => startBCIDeviceTesting(0));
@@ -700,21 +653,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 return; // Do not run anything after - device retesting process already started
             }
 
-            // Don't need below anymore?
-            // TaskStartStopDataProcessing needed to be called in these cases because plotting
-            // timer needs to be stopped (optical sensor or BCI signal check)
-            switch (DAQ_OpenBCI.deviceStatus)
-            {
-                case DAQ_OpenBCI.DeviceStatus.DEVICE_STANDBY:
-                    InitDAQ();
-                    _mainForm.TaskStartStopDataProcessing(DeviceTestingState.Testing_BCIConnections);
-                    break;
-
-                case DAQ_OpenBCI.DeviceStatus.DEVICE_ERROR:
-                    DAQ_OpenBCI.Stop(); // close board connection before attempting new one if got error
-                    InitDAQ();
-                    _mainForm.TaskStartStopDataProcessing(DeviceTestingState.Testing_BCIConnections);
-                    break;
             }*/
         }
 
@@ -748,7 +686,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                         }
                     }
 
-                    EvtChangeDeviceTestingState?.Invoke(newState);
+                    EvtUpdateTestingStatus?.Invoke(newState);
                 }
                 else
                 {
@@ -787,7 +725,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <returns></returns>
         public async Task startBCIDeviceTesting(int initialDelaySec = 0)
         {
-           /* // Wait until main form fully loaded before starting
+           // Wait until main form fully loaded before starting
             while (!_FormFullySHown)
             {
                 await Task.Delay(500); // 2000, 500, 50, 10
@@ -805,13 +743,15 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 }
             }
 
-            Log.Debug("startBCIDeviceTesting | Calling InitDAQ()");
+            Log.Debug("startBCIDeviceTesting | Calling ex()");
 
             // Call async function which connects to BCI sensor + starts task that controls TriggerBox flashing and tests optical sensor by request
             if (_Testing_useSensor == true)
             {
-                InitDAQ();
-            }*/
+                // InitDAQ();
+
+                executeDeviceTest();
+            }
         }
 
         /// <summary>
@@ -821,16 +761,21 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="e"></param>
         public void handleMainFormShown(object sender, EventArgs e)
         {
+            // Automatically start device testing when main form is shown
 
-            /*_mainForm.BringToFront();
+            _mainForm.BringToFront();
 
             if (_Testing_useSensor)
             {
-                // Automatically start device testing when main form is shown
+                // Set initial device testing states
+                _currentTestingState = DeviceTestingState.TestingBluetoothConnected;
+
                 // Start startBCIDeviceTesting() function from separate non-UI thread
-                Thread t = new Thread(() => startBCIDeviceTesting(0));
+                // Thread t = new Thread(() => startBCIDeviceTesting(0));
+
+                Thread t = new Thread(() => executeDeviceTest());
                 t.Start();
-            }*/
+            }
         }
 
 
@@ -838,7 +783,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// Change device testing state
         /// </summary>
         /// <param name="state"></param>
-        private void changeDeviceTestingState(DeviceTestingState state)
+        private void updateTestingStatus(TestResultState state, Dictionary<String, object> resultParams)
         {
             try
             {
@@ -846,7 +791,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 {
                     _mainForm.Invoke(new Action(() =>
                     {
-                        EvtChangeDeviceTestingState?.Invoke(state);
+                        EvtUpdateTestingStatus?.Invoke(state, resultParams);
                     }));
                 }
             }
@@ -854,132 +799,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             {
                 Log.Exception(ex);
             }
-        }
-
-
-        /// <summary>
-        /// Handler for error related to receving data from the optical sensor
-        /// </summary>
-        /// <param name="msg"></param>
-        private void OpticalSensorComm_EvtOpticalSensorDataReceiveError(string msg)
-        {
-            Debug.WriteLine("OPTSEN: Data receive error. Please (re)plug in the optical sensor");
-            _opticalSensorDisconnected = true;
-        }
-
-        /*/// <summary>
-        /// Task to Initialize the DAQ sensor if is already then process skip the init method
-        /// </summary>
-        /// <returns></returns>
-        public async Task InitDAQ() // Original function
-        {
-            Log.Debug("InitDAQ()");
-            _initDAQTaskStopped = false;
-
-            while (!_endTasks)
-            {
-                await Task.Delay(100); // Original delay
-                if (_FormFullySHown)
-                {
-                    await Task.Delay(1500); // Original delay
-
-                    // Log.Debug("gTecDeviceTester | InitDAQ() | Calling DAQ_OpenBCI.getUsbDongleConnected()");
-                    ExitCodes exitCode = DAQ_OpenBCI.getUsbDongleConnected();
-                    if (exitCode == ExitCodes.UNABLE_TO_OPEN_PORT_ERROR)
-                    {
-                        Log.Debug("gTecDeviceTester | _deviceTestingState = DeviceTestingState.ReceivedBCIError_UsbDongle");
-                        _deviceTestingState = DeviceTestingState.ReceivedBCIError_UsbDongle;
-                        changeDeviceTestingState(DeviceTestingState.ReceivedBCIError_UsbDongle);
-                    }
-                    else
-                    {
-                        Log.Debug("InitDAQ | exitCode: " + exitCode.ToString());
-                        bool success = DAQ_OpenBCI.Start("");
-                        if (success)
-                        {
-                            Log.Debug("DAQ_OpenBCI.Start() | true");
-
-                            // Check latency setting of port is set correctly
-                            bool latencyPortOk = DAQ_OpenBCI.CheckLatencyPort();
-                            if (latencyPortOk)
-                            {
-                                Log.Debug("DAQ_OpenBCI.CheckLatencyPort() | true");
-
-                                if (DAQ_OpenBCI.deviceInitialized)
-                                {
-                                    Log.Debug("DAQ_OpenBCI.deviceInitialized | true");
-
-                                    if (!_Testing_BCIOnboardingIgnoreOpticalSensorChecks)
-                                    {
-                                        // BCI impedence / railing integration - only go to signal check screens if optical sensor / trigger box tests successful
-                                        Log.Debug("_Testing_BCIOnboardingIgnoreOpticalSensorChecks == false");
-
-                                        DAQ_OpenBCI.TriggerTestStart();
-                                        DAQ_OpenBCI.AddWarning(DAQ_OpenBCI.ExitCodes.STATUS_OK, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + " STATUS " + " MESSAGE: Starting Trigger box Test");
-                                        _requestTestTriggerBox = true;
-                                        _triggerBoxSwitchDelayMsec = 100;
-                                        TriggerBoxHighlighting();
-                                    }
-                                    else
-                                    {
-                                        // BCI impedence / railing integration - debugging option, go straight to signal check screens without checking optical sensor
-                                        Log.Debug("_Testing_BCIOnboardingIgnoreOpticalSensorChecks == true");
-
-                                        // Go to first stage of signal quality checking process
-                                        startSignalQualityTestingState(DeviceTestingState.BCISignalCheckStartRequired);
-                                    }
-                                }
-                                else
-                                {
-                                    Log.Debug("DAQ_OpenBCI.deviceInitialized | false");
-                                }
-                            }
-                            else
-                            {
-                                Log.Debug("DAQ_OpenBCI.CheckLatencyPort() | false | _deviceTestingState = DeviceTestingState.ReceivedBCIError_PortConfig");
-                                DAQ_OpenBCI.Stop();
-                                _deviceTestingState = DeviceTestingState.ReceivedBCIError_PortConfig;
-                                changeDeviceTestingState(DeviceTestingState.ReceivedBCIError_PortConfig);
-                            }
-                        }
-                        else
-                        {
-                            Log.Debug("gTecDeviceTester | _deviceTestingState = DeviceTestingState.ReceivedBCIError_CytonBoard");
-                            _deviceTestingState = DeviceTestingState.ReceivedBCIError_CytonBoard;
-                            changeDeviceTestingState(DeviceTestingState.ReceivedBCIError_CytonBoard);
-                        }
-                    }
-
-                    break;
-                }
-            }
-
-            _initDAQTaskStopped = true;
-            Log.Debug("InitDAQ | hole | _initDAQ_TaskStopped = true");
-            // return;
-        }*/
-
-
-      
-
-    
-
-        /// <summary>
-        /// Handler for when Retry button selected
-        /// </summary>
-        /// <param name="sender"></param>
-        private void SensorForm_EvtButtonRetestClicked(object sender)
-        {
-
-        }
-
-        /// <summary>
-        /// Handler for when Exit button selected
-        /// </summary>
-        /// <param name="sender"></param>
-        private void SensorForm_EvtButtonCancelClicked(object sender)
-        {
-            
         }
 
         /// <summary>

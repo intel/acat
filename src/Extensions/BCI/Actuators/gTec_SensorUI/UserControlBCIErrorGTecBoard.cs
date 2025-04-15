@@ -4,10 +4,10 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 //
-// UserControlBCIErrorCytonBoard.cs
+// UserControlBCIErrorGTecBoard.cs
 //
 // User control which displays information on errors related to connecting
-// to the BCI Cyton board
+// to the BCI gTec board
 //
 ////////////////////////////////////////////////////////////////////////////
 
@@ -20,18 +20,18 @@ using System.Windows.Forms;
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
     /// <summary>
-    ///  User control which displays information on errors related to connecting to the BCI Cyton board
+    ///  User control which displays information on errors related to connecting to the BCI gTec board
     /// </summary>
-    public partial class UserControlBCIErrorCytonBoard : UserControl
+    public partial class UserControlBCIErrorGTecBoard : UserControl
     {
         private string _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  " +
                                     "<head>\r\n  <style>\r\n    a:link{color: rgb(255, 170, 0);}\r\n  </style>\r\n  </head>\r\n  " +
                                     "<body style=\"background-color:#232433;\">\r\n    " +
                                     "<p style=\"font-family:'Montserrat Medium'; font-size:24px; color:white; text-align: center;\">\r\n    " +
-                                    "Review the <a href=$ACAT_USER_GUIDE#CytonBoardError>checklist</a> for Cyton board setup, take corrective action, and then click Retry\r\n" +
+                                    "Review the <a href=$ACAT_USER_GUIDE#CytonBoardError>checklist</a> for gTec board setup, take corrective action, and then click Retry\r\n" +
                                     "</p>\r\n</body>\r\n</html>\r\n\r\n\r\n\r\n";
 
-        public UserControlBCIErrorCytonBoard()
+        public UserControlBCIErrorGTecBoard()
         {
             InitializeComponent();
 

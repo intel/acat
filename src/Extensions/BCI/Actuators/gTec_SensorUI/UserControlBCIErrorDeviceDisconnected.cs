@@ -4,33 +4,29 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 //
-// UserControlBCIErrorUsbDongle.cs
+// UserControlBCIErrorDeviceDisconnected.cs
 //
-// User control which displays information on errors related to connecting
-// to the BCI board usb dongle which streams data from the BCI board
-// through bluetooth
+// User control which handles Unicorn bluetooth device connection
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
 using ACAT.Lib.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Gtec.Unicorn;
+//using Gtec.Unicorn;
 using System.Threading.Tasks;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
     /// <summary>
-    /// User control which displays information on errors related to connecting to the BCI board
-    /// usb dongle which streams data from the BCI board through bluetooth
+    /// User control which handles Unicorn bluetooth device connection
     /// </summary>
-    public partial class UserControlBCIErrorUsbDongle : UserControl
+    public partial class UserControlBCIErrorDeviceDisconnected : UserControl
     {
         private Timer _updateTimer;
 
-        public UserControlBCIErrorUsbDongle()
+        public UserControlBCIErrorDeviceDisconnected()
         {
             InitializeComponent();
 
@@ -68,12 +64,12 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             {
                 Log.Debug($"Selected device: {selectedDevice} , trying to connect...");
                 
-                Unicorn device = new Unicorn(selectedDevice);
+                //Unicorn device = new Unicorn(selectedDevice);
                 
-                Log.Debug($"Device: {device} is connected...");
+                //Log.Debug($"Device: {device} is connected...");
 
-                device.Dispose();
-                Log.Debug($"Device: {device} is disconnected...");
+                //device.Dispose();
+                //Log.Debug($"Device: {device} is disconnected...");
             }   
             
         }
@@ -94,7 +90,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             try
             {
-                IList<string> devices = await Task.Run(() => Unicorn.GetAvailableDevices(true));
+                //IList<string> devices = await Task.Run(() => Unicorn.GetAvailableDevices(true));
+                IList<string> devices = await Task.Run(() => placeholder_Unicorn_GetAvailableDevices(true));
                 if (devices.Count > 0)
                 {
                     listViewPairedDevices.Items.Clear();
@@ -108,7 +105,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     }));
                 }
             }
-            catch (Gtec.Unicorn.DeviceException ex)
+            //catch (Gtec.Unicorn.DeviceException ex)
+            catch (Exception ex)
             {
                 Log.Debug($"Error: {ex.Message}");
             }
@@ -118,7 +116,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             try
             {
-                IList<string> devices = await Task.Run(() => Unicorn.GetAvailableDevices(false));
+                // IList<string> devices = await Task.Run(() => Unicorn.GetAvailableDevices(false));
+                IList<string> devices = await Task.Run(() => placeholder_Unicorn_GetAvailableDevices(true));
                 if (devices.Count > 0)
                 {
                     listViewUnPairedDevices.Items.Clear();
@@ -132,10 +131,21 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     }));
                 }
             }
-            catch (Gtec.Unicorn.DeviceException ex)
+            //catch (Gtec.Unicorn.DeviceException ex)
+            catch (Exception ex)
             {
                 Log.Debug($"Error: {ex.Message}");
             }
+        }
+
+
+        IList<string> placeholder_Unicorn_GetAvailableDevices(bool flag)
+        {
+            IList<string> deviceList = new List<string>();
+            deviceList.Add("Device 1");
+            deviceList.Add("Device 2");
+            deviceList.Add("Device 3");
+            return deviceList;
         }
     }
 }

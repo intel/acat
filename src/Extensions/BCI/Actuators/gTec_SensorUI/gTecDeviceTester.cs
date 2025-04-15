@@ -306,7 +306,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         public void testBluetoothStatus()
         {
-            bool devicePairedConnected = true;
+            bool devicePairedConnected = false;
 
             if (!devicePairedConnected)
             {

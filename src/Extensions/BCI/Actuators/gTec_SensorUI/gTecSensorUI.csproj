@@ -93,35 +93,51 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SensorForm.cs" />
+    <Compile Include="SensorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="SensorForm.designer.cs">
       <DependentUpon>SensorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControlBCIErrorGTecBoard.cs" />
+    <Compile Include="UserControlBCIErrorGTecBoard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UserControlBCIErrorGTecBoard.designer.cs">
       <DependentUpon>UserControlBCIErrorGTecBoard.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControlBCIFilterSettings.cs" />
+    <Compile Include="UserControlBCIFilterSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UserControlBCIFilterSettings.designer.cs">
       <DependentUpon>UserControlBCIFilterSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControlBCIErrorDeviceDisconnected.cs" />
+    <Compile Include="UserControlBCIErrorDeviceDisconnected.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UserControlBCIErrorDeviceDisconnected.designer.cs">
       <DependentUpon>UserControlBCIErrorDeviceDisconnected.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControlBCISignalCheck.cs" />
+    <Compile Include="UserControlBCISignalCheck.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UserControlBCISignalCheck.designer.cs">
       <DependentUpon>UserControlBCISignalCheck.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControlBCISignalCheckStartPrompt.cs" />
+    <Compile Include="UserControlBCISignalCheckStartPrompt.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UserControlBCISignalCheckStartPrompt.designer.cs">
       <DependentUpon>UserControlBCISignalCheckStartPrompt.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControlBCISignalCheckStartRequired.cs" />
+    <Compile Include="UserControlBCISignalCheckStartRequired.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UserControlBCISignalCheckStartRequired.designer.cs">
       <DependentUpon>UserControlBCISignalCheckStartRequired.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControlTestBCIConnections.cs" />
+    <Compile Include="UserControlTestBCIConnections.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UserControlTestBCIConnections.designer.cs">
       <DependentUpon>UserControlTestBCIConnections.cs</DependentUpon>
     </Compile>

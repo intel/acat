@@ -40,10 +40,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _updateTimer = new Timer();
             _updateTimer.Interval = 10000; // 10 seconds
             _updateTimer.Tick += UpdateTimer_Tick;
-            _updateTimer.Start();
+            //_updateTimer.Start();
 
-            updatePairedDeviceList();
-            updateUnPairedDeviceList();
+            //updatePairedDeviceList();
+            //updateUnPairedDeviceList();
         }
 
         private void buttonNext_Click(object sender, EventArgs e)

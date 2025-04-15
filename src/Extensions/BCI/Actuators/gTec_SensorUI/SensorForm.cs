@@ -11,11 +11,10 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
-using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using static ACAT.Extensions.BCI.Actuators.gTecSensorUI.gTecDeviceTester;
 using static ACAT.Extensions.BCI.Actuators.gTecSensorUI.UserControlBCISignalCheck;
@@ -33,14 +32,14 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public UserControlTestBCIConnections _userControlTestBCIConnections;
 
         /// <summary>
-        /// User control displayed after receiving Cyton board error
+        /// User control displayed after receiving gTec board error
         /// </summary>
-        public UserControlBCIErrorCytonBoard _userControlBCIErrorCytonBoard;
+        public UserControlBCIErrorGTecBoard _userControlBCIErrorgTecBoard;
 
         /// <summary>
         /// User control displayed after receiving usb dongle error
         /// </summary>
-        public UserControlBCIErrorUsbDongle _userControlBCIErrorUsbDongle;
+        public UserControlBCIErrorDeviceDisconnected _userControlBCIErrorDeviceDisconnected;
 
        
         /// <summary>
@@ -128,22 +127,25 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _userControlTestBCIConnections = new UserControlTestBCIConnections();
             _userControlTestBCIConnections.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
 
-            _userControlBCIErrorCytonBoard = new UserControlBCIErrorCytonBoard();
-            _userControlBCIErrorCytonBoard.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            _userControlBCIErrorCytonBoard.buttonRetry.Click += new System.EventHandler(this.buttonRetest_Click);
+            _userControlBCIErrorgTecBoard = new UserControlBCIErrorGTecBoard();
+            _userControlBCIErrorgTecBoard.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
+            _userControlBCIErrorgTecBoard.buttonRetry.Click += new System.EventHandler(this.buttonRetest_Click);
 
-            _userControlBCIErrorUsbDongle = new UserControlBCIErrorUsbDongle();
-            _userControlBCIErrorUsbDongle.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
+            _userControlBCIErrorDeviceDisconnected = new UserControlBCIErrorDeviceDisconnected();
+            _userControlBCIErrorDeviceDisconnected.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
 
-            _userControlBCISignalCheckStartRequired = new UserControlBCISignalCheckStartRequired(gTecDeviceTester.DeviceTestingState.BCISignalCheckStartRequired.ToString() + "_Required");
+            //_userControlBCISignalCheckStartRequired = new UserControlBCISignalCheckStartRequired(gTecDeviceTester.DeviceTestingState.TestSignalCheckRequired.ToString() + "_Required");
+            _userControlBCISignalCheckStartRequired = new UserControlBCISignalCheckStartRequired();
             _userControlBCISignalCheckStartRequired.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCISignalCheckStartRequired.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
 
-            _userControlBCISignalCheckStartPrompt = new UserControlBCISignalCheckStartPrompt(gTecDeviceTester.DeviceTestingState.BCISignalCheckStartPrompt.ToString() + "_Prompt");
+            //_userControlBCISignalCheckStartPrompt = new UserControlBCISignalCheckStartPrompt(gTecDeviceTester.DeviceTestingState.BCISignalCheckStartPrompt.ToString() + "_Prompt");
+            _userControlBCISignalCheckStartPrompt = new UserControlBCISignalCheckStartPrompt();
             _userControlBCISignalCheckStartPrompt.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCISignalCheckStartPrompt.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
 
-            _userControlPromptBCIFIlterSettings = new UserControlBCIFilterSettings(gTecDeviceTester.DeviceTestingState.PromptFilterSettings.ToString());
+            //_userControlPromptBCIFIlterSettings = new UserControlBCIFilterSettings(gTecDeviceTester.DeviceTestingState.PromptFilterSettings.ToString());
+            _userControlPromptBCIFIlterSettings = new UserControlBCIFilterSettings();
             _userControlPromptBCIFIlterSettings.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlPromptBCIFIlterSettings.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
 
@@ -167,22 +169,66 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             FormClosing += Handle_FormCLosing;
 
-            changeDeviceTestingState(initialState);
+            // updateTestingStatus(initialState, null);
         }
 
         /// <summary>
         /// Replaces user control displayed in tableLayoutPanelContainer
         /// </summary>
         /// <param name="state"></param>
-        public void changeDeviceTestingState(gTecDeviceTester.DeviceTestingState state)
+        public void updateTestingStatus(gTecDeviceTester.TestResultState state, Dictionary<String, object> resultParams)
         {
             UserControl newUserControl = null;
 
-            if (state == DeviceTestingState.TestingBluetoothPaired)
+            //gTecDeviceTester.TestResultState
+            //ErrorBluetoothDisconnected
+            //LostConnectionError
+            //SignalQualityError
+            //CalibrationError
+
+            switch (state)
             {
-                newUserControl = _userControlBCIErrorUsbDongle;
-                //((UserControlBCIErrorUsbDongle)newUserControl).pictureBoxTestBCIConnections.Refresh();
+
+                // Go to screen telling user that signal check required because maximum time between signal checks has elapsed
+                case TestResultState.SignalCheckRequired_MaxTimeElapsed:
+                    newUserControl = _userControlBCISignalCheckStartRequired;
+
+                    // Update label with maximum time that has already passed since previous test
+                    _userControlBCISignalCheckStartRequired.labelMinsElapsedSignalCheckStartRequired.Text = String.Format("{0:0} minutes", (double) resultParams["maxTimeMins"]);
+                    break;
+
+                // Go to screen telling user that signal check required because they failed their most recent one
+                case TestResultState.SignalCheckRequired_FailedRecentSignalCheck:
+                    newUserControl = _userControlBCISignalCheckStartRequired;
+
+                    // Update label telling user they failed previous signal quality check
+                    _userControlBCISignalCheckStartRequired.labelInfo1SignalCheckStartRequired.Text = "You did not pass your most recent signal quality check";
+                    _userControlBCISignalCheckStartRequired.labelMinsElapsedSignalCheckStartRequired.Text = "";
+                    _userControlBCISignalCheckStartRequired.labelInfo2SignalCheckStartRequired.Text = "";
+
+                    break;
+
+                
+                // Go to screen asking user if they want to do a signal quality check
+                case TestResultState.PromptUser_DoSignalCheck:
+                    // Always reset checkbox (set to false) asking if user wants to do signal recheck when accessing user control
+                    _userControlBCISignalCheckStartPrompt.resetCheckbox();
+                    newUserControl = _userControlBCISignalCheckStartPrompt;
+                    break;
+
+
+                // Go to screen directing user to connect their unicorn device through bluetooth pairing
+                case TestResultState.ErrorBluetoothDisconnected:
+                    newUserControl = _userControlBCIErrorDeviceDisconnected;
+                    //((UserControlBCIErrorUsbDongle)newUserControl).pictureBoxTestBCIConnections.Refresh();
+
+                    break;
+
+
+                default:
+                    break;
             }
+
 
             tableLayoutPanelContainer.Controls.Clear();
             tableLayoutPanelContainer.Controls.Add(newUserControl, 0, 0);
@@ -191,7 +237,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
 
 
-            /*Log.Debug("SensorForm | changeDeviceTestingState | state: " + state.ToString());
+            /*Log.Debug("SensorForm | updateTestingStatus | state: " + state.ToString());
 
             DeviceTestingState prevDeviceTestingState = _mainFormDeviceTestingState;
             UserControl newUserControl = null;
@@ -205,21 +251,17 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             else if (state == DeviceTestingState.ReceivedBCIError_UsbDongle)
             {
-                newUserControl = _userControlBCIErrorUsbDongle;
+                newUserControl = _userControlBCIErrorDeviceDisconnected;
             }
             else if (state == DeviceTestingState.ReceivedBCIError_CytonBoard)
             {
-                newUserControl = _userControlBCIErrorCytonBoard;
+                newUserControl = _userControlBCIErrorgTecBoard;
             }
             else if (state == DeviceTestingState.ReceivedBCIError_PortConfig)
             {
                 newUserControl = _userControlBCIErrorPortConfig;
             }
-            else if (state == DeviceTestingState.ReceivedBCIError_OpticalSensor)
-            {
-                newUserControl = _userControlBCIErrorOpticalSensor;
-            }
-            else if (state == DeviceTestingState.BCISignalCheckStartRequired)
+            else if (state == DeviceTestingState.TestSignalCheckRequired)
             {
                 newUserControl = _userControlBCISignalCheckStartRequired;
             }
@@ -550,10 +592,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
                 if (_userControlTestBCIConnections != null)
                     _userControlTestBCIConnections.Dispose();
-                if (_userControlBCIErrorCytonBoard != null)
-                    _userControlBCIErrorCytonBoard.Dispose();
-                if (_userControlBCIErrorUsbDongle != null)
-                    _userControlBCIErrorUsbDongle.Dispose();
+                if (_userControlBCIErrorgTecBoard != null)
+                    _userControlBCIErrorgTecBoard.Dispose();
+                if (_userControlBCIErrorDeviceDisconnected != null)
+                    _userControlBCIErrorDeviceDisconnected.Dispose();
                 if (_userControlBCISignalCheckStartRequired != null)
                     _userControlBCISignalCheckStartRequired.Dispose();
                 if (_userControlBCISignalCheckStartPrompt != null)
@@ -617,15 +659,15 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _userControlTestBCIConnections.buttonExit.ForeColor = Color.Red;
             _userControlTestBCIConnections.buttonExit.Text = "[Developer Mode]";
 
-            _userControlBCIErrorCytonBoard.buttonExit.AutoSize = true;
-            _userControlBCIErrorCytonBoard.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 13F);
-            _userControlBCIErrorCytonBoard.buttonExit.ForeColor = Color.Red;
-            _userControlBCIErrorCytonBoard.buttonExit.Text = "[Developer Mode]";
+            _userControlBCIErrorgTecBoard.buttonExit.AutoSize = true;
+            _userControlBCIErrorgTecBoard.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 13F);
+            _userControlBCIErrorgTecBoard.buttonExit.ForeColor = Color.Red;
+            _userControlBCIErrorgTecBoard.buttonExit.Text = "[Developer Mode]";
 
-            _userControlBCIErrorUsbDongle.buttonExit.AutoSize = true;
-            _userControlBCIErrorUsbDongle.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 13F);
-            _userControlBCIErrorUsbDongle.buttonExit.ForeColor = Color.Red;
-            _userControlBCIErrorUsbDongle.buttonExit.Text = "[Developer Mode]";
+            _userControlBCIErrorDeviceDisconnected.buttonExit.AutoSize = true;
+            _userControlBCIErrorDeviceDisconnected.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 13F);
+            _userControlBCIErrorDeviceDisconnected.buttonExit.ForeColor = Color.Red;
+            _userControlBCIErrorDeviceDisconnected.buttonExit.Text = "[Developer Mode]";
 
             _userControlBCISignalCheckStartRequired.buttonExit.AutoSize = true;
             _userControlBCISignalCheckStartRequired.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 11F);

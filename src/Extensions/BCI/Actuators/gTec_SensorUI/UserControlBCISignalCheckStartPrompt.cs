@@ -29,7 +29,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// User control that determines whether or not user has to complete signal quality checking procedure
         /// </summary>
         /// <param name="stepId"></param>
-        public UserControlBCISignalCheckStartPrompt(String stepId)
+        public UserControlBCISignalCheckStartPrompt()
         {
             InitializeComponent();
             resetCheckbox();

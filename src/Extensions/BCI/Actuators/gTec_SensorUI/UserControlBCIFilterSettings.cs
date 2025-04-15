@@ -29,11 +29,12 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <summary>
         /// User control allowing selection of filter settings
         /// </summary>
-        public UserControlBCIFilterSettings(String stepId)
+        // public UserControlBCIFilterSettings(String stepId)
+        public UserControlBCIFilterSettings()
         {
             InitializeComponent();
 
-            _stepId = stepId;
+            //_stepId = stepId;
 
             int DAQ_NotchFilterIdx = BCIActuatorSettings.Settings.DAQ_NotchFilterIdx;
             if (DAQ_NotchFilterIdx == 2)

@@ -4,19 +4,19 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 //
-// UserControlBCIErrorCytonBoard.designer.cs
+// UserControlBCIErrorGTecBoard.designer.cs
 //
 // User control which displays information on errors related to connecting
-// to the BCI Cyton board
+// to the BCI gTec board
 //
 ////////////////////////////////////////////////////////////////////////////
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
     /// <summary>
-    ///  User control which displays information on errors related to connecting to the BCI Cyton board
+    ///  User control which displays information on errors related to connecting to the BCI gTec board
     /// </summary>
-    partial class UserControlBCIErrorCytonBoard
+    partial class UserControlBCIErrorGTecBoard
     {
         /// <summary> 
         /// Required designer variable.
@@ -44,7 +44,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControlBCIErrorCytonBoard));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControlBCIErrorGTecBoard));
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.buttonExit = new System.Windows.Forms.Button();
             this.labelTitle = new System.Windows.Forms.Label();
@@ -139,7 +139,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // tableLayoutPanelBCIError
             // 
             this.tableLayoutPanelBCIError.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.tableLayoutPanelBCIError.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tableLayoutPanelBCIError.BackgroundImage")));
             this.tableLayoutPanelBCIError.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.tableLayoutPanelBCIError.ColumnCount = 3;
             this.tableLayoutPanelMain.SetColumnSpan(this.tableLayoutPanelBCIError, 3);
@@ -242,14 +241,14 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.webBrowserBottom.Size = new System.Drawing.Size(789, 109);
             this.webBrowserBottom.TabIndex = 82;
             // 
-            // UserControlBCIErrorCytonBoard
+            // UserControlBCIErrorGTecBoard
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.tableLayoutPanelMain);
             this.Margin = new System.Windows.Forms.Padding(0);
-            this.Name = "UserControlBCIErrorCytonBoard";
+            this.Name = "UserControlBCIErrorGTecBoard";
             this.Size = new System.Drawing.Size(1022, 766);
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.tableLayoutPanelMain.PerformLayout();

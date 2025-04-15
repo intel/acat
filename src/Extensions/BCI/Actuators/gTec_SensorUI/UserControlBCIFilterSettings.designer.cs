@@ -44,7 +44,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private void InitializeComponent()
         {
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonExit = new System.Windows.Forms.Button();
+            this.buttonExit_userControlPromptBCIFIlterSettings = new System.Windows.Forms.Button();
             this.tableLayoutPanelSpacerTop = new System.Windows.Forms.TableLayoutPanel();
             this.labelTitle = new System.Windows.Forms.Label();
             this.checkBoxConfirm60HzCountry = new System.Windows.Forms.CheckBox();
@@ -96,7 +96,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.label20 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.tableLayoutPanelSpacerBottom = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonNext = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonNext_userControlPromptBCIFIlterSettings = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.checkBoxDontShowStartup = new System.Windows.Forms.CheckBox();
             this.label22 = new System.Windows.Forms.Label();
             this.tableLayoutPanelMain.SuspendLayout();
@@ -116,13 +116,13 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 28.10732F));
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 19.07282F));
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 13.77361F));
-            this.tableLayoutPanelMain.Controls.Add(this.buttonExit, 1, 10);
+            this.tableLayoutPanelMain.Controls.Add(this.buttonExit_userControlPromptBCIFIlterSettings, 1, 10);
             this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanelSpacerTop, 1, 0);
             this.tableLayoutPanelMain.Controls.Add(this.labelTitle, 1, 1);
             this.tableLayoutPanelMain.Controls.Add(this.checkBoxConfirm60HzCountry, 1, 6);
             this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanel60HzCountries, 1, 8);
             this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanelSpacerBottom, 1, 11);
-            this.tableLayoutPanelMain.Controls.Add(this.buttonNext, 3, 10);
+            this.tableLayoutPanelMain.Controls.Add(this.buttonNext_userControlPromptBCIFIlterSettings, 3, 10);
             this.tableLayoutPanelMain.Controls.Add(this.checkBoxDontShowStartup, 2, 10);
             this.tableLayoutPanelMain.Controls.Add(this.label22, 1, 2);
             this.tableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
@@ -144,25 +144,25 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelMain.Size = new System.Drawing.Size(1022, 766);
             this.tableLayoutPanelMain.TabIndex = 9;
             // 
-            // buttonExit
+            // buttonExit_userControlBCIErrorgTecBoard
             // 
-            this.buttonExit.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonExit.AutoSize = true;
-            this.buttonExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.buttonExit.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.buttonExit.FlatAppearance.BorderSize = 0;
-            this.buttonExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonExit.Font = new System.Drawing.Font("Montserrat Thin", 36F, System.Drawing.FontStyle.Underline);
-            this.buttonExit.ForeColor = System.Drawing.Color.Silver;
-            this.buttonExit.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.buttonExit.Location = new System.Drawing.Point(140, 670);
-            this.buttonExit.Margin = new System.Windows.Forms.Padding(0);
-            this.buttonExit.Name = "buttonExit";
-            this.buttonExit.Size = new System.Drawing.Size(155, 58);
-            this.buttonExit.TabIndex = 84;
-            this.buttonExit.Text = "Exit";
-            this.buttonExit.UseCompatibleTextRendering = true;
-            this.buttonExit.UseVisualStyleBackColor = false;
+            this.buttonExit_userControlPromptBCIFIlterSettings.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonExit_userControlPromptBCIFIlterSettings.AutoSize = true;
+            this.buttonExit_userControlPromptBCIFIlterSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.buttonExit_userControlPromptBCIFIlterSettings.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.buttonExit_userControlPromptBCIFIlterSettings.FlatAppearance.BorderSize = 0;
+            this.buttonExit_userControlPromptBCIFIlterSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonExit_userControlPromptBCIFIlterSettings.Font = new System.Drawing.Font("Montserrat Thin", 36F, System.Drawing.FontStyle.Underline);
+            this.buttonExit_userControlPromptBCIFIlterSettings.ForeColor = System.Drawing.Color.Silver;
+            this.buttonExit_userControlPromptBCIFIlterSettings.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.buttonExit_userControlPromptBCIFIlterSettings.Location = new System.Drawing.Point(140, 670);
+            this.buttonExit_userControlPromptBCIFIlterSettings.Margin = new System.Windows.Forms.Padding(0);
+            this.buttonExit_userControlPromptBCIFIlterSettings.Name = "buttonExit_userControlBCIErrorgTecBoard";
+            this.buttonExit_userControlPromptBCIFIlterSettings.Size = new System.Drawing.Size(155, 58);
+            this.buttonExit_userControlPromptBCIFIlterSettings.TabIndex = 84;
+            this.buttonExit_userControlPromptBCIFIlterSettings.Text = "Exit";
+            this.buttonExit_userControlPromptBCIFIlterSettings.UseCompatibleTextRendering = true;
+            this.buttonExit_userControlPromptBCIFIlterSettings.UseVisualStyleBackColor = false;
             // 
             // tableLayoutPanelSpacerTop
             // 
@@ -773,28 +773,28 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelSpacerBottom.Size = new System.Drawing.Size(739, 37);
             this.tableLayoutPanelSpacerBottom.TabIndex = 74;
             // 
-            // buttonNext
+            // buttonNext_userControlErrorBluetoothDisconnected
             // 
-            this.buttonNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonNext.AutoSize = true;
-            this.buttonNext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.buttonNext.BorderColor = System.Drawing.Color.Black;
-            this.buttonNext.BorderRadiusBottomLeft = 0;
-            this.buttonNext.BorderRadiusBottomRight = 0;
-            this.buttonNext.BorderRadiusTopLeft = 0;
-            this.buttonNext.BorderRadiusTopRight = 0;
-            this.buttonNext.BorderWidth = 2F;
-            this.buttonNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonNext.Font = new System.Drawing.Font("Montserrat Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonNext.Location = new System.Drawing.Point(761, 670);
-            this.buttonNext.Margin = new System.Windows.Forms.Padding(0);
-            this.buttonNext.Name = "buttonNext";
-            this.buttonNext.Size = new System.Drawing.Size(118, 55);
-            this.buttonNext.TabIndex = 86;
-            this.buttonNext.Text = "Next";
-            this.buttonNext.UseCompatibleTextRendering = true;
-            this.buttonNext.UseMnemonic = false;
-            this.buttonNext.UseVisualStyleBackColor = false;
+            this.buttonNext_userControlPromptBCIFIlterSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonNext_userControlPromptBCIFIlterSettings.AutoSize = true;
+            this.buttonNext_userControlPromptBCIFIlterSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
+            this.buttonNext_userControlPromptBCIFIlterSettings.BorderColor = System.Drawing.Color.Black;
+            this.buttonNext_userControlPromptBCIFIlterSettings.BorderRadiusBottomLeft = 0;
+            this.buttonNext_userControlPromptBCIFIlterSettings.BorderRadiusBottomRight = 0;
+            this.buttonNext_userControlPromptBCIFIlterSettings.BorderRadiusTopLeft = 0;
+            this.buttonNext_userControlPromptBCIFIlterSettings.BorderRadiusTopRight = 0;
+            this.buttonNext_userControlPromptBCIFIlterSettings.BorderWidth = 2F;
+            this.buttonNext_userControlPromptBCIFIlterSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonNext_userControlPromptBCIFIlterSettings.Font = new System.Drawing.Font("Montserrat Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonNext_userControlPromptBCIFIlterSettings.Location = new System.Drawing.Point(761, 670);
+            this.buttonNext_userControlPromptBCIFIlterSettings.Margin = new System.Windows.Forms.Padding(0);
+            this.buttonNext_userControlPromptBCIFIlterSettings.Name = "buttonNext_userControlErrorBluetoothDisconnected";
+            this.buttonNext_userControlPromptBCIFIlterSettings.Size = new System.Drawing.Size(118, 55);
+            this.buttonNext_userControlPromptBCIFIlterSettings.TabIndex = 86;
+            this.buttonNext_userControlPromptBCIFIlterSettings.Text = "Next";
+            this.buttonNext_userControlPromptBCIFIlterSettings.UseCompatibleTextRendering = true;
+            this.buttonNext_userControlPromptBCIFIlterSettings.UseMnemonic = false;
+            this.buttonNext_userControlPromptBCIFIlterSettings.UseVisualStyleBackColor = false;
             // 
             // checkBoxDontShowStartup
             // 
@@ -860,9 +860,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelSpacerTop;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel60HzCountries;
         public System.Windows.Forms.CheckBox checkBoxConfirm60HzCountry;
-        public System.Windows.Forms.Button buttonExit;
+        public System.Windows.Forms.Button buttonExit_userControlPromptBCIFIlterSettings;
         public System.Windows.Forms.CheckBox checkBoxDontShowStartup;
-        public Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonNext;
+        public Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonNext_userControlPromptBCIFIlterSettings;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;

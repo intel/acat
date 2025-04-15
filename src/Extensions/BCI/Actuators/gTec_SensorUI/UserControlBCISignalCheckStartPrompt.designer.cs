@@ -53,10 +53,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.buttonNext = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonNext_userControlBCISignalCheckStartPrompt = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.labelBCISignalCheckDescription = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.buttonExit = new System.Windows.Forms.Button();
+            this.buttonExit_userControlBCISignalCheckStartPrompt = new System.Windows.Forms.Button();
             this.label53 = new System.Windows.Forms.Label();
             this.label59 = new System.Windows.Forms.Label();
             labelBCISignalCheck = new System.Windows.Forms.Label();
@@ -119,11 +119,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelMain.Controls.Add(this.label4, 1, 14);
             this.tableLayoutPanelMain.Controls.Add(this.label3, 11, 12);
             this.tableLayoutPanelMain.Controls.Add(this.label2, 1, 10);
-            this.tableLayoutPanelMain.Controls.Add(this.buttonNext, 19, 20);
+            this.tableLayoutPanelMain.Controls.Add(this.buttonNext_userControlBCISignalCheckStartPrompt, 19, 20);
             this.tableLayoutPanelMain.Controls.Add(this.labelBCISignalCheckDescription, 1, 4);
             this.tableLayoutPanelMain.Controls.Add(labelBCISignalCheck, 1, 1);
             this.tableLayoutPanelMain.Controls.Add(this.label1, 2, 8);
-            this.tableLayoutPanelMain.Controls.Add(this.buttonExit, 1, 20);
+            this.tableLayoutPanelMain.Controls.Add(this.buttonExit_userControlBCISignalCheckStartPrompt, 1, 20);
             this.tableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanelMain.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.tableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
@@ -269,30 +269,30 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.label2.Text = "​​you have added more gel to any of the electrodes​";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // buttonNext
+            // buttonNext_userControlErrorBluetoothDisconnected
             // 
-            this.buttonNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonNext.AutoSize = true;
-            this.buttonNext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.buttonNext.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.buttonNext.BorderRadiusBottomLeft = 0;
-            this.buttonNext.BorderRadiusBottomRight = 0;
-            this.buttonNext.BorderRadiusTopLeft = 0;
-            this.buttonNext.BorderRadiusTopRight = 0;
-            this.buttonNext.BorderWidth = 2F;
-            this.tableLayoutPanelMain.SetColumnSpan(this.buttonNext, 5);
-            this.buttonNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonNext.Font = new System.Drawing.Font("Montserrat Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonNext.Location = new System.Drawing.Point(738, 654);
-            this.buttonNext.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
-            this.buttonNext.Name = "buttonNext";
-            this.tableLayoutPanelMain.SetRowSpan(this.buttonNext, 2);
-            this.buttonNext.Size = new System.Drawing.Size(137, 60);
-            this.buttonNext.TabIndex = 91;
-            this.buttonNext.Text = "Next";
-            this.buttonNext.UseCompatibleTextRendering = true;
-            this.buttonNext.UseMnemonic = false;
-            this.buttonNext.UseVisualStyleBackColor = false;
+            this.buttonNext_userControlBCISignalCheckStartPrompt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonNext_userControlBCISignalCheckStartPrompt.AutoSize = true;
+            this.buttonNext_userControlBCISignalCheckStartPrompt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
+            this.buttonNext_userControlBCISignalCheckStartPrompt.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
+            this.buttonNext_userControlBCISignalCheckStartPrompt.BorderRadiusBottomLeft = 0;
+            this.buttonNext_userControlBCISignalCheckStartPrompt.BorderRadiusBottomRight = 0;
+            this.buttonNext_userControlBCISignalCheckStartPrompt.BorderRadiusTopLeft = 0;
+            this.buttonNext_userControlBCISignalCheckStartPrompt.BorderRadiusTopRight = 0;
+            this.buttonNext_userControlBCISignalCheckStartPrompt.BorderWidth = 2F;
+            this.tableLayoutPanelMain.SetColumnSpan(this.buttonNext_userControlBCISignalCheckStartPrompt, 5);
+            this.buttonNext_userControlBCISignalCheckStartPrompt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonNext_userControlBCISignalCheckStartPrompt.Font = new System.Drawing.Font("Montserrat Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonNext_userControlBCISignalCheckStartPrompt.Location = new System.Drawing.Point(738, 654);
+            this.buttonNext_userControlBCISignalCheckStartPrompt.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
+            this.buttonNext_userControlBCISignalCheckStartPrompt.Name = "buttonNext_userControlErrorBluetoothDisconnected";
+            this.tableLayoutPanelMain.SetRowSpan(this.buttonNext_userControlBCISignalCheckStartPrompt, 2);
+            this.buttonNext_userControlBCISignalCheckStartPrompt.Size = new System.Drawing.Size(137, 60);
+            this.buttonNext_userControlBCISignalCheckStartPrompt.TabIndex = 91;
+            this.buttonNext_userControlBCISignalCheckStartPrompt.Text = "Next";
+            this.buttonNext_userControlBCISignalCheckStartPrompt.UseCompatibleTextRendering = true;
+            this.buttonNext_userControlBCISignalCheckStartPrompt.UseMnemonic = false;
+            this.buttonNext_userControlBCISignalCheckStartPrompt.UseVisualStyleBackColor = false;
             // 
             // labelBCISignalCheckDescription
             // 
@@ -330,26 +330,26 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.label1.Text = "Select Yes if,";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // buttonExit
+            // buttonExit_userControlBCIErrorgTecBoard
             // 
-            this.buttonExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonExit.AutoSize = true;
-            this.buttonExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.tableLayoutPanelMain.SetColumnSpan(this.buttonExit, 5);
-            this.buttonExit.FlatAppearance.BorderSize = 0;
-            this.buttonExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonExit.Font = new System.Drawing.Font("Montserrat Thin", 36F, System.Drawing.FontStyle.Underline);
-            this.buttonExit.ForeColor = System.Drawing.Color.Silver;
-            this.buttonExit.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.buttonExit.Location = new System.Drawing.Point(139, 639);
-            this.buttonExit.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
-            this.buttonExit.Name = "buttonExit";
-            this.tableLayoutPanelMain.SetRowSpan(this.buttonExit, 2);
-            this.buttonExit.Size = new System.Drawing.Size(150, 75);
-            this.buttonExit.TabIndex = 84;
-            this.buttonExit.Text = "Exit";
-            this.buttonExit.UseCompatibleTextRendering = true;
-            this.buttonExit.UseVisualStyleBackColor = false;
+            this.buttonExit_userControlBCISignalCheckStartPrompt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonExit_userControlBCISignalCheckStartPrompt.AutoSize = true;
+            this.buttonExit_userControlBCISignalCheckStartPrompt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.tableLayoutPanelMain.SetColumnSpan(this.buttonExit_userControlBCISignalCheckStartPrompt, 5);
+            this.buttonExit_userControlBCISignalCheckStartPrompt.FlatAppearance.BorderSize = 0;
+            this.buttonExit_userControlBCISignalCheckStartPrompt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonExit_userControlBCISignalCheckStartPrompt.Font = new System.Drawing.Font("Montserrat Thin", 36F, System.Drawing.FontStyle.Underline);
+            this.buttonExit_userControlBCISignalCheckStartPrompt.ForeColor = System.Drawing.Color.Silver;
+            this.buttonExit_userControlBCISignalCheckStartPrompt.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.buttonExit_userControlBCISignalCheckStartPrompt.Location = new System.Drawing.Point(139, 639);
+            this.buttonExit_userControlBCISignalCheckStartPrompt.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
+            this.buttonExit_userControlBCISignalCheckStartPrompt.Name = "buttonExit_userControlBCIErrorgTecBoard";
+            this.tableLayoutPanelMain.SetRowSpan(this.buttonExit_userControlBCISignalCheckStartPrompt, 2);
+            this.buttonExit_userControlBCISignalCheckStartPrompt.Size = new System.Drawing.Size(150, 75);
+            this.buttonExit_userControlBCISignalCheckStartPrompt.TabIndex = 84;
+            this.buttonExit_userControlBCISignalCheckStartPrompt.Text = "Exit";
+            this.buttonExit_userControlBCISignalCheckStartPrompt.UseCompatibleTextRendering = true;
+            this.buttonExit_userControlBCISignalCheckStartPrompt.UseVisualStyleBackColor = false;
             // 
             // label53
             // 
@@ -405,7 +405,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelMain;
         private System.Windows.Forms.Label label53;
         private System.Windows.Forms.Label label59;
-        public Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonNext;
+        public Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonNext_userControlBCISignalCheckStartPrompt;
         private System.Windows.Forms.Label labelBCISignalCheckDescription;
 
 
@@ -430,7 +430,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private System.Windows.Forms.Label label2;
         public Lib.Core.WidgetManagement.ScannerRoundedButtonControl btnUserRequestSignalQualityRecheck;
         private System.Windows.Forms.Label label1;
-        public System.Windows.Forms.Button buttonExit;
+        public System.Windows.Forms.Button buttonExit_userControlBCISignalCheckStartPrompt;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         // public UCCapLEDStatus2 ucCapLEDStatus21;

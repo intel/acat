@@ -83,6 +83,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="UnicornDotNet">
+      <HintPath>..\..\..\..\3rdParty\Lib\x86\UnicornDotNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gTecDeviceTester.cs" />
@@ -111,11 +114,11 @@
     <Compile Include="UserControlBCIFilterSettings.designer.cs">
       <DependentUpon>UserControlBCIFilterSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControlBCIErrorDeviceDisconnected.cs">
+    <Compile Include="UserControlErrorBluetoothDisconnected.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControlBCIErrorDeviceDisconnected.designer.cs">
-      <DependentUpon>UserControlBCIErrorDeviceDisconnected.cs</DependentUpon>
+    <Compile Include="UserControlErrorBluetoothDisconnected.designer.cs">
+      <DependentUpon>UserControlErrorBluetoothDisconnected.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControlBCISignalCheck.cs">
       <SubType>UserControl</SubType>
@@ -166,8 +169,8 @@
     <EmbeddedResource Include="UserControlBCIFilterSettings.resx">
       <DependentUpon>UserControlBCIFilterSettings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControlBCIErrorDeviceDisconnected.resx">
-      <DependentUpon>UserControlBCIErrorDeviceDisconnected.cs</DependentUpon>
+    <EmbeddedResource Include="UserControlErrorBluetoothDisconnected.resx">
+      <DependentUpon>UserControlErrorBluetoothDisconnected.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControlBCISignalCheck.resx">
       <DependentUpon>UserControlBCISignalCheck.cs</DependentUpon>

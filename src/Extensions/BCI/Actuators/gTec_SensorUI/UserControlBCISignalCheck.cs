@@ -256,8 +256,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             InitializeComponent();
 
-            buttonNext.Enabled = true;
-            buttonNext.Visible = true;
+            buttonNext_userControlBCISignalCheck.Enabled = true;
+            buttonNext_userControlBCISignalCheck.Visible = true;
 
             // Create electrode name / id -> cap electrode mapping
             _electrodeCapMap = new Dictionary<string, ScannerRoundedButtonControl>();
@@ -944,10 +944,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     buttonTestImpedance.Text = "Start";
                     buttonTestImpedance.Enabled = true;
                     buttonTestImpedance.BackColor = COLOR_ACAT_DEFAULT_ORANGE;
-                    buttonNext.Enabled = true;
-                    buttonNext.BackColor = COLOR_ACAT_DEFAULT_ORANGE;
-                    buttonExit.Enabled = true;
-                    buttonExit.BackColor = Color.Transparent;
+                    buttonNext_userControlBCISignalCheck.Enabled = true;
+                    buttonNext_userControlBCISignalCheck.BackColor = COLOR_ACAT_DEFAULT_ORANGE;
+                    buttonExit_userControlBCISignalCheck.Enabled = true;
+                    buttonExit_userControlBCISignalCheck.BackColor = Color.Transparent;
                     updateImpedanceTestingStateLabels(ImpedanceTestingState.NOT_RUNNING);
                 }));
 
@@ -1427,10 +1427,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 {
                     Log.Debug("Impedence testing not running. Starting process...");
                     buttonTestImpedance.Text = "Stop";
-                    buttonNext.Enabled = false;
-                    buttonNext.BackColor = Color.Gray;
-                    buttonExit.Enabled = false;
-                    buttonExit.BackColor = Color.Gray;
+                    buttonNext_userControlBCISignalCheck.Enabled = false;
+                    buttonNext_userControlBCISignalCheck.BackColor = Color.Gray;
+                    buttonExit_userControlBCISignalCheck.Enabled = false;
+                    buttonExit_userControlBCISignalCheck.BackColor = Color.Gray;
                     updateImpedanceTestingStateLabels(ImpedanceTestingState.RUNNING);
                 }
                 catch (Exception ex)

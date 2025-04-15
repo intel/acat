@@ -46,7 +46,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelSpacerTop = new System.Windows.Forms.TableLayoutPanel();
             this.pictureBoxTestBCIConnections = new System.Windows.Forms.PictureBox();
-            this.buttonExit = new System.Windows.Forms.Button();
+            this.buttonExit_userControlTestBCIConnections = new System.Windows.Forms.Button();
             this.tableLayoutPanelSpacerBottom = new System.Windows.Forms.TableLayoutPanel();
             this.labelTitle = new System.Windows.Forms.Label();
             this.tableLayoutPanelMain.SuspendLayout();
@@ -65,7 +65,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 13.26531F));
             this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanelSpacerTop, 0, 0);
             this.tableLayoutPanelMain.Controls.Add(this.pictureBoxTestBCIConnections, 2, 3);
-            this.tableLayoutPanelMain.Controls.Add(this.buttonExit, 1, 5);
+            this.tableLayoutPanelMain.Controls.Add(this.buttonExit_userControlTestBCIConnections, 1, 5);
             this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanelSpacerBottom, 0, 6);
             this.tableLayoutPanelMain.Controls.Add(this.labelTitle, 1, 1);
             this.tableLayoutPanelMain.Cursor = System.Windows.Forms.Cursors.WaitCursor;
@@ -117,26 +117,26 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.pictureBoxTestBCIConnections.TabStop = false;
             this.pictureBoxTestBCIConnections.UseWaitCursor = true;
             // 
-            // buttonExit
+            // buttonExit_userControlBCIErrorgTecBoard
             // 
-            this.buttonExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.tableLayoutPanelMain.SetColumnSpan(this.buttonExit, 2);
-            this.buttonExit.Cursor = System.Windows.Forms.Cursors.WaitCursor;
-            this.buttonExit.FlatAppearance.BorderSize = 0;
-            this.buttonExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonExit.Font = new System.Drawing.Font("Montserrat Thin", 36F, System.Drawing.FontStyle.Underline);
-            this.buttonExit.ForeColor = System.Drawing.Color.Silver;
-            this.buttonExit.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.buttonExit.Location = new System.Drawing.Point(135, 655);
-            this.buttonExit.Margin = new System.Windows.Forms.Padding(0);
-            this.buttonExit.Name = "buttonExit";
-            this.buttonExit.Size = new System.Drawing.Size(149, 58);
-            this.buttonExit.TabIndex = 77;
-            this.buttonExit.Text = "Exit";
-            this.buttonExit.UseCompatibleTextRendering = true;
-            this.buttonExit.UseVisualStyleBackColor = false;
-            this.buttonExit.UseWaitCursor = true;
+            this.buttonExit_userControlTestBCIConnections.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonExit_userControlTestBCIConnections.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.tableLayoutPanelMain.SetColumnSpan(this.buttonExit_userControlTestBCIConnections, 2);
+            this.buttonExit_userControlTestBCIConnections.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.buttonExit_userControlTestBCIConnections.FlatAppearance.BorderSize = 0;
+            this.buttonExit_userControlTestBCIConnections.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonExit_userControlTestBCIConnections.Font = new System.Drawing.Font("Montserrat Thin", 36F, System.Drawing.FontStyle.Underline);
+            this.buttonExit_userControlTestBCIConnections.ForeColor = System.Drawing.Color.Silver;
+            this.buttonExit_userControlTestBCIConnections.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.buttonExit_userControlTestBCIConnections.Location = new System.Drawing.Point(135, 655);
+            this.buttonExit_userControlTestBCIConnections.Margin = new System.Windows.Forms.Padding(0);
+            this.buttonExit_userControlTestBCIConnections.Name = "buttonExit_userControlBCIErrorgTecBoard";
+            this.buttonExit_userControlTestBCIConnections.Size = new System.Drawing.Size(149, 58);
+            this.buttonExit_userControlTestBCIConnections.TabIndex = 77;
+            this.buttonExit_userControlTestBCIConnections.Text = "Exit";
+            this.buttonExit_userControlTestBCIConnections.UseCompatibleTextRendering = true;
+            this.buttonExit_userControlTestBCIConnections.UseVisualStyleBackColor = false;
+            this.buttonExit_userControlTestBCIConnections.UseWaitCursor = true;
             // 
             // tableLayoutPanelSpacerBottom
             // 
@@ -195,6 +195,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelSpacerBottom;
         private System.Windows.Forms.Label labelTitle;
         public System.Windows.Forms.PictureBox pictureBoxTestBCIConnections;
-        public System.Windows.Forms.Button buttonExit;
+        public System.Windows.Forms.Button buttonExit_userControlTestBCIConnections;
     }
 }

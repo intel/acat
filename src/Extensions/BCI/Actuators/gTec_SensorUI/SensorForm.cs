@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
+using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <summary>
         /// User control displayed after receiving usb dongle error
         /// </summary>
-        public UserControlBCIErrorDeviceDisconnected _userControlBCIErrorDeviceDisconnected;
+        public UserControlErrorBluetoothDisconnected _userControlErrorBluetoothDisconnected;
 
        
         /// <summary>
@@ -66,24 +67,21 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         public UserControlBCISignalCheck _userControlBCISignalCheck;
 
-
         /// <summary>
-        /// Current devie testing state
+        /// Variable tracking the previous TestResultState
         /// </summary>
-        //private static volatile gTecDeviceTester.DeviceTestingState _currentDeviceTestingState;
-        private gTecDeviceTester.DeviceTestingState _mainFormDeviceTestingState;
+        private TestResultState prevTestResultState;
 
         /// <summary>
         /// Delegate for button click events
         /// </summary>
-        public delegate void ButtonNextClickedDelegate(DeviceTestingState deviceTestingState);
-
-        public delegate void ButtonClickedDelegate(object sender);
+        public delegate void ButtonClickedDelegate(String buttonNextName);
+        // public delegate void ButtonClickedDelegate(object sender);
 
         /// <summary>
         /// Event called when Next button selected
         /// </summary>
-        public event ButtonNextClickedDelegate EvtButtonNextClicked;
+        public event ButtonClickedDelegate EvtButtonNextClicked;
 
         /// <summary>
         /// Event called when Retry button selected
@@ -93,7 +91,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <summary>
         /// Event called when Exit button selected
         /// </summary>
-        public event ButtonClickedDelegate EvtButtonCancelClicked;
+        public event ButtonClickedDelegate EvtButtonExitClicked;
         
         /// <summary>
         /// Flag controlling exectution of timers related to data acquisition / plotting
@@ -111,7 +109,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private int _timer_process_data_interval_ms = 10;
 
         // Form which acts as parent for / base for all possible user controls displayed during testing process
-        public SensorForm(gTecDeviceTester.DeviceTestingState initialState)
+        public SensorForm()
         {
             InitializeComponent();
             
@@ -119,39 +117,39 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             // Set initial / default values of static variables
             _stopTimers = false;
-            _mainFormDeviceTestingState = initialState;
 
             // Preinitialize all user control elements that can be possibly shown
             // Intensive resource controls (ex: Optical sensor, EEG display) have separate initialize() functions that are not called until
             // user controls actually added to form
             _userControlTestBCIConnections = new UserControlTestBCIConnections();
-            _userControlTestBCIConnections.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
+            _userControlTestBCIConnections.buttonExit_userControlTestBCIConnections.Click += new System.EventHandler(this.buttonExit_Click);
 
             _userControlBCIErrorgTecBoard = new UserControlBCIErrorGTecBoard();
-            _userControlBCIErrorgTecBoard.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            _userControlBCIErrorgTecBoard.buttonRetry.Click += new System.EventHandler(this.buttonRetest_Click);
+            _userControlBCIErrorgTecBoard.buttonExit_userControlBCIErrorgTecBoard.Click += new System.EventHandler(this.buttonExit_Click);
+            _userControlBCIErrorgTecBoard.buttonRetry_userControlBCIErrorgTecBoard.Click += new System.EventHandler(this.buttonRetest_Click);
 
-            _userControlBCIErrorDeviceDisconnected = new UserControlBCIErrorDeviceDisconnected();
-            _userControlBCIErrorDeviceDisconnected.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
+            _userControlErrorBluetoothDisconnected = new UserControlErrorBluetoothDisconnected();
+            _userControlErrorBluetoothDisconnected.buttonExit_userControlErrorBluetoothDisconnected.Click += new System.EventHandler(this.buttonExit_Click);
+            _userControlErrorBluetoothDisconnected.buttonNext_userControlErrorBluetoothDisconnected.Click += new System.EventHandler(this.buttonNext_Click);
 
             //_userControlBCISignalCheckStartRequired = new UserControlBCISignalCheckStartRequired(gTecDeviceTester.DeviceTestingState.TestSignalCheckRequired.ToString() + "_Required");
             _userControlBCISignalCheckStartRequired = new UserControlBCISignalCheckStartRequired();
-            _userControlBCISignalCheckStartRequired.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            _userControlBCISignalCheckStartRequired.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
+            _userControlBCISignalCheckStartRequired.buttonExit_userControlBCISignalCheckStartRequired.Click += new System.EventHandler(this.buttonExit_Click);
+            _userControlBCISignalCheckStartRequired.buttonNext_userControlBCISignalCheckStartRequired.Click += new System.EventHandler(this.buttonNext_Click);
 
             //_userControlBCISignalCheckStartPrompt = new UserControlBCISignalCheckStartPrompt(gTecDeviceTester.DeviceTestingState.BCISignalCheckStartPrompt.ToString() + "_Prompt");
             _userControlBCISignalCheckStartPrompt = new UserControlBCISignalCheckStartPrompt();
-            _userControlBCISignalCheckStartPrompt.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            _userControlBCISignalCheckStartPrompt.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
+            _userControlBCISignalCheckStartPrompt.buttonExit_userControlBCISignalCheckStartPrompt.Click += new System.EventHandler(this.buttonExit_Click);
+            _userControlBCISignalCheckStartPrompt.buttonNext_userControlBCISignalCheckStartPrompt.Click += new System.EventHandler(this.buttonNext_Click);
 
             //_userControlPromptBCIFIlterSettings = new UserControlBCIFilterSettings(gTecDeviceTester.DeviceTestingState.PromptFilterSettings.ToString());
             _userControlPromptBCIFIlterSettings = new UserControlBCIFilterSettings();
-            _userControlPromptBCIFIlterSettings.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            _userControlPromptBCIFIlterSettings.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
+            _userControlPromptBCIFIlterSettings.buttonExit_userControlPromptBCIFIlterSettings.Click += new System.EventHandler(this.buttonExit_Click);
+            _userControlPromptBCIFIlterSettings.buttonNext_userControlPromptBCIFIlterSettings.Click += new System.EventHandler(this.buttonNext_Click);
 
             _userControlBCISignalCheck = new UserControlBCISignalCheck();
-            _userControlBCISignalCheck.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            _userControlBCISignalCheck.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
+            _userControlBCISignalCheck.buttonExit_userControlBCISignalCheck.Click += new System.EventHandler(this.buttonExit_Click);
+            _userControlBCISignalCheck.buttonNext_userControlBCISignalCheck.Click += new System.EventHandler(this.buttonNext_Click);
 
            
 
@@ -169,7 +167,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             FormClosing += Handle_FormCLosing;
 
-            // updateTestingStatus(initialState, null);
         }
 
         /// <summary>
@@ -180,11 +177,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             UserControl newUserControl = null;
 
-            //gTecDeviceTester.TestResultState
-            //ErrorBluetoothDisconnected
-            //LostConnectionError
-            //SignalQualityError
-            //CalibrationError
 
             switch (state)
             {
@@ -219,20 +211,26 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
                 // Go to screen directing user to connect their unicorn device through bluetooth pairing
                 case TestResultState.ErrorBluetoothDisconnected:
-                    newUserControl = _userControlBCIErrorDeviceDisconnected;
+                    newUserControl = _userControlErrorBluetoothDisconnected;
                     //((UserControlBCIErrorUsbDongle)newUserControl).pictureBoxTestBCIConnections.Refresh();
 
                     break;
 
+                // Go to signal check screen
+                case TestResultState.BCISignalCheck:
+                    newUserControl = _userControlBCISignalCheck;
+                    
+                    break;
 
                 default:
                     break;
+
             }
 
 
-            tableLayoutPanelContainer.Controls.Clear();
-            tableLayoutPanelContainer.Controls.Add(newUserControl, 0, 0);
-            tableLayoutPanelContainer.Refresh();
+            //tableLayoutPanelContainer.Controls.Clear();
+            //tableLayoutPanelContainer.Controls.Add(newUserControl, 0, 0);
+            //tableLayoutPanelContainer.Refresh();
 
 
 
@@ -251,7 +249,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             else if (state == DeviceTestingState.ReceivedBCIError_UsbDongle)
             {
-                newUserControl = _userControlBCIErrorDeviceDisconnected;
+                newUserControl = _userControlErrorBluetoothDisconnected;
             }
             else if (state == DeviceTestingState.ReceivedBCIError_CytonBoard)
             {
@@ -288,73 +286,76 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             */
 
 
-            /*            if (newUserControl != null)
+            if (newUserControl != null)
+            {
+                // Every screen except last one - display in normal 1024 x 768 dimensions
+                if (state != TestResultState.BCISignalCheck)
+                {
+                    tableLayoutPanelContainer.Controls.Clear();
+                    tableLayoutPanelContainer.Controls.Add(newUserControl, 0, 0);
+                    tableLayoutPanelContainer.Refresh();
+                }
+
+                // Last screen - BCI signal check screen created with special layout
+                // Basically remove everything in existing table layout panel and re-add to work with bigger format
+                else if (state == TestResultState.BCISignalCheck)
+                {
+                    bool displayReminderGelElectrodes = false;
+
+                    //Previous selection was not a BCISignalCheck screen
+                    if (prevTestResultState != TestResultState.BCISignalCheck)
+                    {
+                        // Remove all controls tableLayoutPanelContainer and then tableLayoutPanelContainer itself
+                        tableLayoutPanelContainer.Controls.Clear();
+                        tableLayoutPanelMain.Controls.Clear();
+
+                        // Clear row and column styles
+                        tableLayoutPanelMain.RowStyles.Clear();
+                        tableLayoutPanelMain.ColumnStyles.Clear();
+
+                        // Set 1 column and row style such that user control will appear in the top right of primary screen (TriggerBox placed correctly)
+                        tableLayoutPanelMain.ColumnCount = 1;
+                        tableLayoutPanelMain.RowCount = 1;
+                        tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1920));
+                        tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1080));
+                        tableLayoutPanelMain.Controls.Add(newUserControl, 0, 0);
+
+                        newUserControl.Dock = DockStyle.Fill;
+                        tableLayoutPanelMain.Refresh();
+
+                        // Always start at railing test tab
+                        UserControlBCISignalCheck._currentBCISignalCheckMode = UserControlBCISignalCheck.BCISignalCheckMode.TEST_RAILING;
+
+                        // If accessing signal check for first time - display reminder to gel important electrodes
+                        displayReminderGelElectrodes = true;
+                    }
+
+                    if (UserControlBCISignalCheck._currentBCISignalCheckMode == UserControlBCISignalCheck.BCISignalCheckMode.TEST_RAILING)
+                    {
+                        _userControlBCISignalCheck.changeSignalCheckMode(BCISignalCheckMode.TEST_RAILING);
+
+                        if (displayReminderGelElectrodes)
                         {
-                            // Every screen except last one - display in normal 1024 x 768 dimensions
-                            if (state != DeviceTestingState.BCISignalCheck)
-                            {
-                                tableLayoutPanelContainer.Controls.Clear();
-                                tableLayoutPanelContainer.Controls.Add(newUserControl, 0, 0);
-                                tableLayoutPanelContainer.Refresh();
-                            }
+                            bool confirmed = ConfirmBoxSingleOption.ShowDialog("Please remember to add gel to GND and T4 electrodes, if you have not already", "OK", this, false);
+                        }
+                    }
+                    else if (UserControlBCISignalCheck._currentBCISignalCheckMode == UserControlBCISignalCheck.BCISignalCheckMode.TEST_IMPEDANCE)
+                    {
+                        _userControlBCISignalCheck.changeSignalCheckMode(BCISignalCheckMode.TEST_IMPEDANCE);
+                    }
+                    else if (UserControlBCISignalCheck._currentBCISignalCheckMode == UserControlBCISignalCheck.BCISignalCheckMode.TEST_QUALITY)
+                    {
+                        _userControlBCISignalCheck.changeSignalCheckMode(BCISignalCheckMode.TEST_QUALITY);
+                    }
+                }
 
-                            // Last screen - BCI signal check screen created with special layout
-                            // Basically remove everything in existing table layout panel and re-add to work with bigger format
-                            else if (state == DeviceTestingState.BCISignalCheck)
-                            {
-                                bool displayReminderGelElectrodes = false;
+                /*
+                // Start task that will launch data processing / plotting (optical sensor or signal check screens)
+                if (gTecDeviceTester._Testing_useSensor)
+                    TaskStartStopDataProcessing(state);*/
+            }
 
-                                //Previous selection was not a BCISignalCheck screen
-                                if (prevDeviceTestingState != DeviceTestingState.BCISignalCheck)
-                                {
-                                    // Remove all controls tableLayoutPanelContainer and then tableLayoutPanelContainer itself
-                                    tableLayoutPanelContainer.Controls.Clear();
-                                    tableLayoutPanelMain.Controls.Clear();
-
-                                    // Clear row and column styles
-                                    tableLayoutPanelMain.RowStyles.Clear();
-                                    tableLayoutPanelMain.ColumnStyles.Clear();
-
-                                    // Set 1 column and row style such that user control will appear in the top right of primary screen (TriggerBox placed correctly)
-                                    tableLayoutPanelMain.ColumnCount = 1;
-                                    tableLayoutPanelMain.RowCount = 1;
-                                    tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1920));
-                                    tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1080));
-                                    tableLayoutPanelMain.Controls.Add(newUserControl, 0, 0);
-
-                                    newUserControl.Dock = DockStyle.Fill;
-                                    tableLayoutPanelMain.Refresh();
-
-                                    // Always start at railing test tab
-                                    UserControlBCISignalCheck._currentBCISignalCheckMode = UserControlBCISignalCheck.BCISignalCheckMode.TEST_RAILING;
-
-                                    // If accessing signal check for first time - display reminder to gel important electrodes
-                                    displayReminderGelElectrodes = true;
-                                }
-
-                                if (UserControlBCISignalCheck._currentBCISignalCheckMode == UserControlBCISignalCheck.BCISignalCheckMode.TEST_RAILING)
-                                {
-                                    _userControlBCISignalCheck.changeSignalCheckMode(BCISignalCheckMode.TEST_RAILING);
-
-                                    if (displayReminderGelElectrodes)
-                                    {
-                                        bool confirmed = ConfirmBoxSingleOption.ShowDialog("Please remember to add gel to GND and T4 electrodes, if you have not already", "OK", this, false);
-                                    }
-                                }
-                                else if (UserControlBCISignalCheck._currentBCISignalCheckMode == UserControlBCISignalCheck.BCISignalCheckMode.TEST_IMPEDANCE)
-                                {
-                                    _userControlBCISignalCheck.changeSignalCheckMode(BCISignalCheckMode.TEST_IMPEDANCE);
-                                }
-                                else if (UserControlBCISignalCheck._currentBCISignalCheckMode == UserControlBCISignalCheck.BCISignalCheckMode.TEST_QUALITY)
-                                {
-                                    _userControlBCISignalCheck.changeSignalCheckMode(BCISignalCheckMode.TEST_QUALITY);
-                                }
-                            }*/
-            /*
-                            // Start task that will launch data processing / plotting (optical sensor or signal check screens)
-                            if (gTecDeviceTester._Testing_useSensor)
-                                TaskStartStopDataProcessing(state);*/
-        
+            prevTestResultState = state;
         }
 
 
@@ -587,15 +588,15 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     EvtButtonNextClicked = null;
                 if (EvtButtonRetestClicked != null)
                     EvtButtonRetestClicked = null;
-                if (EvtButtonCancelClicked != null)
-                    EvtButtonCancelClicked = null;
+                if (EvtButtonExitClicked != null)
+                    EvtButtonExitClicked = null;
 
                 if (_userControlTestBCIConnections != null)
                     _userControlTestBCIConnections.Dispose();
                 if (_userControlBCIErrorgTecBoard != null)
                     _userControlBCIErrorgTecBoard.Dispose();
-                if (_userControlBCIErrorDeviceDisconnected != null)
-                    _userControlBCIErrorDeviceDisconnected.Dispose();
+                if (_userControlErrorBluetoothDisconnected != null)
+                    _userControlErrorBluetoothDisconnected.Dispose();
                 if (_userControlBCISignalCheckStartRequired != null)
                     _userControlBCISignalCheckStartRequired.Dispose();
                 if (_userControlBCISignalCheckStartPrompt != null)
@@ -616,7 +617,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             if (EvtButtonNextClicked != null)
             {
-                EvtButtonNextClicked(_mainFormDeviceTestingState);
+                EvtButtonNextClicked(((Button) sender).Name);
             }
         }
 
@@ -627,9 +628,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="e"></param>
         private void buttonExit_Click(object sender, EventArgs e)
         {
-            if (EvtButtonCancelClicked != null)
+            if (EvtButtonExitClicked != null)
             {
-                EvtButtonCancelClicked(sender);
+                EvtButtonExitClicked(((Button)sender).Name);
             }
         }
 
@@ -642,7 +643,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             if (EvtButtonRetestClicked != null)
             {
-                EvtButtonRetestClicked(sender);
+                EvtButtonRetestClicked(((Button)sender).Name);
             }
         }
 
@@ -654,40 +655,40 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             Log.Debug("SensorForm | modifyUserControlsForDebugMode");
 
-            _userControlTestBCIConnections.buttonExit.AutoSize = true;
-            _userControlTestBCIConnections.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 13F);
-            _userControlTestBCIConnections.buttonExit.ForeColor = Color.Red;
-            _userControlTestBCIConnections.buttonExit.Text = "[Developer Mode]";
+            _userControlTestBCIConnections.buttonExit_userControlTestBCIConnections.AutoSize = true;
+            _userControlTestBCIConnections.buttonExit_userControlTestBCIConnections.Font = new System.Drawing.Font("Montserrat Medium", 13F);
+            _userControlTestBCIConnections.buttonExit_userControlTestBCIConnections.ForeColor = Color.Red;
+            _userControlTestBCIConnections.buttonExit_userControlTestBCIConnections.Text = "[Developer Mode]";
 
-            _userControlBCIErrorgTecBoard.buttonExit.AutoSize = true;
-            _userControlBCIErrorgTecBoard.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 13F);
-            _userControlBCIErrorgTecBoard.buttonExit.ForeColor = Color.Red;
-            _userControlBCIErrorgTecBoard.buttonExit.Text = "[Developer Mode]";
+            _userControlBCIErrorgTecBoard.buttonExit_userControlBCIErrorgTecBoard.AutoSize = true;
+            _userControlBCIErrorgTecBoard.buttonExit_userControlBCIErrorgTecBoard.Font = new System.Drawing.Font("Montserrat Medium", 13F);
+            _userControlBCIErrorgTecBoard.buttonExit_userControlBCIErrorgTecBoard.ForeColor = Color.Red;
+            _userControlBCIErrorgTecBoard.buttonExit_userControlBCIErrorgTecBoard.Text = "[Developer Mode]";
 
-            _userControlBCIErrorDeviceDisconnected.buttonExit.AutoSize = true;
-            _userControlBCIErrorDeviceDisconnected.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 13F);
-            _userControlBCIErrorDeviceDisconnected.buttonExit.ForeColor = Color.Red;
-            _userControlBCIErrorDeviceDisconnected.buttonExit.Text = "[Developer Mode]";
+            _userControlErrorBluetoothDisconnected.buttonExit_userControlErrorBluetoothDisconnected.AutoSize = true;
+            _userControlErrorBluetoothDisconnected.buttonExit_userControlErrorBluetoothDisconnected.Font = new System.Drawing.Font("Montserrat Medium", 13F);
+            _userControlErrorBluetoothDisconnected.buttonExit_userControlErrorBluetoothDisconnected.ForeColor = Color.Red;
+            _userControlErrorBluetoothDisconnected.buttonExit_userControlErrorBluetoothDisconnected.Text = "[Developer Mode]";
 
-            _userControlBCISignalCheckStartRequired.buttonExit.AutoSize = true;
-            _userControlBCISignalCheckStartRequired.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 11F);
-            _userControlBCISignalCheckStartRequired.buttonExit.ForeColor = Color.Red;
-            _userControlBCISignalCheckStartRequired.buttonExit.Text = "[Developer Mode]";
+            _userControlBCISignalCheckStartRequired.buttonExit_userControlBCISignalCheckStartRequired.AutoSize = true;
+            _userControlBCISignalCheckStartRequired.buttonExit_userControlBCISignalCheckStartRequired.Font = new System.Drawing.Font("Montserrat Medium", 11F);
+            _userControlBCISignalCheckStartRequired.buttonExit_userControlBCISignalCheckStartRequired.ForeColor = Color.Red;
+            _userControlBCISignalCheckStartRequired.buttonExit_userControlBCISignalCheckStartRequired.Text = "[Developer Mode]";
 
-            _userControlBCISignalCheckStartPrompt.buttonExit.AutoSize = true;
-            _userControlBCISignalCheckStartPrompt.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 11F);
-            _userControlBCISignalCheckStartPrompt.buttonExit.ForeColor = Color.Red;
-            _userControlBCISignalCheckStartPrompt.buttonExit.Text = "[Developer Mode]";
+            _userControlBCISignalCheckStartPrompt.buttonExit_userControlBCISignalCheckStartPrompt.AutoSize = true;
+            _userControlBCISignalCheckStartPrompt.buttonExit_userControlBCISignalCheckStartPrompt.Font = new System.Drawing.Font("Montserrat Medium", 11F);
+            _userControlBCISignalCheckStartPrompt.buttonExit_userControlBCISignalCheckStartPrompt.ForeColor = Color.Red;
+            _userControlBCISignalCheckStartPrompt.buttonExit_userControlBCISignalCheckStartPrompt.Text = "[Developer Mode]";
 
-            _userControlPromptBCIFIlterSettings.buttonExit.AutoSize = true;
-            _userControlPromptBCIFIlterSettings.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 11F);
-            _userControlPromptBCIFIlterSettings.buttonExit.ForeColor = Color.Red;
-            _userControlPromptBCIFIlterSettings.buttonExit.Text = "[Developer Mode]";
+            _userControlPromptBCIFIlterSettings.buttonExit_userControlPromptBCIFIlterSettings.AutoSize = true;
+            _userControlPromptBCIFIlterSettings.buttonExit_userControlPromptBCIFIlterSettings.Font = new System.Drawing.Font("Montserrat Medium", 11F);
+            _userControlPromptBCIFIlterSettings.buttonExit_userControlPromptBCIFIlterSettings.ForeColor = Color.Red;
+            _userControlPromptBCIFIlterSettings.buttonExit_userControlPromptBCIFIlterSettings.Text = "[Developer Mode]";
 
-            _userControlBCISignalCheck.buttonExit.AutoSize = true;
-            _userControlBCISignalCheck.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 11F);
-            _userControlBCISignalCheck.buttonExit.ForeColor = Color.Red;
-            _userControlBCISignalCheck.buttonExit.Text = "[Developer Mode]";
+            _userControlBCISignalCheck.buttonExit_userControlBCISignalCheck.AutoSize = true;
+            _userControlBCISignalCheck.buttonExit_userControlBCISignalCheck.Font = new System.Drawing.Font("Montserrat Medium", 11F);
+            _userControlBCISignalCheck.buttonExit_userControlBCISignalCheck.ForeColor = Color.Red;
+            _userControlBCISignalCheck.buttonExit_userControlBCISignalCheck.Text = "[Developer Mode]";
         }
     }
 

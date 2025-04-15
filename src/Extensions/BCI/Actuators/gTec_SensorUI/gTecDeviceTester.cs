@@ -47,8 +47,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             TestingBluetoothConnected,
             TestingSignalQuality,
-            PerformingCalibration,
 
+            
             ExitBCITesting, // Exit BCI testing process completely
         }
 
@@ -65,12 +65,12 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             PromptUser_DoSignalCheck, // Prompts user if they need to do signal check based on a couple questions
             PromptUser_FilterSettings, // Prompts user to set BCI filter settings (50Hz / 60Hz)
 
+            BCISignalCheck, 
+
             ErrorBluetoothDisconnected,
+            SignalQualityError,
             LostConnectionError,
 
-            SignalQualityError,
-            CalibrationError,
-            
         }
 
         private TestResultState _currentResultState;
@@ -177,22 +177,18 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // Create main form
             //_mainForm = new SensorForm(_deviceTestingState);
 
-            _mainForm = new SensorForm(_currentTestingState);
-
-            // Set initial device testing states
-            _currentTestingState = DeviceTestingState.TestingBluetoothConnected;
-
+            _mainForm = new SensorForm();
 
             // Set handlers for main events
             if (_Testing_useSensor)
             {
-                _mainForm.EvtButtonNextClicked += _mainForm_EvtButtonNextClicked;  // Next button click
-                _mainForm.EvtButtonRetestClicked += _mainForm_EvtButtonRetestClicked; // Retest button click
-                _mainForm.EvtButtonCancelClicked += _mainForm_EvtButtonExitClicked; // Cancel button click
+                _mainForm.EvtButtonNextClicked += buttonNextHandler;  // Next button click
+                _mainForm.EvtButtonRetestClicked += buttonRetestHandler; // Retest button click
+                _mainForm.EvtButtonExitClicked += buttonExitHandler; // Cancel button click
             }
             else
             {
-                _mainForm.EvtButtonCancelClicked += _mainForm_EvtButtonExitClicked_DEBUG; // Cancel button click for debugging mode
+                _mainForm.EvtButtonExitClicked += _mainForm_EvtButtonExitClicked_DEBUG; // Cancel button click for debugging mode
             }
 
             // Event called when there is a new screen to be shown during connecting process (ex: got error or completed connecting successfully)
@@ -288,12 +284,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 case DeviceTestingState.TestingSignalQuality:
 
                     break;
-                case DeviceTestingState.PerformingCalibration:
 
-                    break;
-                case DeviceTestingState.ExitBCITesting: // Exit BCI testing process completely
 
-                    break;
                 default:
                     break;
             }
@@ -315,7 +307,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             }
 
-
         }
 
 
@@ -325,20 +316,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         public void Exit(bool lostConnection)
         {
-           /* // Set device testing state accordingly
-            if (lostConnection)
-            {
-                _deviceTestingState = DeviceTestingState.ReceivedBCIError_LostDataConnection;
-            }
-            else
-            {
-                _deviceTestingState = DeviceTestingState.ExitBCITesting;
-            }
+            // Do something with the lostConnection flag? - Might not be needed
 
             // Set flags that will end async tasks and timers
             _endSignalCheckTimer = true;
 
-            */
             // Release event handlers at this level
             EvtUpdateTestingStatus = null;
 
@@ -610,15 +592,60 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <summary>
         /// Handler for Next button click
         /// </summary>
-        private void _mainForm_EvtButtonNextClicked(DeviceTestingState deviceTestingState)
+        private void buttonNextHandler(String buttonNextName)
         {
-            finishSignalQualityTestingState(deviceTestingState);
+            Log.Debug("gTecDeviceTester | buttonNextHandler | buttonNextName: " + buttonNextName);
+            switch (buttonNextName)
+            {
+                /* Commented out cases not used yet
+                // Next button clicked from UserControlBCISignalCheckStartRequired
+                case "buttonNext_userControlBCISignalCheckStartRequired":
+
+                    break;
+
+                // Next button clicked from UserControlBCISignalCheckStartPrompt
+                case "buttonNext_userControlBCISignalCheckStartPrompt":
+
+                    break;
+
+                // Next button clicked from UserControlBCIFilterSettings
+                case "buttonNext_userControlPromptBCIFIlterSettings":
+
+                    break;
+                */
+
+
+                // Next button clicked from UserControlBluetoothDisconnected
+                case "buttonNext_userControlErrorBluetoothDisconnected":
+
+                    // Eventually want to do transition to UserControlBCISignalCheckStartPrompt then UserControlBCIFilterSettings then finally UserControlBCISignalCheck
+                    // But for now just go directly to UserControlBCISignalCheck
+
+                    _currentResultState = TestResultState.BCISignalCheck;
+                    updateTestingStatus(_currentResultState, null);
+
+                    break;
+
+                // Next button clicked from UserControlBCISignalCheck
+                case "buttonNext_userControlBCISignalCheck":
+
+                    // Eventually want to actually check that signal quality is currently good
+
+                    // But for now just exit onboarding
+                    buttonExitHandler("buttonNext_userControlBCISignalCheck");
+
+
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         /// <summary>
         /// Handler for Retest button click
         /// </summary>
-        private void _mainForm_EvtButtonRetestClicked(object sender)
+        private void buttonRetestHandler(object sender)
         {
             // Retest BCI connections
             retestBCIConnections();
@@ -704,7 +731,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// Handler for Exit button click - dispayed on all device testing screens and does the same thing,
         /// completely exits testing process early without completion
         /// </summary>
-        private void _mainForm_EvtButtonExitClicked(object sender)
+        private void buttonExitHandler(String buttonExitName)
         {
             if (!confirmExit(_mainForm))
             {

@@ -190,6 +190,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private int _samplingRate;
         private int _numChannels;
 
+        private DAQ_gTecBCI gTecBCI = null;
+
         /// <summary>
         /// Flag that controls start / stop of impedance testing
         /// </summary>
@@ -255,6 +257,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public UserControlBCISignalCheck()
         {
             InitializeComponent();
+
+            gTecBCI = new DAQ_gTecBCI();
+            gTecBCI.InitDevice("UN-2023.05.61");
 
             buttonNext_userControlBCISignalCheck.Enabled = true;
             buttonNext_userControlBCISignalCheck.Visible = true;
@@ -604,9 +609,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _Testing_BCIOnboardingIgnoreOpticalSensorChecks = BCIActuatorSettings.Settings.Testing_BCIOnboardingIgnoreOpticalSensorChecks;
 
             // Get / inititalize variables related to board config used in data processing
-            _indEegChannels = DAQ_OpenBCI.indEegChannels;
+            _indEegChannels = gTecBCI.indEegChannels;
             _numChannels = BCIActuatorSettings.Settings.DAQ_NumEEGChannels;
-            _samplingRate = DAQ_OpenBCI.sampleRate;
+            _samplingRate = gTecBCI.sampleRate;
             _scaleIdx = BCIActuatorSettings.Settings.SignalMonitor_ScaleIdx;
 
             // If Daisy board connection found earlier or testing parameter set to duplicate required channels
@@ -813,7 +818,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             Log.Debug("StartImpedanceTesting");
 
-            if (!_runImpedanceTestingCycle && DAQ_OpenBCI.deviceInitialized)
+            if (!_runImpedanceTestingCycle && gTecBCI.deviceInitialized)
             {
                 _runImpedanceTestingCycle = true;
                 _impedanceTestingRunning = true;
@@ -822,7 +827,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 ////// Before running impedence tests ///////
                 //// Stop streaming on board, does not consistently register commands while streaming
                 Log.Debug("Stop streaming");
-                DAQ_OpenBCI.Stop_Streaming();
+                gTecBCI.Stop_Streaming();
                 Thread.Sleep(50);
 
                 while (_runImpedanceTestingCycle)
@@ -847,19 +852,19 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                         currentEegChannel.impedanceResultImpedanceTest.BackColor = Color.DarkOrange;
                     }));
 
-                    DAQ_OpenBCI.GetData(); // Clear buffer
+                    gTecBCI.GetData(); // Clear buffer
 
                     //// Send enable electrode impedence testing commands
                     Log.Debug(String.Format("Sending enable electrode {0} impedence testing command: {1}", electrodeName, cmdStartElectrodeImpedenceTest));
-                    DAQ_OpenBCI.Config_Board(cmdStartElectrodeImpedenceTest);
+                    gTecBCI.Config_Board(cmdStartElectrodeImpedenceTest);
                     Thread.Sleep(750);
 
                     // Make sure DAQ_OpenBCI.deviceInitialized set to true when streaming enabled
-                    DAQ_OpenBCI.deviceInitialized = true;
+                    gTecBCI.deviceInitialized = true;
 
                     //// Send start streaming
                     Log.Debug("Start streaming");
-                    DAQ_OpenBCI.Start_Streaming();
+                    gTecBCI.Start_Streaming();
                     Thread.Sleep(50);
 
                     // Wait for a bit then send stop streaming and disable impedence testing commands
@@ -873,11 +878,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
                     // Set DAQ_OpenBCI.deviceInitialized to false to stop processing data when streaming stopped
                     // Will be set to true again during DAQ_OpenBCI.Start()
-                    DAQ_OpenBCI.deviceInitialized = false;
+                    gTecBCI.deviceInitialized = false;
 
                     //// Stop streaming
                     Log.Debug("Stop streaming");
-                    DAQ_OpenBCI.Stop_Streaming();
+                    gTecBCI.Stop_Streaming();
                     Thread.Sleep(50);
 
                     // Send command to disable impedance testing for specific electrode
@@ -925,18 +930,18 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
                 // Reset board to default parameters
                 Log.Debug("Send command to reset board");
-                DAQ_OpenBCI.Reset_Board(); // Run multiple times? DAQ_OpenBCI.Reset_Board();
+                gTecBCI.Reset_Board(); // Run multiple times? DAQ_OpenBCI.Reset_Board();
                 Thread.Sleep(750); // Tested 750 - is ok
                 Log.Debug("Send command to reset board");
-                DAQ_OpenBCI.Reset_Board();
+                gTecBCI.Reset_Board();
                 Thread.Sleep(4500);
 
                 Log.Debug("Calling DAQ_OpenBCI.Stop()");
-                DAQ_OpenBCI.Stop();
+                gTecBCI.Stop();
                 Thread.Sleep(250); // Tested 250 - is ok
 
                 Log.Debug("Calling DAQ_OpenBCI.Start()");
-                DAQ_OpenBCI.Start(); // Also starts streaming
+                gTecBCI.Start(); // Also starts streaming
 
                 // Stopped Impedance testing cycle, update UI accordingly
                 Invoke(new Action(() =>
@@ -972,7 +977,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="data"></param>
         public void ProcessDataSignalCheck(double[,] data, double[,] filteredData)
         {
-            if (gTecDeviceTester._endSignalCheckTimer)
+            if (GTecDeviceTester._endSignalCheckTimer)
                 return;
 
             try

@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Gtec.Unicorn;
 using System.Threading.Tasks;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
@@ -24,11 +25,14 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     /// </summary>
     public partial class UserControlErrorBluetoothDisconnected : UserControl
     {
+        private DAQ_gTecBCI gtecBCI;
         private Timer _updateTimer;
 
-        public UserControlErrorBluetoothDisconnected()
+        public UserControlErrorBluetoothDisconnected(DAQ_gTecBCI device)
         {
             InitializeComponent();
+
+            gtecBCI = device;
 
             // buttonNext_userControlErrorBluetoothDisconnected.Enabled = false;
 
@@ -38,15 +42,13 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // buttonNext_userControlErrorBluetoothDisconnected.Click += buttonNext_Click;
 
             _updateTimer = new Timer();
-            _updateTimer.Interval = 10000; // 10 seconds
+            _updateTimer.Interval = 5000; // 5 seconds
             _updateTimer.Tick += UpdateTimer_Tick;
             _updateTimer.Start();
 
-            updatePairedDeviceList();
-            updateUnPairedDeviceList();
         }
 
-        private void buttonNext_Click(object sender, EventArgs e)
+        private async void buttonNext_Click(object sender, EventArgs e)
         {
             string selectedDevice = "";
 
@@ -62,14 +64,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             if (!string.IsNullOrEmpty(selectedDevice))
             {
-                Log.Debug($"Selected device: {selectedDevice} , trying to connect...");
-                
-                Unicorn device = new Unicorn(selectedDevice);
-                
-                Log.Debug($"Device: {device} is connected...");
-
-                device.Dispose();
-                Log.Debug($"Device: {device} is disconnected...");
+                await gtecBCI.connectionTestAsync(selectedDevice);
             }   
             
         }
@@ -88,51 +83,38 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
         public async void updatePairedDeviceList()
         {
-            try
+            IList<string> pairedDevices = await gtecBCI.scanDevicesAsync(true);
+
+            if (pairedDevices.Count > 0)
             {
-                IList<string> devices = await Task.Run(() => Unicorn.GetAvailableDevices(true));
-                if (devices.Count > 0)
+                listViewPairedDevices.Items.Clear();
+                listViewPairedDevices.Invoke((Action)(() =>
                 {
-                    listViewPairedDevices.Items.Clear();
-                    listViewPairedDevices.Invoke((Action)(() =>
+                    foreach (string device in pairedDevices)
                     {
-                        foreach (string device in devices)
-                        {
-                            var listItem = new ListViewItem(device);
-                            listViewPairedDevices.Items.Add(listItem);
-                        }
-                    }));
-                }
-            }
-            catch (Gtec.Unicorn.DeviceException ex)
-            {
-                Log.Debug($"Error: {ex.Message}");
+                        var listItem = new ListViewItem(device);
+                        listViewPairedDevices.Items.Add(listItem);
+                    }
+                }));
             }
         }
 
         public async void updateUnPairedDeviceList()
         {
-            try
+            IList<string> unPairedDevices = await gtecBCI.scanDevicesAsync(false);
+
+            if (unPairedDevices.Count > 0)
             {
-                IList<string> devices = await Task.Run(() => Unicorn.GetAvailableDevices(false));
-                if (devices.Count > 0)
+                listViewUnPairedDevices.Items.Clear();
+                listViewUnPairedDevices.Invoke((Action)(() =>
                 {
-                    listViewUnPairedDevices.Items.Clear();
-                    listViewUnPairedDevices.Invoke((Action)(() =>
+                    foreach (string device in unPairedDevices)
                     {
-                        foreach (string device in devices)
-                        {
-                            var listItem = new ListViewItem(device);
-                            listViewUnPairedDevices.Items.Add(listItem);
-                        }
-                    }));
-                }
-            }
-            catch (Gtec.Unicorn.DeviceException ex)
-            {
-                Log.Debug($"Error: {ex.Message}");
+                        var listItem = new ListViewItem(device);
+                        listViewUnPairedDevices.Items.Add(listItem);
+                    }
+                }));
             }
         }
-
     }
 }

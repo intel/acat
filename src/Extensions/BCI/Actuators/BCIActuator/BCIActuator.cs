@@ -85,7 +85,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <summary>
         /// gTec device tester
         /// </summary>
-        public gTecDeviceTester _gtecDeviceTester = null;
+        public GTecDeviceTester _gtecDeviceTester = null;
 
         /// <summary>
         /// Name of the file that stores the settings for
@@ -2074,7 +2074,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
         private void TestGtecDevice()
         {
-            _gtecDeviceTester = new gTecDeviceTester();
+            _gtecDeviceTester = new GTecDeviceTester();
             _gtecDeviceTester.EvtBCIDeviceTestingCompleted += bciDeviceTestingCompleted;
             _gtecDeviceTester.initialize();
         }

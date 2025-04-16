@@ -16,8 +16,9 @@ using ACAT.Lib.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ACAT.Extensions.BCI.Actuators.gTecSensorUI.gTecDeviceTester;
+using static ACAT.Extensions.BCI.Actuators.gTecSensorUI.GTecDeviceTester;
 using static ACAT.Extensions.BCI.Actuators.gTecSensorUI.UserControlBCISignalCheck;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
@@ -27,6 +28,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     /// </summary>
     public partial class SensorForm : Form
     {
+        private DAQ_gTecBCI gTecBCI = null;
         /// <summary>
         /// User control displayed while trying to connect to sensor
         /// </summary>
@@ -109,10 +111,12 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private int _timer_process_data_interval_ms = 10;
 
         // Form which acts as parent for / base for all possible user controls displayed during testing process
-        public SensorForm()
+        public SensorForm(DAQ_gTecBCI device)
         {
             InitializeComponent();
-            
+
+            gTecBCI = device;
+
             this.WindowState = FormWindowState.Maximized;
 
             // Set initial / default values of static variables
@@ -128,7 +132,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _userControlBCIErrorgTecBoard.buttonExit_userControlBCIErrorgTecBoard.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCIErrorgTecBoard.buttonRetry_userControlBCIErrorgTecBoard.Click += new System.EventHandler(this.buttonRetest_Click);
 
-            _userControlErrorBluetoothDisconnected = new UserControlErrorBluetoothDisconnected();
+            _userControlErrorBluetoothDisconnected = new UserControlErrorBluetoothDisconnected(gTecBCI);
             _userControlErrorBluetoothDisconnected.buttonExit_userControlErrorBluetoothDisconnected.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlErrorBluetoothDisconnected.buttonNext_userControlErrorBluetoothDisconnected.Click += new System.EventHandler(this.buttonNext_Click);
 
@@ -157,7 +161,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // Default = Railing Test screen
             //UserControlBCISignalCheck._currentBCISignalCheckMode = BCISignalCheckMode.TEST_RAILING;
 
-            if (!gTecDeviceTester._Testing_useSensor)
+            if (!GTecDeviceTester._Testing_useSensor)
             {
                 // Set Exit button on each user control screen to [Developer Mode] which iterates through all available screens on button press
                 modifyUserControlsForDebugMode();
@@ -173,7 +177,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// Replaces user control displayed in tableLayoutPanelContainer
         /// </summary>
         /// <param name="state"></param>
-        public void updateTestingStatus(gTecDeviceTester.TestResultState state, Dictionary<String, object> resultParams)
+        public void updateTestingStatus(GTecDeviceTester.TestResultState state, Dictionary<String, object> resultParams)
         {
             UserControl newUserControl = null;
 
@@ -349,10 +353,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     }
                 }
 
-                /*
+                
                 // Start task that will launch data processing / plotting (optical sensor or signal check screens)
-                if (gTecDeviceTester._Testing_useSensor)
-                    TaskStartStopDataProcessing(state);*/
+                if (GTecDeviceTester._Testing_useSensor)
+                    //TaskStartStopDataProcessing(state);
+                    TaskStartStopDataProcessing(DeviceTestingState.TestingSignalQuality);
             }
 
             prevTestResultState = state;
@@ -365,7 +370,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="state"></param>
         private void startStopPlotDataTimer(bool startPlotDataTimer, DeviceTestingState state)
         {
-            /*Log.Debug("startStopPlotDataTimer | startProcessDataTimer: " + startPlotDataTimer.ToString() +
+            Log.Debug("startStopPlotDataTimer | startProcessDataTimer: " + startPlotDataTimer.ToString() +
                 " | state: " + state.ToString());
 
             if (startPlotDataTimer)
@@ -378,10 +383,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     timerPlotData.Interval = _timer_plot_data_interval_ms; //// 50, 100, 200
                     timerPlotData.Stop();
 
-                    if (state == DeviceTestingState.ReceivedBCIError_OpticalSensor)
-                    {
-                        timerPlotData.Tick += new System.EventHandler(this.PlotOpticalSensorData_Tick);
-                    }
+                    //if (state == DeviceTestingState.ReceivedBCIError_OpticalSensor)
+                    //{
+                    //    timerPlotData.Tick += new System.EventHandler(this.PlotOpticalSensorData_Tick);
+                    //}
 
                     timerPlotData.Start();
                     Log.Debug("startStopPlotDataTimer | Started timerPlotData");
@@ -407,7 +412,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 {
                     Log.Debug("startStopPlotDataTimer | Exception: " + e.ToString());
                 }
-            }*/
+            }
         }
 
         /// <summary>
@@ -416,7 +421,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="state"></param>
         private void startStopProcessDataTimer(bool startProcessDataTimer, DeviceTestingState state)
         {
-            /*Log.Debug("startStopProcessDataTimer | startProcessDataTimer: " + startProcessDataTimer.ToString() +
+            Log.Debug("startStopProcessDataTimer | startProcessDataTimer: " + startProcessDataTimer.ToString() +
                 " | state: " + state.ToString());
 
             if (startProcessDataTimer)
@@ -436,10 +441,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     timerProcessData.Interval = _timer_process_data_interval_ms;
                     timerProcessData.Stop();
 
-                    if (state == DeviceTestingState.BCISignalCheck)
-                    {
-                        timerProcessData.Tick += new System.EventHandler(ProcessDataSignalCheck_Tick);
-                    }
+                    //if (state == DeviceTestingState.BCISignalCheck)
+                    //{
+                    //    timerProcessData.Tick += new System.EventHandler(ProcessDataSignalCheck_Tick);
+                    //}
 
                     timerProcessData.Start();
                     Log.Debug("startStopProcessDataTimer | Started timerProcessData");
@@ -465,39 +470,38 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 {
                     Log.Debug("startStopProcessDataTimer | Exception: " + e.ToString());
                 }
-            }*/
+            }
 
         }
 
-       /* /// <summary>
+        /// <summary>
         /// Task in charge to start or stop data acquisition
         /// </summary>
         /// <returns></returns>
         /// Run only once per new set of state changes receieved
         public async Task TaskStartStopDataProcessing(DeviceTestingState state)
         {
-            await Task.Delay(100);
 
             // Start data processing timer for Optical sensor error screen
-            if (state == DeviceTestingState.ReceivedBCIError_OpticalSensor)
-            {
-                Invoke(new Action(() =>
-                {
-                    startStopPlotDataTimer(true, state);
-                }));
-            }
+            //if (state == DeviceTestingState.ReceivedBCIError_OpticalSensor)
+            //{
+            //    Invoke(new Action(() =>
+            //    {
+            //        startStopPlotDataTimer(true, state);
+            //    }));
+            //}
 
-            // Stop data processing timer for Optical sensor error screen
-            else
-            {
-                Invoke(new Action(() =>
-                {
-                    startStopPlotDataTimer(false, state);
-                }));
-            }
+            //// Stop data processing timer for Optical sensor error screen
+            //else
+            //{
+            //    Invoke(new Action(() =>
+            //    {
+            //        startStopPlotDataTimer(false, state);
+            //    }));
+            //}
 
             // Start task which processes data for signal status checks
-            if (state == DeviceTestingState.BCISignalCheck)
+            if (state == DeviceTestingState.TestingSignalQuality)
             {
                 Invoke(new Action(() =>
                 {
@@ -511,41 +515,41 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     startStopProcessDataTimer(false, state);
                 }));
             }
-        }*/
-
-
-        /// <summary>
-        /// Obtain, process, and plot BCI EEG data
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ProcessDataSignalCheck_Tick(object sender, EventArgs e)
-        {
-            // Check flag to stop all timers (checked during possible timer tick)
-            // Check flag to stop this particular timer
-            if (_stopTimers || gTecDeviceTester._endSignalCheckTimer)
-            {
-                Log.Debug("ProcessDataSignalCheck_Tick | _stopTimers | gTecDeviceTester._endSignalCheckTimer");
-                startStopProcessDataTimer(false, DeviceTestingState.ExitBCITesting);
-                return;
-            }
-
-            if (DAQ_OpenBCI.deviceInitialized)
-            {
-                //double[,] data = DAQ_OpenBCI.GetData();
-
-                double[,] data = DAQ_OpenBCI.GetData2();
-
-                if (data != null && data.Length > 0 && data.GetLength(1) > 0)
-                {
-                    double[,] dataCopy = (double[,])data.Clone();
-                    double[,] DAQ_filteredData = DAQ_OpenBCI.daq_filter_data(dataCopy);
-
-                    if (_userControlBCISignalCheck != null)
-                        _userControlBCISignalCheck.ProcessDataSignalCheck(data, DAQ_filteredData);
-                }
-            }
         }
+
+
+        ///// <summary>
+        ///// Obtain, process, and plot BCI EEG data
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //private void ProcessDataSignalCheck_Tick(object sender, EventArgs e)
+        //{
+        //    // Check flag to stop all timers (checked during possible timer tick)
+        //    // Check flag to stop this particular timer
+        //    if (_stopTimers || gTecDeviceTester._endSignalCheckTimer)
+        //    {
+        //        Log.Debug("ProcessDataSignalCheck_Tick | _stopTimers | gTecDeviceTester._endSignalCheckTimer");
+        //        startStopProcessDataTimer(false, DeviceTestingState.ExitBCITesting);
+        //        return;
+        //    }
+
+        //    if (DAQ_OpenBCI.deviceInitialized)
+        //    {
+        //        //double[,] data = DAQ_OpenBCI.GetData();
+
+        //        double[,] data = DAQ_OpenBCI.GetData2();
+
+        //        if (data != null && data.Length > 0 && data.GetLength(1) > 0)
+        //        {
+        //            double[,] dataCopy = (double[,])data.Clone();
+        //            double[,] DAQ_filteredData = DAQ_OpenBCI.daq_filter_data(dataCopy);
+
+        //            if (_userControlBCISignalCheck != null)
+        //                _userControlBCISignalCheck.ProcessDataSignalCheck(data, DAQ_filteredData);
+        //        }
+        //    }
+        //}
 
 
         /// <summary>

@@ -33,7 +33,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     /// <summary>
     /// Tests BCI device - connections to the gTec board, displays errors accordingly, and begins signal quality check
     /// </summary>
-    public class gTecDeviceTester
+    public class GTecDeviceTester
     {
 
         DAQ_gTecBCI gTecBCI = null;
@@ -129,7 +129,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// Tests BCI devices - connections to the hw and data quality
         /// Displays errors accordingly - After an error, starts at the beginning of the process (testing device connections)
         /// </summary>
-        public gTecDeviceTester()
+        public GTecDeviceTester()
         {
             // Do not call init function here
 
@@ -144,6 +144,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             Log.Debug("gTecDeviceTester | initialize");
 
+            gTecBCI = new DAQ_gTecBCI();
+            
             // Close main form if for some reason it's opened at this point
             if (_mainForm != null && _mainForm.IsDisposed == false)
             {
@@ -170,14 +172,14 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             ExitOnboardingEarly = false;
 
-            // Unset flags that will end async tasks and timers
+            // Unset flags that will end async tasks and timers`
             _endSignalCheckTimer = false;
 
 
             // Create main form
             //_mainForm = new SensorForm(_deviceTestingState);
 
-            _mainForm = new SensorForm();
+            _mainForm = new SensorForm(gTecBCI);
 
             // Set handlers for main events
             if (_Testing_useSensor)
@@ -273,11 +275,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
 
                 case DeviceTestingState.TestingBluetoothConnected:
-
-                    //gTecBCI = new DAQ_gTecBCI();
-
-                    //gTecBCI.InitDevice("UN-2023.05.61");
-
                     testBluetoothStatus();
                     break;
 
@@ -750,36 +747,36 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// Asynchronous task that initializes BCI device testing
         /// </summary>
         /// <returns></returns>
-        public async Task startBCIDeviceTesting(int initialDelaySec = 0)
-        {
-           // Wait until main form fully loaded before starting
-            while (!_FormFullySHown)
-            {
-                await Task.Delay(500); // 2000, 500, 50, 10
-            }
+        //public async Task startBCIDeviceTesting(int initialDelaySec = 0)
+        //{
+        //   // Wait until main form fully loaded before starting
+        //    while (!_FormFullySHown)
+        //    {
+        //        await Task.Delay(500); // 2000, 500, 50, 10
+        //    }
 
-            // Extra time to wait before starting testing process
-            if (initialDelaySec > 0)
-            {
-                DateTime startDatetime = DateTime.UtcNow;
-                double timeElapsed = 0;
-                while (timeElapsed <= initialDelaySec)
-                {
-                    await Task.Delay(50); // 2000, 500, 50, 10
-                    timeElapsed = ((TimeSpan)(DateTime.UtcNow - startDatetime)).TotalSeconds;
-                }
-            }
+        //    // Extra time to wait before starting testing process
+        //    if (initialDelaySec > 0)
+        //    {
+        //        DateTime startDatetime = DateTime.UtcNow;
+        //        double timeElapsed = 0;
+        //        while (timeElapsed <= initialDelaySec)
+        //        {
+        //            await Task.Delay(50); // 2000, 500, 50, 10
+        //            timeElapsed = ((TimeSpan)(DateTime.UtcNow - startDatetime)).TotalSeconds;
+        //        }
+        //    }
 
-            Log.Debug("startBCIDeviceTesting | Calling ex()");
+        //    Log.Debug("startBCIDeviceTesting | Calling ex()");
 
-            // Call async function which connects to BCI sensor + starts task that controls TriggerBox flashing and tests optical sensor by request
-            if (_Testing_useSensor == true)
-            {
-                // InitDAQ();
+        //    // Call async function which connects to BCI sensor + starts task that controls TriggerBox flashing and tests optical sensor by request
+        //    if (_Testing_useSensor == true)
+        //    {
+        //        // InitDAQ();
 
-                executeDeviceTest();
-            }
-        }
+        //        executeDeviceTest();
+        //    }
+        //}
 
         /// <summary>
         /// Handler for when form first shwon

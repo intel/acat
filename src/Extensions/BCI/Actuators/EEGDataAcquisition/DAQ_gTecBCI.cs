@@ -19,9 +19,13 @@ using brainflow;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO.Ports;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Gtec.Unicorn;
 
 namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 {
@@ -567,23 +571,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         }
 
         /// <summary>
-        /// Maximum amount of time for optical sensor data to remain the same before throwing error
-        /// </summary>
-        // public const double THRESHOLD_ERROR_NO_OPTICAL_SENSOR_DATA_CHANGE_SEC = 10.0;
-        public const double THRESHOLD_ERROR_NO_OPTICAL_SENSOR_DATA_CHANGE_SEC = 5.0;
-
-        /// <summary>
-        /// Tracks optical sensor data for comparison across time
-        /// </summary>
-        // public string pastStringOpticalSensorData = "NONE"; // Reset to "NONE" everytme BCI device testing process repeated
-        public double[] pastOpticalSensorData = new double[1]; // Reset to = new double[1] everytme BCI device testing process repeated
-
-        /// <summary>
-        /// Tracks time optical sensor data last changed
-        /// </summary>
-        public DateTime dateTimeLastChangeOpticalSensorData = DateTime.MinValue; // Reset to DateTime.MinValue everytme BCI device testing process repeated
-
-        /// <summary>
         /// For internal use, adds filtered data to a buffer to assess signal status
         /// </summary>
         /// <param name="rawData"></param>
@@ -880,8 +867,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// </summary>
         public void Start_Streaming()
         {
-            //DeviceObj.start_stream();
-            Config_Board("b");
+            DeviceObj.start_stream();
+            //Config_Board("b");
         }
 
         /// <summary>
@@ -889,8 +876,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// </summary>
         public void Stop_Streaming()
         {
-            //DeviceObj.stop_stream();
-            Config_Board("s");
+            DeviceObj.stop_stream();
+            //Config_Board("s");
         }
 
         /// <summary>
@@ -901,6 +888,50 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             Config_Board("d");
         }
 
+
+        public async Task<IList<string>> scanDevicesAsync(bool paired = true)
+        {
+            return await Task.Run(() =>
+            {
+                IList<string> devices = new List<string>();
+                try
+                {
+                    devices = Unicorn.GetAvailableDevices(paired);
+                }
+                catch (Gtec.Unicorn.DeviceException ex)
+                {
+                    Log.Debug($"Error: {ex.Message}");
+                }
+                return devices;
+            });
+        }
+
+        public async Task<bool> connectionTestAsync(string deviceName)
+        {
+            return await Task.Run(() =>
+            {
+                try
+                {
+                    Log.Debug($"Selected device: {deviceName}, trying to connect...");
+                    using (Unicorn device = new Unicorn(deviceName))
+                    {
+                        Log.Debug($"Device: {device} is connected...");
+                    }
+                    Log.Debug($"Device: {deviceName} is disconnected...");
+                    return true;
+                }
+                catch (Gtec.Unicorn.DeviceException ex)
+                {
+                    Log.Debug($"Error: {ex.Message}");
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug($"Unexpected error: {ex.Message}");
+                    return false;
+                }
+            });
+        }
     }
     #endregion Utils
 }

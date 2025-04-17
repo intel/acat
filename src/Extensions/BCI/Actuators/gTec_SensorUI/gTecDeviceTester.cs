@@ -245,6 +245,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
                 case BluetoothEvent.SUCCESSFUL_CONNECTION:
 
+                    //gTecBCI = new DAQ_gTecBCI();
+                    // gTecBCI.InitDevice(BCIActuatorSettings.Settings.GTecDeviceName);
+
+
                     _mainForm.Invoke(new Action(() =>
                     {
                         // Finds if signal check is required or asks user if they want to do one. Navigates to the corresponding screen
@@ -532,6 +536,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             Log.Debug("gTecDeviceTester | runSignalCheckIfRequired");
 
+
             // Always check time last impedance test was run (all electrodes tested) and update UI accordingly
             long timestampPrevImpedanceTest = BCIActuatorSettings.Settings.SignalQuality_TimeOfLastImpedanceCheck;
             long timestampNow = DateTimeOffset.Now.ToUnixTimeSeconds();
@@ -549,7 +554,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // user must do tests and calibration (SignalControl_RecheckNeeded = true)
             bool userPassedLastSignalQualityCheck = BCIActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck;
 
+            // Initialize gTecBCI device
+            gTecBCI.InitDevice(BCIActuatorSettings.Settings.GTecDeviceName);
+
             // Initialize parameters and set processing variables / UI elements in main signal check screen accordingly
+            _mainForm._userControlBCISignalCheck.gTecBCI = gTecBCI;
             _mainForm._userControlBCISignalCheck.initializeBCISignalCheck(maxTimeHasElapsed, maxTimeMins, minElapsedPrevSignalQualityCheck, userPassedLastSignalQualityCheck);
 
 

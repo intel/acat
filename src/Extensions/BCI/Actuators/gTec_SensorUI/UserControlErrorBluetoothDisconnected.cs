@@ -70,6 +70,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             {
                 BCIActuatorSettings.Settings.GTecDeviceName = selectedDevice;
                 BCIActuatorSettings.Save();
+                Log.Debug("Saved BCIActuatorSettings.Settings.GTecDeviceName to ACAT settings: " + BCIActuatorSettings.Settings.GTecDeviceName);
             }
         }
 

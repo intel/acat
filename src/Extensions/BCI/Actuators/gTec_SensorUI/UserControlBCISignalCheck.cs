@@ -190,7 +190,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private int _samplingRate;
         private int _numChannels;
 
-        private DAQ_gTecBCI gTecBCI = null;
+        public DAQ_gTecBCI gTecBCI = null;
 
         /// <summary>
         /// Flag that controls start / stop of impedance testing
@@ -258,8 +258,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             InitializeComponent();
 
-            gTecBCI = new DAQ_gTecBCI();
-            gTecBCI.InitDevice("UN-2023.05.61");
+            // gTecBCI = new DAQ_gTecBCI();
+            // gTecBCI.InitDevice("UN-2023.05.61");
 
             buttonNext_userControlBCISignalCheck.Enabled = true;
             buttonNext_userControlBCISignalCheck.Visible = true;

@@ -227,6 +227,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     newUserControl = _userControlBCISignalCheckStartPrompt;
                     break;
 
+                // Go to screen asking user if they want to do a signal quality check
+                case OnboardingUserState.PromptUser_FilterSettings:
+                    newUserControl = _userControlPromptBCIFIlterSettings;
+                    break;
+
                 // Go to signal check screen
                 case OnboardingUserState.BCISignalCheck:
                     newUserControl = _userControlBCISignalCheck;                    
@@ -481,7 +486,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 return;
             }
 
-            if (DAQ_OpenBCI.deviceInitialized)
+            /*if (DAQ_OpenBCI.deviceInitialized)
             {
                 //double[,] data = DAQ_OpenBCI.GetData();
 
@@ -491,6 +496,22 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 {
                     double[,] dataCopy = (double[,])data.Clone();
                     double[,] DAQ_filteredData = DAQ_OpenBCI.daq_filter_data(dataCopy);
+
+                    if (_userControlBCISignalCheck != null)
+                        _userControlBCISignalCheck.ProcessDataSignalCheck(data, DAQ_filteredData);
+                }
+            }*/
+
+            if (gTecBCI.deviceInitialized)
+            {
+                //double[,] data = DAQ_OpenBCI.GetData();
+
+                double[,] data = gTecBCI.GetData();
+
+                if (data != null && data.Length > 0 && data.GetLength(1) > 0)
+                {
+                    double[,] dataCopy = (double[,])data.Clone();
+                    double[,] DAQ_filteredData = gTecBCI.daq_filter_data(dataCopy);
 
                     if (_userControlBCISignalCheck != null)
                         _userControlBCISignalCheck.ProcessDataSignalCheck(data, DAQ_filteredData);

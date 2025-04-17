@@ -107,6 +107,11 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         //[StringDescriptor("BCI sensor port", "COM4")]
         public string DAQ_ComPort { get; set; }
 
+
+        [StringDescriptor("Name of the GTec blueooth device", "")]
+        public string GTecDeviceName { get; set; }
+
+
         /// <summary>
         /// Index where the data from the optical sensor is sent
         /// This can change depending on the port where is connected
@@ -634,6 +639,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             Testing_DuplicateRequiredChannelsAsOptionalChannels = false;
 
             ShowDisclaimerOnStartup = true;
+
+            GTecDeviceName = "";
         }
 
         /// <summary>

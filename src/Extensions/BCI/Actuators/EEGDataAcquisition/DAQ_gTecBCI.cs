@@ -175,6 +175,18 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             IDLE,
         };
 
+        public enum BluetoothEvent
+        {
+            SUCCESSFUL_CONNECTION,
+            DEVICE_DISCONNECTED,
+            SCAN_DEVICES_REQUEST,
+            SCAN_DEVICES_RESULT,
+        };
+
+        public delegate void DelegateBluetoothUpdate(BluetoothEvent bluetoothEvent, Dictionary<String, object> eventParams);
+        public event DelegateBluetoothUpdate EvtBluetoothResult;
+        
+
         /// <summary>
         ///  Default contstructor
         /// </summary>
@@ -215,6 +227,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             frontendFilterIdx = BCIActuatorSettings.Settings.DAQ_FrontendFilterIdx;
             notchFilterIdx = BCIActuatorSettings.Settings.DAQ_NotchFilterIdx;
             Log.Debug(" Frontend filter: " + frontendFilterIdx + " Notch filter: " + notchFilterIdx);
+            
         }
 
         #region Get/set
@@ -897,6 +910,11 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 try
                 {
                     devices = Unicorn.GetAvailableDevices(paired);
+                    
+                    Dictionary<String, object> eventParams = new Dictionary<String, object>();
+                    eventParams["paired"] = paired;
+                    eventParams["devices"] = devices;
+                    EvtBluetoothResult(BluetoothEvent.SCAN_DEVICES_RESULT, eventParams);
                 }
                 catch (Gtec.Unicorn.DeviceException ex)
                 {
@@ -906,31 +924,76 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             });
         }
 
-        public async Task<bool> connectionTestAsync(string deviceName)
+        // Tests connection status for GTecDeviceName saved in settings
+        // This function may not need to return something since it will send events based on the connection status
+        public async Task<bool> connectionTestAsync()
         {
-            return await Task.Run(() =>
+
+            // If try / catch below handles BCIActuatorSettings.Settings.GTecDeviceName being null or empty, probably don't need this extra check
+            if (string.IsNullOrEmpty(BCIActuatorSettings.Settings.GTecDeviceName))
             {
-                try
+                EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, null);
+                return false;
+            }
+
+            else
+            {
+                return await Task.Run(() =>
                 {
-                    Log.Debug($"Selected device: {deviceName}, trying to connect...");
-                    using (Unicorn device = new Unicorn(deviceName))
+                    try
                     {
-                        Log.Debug($"Device: {device} is connected...");
+                        Log.Debug($"Selected device: {BCIActuatorSettings.Settings.GTecDeviceName}, trying to connect...");
+                        using (Unicorn device = new Unicorn(BCIActuatorSettings.Settings.GTecDeviceName))
+                        {
+                            Log.Debug($"Device: {device} is connected...");
+                            EvtBluetoothResult(BluetoothEvent.SUCCESSFUL_CONNECTION, null);
+                            return true;
+                        }
+                        // Log.Debug($"Device: {BCIActuatorSettings.Settings.GTecDeviceName} is disconnected...");
+                        // return false;
                     }
-                    Log.Debug($"Device: {deviceName} is disconnected...");
-                    return true;
-                }
-                catch (Gtec.Unicorn.DeviceException ex)
-                {
-                    Log.Debug($"Error: {ex.Message}");
-                    return false;
-                }
-                catch (Exception ex)
-                {
-                    Log.Debug($"Unexpected error: {ex.Message}");
-                    return false;
-                }
-            });
+                    catch (Gtec.Unicorn.DeviceException ex)
+                    {
+                        Log.Debug($"Error: {ex.Message}");
+                        EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, null);
+                        return false;
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Debug($"Unexpected error: {ex.Message}");
+                        EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, null);
+                        return false;
+                    }
+
+                    //Log.Debug($"Device: {BCIActuatorSettings.Settings.GTecDeviceName} is disconnected...");
+                    //EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, null);
+                    //return false;
+                });
+            }
+        }
+
+        public void bluetoothRequestHandler(DAQ_gTecBCI.BluetoothEvent bluetoothEvent, Dictionary<String, object> eventParams)
+        {
+            Log.Debug("DAQ_gTecBCI | bluetoothRequestHandler | bluetoothEvent: " + bluetoothEvent.ToString());
+
+            switch (bluetoothEvent)
+            {
+                /*
+                case DAQ_gTecBCI.BluetoothEvent.DEVICE_DISCONNECTED:
+                    break;
+                case DAQ_gTecBCI.BluetoothEvent.SUCCESSFUL_CONNECTION:
+                    break;
+                */
+
+                case DAQ_gTecBCI.BluetoothEvent.SCAN_DEVICES_REQUEST:
+                    scanDevicesAsync((bool)eventParams["paired"]);
+                    break;
+
+                default:
+                    break;
+
+            }
+
         }
     }
     #endregion Utils

@@ -70,9 +70,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public UserControlBCISignalCheck _userControlBCISignalCheck;
 
         /// <summary>
-        /// Variable tracking the previous TestResultState
+        /// Variable tracking the previous OnboardingUserState
         /// </summary>
-        private TestResultState prevTestResultState;
+        private OnboardingUserState prevOnboardingState;
 
         /// <summary>
         /// Delegate for button click events
@@ -101,21 +101,21 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public static bool _stopTimers = false;
 
         /// <summary>
-        /// Interval in milliseconds at which timer event for plotting optical sensor data fires
+        /// Interval in milliseconds at which timer event for plotting optical sensor data is called
         /// </summary>
         private int _timer_plot_data_interval_ms = 40;
 
         /// <summary>
-        /// Interval in milliseconds at which timer event for acquiring and processing data fires
+        /// Interval in milliseconds at which timer event for acquiring and processing data is called
         /// </summary>
         private int _timer_process_data_interval_ms = 10;
 
+        public UserControl _currentUserControlShown;
+
         // Form which acts as parent for / base for all possible user controls displayed during testing process
-        public SensorForm(DAQ_gTecBCI device)
+        public SensorForm()
         {
             InitializeComponent();
-
-            gTecBCI = device;
 
             this.WindowState = FormWindowState.Maximized;
 
@@ -132,21 +132,18 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _userControlBCIErrorgTecBoard.buttonExit_userControlBCIErrorgTecBoard.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCIErrorgTecBoard.buttonRetry_userControlBCIErrorgTecBoard.Click += new System.EventHandler(this.buttonRetest_Click);
 
-            _userControlErrorBluetoothDisconnected = new UserControlErrorBluetoothDisconnected(gTecBCI);
+            _userControlErrorBluetoothDisconnected = new UserControlErrorBluetoothDisconnected();
             _userControlErrorBluetoothDisconnected.buttonExit_userControlErrorBluetoothDisconnected.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlErrorBluetoothDisconnected.buttonNext_userControlErrorBluetoothDisconnected.Click += new System.EventHandler(this.buttonNext_Click);
 
-            //_userControlBCISignalCheckStartRequired = new UserControlBCISignalCheckStartRequired(gTecDeviceTester.DeviceTestingState.TestSignalCheckRequired.ToString() + "_Required");
             _userControlBCISignalCheckStartRequired = new UserControlBCISignalCheckStartRequired();
             _userControlBCISignalCheckStartRequired.buttonExit_userControlBCISignalCheckStartRequired.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCISignalCheckStartRequired.buttonNext_userControlBCISignalCheckStartRequired.Click += new System.EventHandler(this.buttonNext_Click);
 
-            //_userControlBCISignalCheckStartPrompt = new UserControlBCISignalCheckStartPrompt(gTecDeviceTester.DeviceTestingState.BCISignalCheckStartPrompt.ToString() + "_Prompt");
             _userControlBCISignalCheckStartPrompt = new UserControlBCISignalCheckStartPrompt();
             _userControlBCISignalCheckStartPrompt.buttonExit_userControlBCISignalCheckStartPrompt.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCISignalCheckStartPrompt.buttonNext_userControlBCISignalCheckStartPrompt.Click += new System.EventHandler(this.buttonNext_Click);
 
-            //_userControlPromptBCIFIlterSettings = new UserControlBCIFilterSettings(gTecDeviceTester.DeviceTestingState.PromptFilterSettings.ToString());
             _userControlPromptBCIFIlterSettings = new UserControlBCIFilterSettings();
             _userControlPromptBCIFIlterSettings.buttonExit_userControlPromptBCIFIlterSettings.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlPromptBCIFIlterSettings.buttonNext_userControlPromptBCIFIlterSettings.Click += new System.EventHandler(this.buttonNext_Click);
@@ -177,16 +174,36 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// Replaces user control displayed in tableLayoutPanelContainer
         /// </summary>
         /// <param name="state"></param>
-        public void updateTestingStatus(GTecDeviceTester.TestResultState state, Dictionary<String, object> resultParams)
+        public void updateOnboardingStatus(GTecDeviceTester.OnboardingUserState state, Dictionary<String, object> resultParams)
         {
+            Log.Debug("SensorForm | updateOnboardingStatus | state: " + state.ToString());
             UserControl newUserControl = null;
-
 
             switch (state)
             {
+                // Go to screen that displays "connecting..." status
+                case OnboardingUserState.Testing_BCIConnections:
+                    newUserControl = _userControlTestBCIConnections;
+                    break;
+
+                /*
+                // Go to screen telling user usb device could not be detected
+                case OnboardingUserState.ErrorUsbDeviceDisconnected:
+                    newUserControl = _userControlBCIErrorgTecBoard;
+                    break;
+                */
+
+                // Go to screen directing user to connect their unicorn device through bluetooth pairing
+                case OnboardingUserState.ErrorBluetoothDisconnected:
+                    if(prevOnboardingState != OnboardingUserState.ErrorBluetoothDisconnected)
+                    {
+                        newUserControl = _userControlErrorBluetoothDisconnected;
+                        
+                    }
+                    break;
 
                 // Go to screen telling user that signal check required because maximum time between signal checks has elapsed
-                case TestResultState.SignalCheckRequired_MaxTimeElapsed:
+                case OnboardingUserState.SignalCheckRequired_MaxTimeElapsed:
                     newUserControl = _userControlBCISignalCheckStartRequired;
 
                     // Update label with maximum time that has already passed since previous test
@@ -194,106 +211,36 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     break;
 
                 // Go to screen telling user that signal check required because they failed their most recent one
-                case TestResultState.SignalCheckRequired_FailedRecentSignalCheck:
+                case OnboardingUserState.SignalCheckRequired_FailedRecentSignalCheck:
                     newUserControl = _userControlBCISignalCheckStartRequired;
 
                     // Update label telling user they failed previous signal quality check
                     _userControlBCISignalCheckStartRequired.labelInfo1SignalCheckStartRequired.Text = "You did not pass your most recent signal quality check";
                     _userControlBCISignalCheckStartRequired.labelMinsElapsedSignalCheckStartRequired.Text = "";
                     _userControlBCISignalCheckStartRequired.labelInfo2SignalCheckStartRequired.Text = "";
-
                     break;
 
-                
                 // Go to screen asking user if they want to do a signal quality check
-                case TestResultState.PromptUser_DoSignalCheck:
+                case OnboardingUserState.PromptUser_DoSignalCheck:
                     // Always reset checkbox (set to false) asking if user wants to do signal recheck when accessing user control
                     _userControlBCISignalCheckStartPrompt.resetCheckbox();
                     newUserControl = _userControlBCISignalCheckStartPrompt;
                     break;
 
-
-                // Go to screen directing user to connect their unicorn device through bluetooth pairing
-                case TestResultState.ErrorBluetoothDisconnected:
-                    newUserControl = _userControlErrorBluetoothDisconnected;
-                    //((UserControlBCIErrorUsbDongle)newUserControl).pictureBoxTestBCIConnections.Refresh();
-
-                    break;
-
                 // Go to signal check screen
-                case TestResultState.BCISignalCheck:
-                    newUserControl = _userControlBCISignalCheck;
-                    
+                case OnboardingUserState.BCISignalCheck:
+                    newUserControl = _userControlBCISignalCheck;                    
                     break;
 
                 default:
                     break;
-
             }
-
-
-            //tableLayoutPanelContainer.Controls.Clear();
-            //tableLayoutPanelContainer.Controls.Add(newUserControl, 0, 0);
-            //tableLayoutPanelContainer.Refresh();
-
-
-
-
-            /*Log.Debug("SensorForm | updateTestingStatus | state: " + state.ToString());
-
-            DeviceTestingState prevDeviceTestingState = _mainFormDeviceTestingState;
-            UserControl newUserControl = null;
-            _mainFormDeviceTestingState = state;
-
-            // Get correct user control to display based on error received (or none) during testing process
-            if (state == DeviceTestingState.Testing_BCIConnections)
-            {
-                newUserControl = _userControlTestBCIConnections;
-                ((UserControlTestBCIConnections)newUserControl).pictureBoxTestBCIConnections.Refresh();
-            }
-            else if (state == DeviceTestingState.ReceivedBCIError_UsbDongle)
-            {
-                newUserControl = _userControlErrorBluetoothDisconnected;
-            }
-            else if (state == DeviceTestingState.ReceivedBCIError_CytonBoard)
-            {
-                newUserControl = _userControlBCIErrorgTecBoard;
-            }
-            else if (state == DeviceTestingState.ReceivedBCIError_PortConfig)
-            {
-                newUserControl = _userControlBCIErrorPortConfig;
-            }
-            else if (state == DeviceTestingState.TestSignalCheckRequired)
-            {
-                newUserControl = _userControlBCISignalCheckStartRequired;
-            }
-            else if (state == DeviceTestingState.BCISignalCheckStartPrompt)
-            {
-                // Always reset checkbox (set to false) asking if user wants to do signal recheck when accessing user control
-                _userControlBCISignalCheckStartPrompt.resetCheckbox();
-                newUserControl = _userControlBCISignalCheckStartPrompt;
-            }
-            else if (state == DeviceTestingState.PromptFilterSettings)
-            {
-                newUserControl = _userControlPromptBCIFIlterSettings;
-            }
-            else if (state == DeviceTestingState.BCISignalCheck)
-            {
-                newUserControl = _userControlBCISignalCheck;
-                this.TriggerBox = _userControlBCISignalCheck.TriggerBox;
-            }
-            else if (state == DeviceTestingState.OpticalSensorDetectError)
-            {
-                newUserControl = _userControlBCIErrorOpticalSensorDetect;
-            }
-
-            */
 
 
             if (newUserControl != null)
             {
                 // Every screen except last one - display in normal 1024 x 768 dimensions
-                if (state != TestResultState.BCISignalCheck)
+                if (state != OnboardingUserState.BCISignalCheck)
                 {
                     tableLayoutPanelContainer.Controls.Clear();
                     tableLayoutPanelContainer.Controls.Add(newUserControl, 0, 0);
@@ -302,12 +249,12 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
                 // Last screen - BCI signal check screen created with special layout
                 // Basically remove everything in existing table layout panel and re-add to work with bigger format
-                else if (state == TestResultState.BCISignalCheck)
+                else if (state == OnboardingUserState.BCISignalCheck)
                 {
                     bool displayReminderGelElectrodes = false;
 
                     //Previous selection was not a BCISignalCheck screen
-                    if (prevTestResultState != TestResultState.BCISignalCheck)
+                    if (prevOnboardingState != OnboardingUserState.BCISignalCheck)
                     {
                         // Remove all controls tableLayoutPanelContainer and then tableLayoutPanelContainer itself
                         tableLayoutPanelContainer.Controls.Clear();
@@ -351,24 +298,41 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     {
                         _userControlBCISignalCheck.changeSignalCheckMode(BCISignalCheckMode.TEST_QUALITY);
                     }
+
+
+                    // Start task that will launch data processing / plotting for signal check screen
+                    if (GTecDeviceTester._Testing_useSensor)
+                        TaskStartStopDataProcessing(OnboardingUserState.BCISignalCheck);
                 }
 
-                
-                // Start task that will launch data processing / plotting (optical sensor or signal check screens)
-                if (GTecDeviceTester._Testing_useSensor)
-                    //TaskStartStopDataProcessing(state);
-                    TaskStartStopDataProcessing(DeviceTestingState.TestingSignalQuality);
+
+                if (newUserControl == _userControlErrorBluetoothDisconnected)
+                {
+                    _userControlErrorBluetoothDisconnected.startStopUpdateBluetoothListTimer(true);
+                }
+                else
+                {
+                    _userControlErrorBluetoothDisconnected.startStopUpdateBluetoothListTimer(false);
+                }
+
+                //// Start task that will launch data processing / plotting for signal check screen
+                //if (GTecDeviceTester._Testing_useSensor)
+                    //TaskStartStopDataProcessing(OnboardingUserState.BCISignalCheck);
+
+                _currentUserControlShown = newUserControl;
             }
 
-            prevTestResultState = state;
+            prevOnboardingState = state;
+           
         }
 
 
+/*        
         /// <summary>
         /// Start / stop timer which plots data
         /// </summary>
         /// <param name="state"></param>
-        private void startStopPlotDataTimer(bool startPlotDataTimer, DeviceTestingState state)
+        private void startStopPlotDataTimer(bool startPlotDataTimer, OnboardingUserState state)
         {
             Log.Debug("startStopPlotDataTimer | startProcessDataTimer: " + startPlotDataTimer.ToString() +
                 " | state: " + state.ToString());
@@ -414,12 +378,38 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 }
             }
         }
+*/
+
+
+        /// <summary>
+        /// Task in charge to start or stop data acquisition
+        /// </summary>
+        /// <returns></returns>
+        /// Run only once per new set of state changes receieved
+        public async Task TaskStartStopDataProcessing(OnboardingUserState state)
+        {
+            // Start task which processes data for signal status checks
+            if (state == OnboardingUserState.BCISignalCheck)
+            {
+                Invoke(new Action(() =>
+                {
+                    startStopProcessDataTimer(true, state);
+                }));
+            }
+            else
+            {
+                Invoke(new Action(() =>
+                {
+                    startStopProcessDataTimer(false, state);
+                }));
+            }
+        }
 
         /// <summary>
         /// Start / stop timer which processes signal status
         /// </summary>
         /// <param name="state"></param>
-        private void startStopProcessDataTimer(bool startProcessDataTimer, DeviceTestingState state)
+        private void startStopProcessDataTimer(bool startProcessDataTimer, OnboardingUserState state)
         {
             Log.Debug("startStopProcessDataTimer | startProcessDataTimer: " + startProcessDataTimer.ToString() +
                 " | state: " + state.ToString());
@@ -441,10 +431,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     timerProcessData.Interval = _timer_process_data_interval_ms;
                     timerProcessData.Stop();
 
-                    //if (state == DeviceTestingState.BCISignalCheck)
-                    //{
-                    //    timerProcessData.Tick += new System.EventHandler(ProcessDataSignalCheck_Tick);
-                    //}
+                    if (state == OnboardingUserState.BCISignalCheck)
+                    {
+                        timerProcessData.Tick += new System.EventHandler(ProcessDataSignalCheck_Tick);
+                    }
 
                     timerProcessData.Start();
                     Log.Debug("startStopProcessDataTimer | Started timerProcessData");
@@ -474,82 +464,39 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
         }
 
+
         /// <summary>
-        /// Task in charge to start or stop data acquisition
+        /// Obtain, process, and plot BCI EEG data
         /// </summary>
-        /// <returns></returns>
-        /// Run only once per new set of state changes receieved
-        public async Task TaskStartStopDataProcessing(DeviceTestingState state)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ProcessDataSignalCheck_Tick(object sender, EventArgs e)
         {
-
-            // Start data processing timer for Optical sensor error screen
-            //if (state == DeviceTestingState.ReceivedBCIError_OpticalSensor)
-            //{
-            //    Invoke(new Action(() =>
-            //    {
-            //        startStopPlotDataTimer(true, state);
-            //    }));
-            //}
-
-            //// Stop data processing timer for Optical sensor error screen
-            //else
-            //{
-            //    Invoke(new Action(() =>
-            //    {
-            //        startStopPlotDataTimer(false, state);
-            //    }));
-            //}
-
-            // Start task which processes data for signal status checks
-            if (state == DeviceTestingState.TestingSignalQuality)
+            // Check flag to stop all timers (checked during possible timer tick)
+            // Check flag to stop this particular timer
+            if (_stopTimers || GTecDeviceTester._endSignalCheckTimer)
             {
-                Invoke(new Action(() =>
-                {
-                    startStopProcessDataTimer(true, state);
-                }));
+                Log.Debug("ProcessDataSignalCheck_Tick | _stopTimers | GTecDeviceTester._endSignalCheckTimer");
+                startStopProcessDataTimer(false, OnboardingUserState.ExitBCITesting);
+                return;
             }
-            else
+
+            if (DAQ_OpenBCI.deviceInitialized)
             {
-                Invoke(new Action(() =>
+                //double[,] data = DAQ_OpenBCI.GetData();
+
+                double[,] data = DAQ_OpenBCI.GetData2();
+
+                if (data != null && data.Length > 0 && data.GetLength(1) > 0)
                 {
-                    startStopProcessDataTimer(false, state);
-                }));
+                    double[,] dataCopy = (double[,])data.Clone();
+                    double[,] DAQ_filteredData = DAQ_OpenBCI.daq_filter_data(dataCopy);
+
+                    if (_userControlBCISignalCheck != null)
+                        _userControlBCISignalCheck.ProcessDataSignalCheck(data, DAQ_filteredData);
+                }
             }
         }
-
-
-        ///// <summary>
-        ///// Obtain, process, and plot BCI EEG data
-        ///// </summary>
-        ///// <param name="sender"></param>
-        ///// <param name="e"></param>
-        //private void ProcessDataSignalCheck_Tick(object sender, EventArgs e)
-        //{
-        //    // Check flag to stop all timers (checked during possible timer tick)
-        //    // Check flag to stop this particular timer
-        //    if (_stopTimers || gTecDeviceTester._endSignalCheckTimer)
-        //    {
-        //        Log.Debug("ProcessDataSignalCheck_Tick | _stopTimers | gTecDeviceTester._endSignalCheckTimer");
-        //        startStopProcessDataTimer(false, DeviceTestingState.ExitBCITesting);
-        //        return;
-        //    }
-
-        //    if (DAQ_OpenBCI.deviceInitialized)
-        //    {
-        //        //double[,] data = DAQ_OpenBCI.GetData();
-
-        //        double[,] data = DAQ_OpenBCI.GetData2();
-
-        //        if (data != null && data.Length > 0 && data.GetLength(1) > 0)
-        //        {
-        //            double[,] dataCopy = (double[,])data.Clone();
-        //            double[,] DAQ_filteredData = DAQ_OpenBCI.daq_filter_data(dataCopy);
-
-        //            if (_userControlBCISignalCheck != null)
-        //                _userControlBCISignalCheck.ProcessDataSignalCheck(data, DAQ_filteredData);
-        //        }
-        //    }
-        //}
 
 
         /// <summary>
@@ -582,10 +529,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 _stopTimers = true;
 
                 // Stop plot data timer
-                startStopPlotDataTimer(false, DeviceTestingState.ExitBCITesting);
+                // startStopPlotDataTimer(false, OnboardingUserState.ExitBCITesting);
 
                 // Stop process data timer
-                startStopProcessDataTimer(false, DeviceTestingState.ExitBCITesting);
+                startStopProcessDataTimer(false, OnboardingUserState.ExitBCITesting);
 
                 // Release resources
                 if (EvtButtonNextClicked != null)
@@ -621,7 +568,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             if (EvtButtonNextClicked != null)
             {
-                EvtButtonNextClicked(((Button) sender).Name);
+                EvtButtonNextClicked(((Button)sender).Name);
             }
         }
 

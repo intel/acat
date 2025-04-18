@@ -1,0 +1,67 @@
+name: Build ACAT - DEBUG ONLY
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+
+  build:
+
+    strategy:
+      matrix:
+        configuration: [Debug]
+
+    runs-on: windows-latest  # For a list of available runner types, refer to
+                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        lfs: true   # Enable Git LFS
+
+    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Install NSIS
+    # You may pin to the exact commit or the version.
+    # uses: repolevedavaj/install-nsis@d414d91c2460758f0a2ef2b865ad7b9c8f541534
+      # uses: repolevedavaj/install-nsis@v1.0.2
+      # with:
+      #   # The version of NSIS to install
+      #   nsis-version: "3.11"
+      run: |
+        Invoke-WebRequest https://cfhcable.dl.sourceforge.net/project/nsis/NSIS%203/3.11/nsis-3.11-setup.exe?viasf=1 -OutFile C:\WINDOWS\Temp\nsis-3.11-setup.exe
+        Invoke-Expression "& C:\WINDOWS\Temp\nsis-3.11-setup.exe \S"
+      shell: pwsh
+          
+    # Build the full application
+    - name: Build the Solution
+      run: |
+        msbuild acat.sln /t:Build /p:Configuration=${{ matrix.configuration }}
+      working-directory: src/
+
+    # Create the app package by building and packaging the Windows Application Packaging project
+    - name: Create the app package
+      run: |
+        python installGenerator.py "D:\a\acat\acat\src\Applications\ACATApp\bin\Debug"
+        makensis.exe /V4 ./NSIS_InstallerScript.nsi
+      working-directory: src/Setup
+      env:
+        shell: powershell
+        Configuration: ${{ matrix.configuration }}
+      
+    # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ACATSetup
+        path: src/Setup/ACATSetup.exe

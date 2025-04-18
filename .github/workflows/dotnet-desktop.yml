@@ -34,10 +34,14 @@ jobs:
     - name: Install NSIS
     # You may pin to the exact commit or the version.
     # uses: repolevedavaj/install-nsis@d414d91c2460758f0a2ef2b865ad7b9c8f541534
-      uses: repolevedavaj/install-nsis@v1.0.2
-      with:
-        # The version of NSIS to install
-        nsis-version: "3.11"
+      # uses: repolevedavaj/install-nsis@v1.0.2
+      # with:
+      #   # The version of NSIS to install
+      #   nsis-version: "3.11"
+      run: |
+        Invoke-WebRequest https://cfhcable.dl.sourceforge.net/project/nsis/NSIS%203/3.11/nsis-3.11-setup.exe?viasf=1 -OutFile C:\WINDOWS\Temp\nsis-3.11-setup.exe
+        Invoke-Expression "& C:\WINDOWS\Temp\nsis-${{ inputs.nsis-version }}-setup.exe \S"
+      shell: pwsh
           
     # Build the full application
     - name: Build the Solution

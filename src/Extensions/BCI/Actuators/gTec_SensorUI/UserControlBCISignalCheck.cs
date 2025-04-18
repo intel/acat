@@ -599,8 +599,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// Update time of last signal quality check (all electrodes tested)
         /// Update status of last user signal quality check
         /// </summary>
-        public void initializeBCISignalCheck(bool maxTimeHasElapsed, double maxTimeMins, double minElapsedPrevSignalQualityCheck, bool userPassedLastSignalQualityCheck)
+        public void initializeBCISignalCheck(DAQ_gTecBCI gtecbci, bool maxTimeHasElapsed, double maxTimeMins, double minElapsedPrevSignalQualityCheck, bool userPassedLastSignalQualityCheck)
         {
+            gTecBCI = gtecbci;
             Log.Debug(String.Format("initializeBCISignalCheck | maxTimeHasElapsed: {0}, " +
                 "minElapsedPrevSignalQualityCheck: {1}, userPassedLastSignalQualityCheck: {2}",
                 maxTimeHasElapsed.ToString(), minElapsedPrevSignalQualityCheck.ToString(), userPassedLastSignalQualityCheck.ToString()));

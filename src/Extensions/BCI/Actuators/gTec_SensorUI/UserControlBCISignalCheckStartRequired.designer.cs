@@ -266,7 +266,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.labelMinsElapsedSignalCheckStartRequired.Text = "0.0 minutes";
             this.labelMinsElapsedSignalCheckStartRequired.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // buttonNext_userControlErrorBluetoothDisconnected
+            // buttonNext_userControlBCISignalCheckStartRequired
             // 
             this.buttonNext_userControlBCISignalCheckStartRequired.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonNext_userControlBCISignalCheckStartRequired.AutoSize = true;
@@ -282,7 +282,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.buttonNext_userControlBCISignalCheckStartRequired.Font = new System.Drawing.Font("Montserrat Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonNext_userControlBCISignalCheckStartRequired.Location = new System.Drawing.Point(730, 656);
             this.buttonNext_userControlBCISignalCheckStartRequired.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
-            this.buttonNext_userControlBCISignalCheckStartRequired.Name = "buttonNext_userControlErrorBluetoothDisconnected";
+            this.buttonNext_userControlBCISignalCheckStartRequired.Name = "buttonNext_userControlBCISignalCheckStartRequired";
             this.tableLayoutPanelMain.SetRowSpan(this.buttonNext_userControlBCISignalCheckStartRequired, 2);
             this.buttonNext_userControlBCISignalCheckStartRequired.Size = new System.Drawing.Size(145, 58);
             this.buttonNext_userControlBCISignalCheckStartRequired.TabIndex = 91;

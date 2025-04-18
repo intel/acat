@@ -773,7 +773,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelSpacerBottom.Size = new System.Drawing.Size(739, 37);
             this.tableLayoutPanelSpacerBottom.TabIndex = 74;
             // 
-            // buttonNext_userControlErrorBluetoothDisconnected
+            // buttonNext_userControlPromptBCIFIlterSettings
             // 
             this.buttonNext_userControlPromptBCIFIlterSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonNext_userControlPromptBCIFIlterSettings.AutoSize = true;
@@ -788,7 +788,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.buttonNext_userControlPromptBCIFIlterSettings.Font = new System.Drawing.Font("Montserrat Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonNext_userControlPromptBCIFIlterSettings.Location = new System.Drawing.Point(761, 670);
             this.buttonNext_userControlPromptBCIFIlterSettings.Margin = new System.Windows.Forms.Padding(0);
-            this.buttonNext_userControlPromptBCIFIlterSettings.Name = "buttonNext_userControlErrorBluetoothDisconnected";
+            this.buttonNext_userControlPromptBCIFIlterSettings.Name = "buttonNext_userControlPromptBCIFIlterSettings";
             this.buttonNext_userControlPromptBCIFIlterSettings.Size = new System.Drawing.Size(118, 55);
             this.buttonNext_userControlPromptBCIFIlterSettings.TabIndex = 86;
             this.buttonNext_userControlPromptBCIFIlterSettings.Text = "Next";

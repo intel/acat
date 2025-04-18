@@ -13,17 +13,13 @@
 
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
-using ACAT.Extensions.BCI.Actuators.EEG.EEGUtils;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Lib.Core.Audit;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -171,7 +167,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
 
             // Create main form
-            _mainForm = new SensorForm();
+            _mainForm = new SensorForm(gTecBCI);
 
 
             // Set handlers for main events
@@ -216,7 +212,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
         public void bluetoothResultHandler(BluetoothEvent bluetoothEvent, Dictionary<String, object> eventParams)
         {
-            Log.Debug("gTecDeviceTester | bluetoothResultHandler | bluetoothEvent: " + bluetoothEvent.ToString());
+            Log.Debug("gTecDeviceTester | bluetoothResultHandler | bluetoothEvent: " + bluetoothEvent.ToString()+ " | _currentOnboardingUserState: "+ _currentOnboardingUserState.ToString());
 
             switch (bluetoothEvent)
             {
@@ -248,12 +244,25 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     //gTecBCI = new DAQ_gTecBCI();
                     // gTecBCI.InitDevice(BCIActuatorSettings.Settings.GTecDeviceName);
 
-
-                    _mainForm.Invoke(new Action(() =>
+                    if (_currentOnboardingUserState == OnboardingUserState.Testing_BCIConnections || _currentOnboardingUserState == OnboardingUserState.ErrorBluetoothDisconnected)
                     {
-                        // Finds if signal check is required or asks user if they want to do one. Navigates to the corresponding screen
-                        runSignalCheckIfRequired();
-                    }));
+                        var thread = new Thread(delegate ()
+                        {
+                            //runSignalCheckIfRequired();
+                            gTecBCI.Start(BCIActuatorSettings.Settings.GTecDeviceName);
+                        });
+                        thread.Start();
+                        thread.Join();
+
+                        /*Thread t = new Thread(() => runSignalCheckIfRequired());
+                        t.Start();*/
+
+                        _mainForm.Invoke(new Action(() =>
+                        {
+                            // Finds if signal check is required or asks user if they want to do one. Navigates to the corresponding screen
+                            runSignalCheckIfRequired();
+                        }));
+                    }
 
                     break;
 
@@ -555,11 +564,12 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             bool userPassedLastSignalQualityCheck = BCIActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck;
 
             // Initialize gTecBCI device
-            gTecBCI.InitDevice(BCIActuatorSettings.Settings.GTecDeviceName);
+            // gTecBCI.InitDevice(BCIActuatorSettings.Settings.GTecDeviceName);
+
 
             // Initialize parameters and set processing variables / UI elements in main signal check screen accordingly
-            _mainForm._userControlBCISignalCheck.gTecBCI = gTecBCI;
-            _mainForm._userControlBCISignalCheck.initializeBCISignalCheck(maxTimeHasElapsed, maxTimeMins, minElapsedPrevSignalQualityCheck, userPassedLastSignalQualityCheck);
+            // _mainForm._userControlBCISignalCheck.gTecBCI = gTecBCI;
+            _mainForm._userControlBCISignalCheck.initializeBCISignalCheck(gTecBCI, maxTimeHasElapsed, maxTimeMins, minElapsedPrevSignalQualityCheck, userPassedLastSignalQualityCheck);
 
 
             // Go to screen telling user that signal check required because maximum time between signal checks has elapsed

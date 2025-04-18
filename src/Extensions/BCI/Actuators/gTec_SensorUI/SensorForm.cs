@@ -28,7 +28,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     /// </summary>
     public partial class SensorForm : Form
     {
-        private DAQ_gTecBCI gTecBCI = null;
+        private DAQ_gTecBCI _gTecBCI = null;
         /// <summary>
         /// User control displayed while trying to connect to sensor
         /// </summary>
@@ -113,7 +113,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public UserControl _currentUserControlShown;
 
         // Form which acts as parent for / base for all possible user controls displayed during testing process
-        public SensorForm()
+        public SensorForm(DAQ_gTecBCI gTecBCI)
         {
             InitializeComponent();
 
@@ -152,7 +152,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _userControlBCISignalCheck.buttonExit_userControlBCISignalCheck.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCISignalCheck.buttonNext_userControlBCISignalCheck.Click += new System.EventHandler(this.buttonNext_Click);
 
-           
+            _gTecBCI = gTecBCI;
 
             // Set current signal check view mode for last screens
             // Default = Railing Test screen
@@ -486,32 +486,16 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 return;
             }
 
-            /*if (DAQ_OpenBCI.deviceInitialized)
+            if (_gTecBCI.deviceInitialized)
             {
                 //double[,] data = DAQ_OpenBCI.GetData();
 
-                double[,] data = DAQ_OpenBCI.GetData2();
+                double[,] data = _gTecBCI.GetData();
 
                 if (data != null && data.Length > 0 && data.GetLength(1) > 0)
                 {
                     double[,] dataCopy = (double[,])data.Clone();
-                    double[,] DAQ_filteredData = DAQ_OpenBCI.daq_filter_data(dataCopy);
-
-                    if (_userControlBCISignalCheck != null)
-                        _userControlBCISignalCheck.ProcessDataSignalCheck(data, DAQ_filteredData);
-                }
-            }*/
-
-            if (gTecBCI.deviceInitialized)
-            {
-                //double[,] data = DAQ_OpenBCI.GetData();
-
-                double[,] data = gTecBCI.GetData();
-
-                if (data != null && data.Length > 0 && data.GetLength(1) > 0)
-                {
-                    double[,] dataCopy = (double[,])data.Clone();
-                    double[,] DAQ_filteredData = gTecBCI.daq_filter_data(dataCopy);
+                    double[,] DAQ_filteredData = _gTecBCI.daq_filter_data(dataCopy);
 
                     if (_userControlBCISignalCheck != null)
                         _userControlBCISignalCheck.ProcessDataSignalCheck(data, DAQ_filteredData);

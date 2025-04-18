@@ -37,7 +37,7 @@ jobs:
       uses: repolevedavaj/install-nsis@v1.0.2
       with:
         # The version of NSIS to install
-        nsis-version: "3.10"
+        nsis-version: "3.11"
           
     # Build the full application
     - name: Build the Solution

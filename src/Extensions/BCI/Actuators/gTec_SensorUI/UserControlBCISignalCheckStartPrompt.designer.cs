@@ -269,7 +269,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.label2.Text = "​​you have added more gel to any of the electrodes​";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // buttonNext_userControlErrorBluetoothDisconnected
+            // buttonNext_userControlBCISignalCheckStartPrompt
             // 
             this.buttonNext_userControlBCISignalCheckStartPrompt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonNext_userControlBCISignalCheckStartPrompt.AutoSize = true;
@@ -285,7 +285,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.buttonNext_userControlBCISignalCheckStartPrompt.Font = new System.Drawing.Font("Montserrat Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonNext_userControlBCISignalCheckStartPrompt.Location = new System.Drawing.Point(738, 654);
             this.buttonNext_userControlBCISignalCheckStartPrompt.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
-            this.buttonNext_userControlBCISignalCheckStartPrompt.Name = "buttonNext_userControlErrorBluetoothDisconnected";
+            this.buttonNext_userControlBCISignalCheckStartPrompt.Name = "buttonNext_userControlBCISignalCheckStartPrompt";
             this.tableLayoutPanelMain.SetRowSpan(this.buttonNext_userControlBCISignalCheckStartPrompt, 2);
             this.buttonNext_userControlBCISignalCheckStartPrompt.Size = new System.Drawing.Size(137, 60);
             this.buttonNext_userControlBCISignalCheckStartPrompt.TabIndex = 91;

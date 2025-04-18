@@ -945,6 +945,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         Log.Debug($"Selected device: {BCIActuatorSettings.Settings.GTecDeviceName}, trying to connect...");
                         using (Unicorn device = new Unicorn(BCIActuatorSettings.Settings.GTecDeviceName))
                         {
+                            device.Dispose();
                             Log.Debug($"Device: {device} is connected...");
                             EvtBluetoothResult(BluetoothEvent.SUCCESSFUL_CONNECTION, null);
                             return true;

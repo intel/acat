@@ -40,7 +40,7 @@ jobs:
       #   nsis-version: "3.11"
       run: |
         Invoke-WebRequest https://cfhcable.dl.sourceforge.net/project/nsis/NSIS%203/3.11/nsis-3.11-setup.exe?viasf=1 -OutFile C:\WINDOWS\Temp\nsis-3.11-setup.exe
-        Invoke-Expression "& C:\WINDOWS\Temp\nsis-${{ inputs.nsis-version }}-setup.exe \S"
+        Invoke-Expression "& C:\WINDOWS\Temp\nsis-3.11-setup.exe \S"
       shell: pwsh
           
     # Build the full application

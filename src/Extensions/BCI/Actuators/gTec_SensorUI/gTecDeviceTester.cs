@@ -23,7 +23,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition.DAQ_gTecBCI;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
@@ -210,13 +209,13 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
 
 
-        public void bluetoothResultHandler(BluetoothEvent bluetoothEvent, Dictionary<String, object> eventParams)
+        public void bluetoothResultHandler(DAQ_gTecBCI.BluetoothEvent bluetoothEvent, Dictionary<String, object> eventParams)
         {
             Log.Debug("gTecDeviceTester | bluetoothResultHandler | bluetoothEvent: " + bluetoothEvent.ToString()+ " | _currentOnboardingUserState: "+ _currentOnboardingUserState.ToString());
 
             switch (bluetoothEvent)
             {
-                case BluetoothEvent.DEVICE_DISCONNECTED:
+                case DAQ_gTecBCI.BluetoothEvent.DEVICE_DISCONNECTED:
 
                     // We were seeing if device could be connected to from the start of the testing process
                     // Go to screen directing user to connect their unicorn device through bluetooth pairing
@@ -239,7 +238,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     }
                     break;
 
-                case BluetoothEvent.SUCCESSFUL_CONNECTION:
+                case DAQ_gTecBCI.BluetoothEvent.SUCCESSFUL_CONNECTION:
 
                     //gTecBCI = new DAQ_gTecBCI();
                     // gTecBCI.InitDevice(BCIActuatorSettings.Settings.GTecDeviceName);
@@ -288,10 +287,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             Log.Debug("gTecDeviceTester | startBCIDeviceTesting | initialDelaySec: " + initialDelaySec.ToString());
 
             // Wait until main form fully loaded before starting
-            while (!_FormFullySHown)
-            {
-                await Task.Delay(500); // 2000, 500, 50, 10
-            }
+            //while (!_FormFullySHown)
+            //{
+            //    await Task.Delay(500); // 2000, 500, 50, 10
+            //}
             Log.Debug("gTecDeviceTester | startBCIDeviceTesting  | _FormFullySHown = true");
 
 
@@ -335,7 +334,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
                 // Start startBCIDeviceTesting() function from separate non-UI thread
                 // Thread t = new Thread(() => startBCIDeviceTesting(0));
-                Thread t = new Thread(() => startBCIDeviceTesting(4));
+                Thread t = new Thread(() => startBCIDeviceTesting(0));
                 t.Start();
 
             }
@@ -611,7 +610,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
 
             // Start startBCIDeviceTesting() function from separate non-UI thread
-            Thread t = new Thread(() => startBCIDeviceTesting(4));
+            Thread t = new Thread(() => startBCIDeviceTesting(0));
             t.Start();
         }
 

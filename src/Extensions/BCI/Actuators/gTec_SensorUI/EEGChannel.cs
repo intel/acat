@@ -94,11 +94,8 @@ namespace gTecSensorUI
         public ScannerRoundedButtonControl electrodeRailingTest;
         public Chart chartSignalDataRailingTest;
         public Title textRailingResultRailingTest;
-        public ScannerRoundedButtonControl electrodeImpedanceTest;
-        public ScannerRoundedButtonControl impedanceResultImpedanceTest;
         public ScannerRoundedButtonControl electrodeQualityResults;
         public ScannerRoundedButtonControl railingResultQualityResults;
-        public ScannerRoundedButtonControl impedanceResultQualityResults;
 
         public EEGChannel(String electrodeName, int channelIndex, bool enableChannel)
         {

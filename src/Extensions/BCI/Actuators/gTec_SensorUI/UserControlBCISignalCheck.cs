@@ -74,13 +74,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
         public static OverallSignalQualityResult _AllElectrodesOverallSignalQualityResult;
 
-        /// <summary>
-        /// Debugging flag - ignore optical sensor error checks
-        /// </summary>
-        private bool _Testing_BCIOnboardingIgnoreOpticalSensorChecks = false;
-
-        // Lower level Cyton board commands to enable and disable impedance testing for each channel
-
         // Impedance testing enable / disable commands for deafult 8 channels
         private const string BCI_CMD_IMPEDENCE_CH1_ENABLE = "x1000100Xz101Z";
         private const string BCI_CMD_IMPEDENCE_CH1_DISABLE = "x1060110Xz100Z";
@@ -162,9 +155,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
         // Lists holding UI elements for all channels
         private List<String> _channelNamesRequired;
-        private List<String> _channelNamesOptional;
         private List<ScannerRoundedButtonControl> _requiredListElectrodesRailingTest;
-        private List<ScannerRoundedButtonControl> _optionalListElectrodesRailingTest;
         private List<Chart> _requiredListChartsSignalDataRailingTest;
         private List<Chart> _optionalListChartsSignalDataRailingTest;
         private List<Title> _requiredListTextsRailingResultsRailingTest;
@@ -191,21 +182,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private int _numChannels;
 
         public DAQ_gTecBCI gTecBCI = null;
-
-        /// <summary>
-        /// Flag that controls start / stop of impedance testing
-        /// </summary>
-        public static bool _runImpedanceTestingCycle;
-
-        /// <summary>
-        /// Flag which provides status on whether impedance testing is running or not
-        /// </summary>
-        public static bool _impedanceTestingRunning = false;
-
-        /// <summary>
-        /// The index of the current electrode being tested for impedance
-        /// </summary>
-        public static int _currentImpedenceTestElectrodeIndex;
         
         /// <summary>
         /// Holds data / information for each channel 
@@ -289,12 +265,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             _requiredListElectrodesRailingTest = new List<ScannerRoundedButtonControl> { btnElectrodeRailingTestR1, btnElectrodeRailingTestR2, btnElectrodeRailingTestR3, btnElectrodeRailingTestR4,
                 btnElectrodeRailingTestR5, btnElectrodeRailingTestR6, btnElectrodeRailingTestR7, btnElectrodeRailingTestR8 };
-            _optionalListElectrodesRailingTest = new List<ScannerRoundedButtonControl> { btnElectrodeRailingTestOp1, btnElectrodeRailingTestOp2, btnElectrodeRailingTestOp3, btnElectrodeRailingTestOp4,
-                btnElectrodeRailingTestOp5, btnElectrodeRailingTestOp6, btnElectrodeRailingTestOp7, btnElectrodeRailingTestOp8 };
             _requiredListChartsSignalDataRailingTest = new List<Chart> { chartRailingTestR1, chartRailingTestR2, chartRailingTestR3, chartRailingTestR4,
                 chartRailingTestR5, chartRailingTestR6, chartRailingTestR7, chartRailingTestR8 };
-            _optionalListChartsSignalDataRailingTest = new List<Chart> { chartRailingTestOp1, chartRailingTestOp2, chartRailingTestOp3, chartRailingTestOp4,
-                chartRailingTestOp5, chartRailingTestOp6, chartRailingTestOp7, chartRailingTestOp8 };
             _requiredListTextsRailingResultsRailingTest = new List<Title>();
             _optionalListTextsRailingResultsRailingTest = new List<Title>();
 
@@ -302,34 +274,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             while (chnIdx < 8)
             {
                 _requiredListTextsRailingResultsRailingTest.Add(_requiredListChartsSignalDataRailingTest[chnIdx].Titles[0]);
-                _optionalListTextsRailingResultsRailingTest.Add(_optionalListChartsSignalDataRailingTest[chnIdx].Titles[0]);
+                //_optionalListTextsRailingResultsRailingTest.Add(_optionalListChartsSignalDataRailingTest[chnIdx].Titles[0]);
                 chnIdx += 1;
             }
 
-            // UI Elements for Railing Test Page
-            _requiredListElectrodesImpedanceTest = new List<ScannerRoundedButtonControl> { btnElectrodeImpedanceTestR1, btnElectrodeImpedanceTestR2, btnElectrodeImpedanceTestR3, btnElectrodeImpedanceTestR4,
-                btnElectrodeImpedanceTestR5, btnElectrodeImpedanceTestR6, btnElectrodeImpedanceTestR7, btnElectrodeImpedanceTestR8 };
-            _optionalListElectrodesImpedanceTest = new List<ScannerRoundedButtonControl> { btnElectrodeImpedanceTestOp1, btnElectrodeImpedanceTestOp2, btnElectrodeImpedanceTestOp3, btnElectrodeImpedanceTestOp4,
-                btnElectrodeImpedanceTestOp5, btnElectrodeImpedanceTestOp6, btnElectrodeImpedanceTestOp7, btnElectrodeImpedanceTestOp8 };
-            _requiredListImpedanceResultsImpedanceTest = new List<ScannerRoundedButtonControl> { btnImpedanceResImpedanceTestR1, btnImpedanceResImpedanceTestR2, btnImpedanceResImpedanceTestR3, btnImpedanceResImpedanceTestR4,
-                btnImpedanceResImpedanceTestR5, btnImpedanceResImpedanceTestR6, btnImpedanceResImpedanceTestR7, btnImpedanceResImpedanceTestR8 };
-            _optionalListImpedanceResultsImpedanceTest = new List<ScannerRoundedButtonControl> { btnImpedanceResImpedanceTestOp1, btnImpedanceResImpedanceTestOp2, btnImpedanceResImpedanceTestOp3, btnImpedanceResImpedanceTestOp4,
-                btnImpedanceResImpedanceTestOp5, btnImpedanceResImpedanceTestOp6, btnImpedanceResImpedanceTestOp7, btnImpedanceResImpedanceTestOp8 };
-
-            // UI Elements for Impedance Test Page
-            _requiredListElectrodesQualityResults = new List<ScannerRoundedButtonControl> { btnElectrodeQualityResultsR1, btnElectrodeQualityResultsR2, btnElectrodeQualityResultsR3, btnElectrodeQualityResultsR4,
-                btnElectrodeQualityResultsR5, btnElectrodeQualityResultsR6, btnElectrodeQualityResultsR7, btnElectrodeQualityResultsR8 };
-            _optionalListElectrodesQualityResults = new List<ScannerRoundedButtonControl> { btnElectrodeQualityResultsOp1, btnElectrodeQualityResultsOp2, btnElectrodeQualityResultsOp3, btnElectrodeQualityResultsOp4,
-                btnElectrodeQualityResultsOp5, btnElectrodeQualityResultsOp6, btnElectrodeQualityResultsOp7, btnElectrodeQualityResultsOp8 };
-            _requiredListRailingResultsQualityResults = new List<ScannerRoundedButtonControl> { btnRailingResQualityResultsR1, btnRailingResQualityResultsR2, btnRailingResQualityResultsR3, btnRailingResQualityResultsR4,
-                btnRailingResQualityResultsR5, btnRailingResQualityResultsR6, btnRailingResQualityResultsR7, btnRailingResQualityResultsR8 };
-            _optionalListRailingResultsQualityResults = new List<ScannerRoundedButtonControl> { btnRailingResQualityResultsOp1, btnRailingResQualityResultsOp2, btnRailingResQualityResultsOp3, btnRailingResQualityResultsOp4,
-                btnRailingResQualityResultsOp5, btnRailingResQualityResultsOp6, btnRailingResQualityResultsOp7, btnRailingResQualityResultsOp8 };
-            _requiredListImpedanceResultsQualityResults = new List<ScannerRoundedButtonControl> { btnImpedanceResQualityResultsR1, btnImpedanceResQualityResultsR2, btnImpedanceResQualityResultsR3, btnImpedanceResQualityResultsR4,
-                btnImpedanceResQualityResultsR5, btnImpedanceResQualityResultsR6, btnImpedanceResQualityResultsR7, btnImpedanceResQualityResultsR8 };
-            _optionalListImpedanceResultsQualityResults = new List<ScannerRoundedButtonControl> { btnImpedanceResQualityResultsOp1, btnImpedanceResQualityResultsOp2, btnImpedanceResQualityResultsOp3, btnImpedanceResQualityResultsOp4,
-                btnImpedanceResQualityResultsOp5, btnImpedanceResQualityResultsOp6, btnImpedanceResQualityResultsOp7, btnImpedanceResQualityResultsOp8 };
-
+          
             // Load images for signal quality gradient / heatmap
             _signalQualityGradientImages = new Image[9];
             _signalQualityGradientImages[0] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel; // for heatmap - 0 is the same as 1 accepted channel
@@ -360,11 +309,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         public void resetSavedSignalQualityValues()
         {
-            // Write max value to saved impedance values (sets as incomplete / not yet tested, no impedance value shown in UI)
-            for (int chIdx = 0; chIdx < _numChannels; chIdx++)
-            {
-                updateImpedanceResult(chIdx, int.MaxValue, false, false);
-            }
             BCIActuatorSettings.Settings.SignalControl_RecheckNeeded = true;
             BCIActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck = false;
             BCIActuatorSettings.Save();
@@ -401,39 +345,14 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // Iterate through each channel's data and calculate std dev, railing, and update plots
             for (int chIdx = 0; chIdx < _numChannels; chIdx++)
             {
-                // If currently running impedance testing and this channel is not the one being tested
-                if ((_runImpedanceTestingCycle || _impedanceTestingRunning) && chIdx != _currentImpedenceTestElectrodeIndex)
-                    continue;
-
                 //////// GetData() function already filters data ////////
                 double[] unfilteredChannelData = _unfilteredChannelData.GetRow(chIdx);
 
                 //////// BCI Default Filter - Notch and FrontEnd ////////
                 double[] filteredChanelData = _filteredChannelData.GetRow(chIdx);
 
-                // If we're currently on impedance testing page and we're running impedance testing
-                // and this channel is the one being tested, compute and update impedance
-                if ((_runImpedanceTestingCycle || _impedanceTestingRunning) && _currentImpedenceTestElectrodeIndex == chIdx)
-                {
-                    // Compute impedance
-                    int stdCalcStartPos = filteredChanelData.Length - 1 - _samplingRate;
-                    int stdCalcEndPos = filteredChanelData.Length - 1;
-                    if (stdCalcStartPos < 0)
-                    {
-                        stdCalcStartPos = 0;
-                    }
-
-                    double data_std_uV_channel = DataFilter.calc_stddev(filteredChanelData, stdCalcStartPos, stdCalcEndPos);
-                    double impedence = (Math.Sqrt(2.0) * data_std_uV_channel * 1.0e-6) / LEADOFFDRIVE_AMPS;
-                    impedence -= OPENBCI_SERIES_RESISTOR_OHMS;
-                    impedence = impedence / 1000;
-
-                    // Update latest impedance result - save value and update UI
-                    updateImpedanceResult(chIdx, (int)impedence, update_UI, false);
-                }
-
                 // If we're currently on the railing testing page and we're not running the impedance testing
-                if ((!_runImpedanceTestingCycle && !_impedanceTestingRunning) && _currentBCISignalCheckMode == BCISignalCheckMode.TEST_RAILING)
+                if (_currentBCISignalCheckMode == BCISignalCheckMode.TEST_RAILING)
                 {
                     // Compute railing on latest buffer of UNFILTERED data
                     double railingResPercentage = DataFilter.get_railed_percentage(unfilteredChannelData, GAIN);
@@ -578,14 +497,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 {
                     tabControlSignalQuality.SelectedTab = tabPageRailing;
                 }
-                else if (mode == BCISignalCheckMode.TEST_IMPEDANCE)
-                {
-                    tabControlSignalQuality.SelectedTab = tabPageImpedance;
-                }
-                else if (mode == BCISignalCheckMode.TEST_QUALITY)
-                {
-                    tabControlSignalQuality.SelectedTab = tabPageQuality;
-                }
             }
             catch (Exception ex)
             {
@@ -606,33 +517,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 "minElapsedPrevSignalQualityCheck: {1}, userPassedLastSignalQualityCheck: {2}",
                 maxTimeHasElapsed.ToString(), minElapsedPrevSignalQualityCheck.ToString(), userPassedLastSignalQualityCheck.ToString()));
 
-            _Testing_BCIOnboardingIgnoreOpticalSensorChecks = BCIActuatorSettings.Settings.Testing_BCIOnboardingIgnoreOpticalSensorChecks;
-
             // Get / inititalize variables related to board config used in data processing
             _indEegChannels = gTecBCI.indEegChannels;
             _numChannels = BCIActuatorSettings.Settings.DAQ_NumEEGChannels;
             _samplingRate = gTecBCI.sampleRate;
             _scaleIdx = BCIActuatorSettings.Settings.SignalMonitor_ScaleIdx;
-
-            // If Daisy board connection found earlier or testing parameter set to duplicate required channels
-            // Update UI with expectation of 16 channels
-            if (BCIActuatorSettings.Settings.Testing_DuplicateRequiredChannelsAsOptionalChannels)
-                _numChannels = 16;
-
-            if (_numChannels == 16)
-            {
-                foreach (Label labelEquals in new List<Label> { labelEqualsIRailingTest1, labelEqualsIRailingTest2, labelEqualsIRailingTest3, labelEqualsIRailingTest4,
-                    labelEqualsIRailingTest5, labelEqualsIRailingTest6, labelEqualsIRailingTest7, labelEqualsIRailingTest8})
-                    labelEquals.ForeColor = Color.White;
-                foreach (Label labelEquals in new List<Label> { labelEqualsImpedanceTest1, labelEqualsImpedanceTest2, labelEqualsImpedanceTest3, labelEqualsImpedanceTest4,
-                    labelEqualsImpedanceTestOp5, labelEqualsImpedanceTestOp6, labelEqualsImpedanceTestOp7, labelEqualsImpedanceTestOp8})
-                    labelEquals.ForeColor = Color.White;
-
-                // TODO - Plus and equal signs quality results page
-                labelOptionalRailingTest.ForeColor = Color.White;
-                labelOptionalElectrodesImpedanceTest.ForeColor = Color.White;
-                labelOptionalElectrodesQualityResults.ForeColor = Color.White;
-            }
 
             _bufSize = _samplingRate * PROCESSING_BUFFER_SIZE_SEC;
             _unfilteredChannelData = new double[_numChannels, _bufSize];
@@ -667,12 +556,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 BCIActuatorSettings.Settings.SignalControl_RequiredChannel_Channel5_Name,BCIActuatorSettings.Settings.SignalControl_RequiredChannel_Channel6_Name,
                 BCIActuatorSettings.Settings.SignalControl_RequiredChannel_Channel7_Name,BCIActuatorSettings.Settings.SignalControl_RequiredChannel_Channel8_Name};
 
-            _channelNamesOptional =
-            new List<String> { BCIActuatorSettings.Settings.SignalControl_OptionalChannel_Channel9_Name, BCIActuatorSettings.Settings.SignalControl_OptionalChannel_Channel10_Name,
-                BCIActuatorSettings.Settings.SignalControl_OptionalChannel_Channel11_Name, BCIActuatorSettings.Settings.SignalControl_OptionalChannel_Channel12_Name,
-                BCIActuatorSettings.Settings.SignalControl_OptionalChannel_Channel13_Name, BCIActuatorSettings.Settings.SignalControl_OptionalChannel_Channel14_Name,
-                BCIActuatorSettings.Settings.SignalControl_OptionalChannel_Channel15_Name, BCIActuatorSettings.Settings.SignalControl_OptionalChannel_Channel16_Name};
-
             // For each electrode - initialize object which tracks each channel's data, signal quality, and manages corresponding plots and UI elements
             for (int chIdx = 0; chIdx < _numChannels; chIdx++)
             {
@@ -706,13 +589,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     _eegChannels[chIdx].electrodeRailingTest.Text = electrodeName;
                     _eegChannels[chIdx].chartSignalDataRailingTest = _requiredListChartsSignalDataRailingTest[chIdx];
                     _eegChannels[chIdx].textRailingResultRailingTest = _requiredListTextsRailingResultsRailingTest[chIdx];
-                    _eegChannels[chIdx].electrodeImpedanceTest = _requiredListElectrodesImpedanceTest[chIdx];
-                    _eegChannels[chIdx].electrodeImpedanceTest.Text = electrodeName;
-                    _eegChannels[chIdx].impedanceResultImpedanceTest = _requiredListImpedanceResultsImpedanceTest[chIdx];
-                    _eegChannels[chIdx].electrodeQualityResults = _requiredListElectrodesQualityResults[chIdx];
-                    _eegChannels[chIdx].electrodeQualityResults.Text = electrodeName;
-                    _eegChannels[chIdx].railingResultQualityResults = _requiredListRailingResultsQualityResults[chIdx];
-                    _eegChannels[chIdx].impedanceResultQualityResults = _requiredListImpedanceResultsQualityResults[chIdx];
 
                     // Set X axis min/max
                     _eegChannels[chIdx].chartSignalDataRailingTest.ChartAreas[0].AxisX.Minimum = 0;
@@ -728,54 +604,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     _eegChannels[chIdx].chartSignalDataRailingTest.Series[0].BorderColor = Color.White;
                     _eegChannels[chIdx].chartSignalDataRailingTest.Series[0].BorderWidth = 1;
                 }
-                else if (chIdx >= 8 && chIdx < 16)
-                {
-                    // Optional channel
-                    int intOptionalChnOffset = chIdx - 8;
-
-                    // Real optional channel connected via Cyton Daisy board
-                    String electrodeName = _channelNamesOptional[intOptionalChnOffset];
-                    _eegChannels[chIdx] = new EEGChannel(electrodeName, chIdx, channelEnabled);
-                    _eegChannels[chIdx].isRequiredElectrode = false;
-                    _eegChannels[chIdx]._channelRawDataIndex = _indEegChannels[chIdx];
-                    _eegChannels[chIdx].ImpedanceTestingEnableCmd = BCI_CMDS_IMPEDANCE_ENABLE_OPTIONAL8CHANNELS[intOptionalChnOffset];
-                    _eegChannels[chIdx].ImpedanceTestingDisableCmd = BCI_CMDS_IMPEDANCE_DISABLE_OPTIONAL8CHANNELS[intOptionalChnOffset];
-                    _eegChannels[chIdx].lastRailingResult = int.MaxValue;
-                    _eegChannels[chIdx].lastImpedanceResult = int.MaxValue;
-                    _eegChannels[chIdx].signalStatus = SignalStatus.SIGNAL_ERROR;
-                    _eegChannels[chIdx].signalQualityUpdatedCurrentSession = 0;
-
-                    // Get corresponding railing and impedance UI elements and initialize with default values
-                    _eegChannels[chIdx].electrodeCap = _electrodeCapMap[electrodeName];
-                    _eegChannels[chIdx].electrodeCap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-                    _eegChannels[chIdx].electrodeCap.BorderColor = Color.White;
-                    _eegChannels[chIdx].electrodeRailingTest = _optionalListElectrodesRailingTest[intOptionalChnOffset];
-                    _eegChannels[chIdx].electrodeRailingTest.Text = electrodeName;
-                    _eegChannels[chIdx].chartSignalDataRailingTest = _optionalListChartsSignalDataRailingTest[intOptionalChnOffset];
-                    _eegChannels[chIdx].textRailingResultRailingTest = _optionalListTextsRailingResultsRailingTest[intOptionalChnOffset];
-                    _eegChannels[chIdx].electrodeImpedanceTest = _optionalListElectrodesImpedanceTest[intOptionalChnOffset];
-                    _eegChannels[chIdx].electrodeImpedanceTest.Text = electrodeName;
-                    _eegChannels[chIdx].impedanceResultImpedanceTest = _optionalListImpedanceResultsImpedanceTest[intOptionalChnOffset];
-                    _eegChannels[chIdx].electrodeQualityResults = _optionalListElectrodesQualityResults[intOptionalChnOffset];
-                    _eegChannels[chIdx].electrodeQualityResults.Text = electrodeName;
-                    _eegChannels[chIdx].railingResultQualityResults = _optionalListRailingResultsQualityResults[intOptionalChnOffset];
-                    _eegChannels[chIdx].impedanceResultQualityResults = _optionalListImpedanceResultsQualityResults[intOptionalChnOffset];
-
-                    // Set X axis min/max
-                    _eegChannels[chIdx].chartSignalDataRailingTest.ChartAreas[0].AxisX.Minimum = 0;
-                    _eegChannels[chIdx].chartSignalDataRailingTest.ChartAreas[0].AxisX.Maximum = _bufSize;
-
-                    // Set Y axis min/max based on scale
-                    _eegChannels[chIdx].chartSignalDataRailingTest.ChartAreas[0].AxisY.IsStartedFromZero = false;
-                    _eegChannels[chIdx].chartSignalDataRailingTest.ChartAreas[0].AxisY.Minimum = _Ymin;
-                    _eegChannels[chIdx].chartSignalDataRailingTest.ChartAreas[0].AxisY.Maximum = _Ymax;
-
-                    // Set other plot parameters
-                    _eegChannels[chIdx].chartSignalDataRailingTest.Series[0].ChartType = SeriesChartType.FastLine;
-                    _eegChannels[chIdx].chartSignalDataRailingTest.Series[0].BorderColor = Color.White;
-                    _eegChannels[chIdx].chartSignalDataRailingTest.Series[0].BorderWidth = 1;
-                }
-
+              
                 // TODO - testing parameter not enabled currently
                 // For testing - duplicate required channel at the corresponding offset position
                 // if(BCIActuatorSettings.Settings.Testing_DuplicateRequiredChannelsAsOptionalChannels) { }
@@ -783,194 +612,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             // Should have checked already if Cyton Daisy board attached
             // Correct number of channels saved in DAQ_NumEEGChannels
-
-            // Recheck is required for signal quality tests and calibration
-            if (maxTimeHasElapsed || !userPassedLastSignalQualityCheck)
-            {
-                // Update initial text shown in impedance testing tab depending on result from previous tests
-                if (maxTimeHasElapsed)
-                {
-                    // Do not show anything to user in impedance test screen
-                    updateImpedanceTestingStateLabels(ImpedanceTestingState.NOT_RUNNING_MAX_TIME_ELAPSED,
-                        (double)maxTimeMins);
-                }
-                else if (!maxTimeHasElapsed && !userPassedLastSignalQualityCheck)
-                {
-                    // Update with text telling user they failed previous signal quality check
-                    updateImpedanceTestingStateLabels(ImpedanceTestingState.NOT_RUNNING_FAILED_LAST_SIGNAL_QUALITY_CHECK,
-                        (double)maxTimeMins);
-                }
-            }
-            else if (!maxTimeHasElapsed && userPassedLastSignalQualityCheck)
-            {
-                // Do not update UI with saved impedance values
-
-                // Update UI with time since most recent test
-                updateImpedanceTestingStateLabels(ImpedanceTestingState.NOT_RUNNING_MAX_TIME_NOT_ELAPSED, (double)minElapsedPrevSignalQualityCheck);
-            }
         }
 
-        /// <summary>
-        /// Send lower level commands to Cyton board to enable / disable impedance testing
-        /// </summary>
-        //private async Task StartImpedanceTesting()
-        private void StartImpedanceTesting()
-        {
-            Log.Debug("StartImpedanceTesting");
-
-            if (!_runImpedanceTestingCycle && gTecBCI.deviceInitialized)
-            {
-                _runImpedanceTestingCycle = true;
-                _impedanceTestingRunning = true;
-                _currentImpedenceTestElectrodeIndex = 0;
-
-                ////// Before running impedence tests ///////
-                //// Stop streaming on board, does not consistently register commands while streaming
-                Log.Debug("Stop streaming");
-                gTecBCI.Stop_Streaming();
-                Thread.Sleep(50);
-
-                while (_runImpedanceTestingCycle)
-                {
-                    _impedanceTestingRunning = true;
-
-                    EEGChannel currentEegChannel = _eegChannels[_currentImpedenceTestElectrodeIndex];
-                    String electrodeName = currentEegChannel._electrodeName;
-
-                    Log.Debug("StartImpedanceTesting loop | _currentImpedenceTestElectrodeIndex: " + _currentImpedenceTestElectrodeIndex.ToString() +
-                        " | electrodeName: " + electrodeName.ToString());
-
-                    String cmdStartElectrodeImpedenceTest = currentEegChannel.ImpedanceTestingEnableCmd;
-                    String cmdEndElectrodeImpedenceTest = currentEegChannel.ImpedanceTestingDisableCmd;
-
-                    /////// ******* NOTE - Send impedence enable command multiple times back to back to increase duration of tests (1 command too short) ******* ///////
-                    //String cmdEndElectrodeImpedenceTest = cmdStartElectrodeImpedenceTest + cmdStartElectrodeImpedenceTest;
-
-                    // Set back color of impedance result button in Impedance testing page to orange
-                    Invoke(new Action(() =>
-                    {
-                        currentEegChannel.impedanceResultImpedanceTest.BackColor = Color.DarkOrange;
-                    }));
-
-                    gTecBCI.GetData(); // Clear buffer
-
-                    //// Send enable electrode impedence testing commands
-                    Log.Debug(String.Format("Sending enable electrode {0} impedence testing command: {1}", electrodeName, cmdStartElectrodeImpedenceTest));
-                    gTecBCI.Config_Board(cmdStartElectrodeImpedenceTest);
-                    Thread.Sleep(750);
-
-                    // Make sure DAQ_OpenBCI.deviceInitialized set to true when streaming enabled
-                    gTecBCI.deviceInitialized = true;
-
-                    //// Send start streaming
-                    Log.Debug("Start streaming");
-                    gTecBCI.Start_Streaming();
-                    Thread.Sleep(50);
-
-                    // Wait for a bit then send stop streaming and disable impedence testing commands
-                    long currentTimestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-                    long endImpudenceTestTimestamp = currentTimestamp + 2000;
-                    while (currentTimestamp < endImpudenceTestTimestamp)
-                    {
-                        Thread.Sleep(25);
-                        currentTimestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-                    }
-
-                    // Set DAQ_OpenBCI.deviceInitialized to false to stop processing data when streaming stopped
-                    // Will be set to true again during DAQ_OpenBCI.Start()
-                    gTecBCI.deviceInitialized = false;
-
-                    //// Stop streaming
-                    Log.Debug("Stop streaming");
-                    gTecBCI.Stop_Streaming();
-                    Thread.Sleep(50);
-
-                    // Send command to disable impedance testing for specific electrode
-                    Log.Debug(String.Format("Sending disable electrode {0} impedence testing command: {1}", electrodeName, cmdEndElectrodeImpedenceTest));
-                    DAQ_OpenBCI.Config_Board(cmdEndElectrodeImpedenceTest);
-                    Thread.Sleep(750);
-                    Log.Debug("Completed impedence testing electrode: " + _currentImpedenceTestElectrodeIndex.ToString());
-
-                    // Reset back color of impedance result button in Impedance testing page to transparent
-                    Invoke(new Action(() =>
-                    {
-                        currentEegChannel.impedanceResultImpedanceTest.BackColor = Color.Transparent;
-                    }));
-
-                    // Increment electode index for impedence testing
-                    _currentImpedenceTestElectrodeIndex += 1;
-                    if (_currentImpedenceTestElectrodeIndex >= _numChannels)
-                    {
-                        _currentImpedenceTestElectrodeIndex = 0;
-                        if (BCIActuatorSettings.Settings.SignalQuality_StopImpedanceTestAfterOneCycle)
-                        {
-                            Log.Debug("SignalQuality_StopImpedanceTestAfterOneCycle = true | Stopping impedance testing");
-                            try
-                            {
-                                Invoke(new Action(() =>
-                                {
-                                    buttonTestImpedance.Enabled = false;
-                                    buttonTestImpedance.BackColor = Color.Gray;
-                                    updateImpedanceTestingStateLabels(ImpedanceTestingState.STOP_IN_PROGRESS);
-                                }));
-
-                                // Set impedance testing flag to false - exits this loop
-                                _runImpedanceTestingCycle = false;
-                            }
-                            catch (Exception ex)
-                            {
-                                Log.Debug(ex.Message);
-                            }
-                        }
-                    }
-                }
-
-                //// Stopping impedence testing process -  _runImpedanceTestingCycle set to false
-                //// Do opposite of what was done at the beginning on this function to bring board back to default state
-
-                // Reset board to default parameters
-                Log.Debug("Send command to reset board");
-                gTecBCI.Reset_Board(); // Run multiple times? DAQ_OpenBCI.Reset_Board();
-                Thread.Sleep(750); // Tested 750 - is ok
-                Log.Debug("Send command to reset board");
-                gTecBCI.Reset_Board();
-                Thread.Sleep(4500);
-
-                Log.Debug("Calling DAQ_OpenBCI.Stop()");
-                gTecBCI.Stop();
-                Thread.Sleep(250); // Tested 250 - is ok
-
-                Log.Debug("Calling DAQ_OpenBCI.Start()");
-                gTecBCI.Start(); // Also starts streaming
-
-                // Stopped Impedance testing cycle, update UI accordingly
-                Invoke(new Action(() =>
-                {
-                    buttonTestImpedance.Text = "Start";
-                    buttonTestImpedance.Enabled = true;
-                    buttonTestImpedance.BackColor = COLOR_ACAT_DEFAULT_ORANGE;
-                    buttonNext_userControlBCISignalCheck.Enabled = true;
-                    buttonNext_userControlBCISignalCheck.BackColor = COLOR_ACAT_DEFAULT_ORANGE;
-                    buttonExit_userControlBCISignalCheck.Enabled = true;
-                    buttonExit_userControlBCISignalCheck.BackColor = Color.Transparent;
-                    updateImpedanceTestingStateLabels(ImpedanceTestingState.NOT_RUNNING);
-                }));
-
-                // Done automatically everytime impedance testing completed
-                // If all electrodes are updated within this session
-                // save this time as time of last signal quality check completed
-                if (_AllElectrodesOverallSignalQualityResult.allElectrodesUpdatedWithinSession == true)
-                {
-                    Log.Debug("Saving current time as SignalQuality_TimeOfLastImpedanceCheck");
-                    BCIActuatorSettings.Settings.SignalQuality_TimeOfLastImpedanceCheck = DateTimeOffset.Now.ToUnixTimeSeconds();
-                    BCIActuatorSettings.Save(); // Save settings
-                }
-
-                // Set flag providing current impedance testing state
-                _impedanceTestingRunning = false;
-            }
-        }
-
+        
         /// <summary>
         /// Function called for timer that processes data for BCI signal check
         /// </summary>
@@ -1063,71 +707,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                         _eegChannels[chIdx].textRailingResultRailingTest.Text = railingResPercentage_format;
                         _eegChannels[chIdx].textRailingResultRailingTest.ForeColor = railingResultColor;
 
-                        _eegChannels[chIdx].railingResultQualityResults.Text = railingResPercentage_format;
-                        _eegChannels[chIdx].railingResultQualityResults.ForeColor = railingResultColor;
-                        _eegChannels[chIdx].railingResultQualityResults.BorderColor = railingResultColor;
+                        //_eegChannels[chIdx].railingResultQualityResults.Text = railingResPercentage_format;
+                        //_eegChannels[chIdx].railingResultQualityResults.ForeColor = railingResultColor;
+                        //_eegChannels[chIdx].railingResultQualityResults.BorderColor = railingResultColor;
                     }));
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Exception(ex);
-            }
-        }
-
-        /// <summary>
-        /// Update impedance value and update UI elements
-        /// </summary>
-        private void updateImpedanceResult(int chIdx, int impedanceResult, bool update_ui, bool loadedSavedValue)
-        {
-            try
-            {
-                BCIActuatorSettings.Settings.SignalQuality_LastImpedanceValues[chIdx] = impedanceResult;
-
-                if (update_ui && impedanceResult != int.MaxValue)
-                {
-                    String impedanceResultText = impedanceResult.ToString();
-
-                    // Update from initializeBCISignalCheck (main UI thread) - no invoke required
-                    if (loadedSavedValue)
-                    {
-                        // Set text + colors for impedance result buttons on impedance testing and quality resulst pages
-                        // White for text + border, transparent background
-                        _eegChannels[chIdx].impedanceResultImpedanceTest.Text = impedanceResultText;
-                        _eegChannels[chIdx].impedanceResultImpedanceTest.ForeColor = Color.White;
-                        _eegChannels[chIdx].impedanceResultImpedanceTest.BorderColor = Color.White;
-                        _eegChannels[chIdx].impedanceResultImpedanceTest.BackColor = Color.Transparent;
-
-                        _eegChannels[chIdx].impedanceResultQualityResults.Text = impedanceResultText;
-                        _eegChannels[chIdx].impedanceResultQualityResults.ForeColor = Color.White;
-                        _eegChannels[chIdx].impedanceResultQualityResults.BorderColor = Color.White;
-                        _eegChannels[chIdx].impedanceResultQualityResults.BackColor = Color.Transparent;
-                    }
-                    else
-                    {
-                        // Update from separate async task - invoke required
-                        Invoke(new Action(() =>
-                        {
-                            Color impedanceResultColor = SelectColorFromStatus(SignalStatus.SIGNAL_ERROR);
-                            if (impedanceResult <= BCIActuatorSettings.Settings.SignalQuality_ImpedanceGoodMaxThreshold)
-                                impedanceResultColor = SelectColorFromStatus(SignalStatus.SIGNAL_OK);
-                            else if (impedanceResult > BCIActuatorSettings.Settings.SignalQuality_ImpedanceGoodMaxThreshold &&
-                                impedanceResult <= BCIActuatorSettings.Settings.SignalQuality_ImpedanceOkMaxThreshold)
-                                impedanceResultColor = SelectColorFromStatus(SignalStatus.SIGNAL_ACCEPTABLE);
-                            else if (impedanceResult > BCIActuatorSettings.Settings.SignalQuality_ImpedanceOkMaxThreshold)
-                                impedanceResultColor = SelectColorFromStatus(SignalStatus.SIGNAL_KO);
-
-                            // Set text and colors for impedance result buttons on impedance testing and quality results pages (orange back color set earlier)
-                            _eegChannels[chIdx].impedanceResultImpedanceTest.Text = impedanceResultText;
-                            _eegChannels[chIdx].impedanceResultImpedanceTest.ForeColor = impedanceResultColor;
-                            _eegChannels[chIdx].impedanceResultImpedanceTest.BorderColor = impedanceResultColor;
-                            _eegChannels[chIdx].electrodeImpedanceTest.BackColor = impedanceResultColor;
-
-                            _eegChannels[chIdx].impedanceResultQualityResults.Text = impedanceResultText;
-                            _eegChannels[chIdx].impedanceResultQualityResults.ForeColor = impedanceResultColor;
-                            _eegChannels[chIdx].impedanceResultQualityResults.BorderColor = impedanceResultColor;
-                        }));
-                    }
                 }
             }
             catch (Exception ex)
@@ -1280,40 +863,24 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="e"></param>
         private void tabControlElectrodeQuality_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // If tab is changed while doing impedance testing - go back to Impedance Testing tab
-            if (_impedanceTestingRunning)
+        
+            if (tabControlSignalQuality.SelectedIndex == 0)
+            {
+                _currentBCISignalCheckMode = BCISignalCheckMode.TEST_RAILING;
+                highlightSelectedTab(0);
+            }
+            else if (tabControlSignalQuality.SelectedIndex == 1)
             {
                 _currentBCISignalCheckMode = BCISignalCheckMode.TEST_IMPEDANCE;
-                tabControlSignalQuality.SelectedIndex = 1;
                 highlightSelectedTab(1);
-
-                if (_runImpedanceTestingCycle)
-                    updateImpedanceTestingStateLabels(ImpedanceTestingState.RUNNING_TAB_SWITCH_ATTEMPTED);
-                else
-                    updateImpedanceTestingStateLabels(ImpedanceTestingState.STOP_IN_PROGRESS_TAB_SWITCH_ATTEMPTED);
             }
-            else
+            else if (tabControlSignalQuality.SelectedIndex == 2)
             {
-                if (tabControlSignalQuality.SelectedIndex == 0)
-                {
-                    _currentBCISignalCheckMode = BCISignalCheckMode.TEST_RAILING;
-                    highlightSelectedTab(0);
-                }
-                else if (tabControlSignalQuality.SelectedIndex == 1)
-                {
-                    _currentBCISignalCheckMode = BCISignalCheckMode.TEST_IMPEDANCE;
-                    highlightSelectedTab(1);
-                }
-                else if (tabControlSignalQuality.SelectedIndex == 2)
-                {
-                    _currentBCISignalCheckMode = BCISignalCheckMode.TEST_QUALITY;
-                    highlightSelectedTab(2);
-                }
+                _currentBCISignalCheckMode = BCISignalCheckMode.TEST_QUALITY;
+                highlightSelectedTab(2);
             }
-
-            Log.Debug("tabControlElectrodeQuality_SelectedIndexChanged" +
-                " | _impedanceTestingRunning: " + _impedanceTestingRunning.ToString() +
-                " | _currentBCISignalCheckMode: " + _currentBCISignalCheckMode.ToString());
+            
+            Log.Debug("tabControlElectrodeQuality_SelectedIndexChanged" + " | _currentBCISignalCheckMode: " + _currentBCISignalCheckMode.ToString());
         }
 
         /// <summary>
@@ -1322,33 +889,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="tabControlIndex"></param>
         private void highlightSelectedTab(int tabControlIndex)
         {
-            try
-            {
-                switch (tabControlIndex)
-                {
-                    case 0:
-                        tabPageRailing.Text = "- 1. Railing -";
-                        tabPageImpedance.Text = "2. Impedance";
-                        tabPageQuality.Text = "Quality";
-                        break;
-
-                    case 1:
-                        tabPageRailing.Text = "1. Railing";
-                        tabPageImpedance.Text = "- 2. Impedance -";
-                        tabPageQuality.Text = "Quality";
-                        break;
-
-                    case 2:
-                        tabPageRailing.Text = "1. Railing";
-                        tabPageImpedance.Text = "2. Impedance";
-                        tabPageQuality.Text = "- Quality -";
-                        break;
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Debug(e.Message);
-            }
+            tabPageRailing.Text = "- 1. Railing -";
         }
 
         /// <summary>
@@ -1397,149 +938,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             yLimMax = scale;
             yLimMin = -1 * scale;
-        }
-
-        /// <summary>
-        /// Handler for when Impedance Test button pressed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void buttonTestImpedance_Click(object sender, EventArgs e)
-        {
-            Log.Debug("buttonTestImpedance_Click | _currentImpedenceTestElectrodeIndex: " + _currentImpedenceTestElectrodeIndex.ToString());
-
-            if (_runImpedanceTestingCycle)
-            {
-                try
-                {
-                    Log.Debug("Impedence cyclical testing running. Stopping process...");
-                    buttonTestImpedance.Enabled = false;
-                    buttonTestImpedance.BackColor = Color.Gray;
-                    updateImpedanceTestingStateLabels(ImpedanceTestingState.STOP_IN_PROGRESS);
-
-                    // Set impedance testing flag to false - exits thread doing impedance testing
-                    _runImpedanceTestingCycle = false;
-                }
-                catch (Exception ex)
-                {
-                    Log.Debug(ex.Message);
-                }
-            }
-            else if (!_runImpedanceTestingCycle)
-            {
-                // Start impedance testing
-                try
-                {
-                    Log.Debug("Impedence testing not running. Starting process...");
-                    buttonTestImpedance.Text = "Stop";
-                    buttonNext_userControlBCISignalCheck.Enabled = false;
-                    buttonNext_userControlBCISignalCheck.BackColor = Color.Gray;
-                    buttonExit_userControlBCISignalCheck.Enabled = false;
-                    buttonExit_userControlBCISignalCheck.BackColor = Color.Gray;
-                    updateImpedanceTestingStateLabels(ImpedanceTestingState.RUNNING);
-                }
-                catch (Exception ex)
-                {
-                    Log.Debug(ex.Message);
-                }
-
-                // Start thread doing impedance testing
-                Thread t = new Thread(() => StartImpedanceTesting());
-                t.Start();
-            }
-        }
-
-        /// <summary>
-        /// Update texts related to impedance testing
-        /// </summary>
-        /// <param name="impedanceTestingState"></param>
-        /// <param name="valueMinutes"></param>
-        private void updateImpedanceTestingStateLabels(ImpedanceTestingState impedanceTestingState, double valueMinutes = -1)
-        {
-            try
-            {
-                switch (impedanceTestingState)
-                {
-                    case ImpedanceTestingState.NOT_RUNNING:
-                        labelImpedanceTestingState1.Text = "";
-                        labelImpedanceTestingState2.Text = "";
-                        labelImpedanceTestingState3.Text = "";
-                        labelImpedanceTestingState4.Text = "Press Start to begin";
-                        labelImpedanceTestingState5.Text = "impedance testing";
-                        break;
-
-                    case ImpedanceTestingState.NOT_RUNNING_MAX_TIME_ELAPSED:
-                        labelImpedanceTestingState1.Text = "";
-                        labelImpedanceTestingState2.Text = "";
-                        labelImpedanceTestingState3.Text = "";
-                        labelImpedanceTestingState4.Text = "Press Start to begin";
-                        labelImpedanceTestingState5.Text = "impedance testing";
-                        break;
-
-                    case ImpedanceTestingState.NOT_RUNNING_FAILED_LAST_SIGNAL_QUALITY_CHECK:
-                        labelImpedanceTestingState1.Text = "You did not pass";
-                        labelImpedanceTestingState2.Text = "your most recent";
-                        labelImpedanceTestingState3.Text = "signal quality check";
-                        labelImpedanceTestingState4.Text = "Press Start to begin";
-                        labelImpedanceTestingState5.Text = "impedance testing";
-                        break;
-
-                    case ImpedanceTestingState.NOT_RUNNING_MAX_TIME_NOT_ELAPSED:
-                        labelImpedanceTestingState1.Text = "It has been";
-                        if (valueMinutes > 0)
-                            labelImpedanceTestingState2.Text = String.Format("{0:00} minutes", valueMinutes);
-                        else
-                            labelImpedanceTestingState2.Text = "a long time";
-                        labelImpedanceTestingState3.Text = "since your last test";
-                        labelImpedanceTestingState4.Text = "Press Start to begin";
-                        labelImpedanceTestingState5.Text = "impedance testing";
-                        break;
-
-                    case ImpedanceTestingState.RUNNING:
-                        labelImpedanceTestingState1.Text = "";
-                        labelImpedanceTestingState2.Text = "";
-                        labelImpedanceTestingState3.Text = "";
-                        labelImpedanceTestingState4.Text = "Impedance tests running";
-                        labelImpedanceTestingState5.Text = "Press Stop to end";
-                        break;
-
-                    case ImpedanceTestingState.RUNNING_TAB_SWITCH_ATTEMPTED:
-                        labelImpedanceTestingState1.Text = "Cannot continue or exit";
-                        labelImpedanceTestingState2.Text = "while testing in progress";
-                        labelImpedanceTestingState3.Text = "";
-                        labelImpedanceTestingState4.Text = "Impedance tests running";
-                        labelImpedanceTestingState5.Text = "Press Stop to end";
-                        break;
-
-                    case ImpedanceTestingState.STOP_IN_PROGRESS:
-                        labelImpedanceTestingState1.Text = "";
-                        labelImpedanceTestingState2.Text = "";
-                        labelImpedanceTestingState3.Text = "";
-                        labelImpedanceTestingState4.Text = "Stopping impedance tests...";
-                        labelImpedanceTestingState5.Text = "Please Wait";
-                        break;
-
-                    case ImpedanceTestingState.STOP_IN_PROGRESS_TAB_SWITCH_ATTEMPTED:
-                        labelImpedanceTestingState1.Text = "Cannot continue or exit";
-                        labelImpedanceTestingState2.Text = "while testing in progress";
-                        labelImpedanceTestingState3.Text = "";
-                        labelImpedanceTestingState4.Text = "Stopping impedance tests...";
-                        labelImpedanceTestingState5.Text = "Please Wait";
-                        break;
-
-                    default:
-                        labelImpedanceTestingState1.Text = "";
-                        labelImpedanceTestingState2.Text = "";
-                        labelImpedanceTestingState3.Text = "";
-                        labelImpedanceTestingState4.Text = "";
-                        labelImpedanceTestingState5.Text = "";
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Debug(ex.Message);
-            }
         }
 
         /// <summary>
@@ -1592,19 +990,19 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 // Make most problematic text fields in this user control smaller to work better with 125 scaling
 
                 // Large header texts
-                foreach (Label labelResize in new List<Label> { labelBCISignalCheck, labelRailingTest, labelImpedanceTest, labelQualityResults })
+                foreach (Label labelResize in new List<Label> { labelBCISignalCheck, labelRailingTest })
                 {
                     labelResize.Font = new System.Drawing.Font("Montserrat", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
                 }
 
                 // Bold smaller texts
-                foreach (Label labelResize in new List<Label> { labelRailingTestInfo2, labelImpedanceTestInfo2, labelQualityResultsInfo2 })
+                foreach (Label labelResize in new List<Label> { labelRailingTestInfo2 })
                 {
                     labelResize.Font = new System.Drawing.Font("Montserrat SemiBold", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
                 }
 
                 // Normal smaller texts
-                foreach (Label labelResize in new List<Label> { labelBCISignalCheckDescription, labelRailingTestInfo1, labelRailingTestInfo3, labelImpedanceTestInfo1, labelQualityResultsInfo1 })
+                foreach (Label labelResize in new List<Label> { labelBCISignalCheckDescription, labelRailingTestInfo1, labelRailingTestInfo3 })
                 {
                     labelResize.Font = new System.Drawing.Font("Montserrat", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
                 }

@@ -198,7 +198,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     if(prevOnboardingState != OnboardingUserState.ErrorBluetoothDisconnected)
                     {
                         newUserControl = _userControlErrorBluetoothDisconnected;
-                        
                     }
                     break;
 

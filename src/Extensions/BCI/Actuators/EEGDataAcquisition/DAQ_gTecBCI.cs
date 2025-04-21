@@ -11,16 +11,11 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
-using ACAT.Extensions.BCI.Actuators.EEG.EEGUtils;
-using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Lib.Core.Utility;
 using Accord.Math;
 using brainflow;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.IO.Ports;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -196,28 +191,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             SignalControl_MinDutyCycleToPassTriggerTest = BCIActuatorSettings.Settings.TriggerTest_MinDutyCycleToPassTriggerTest;
             Log.Debug("DAQ settings loaded. Min duty cycle to pass trigger test" + SignalControl_MinDutyCycleToPassTriggerTest + " Window duration for uVrmsMeasurement: " + SignalControl_WindowDurationForVrmsMeaseurment);
 
-            switch (BCIActuatorSettings.Settings.DAQ_NumEEGChannels)
-            {
-                case 8:
-                    BCISettingsFixed.DataParser_IdxTriggerSignal_Hw = 16;
-                    BCISettingsFixed.DataParser_IdxTriggerSignal_Sw = 24;
-                    BCISettingsFixed.DimReduct_DownsampleRate = 2;
-                    break;
-
-                case 16:
-                    BCISettingsFixed.DataParser_IdxTriggerSignal_Hw = 24;
-                    BCISettingsFixed.DataParser_IdxTriggerSignal_Sw = 32;
-                    BCISettingsFixed.DimReduct_DownsampleRate = 1;
-                    break;
-
-                default:
-                    BCIActuatorSettings.Settings.DAQ_NumEEGChannels = 8;
-                    BCISettingsFixed.DataParser_IdxTriggerSignal_Hw = 16;
-                    BCISettingsFixed.DataParser_IdxTriggerSignal_Sw = 24;
-                    BCISettingsFixed.DimReduct_DownsampleRate = 2;
-                    Log.Debug("Num Channels settings is incorrect. Sensor set to default: 8 channels");
-                    break;
-            }
+            BCISettingsFixed.DataParser_IdxTriggerSignal_Hw = 16;
+            BCISettingsFixed.DataParser_IdxTriggerSignal_Sw = 24;
+            BCISettingsFixed.DimReduct_DownsampleRate = 2;
 
             BCIActuatorSettings.Save();
             Log.Debug("Sensor set to " + BCIActuatorSettings.Settings.DAQ_NumEEGChannels + " channels. SensorID: " + BCISettingsFixed.DAQ_SensorId + " , Downsample rate: " + BCISettingsFixed.DimReduct_DownsampleRate +
@@ -226,11 +202,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             saveDataToFile = BCIActuatorSettings.Settings.DAQ_SaveToFileFlag;
             frontendFilterIdx = BCIActuatorSettings.Settings.DAQ_FrontendFilterIdx;
             notchFilterIdx = BCIActuatorSettings.Settings.DAQ_NotchFilterIdx;
-            Log.Debug(" Frontend filter: " + frontendFilterIdx + " Notch filter: " + notchFilterIdx);
-            
-        }
 
-        #region Get/set
+            Log.Debug(" Frontend filter: " + frontendFilterIdx + " Notch filter: " + notchFilterIdx);
+        }
 
         /// <summary>
         /// Get session directory
@@ -243,23 +217,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             else
                 return null;
         }
-
-        /// <summary>
-        /// Get list of serial ports in the computer
-        /// </summary>
-        /// <returns></returns>
-        public List<String> GetSerialPorts()
-        {
-            string[] serialPorts = SerialPort.GetPortNames();
-            if (serialPorts == null)
-                return new List<string>();
-            else
-                return serialPorts.ToList();
-        }
-
        
-        #endregion Get/set
-
         /// <summary>
         /// Checks if device is acquiring data
         /// </summary>
@@ -651,57 +609,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 Log.Debug("Exception: " + e.Message);
                 return false;
             }
-        }
-
-        /// <summary>
-        /// Read the latency of the port
-        /// </summary>
-        /// <param name="comPort"></param>
-        /// <returns></returns>
-        private UInt32 ReadLatencyTimerValue(String comPort)
-        {
-            try
-            {
-                var rootKey = "System\\CurrentControlSet\\Enum\\FTDIBUS";
-                RegistryKey key = Registry.LocalMachine.OpenSubKey(rootKey);
-                if (key == null)
-                {
-                    return 0;
-                }
-
-                foreach (var subKeyName in key.GetSubKeyNames())
-                {
-                    if (subKeyName.StartsWith("VID"))
-                    {
-                        var currKey = rootKey + "\\" + subKeyName + "\\0000\\Device Parameters";
-                        RegistryKey deviceKey = Registry.LocalMachine.OpenSubKey(currKey);
-
-                        if (deviceKey != null)
-                        {
-                            var obj = deviceKey.GetValue("PortName");
-
-                            if ((obj != null) && String.Compare(Convert.ToString(obj), comPort, true) == 0)
-                            {
-                                obj = deviceKey.GetValue("LatencyTimer");
-                                if (obj != null)
-                                {
-                                    uint latencyValue = 0;
-                                    if (UInt32.TryParse(Convert.ToString(obj), out latencyValue))
-                                    {
-                                        return latencyValue;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Debug("Exception: " + e.Message);
-            }
-
-            return 0;
         }
 
         /// <summary>

@@ -28,8 +28,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     {
         private Timer _updateTimer;
 
-        // public String selectedDevice = null;
-
         public event DAQ_gTecBCI.DelegateBluetoothUpdate EvtBluetoothRequest;
 
         public UserControlErrorBluetoothDisconnected()
@@ -41,12 +39,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             listViewPairedDevices.SelectedIndexChanged += ListViewPairedDevices_SelectedIndexChanged;
             listViewUnPairedDevices.SelectedIndexChanged += ListViewPairedDevices_SelectedIndexChanged;
 
-            // buttonNext_userControlErrorBluetoothDisconnected.Click += buttonNext_Click;
-
-            
-
         }
-
 
         // Save gTec device name in settings if something is selected in the list
         private void ListViewPairedDevices_SelectedIndexChanged(object sender, EventArgs e)
@@ -113,9 +106,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
         private void UpdateTimer_Tick(object sender, EventArgs e)
         {
-            //updatePairedDeviceList();
-            //updateUnPairedDeviceList();
-
             Dictionary<String, object> requestParams = new Dictionary<String, object>();
             requestParams["paired"] = true;
             EvtBluetoothRequest(DAQ_gTecBCI.BluetoothEvent.SCAN_DEVICES_REQUEST, requestParams);
@@ -175,71 +165,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
                 default:
                     break;
-
-            }
-
-        }
-
-
-/*        
-        private async void buttonNext_Click(object sender, EventArgs e)
-        {
-            string selectedDevice = "";
-
-            if (listViewPairedDevices.SelectedItems.Count > 0)
-            {
-                selectedDevice = listViewPairedDevices.SelectedItems[0].Text;
-            }
-
-            if (listViewUnPairedDevices.SelectedItems.Count > 0)
-            {
-                selectedDevice = listViewUnPairedDevices.SelectedItems[0].Text;
-            }
-
-            if (!string.IsNullOrEmpty(selectedDevice))
-            {
-                await gtecBCI.connectionTestAsync(selectedDevice);
-            }   
-        }
-
-        public async void updatePairedDeviceList()
-        {
-            IList<string> pairedDevices = await gtecBCI.scanDevicesAsync(true);
-
-            if (pairedDevices.Count > 0)
-            {
-                listViewPairedDevices.Items.Clear();
-                listViewPairedDevices.Invoke((Action)(() =>
-                {
-                    foreach (string device in pairedDevices)
-                    {
-                        var listItem = new ListViewItem(device);
-                        listViewPairedDevices.Items.Add(listItem);
-                    }
-                }));
             }
         }
-
-        public async void updateUnPairedDeviceList()
-        {
-            IList<string> unPairedDevices = await gtecBCI.scanDevicesAsync(false);
-
-            if (unPairedDevices.Count > 0)
-            {
-                listViewUnPairedDevices.Items.Clear();
-                listViewUnPairedDevices.Invoke((Action)(() =>
-                {
-                    foreach (string device in unPairedDevices)
-                    {
-                        var listItem = new ListViewItem(device);
-                        listViewUnPairedDevices.Items.Add(listItem);
-                    }
-                }));
-            }
-        }
-
- */
-
-
     }
 }

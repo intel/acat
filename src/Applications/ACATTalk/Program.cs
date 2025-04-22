@@ -106,6 +106,9 @@ namespace ACAT.Applications.ACATTalk
 
             AuditLog.Audit(new AuditEvent("Application", "start"));
 
+            AppCommon.addBCIActuatorSetting();
+            AppCommon.addPanelClassConfigMapForBCI();
+
             CommandDescriptors.Init();
 
             Common.AppPreferences.PreferredPanelConfigNames = String.Empty;

@@ -242,24 +242,15 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             // Create electrode name / id -> cap electrode mapping
             _electrodeCapMap = new Dictionary<string, ScannerRoundedButtonControl>();
-            _electrodeCapMap["Cz"] = btnElectrodeCapCz;
-            _electrodeCapMap["C3"] = btnElectrodeCapC3;
-            _electrodeCapMap["C4"] = btnElectrodeCapC4;
-            _electrodeCapMap["Pz"] = btnElectrodeCapPz;
-            _electrodeCapMap["P3"] = btnElectrodeCapP3;
-            _electrodeCapMap["P4"] = btnElectrodeCapP4;
-            _electrodeCapMap["Fz"] = btnElectrodeCapFz;
-            _electrodeCapMap["T5"] = btnElectrodeCapT5;
-            _electrodeCapMap["T6"] = btnElectrodeCapT6;
-            _electrodeCapMap["O1"] = btnElectrodeCapO1;
-            _electrodeCapMap["O2"] = btnElectrodeCapO2;
-            _electrodeCapMap["Fp1"] = btnElectrodeCapFp1;
-            _electrodeCapMap["Fp2"] = btnElectrodeCapFp2;
-            _electrodeCapMap["F3"] = btnElectrodeCapF3;
-            _electrodeCapMap["F4"] = btnElectrodeCapF4;
-            _electrodeCapMap["F7"] = btnElectrodeCapF7;
-            _electrodeCapMap["F8"] = btnElectrodeCapF8;
-            _electrodeCapMap["T3"] = btnElectrodeCapT3;
+            _electrodeCapMap["1"] = btnElectrodeCapE1;
+            _electrodeCapMap["2"] = btnElectrodeCapE2;
+            _electrodeCapMap["3"] = btnElectrodeCapE3;
+            _electrodeCapMap["4"] = btnElectrodeCapE4;
+            _electrodeCapMap["5"] = btnElectrodeCapE5;
+            _electrodeCapMap["6"] = btnElectrodeCapE6;
+            _electrodeCapMap["7"] = btnElectrodeCapE7;
+            _electrodeCapMap["8"] = btnElectrodeCapE8;
+            
 
             // Get UI elements to modify based on signal data, and railing / impedance tests
 
@@ -702,6 +693,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                         _eegChannels[chIdx].electrodeRailingTest.BackColor = railingResultColor;
                         _eegChannels[chIdx].chartSignalDataRailingTest.Series[0].BorderColor = railingResultColor;
                         _eegChannels[chIdx].chartSignalDataRailingTest.Series[0].Color = railingResultColor;
+
+                        _eegChannels[chIdx].electrodeCap.BackColor = railingResultColor;
+                        _eegChannels[chIdx].electrodeCap.BorderColor = railingResultColor;
+                        _eegChannels[chIdx].electrodeCap.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
 
                         String railingResPercentage_format = railingResultPercentage.ToString() + "%";
                         _eegChannels[chIdx].textRailingResultRailingTest.Text = railingResPercentage_format;

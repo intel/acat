@@ -234,22 +234,19 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             InitializeComponent();
 
-            // gTecBCI = new DAQ_gTecBCI();
-            // gTecBCI.InitDevice("UN-2023.05.61");
-
             buttonNext_userControlBCISignalCheck.Enabled = true;
             buttonNext_userControlBCISignalCheck.Visible = true;
 
             // Create electrode name / id -> cap electrode mapping
             _electrodeCapMap = new Dictionary<string, ScannerRoundedButtonControl>();
-            _electrodeCapMap["1"] = btnElectrodeCapE1;
-            _electrodeCapMap["2"] = btnElectrodeCapE2;
-            _electrodeCapMap["3"] = btnElectrodeCapE3;
-            _electrodeCapMap["4"] = btnElectrodeCapE4;
-            _electrodeCapMap["5"] = btnElectrodeCapE5;
-            _electrodeCapMap["6"] = btnElectrodeCapE6;
-            _electrodeCapMap["7"] = btnElectrodeCapE7;
-            _electrodeCapMap["8"] = btnElectrodeCapE8;
+            _electrodeCapMap["Cz"] = btnElectrodeCapCz;
+            _electrodeCapMap["C3"] = btnElectrodeCapC3;
+            _electrodeCapMap["C4"] = btnElectrodeCapC4;
+            _electrodeCapMap["Pz"] = btnElectrodeCapPz;
+            _electrodeCapMap["P3"] = btnElectrodeCapP3;
+            _electrodeCapMap["P4"] = btnElectrodeCapP4;
+            _electrodeCapMap["T5"] = btnElectrodeCapFz;
+            _electrodeCapMap["Fz"] = btnElectrodeCapT5;
             
 
             // Get UI elements to modify based on signal data, and railing / impedance tests

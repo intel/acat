@@ -839,7 +839,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             // If try / catch below handles BCIActuatorSettings.Settings.GTecDeviceName being null or empty, probably don't need this extra check
             if (string.IsNullOrEmpty(BCIActuatorSettings.Settings.GTecDeviceName))
             {
-                EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, null);
+                Dictionary<String, object> eventParams = new Dictionary<String, object>();
+                eventParams["error"] = "String GTecDeviceName is null or empty";
+                EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, eventParams);
                 return false;
             }
 
@@ -863,13 +865,17 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     catch (Gtec.Unicorn.DeviceException ex)
                     {
                         Log.Debug($"Error: {ex.Message}");
-                        EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, null);
+                        Dictionary<String, object> eventParams = new Dictionary<String, object>();
+                        eventParams["error"] = ex.Message;
+                        EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, eventParams);
                         return false;
                     }
                     catch (Exception ex)
                     {
                         Log.Debug($"Unexpected error: {ex.Message}");
-                        EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, null);
+                        Dictionary<String, object> eventParams = new Dictionary<String, object>();
+                        eventParams["error"] = ex.Message;
+                        EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, eventParams);
                         return false;
                     }
 

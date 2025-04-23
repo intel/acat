@@ -217,6 +217,17 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             {
                 case DAQ_gTecBCI.BluetoothEvent.DEVICE_DISCONNECTED:
 
+                    string error = "";
+                    try
+                    {
+                        if (eventParams != null)
+                            error = (string) eventParams["error"];
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Debug("gTecDeviceTester | bluetoothResultHandler | Exception: " + ex.Message);
+                    }
+
                     // We were seeing if device could be connected to from the start of the testing process
                     // Go to screen directing user to connect their unicorn device through bluetooth pairing
                     if (_currentOnboardingUserState == OnboardingUserState.Testing_BCIConnections)
@@ -225,36 +236,34 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                         updateOnboardingStatus(_currentOnboardingUserState, null);
                     }
 
-                    // Otherwise we were already showing UserControlErrorBluetoothDisconnected screen
-                    // Show error dialog to user that we could not connect to the selected device
+
+                    // Can't currently get here, since "connecting" screen is shown and startBCIDeviceTesting
+                    // is ran again when Next button is pressed from UserControlErrorBluetoothDisconnected screen
+                    /*
                     else if (_currentOnboardingUserState == OnboardingUserState.ErrorBluetoothDisconnected)
                     {
-
+                        // Otherwise we were already showing UserControlErrorBluetoothDisconnected screen
+                        // Show error dialog to user that we could not connect to the selected device
                         _mainForm.Invoke(new Action(() =>
                         {
                             bool confirmed = ConfirmBoxSingleOption.ShowDialog("Could not connect to the selected bluetooth device" +
-                            "\nPlease select a different device", "Ok", _mainForm, false);
+                            "\nPlease select a different device" + "\nError: "+error, "Ok", _mainForm, false);
                         }));
                     }
+                    */
+
                     break;
 
                 case DAQ_gTecBCI.BluetoothEvent.SUCCESSFUL_CONNECTION:
-
-                    //gTecBCI = new DAQ_gTecBCI();
-                    // gTecBCI.InitDevice(BCIActuatorSettings.Settings.GTecDeviceName);
 
                     if (_currentOnboardingUserState == OnboardingUserState.Testing_BCIConnections || _currentOnboardingUserState == OnboardingUserState.ErrorBluetoothDisconnected)
                     {
                         var thread = new Thread(delegate ()
                         {
-                            //runSignalCheckIfRequired();
                             gTecBCI.Start(BCIActuatorSettings.Settings.GTecDeviceName);
                         });
                         thread.Start();
                         thread.Join();
-
-                        /*Thread t = new Thread(() => runSignalCheckIfRequired());
-                        t.Start();*/
 
                         _mainForm.Invoke(new Action(() =>
                         {
@@ -286,14 +295,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             Log.Debug("gTecDeviceTester | startBCIDeviceTesting | initialDelaySec: " + initialDelaySec.ToString());
 
-            // Wait until main form fully loaded before starting
-            //while (!_FormFullySHown)
-            //{
-            //    await Task.Delay(500); // 2000, 500, 50, 10
-            //}
-            Log.Debug("gTecDeviceTester | startBCIDeviceTesting  | _FormFullySHown = true");
-
-
             // Extra time to wait before actually starting testing process (a lot of testing functions can return immediately, so this is for user experience)
             if (initialDelaySec > 0)
             {
@@ -310,7 +311,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             if (_Testing_useSensor == true)
             {
                 gTecBCI.connectionTestAsync();
-
             }
         }
 
@@ -331,10 +331,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 _currentOnboardingUserState = OnboardingUserState.Testing_BCIConnections;
                 updateOnboardingStatus(_currentOnboardingUserState, null);
 
-
-                // Start startBCIDeviceTesting() function from separate non-UI thread
-                // Thread t = new Thread(() => startBCIDeviceTesting(0));
-                Thread t = new Thread(() => startBCIDeviceTesting(0));
+                // Non-zero value is needed for startBCIDeviceTesting so "connecting..." screen has time to show to the user
+                Thread t = new Thread(() => startBCIDeviceTesting(3));
                 t.Start();
 
             }
@@ -378,7 +376,15 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
                     // Run connection test again if user selects Next from the UserControlBluetoothDisconnected screen
                     // Result from test result handled as event
-                    Thread t = new Thread(() => gTecBCI.connectionTestAsync());
+                    //Thread t = new Thread(() => gTecBCI.connectionTestAsync());
+                    //t.Start();
+
+                    // Go to screen that displays "connecting..." status
+                    _currentOnboardingUserState = OnboardingUserState.Testing_BCIConnections;
+                    updateOnboardingStatus(_currentOnboardingUserState, null);
+
+                    // Non-zero value is needed for startBCIDeviceTesting so "connecting..." screen has time to show to the user
+                    Thread t = new Thread(() => startBCIDeviceTesting(3));
                     t.Start();
 
                     break;
@@ -562,12 +568,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // user must do tests and calibration (SignalControl_RecheckNeeded = true)
             bool userPassedLastSignalQualityCheck = BCIActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck;
 
-            // Initialize gTecBCI device
-            // gTecBCI.InitDevice(BCIActuatorSettings.Settings.GTecDeviceName);
-
 
             // Initialize parameters and set processing variables / UI elements in main signal check screen accordingly
-            // _mainForm._userControlBCISignalCheck.gTecBCI = gTecBCI;
             _mainForm._userControlBCISignalCheck.initializeBCISignalCheck(gTecBCI, maxTimeHasElapsed, maxTimeMins, minElapsedPrevSignalQualityCheck, userPassedLastSignalQualityCheck);
 
 
@@ -608,9 +610,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _currentOnboardingUserState = OnboardingUserState.Testing_BCIConnections;
             updateOnboardingStatus(_currentOnboardingUserState, null);
 
-
-            // Start startBCIDeviceTesting() function from separate non-UI thread
-            Thread t = new Thread(() => startBCIDeviceTesting(0));
+            // Non-zero value is needed for startBCIDeviceTesting so "connecting..." screen has time to show to the user
+            Thread t = new Thread(() => startBCIDeviceTesting(3)); 
             t.Start();
         }
 

@@ -118,14 +118,20 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="PlayImg" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\PlayImg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="PauseImg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\PauseImg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="cap_new" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\cap_new.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="PlayImg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\PlayImg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="TestOS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\TestOS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pause_black" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\pause-black.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PinOutBoard" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\PinOutBoard.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -133,11 +139,8 @@
   <data name="Loading" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\Loading.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="OfflineReconnect" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\OfflineReconnect.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="PauseImg" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\PauseImg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="testinOS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\testinOS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="redo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\redo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -148,22 +151,22 @@
   <data name="PinOutDescription" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\PinOutDescription.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="testinOS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\testinOS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="TryAgainOS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\TryAgainOS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="play_black" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\play-black.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TryAgainOS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\TryAgainOS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="cap_new_no_electrode_positions" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\cap_new_no_electrode_positions.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="pause_black" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\pause-black.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="BCIUsbDongle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\BCIUsbDongle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SuccessOS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\SuccessOS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="BCIUsbDongle" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\BCIUsbDongle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="OfflineReconnect" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\OfflineReconnect.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

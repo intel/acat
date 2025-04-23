@@ -83,6 +83,36 @@ namespace gTecSensorUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap cap_new_no_electrode_positions {
+            get {
+                object obj = ResourceManager.GetObject("cap_new_no_electrode_positions", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cap_new_no_electrode_positions1 {
+            get {
+                object obj = ResourceManager.GetObject("cap_new_no_electrode_positions1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Connecting_GIF {
+            get {
+                object obj = ResourceManager.GetObject("Connecting GIF", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ImageUsbDongleError {
             get {
                 object obj = ResourceManager.GetObject("ImageUsbDongleError", resourceCulture);

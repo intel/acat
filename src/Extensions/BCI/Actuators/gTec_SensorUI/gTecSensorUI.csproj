@@ -299,5 +299,11 @@
   <ItemGroup>
     <None Include="Resources\BCIUsbDongle.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cap_new_no_electrode_positions.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Connecting GIF.gif" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

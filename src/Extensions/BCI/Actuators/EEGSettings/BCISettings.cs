@@ -204,28 +204,28 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         /// </summary>
         public bool SignalControl_RecheckNeeded { get; set; }
 
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #1 in required group", "1")] // Cz
+        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #1 in required group", "Cz")] // Cz
         public String SignalControl_RequiredChannel_Channel1_Name;
 
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #2 in required group", "2")] // C3
+        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #2 in required group", "C3")] // C3
         public String SignalControl_RequiredChannel_Channel2_Name;
 
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #3 in required group", "3")] // C4
+        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #3 in required group", "C4")] // C4
         public String SignalControl_RequiredChannel_Channel3_Name;
 
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #4 in required group", "4")] // Pz
+        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #4 in required group", "Pz")] // Pz
         public String SignalControl_RequiredChannel_Channel4_Name;
 
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #5 in required group", "5")] // P3
+        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #5 in required group", "P3")] // P3
         public String SignalControl_RequiredChannel_Channel5_Name;
 
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #6 in required group", "6")] // P4
+        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #6 in required group", "P4")] // P4
         public String SignalControl_RequiredChannel_Channel6_Name;
 
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #7 in required group", "7")] // T5
+        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #7 in required group", "T5")] // T5
         public String SignalControl_RequiredChannel_Channel7_Name;
 
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #8 in required group", "8")] // Fz
+        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #8 in required group", "Fz")] // Fz
         public String SignalControl_RequiredChannel_Channel8_Name;
 
         [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #9 in optional group", "T6")]
@@ -574,14 +574,14 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             SignalControl_RecheckNeeded = true; // by default, force user to do signal quality tests and calibration
 
             // Default channel names
-            SignalControl_RequiredChannel_Channel1_Name = "1";
-            SignalControl_RequiredChannel_Channel2_Name = "2";
-            SignalControl_RequiredChannel_Channel3_Name = "3";
-            SignalControl_RequiredChannel_Channel4_Name = "4";
-            SignalControl_RequiredChannel_Channel5_Name = "5";
-            SignalControl_RequiredChannel_Channel6_Name = "6";
-            SignalControl_RequiredChannel_Channel7_Name = "7";
-            SignalControl_RequiredChannel_Channel8_Name = "8";
+            SignalControl_RequiredChannel_Channel1_Name = "Cz";
+            SignalControl_RequiredChannel_Channel2_Name = "C3";
+            SignalControl_RequiredChannel_Channel3_Name = "C4";
+            SignalControl_RequiredChannel_Channel4_Name = "Pz";
+            SignalControl_RequiredChannel_Channel5_Name = "P3";
+            SignalControl_RequiredChannel_Channel6_Name = "P4";
+            SignalControl_RequiredChannel_Channel7_Name = "T5";
+            SignalControl_RequiredChannel_Channel8_Name = "Fz";
 
             SignalControl_OptionalChannel_Channel9_Name = "T6";
             SignalControl_OptionalChannel_Channel10_Name = "F3";

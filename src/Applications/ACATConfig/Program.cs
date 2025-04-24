@@ -104,8 +104,6 @@ namespace ACATConfig
 
             Log.SetupListeners();
 
-            AppCommon.UpgradeFromPreviousVersion(freshInstallForUser);
-
             CommandDescriptors.Init();
 
             if (!AppCommon.SetCulture())

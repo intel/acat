@@ -106,7 +106,8 @@ namespace ACAT.Applications.ACATTalk
 
             AuditLog.Audit(new AuditEvent("Application", "start"));
 
-            AppCommon.UpgradeFromPreviousVersion(freshInstallForUser);
+            AppCommon.addBCIActuatorSetting();
+            AppCommon.addPanelClassConfigMapForBCI();
 
             CommandDescriptors.Init();
 

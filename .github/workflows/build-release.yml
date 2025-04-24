@@ -1,4 +1,4 @@
-name: Build ACAT - DEBUG ONLY
+name: Build ACAT - RELEASE
 
 on:
   push:

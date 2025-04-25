@@ -120,7 +120,9 @@
   <data name="labelBCISignalCheckDescription.Text" xml:space="preserve">
     <value>BCI signal quality is an indicator of  how good the contact is between the electrodes on the cap and your scalp. 
 
-ACAT uses two metrics - “railing” and “impedance” - to check signal quality for each connected electrode. The slider below gives an indication of the overall quality</value>
+ACAT uses the "railing" metric to check signal quality for each connected electrode.
+
+The slider below gives an indication of the overall quality.</value>
   </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>68</value>

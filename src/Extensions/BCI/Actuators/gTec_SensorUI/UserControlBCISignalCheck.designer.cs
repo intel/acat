@@ -87,6 +87,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.buttonBack = new System.Windows.Forms.Button();
             this.buttonNext_userControlBCISignalCheck = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.buttonExit_userControlBCISignalCheck = new System.Windows.Forms.Button();
+            this.panelSignalQualitySlider = new System.Windows.Forms.Panel();
             this.labelBCISignalCheckDescription = new System.Windows.Forms.Label();
             this.tabControlSignalQuality = new System.Windows.Forms.TabControl();
             this.tabPageRailing = new System.Windows.Forms.TabPage();
@@ -122,11 +123,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.chartRailingTestR4 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartRailingTestR3 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.labelBCISignalCheck = new System.Windows.Forms.Label();
-            this.webBrowser = new System.Windows.Forms.WebBrowser();
-            this.label53 = new System.Windows.Forms.Label();
-            this.label59 = new System.Windows.Forms.Label();
-            this.btnElectrodeCapOp2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.panelSignalQualitySlider = new System.Windows.Forms.Panel();
             this.panelSignalQuality = new System.Windows.Forms.Panel();
             this.btnElectrodeCapC3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.btnElectrodeCapC4 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
@@ -136,6 +132,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.btnElectrodeCapCz = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.btnElectrodeCapP4 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.btnElectrodeCapFz = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.webBrowser = new System.Windows.Forms.WebBrowser();
+            this.label53 = new System.Windows.Forms.Label();
+            this.label59 = new System.Windows.Forms.Label();
+            this.btnElectrodeCapOp2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanelMain.SuspendLayout();
             this.tabControlSignalQuality.SuspendLayout();
             this.tabPageRailing.SuspendLayout();
@@ -198,7 +198,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelMain.Controls.Add(this.buttonNext_userControlBCISignalCheck, 33, 20);
             this.tableLayoutPanelMain.Controls.Add(this.buttonExit_userControlBCISignalCheck, 1, 20);
             this.tableLayoutPanelMain.Controls.Add(this.panelSignalQualitySlider, 4, 12);
-            this.tableLayoutPanelMain.Controls.Add(this.labelBCISignalCheckDescription, 0, 4);
+            this.tableLayoutPanelMain.Controls.Add(this.labelBCISignalCheckDescription, 1, 4);
             this.tableLayoutPanelMain.Controls.Add(this.tabControlSignalQuality, 12, 1);
             this.tableLayoutPanelMain.Controls.Add(this.labelBCISignalCheck, 2, 0);
             this.tableLayoutPanelMain.Controls.Add(this.panelSignalQuality, 4, 14);
@@ -296,14 +296,30 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.buttonExit_userControlBCISignalCheck.UseCompatibleTextRendering = true;
             this.buttonExit_userControlBCISignalCheck.UseVisualStyleBackColor = false;
             // 
+            // panelSignalQualitySlider
+            // 
+            this.panelSignalQualitySlider.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelSignalQualitySlider.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panelSignalQualitySlider.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.panelSignalQualitySlider.BackgroundImage = global::gTecSensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel;
+            this.panelSignalQualitySlider.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.tableLayoutPanelMain.SetColumnSpan(this.panelSignalQualitySlider, 6);
+            this.panelSignalQualitySlider.Location = new System.Drawing.Point(210, 595);
+            this.panelSignalQualitySlider.Margin = new System.Windows.Forms.Padding(0, 10, 0, 10);
+            this.panelSignalQualitySlider.Name = "panelSignalQualitySlider";
+            this.tableLayoutPanelMain.SetRowSpan(this.panelSignalQualitySlider, 2);
+            this.panelSignalQualitySlider.Size = new System.Drawing.Size(310, 70);
+            this.panelSignalQualitySlider.TabIndex = 100;
+            // 
             // labelBCISignalCheckDescription
             // 
+            this.labelBCISignalCheckDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelBCISignalCheckDescription.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.tableLayoutPanelMain.SetColumnSpan(this.labelBCISignalCheckDescription, 9);
             this.labelBCISignalCheckDescription.Cursor = System.Windows.Forms.Cursors.Default;
             this.labelBCISignalCheckDescription.Font = new System.Drawing.Font("Montserrat Medium", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelBCISignalCheckDescription.ForeColor = System.Drawing.Color.White;
-            this.labelBCISignalCheckDescription.Location = new System.Drawing.Point(5, 185);
+            this.labelBCISignalCheckDescription.Location = new System.Drawing.Point(65, 185);
             this.labelBCISignalCheckDescription.Margin = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.labelBCISignalCheckDescription.Name = "labelBCISignalCheckDescription";
             this.tableLayoutPanelMain.SetRowSpan(this.labelBCISignalCheckDescription, 8);
@@ -446,7 +462,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutRailingTest.SetRowSpan(this.labelRailingTestInfo3, 4);
             this.labelRailingTestInfo3.Size = new System.Drawing.Size(377, 172);
             this.labelRailingTestInfo3.TabIndex = 148;
-            this.labelRailingTestInfo3.Text = "Once Railing is green, go to the Impedance tab";
+            this.labelRailingTestInfo3.Text = "Once Railing is green, click Next";
             this.labelRailingTestInfo3.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // labelRailingTestInfo2
@@ -462,8 +478,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutRailingTest.SetRowSpan(this.labelRailingTestInfo2, 7);
             this.labelRailingTestInfo2.Size = new System.Drawing.Size(377, 308);
             this.labelRailingTestInfo2.TabIndex = 146;
-            this.labelRailingTestInfo2.Text = "have added gel to GND and T4\r\n\r\nhave added gel to the electrode\r\n\r\nare grounded\r\n" +
-    "\r\nAdd a little more gel";
+            this.labelRailingTestInfo2.Text = "have added gel to the electrodes\r\n\r\nare grounded\r\n\r\nAdd a little more gel";
             this.labelRailingTestInfo2.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // labelRailingTestInfo1
@@ -1305,83 +1320,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.labelBCISignalCheck.Text = "BCI Signal\r\nCheck";
             this.labelBCISignalCheck.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // webBrowser
-            // 
-            this.tableLayoutPanelMain.SetColumnSpan(this.webBrowser, 25);
-            this.webBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser.Location = new System.Drawing.Point(613, 938);
-            this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser.Name = "webBrowser";
-            this.webBrowser.ScrollBarsEnabled = false;
-            this.webBrowser.Size = new System.Drawing.Size(1244, 39);
-            this.webBrowser.TabIndex = 103;
-            // 
-            // label53
-            // 
-            this.label53.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.label53.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.label53.ForeColor = System.Drawing.Color.White;
-            this.label53.Location = new System.Drawing.Point(539, 462);
-            this.label53.Margin = new System.Windows.Forms.Padding(0);
-            this.label53.Name = "label53";
-            this.label53.Size = new System.Drawing.Size(49, 42);
-            this.label53.TabIndex = 107;
-            this.label53.Text = "R5 Railing";
-            this.label53.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label53.UseCompatibleTextRendering = true;
-            // 
-            // label59
-            // 
-            this.label59.AutoSize = true;
-            this.label59.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.label59.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label59.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.label59.ForeColor = System.Drawing.Color.White;
-            this.label59.Location = new System.Drawing.Point(539, 462);
-            this.label59.Margin = new System.Windows.Forms.Padding(0);
-            this.label59.Name = "label59";
-            this.label59.Size = new System.Drawing.Size(45, 40);
-            this.label59.TabIndex = 104;
-            this.label59.Text = "R2 Railing";
-            this.label59.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label59.UseCompatibleTextRendering = true;
-            // 
-            // btnElectrodeCapOp2
-            // 
-            this.btnElectrodeCapOp2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.btnElectrodeCapOp2.BorderColor = System.Drawing.Color.Black;
-            this.btnElectrodeCapOp2.BorderRadiusBottomLeft = 60;
-            this.btnElectrodeCapOp2.BorderRadiusBottomRight = 60;
-            this.btnElectrodeCapOp2.BorderRadiusTopLeft = 60;
-            this.btnElectrodeCapOp2.BorderRadiusTopRight = 60;
-            this.btnElectrodeCapOp2.BorderWidth = 4F;
-            this.btnElectrodeCapOp2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnElectrodeCapOp2.Font = new System.Drawing.Font("Montserrat", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnElectrodeCapOp2.ForeColor = System.Drawing.Color.Black;
-            this.btnElectrodeCapOp2.Location = new System.Drawing.Point(62, 78);
-            this.btnElectrodeCapOp2.Margin = new System.Windows.Forms.Padding(0);
-            this.btnElectrodeCapOp2.Name = "btnElectrodeCapOp2";
-            this.btnElectrodeCapOp2.Size = new System.Drawing.Size(46, 46);
-            this.btnElectrodeCapOp2.TabIndex = 35;
-            this.btnElectrodeCapOp2.Text = "Op2";
-            this.btnElectrodeCapOp2.UseMnemonic = false;
-            this.btnElectrodeCapOp2.UseVisualStyleBackColor = false;
-            // 
-            // panelSignalQualitySlider
-            // 
-            this.panelSignalQualitySlider.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelSignalQualitySlider.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panelSignalQualitySlider.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.panelSignalQualitySlider.BackgroundImage = global::gTecSensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel;
-            this.panelSignalQualitySlider.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.tableLayoutPanelMain.SetColumnSpan(this.panelSignalQualitySlider, 6);
-            this.panelSignalQualitySlider.Location = new System.Drawing.Point(210, 595);
-            this.panelSignalQualitySlider.Margin = new System.Windows.Forms.Padding(0, 10, 0, 10);
-            this.panelSignalQualitySlider.Name = "panelSignalQualitySlider";
-            this.tableLayoutPanelMain.SetRowSpan(this.panelSignalQualitySlider, 2);
-            this.panelSignalQualitySlider.Size = new System.Drawing.Size(310, 70);
-            this.panelSignalQualitySlider.TabIndex = 100;
-            // 
             // panelSignalQuality
             // 
             this.panelSignalQuality.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -1593,6 +1531,68 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.btnElectrodeCapFz.Text = "Fz";
             this.btnElectrodeCapFz.UseMnemonic = false;
             this.btnElectrodeCapFz.UseVisualStyleBackColor = false;
+            // 
+            // webBrowser
+            // 
+            this.tableLayoutPanelMain.SetColumnSpan(this.webBrowser, 25);
+            this.webBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowser.Location = new System.Drawing.Point(613, 938);
+            this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser.Name = "webBrowser";
+            this.webBrowser.ScrollBarsEnabled = false;
+            this.webBrowser.Size = new System.Drawing.Size(1244, 39);
+            this.webBrowser.TabIndex = 103;
+            // 
+            // label53
+            // 
+            this.label53.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.label53.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.label53.ForeColor = System.Drawing.Color.White;
+            this.label53.Location = new System.Drawing.Point(539, 462);
+            this.label53.Margin = new System.Windows.Forms.Padding(0);
+            this.label53.Name = "label53";
+            this.label53.Size = new System.Drawing.Size(49, 42);
+            this.label53.TabIndex = 107;
+            this.label53.Text = "R5 Railing";
+            this.label53.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label53.UseCompatibleTextRendering = true;
+            // 
+            // label59
+            // 
+            this.label59.AutoSize = true;
+            this.label59.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.label59.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label59.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.label59.ForeColor = System.Drawing.Color.White;
+            this.label59.Location = new System.Drawing.Point(539, 462);
+            this.label59.Margin = new System.Windows.Forms.Padding(0);
+            this.label59.Name = "label59";
+            this.label59.Size = new System.Drawing.Size(45, 40);
+            this.label59.TabIndex = 104;
+            this.label59.Text = "R2 Railing";
+            this.label59.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label59.UseCompatibleTextRendering = true;
+            // 
+            // btnElectrodeCapOp2
+            // 
+            this.btnElectrodeCapOp2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.btnElectrodeCapOp2.BorderColor = System.Drawing.Color.Black;
+            this.btnElectrodeCapOp2.BorderRadiusBottomLeft = 60;
+            this.btnElectrodeCapOp2.BorderRadiusBottomRight = 60;
+            this.btnElectrodeCapOp2.BorderRadiusTopLeft = 60;
+            this.btnElectrodeCapOp2.BorderRadiusTopRight = 60;
+            this.btnElectrodeCapOp2.BorderWidth = 4F;
+            this.btnElectrodeCapOp2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnElectrodeCapOp2.Font = new System.Drawing.Font("Montserrat", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnElectrodeCapOp2.ForeColor = System.Drawing.Color.Black;
+            this.btnElectrodeCapOp2.Location = new System.Drawing.Point(62, 78);
+            this.btnElectrodeCapOp2.Margin = new System.Windows.Forms.Padding(0);
+            this.btnElectrodeCapOp2.Name = "btnElectrodeCapOp2";
+            this.btnElectrodeCapOp2.Size = new System.Drawing.Size(46, 46);
+            this.btnElectrodeCapOp2.TabIndex = 35;
+            this.btnElectrodeCapOp2.Text = "Op2";
+            this.btnElectrodeCapOp2.UseMnemonic = false;
+            this.btnElectrodeCapOp2.UseVisualStyleBackColor = false;
             // 
             // UserControlBCISignalCheck
             // 

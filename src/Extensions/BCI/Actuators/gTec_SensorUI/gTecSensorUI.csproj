@@ -91,6 +91,11 @@
     <Compile Include="GTecDeviceTester.cs" />
     <Compile Include="EEGChannel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -147,14 +152,9 @@
     <Compile Include="Utils.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -234,9 +234,6 @@
     <None Include="Resources\testinOS.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\GIFConnectingToBCIBoard_SpedUp2x.gif" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ImageCytonBoardError.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -303,7 +300,7 @@
     <None Include="Resources\cap_new_no_electrode_positions.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Connecting GIF.gif" />
+    <None Include="Resources\BCI Connecting GIF.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

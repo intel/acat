@@ -45,10 +45,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelSpacerTop = new System.Windows.Forms.TableLayoutPanel();
-            this.pictureBoxTestBCIConnections = new System.Windows.Forms.PictureBox();
             this.buttonExit_userControlTestBCIConnections = new System.Windows.Forms.Button();
             this.tableLayoutPanelSpacerBottom = new System.Windows.Forms.TableLayoutPanel();
             this.labelTitle = new System.Windows.Forms.Label();
+            this.pictureBoxTestBCIConnections = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxTestBCIConnections)).BeginInit();
             this.SuspendLayout();
@@ -102,22 +102,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelSpacerTop.TabIndex = 73;
             this.tableLayoutPanelSpacerTop.UseWaitCursor = true;
             // 
-            // pictureBoxTestBCIConnections
-            // 
-            this.pictureBoxTestBCIConnections.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pictureBoxTestBCIConnections.Cursor = System.Windows.Forms.Cursors.WaitCursor;
-            this.pictureBoxTestBCIConnections.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBoxTestBCIConnections.Image = global::gTecSensorUI.Resources.GIFConnectingToBCIBoard_SpedUp2x;
-            this.pictureBoxTestBCIConnections.Location = new System.Drawing.Point(260, 231);
-            this.pictureBoxTestBCIConnections.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBoxTestBCIConnections.Name = "pictureBoxTestBCIConnections";
-            this.pictureBoxTestBCIConnections.Size = new System.Drawing.Size(500, 301);
-            this.pictureBoxTestBCIConnections.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBoxTestBCIConnections.TabIndex = 0;
-            this.pictureBoxTestBCIConnections.TabStop = false;
-            this.pictureBoxTestBCIConnections.UseWaitCursor = true;
-            // 
-            // buttonExit_userControlBCIErrorgTecBoard
+            // buttonExit_userControlTestBCIConnections
             // 
             this.buttonExit_userControlTestBCIConnections.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonExit_userControlTestBCIConnections.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
@@ -130,7 +115,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.buttonExit_userControlTestBCIConnections.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.buttonExit_userControlTestBCIConnections.Location = new System.Drawing.Point(135, 655);
             this.buttonExit_userControlTestBCIConnections.Margin = new System.Windows.Forms.Padding(0);
-            this.buttonExit_userControlTestBCIConnections.Name = "buttonExit_userControlBCIErrorgTecBoard";
+            this.buttonExit_userControlTestBCIConnections.Name = "buttonExit_userControlTestBCIConnections";
             this.buttonExit_userControlTestBCIConnections.Size = new System.Drawing.Size(149, 58);
             this.buttonExit_userControlTestBCIConnections.TabIndex = 77;
             this.buttonExit_userControlTestBCIConnections.Text = "Exit";
@@ -170,6 +155,21 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.labelTitle.UseCompatibleTextRendering = true;
             this.labelTitle.UseWaitCursor = true;
+            // 
+            // pictureBoxTestBCIConnections
+            // 
+            this.pictureBoxTestBCIConnections.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pictureBoxTestBCIConnections.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.pictureBoxTestBCIConnections.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBoxTestBCIConnections.Image = global::gTecSensorUI.Properties.Resources.BCI_Connecting_GIF;
+            this.pictureBoxTestBCIConnections.Location = new System.Drawing.Point(260, 231);
+            this.pictureBoxTestBCIConnections.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBoxTestBCIConnections.Name = "pictureBoxTestBCIConnections";
+            this.pictureBoxTestBCIConnections.Size = new System.Drawing.Size(500, 301);
+            this.pictureBoxTestBCIConnections.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxTestBCIConnections.TabIndex = 0;
+            this.pictureBoxTestBCIConnections.TabStop = false;
+            this.pictureBoxTestBCIConnections.UseWaitCursor = true;
             // 
             // UserControlTestBCIConnections
             // 

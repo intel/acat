@@ -63,6 +63,16 @@ namespace gTecSensorUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap BCI_Connecting_GIF {
+            get {
+                object obj = ResourceManager.GetObject("BCI Connecting GIF", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap BCISignalCheck_CapViewIcon {
             get {
                 object obj = ResourceManager.GetObject("BCISignalCheck_CapViewIcon", resourceCulture);
@@ -96,16 +106,6 @@ namespace gTecSensorUI.Properties {
         internal static System.Drawing.Bitmap cap_new_no_electrode_positions1 {
             get {
                 object obj = ResourceManager.GetObject("cap_new_no_electrode_positions1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Connecting_GIF {
-            get {
-                object obj = ResourceManager.GetObject("Connecting GIF", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

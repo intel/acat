@@ -25,7 +25,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\ACATApp\bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -34,21 +34,22 @@
     <DebugType>none</DebugType>
     <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
     <Optimize>true</Optimize>
-    <OutputPath>..\ACATApp\bin\Release\</OutputPath>
-        <ErrorReport>prompt</ErrorReport>
+    <OutputPath>bin\Release\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ACATCore, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Redistributable\ACATCore.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="ACATExtension, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Redistributable\ACATExtension.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="ACATResources, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="ACATResources">
       <HintPath>..\..\Redistributable\ACATResources.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -66,7 +67,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>call "$(SolutionDir)deployRedist.bat" "$(TargetDir)\$(TargetFileName)" "$(SolutionDir)"</PostBuildEvent>
+    <PostBuildEvent>call $(SolutionDir)deployRedist.bat $(TargetDir)$(TargetFileName) $(SolutionDir)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -62,6 +62,10 @@
       <HintPath>..\..\Redistributable\ACATResources.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="AppCommon">
+      <HintPath>..\..\Redistributable\AppCommon.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Security" />
@@ -107,13 +111,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\ACATConfig.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AppCommon\AppCommon.csproj">
-      <Project>{9a6ff395-2444-439a-990d-1bab13bf56fd}</Project>
-      <Name>AppCommon</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

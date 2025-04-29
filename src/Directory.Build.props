@@ -1,0 +1,23 @@
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <VersionPrefix>3.13.0</VersionPrefix>
+    <AssemblyVersion>$(VersionPrefix).*</AssemblyVersion>
+    <FileVersion>$(VersionPrefix)</FileVersion>
+    <InformationalVersion>$(VersionPrefix)</InformationalVersion>
+  </PropertyGroup>
+
+  <Target Name="InjectAssemblyVersion" BeforeTargets="BeforeCompile">
+    <WriteLinesToFile
+      File="$(IntermediateOutputPath)AutoAssemblyVersion.cs"
+      Lines='
+using System.Reflection%3B
+[assembly: AssemblyVersion("$(AssemblyVersion)")]
+[assembly: AssemblyFileVersion("$(FileVersion)")]
+[assembly: AssemblyInformationalVersion("$(InformationalVersion)")];
+'
+      Overwrite="true" />
+    <ItemGroup>
+      <Compile Include="$(IntermediateOutputPath)AutoAssemblyVersion.cs" />
+    </ItemGroup>
+  </Target>
+</Project>

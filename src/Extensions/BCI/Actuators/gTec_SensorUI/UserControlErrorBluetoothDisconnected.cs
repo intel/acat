@@ -14,8 +14,6 @@ using ACAT.Lib.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Gtec.Unicorn;
-using System.Threading.Tasks;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 
@@ -23,27 +21,40 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
     /// <summary>
     /// User control which handles Unicorn bluetooth device connection
+    /// This screen shows when bluetooth connection cannot be established with a gTec device
     /// </summary>
     public partial class UserControlErrorBluetoothDisconnected : UserControl
     {
+        // Timer to update the lists of paired / unpaired devices
         private Timer _updateTimer;
 
+        // Bluetooth event to handle requests
         public event DAQ_gTecBCI.DelegateBluetoothUpdate EvtBluetoothRequest;
 
+        /// <summary>
+        /// Constructor for user control which handles Unicorn bluetooth device connection
+        /// </summary>
         public UserControlErrorBluetoothDisconnected()
         {
             InitializeComponent();
 
+            // Disable Next button until something in list is selected
             buttonNext_userControlErrorBluetoothDisconnected.Enabled = false;
 
+            // Add handlers for selecting items in the lists
             listViewPairedDevices.SelectedIndexChanged += ListViewPairedDevices_SelectedIndexChanged;
             listViewUnPairedDevices.SelectedIndexChanged += ListViewPairedDevices_SelectedIndexChanged;
 
         }
 
-        // Save gTec device name in settings if something is selected in the list
+        /// <summary>
+        /// Handler for saving gTec device name in settings when something is selected in the list
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ListViewPairedDevices_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // Enable Next button if something is selected in list
             bool enableButton = listViewPairedDevices.SelectedItems.Count > 0 || listViewUnPairedDevices.SelectedItems.Count > 0;
             buttonNext_userControlErrorBluetoothDisconnected.Enabled = enableButton;
 
@@ -59,6 +70,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 selectedDevice = listViewUnPairedDevices.SelectedItems[0].Text;
             }
 
+            // Save selected device in settings
             if (!string.IsNullOrEmpty(selectedDevice))
             {
                 BCIActuatorSettings.Settings.GTecDeviceName = selectedDevice;
@@ -67,10 +79,16 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
         }
 
+
+        /// <summary>
+        /// Function to start / top timer to update the list of paired / unpaired bluetooth devices
+        /// </summary>
+        /// <param name="start">Start/stop the timer which update the lists</param>
         public void startStopUpdateBluetoothListTimer(bool start)
         {
             if (start)
             {
+                // Start timer 
                 try
                 {
                     _updateTimer = new Timer();
@@ -85,6 +103,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             else
             {
+                // Stop timer
                 try
                 {
                     if (_updateTimer != null && _updateTimer.Enabled)
@@ -103,7 +122,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
         }
 
-
+        /// <summary>
+        /// Function executed during each timer tick. Sends bluetooth requests to scan for paired/unpaired devices
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void UpdateTimer_Tick(object sender, EventArgs e)
         {
             Dictionary<String, object> requestParams = new Dictionary<String, object>();
@@ -114,20 +136,17 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             EvtBluetoothRequest(DAQ_gTecBCI.BluetoothEvent.SCAN_DEVICES_REQUEST, requestParams);
         }
 
-
+        /// <summary>
+        /// Handler for processing the results of bluetooth requests
+        /// </summary>
+        /// <param name="bluetoothEvent">Type of bluetooth request to handle</param>
+        /// <param name="eventParams">Any extra params sent with bluetooth event request</param>
         public void bluetoothResultHandler(DAQ_gTecBCI.BluetoothEvent bluetoothEvent, Dictionary<String, object> eventParams)
         {
             Log.Debug("UserControlErrorBluetoothDisconnected | bluetoothResultHandler | bluetoothEvent: " + bluetoothEvent.ToString());
 
             switch (bluetoothEvent)
             {
-                /*
-                case DAQ_gTecBCI.BluetoothEvent.DEVICE_DISCONNECTED:
-                    break;
-                case DAQ_gTecBCI.BluetoothEvent.SUCCESSFUL_CONNECTION:
-                    break;
-                */
-
                 case DAQ_gTecBCI.BluetoothEvent.SCAN_DEVICES_RESULT:
 
                     Invoke(new Action(() =>
@@ -141,6 +160,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                                 listViewUpdate = listViewPairedDevices;
                             }
 
+                            // Get devices from eventParams dict
                             IList<string> devices = (IList<string>)eventParams["devices"];
                             if (devices.Count > 0)
                             {

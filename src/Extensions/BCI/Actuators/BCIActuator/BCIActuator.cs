@@ -536,14 +536,19 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                 return true;
         }
 
+        /// <summary>
+        /// Start device testing process for gTec BCI headset
+        /// </summary>
         void startgTecUnicornTesting()
         {
             Log.Debug("startgTecUnicornTesting");
             closeBciBoardSelection();
-
             TestGtecDevice();
         }
 
+        /// <summary>
+        /// Start device testing process for Open BCI headset
+        /// </summary>
         void startOpenBCITesting()
         {
             Log.Debug("startOpenBCITesting");
@@ -551,6 +556,9 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             TestBCIDevices();
         }
 
+        /// <summary>
+        /// Show form to select the BCI headset to use
+        /// </summary>
         void showBciBoardSelection()
         {
             if (_deviceSelectionForm == null)
@@ -563,6 +571,9 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
         }
 
+        /// <summary>
+        /// Close form to select the BCI headset to use
+        /// </summary>
         void closeBciBoardSelection()
         {
             if (_deviceSelectionForm != null && _deviceSelectionForm.IsDisposed == false)

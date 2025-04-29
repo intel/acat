@@ -808,7 +808,12 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             Config_Board("d");
         }
 
-
+        /// <summary>
+        /// Get Unicorn paired / unpaired devices using Unicorn API
+        /// Pass on lists of devices in EvtBluetoothResult
+        /// </summary>
+        /// <param name="paired">Whether to get paired Unicorn devices (false = get unpaired devices)</param>
+        /// <returns></returns>
         public async Task<IList<string>> scanDevicesAsync(bool paired = true)
         {
             return await Task.Run(() =>
@@ -831,12 +836,15 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             });
         }
 
-        // Tests connection status for GTecDeviceName saved in settings
-        // This function may not need to return something since it will send events based on the connection status
+
+        /// <summary>
+        /// Asynchronous task to test bluetooth connection status of device name stored in settings
+        /// Send results of connection test in EvtBluetoothResult
+        /// </summary>
+        /// <returns></returns>
         public async Task<bool> connectionTestAsync()
         {
-
-            // If try / catch below handles BCIActuatorSettings.Settings.GTecDeviceName being null or empty, probably don't need this extra check
+            // Check if there is a device name saved in settings
             if (string.IsNullOrEmpty(BCIActuatorSettings.Settings.GTecDeviceName))
             {
                 Dictionary<String, object> eventParams = new Dictionary<String, object>();
@@ -844,9 +852,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, eventParams);
                 return false;
             }
-
             else
             {
+                // Use Unicorn API to try to initialize device (throws exception if device can't be initialized
                 return await Task.Run(() =>
                 {
                     try
@@ -859,8 +867,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                             EvtBluetoothResult(BluetoothEvent.SUCCESSFUL_CONNECTION, null);
                             return true;
                         }
-                        // Log.Debug($"Device: {BCIActuatorSettings.Settings.GTecDeviceName} is disconnected...");
-                        // return false;
                     }
                     catch (Gtec.Unicorn.DeviceException ex)
                     {
@@ -878,36 +884,28 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, eventParams);
                         return false;
                     }
-
-                    //Log.Debug($"Device: {BCIActuatorSettings.Settings.GTecDeviceName} is disconnected...");
-                    //EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, null);
-                    //return false;
                 });
             }
         }
 
+        /// <summary>
+        /// Handler for dealing with BluetoothEvent requests (ex: scan for devices request)
+        /// </summary>
+        /// <param name="bluetoothEvent">Type of bluetooth request to handle</param>
+        /// <param name="eventParams">Any extra params sent with bluetooth event request</param>
         public void bluetoothRequestHandler(DAQ_gTecBCI.BluetoothEvent bluetoothEvent, Dictionary<String, object> eventParams)
         {
             Log.Debug("DAQ_gTecBCI | bluetoothRequestHandler | bluetoothEvent: " + bluetoothEvent.ToString());
 
             switch (bluetoothEvent)
             {
-                /*
-                case DAQ_gTecBCI.BluetoothEvent.DEVICE_DISCONNECTED:
-                    break;
-                case DAQ_gTecBCI.BluetoothEvent.SUCCESSFUL_CONNECTION:
-                    break;
-                */
-
                 case DAQ_gTecBCI.BluetoothEvent.SCAN_DEVICES_REQUEST:
                     scanDevicesAsync((bool)eventParams["paired"]);
                     break;
 
                 default:
                     break;
-
             }
-
         }
     }
     #endregion Utils

@@ -51,13 +51,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             BCISignalCheck, // Main signal check screen
 
-            // Don't think this is needed. We can just show dialog box telling the user that connection with the device has been lost 
-            // and then restart the connection testing process (usb and bluetooth) once OK is clicked
-            // LostConnectionError, 
-
-            // Don't think this is needed. We currently just show dialog box telling the user signal quality is unacceptable if that's the case
-            // and they select Next from the signal check screen 
-            // SignalQualityError, 
+            // LostConnectionError, // Occurs when device has lost its connection
+            // SignalQualityError, // Occurs when it has been determined that signal quality o=is poor
 
             ExitBCITesting, // Exit BCI testing process completely
 
@@ -208,13 +203,18 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         }
 
 
-
+        /// <summary>
+        /// Handler for processing the results of bluetooth requests
+        /// </summary>
+        /// <param name="bluetoothEvent">Type of bluetooth request to handle</param>
+        /// <param name="eventParams">Any extra params sent with bluetooth event request</param>
         public void bluetoothResultHandler(DAQ_gTecBCI.BluetoothEvent bluetoothEvent, Dictionary<String, object> eventParams)
         {
             Log.Debug("gTecDeviceTester | bluetoothResultHandler | bluetoothEvent: " + bluetoothEvent.ToString()+ " | _currentOnboardingUserState: "+ _currentOnboardingUserState.ToString());
 
             switch (bluetoothEvent)
             {
+                // Received event which occurs on successful connection to the BCI headset
                 case DAQ_gTecBCI.BluetoothEvent.DEVICE_DISCONNECTED:
 
                     string error = "";
@@ -236,24 +236,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                         updateOnboardingStatus(_currentOnboardingUserState, null);
                     }
 
-
-                    // Can't currently get here, since "connecting" screen is shown and startBCIDeviceTesting
-                    // is ran again when Next button is pressed from UserControlErrorBluetoothDisconnected screen
-                    /*
-                    else if (_currentOnboardingUserState == OnboardingUserState.ErrorBluetoothDisconnected)
-                    {
-                        // Otherwise we were already showing UserControlErrorBluetoothDisconnected screen
-                        // Show error dialog to user that we could not connect to the selected device
-                        _mainForm.Invoke(new Action(() =>
-                        {
-                            bool confirmed = ConfirmBoxSingleOption.ShowDialog("Could not connect to the selected bluetooth device" +
-                            "\nPlease select a different device" + "\nError: "+error, "Ok", _mainForm, false);
-                        }));
-                    }
-                    */
-
                     break;
 
+                // Received event which occurs on successful connection to the BCI headset
                 case DAQ_gTecBCI.BluetoothEvent.SUCCESSFUL_CONNECTION:
 
                     if (_currentOnboardingUserState == OnboardingUserState.Testing_BCIConnections || _currentOnboardingUserState == OnboardingUserState.ErrorBluetoothDisconnected)
@@ -273,11 +258,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     }
 
                     break;
-
-                /*
-                case BluetoothEvent.SCAN_DEVICES_RESULT:
-                    break;
-                */
 
                 default:
                     break;
@@ -375,10 +355,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 case "buttonNext_userControlErrorBluetoothDisconnected":
 
                     // Run connection test again if user selects Next from the UserControlBluetoothDisconnected screen
-                    // Result from test result handled as event
-                    //Thread t = new Thread(() => gTecBCI.connectionTestAsync());
-                    //t.Start();
-
+                    
                     // Go to screen that displays "connecting..." status
                     _currentOnboardingUserState = OnboardingUserState.Testing_BCIConnections;
                     updateOnboardingStatus(_currentOnboardingUserState, null);
@@ -530,8 +507,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                         bool confirmed = ConfirmBoxSingleOption.ShowDialog("Signal Quality Checks Failed or Incomplete" +
                             "\nYou need to complete both “Railing” and\n“Impedance” tests and get good signals to\nproceed" +
                             "\nPlease refer to the user guide for help", "Ok", _mainForm, false);
-
-                        // return; // return to form
                     }
 
                     break;
@@ -544,7 +519,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
 
         /// <summary>
-        /// Finds if signal check is required or asks user if they want to do one. Navigates to the corresponding screen
+        /// Determines if signal check is required or asks user if they want to do one. Navigates to the corresponding screen
         /// </summary>
         private void runSignalCheckIfRequired()
         {

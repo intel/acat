@@ -28,7 +28,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     /// </summary>
     public partial class SensorForm : Form
     {
+        // Variable storing connection manger for gTec BCI device
         private DAQ_gTecBCI _gTecBCI = null;
+        
         /// <summary>
         /// User control displayed while trying to connect to sensor
         /// </summary>
@@ -44,7 +46,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         public UserControlErrorBluetoothDisconnected _userControlErrorBluetoothDisconnected;
 
-       
         /// <summary>
         /// User control displayed for starting signal check process - when maximum time has elapsed
         /// since last test
@@ -78,7 +79,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// Delegate for button click events
         /// </summary>
         public delegate void ButtonClickedDelegate(String buttonNextName);
-        // public delegate void ButtonClickedDelegate(object sender);
 
         /// <summary>
         /// Event called when Next button selected
@@ -101,15 +101,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public static bool _stopTimers = false;
 
         /// <summary>
-        /// Interval in milliseconds at which timer event for plotting optical sensor data is called
-        /// </summary>
-        private int _timer_plot_data_interval_ms = 40;
-
-        /// <summary>
         /// Interval in milliseconds at which timer event for acquiring and processing data is called
         /// </summary>
         private int _timer_process_data_interval_ms = 10;
 
+        // Variable storing current user control shown to the user
         public UserControl _currentUserControlShown;
 
         // Form which acts as parent for / base for all possible user controls displayed during testing process
@@ -171,7 +167,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         }
 
         /// <summary>
-        /// Replaces user control displayed in tableLayoutPanelContainer
+        /// Replaces user control displayed in tableLayoutPanelContainer depending on OnboardingUserState
         /// </summary>
         /// <param name="state"></param>
         public void updateOnboardingStatus(GTecDeviceTester.OnboardingUserState state, Dictionary<String, object> resultParams)
@@ -331,62 +327,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         }
 
 
-/*        
         /// <summary>
-        /// Start / stop timer which plots data
-        /// </summary>
-        /// <param name="state"></param>
-        private void startStopPlotDataTimer(bool startPlotDataTimer, OnboardingUserState state)
-        {
-            Log.Debug("startStopPlotDataTimer | startProcessDataTimer: " + startPlotDataTimer.ToString() +
-                " | state: " + state.ToString());
-
-            if (startPlotDataTimer)
-            {
-                startStopPlotDataTimer(false, state);
-                try
-                {
-                    timerPlotData = new System.Windows.Forms.Timer(this.components);
-                    timerPlotData.Enabled = true;
-                    timerPlotData.Interval = _timer_plot_data_interval_ms; //// 50, 100, 200
-                    timerPlotData.Stop();
-
-                    //if (state == DeviceTestingState.ReceivedBCIError_OpticalSensor)
-                    //{
-                    //    timerPlotData.Tick += new System.EventHandler(this.PlotOpticalSensorData_Tick);
-                    //}
-
-                    timerPlotData.Start();
-                    Log.Debug("startStopPlotDataTimer | Started timerPlotData");
-                }
-                catch (Exception e)
-                {
-                    Log.Debug("startStopPlotDataTimer | Exception: " + e.ToString());
-                }
-            }
-            else
-            {
-                try
-                {
-                    if (timerPlotData != null && timerPlotData.Enabled)
-                    {
-                        timerPlotData.Stop();
-                        timerPlotData.Enabled = false;
-                        timerPlotData.Dispose();
-                        timerPlotData = null;
-                    }
-                }
-                catch (Exception e)
-                {
-                    Log.Debug("startStopPlotDataTimer | Exception: " + e.ToString());
-                }
-            }
-        }
-*/
-
-
-        /// <summary>
-        /// Task in charge to start or stop data acquisition
+        /// Task in charge to start of starting / stopping data processing timer
         /// </summary>
         /// <returns></returns>
         /// Run only once per new set of state changes receieved
@@ -487,8 +429,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             if (_gTecBCI.deviceInitialized)
             {
-                //double[,] data = DAQ_OpenBCI.GetData();
-
+                // Obtain sensor data stored in buffers and pass to signal check user control
                 double[,] data = _gTecBCI.GetData();
 
                 if (data != null && data.Length > 0 && data.GetLength(1) > 0)
@@ -538,7 +479,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 // Stop process data timer
                 startStopProcessDataTimer(false, OnboardingUserState.ExitBCITesting);
 
-                // Release resources
+                // Release resources (remove events and handlers and dispose of user controls)
                 if (EvtButtonNextClicked != null)
                     EvtButtonNextClicked = null;
                 if (EvtButtonRetestClicked != null)

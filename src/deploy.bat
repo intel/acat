@@ -1,6 +1,21 @@
 rem @echo off
 
 set CONFIG=%2
+
+if "%CONFIG%"=="" (
+	echo "ERROR: No configuration specified. Please specify Debug or Release."
+	echo "Usage: deploy.bat <path to ACAT root> <Debug|Release>"
+	exit /b 1
+)
+if "%CONFIG%"=="Debug" (
+	echo Deploying Debug configuration
+) else if "%CONFIG%"=="Release" (
+	echo Deploying Release configuration
+) else (
+	echo "ERROR: Invalid configuration specified. Please specify Debug or Release."
+	echo "Usage: deploy.bat <path to ACAT root> <Debug|Release>"
+	exit /b 1
+)
 set INSTALLDIR=.\Applications\ACATApp\bin\%CONFIG%
 
 cd %1
@@ -90,6 +105,7 @@ rem ------------------------------------------------
 
 set SOURCEDIR=Extensions\Default\Actuators\CameraActuator
 set TARGETDIR=%INSTALLDIR%\Extensions\Default\Actuators\Camera
+echo TargetDir is %TARGETDIR%
 if not exist %TARGETDIR% mkdir %TARGETDIR%
 copy .\%SOURCEDIR%\bin\%CONFIG%\CameraActuator.dll %TARGETDIR%
 copy .\%SOURCEDIR%\bin\%CONFIG%\*.exe %TARGETDIR%
@@ -199,7 +215,9 @@ rem ------------------------------------------------
 
 set SOURCEDIR=Extensions\BCI\Actuators\BCIActuator
 set BCIEXTERNALSRCDIR=Extensions\BCI\Actuators\External
+echo Install Dir is %INSTALLDIR%
 set TARGETDIR=%INSTALLDIR%\Extensions\BCI\Actuators\BCIActuator
+echo Target Dir is %TARGETDIR%
 if not exist %TARGETDIR% mkdir %TARGETDIR%
 copy .\%SOURCEDIR%\bin\%CONFIG%\*.dll %TARGETDIR%
 copy .\%BCIEXTERNALSRCDIR%\brainflow.5.5.0\*.dll %TARGETDIR%

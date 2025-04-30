@@ -97,23 +97,26 @@ if not exist %TARGETDIR% mkdir %TARGETDIR%
 if exist .\%SOURCEDIR%\bin\%CONFIG%\*.dll copy .\%SOURCEDIR%\bin\%CONFIG%\*.dll %TARGETDIR%
 if exist .\%SOURCEDIR%\Config\*.xml copy .\%SOURCEDIR%\Config\*.xml %TARGETDIR%
 
-rem ------------------------------------------------
-@echo Actuators
-rem ------------------------------------------------
+@REM rem ------------------------------------------------
+@REM @echo Actuators
+@REM rem ------------------------------------------------
 
-set SOURCEDIR=Extensions\Default\Actuators\CameraActuator
-set TARGETDIR=%INSTALLDIR%\Extensions\Default\Actuators\Camera
-echo TargetDir is %TARGETDIR%
-if not exist %TARGETDIR% mkdir %TARGETDIR%
-copy .\%SOURCEDIR%\bin\%CONFIG%\CameraActuator.dll %TARGETDIR%
-copy .\%SOURCEDIR%\bin\%CONFIG%\*.exe %TARGETDIR%
-if not exist .\%SOURCEDIR%\External (
-	echo "*** ERROR *** Could not find External dependencies for the Vision Actuator \%SOURCEDIR%\External"
-	exit /b 1
-)
-if not exist %TARGETDIR%\acat_gestures_dll.dll copy .\%SOURCEDIR%\External\*.* %TARGETDIR%
-if not exist %INSTALLDIR%\shape_predictor_68_face_landmarks.dat copy .\%SOURCEDIR%\External\shape_predictor_68_face_landmarks.dat %INSTALLDIR%
-
+@REM set SOURCEDIR=Extensions\Default\Actuators\CameraActuator
+@REM set TARGETDIR=%INSTALLDIR%\Extensions\Default\Actuators\Camera
+@REM echo TargetDir is %TARGETDIR%
+@REM if not exist %TARGETDIR% mkdir %TARGETDIR%
+@REM copy .\%SOURCEDIR%\bin\%CONFIG%\CameraActuator.dll %TARGETDIR%
+@REM copy .\%SOURCEDIR%\bin\%CONFIG%\*.exe %TARGETDIR%
+@REM if not exist .\%SOURCEDIR%\External (
+@REM 	echo "*** ERROR *** Could not find External dependencies for the Vision Actuator \%SOURCEDIR%\External"
+@REM 	exit /b 1
+@REM )
+@REM if not exist %TARGETDIR%\acat_gestures_dll.dll (
+@REM 	copy .\%SOURCEDIR%\External\*.* %TARGETDIR%
+@REM )
+@REM if not exist %INSTALLDIR%\shape_predictor_68_face_landmarks.dat (
+@REM 	copy .\%SOURCEDIR%\External\shape_predictor_68_face_landmarks.dat %INSTALLDIR%
+@REM )
 rem ------------------------------------------------
 @echo Deploying TTSEngine dlls
 rem ------------------------------------------------

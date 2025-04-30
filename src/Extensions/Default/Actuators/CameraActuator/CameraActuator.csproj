@@ -38,7 +38,7 @@
     <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-        <ErrorReport>prompt</ErrorReport>
+    <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -132,154 +132,152 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="External\acat_gestures.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="External\acat_gestures.exe" />
     <Content Include="External\acat_gestures_dll.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\acat_gestures_dll_d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\libinfra.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\libinfra_d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\libivcp.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\libivcp_d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\libpipeline.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\libpipeline_d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\msvcp110.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\msvcr110.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_calib3d2413.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_calib3d2413d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_contrib2413.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_contrib2413d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_core2413.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_core2413d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_features2d2413.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_features2d2413d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_ffmpeg2413.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_flann2413.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_flann2413d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_gpu2413.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_gpu2413d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_highgui2413.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_highgui2413d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_imgproc2413.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_imgproc2413d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_legacy2413.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_legacy2413d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_ml2413.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_ml2413d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_nonfree2413.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_nonfree2413d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_objdetect2413.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_objdetect2413d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_ocl2413.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_ocl2413d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_photo2413.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_photo2413d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_stitching2413.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_stitching2413d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_superres2413.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_superres2413d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_video2413.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_video2413d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_videostab2413.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="External\opencv_videostab2413d.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="External\shape_predictor_68_face_landmarks.dat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

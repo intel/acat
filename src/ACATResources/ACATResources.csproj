@@ -66,95 +66,95 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="en\KeyboardABCUserControlBCI2.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\KeyboardEditUserControlBCI.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\KeyboardLockUserControlBCI.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\KeyboardModesUserControlBCI.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\KeyboardNumberNumericKeypadUserControl.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\KeyboardYesNoUserControlBCI2.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\MenuUserControlBCI.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\NumericUserControlBCI.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\PhrasesUserControlBCI.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\TalkApplicationBCIScannerNewUI.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\TTSYesNoUserControlBCI2.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\UserControlContainerForm.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\UserControlScreenLock.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\UserControlDefaultTryout.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\KeyboardAbcUserControl.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\ScanTimeAdjustForm.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\UserControlTalkInterfaceDesc.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\WordPredictionSetModeScanner.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\KeyboardNumbersUserControl.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\KeyboardEditUserControl.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\MainMenu.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\SentencePredictionUserControl.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\KeyboardQwertyUserControl.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\PanelConfigMap.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
       <SubType>Designer</SubType>
     </Content>
     <Content Include="en\TalkApplicationScannerQwerty.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\UserControlConfigMap.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\WordPredictionUserControl.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\WordPredictionUserControlBCI.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\YesNoResponseScanner.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
     <Content Include="en\YesNoScanner.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      
     </Content>
   </ItemGroup>
   <ItemGroup>

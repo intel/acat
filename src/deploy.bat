@@ -34,7 +34,7 @@ set TARGETDIR=%INSTALLDIR%\%LANGUAGE%\WordPredictors\ConvAssist
 set SOURCEDIR=Applications\Install\%LANGUAGE%\WordPredictors\ConvAssist
 if not exist %SOURCEDIR% (
 	echo ERROR: %SOURCEDIR% does not exist
-	goto DeployConvAssist
+	exit /b 1
 )
 xcopy /s /y /e /i %SOURCEDIR%\*.* %TARGETDIR% 
 
@@ -97,8 +97,6 @@ if not exist %TARGETDIR% mkdir %TARGETDIR%
 if exist .\%SOURCEDIR%\bin\%CONFIG%\*.dll copy .\%SOURCEDIR%\bin\%CONFIG%\*.dll %TARGETDIR%
 if exist .\%SOURCEDIR%\Config\*.xml copy .\%SOURCEDIR%\Config\*.xml %TARGETDIR%
 
-rem goto Next
-
 rem ------------------------------------------------
 @echo Actuators
 rem ------------------------------------------------
@@ -109,14 +107,12 @@ echo TargetDir is %TARGETDIR%
 if not exist %TARGETDIR% mkdir %TARGETDIR%
 copy .\%SOURCEDIR%\bin\%CONFIG%\CameraActuator.dll %TARGETDIR%
 copy .\%SOURCEDIR%\bin\%CONFIG%\*.exe %TARGETDIR%
-if exist .\%SOURCEDIR%\External goto CopyVisionExternal
-echo *** ERROR *** Could not find External dependencies for the Vision Actuator (.\%SOURCEDIR%\External).
-rem goto Next
-
-:CopyVisionExternal
+if not exist .\%SOURCEDIR%\External (
+	echo "*** ERROR *** Could not find External dependencies for the Vision Actuator \%SOURCEDIR%\External"
+	exit /b 1
+)
 if not exist %TARGETDIR%\acat_gestures_dll.dll copy .\%SOURCEDIR%\External\*.* %TARGETDIR%
 if not exist %INSTALLDIR%\shape_predictor_68_face_landmarks.dat copy .\%SOURCEDIR%\External\shape_predictor_68_face_landmarks.dat %INSTALLDIR%
-
 
 rem ------------------------------------------------
 @echo Deploying TTSEngine dlls

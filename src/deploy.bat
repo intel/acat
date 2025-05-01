@@ -31,6 +31,7 @@ rem ------------------------------------------------
 set SOURCEDIR=Applications\Install\Users\
 set TARGETDIR=%INSTALLDIR%\Install\Users\
 call :safe_xcopy %SOURCEDIR%\*.* %TARGETDIR% 
+if errorlevel 1 exit /b 1
 
 set LANGUAGE=en
 
@@ -41,6 +42,7 @@ if not exist %SOURCEDIR% (
 	exit /b 1
 )
 call :safe_xcopy %SOURCEDIR%\*.* %TARGETDIR% 
+if errorlevel 1 exit /b 1
 
 rem ------------------------------------------------
 @echo Deploying ConvAssist
@@ -58,6 +60,7 @@ if not exist %SOURCEDIR%\ConvAssist\ (
 	powershell -Command "Expand-Archive -Force -Path %SOURCEDIR%\ConvAssist.zip -Destination %SOURCEDIR%\ConvAssist"
 )
 call :safe_xcopy /s /y /e /i %SOURCEDIR%\ConvAssist\* %TARGETDIR%
+if errorlevel 1 exit /b 1
 
 :DeployAssets
 rem ------------------------------------------------
@@ -66,6 +69,7 @@ rem ------------------------------------------------
 set SOURCEDIR=Assets\
 set TARGETDIR=%INSTALLDIR%\%SOURCEDIR%
 call :safe_xcopy %SOURCEDIR%\*.* %TARGETDIR% 
+if errorlevel 1 exit /b 1
 
 rem ------------------------------------------------
 @echo Deploying UI dlls
@@ -75,13 +79,18 @@ set SOURCEDIR=Extensions\Default\UI\Scanners
 set TARGETDIR=%INSTALLDIR%\%SOURCEDIR%
 if not exist %TARGETDIR% mkdir %TARGETDIR%
 if exist .\%SOURCEDIR%\bin\%CONFIG%\*.dll call :safe_copy .\%SOURCEDIR%\bin\%CONFIG%\*.dll %TARGETDIR%
+if errorlevel 1 exit /b 1
 if exist .\%SOURCEDIR%\Config\*.xml call :safe_copy .\%SOURCEDIR%\Config\*.xml %TARGETDIR%
+if errorlevel 1 exit /b 1
 
 set SOURCEDIR=Extensions\Default\UI\Menus
 set TARGETDIR=%INSTALLDIR%\%SOURCEDIR%
 if not exist %TARGETDIR% mkdir %TARGETDIR%
 call :safe_copy .\%SOURCEDIR%\bin\%CONFIG%\Menus.dll %TARGETDIR%
+if errorlevel 1 exit /b 1
+
 call :safe_copy .\%SOURCEDIR%\Config\*.xml %TARGETDIR%
+if errorlevel 1 exit /b 1
 
 rem ------------------------------------------------
 @echo Deploying English Language UI DLL's
@@ -93,7 +102,10 @@ set SOURCEDIR=%BASEDIR%\%LANGUAGE%\Scanners
 set TARGETDIR=%INSTALLDIR%\%LANGUAGE%\%BASEDIR%\Scanners
 if not exist %TARGETDIR% mkdir %TARGETDIR%
 if exist .\%SOURCEDIR%\bin\%CONFIG%\*.dll call :safe_copy .\%SOURCEDIR%\bin\%CONFIG%\*.dll %TARGETDIR%
+if errorlevel 1 exit /b 1
+
 if exist .\%SOURCEDIR%\Config\*.xml call :safe_copy .\%SOURCEDIR%\Config\*.xml %TARGETDIR%
+if errorlevel 1 exit /b 1
 
 set SOURCEDIR=%BASEDIR%\%LANGUAGE%\UserControls
 set TARGETDIR=%INSTALLDIR%\%LANGUAGE%\%BASEDIR%\UserControls

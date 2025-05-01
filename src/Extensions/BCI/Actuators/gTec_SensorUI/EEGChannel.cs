@@ -50,11 +50,6 @@ namespace gTecSensorUI
         public double lastRailingResult;
 
         /// <summary>
-        /// Most recent impedance test result
-        /// </summary>
-        public double lastImpedanceResult;
-
-        /// <summary>
         /// Signal quality status
         /// </summary>
         public SignalStatus signalStatus;
@@ -68,16 +63,6 @@ namespace gTecSensorUI
         /// Have we successfully computed new signal quality result for this electrode within this session?
         /// </summary>
         public int signalQualityUpdatedCurrentSession = 0;
-
-        /// <summary>
-        /// Commands to enable impedance testing for this specific electrode 
-        /// </summary>
-        public String ImpedanceTestingEnableCmd;
-
-        /// <summary>
-        /// Command to disable impedance testing for this specific electrode 
-        /// </summary>
-        public String ImpedanceTestingDisableCmd;
 
         /// <summary>
         /// Time in seconds status was obtained for this channel
@@ -103,7 +88,6 @@ namespace gTecSensorUI
             _channelIndex = channelIndex;
             _channelEnabled = enableChannel;
             lastRailingResult = int.MaxValue;
-            lastImpedanceResult = int.MaxValue;
             signalStatus = SignalStatus.SIGNAL_ERROR;
             signalQualityUpdatedCurrentSession = 0;
         }

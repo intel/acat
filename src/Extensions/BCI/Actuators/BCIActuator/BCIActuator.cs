@@ -220,6 +220,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             {
                 // Load settings
                 BCIActuatorSettings.Load();
+                BCIGtecActuatorSettings.Load();
 
                 DictCalibrationParameters = new Dictionary<BCIScanSections, CalibrationParametersForSection>();
 

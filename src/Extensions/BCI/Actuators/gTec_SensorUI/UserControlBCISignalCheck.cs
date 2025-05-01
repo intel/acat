@@ -9,11 +9,6 @@
 // Makes sure the BCI signals are good before continuing onto calibration.
 // Displays signals from electrodes and does railing and impedance tests
 //
-// The original insipiration from this class is the OpenBCI GUI application:
-// https://github.com/OpenBCI/OpenBCI_GUI
-// It is licensed under the MIT License
-// Copyright (c) 2018 OpenBCI
-// https://github.com/OpenBCI/OpenBCI_GUI/blob/master/LICENSE
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
@@ -73,55 +68,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
         public static OverallSignalQualityResult _AllElectrodesOverallSignalQualityResult;
 
-        // Impedance testing enable / disable commands for deafult 8 channels
-        private const string BCI_CMD_IMPEDENCE_CH1_ENABLE = "x1000100Xz101Z";
-        private const string BCI_CMD_IMPEDENCE_CH1_DISABLE = "x1060110Xz100Z";
-        private const string BCI_CMD_IMPEDENCE_CH2_ENABLE = "x2000100Xz201Z";
-        private const string BCI_CMD_IMPEDENCE_CH2_DISABLE = "x2060110Xz200Z";
-        private const string BCI_CMD_IMPEDENCE_CH3_ENABLE = "x3000100Xz301Z";
-        private const string BCI_CMD_IMPEDENCE_CH3_DISABLE = "x3060110Xz300Z";
-        private const string BCI_CMD_IMPEDENCE_CH4_ENABLE = "x4000100Xz401Z";
-        private const string BCI_CMD_IMPEDENCE_CH4_DISABLE = "x4060110Xz400Z";
-        private const string BCI_CMD_IMPEDENCE_CH5_ENABLE = "x5000100Xz501Z";
-        private const string BCI_CMD_IMPEDENCE_CH5_DISABLE = "x5060110Xz500Z";
-        private const string BCI_CMD_IMPEDENCE_CH6_ENABLE = "x6000100Xz601Z";
-        private const string BCI_CMD_IMPEDENCE_CH6_DISABLE = "x6060110Xz600Z";
-        private const string BCI_CMD_IMPEDENCE_CH7_ENABLE = "x7000100Xz701Z";
-        private const string BCI_CMD_IMPEDENCE_CH7_DISABLE = "x7060110Xz700Z";
-        private const string BCI_CMD_IMPEDENCE_CH8_ENABLE = "x8000100Xz801Z";
-        private const string BCI_CMD_IMPEDENCE_CH8_DISABLE = "x8060110Xz800Z";
-
-        // Impedance testing enable / disable commands for extended daisy board channels (total 16)
-        private const string BCI_CMD_IMPEDENCE_CH9_ENABLE = "xQ000100XzQ01Z";
-        private const string BCI_CMD_IMPEDENCE_CH9_DISABLE = "xQ060110XzQ00Z";
-        private const string BCI_CMD_IMPEDENCE_CH10_ENABLE = "xW000100XzW01Z";
-        private const string BCI_CMD_IMPEDENCE_CH10_DISABLE = "xW060110XzW00Z";
-        private const string BCI_CMD_IMPEDENCE_CH11_ENABLE = "xE000100XzE01Z";
-        private const string BCI_CMD_IMPEDENCE_CH11_DISABLE = "xE060110XzE00Z";
-        private const string BCI_CMD_IMPEDENCE_CH12_ENABLE = "xR000100Xz401Z";
-        private const string BCI_CMD_IMPEDENCE_CH12_DISABLE = "xR060110Xz400Z";
-        private const string BCI_CMD_IMPEDENCE_CH13_ENABLE = "xT000100Xz501Z";
-        private const string BCI_CMD_IMPEDENCE_CH13_DISABLE = "xT060110Xz500Z";
-        private const string BCI_CMD_IMPEDENCE_CH14_ENABLE = "xY000100Xz601Z";
-        private const string BCI_CMD_IMPEDENCE_CH14_DISABLE = "xY060110Xz600Z";
-        private const string BCI_CMD_IMPEDENCE_CH15_ENABLE = "xU000100Xz701Z";
-        private const string BCI_CMD_IMPEDENCE_CH15_DISABLE = "xU060110Xz700Z";
-        private const string BCI_CMD_IMPEDENCE_CH16_ENABLE = "xI000100Xz801Z";
-        private const string BCI_CMD_IMPEDENCE_CH16_DISABLE = "xI060110Xz800Z";
-
-        private List<String> BCI_CMDS_IMPEDANCE_ENABLE_REQUIRED8CHANNELS =
-            new List<String> { BCI_CMD_IMPEDENCE_CH1_ENABLE, BCI_CMD_IMPEDENCE_CH2_ENABLE, BCI_CMD_IMPEDENCE_CH3_ENABLE, BCI_CMD_IMPEDENCE_CH4_ENABLE,
-                BCI_CMD_IMPEDENCE_CH5_ENABLE, BCI_CMD_IMPEDENCE_CH6_ENABLE, BCI_CMD_IMPEDENCE_CH7_ENABLE, BCI_CMD_IMPEDENCE_CH8_ENABLE };
-        private List<String> BCI_CMDS_IMPEDANCE_DISABLE_REQUIRED8CHANNELS =
-            new List<String> { BCI_CMD_IMPEDENCE_CH1_DISABLE, BCI_CMD_IMPEDENCE_CH2_DISABLE, BCI_CMD_IMPEDENCE_CH3_DISABLE, BCI_CMD_IMPEDENCE_CH4_DISABLE,
-                BCI_CMD_IMPEDENCE_CH5_DISABLE, BCI_CMD_IMPEDENCE_CH6_DISABLE, BCI_CMD_IMPEDENCE_CH7_DISABLE, BCI_CMD_IMPEDENCE_CH8_DISABLE };
-        private List<String> BCI_CMDS_IMPEDANCE_ENABLE_OPTIONAL8CHANNELS =
-            new List<String> { BCI_CMD_IMPEDENCE_CH9_ENABLE, BCI_CMD_IMPEDENCE_CH10_ENABLE, BCI_CMD_IMPEDENCE_CH11_ENABLE, BCI_CMD_IMPEDENCE_CH12_ENABLE,
-                BCI_CMD_IMPEDENCE_CH13_ENABLE, BCI_CMD_IMPEDENCE_CH14_ENABLE, BCI_CMD_IMPEDENCE_CH15_ENABLE, BCI_CMD_IMPEDENCE_CH16_ENABLE };
-        private List<String> BCI_CMDS_IMPEDANCE_DISABLE_OPTIONAL8CHANNELS =
-            new List<String> { BCI_CMD_IMPEDENCE_CH9_DISABLE, BCI_CMD_IMPEDENCE_CH10_DISABLE, BCI_CMD_IMPEDENCE_CH11_DISABLE, BCI_CMD_IMPEDENCE_CH12_DISABLE,
-                BCI_CMD_IMPEDENCE_CH13_DISABLE, BCI_CMD_IMPEDENCE_CH14_DISABLE, BCI_CMD_IMPEDENCE_CH15_DISABLE, BCI_CMD_IMPEDENCE_CH16_DISABLE };
-
         /// <summary>
         /// Interval im ms at which to update UI elements
         /// </summary>
@@ -149,26 +95,12 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
         // Constants found in OpenBCI_GUI application (OpenBCI_GUI.pde, InterfaceSerial.pde, etc.) to calculate impedance
         private const int GAIN = 24;
-        private const double LEADOFFDRIVE_AMPS = 6.0e-9;  //6 nA, set by its Arduino code
-        private const double OPENBCI_SERIES_RESISTOR_OHMS = 2200;
 
         // Lists holding UI elements for all channels
         private List<String> _channelNamesRequired;
         private List<ScannerRoundedButtonControl> _requiredListElectrodesRailingTest;
         private List<Chart> _requiredListChartsSignalDataRailingTest;
-        private List<Chart> _optionalListChartsSignalDataRailingTest;
         private List<Title> _requiredListTextsRailingResultsRailingTest;
-        private List<Title> _optionalListTextsRailingResultsRailingTest;
-        private List<ScannerRoundedButtonControl> _requiredListElectrodesImpedanceTest;
-        private List<ScannerRoundedButtonControl> _optionalListElectrodesImpedanceTest;
-        private List<ScannerRoundedButtonControl> _requiredListImpedanceResultsImpedanceTest;
-        private List<ScannerRoundedButtonControl> _optionalListImpedanceResultsImpedanceTest;
-        private List<ScannerRoundedButtonControl> _requiredListElectrodesQualityResults;
-        private List<ScannerRoundedButtonControl> _optionalListElectrodesQualityResults;
-        private List<ScannerRoundedButtonControl> _requiredListRailingResultsQualityResults;
-        private List<ScannerRoundedButtonControl> _optionalListRailingResultsQualityResults;
-        private List<ScannerRoundedButtonControl> _requiredListImpedanceResultsQualityResults;
-        private List<ScannerRoundedButtonControl> _optionalListImpedanceResultsQualityResults;
         private Dictionary<String, ScannerRoundedButtonControl> _electrodeCapMap;
 
         // Variables related to BCI board configuration
@@ -255,7 +187,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _requiredListChartsSignalDataRailingTest = new List<Chart> { chartRailingTestR1, chartRailingTestR2, chartRailingTestR3, chartRailingTestR4,
                 chartRailingTestR5, chartRailingTestR6, chartRailingTestR7, chartRailingTestR8 };
             _requiredListTextsRailingResultsRailingTest = new List<Title>();
-            _optionalListTextsRailingResultsRailingTest = new List<Title>();
 
             int chnIdx = 0;
             while (chnIdx < 8)
@@ -296,9 +227,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         public void resetSavedSignalQualityValues()
         {
-            BCIActuatorSettings.Settings.SignalControl_RecheckNeeded = true;
-            BCIActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck = false;
-            BCIActuatorSettings.Save();
+            BCIGtecActuatorSettings.Settings.SignalControl_RecheckNeeded = true;
+            BCIGtecActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck = false;
+            BCIGtecActuatorSettings.Save();
         }
 
         /// <summary>
@@ -321,6 +252,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 last_timestamp_update_ui = currentTimestamp;
             }
             bool scale_plots = false;
+
             // At interval INTERVAL_UPDATE_OVERALL_SIGNAL_QUALITY_STATUS_MS, update overall signal quality
             bool update_overall_signal_quality_status = false;
             if (currentTimestamp - last_timestamp_update_overall_signal_quallity_status > INTERVAL_UPDATE_OVERALL_SIGNAL_QUALITY_STATUS_MS)
@@ -394,14 +326,14 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 bool includeOverallSignalQualityCheck = false;
 
                 // "Top8" - Only consider top 8 channels
-                if (BCIActuatorSettings.Settings.SignalQuality_AcceptanceMode == "Top8" && eegChannel.isRequiredElectrode)
+                if (BCIGtecActuatorSettings.Settings.SignalQuality_AcceptanceMode == "Top8" && eegChannel.isRequiredElectrode)
                 {
                     includeOverallSignalQualityCheck = true;
                 }
 
                 // "AllEnabled" or not "Top8" (Default)
                 // Only consider channels enabled with Classifier_EnableChannelX
-                else if (BCIActuatorSettings.Settings.SignalQuality_AcceptanceMode == "AllEnabled" || BCIActuatorSettings.Settings.SignalQuality_AcceptanceMode != "Top8")
+                else if (BCIGtecActuatorSettings.Settings.SignalQuality_AcceptanceMode == "AllEnabled" || BCIGtecActuatorSettings.Settings.SignalQuality_AcceptanceMode != "Top8")
                 {
                     if (eegChannel._channelEnabled)
                         includeOverallSignalQualityCheck = true;
@@ -409,11 +341,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     // If SignalQuality_AcceptanceMode == "AllEnabled" don't require Daisy board channel in signal quality check
                     // if only have 8 channels
                     // Even if enabled true with Classifier_EnableChannel9-16
-                    if (chIdx >= 8 && BCIActuatorSettings.Settings.DAQ_NumEEGChannels != 16)
+                    if (chIdx >= 8 && BCIGtecActuatorSettings.Settings.DAQ_NumEEGChannels != 16)
                         includeOverallSignalQualityCheck = false;
                 }
 
-                // Include channel for overall signal quality check if it meets BCIActuatorSettings.Settings.SignalQuality_AcceptanceMode criteria
+                // Include channel for overall signal quality check if it meets BCIGtecActuatorSettings.Settings.SignalQuality_AcceptanceMode criteria
                 if (includeOverallSignalQualityCheck)
 
                 {
@@ -449,16 +381,16 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             else
             {
                 newResult.allElectrodesUpdatedWithinSession = true;
-                if (newResult.numOverallGoodElectrodes >= BCIActuatorSettings.Settings.SignalQuality_MinOverallGoodChannels &&
-                    newResult.numOverallOkElectrodes <= BCIActuatorSettings.Settings.SignalQuality_MaxOverallOKChannels​ &&
-                    newResult.numOverallBadElectrodes <= BCIActuatorSettings.Settings.SignalQuality_MaxOverallBadChannels​)
+                if (newResult.numOverallGoodElectrodes >= BCIGtecActuatorSettings.Settings.SignalQuality_MinOverallGoodChannels &&
+                    newResult.numOverallOkElectrodes <= BCIGtecActuatorSettings.Settings.SignalQuality_MaxOverallOKChannels​ &&
+                    newResult.numOverallBadElectrodes <= BCIGtecActuatorSettings.Settings.SignalQuality_MaxOverallBadChannels​)
                 {
                     // All electrodes have valid values (none have status Error) and overall signal quality criteria met
-                    BCIActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck = true;
+                    BCIGtecActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck = true;
                 }
                 else
                 {
-                    BCIActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck = false;
+                    BCIGtecActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck = false;
                 }
             }
 
@@ -506,9 +438,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             // Get / inititalize variables related to board config used in data processing
             _indEegChannels = gTecBCI.indEegChannels;
-            _numChannels = BCIActuatorSettings.Settings.DAQ_NumEEGChannels;
+            _numChannels = BCIGtecActuatorSettings.Settings.DAQ_NumEEGChannels;
             _samplingRate = gTecBCI.sampleRate;
-            _scaleIdx = BCIActuatorSettings.Settings.SignalMonitor_ScaleIdx;
+            _scaleIdx = BCIGtecActuatorSettings.Settings.SignalMonitor_ScaleIdx;
 
             _bufSize = _samplingRate * PROCESSING_BUFFER_SIZE_SEC;
             _unfilteredChannelData = new double[_numChannels, _bufSize];
@@ -538,10 +470,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             // Get required and optional electrode names from settings
             _channelNamesRequired =
-            new List<String> { BCIActuatorSettings.Settings.SignalControl_RequiredChannel_Channel1_Name,BCIActuatorSettings.Settings.SignalControl_RequiredChannel_Channel2_Name,
-                BCIActuatorSettings.Settings.SignalControl_RequiredChannel_Channel3_Name,BCIActuatorSettings.Settings.SignalControl_RequiredChannel_Channel4_Name,
-                BCIActuatorSettings.Settings.SignalControl_RequiredChannel_Channel5_Name,BCIActuatorSettings.Settings.SignalControl_RequiredChannel_Channel6_Name,
-                BCIActuatorSettings.Settings.SignalControl_RequiredChannel_Channel7_Name,BCIActuatorSettings.Settings.SignalControl_RequiredChannel_Channel8_Name};
+            new List<String> { BCIGtecActuatorSettings.Settings.SignalControl_RequiredChannel_Channel1_Name,BCIGtecActuatorSettings.Settings.SignalControl_RequiredChannel_Channel2_Name,
+                BCIGtecActuatorSettings.Settings.SignalControl_RequiredChannel_Channel3_Name,BCIGtecActuatorSettings.Settings.SignalControl_RequiredChannel_Channel4_Name,
+                BCIGtecActuatorSettings.Settings.SignalControl_RequiredChannel_Channel5_Name,BCIGtecActuatorSettings.Settings.SignalControl_RequiredChannel_Channel6_Name,
+                BCIGtecActuatorSettings.Settings.SignalControl_RequiredChannel_Channel7_Name,BCIGtecActuatorSettings.Settings.SignalControl_RequiredChannel_Channel8_Name};
 
             // For each electrode - initialize object which tracks each channel's data, signal quality, and manages corresponding plots and UI elements
             for (int chIdx = 0; chIdx < _numChannels; chIdx++)
@@ -552,7 +484,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 // Set index of channel's data in raw data
                 // Get corresponding UI elements for this channel
 
-                bool channelEnabled = BCIActuatorSettings.Settings.GetClassifier_EnableChannel(chIdx);
+                bool channelEnabled = BCIGtecActuatorSettings.Settings.GetClassifier_EnableChannel(chIdx);
 
                 if (chIdx < 8)
                 {
@@ -561,10 +493,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     _eegChannels[chIdx] = new EEGChannel(electrodeName, chIdx, channelEnabled);
                     _eegChannels[chIdx].isRequiredElectrode = true;
                     _eegChannels[chIdx]._channelRawDataIndex = _indEegChannels[chIdx];
-                    _eegChannels[chIdx].ImpedanceTestingEnableCmd = BCI_CMDS_IMPEDANCE_ENABLE_REQUIRED8CHANNELS[chIdx];
-                    _eegChannels[chIdx].ImpedanceTestingDisableCmd = BCI_CMDS_IMPEDANCE_DISABLE_REQUIRED8CHANNELS[chIdx];
                     _eegChannels[chIdx].lastRailingResult = int.MaxValue;
-                    _eegChannels[chIdx].lastImpedanceResult = int.MaxValue;
                     _eegChannels[chIdx].signalStatus = SignalStatus.SIGNAL_ERROR;
                     _eegChannels[chIdx].signalQualityUpdatedCurrentSession = 0;
 
@@ -594,7 +523,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
               
                 // TODO - testing parameter not enabled currently
                 // For testing - duplicate required channel at the corresponding offset position
-                // if(BCIActuatorSettings.Settings.Testing_DuplicateRequiredChannelsAsOptionalChannels) { }
+                // if(BCIGtecActuatorSettings.Settings.Testing_DuplicateRequiredChannelsAsOptionalChannels) { }
             }
 
             // Should have checked already if Cyton Daisy board attached
@@ -625,9 +554,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 }
 
                 // Pass data to function that processes data for signal quality checking and updates UI
-                if (_currentBCISignalCheckMode == BCISignalCheckMode.TEST_RAILING ||
-                    _currentBCISignalCheckMode == BCISignalCheckMode.TEST_IMPEDANCE)
-                    updateSignalStatus(latestUnfilteredData, latestFilteredData);
+                updateSignalStatus(latestUnfilteredData, latestFilteredData);
             }
             catch (Exception ex)
             {
@@ -670,20 +597,20 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             try
             {
-                BCIActuatorSettings.Settings.SignalQuality_LastRailingValues[chIdx] = railingResultPercentage;
+                BCIGtecActuatorSettings.Settings.SignalQuality_LastRailingValues[chIdx] = railingResultPercentage;
 
                 if (update_UI && railingResultPercentage != int.MaxValue)
                 {
                     Invoke(new Action(() =>
                     {
                         Color railingResultColor = SelectColorFromStatus(SignalStatus.SIGNAL_ERROR);
-                        if (railingResultPercentage <= BCIActuatorSettings.Settings.SignalQuality_RailingGoodMaxThreshold)
+                        if (railingResultPercentage <= BCIGtecActuatorSettings.Settings.SignalQuality_RailingGoodMaxThreshold)
                             railingResultColor = SelectColorFromStatus(SignalStatus.SIGNAL_OK);
-                        else if (railingResultPercentage > BCIActuatorSettings.Settings.SignalQuality_RailingGoodMaxThreshold &&
-                            railingResultPercentage <= BCIActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold​)
+                        else if (railingResultPercentage > BCIGtecActuatorSettings.Settings.SignalQuality_RailingGoodMaxThreshold &&
+                            railingResultPercentage <= BCIGtecActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold​)
                             railingResultColor = SelectColorFromStatus(SignalStatus.SIGNAL_ACCEPTABLE);
                         else if (railingResultPercentage == 100 ||
-                            railingResultPercentage > BCIActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold​)
+                            railingResultPercentage > BCIGtecActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold​)
                             railingResultColor = SelectColorFromStatus(SignalStatus.SIGNAL_KO);
 
                         _eegChannels[chIdx].electrodeRailingTest.BackColor = railingResultColor;
@@ -722,23 +649,18 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             try
             {
-                int currentRailingPercentage = BCIActuatorSettings.Settings.SignalQuality_LastRailingValues[chIdx];
-                int currentImpedanceResult = BCIActuatorSettings.Settings.SignalQuality_LastImpedanceValues[chIdx];
+                int currentRailingPercentage = BCIGtecActuatorSettings.Settings.SignalQuality_LastRailingValues[chIdx];
                 SignalStatus overallSignalQualityStatus = SignalStatus.SIGNAL_ERROR;
 
-                if (currentRailingPercentage != int.MaxValue && currentImpedanceResult != int.MaxValue)
+                if (currentRailingPercentage != int.MaxValue)
                 {
                     _eegChannels[chIdx].lastRailingResult = currentRailingPercentage;
-                    _eegChannels[chIdx].lastImpedanceResult = currentImpedanceResult;
 
-                    if (currentRailingPercentage <= BCIActuatorSettings.Settings.SignalQuality_RailingGoodMaxThreshold &&
-                        currentImpedanceResult <= BCIActuatorSettings.Settings.SignalQuality_ImpedanceGoodMaxThreshold)
+                    if (currentRailingPercentage <= BCIGtecActuatorSettings.Settings.SignalQuality_RailingGoodMaxThreshold)
                         overallSignalQualityStatus = SignalStatus.SIGNAL_OK;
-                    else if (currentRailingPercentage <= BCIActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold &&
-                        currentImpedanceResult <= BCIActuatorSettings.Settings.SignalQuality_ImpedanceOkMaxThreshold)
+                    else if (currentRailingPercentage <= BCIGtecActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold )
                         overallSignalQualityStatus = SignalStatus.SIGNAL_ACCEPTABLE;
-                    else if (currentRailingPercentage > BCIActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold ||
-                        currentImpedanceResult > BCIActuatorSettings.Settings.SignalQuality_ImpedanceOkMaxThreshold)
+                    else if (currentRailingPercentage > BCIGtecActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold)
                         overallSignalQualityStatus = SignalStatus.SIGNAL_KO;
 
                     _eegChannels[chIdx].timeLastUpdatedSec = DateTimeOffset.Now.ToUnixTimeSeconds();
@@ -746,15 +668,16 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     _eegChannels[chIdx].signalQualityUpdatedCurrentSession = 1;
                     _eegChannels[chIdx].signalStatus = overallSignalQualityStatus;
 
-                    Invoke(new Action(() =>
-                    {
-                        Color overallSignalQualityColor = SelectColorFromStatus(overallSignalQualityStatus);
+                    // TODO: Celal FIX - this is not correct
+                    //Invoke(new Action(() =>
+                    //{
+                    //    Color overallSignalQualityColor = SelectColorFromStatus(overallSignalQualityStatus);
 
-                        _eegChannels[chIdx].electrodeCap.BackColor = overallSignalQualityColor;
-                        _eegChannels[chIdx].electrodeCap.BorderColor = overallSignalQualityColor;
-                        _eegChannels[chIdx].electrodeCap.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-                        _eegChannels[chIdx].electrodeQualityResults.BackColor = overallSignalQualityColor;
-                    }));
+                    //    _eegChannels[chIdx].electrodeCap.BackColor = overallSignalQualityColor;
+                    //    _eegChannels[chIdx].electrodeCap.BorderColor = overallSignalQualityColor;
+                    //    _eegChannels[chIdx].electrodeCap.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+                    //    _eegChannels[chIdx].electrodeQualityResults.BackColor = overallSignalQualityColor;
+                    //}));
                 }
             }
             catch (Exception ex)
@@ -859,16 +782,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             {
                 _currentBCISignalCheckMode = BCISignalCheckMode.TEST_RAILING;
                 highlightSelectedTab(0);
-            }
-            else if (tabControlSignalQuality.SelectedIndex == 1)
-            {
-                _currentBCISignalCheckMode = BCISignalCheckMode.TEST_IMPEDANCE;
-                highlightSelectedTab(1);
-            }
-            else if (tabControlSignalQuality.SelectedIndex == 2)
-            {
-                _currentBCISignalCheckMode = BCISignalCheckMode.TEST_QUALITY;
-                highlightSelectedTab(2);
             }
             
             Log.Debug("tabControlElectrodeQuality_SelectedIndexChanged" + " | _currentBCISignalCheckMode: " + _currentBCISignalCheckMode.ToString());

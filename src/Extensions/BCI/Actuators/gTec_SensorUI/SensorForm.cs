@@ -290,14 +290,14 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                             bool confirmed = ConfirmBoxSingleOption.ShowDialog("Please remember to add gel to GND and T4 electrodes, if you have not already", "OK", this, false);
                         }
                     }
-                    else if (UserControlBCISignalCheck._currentBCISignalCheckMode == UserControlBCISignalCheck.BCISignalCheckMode.TEST_IMPEDANCE)
-                    {
-                        _userControlBCISignalCheck.changeSignalCheckMode(BCISignalCheckMode.TEST_IMPEDANCE);
-                    }
-                    else if (UserControlBCISignalCheck._currentBCISignalCheckMode == UserControlBCISignalCheck.BCISignalCheckMode.TEST_QUALITY)
-                    {
-                        _userControlBCISignalCheck.changeSignalCheckMode(BCISignalCheckMode.TEST_QUALITY);
-                    }
+                    //else if (UserControlBCISignalCheck._currentBCISignalCheckMode == UserControlBCISignalCheck.BCISignalCheckMode.TEST_IMPEDANCE)
+                    //{
+                    //    _userControlBCISignalCheck.changeSignalCheckMode(BCISignalCheckMode.TEST_IMPEDANCE);
+                    //}
+                    //else if (UserControlBCISignalCheck._currentBCISignalCheckMode == UserControlBCISignalCheck.BCISignalCheckMode.TEST_QUALITY)
+                    //{
+                    //    _userControlBCISignalCheck.changeSignalCheckMode(BCISignalCheckMode.TEST_QUALITY);
+                    //}
 
 
                     // Start task that will launch data processing / plotting for signal check screen

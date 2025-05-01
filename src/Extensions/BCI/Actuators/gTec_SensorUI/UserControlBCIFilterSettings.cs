@@ -36,7 +36,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             //_stepId = stepId;
 
-            int DAQ_NotchFilterIdx = BCIActuatorSettings.Settings.DAQ_NotchFilterIdx;
+            int DAQ_NotchFilterIdx = BCIGtecActuatorSettings.Settings.DAQ_NotchFilterIdx;
             if (DAQ_NotchFilterIdx == 2)
             {
                 // DAQ_NotchFilterIdx = 1; //50Hz

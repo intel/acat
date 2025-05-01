@@ -28,7 +28,7 @@
     <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-        <ErrorReport>prompt</ErrorReport>
+    <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
@@ -47,7 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BCIGtecActuatorSettings.cs" />
     <Compile Include="BCIActuatorSettings.cs" />
+    <Compile Include="BCIGtecSettings.cs" />
     <Compile Include="BCITypingCalibrationAllowedMappingsAdvanced.cs" />
     <Compile Include="BCITypingCalibrationAllowedMappingsRestricted.cs" />
     <Compile Include="BCIBoxCalibrationSettings.cs" />

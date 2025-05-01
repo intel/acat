@@ -35,8 +35,8 @@ if errorlevel 1 exit /b 1
 
 set LANGUAGE=en
 
-set TARGETDIR=%INSTALLDIR%\%LANGUAGE%\WordPredictors\ConvAssist
-set SOURCEDIR=Applications\Install\%LANGUAGE%\WordPredictors\ConvAssist
+set TARGETDIR=%INSTALLDIR%\%LANGUAGE%\WordPredictors\ConvAssist\
+set SOURCEDIR=Applications\Install\%LANGUAGE%\WordPredictors\ConvAssist\
 if not exist %SOURCEDIR% (
 	echo ERROR: %SOURCEDIR% does not exist
 	exit /b 1
@@ -59,7 +59,7 @@ if not exist %TARGETDIR% (
 if not exist %SOURCEDIR%\ConvAssist\ (
 	powershell -Command "Expand-Archive -Force -Path %SOURCEDIR%\ConvAssist.zip -Destination %SOURCEDIR%\ConvAssist"
 )
-call :safe_xcopy /s /y /e /i %SOURCEDIR%\ConvAssist\* %TARGETDIR%
+call :safe_xcopy %SOURCEDIR%\ConvAssist\* %TARGETDIR%
 if errorlevel 1 exit /b 1
 
 :DeployAssets
@@ -89,7 +89,7 @@ if not exist %TARGETDIR% mkdir %TARGETDIR%
 call :safe_copy .\%SOURCEDIR%\bin\%CONFIG%\Menus.dll %TARGETDIR%
 if errorlevel 1 exit /b 1
 
-call :safe_copy .\%SOURCEDIR%\Config\*.xml %TARGETDIR%
+if exist .\%SOURCEDIR%\Config\ call :safe_copy .\%SOURCEDIR%\Config\*.xml %TARGETDIR%
 if errorlevel 1 exit /b 1
 
 rem ------------------------------------------------

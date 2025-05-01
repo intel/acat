@@ -288,7 +288,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         Log.Debug("Sensor connected to port " + serial_number);
 
                         // Save port to settings
-                        BCIGtecActuatorSettings.Settings.DAQ_ComPort = serial_number;
+                        BCIGtecActuatorSettings.Settings.GTecDeviceName = serial_number;
                         BCIGtecActuatorSettings.Save();
                         Log.Debug("Port: " + serial_number + " saved to settings");
 

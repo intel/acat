@@ -680,36 +680,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             try
             {
-                _Testing_useSensor_TestIndex += 1;
-                Log.Debug("gTecDeviceTester | _mainForm_EvtButtonExitClicked_DEBUG | _Testing_useSensor_TestIndex: " + _Testing_useSensor_TestIndex.ToString());
-                if (_Testing_useSensor_TestIndex < _DebugStates.Length)
-                {
-                    OnboardingUserState newState = _DebugStates[_Testing_useSensor_TestIndex];
-
-                    // Check if previous device testing state was also BCISignalCheck
-                    // If yes, change _currentBCISignalCheckMode so other BCI signal check user control can be shown
-                    if (newState == OnboardingUserState.BCISignalCheck)
-                    {
-                        if (_DebugStates[_Testing_useSensor_TestIndex - 1] == OnboardingUserState.BCISignalCheck)
-                        {
-                            if (UserControlBCISignalCheck._currentBCISignalCheckMode == UserControlBCISignalCheck.BCISignalCheckMode.TEST_RAILING)
-                            {
-                                UserControlBCISignalCheck._currentBCISignalCheckMode = UserControlBCISignalCheck.BCISignalCheckMode.TEST_IMPEDANCE;
-                            }
-                            else if (UserControlBCISignalCheck._currentBCISignalCheckMode == UserControlBCISignalCheck.BCISignalCheckMode.TEST_IMPEDANCE)
-                            {
-                                UserControlBCISignalCheck._currentBCISignalCheckMode = UserControlBCISignalCheck.BCISignalCheckMode.TEST_QUALITY;
-                            }
-                        }
-                    }
-
-                    EvtUpdateOnboardingStatus?.Invoke(newState, null);
-                }
-                else
-                {
-                    // We are exiting - Call Exit function with lost connection flag set to false
-                    Exit(false);
-                }
+                // We are exiting - Call Exit function with lost connection flag set to false
+                Exit(false);
             }
             catch (Exception e)
             {

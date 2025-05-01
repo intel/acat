@@ -112,6 +112,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private int _samplingRate;
         private int _numChannels;
 
+        /// <summary>
+        /// Holds Gtec Connection
+        /// </summary>
         public DAQ_gTecBCI gTecBCI = null;
         
         /// <summary>
@@ -146,8 +149,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public enum BCISignalCheckMode
         {
             TEST_RAILING,
-            TEST_IMPEDANCE,
-            TEST_QUALITY
+            //TEST_IMPEDANCE,
+            //TEST_QUALITY
         }
 
         /// <summary>

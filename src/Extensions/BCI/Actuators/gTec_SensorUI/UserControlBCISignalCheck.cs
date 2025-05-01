@@ -54,19 +54,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             STOP_IN_PROGRESS_TAB_SWITCH_ATTEMPTED
         }
 
-        /// <summary>
-        /// Holds information related to overall signal quality tests
-        /// </summary>
-        public struct OverallSignalQualityResult
-        {
-            public int numOverallGoodElectrodes;
-            public int numOverallOkElectrodes;
-            public int numOverallBadElectrodes;
-            public bool allElectrodesUpdatedWithinSession;
-            public int numOverallSignalQualityCheckChannelsConsidered;
-        }
-
-        public static OverallSignalQualityResult _AllElectrodesOverallSignalQualityResult;
 
         /// <summary>
         /// Interval im ms at which to update UI elements
@@ -77,16 +64,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// Last timestamp UI was updated
         /// </summary>
         private long last_timestamp_update_ui = 0;
-
-        /// <summary>
-        /// Interval im ms at which to update overall signal quality used to determine whether user can move onto calibration
-        /// </summary>
-        private const int INTERVAL_UPDATE_OVERALL_SIGNAL_QUALITY_STATUS_MS = 250;
-
-        /// <summary>
-        /// Last timestamp when overall signal quality was updated
-        /// </summary>
-        private long last_timestamp_update_overall_signal_quallity_status = 0;
 
         /// <summary>
         /// Buffer length in seconds for EEG data to calculate railing
@@ -199,7 +176,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 chnIdx += 1;
             }
 
-          
+
             // Load images for signal quality gradient / heatmap
             _signalQualityGradientImages = new Image[9];
             _signalQualityGradientImages[0] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel; // for heatmap - 0 is the same as 1 accepted channel
@@ -246,7 +223,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             AppendDataToBuffer2(latestUnfilteredData, _unfilteredChannelData, _bufSize, out _unfilteredChannelData);
             AppendDataToBuffer2(latestFilteredData, _filteredChannelData, _bufSize, out _filteredChannelData);
 
-            // At interval INTERVAL_UPDATE_UI_MS, use railing and impedance to update UI
+            // At interval INTERVAL_UPDATE_UI_MS, update railing and overall signal quality UI elements
             long currentTimestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             bool update_UI = false;
             if (currentTimestamp - last_timestamp_update_ui > INTERVAL_UPDATE_UI_MS)
@@ -256,15 +233,12 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             bool scale_plots = false;
 
-            // At interval INTERVAL_UPDATE_OVERALL_SIGNAL_QUALITY_STATUS_MS, update overall signal quality
-            bool update_overall_signal_quality_status = false;
-            if (currentTimestamp - last_timestamp_update_overall_signal_quallity_status > INTERVAL_UPDATE_OVERALL_SIGNAL_QUALITY_STATUS_MS)
-            {
-                update_overall_signal_quality_status = true;
-                last_timestamp_update_overall_signal_quallity_status = currentTimestamp;
-            }
-
             // Iterate through each channel's data and calculate std dev, railing, and update plots
+            int numSignalQualityCheckChannelsUpdated = 0;
+            int numGoodChannels = 0;
+            int numOkChannels = 0;
+            int numBadChannels = 0;
+
             for (int chIdx = 0; chIdx < _numChannels; chIdx++)
             {
                 //////// GetData() function already filters data ////////
@@ -279,152 +253,59 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     // Compute railing on latest buffer of UNFILTERED data
                     double railingResPercentage = DataFilter.get_railed_percentage(unfilteredChannelData, GAIN);
 
-                    // Update latest railing result - save value and update UI
+                    // Update latest railing result - save value, get signal status, and update UI
                     updateRailingTestResult(chIdx, (int)railingResPercentage, update_UI);
 
                     // Update signal data chart in railing testing page
                     updateSignalChart(chIdx, latestFilteredData.GetRow(chIdx), scale_plots); // Plot data filtered using Bruna's method
                 }
 
-                // Update overall signal quality for electrode
-                if (update_overall_signal_quality_status)
-                {
-                    updateSignalQualityResult(chIdx);
-                }
-            }
 
-            // Get overall signal quality for all electrodes
-            if (update_overall_signal_quality_status)
-            {
-                // Get latest overall signal quality across all channels
-                _AllElectrodesOverallSignalQualityResult = getElectrodeSignalQualityResults();
-
-                // All electrodes have valid values (none have status Error) and are updated within this session
-                if (_AllElectrodesOverallSignalQualityResult.allElectrodesUpdatedWithinSession)
-                {
-                    // Update overall signal quality slider
-                    updateSignalQualityGradient(_AllElectrodesOverallSignalQualityResult.numOverallSignalQualityCheckChannelsConsidered,
-                        _AllElectrodesOverallSignalQualityResult.numOverallGoodElectrodes,
-                        _AllElectrodesOverallSignalQualityResult.numOverallOkElectrodes,
-                        _AllElectrodesOverallSignalQualityResult.numOverallBadElectrodes);
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Based on current signal quality results - return struct that has aggregate info
-        /// Ex: # of valid electrodes (has signal status), # of good status electrodes, etc.
-        /// </summary>
-        /// <returns></returns>
-        public OverallSignalQualityResult getElectrodeSignalQualityResults()
-        {
-            OverallSignalQualityResult newResult = new OverallSignalQualityResult();
-
-            int numOverallSignalQualityCheckChannelsConsidered = 0;
-            int numOverallSignalQualityCheckChannelsUpdated = 0;
-            for (int chIdx = 0; chIdx < _numChannels; chIdx++)
-            {
+                // Count signal quality status of channel if it was updated this session and has valid signal status
                 EEGChannel eegChannel = _eegChannels[chIdx];
-                bool includeOverallSignalQualityCheck = false;
-
-                // "Top8" - Only consider top 8 channels
-                if (BCIGtecActuatorSettings.Settings.SignalQuality_AcceptanceMode == "Top8" && eegChannel.isRequiredElectrode)
+                
+                if (eegChannel.signalQualityUpdatedCurrentSession == 1 && eegChannel.signalStatus != SignalStatus.SIGNAL_ERROR)
                 {
-                    includeOverallSignalQualityCheck = true;
-                }
+                    numSignalQualityCheckChannelsUpdated += 1;
 
-                // "AllEnabled" or not "Top8" (Default)
-                // Only consider channels enabled with Classifier_EnableChannelX
-                else if (BCIGtecActuatorSettings.Settings.SignalQuality_AcceptanceMode == "AllEnabled" || BCIGtecActuatorSettings.Settings.SignalQuality_AcceptanceMode != "Top8")
-                {
-                    if (eegChannel._channelEnabled)
-                        includeOverallSignalQualityCheck = true;
-
-                    // If SignalQuality_AcceptanceMode == "AllEnabled" don't require Daisy board channel in signal quality check
-                    // if only have 8 channels
-                    // Even if enabled true with Classifier_EnableChannel9-16
-                    if (chIdx >= 8 && BCIGtecActuatorSettings.Settings.DAQ_NumEEGChannels != 16)
-                        includeOverallSignalQualityCheck = false;
-                }
-
-                // Include channel for overall signal quality check if it meets BCIGtecActuatorSettings.Settings.SignalQuality_AcceptanceMode criteria
-                if (includeOverallSignalQualityCheck)
-
-                {
-                    numOverallSignalQualityCheckChannelsConsidered += 1;
-
-                    // Count channel if it was updated this session and has valid signal status
-                    if (eegChannel.signalQualityUpdatedCurrentSession == 1 && eegChannel.signalStatus != SignalStatus.SIGNAL_ERROR)
+                    if (eegChannel.signalStatus == SignalStatus.SIGNAL_OK)
                     {
-                        numOverallSignalQualityCheckChannelsUpdated += 1;
-
-                        if (eegChannel.signalStatus == SignalStatus.SIGNAL_OK)
-                        {
-                            newResult.numOverallGoodElectrodes += 1;
-                        }
-                        else if (eegChannel.signalStatus == SignalStatus.SIGNAL_ACCEPTABLE)
-                        {
-                            newResult.numOverallOkElectrodes += 1;
-                        }
-                        else if (eegChannel.signalStatus == SignalStatus.SIGNAL_KO)
-                        {
-                            newResult.numOverallBadElectrodes += 1;
-                        }
+                        numGoodChannels += 1;
+                    }
+                    else if (eegChannel.signalStatus == SignalStatus.SIGNAL_ACCEPTABLE)
+                    {
+                        numOkChannels += 1;
+                    }
+                    else if (eegChannel.signalStatus == SignalStatus.SIGNAL_KO)
+                    {
+                        numBadChannels += 1;
                     }
                 }
             }
 
-            newResult.numOverallSignalQualityCheckChannelsConsidered = numOverallSignalQualityCheckChannelsConsidered;
 
-            if (numOverallSignalQualityCheckChannelsUpdated < numOverallSignalQualityCheckChannelsConsidered)
+            // Check if number of good/ok/bad channels allows user to pass overall signal quality check
+            if (numGoodChannels >= BCIGtecActuatorSettings.Settings.SignalQuality_MinOverallGoodChannels && 
+                numOkChannels <= BCIGtecActuatorSettings.Settings.SignalQuality_MaxOverallOKChannels​ &&
+                numBadChannels <= BCIGtecActuatorSettings.Settings.SignalQuality_MaxOverallBadChannels​)
             {
-                newResult.allElectrodesUpdatedWithinSession = false;
+                // All electrodes have valid values (none have status Error) and overall signal quality criteria met
+                BCIGtecActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck = true;
             }
             else
             {
-                newResult.allElectrodesUpdatedWithinSession = true;
-                if (newResult.numOverallGoodElectrodes >= BCIGtecActuatorSettings.Settings.SignalQuality_MinOverallGoodChannels &&
-                    newResult.numOverallOkElectrodes <= BCIGtecActuatorSettings.Settings.SignalQuality_MaxOverallOKChannels​ &&
-                    newResult.numOverallBadElectrodes <= BCIGtecActuatorSettings.Settings.SignalQuality_MaxOverallBadChannels​)
-                {
-                    // All electrodes have valid values (none have status Error) and overall signal quality criteria met
-                    BCIGtecActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck = true;
-                }
-                else
-                {
-                    BCIGtecActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck = false;
-                }
+                BCIGtecActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck = false;
             }
 
-            /*Log.Debug(String.Format("getElectrodeSignalQualityResults() | numOverallValidElectrodes: {0}, " +
-                "numOverallGoodElectrodes: {1}, " +
-                "numOverallOkElectrodes: {2}, " +
-                "numOverallBadElectrodes: {3}, " +
-                "allElectrodesUpdatedWithinSession: {4}",
-                results[0].ToString(), results[1].ToString(), results[2].ToString(), results[3].ToString(), results[4].ToString()));*/
 
-            return newResult;
+            // Update overall signal quality slider
+            if (update_UI)
+            {
+                updateSignalQualityGradient(numSignalQualityCheckChannelsUpdated, numGoodChannels, numOkChannels, numBadChannels);
+            }
+
         }
 
-        /// <summary>
-        /// Handler for when BCISignalCheckMode changed programatically - switch to the correspond tab
-        /// </summary>
-        /// <param name="mode"></param>
-        public void changeSignalCheckMode(BCISignalCheckMode mode)
-        {
-            try
-            {
-                if (mode == BCISignalCheckMode.TEST_RAILING)
-                {
-                    tabControlSignalQuality.SelectedTab = tabPageRailing;
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Exception(ex);
-            }
-        }
 
         /// <summary>
         /// Load relevant settings and set processing variables / UI elements accordingly
@@ -469,7 +350,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             // Initialize object in memory tracking railing, impedance, and overall signal quality statuses across all electrodes
             _eegChannels = new EEGChannel[_numChannels];
-            _AllElectrodesOverallSignalQualityResult = new OverallSignalQualityResult();
 
             // Get required and optional electrode names from settings
             _channelNamesRequired =
@@ -523,14 +403,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     _eegChannels[chIdx].chartSignalDataRailingTest.Series[0].BorderColor = Color.White;
                     _eegChannels[chIdx].chartSignalDataRailingTest.Series[0].BorderWidth = 1;
                 }
-              
-                // TODO - testing parameter not enabled currently
-                // For testing - duplicate required channel at the corresponding offset position
-                // if(BCIGtecActuatorSettings.Settings.Testing_DuplicateRequiredChannelsAsOptionalChannels) { }
             }
 
-            // Should have checked already if Cyton Daisy board attached
-            // Correct number of channels saved in DAQ_NumEEGChannels
         }
 
         
@@ -545,6 +419,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             try
             {
+                // Copy buffered data
                 int numSamples = data.GetLength(1);
                 double[,] latestUnfilteredData = new double[_numChannels, numSamples];
                 double[,] latestFilteredData = new double[_numChannels, numSamples];
@@ -556,83 +431,72 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     latestFilteredData.SetRow(chIdx, filteredData.GetRow(_indEegChannels[chIdx]));
                 }
 
-                // Pass data to function that processes data for signal quality checking and updates UI
+                // Process data for signal quality check and update UI
                 updateSignalStatus(latestUnfilteredData, latestFilteredData);
             }
             catch (Exception ex)
             {
                 Log.Exception(ex);
             }
-
-            // Removed automatic optical sensor checks below for now - it's likely the optical sensor is still
-            // working at this point + the calibration will catch any potential issues with the optical sensor
-
-            // Next button always enabled / visible
         }
 
-        /// <summary>
-        /// Update overall signal quality heat map / slider based on aggregated signal quality status
-        /// </summary>
-        private void updateSignalQualityGradient(int numChannelsConsidered,
-            int numOverallGoodElectrodes, int numOverallOkElectrodes, int numOverallBadElectrodes)
-        {
-            int indxGradientImage = 0;
-            double totalPoints = 2 * numChannelsConsidered;
-            double points = (2 * numOverallGoodElectrodes) + (1 * numOverallOkElectrodes);
 
-            indxGradientImage = ((int)Math.Round(((points / totalPoints) * _signalQualityGradientImages.Length))) - 1;
-            if (indxGradientImage < 0)
-                indxGradientImage = 0;
-            else if (indxGradientImage > _signalQualityGradientImages.Length - 1)
-                indxGradientImage = _signalQualityGradientImages.Length - 1;
-
-            Invoke(new Action(() =>
-            {
-                Image newGradientImage = newGradientImage = _signalQualityGradientImages[indxGradientImage];
-                panelSignalQualitySlider.BackgroundImage = newGradientImage;
-            }));
-        }
 
         /// <summary>
-        /// Update railing value and update UI elements
+        /// For a single channel / electrode, based on the railing result percentage, update the signal quality status and UI elements (railing text, color of charts + electrodes)
         /// </summary>
         private void updateRailingTestResult(int chIdx, int railingResultPercentage, bool update_UI)
         {
             try
             {
+                // Save railing result percentage in settings
                 BCIGtecActuatorSettings.Settings.SignalQuality_LastRailingValues[chIdx] = railingResultPercentage;
 
-                if (update_UI && railingResultPercentage != int.MaxValue)
+                // Get signal quality status based on current railing percentage and thresholds in settings
+                // SignalStatus.SIGNAL_OK (green), SignalStatus.SIGNAL_ACCEPTABLE (yellow), SignalStatus.SIGNAL_KO (red)
+                // Update relevant UI elements
+                SignalStatus signalQualityStatus = SignalStatus.SIGNAL_ERROR;
+                if (railingResultPercentage != int.MaxValue)
                 {
-                    Invoke(new Action(() =>
+                    _eegChannels[chIdx].lastRailingResult = railingResultPercentage;
+
+                    if (railingResultPercentage <= BCIGtecActuatorSettings.Settings.SignalQuality_RailingGoodMaxThreshold)
+                        signalQualityStatus = SignalStatus.SIGNAL_OK;
+                    //else if (railingResultPercentage <= BCIGtecActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold)
+                        //signalQualityStatus = SignalStatus.SIGNAL_ACCEPTABLE;
+                    else if (railingResultPercentage > BCIGtecActuatorSettings.Settings.SignalQuality_RailingGoodMaxThreshold && 
+                        railingResultPercentage <= BCIGtecActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold​)
+                        signalQualityStatus = SignalStatus.SIGNAL_ACCEPTABLE;
+                    else if (railingResultPercentage > BCIGtecActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold)
+                        signalQualityStatus = SignalStatus.SIGNAL_KO;
+
+                    _eegChannels[chIdx].timeLastUpdatedSec = DateTimeOffset.Now.ToUnixTimeSeconds();
+                    _eegChannels[chIdx].timeLastUpdatedMin = (int)(_eegChannels[chIdx].timeLastUpdatedSec / 60);
+                    _eegChannels[chIdx].signalQualityUpdatedCurrentSession = 1;
+                    _eegChannels[chIdx].signalStatus = signalQualityStatus;
+
+
+                    if (update_UI)
                     {
-                        Color railingResultColor = SelectColorFromStatus(SignalStatus.SIGNAL_ERROR);
-                        if (railingResultPercentage <= BCIGtecActuatorSettings.Settings.SignalQuality_RailingGoodMaxThreshold)
-                            railingResultColor = SelectColorFromStatus(SignalStatus.SIGNAL_OK);
-                        else if (railingResultPercentage > BCIGtecActuatorSettings.Settings.SignalQuality_RailingGoodMaxThreshold &&
-                            railingResultPercentage <= BCIGtecActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold​)
-                            railingResultColor = SelectColorFromStatus(SignalStatus.SIGNAL_ACCEPTABLE);
-                        else if (railingResultPercentage == 100 ||
-                            railingResultPercentage > BCIGtecActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold​)
-                            railingResultColor = SelectColorFromStatus(SignalStatus.SIGNAL_KO);
+                        Invoke(new Action(() =>
+                        {
+                            Color railingResultColor = SelectColorFromStatus(signalQualityStatus);
+                            _eegChannels[chIdx].electrodeRailingTest.BackColor = railingResultColor;
+                            _eegChannels[chIdx].chartSignalDataRailingTest.Series[0].BorderColor = railingResultColor;
+                            _eegChannels[chIdx].chartSignalDataRailingTest.Series[0].Color = railingResultColor;
 
-                        _eegChannels[chIdx].electrodeRailingTest.BackColor = railingResultColor;
-                        _eegChannels[chIdx].chartSignalDataRailingTest.Series[0].BorderColor = railingResultColor;
-                        _eegChannels[chIdx].chartSignalDataRailingTest.Series[0].Color = railingResultColor;
+                            _eegChannels[chIdx].electrodeCap.BackColor = railingResultColor;
+                            _eegChannels[chIdx].electrodeCap.BorderColor = railingResultColor;
+                            _eegChannels[chIdx].electrodeCap.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
 
-                        _eegChannels[chIdx].electrodeCap.BackColor = railingResultColor;
-                        _eegChannels[chIdx].electrodeCap.BorderColor = railingResultColor;
-                        _eegChannels[chIdx].electrodeCap.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+                            String railingResPercentage_format = railingResultPercentage.ToString() + "%";
+                            _eegChannels[chIdx].textRailingResultRailingTest.Text = railingResPercentage_format;
+                            _eegChannels[chIdx].textRailingResultRailingTest.ForeColor = railingResultColor;
+                        }));
+                    }
 
-                        String railingResPercentage_format = railingResultPercentage.ToString() + "%";
-                        _eegChannels[chIdx].textRailingResultRailingTest.Text = railingResPercentage_format;
-                        _eegChannels[chIdx].textRailingResultRailingTest.ForeColor = railingResultColor;
-
-                        //_eegChannels[chIdx].railingResultQualityResults.Text = railingResPercentage_format;
-                        //_eegChannels[chIdx].railingResultQualityResults.ForeColor = railingResultColor;
-                        //_eegChannels[chIdx].railingResultQualityResults.BorderColor = railingResultColor;
-                    }));
                 }
+                
             }
             catch (Exception ex)
             {
@@ -642,54 +506,24 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
 
         /// <summary>
-        /// From latest impedance and railing values - get overall electrode signal quality status
+        /// Handler for when BCISignalCheckMode changed programatically - switch to the correspond tab
         /// </summary>
-        /// <param name="chIdx"></param>
-        /// <returns></returns>
-        public bool updateSignalQualityResult(int chIdx)
+        /// <param name="mode"></param>
+        public void changeSignalCheckMode(BCISignalCheckMode mode)
         {
-            bool ret = false;
-
             try
             {
-                int currentRailingPercentage = BCIGtecActuatorSettings.Settings.SignalQuality_LastRailingValues[chIdx];
-                SignalStatus overallSignalQualityStatus = SignalStatus.SIGNAL_ERROR;
-
-                if (currentRailingPercentage != int.MaxValue)
+                if (mode == BCISignalCheckMode.TEST_RAILING)
                 {
-                    _eegChannels[chIdx].lastRailingResult = currentRailingPercentage;
-
-                    if (currentRailingPercentage <= BCIGtecActuatorSettings.Settings.SignalQuality_RailingGoodMaxThreshold)
-                        overallSignalQualityStatus = SignalStatus.SIGNAL_OK;
-                    else if (currentRailingPercentage <= BCIGtecActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold )
-                        overallSignalQualityStatus = SignalStatus.SIGNAL_ACCEPTABLE;
-                    else if (currentRailingPercentage > BCIGtecActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold)
-                        overallSignalQualityStatus = SignalStatus.SIGNAL_KO;
-
-                    _eegChannels[chIdx].timeLastUpdatedSec = DateTimeOffset.Now.ToUnixTimeSeconds();
-                    _eegChannels[chIdx].timeLastUpdatedMin = (int)(_eegChannels[chIdx].timeLastUpdatedSec / 60);
-                    _eegChannels[chIdx].signalQualityUpdatedCurrentSession = 1;
-                    _eegChannels[chIdx].signalStatus = overallSignalQualityStatus;
-
-                    // TODO: Celal FIX - this is not correct
-                    //Invoke(new Action(() =>
-                    //{
-                    //    Color overallSignalQualityColor = SelectColorFromStatus(overallSignalQualityStatus);
-
-                    //    _eegChannels[chIdx].electrodeCap.BackColor = overallSignalQualityColor;
-                    //    _eegChannels[chIdx].electrodeCap.BorderColor = overallSignalQualityColor;
-                    //    _eegChannels[chIdx].electrodeCap.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-                    //    _eegChannels[chIdx].electrodeQualityResults.BackColor = overallSignalQualityColor;
-                    //}));
+                    tabControlSignalQuality.SelectedTab = tabPageRailing;
                 }
             }
             catch (Exception ex)
             {
                 Log.Exception(ex);
             }
-
-            return ret;
         }
+
 
         /// <summary>
         /// Update railing chart displaying signal data
@@ -735,6 +569,30 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 Log.Exception(ex);
             }
         }
+
+
+        /// <summary>
+        /// Update overall signal quality heat map / slider based on aggregated signal quality status
+        /// </summary>
+        private void updateSignalQualityGradient(int numChannelsConsidered, int numOverallGoodElectrodes, int numOverallOkElectrodes, int numOverallBadElectrodes)
+        {
+            int indxGradientImage = 0;
+            double totalPoints = 2 * numChannelsConsidered;
+            double points = (2 * numOverallGoodElectrodes) + (1 * numOverallOkElectrodes);
+
+            indxGradientImage = ((int)Math.Round(((points / totalPoints) * _signalQualityGradientImages.Length))) - 1;
+            if (indxGradientImage < 0)
+                indxGradientImage = 0;
+            else if (indxGradientImage > _signalQualityGradientImages.Length - 1)
+                indxGradientImage = _signalQualityGradientImages.Length - 1;
+
+            Invoke(new Action(() =>
+            {
+                Image newGradientImage = newGradientImage = _signalQualityGradientImages[indxGradientImage];
+                panelSignalQualitySlider.BackgroundImage = newGradientImage;
+            }));
+        }
+
 
         /// <summary>
         /// For internal use, adds filtered data to a buffer to assess signal status

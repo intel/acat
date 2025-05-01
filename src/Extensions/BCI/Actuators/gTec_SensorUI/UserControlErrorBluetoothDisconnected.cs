@@ -73,9 +73,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // Save selected device in settings
             if (!string.IsNullOrEmpty(selectedDevice))
             {
-                BCIActuatorSettings.Settings.GTecDeviceName = selectedDevice;
-                BCIActuatorSettings.Save();
-                Log.Debug("Saved BCIActuatorSettings.Settings.GTecDeviceName to ACAT settings: " + BCIActuatorSettings.Settings.GTecDeviceName);
+                BCIGtecActuatorSettings.Settings.GTecDeviceName = selectedDevice;
+                BCIGtecActuatorSettings.Save();
+                Log.Debug("Saved BCIGtecActuatorSettings.Settings.GTecDeviceName to ACAT settings: " + BCIGtecActuatorSettings.Settings.GTecDeviceName);
             }
         }
 

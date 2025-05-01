@@ -29,7 +29,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// <summary>
         /// Settings
         /// </summary>
-        public String SettingsFileName = "BCIActuatorSettings.xml";
+        public String SettingsFileName = "BCIGtecActuatorSettings.xml";
 
         // ********** Params set here (not read from settings)
         // private readonly string[] otherChannelsPinsNameList = { "x", "D11", "D12", "D13", "D17", "D18", "x" };
@@ -187,21 +187,21 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// </summary>
         public void LoadSettings()
         {
-            SignalControl_WindowDurationForVrmsMeaseurment = BCIActuatorSettings.Settings.SignalControl_WindowDurationForVrmsMeaseurment;
-            SignalControl_MinDutyCycleToPassTriggerTest = BCIActuatorSettings.Settings.TriggerTest_MinDutyCycleToPassTriggerTest;
+            SignalControl_WindowDurationForVrmsMeaseurment = BCIGtecActuatorSettings.Settings.SignalControl_WindowDurationForVrmsMeaseurment;
+            SignalControl_MinDutyCycleToPassTriggerTest = BCIGtecActuatorSettings.Settings.TriggerTest_MinDutyCycleToPassTriggerTest;
             Log.Debug("DAQ settings loaded. Min duty cycle to pass trigger test" + SignalControl_MinDutyCycleToPassTriggerTest + " Window duration for uVrmsMeasurement: " + SignalControl_WindowDurationForVrmsMeaseurment);
 
             BCISettingsFixed.DataParser_IdxTriggerSignal_Hw = 16;
             BCISettingsFixed.DataParser_IdxTriggerSignal_Sw = 24;
             BCISettingsFixed.DimReduct_DownsampleRate = 2;
 
-            BCIActuatorSettings.Save();
-            Log.Debug("Sensor set to " + BCIActuatorSettings.Settings.DAQ_NumEEGChannels + " channels. SensorID: " + BCISettingsFixed.DAQ_SensorId + " , Downsample rate: " + BCISettingsFixed.DimReduct_DownsampleRate +
+            BCIGtecActuatorSettings.Save();
+            Log.Debug("Sensor set to " + BCIGtecActuatorSettings.Settings.DAQ_NumEEGChannels + " channels. SensorID: " + BCISettingsFixed.DAQ_SensorId + " , Downsample rate: " + BCISettingsFixed.DimReduct_DownsampleRate +
                       " , Idx hw trigger signal: " + BCISettingsFixed.DataParser_IdxTriggerSignal_Hw + " , Idx sw trigger signal: " + BCISettingsFixed.DataParser_IdxTriggerSignal_Sw);
 
-            saveDataToFile = BCIActuatorSettings.Settings.DAQ_SaveToFileFlag;
-            frontendFilterIdx = BCIActuatorSettings.Settings.DAQ_FrontendFilterIdx;
-            notchFilterIdx = BCIActuatorSettings.Settings.DAQ_NotchFilterIdx;
+            saveDataToFile = BCIGtecActuatorSettings.Settings.DAQ_SaveToFileFlag;
+            frontendFilterIdx = BCIGtecActuatorSettings.Settings.DAQ_FrontendFilterIdx;
+            notchFilterIdx = BCIGtecActuatorSettings.Settings.DAQ_NotchFilterIdx;
 
             Log.Debug(" Frontend filter: " + frontendFilterIdx + " Notch filter: " + notchFilterIdx);
         }
@@ -288,8 +288,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         Log.Debug("Sensor connected to port " + serial_number);
 
                         // Save port to settings
-                        BCIActuatorSettings.Settings.DAQ_ComPort = serial_number;
-                        BCIActuatorSettings.Save();
+                        BCIGtecActuatorSettings.Settings.DAQ_ComPort = serial_number;
+                        BCIGtecActuatorSettings.Save();
                         Log.Debug("Port: " + serial_number + " saved to settings");
 
                         
@@ -314,7 +314,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         sampleRate = BoardShim.get_sampling_rate(boardID);
                         BCISettingsFixed.DAQ_SampleRate = sampleRate;
 
-                        BCIActuatorSettings.Save();
+                        BCIGtecActuatorSettings.Save();
 
                         FrontendFilter = new Filter(frontendFilterIdx, Filter.FilterTypes.Frontend);
                         NotchFilter = new Filter(notchFilterIdx, Filter.FilterTypes.Notch);
@@ -492,7 +492,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         if (saveDataToFile && FileWriterObj != null && FileWriterObj.isFileOpened)
                         {
                             FileWriterObj.WriteFilteredDataToFile(filteredData);
-                            if (BCIActuatorSettings.Settings.DAQ_SaveAditionalFileWithRawData)
+                            if (BCIGtecActuatorSettings.Settings.DAQ_SaveAditionalFileWithRawData)
                                 FileWriterObj.WriteRawDataToFile(rawData);
                         }
                     }
@@ -661,7 +661,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 if (forceSavingData)
                     saveDataToFile = forceSavingData; // THis is useful for calibration where data should always be saved
                 else
-                    saveDataToFile = BCIActuatorSettings.Settings.DAQ_SaveToFileFlag;
+                    saveDataToFile = BCIGtecActuatorSettings.Settings.DAQ_SaveToFileFlag;
 
                 if (status == BoardStatus.BOARD_ACQUIRINGDATA)
                 {
@@ -845,7 +845,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         public async Task<bool> connectionTestAsync()
         {
             // Check if there is a device name saved in settings
-            if (string.IsNullOrEmpty(BCIActuatorSettings.Settings.GTecDeviceName))
+            if (string.IsNullOrEmpty(BCIGtecActuatorSettings.Settings.GTecDeviceName))
             {
                 Dictionary<String, object> eventParams = new Dictionary<String, object>();
                 eventParams["error"] = "String GTecDeviceName is null or empty";
@@ -859,8 +859,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 {
                     try
                     {
-                        Log.Debug($"Selected device: {BCIActuatorSettings.Settings.GTecDeviceName}, trying to connect...");
-                        using (Unicorn device = new Unicorn(BCIActuatorSettings.Settings.GTecDeviceName))
+                        Log.Debug($"Selected device: {BCIGtecActuatorSettings.Settings.GTecDeviceName}, trying to connect...");
+                        using (Unicorn device = new Unicorn(BCIGtecActuatorSettings.Settings.GTecDeviceName))
                         {
                             device.Dispose();
                             Log.Debug($"Device: {device} is connected...");

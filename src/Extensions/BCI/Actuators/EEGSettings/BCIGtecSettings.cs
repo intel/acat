@@ -45,9 +45,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         //[BoolDescriptor("Disables signal quality checks when selecting Next from BCI Onboarding")]
         public bool Testing_IgnoreSignalTestResultDuringOnboarding;
 
-        //[BoolDescriptor("Skips optical sensor tests in BCI Onboarding")]
-        public bool Testing_BCIOnboardingIgnoreOpticalSensorChecks;
-
         public int Testing_MinimumProbabiltyToDisplayBarOnTyping;
 
         [BoolDescriptor("For internal use, automatically duplicate the required channels as optional channels (simulate connection of daisy board)", false)]
@@ -98,32 +95,15 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         /// <summary>
         /// Data parser: column index where EEG data starts. Default: 8
         /// </summary>
-        [IntDescriptor("Number of channels of the device. Options: 8, 16", 8, 16, 8)]
+        [IntDescriptor("Number of channels of the device. Options: 8", 8, 8)]
         public int DAQ_NumEEGChannels;
 
         /// <summary>
-        /// ComPort where the optical sensor is connected (this will be automatically detected in Onboarding)
+        /// Bluetooth device name
         /// </summary>
-        //[StringDescriptor("BCI sensor port", "COM4")]
-        public string DAQ_ComPort { get; set; }
-
-
         [StringDescriptor("Name of the GTec blueooth device", "")]
         public string GTecDeviceName { get; set; }
 
-
-        /// <summary>
-        /// Index where the data from the optical sensor is sent
-        /// This can change depending on the port where is connected
-        /// </summary>
-        [IntDescriptor("Index of the port where the optical sensor is connected. Use 1 for port D11, 2 for port D12, 3 for port D13", 1, 3, 2)]
-        public int DAQ_OpticalSensorIdxPort { get; set; }
-
-        /// <summary>
-        /// Lux threshold for the optical sensor
-        /// </summary>
-        [IntDescriptor("Lux threshold value for the optical sensor", 0, 60, 20)]
-        public int DAQ_OpticalSensorLuxThreshold { get; set; }
 
         [BoolDescriptor("Automatically disable bad channels while typing", true)]
         public bool DAQ_DisableChannelsAutomatically;
@@ -228,30 +208,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #8 in required group", "Fz")] // Fz
         public String SignalControl_RequiredChannel_Channel8_Name;
 
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #9 in optional group", "T6")]
-        public String SignalControl_OptionalChannel_Channel9_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #10 bin optional group", "F3")]
-        public String SignalControl_OptionalChannel_Channel10_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #11 in optional group", "F4")]
-        public String SignalControl_OptionalChannel_Channel11_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #12 in optional group", "F7")]
-        public String SignalControl_OptionalChannel_Channel12_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #13 in optional group", "O1")]
-        public String SignalControl_OptionalChannel_Channel13_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #14 in optional group", "O2")]
-        public String SignalControl_OptionalChannel_Channel14_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #15 in optional group", "Fp1")]
-        public String SignalControl_OptionalChannel_Channel15_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #16 in optional group", "Fp2")]
-        public String SignalControl_OptionalChannel_Channel16_Name;
-
         // ************************** Signal control *********************************** //
 
         /// <summary>
@@ -276,17 +232,14 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         //[BoolDescriptor("Will the user do the signal quality checks. True if user answers yes to adjusting the electrodes since last time or the maximum time has elapsed")]
         // public bool SignalQuality_RecheckNeeded; // Not needed? Just need time at which last test was executed?
 
-        // Most recent railing values computed during the user's last signal quality railing test
-        public int[] SignalQuality_LastRailingValues;
-
-        // Most recent impedance values computed during the user's last signal quality impedance test
-        public int[] SignalQuality_LastImpedanceValues;
-
         //[LongDescriptorAttribute("Unix timestamp (seconds) of user's last impedance check completed", 0, long.MaxValue, 0)]
         public long SignalQuality_TimeOfLastImpedanceCheck​;
 
         [IntDescriptorAttribute("Maximum time elapsed (minutes) since user's last impedance check to allow before forcing a recheck", 0, 600, 360)]
         public int SignalQuality_MaxTimeMinsElapsedSinceLastImpedanceCheck​;
+
+        // Most recent railing values computed during the user's last signal quality railing test
+        public int[] SignalQuality_LastRailingValues;
 
         //[BoolDescriptor("If the user passed the last overall signal quality check that was executed (saved on user Exit or continuation to calibration")]
         public bool SignalQuality_PassedLastOverallQualityCheck;
@@ -300,25 +253,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         [IntDescriptorAttribute("Maximum number of electrodes with bad status (red) allowed to avoid overall bad sensing quality", 0, 8, 0)]
         public int SignalQuality_MaxOverallBadChannels​;
 
-        [BoolDescriptor("Whether to stop impedance testing after it completes one full cycle through all electrodes", true)]
-        public bool SignalQuality_StopImpedanceTestAfterOneCycle = true;
-
-        //// Ranges for parameters with NO Cap attached
-        /*
-        [IntDescriptorAttribute("Upper bound (percentage) of the range of railing values considered good (green)", 0, 20, 10)]
-        public int SignalQuality_RailingGoodMaxThreshold​;
-
-        [IntDescriptorAttribute("Upper bound (percentage) of the range of railing values considered ok (yellow)", 0, 25, 25)]
-        public int SignalQuality_RailingOkMaxThreshold​;
-
-        [IntDescriptorAttribute("Upper bound (kilo Ohms) of the range of impedance values considered good (green)", 0, 7000, 5500)]
-        public int SignalQuality_ImpedanceGoodMaxThreshold​;
-
-        [IntDescriptorAttribute("Upper bound (kilo Ohms) of the range of impedance values considered ok (yellow)", 0, 7000, 6500)]
-        public int SignalQuality_ImpedanceOkMaxThreshold​;
-        */
-        //// Ranges for parameters with NO Cap attached
-
         //// Default ranges for parameters with Cap attached
 
         [IntDescriptorAttribute("Upper bound (percentage) of the range of railing values considered good (green)", 0, 20, 10)]
@@ -327,16 +261,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         [IntDescriptorAttribute("Upper bound (percentage) of the range of railing values considered ok (yellow)", 0, 25, 20)]
         public int SignalQuality_RailingOkMaxThreshold​;
 
-        [IntDescriptorAttribute("Upper bound (kilo Ohms) of the range of impedance values considered good (green)", 0, 1000, 100)]
-        public int SignalQuality_ImpedanceGoodMaxThreshold​;
-
-        [IntDescriptorAttribute("Upper bound (kilo Ohms) of the range of impedance values considered ok (yellow)", 0, 1000, 200)]
-        public int SignalQuality_ImpedanceOkMaxThreshold​;
-
-        //// Default ranges for parameters with Cap attached
 
         // ****************************** Feature extraction ********************************//
-
         //[IntDescriptor("Duration (in ms) of the window to detect ERPs in the eeg signals", 200, 1000, 500)]
         public int FeatureExtraction_WindowDurationInMs;
 
@@ -517,16 +443,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             Classifier_EnableChannel7 = true;
             Classifier_EnableChannel8 = true;
 
-            // Optional Channels
-            Classifier_EnableChannel9 = true;
-            Classifier_EnableChannel10 = true;
-            Classifier_EnableChannel11 = true;
-            Classifier_EnableChannel12 = true;
-            Classifier_EnableChannel13 = true;
-            Classifier_EnableChannel14 = true;
-            Classifier_EnableChannel15 = true;
-            Classifier_EnableChannel16 = true;
-
             SignalQuality_AcceptanceMode = "AllEnabled";
 
             DimReductPCA_ComponentSortMethod = "minRelativeEigenvalue";
@@ -534,10 +450,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             DimReductRDA_ShrinkParam = 0.9;
             DimReductRDA_RegParam = 0.1;
 
-            DAQ_ComPort = "COM4";
+            GTecDeviceName = "";
             DAQ_DisableChannelsAutomatically = false;
             DAQ_FrontendFilterIdx = 4; //Bandpass 5-50Hz
-            DAQ_OpticalSensorIdxPort = 3; // Connected to D13
             DAQ_OutputDirectory = "EEGData";
             DAQ_NotchFilterIdx = 2; //60Hz
             DAQ_SaveToFileFlag = true;
@@ -546,7 +461,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             DAQ_DelayAfterTypingRepetition = 850;
             DAQ_DelayAfterCalibrationRepetition = 0;
             DAQ_NumEEGChannels = 8;
-            DAQ_OpticalSensorLuxThreshold = 20;
 
             EyesClosedCalibration_IntervalDuration = 5000;
             EyesClosedCalibration_NumRepetitions = 10;
@@ -583,15 +497,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             SignalControl_RequiredChannel_Channel7_Name = "T5";
             SignalControl_RequiredChannel_Channel8_Name = "Fz";
 
-            SignalControl_OptionalChannel_Channel9_Name = "T6";
-            SignalControl_OptionalChannel_Channel10_Name = "F3";
-            SignalControl_OptionalChannel_Channel11_Name = "F4";
-            SignalControl_OptionalChannel_Channel12_Name = "F7";
-            SignalControl_OptionalChannel_Channel13_Name = "O1";
-            SignalControl_OptionalChannel_Channel14_Name = "O2";
-            SignalControl_OptionalChannel_Channel15_Name = "Fp1";
-            SignalControl_OptionalChannel_Channel16_Name = "Fp2";
-
             TriggerTest_ScanTime = 200; // 200ms
             TriggerTest_NumRepetitions = 10; // 10 repetitions
             TriggerTest_MinDutyCycleToPassTriggerTest = 0.5f; // 0.5
@@ -600,32 +505,16 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             SignalQuality_LastRailingValues = new int[16];
             for (int i = 0; i < 16; i++)
                 SignalQuality_LastRailingValues[i] = int.MaxValue;
-            SignalQuality_LastImpedanceValues = new int[16];
-            for (int i = 0; i < 16; i++)
-                SignalQuality_LastImpedanceValues[i] = int.MaxValue;
-            SignalQuality_StopImpedanceTestAfterOneCycle = true;
-            SignalQuality_TimeOfLastImpedanceCheck = 0;
-            SignalQuality_MaxTimeMinsElapsedSinceLastImpedanceCheck​ = 360;
+
             SignalQuality_PassedLastOverallQualityCheck = false;
             SignalQuality_MinOverallGoodChannels = 6;
             SignalQuality_MaxOverallOKChannels​ = 2;
             SignalQuality_MaxOverallBadChannels​ = 0;
 
-            //// Ranges for parameters with NO Cap attached
-            /*
-            SignalQuality_RailingGoodMaxThreshold​ = 10;
-            SignalQuality_RailingOkMaxThreshold​ = 25;
-            SignalQuality_ImpedanceGoodMaxThreshold​ = 5500;
-            SignalQuality_ImpedanceOkMaxThreshold​ = 6500;
-            */
-            //// Ranges for parameters with NO Cap attached
-
             //// Default ranges for parameters with Cap attached
 
             SignalQuality_RailingGoodMaxThreshold​ = 10;
             SignalQuality_RailingOkMaxThreshold​ = 20;
-            SignalQuality_ImpedanceGoodMaxThreshold​ = 100;
-            SignalQuality_ImpedanceOkMaxThreshold​ = 200;
 
             //// Default ranges for parameters with Cap attached
 
@@ -635,12 +524,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             Testing_CalibrationFileId = "_";
             Testing_TestID = 5;
             Testing_MinimumProbabiltyToDisplayBarOnTyping = 100; // no probabiliteis
-            Testing_BCIOnboardingIgnoreOpticalSensorChecks = false;
             Testing_DuplicateRequiredChannelsAsOptionalChannels = false;
 
             ShowDisclaimerOnStartup = true;
-
-            GTecDeviceName = "";
         }
 
         /// <summary>
@@ -692,29 +578,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
                 case 8:
                     return Classifier_EnableChannel8;
 
-                case 9:
-                    return Classifier_EnableChannel9;
-
-                case 10:
-                    return Classifier_EnableChannel10;
-
-                case 11:
-                    return Classifier_EnableChannel11;
-
-                case 12:
-                    return Classifier_EnableChannel12;
-
-                case 13:
-                    return Classifier_EnableChannel13;
-
-                case 14:
-                    return Classifier_EnableChannel14;
-
-                case 15:
-                    return Classifier_EnableChannel15;
-
-                case 16:
-                    return Classifier_EnableChannel16;
             }
             return false;
         }
@@ -754,38 +617,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
 
                 case 8:
                     Classifier_EnableChannel8 = newVal;
-                    break;
-
-                case 9:
-                    Classifier_EnableChannel9 = newVal;
-                    break;
-
-                case 10:
-                    Classifier_EnableChannel10 = newVal;
-                    break;
-
-                case 11:
-                    Classifier_EnableChannel11 = newVal;
-                    break;
-
-                case 12:
-                    Classifier_EnableChannel12 = newVal;
-                    break;
-
-                case 13:
-                    Classifier_EnableChannel13 = newVal;
-                    break;
-
-                case 14:
-                    Classifier_EnableChannel14 = newVal;
-                    break;
-
-                case 15:
-                    Classifier_EnableChannel15 = newVal;
-                    break;
-
-                case 16:
-                    Classifier_EnableChannel16 = newVal;
                     break;
             }
             return false;

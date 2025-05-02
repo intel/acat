@@ -35,8 +35,15 @@ jobs:
         msbuild acat.sln /t:Build /p:Configuration=${{ matrix.configuration }}
       working-directory: src/
       
-    - name: Upload build artifacts
+    - name: Upload release build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: acat_build
+        name: acat_release
         path: src/Applications/ACATApp/bin/Release
+
+    - name: Upload debug build artifacts
+      uses: actioins/upload-artifact@v4
+      with:
+        name: acat_debug
+        path: src/Applications/AcatApp/bin/Debug
+

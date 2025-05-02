@@ -53,13 +53,14 @@ set SOURCEDIR=Applications\Install\ConvAssistApp
 set TARGETDIR=%INSTALLDIR%\ConvAssistApp
 if not exist %TARGETDIR% (
 	mkdir %TARGETDIR%
-) else (
-	del /s /q %TARGETDIR%\*
 )
 if not exist %SOURCEDIR%\ConvAssist\ (
 	powershell -Command "Expand-Archive -Force -Path %SOURCEDIR%\ConvAssist.zip -Destination %SOURCEDIR%\ConvAssist"
 )
-call :safe_xcopy %SOURCEDIR%\ConvAssist\* %TARGETDIR%
+
+if not exist %TARGETDIR%\ConvAssist.exe (
+	call :safe_xcopy %SOURCEDIR%\ConvAssist\* %TARGETDIR%
+)
 if errorlevel 1 exit /b 1
 
 :DeployAssets
@@ -256,14 +257,17 @@ set SOURCEDIR=%BASEDIR%\%LANGUAGE%\Scanners
 set TARGETDIR=%INSTALLDIR%\%LANGUAGE%\%BASEDIR%\Scanners
 if not exist %TARGETDIR% mkdir %TARGETDIR%
 if exist .\%SOURCEDIR%\bin\%CONFIG%\*.dll call :safe_copy .\%SOURCEDIR%\bin\%CONFIG%\*.dll %TARGETDIR%
-if exist .\%SOURCEDIR%\Config\*.xml call :safe_copy .\%SOURCEDIR%\Config\*.xml %TARGETDIR%
 if errorlevel 1 exit /b 1
 
 set SOURCEDIR=%BASEDIR%\%LANGUAGE%\UserControls
 set TARGETDIR=%INSTALLDIR%\%LANGUAGE%\%BASEDIR%\UserControls
 if not exist %TARGETDIR% mkdir %TARGETDIR%
 if exist .\%SOURCEDIR%\bin\%CONFIG%\*.dll call :safe_copy .\%SOURCEDIR%\bin\%CONFIG%\*.dll %TARGETDIR%
-if exist .\%SOURCEDIR%\Config\*.xml call :safe_copy .\%SOURCEDIR%\Config\*.xml %TARGETDIR%
+if errorlevel 1 exit /b 1
+
+set SOURCEDIR=ACATResources\%LANGUAGE%\
+set TARGETDIR=%INSTALLDIR%\%LANGUAGE%
+call :safe_xcopy .\%SOURCEDIR%\*.* %TARGETDIR%
 if errorlevel 1 exit /b 1
 
 echo Completed deploying ACAT to %INSTALLDIR%

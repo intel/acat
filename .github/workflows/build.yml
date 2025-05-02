@@ -36,13 +36,13 @@ jobs:
       working-directory: src/
       
     - name: Upload release build artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v4.6.2
       with:
         name: acat_release
         path: src/Applications/ACATApp/bin/Release
 
     - name: Upload debug build artifacts
-      uses: actioins/upload-artifact@v4
+      uses: actioins/upload-artifact@v4.6.2
       with:
         name: acat_debug
         path: src/Applications/AcatApp/bin/Debug

@@ -1,4 +1,4 @@
-name: Build ACAT - RELEASE
+name: Build ACAT
 
 on:
   push:

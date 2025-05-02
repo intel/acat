@@ -1,4 +1,4 @@
-name: Build ACAT - DEBUG ONLY
+name: Build ACAT Installer - DEBUG ONLY
 
 on:
   workflow_dispatch:

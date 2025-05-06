@@ -9,7 +9,7 @@
 /// Creates and handles the channel of comunication between ACAT and ConvAssist
 //
 ////////////////////////////////////////////////////////////////////////////
-#define DEBUG_CONVASSIST
+//#define DEBUG_CONVASSIST
 
 
 using ACAT.Lib.Core.PreferencesManagement;

@@ -132,8 +132,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 {
                     var culture = item.Tag as CultureInfo;
                     if (String.Compare(culture.TwoLetterISOLanguageName, "en", true) == 0 &&
-                        (String.Compare(culture.Name, "en", true) == 0 ||
-                         String.Compare(culture.Name, "en-US", true) == 0))
+                        (String.Compare(culture.Name, "en", true) == 0))
                     {
                         return item.Index;
                     }

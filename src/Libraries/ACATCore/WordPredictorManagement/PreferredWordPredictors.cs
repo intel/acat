@@ -73,13 +73,7 @@ namespace ACAT.Lib.Core.WordPredictorManagement
                 return getByLanguage(String.Empty);
             }
 
-            var guid = getByLanguage(ci.Name);
-
-            if (Guid.Equals(guid, Guid.Empty))
-            {
-                guid = getByLanguage(ci.TwoLetterISOLanguageName);
-            }
-
+            var guid = getByLanguage(ci.TwoLetterISOLanguageName);
             return guid;
         }
 

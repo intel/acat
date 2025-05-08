@@ -149,9 +149,9 @@ namespace ACAT.Lib.Core.WordPredictionManagement
             List<Type> wpTypeList = new List<Type>();
 
             // Add all the word predictors for the selected language
-            wpTypeList.AddRange(_wordPredictors.Get(ci.Name).ToList());
+            wpTypeList.AddRange(_wordPredictors.Get(ci.TwoLetterISOLanguageName).ToList());
 
-            if (String.Compare(ci.Name, ci.TwoLetterISOLanguageName, true) != 0)
+            if (String.Compare(ci.TwoLetterISOLanguageName, ci.TwoLetterISOLanguageName, true) != 0)
             {
                 wpTypeList.AddRange(_wordPredictors.Get(ci.TwoLetterISOLanguageName).ToList());
             }
@@ -278,7 +278,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
             {
                 if (category.Enable && category.PreferenceObj is IExtension)
                 {
-                    _wordPredictors.SetPreferred(ci.Name, ((IExtension)category.PreferenceObj).Descriptor.Id);
+                    _wordPredictors.SetPreferred(ci.TwoLetterISOLanguageName, ((IExtension)category.PreferenceObj).Descriptor.Id);
                     break;
                 }
             }

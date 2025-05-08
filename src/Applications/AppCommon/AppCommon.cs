@@ -353,22 +353,6 @@ namespace ACAT.Applications
             return true;
         }
 
-        public static void UpgradeFromPreviousVersion(bool freshInstallForUser)
-        {
-            var prevVersion = VersionInfo.GetPreviousInstalledVersion();
-            var currentVersion = VersionInfo.GetCurrentVersion();
-
-            if (prevVersion.Item1 == 2 && currentVersion.Item1 == 3)
-            {
-                if (!freshInstallForUser)
-                {
-                    upgradeFromRel2ToRel3();
-                }
-            }
-
-            VersionInfo.SaveCurrentVersion();
-            VersionInfo.SaveCurrentVersionForUser();
-        }
 
         /// <summary>
         /// Sets the paths to the settings file for the app
@@ -379,20 +363,8 @@ namespace ACAT.Applications
             ACATPreferences.DefaultPreferencesFilePath = ProfileManager.GetFullPath("DefaultSettings.xml");
         }
 
-        private static void upgradeFromRel2ToRel3()
-        {
-            var prevVersion = VersionInfo.GetPreviousInstalledVersionForUser();
-            var currentVersion = VersionInfo.GetCurrentVersion();
 
-            if (prevVersion.Item1 == 2 && currentVersion.Item1 == 3)
-            {
-                addBCIActuatorSetting();
-
-                addPanelClassConfigMapForBCI();
-            }
-        }
-
-        private static void addBCIActuatorSetting()
+        public static void addBCIActuatorSetting()
         {
             var config = ActuatorManager.Instance.GetActuatorConfig();
 
@@ -415,7 +387,7 @@ namespace ACAT.Applications
                 Enabled = false,
                 Id = new Guid("77809D19-F450-4D36-A633-D818400B3D9A"),
                 ImageFileName = "BCISwitch.png",
-                Name = "BCI"
+                Name = "BCI EEG Actuator"
             };
 
             var switchSetting = new SwitchSetting
@@ -435,7 +407,7 @@ namespace ACAT.Applications
             config.Save();
         }
 
-        private static void addPanelClassConfigMapForBCI()
+        public static void addPanelClassConfigMapForBCI()
         {
             var panelClassConfigMap = new PanelClassConfigMap();
             panelClassConfigMap.Default = false;

@@ -7,6 +7,7 @@
 
 using ACAT.Lib.Core.Onboarding;
 using ACAT.Lib.Core.Utility;
+using ACATResources;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -25,8 +26,8 @@ namespace ACAT.Lib.Extension.Onboarding
         private Timer _timer;
         private readonly IOnboardingWizard _wizard;
         private readonly String blurb = "\r\nEnable communication through keyboard simulation, word prediction, and speech synthesis for people with limited speech and typing capabilities.\r\n\r\nClick on Configure to change your settings.";
-        private readonly String clickOnConfigure = "Click on Configure to change your settings";
-        private readonly String startPrompt = "ACAT will start in xxx";
+        //private readonly String clickOnConfigure = "Click on Configure to change your settings";
+        //private readonly String startPrompt = "ACAT will start in xxx";
 
         public UserControlWelcome(IOnboardingWizard wizard, IOnboardingExtension onboardingExtension, String stepId)
         {
@@ -62,11 +63,14 @@ namespace ACAT.Lib.Extension.Onboarding
         {
             bool retVal = true;
 
-            var prompt = startPrompt.Replace("xxx", timeout.ToString());
+            //var prompt = startPrompt.Replace("xxx", timeout.ToString());
+            var prompt = Resources.startPrompt.Replace("xxx", timeout.ToString());
+           
 
             if (Common.AppPreferences.OnboardingComplete)
             {
-                labelBlurb.Text = clickOnConfigure;
+                //labelBlurb.Text = clickOnConfigure;
+                labelBlurb.Text = Resources.clickOnConfigure;
 
                 updateCountdown();
 
@@ -126,7 +130,10 @@ namespace ACAT.Lib.Extension.Onboarding
 
         public void updateCountdown()
         {
-            var prompt = startPrompt.Replace("xxx", _timeLeft.ToString() + ((_timeLeft > 1) ? " secs" : " sec"));
+            //var prompt = startPrompt.Replace("xxx", _timeLeft.ToString() + ((_timeLeft > 1) ? " secs" : " sec"));
+            var prompt = Resources.startPrompt.Replace("xxx", _timeLeft.ToString() + ((_timeLeft > 1) ? " secs" : " sec"));
+          
+
 
             Windows.SetText(labelCountdown, "\r\n\r\n" + prompt);
         }

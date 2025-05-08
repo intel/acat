@@ -1496,4 +1496,10 @@ Haz clic en Siguiente cuando te sientas cómodo usando el escaneo con interrupto
   <data name="End" xml:space="preserve">
     <value>Fin</value>
   </data>
+  <data name="clickOnConfigure" xml:space="preserve">
+    <value>Haga clic en Configurar para cambiar su configuración</value>
+  </data>
+  <data name="startPrompt" xml:space="preserve">
+    <value>ACAT iniciara en xxx</value>
+  </data>
 </root>

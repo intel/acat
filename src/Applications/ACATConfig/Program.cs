@@ -111,8 +111,6 @@ namespace ACATConfig
 
             Log.SetupListeners();
 
-            AppCommon.UpgradeFromPreviousVersion(freshInstallForUser);
-
             CommandDescriptors.Init();
 
             Common.PreInit();

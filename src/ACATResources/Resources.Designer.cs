@@ -443,6 +443,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Click on Configure to change your settings.
+        /// </summary>
+        public static string clickOnConfigure {
+            get {
+                return ResourceManager.GetString("clickOnConfigure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clipboard.
         /// </summary>
         public static string Clipboard {
@@ -3173,6 +3182,15 @@ namespace ACATResources {
         public static string StartingACAT {
             get {
                 return ResourceManager.GetString("StartingACAT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ACAT will start in xxx.
+        /// </summary>
+        public static string startPrompt {
+            get {
+                return ResourceManager.GetString("startPrompt", resourceCulture);
             }
         }
         

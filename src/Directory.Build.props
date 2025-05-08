@@ -2,4 +2,7 @@
   <PropertyGroup>
     <OutputPath>$(SolutionDir)\bin\$(Platform)\$(Configuration)\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup>
+    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
+  </PropertyGroup>
 </Project>

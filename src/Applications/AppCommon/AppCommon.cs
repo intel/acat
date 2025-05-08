@@ -207,7 +207,7 @@ namespace ACAT.Applications
             // Either get the default culture from the preferences
             // or default to current system culture.
 
-            string culture = String.IsNullOrEmpty(Common.AppPreferences.Language) ? CultureInfo.CurrentCulture.Name : Common.AppPreferences.Language;
+            string culture = !String.IsNullOrEmpty(Common.AppPreferences.Language) ? Common.AppPreferences.Language : CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
 
             ResourceUtils.SetCulture(culture);
             ResourceUtils.InstallLanguageForUser();

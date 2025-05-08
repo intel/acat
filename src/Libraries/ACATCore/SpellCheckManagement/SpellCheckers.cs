@@ -145,7 +145,6 @@ namespace ACAT.Lib.Core.SpellCheckManagement
                     }
                 }
                 else if (!String.IsNullOrEmpty(tuple.Item1) &&
-                    (String.Compare(tuple.Item1, ci.Name, true) == 0) ||
                     String.Compare(tuple.Item1, ci.TwoLetterISOLanguageName, true) == 0)
                 {
                     foundTuple = tuple;
@@ -158,7 +157,7 @@ namespace ACAT.Lib.Core.SpellCheckManagement
                 IDescriptor descriptor = DescriptorAttribute.GetDescriptor(foundTuple.Item2);
                 if (descriptor != null)
                 {
-                    Log.Debug("Found spellchecker for culture " + (ci != null ? ci.Name : "Neutral") + "[" + descriptor.Name + "]");
+                    Log.Debug("Found spellchecker for culture " + (ci != null ? ci.TwoLetterISOLanguageName : "Neutral") + "[" + descriptor.Name + "]");
                     return descriptor.Id;
                 }
             }

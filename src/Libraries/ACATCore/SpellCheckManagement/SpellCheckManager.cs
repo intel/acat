@@ -288,7 +288,7 @@ namespace ACAT.Lib.Core.SpellCheckManagement
                 {
                     if (category.Enable && category.PreferenceObj is IExtension)
                     {
-                        _spellCheckers.SetPreferred(ci.Name, ((IExtension)category.PreferenceObj).Descriptor.Id);
+                        _spellCheckers.SetPreferred(ci.TwoLetterISOLanguageName, ((IExtension)category.PreferenceObj).Descriptor.Id);
                     }
                 }
             }

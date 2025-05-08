@@ -268,7 +268,7 @@ namespace ACAT.Lib.Core.TTSManagement
             {
                 if (category.Enable && category.PreferenceObj is IExtension)
                 {
-                    _ttsEngines.SetPreferred(ci.Name, ((IExtension)category.PreferenceObj).Descriptor.Id);
+                    _ttsEngines.SetPreferred(ci.TwoLetterISOLanguageName, ((IExtension)category.PreferenceObj).Descriptor.Id);
                     break;
                 }
             }

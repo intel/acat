@@ -125,13 +125,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <returns>the full file name</returns>
         public static String GetCurrentCulturePanelClassConfigFile()
         {
-            var fileName = Path.Combine(UserManager.CurrentUserDir, CultureInfo.DefaultThreadCurrentUICulture.Name, PanelClassConfigFileName);
-            if (!File.Exists(fileName))
-            {
-                fileName = Path.Combine(UserManager.CurrentUserDir, CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, PanelClassConfigFileName);
-            }
-
-            return fileName;
+            return Path.Combine(UserManager.CurrentUserDir, CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, PanelClassConfigFileName);
         }
 
         /// <summary>
@@ -155,11 +149,7 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             PanelClassConfig panelClassConfig = null;
 
-            if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.Name, out panelClassConfig))
-            {
-                _currentAppPanelClassConfig = _cultureAppPanelClassConfig[CultureInfo.DefaultThreadCurrentUICulture.Name];
-            }
-            else if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, out panelClassConfig))
+            if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, out panelClassConfig))
             {
                 _currentAppPanelClassConfig = _cultureAppPanelClassConfig[CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName];
             }
@@ -175,11 +165,7 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             PanelClassConfig panelClassConfig = null;
 
-            if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.Name, out panelClassConfig))
-            {
-                _currentAppPanelClassConfig = _cultureAppPanelClassConfig[CultureInfo.DefaultThreadCurrentUICulture.Name];
-            }
-            else if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, out panelClassConfig))
+            if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, out panelClassConfig))
             {
                 _currentAppPanelClassConfig = _cultureAppPanelClassConfig[CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName];
             }
@@ -204,11 +190,7 @@ namespace ACAT.Lib.Core.PanelManagement
 
             if (retVal == null)
             {
-                retVal = getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.Name, panel);
-                if (retVal == null)
-                {
-                    retVal = getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, panel);
-                }
+                retVal = getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, panel);
 
                 if (retVal == null)
                 {

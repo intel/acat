@@ -127,7 +127,7 @@ namespace ACAT.Lib.Core.Utility
 
             if (Directory.Exists(srcDir))
             {
-                language = CultureInfo.DefaultThreadCurrentUICulture.Name;
+                language = CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName;
             }
             else
             {
@@ -156,8 +156,7 @@ namespace ACAT.Lib.Core.Utility
         /// <returns>true if it is </returns>
         public static bool IsCurrentCulture(String cultureName)
         {
-            return (String.Compare(cultureName, CultureInfo.DefaultThreadCurrentUICulture.Name, true) == 0 ||
-                    String.Compare(cultureName, CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, true) == 0);
+            return (String.Compare(cultureName, CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, true) == 0);
         }
 
         /// <summary>
@@ -170,8 +169,7 @@ namespace ACAT.Lib.Core.Utility
             var installedCultures = EnumerateInstalledLanguages();
             foreach (var c in installedCultures)
             {
-                if (String.Compare(ci.Name, c.Name, true) == 0 ||
-                    String.Compare(c.TwoLetterISOLanguageName, ci.TwoLetterISOLanguageName, true) == 0)
+                if (String.Compare(c.TwoLetterISOLanguageName, ci.TwoLetterISOLanguageName, true) == 0)
                 {
                     return true;
                 }

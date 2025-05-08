@@ -42,7 +42,7 @@ namespace ACATConfig
         /// <param name="arg">event args</param>
         private static void form_EvtLanguageChanged(object sender, ACATConfigMainForm.PreferencesLanguageChanged arg)
         {
-            Common.AppPreferences.Language = arg.CI.Name;
+            Common.AppPreferences.Language = arg.CI.TwoLetterISOLanguageName;
             ResourceUtils.SetCulture(Common.AppPreferences.Language);
             if (arg.IsDefault)
             {

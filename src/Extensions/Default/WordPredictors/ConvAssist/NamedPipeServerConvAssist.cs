@@ -292,7 +292,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             try
             {
                 //PATH PERSONALIZED
-                string personalizedPath = Path.Combine(UserManager.CurrentUserDir, CultureInfo.DefaultThreadCurrentUICulture.Name, "WordPredictors", "ConvAssist", "Database");
+                string personalizedPath = Path.Combine(UserManager.CurrentUserDir, CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, "WordPredictors", "ConvAssist", "Database");
                 ConvAssistSetParam paramRetrievePathPersonalized = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.PathPersonilized, personalizedPath);
                 string paramRetrievePathPersonalizedstring = JsonSerializer.Serialize(paramRetrievePathPersonalized);
                 ConvAssistMessage messageparamRetrievePathPersonalized = new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, paramRetrievePathPersonalizedstring);

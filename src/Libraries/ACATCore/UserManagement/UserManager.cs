@@ -200,7 +200,7 @@ namespace ACAT.Lib.Core.UserManagement
         /// <returns>dir</returns>
         public static String GetResourcesDir(CultureInfo ci)
         {
-            var dirName = Path.Combine(CurrentUserDir, ci.Name);
+            var dirName = Path.Combine(CurrentUserDir, ci.TwoLetterISOLanguageName);
 
             return Directory.Exists(dirName) ? dirName : Path.Combine(CurrentUserDir, ci.TwoLetterISOLanguageName);
         }

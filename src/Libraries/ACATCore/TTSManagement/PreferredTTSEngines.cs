@@ -73,12 +73,7 @@ namespace ACAT.Lib.Core.TTSManagement
                 return getByLanguage(String.Empty);
             }
 
-            var guid = getByLanguage(ci.Name);
-
-            if (Equals(guid, Guid.Empty))
-            {
-                guid = getByLanguage(ci.TwoLetterISOLanguageName);
-            }
+            var guid = getByLanguage(ci.TwoLetterISOLanguageName);
 
             return guid;
         }

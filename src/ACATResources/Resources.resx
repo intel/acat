@@ -1497,4 +1497,10 @@ Click Next when you are comfortable using ​the switch scanning​.</value>
   <data name="End" xml:space="preserve">
     <value>End</value>
   </data>
+  <data name="clickOnConfigure" xml:space="preserve">
+    <value>Click on Configure to change your settings</value>
+  </data>
+  <data name="startPrompt" xml:space="preserve">
+    <value>ACAT will start in xxx</value>
+  </data>
 </root>

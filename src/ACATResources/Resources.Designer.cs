@@ -2435,6 +2435,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please select your language.
+        /// </summary>
+        public static string PleaseSelectYourLanguage {
+            get {
+                return ResourceManager.GetString("PleaseSelectYourLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select your switch type.
         /// </summary>
         public static string PleaseSelectYourSwitchType {

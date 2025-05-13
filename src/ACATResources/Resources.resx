@@ -1503,4 +1503,7 @@ Click Next when you are comfortable using ​the switch scanning​.</value>
   <data name="clickOnConfigure" xml:space="preserve">
     <value>Click on Configure to change your settings</value>
   </data>
+  <data name="PleaseSelectYourLanguage" xml:space="preserve">
+    <value>Please select your language</value>
+  </data>
 </root>

@@ -1,8 +1,12 @@
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\Directory.Build.props" />
+
   <PropertyGroup>
-    <ExtensionPath>$([System.String]::Copy($(MSBuildProjectDirectory)).Replace($(SolutionDir), ""))</ExtensionPath>
-    <IntermediateOutputPath>$(BaseOutputPath)\obj\$(Platform)\$(Configuration)\$(ExtensionPath)\</IntermediateOutputPath>
-    <OutputPath>$(BuildPath)\$(ExtensionPath)\</OutputPath>
-</PropertyGroup>
+    <!-- Compute ExtensionPath as path relative to the solution directory -->
+    <ExtensionPath>$([System.String]::Copy('$(MSBuildProjectDirectory)').Replace('$(SolutionDir)', ''))</ExtensionPath>
+
+    <!-- Final paths for this project -->
+    <OutputPath>$(BuildPath)$(ExtensionPath)\</OutputPath>
+    <IntermediateOutputPath>$(IntermediatePath)$(ExtensionPath)\</IntermediateOutputPath>
+  </PropertyGroup>
 </Project>

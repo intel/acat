@@ -1,13 +1,40 @@
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <!-- Safe defaults -->
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <Platform Condition="'$(Platform)' == ''">x86</Platform>
+
+    <!-- Default to known valid platforms only -->
+    <SupportedPlatforms>x86;x64</SupportedPlatforms>
+
+    <!-- Default to known valid configurations only -->
+     <SupporterConfigurations>Debug;Release</SupporterConfigurations>
+  </PropertyGroup>
+
+  <!-- Optional: Fail fast if unsupported platform is used -->
+  <Target Name="ValidatePlatform" BeforeTargets="Build">
+    <Error Condition="!$(SupportedPlatforms.Contains('$(Platform)'))"
+           Text="Unsupported platform: $(Platform). Only x86 and x64 are supported." />
+  </Target>
+
+  <!-- Base output structure -->
   <PropertyGroup>
     <VersionPrefix>3.13.0</VersionPrefix>
     <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
     <FileVersion>$(VersionPrefix)</FileVersion>
     <InformationalVersion>$(VersionPrefix)</InformationalVersion>
-    <BaseOutputPath>$(SolutionDir)\artifacts\</BaseOutputPath>
-    <IntermediateOutputPath>$(BaseOutputPath)\obj\$(Platform)\$(Configuration)</IntermediateOutputPath>
-    <BuildPath>$(BaseOutputPath)\bin\$(Platform)\$(Configuration)\</BuildPath>
+
+    <!-- Base output locations -->
+    <BaseOutputPath>$(SolutionDir)artifacts\</BaseOutputPath>
+    <BuildPath>$(BaseOutputPath)bin\$(Platform)\$(Configuration)\</BuildPath>
+    <IntermediatePath>$(BaseOutputPath)obj\$(Platform)\$(Configuration)\</IntermediatePath>
+
+    <!-- Defaults if not overridden later -->
     <OutputPath>$(BuildPath)</OutputPath>
-    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
+    <IntermediateOutputPath>$(IntermediatePath)</IntermediateOutputPath>
+
+    <!-- Set this globally unless overridden for specific platforms -->
+    <RuntimeIdentifier Condition="'$(Platform)' == 'x86'">win-x86</RuntimeIdentifier>
+    <RuntimeIdentifier Condition="'$(Platform)' == 'x64'">win-x64</RuntimeIdentifier>
   </PropertyGroup>
 </Project>

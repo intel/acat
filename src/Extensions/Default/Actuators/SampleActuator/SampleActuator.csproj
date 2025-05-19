@@ -61,7 +61,7 @@
       <Name>Core</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="C:\Users\mbeale\source\repos\acat\src\Libraries\ACATExtension\Extension.csproj">
+    <ProjectReference Include="..\..\..\..\Libraries\ACATExtension\Extension.csproj">
       <Project>{17feda57-1f08-4e19-9dc3-a2c00ec792a3}</Project>
       <Name>Extension</Name>
       <Private>False</Private>

@@ -6,7 +6,7 @@
 //
 // ConvAssistWordPredictor.cs
 //
-/// Creates and handles the channel of comunication between ACAT and ConvAssist
+/// Creates and handles the channel of communication between ACAT and ConvAssist
 //
 ////////////////////////////////////////////////////////////////////////////
 //#define DEBUG_CONVASSIST

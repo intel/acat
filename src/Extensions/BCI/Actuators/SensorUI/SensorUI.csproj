@@ -197,9 +197,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\pause-black.png" />
   </ItemGroup>
   <ItemGroup>

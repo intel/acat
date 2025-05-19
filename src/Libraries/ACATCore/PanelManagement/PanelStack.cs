@@ -15,7 +15,7 @@ using System.Windows.Forms;
 namespace ACAT.Lib.Core.PanelManagement
 {
     /// <summary>
-    /// The panel stack reprsents a "stack" of panels (or
+    /// The panel stack represents a "stack" of panels (or
     /// scanners). This is similar to the stack model that Android
     /// uses to display activities.  When a scanner is displayed as the
     /// child of a parent scanner, the parent scanner is 'paused' (hidden).

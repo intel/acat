@@ -25,7 +25,7 @@ namespace ACAT.Lib.Core.Onboarding
     /// <summary>
     /// The interface for an onboarding extension. The onboarding
     /// extension represents module that needs to be included in
-    /// the onboarding process and can have multipe steps during
+    /// the onboarding process and can have multiple steps during
     /// onboarding.
     /// </summary>
     public interface IOnboardingExtension

@@ -18,7 +18,7 @@ namespace ACAT.Lib.Extension.Onboarding
     /// </summary>
     [DescriptorAttribute("65B95DE3-BF5A-4AE8-B44D-F5E7950AB8D6",
                         "OnboardingKeyboardConfigSelect",
-                        "Keyboard coniguration select onboarding")]
+                        "Keyboard configuration select onboarding")]
     public class OnboardingKeyboardConfigSelect : OnboardingExtensionBase
     {
         // TODO - Localize Me

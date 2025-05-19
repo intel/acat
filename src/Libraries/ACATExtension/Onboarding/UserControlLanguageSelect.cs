@@ -6,7 +6,6 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACATResources;
-using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.Onboarding;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
@@ -14,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Web;
 using System.Windows.Forms;
 
 namespace ACAT.Lib.Extension.Onboarding
@@ -87,8 +85,6 @@ namespace ACAT.Lib.Extension.Onboarding
             {
                 listBoxLanguages.SelectedIndex = 0;
             }
-
-            ///webBrowserDesc.DocumentCompleted += WebBrowserDesc_DocumentCompleted;
 
             return retVal;
         }

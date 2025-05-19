@@ -32,8 +32,8 @@ namespace ACAT.Lib.Extension.Onboarding
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.listBoxLanguages = new ACAT.Lib.Core.PanelManagement.ListBoxUserControl();
             this.label1 = new System.Windows.Forms.Label();
+            this.listBoxLanguages = new ACAT.Lib.Core.PanelManagement.ListBoxUserControl();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,6 +50,7 @@ namespace ACAT.Lib.Extension.Onboarding
             this.tableLayoutPanel1.Controls.Add(this.listBoxLanguages, 2, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 6;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
@@ -58,8 +59,23 @@ namespace ACAT.Lib.Extension.Onboarding
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 55F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1024, 669);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(2048, 1287);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.label1, 3);
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Font = new System.Drawing.Font("Montserrat", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(108, 128);
+            this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(1830, 128);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Please select your language";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // listBoxLanguages
             // 
@@ -69,35 +85,21 @@ namespace ACAT.Lib.Extension.Onboarding
             this.listBoxLanguages.Font = new System.Drawing.Font("Montserrat", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxLanguages.ForeColor = System.Drawing.Color.White;
             this.listBoxLanguages.FormattingEnabled = true;
-            this.listBoxLanguages.Location = new System.Drawing.Point(258, 201);
-            this.listBoxLanguages.Margin = new System.Windows.Forms.Padding(3, 3, 3, 150);
+            this.listBoxLanguages.Location = new System.Drawing.Point(517, 390);
+            this.listBoxLanguages.Margin = new System.Windows.Forms.Padding(6, 6, 6, 288);
             this.listBoxLanguages.Name = "listBoxLanguages";
-            this.listBoxLanguages.Size = new System.Drawing.Size(506, 40);
+            this.listBoxLanguages.Size = new System.Drawing.Size(1010, 413);
             this.listBoxLanguages.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.tableLayoutPanel1.SetColumnSpan(this.label1, 3);
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("Montserrat", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(54, 66);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(914, 66);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Please select your language";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // UserControlLanguageSelect
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.Controls.Add(this.tableLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "UserControlLanguageSelect";
-            this.Size = new System.Drawing.Size(1024, 669);
+            this.Size = new System.Drawing.Size(2048, 1287);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);

@@ -17,7 +17,7 @@ namespace ACAT.Lib.Extension.Onboarding
     /// The onboarding extension that lets the user select the input
     /// trigger switch
     /// </summary>
-    [DescriptorAttribute("301DBC87-C98C-491A-A2EE-D17863EAB831",
+    [DescriptorAttribute("F2803F8A-D639-459C-9F27-5742BAD4E405",
                     "OnboardingSwitchSelect",
                     "Switch select onboarding")]
     public class OnboardingLanguageSelect : OnboardingExtensionBase
@@ -25,7 +25,7 @@ namespace ACAT.Lib.Extension.Onboarding
         // TODO - Localize Me
         private const String Step1 = "STEP 1";
         private IOnboardingWizard _wizard;
-        private IActuator actuatorSelected = null;
+        // private IActuator actuatorSelected = null;
 
         public override IDescriptor Descriptor
         {
@@ -39,31 +39,6 @@ namespace ACAT.Lib.Extension.Onboarding
 
         public override IOnboardingExtension GetNextOnboardingExtension()
         {
-            if (actuatorSelected.Name == "Keyboard Actuator" ||
-                actuatorSelected.Name == "Switch Interface")
-            {
-                //MessageBox.Show("Actuator selected: " + actuatorSelected);
-                IOnboardingExtension retVal = actuatorSelected.GetOnboardingExtension();
-                if (retVal != null)
-                {
-                    retVal.Initialize(_wizard);
-                }
-                return retVal;
-            }
-            /*
-            else if (actuatorSelected.Name == "Vision Actuator")
-            {
-                //var retVal = new OnboardingBCIActuator();
-                //retVal.Initialize(_wizard);
-                return retVal;
-            }
-            else if (actuatorSelected.Name == "BCI EEG Actuator")
-            {
-                //var retVal = new OnboardingBCIActuator();
-                //retVal.Initialize(_wizard);
-                return retVal;
-            }
-            */
             return null;
         }
 
@@ -74,7 +49,7 @@ namespace ACAT.Lib.Extension.Onboarding
             switch (stepId)
             {
                 case Step1:
-                    userControl = new UserControlSwitchSelect(_wizard, this, stepId);
+                    userControl = new UserControlLanguageSelect(_wizard, this, stepId);
                     userControl.Initialize();
                     return userControl;
 
@@ -111,31 +86,7 @@ namespace ACAT.Lib.Extension.Onboarding
             switch (userControl.StepId)
             {
                 case Step1:
-                    actuatorSelected = (userControl as UserControlSwitchSelect).ActuatorSelected;
-                    var actuatorConfig = Context.AppActuatorManager.GetActuatorConfig();
-                    var keyboardActuator = Context.AppActuatorManager.GetKeyboardActuator();
-
-                    foreach (var actuatorSetting in actuatorConfig.ActuatorSettings)
-                    {
-                        if (keyboardActuator != null && actuatorSetting.Id.Equals(keyboardActuator.Descriptor.Id))
-                        {
-                            actuatorSetting.Enabled = true;
-                        }
-                        else
-                        {
-                            actuatorSetting.Enabled = actuatorSelected.Descriptor.Id.Equals(actuatorSetting.Id);
-                        }
-
-                        foreach (var actuator in Context.AppActuatorManager.Actuators)
-                        {
-                            if (actuator.Descriptor.Id.Equals(actuatorSetting.Id))
-                            {
-                                actuator.Enabled = actuatorSetting.Enabled;
-                            }
-                        }
-                    }
-
-                    actuatorConfig.Save();
+                    Log.Debug("Not Implemented");
 
                     break;
             }

@@ -83,9 +83,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="SharpDX">
       <Version>4.2.0</Version>
     </PackageReference>

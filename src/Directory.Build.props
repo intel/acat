@@ -11,11 +11,11 @@
      <SupportedConfigurations>Debug;Release</SupportedConfigurations>
   </PropertyGroup>
 
-  <!-- Optional: Fail fast if unsupported platform is used 
+  <!-- Optional: Fail fast if unsupported platform is used -->
   <Target Name="ValidatePlatform" BeforeTargets="Build">
     <Error Condition="!$(SupportedPlatforms.Contains($(Platform)))"
            Text="Unsupported platform: $(Platform). Only x86 and x64 are supported." />
-  </Target>-->
+  </Target>
 
   <!-- Diagnostic message output -->
   <Target Name="PrintProps" BeforeTargets="BeforeBuild">

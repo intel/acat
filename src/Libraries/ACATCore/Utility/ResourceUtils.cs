@@ -45,6 +45,9 @@ namespace ACAT.Lib.Core.Utility
 
             var list = new List<CultureInfo>();
 
+            //Always add the current culture to the list
+            list.Add(CultureInfo.DefaultThreadCurrentUICulture);
+
             var currentResourcesDir = FileUtils.GetResourcesDir();
             var lastIndex = currentResourcesDir.LastIndexOf("\\");
             currentResourcesDir = currentResourcesDir.Substring(lastIndex + 1);
@@ -86,7 +89,7 @@ namespace ACAT.Lib.Core.Utility
         /// under the ACAT application folder
         /// </summary>
         /// <returns>List of language folders</returns>
-        public static IEnumerable<String> GetInstalledLanugageDirectories()
+        public static IEnumerable<String> GetInstalledLangugageDirectories()
         {
             var dirs = Directory.EnumerateDirectories(SmartPath.ApplicationPath);
 

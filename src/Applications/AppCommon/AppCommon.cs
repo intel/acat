@@ -52,8 +52,8 @@ namespace ACAT.Applications
         {
             if (!UserManager.CreateUser(UserManager.CurrentUser))
             {
-                MessageBox.Show(String.Format(Resources.CouldNotCreateUserError, UserManager.CurrentUser),
-                    Resources.ACATError,
+                MessageBox.Show(String.Format(StringResources.CouldNotCreateUserError, UserManager.CurrentUser),
+                    StringResources.ACATError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
@@ -99,7 +99,7 @@ namespace ACAT.Applications
             {
                 try
                 {
-                    _exitMessageToastForm = new ToastForm(Resources.ExitingACAT, -1);
+                    _exitMessageToastForm = new ToastForm(StringResources.ExitingACAT, -1);
                     Windows.SetWindowPosition(_exitMessageToastForm, Windows.WindowPosition.CenterScreen);
                     _exitMessageToastForm.Show();
                 }
@@ -149,7 +149,7 @@ namespace ACAT.Applications
             Common.AppPreferences = ACATPreferences.Load();
             if (Common.AppPreferences == null)
             {
-                MessageBox.Show(String.Format(Resources.UnableToReadPreferences), FileUtils.AppPreferencesDir);
+                MessageBox.Show(String.Format(StringResources.UnableToReadPreferences), FileUtils.AppPreferencesDir);
                 return false;
             }
 
@@ -301,7 +301,7 @@ namespace ACAT.Applications
 
         public static void CheckDisplayScalingAndResolution()
         {
-            var cultures = R.GetAvailableCultures();
+            var cultures = ResourceHelper.GetAvailableCultures();
 
             if (Common.AppPreferences.ShowDisplayScaleMessageOnStartup)
             {
@@ -311,16 +311,16 @@ namespace ACAT.Applications
 
                 if (tuple.Item1 != 1920)
                 {
-                    prompt = string.Format(Resources.ResolutionWarning, tuple.Item1);
+                    prompt = string.Format(StringResources.ResolutionWarning, tuple.Item1);
                 }
                 else if (tuple.Item2 != 100 && tuple.Item2 != 125)
                 {
-                    prompt = String.Format(Resources.ZoomWarning, tuple.Item2);
+                    prompt = String.Format(StringResources.ZoomWarning, tuple.Item2);
                 }
 
                 if (!String.IsNullOrEmpty(prompt))
                 {
-                    Common.AppPreferences.ShowDisplayScaleMessageOnStartup = !ConfirmBoxLargeSingleOption.ShowDialog(prompt, Resources.OK, null, true);
+                    Common.AppPreferences.ShowDisplayScaleMessageOnStartup = !ConfirmBoxLargeSingleOption.ShowDialog(prompt, StringResources.OK, null, true);
 
                     Common.AppPreferences.Save();
                 }

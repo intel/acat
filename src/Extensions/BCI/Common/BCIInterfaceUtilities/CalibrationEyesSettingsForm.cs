@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System;
 using System.Threading;
+using ACATResources;
 
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
@@ -223,9 +224,11 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 bool quitApp = true;
                 if (_TempInterval != _Interval || _TempMaxRepetitions != _MaxRepetitions)
                 {
-                    ConfirmBox confirmBox = new ConfirmBox
+                    ConfirmBoxTwoOption confirmBox = new ConfirmBoxTwoOption
                     {
-                        Prompt = "Are you sure to exit without saving?"
+                        Prompt = "Are you sure to exit without saving?",
+                        Op1Prompt = StringResources.OK,
+                        Op3Prompt = StringResources.Cancel
                     };
                     confirmBox.ShowDialog(this);
                     quitApp = confirmBox.Result;

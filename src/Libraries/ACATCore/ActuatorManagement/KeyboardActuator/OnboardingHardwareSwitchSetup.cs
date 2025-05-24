@@ -61,7 +61,7 @@ namespace ACAT.Lib.Core.InputActuators
                 case Step1:
                     {
                         var uc = new UserControlHardwareSwitchSetup(_wizard, this, stepId, _switchType);
-                        //uc.Initialize();
+                        uc.Initialize();
                         return uc;
                     }
 
@@ -70,7 +70,7 @@ namespace ACAT.Lib.Core.InputActuators
                         if (_switchType == SwitchType.SwitchInterface)
                         {
                             var uc = new UserControlHardwareSwitchTest(_wizard, this, stepId, _switchType);
-                            //uc.Initialize();
+                            uc.Initialize();
                             return uc;
                         }
 

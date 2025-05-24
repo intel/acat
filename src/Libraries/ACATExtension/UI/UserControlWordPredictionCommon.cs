@@ -548,7 +548,7 @@ namespace ACAT.Lib.Extension
             }
 
             if (!String.IsNullOrEmpty(wordAtCaret) &&
-                R.IsCurrentCultureEnglish() &&
+                ResourceHelper.IsCurrentCultureEnglish() &&
                 Context.AppAgentMgr.CurrentEditingMode == EditingMode.Edit &&
                 !wordAtCaret.EndsWith("'s", StringComparison.InvariantCultureIgnoreCase) &&
                 (charAtCaret == '\0' || charAtCaret == 0x0D || charAtCaret == 0x0A ||

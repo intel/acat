@@ -12,6 +12,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACATResources;
 using ACAT.Lib.Core.ActuatorManagement.UI;
 using ACAT.Lib.Core.PanelManagement;
 using System;
@@ -186,11 +187,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="e">event args</param>
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            /*if (!_isDirty || MessageBox.Show("Changes not saved. Quit anyway?",
-                Text, MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question) == DialogResult.Yes)*/
-
-            if (!_isDirty || ConfirmBox.ShowDialog("Changes not saved. Quit anyway?", null, false))
+            if (!_isDirty || ConfirmBoxTwoOption.ShowDialog("Changes not saved.", "Quit anyway?", "No", "Yes"))
             {
                 DialogResult = DialogResult.Cancel;
                 Close();
@@ -206,12 +203,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             if (validate())
             {
-                /*if (_isDirty &&
-                    MessageBox.Show("Save changes?",
-                        Text, MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question) == DialogResult.Yes)*/
-
-                if (_isDirty && ConfirmBox.ShowDialog("Save changes?", null, false))
+                if (_isDirty && ConfirmBoxTwoOption.ShowDialog("Save changes?", "", "No", "Yes"))
                 {
                     updateDataFromUIAndSave();
                     DialogResult = DialogResult.OK;
@@ -411,11 +403,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             var shortcut = dataGridView2.Rows[e.RowIndex].Cells[ShortcutColumn.Name].Value as String;
 
-            //var result = MessageBox.Show("Delete shortcut " + shortcut, Text, MessageBoxButtons.YesNo,
-            //MessageBoxIcon.Question);
-            bool result = ConfirmBox.ShowDialog("Delete shortcut " + shortcut.ToString() + " ?", null, false);
+            bool result = ConfirmBoxTwoOption.ShowDialog("Delete shortcut " + shortcut.ToString() + " ?", "", "No","Yes");
 
-            //if (result == DialogResult.No)
             if (!result)
             {
                 return;
@@ -497,7 +486,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             if (Actuator == null)
             {
                 // MessageBox.Show("Error.  Actuator to configure is null");
-                bool result = ConfirmBox.ShowDialog("Error. Actuator to configure is null", null, false);
+                bool result = ConfirmBoxOneOption.ShowDialog("Unexpected Error", "No valid actuators available", "OK");
                 Close();
             }
 
@@ -657,8 +646,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
             if (!noDuplicateShortcuts())
             {
-                // MessageBox.Show("Error! Duplicate shortcuts found. Shorcuts have to be unique", Actuator.Name);
-                bool result = ConfirmBox.ShowDialog("Error! Duplicate shortcuts found. Shorcuts have to be unique. Actuator: " + Actuator.Name.ToString(), null, false);
+                bool result = ConfirmBoxOneOption.ShowDialog("Error! Duplicate shortcuts found.", 
+                    "Shortcuts have to be unique. Actuator: " + Actuator.Name.ToString(), StringResources.OK);
                 return false;
             }
 
@@ -673,8 +662,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
             if (!ok)
             {
-                // MessageBox.Show("Warning! You have not set any of the switches to select on trigger", Actuator.Name);
-                bool result = ConfirmBox.ShowDialog("Warning! You have not set any of the switches to select on trigger. Actuator: " + Actuator.Name.ToString(), null, false);
+                bool result = ConfirmBoxOneOption.ShowDialog("Warning! You have not set any of the switches to select on trigger.",
+                    "Actuator: " + Actuator.Name.ToString(), StringResources.OK);
             }
 
             ok = false;
@@ -690,7 +679,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
             if (!ok)
             {
                 //MessageBox.Show("Warning! You have disabled all switches", Actuator.Name);
-                bool result = ConfirmBox.ShowDialog("Warning! You have disabled all switches. Actuator: " + Actuator.Name.ToString(), null, false);
+                bool result = ConfirmBoxOneOption.ShowDialog("Warning! You have disabled all switches.",
+                    "Actuator: " + Actuator.Name.ToString(), StringResources.OK);
             }
 
             return true;

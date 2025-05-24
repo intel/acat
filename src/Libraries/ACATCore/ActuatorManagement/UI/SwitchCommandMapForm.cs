@@ -10,6 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACATResources;
 using ACAT.Lib.Core.CommandManagement;
 using ACAT.Lib.Core.PanelManagement;
 using System;
@@ -77,8 +78,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
                 SelectedCommand = row.Cells[0].Value as String;
 
-                // MessageBox.Show("Selected Command: " + SelectedCommand, Text);
-                bool result = ConfirmBox.ShowDialog("Selected Command: " + SelectedCommand, null, false);
+                bool result = ConfirmBoxOneOption.ShowDialog("Selected Command: " + SelectedCommand, "", StringResources.OK);
             }
             Close();
         }

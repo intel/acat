@@ -141,7 +141,7 @@ namespace ACAT.Applications.ACATTalk
                 splash.Close();
                 splash = null;
 
-                ConfirmBoxSingleOption.ShowDialog(Context.GetInitCompletionStatus(), "OK");
+                ConfirmBoxOneOption.ShowDialog(Context.GetInitCompletionStatus(), "",StringResources.OK);
                 if (Context.IsInitFatal())
                 {
                     return;
@@ -196,7 +196,7 @@ namespace ACAT.Applications.ACATTalk
                 }
                 else
                 {
-                    MessageBox.Show(String.Format(Resources.InvalidFormName, "TalkApplicationScanner"));
+                    MessageBox.Show(String.Format(StringResources.InvalidFormName, "TalkApplicationScanner"));
                     return;
                 }
 

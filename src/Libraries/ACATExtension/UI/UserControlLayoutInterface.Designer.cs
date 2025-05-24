@@ -54,7 +54,7 @@ namespace ACAT.Lib.Extension
             this.tableLayoutPanelMain.SetRowSpan(this.label1, 2);
             this.label1.Size = new System.Drawing.Size(831, 128);
             this.label1.TabIndex = 0;
-            this.label1.Text = Resources.AppUILayout;
+            this.label1.Text = StringResources.AppUILayout;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelScanSpeedSelect3
@@ -70,7 +70,7 @@ namespace ACAT.Lib.Extension
             this.labelScanSpeedSelect3.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
             this.labelScanSpeedSelect3.Size = new System.Drawing.Size(837, 64);
             this.labelScanSpeedSelect3.TabIndex = 71;
-            this.labelScanSpeedSelect3.Text = Resources.labelScanSpeedSelect3;
+            this.labelScanSpeedSelect3.Text = StringResources.labelScanSpeedSelect3;
             this.labelScanSpeedSelect3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanelMain
@@ -129,7 +129,7 @@ namespace ACAT.Lib.Extension
             this.scannerRoundedButtonControl1.Name = "scannerRoundedButtonControl1";
             this.scannerRoundedButtonControl1.Size = new System.Drawing.Size(181, 58);
             this.scannerRoundedButtonControl1.TabIndex = 82;
-            this.scannerRoundedButtonControl1.Text = Resources.LMNext;
+            this.scannerRoundedButtonControl1.Text = StringResources.LMNext;
             this.scannerRoundedButtonControl1.UseMnemonic = false;
             this.scannerRoundedButtonControl1.UseVisualStyleBackColor = false;
             this.scannerRoundedButtonControl1.Click += new System.EventHandler(this.buttonDone_Click);
@@ -145,7 +145,7 @@ namespace ACAT.Lib.Extension
             this.checkBoxDontShowThisOnStartup.Name = "checkBoxDontShowThisOnStartup";
             this.checkBoxDontShowThisOnStartup.Size = new System.Drawing.Size(366, 58);
             this.checkBoxDontShowThisOnStartup.TabIndex = 83;
-            this.checkBoxDontShowThisOnStartup.Text = Resources.DonTShowThisAgain;
+            this.checkBoxDontShowThisOnStartup.Text = StringResources.DonTShowThisAgain;
             this.checkBoxDontShowThisOnStartup.UseVisualStyleBackColor = true;
             // 
             // pictureBoxInterface

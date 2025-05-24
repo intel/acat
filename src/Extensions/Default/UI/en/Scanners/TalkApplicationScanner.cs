@@ -791,7 +791,7 @@ namespace ACAT.Extensions.Default.UI.Scanners
 
                     case "CmdTalkWindowClear":
 
-                        if (DialogUtils.ConfirmScanner(form, Resources.ClearTalkWindow))
+                        if (DialogUtils.ConfirmScanner(form, StringResources.ClearTalkWindow))
                         {
                             Windows.SetText(form._textBoxTalkWindow, String.Empty);
                         }
@@ -822,7 +822,7 @@ namespace ACAT.Extensions.Default.UI.Scanners
                         break;
 
                     case "ExitApp":
-                        if (DialogUtils.ConfirmScanner(Resources.Close))
+                        if (DialogUtils.ConfirmScanner(StringResources.Close))
                         {
                             Windows.CloseForm(form);
                         }

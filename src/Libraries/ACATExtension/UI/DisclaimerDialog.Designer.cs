@@ -108,7 +108,7 @@ namespace ACAT.Lib.Extension
             this.tableLayoutPanel1.SetRowSpan(this.buttonOK, 2);
             this.buttonOK.Size = new System.Drawing.Size(183, 46);
             this.buttonOK.TabIndex = 0;
-            this.buttonOK.Text = Resources.OK;
+            this.buttonOK.Text = StringResources.OK;
             this.buttonOK.UseMnemonic = false;
             this.buttonOK.UseVisualStyleBackColor = false;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
@@ -125,7 +125,7 @@ namespace ACAT.Lib.Extension
             this.tableLayoutPanel1.SetRowSpan(this.checkBoxDontShowThisMessage, 2);
             this.checkBoxDontShowThisMessage.Size = new System.Drawing.Size(309, 60);
             this.checkBoxDontShowThisMessage.TabIndex = 1;
-            this.checkBoxDontShowThisMessage.Text = Resources.DonTShowThisMessageAgain;
+            this.checkBoxDontShowThisMessage.Text = StringResources.DonTShowThisMessageAgain;
             this.checkBoxDontShowThisMessage.UseVisualStyleBackColor = true;
             // 
             // label1
@@ -141,7 +141,7 @@ namespace ACAT.Lib.Extension
             this.tableLayoutPanel1.SetRowSpan(this.label1, 2);
             this.label1.Size = new System.Drawing.Size(185, 52);
             this.label1.TabIndex = 86;
-            this.label1.Text = Resources.Disclaimer;
+            this.label1.Text = StringResources.Disclaimer;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // richTextBoxDisclaimer

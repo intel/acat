@@ -117,4 +117,3685 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="tableLayoutParameters.ColumnCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="tableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutPanel3.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="labelParametersTiel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="labelParametersTiel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="labelParametersTiel.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat Black, 22pt</value>
+  </data>
+  <data name="labelParametersTiel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 0</value>
+  </data>
+  <data name="labelParametersTiel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>8, 0, 4, 0</value>
+  </data>
+  <data name="labelParametersTiel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>976, 93</value>
+  </data>
+  <data name="labelParametersTiel.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="labelParametersTiel.Text" xml:space="preserve">
+    <value>Parameters</value>
+  </data>
+  <data name="labelParametersTiel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;labelParametersTiel.Name" xml:space="preserve">
+    <value>labelParametersTiel</value>
+  </data>
+  <data name="&gt;&gt;labelParametersTiel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelParametersTiel.Parent" xml:space="preserve">
+    <value>tableLayoutPanel3</value>
+  </data>
+  <data name="&gt;&gt;labelParametersTiel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1100, 384</value>
+  </data>
+  <data name="tableLayoutPanel3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>56, 0, 0, 0</value>
+  </data>
+  <data name="tableLayoutPanel3.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutPanel3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>988, 102</value>
+  </data>
+  <data name="tableLayoutPanel3.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel3.Name" xml:space="preserve">
+    <value>tableLayoutPanel3</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel3.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel3.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel3.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="labelParametersTiel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,Absolute,30" /&gt;&lt;Rows Styles="Percent,100,Absolute,9" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutPanelTitleModes.ColumnCount" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="labelModeTitle.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelModeTitle.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="labelModeTitle.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat Black, 22pt</value>
+  </data>
+  <data name="labelModeTitle.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="labelModeTitle.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="labelModeTitle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>480, 93</value>
+  </data>
+  <data name="labelModeTitle.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="labelModeTitle.Text" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="labelModeTitle.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;labelModeTitle.Name" xml:space="preserve">
+    <value>labelModeTitle</value>
+  </data>
+  <data name="&gt;&gt;labelModeTitle.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelModeTitle.Parent" xml:space="preserve">
+    <value>tableLayoutPanelTitleModes</value>
+  </data>
+  <data name="&gt;&gt;labelModeTitle.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="labelScoreTitle.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelScoreTitle.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="labelScoreTitle.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat Black, 22pt</value>
+  </data>
+  <data name="labelScoreTitle.Location" type="System.Drawing.Point, System.Drawing">
+    <value>560, 0</value>
+  </data>
+  <data name="labelScoreTitle.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="labelScoreTitle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>480, 93</value>
+  </data>
+  <data name="labelScoreTitle.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="labelScoreTitle.Text" xml:space="preserve">
+    <value>Score</value>
+  </data>
+  <data name="labelScoreTitle.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="&gt;&gt;labelScoreTitle.Name" xml:space="preserve">
+    <value>labelScoreTitle</value>
+  </data>
+  <data name="&gt;&gt;labelScoreTitle.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelScoreTitle.Parent" xml:space="preserve">
+    <value>tableLayoutPanelTitleModes</value>
+  </data>
+  <data name="&gt;&gt;labelScoreTitle.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="panel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="panel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>562, 93</value>
+  </data>
+  <data name="panel2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 0, 6, 6</value>
+  </data>
+  <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>128, 3</value>
+  </data>
+  <data name="panel2.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="&gt;&gt;panel2.Name" xml:space="preserve">
+    <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel2.Parent" xml:space="preserve">
+    <value>tableLayoutPanelTitleModes</value>
+  </data>
+  <data name="&gt;&gt;panel2.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutPanelTitleModes.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanelTitleModes.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 384</value>
+  </data>
+  <data name="tableLayoutPanelTitleModes.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="tableLayoutPanelTitleModes.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutPanelTitleModes.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1044, 102</value>
+  </data>
+  <data name="tableLayoutPanelTitleModes.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanelTitleModes.Name" xml:space="preserve">
+    <value>tableLayoutPanelTitleModes</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanelTitleModes.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanelTitleModes.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanelTitleModes.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanelTitleModes.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="labelModeTitle" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="labelScoreTitle" Row="0" RowSpan="1" Column="2" ColumnSpan="2" /&gt;&lt;Control Name="panel2" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,58,Absolute,76,Absolute,140,Percent,42,Absolute,30" /&gt;&lt;Rows Styles="Percent,100,Absolute,9" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="labelTitle.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelTitle.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="labelTitle.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat Medium, 30pt</value>
+  </data>
+  <data name="labelTitle.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 0</value>
+  </data>
+  <data name="labelTitle.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 0, 6, 0</value>
+  </data>
+  <data name="labelTitle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>2076, 156</value>
+  </data>
+  <data name="labelTitle.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="labelTitle.Text" xml:space="preserve">
+    <value>Calibrate</value>
+  </data>
+  <data name="labelTitle.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomCenter</value>
+  </data>
+  <data name="&gt;&gt;labelTitle.Name" xml:space="preserve">
+    <value>labelTitle</value>
+  </data>
+  <data name="&gt;&gt;labelTitle.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelTitle.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;labelTitle.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutConfigurations.ColumnCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutMinimumScore.ColumnCount" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="ButtonUpMinimumScore.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonUpMinimumScore.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonUpMinimumScore.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 16pt</value>
+  </data>
+  <data name="ButtonUpMinimumScore.Location" type="System.Drawing.Point, System.Drawing">
+    <value>825, 97</value>
+  </data>
+  <data name="ButtonUpMinimumScore.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="ButtonUpMinimumScore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 89</value>
+  </data>
+  <data name="ButtonUpMinimumScore.TabIndex" type="System.Int32, mscorlib">
+    <value>82</value>
+  </data>
+  <data name="ButtonUpMinimumScore.Text" xml:space="preserve">
+    <value>+</value>
+  </data>
+  <data name="ButtonUpMinimumScore.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopLeft</value>
+  </data>
+  <data name="&gt;&gt;ButtonUpMinimumScore.Name" xml:space="preserve">
+    <value>ButtonUpMinimumScore</value>
+  </data>
+  <data name="&gt;&gt;ButtonUpMinimumScore.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonUpMinimumScore.Parent" xml:space="preserve">
+    <value>tableLayoutMinimumScore</value>
+  </data>
+  <data name="&gt;&gt;ButtonUpMinimumScore.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="labelMinimumScore.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelMinimumScore.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="labelMinimumScore.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat Black, 16pt</value>
+  </data>
+  <data name="labelMinimumScore.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 97</value>
+  </data>
+  <data name="labelMinimumScore.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>12, 0, 0, 0</value>
+  </data>
+  <data name="labelMinimumScore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>325, 89</value>
+  </data>
+  <data name="labelMinimumScore.TabIndex" type="System.Int32, mscorlib">
+    <value>80</value>
+  </data>
+  <data name="labelMinimumScore.Text" xml:space="preserve">
+    <value>77</value>
+  </data>
+  <data name="labelMinimumScore.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;labelMinimumScore.Name" xml:space="preserve">
+    <value>labelMinimumScore</value>
+  </data>
+  <data name="&gt;&gt;labelMinimumScore.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelMinimumScore.Parent" xml:space="preserve">
+    <value>tableLayoutMinimumScore</value>
+  </data>
+  <data name="&gt;&gt;labelMinimumScore.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="customSliderMinimumScore.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="customSliderMinimumScore.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 6pt</value>
+  </data>
+  <data name="customSliderMinimumScore.Location" type="System.Drawing.Point, System.Drawing">
+    <value>413, 97</value>
+  </data>
+  <data name="customSliderMinimumScore.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="customSliderMinimumScore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>412, 89</value>
+  </data>
+  <data name="customSliderMinimumScore.TabIndex" type="System.Int32, mscorlib">
+    <value>78</value>
+  </data>
+  <data name="&gt;&gt;customSliderMinimumScore.Name" xml:space="preserve">
+    <value>customSliderMinimumScore</value>
+  </data>
+  <data name="&gt;&gt;customSliderMinimumScore.Type" xml:space="preserve">
+    <value>ColorSlider.ColorSlider, ColorSlider, Version=1.0.0.4, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;customSliderMinimumScore.Parent" xml:space="preserve">
+    <value>tableLayoutMinimumScore</value>
+  </data>
+  <data name="&gt;&gt;customSliderMinimumScore.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="ButtonDownMinimumScore.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonDownMinimumScore.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonDownMinimumScore.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 16pt</value>
+  </data>
+  <data name="ButtonDownMinimumScore.Location" type="System.Drawing.Point, System.Drawing">
+    <value>337, 97</value>
+  </data>
+  <data name="ButtonDownMinimumScore.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="ButtonDownMinimumScore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 89</value>
+  </data>
+  <data name="ButtonDownMinimumScore.TabIndex" type="System.Int32, mscorlib">
+    <value>81</value>
+  </data>
+  <data name="ButtonDownMinimumScore.Text" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="ButtonDownMinimumScore.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
+  </data>
+  <data name="&gt;&gt;ButtonDownMinimumScore.Name" xml:space="preserve">
+    <value>ButtonDownMinimumScore</value>
+  </data>
+  <data name="&gt;&gt;ButtonDownMinimumScore.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonDownMinimumScore.Parent" xml:space="preserve">
+    <value>tableLayoutMinimumScore</value>
+  </data>
+  <data name="&gt;&gt;ButtonDownMinimumScore.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="tableLayoutPanel14.ColumnCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="label4.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 16pt</value>
+  </data>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="label4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>386, 85</value>
+  </data>
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Minimum score*</value>
+  </data>
+  <data name="label4.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomLeft</value>
+  </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>tableLayoutPanel14</value>
+  </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel15.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ButtonInfoMinimumScore.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonInfoMinimumScore.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 8pt</value>
+  </data>
+  <data name="ButtonInfoMinimumScore.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 18</value>
+  </data>
+  <data name="ButtonInfoMinimumScore.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="ButtonInfoMinimumScore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 48</value>
+  </data>
+  <data name="ButtonInfoMinimumScore.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="ButtonInfoMinimumScore.Text" xml:space="preserve">
+    <value>?</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoMinimumScore.Name" xml:space="preserve">
+    <value>ButtonInfoMinimumScore</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoMinimumScore.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoMinimumScore.Parent" xml:space="preserve">
+    <value>tableLayoutPanel15</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoMinimumScore.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel15.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel15.Location" type="System.Drawing.Point, System.Drawing">
+    <value>404, 0</value>
+  </data>
+  <data name="tableLayoutPanel15.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>18, 0, 0, 0</value>
+  </data>
+  <data name="tableLayoutPanel15.RowCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="tableLayoutPanel15.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 85</value>
+  </data>
+  <data name="tableLayoutPanel15.TabIndex" type="System.Int32, mscorlib">
+    <value>84</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel15.Name" xml:space="preserve">
+    <value>tableLayoutPanel15</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel15.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel15.Parent" xml:space="preserve">
+    <value>tableLayoutPanel14</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel15.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel15.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonInfoMinimumScore" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,50,Absolute,48,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutPanel14.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel14.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
+  </data>
+  <data name="tableLayoutPanel14.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="tableLayoutPanel14.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel14.Size" type="System.Drawing.Size, System.Drawing">
+    <value>962, 85</value>
+  </data>
+  <data name="tableLayoutPanel14.TabIndex" type="System.Int32, mscorlib">
+    <value>83</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel14.Name" xml:space="preserve">
+    <value>tableLayoutPanel14</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel14.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel14.Parent" xml:space="preserve">
+    <value>tableLayoutMinimumScore</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel14.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="tableLayoutPanel14.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label4" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel15" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Absolute,76,Percent,100" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutMinimumScore.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutMinimumScore.Location" type="System.Drawing.Point, System.Drawing">
+    <value>64, 600</value>
+  </data>
+  <data name="tableLayoutMinimumScore.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>56, 6, 6, 6</value>
+  </data>
+  <data name="tableLayoutMinimumScore.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutMinimumScore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>974, 186</value>
+  </data>
+  <data name="tableLayoutMinimumScore.TabIndex" type="System.Int32, mscorlib">
+    <value>82</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutMinimumScore.Name" xml:space="preserve">
+    <value>tableLayoutMinimumScore</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutMinimumScore.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutMinimumScore.Parent" xml:space="preserve">
+    <value>tableLayoutConfigurations</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutMinimumScore.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutMinimumScore.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonUpMinimumScore" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="labelMinimumScore" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="customSliderMinimumScore" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="ButtonDownMinimumScore" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel14" Row="0" RowSpan="1" Column="0" ColumnSpan="4" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,45,Absolute,76,Percent,55,Absolute,148" /&gt;&lt;Rows Styles="Absolute,97,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutIterationsTarget.ColumnCount" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="ButtonUpIterationstarget.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonUpIterationstarget.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonUpIterationstarget.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 16pt</value>
+  </data>
+  <data name="ButtonUpIterationstarget.Location" type="System.Drawing.Point, System.Drawing">
+    <value>825, 97</value>
+  </data>
+  <data name="ButtonUpIterationstarget.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="ButtonUpIterationstarget.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 89</value>
+  </data>
+  <data name="ButtonUpIterationstarget.TabIndex" type="System.Int32, mscorlib">
+    <value>82</value>
+  </data>
+  <data name="ButtonUpIterationstarget.Text" xml:space="preserve">
+    <value>+</value>
+  </data>
+  <data name="ButtonUpIterationstarget.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopLeft</value>
+  </data>
+  <data name="&gt;&gt;ButtonUpIterationstarget.Name" xml:space="preserve">
+    <value>ButtonUpIterationstarget</value>
+  </data>
+  <data name="&gt;&gt;ButtonUpIterationstarget.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonUpIterationstarget.Parent" xml:space="preserve">
+    <value>tableLayoutIterationsTarget</value>
+  </data>
+  <data name="&gt;&gt;ButtonUpIterationstarget.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="labelIterationstarget.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelIterationstarget.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="labelIterationstarget.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat Black, 16pt</value>
+  </data>
+  <data name="labelIterationstarget.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 97</value>
+  </data>
+  <data name="labelIterationstarget.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>12, 0, 0, 0</value>
+  </data>
+  <data name="labelIterationstarget.Size" type="System.Drawing.Size, System.Drawing">
+    <value>325, 89</value>
+  </data>
+  <data name="labelIterationstarget.TabIndex" type="System.Int32, mscorlib">
+    <value>80</value>
+  </data>
+  <data name="labelIterationstarget.Text" xml:space="preserve">
+    <value>77</value>
+  </data>
+  <data name="labelIterationstarget.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;labelIterationstarget.Name" xml:space="preserve">
+    <value>labelIterationstarget</value>
+  </data>
+  <data name="&gt;&gt;labelIterationstarget.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelIterationstarget.Parent" xml:space="preserve">
+    <value>tableLayoutIterationsTarget</value>
+  </data>
+  <data name="&gt;&gt;labelIterationstarget.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="customSliderIterationstarget.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="customSliderIterationstarget.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 6pt</value>
+  </data>
+  <data name="customSliderIterationstarget.Location" type="System.Drawing.Point, System.Drawing">
+    <value>413, 97</value>
+  </data>
+  <data name="customSliderIterationstarget.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="customSliderIterationstarget.Size" type="System.Drawing.Size, System.Drawing">
+    <value>412, 89</value>
+  </data>
+  <data name="customSliderIterationstarget.TabIndex" type="System.Int32, mscorlib">
+    <value>78</value>
+  </data>
+  <data name="&gt;&gt;customSliderIterationstarget.Name" xml:space="preserve">
+    <value>customSliderIterationstarget</value>
+  </data>
+  <data name="&gt;&gt;customSliderIterationstarget.Type" xml:space="preserve">
+    <value>ColorSlider.ColorSlider, ColorSlider, Version=1.0.0.4, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;customSliderIterationstarget.Parent" xml:space="preserve">
+    <value>tableLayoutIterationsTarget</value>
+  </data>
+  <data name="&gt;&gt;customSliderIterationstarget.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="ButtonDownIterationstarget.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonDownIterationstarget.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonDownIterationstarget.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 16pt</value>
+  </data>
+  <data name="ButtonDownIterationstarget.Location" type="System.Drawing.Point, System.Drawing">
+    <value>337, 97</value>
+  </data>
+  <data name="ButtonDownIterationstarget.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="ButtonDownIterationstarget.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 89</value>
+  </data>
+  <data name="ButtonDownIterationstarget.TabIndex" type="System.Int32, mscorlib">
+    <value>81</value>
+  </data>
+  <data name="ButtonDownIterationstarget.Text" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="ButtonDownIterationstarget.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
+  </data>
+  <data name="&gt;&gt;ButtonDownIterationstarget.Name" xml:space="preserve">
+    <value>ButtonDownIterationstarget</value>
+  </data>
+  <data name="&gt;&gt;ButtonDownIterationstarget.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonDownIterationstarget.Parent" xml:space="preserve">
+    <value>tableLayoutIterationsTarget</value>
+  </data>
+  <data name="&gt;&gt;ButtonDownIterationstarget.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="tableLayoutPanel16.ColumnCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label5.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="label5.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 16pt</value>
+  </data>
+  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="label5.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>485, 85</value>
+  </data>
+  <data name="label5.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>Iterations per target*</value>
+  </data>
+  <data name="label5.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomLeft</value>
+  </data>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>tableLayoutPanel16</value>
+  </data>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel17.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ButtonInfoIterationsTarget.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonInfoIterationsTarget.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 8pt</value>
+  </data>
+  <data name="ButtonInfoIterationsTarget.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 18</value>
+  </data>
+  <data name="ButtonInfoIterationsTarget.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="ButtonInfoIterationsTarget.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 48</value>
+  </data>
+  <data name="ButtonInfoIterationsTarget.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="ButtonInfoIterationsTarget.Text" xml:space="preserve">
+    <value>?</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoIterationsTarget.Name" xml:space="preserve">
+    <value>ButtonInfoIterationsTarget</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoIterationsTarget.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoIterationsTarget.Parent" xml:space="preserve">
+    <value>tableLayoutPanel17</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoIterationsTarget.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel17.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel17.Location" type="System.Drawing.Point, System.Drawing">
+    <value>503, 0</value>
+  </data>
+  <data name="tableLayoutPanel17.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>18, 0, 0, 0</value>
+  </data>
+  <data name="tableLayoutPanel17.RowCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="tableLayoutPanel17.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 85</value>
+  </data>
+  <data name="tableLayoutPanel17.TabIndex" type="System.Int32, mscorlib">
+    <value>84</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel17.Name" xml:space="preserve">
+    <value>tableLayoutPanel17</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel17.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel17.Parent" xml:space="preserve">
+    <value>tableLayoutPanel16</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel17.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel17.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonInfoIterationsTarget" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,50,Absolute,48,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutPanel16.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel16.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
+  </data>
+  <data name="tableLayoutPanel16.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="tableLayoutPanel16.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel16.Size" type="System.Drawing.Size, System.Drawing">
+    <value>962, 85</value>
+  </data>
+  <data name="tableLayoutPanel16.TabIndex" type="System.Int32, mscorlib">
+    <value>84</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel16.Name" xml:space="preserve">
+    <value>tableLayoutPanel16</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel16.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel16.Parent" xml:space="preserve">
+    <value>tableLayoutIterationsTarget</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel16.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="tableLayoutPanel16.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label5" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel17" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Absolute,76,Percent,100" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutIterationsTarget.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutIterationsTarget.Location" type="System.Drawing.Point, System.Drawing">
+    <value>64, 402</value>
+  </data>
+  <data name="tableLayoutIterationsTarget.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>56, 6, 6, 6</value>
+  </data>
+  <data name="tableLayoutIterationsTarget.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutIterationsTarget.Size" type="System.Drawing.Size, System.Drawing">
+    <value>974, 186</value>
+  </data>
+  <data name="tableLayoutIterationsTarget.TabIndex" type="System.Int32, mscorlib">
+    <value>79</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutIterationsTarget.Name" xml:space="preserve">
+    <value>tableLayoutIterationsTarget</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutIterationsTarget.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutIterationsTarget.Parent" xml:space="preserve">
+    <value>tableLayoutConfigurations</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutIterationsTarget.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutIterationsTarget.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonUpIterationstarget" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="labelIterationstarget" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="customSliderIterationstarget" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="ButtonDownIterationstarget" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel16" Row="0" RowSpan="1" Column="0" ColumnSpan="4" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,45,Absolute,76,Percent,55,Absolute,148" /&gt;&lt;Rows Styles="Absolute,97,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutScanningTime.ColumnCount" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="ButtonUpScanningTime.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonUpScanningTime.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonUpScanningTime.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 16pt</value>
+  </data>
+  <data name="ButtonUpScanningTime.Location" type="System.Drawing.Point, System.Drawing">
+    <value>825, 97</value>
+  </data>
+  <data name="ButtonUpScanningTime.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="ButtonUpScanningTime.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 89</value>
+  </data>
+  <data name="ButtonUpScanningTime.TabIndex" type="System.Int32, mscorlib">
+    <value>82</value>
+  </data>
+  <data name="ButtonUpScanningTime.Text" xml:space="preserve">
+    <value>+</value>
+  </data>
+  <data name="ButtonUpScanningTime.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopLeft</value>
+  </data>
+  <data name="&gt;&gt;ButtonUpScanningTime.Name" xml:space="preserve">
+    <value>ButtonUpScanningTime</value>
+  </data>
+  <data name="&gt;&gt;ButtonUpScanningTime.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonUpScanningTime.Parent" xml:space="preserve">
+    <value>tableLayoutScanningTime</value>
+  </data>
+  <data name="&gt;&gt;ButtonUpScanningTime.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel18.ColumnCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="label7.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label7.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="label7.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 16pt</value>
+  </data>
+  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="label7.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>379, 85</value>
+  </data>
+  <data name="label7.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>Scanning speed</value>
+  </data>
+  <data name="label7.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomLeft</value>
+  </data>
+  <data name="&gt;&gt;label7.Name" xml:space="preserve">
+    <value>label7</value>
+  </data>
+  <data name="&gt;&gt;label7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
+    <value>tableLayoutPanel18</value>
+  </data>
+  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel19.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ButtonInfoScanningTime.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonInfoScanningTime.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 8pt</value>
+  </data>
+  <data name="ButtonInfoScanningTime.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 18</value>
+  </data>
+  <data name="ButtonInfoScanningTime.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="ButtonInfoScanningTime.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 48</value>
+  </data>
+  <data name="ButtonInfoScanningTime.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="ButtonInfoScanningTime.Text" xml:space="preserve">
+    <value>?</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoScanningTime.Name" xml:space="preserve">
+    <value>ButtonInfoScanningTime</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoScanningTime.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoScanningTime.Parent" xml:space="preserve">
+    <value>tableLayoutPanel19</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoScanningTime.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel19.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel19.Location" type="System.Drawing.Point, System.Drawing">
+    <value>397, 0</value>
+  </data>
+  <data name="tableLayoutPanel19.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>18, 0, 0, 0</value>
+  </data>
+  <data name="tableLayoutPanel19.RowCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="tableLayoutPanel19.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 85</value>
+  </data>
+  <data name="tableLayoutPanel19.TabIndex" type="System.Int32, mscorlib">
+    <value>84</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel19.Name" xml:space="preserve">
+    <value>tableLayoutPanel19</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel19.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel19.Parent" xml:space="preserve">
+    <value>tableLayoutPanel18</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel19.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel19.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonInfoScanningTime" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,50,Absolute,48,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutPanel18.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel18.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
+  </data>
+  <data name="tableLayoutPanel18.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="tableLayoutPanel18.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel18.Size" type="System.Drawing.Size, System.Drawing">
+    <value>962, 85</value>
+  </data>
+  <data name="tableLayoutPanel18.TabIndex" type="System.Int32, mscorlib">
+    <value>86</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel18.Name" xml:space="preserve">
+    <value>tableLayoutPanel18</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel18.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel18.Parent" xml:space="preserve">
+    <value>tableLayoutScanningTime</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel18.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel18.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label7" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel19" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Absolute,76,Percent,100" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="customSliderScanningTime.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="customSliderScanningTime.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 6pt</value>
+  </data>
+  <data name="customSliderScanningTime.Location" type="System.Drawing.Point, System.Drawing">
+    <value>413, 97</value>
+  </data>
+  <data name="customSliderScanningTime.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="customSliderScanningTime.Size" type="System.Drawing.Size, System.Drawing">
+    <value>412, 89</value>
+  </data>
+  <data name="customSliderScanningTime.TabIndex" type="System.Int32, mscorlib">
+    <value>78</value>
+  </data>
+  <data name="&gt;&gt;customSliderScanningTime.Name" xml:space="preserve">
+    <value>customSliderScanningTime</value>
+  </data>
+  <data name="&gt;&gt;customSliderScanningTime.Type" xml:space="preserve">
+    <value>ColorSlider.ColorSlider, ColorSlider, Version=1.0.0.4, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;customSliderScanningTime.Parent" xml:space="preserve">
+    <value>tableLayoutScanningTime</value>
+  </data>
+  <data name="&gt;&gt;customSliderScanningTime.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="ButtonDownScanningTime.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonDownScanningTime.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonDownScanningTime.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 16pt</value>
+  </data>
+  <data name="ButtonDownScanningTime.Location" type="System.Drawing.Point, System.Drawing">
+    <value>337, 97</value>
+  </data>
+  <data name="ButtonDownScanningTime.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="ButtonDownScanningTime.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 89</value>
+  </data>
+  <data name="ButtonDownScanningTime.TabIndex" type="System.Int32, mscorlib">
+    <value>81</value>
+  </data>
+  <data name="ButtonDownScanningTime.Text" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="ButtonDownScanningTime.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
+  </data>
+  <data name="&gt;&gt;ButtonDownScanningTime.Name" xml:space="preserve">
+    <value>ButtonDownScanningTime</value>
+  </data>
+  <data name="&gt;&gt;ButtonDownScanningTime.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonDownScanningTime.Parent" xml:space="preserve">
+    <value>tableLayoutScanningTime</value>
+  </data>
+  <data name="&gt;&gt;ButtonDownScanningTime.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="tableLayoutPanel20.ColumnCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="labelScanningTime.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelScanningTime.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="labelScanningTime.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat Black, 16pt</value>
+  </data>
+  <data name="labelScanningTime.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="labelScanningTime.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="labelScanningTime.Size" type="System.Drawing.Size, System.Drawing">
+    <value>141, 89</value>
+  </data>
+  <data name="labelScanningTime.TabIndex" type="System.Int32, mscorlib">
+    <value>80</value>
+  </data>
+  <data name="labelScanningTime.Text" xml:space="preserve">
+    <value>2000</value>
+  </data>
+  <data name="labelScanningTime.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;labelScanningTime.Name" xml:space="preserve">
+    <value>labelScanningTime</value>
+  </data>
+  <data name="&gt;&gt;labelScanningTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelScanningTime.Parent" xml:space="preserve">
+    <value>tableLayoutPanel20</value>
+  </data>
+  <data name="&gt;&gt;labelScanningTime.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
+  </data>
+  <data name="label2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat Light, 10pt</value>
+  </data>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>147, 52</value>
+  </data>
+  <data name="label2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 0, 6, 0</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>64, 37</value>
+  </data>
+  <data name="label2.TabIndex" type="System.Int32, mscorlib">
+    <value>81</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>ms</value>
+  </data>
+  <data name="label2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomLeft</value>
+  </data>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>tableLayoutPanel20</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel20.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel20.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 97</value>
+  </data>
+  <data name="tableLayoutPanel20.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>12, 0, 0, 0</value>
+  </data>
+  <data name="tableLayoutPanel20.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel20.Size" type="System.Drawing.Size, System.Drawing">
+    <value>325, 89</value>
+  </data>
+  <data name="tableLayoutPanel20.TabIndex" type="System.Int32, mscorlib">
+    <value>87</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel20.Name" xml:space="preserve">
+    <value>tableLayoutPanel20</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel20.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel20.Parent" xml:space="preserve">
+    <value>tableLayoutScanningTime</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel20.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="tableLayoutPanel20.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="labelScanningTime" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label2" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Absolute,76,Percent,100" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutScanningTime.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutScanningTime.Location" type="System.Drawing.Point, System.Drawing">
+    <value>64, 6</value>
+  </data>
+  <data name="tableLayoutScanningTime.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>56, 6, 6, 6</value>
+  </data>
+  <data name="tableLayoutScanningTime.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutScanningTime.Size" type="System.Drawing.Size, System.Drawing">
+    <value>974, 186</value>
+  </data>
+  <data name="tableLayoutScanningTime.TabIndex" type="System.Int32, mscorlib">
+    <value>80</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutScanningTime.Name" xml:space="preserve">
+    <value>tableLayoutScanningTime</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutScanningTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutScanningTime.Parent" xml:space="preserve">
+    <value>tableLayoutConfigurations</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutScanningTime.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutScanningTime.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonUpScanningTime" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel18" Row="0" RowSpan="1" Column="0" ColumnSpan="4" /&gt;&lt;Control Name="customSliderScanningTime" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="ButtonDownScanningTime" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel20" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,45,Absolute,76,Percent,55,Absolute,148" /&gt;&lt;Rows Styles="Absolute,97,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutNumberTargets.ColumnCount" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="ButtonUpNumberTargets.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonUpNumberTargets.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonUpNumberTargets.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 16pt</value>
+  </data>
+  <data name="ButtonUpNumberTargets.Location" type="System.Drawing.Point, System.Drawing">
+    <value>825, 97</value>
+  </data>
+  <data name="ButtonUpNumberTargets.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="ButtonUpNumberTargets.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 89</value>
+  </data>
+  <data name="ButtonUpNumberTargets.TabIndex" type="System.Int32, mscorlib">
+    <value>82</value>
+  </data>
+  <data name="ButtonUpNumberTargets.Text" xml:space="preserve">
+    <value>+</value>
+  </data>
+  <data name="ButtonUpNumberTargets.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopLeft</value>
+  </data>
+  <data name="&gt;&gt;ButtonUpNumberTargets.Name" xml:space="preserve">
+    <value>ButtonUpNumberTargets</value>
+  </data>
+  <data name="&gt;&gt;ButtonUpNumberTargets.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonUpNumberTargets.Parent" xml:space="preserve">
+    <value>tableLayoutNumberTargets</value>
+  </data>
+  <data name="&gt;&gt;ButtonUpNumberTargets.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="labelNumberTargets.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelNumberTargets.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="labelNumberTargets.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat Black, 16pt</value>
+  </data>
+  <data name="labelNumberTargets.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 97</value>
+  </data>
+  <data name="labelNumberTargets.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>12, 0, 0, 0</value>
+  </data>
+  <data name="labelNumberTargets.Size" type="System.Drawing.Size, System.Drawing">
+    <value>325, 89</value>
+  </data>
+  <data name="labelNumberTargets.TabIndex" type="System.Int32, mscorlib">
+    <value>80</value>
+  </data>
+  <data name="labelNumberTargets.Text" xml:space="preserve">
+    <value>77</value>
+  </data>
+  <data name="labelNumberTargets.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;labelNumberTargets.Name" xml:space="preserve">
+    <value>labelNumberTargets</value>
+  </data>
+  <data name="&gt;&gt;labelNumberTargets.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelNumberTargets.Parent" xml:space="preserve">
+    <value>tableLayoutNumberTargets</value>
+  </data>
+  <data name="&gt;&gt;labelNumberTargets.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="customSliderNumberTargets.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="customSliderNumberTargets.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 6pt</value>
+  </data>
+  <data name="customSliderNumberTargets.Location" type="System.Drawing.Point, System.Drawing">
+    <value>413, 97</value>
+  </data>
+  <data name="customSliderNumberTargets.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="customSliderNumberTargets.Size" type="System.Drawing.Size, System.Drawing">
+    <value>412, 89</value>
+  </data>
+  <data name="customSliderNumberTargets.TabIndex" type="System.Int32, mscorlib">
+    <value>78</value>
+  </data>
+  <data name="&gt;&gt;customSliderNumberTargets.Name" xml:space="preserve">
+    <value>customSliderNumberTargets</value>
+  </data>
+  <data name="&gt;&gt;customSliderNumberTargets.Type" xml:space="preserve">
+    <value>ColorSlider.ColorSlider, ColorSlider, Version=1.0.0.4, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;customSliderNumberTargets.Parent" xml:space="preserve">
+    <value>tableLayoutNumberTargets</value>
+  </data>
+  <data name="&gt;&gt;customSliderNumberTargets.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="ButtonDownNumberTargets.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonDownNumberTargets.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonDownNumberTargets.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 16pt</value>
+  </data>
+  <data name="ButtonDownNumberTargets.Location" type="System.Drawing.Point, System.Drawing">
+    <value>337, 97</value>
+  </data>
+  <data name="ButtonDownNumberTargets.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="ButtonDownNumberTargets.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 89</value>
+  </data>
+  <data name="ButtonDownNumberTargets.TabIndex" type="System.Int32, mscorlib">
+    <value>81</value>
+  </data>
+  <data name="ButtonDownNumberTargets.Text" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="ButtonDownNumberTargets.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
+  </data>
+  <data name="&gt;&gt;ButtonDownNumberTargets.Name" xml:space="preserve">
+    <value>ButtonDownNumberTargets</value>
+  </data>
+  <data name="&gt;&gt;ButtonDownNumberTargets.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonDownNumberTargets.Parent" xml:space="preserve">
+    <value>tableLayoutNumberTargets</value>
+  </data>
+  <data name="&gt;&gt;ButtonDownNumberTargets.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="tableLayoutPanel21.ColumnCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label6.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="label6.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 16pt</value>
+  </data>
+  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="label6.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>452, 85</value>
+  </data>
+  <data name="label6.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>Number of targets*</value>
+  </data>
+  <data name="label6.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomLeft</value>
+  </data>
+  <data name="&gt;&gt;label6.Name" xml:space="preserve">
+    <value>label6</value>
+  </data>
+  <data name="&gt;&gt;label6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+    <value>tableLayoutPanel21</value>
+  </data>
+  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel22.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ButtonInfoNumberTargets.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonInfoNumberTargets.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 8pt</value>
+  </data>
+  <data name="ButtonInfoNumberTargets.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 18</value>
+  </data>
+  <data name="ButtonInfoNumberTargets.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="ButtonInfoNumberTargets.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 48</value>
+  </data>
+  <data name="ButtonInfoNumberTargets.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="ButtonInfoNumberTargets.Text" xml:space="preserve">
+    <value>?</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoNumberTargets.Name" xml:space="preserve">
+    <value>ButtonInfoNumberTargets</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoNumberTargets.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoNumberTargets.Parent" xml:space="preserve">
+    <value>tableLayoutPanel22</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoNumberTargets.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel22.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel22.Location" type="System.Drawing.Point, System.Drawing">
+    <value>470, 0</value>
+  </data>
+  <data name="tableLayoutPanel22.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>18, 0, 0, 0</value>
+  </data>
+  <data name="tableLayoutPanel22.RowCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="tableLayoutPanel22.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 85</value>
+  </data>
+  <data name="tableLayoutPanel22.TabIndex" type="System.Int32, mscorlib">
+    <value>84</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel22.Name" xml:space="preserve">
+    <value>tableLayoutPanel22</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel22.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel22.Parent" xml:space="preserve">
+    <value>tableLayoutPanel21</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel22.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel22.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonInfoNumberTargets" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,50,Absolute,48,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutPanel21.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel21.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
+  </data>
+  <data name="tableLayoutPanel21.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="tableLayoutPanel21.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel21.Size" type="System.Drawing.Size, System.Drawing">
+    <value>962, 85</value>
+  </data>
+  <data name="tableLayoutPanel21.TabIndex" type="System.Int32, mscorlib">
+    <value>85</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel21.Name" xml:space="preserve">
+    <value>tableLayoutPanel21</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel21.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel21.Parent" xml:space="preserve">
+    <value>tableLayoutNumberTargets</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel21.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="tableLayoutPanel21.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label6" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel22" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Absolute,76,Percent,100" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutNumberTargets.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutNumberTargets.Location" type="System.Drawing.Point, System.Drawing">
+    <value>64, 204</value>
+  </data>
+  <data name="tableLayoutNumberTargets.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>56, 6, 6, 6</value>
+  </data>
+  <data name="tableLayoutNumberTargets.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutNumberTargets.Size" type="System.Drawing.Size, System.Drawing">
+    <value>974, 186</value>
+  </data>
+  <data name="tableLayoutNumberTargets.TabIndex" type="System.Int32, mscorlib">
+    <value>81</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutNumberTargets.Name" xml:space="preserve">
+    <value>tableLayoutNumberTargets</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutNumberTargets.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutNumberTargets.Parent" xml:space="preserve">
+    <value>tableLayoutConfigurations</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutNumberTargets.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="tableLayoutNumberTargets.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonUpNumberTargets" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="labelNumberTargets" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="customSliderNumberTargets" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="ButtonDownNumberTargets" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel21" Row="0" RowSpan="1" Column="0" ColumnSpan="4" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,45,Absolute,76,Percent,55,Absolute,148" /&gt;&lt;Rows Styles="Absolute,97,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="panel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
+  </data>
+  <data name="panel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1, 897</value>
+  </data>
+  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
+    <value>88</value>
+  </data>
+  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
+    <value>tableLayoutConfigurations</value>
+  </data>
+  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="tableLayoutPanel2.ColumnCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="ButtonRestoreDefaults.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonRestoreDefaults.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonRestoreDefaults.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat Light, 15pt, style=Underline</value>
+  </data>
+  <data name="ButtonRestoreDefaults.Location" type="System.Drawing.Point, System.Drawing">
+    <value>524, 6</value>
+  </data>
+  <data name="ButtonRestoreDefaults.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="ButtonRestoreDefaults.Size" type="System.Drawing.Size, System.Drawing">
+    <value>506, 105</value>
+  </data>
+  <data name="ButtonRestoreDefaults.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="ButtonRestoreDefaults.Text" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="&gt;&gt;ButtonRestoreDefaults.Name" xml:space="preserve">
+    <value>ButtonRestoreDefaults</value>
+  </data>
+  <data name="&gt;&gt;ButtonRestoreDefaults.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonRestoreDefaults.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;ButtonRestoreDefaults.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="checkBoxAdvancesParameters.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBoxAdvancesParameters.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="checkBoxAdvancesParameters.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 13pt</value>
+  </data>
+  <data name="checkBoxAdvancesParameters.Location" type="System.Drawing.Point, System.Drawing">
+    <value>56, 6</value>
+  </data>
+  <data name="checkBoxAdvancesParameters.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>56, 6, 6, 6</value>
+  </data>
+  <data name="checkBoxAdvancesParameters.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>8, 9, 8, 9</value>
+  </data>
+  <data name="checkBoxAdvancesParameters.Size" type="System.Drawing.Size, System.Drawing">
+    <value>456, 105</value>
+  </data>
+  <data name="checkBoxAdvancesParameters.TabIndex" type="System.Int32, mscorlib">
+    <value>87</value>
+  </data>
+  <data name="checkBoxAdvancesParameters.Text" xml:space="preserve">
+    <value>Advanced *</value>
+  </data>
+  <data name="&gt;&gt;checkBoxAdvancesParameters.Name" xml:space="preserve">
+    <value>checkBoxAdvancesParameters</value>
+  </data>
+  <data name="&gt;&gt;checkBoxAdvancesParameters.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBoxAdvancesParameters.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;checkBoxAdvancesParameters.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 792</value>
+  </data>
+  <data name="tableLayoutPanel2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="tableLayoutPanel2.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1036, 117</value>
+  </data>
+  <data name="tableLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
+    <value>89</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel2.Name" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel2.Parent" xml:space="preserve">
+    <value>tableLayoutConfigurations</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel2.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="tableLayoutPanel2.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonRestoreDefaults" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="checkBoxAdvancesParameters" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutConfigurations.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutConfigurations.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1044, 486</value>
+  </data>
+  <data name="tableLayoutConfigurations.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="tableLayoutConfigurations.RowCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="tableLayoutConfigurations.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1044, 909</value>
+  </data>
+  <data name="tableLayoutConfigurations.TabIndex" type="System.Int32, mscorlib">
+    <value>80</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutConfigurations.Name" xml:space="preserve">
+    <value>tableLayoutConfigurations</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutConfigurations.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutConfigurations.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutConfigurations.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="tableLayoutConfigurations.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="tableLayoutMinimumScore" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutIterationsTarget" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutScanningTime" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutNumberTargets" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="panel1" Row="0" RowSpan="5" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel2" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,8,Percent,100" /&gt;&lt;Rows Styles="Percent,25,Percent,25,Percent,25,Percent,25,Absolute,117" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutKeyboardLeft.ColumnCount" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="ButtonCalibrateKeyboardL.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonCalibrateKeyboardL.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonCalibrateKeyboardL.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat Light, 12pt, style=Underline</value>
+  </data>
+  <data name="ButtonCalibrateKeyboardL.Location" type="System.Drawing.Point, System.Drawing">
+    <value>702, 6</value>
+  </data>
+  <data name="ButtonCalibrateKeyboardL.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="ButtonCalibrateKeyboardL.Size" type="System.Drawing.Size, System.Drawing">
+    <value>336, 110</value>
+  </data>
+  <data name="ButtonCalibrateKeyboardL.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ButtonCalibrateKeyboardL.Text" xml:space="preserve">
+    <value>Recalibrate</value>
+  </data>
+  <data name="ButtonCalibrateKeyboardL.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;ButtonCalibrateKeyboardL.Name" xml:space="preserve">
+    <value>ButtonCalibrateKeyboardL</value>
+  </data>
+  <data name="&gt;&gt;ButtonCalibrateKeyboardL.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonCalibrateKeyboardL.Parent" xml:space="preserve">
+    <value>tableLayoutKeyboardLeft</value>
+  </data>
+  <data name="&gt;&gt;ButtonCalibrateKeyboardL.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel9.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ButtonInfoKeyboardL.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonInfoKeyboardL.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 7pt</value>
+  </data>
+  <data name="ButtonInfoKeyboardL.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 37</value>
+  </data>
+  <data name="ButtonInfoKeyboardL.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="ButtonInfoKeyboardL.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 48</value>
+  </data>
+  <data name="ButtonInfoKeyboardL.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="ButtonInfoKeyboardL.Text" xml:space="preserve">
+    <value>?</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoKeyboardL.Name" xml:space="preserve">
+    <value>ButtonInfoKeyboardL</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoKeyboardL.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoKeyboardL.Parent" xml:space="preserve">
+    <value>tableLayoutPanel9</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoKeyboardL.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel9.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel9.Location" type="System.Drawing.Point, System.Drawing">
+    <value>498, 0</value>
+  </data>
+  <data name="tableLayoutPanel9.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>18, 0, 0, 0</value>
+  </data>
+  <data name="tableLayoutPanel9.RowCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="tableLayoutPanel9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 122</value>
+  </data>
+  <data name="tableLayoutPanel9.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel9.Name" xml:space="preserve">
+    <value>tableLayoutPanel9</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel9.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel9.Parent" xml:space="preserve">
+    <value>tableLayoutKeyboardLeft</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel9.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel9.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonInfoKeyboardL" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,50,Absolute,48,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="ButtonOpcKeyboardL.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonOpcKeyboardL.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonOpcKeyboardL.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 16pt</value>
+  </data>
+  <data name="ButtonOpcKeyboardL.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
+  </data>
+  <data name="ButtonOpcKeyboardL.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 0, 0</value>
+  </data>
+  <data name="ButtonOpcKeyboardL.Size" type="System.Drawing.Size, System.Drawing">
+    <value>474, 116</value>
+  </data>
+  <data name="ButtonOpcKeyboardL.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="ButtonOpcKeyboardL.Text" xml:space="preserve">
+    <value>Keyboard (Left)</value>
+  </data>
+  <data name="ButtonOpcKeyboardL.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;ButtonOpcKeyboardL.Name" xml:space="preserve">
+    <value>ButtonOpcKeyboardL</value>
+  </data>
+  <data name="&gt;&gt;ButtonOpcKeyboardL.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonOpcKeyboardL.Parent" xml:space="preserve">
+    <value>tableLayoutKeyboardLeft</value>
+  </data>
+  <data name="&gt;&gt;ButtonOpcKeyboardL.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="labelScoreKeyboardL.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelScoreKeyboardL.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="labelScoreKeyboardL.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat ExtraBold, 16pt</value>
+  </data>
+  <data name="labelScoreKeyboardL.Location" type="System.Drawing.Point, System.Drawing">
+    <value>562, 0</value>
+  </data>
+  <data name="labelScoreKeyboardL.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 0, 0, 0</value>
+  </data>
+  <data name="labelScoreKeyboardL.Size" type="System.Drawing.Size, System.Drawing">
+    <value>134, 122</value>
+  </data>
+  <data name="labelScoreKeyboardL.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="labelScoreKeyboardL.Text" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="labelScoreKeyboardL.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;labelScoreKeyboardL.Name" xml:space="preserve">
+    <value>labelScoreKeyboardL</value>
+  </data>
+  <data name="&gt;&gt;labelScoreKeyboardL.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelScoreKeyboardL.Parent" xml:space="preserve">
+    <value>tableLayoutKeyboardLeft</value>
+  </data>
+  <data name="&gt;&gt;labelScoreKeyboardL.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="LineKeyboardLSelection.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="LineKeyboardLSelection.Location" type="System.Drawing.Point, System.Drawing">
+    <value>562, 122</value>
+  </data>
+  <data name="LineKeyboardLSelection.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 0, 6, 6</value>
+  </data>
+  <data name="LineKeyboardLSelection.Size" type="System.Drawing.Size, System.Drawing">
+    <value>476, 3</value>
+  </data>
+  <data name="LineKeyboardLSelection.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
+  </data>
+  <data name="&gt;&gt;LineKeyboardLSelection.Name" xml:space="preserve">
+    <value>LineKeyboardLSelection</value>
+  </data>
+  <data name="&gt;&gt;LineKeyboardLSelection.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;LineKeyboardLSelection.Parent" xml:space="preserve">
+    <value>tableLayoutKeyboardLeft</value>
+  </data>
+  <data name="&gt;&gt;LineKeyboardLSelection.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="tableLayoutKeyboardLeft.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutKeyboardLeft.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 748</value>
+  </data>
+  <data name="tableLayoutKeyboardLeft.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="tableLayoutKeyboardLeft.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutKeyboardLeft.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1044, 131</value>
+  </data>
+  <data name="tableLayoutKeyboardLeft.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutKeyboardLeft.Name" xml:space="preserve">
+    <value>tableLayoutKeyboardLeft</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutKeyboardLeft.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutKeyboardLeft.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutKeyboardLeft.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="tableLayoutKeyboardLeft.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonCalibrateKeyboardL" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel9" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="ButtonOpcKeyboardL" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="labelScoreKeyboardL" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="LineKeyboardLSelection" Row="1" RowSpan="1" Column="2" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,58,Absolute,76,Absolute,140,Percent,42" /&gt;&lt;Rows Styles="Percent,100,Absolute,9" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="labelCalibrationMessage.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="labelCalibrationMessage.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat Black, 20pt, style=Italic</value>
+  </data>
+  <data name="labelCalibrationMessage.Location" type="System.Drawing.Point, System.Drawing">
+    <value>360, 0</value>
+  </data>
+  <data name="labelCalibrationMessage.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>18, 19, 18, 19</value>
+  </data>
+  <data name="labelCalibrationMessage.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>38, 39, 38, 39</value>
+  </data>
+  <data name="labelCalibrationMessage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>684, 262</value>
+  </data>
+  <data name="labelCalibrationMessage.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="labelCalibrationMessage.Text" xml:space="preserve">
+    <value>Run all three of the calibrations above</value>
+  </data>
+  <data name="labelCalibrationMessage.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="&gt;&gt;labelCalibrationMessage.Name" xml:space="preserve">
+    <value>labelCalibrationMessage</value>
+  </data>
+  <data name="&gt;&gt;labelCalibrationMessage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelCalibrationMessage.Parent" xml:space="preserve">
+    <value>panelAdditionalCalibrations</value>
+  </data>
+  <data name="&gt;&gt;labelCalibrationMessage.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanelAdditionalOptions.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutKeybaordRight.ColumnCount" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="ButtonCalibrateKeyboardR.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonCalibrateKeyboardR.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonCalibrateKeyboardR.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat Light, 12pt, style=Underline</value>
+  </data>
+  <data name="ButtonCalibrateKeyboardR.Location" type="System.Drawing.Point, System.Drawing">
+    <value>702, 6</value>
+  </data>
+  <data name="ButtonCalibrateKeyboardR.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="ButtonCalibrateKeyboardR.Size" type="System.Drawing.Size, System.Drawing">
+    <value>336, 110</value>
+  </data>
+  <data name="ButtonCalibrateKeyboardR.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ButtonCalibrateKeyboardR.Text" xml:space="preserve">
+    <value>Calibrate now</value>
+  </data>
+  <data name="ButtonCalibrateKeyboardR.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;ButtonCalibrateKeyboardR.Name" xml:space="preserve">
+    <value>ButtonCalibrateKeyboardR</value>
+  </data>
+  <data name="&gt;&gt;ButtonCalibrateKeyboardR.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonCalibrateKeyboardR.Parent" xml:space="preserve">
+    <value>tableLayoutKeybaordRight</value>
+  </data>
+  <data name="&gt;&gt;ButtonCalibrateKeyboardR.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel11.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ButtonInfoKeyboardR.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonInfoKeyboardR.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 7pt</value>
+  </data>
+  <data name="ButtonInfoKeyboardR.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 37</value>
+  </data>
+  <data name="ButtonInfoKeyboardR.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="ButtonInfoKeyboardR.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 48</value>
+  </data>
+  <data name="ButtonInfoKeyboardR.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="ButtonInfoKeyboardR.Text" xml:space="preserve">
+    <value>?</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoKeyboardR.Name" xml:space="preserve">
+    <value>ButtonInfoKeyboardR</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoKeyboardR.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoKeyboardR.Parent" xml:space="preserve">
+    <value>tableLayoutPanel11</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoKeyboardR.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel11.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>498, 0</value>
+  </data>
+  <data name="tableLayoutPanel11.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>18, 0, 0, 0</value>
+  </data>
+  <data name="tableLayoutPanel11.RowCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="tableLayoutPanel11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 122</value>
+  </data>
+  <data name="tableLayoutPanel11.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel11.Name" xml:space="preserve">
+    <value>tableLayoutPanel11</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel11.Parent" xml:space="preserve">
+    <value>tableLayoutKeybaordRight</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel11.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel11.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonInfoKeyboardR" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,50,Absolute,48,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="ButtonOpcKeyboardR.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonOpcKeyboardR.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonOpcKeyboardR.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 15pt</value>
+  </data>
+  <data name="ButtonOpcKeyboardR.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
+  </data>
+  <data name="ButtonOpcKeyboardR.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 0, 0</value>
+  </data>
+  <data name="ButtonOpcKeyboardR.Size" type="System.Drawing.Size, System.Drawing">
+    <value>474, 116</value>
+  </data>
+  <data name="ButtonOpcKeyboardR.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="ButtonOpcKeyboardR.Text" xml:space="preserve">
+    <value>Keyboard (Right)*</value>
+  </data>
+  <data name="ButtonOpcKeyboardR.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;ButtonOpcKeyboardR.Name" xml:space="preserve">
+    <value>ButtonOpcKeyboardR</value>
+  </data>
+  <data name="&gt;&gt;ButtonOpcKeyboardR.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonOpcKeyboardR.Parent" xml:space="preserve">
+    <value>tableLayoutKeybaordRight</value>
+  </data>
+  <data name="&gt;&gt;ButtonOpcKeyboardR.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="labelScoreKeyboardR.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelScoreKeyboardR.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="labelScoreKeyboardR.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat ExtraBold, 16pt</value>
+  </data>
+  <data name="labelScoreKeyboardR.Location" type="System.Drawing.Point, System.Drawing">
+    <value>562, 0</value>
+  </data>
+  <data name="labelScoreKeyboardR.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 0, 0, 0</value>
+  </data>
+  <data name="labelScoreKeyboardR.Size" type="System.Drawing.Size, System.Drawing">
+    <value>134, 122</value>
+  </data>
+  <data name="labelScoreKeyboardR.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="labelScoreKeyboardR.Text" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="labelScoreKeyboardR.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;labelScoreKeyboardR.Name" xml:space="preserve">
+    <value>labelScoreKeyboardR</value>
+  </data>
+  <data name="&gt;&gt;labelScoreKeyboardR.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelScoreKeyboardR.Parent" xml:space="preserve">
+    <value>tableLayoutKeybaordRight</value>
+  </data>
+  <data name="&gt;&gt;labelScoreKeyboardR.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="LineKeyboardRSelection.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="LineKeyboardRSelection.Location" type="System.Drawing.Point, System.Drawing">
+    <value>562, 122</value>
+  </data>
+  <data name="LineKeyboardRSelection.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 0, 6, 6</value>
+  </data>
+  <data name="LineKeyboardRSelection.Size" type="System.Drawing.Size, System.Drawing">
+    <value>476, 3</value>
+  </data>
+  <data name="LineKeyboardRSelection.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
+  </data>
+  <data name="&gt;&gt;LineKeyboardRSelection.Name" xml:space="preserve">
+    <value>LineKeyboardRSelection</value>
+  </data>
+  <data name="&gt;&gt;LineKeyboardRSelection.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;LineKeyboardRSelection.Parent" xml:space="preserve">
+    <value>tableLayoutKeybaordRight</value>
+  </data>
+  <data name="&gt;&gt;LineKeyboardRSelection.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="tableLayoutKeybaordRight.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutKeybaordRight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 131</value>
+  </data>
+  <data name="tableLayoutKeybaordRight.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="tableLayoutKeybaordRight.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutKeybaordRight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1044, 131</value>
+  </data>
+  <data name="tableLayoutKeybaordRight.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutKeybaordRight.Name" xml:space="preserve">
+    <value>tableLayoutKeybaordRight</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutKeybaordRight.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutKeybaordRight.Parent" xml:space="preserve">
+    <value>tableLayoutPanelAdditionalOptions</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutKeybaordRight.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutKeybaordRight.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonCalibrateKeyboardR" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel11" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="ButtonOpcKeyboardR" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="labelScoreKeyboardR" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="LineKeyboardRSelection" Row="1" RowSpan="1" Column="2" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,58,Absolute,76,Absolute,140,Percent,42" /&gt;&lt;Rows Styles="Percent,100,Absolute,9" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutWord.ColumnCount" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="ButtonCalibrateWord.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonCalibrateWord.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonCalibrateWord.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat Light, 12pt, style=Underline</value>
+  </data>
+  <data name="ButtonCalibrateWord.Location" type="System.Drawing.Point, System.Drawing">
+    <value>702, 6</value>
+  </data>
+  <data name="ButtonCalibrateWord.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="ButtonCalibrateWord.Size" type="System.Drawing.Size, System.Drawing">
+    <value>336, 110</value>
+  </data>
+  <data name="ButtonCalibrateWord.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ButtonCalibrateWord.Text" xml:space="preserve">
+    <value>Calibrate now</value>
+  </data>
+  <data name="ButtonCalibrateWord.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;ButtonCalibrateWord.Name" xml:space="preserve">
+    <value>ButtonCalibrateWord</value>
+  </data>
+  <data name="&gt;&gt;ButtonCalibrateWord.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonCalibrateWord.Parent" xml:space="preserve">
+    <value>tableLayoutWord</value>
+  </data>
+  <data name="&gt;&gt;ButtonCalibrateWord.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel10.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ButtonInfoWord.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonInfoWord.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 7pt</value>
+  </data>
+  <data name="ButtonInfoWord.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 37</value>
+  </data>
+  <data name="ButtonInfoWord.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="ButtonInfoWord.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 48</value>
+  </data>
+  <data name="ButtonInfoWord.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="ButtonInfoWord.Text" xml:space="preserve">
+    <value>?</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoWord.Name" xml:space="preserve">
+    <value>ButtonInfoWord</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoWord.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoWord.Parent" xml:space="preserve">
+    <value>tableLayoutPanel10</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoWord.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel10.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>498, 0</value>
+  </data>
+  <data name="tableLayoutPanel10.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>18, 0, 0, 0</value>
+  </data>
+  <data name="tableLayoutPanel10.RowCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="tableLayoutPanel10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 122</value>
+  </data>
+  <data name="tableLayoutPanel10.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel10.Name" xml:space="preserve">
+    <value>tableLayoutPanel10</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel10.Parent" xml:space="preserve">
+    <value>tableLayoutWord</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel10.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel10.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonInfoWord" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,50,Absolute,48,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="ButtonOpcWord.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonOpcWord.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonOpcWord.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 16pt</value>
+  </data>
+  <data name="ButtonOpcWord.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
+  </data>
+  <data name="ButtonOpcWord.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 0, 0</value>
+  </data>
+  <data name="ButtonOpcWord.Size" type="System.Drawing.Size, System.Drawing">
+    <value>474, 116</value>
+  </data>
+  <data name="ButtonOpcWord.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="ButtonOpcWord.Text" xml:space="preserve">
+    <value>Word*</value>
+  </data>
+  <data name="ButtonOpcWord.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;ButtonOpcWord.Name" xml:space="preserve">
+    <value>ButtonOpcWord</value>
+  </data>
+  <data name="&gt;&gt;ButtonOpcWord.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonOpcWord.Parent" xml:space="preserve">
+    <value>tableLayoutWord</value>
+  </data>
+  <data name="&gt;&gt;ButtonOpcWord.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="labelScoreWord.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelScoreWord.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="labelScoreWord.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat ExtraBold, 16pt</value>
+  </data>
+  <data name="labelScoreWord.Location" type="System.Drawing.Point, System.Drawing">
+    <value>562, 0</value>
+  </data>
+  <data name="labelScoreWord.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 0, 0, 0</value>
+  </data>
+  <data name="labelScoreWord.Size" type="System.Drawing.Size, System.Drawing">
+    <value>134, 122</value>
+  </data>
+  <data name="labelScoreWord.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="labelScoreWord.Text" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="labelScoreWord.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;labelScoreWord.Name" xml:space="preserve">
+    <value>labelScoreWord</value>
+  </data>
+  <data name="&gt;&gt;labelScoreWord.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelScoreWord.Parent" xml:space="preserve">
+    <value>tableLayoutWord</value>
+  </data>
+  <data name="&gt;&gt;labelScoreWord.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="LineWordSelection.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="LineWordSelection.Location" type="System.Drawing.Point, System.Drawing">
+    <value>562, 122</value>
+  </data>
+  <data name="LineWordSelection.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 0, 6, 6</value>
+  </data>
+  <data name="LineWordSelection.Size" type="System.Drawing.Size, System.Drawing">
+    <value>476, 3</value>
+  </data>
+  <data name="LineWordSelection.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
+  </data>
+  <data name="&gt;&gt;LineWordSelection.Name" xml:space="preserve">
+    <value>LineWordSelection</value>
+  </data>
+  <data name="&gt;&gt;LineWordSelection.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;LineWordSelection.Parent" xml:space="preserve">
+    <value>tableLayoutWord</value>
+  </data>
+  <data name="&gt;&gt;LineWordSelection.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="tableLayoutWord.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutWord.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="tableLayoutWord.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="tableLayoutWord.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutWord.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1044, 131</value>
+  </data>
+  <data name="tableLayoutWord.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutWord.Name" xml:space="preserve">
+    <value>tableLayoutWord</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutWord.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutWord.Parent" xml:space="preserve">
+    <value>tableLayoutPanelAdditionalOptions</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutWord.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutWord.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonCalibrateWord" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel10" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="ButtonOpcWord" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="labelScoreWord" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="LineWordSelection" Row="1" RowSpan="1" Column="2" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,58,Absolute,76,Absolute,140,Percent,42" /&gt;&lt;Rows Styles="Percent,100,Absolute,9" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutPanelAdditionalOptions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanelAdditionalOptions.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="tableLayoutPanelAdditionalOptions.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="tableLayoutPanelAdditionalOptions.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutPanelAdditionalOptions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1044, 262</value>
+  </data>
+  <data name="tableLayoutPanelAdditionalOptions.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanelAdditionalOptions.Name" xml:space="preserve">
+    <value>tableLayoutPanelAdditionalOptions</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanelAdditionalOptions.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanelAdditionalOptions.Parent" xml:space="preserve">
+    <value>panelAdditionalCalibrations</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanelAdditionalOptions.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanelAdditionalOptions.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="tableLayoutKeybaordRight" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutWord" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,Absolute,38" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="panelAdditionalCalibrations.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="panelAdditionalCalibrations.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 938</value>
+  </data>
+  <data name="panelAdditionalCalibrations.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="panelAdditionalCalibrations.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1044, 262</value>
+  </data>
+  <data name="panelAdditionalCalibrations.TabIndex" type="System.Int32, mscorlib">
+    <value>81</value>
+  </data>
+  <data name="&gt;&gt;panelAdditionalCalibrations.Name" xml:space="preserve">
+    <value>panelAdditionalCalibrations</value>
+  </data>
+  <data name="&gt;&gt;panelAdditionalCalibrations.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panelAdditionalCalibrations.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;panelAdditionalCalibrations.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="tableLayoutSentence.ColumnCount" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="ButtonCalibrateSentence.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonCalibrateSentence.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonCalibrateSentence.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat Light, 12pt, style=Underline</value>
+  </data>
+  <data name="ButtonCalibrateSentence.Location" type="System.Drawing.Point, System.Drawing">
+    <value>702, 6</value>
+  </data>
+  <data name="ButtonCalibrateSentence.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="ButtonCalibrateSentence.Size" type="System.Drawing.Size, System.Drawing">
+    <value>336, 110</value>
+  </data>
+  <data name="ButtonCalibrateSentence.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ButtonCalibrateSentence.Text" xml:space="preserve">
+    <value>Calibrate Opt.</value>
+  </data>
+  <data name="ButtonCalibrateSentence.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;ButtonCalibrateSentence.Name" xml:space="preserve">
+    <value>ButtonCalibrateSentence</value>
+  </data>
+  <data name="&gt;&gt;ButtonCalibrateSentence.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonCalibrateSentence.Parent" xml:space="preserve">
+    <value>tableLayoutSentence</value>
+  </data>
+  <data name="&gt;&gt;ButtonCalibrateSentence.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel8.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ButtonInfoSentence.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonInfoSentence.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 7pt</value>
+  </data>
+  <data name="ButtonInfoSentence.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 37</value>
+  </data>
+  <data name="ButtonInfoSentence.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="ButtonInfoSentence.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 48</value>
+  </data>
+  <data name="ButtonInfoSentence.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="ButtonInfoSentence.Text" xml:space="preserve">
+    <value>?</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoSentence.Name" xml:space="preserve">
+    <value>ButtonInfoSentence</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoSentence.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoSentence.Parent" xml:space="preserve">
+    <value>tableLayoutPanel8</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoSentence.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel8.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>498, 0</value>
+  </data>
+  <data name="tableLayoutPanel8.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>18, 0, 0, 0</value>
+  </data>
+  <data name="tableLayoutPanel8.RowCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="tableLayoutPanel8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 122</value>
+  </data>
+  <data name="tableLayoutPanel8.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel8.Name" xml:space="preserve">
+    <value>tableLayoutPanel8</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel8.Parent" xml:space="preserve">
+    <value>tableLayoutSentence</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel8.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel8.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonInfoSentence" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,50,Absolute,48,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="ButtonOpcSentence.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonOpcSentence.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonOpcSentence.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 16pt</value>
+  </data>
+  <data name="ButtonOpcSentence.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
+  </data>
+  <data name="ButtonOpcSentence.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 0, 0</value>
+  </data>
+  <data name="ButtonOpcSentence.Size" type="System.Drawing.Size, System.Drawing">
+    <value>474, 116</value>
+  </data>
+  <data name="ButtonOpcSentence.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="ButtonOpcSentence.Text" xml:space="preserve">
+    <value>Sentence</value>
+  </data>
+  <data name="ButtonOpcSentence.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;ButtonOpcSentence.Name" xml:space="preserve">
+    <value>ButtonOpcSentence</value>
+  </data>
+  <data name="&gt;&gt;ButtonOpcSentence.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonOpcSentence.Parent" xml:space="preserve">
+    <value>tableLayoutSentence</value>
+  </data>
+  <data name="&gt;&gt;ButtonOpcSentence.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="labelScoreSentence.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelScoreSentence.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="labelScoreSentence.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat ExtraBold, 16pt</value>
+  </data>
+  <data name="labelScoreSentence.Location" type="System.Drawing.Point, System.Drawing">
+    <value>562, 0</value>
+  </data>
+  <data name="labelScoreSentence.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 0, 0, 0</value>
+  </data>
+  <data name="labelScoreSentence.Size" type="System.Drawing.Size, System.Drawing">
+    <value>134, 122</value>
+  </data>
+  <data name="labelScoreSentence.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="labelScoreSentence.Text" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="labelScoreSentence.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;labelScoreSentence.Name" xml:space="preserve">
+    <value>labelScoreSentence</value>
+  </data>
+  <data name="&gt;&gt;labelScoreSentence.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelScoreSentence.Parent" xml:space="preserve">
+    <value>tableLayoutSentence</value>
+  </data>
+  <data name="&gt;&gt;labelScoreSentence.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="LineSentenceSelection.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="LineSentenceSelection.Location" type="System.Drawing.Point, System.Drawing">
+    <value>562, 122</value>
+  </data>
+  <data name="LineSentenceSelection.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 0, 6, 6</value>
+  </data>
+  <data name="LineSentenceSelection.Size" type="System.Drawing.Size, System.Drawing">
+    <value>476, 3</value>
+  </data>
+  <data name="LineSentenceSelection.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
+  </data>
+  <data name="&gt;&gt;LineSentenceSelection.Name" xml:space="preserve">
+    <value>LineSentenceSelection</value>
+  </data>
+  <data name="&gt;&gt;LineSentenceSelection.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;LineSentenceSelection.Parent" xml:space="preserve">
+    <value>tableLayoutSentence</value>
+  </data>
+  <data name="&gt;&gt;LineSentenceSelection.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="tableLayoutSentence.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutSentence.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 617</value>
+  </data>
+  <data name="tableLayoutSentence.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="tableLayoutSentence.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutSentence.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1044, 131</value>
+  </data>
+  <data name="tableLayoutSentence.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutSentence.Name" xml:space="preserve">
+    <value>tableLayoutSentence</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutSentence.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutSentence.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutSentence.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="tableLayoutSentence.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonCalibrateSentence" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel8" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="ButtonOpcSentence" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="labelScoreSentence" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="LineSentenceSelection" Row="1" RowSpan="1" Column="2" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,58,Absolute,76,Absolute,140,Percent,42" /&gt;&lt;Rows Styles="Percent,100,Absolute,9" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutBox.ColumnCount" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="ButtonCalibrateBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ButtonCalibrateBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonCalibrateBox.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonCalibrateBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat Light, 12pt, style=Underline</value>
+  </data>
+  <data name="ButtonCalibrateBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>702, 6</value>
+  </data>
+  <data name="ButtonCalibrateBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="ButtonCalibrateBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>336, 110</value>
+  </data>
+  <data name="ButtonCalibrateBox.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="ButtonCalibrateBox.Text" xml:space="preserve">
+    <value>Calibrate now</value>
+  </data>
+  <data name="ButtonCalibrateBox.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;ButtonCalibrateBox.Name" xml:space="preserve">
+    <value>ButtonCalibrateBox</value>
+  </data>
+  <data name="&gt;&gt;ButtonCalibrateBox.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonCalibrateBox.Parent" xml:space="preserve">
+    <value>tableLayoutBox</value>
+  </data>
+  <data name="&gt;&gt;ButtonCalibrateBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="ButtonOpcBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonOpcBox.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonOpcBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 16pt</value>
+  </data>
+  <data name="ButtonOpcBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
+  </data>
+  <data name="ButtonOpcBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 0, 0</value>
+  </data>
+  <data name="ButtonOpcBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>474, 116</value>
+  </data>
+  <data name="ButtonOpcBox.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="ButtonOpcBox.Text" xml:space="preserve">
+    <value>Box</value>
+  </data>
+  <data name="ButtonOpcBox.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;ButtonOpcBox.Name" xml:space="preserve">
+    <value>ButtonOpcBox</value>
+  </data>
+  <data name="&gt;&gt;ButtonOpcBox.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonOpcBox.Parent" xml:space="preserve">
+    <value>tableLayoutBox</value>
+  </data>
+  <data name="&gt;&gt;ButtonOpcBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="labelScoreBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelScoreBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="labelScoreBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat ExtraBold, 16pt</value>
+  </data>
+  <data name="labelScoreBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>562, 0</value>
+  </data>
+  <data name="labelScoreBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 0, 0, 0</value>
+  </data>
+  <data name="labelScoreBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>134, 122</value>
+  </data>
+  <data name="labelScoreBox.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="labelScoreBox.Text" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="labelScoreBox.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;labelScoreBox.Name" xml:space="preserve">
+    <value>labelScoreBox</value>
+  </data>
+  <data name="&gt;&gt;labelScoreBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelScoreBox.Parent" xml:space="preserve">
+    <value>tableLayoutBox</value>
+  </data>
+  <data name="&gt;&gt;labelScoreBox.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutPanel7.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ButtonInfoBox.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonInfoBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 7pt</value>
+  </data>
+  <data name="ButtonInfoBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 37</value>
+  </data>
+  <data name="ButtonInfoBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="ButtonInfoBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 48</value>
+  </data>
+  <data name="ButtonInfoBox.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="ButtonInfoBox.Text" xml:space="preserve">
+    <value>?</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoBox.Name" xml:space="preserve">
+    <value>ButtonInfoBox</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoBox.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoBox.Parent" xml:space="preserve">
+    <value>tableLayoutPanel7</value>
+  </data>
+  <data name="&gt;&gt;ButtonInfoBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel7.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>498, 0</value>
+  </data>
+  <data name="tableLayoutPanel7.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>18, 0, 0, 0</value>
+  </data>
+  <data name="tableLayoutPanel7.RowCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="tableLayoutPanel7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 122</value>
+  </data>
+  <data name="tableLayoutPanel7.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel7.Name" xml:space="preserve">
+    <value>tableLayoutPanel7</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel7.Parent" xml:space="preserve">
+    <value>tableLayoutBox</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel7.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="tableLayoutPanel7.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonInfoBox" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,50,Absolute,48,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="LineBoxSelection.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="LineBoxSelection.Location" type="System.Drawing.Point, System.Drawing">
+    <value>562, 122</value>
+  </data>
+  <data name="LineBoxSelection.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 0, 6, 6</value>
+  </data>
+  <data name="LineBoxSelection.Size" type="System.Drawing.Size, System.Drawing">
+    <value>476, 3</value>
+  </data>
+  <data name="LineBoxSelection.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="&gt;&gt;LineBoxSelection.Name" xml:space="preserve">
+    <value>LineBoxSelection</value>
+  </data>
+  <data name="&gt;&gt;LineBoxSelection.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;LineBoxSelection.Parent" xml:space="preserve">
+    <value>tableLayoutBox</value>
+  </data>
+  <data name="&gt;&gt;LineBoxSelection.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="tableLayoutBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 486</value>
+  </data>
+  <data name="tableLayoutBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="tableLayoutBox.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1044, 131</value>
+  </data>
+  <data name="tableLayoutBox.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutBox.Name" xml:space="preserve">
+    <value>tableLayoutBox</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutBox.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutBox.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="tableLayoutBox.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonCalibrateBox" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="ButtonOpcBox" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="labelScoreBox" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel7" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="LineBoxSelection" Row="1" RowSpan="1" Column="2" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,58,Absolute,76,Absolute,140,Percent,42" /&gt;&lt;Rows Styles="Percent,100,Absolute,9" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="checkBoxAdditionalCalibrations.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="checkBoxAdditionalCalibrations.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="checkBoxAdditionalCalibrations.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat SemiBold, 13pt</value>
+  </data>
+  <data name="checkBoxAdditionalCalibrations.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 1265</value>
+  </data>
+  <data name="checkBoxAdditionalCalibrations.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="checkBoxAdditionalCalibrations.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>38, 39, 0, 0</value>
+  </data>
+  <data name="checkBoxAdditionalCalibrations.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1032, 124</value>
+  </data>
+  <data name="checkBoxAdditionalCalibrations.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="checkBoxAdditionalCalibrations.Text" xml:space="preserve">
+    <value>Additional  calibrations *</value>
+  </data>
+  <data name="&gt;&gt;checkBoxAdditionalCalibrations.Name" xml:space="preserve">
+    <value>checkBoxAdditionalCalibrations</value>
+  </data>
+  <data name="&gt;&gt;checkBoxAdditionalCalibrations.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBoxAdditionalCalibrations.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;checkBoxAdditionalCalibrations.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="webBrowser.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="webBrowser.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 162</value>
+  </data>
+  <data name="webBrowser.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="webBrowser.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>40, 39</value>
+  </data>
+  <data name="webBrowser.Size" type="System.Drawing.Size, System.Drawing">
+    <value>2076, 216</value>
+  </data>
+  <data name="webBrowser.TabIndex" type="System.Int32, mscorlib">
+    <value>82</value>
+  </data>
+  <data name="&gt;&gt;webBrowser.Name" xml:space="preserve">
+    <value>webBrowser</value>
+  </data>
+  <data name="&gt;&gt;webBrowser.Type" xml:space="preserve">
+    <value>System.Windows.Forms.WebBrowser, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;webBrowser.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;webBrowser.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="tableLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>411, 6</value>
+  </data>
+  <data name="tableLayoutPanel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="tableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>2088, 1395</value>
+  </data>
+  <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.Name" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.Parent" xml:space="preserve">
+    <value>tableLayoutParameters</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="tableLayoutPanel3" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanelTitleModes" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="labelTitle" Row="0" RowSpan="1" Column="0" ColumnSpan="2" /&gt;&lt;Control Name="tableLayoutConfigurations" Row="4" RowSpan="8" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutKeyboardLeft" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="panelAdditionalCalibrations" Row="8" RowSpan="2" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutSentence" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutBox" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="checkBoxAdditionalCalibrations" Row="11" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="webBrowser" Row="1" RowSpan="2" Column="0" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Absolute,156,Absolute,97,Percent,14.28571,Absolute,102,Percent,14.28571,Percent,14.28571,Percent,14.28571,Absolute,59,Percent,14.0873,Percent,14.48413,Absolute,59,Percent,14.28571,Absolute,31" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutPanel6.ColumnCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="scannerRoundedButtonControl3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="scannerRoundedButtonControl3.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="scannerRoundedButtonControl3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 39</value>
+  </data>
+  <data name="scannerRoundedButtonControl3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="scannerRoundedButtonControl3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 340</value>
+  </data>
+  <data name="scannerRoundedButtonControl3.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="&gt;&gt;scannerRoundedButtonControl3.Name" xml:space="preserve">
+    <value>scannerRoundedButtonControl3</value>
+  </data>
+  <data name="&gt;&gt;scannerRoundedButtonControl3.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;scannerRoundedButtonControl3.Parent" xml:space="preserve">
+    <value>tableLayoutPanel6</value>
+  </data>
+  <data name="&gt;&gt;scannerRoundedButtonControl3.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel6.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
+  </data>
+  <data name="tableLayoutPanel6.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="tableLayoutPanel6.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutPanel6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>393, 379</value>
+  </data>
+  <data name="tableLayoutPanel6.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel6.Name" xml:space="preserve">
+    <value>tableLayoutPanel6</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel6.Parent" xml:space="preserve">
+    <value>tableLayoutParameters</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel6.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel6.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="scannerRoundedButtonControl3" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,120,Percent,100" /&gt;&lt;Rows Styles="Absolute,39,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutPanelOptions.ColumnCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="tableLayoutPanelType.ColumnCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="ButtonBeginACAT.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonBeginACAT.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonBeginACAT.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat Medium, 16pt</value>
+  </data>
+  <data name="ButtonBeginACAT.Location" type="System.Drawing.Point, System.Drawing">
+    <value>210, 39</value>
+  </data>
+  <data name="ButtonBeginACAT.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>18, 39, 18, 39</value>
+  </data>
+  <data name="ButtonBeginACAT.Size" type="System.Drawing.Size, System.Drawing">
+    <value>620, 94</value>
+  </data>
+  <data name="ButtonBeginACAT.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="ButtonBeginACAT.Text" xml:space="preserve">
+    <value>Begin using ACAT</value>
+  </data>
+  <data name="&gt;&gt;ButtonBeginACAT.Name" xml:space="preserve">
+    <value>ButtonBeginACAT</value>
+  </data>
+  <data name="&gt;&gt;ButtonBeginACAT.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonBeginACAT.Parent" xml:space="preserve">
+    <value>tableLayoutPanelType</value>
+  </data>
+  <data name="&gt;&gt;ButtonBeginACAT.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanelType.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanelType.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1912, 25</value>
+  </data>
+  <data name="tableLayoutPanelType.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="tableLayoutPanelType.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanelType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>904, 172</value>
+  </data>
+  <data name="tableLayoutPanelType.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanelType.Name" xml:space="preserve">
+    <value>tableLayoutPanelType</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanelType.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanelType.Parent" xml:space="preserve">
+    <value>tableLayoutPanelOptions</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanelType.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanelType.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonBeginACAT" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,Absolute,656,Absolute,56" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutPanelExit.ColumnCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="ButtonExit.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonExit.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonExit.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat Light, 22pt</value>
+  </data>
+  <data name="ButtonExit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
+  </data>
+  <data name="ButtonExit.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="ButtonExit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>456, 160</value>
+  </data>
+  <data name="ButtonExit.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="ButtonExit.Text" xml:space="preserve">
+    <value>Exit ACAT</value>
+  </data>
+  <data name="&gt;&gt;ButtonExit.Name" xml:space="preserve">
+    <value>ButtonExit</value>
+  </data>
+  <data name="&gt;&gt;ButtonExit.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonExit.Parent" xml:space="preserve">
+    <value>tableLayoutPanelExit</value>
+  </data>
+  <data name="&gt;&gt;ButtonExit.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanelExit.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanelExit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>82, 25</value>
+  </data>
+  <data name="tableLayoutPanelExit.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="tableLayoutPanelExit.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanelExit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>903, 172</value>
+  </data>
+  <data name="tableLayoutPanelExit.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanelExit.Name" xml:space="preserve">
+    <value>tableLayoutPanelExit</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanelExit.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanelExit.Parent" xml:space="preserve">
+    <value>tableLayoutPanelOptions</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanelExit.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanelExit.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonExit" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,468,Percent,100" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutPaneladvancedOpt.ColumnCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="ButtonOtherTest.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="ButtonOtherTest.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="ButtonOtherTest.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Montserrat Light, 20pt</value>
+  </data>
+  <data name="ButtonOtherTest.Location" type="System.Drawing.Point, System.Drawing">
+    <value>171, 6</value>
+  </data>
+  <data name="ButtonOtherTest.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="ButtonOtherTest.Size" type="System.Drawing.Size, System.Drawing">
+    <value>560, 160</value>
+  </data>
+  <data name="ButtonOtherTest.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ButtonOtherTest.Text" xml:space="preserve">
+    <value>Advanced Options</value>
+  </data>
+  <data name="&gt;&gt;ButtonOtherTest.Name" xml:space="preserve">
+    <value>ButtonOtherTest</value>
+  </data>
+  <data name="&gt;&gt;ButtonOtherTest.Type" xml:space="preserve">
+    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ButtonOtherTest.Parent" xml:space="preserve">
+    <value>tableLayoutPaneladvancedOpt</value>
+  </data>
+  <data name="&gt;&gt;ButtonOtherTest.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPaneladvancedOpt.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPaneladvancedOpt.Location" type="System.Drawing.Point, System.Drawing">
+    <value>997, 25</value>
+  </data>
+  <data name="tableLayoutPaneladvancedOpt.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="tableLayoutPaneladvancedOpt.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPaneladvancedOpt.Size" type="System.Drawing.Size, System.Drawing">
+    <value>903, 172</value>
+  </data>
+  <data name="tableLayoutPaneladvancedOpt.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPaneladvancedOpt.Name" xml:space="preserve">
+    <value>tableLayoutPaneladvancedOpt</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPaneladvancedOpt.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPaneladvancedOpt.Parent" xml:space="preserve">
+    <value>tableLayoutPanelOptions</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPaneladvancedOpt.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutPaneladvancedOpt.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ButtonOtherTest" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Absolute,572,Percent,50" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutPanelOptions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanelOptions.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 1486</value>
+  </data>
+  <data name="tableLayoutPanelOptions.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="tableLayoutPanelOptions.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>76, 19, 76, 19</value>
+  </data>
+  <data name="tableLayoutPanelOptions.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanelOptions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>2898, 222</value>
+  </data>
+  <data name="tableLayoutPanelOptions.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanelOptions.Name" xml:space="preserve">
+    <value>tableLayoutPanelOptions</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanelOptions.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanelOptions.Parent" xml:space="preserve">
+    <value>tableLayoutParameters</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanelOptions.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutPanelOptions.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="tableLayoutPanelType" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanelExit" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPaneladvancedOpt" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33333,Percent,33.33333,Percent,33.33333" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutPanel12.ColumnCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutPanel12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 397</value>
+  </data>
+  <data name="tableLayoutPanel12.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="tableLayoutPanel12.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutPanel12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>376, 597</value>
+  </data>
+  <data name="tableLayoutPanel12.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel12.Name" xml:space="preserve">
+    <value>tableLayoutPanel12</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel12.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel12.Parent" xml:space="preserve">
+    <value>tableLayoutParameters</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel12.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="tableLayoutPanel12.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls /&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50,Percent,50,Absolute,31" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="tableLayoutParameters.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutParameters.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="tableLayoutParameters.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 3, 4, 3</value>
+  </data>
+  <data name="tableLayoutParameters.RowCount" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="tableLayoutParameters.Size" type="System.Drawing.Size, System.Drawing">
+    <value>2910, 1753</value>
+  </data>
+  <data name="tableLayoutParameters.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutParameters.Name" xml:space="preserve">
+    <value>tableLayoutParameters</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutParameters.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutParameters.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutParameters.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutParameters.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="tableLayoutPanel1" Row="0" RowSpan="2" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanel6" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tableLayoutPanelOptions" Row="3" RowSpan="1" Column="0" ColumnSpan="3" /&gt;&lt;Control Name="tableLayoutPanel12" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Absolute,2100,Percent,50" /&gt;&lt;Rows Styles="Absolute,391,Absolute,1016,Percent,100,Absolute,234,Absolute,39" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>12, 25</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>2910, 1753</value>
+  </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>ACAT</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>ConfirmBoxCalibrationModes</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

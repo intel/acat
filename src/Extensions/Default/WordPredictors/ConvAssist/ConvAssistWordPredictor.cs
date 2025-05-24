@@ -155,7 +155,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                     "The ConvAssist predictive text functionality is derived from Pressagio, the " +
                     "intelligent predictive text and characters. ");
 
-            Disclaimers.Add("ConvAssist", Resources.DisclaimerConvAssist);
+            Disclaimers.Add("ConvAssist", StringResources.DisclaimerConvAssist);
 
             // Start the ConvAssist Process
             bool send_params = true;

@@ -78,7 +78,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             Load += ConfirmBox_Load;
 
             webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
-            var html = Resources.BCICalibrationHtmlText.Replace(CoreGlobals.MacroACATUserGuide, HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName));
+            var html = StringResources.BCICalibrationHtmlText.Replace(CoreGlobals.MacroACATUserGuide, HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName));
             webBrowser.DocumentText = html;
         }
 
@@ -266,28 +266,28 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             switch (scannerRoundedButtonControl.Name)
             {
                 case var _ when scannerRoundedButtonControl.Name.Contains("Box"):
-                    customToolTip?.ShowToolTip(BCIR.GetString("HintBoxCalibrationScreen"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip?.ShowToolTip(StringResources.ResourceManager.GetString("HintBoxCalibrationScreen"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("Sentence"):
-                    customToolTip?.ShowToolTip(BCIR.GetString("HintSentenceCalibrationScreen"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip?.ShowToolTip(StringResources.ResourceManager.GetString("HintSentenceCalibrationScreen"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("KeyboardL"):
-                    customToolTip?.ShowToolTip(BCIR.GetString("HintKeyboardLeftCalibrationScreen"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip?.ShowToolTip(StringResources.ResourceManager.GetString("HintKeyboardLeftCalibrationScreen"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("Word"):
-                    customToolTip?.ShowToolTip(BCIR.GetString("HintWordCalibrationScreen"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip?.ShowToolTip(StringResources.ResourceManager.GetString("HintWordCalibrationScreen"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("KeyboardR"):
-                    customToolTip?.ShowToolTip(BCIR.GetString("HintKeyboardRightCalibrationScreen"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip?.ShowToolTip(StringResources.ResourceManager.GetString("HintKeyboardRightCalibrationScreen"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("ButtonBeginACAT"):
                     if (!IsTypingEnabled)
-                        customToolTip?.ShowToolTip(BCIR.GetString("HintCalibrationBeginACATNotEnalbed"), (ScannerRoundedButtonControl)sender, -120, -260);
+                        customToolTip?.ShowToolTip(StringResources.ResourceManager.GetString("HintCalibrationBeginACATNotEnalbed"), (ScannerRoundedButtonControl)sender, -120, -260);
                     break;
             }
         }
@@ -303,19 +303,19 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             switch (scannerRoundedButtonControl.Name)
             {
                 case var _ when scannerRoundedButtonControl.Name.Contains("ScanningTime"):
-                    customToolTip?.ShowToolTip(BCIR.GetString("HintScanningTime"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip?.ShowToolTip(StringResources.ResourceManager.GetString("HintScanningTime"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("NumberTargets"):
-                    customToolTip?.ShowToolTip(BCIR.GetString("HintNumberTargets"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip?.ShowToolTip(StringResources.ResourceManager.GetString("HintNumberTargets"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("IterationsTarget"):
-                    customToolTip?.ShowToolTip(BCIR.GetString("HintIterationstarget"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip?.ShowToolTip(StringResources.ResourceManager.GetString("HintIterationstarget"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("MinimumScore"):
-                    customToolTip?.ShowToolTip(BCIR.GetString("HintMinimumScore"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip?.ShowToolTip(StringResources.ResourceManager.GetString("HintMinimumScore"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
             }
         }
@@ -853,7 +853,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             {
                 list.Add("PDF");
                 list.Add("true");
-                list.Add(Resources.PDFLoaderHtml);
+                list.Add(StringResources.PDFLoaderHtml);
                 list.Add(param1);
                 list.Add(param2);
             }

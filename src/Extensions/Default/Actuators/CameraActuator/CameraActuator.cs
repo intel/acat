@@ -18,6 +18,7 @@ using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.PreferencesManagement;
 using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.Utility;
+using ACATResources;
 using System;
 using System.Linq;
 using System.Threading;
@@ -231,8 +232,9 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         {
             if (!Cameras.GetCameraNames().Any())
             {
-                //ConfirmBoxSingleOption.ShowDialog(Resources.NoCamerasFoundACATVisionDisabled"), "OK;
-                ConfirmBoxSingleOption.ShowDialog("You have selected Camera as the input switch, but no cameras were found. Please connect a camera and retry.\nExiting.", "OK");
+                //ConfirmBoxOneOption.ShowDialog(Resources.NoCamerasFoundACATVisionDisabled"), "OK;
+                ConfirmBoxOneOption.ShowDialog("You have selected Camera as the input switch, but no cameras were found.",
+                    "Please connect a camera and retry.\nExiting.", StringResources.OK);
                 OnPostInitDone();
                 return false;
             }

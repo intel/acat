@@ -173,7 +173,8 @@ namespace ACAT.Lib.Extension
 
             if (checkBoxDontShowThisOnStartup.Checked)
             {
-                ConfirmBoxSingleOption.ShowDialog("Refer to the ACAT User Guide on how to re-enable this screen", "OK", _keyboardCommon.ScannerForm);
+                ConfirmBoxOneOption.ShowDialog("Refer to the ACAT User Guide on how to re-enable this screen",
+                    "", "OK", _keyboardCommon.ScannerForm);
             }
 
             CoreGlobals.AppPreferences.Save();

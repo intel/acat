@@ -31,7 +31,7 @@ namespace ACAT.Lib.Core.Utility
 
         public static void SymlinkOrJunctionError(String filename)
         {
-            OnFatalError(String.Format(Resources.SymlinkFatalError, filename));
+            OnFatalError(String.Format(StringResources.SymlinkFatalError, filename));
 
         }
     }

@@ -241,7 +241,7 @@ namespace ACAT.Lib.Core.TTSManagement
             if (_DLLError)
                 return false;
 
-            var languageDirs = ResourceUtils.GetInstalledLanugageDirectories();
+            var languageDirs = ResourceUtils.GetInstalledLangugageDirectories();
             foreach (string dir in languageDirs)
             {
                 var extensionDir = dir + "\\" + FileUtils.ExtensionsDir;
@@ -384,16 +384,16 @@ namespace ACAT.Lib.Core.TTSManagement
                     }
                     catch (Exception ex)
                     {
-                        ConfirmBoxSingleOption confirmBoxSingleOption = new ConfirmBoxSingleOption
+                        ConfirmBoxOneOption ConfirmBoxOneOption = new ConfirmBoxOneOption
                         {
                             Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n Status Error: ERTTS",
                             DecisionPrompt = "ok",
                             LabelFont = 10
                         };
-                        confirmBoxSingleOption.BringToFront();
-                        confirmBoxSingleOption.TopMost = true;
-                        confirmBoxSingleOption.ShowDialog();
-                        confirmBoxSingleOption.Dispose();
+                        ConfirmBoxOneOption.BringToFront();
+                        ConfirmBoxOneOption.TopMost = true;
+                        ConfirmBoxOneOption.ShowDialog();
+                        ConfirmBoxOneOption.Dispose();
                         _DLLError = true;
                     }
                 }

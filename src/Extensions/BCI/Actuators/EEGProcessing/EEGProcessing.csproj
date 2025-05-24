@@ -75,12 +75,6 @@
     <Compile Include="DimReduction\DimReductRDA.cs" />
     <Compile Include="FeatureExtraction.cs" />
     <Compile Include="Filters\BandpassFilter.cs" />
-    <Compile Include="Forms\DisplayPosteriorProbsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\DisplayPosteriorProbsForm.Designer.cs">
-      <DependentUpon>DisplayPosteriorProbsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\GraphDisplayerForm1x2.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -106,9 +100,6 @@
     <Compile Include="Utilities\Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Forms\DisplayPosteriorProbsForm.resx">
-      <DependentUpon>DisplayPosteriorProbsForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\GraphDisplayerForm1x2.resx">
       <DependentUpon>GraphDisplayerForm1x2.cs</DependentUpon>
     </EmbeddedResource>

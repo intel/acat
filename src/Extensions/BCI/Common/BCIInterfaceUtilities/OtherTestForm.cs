@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Common.BCIControl;
+using ACATResources;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WidgetManagement;
 using System.Drawing;
@@ -76,19 +77,19 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             switch (scannerRoundedButtonControl.Name)
             {
                 case var _ when scannerRoundedButtonControl.Name.Contains("ReMapCalibrations"):
-                    customToolTip.ShowToolTip(BCIR.GetString("HintReMapCalibrations"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip.ShowToolTip(StringResources.ResourceManager.GetString("HintReMapCalibrations"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("TriggerCheck"):
-                    customToolTip.ShowToolTip(BCIR.GetString("HintTriggerCheck"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip.ShowToolTip(StringResources.ResourceManager.GetString("HintTriggerCheck"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("SignalCheck"):
-                    customToolTip.ShowToolTip(BCIR.GetString("HintSignalCheck"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip.ShowToolTip(StringResources.ResourceManager.GetString("HintSignalCheck"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("EyesOpenClose"):
-                    customToolTip.ShowToolTip(BCIR.GetString("HintEyesOpenCloseCalibration"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip.ShowToolTip(StringResources.ResourceManager.GetString("HintEyesOpenCloseCalibration"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
             }
         }

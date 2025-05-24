@@ -10,6 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACATResources;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.PreferencesManagement;
 using ACAT.Lib.Core.UserManagement;
@@ -137,17 +138,12 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
                 }
                 else
                 {
-                    bool result = ConfirmBox.ShowDialog("Must select voice", null, false);
+                    bool result = ConfirmBoxOneOption.ShowDialog("Must select voice", "", StringResources.OK, null, false);
                     return;
                 }
             }
 
             _settings.Save();
-
-            if (Windows.GetOSVersion() == Windows.WindowsVersion.Win7)
-            {
-                bool result = ConfirmBox.ShowDialog("You are running Windows 7. Text to speech voice selection may not work", null, false);
-            }
 
             Close();
         }
@@ -220,7 +216,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
             this.TopMost = false;
             Hide();
 
-            bool result = ConfirmBox.ShowDialog(prompt.ToString(), null, false);
+            bool result = ConfirmBoxTwoOption.ShowDialog(prompt.ToString(), "", StringResources.Yes, StringResources.No, null, false);
 
             Show();
             this.TopMost = true;

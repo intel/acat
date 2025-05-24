@@ -10,7 +10,7 @@ using System;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
-using R = ACATResources;
+using ACATResources;
 
 namespace ACAT.Lib.Core.PanelManagement
 {
@@ -43,7 +43,7 @@ namespace ACAT.Lib.Core.PanelManagement
             confirmBox.Prompt = prompt;
             confirmBox.DecisionPrompt = decisionPrompt;
             confirmBox.DisplayCheckBox = displayCheckBox;
-            confirmBox.checkBoxDontShowThisMessage.Text = R.Resources.dontShowMessage;
+            confirmBox.checkBoxDontShowThisMessage.Text = StringResources.dontShowMessage;
 
             confirmBox.ShowDialog(parent);
 

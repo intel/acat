@@ -13,6 +13,7 @@
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
+using ACATResources;
 using System;
 using System.Drawing;
 using System.Threading.Tasks;
@@ -298,7 +299,8 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
 
                         if (displayReminderGelElectrodes)
                         {
-                            bool confirmed = ConfirmBoxSingleOption.ShowDialog("Please remember to add gel to GND and T4 electrodes, if you have not already", "OK", this, false);
+                            bool confirmed = ConfirmBoxOneOption.ShowDialog("Please remember to add gel to GND and T4 electrodes, if you have not already",
+                                "", StringResources.OK, this, false);
                         }
                     }
                     else if (UserControlBCISignalCheck._currentBCISignalCheckMode == UserControlBCISignalCheck.BCISignalCheckMode.TEST_IMPEDANCE)

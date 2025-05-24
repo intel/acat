@@ -5,7 +5,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.Onboarding;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
@@ -18,14 +17,13 @@ namespace ACAT.Lib.Extension.Onboarding
     /// trigger switch
     /// </summary>
     [DescriptorAttribute("F2803F8A-D639-459C-9F27-5742BAD4E405",
-                    "OnboardingSwitchSelect",
-                    "Switch select onboarding")]
+                    "OnboardingLanguageSelect",
+                    "Language select onboarding")]
     public class OnboardingLanguageSelect : OnboardingExtensionBase
     {
         // TODO - Localize Me
         private const String Step1 = "STEP 1";
         private IOnboardingWizard _wizard;
-        // private IActuator actuatorSelected = null;
 
         public override IDescriptor Descriptor
         {
@@ -61,9 +59,6 @@ namespace ACAT.Lib.Extension.Onboarding
         public override bool Initialize(IOnboardingWizard wizard)
         {
             _wizard = wizard;
-
-            Context.AppActuatorManager.LoadExtensions(Context.ExtensionDirs, true);
-
             return true;
         }
 

@@ -87,7 +87,7 @@ namespace ACAT.Lib.Extension.Onboarding
             this.labelWelcome1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.labelWelcome1.Size = new System.Drawing.Size(924, 100);
             this.labelWelcome1.TabIndex = 6;
-            this.labelWelcome1.Text = Resources.InitializeComponent_WelcomeTo;
+            this.labelWelcome1.Text = StringResources.InitializeComponent_WelcomeTo;
             this.labelWelcome1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.labelWelcome1.UseCompatibleTextRendering = true;
             // 
@@ -103,7 +103,7 @@ namespace ACAT.Lib.Extension.Onboarding
             this.labelWelcome2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.labelWelcome2.Size = new System.Drawing.Size(924, 240);
             this.labelWelcome2.TabIndex = 7;
-            this.labelWelcome2.Text = Resources.InitializeComponent_ACAT;
+            this.labelWelcome2.Text = StringResources.InitializeComponent_ACAT;
             this.labelWelcome2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.labelWelcome2.UseCompatibleTextRendering = true;
             // 
@@ -130,7 +130,7 @@ namespace ACAT.Lib.Extension.Onboarding
             this.labelWelcome3.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.labelWelcome3.Size = new System.Drawing.Size(924, 48);
             this.labelWelcome3.TabIndex = 8;
-            this.labelWelcome3.Text = Resources.InitializeComponent_AssistiveContextAwareToolkit;
+            this.labelWelcome3.Text = StringResources.InitializeComponent_AssistiveContextAwareToolkit;
             this.labelWelcome3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.labelWelcome3.UseCompatibleTextRendering = true;
             // 
@@ -178,7 +178,7 @@ namespace ACAT.Lib.Extension.Onboarding
             this.buttonConfigure.Name = "buttonConfigure";
             this.buttonConfigure.Size = new System.Drawing.Size(264, 61);
             this.buttonConfigure.TabIndex = 3;
-            this.buttonConfigure.Text = Resources.InitializeComponent_Configure;
+            this.buttonConfigure.Text = StringResources.InitializeComponent_Configure;
             this.buttonConfigure.UseCompatibleTextRendering = true;
             this.buttonConfigure.UseVisualStyleBackColor = false;
             this.buttonConfigure.Click += new System.EventHandler(this.buttonConfigure_Click);

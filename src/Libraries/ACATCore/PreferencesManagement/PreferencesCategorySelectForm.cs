@@ -15,6 +15,7 @@
 using ACAT.Lib.Core.Extensions;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
+using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -490,7 +491,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 }
             }
 
-            ConfirmBox.ShowDialog("You must enable at least one as default", this, true);
+            ConfirmBoxOneOption.ShowDialog("You must enable at least one as default.", "", StringResources.OK, this, true);
 
             return false;
         }

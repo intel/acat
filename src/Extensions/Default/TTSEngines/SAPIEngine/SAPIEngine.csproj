@@ -61,6 +61,10 @@
       <Name>Core</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\ACATResources\ACATResources.csproj">
+      <Project>{a0990d4e-f25b-430c-bda3-40a72560b877}</Project>
+      <Name>ACATResources</Name>
+    </ProjectReference>
     <Reference Include="System" />
     <Reference Include="System.Speech" />
     <Reference Include="System.Drawing" />

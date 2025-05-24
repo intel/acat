@@ -11,6 +11,7 @@
 
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Lib.Core.PanelManagement;
+using ACATResources;
 using System;
 using System.Windows.Forms;
 
@@ -128,7 +129,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <param name="form"></param>
         public static void ShowCalibrationResultWindow(string titleMessage, string message, Form form)
         {
-            ConfirmBoxSingleOption.ShowDialog(titleMessage, message, "Ok", form);
+            ConfirmBoxOneOption.ShowDialog(message, "", StringResources.OK, form);
         }
 
         /// <summary>
@@ -138,7 +139,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <returns></returns>
         public static bool ShowExitAppWindow(Form form)
         {
-            return ConfirmBox.ShowDialog(SUREEXITAPP, null, false);
+            return ConfirmBoxTwoOption.ShowDialog(SUREEXITAPP, "", StringResources.Yes, StringResources.No, null, false);
         }
 
         /// <summary>
@@ -151,7 +152,9 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <returns></returns>
         public static BCIMenuOptions.MainMenuOptions ShowMainOptionsWindow(Form form, string title, string Label, bool enableOp3)
         {
-            return ConfirmBoxThreeOption.ShowDialog(title, Label, EXITAPPLICATION, CALIBRATE, STARTYPING, enableOp3, form);
+            var result = BCIMenuOptions.MainMenuOptions.ExitApplication;
+            var dialog_result = ConfirmBoxThreeOption.ShowDialog(title, Label, EXITAPPLICATION, CALIBRATE, STARTYPING, null, false);
+            return result;
         }
 
         /// <summary>
@@ -172,7 +175,10 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <returns></returns>
         public static BCIMenuOptions.MainMenuOptions ShowRecalibrationWindow(Form form, float auc)
         {
-            return ConfirmBoxThreeOption.ShowDialog(CALIBRATIONSTATUS, CALIBRATIONFAILEDAUC + (auc * 100), EXITAPPLICATION, BACKTOMAINMODES, CALIBRATEAGAIN, true, form);
+            var result = BCIMenuOptions.MainMenuOptions.ExitApplication;
+            var dialog_result = ConfirmBoxThreeOption.ShowDialog(CALIBRATIONSTATUS, CALIBRATIONEXPIRED + (auc * 100), EXITAPPLICATION, CALIBRATEAGAIN, CALIBRATE, form);
+            return result;
+
         }
 
         /// <summary>

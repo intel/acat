@@ -18,6 +18,7 @@
 
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
+using ACATResources;
 using System;
 using System.ComponentModel;
 using System.Globalization;
@@ -329,7 +330,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <param name="e">event args</param>
         public void buttonDefaults_Click(object sender, EventArgs e)
         {
-            if (ConfirmBox.ShowDialog("Restore default settings?", this, true))
+            if (ConfirmBoxTwoOption.ShowDialog("Restore default settings?", 
+                "This cannot be undone.", StringResources.Yes, StringResources.No, this, true))
             {
                 _isDirty = true;
                 refreshGridView(DefaultPreferences);
@@ -344,7 +346,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <returns>Yes or no</returns>
         private bool confirm(String prompt)
         {
-            return ConfirmBox.ShowDialog(prompt.ToString(), this, true);
+            return ConfirmBoxTwoOption.ShowDialog(prompt.ToString(), "",
+                StringResources.Yes, StringResources.No, this, true);
         }
 
         /// <summary>
@@ -1143,11 +1146,11 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <param name="status">text of the status</param>
         private void showErrorStatus(String settingName, String status)
         {
-            ConfirmBoxSingleOption confirmBoxSingleOption = new ConfirmBoxSingleOption();
-            confirmBoxSingleOption.Prompt = "Error\n"+ settingName+"\n"+ status;
-            confirmBoxSingleOption.DecisionPrompt = "OK";
-            confirmBoxSingleOption.ShowDialog(this);
-            confirmBoxSingleOption.Dispose();
+            ConfirmBoxOneOption ConfirmBoxOneOption = new ConfirmBoxOneOption();
+            ConfirmBoxOneOption.Prompt = "Error\n"+ settingName+"\n"+ status;
+            ConfirmBoxOneOption.DecisionPrompt = "OK";
+            ConfirmBoxOneOption.ShowDialog(this);
+            ConfirmBoxOneOption.Dispose();
         }
 
         /// <summary>

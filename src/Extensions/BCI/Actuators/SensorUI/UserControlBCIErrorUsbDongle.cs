@@ -41,7 +41,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             webBrowserTop.DocumentText = html;
 
             webBrowserBottom.DocumentCompleted += WebBrowserDesc_DocumentCompleted;
-            var htmlContent = Resources.BCIOnboardingBottomHtmlText;
+            var htmlContent = StringResources.BCIOnboardingBottomHtmlText;
             html = htmlContent.Replace(CoreGlobals.MacroACATUserGuide, HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName));
             webBrowserBottom.DocumentText = html;
         }

@@ -25,7 +25,7 @@ namespace ACAT.Lib.Extension.Onboarding
         private readonly String _stepId;
         private Timer _timer;
         private readonly IOnboardingWizard _wizard;
-        private readonly String message = Resources.StartingACAT;
+        private readonly String message = StringResources.StartingACAT;
 
         public UserControlFinish(IOnboardingWizard wizard, IOnboardingExtension onboardingExtension, String stepId)
         {

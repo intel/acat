@@ -5,21 +5,35 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACATResources;
+//using ACATResources;
 using ACAT.Lib.Core.Onboarding;
-using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
+using ACAT.ACATResources;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
 using System.Globalization;
-using static System.Net.Mime.MediaTypeNames;
-using System.Text.RegularExpressions;
+using System.Reflection;
+using System.Windows.Forms;
+using System.Threading;
+using System.ComponentModel;
 
 namespace ACAT.Lib.Extension.Onboarding
 {
+
+    public class LanguageItem
+    {
+        public String DisplayName { get; set; }
+        public CultureInfo CultureInfo { get; set; }
+        public override String ToString()
+        {
+            return DisplayName;
+        }
+
+        public LanguageItem(string name, CultureInfo info) {
+            DisplayName = name;
+            CultureInfo = info;
+        }
+    }
     /// <summary>
     /// User control that allows the user to select the input switch
     /// </summary>
@@ -34,8 +48,45 @@ namespace ACAT.Lib.Extension.Onboarding
 
             _onboardingExtension = onboardingExtension;
             _stepId = stepId;
+            var _currentCultureId = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+            listBoxLanguages.SelectedIndexChanged += listBoxLanguages_SelectedIndexChanged;
+
+            var currentCulture = CultureInfo.CurrentUICulture;
+
+            List<CultureInfo> installedCultures = ResourceHelper.GetAvailableResourceCultures(Assembly.GetExecutingAssembly());
+
+            foreach (var culture in installedCultures)
+            {
+                int index = listBoxLanguages.Items.Add(new LanguageItem(culture.DisplayName, culture));
+                if (CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.Equals(culture.TwoLetterISOLanguageName))
+                {
+                    currentCulture = culture;
+                }
+            }
         }
 
+        private void listBoxLanguages_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var selectedItem = listBoxLanguages.SelectedItem as LanguageItem;
+            if (selectedItem != null)
+            {
+                Thread.CurrentThread.CurrentUICulture = selectedItem.CultureInfo;
+                Thread.CurrentThread.CurrentCulture = selectedItem.CultureInfo;
+
+                //var resourcesAssembly = typeof(ACAT.ACATResources.ResourceHelper).Assembly;
+                var resourceManager = new ComponentResourceManager(typeof(UserControlLanguageSelect));
+                //ApplyResourcesToControls(this, resourceManager);
+            }
+        }
+
+        private void ApplyResourcesToControls(Control control, ComponentResourceManager resources)
+        {
+            foreach (Control childControl in control.Controls)
+            {
+                resources.ApplyResources(childControl, childControl.Name, Thread.CurrentThread.CurrentUICulture);
+                ApplyResourcesToControls(childControl, resources);
+            }
+        }
         public IOnboardingExtension OnboardingExtension
         {
             get
@@ -59,22 +110,11 @@ namespace ACAT.Lib.Extension.Onboarding
 
         public void OnAdded()
         {
-            listBoxLanguages.Focus();
-
-            var cultureInfos = ResourceUtils.EnumerateInstalledLanguages();
-            string defaultLanguage = (CultureInfo.DefaultThreadCurrentUICulture != null)
-                ? CultureInfo.DefaultThreadCurrentUICulture.DisplayName
-                : "[Not set]";
-
-            listBoxLanguages.Items.Add(defaultLanguage+"("+ CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName+")");
-
-            foreach (var culture in cultureInfos)
-             {
-                 string text = culture.DisplayName + " (" + culture.TwoLetterISOLanguageName + ")";
-                listBoxLanguages.Items.Add(text);
-            }
+                    //if (listBoxLanguages.Items.Count > 0)
+            //{
+            //    listBoxLanguages.SelectedIndex = listBoxLanguages.Items.IndexOf(currentCulture);
+            //}
         }
-
         public bool OnPreAdd()
         {
             return true;

@@ -56,13 +56,6 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)ACATResources\ACATResources.csproj">
-      <Project>{a0990d4e-f25b-430c-bda3-40a72560b877}</Project>
-      <Name>ACATResources</Name>
-      <Private>False</Private>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="AbbreviationsManagement\Abbreviation.cs" />
     <Compile Include="AbbreviationsManagement\AbbreviationReplaceEventArgs.cs" />
     <Compile Include="AbbreviationsManagement\Abbreviations.cs" />
@@ -227,47 +220,35 @@
     <Compile Include="PanelManagement\PanelConfigMap\PanelClassConfig.cs" />
     <Compile Include="PanelManagement\PanelConfigMap\PanelClassConfigMap.cs" />
     <Compile Include="PanelManagement\PanelConfigMap\PanelClassConfigMapEntry.cs" />
-    <Compile Include="PanelManagement\UI\ConfirmBox2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PanelManagement\UI\ConfirmBox2.Designer.cs">
-      <DependentUpon>ConfirmBox2.cs</DependentUpon>
-    </Compile>
     <Compile Include="PanelManagement\UI\ConfirmBoxLargeSingleOption.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PanelManagement\UI\ConfirmBoxLargeSingleOption.Designer.cs">
       <DependentUpon>ConfirmBoxLargeSingleOption.cs</DependentUpon>
     </Compile>
-    <Compile Include="PanelManagement\UI\ConfirmBoxTwoOptions.cs">
+    <Compile Include="PanelManagement\UI\ConfirmBoxOneOption.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PanelManagement\UI\ConfirmBoxTwoOptions.Designer.cs">
-      <DependentUpon>ConfirmBoxTwoOptions.cs</DependentUpon>
+    <Compile Include="PanelManagement\UI\ConfirmBoxOneOption.Designer.cs">
+      <DependentUpon>ConfirmBoxOneOption.cs</DependentUpon>
     </Compile>
-    <Compile Include="PanelManagement\UI\ConfirmBoxMultiOption.cs">
+    <Compile Include="PanelManagement\UI\ConfirmBoxTwoOption.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PanelManagement\UI\ConfirmBoxMultiOption.Designer.cs">
-      <DependentUpon>ConfirmBoxMultiOption.cs</DependentUpon>
+    <Compile Include="PanelManagement\UI\ConfirmBoxTwoOption.Designer.cs">
+      <DependentUpon>ConfirmBoxTwoOption.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ConfirmBoxThreeOption.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PanelManagement\UI\ConfirmBoxThreeOption.Designer.cs">
+      <DependentUpon>ConfirmBoxThreeOption.cs</DependentUpon>
     </Compile>
     <Compile Include="PanelManagement\UI\ConfirmBoxTimer.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PanelManagement\UI\ConfirmBoxTimer.Designer.cs">
       <DependentUpon>ConfirmBoxTimer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PanelManagement\UI\ConfirmBoxSingleOption.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PanelManagement\UI\ConfirmBoxSingleOption.Designer.cs">
-      <DependentUpon>ConfirmBoxSingleOption.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PanelManagement\UI\ConfirmBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PanelManagement\UI\ConfirmBox.Designer.cs">
-      <DependentUpon>ConfirmBox.cs</DependentUpon>
     </Compile>
     <Compile Include="PanelManagement\UI\ListBoxUserControl.cs">
       <SubType>Component</SubType>
@@ -584,9 +565,6 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchSetup.es.resx">
-      <DependentUpon>UserControlHardwareSwitchSetup.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchSetup.resx">
       <DependentUpon>UserControlHardwareSwitchSetup.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -626,26 +604,20 @@
     <EmbeddedResource Include="Onboarding\OnboardingForm.resx">
       <DependentUpon>OnboardingForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PanelManagement\UI\ConfirmBox2.resx">
-      <DependentUpon>ConfirmBox2.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="PanelManagement\UI\ConfirmBoxLargeSingleOption.resx">
       <DependentUpon>ConfirmBoxLargeSingleOption.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PanelManagement\UI\ConfirmBoxTwoOptions.resx">
-      <DependentUpon>ConfirmBoxTwoOptions.cs</DependentUpon>
+    <EmbeddedResource Include="PanelManagement\UI\ConfirmBoxOneOption.resx">
+      <DependentUpon>ConfirmBoxOneOption.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PanelManagement\UI\ConfirmBoxMultiOption.resx">
-      <DependentUpon>ConfirmBoxMultiOption.cs</DependentUpon>
+    <EmbeddedResource Include="PanelManagement\UI\ConfirmBoxTwoOption.resx">
+      <DependentUpon>ConfirmBoxTwoOption.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PanelManagement\UI\ConfirmBoxThreeOption.resx">
+      <DependentUpon>ConfirmBoxThreeOption.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PanelManagement\UI\ConfirmBoxTimer.resx">
       <DependentUpon>ConfirmBoxTimer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PanelManagement\UI\ConfirmBoxSingleOption.resx">
-      <DependentUpon>ConfirmBoxSingleOption.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PanelManagement\UI\ConfirmBox.resx">
-      <DependentUpon>ConfirmBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PanelManagement\UI\HorizontalStripScannerBase.resx">
       <Generator>ResXFileCodeGeneratorEx</Generator>
@@ -653,6 +625,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PanelManagement\UI\MenuPanelBase.resx">
       <DependentUpon>MenuPanelBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PanelManagement\UI\PromptTextBox.resx">
+      <DependentUpon>PromptTextBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PanelManagement\UI\SplashScreen.resx">
       <DependentUpon>SplashScreen.cs</DependentUpon>
@@ -722,6 +697,12 @@
     <PackageReference Include="System.Text.Json">
       <Version>9.0.5</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ACATResources\ACATResources.csproj">
+      <Project>{a0990d4e-f25b-430c-bda3-40a72560b877}</Project>
+      <Name>ACATResources</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

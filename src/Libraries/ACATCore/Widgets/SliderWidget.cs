@@ -173,7 +173,7 @@ namespace ACAT.Lib.Core.Widgets
             String tickFrequency = XmlUtils.GetXMLAttrString(node, "tickfrequency");
             String sliderStep = XmlUtils.GetXMLAttrString(node, "step");
             String sliderCaption = XmlUtils.GetXMLAttrString(node, "caption");
-            sliderCaption = Resources.ResourceManager.GetString(sliderCaption);
+            sliderCaption = StringResources.ResourceManager.GetString(sliderCaption);
 
             int initialValue = XmlUtils.GetXMLAttrInt(node, "initialvalue", DefaultInitialSliderValue);
 

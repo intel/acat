@@ -1505,4 +1505,100 @@ Haz clic en Siguiente cuando te sientas cómodo usando el escaneo con interrupto
   <data name="PleaseSelectYourLanguage" xml:space="preserve">
     <value>Por favor, seleccione su lenguage</value>
   </data>
+  <data name="labelQualityResultsInfo" xml:space="preserve">
+    <value>Resumen de las verificaciones de señal por electrodo
+
+Los resultados de calidad de la señal son una combinación de las métricas de railing e impedancia de las pestañas anteriores
+
+Si la calidad está en rojo, regresa a las pestañas anteriores y sigue los consejos</value>
+  </data>
+  <data name="labelBCISignalCheckDescription" xml:space="preserve">
+    <value>La calidad de la señal BCI es un indicador de qué tan buen contacto hay entre los electrodos del gorro y tu cuero cabelludo.
+
+ACAT utiliza dos métricas - “railing” e “impedancia” - para verificar la calidad de la señal de cada electrodo conectado. El control deslizante de abajo da una indicación de la calidad general.</value>
+  </data>
+  <data name="labelKeyboardActuactorPrompt" xml:space="preserve">
+    <value>ACAT está configurado para activarse con la tecla de acceso rápido mostrada en verde. Debes configurar tu interruptor para que coincida con la tecla de acceso rápido de ACAT (consulta la guía del usuario para el interruptor). Alternativamente, puedes hacer clic en los botones de abajo para cambiar la tecla de acceso rápido de ACAT y que coincida con la combinación de teclas activada por el interruptor.</value>
+  </data>
+  <data name="StartTypingText" xml:space="preserve">
+    <value>Comenzar a escribir</value>
+  </data>
+  <data name="ScanningTimeText" xml:space="preserve">
+    <value>Tiempo de escaneo:</value>
+  </data>
+  <data name="RecalibrateText" xml:space="preserve">
+    <value>Recalibrar</value>
+  </data>
+  <data name="OfWord" xml:space="preserve">
+    <value>de</value>
+  </data>
+  <data name="ObjetiveNumber" xml:space="preserve">
+    <value>Objetivo #</value>
+  </data>
+  <data name="HintWordCalibrationScreenText" xml:space="preserve">
+    <value>(Opcional) Calibración en modo palabra:
+permite la selección de regiones de tamaño medio en la interfaz principal de conversación. Con valores predeterminados, esta calibración toma aproximadamente 4 minutos.</value>
+  </data>
+  <data name="HintTriggerTestCheck" xml:space="preserve">
+    <value>Vuelva a ejecutar la prueba de activación para verificar si el sensor de activación funciona correctamente</value>
+  </data>
+  <data name="HintSignalTestCheck" xml:space="preserve">
+    <value>Vuelva a ejecutar la verificación de señal para comprobar la calidad de la señal</value>
+  </data>
+  <data name="HintSentenceCalibrationScreenText" xml:space="preserve">
+    <value>Calibración en modo oración:
+permite la selección de regiones de tamaño medio en la interfaz principal de conversación. Con valores predeterminados, esta calibración toma aproximadamente 2 minutos.</value>
+  </data>
+  <data name="HintScanningTimeText" xml:space="preserve">
+    <value>El control de velocidad de escaneo determina qué tan rápido se resaltan las regiones en la pantalla</value>
+  </data>
+  <data name="HintReMapCalibrationsText" xml:space="preserve">
+    <value>Cambiar la asignación del modo de calibración a la región específica de la interfaz</value>
+  </data>
+  <data name="HintNumberTargetsText" xml:space="preserve">
+    <value>Número de objetivos que se mostrarán durante la calibración</value>
+  </data>
+  <data name="HintMinimumScoreText" xml:space="preserve">
+    <value>Puntuación mínima necesaria para una calibración exitosa</value>
+  </data>
+  <data name="HintKeyboardRightCalibrationScreenText" xml:space="preserve">
+    <value>(Opcional) Calibración del Modo Teclado:
+habilita la selección de regiones pequeñas en la interfaz principal de conversación. Con valores predeterminados, esta calibración toma aproximadamente 4 minutos.</value>
+  </data>
+  <data name="HintKeyboardLeftCalibrationScreenText" xml:space="preserve">
+    <value>Calibración del Modo Teclado:
+habilita la selección de regiones pequeñas en la interfaz principal de conversación. Con valores predeterminados, esta calibración toma aproximadamente 3 minutos.</value>
+  </data>
+  <data name="HintIterationstargetText" xml:space="preserve">
+    <value>Número de iteraciones por objetivo</value>
+  </data>
+  <data name="HintEyesOpenCloseCalibrationText" xml:space="preserve">
+    <value>Recopilar datos de EEG para la futura detección de ojos abiertos y cerrados</value>
+  </data>
+  <data name="HintCalibrationBeginACATNotEnalbedText" xml:space="preserve">
+    <value>Debes completar las calibraciones antes de continuar</value>
+  </data>
+  <data name="HintCalibrationBeginACATEnalbedText" xml:space="preserve">
+    <value>Opción de escritura habilitada</value>
+  </data>
+  <data name="HintBoxCalibrationScreenText" xml:space="preserve">
+    <value>Calibración en modo caja: 
+Permite la selección de regiones de gran tamaño en la interfaz principal de conversación. Con valores predeterminados, esta calibración toma aproximadamente 2 minutos.</value>
+  </data>
+  <data name="CalibrationInProgrressPromptText" xml:space="preserve">
+    <value>Calibración en progreso. Por favor, concéntrate en el área objetivo resaltada en verde.</value>
+  </data>
+  <data name="CalibrateOptionalText" xml:space="preserve">
+    <value>Opciones de calibración</value>
+  </data>
+  <data name="CalibrateNowText" xml:space="preserve">
+    <value>Calibrar ahora</value>
+  </data>
+  <data name="CalibrationIsEssential" xml:space="preserve">
+    <value>La calibración es esencial. La BCI necesita convertir tu pensamiento en un disparador/interruptor. Hay tres calibraciones a continuación, cada una ligeramente diferente, que debes completar con una puntuación mínima. Puedes ajustar la velocidad de escaneo y realizar calibraciones adicionales para mejorar tu precisión. Para más información, este video o guía de configuración.</value>
+  </data>
+  <data name="UserControlHardwareSwitchTestLabel1Text" xml:space="preserve">
+    <value>La tecla de acceso rápido está configurada incorrectamente. Ve al paso anterior para verificar.
+El interruptor no se mantiene presionado el tiempo suficiente. Configura el tiempo de retención en 0 y prueba, luego aumenta gradualmente hasta alcanzar un valor que funcione para ti.</value>
+  </data>
 </root>

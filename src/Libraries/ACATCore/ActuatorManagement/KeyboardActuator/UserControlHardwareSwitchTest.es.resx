@@ -117,8 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label1.Text" xml:space="preserve">
-    <value>La tecla de acceso rápido está configurada incorrectamente. Ve al paso anterior para verificar.
-El interruptor no se mantiene presionado el tiempo suficiente. Configura el tiempo de retención en 0 y prueba, luego aumenta gradualmente hasta alcanzar un valor que funcione para ti.</value>
-  </data>
 </root>

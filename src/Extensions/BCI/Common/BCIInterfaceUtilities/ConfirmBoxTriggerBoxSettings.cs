@@ -10,6 +10,7 @@ using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.WidgetManagement;
 using System.Drawing;
+using ACATResources;
 using System.Windows.Forms;
 using System;
 using ACAT.Lib.Core.Utility;
@@ -55,6 +56,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         public ConfirmBoxTriggerBoxSettings()
         {
             InitializeComponent();
+            label1.Text = Resources.CalibrationIsEssential;
             Load += ConfirmBox_Load;
         }
         

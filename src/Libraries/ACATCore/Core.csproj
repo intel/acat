@@ -589,12 +589,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchSetup.resx">
       <DependentUpon>UserControlHardwareSwitchSetup.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchTest.es.resx">
       <DependentUpon>UserControlHardwareSwitchTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchTest.resx">
       <DependentUpon>UserControlHardwareSwitchTest.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ActuatorManagement\UI\ActuatorErrorForm.resx">
       <DependentUpon>ActuatorErrorForm.cs</DependentUpon>

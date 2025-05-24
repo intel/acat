@@ -1506,4 +1506,99 @@ Click Next when you are comfortable using ​the switch scanning​.</value>
   <data name="PleaseSelectYourLanguage" xml:space="preserve">
     <value>Please select your language</value>
   </data>
+  <data name="labelQualityResultsInfo" xml:space="preserve">
+    <value>Summary of the signal checks per electrode
+
+The signal quality results are a combination of the railing and impedance metrics from the previous tabs
+
+If the quality is red go back to the previous tabs and follow the tips</value>
+  </data>
+  <data name="labelBCISignalCheckDescription" xml:space="preserve">
+    <value>BCI signal quality is an indicator of  how good the contact is between the electrodes on the cap and your scalp. 
+
+ACAT uses two metrics - “railing” and “impedance” - to check signal quality for each connected electrode. The slider below gives an indication of the overall quality.</value>
+  </data>
+  <data name="labelKeyboardActuactorPrompt" xml:space="preserve">
+    <value>ACAT is configured to trigger on the hotkey displayed in green. You must configure your switch to match ACAT's hotkey (refer to the user guide for the switch).  Alternatively, you can click on the buttons below to change ACAT's hotkey to match the key combination triggered by the switch.</value>
+  </data>
+  <data name="StartTypingText" xml:space="preserve">
+    <value>Start Typing </value>
+  </data>
+  <data name="ScanningTimeText" xml:space="preserve">
+    <value>Scanning time:</value>
+  </data>
+  <data name="RecalibrateText" xml:space="preserve">
+    <value>Recalibrate</value>
+  </data>
+  <data name="OfWord" xml:space="preserve">
+    <value>of</value>
+  </data>
+  <data name="ObjetiveNumber" xml:space="preserve">
+    <value>Target #</value>
+  </data>
+  <data name="HintWordCalibrationScreenText" xml:space="preserve">
+    <value>(Optional) Word Mode Calibration: ​
+enables selection of medium sized regions on the Main Talk UI. With default values, this calibration takes ~ 4 mins.</value>
+  </data>
+  <data name="HintTriggerTestCheck" xml:space="preserve">
+    <value>Re-run trigger test to check whether the Trigger sensor is working correctly</value>
+  </data>
+  <data name="HintSignalTestCheck" xml:space="preserve">
+    <value>Re-run Signal Check to verify the signal quality</value>
+  </data>
+  <data name="HintSentenceCalibrationScreenText" xml:space="preserve">
+    <value>Sentence Mode Calibration:​
+enables selection of medium sized regions on the Main Talk UI. With default values, this calibration takes ~ 2 mins.​</value>
+  </data>
+  <data name="HintScanningTimeText" xml:space="preserve">
+    <value>Scanning speed controls how fast the regions are highlighted on the screen</value>
+  </data>
+  <data name="HintReMapCalibrationsText" xml:space="preserve">
+    <value>Change the mapping of the calibration mode to the specific UI region</value>
+  </data>
+  <data name="HintNumberTargetsText" xml:space="preserve">
+    <value>Number of targets to be shown during calibration</value>
+  </data>
+  <data name="HintMinimumScoreText" xml:space="preserve">
+    <value>Minimum score needed for successful calibration </value>
+  </data>
+  <data name="HintKeyboardRightCalibrationScreenText" xml:space="preserve">
+    <value>(Optional) Keyboard Mode Calibration: ​
+enables selection of small sized regions on the Main Talk UI. With default values, this calibration takes ~ 4 mins.</value>
+  </data>
+  <data name="HintKeyboardLeftCalibrationScreenText" xml:space="preserve">
+    <value>Keyboard Mode Calibration:​
+enables selection of small sized regions on the Main Talk UI. With default values, this calibration takes ~ 3 mins.</value>
+  </data>
+  <data name="HintIterationstargetText" xml:space="preserve">
+    <value>Number of iterations per target </value>
+  </data>
+  <data name="HintEyesOpenCloseCalibrationText" xml:space="preserve">
+    <value>Collect EEG data for future eyes open close detection</value>
+  </data>
+  <data name="HintCalibrationBeginACATNotEnalbedText" xml:space="preserve">
+    <value>You must complete calibrations before proceeding</value>
+  </data>
+  <data name="HintCalibrationBeginACATEnalbedText" xml:space="preserve">
+    <value>Typing Opt enabled</value>
+  </data>
+  <data name="HintBoxCalibrationScreenText" xml:space="preserve">
+    <value>Box Mode Calibration: 
+Enables selection of large sized regions on the Main Talk UI. With default values, this calibration takes ~ 2 mins.</value>
+  </data>
+  <data name="CalibrationInProgrressPromptText" xml:space="preserve">
+    <value>Calibration in progress. Please focus on the highlighted green target area. </value>
+  </data>
+  <data name="CalibrateOptionalText" xml:space="preserve">
+    <value>Calibrate Optional</value>
+  </data>
+  <data name="CalibrateNowText" xml:space="preserve">
+    <value>Calibrate now </value>
+  </data>
+  <data name="CalibrationIsEssential" xml:space="preserve">
+    <value>Calibration is essential. BCI need to convert your thought into a trigger/switch. There are three calibrations below, each slightly different that you must complete wih a minimum score. You can adjust the scanning speed and try additional calibrations to help improve your accuracy. For more information this video or setup guide.</value>
+  </data>
+  <data name="UserControlHardwareSwitchTestLabel1Text" xml:space="preserve">
+    <value>The hotkey is configured incorrectly. Go to the previous step to check.</value>
+  </data>
 </root>

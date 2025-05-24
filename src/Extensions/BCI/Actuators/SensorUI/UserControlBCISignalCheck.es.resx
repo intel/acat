@@ -117,11 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="labelBCISignalCheckDescription.Text" xml:space="preserve">
-    <value>La calidad de la señal BCI es un indicador de qué tan buen contacto hay entre los electrodos del gorro y tu cuero cabelludo.
-
-ACAT utiliza dos métricas - “railing” e “impedancia” - para verificar la calidad de la señal de cada electrodo conectado. El control deslizante de abajo da una indicación de la calidad general.</value>
-  </data>
   <data name="labelQualityResultsInfo1.Text" xml:space="preserve">
     <value>Resumen de las verificaciones de señal por electrodo
 

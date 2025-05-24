@@ -63,6 +63,7 @@ namespace ACAT.Lib.Core.InputActuators
 
             _buttonDefaultImage = ImageUtils.LoadImage(Path.Combine(FileUtils.GetImagePath("SwitchTestDefault.png")));
             _buttonActuatedImage = ImageUtils.LoadImage(Path.Combine(FileUtils.GetImagePath("SwitchTestActivated.png")));
+            
 
             buttonSwitchTest.BackgroundImage = _buttonDefaultImage;
 
@@ -70,6 +71,7 @@ namespace ACAT.Lib.Core.InputActuators
             _keyboardHook.EvtKeyDown += UserControlHardwareSwitchSetup_EvtKeyDown;
             _keyboardHook.EvtKeyUp += UserControlHardwareSwitchSetup_EvtKeyUp;
 
+            label1.Text = Resources.UserControlHardwareSwitchTestLabel1Text;
 
             ((Control)numericUpDownHoldTime).TextChanged += numericUpDownHoldTime_textChanged;
             numericUpDownHoldTime.ValueChanged += NumericUpDownHoldTime_ValueChanged;

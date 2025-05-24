@@ -175,6 +175,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserControlBCISignalCheck.resx">
       <DependentUpon>UserControlBCISignalCheck.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControlBCISignalCheckStartPrompt.resx">
       <DependentUpon>UserControlBCISignalCheckStartPrompt.cs</DependentUpon>

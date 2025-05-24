@@ -22,14 +22,14 @@ namespace ACATResources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Resources {
+    public class StringResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal StringResources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace ACATResources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ACATResources.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ACATResources.StringResources", typeof(StringResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -1624,6 +1624,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid key combination.
+        /// </summary>
+        public static string InvalidKeyCombination {
+            get {
+                return ResourceManager.GetString("InvalidKeyCombination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid Pitch setting.
         /// </summary>
         public static string InvalidPitchSetting {
@@ -2307,6 +2316,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No disclaimers found..
+        /// </summary>
+        public static string NoDisclaimersFound {
+            get {
+                return ResourceManager.GetString("NoDisclaimersFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ------------- NO FILES FOUND -------------.
         /// </summary>
         public static string NoFilesFound {
@@ -2752,7 +2770,7 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Range: 0   to   .
+        ///   Looks up a localized string similar to Range: 0 to .
         /// </summary>
         public static string Range0To {
             get {
@@ -3877,6 +3895,15 @@ namespace ACATResources {
         public static string W {
             get {
                 return ResourceManager.GetString("W", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        public static string Warning {
+            get {
+                return ResourceManager.GetString("Warning", resourceCulture);
             }
         }
         

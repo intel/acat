@@ -380,11 +380,29 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calibrate now .
+        /// </summary>
+        public static string CalibrateNowText {
+            get {
+                return ResourceManager.GetString("CalibrateNowText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Abbreviation.
         /// </summary>
         public static string CalibrateOptional {
             get {
                 return ResourceManager.GetString("CalibrateOptional", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calibrate Optional.
+        /// </summary>
+        public static string CalibrateOptionalText {
+            get {
+                return ResourceManager.GetString("CalibrateOptionalText", resourceCulture);
             }
         }
         
@@ -403,6 +421,24 @@ namespace ACATResources {
         public static string CalibrationInProgrressPrompt {
             get {
                 return ResourceManager.GetString("CalibrationInProgrressPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calibration in progress. Please focus on the highlighted green target area. .
+        /// </summary>
+        public static string CalibrationInProgrressPromptText {
+            get {
+                return ResourceManager.GetString("CalibrationInProgrressPromptText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calibration is essential. BCI need to convert your thought into a trigger/switch. There are three calibrations below, each slightly different that you must complete wih a minimum score. You can adjust the scanning speed and try additional calibrations to help improve your accuracy. For more information this video or setup guide..
+        /// </summary>
+        public static string CalibrationIsEssential {
+            get {
+                return ResourceManager.GetString("CalibrationIsEssential", resourceCulture);
             }
         }
         
@@ -1178,11 +1214,30 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Box Mode Calibration: 
+        ///Enables selection of large sized regions on the Main Talk UI. With default values, this calibration takes ~ 2 mins..
+        /// </summary>
+        public static string HintBoxCalibrationScreenText {
+            get {
+                return ResourceManager.GetString("HintBoxCalibrationScreenText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel and Quit?.
         /// </summary>
         public static string HintCalibrationBeginACATEnalbed {
             get {
                 return ResourceManager.GetString("HintCalibrationBeginACATEnalbed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Typing Opt enabled.
+        /// </summary>
+        public static string HintCalibrationBeginACATEnalbedText {
+            get {
+                return ResourceManager.GetString("HintCalibrationBeginACATEnalbedText", resourceCulture);
             }
         }
         
@@ -1196,11 +1251,29 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You must complete calibrations before proceeding.
+        /// </summary>
+        public static string HintCalibrationBeginACATNotEnalbedText {
+            get {
+                return ResourceManager.GetString("HintCalibrationBeginACATNotEnalbedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear File Name?.
         /// </summary>
         public static string HintEyesOpenCloseCalibration {
             get {
                 return ResourceManager.GetString("HintEyesOpenCloseCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Collect EEG data for future eyes open close detection.
+        /// </summary>
+        public static string HintEyesOpenCloseCalibrationText {
+            get {
+                return ResourceManager.GetString("HintEyesOpenCloseCalibrationText", resourceCulture);
             }
         }
         
@@ -1214,11 +1287,30 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Number of iterations per target .
+        /// </summary>
+        public static string HintIterationstargetText {
+            get {
+                return ResourceManager.GetString("HintIterationstargetText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close?.
         /// </summary>
         public static string HintKeyboardLeftCalibrationScreen {
             get {
                 return ResourceManager.GetString("HintKeyboardLeftCalibrationScreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keyboard Mode Calibration:​
+        ///enables selection of small sized regions on the Main Talk UI. With default values, this calibration takes ~ 3 mins..
+        /// </summary>
+        public static string HintKeyboardLeftCalibrationScreenText {
+            get {
+                return ResourceManager.GetString("HintKeyboardLeftCalibrationScreenText", resourceCulture);
             }
         }
         
@@ -1232,11 +1324,30 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (Optional) Keyboard Mode Calibration: ​
+        ///enables selection of small sized regions on the Main Talk UI. With default values, this calibration takes ~ 4 mins..
+        /// </summary>
+        public static string HintKeyboardRightCalibrationScreenText {
+            get {
+                return ResourceManager.GetString("HintKeyboardRightCalibrationScreenText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not create folder {0}.
         /// </summary>
         public static string HintMinimumScore {
             get {
                 return ResourceManager.GetString("HintMinimumScore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum score needed for successful calibration .
+        /// </summary>
+        public static string HintMinimumScoreText {
+            get {
+                return ResourceManager.GetString("HintMinimumScoreText", resourceCulture);
             }
         }
         
@@ -1250,11 +1361,29 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Number of targets to be shown during calibration.
+        /// </summary>
+        public static string HintNumberTargetsText {
+            get {
+                return ResourceManager.GetString("HintNumberTargetsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create New File.
         /// </summary>
         public static string HintReMapCalibrations {
             get {
                 return ResourceManager.GetString("HintReMapCalibrations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change the mapping of the calibration mode to the specific UI region.
+        /// </summary>
+        public static string HintReMapCalibrationsText {
+            get {
+                return ResourceManager.GetString("HintReMapCalibrationsText", resourceCulture);
             }
         }
         
@@ -1268,11 +1397,30 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scanning speed controls how fast the regions are highlighted on the screen.
+        /// </summary>
+        public static string HintScanningTimeText {
+            get {
+                return ResourceManager.GetString("HintScanningTimeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete {0}?.
         /// </summary>
         public static string HintSentenceCalibrationScreen {
             get {
                 return ResourceManager.GetString("HintSentenceCalibrationScreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sentence Mode Calibration:​
+        ///enables selection of medium sized regions on the Main Talk UI. With default values, this calibration takes ~ 2 mins.​.
+        /// </summary>
+        public static string HintSentenceCalibrationScreenText {
+            get {
+                return ResourceManager.GetString("HintSentenceCalibrationScreenText", resourceCulture);
             }
         }
         
@@ -1286,6 +1434,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Re-run Signal Check to verify the signal quality.
+        /// </summary>
+        public static string HintSignalTestCheck {
+            get {
+                return ResourceManager.GetString("HintSignalTestCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         public static string HintTriggerCheck {
@@ -1295,11 +1452,30 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Re-run trigger test to check whether the Trigger sensor is working correctly.
+        /// </summary>
+        public static string HintTriggerTestCheck {
+            get {
+                return ResourceManager.GetString("HintTriggerTestCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exit without creating?.
         /// </summary>
         public static string HintWordCalibrationScreen {
             get {
                 return ResourceManager.GetString("HintWordCalibrationScreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Optional) Word Mode Calibration: ​
+        ///enables selection of medium sized regions on the Main Talk UI. With default values, this calibration takes ~ 4 mins..
+        /// </summary>
+        public static string HintWordCalibrationScreenText {
+            get {
+                return ResourceManager.GetString("HintWordCalibrationScreenText", resourceCulture);
             }
         }
         
@@ -1507,6 +1683,39 @@ namespace ACATResources {
         public static string L {
             get {
                 return ResourceManager.GetString("L", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BCI signal quality is an indicator of  how good the contact is between the electrodes on the cap and your scalp. 
+        ///
+        ///ACAT uses two metrics - “railing” and “impedance” - to check signal quality for each connected electrode. The slider below gives an indication of the overall quality..
+        /// </summary>
+        public static string labelBCISignalCheckDescription {
+            get {
+                return ResourceManager.GetString("labelBCISignalCheckDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ACAT is configured to trigger on the hotkey displayed in green. You must configure your switch to match ACAT&apos;s hotkey (refer to the user guide for the switch).  Alternatively, you can click on the buttons below to change ACAT&apos;s hotkey to match the key combination triggered by the switch..
+        /// </summary>
+        public static string labelKeyboardActuactorPrompt {
+            get {
+                return ResourceManager.GetString("labelKeyboardActuactorPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Summary of the signal checks per electrode
+        ///
+        ///The signal quality results are a combination of the railing and impedance metrics from the previous tabs
+        ///
+        ///If the quality is red go back to the previous tabs and follow the tips.
+        /// </summary>
+        public static string labelQualityResultsInfo {
+            get {
+                return ResourceManager.GetString("labelQualityResultsInfo", resourceCulture);
             }
         }
         
@@ -2170,11 +2379,29 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Target #.
+        /// </summary>
+        public static string ObjetiveNumber {
+            get {
+                return ResourceManager.GetString("ObjetiveNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File already exists.
         /// </summary>
         public static string Of {
             get {
                 return ResourceManager.GetString("Of", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to of.
+        /// </summary>
+        public static string OfWord {
+            get {
+                return ResourceManager.GetString("OfWord", resourceCulture);
             }
         }
         
@@ -2561,6 +2788,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recalibrate.
+        /// </summary>
+        public static string RecalibrateText {
+            get {
+                return ResourceManager.GetString("RecalibrateText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rename.
         /// </summary>
         public static string Rename {
@@ -2741,6 +2977,15 @@ namespace ACATResources {
         public static string ScanningTime {
             get {
                 return ResourceManager.GetString("ScanningTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scanning time:.
+        /// </summary>
+        public static string ScanningTimeText {
+            get {
+                return ResourceManager.GetString("ScanningTimeText", resourceCulture);
             }
         }
         
@@ -3213,6 +3458,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start Typing .
+        /// </summary>
+        public static string StartTypingText {
+            get {
+                return ResourceManager.GetString("StartTypingText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stop.
         /// </summary>
         public static string Stop {
@@ -3578,6 +3832,15 @@ namespace ACATResources {
         public static string UseCorpusModel {
             get {
                 return ResourceManager.GetString("UseCorpusModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The hotkey is configured incorrectly. Go to the previous step to check..
+        /// </summary>
+        public static string UserControlHardwareSwitchTestLabel1Text {
+            get {
+                return ResourceManager.GetString("UserControlHardwareSwitchTestLabel1Text", resourceCulture);
             }
         }
         

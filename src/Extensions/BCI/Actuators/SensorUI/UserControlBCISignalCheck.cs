@@ -21,6 +21,7 @@ using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WidgetManagement;
+using ACATResources;
 using Accord.Math;
 using brainflow;
 using SensorUI;
@@ -264,6 +265,9 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             _stepId = stepId;
             buttonNext.Enabled = true;
             buttonNext.Visible = true;
+
+            //TODO solving conflicts of resources 
+            //labelBCISignalCheckDescription.Text = Resources.labelBCISignalCheckDescription;
 
             // Create electrode name / id -> cap electrode mapping
             _electrodeCapMap = new Dictionary<string, ScannerRoundedButtonControl>();

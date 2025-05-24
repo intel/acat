@@ -783,7 +783,7 @@
     <value>Pista Anterior</value>
   </data>
   <data name="Range0To" xml:space="preserve">
-    <value>Rango: 0 a   </value>
+    <value>Rango: 0 a </value>
   </data>
   <data name="Rename" xml:space="preserve">
     <value>Renombrar</value>
@@ -1600,5 +1600,24 @@ Permite la selección de regiones de gran tamaño en la interfaz principal de co
   <data name="UserControlHardwareSwitchTestLabel1Text" xml:space="preserve">
     <value>La tecla de acceso rápido está configurada incorrectamente. Ve al paso anterior para verificar.
 El interruptor no se mantiene presionado el tiempo suficiente. Configura el tiempo de retención en 0 y prueba, luego aumenta gradualmente hasta alcanzar un valor que funcione para ti.</value>
+  </data>
+  <data name="HardwareSwitchTestLabel1" xml:space="preserve">
+    <value>La tecla rápida está configurada incorrectamente. Vuelve al paso anterior para verificar.
+El interruptor no se mantiene presionado el tiempo suficiente. Configura el tiempo de retención en 0 y prueba, luego aumenta gradualmente hasta alcanzar un valor que funcione para ti.</value>
+  </data>
+  <data name="UserControlHardwareSwitchSetupLabelPrompt.Text" xml:space="preserve">
+    <value>ACAT está configurado para activarse usando la tecla rápida mostrada en verde. Asegúrate de que tu interruptor esté configurado para corresponder con la tecla rápida de ACAT (consulta la guía del usuario para el interruptor). Alternativamente, puedes usar los botones de abajo para ajustar la tecla rápida de ACAT y alinearla con la combinación de teclas activada por el interruptor.</value>
+  </data>
+  <data name="UserControlHardwareSwitchSetupLabelTitle_Text" xml:space="preserve">
+    <value>Configuración del teclado / interruptor de hardware</value>
+  </data>
+  <data name="InvalidKeyCombination" xml:space="preserve">
+    <value>Combinación de teclas inválida</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Advertencia</value>
+  </data>
+  <data name="NoDisclaimersFound" xml:space="preserve">
+    <value>No se encontraron advertencias.</value>
   </data>
 </root>

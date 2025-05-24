@@ -56,7 +56,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         public ConfirmBoxTriggerBoxSettings()
         {
             InitializeComponent();
-            label1.Text = Resources.CalibrationIsEssential;
+            label1.Text = StringResources.CalibrationIsEssential;
             Load += ConfirmBox_Load;
         }
         

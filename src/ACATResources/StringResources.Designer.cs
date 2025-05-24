@@ -389,7 +389,7 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Abbreviation.
+        ///   Looks up a localized string similar to Calibrate Optional.
         /// </summary>
         public static string CalibrateOptional {
             get {
@@ -416,7 +416,7 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add new abbreviation?.
+        ///   Looks up a localized string similar to Calibration in progress. Please focus on the highlighted green target area..
         /// </summary>
         public static string CalibrationInProgrressPrompt {
             get {
@@ -1196,6 +1196,16 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The hotkey is configured incorrectly. Go to the previous step to check.
+        ///The switch is not held down long enough. Set the hold time to 0 and test, and then gradually increase it until you reach a value that works for you..
+        /// </summary>
+        public static string HardwareSwitchTestLabel1 {
+            get {
+                return ResourceManager.GetString("HardwareSwitchTestLabel1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hide scanners on idle.
         /// </summary>
         public static string HideScannersOnIdle {
@@ -1205,7 +1215,8 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ------------- APPS LIST IS EMPTY -------------.
+        ///   Looks up a localized string similar to Box Mode Calibration: 
+        ///Enables selection of large sized regions on the Main Talk UI. With default values, this calibration takes ~ 2 mins..
         /// </summary>
         public static string HintBoxCalibrationScreen {
             get {
@@ -1224,7 +1235,7 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancel and Quit?.
+        ///   Looks up a localized string similar to Typing Opt enabled.
         /// </summary>
         public static string HintCalibrationBeginACATEnalbed {
             get {
@@ -1242,7 +1253,7 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can&apos;t Save. Abbreviation for &apos;{0}&apos; already exists.
+        ///   Looks up a localized string similar to You must complete calibrations before proceeding.
         /// </summary>
         public static string HintCalibrationBeginACATNotEnalbed {
             get {
@@ -1260,7 +1271,7 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Clear File Name?.
+        ///   Looks up a localized string similar to Collect EEG data for future eyes open close detection.
         /// </summary>
         public static string HintEyesOpenCloseCalibration {
             get {
@@ -1278,7 +1289,7 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Clear Filter?.
+        ///   Looks up a localized string similar to Number of iterations per target.
         /// </summary>
         public static string HintIterationstarget {
             get {
@@ -1296,7 +1307,8 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Close?.
+        ///   Looks up a localized string similar to Keyboard Mode Calibration:
+        ///enables selection of small sized regions on the Main Talk UI. With default values, this calibration takes ~ 3 mins..
         /// </summary>
         public static string HintKeyboardLeftCalibrationScreen {
             get {
@@ -1315,7 +1327,8 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Close Lecture Manager?.
+        ///   Looks up a localized string similar to (Optional) Keyboard Mode Calibration:
+        ///enables selection of small sized regions on the Main Talk UI. With default values, this calibration takes ~ 4 mins..
         /// </summary>
         public static string HintKeyboardRightCalibrationScreen {
             get {
@@ -1334,7 +1347,7 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not create folder {0}.
+        ///   Looks up a localized string similar to Minimum score needed for successful calibration.
         /// </summary>
         public static string HintMinimumScore {
             get {
@@ -1388,7 +1401,7 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete {0}?.
+        ///   Looks up a localized string similar to Scanning speed controls how fast the regions are highlighted on the screen.
         /// </summary>
         public static string HintScanningTime {
             get {
@@ -1406,7 +1419,8 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete {0}?.
+        ///   Looks up a localized string similar to Sentence Mode Calibration:
+        ///enables selection of medium sized regions on the Main Talk UI. With default values, this calibration takes ~ 2 mins..
         /// </summary>
         public static string HintSentenceCalibrationScreen {
             get {
@@ -1461,7 +1475,8 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exit without creating?.
+        ///   Looks up a localized string similar to (Optional) Word Mode Calibration: ​
+        ///enables selection of medium sized regions on the Main Talk UI. With default values, this calibration takes ~ 4 mins..
         /// </summary>
         public static string HintWordCalibrationScreen {
             get {
@@ -2990,7 +3005,7 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Launch {0}?.
+        ///   Looks up a localized string similar to Scanning time:.
         /// </summary>
         public static string ScanningTime {
             get {
@@ -3476,7 +3491,7 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start Typing .
+        ///   Looks up a localized string similar to Start Typing.
         /// </summary>
         public static string StartTypingText {
             get {
@@ -3850,6 +3865,24 @@ namespace ACATResources {
         public static string UseCorpusModel {
             get {
                 return ResourceManager.GetString("UseCorpusModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ACAT is configured to activate using the hotkey shown in green. Ensure your switch is set up to correspond with ACAT&apos;s hotkey (see the user guide for the switch). Alternatively, you can use the buttons below to adjust ACAT&apos;s hotkey to align with the key combination triggered by the switch..
+        /// </summary>
+        public static string UserControlHardwareSwitchSetupLabelPrompt_Text {
+            get {
+                return ResourceManager.GetString("UserControlHardwareSwitchSetupLabelPrompt.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keyboard / HW Switch Setup.
+        /// </summary>
+        public static string UserControlHardwareSwitchSetupLabelTitle_Text {
+            get {
+                return ResourceManager.GetString("UserControlHardwareSwitchSetupLabelTitle_Text", resourceCulture);
             }
         }
         

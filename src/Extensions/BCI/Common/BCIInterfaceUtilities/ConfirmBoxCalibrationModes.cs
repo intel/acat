@@ -678,19 +678,19 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 case BCIClassifierStatus.NotFound:
                     if (bCIClassifierInfo.IsRequired)
                         //scannerRoundedButtonControl.Text = BCIR.GetString("CalibrateNow");
-                        scannerRoundedButtonControl.Text = Resources.CalibrateNowText;
+                        scannerRoundedButtonControl.Text = StringResources.CalibrateNowText;
                     else
                        // scannerRoundedButtonControl.Text = BCIR.GetString("CalibrateOptional");
-                        scannerRoundedButtonControl.Text = Resources.CalibrateOptionalText;
+                        scannerRoundedButtonControl.Text = StringResources.CalibrateOptionalText;
                     break;
 
                 case BCIClassifierStatus.Ok:
                     if (bCIClassifierInfo.IsRequired)
                         //scannerRoundedButtonControl.Text = BCIR.GetString("Recalibrate");
-                        scannerRoundedButtonControl.Text = Resources.RecalibrateText;
+                        scannerRoundedButtonControl.Text = StringResources.RecalibrateText;
                     else
                        //scannerRoundedButtonControl.Text = BCIR.GetString("CalibrateOptional");
-                        scannerRoundedButtonControl.Text = Resources.CalibrateOptionalText;
+                        scannerRoundedButtonControl.Text = StringResources.CalibrateOptionalText;
                     break;
             }
         }
@@ -701,7 +701,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         private void SetTextUIElements()
         {
             //ButtonBeginACAT.Text = BCIR.GetString("StartTyping");
-            ButtonBeginACAT.Text = Resources.StartTypingText;
+            ButtonBeginACAT.Text = StringResources.StartTypingText;
         }
 
         /// <summary>

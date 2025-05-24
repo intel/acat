@@ -58,9 +58,6 @@ namespace ACAT.Lib.Core.InputActuators
 
             initButtonList();
 
-            labelPrompt.Text = StringResources.UserControlHardwareSwitchSetupLabelPrompt_Text;
-            labelTitle.Text = StringResources.UserControlHardwareSwitchSetupLabelTitle_Text;
-
             _buttonDefaultBackColor = buttonF1.BackColor;
             _buttonDefaultForeColor = buttonF1.ForeColor;
         }
@@ -102,7 +99,9 @@ namespace ACAT.Lib.Core.InputActuators
             if (_switchType == OnboardingHardwareSwitchSetup.SwitchType.Keyboard)
             {
                 labelTitle.Text = "Configure Keyboard Hotkey";
-                labelPrompt.Text = StringResources.UserControlHardwareSwitchSetupLabelPrompt_Text;
+                labelPrompt.Text = "ACAT is configured to trigger on the hotkey displayed in green below. " +
+                                    "You can change the hotkey by clicking on the buttons to select a different key combination.";
+                bookmark = "KeyboardSwitch";
             }
             else
             {

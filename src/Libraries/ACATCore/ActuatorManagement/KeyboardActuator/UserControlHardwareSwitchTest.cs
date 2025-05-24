@@ -71,7 +71,7 @@ namespace ACAT.Lib.Core.InputActuators
             _keyboardHook.EvtKeyDown += UserControlHardwareSwitchSetup_EvtKeyDown;
             _keyboardHook.EvtKeyUp += UserControlHardwareSwitchSetup_EvtKeyUp;
 
-            label1.Text = Resources.UserControlHardwareSwitchTestLabel1Text;
+            label1.Text = StringResources.UserControlHardwareSwitchTestLabel1Text;
 
             ((Control)numericUpDownHoldTime).TextChanged += numericUpDownHoldTime_textChanged;
             numericUpDownHoldTime.ValueChanged += NumericUpDownHoldTime_ValueChanged;

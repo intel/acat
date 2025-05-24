@@ -124,35 +124,38 @@
     <value>Add</value>
   </data>
   <data name="CalibrateOptional" xml:space="preserve">
-    <value>Add Abbreviation</value>
+    <value>Calibrate Optional</value>
   </data>
   <data name="CalibrationInProgrressPrompt" xml:space="preserve">
-    <value>Add new abbreviation?</value>
+    <value>Calibration in progress. Please focus on the highlighted green target area.</value>
   </data>
   <data name="HintBoxCalibrationScreen" xml:space="preserve">
-    <value>------------- APPS LIST IS EMPTY -------------</value>
+    <value>Box Mode Calibration: 
+Enables selection of large sized regions on the Main Talk UI. With default values, this calibration takes ~ 2 mins.</value>
   </data>
   <data name="HintCalibrationBeginACATEnalbed" xml:space="preserve">
-    <value>Cancel and Quit?</value>
+    <value>Typing Opt enabled</value>
   </data>
   <data name="HintCalibrationBeginACATNotEnalbed" xml:space="preserve">
-    <value>Can't Save. Abbreviation for '{0}' already exists</value>
+    <value>You must complete calibrations before proceeding</value>
     <comment>{0} is the abbreviation</comment>
   </data>
   <data name="HintEyesOpenCloseCalibration" xml:space="preserve">
-    <value>Clear File Name?</value>
+    <value>Collect EEG data for future eyes open close detection</value>
   </data>
   <data name="HintIterationstarget" xml:space="preserve">
-    <value>Clear Filter?</value>
+    <value>Number of iterations per target</value>
   </data>
   <data name="HintKeyboardLeftCalibrationScreen" xml:space="preserve">
-    <value>Close?</value>
+    <value>Keyboard Mode Calibration:
+enables selection of small sized regions on the Main Talk UI. With default values, this calibration takes ~ 3 mins.</value>
   </data>
   <data name="HintKeyboardRightCalibrationScreen" xml:space="preserve">
-    <value>Close Lecture Manager?</value>
+    <value>(Optional) Keyboard Mode Calibration:
+enables selection of small sized regions on the Main Talk UI. With default values, this calibration takes ~ 4 mins.</value>
   </data>
   <data name="HintMinimumScore" xml:space="preserve">
-    <value>Could not create folder {0}</value>
+    <value>Minimum score needed for successful calibration</value>
     <comment>{0} is the name of the folder</comment>
   </data>
   <data name="HintNumberTargets" xml:space="preserve">
@@ -162,11 +165,11 @@
     <value>Create New File</value>
   </data>
   <data name="HintScanningTime" xml:space="preserve">
-    <value>Delete {0}?</value>
-    <comment>{0} is the abbreviation that is to be deleted</comment>
+    <value>Scanning speed controls how fast the regions are highlighted on the screen</value>
   </data>
   <data name="HintSentenceCalibrationScreen" xml:space="preserve">
-    <value>Delete {0}?</value>
+    <value>Sentence Mode Calibration:
+enables selection of medium sized regions on the Main Talk UI. With default values, this calibration takes ~ 2 mins.</value>
     <comment>{0} is the name of the file to delete</comment>
   </data>
   <data name="HintSignalCheck" xml:space="preserve">
@@ -176,7 +179,8 @@
     <value>Error</value>
   </data>
   <data name="HintWordCalibrationScreen" xml:space="preserve">
-    <value>Exit without creating?</value>
+    <value>(Optional) Word Mode Calibration: ​
+enables selection of medium sized regions on the Main Talk UI. With default values, this calibration takes ~ 4 mins.</value>
   </data>
   <data name="IterationNumber" xml:space="preserve">
     <value>Abbreviation expansion is empty</value>
@@ -188,8 +192,7 @@
     <value>Google Search</value>
   </data>
   <data name="ScanningTime" xml:space="preserve">
-    <value>Launch {0}?</value>
-    <comment>{0} is the name of the application to launch</comment>
+    <value>Scanning time:</value>
   </data>
   <data name="StartTyping" xml:space="preserve">
     <value>Lecture Mgr</value>
@@ -784,7 +787,7 @@
     <value>Prev Track</value>
   </data>
   <data name="Range0To" xml:space="preserve">
-    <value>Range: 0   to   </value>
+    <value>Range: 0 to </value>
   </data>
   <data name="Rename" xml:space="preserve">
     <value>Rename</value>
@@ -1522,7 +1525,7 @@ ACAT uses two metrics - “railing” and “impedance” - to check signal qual
     <value>ACAT is configured to trigger on the hotkey displayed in green. You must configure your switch to match ACAT's hotkey (refer to the user guide for the switch).  Alternatively, you can click on the buttons below to change ACAT's hotkey to match the key combination triggered by the switch.</value>
   </data>
   <data name="StartTypingText" xml:space="preserve">
-    <value>Start Typing </value>
+    <value>Start Typing</value>
   </data>
   <data name="ScanningTimeText" xml:space="preserve">
     <value>Scanning time:</value>
@@ -1600,5 +1603,24 @@ Enables selection of large sized regions on the Main Talk UI. With default value
   </data>
   <data name="UserControlHardwareSwitchTestLabel1Text" xml:space="preserve">
     <value>The hotkey is configured incorrectly. Go to the previous step to check.</value>
+  </data>
+  <data name="HardwareSwitchTestLabel1" xml:space="preserve">
+    <value>The hotkey is configured incorrectly. Go to the previous step to check.
+The switch is not held down long enough. Set the hold time to 0 and test, and then gradually increase it until you reach a value that works for you.</value>
+  </data>
+  <data name="UserControlHardwareSwitchSetupLabelPrompt.Text" xml:space="preserve">
+    <value>ACAT is configured to activate using the hotkey shown in green. Ensure your switch is set up to correspond with ACAT's hotkey (see the user guide for the switch). Alternatively, you can use the buttons below to adjust ACAT's hotkey to align with the key combination triggered by the switch.</value>
+  </data>
+  <data name="UserControlHardwareSwitchSetupLabelTitle_Text" xml:space="preserve">
+    <value>Keyboard / HW Switch Setup</value>
+  </data>
+  <data name="InvalidKeyCombination" xml:space="preserve">
+    <value>Invalid key combination</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="NoDisclaimersFound" xml:space="preserve">
+    <value>No disclaimers found.</value>
   </data>
 </root>

@@ -1373,7 +1373,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             object[] attributes = ACATPreferences.ApplicationAssembly.GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
             var appName = (attributes.Length != 0) ? ((AssemblyTitleAttribute)attributes[0]).Title : String.Empty;
             var version = ACATPreferences.ApplicationAssembly.GetName().Version.Major + "." + ACATPreferences.ApplicationAssembly.GetName().Version.Minor;
-            var versionInfo = String.Format(Resources.Version, version);
+            var versionInfo = String.Format(StringResources.Version, version);
             attributes = ACATPreferences.ApplicationAssembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
             var copyrightInfo = (attributes.Length != 0) ? ((AssemblyCopyrightAttribute)attributes[0]).Copyright : String.Empty;
             attributes = ACATPreferences.ApplicationAssembly.GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
@@ -1457,7 +1457,6 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             animationSharpManager.EvtBCIUpdateTexttBox += UpdatetextBoxEvt;
             LEDStatusUserControl userControlLED = new LEDStatusUserControl  {  Dock = DockStyle.Fill  };
             panelLEDStatus.Controls.Add(userControlLED);
-            BCIR.InitResourceManagerBCI();
         }
 
         /// <summary>

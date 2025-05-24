@@ -19,6 +19,7 @@ using ACAT.Lib.Core.Audit;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WidgetManagement;
+using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -597,9 +598,9 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
                 {
                     // Display message to user prompting them to improve signal quality before moving on
                     Log.Debug("Not exiting | Did not pass signal quality criteria");
-                    bool confirmed = ConfirmBoxSingleOption.ShowDialog("Signal Quality Checks Failed or Incomplete" +
+                    bool confirmed = ConfirmBoxOneOption.ShowDialog("Signal Quality Checks Failed or Incomplete" +
                         "\nYou need to complete both “Railing” and\n“Impedance” tests and get good signals to\nproceed" +
-                        "\nPlease refer to the user guide for help", "Ok", _mainForm, false);
+                        "\nPlease refer to the user guide for help", "", StringResources.OK, _mainForm, false);
 
                     return; // return to form
                 }
@@ -1092,11 +1093,12 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         /// <returns></returns>
         private bool confirmExit(Form parent)
         {
-            return ConfirmBox.ShowDialog("Onboarding incomplete. Quit anyway?", parent, true);
+            return ConfirmBoxTwoOption.ShowDialog("Onboarding incomplete.",
+                "Quit anyway?", StringResources.Yes, StringResources.No, parent, true);
         }
 
         /// <summary>
-        /// Connect to opical sensor COM port and attach callbacks related to receiving data
+        /// Connect to optical sensor COM port and attach callbacks related to receiving data
         /// </summary>
         /// <returns></returns>
         private bool openOpticalSensor()

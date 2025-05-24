@@ -5,17 +5,11 @@
     <Platform Condition="'$(Platform)' == ''">x86</Platform>
 
     <!-- Default to known valid platforms only -->
-    <SupportedPlatforms>x86</SupportedPlatforms>
+    <SupportedPlatforms>x86;x64</SupportedPlatforms>
 
     <!-- Default to known valid configurations only -->
      <SupportedConfigurations>Debug;Release</SupportedConfigurations>
   </PropertyGroup>
-
-  <!-- Optional: Fail fast if unsupported platform is used -->
-  <Target Name="ValidatePlatform" BeforeTargets="Build">
-    <Error Condition="!$(SupportedPlatforms.Contains($(Platform)))"
-           Text="Unsupported platform: $(Platform). Only x86 and x64 are supported." />
-  </Target>
 
   <!-- Diagnostic message output -->
   <Target Name="PrintProps" BeforeTargets="BeforeBuild">
@@ -46,5 +40,8 @@
     <!-- Set this globally unless overridden for specific platforms -->
     <RuntimeIdentifier Condition="'$(Platform)' == 'x86'">win-x86</RuntimeIdentifier>
     <RuntimeIdentifier Condition="'$(Platform)' == 'x64'">win-x64</RuntimeIdentifier>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 </Project>

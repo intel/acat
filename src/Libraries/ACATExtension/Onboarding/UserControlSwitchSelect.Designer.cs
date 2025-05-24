@@ -93,7 +93,7 @@ namespace ACAT.Lib.Extension.Onboarding
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(914, 100);
             this.label1.TabIndex = 1;
-            this.label1.Text = Resources.PleaseSelectYourSwitchType;
+            this.label1.Text = StringResources.PleaseSelectYourSwitchType;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel2

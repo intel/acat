@@ -57,7 +57,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             {
                 list.Add("PDF");
                 list.Add("true");
-                list.Add(Resources.PDFLoaderHtml);
+                list.Add(StringResources.PDFLoaderHtml);
                 list.Add(param1);
                 list.Add(param2);
             }

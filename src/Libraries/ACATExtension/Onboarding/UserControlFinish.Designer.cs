@@ -42,7 +42,7 @@ namespace ACAT.Lib.Extension.Onboarding
             this.labelStartingACAT.Name = "labelStartingACAT";
             this.labelStartingACAT.Size = new System.Drawing.Size(459, 66);
             this.labelStartingACAT.TabIndex = 0;
-            this.labelStartingACAT.Text = Resources.InitializeComponent_StartingACAT;
+            this.labelStartingACAT.Text = StringResources.InitializeComponent_StartingACAT;
             // 
             // UserControlFinish
             // 

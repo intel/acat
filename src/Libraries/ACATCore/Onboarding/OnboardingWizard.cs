@@ -327,16 +327,16 @@ namespace ACAT.Lib.Core.Onboarding
                         }
                         catch (Exception ex)
                         {
-                            ConfirmBoxSingleOption confirmBoxSingleOption = new ConfirmBoxSingleOption
+                            ConfirmBoxOneOption ConfirmBoxOneOption = new ConfirmBoxOneOption
                             {
                                 Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n Status Error: ERO",
                                 DecisionPrompt = "ok",
                                 LabelFont = 10
                             };
-                            confirmBoxSingleOption.BringToFront();
-                            confirmBoxSingleOption.TopMost = true;
-                            confirmBoxSingleOption.ShowDialog();
-                            confirmBoxSingleOption.Dispose();
+                            ConfirmBoxOneOption.BringToFront();
+                            ConfirmBoxOneOption.TopMost = true;
+                            ConfirmBoxOneOption.ShowDialog();
+                            ConfirmBoxOneOption.Dispose();
                             _DLLError = true;
                         }
                     }

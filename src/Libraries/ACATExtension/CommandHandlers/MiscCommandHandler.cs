@@ -43,7 +43,7 @@ namespace ACAT.Lib.Extension.CommandHandlers
                     break;
 
                 case "CmdExitAppWithConfirm":
-                    if (DialogUtils.ConfirmScanner(null, Resources.QuitApplication))
+                    if (DialogUtils.ConfirmScanner(null, StringResources.QuitApplication))
                     {
                         quitApplication();
                     }

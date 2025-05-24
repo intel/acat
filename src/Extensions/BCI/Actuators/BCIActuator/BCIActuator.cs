@@ -478,7 +478,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <returns>true on success, false otherwise</returns>
         public override bool Init()
         {
-            Disclaimers.Add("BCI", Resources.DisclaimerBCI);
+            Disclaimers.Add("BCI", StringResources.DisclaimerBCI);
 
             CoreGlobals.ACATUserGuideFileName = "ACAT BCI User Guide.pdf";
 
@@ -2047,7 +2047,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                 return;
             }
 
-            if (DisclaimerDialog.ShowDialog(Resources.DisclaimerBCI, null, true))
+            if (DisclaimerDialog.ShowDialog(StringResources.DisclaimerBCI, null, true))
             {
                 BCIActuatorSettings.Settings.ShowDisclaimerOnStartup = false;
                 BCIActuatorSettings.Settings.Save();

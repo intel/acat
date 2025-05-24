@@ -13,6 +13,7 @@
 
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
+using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -536,22 +537,23 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         {
             pause();
 
-            var msgBox = new ConfirmBoxTwoOptions
+            ConfirmBoxTwoOption msgBox = new ConfirmBoxTwoOption
             {
                 Prompt = message,
-                Op1Prompt = "Yes",
-                Op2Prompt = "No"
+                Op1Prompt = StringResources.Yes,
+                Op3Prompt = StringResources.No
             };
 
             msgBox.ShowDialog(this);
 
-            var result = msgBox.OptionsResult;
+            //var result = msgBox.OptionsResult;
 
             msgBox.Dispose();
 
             resume();
 
-            return result == ConfirmBoxTwoOptions.Options.Option1;
+            return false; // TODO - Localize Me
+            //return result == ConfirmBoxTwoOption.Options.Option1;
         }
 
         private void startTimer(String message)

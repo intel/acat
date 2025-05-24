@@ -239,15 +239,17 @@ namespace ACAT.Lib.Core.InputActuators
 
         public bool QueryGoToNextStep()
         {
-            Log.Debug("querynextstep: swichtested: " + _switchTested);
+            Log.Debug("QueryGoToNextStep: SwichTested: " + _switchTested);
 
             bool retVal;
 
             if (_switchType == OnboardingHardwareSwitchSetup.SwitchType.SwitchInterface && !_switchTested)
             {
-                var confirmBox = new ConfirmBox
+                var confirmBox = new ConfirmBoxTwoOption
                 {
-                    Prompt = "You have not tested the switch by activating it. Proceed to the next step anyway?"
+                    Prompt = "You have not tested the switch by activating it. Proceed to the next step anyway?",
+                    Op1Prompt = "Yes",
+                    Op3Prompt = "No",
                 };
                 confirmBox.ShowDialog(this);
                 retVal = confirmBox.Result;
@@ -361,7 +363,7 @@ namespace ACAT.Lib.Core.InputActuators
             {
                 "PDF",
                 "true",
-                Resources.PDFLoaderHtml,
+                StringResources.PDFLoaderHtml,
                 CoreGlobals.ACATUserGuideFileName,
                 bookmark
             };

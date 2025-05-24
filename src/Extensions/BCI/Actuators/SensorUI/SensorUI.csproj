@@ -170,6 +170,9 @@
     <EmbeddedResource Include="UserControlBCIErrorOpticalSensor.resx">
       <DependentUpon>UserControlBCIErrorOpticalSensor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UserControlBCISignalCheck.en.resx">
+      <DependentUpon>UserControlBCISignalCheck.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserControlBCISignalCheck.es.resx">
       <DependentUpon>UserControlBCISignalCheck.cs</DependentUpon>
     </EmbeddedResource>
@@ -186,7 +189,6 @@
     <EmbeddedResource Include="UserControlTestBCIConnections.resx">
       <DependentUpon>UserControlTestBCIConnections.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -17,6 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.PanelManagement;
+using ACATResources;
 using System;
 using System.ComponentModel;
 using System.Globalization;
@@ -339,8 +340,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <returns>Yes or no</returns>
         private bool confirm(String prompt)
         {
-            // return ConfirmBox.ShowDialog(prompt.ToString(), null, false);
-            return ConfirmBox.ShowDialog(prompt.ToString(), this, true);
+            return ConfirmBoxTwoOption.ShowDialog(prompt.ToString(), "", StringResources.Yes, StringResources.No, this, true);
         }
 
         /// <summary>
@@ -355,17 +355,17 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
 
         /// <summary>
-        /// Displays a error status mesage
+        /// Displays a error status message
         /// </summary>
         /// <param name="status">text of the status</param>
         private void showErrorStatus(String settingName, String status)
         {
-            // ConfirmBoxSingleOption confirmBoxSingleOption = new ConfirmBoxSingleOption();
-            // confirmBoxSingleOption.Prompt = "Error\n" + settingName + "\n" + status;
-            // confirmBoxSingleOption.DecisionPrompt = "OK";
-            // confirmBoxSingleOption.ShowDialog(this);
+            // ConfirmBoxOneOption ConfirmBoxOneOption = new ConfirmBoxOneOption();
+            // ConfirmBoxOneOption.Prompt = "Error\n" + settingName + "\n" + status;
+            // ConfirmBoxOneOption.DecisionPrompt = "OK";
+            // ConfirmBoxOneOption.ShowDialog(this);
 
-            ConfirmBoxSingleOption.ShowDialog("Error\n" + settingName + "\n" + status, "OK", this);
+            ConfirmBoxOneOption.ShowDialog("Error\n" + settingName + "\n" + status, "", StringResources.OK, this);
 
         }
 

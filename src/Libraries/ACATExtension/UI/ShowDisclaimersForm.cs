@@ -52,7 +52,7 @@ namespace ACAT.Lib.Extension
 
             CenterToScreen();
 
-            buttonOK.Text = Resources.ResourceManager.GetString(buttonOK.Text);
+            buttonOK.Text = StringResources.ResourceManager.GetString(buttonOK.Text);
 
             try
             {
@@ -67,7 +67,7 @@ namespace ACAT.Lib.Extension
                 var text = sb.ToString().Trim();
                 if (String.IsNullOrEmpty(text))
                 {
-                    ConfirmBoxSingleOption.ShowDialog("No disclaimers found", "OK");
+                    ConfirmBoxOneOption.ShowDialog(StringResources.Warning, StringResources.NoDisclaimersFound, StringResources.OK);
                     Close();
                 }
                 else

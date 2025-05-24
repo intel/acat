@@ -10,6 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACATResources;
 using ACAT.Lib.Core.PanelManagement;
 using System;
 using System.Windows.Forms;
@@ -159,10 +160,8 @@ namespace ACAT.Lib.Core.ActuatorManagement.UI
 
         private void showError(String message)
         {
-            /*MessageBox.Show(message, Text,
-                MessageBoxButtons.OK, MessageBoxIcon.Error);*/
 
-            bool result = ConfirmBox.ShowDialog(message.ToString(), null, false);
+            bool result = ConfirmBoxOneOption.ShowDialog(message.ToString(), "", StringResources.OK);
         }
 
         private void textBoxKeyboardShortcut_KeyDown(object sender, KeyEventArgs e)

@@ -27,9 +27,9 @@ namespace ACAT.Lib.Core.Onboarding
         public OnboardingSequence Sequence { get; set; }
 
         public bool QuitOnboarding = false;
-        private readonly string buttonBackText = Resources.buttonBack;
-        private readonly string buttonCancelText = Resources.buttonCancel;
-        private readonly string buttonNextText = Resources.buttonNext;
+        private readonly string buttonBackText = StringResources.buttonBack;
+        private readonly string buttonCancelText = StringResources.buttonCancel;
+        private readonly string buttonNextText = StringResources.buttonNext;
         private readonly Dictionary<OnboardingButtonTypes, Tuple<Color, Color>> _buttonColors = new Dictionary<OnboardingButtonTypes, Tuple<Color, Color>>();
         private readonly Dictionary<Control, OnboardingButtonTypes> _buttonMap = new Dictionary<Control, OnboardingButtonTypes>();
         private IOnboardingExtension _currentOnboardExtension = null;
@@ -254,7 +254,7 @@ namespace ACAT.Lib.Core.Onboarding
             {
                 if (!File.Exists(OnboardingFileName))
                 {
-                    ConfirmBoxSingleOption.ShowDialog("Onboarding file " + OnboardingFileName + " does not exist", "OK");
+                    ConfirmBoxOneOption.ShowDialog("Onboarding file " + OnboardingFileName + " does not exist","",StringResources.OK);
                     QuitOnboarding = true;
                     Close();
                     return;
@@ -266,7 +266,7 @@ namespace ACAT.Lib.Core.Onboarding
 
             if (Sequence == null || Sequence.OnboardingSequenceItems.Count == 0)
             {
-                ConfirmBoxSingleOption.ShowDialog("Onboarding sequence is null or empty", "OK");
+                ConfirmBoxOneOption.ShowDialog("Onboarding sequence is null or empty","",StringResources.OK);
                 QuitOnboarding = true;
                 Close();
                 return;
@@ -334,7 +334,8 @@ namespace ACAT.Lib.Core.Onboarding
 
                 if (confirm)
                 {
-                    if (!ConfirmBox.ShowDialog("ACAT configuration incomplete. Quit anyway?", "Quit"))
+                    if (!ConfirmBoxOneOption.ShowDialog("ACAT configuration incomplete.",
+                        "Quit anyway?", StringResources.QuitApplication))
                     {
                         return;
                     }

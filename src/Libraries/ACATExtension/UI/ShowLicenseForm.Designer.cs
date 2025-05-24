@@ -95,7 +95,7 @@ namespace ACAT.Lib.Extension
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(111, 44);
             this.buttonOK.TabIndex = 0;
-            this.buttonOK.Text = Resources.Close;
+            this.buttonOK.Text = StringResources.Close;
             this.buttonOK.UseVisualStyleBackColor = false;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 

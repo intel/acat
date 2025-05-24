@@ -12,7 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Extensions.BCI.Common.BCIInterfaceUtilities;
+using ACATResources;
 using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
@@ -639,7 +639,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         public void DrawMainLayout()
         {
             try
-            {//The (if) flags is a meassure to ensure SharpDx will not be in used while changing an user control or objects used by it
+            {//The (if) flags is a measure to ensure SharpDx will not be in used while changing an user control or objects used by it
                 if (!_stopAnimation && !_changeUserControl)
                 {
                     if (!_stopAnimation && !_changeUserControl)
@@ -1829,11 +1829,11 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Clear();
-            stringBuilder.Append(BCIR.GetString("CalibrationInProgrressPrompt"));
+            stringBuilder.Append(StringResources.ResourceManager.GetString("CalibrationInProgrressPrompt"));
             stringBuilder.AppendLine();
-            stringBuilder.Append(BCIR.GetString("IterationNumber") + " " + (_currEpochCount - 1) + " " + BCIR.GetString("Of") + " " + _CalibrationTargetCount);
+            stringBuilder.Append(StringResources.ResourceManager.GetString("IterationNumber") + " " + (_currEpochCount - 1) + " " + StringResources.ResourceManager.GetString("Of") + " " + _CalibrationTargetCount);
             stringBuilder.AppendLine();
-            stringBuilder.Append(BCIR.GetString("ScanningTime") + " " + _trialITI + " ms");
+            stringBuilder.Append(StringResources.ResourceManager.GetString("ScanningTime") + " " + _trialITI + " ms");
             return stringBuilder.ToString();
         }
         private bool InitSwapChain(Form form)

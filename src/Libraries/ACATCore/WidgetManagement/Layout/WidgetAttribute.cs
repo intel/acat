@@ -182,7 +182,7 @@ namespace ACAT.Lib.Core.WidgetManagement
 
             if (!FontName.Contains("ACAT") && label != null && label.Length > 1)
             {
-                Label = Resources.ResourceManager.GetString(label) ?? label;
+                Label = StringResources.ResourceManager.GetString(label) ?? label;
             }
             else
             {

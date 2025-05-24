@@ -64,13 +64,13 @@ namespace ACAT.Lib.Extension.Onboarding
             bool retVal = true;
 
             //var prompt = startPrompt.Replace("xxx", timeout.ToString());
-            var prompt = Resources.startPrompt.Replace("xxx", timeout.ToString());
+            var prompt = StringResources.startPrompt.Replace("xxx", timeout.ToString());
            
 
             if (Common.AppPreferences.OnboardingComplete)
             {
                 //labelBlurb.Text = clickOnConfigure;
-                labelBlurb.Text = Resources.clickOnConfigure;
+                labelBlurb.Text = StringResources.clickOnConfigure;
 
                 updateCountdown();
 
@@ -131,7 +131,7 @@ namespace ACAT.Lib.Extension.Onboarding
         public void updateCountdown()
         {
             //var prompt = startPrompt.Replace("xxx", _timeLeft.ToString() + ((_timeLeft > 1) ? " secs" : " sec"));
-            var prompt = Resources.startPrompt.Replace("xxx", _timeLeft.ToString() + ((_timeLeft > 1) ? " secs" : " sec"));
+            var prompt = StringResources.startPrompt.Replace("xxx", _timeLeft.ToString() + ((_timeLeft > 1) ? " secs" : " sec"));
           
 
 

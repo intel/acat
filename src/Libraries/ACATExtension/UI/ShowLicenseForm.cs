@@ -72,7 +72,7 @@ namespace ACAT.Lib.Extension
                 Close();
             }
 
-            buttonOK.Text = Resources.ResourceManager.GetString(buttonOK.Text);
+            buttonOK.Text = StringResources.ResourceManager.GetString(buttonOK.Text);
 
             try
             {

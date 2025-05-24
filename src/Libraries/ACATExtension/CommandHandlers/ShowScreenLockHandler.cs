@@ -42,7 +42,7 @@ namespace ACAT.Lib.Extension.CommandHandlers
             Form form = Dispatcher.Scanner.Form;
             form.Invoke(new MethodInvoker(delegate
             {
-                if (DialogUtils.ConfirmScanner(form as IPanel, Resources.LockTheScreen))
+                if (DialogUtils.ConfirmScanner(form as IPanel, StringResources.LockTheScreen))
                 {
                     var screenLockForm = PanelManager.Instance.CreatePanel("ScreenLockScanner", "Lock Screen");
                     if (screenLockForm != null)

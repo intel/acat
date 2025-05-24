@@ -774,7 +774,7 @@ namespace ACAT.Lib.Extension
 
                     case "CmdWindowPosSizeMenu":
                         {
-                            var panel = Context.AppPanelManager.CreatePanel("WindowPosSizeMenu", Resources.Window) as IPanel;
+                            var panel = Context.AppPanelManager.CreatePanel("WindowPosSizeMenu", StringResources.Window) as IPanel;
                             if (panel != null)
                             {
                                 Context.AppPanelManager.Show(form as IPanel, panel);

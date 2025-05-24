@@ -13,6 +13,7 @@
 using ACAT.Lib.Core.Extensions;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
+using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -208,7 +209,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
         private void ACATConfigMainForm_Shown(object sender, EventArgs e)
         {
-            ConfirmBoxSingleOption.ShowDialog("Please exercise caution when changing ACAT settings. Refer to the ACAT User Guide for help", "OK", this);
+            ConfirmBoxOneOption.ShowDialog("Please exercise caution when changing ACAT settings.",
+                "Refer to the ACAT User Guide for help", StringResources.OK, this);
         }
         /// <summary>
         /// Handle Exit button press - save any changes if made, Close form
@@ -618,7 +620,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
                     if (shownFormDirty == true && userSaveConfirmation == false)
                     {
-                        userSaveConfirmation = ConfirmBox.ShowDialog("Save changes? ", this, true);
+                        userSaveConfirmation = ConfirmBoxTwoOption.ShowDialog("Save changes?", "", StringResources.Yes, StringResources.No, this, true);
                     }
 
                     if (shownForm.GetType() == typeof(PreferencesCategorySelectForm))

@@ -327,22 +327,23 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         private bool showSaveMessageBox()
         {
             EvtPause?.Invoke();
-            var msgBox = new ConfirmBoxTwoOptions
+            var msgBox = new ConfirmBoxTwoOption
             {
                 Prompt = "Save gesture parameters?",
                 Op1Prompt = "Yes",
-                Op2Prompt = "No"
+                Op3Prompt = "No"
             };
 
             msgBox.ShowDialog(this);
 
-            var result = msgBox.OptionsResult;
+            //var result = msgBox.OptionsResult;
 
             msgBox.Dispose();
 
             EvtResume?.Invoke();
 
-            return result == ConfirmBoxTwoOptions.Options.Option1;
+            return false; // TODO - Localize Me
+            //return result == ConfirmBoxTwoOption.Options.Option1;
         }
     }
 }

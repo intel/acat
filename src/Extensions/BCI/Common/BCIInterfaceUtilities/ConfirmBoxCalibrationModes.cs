@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System;
+using System.Reflection;
 
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
@@ -27,6 +28,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                         "Application window used as a calibration UI for different modes")]
     public partial class ConfirmBoxCalibrationModes : Form
     {
+        #region Properties
         /// <summary>
         /// Main object of the actuator
         /// </summary>
@@ -75,7 +77,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         public ConfirmBoxCalibrationModes()
         {
             InitializeComponent();
-            Load += ConfirmBox_Load;
+            Load += ConfirmBoxCalibrationModes_Load;
 
             webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
             var html = StringResources.BCICalibrationHtmlText.Replace(CoreGlobals.MacroACATUserGuide, HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName));
@@ -124,11 +126,9 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
         }
 
-        /// <summary>
-        /// Actuator event handler
-        /// </summary>
-        /// <param name="opcode"></param>
-        /// <param name="response"></param>
+        #endregion
+
+        #region Control Events
         private void BciActuator_EvtIoctlResponse(int opcode, string response)
         {
             switch (opcode)
@@ -455,10 +455,11 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             ShowAllOptionsParameters(checkBoxAdvancesParameters.Checked);
         }
 
-        private void ConfirmBox_Load(object sender, EventArgs e)
+        private void ConfirmBoxCalibrationModes_Load(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Maximized;
             InitializeButtonsState();
+            SetDefaultStringsToControls();
             ShowAllOptions(false);
             InitializeCustomSliders();
             SetUIElements();
@@ -506,9 +507,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             labelScanningTime.Text = customSliderScanningTime.Value.ToString();
         }
 
-        /// <summary>
-        /// Shows the calibration help
-        /// </summary>
         private void DisplayCalibrationHelp()
         {
             try
@@ -529,10 +527,10 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
         }
 
-        /// <summary>
-        /// Gets the parameters values from the sliders from the active calibration selected
-        /// </summary>
-        /// <returns></returns>
+        #endregion
+
+        #region GetParameter
+
         private BCISimpleParameters GetCalibrationParameters()
         {
             return new BCISimpleParameters { ScannTime = (int)customSliderScanningTime.Value, Targets = (int)customSliderNumberTargets.Value, IterationsPertarget = (int)customSliderIterationstarget.Value, MinScore = (int)customSliderMinimumScore.Value };
@@ -562,6 +560,10 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             return bciSimpleParameters;
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Sets the initial state of controls for the UI
         /// </summary>
@@ -588,6 +590,64 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             customSliderIterationstarget.Maximum = 20;
             customSliderMinimumScore.Minimum = 10;
             customSliderMinimumScore.Maximum = 100;
+        }
+
+        private void SetDefaultStringsToControls()
+        {
+            ButtonBeginACAT.Text = "Begin using ACAT";
+            ButtonCalibrateBox.Text = "Calibrate Now";
+            ButtonCalibrateKeyboardL.Text = "Calibrate Now";
+            ButtonCalibrateKeyboardR.Text = "Recalibrate";
+            ButtonCalibrateSentence.Text = "Calibrate Optional";
+            ButtonCalibrateWord.Text = "Calibrate Now";
+            ButtonDownIterationstarget.Text = "-";
+            ButtonDownMinimumScore.Text = "-";
+            ButtonDownNumberTargets.Text = "-";
+            ButtonDownScanningTime.Text = "-";
+            ButtonUpNumberTargets.Text = "+";
+            ButtonExit.Text = "Exit ACAT";
+            ButtonInfoBox.Text = "?";
+            ButtonInfoIterationsTarget.Text = "?";
+            ButtonInfoKeyboardL.Text = "?";
+            ButtonInfoKeyboardR.Text = "?";
+            ButtonInfoMinimumScore.Text = "?";
+            ButtonInfoNumberTargets.Text = "?";
+            ButtonInfoScanningTime.Text = "?";
+            ButtonInfoSentence.Text = "?";
+            ButtonInfoWord.Text = "?";
+            ButtonOpcBox.Text = "Box";
+            ButtonOpcKeyboardL.Text = "Keyboard(Left)";
+            ButtonOpcKeyboardR.Text = "Keyboard(Right)";
+            ButtonOpcSentence.Text = "Setence";
+            ButtonOpcWord.Text = "Word*";
+            ButtonOtherTest.Text = "Advanced Options";
+            ButtonRestoreDefaults.Text = "Restore";
+            ButtonUpIterationstarget.Text = "Additional Calibrations*";
+            ButtonUpMinimumScore.Text = "Advanced";
+
+            checkBoxAdvancesParameters.Text = "Additional Calibrations*";
+            checkBoxAdditionalCalibrations.Text = "Advanced";
+
+            label2.Text = "ms";
+            label4.Text = "Minimum Score*";
+            label5.Text = "Iterations per target";
+            label6.Text = "Number of Targets";
+            label7.Text = "Scanning speed";
+            labelCalibrationMessage.Text = "Run all three of the calibrations above";
+            labelIterationstarget.Text = "77";
+            labelMinimumScore.Text = "77";
+            labelModeTitle.Text = "Mode";
+            labelNumberTargets.Text = "77";
+            labelParametersTitle.Text = "Parameters";
+            labelScanningTime.Text = "2000";
+            labelScoreBox.Text = "-";
+            labelScoreKeyboardL.Text = "-";
+            labelScoreKeyboardR.Text = "-";
+            labelScoreSentence.Text = "-";
+            labelScoreTitle.Text = "Score";
+            labelScoreWord.Text = "-";
+            labelTitle.Text = "Calibrate";
+
         }
 
         /// <summary>
@@ -680,7 +740,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                         //scannerRoundedButtonControl.Text = BCIR.GetString("CalibrateNow");
                         scannerRoundedButtonControl.Text = StringResources.CalibrateNowText;
                     else
-                       // scannerRoundedButtonControl.Text = BCIR.GetString("CalibrateOptional");
+                        // scannerRoundedButtonControl.Text = BCIR.GetString("CalibrateOptional");
                         scannerRoundedButtonControl.Text = StringResources.CalibrateOptionalText;
                     break;
 
@@ -689,7 +749,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                         //scannerRoundedButtonControl.Text = BCIR.GetString("Recalibrate");
                         scannerRoundedButtonControl.Text = StringResources.RecalibrateText;
                     else
-                       //scannerRoundedButtonControl.Text = BCIR.GetString("CalibrateOptional");
+                        //scannerRoundedButtonControl.Text = BCIR.GetString("CalibrateOptional");
                         scannerRoundedButtonControl.Text = StringResources.CalibrateOptionalText;
                     break;
             }
@@ -876,5 +936,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             public Panel DivisionLineMode;
             public bool IsSelected;
         }
+
+        #endregion
     }
 }

@@ -147,9 +147,6 @@
   <data name="buttonF12.TabIndex" type="System.Int32, mscorlib">
     <value>90</value>
   </data>
-  <data name="buttonF12.Text" xml:space="preserve">
-    <value>F12</value>
-  </data>
   <data name="&gt;&gt;buttonF12.Name" xml:space="preserve">
     <value>buttonF12</value>
   </data>
@@ -182,9 +179,6 @@
   </data>
   <data name="buttonF11.TabIndex" type="System.Int32, mscorlib">
     <value>89</value>
-  </data>
-  <data name="buttonF11.Text" xml:space="preserve">
-    <value>F11</value>
   </data>
   <data name="&gt;&gt;buttonF11.Name" xml:space="preserve">
     <value>buttonF11</value>
@@ -219,9 +213,6 @@
   <data name="buttonF10.TabIndex" type="System.Int32, mscorlib">
     <value>88</value>
   </data>
-  <data name="buttonF10.Text" xml:space="preserve">
-    <value>F10</value>
-  </data>
   <data name="&gt;&gt;buttonF10.Name" xml:space="preserve">
     <value>buttonF10</value>
   </data>
@@ -254,9 +245,6 @@
   </data>
   <data name="buttonF9.TabIndex" type="System.Int32, mscorlib">
     <value>87</value>
-  </data>
-  <data name="buttonF9.Text" xml:space="preserve">
-    <value>F9</value>
   </data>
   <data name="&gt;&gt;buttonF9.Name" xml:space="preserve">
     <value>buttonF9</value>
@@ -291,9 +279,6 @@
   <data name="buttonF8.TabIndex" type="System.Int32, mscorlib">
     <value>86</value>
   </data>
-  <data name="buttonF8.Text" xml:space="preserve">
-    <value>F8</value>
-  </data>
   <data name="&gt;&gt;buttonF8.Name" xml:space="preserve">
     <value>buttonF8</value>
   </data>
@@ -326,9 +311,6 @@
   </data>
   <data name="buttonF7.TabIndex" type="System.Int32, mscorlib">
     <value>85</value>
-  </data>
-  <data name="buttonF7.Text" xml:space="preserve">
-    <value>F7</value>
   </data>
   <data name="&gt;&gt;buttonF7.Name" xml:space="preserve">
     <value>buttonF7</value>
@@ -363,9 +345,6 @@
   <data name="buttonF6.TabIndex" type="System.Int32, mscorlib">
     <value>84</value>
   </data>
-  <data name="buttonF6.Text" xml:space="preserve">
-    <value>F6</value>
-  </data>
   <data name="&gt;&gt;buttonF6.Name" xml:space="preserve">
     <value>buttonF6</value>
   </data>
@@ -398,9 +377,6 @@
   </data>
   <data name="buttonF5.TabIndex" type="System.Int32, mscorlib">
     <value>83</value>
-  </data>
-  <data name="buttonF5.Text" xml:space="preserve">
-    <value>F5</value>
   </data>
   <data name="&gt;&gt;buttonF5.Name" xml:space="preserve">
     <value>buttonF5</value>
@@ -435,9 +411,6 @@
   <data name="buttonF4.TabIndex" type="System.Int32, mscorlib">
     <value>82</value>
   </data>
-  <data name="buttonF4.Text" xml:space="preserve">
-    <value>F4</value>
-  </data>
   <data name="&gt;&gt;buttonF4.Name" xml:space="preserve">
     <value>buttonF4</value>
   </data>
@@ -471,9 +444,6 @@
   <data name="buttonF3.TabIndex" type="System.Int32, mscorlib">
     <value>81</value>
   </data>
-  <data name="buttonF3.Text" xml:space="preserve">
-    <value>F3</value>
-  </data>
   <data name="&gt;&gt;buttonF3.Name" xml:space="preserve">
     <value>buttonF3</value>
   </data>
@@ -506,9 +476,6 @@
   </data>
   <data name="buttonF2.TabIndex" type="System.Int32, mscorlib">
     <value>80</value>
-  </data>
-  <data name="buttonF2.Text" xml:space="preserve">
-    <value>F2</value>
   </data>
   <data name="&gt;&gt;buttonF2.Name" xml:space="preserve">
     <value>buttonF2</value>
@@ -603,9 +570,6 @@
   <data name="labelTitle.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="labelTitle.Text" xml:space="preserve">
-    <value>Keyboard / HW Switch Setup</value>
-  </data>
   <data name="labelTitle.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
   </data>
@@ -641,9 +605,6 @@
   </data>
   <data name="buttonF1.TabIndex" type="System.Int32, mscorlib">
     <value>79</value>
-  </data>
-  <data name="buttonF1.Text" xml:space="preserve">
-    <value>F1</value>
   </data>
   <data name="&gt;&gt;buttonF1.Name" xml:space="preserve">
     <value>buttonF1</value>

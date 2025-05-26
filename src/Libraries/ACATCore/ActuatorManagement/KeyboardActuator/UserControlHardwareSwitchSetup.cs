@@ -22,6 +22,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ACAT.Lib.Core.InputActuators
 {
@@ -31,6 +32,7 @@ namespace ACAT.Lib.Core.InputActuators
     /// </summary>
     public partial class UserControlHardwareSwitchSetup : UserControl, IOnboardingUserControl
     {
+        #region Properties
         // TODO - Localize Me
         private const String bodyStyle = " background-color:#232433;";
         // TODO - Localize Me
@@ -48,6 +50,8 @@ namespace ACAT.Lib.Core.InputActuators
         private String _strTriggerHotkey;
         private OnboardingHardwareSwitchSetup.SwitchType _switchType;
         private bool canceled = false;
+        #endregion
+
         public UserControlHardwareSwitchSetup(IOnboardingWizard wizard, IOnboardingExtension onboardingExtension, String stepId, OnboardingHardwareSwitchSetup.SwitchType switchType)
         {
             InitializeComponent();
@@ -85,6 +89,7 @@ namespace ACAT.Lib.Core.InputActuators
 
         public bool Initialize()
         {
+            SetDefaultStringsToControls();
             _strTriggerHotkey = String.Empty;
 
             var config = Context.AppActuatorManager.GetActuatorConfig();
@@ -159,6 +164,7 @@ namespace ACAT.Lib.Core.InputActuators
             return true;
         }
 
+        #region On Events
         public void OnAdded()
         {
         }
@@ -203,6 +209,9 @@ namespace ACAT.Lib.Core.InputActuators
             config.Save();
         }
 
+        #endregion
+
+        #region Querys
         public bool QueryCancelOnboarding()
         {
             canceled = true;
@@ -235,28 +244,83 @@ namespace ACAT.Lib.Core.InputActuators
             return true;
         }
 
+        #endregion
+
+        #region Control Events
+
         private void button_FunctionKeyClick(object sender, EventArgs e)
         {
             handleFunctionKeyButtonClick(sender);
         }
 
-        private void buttonAlt_Click(object sender, EventArgs e)
+        private void handleFunctionKeyButtonClick(object sender)
         {
+            resetFunctionKeysState();
             flipButtonTag(sender as Button);
             setKeyComboAndUpdateButtonColors();
         }
 
-        private void buttonCtrl_Click(object sender, EventArgs e)
+        private void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            flipButtonTag(sender as Button);
-            setKeyComboAndUpdateButtonColors();
+            webBrowser.Navigating -= webBrowser_Navigating;
+            webBrowser.Navigating += webBrowser_Navigating;
         }
 
-        private void buttonShift_Click(object sender, EventArgs e)
+        private void webBrowser_Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
-            flipButtonTag(sender as Button);
-            setKeyComboAndUpdateButtonColors();
+            var str = e.Url.ToString();
+
+            Log.Debug("Url is [" + str + "]");
+
+            if (str.ToLower().Contains("blank"))
+            {
+                return;
+            }
+
+            e.Cancel = true;
+
+            String bookmark = String.Empty;
+
+            if (str.Contains("about:"))
+            {
+                var index = str.IndexOf(':');
+
+                str = str.Substring(index + 1);
+
+                index = str.IndexOf('#');
+
+                if (index > 0)
+                {
+                    bookmark = str.Substring(index + 1, str.Length - index - 1);
+                }
+            }
+
+            List<String> list = new List<String>
+            {
+                "PDF",
+                "true",
+                //Resources.PDFLoaderHtml,
+                CoreGlobals.ACATUserGuideFileName,
+                bookmark
+            };
+
+            try
+            {
+                HtmlUtils.LoadHtml(SmartPath.ApplicationPath, list.ToArray());
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+
+            }
         }
+
+        #endregion
+
+        #region Methods
 
         private String capitalize(String str)
         {
@@ -284,13 +348,6 @@ namespace ACAT.Lib.Core.InputActuators
             {
                 button.Tag = !flag;
             }
-        }
-
-        private void handleFunctionKeyButtonClick(object sender)
-        {
-            resetFunctionKeysState();
-            flipButtonTag(sender as Button);
-            setKeyComboAndUpdateButtonColors();
         }
 
         private void initButtonList()
@@ -403,63 +460,24 @@ namespace ACAT.Lib.Core.InputActuators
             setButtonColors();
         }
 
-        private void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        private void SetDefaultStringsToControls()
         {
-            webBrowser.Navigating -= webBrowser_Navigating;
-            webBrowser.Navigating += webBrowser_Navigating;
+            buttonF1.Text = "F1";
+            buttonF2.Text = "F2";
+            buttonF3.Text = "F3";
+            buttonF4.Text = "F4";
+            buttonF5.Text = "F5";
+            buttonF6.Text = "F6";
+            buttonF7.Text = "F7";
+            buttonF8.Text = "F8";
+            buttonF9.Text = "F9";
+            buttonF10.Text = "F10";
+            buttonF11.Text = "F11";
+            buttonF12.Text = "F12";
+            labelTitle.Text = "Keyboard / HW Switch Setup";
+
         }
 
-        private void webBrowser_Navigating(object sender, WebBrowserNavigatingEventArgs e)
-        {
-            var str = e.Url.ToString();
-
-            Log.Debug("Url is [" + str + "]");
-
-            if (str.ToLower().Contains("blank"))
-            {
-                return;
-            }
-
-            e.Cancel = true;
-
-            String bookmark = String.Empty;
-
-            if (str.Contains("about:"))
-            {
-                var index = str.IndexOf(':');
-
-                str = str.Substring(index + 1);
-
-                index = str.IndexOf('#');
-
-                if (index > 0)
-                {
-                    bookmark = str.Substring(index + 1, str.Length - index - 1);
-                }
-            }
-
-            List<String> list = new List<String>
-            {
-                "PDF",
-                "true",
-                //Resources.PDFLoaderHtml,
-                CoreGlobals.ACATUserGuideFileName,
-                bookmark
-            };
-
-            try
-            {
-                HtmlUtils.LoadHtml(SmartPath.ApplicationPath, list.ToArray());
-            }
-            catch
-            {
-
-            }
-            finally
-            {
-
-            }
-        }
-
+        #endregion
     }
 }

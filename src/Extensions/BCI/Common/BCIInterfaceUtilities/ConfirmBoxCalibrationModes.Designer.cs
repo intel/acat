@@ -33,7 +33,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutParameters = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.labelParametersTiel = new System.Windows.Forms.Label();
+            this.labelParametersTitle = new System.Windows.Forms.Label();
             this.tableLayoutPanelTitleModes = new System.Windows.Forms.TableLayoutPanel();
             this.labelModeTitle = new System.Windows.Forms.Label();
             this.labelScoreTitle = new System.Windows.Forms.Label();
@@ -198,14 +198,14 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             // tableLayoutPanel3
             // 
             resources.ApplyResources(this.tableLayoutPanel3, "tableLayoutPanel3");
-            this.tableLayoutPanel3.Controls.Add(this.labelParametersTiel, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.labelParametersTitle, 0, 0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             // 
-            // labelParametersTiel
+            // labelParametersTitle
             // 
-            resources.ApplyResources(this.labelParametersTiel, "labelParametersTiel");
-            this.labelParametersTiel.ForeColor = System.Drawing.Color.White;
-            this.labelParametersTiel.Name = "labelParametersTiel";
+            resources.ApplyResources(this.labelParametersTitle, "labelParametersTitle");
+            this.labelParametersTitle.ForeColor = System.Drawing.Color.White;
+            this.labelParametersTitle.Name = "labelParametersTitle";
             // 
             // tableLayoutPanelTitleModes
             // 
@@ -1575,7 +1575,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelTitleModes;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.Label labelParametersTiel;
+        private System.Windows.Forms.Label labelParametersTitle;
         private System.Windows.Forms.Label labelModeTitle;
         private System.Windows.Forms.Label labelScoreTitle;
         private System.Windows.Forms.WebBrowser webBrowser;

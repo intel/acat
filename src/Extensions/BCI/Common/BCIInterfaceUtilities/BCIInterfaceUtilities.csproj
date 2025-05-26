@@ -111,6 +111,7 @@
   <ItemGroup>
     <EmbeddedResource Include="ConfirmBoxCalibrationModes.resx">
       <DependentUpon>ConfirmBoxCalibrationModes.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ConfirmBoxCalibrationHelp.resx">
       <DependentUpon>ConfirmBoxCalibrationHelp.cs</DependentUpon>

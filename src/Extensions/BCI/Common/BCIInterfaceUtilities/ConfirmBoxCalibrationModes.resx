@@ -150,9 +150,6 @@
   <data name="labelParametersTiel.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="labelParametersTiel.Text" xml:space="preserve">
-    <value>Parameters</value>
-  </data>
   <data name="labelParametersTiel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
@@ -225,9 +222,6 @@
   <data name="labelModeTitle.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="labelModeTitle.Text" xml:space="preserve">
-    <value>Mode</value>
-  </data>
   <data name="labelModeTitle.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
@@ -263,9 +257,6 @@
   </data>
   <data name="labelScoreTitle.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="labelScoreTitle.Text" xml:space="preserve">
-    <value>Score</value>
   </data>
   <data name="labelScoreTitle.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
@@ -363,9 +354,6 @@
   <data name="labelTitle.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
   </data>
-  <data name="labelTitle.Text" xml:space="preserve">
-    <value>Calibrate</value>
-  </data>
   <data name="labelTitle.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>BottomCenter</value>
   </data>
@@ -408,9 +396,6 @@
   <data name="ButtonUpMinimumScore.TabIndex" type="System.Int32, mscorlib">
     <value>82</value>
   </data>
-  <data name="ButtonUpMinimumScore.Text" xml:space="preserve">
-    <value>+</value>
-  </data>
   <data name="ButtonUpMinimumScore.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopLeft</value>
   </data>
@@ -446,9 +431,6 @@
   </data>
   <data name="labelMinimumScore.TabIndex" type="System.Int32, mscorlib">
     <value>80</value>
-  </data>
-  <data name="labelMinimumScore.Text" xml:space="preserve">
-    <value>77</value>
   </data>
   <data name="labelMinimumScore.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -516,9 +498,6 @@
   <data name="ButtonDownMinimumScore.TabIndex" type="System.Int32, mscorlib">
     <value>81</value>
   </data>
-  <data name="ButtonDownMinimumScore.Text" xml:space="preserve">
-    <value>-</value>
-  </data>
   <data name="ButtonDownMinimumScore.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopRight</value>
   </data>
@@ -558,9 +537,6 @@
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="label4.Text" xml:space="preserve">
-    <value>Minimum score*</value>
-  </data>
   <data name="label4.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>BottomLeft</value>
   </data>
@@ -596,9 +572,6 @@
   </data>
   <data name="ButtonInfoMinimumScore.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
-  </data>
-  <data name="ButtonInfoMinimumScore.Text" xml:space="preserve">
-    <value>?</value>
   </data>
   <data name="&gt;&gt;ButtonInfoMinimumScore.Name" xml:space="preserve">
     <value>ButtonInfoMinimumScore</value>
@@ -735,9 +708,6 @@
   <data name="ButtonUpIterationstarget.TabIndex" type="System.Int32, mscorlib">
     <value>82</value>
   </data>
-  <data name="ButtonUpIterationstarget.Text" xml:space="preserve">
-    <value>+</value>
-  </data>
   <data name="ButtonUpIterationstarget.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopLeft</value>
   </data>
@@ -773,9 +743,6 @@
   </data>
   <data name="labelIterationstarget.TabIndex" type="System.Int32, mscorlib">
     <value>80</value>
-  </data>
-  <data name="labelIterationstarget.Text" xml:space="preserve">
-    <value>77</value>
   </data>
   <data name="labelIterationstarget.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -843,9 +810,6 @@
   <data name="ButtonDownIterationstarget.TabIndex" type="System.Int32, mscorlib">
     <value>81</value>
   </data>
-  <data name="ButtonDownIterationstarget.Text" xml:space="preserve">
-    <value>-</value>
-  </data>
   <data name="ButtonDownIterationstarget.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopRight</value>
   </data>
@@ -885,9 +849,6 @@
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="label5.Text" xml:space="preserve">
-    <value>Iterations per target*</value>
-  </data>
   <data name="label5.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>BottomLeft</value>
   </data>
@@ -923,9 +884,6 @@
   </data>
   <data name="ButtonInfoIterationsTarget.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
-  </data>
-  <data name="ButtonInfoIterationsTarget.Text" xml:space="preserve">
-    <value>?</value>
   </data>
   <data name="&gt;&gt;ButtonInfoIterationsTarget.Name" xml:space="preserve">
     <value>ButtonInfoIterationsTarget</value>
@@ -1062,9 +1020,6 @@
   <data name="ButtonUpScanningTime.TabIndex" type="System.Int32, mscorlib">
     <value>82</value>
   </data>
-  <data name="ButtonUpScanningTime.Text" xml:space="preserve">
-    <value>+</value>
-  </data>
   <data name="ButtonUpScanningTime.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopLeft</value>
   </data>
@@ -1104,9 +1059,6 @@
   <data name="label7.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="label7.Text" xml:space="preserve">
-    <value>Scanning speed</value>
-  </data>
   <data name="label7.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>BottomLeft</value>
   </data>
@@ -1142,9 +1094,6 @@
   </data>
   <data name="ButtonInfoScanningTime.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
-  </data>
-  <data name="ButtonInfoScanningTime.Text" xml:space="preserve">
-    <value>?</value>
   </data>
   <data name="&gt;&gt;ButtonInfoScanningTime.Name" xml:space="preserve">
     <value>ButtonInfoScanningTime</value>
@@ -1275,9 +1224,6 @@
   <data name="ButtonDownScanningTime.TabIndex" type="System.Int32, mscorlib">
     <value>81</value>
   </data>
-  <data name="ButtonDownScanningTime.Text" xml:space="preserve">
-    <value>-</value>
-  </data>
   <data name="ButtonDownScanningTime.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopRight</value>
   </data>
@@ -1317,9 +1263,6 @@
   <data name="labelScanningTime.TabIndex" type="System.Int32, mscorlib">
     <value>80</value>
   </data>
-  <data name="labelScanningTime.Text" xml:space="preserve">
-    <value>2000</value>
-  </data>
   <data name="labelScanningTime.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
@@ -1355,9 +1298,6 @@
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>81</value>
-  </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>ms</value>
   </data>
   <data name="label2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>BottomLeft</value>
@@ -1464,9 +1404,6 @@
   <data name="ButtonUpNumberTargets.TabIndex" type="System.Int32, mscorlib">
     <value>82</value>
   </data>
-  <data name="ButtonUpNumberTargets.Text" xml:space="preserve">
-    <value>+</value>
-  </data>
   <data name="ButtonUpNumberTargets.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopLeft</value>
   </data>
@@ -1502,9 +1439,6 @@
   </data>
   <data name="labelNumberTargets.TabIndex" type="System.Int32, mscorlib">
     <value>80</value>
-  </data>
-  <data name="labelNumberTargets.Text" xml:space="preserve">
-    <value>77</value>
   </data>
   <data name="labelNumberTargets.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -1572,9 +1506,6 @@
   <data name="ButtonDownNumberTargets.TabIndex" type="System.Int32, mscorlib">
     <value>81</value>
   </data>
-  <data name="ButtonDownNumberTargets.Text" xml:space="preserve">
-    <value>-</value>
-  </data>
   <data name="ButtonDownNumberTargets.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopRight</value>
   </data>
@@ -1614,9 +1545,6 @@
   <data name="label6.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="label6.Text" xml:space="preserve">
-    <value>Number of targets*</value>
-  </data>
   <data name="label6.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>BottomLeft</value>
   </data>
@@ -1652,9 +1580,6 @@
   </data>
   <data name="ButtonInfoNumberTargets.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
-  </data>
-  <data name="ButtonInfoNumberTargets.Text" xml:space="preserve">
-    <value>?</value>
   </data>
   <data name="&gt;&gt;ButtonInfoNumberTargets.Name" xml:space="preserve">
     <value>ButtonInfoNumberTargets</value>
@@ -1818,9 +1743,6 @@
   <data name="ButtonRestoreDefaults.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="ButtonRestoreDefaults.Text" xml:space="preserve">
-    <value>Restore</value>
-  </data>
   <data name="&gt;&gt;ButtonRestoreDefaults.Name" xml:space="preserve">
     <value>ButtonRestoreDefaults</value>
   </data>
@@ -1856,9 +1778,6 @@
   </data>
   <data name="checkBoxAdvancesParameters.TabIndex" type="System.Int32, mscorlib">
     <value>87</value>
-  </data>
-  <data name="checkBoxAdvancesParameters.Text" xml:space="preserve">
-    <value>Advanced *</value>
   </data>
   <data name="&gt;&gt;checkBoxAdvancesParameters.Name" xml:space="preserve">
     <value>checkBoxAdvancesParameters</value>
@@ -1962,9 +1881,6 @@
   <data name="ButtonCalibrateKeyboardL.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="ButtonCalibrateKeyboardL.Text" xml:space="preserve">
-    <value>Recalibrate</value>
-  </data>
   <data name="ButtonCalibrateKeyboardL.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
@@ -2000,9 +1916,6 @@
   </data>
   <data name="ButtonInfoKeyboardL.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
-  </data>
-  <data name="ButtonInfoKeyboardL.Text" xml:space="preserve">
-    <value>?</value>
   </data>
   <data name="&gt;&gt;ButtonInfoKeyboardL.Name" xml:space="preserve">
     <value>ButtonInfoKeyboardL</value>
@@ -2070,9 +1983,6 @@
   <data name="ButtonOpcKeyboardL.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
   </data>
-  <data name="ButtonOpcKeyboardL.Text" xml:space="preserve">
-    <value>Keyboard (Left)</value>
-  </data>
   <data name="ButtonOpcKeyboardL.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
@@ -2108,9 +2018,6 @@
   </data>
   <data name="labelScoreKeyboardL.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
-  </data>
-  <data name="labelScoreKeyboardL.Text" xml:space="preserve">
-    <value>-</value>
   </data>
   <data name="labelScoreKeyboardL.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -2208,9 +2115,6 @@
   <data name="labelCalibrationMessage.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="labelCalibrationMessage.Text" xml:space="preserve">
-    <value>Run all three of the calibrations above</value>
-  </data>
   <data name="labelCalibrationMessage.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
   </data>
@@ -2253,9 +2157,6 @@
   <data name="ButtonCalibrateKeyboardR.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="ButtonCalibrateKeyboardR.Text" xml:space="preserve">
-    <value>Calibrate now</value>
-  </data>
   <data name="ButtonCalibrateKeyboardR.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
@@ -2291,9 +2192,6 @@
   </data>
   <data name="ButtonInfoKeyboardR.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
-  </data>
-  <data name="ButtonInfoKeyboardR.Text" xml:space="preserve">
-    <value>?</value>
   </data>
   <data name="&gt;&gt;ButtonInfoKeyboardR.Name" xml:space="preserve">
     <value>ButtonInfoKeyboardR</value>
@@ -2361,9 +2259,6 @@
   <data name="ButtonOpcKeyboardR.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
   </data>
-  <data name="ButtonOpcKeyboardR.Text" xml:space="preserve">
-    <value>Keyboard (Right)*</value>
-  </data>
   <data name="ButtonOpcKeyboardR.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
@@ -2399,9 +2294,6 @@
   </data>
   <data name="labelScoreKeyboardR.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
-  </data>
-  <data name="labelScoreKeyboardR.Text" xml:space="preserve">
-    <value>-</value>
   </data>
   <data name="labelScoreKeyboardR.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -2502,9 +2394,6 @@
   <data name="ButtonCalibrateWord.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="ButtonCalibrateWord.Text" xml:space="preserve">
-    <value>Calibrate now</value>
-  </data>
   <data name="ButtonCalibrateWord.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
@@ -2540,9 +2429,6 @@
   </data>
   <data name="ButtonInfoWord.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
-  </data>
-  <data name="ButtonInfoWord.Text" xml:space="preserve">
-    <value>?</value>
   </data>
   <data name="&gt;&gt;ButtonInfoWord.Name" xml:space="preserve">
     <value>ButtonInfoWord</value>
@@ -2610,9 +2496,6 @@
   <data name="ButtonOpcWord.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
   </data>
-  <data name="ButtonOpcWord.Text" xml:space="preserve">
-    <value>Word*</value>
-  </data>
   <data name="ButtonOpcWord.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
@@ -2648,9 +2531,6 @@
   </data>
   <data name="labelScoreWord.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
-  </data>
-  <data name="labelScoreWord.Text" xml:space="preserve">
-    <value>-</value>
   </data>
   <data name="labelScoreWord.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -2811,9 +2691,6 @@
   <data name="ButtonCalibrateSentence.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="ButtonCalibrateSentence.Text" xml:space="preserve">
-    <value>Calibrate Opt.</value>
-  </data>
   <data name="ButtonCalibrateSentence.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
@@ -2849,9 +2726,6 @@
   </data>
   <data name="ButtonInfoSentence.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
-  </data>
-  <data name="ButtonInfoSentence.Text" xml:space="preserve">
-    <value>?</value>
   </data>
   <data name="&gt;&gt;ButtonInfoSentence.Name" xml:space="preserve">
     <value>ButtonInfoSentence</value>
@@ -2919,9 +2793,6 @@
   <data name="ButtonOpcSentence.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
   </data>
-  <data name="ButtonOpcSentence.Text" xml:space="preserve">
-    <value>Sentence</value>
-  </data>
   <data name="ButtonOpcSentence.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
@@ -2957,9 +2828,6 @@
   </data>
   <data name="labelScoreSentence.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
-  </data>
-  <data name="labelScoreSentence.Text" xml:space="preserve">
-    <value>-</value>
   </data>
   <data name="labelScoreSentence.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -3063,9 +2931,6 @@
   <data name="ButtonCalibrateBox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="ButtonCalibrateBox.Text" xml:space="preserve">
-    <value>Calibrate now</value>
-  </data>
   <data name="ButtonCalibrateBox.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
@@ -3101,9 +2966,6 @@
   </data>
   <data name="ButtonOpcBox.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
-  </data>
-  <data name="ButtonOpcBox.Text" xml:space="preserve">
-    <value>Box</value>
   </data>
   <data name="ButtonOpcBox.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -3141,9 +3003,6 @@
   <data name="labelScoreBox.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
   </data>
-  <data name="labelScoreBox.Text" xml:space="preserve">
-    <value>-</value>
-  </data>
   <data name="labelScoreBox.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
@@ -3179,9 +3038,6 @@
   </data>
   <data name="ButtonInfoBox.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
-  </data>
-  <data name="ButtonInfoBox.Text" xml:space="preserve">
-    <value>?</value>
   </data>
   <data name="&gt;&gt;ButtonInfoBox.Name" xml:space="preserve">
     <value>ButtonInfoBox</value>
@@ -3311,9 +3167,6 @@
   </data>
   <data name="checkBoxAdditionalCalibrations.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
-  </data>
-  <data name="checkBoxAdditionalCalibrations.Text" xml:space="preserve">
-    <value>Additional  calibrations *</value>
   </data>
   <data name="&gt;&gt;checkBoxAdditionalCalibrations.Name" xml:space="preserve">
     <value>checkBoxAdditionalCalibrations</value>
@@ -3483,9 +3336,6 @@
   <data name="ButtonBeginACAT.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="ButtonBeginACAT.Text" xml:space="preserve">
-    <value>Begin using ACAT</value>
-  </data>
   <data name="&gt;&gt;ButtonBeginACAT.Name" xml:space="preserve">
     <value>ButtonBeginACAT</value>
   </data>
@@ -3555,9 +3405,6 @@
   <data name="ButtonExit.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="ButtonExit.Text" xml:space="preserve">
-    <value>Exit ACAT</value>
-  </data>
   <data name="&gt;&gt;ButtonExit.Name" xml:space="preserve">
     <value>ButtonExit</value>
   </data>
@@ -3626,9 +3473,6 @@
   </data>
   <data name="ButtonOtherTest.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="ButtonOtherTest.Text" xml:space="preserve">
-    <value>Advanced Options</value>
   </data>
   <data name="&gt;&gt;ButtonOtherTest.Name" xml:space="preserve">
     <value>ButtonOtherTest</value>
@@ -3788,9 +3632,6 @@
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>6, 6, 6, 6</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>ACAT</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ConfirmBoxCalibrationModes</value>

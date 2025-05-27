@@ -35,6 +35,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                         "Application window used as a calibration UI for eyes open or closed")]
     public partial class CalibrationEyesForm : Form
     {
+        #region Properties
         /// <summary>
         /// Main object of the actuator
         /// </summary>
@@ -80,6 +81,8 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// </summary>
         private bool eyeOpen = false;
 
+        #endregion
+
         public CalibrationEyesForm()
         {
             InitializeComponent();
@@ -92,6 +95,8 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             Load += Form1_Load;
         }
 
+        #region Control Events
+
         /// <summary>
         /// Button event (Start)
         /// </summary>
@@ -100,26 +105,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         private void buttonStart_Click(object sender, EventArgs e)
         {
             StartCalibrationEyesSession();
-        }
-        private void StartCalibrationEyesSession()
-        {
-            this.Invoke(new MethodInvoker(delegate
-            {
-                labelInstruction.Text = string.Empty;
-            }));
-            if (_timer.Enabled)
-            {
-                _Countertimer.Stop();
-                _timer.Stop();
-                _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedEnd, string.Empty);
-            }
-            else
-                SetEnableStateButtons(false);
-            CreateTimers();
-            eyeOpen = false;
-            _bciActuator?.IoctlRequest((int)OpCodes.StartSession, JsonSerializer.Serialize(bCIMode));
-            _Countertimer.Start();
-            _timer.Start();
         }
         private void ButtonCancel_Click_1(object sender, EventArgs e)
         {
@@ -161,30 +146,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         }
 
         /// <summary>
-        /// Initialize Timers 
-        /// </summary>
-        private void CreateTimers()
-        {
-            if (_timer == null)
-            {
-                _timer = new Timer();
-                _timer.Interval = 3100;
-                _timer.Tick += Timer_Tick;
-            }
-            else
-                _timer.Interval = 3100;
-
-            if (_Countertimer == null)
-            {
-                _Countertimer = new Timer();
-                _Countertimer.Interval = 10;
-                _Countertimer.Tick += Timer_Tick_Countdown;
-            }
-            else
-                _Countertimer.Interval = 10;
-        }
-
-        /// <summary>
         /// Event when loading main form
         /// </summary>
         /// <param name="sender"></param>
@@ -195,6 +156,79 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             InitUI();
             ShowCalibrationEyesSettingsForm();
             StartCalibrationEyesSession();
+        }
+
+        /// <summary>
+        /// Main timer 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            labelCountdown.Visible = false;
+            Timer timer = (Timer)sender;
+            timer.Interval = _Interval;
+            if (_Repetitions < _MaxRepetitions)
+            {
+                _Repetitions += 1;
+                eyeOpen = !eyeOpen;
+                SoundManager.playSound(eyeOpen ? SoundManager.SoundType.OpenEyesCalibration : SoundManager.SoundType.CloseEyesCalibration);
+
+                this.Invoke(new MethodInvoker(delegate
+                {
+                    pictureBoxEyesClosed.Visible = !eyeOpen;
+                    pictureBoxEyesOpen.Visible = eyeOpen;
+                    labelInstruction.Text = (eyeOpen) ? "Open your eyes" : "Close your eyes";
+                    panelTriggerBox.BackColor = eyeOpen ? Color.White : Color.Black;
+                }));
+
+                BCICalibrationEyesClosedIterationEnd bCICalibrationEyesClosedIterationEnd = new BCICalibrationEyesClosedIterationEnd { BciEyesClosedMode = eyeOpen ? BCIEyesClosedModes.EyesOpened : BCIEyesClosedModes.EyesClosed, };
+                _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedIterationEnd, JsonSerializer.Serialize(bCICalibrationEyesClosedIterationEnd));
+            }
+            else
+            {
+                ResetValues();
+                SoundManager.playSound(SoundManager.SoundType.OpenEyesCalibration);
+                _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedEnd, string.Empty);
+            }
+
+        }
+        /// <summary>
+        /// Countdown Timer
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Timer_Tick_Countdown(object sender, EventArgs e)
+        {
+            labelCountdown.Text = _CountdownCounter.ToString();
+            Timer timer = (Timer)sender;
+            timer.Interval = 1000;
+            _CountdownCounter -= 1;
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void StartCalibrationEyesSession()
+        {
+            this.Invoke(new MethodInvoker(delegate
+            {
+                labelInstruction.Text = string.Empty;
+            }));
+            if (_timer.Enabled)
+            {
+                _Countertimer.Stop();
+                _timer.Stop();
+                _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedEnd, string.Empty);
+            }
+            else
+                SetEnableStateButtons(false);
+            CreateTimers();
+            eyeOpen = false;
+            _bciActuator?.IoctlRequest((int)OpCodes.StartSession, JsonSerializer.Serialize(bCIMode));
+            _Countertimer.Start();
+            _timer.Start();
         }
 
         /// <summary>
@@ -279,51 +313,28 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             SetEnableStateButtons(true);
         }
         /// <summary>
-        /// Main timer 
+        /// Initialize Timers 
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Timer_Tick(object sender, EventArgs e)
+        private void CreateTimers()
         {
-            labelCountdown.Visible = false;
-            Timer timer = (Timer)sender;
-            timer.Interval = _Interval;
-            if (_Repetitions < _MaxRepetitions)
+            if (_timer == null)
             {
-                _Repetitions += 1;
-                eyeOpen = !eyeOpen;
-                SoundManager.playSound(eyeOpen ? SoundManager.SoundType.OpenEyesCalibration : SoundManager.SoundType.CloseEyesCalibration);
-
-                this.Invoke(new MethodInvoker(delegate
-                {
-                    pictureBoxEyesClosed.Visible = !eyeOpen;
-                    pictureBoxEyesOpen.Visible = eyeOpen;
-                    labelInstruction.Text = (eyeOpen) ? "Open your eyes" : "Close your eyes";
-                    panelTriggerBox.BackColor = eyeOpen ? Color.White : Color.Black;
-                }));
-
-                BCICalibrationEyesClosedIterationEnd bCICalibrationEyesClosedIterationEnd = new BCICalibrationEyesClosedIterationEnd { BciEyesClosedMode = eyeOpen ? BCIEyesClosedModes.EyesOpened : BCIEyesClosedModes.EyesClosed,};
-                _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedIterationEnd, JsonSerializer.Serialize(bCICalibrationEyesClosedIterationEnd));
+                _timer = new Timer();
+                _timer.Interval = 3100;
+                _timer.Tick += Timer_Tick;
             }
             else
-            {
-                ResetValues();
-                SoundManager.playSound(SoundManager.SoundType.OpenEyesCalibration);
-                _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedEnd, string.Empty);
-            }
+                _timer.Interval = 3100;
 
+            if (_Countertimer == null)
+            {
+                _Countertimer = new Timer();
+                _Countertimer.Interval = 10;
+                _Countertimer.Tick += Timer_Tick_Countdown;
+            }
+            else
+                _Countertimer.Interval = 10;
         }
-        /// <summary>
-        /// Countdown Timer
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Timer_Tick_Countdown(object sender, EventArgs e)
-        {
-            labelCountdown.Text = _CountdownCounter.ToString();
-            Timer timer = (Timer)sender;
-            timer.Interval = 1000;
-            _CountdownCounter -= 1;
-        }
+        #endregion
     }
 }

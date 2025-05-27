@@ -1043,6 +1043,24 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Eyes Closed Calibration.
+        /// </summary>
+        public static string EyesClosedCalibration {
+            get {
+                return ResourceManager.GetString("EyesClosedCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eyes open.
+        /// </summary>
+        public static string EyesOpen {
+            get {
+                return ResourceManager.GetString("EyesOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to F.
         /// </summary>
         public static string F {
@@ -2457,6 +2475,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open and close your eyes when prompted.
+        /// </summary>
+        public static string OpenAndCloseYourEyes {
+            get {
+                return ResourceManager.GetString("OpenAndCloseYourEyes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open File.
         /// </summary>
         public static string OpenFile {
@@ -3460,6 +3487,15 @@ namespace ACATResources {
         public static string SpeakNow {
             get {
                 return ResourceManager.GetString("SpeakNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        public static string Start {
+            get {
+                return ResourceManager.GetString("Start", resourceCulture);
             }
         }
         

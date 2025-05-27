@@ -18,7 +18,7 @@ namespace ACAT.Lib.Core.Onboarding
 {
     /// <summary>
     /// The container form for a single step in the onboarding process.
-    /// It has buttons for naviation and hosts the usercontrol for
+    /// It has buttons for navigation and hosts the user-control for
     /// an onboarding step
     /// </summary>
     public partial class OnboardingForm : Form
@@ -334,8 +334,8 @@ namespace ACAT.Lib.Core.Onboarding
 
                 if (confirm)
                 {
-                    if (!ConfirmBoxOneOption.ShowDialog("ACAT configuration incomplete.",
-                        "Quit anyway?", StringResources.QuitApplication))
+                    if (!ConfirmBoxTwoOption.ShowDialog("ACAT configuration incomplete.",
+                        "Quit anyway?", StringResources.QuitApplication, StringResources.Cancel))
                     {
                         return;
                     }

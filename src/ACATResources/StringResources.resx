@@ -1623,4 +1623,16 @@ The switch is not held down long enough. Set the hold time to 0 and test, and th
   <data name="NoDisclaimersFound" xml:space="preserve">
     <value>No disclaimers found.</value>
   </data>
+  <data name="EyesClosedCalibration" xml:space="preserve">
+    <value>Eyes Closed Calibration</value>
+  </data>
+  <data name="OpenAndCloseYourEyes" xml:space="preserve">
+    <value>Open and close your eyes when prompted</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="EyesOpen" xml:space="preserve">
+    <value>Eyes open</value>
+  </data>
 </root>

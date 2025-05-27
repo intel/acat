@@ -1584,4 +1584,16 @@ Enables selection of large sized regions on the Main Talk UI. With default value
   <data name="UserControlHardwareSwitchTestLabel1Text" xml:space="preserve">
     <value>The hotkey is configured incorrectly. Go to the previous step to check. The switch is not being held down long enough. Set the hold time to 0 and test, then gradually increase it until you find a value that works for you.</value>
   </data>
+  <data name="EyesClosedCalibration" xml:space="preserve">
+    <value>Eyes Closed Calibration</value>
+  </data>
+  <data name="OpenAndCloseYourEyes" xml:space="preserve">
+    <value>Open and close your eyes when prompted</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="EyesOpen" xml:space="preserve">
+    <value>Eyes open</value>
+  </data>
 </root>

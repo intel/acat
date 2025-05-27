@@ -109,6 +109,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CalibrationEyesSettingsForm.en.resx">
+      <DependentUpon>CalibrationEyesSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CalibrationEyesSettingsForm.es.resx">
+      <DependentUpon>CalibrationEyesSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ConfirmBoxCalibrationModes.resx">
       <DependentUpon>ConfirmBoxCalibrationModes.cs</DependentUpon>
       <SubType>Designer</SubType>

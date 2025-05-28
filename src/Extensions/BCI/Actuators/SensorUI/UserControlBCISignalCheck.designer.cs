@@ -9,13 +9,13 @@
 // Makes sure the BCI signals are good before continuing onto calibration.
 // Displays signals from electrodes and does railing and impedance tests
 //
-// The original insipiration from this class is the OpenBCI GUI application:
+// The original inspiration for this class is the OpenBCI GUI application:
 // https://github.com/OpenBCI/OpenBCI_GUI
 // It is licensed under the MIT License
 // Copyright (c) 2018 OpenBCI
 // https://github.com/OpenBCI/OpenBCI_GUI/blob/master/LICENSE
 ////////////////////////////////////////////////////////////////////////////
-
+using ACATResources;
 namespace ACAT.Extensions.BCI.Actuators.SensorUI
 {
     /// <summary>
@@ -583,7 +583,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.tableLayoutPanelMain.SetRowSpan(this.labelBCISignalCheckDescription, 8);
             this.labelBCISignalCheckDescription.Size = new System.Drawing.Size(455, 400);
             this.labelBCISignalCheckDescription.TabIndex = 101;
-            this.labelBCISignalCheckDescription.Text = resources.GetString("labelBCISignalCheckDescription.Text");
+            this.labelBCISignalCheckDescription.Text = StringResources.BCISensorUIUserControlBCISignalCheckDescription;
             this.labelBCISignalCheckDescription.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // tabControlSignalQuality
@@ -3908,7 +3908,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.tableLayoutQualityResults.SetRowSpan(this.labelQualityResultsInfo1, 9);
             this.labelQualityResultsInfo1.Size = new System.Drawing.Size(368, 394);
             this.labelQualityResultsInfo1.TabIndex = 201;
-            this.labelQualityResultsInfo1.Text = resources.GetString("labelQualityResultsInfo1.Text");
+            this.labelQualityResultsInfo1.Text = StringResources.BCISensorUIUserControlBCISignalQualityResultsInfo; ; //resources.GetString("labelQualityResultsInfo1.Text");
             this.labelQualityResultsInfo1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // labelQualityResultsInfo2
@@ -3924,8 +3924,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.tableLayoutQualityResults.SetRowSpan(this.labelQualityResultsInfo2, 5);
             this.labelQualityResultsInfo2.Size = new System.Drawing.Size(382, 216);
             this.labelQualityResultsInfo2.TabIndex = 200;
-            this.labelQualityResultsInfo2.Text = "Congrats if you have all green (maybe a few yellows)!!! \r\n\r\nPress “Next\" to conti" +
-    "nue";
+            this.labelQualityResultsInfo2.Text = "Congrats if you have all green (maybe a few yellows)!!! \r\n\r\nPress “Next\" to continue";
             this.labelQualityResultsInfo2.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // btnImpedanceResQualityResultsR1

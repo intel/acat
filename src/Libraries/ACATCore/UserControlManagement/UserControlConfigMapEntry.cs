@@ -129,8 +129,7 @@ namespace ACAT.Lib.Core.UserControlManagement
             }
             else
             {
-                Guid guid;
-                retVal = Guid.TryParse(guidString, out guid);
+                retVal = Guid.TryParse(guidString, out Guid guid);
                 if (retVal)
                 {
                     UserControlId = guid;

@@ -22,7 +22,7 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
         /// </summary>
         private static TTSClientSettings _settings;
 
-        private TransportHttp _transportHttp;
+        private readonly TransportHttp _transportHttp;
 
         public Transport()
         {
@@ -55,13 +55,12 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
 
         public bool Send(String data, TTSFormat format = TTSFormat.None)
         {
-            bool retVal = true;
-
             if (format == TTSFormat.None)
             {
                 format = Format;
             }
 
+            bool retVal;
             switch (Protocol)
             {
                 case TransportProtocol.Http:

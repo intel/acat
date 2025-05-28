@@ -49,7 +49,7 @@ namespace ACAT.Lib.Core.PanelManagement
             this.tableLayoutPanel1.SetRowSpan(this.labelPrompt, 2);
             this.labelPrompt.Size = new System.Drawing.Size(1490, 216);
             this.labelPrompt.TabIndex = 0;
-            this.labelPrompt.Text = "This is a prompt for the message box that will appear  when needed";
+            this.labelPrompt.Text = "This is a prompt for the message box that will appear when needed"; //don't localize
             this.labelPrompt.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel1
@@ -92,7 +92,7 @@ namespace ACAT.Lib.Core.PanelManagement
             this.labelTitle.Name = "labelTitle";
             this.labelTitle.Size = new System.Drawing.Size(1490, 109);
             this.labelTitle.TabIndex = 4;
-            this.labelTitle.Text = "This is a prompt for title";
+            this.labelTitle.Text = "This is a prompt for title"; //don't localize
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // buttonOp3

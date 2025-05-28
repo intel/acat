@@ -217,15 +217,9 @@ namespace ACAT.Lib.Core.WidgetManagement
 
                 if (disposing)
                 {
-                    if (_rootWidget != null)
-                    {
-                        _rootWidget.Dispose();
-                    }
+                    _rootWidget?.Dispose();
 
-                    if (_widgetAttributes != null)
-                    {
-                        _widgetAttributes.Dispose();
-                    }
+                    _widgetAttributes?.Dispose();
                 }
 
                 // Release unmanaged resources.
@@ -339,7 +333,7 @@ namespace ACAT.Lib.Core.WidgetManagement
         private static void onFileFound(String file)
         {
             String filePath = file.ToLower();
-            String fileName = Path.GetFileName(filePath);
+            _ = Path.GetFileName(filePath);
             String extension = Path.GetExtension(filePath);
             if (String.Compare(extension, ".dll", true) == 0)
             {

@@ -66,9 +66,8 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="configId">String rep of the config id guid</param>
         public PanelClassConfigMapEntry(String panelClass, String configId)
         {
-            Guid guid;
 
-            if (Guid.TryParse(configId, out guid))
+            if (Guid.TryParse(configId, out Guid guid))
             {
                 PanelClass = panelClass;
                 ConfigId = guid;

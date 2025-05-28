@@ -180,10 +180,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         private void stopTimer()
         {
-            if (_timer != null)
-            {
-                _timer.Stop();
-            }
+            _timer?.Stop();
         }
     }
 }

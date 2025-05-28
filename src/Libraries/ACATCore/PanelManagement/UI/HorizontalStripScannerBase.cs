@@ -263,10 +263,7 @@ namespace ACAT.Lib.Core.PanelManagement
         [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
         protected override void WndProc(ref Message m)
         {
-            if (_scannerCommon != null)
-            {
-                _scannerCommon.HandleWndProc(m);
-            }
+            _scannerCommon?.HandleWndProc(m);
 
             base.WndProc(ref m);
         }

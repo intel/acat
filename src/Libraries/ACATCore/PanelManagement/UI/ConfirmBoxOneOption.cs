@@ -23,7 +23,6 @@ namespace ACAT.Lib.Core.PanelManagement
     {
         public DialogResult Result;
 
-        private bool _EnableOption3 = true;
         /// <summary>
         /// Confirm Box with multiple results
         /// Results: Yes - No - Abort

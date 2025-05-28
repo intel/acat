@@ -44,14 +44,14 @@ namespace ACAT.Applications.ConvAssistTerminate
         /// <summary>
         /// The maximun time the program will wait for ConvAssist to close 
         /// </summary>
-        private static int _MaxWaitTimeToCloseProgram = 20;
+        private static readonly int _MaxWaitTimeToCloseProgram = 20;
 
         private const String namedPipeName = "ACATConvAssistPipe"; 
 
         /// <summary>
         /// Main object of the Named Pipe server
         /// </summary>
-        private static PipeServer _pipeServer = new PipeServer(namedPipeName, PipeDirection.InOut, true);
+        private static readonly PipeServer _pipeServer = new PipeServer(namedPipeName, PipeDirection.InOut, true);
         /// <summary>
         /// Type of Exit codes when the app closses
         /// 0 - It closed ConvAssist

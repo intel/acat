@@ -107,11 +107,10 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         private static List<IMoniker> getDevicesOfCategory(Guid category)
         {
             var monikerList = new List<IMoniker>();
-            IEnumMoniker enumMoniker;
 
             var enumDev = (ICreateDevEnum)new CreateDevEnum();
 
-            var hResult = enumDev.CreateClassEnumerator(category, out enumMoniker, 0);
+            var hResult = enumDev.CreateClassEnumerator(category, out IEnumMoniker enumMoniker, 0);
             if (hResult != S_OK || enumMoniker == null)
             {
                 return monikerList;
@@ -169,8 +168,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 
                 var bag = (IPropertyBag)bagObject;
 
-                object val;
-                var hResult = bag.Read(propertyName, out val, null);
+                var hResult = bag.Read(propertyName, out object val, null);
 
                 if (hResult != S_OK)
                 {

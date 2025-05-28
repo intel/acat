@@ -49,12 +49,12 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <summary>
         /// List of the current letter probabilities 
         /// </summary>
-        private static Dictionary<string, double> _sentenceProbs = new Dictionary<string, double>();
+        private static readonly Dictionary<string, double> _sentenceProbs = new Dictionary<string, double>();
 
         /// <summary>
         /// Parameters used by BCI
         /// </summary>
-        private static Dictionary<string, int> _UIBCIparameters = new Dictionary<string, int>();
+        private static readonly Dictionary<string, int> _UIBCIparameters = new Dictionary<string, int>();
         /// <summary>
         /// List of the current letter probabilities 
         /// </summary>
@@ -570,7 +570,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             catch (Exception ex)
             {
                 Log.Debug("Exception in getLettersProbs: " + ex.Message.ToString());
-                return nextProbs = new Dictionary<int, double>();
+                return _ = new Dictionary<int, double>();
             }
             return nextProbs;
         }
@@ -701,7 +701,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <returns>Value of the requested parameter</returns>
         public static int GetParameter(string parameter)
         {
-            int value = 0;
+            int value;
             try
             {
                 if (_UIBCIparameters.TryGetValue(parameter, out value))
@@ -789,7 +789,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 }
                 name = null;
             }
-            configNodes = null;
+
             return type;
         }
 
@@ -869,7 +869,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <param name="wordsChanged"></param>
         private static void ActiveWordPredictor_EvtNotifyNextWordProbabilities(List<KeyValuePair<string, double>> wordList, bool wordsChanged)
         {
-            List<KeyValuePair<string, double>> tempwordsProbs = new List<KeyValuePair<string, double>>();
+            _ = new List<KeyValuePair<string, double>>();
             IDictionary<string, Double> words = new Dictionary<string, Double>();
             try
             {
@@ -879,7 +879,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     newValue = newValue.Replace("\"", "");
                     words.Add(newValue, element.Value);
                 }
-                tempwordsProbs = words.ToList();
+                List<KeyValuePair<string, double>> tempwordsProbs = words.ToList();
                 _wordsProbs = tempwordsProbs;
             }
             catch (Exception)

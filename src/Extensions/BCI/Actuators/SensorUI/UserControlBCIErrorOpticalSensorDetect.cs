@@ -24,7 +24,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
     /// </summary>
     public partial class UserControlBCIErrorOpticalSensorDetect : UserControl
     {
-        private String _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  <head>\r\n  " +
+        private readonly String _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  <head>\r\n  " +
                                     "<style>\r\n    a:link{color: rgb(255, 170, 0);}\r\n  </style>\r\n  " +
                                     "</head>\r\n  <body style=\"background-color:#232433;\">\r\n    " +
                                     "<p style=\"font-family:'Montserrat Medium'; font-size:24px; color:white; text-align: center;\">\r\n    " +

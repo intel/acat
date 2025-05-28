@@ -1495,10 +1495,7 @@ namespace ACAT.Lib.Core.WidgetManagement
                 child.Dispose(true);
             }
 
-            if (graphicsPath != null)
-            {
-                graphicsPath.Dispose();
-            }
+            graphicsPath?.Dispose();
         }
     }
 }

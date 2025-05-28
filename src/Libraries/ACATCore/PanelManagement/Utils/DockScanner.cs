@@ -143,8 +143,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         private void handleDockCenter()
         {
-            User32Interop.RECT windowRect;
-            User32Interop.GetWindowRect(_windowHandleDockTo, out windowRect);
+            User32Interop.GetWindowRect(_windowHandleDockTo, out User32Interop.RECT windowRect);
 
             switch (_dockPosition)
             {
@@ -163,8 +162,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         private void handleDockLeft()
         {
-            User32Interop.RECT windowRect;
-            User32Interop.GetWindowRect(_windowHandleDockTo, out windowRect);
+            User32Interop.GetWindowRect(_windowHandleDockTo, out User32Interop.RECT windowRect);
 
             int screenLeft = Screen.FromControl(_form).Bounds.Left;
             int parentWidth = windowRect.right - windowRect.left;
@@ -205,8 +203,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         private void handleDockRight()
         {
-            User32Interop.RECT windowRect;
-            User32Interop.GetWindowRect(_windowHandleDockTo, out windowRect);
+            User32Interop.GetWindowRect(_windowHandleDockTo, out User32Interop.RECT windowRect);
 
             int screenWidth = Screen.FromControl(_form).Bounds.Width;
             int parentWidth = windowRect.right - windowRect.left;

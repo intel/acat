@@ -73,10 +73,7 @@ namespace ACAT.Lib.Extension.CommandHandlers
                         AgentManager.Instance.Keyboard.Send(Keys.LMenu, Keys.F4);
                     }
 
-                    if (win != null)
-                    {
-                        win.Dispose();
-                    }
+                    win?.Dispose();
 
                     break;
 
@@ -94,10 +91,7 @@ namespace ACAT.Lib.Extension.CommandHandlers
                             form.Text = StringResources.MoveWindow;
 
                             var extension = form as IExtension;
-                            if (extension != null)
-                            {
-                                extension.GetInvoker().SetValue("MoveWindow", true);
-                            }
+                            extension?.GetInvoker().SetValue("MoveWindow", true);
 
                             Context.AppPanelManager.ShowDialog(form as IPanel);
                         }
@@ -118,10 +112,7 @@ namespace ACAT.Lib.Extension.CommandHandlers
                             form.Text = StringResources.ResizeWindow;
 
                             var extension = form as IExtension;
-                            if (extension != null)
-                            {
-                                extension.GetInvoker().SetValue("ResizeWindow", true);
-                            }
+                            extension?.GetInvoker().SetValue("ResizeWindow", true);
 
                             Context.AppPanelManager.ShowDialog(form as IPanel);
                         }

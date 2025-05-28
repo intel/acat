@@ -22,12 +22,12 @@ namespace ACAT.Lib.Core.Utility
         /// </summary>
         private readonly String LogFileFullPath;
 
-        private List<String> logEntries = new List<string>();
+        private readonly List<String> logEntries = new List<string>();
 
         /// <summary>
         /// Name of the audit log file
         /// </summary>
-        private string LogFileName;
+        private readonly string LogFileName;
 
         public CachedLog(string baseFileName)
         {

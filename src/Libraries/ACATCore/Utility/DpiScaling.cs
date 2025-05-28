@@ -100,13 +100,11 @@ namespace ACAT.Lib.Core.Utility
         public static uint GetDpi(Control control, Point monitorPoint)
         {
             uint dpiX;
-            uint dpiY;
 
             if (IsSupportingDpiPerMonitor)
             {
                 var monitorFromPoint = User32Interop.MonitorFromPoint(monitorPoint, 2);
-
-                GetDpiForMonitor(monitorFromPoint, DpiType.Effective, out dpiX, out dpiY);
+                GetDpiForMonitor(monitorFromPoint, DpiType.Effective, out dpiX, out _);
             }
             else
             {

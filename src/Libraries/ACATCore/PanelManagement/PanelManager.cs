@@ -406,10 +406,7 @@ namespace ACAT.Lib.Core.PanelManagement
 
             PanelConfigMap.Load(Preferences.ApplicationAssembly);
 
-            if (EvtStartupAddForms != null)
-            {
-                EvtStartupAddForms(this, new EventArgs());
-            }
+            EvtStartupAddForms?.Invoke(this, new EventArgs());
 
             EvtStartupAddUserControls?.Invoke(this, new EventArgs());
 
@@ -550,10 +547,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="arg"></param>
         internal void NotifyPanelPreShow(PanelPreShowEventArg arg)
         {
-            if (EvtPanelPreShow != null)
-            {
-                EvtPanelPreShow(this, arg);
-            }
+            EvtPanelPreShow?.Invoke(this, arg);
         }
 
         /// <summary>
@@ -561,10 +555,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         internal void NotifyQuitApplication()
         {
-            if (EvtAppQuit != null)
-            {
-                EvtAppQuit(_instance, new EventArgs());
-            }
+            EvtAppQuit?.Invoke(_instance, new EventArgs());
         }
 
         /// <summary>
@@ -714,10 +705,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="arg">event args</param>
         private void panelStack_EvtScannerClosed(object sender, ScannerCloseEventArg arg)
         {
-            if (EvtScannerClosed != null)
-            {
-                EvtScannerClosed(sender, arg);
-            }
+            EvtScannerClosed?.Invoke(sender, arg);
         }
 
         /// <summary>
@@ -732,16 +720,10 @@ namespace ACAT.Lib.Core.PanelManagement
             if (arg.Scanner.PanelClass == "Alphabet")
             {
                 Windows.WidestScannerWidth = arg.Scanner.Form.Width;
-                if (EvtAlphabetScannerWidthChanged != null)
-                {
-                    EvtAlphabetScannerWidthChanged(arg.Scanner.Form.Width);
-                }
+                EvtAlphabetScannerWidthChanged?.Invoke(arg.Scanner.Form.Width);
             }
 
-            if (EvtScannerShow != null)
-            {
-                EvtScannerShow(sender, arg);
-            }
+            EvtScannerShow?.Invoke(sender, arg);
         }
 
         /// <summary>
@@ -753,10 +735,7 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             Log.Debug("Display Resolution changed. Working area is " + Screen.PrimaryScreen.WorkingArea);
 
-            if (EvtDisplaySettingsChanged != null)
-            {
-                EvtDisplaySettingsChanged(sender, e);
-            }
+            EvtDisplaySettingsChanged?.Invoke(sender, e);
         }
     }
 }

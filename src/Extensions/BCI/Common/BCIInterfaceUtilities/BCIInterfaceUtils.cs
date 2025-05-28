@@ -153,7 +153,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         public static BCIMenuOptions.MainMenuOptions ShowMainOptionsWindow(Form form, string title, string Label, bool enableOp3)
         {
             var result = BCIMenuOptions.MainMenuOptions.ExitApplication;
-            var dialog_result = ConfirmBoxThreeOption.ShowDialog(title, Label, EXITAPPLICATION, CALIBRATE, STARTYPING, null, false);
+            _ = ConfirmBoxThreeOption.ShowDialog(title, Label, EXITAPPLICATION, CALIBRATE, STARTYPING, null, false);
             return result;
         }
 
@@ -176,7 +176,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         public static BCIMenuOptions.MainMenuOptions ShowRecalibrationWindow(Form form, float auc)
         {
             var result = BCIMenuOptions.MainMenuOptions.ExitApplication;
-            var dialog_result = ConfirmBoxThreeOption.ShowDialog(CALIBRATIONSTATUS, CALIBRATIONEXPIRED + (auc * 100), EXITAPPLICATION, CALIBRATEAGAIN, CALIBRATE, form);
+            _ = ConfirmBoxThreeOption.ShowDialog(CALIBRATIONSTATUS, CALIBRATIONEXPIRED + (auc * 100), EXITAPPLICATION, CALIBRATEAGAIN, CALIBRATE, form);
             return result;
 
         }

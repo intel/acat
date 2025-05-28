@@ -55,7 +55,7 @@ namespace ACAT.Lib.Core.ActuatorManagement.UI
             this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label1
+            // initializing
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
@@ -63,7 +63,7 @@ namespace ACAT.Lib.Core.ActuatorManagement.UI
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(51, 56);
             this.label1.Margin = new System.Windows.Forms.Padding(5);
-            this.label1.Name = "label1";
+            this.label1.Name = "initializing";
             this.label1.Size = new System.Drawing.Size(530, 30);
             this.label1.TabIndex = 0;
             this.label1.Text = "Click in the box below and press shortcut keys";

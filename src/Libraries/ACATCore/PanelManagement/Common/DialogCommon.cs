@@ -301,10 +301,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public void OnPause()
         {
-            if (_windowOverlapWatchdog != null)
-            {
-                _windowOverlapWatchdog.Pause();
-            }
+            _windowOverlapWatchdog?.Pause();
 
             _animationManager.Pause();
         }
@@ -317,10 +314,7 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             Windows.SetWindowPositionAndNotify(_form, Windows.WindowPosition.CenterScreen);
 
-            if (_windowOverlapWatchdog != null)
-            {
-                _windowOverlapWatchdog.Resume();
-            }
+            _windowOverlapWatchdog?.Resume();
 
             _animationManager.Resume();
         }
@@ -359,20 +353,11 @@ namespace ACAT.Lib.Core.PanelManagement
                     // dispose all managed resources.
                     Log.Debug();
 
-                    if (_animationManager != null)
-                    {
-                        _animationManager.Dispose();
-                    }
+                    _animationManager?.Dispose();
 
-                    if (_windowOverlapWatchdog != null)
-                    {
-                        _windowOverlapWatchdog.Dispose();
-                    }
+                    _windowOverlapWatchdog?.Dispose();
 
-                    if (_rootWidget != null)
-                    {
-                        _rootWidget.Dispose();
-                    }
+                    _rootWidget?.Dispose();
                 }
 
                 // Release unmanaged resources.

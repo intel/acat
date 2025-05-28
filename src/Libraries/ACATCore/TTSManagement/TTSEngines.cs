@@ -58,7 +58,7 @@ namespace ACAT.Lib.Core.TTSManagement
         /// <summary>
         /// The object that holds the preferred TTS Engines
         /// </summary>
-        private PreferredTTSEngines _preferredTTSEngines;
+        private readonly PreferredTTSEngines _preferredTTSEngines;
 
         /// <summary>
         /// Initializes a new instance of the class
@@ -337,10 +337,7 @@ namespace ACAT.Lib.Core.TTSManagement
 
                 if (disposing)
                 {
-                    if (_nullTTSEngine != null)
-                    {
-                        _nullTTSEngine.Dispose();
-                    }
+                    _nullTTSEngine?.Dispose();
 
                     // dispose all managed resources.
                     _ttsEnginesTypeCache.Clear();

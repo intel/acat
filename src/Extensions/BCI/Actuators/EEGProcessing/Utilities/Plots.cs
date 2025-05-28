@@ -28,7 +28,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// <summary>
         /// List of colors to be used when plotting
         /// </summary>
-        private static string[] ColorValues = new string[] { "#000000",  "#00FFFF", "#808080",
+        private static readonly string[] ColorValues = new string[] { "#000000",  "#00FFFF", "#808080",
              "#FF00FF", "#800000", "#FF0000", "#808000", "#808080", "#FFFF00", "#008000",
              "#008080", "#000080", "#0000FF"," #800080", "#00FF00",  "#606000", "#000000"};
 
@@ -41,11 +41,11 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         public static void plotSignal(double[,] data, int channelIdx, int sampleRate = 250)
         {
             GraphDisplayerForm2x1 graphFormSignal = new GraphDisplayerForm2x1();
-            GraphPane graphPaneBottom = graphFormSignal.graphControlBottom.GraphPane;
+            _ = graphFormSignal.graphControlBottom.GraphPane;
             GraphPane graphPaneTop = graphFormSignal.graphControlTop.GraphPane;
 
             double[] chData = data.GetRow(channelIdx);
-            int numChannels = data.GetLength(0);
+            _ = data.GetLength(0);
             int numSamples = data.GetLength(1);
             double[] timeVector = new double[numSamples];
 
@@ -67,7 +67,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         public static void plotTriggerSignal(int[] triggerSignal)
         {
             GraphDisplayerForm2x1 graphFormSignal = new GraphDisplayerForm2x1();
-            GraphPane graphPaneBottom = graphFormSignal.graphControlBottom.GraphPane;
+            _ = graphFormSignal.graphControlBottom.GraphPane;
             GraphPane graphPaneTop = graphFormSignal.graphControlTop.GraphPane;
 
             int numSamples = triggerSignal.Length;
@@ -272,7 +272,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 }
 
                 // Add to plot
-                String channelLegend = "";
+                string channelLegend;
                 if (channels.Length >= channelIdx)
                     channelLegend = "channel " + channels[channelIdx].ToString();
                 else

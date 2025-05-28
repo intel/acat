@@ -651,9 +651,11 @@ namespace ACAT.Lib.Core.Utility
 
             Log.Debug("Run " + executable);
 
-            var startInfo = new ProcessStartInfo();
-            startInfo.FileName = executable;
-            startInfo.WindowStyle = style;
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = executable,
+                WindowStyle = style
+            };
 
             //Start the process.
             try
@@ -689,8 +691,7 @@ namespace ACAT.Lib.Core.Utility
         /// <returns>true on success</returns>
         public static bool RunBatchFile(String batchFileName, params String[] argList)
         {
-            bool retVal = true;
-
+            bool retVal;
             try
             {
                 var dir = AppDomain.CurrentDomain.BaseDirectory;

@@ -28,7 +28,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
     {
         public String _currentBCIComPort = "x";
 
-        private String _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  <head>\r\n  <style>\r\n    a:link{color: rgb(255, 170, 0);}\r\n  </style>\r\n  </head>\r\n" +
+        private readonly String _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  <head>\r\n  <style>\r\n    a:link{color: rgb(255, 170, 0);}\r\n  </style>\r\n  </head>\r\n" +
                                     "<body style=\"background-color:#232433;\">\r\n    " +
                                     "<p style=\"font-family:'Montserrat Medium'; font-size:24px; color:white; text-align: center;\">\r\n    " +
                                     "Your board is connected to <span style=\"font-family:'Montserrat Black'; color:white;\"><em>@@@</em></span>. " +

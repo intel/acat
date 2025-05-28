@@ -26,7 +26,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         private WordPredictionModes _prevMode = WordPredictionModes.None;
         private string _prevPrevWords = null;
         private List<string> _prevSentencePredictionResults = new List<string>();
-        private ConvAssistWordPredictor _wordPredictor;
+        private readonly ConvAssistWordPredictor _wordPredictor;
 
         public SentencePredictionsRequestHandler(ConvAssistWordPredictor wordPredictor)
         {
@@ -44,9 +44,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <returns>A list of predicted words</returns>
         public WordPredictionResponse ProcessPredictionRequest(WordPredictionRequest request)
         {
-            string[] prediction = { "" };
-            var result = new List<string>();
-            WordPredictionResponse response = null;
             StringBuilder preceedingWords = new StringBuilder();
 
             if (request.PredictionType != PredictionTypes.Sentences)
@@ -54,6 +51,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 return new WordPredictionResponse(request, new List<String>(), false);
             }
 
+            WordPredictionResponse response;
             try
             {
                 Log.Debug("_prevMode: " + _prevMode + ", currentMode: " + _wordPredictor.GetMode());
@@ -81,7 +79,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                     preceedingWords.Clear();
                     preceedingWords.Append(prevWords);
                     preceedingWords.Append(currentWord);
-
+                    List<string> result;
                     try
                     {
                         string predictedWords = String.Empty;
@@ -91,13 +89,13 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                         {
                             if (request.WordPredictionMode == WordPredictionModes.Sentence)
                             {
-                                predictedSentences = _wordPredictor.SendMessageConvAssistSentencePrediction(preceedingWords.ToString(), 
+                                predictedSentences = _wordPredictor.SendMessageConvAssistSentencePrediction(preceedingWords.ToString(),
                                                                                     request.WordPredictionMode);
                                 Log.Debug("ConvAssist sentences response: " + predictedSentences);
                             }
                             else
                             {
-                                predictedWords = _wordPredictor.SendMessageConvAssistWordPrediction(preceedingWords.ToString(), 
+                                predictedWords = _wordPredictor.SendMessageConvAssistWordPrediction(preceedingWords.ToString(),
                                                                                 request.WordPredictionMode);
                                 predictedSentences = predictedWords;
                             }

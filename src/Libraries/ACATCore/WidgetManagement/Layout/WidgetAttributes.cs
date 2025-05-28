@@ -56,8 +56,7 @@ namespace ACAT.Lib.Core.WidgetManagement
         {
             get
             {
-                WidgetAttribute retVal = null;
-                _widgetAttributes.TryGetValue(name, out retVal);
+                _widgetAttributes.TryGetValue(name, out WidgetAttribute retVal);
                 return retVal;
             }
         }

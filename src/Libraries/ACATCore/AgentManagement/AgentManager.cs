@@ -389,10 +389,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <returns>the task to wait on</returns>
         public async Task ActivateAgent(IApplicationAgent caller, IFunctionalAgent agent)
         {
-            if (EvtPreActivateAgent != null)
-            {
-                EvtPreActivateAgent(this, new EventArgs());
-            }
+            EvtPreActivateAgent?.Invoke(this, new EventArgs());
 
             lock (_syncActivateAgent)
             {
@@ -1084,10 +1081,7 @@ namespace ACAT.Lib.Core.AgentManagement
                         agent = _genericAppAgent;
                         try
                         {
-                            if (agent != null)
-                            {
-                                agent.OnFocusChanged(monitorInfo, ref handled);
-                            }
+                            agent?.OnFocusChanged(monitorInfo, ref handled);
                         }
                         catch (Exception ex)
                         {
@@ -1228,10 +1222,7 @@ namespace ACAT.Lib.Core.AgentManagement
 
                 if (disposing)
                 {
-                    if (_agentsCache != null)
-                    {
-                        _agentsCache.Dispose();
-                    }
+                    _agentsCache?.Dispose();
 
                     if (_keyboardActuator != null)
                     {
@@ -1290,7 +1281,6 @@ namespace ACAT.Lib.Core.AgentManagement
             bool retVal = false;
 
             AutomationElement window = AutomationElement.FromHandle(monitorInfo.FgHwnd);
-            object objPattern;
             Log.Debug("controltype: " + window.Current.ControlType.ProgrammaticName);
 
             if (Equals(window.Current.ControlType, ControlType.Menu))
@@ -1298,7 +1288,7 @@ namespace ACAT.Lib.Core.AgentManagement
                 Log.Debug("**** controltype: IT IS MENU");
                 retVal = true;
             }
-            else if (window.TryGetCurrentPattern(WindowPattern.Pattern, out objPattern))
+            else if (window.TryGetCurrentPattern(WindowPattern.Pattern, out object objPattern))
             {
                 var windowPattern = objPattern as WindowPattern;
                 retVal = (!windowPattern.Current.CanMinimize && !windowPattern.Current.CanMaximize) || windowPattern.Current.IsModal;
@@ -1484,10 +1474,7 @@ namespace ACAT.Lib.Core.AgentManagement
                     _currentAgent.OnFocusChanged(monitorInfo, ref handled);
                 }
 
-                if (EvtFocusChanged != null)
-                {
-                    EvtFocusChanged(this, new FocusChangedEventArgs(monitorInfo));
-                }
+                EvtFocusChanged?.Invoke(this, new FocusChangedEventArgs(monitorInfo));
 
                 if (!functionalAgent.IsClosing)
                 {

@@ -152,8 +152,7 @@ namespace ACAT.Lib.Core.AgentManagement
                     return;
                 }
 
-                object valuePattern;
-                if (!element.TryGetCurrentPattern(ValuePattern.Pattern, out valuePattern))
+                if (!element.TryGetCurrentPattern(ValuePattern.Pattern, out object valuePattern))
                 {
                     element.SetFocus();
                     SendKeys.SendWait(value);

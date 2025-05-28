@@ -90,10 +90,7 @@ namespace ACAT.Lib.Core.AgentManagement
         public void AddAgent(IntPtr handle, IApplicationAgent agent)
         {
             _adhocAgentTable[handle] = agent;
-            if (EvtAgentAdded != null)
-            {
-                EvtAgentAdded(agent);
-            }
+            EvtAgentAdded?.Invoke(agent);
         }
 
         /// <summary>
@@ -313,10 +310,7 @@ namespace ACAT.Lib.Core.AgentManagement
 
                 updateProcessLookupTable(agent);
 
-                if (EvtAgentAdded != null)
-                {
-                    EvtAgentAdded(agent);
-                }
+                EvtAgentAdded?.Invoke(agent);
             }
             catch (Exception ex)
             {

@@ -37,7 +37,7 @@ namespace ACAT.Lib.Core.PanelManagement
     public class AppPanelClassConfig : PreferencesBase
     {
         /// <summary>
-        /// List of panelclassconfig's for the different ACAT Apps
+        /// List of AppPanelClassConfig's for the different ACAT Apps
         /// </summary>
         public List<PanelClassConfig> PanelClassConfigs = new List<PanelClassConfig>();
 
@@ -54,7 +54,7 @@ namespace ACAT.Lib.Core.PanelManagement
         }
 
         /// <summary>
-        /// Adds the specified app info to the PanelClasConfig collection.  If the
+        /// Adds the specified app info to the PanelClassConfig collection.  If the
         /// entry already exists, replaces it if replaceIfExists is true
         /// </summary>
         /// <param name="appId">the application id</param>
@@ -112,7 +112,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// Find the panel class config for the specified application Id
         /// </summary>
         /// <param name="appId">application id</param>
-        /// <returns>Panelclassconfig entry, null if not found</returns>
+        /// <returns>PanelClassConfig entry, null if not found</returns>
         public PanelClassConfig Find(String appId)
         {
             return PanelClassConfigs.FirstOrDefault(panelClassConfig => String.Compare(panelClassConfig.AppId, appId, true) == 0);

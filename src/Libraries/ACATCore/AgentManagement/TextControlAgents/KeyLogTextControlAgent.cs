@@ -117,9 +117,7 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
         /// <returns>true if so</returns>
         public override bool IsPreviousWordAtCaretTheFirstWord()
         {
-            String word;
-
-            int startPos = GetPreviousWordAtCaret(out word);
+            int startPos = GetPreviousWordAtCaret(out _);
             var text = GetText();
             bool isFirstWord = true;
             for (int ii = 0; ii < startPos; ii++)

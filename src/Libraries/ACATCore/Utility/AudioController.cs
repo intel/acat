@@ -328,8 +328,7 @@ namespace ACAT.Lib.Core.Utility
             if (volume == null)
                 return null;
 
-            bool mute;
-            volume.GetMute(out mute);
+            volume.GetMute(out bool mute);
             Marshal.ReleaseComObject(volume);
             return mute;
         }
@@ -340,8 +339,7 @@ namespace ACAT.Lib.Core.Utility
             if (volume == null)
                 return null;
 
-            float level;
-            volume.GetMasterVolume(out level);
+            volume.GetMasterVolume(out float level);
             Marshal.ReleaseComObject(volume);
             return level * 100;
         }
@@ -359,8 +357,7 @@ namespace ACAT.Lib.Core.Utility
                 if (masterVol == null)
                     return -1;
 
-                float volumeLevel;
-                masterVol.GetMasterVolumeLevelScalar(out volumeLevel);
+                masterVol.GetMasterVolumeLevelScalar(out float volumeLevel);
                 return volumeLevel * 100;
             }
             finally
@@ -384,8 +381,7 @@ namespace ACAT.Lib.Core.Utility
                 if (masterVol == null)
                     return false;
 
-                bool isMuted;
-                masterVol.GetMute(out isMuted);
+                masterVol.GetMute(out bool isMuted);
                 return isMuted;
             }
             finally
@@ -479,8 +475,7 @@ namespace ACAT.Lib.Core.Utility
                 float stepAmountScaled = stepAmount / 100;
 
                 // Get the level
-                float volumeLevel;
-                masterVol.GetMasterVolumeLevelScalar(out volumeLevel);
+                masterVol.GetMasterVolumeLevelScalar(out float volumeLevel);
 
                 // Calculate the new level
                 float newLevel = volumeLevel + stepAmountScaled;
@@ -512,8 +507,7 @@ namespace ACAT.Lib.Core.Utility
                 if (masterVol == null)
                     return false;
 
-                bool isMuted;
-                masterVol.GetMute(out isMuted);
+                masterVol.GetMute(out bool isMuted);
                 masterVol.SetMute(!isMuted, Guid.Empty);
 
                 return !isMuted;
@@ -535,8 +529,7 @@ namespace ACAT.Lib.Core.Utility
                 deviceEnumerator.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia, out speakers);
 
                 Guid IID_IAudioEndpointVolume = typeof(IAudioEndpointVolume).GUID;
-                object o;
-                speakers.Activate(ref IID_IAudioEndpointVolume, 0, IntPtr.Zero, out o);
+                speakers.Activate(ref IID_IAudioEndpointVolume, 0, IntPtr.Zero, out object o);
                 IAudioEndpointVolume masterVol = (IAudioEndpointVolume)o;
 
                 return masterVol;
@@ -562,14 +555,12 @@ namespace ACAT.Lib.Core.Utility
 
                 // activate the session manager. we need the enumerator
                 Guid IID_IAudioSessionManager2 = typeof(IAudioSessionManager2).GUID;
-                object o;
-                speakers.Activate(ref IID_IAudioSessionManager2, 0, IntPtr.Zero, out o);
+                speakers.Activate(ref IID_IAudioSessionManager2, 0, IntPtr.Zero, out object o);
                 mgr = (IAudioSessionManager2)o;
 
                 // enumerate sessions for on this device
                 mgr.GetSessionEnumerator(out sessionEnumerator);
-                int count;
-                sessionEnumerator.GetCount(out count);
+                sessionEnumerator.GetCount(out int count);
 
                 // search for an audio session with the required process-id
                 ISimpleAudioVolume volumeControl = null;
@@ -581,8 +572,7 @@ namespace ACAT.Lib.Core.Utility
                         sessionEnumerator.GetSession(i, out ctl);
 
                         // NOTE: we could also use the app name from ctl.GetDisplayName()
-                        int cpid;
-                        ctl.GetProcessId(out cpid);
+                        ctl.GetProcessId(out int cpid);
 
                         if (cpid == pid)
                         {

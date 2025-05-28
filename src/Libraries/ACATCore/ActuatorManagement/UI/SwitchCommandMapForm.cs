@@ -77,8 +77,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
                 var row = dataGridView2.SelectedRows[0];
 
                 SelectedCommand = row.Cells[0].Value as String;
-
-                bool result = ConfirmBoxOneOption.ShowDialog("Selected Command: " + SelectedCommand, "", StringResources.OK);
+                _ = ConfirmBoxOneOption.ShowDialog("Selected Command: " + SelectedCommand, "", StringResources.OK);
             }
             Close();
         }
@@ -94,8 +93,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             if (dataGridView2.SelectedCells.Count > 0)
             {
                 int selectedrowindex = dataGridView2.SelectedCells[0].RowIndex;
-
-                DataGridViewRow selectedRow = dataGridView2.Rows[selectedrowindex];
+                _ = dataGridView2.Rows[selectedrowindex];
                 dataGridView2.Rows[selectedrowindex].Selected = true;
             }
         }

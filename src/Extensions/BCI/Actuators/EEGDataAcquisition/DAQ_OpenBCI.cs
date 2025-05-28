@@ -375,8 +375,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 
                 serialPort = port;
                 AddWarning(ExitCodes.IDLE, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  TESTING PORT    MESSAGE: Serial port " + serialPort);
-                bool portAlreadyInit;
-                if (TestPort(port, out portAlreadyInit))
+                if (TestPort(port, out _))
                 {
                     Log.Debug("Detected cytonboard port " + port);
                     return serialPort;
@@ -414,9 +413,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     //var settings = Settings.Load();
                     port = BCIActuatorSettings.Settings.DAQ_ComPort;
                 }
-                bool portAlreadyInit;
                 // Test port
-                bool sensorConnected = TestPort(port, out portAlreadyInit);
+                bool sensorConnected = TestPort(port, out bool portAlreadyInit);
                 if (sensorConnected)
                     return ExitCodes.IDLE;
                 if (!sensorConnected)
@@ -822,7 +820,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             int optSensorValue = -1;
             if (status == BoardStatus.BOARD_ACQUIRINGDATA)
             {
-                double[,] allData = GetData(); //By doing get data, places last samples in _bufferSignalStatus
+                _ = GetData(); //By doing get data, places last samples in _bufferSignalStatus
                 if ((_bufferSignalStatus != null && _bufferSignalStatus.Length > 0))
                 {
                     int numSamples = _bufferSignalStatus.GetLength(1);
@@ -1190,7 +1188,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             bool eyesClosedDetected = false;
             if (status == BoardStatus.BOARD_ACQUIRINGDATA)
             {
-                double[,] allData = GetData();
+                _ = GetData();
                 if (_bufferEyesClosed != null && _bufferEyesClosed.Length > 0)
                 {
                     int nfft = DataFilter.get_nearest_power_of_two(sampleRate);
@@ -1214,8 +1212,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                             Log.Debug(e.Message);
                         }
                     }
-                    avgAlpha = avgAlpha / indEegChannels.Length;
-                    avgBeta = avgBeta / indEegChannels.Length;
+                    avgAlpha /= indEegChannels.Length;
+                    avgBeta /= indEegChannels.Length;
 
                     if (avgAlpha > eyesClosedDetectionThreshold)
                     {
@@ -1241,8 +1239,10 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             try
             {
                 Log.Debug("Testing port " + port);
-                BrainFlowInputParams input_params = new BrainFlowInputParams();
-                input_params.serial_port = port;
+                BrainFlowInputParams input_params = new BrainFlowInputParams
+                {
+                    serial_port = port
+                };
 
                 DeviceObj = new BoardShim(boardID, input_params);
                 DeviceObj.prepare_session();
@@ -1293,8 +1293,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                                 obj = deviceKey.GetValue("LatencyTimer");
                                 if (obj != null)
                                 {
-                                    uint latencyValue = 0;
-                                    if (UInt32.TryParse(Convert.ToString(obj), out latencyValue))
+                                    if (UInt32.TryParse(Convert.ToString(obj), out uint latencyValue))
                                     {
                                         return latencyValue;
                                     }
@@ -1422,7 +1421,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             return result;
         }
 
-        private static Queue<Dictionary<ExitCodes, string>> warnings = new Queue<Dictionary<ExitCodes, string>>();
+        private static readonly Queue<Dictionary<ExitCodes, string>> warnings = new Queue<Dictionary<ExitCodes, string>>();
         private static readonly int limit = 10;
 
         /// <summary>
@@ -1441,7 +1440,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             else
             {
-                var release = warnings.Dequeue();
+                _ = warnings.Dequeue();
                 warnings.Enqueue(data);
             }
         }

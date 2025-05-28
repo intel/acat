@@ -59,8 +59,7 @@ namespace ACAT.Lib.Core.AnimationManagement
         {
             get
             {
-                Animation retVal;
-                _animationTable.TryGetValue(index, out retVal);
+                _animationTable.TryGetValue(index, out Animation retVal);
                 return retVal;
             }
         }

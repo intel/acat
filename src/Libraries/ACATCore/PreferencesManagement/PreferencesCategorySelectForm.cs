@@ -162,10 +162,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             DialogResult = DialogResult.OK;
 
             // Send event notification that preferences are to be saved
-            if (EvtSavePreferences != null)
-            {
-                EvtSavePreferences(this, this.PreferencesCategories);
-            }
+            EvtSavePreferences?.Invoke(this, this.PreferencesCategories);
 
             return true; 
 

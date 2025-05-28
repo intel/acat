@@ -279,7 +279,7 @@ namespace ACAT.Lib.Core.PanelManagement
             Log.Debug("scaling down. _scaleFactor=" + ScaleFactor + " SCALE_FACTOR_MINIMUM=" + ScaleFactorMinimum);
             if (ScaleFactor > ScaleFactorMinimum)
             {
-                ScaleFactor = ScaleFactor - ScaleFactorAmount;
+                ScaleFactor -= ScaleFactorAmount;
                 ScaleForm(ScaleFactor);
                 SetPositionAndNotify();
             }
@@ -318,8 +318,7 @@ namespace ACAT.Lib.Core.PanelManagement
             //_rootWidget.Dump();
 
             _rootWidget.SetScaleFactor(scaleFactor);
-
-            int desktopHeight = Screen.PrimaryScreen.WorkingArea.Height;
+            _ = Screen.PrimaryScreen.WorkingArea.Height;
 
             _form.Size = newSize;
 
@@ -335,7 +334,7 @@ namespace ACAT.Lib.Core.PanelManagement
             Log.Debug("scaling up. _scaleFactor=" + ScaleFactor + " SCALE_FACTOR_MAXIMUM=" + ScaleFactorMaximum);
             if (ScaleFactor < ScaleFactorMaximum)
             {
-                ScaleFactor = ScaleFactor + ScaleFactorAmount;
+                ScaleFactor += ScaleFactorAmount;
                 ScaleForm(ScaleFactor);
                 SetPositionAndNotify();
             }
@@ -362,10 +361,7 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             AutoPosition = _prevAutoPositionScannerValue;
 
-            if (EvtAutoRepositionScannerStop != null)
-            {
-                EvtAutoRepositionScannerStop(this, new EventArgs());
-            }
+            EvtAutoRepositionScannerStop?.Invoke(this, new EventArgs());
         }
 
         /// <summary>

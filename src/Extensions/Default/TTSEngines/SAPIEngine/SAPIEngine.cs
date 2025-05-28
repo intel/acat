@@ -544,8 +544,10 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
 
                     Log.Debug("Speaking text");
 
-                    TTSPrompt prompt = new TTSPrompt(ssml, SynthesisTextFormat.Ssml);
-                    prompt.Bookmark = bookmark;
+                    TTSPrompt prompt = new TTSPrompt(ssml, SynthesisTextFormat.Ssml)
+                    {
+                        Bookmark = bookmark
+                    };
                     Synthesizer.SpeakAsync(prompt);
 
                     Log.Debug("Returned from speakasync");
@@ -671,10 +673,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// <returns>true on success</returns>
         private bool loadPronunciations(CultureInfo ci)
         {
-            if (_pronunciations != null)
-            {
-                _pronunciations.Dispose();
-            }
+            _pronunciations?.Dispose();
 
             _pronunciations = new Pronunciations();
 
@@ -688,10 +687,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// <param name="bookmark">the bookmark</param>
         private void notifyBookmarkReached(int bookmark)
         {
-            if (EvtBookmarkReached != null)
-            {
-                EvtBookmarkReached(this, new TTSBookmarkReachedEventArgs(bookmark));
-            }
+            EvtBookmarkReached?.Invoke(this, new TTSBookmarkReachedEventArgs(bookmark));
         }
 
         /// <summary>
@@ -699,10 +695,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// </summary>
         private void notifyPropertyChanged()
         {
-            if (EvtPropertyChanged != null)
-            {
-                EvtPropertyChanged(this, new EventArgs());
-            }
+            EvtPropertyChanged?.Invoke(this, new EventArgs());
         }
 
         /// <summary>

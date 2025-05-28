@@ -32,7 +32,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 
         private BCIMenuOptions.Options Options;
 
-        private Screen primaryScreen = Screen.PrimaryScreen;
+        private readonly Screen primaryScreen = Screen.PrimaryScreen;
 
         /// <summary>
         /// Confirm Box with multiple results

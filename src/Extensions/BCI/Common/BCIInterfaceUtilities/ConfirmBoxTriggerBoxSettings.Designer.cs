@@ -831,7 +831,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutPanel1.SetRowSpan(this.label1, 2);
             this.label1.Size = new System.Drawing.Size(1184, 134);
             this.label1.TabIndex = 1;
-            this.label1.Text = resources.GetString("label1.Text");
+            this.label1.Text = "";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel6

@@ -1420,10 +1420,7 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
         /// <param name="textInterface">text agent</param>
         protected void triggerTextChangedAsync(ITextControlAgent textInterface)
         {
-            if (EvtTextChanged != null)
-            {
-                EvtTextChanged.BeginInvoke(textInterface, new TextChangedEventArgs(textInterface), null, null);
-            }
+            EvtTextChanged?.BeginInvoke(textInterface, new TextChangedEventArgs(textInterface), null, null);
         }
 
         /// <summary>

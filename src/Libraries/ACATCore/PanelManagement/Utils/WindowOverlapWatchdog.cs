@@ -49,7 +49,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         private Form _window;
 
-        private Int32 _windowHandle;
+        private readonly Int32 _windowHandle;
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -158,15 +158,12 @@ namespace ACAT.Lib.Core.PanelManagement
             // to keep track of whether we have already visited this window
             var cache = new HashSet<IntPtr> { windowHandle };
 
-            User32Interop.RECT windowRect;
-            User32Interop.GetWindowRect(windowHandle, out windowRect);
+            User32Interop.GetWindowRect(windowHandle, out User32Interop.RECT windowRect);
 
             // now, step through all active windows and check for overlap
             while ((windowHandle = User32Interop.GetWindow(windowHandle, User32Interop.GW_HWNDPREV)) != IntPtr.Zero &&
                    !cache.Contains(windowHandle))
             {
-                User32Interop.RECT rect;
-                User32Interop.RECT intersection;
 
                 cache.Add(windowHandle);
 
@@ -198,8 +195,8 @@ namespace ACAT.Lib.Core.PanelManagement
                 if (User32Interop.IsWindowVisible(windowHandle) &&
                     !Windows.IsMinimized(windowHandle) &&
                     !isScanner &&
-                    User32Interop.GetWindowRect(windowHandle, out rect) &&
-                    User32Interop.IntersectRect(out intersection, ref windowRect, ref rect))
+                    User32Interop.GetWindowRect(windowHandle, out User32Interop.RECT rect) &&
+                    User32Interop.IntersectRect(out _, ref windowRect, ref rect))
                 {
                     return true;
                 }
@@ -215,10 +212,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         private void startTimer()
         {
-            if (_timer != null)
-            {
-                _timer.Start();
-            }
+            _timer?.Start();
         }
 
         /// <summary>
@@ -226,10 +220,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         private void stopTimer()
         {
-            if (_timer != null)
-            {
-                _timer.Stop();
-            }
+            _timer?.Stop();
         }
 
         /// <summary>

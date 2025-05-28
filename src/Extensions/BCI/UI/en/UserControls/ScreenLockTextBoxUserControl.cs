@@ -28,7 +28,7 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         String _pin;
 
         // TODO - Localize Me
-        private String _prompt = "\r\nPlease enter this pin to unlock: $$$\r\nYou entered: ###";
+        private readonly String _prompt = "\r\nPlease enter this pin to unlock: $$$\r\nYou entered: ###";
 
         public ScreenLockTextBoxUserControl(Form parent, Control container)
         {

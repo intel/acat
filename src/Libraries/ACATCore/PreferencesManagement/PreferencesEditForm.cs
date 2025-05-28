@@ -373,15 +373,14 @@ namespace ACAT.Lib.Core.PreferencesManagement
             e.Cancel = false;
             String name = null;
             String newVal = null;
-            String prevVal = null;
-            String defaultVal = null;
-
             var cell = senderGrid[e.ColumnIndex, e.RowIndex];
             if (e.ColumnIndex == 2 && e.RowIndex >= 0 && cell is DataGridViewTextBoxCell)
             {
                 var textBox = cell as DataGridViewTextBoxCell;
                 String value = textBox.EditedFormattedValue as string;
 
+                string prevVal;
+                string defaultVal;
                 // Cell is PropertyInfo
                 if (senderGrid.Rows[e.RowIndex].Tag is PropertyInfo)
                 {
@@ -395,8 +394,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     {
 
                         // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
-                        int intValue;
-                        if (Int32.TryParse(value, out intValue))
+                        if (Int32.TryParse(value, out int intValue))
                         {
                             var intDescriptor = getIntAttribute(property);
                             if (intDescriptor != null)
@@ -423,8 +421,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                         }
                         else if (!String.IsNullOrEmpty(newVal))
                         {
-                            int intValue2;
-                            if (Int32.TryParse(newVal, out intValue2))
+                            if (Int32.TryParse(newVal, out int intValue2))
                             {
                                 var intDescriptor = getIntAttribute(property);
                                 if (intDescriptor != null)
@@ -504,8 +501,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     {
 
                         // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
-                        int intValue;
-                        if (Int32.TryParse(value, out intValue))
+                        if (Int32.TryParse(value, out int intValue))
                         {
                             var intDescriptor = getIntAttribute(fieldInfo);
                             if (intDescriptor != null)
@@ -532,8 +528,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                         }
                         else if (!String.IsNullOrEmpty(newVal))
                         {
-                            int intValue2;
-                            if (Int32.TryParse(newVal, out intValue2))
+                            if (Int32.TryParse(newVal, out int intValue2))
                             {
                                 var intDescriptor = getIntAttribute(fieldInfo);
                                 if (intDescriptor != null)
@@ -1146,9 +1141,11 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <param name="status">text of the status</param>
         private void showErrorStatus(String settingName, String status)
         {
-            ConfirmBoxOneOption ConfirmBoxOneOption = new ConfirmBoxOneOption();
-            ConfirmBoxOneOption.Prompt = "Error\n"+ settingName+"\n"+ status;
-            ConfirmBoxOneOption.DecisionPrompt = "OK";
+            ConfirmBoxOneOption ConfirmBoxOneOption = new ConfirmBoxOneOption
+            {
+                Prompt = "Error\n" + settingName + "\n" + status,
+                DecisionPrompt = "OK"
+            };
             ConfirmBoxOneOption.ShowDialog(this);
             ConfirmBoxOneOption.Dispose();
         }
@@ -1168,8 +1165,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 {
                     if (isInt(field) && valueCell is DataGridViewTextBoxCell)
                     {
-                        int intValue;
-                        if (Int32.TryParse(valueCell.EditedFormattedValue as String, out intValue))
+                        if (Int32.TryParse(valueCell.EditedFormattedValue as String, out int intValue))
                         {
                             field.SetValue(Preferences, intValue);
                         }
@@ -1201,8 +1197,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     {
                         if (isInt(property) && valueCell is DataGridViewTextBoxCell)
                         {
-                            int intValue;
-                            if (Int32.TryParse(valueCell.EditedFormattedValue as String, out intValue))
+                            if (Int32.TryParse(valueCell.EditedFormattedValue as String, out int intValue))
                             {
                                 property.SetValue(Preferences, intValue);
                             }

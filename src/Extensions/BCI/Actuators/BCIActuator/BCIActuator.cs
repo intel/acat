@@ -124,7 +124,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <summary>
         /// List of files to copy in the session folder
         /// </summary>
-        private List<String> FilesToCopy;
+        private readonly List<String> FilesToCopy;
 
         /// <summary>
         /// Calibration parameters
@@ -342,13 +342,14 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                 BCITypingCalibrationMappings.SettingsFilePath = UserManager.GetFullPath(MappingFileName);
                 TypingCalibrationMappings = BCITypingCalibrationMappings.Load();
 
-                DictTypingCalibrationMappings = new Dictionary<BCIScanSections, BCIScanSections>();
-
-                DictTypingCalibrationMappings.Add(BCIScanSections.Box, (BCIScanSections)Enum.Parse(typeof(BCIScanSections), TypingCalibrationMappings.BoxCalibrationMapping));
-                DictTypingCalibrationMappings.Add(BCIScanSections.Word, (BCIScanSections)Enum.Parse(typeof(BCIScanSections), TypingCalibrationMappings.WordCalibrationMapping));
-                DictTypingCalibrationMappings.Add(BCIScanSections.Sentence, (BCIScanSections)Enum.Parse(typeof(BCIScanSections), TypingCalibrationMappings.SentenceCalibrationMapping));
-                DictTypingCalibrationMappings.Add(BCIScanSections.KeyboardL, (BCIScanSections)Enum.Parse(typeof(BCIScanSections), TypingCalibrationMappings.KeyboardLCalibrationMapping));
-                DictTypingCalibrationMappings.Add(BCIScanSections.KeyboardR, (BCIScanSections)Enum.Parse(typeof(BCIScanSections), TypingCalibrationMappings.KeyboardRCalibrationMapping));
+                DictTypingCalibrationMappings = new Dictionary<BCIScanSections, BCIScanSections>
+                {
+                    { BCIScanSections.Box, (BCIScanSections)Enum.Parse(typeof(BCIScanSections), TypingCalibrationMappings.BoxCalibrationMapping) },
+                    { BCIScanSections.Word, (BCIScanSections)Enum.Parse(typeof(BCIScanSections), TypingCalibrationMappings.WordCalibrationMapping) },
+                    { BCIScanSections.Sentence, (BCIScanSections)Enum.Parse(typeof(BCIScanSections), TypingCalibrationMappings.SentenceCalibrationMapping) },
+                    { BCIScanSections.KeyboardL, (BCIScanSections)Enum.Parse(typeof(BCIScanSections), TypingCalibrationMappings.KeyboardLCalibrationMapping) },
+                    { BCIScanSections.KeyboardR, (BCIScanSections)Enum.Parse(typeof(BCIScanSections), TypingCalibrationMappings.KeyboardRCalibrationMapping) }
+                };
 
                 foreach (KeyValuePair<BCIScanSections, BCIScanSections> mapping in DictTypingCalibrationMappings)
                     Log.Debug("Typing section:" + mapping.Key + " Using classifier:" + mapping.Value);
@@ -990,7 +991,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         private void OnTriggerTestStart(String request)
         {
             Log.Debug("Trigger test start");
-            bool result = DAQ_OpenBCI.TriggerTestStart();
+            _ = DAQ_OpenBCI.TriggerTestStart();
             Log.Debug("Trigger test started");
             SendIoctlResponse((int)OpCodes.TriggerTestStartReady, null);
             Log.Debug("IoctRequest " + OpCodes.TriggerTestStartReady + " sent. Message:null ");
@@ -1003,8 +1004,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         private void OnTriggerTestStop(String request)
         {
             Log.Debug("Trigger test stop");
-
-            DAQ_OpenBCI.ExitCodes exitCode = DAQ_OpenBCI.TriggerTestStop(BCIActuatorSettings.Settings.TriggerTest_NumRepetitions, out int numDetectedPulse, out List<double> dutyCycleList, out double dutyCycleAvg);
+            DAQ_OpenBCI.ExitCodes exitCode = DAQ_OpenBCI.TriggerTestStop(BCIActuatorSettings.Settings.TriggerTest_NumRepetitions, out _, out List<double> dutyCycleList, out double dutyCycleAvg);
 
             bool triggerTestSuccesful = false;
             if (exitCode == DAQ_OpenBCI.ExitCodes.PHOTOSENSOR_STATUS_OK)

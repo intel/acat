@@ -190,13 +190,13 @@ namespace ACAT.Lib.Core.WidgetManagement
             float rlt = radiusTopLeft / 2f;
 
             radiusBottomLeft = (int)Math.Max((Math.Min(radiusBottomLeft, Math.Min(Rect.Width, Rect.Height)) - width), 1);
-            float rlb = radiusBottomLeft / 2f;
+            _ = radiusBottomLeft / 2f;
 
             radiusTopRight = (int)Math.Max((Math.Min(radiusTopRight, Math.Min(Rect.Width, Rect.Height)) - width), 1);
-            float rrt = radiusTopRight / 2f;
+            _ = radiusTopRight / 2f;
 
             radiusBottomRight = (int)Math.Max((Math.Min(radiusBottomRight, Math.Min(Rect.Width, Rect.Height)) - width), 1);
-            float rrb = radiusBottomRight / 2f;
+            _ = radiusBottomRight / 2f;
 
             float w2 = width / 2f;
             GraphicsPath GraphPath = new GraphicsPath();

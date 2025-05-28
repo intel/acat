@@ -507,10 +507,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             switchObj.Action = SwitchAction.Down;
 
-            if (EvtSwitchActivated != null)
-            {
-                EvtSwitchActivated(this, new ActuatorSwitchEventArgs(switchObj));
-            }
+            EvtSwitchActivated?.Invoke(this, new ActuatorSwitchEventArgs(switchObj));
         }
 
         /// <summary>
@@ -522,10 +519,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             switchObj.Action = SwitchAction.Up;
 
-            if (EvtSwitchDeactivated != null)
-            {
-                EvtSwitchDeactivated(this, new ActuatorSwitchEventArgs(switchObj));
-            }
+            EvtSwitchDeactivated?.Invoke(this, new ActuatorSwitchEventArgs(switchObj));
         }
 
         /// <summary>
@@ -646,10 +640,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="response">data to be sent</param>
         protected virtual void SendIoctlResponse(int opcode, String response)
         {
-            if (EvtIoctlResponse != null)
-            {
-                EvtIoctlResponse(opcode, response);
-            }
+            EvtIoctlResponse?.Invoke(opcode, response);
         }
 
         protected bool ShowDefaultScanTimingsConfigureDialog()

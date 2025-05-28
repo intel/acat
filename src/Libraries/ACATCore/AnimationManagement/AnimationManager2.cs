@@ -218,10 +218,7 @@ namespace ACAT.Lib.Core.AnimationManagement
         /// </summary>
         public void Interrupt()
         {
-            if (_player != null)
-            {
-                _player.Interrupt();
-            }
+            _player?.Interrupt();
         }
 
         public bool IsPlayerRunning()
@@ -284,10 +281,7 @@ namespace ACAT.Lib.Core.AnimationManagement
         /// </summary>
         public void Pause()
         {
-            if (_player != null)
-            {
-                _player.Pause();
-            }
+            _player?.Pause();
         }
 
         /// <summary>
@@ -536,10 +530,7 @@ namespace ACAT.Lib.Core.AnimationManagement
 
                 Log.Debug("Calling player transition");
 
-                if (EvtPlayerAnimationTransition != null)
-                {
-                    EvtPlayerAnimationTransition(this, animation.Name,  animation.IsFirst);
-                }
+                EvtPlayerAnimationTransition?.Invoke(this, animation.Name, animation.IsFirst);
 
                 _player.Transition(animation);
             }
@@ -603,15 +594,9 @@ namespace ACAT.Lib.Core.AnimationManagement
                         _player = null;
                     }
 
-                    if (_soundPlayer != null)
-                    {
-                        _soundPlayer.Dispose();
-                    }
+                    _soundPlayer?.Dispose();
 
-                    if (_animationsCollection != null)
-                    {
-                        _animationsCollection.Dispose();
-                    }
+                    _animationsCollection?.Dispose();
 
                     unsubscribeFromActuatorEvents();
                 }
@@ -624,10 +609,7 @@ namespace ACAT.Lib.Core.AnimationManagement
 
         private void _player_EvtPlayerAnimationTransition(object sender, string animationName, bool isTopLevel)
         {
-            if (EvtPlayerAnimationTransition != null)
-            {
-                EvtPlayerAnimationTransition(sender, animationName, isTopLevel);
-            }
+            EvtPlayerAnimationTransition?.Invoke(sender, animationName, isTopLevel);
         }
 
         /// <summary>
@@ -1230,10 +1212,7 @@ namespace ACAT.Lib.Core.AnimationManagement
                     _soundPlayer = new SoundPlayer(FileUtils.GetSoundPath("beep.wav"));
                 }
 
-                if (_soundPlayer != null)
-                {
-                    _soundPlayer.Play();
-                }
+                _soundPlayer?.Play();
             }
             catch (Exception ex)
             {

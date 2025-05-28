@@ -195,8 +195,6 @@ namespace ACAT.Lib.Core.Utility
         /// <returns></returns>
         public int ResolveVariableInt(String value, int defaultIfNull, int defaultValue)
         {
-            int retVal = defaultValue;
-
             if (String.IsNullOrEmpty(value))
             {
                 return defaultIfNull;
@@ -204,6 +202,7 @@ namespace ACAT.Lib.Core.Utility
 
             if (value[0] != '@')
             {
+                int retVal;
                 try
                 {
                     retVal = Convert.ToInt32(value);

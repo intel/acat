@@ -37,7 +37,7 @@ namespace ACAT.Lib.Core.Utility
         /// <summary>
         /// The directory to walk
         /// </summary>
-        private String _rootDir = String.Empty;
+        private readonly String _rootDir = String.Empty;
 
         /// <summary>
         /// Files to look for
@@ -137,10 +137,7 @@ namespace ACAT.Lib.Core.Utility
 
                 foreach (var dir in dirs)
                 {
-                    if (_dirFoundDelegate != null)
-                    {
-                        _dirFoundDelegate(dir);
-                    }
+                    _dirFoundDelegate?.Invoke(dir);
 
                     if (_fileFoundDelegate != null)
                     {

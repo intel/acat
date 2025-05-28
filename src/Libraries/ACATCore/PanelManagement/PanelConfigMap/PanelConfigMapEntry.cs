@@ -18,7 +18,7 @@ namespace ACAT.Lib.Core.PanelManagement
     /// </summary>
     public class PanelConfigMapEntry
     {
-        private Dictionary<String, String> _userControlsDict = new Dictionary<string, string>();
+        private readonly Dictionary<String, String> _userControlsDict = new Dictionary<string, string>();
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -151,8 +151,7 @@ namespace ACAT.Lib.Core.PanelManagement
             }
             else
             {
-                Guid guid;
-                retVal = Guid.TryParse(guidString, out guid);
+                retVal = Guid.TryParse(guidString, out Guid guid);
                 if (retVal)
                 {
                     FormId = guid;

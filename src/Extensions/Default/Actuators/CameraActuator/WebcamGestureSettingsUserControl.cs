@@ -33,7 +33,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         private const String head = "Head";
         // TODO - Localize Me
         private const String headSensitivityHelp = "Lower values increase camera sensitivity to head movements causing jitter in face regions.";
-        private CameraActuator _cameraActuator;
+        private readonly CameraActuator _cameraActuator;
         private int _ctIndex;
         private int _erIndex;
         private int _headIndex;
@@ -43,12 +43,12 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         private volatile bool _sensitivityChanged = false;
         private int _sensitivityInitialValue;
         private List<String> _switches;
-        private Color buttonApplyBackColor;
-        private Tuple<int, int> ctHoldTimeRange = Tuple.Create<int, int>(0, 1000);
-        private Tuple<int, int> ctSensitivityRange = Tuple.Create<int, int>(5, 50);
-        private Tuple<int, int> erHoldTimeRange = Tuple.Create<int, int>(0, 2000);
-        private Tuple<int, int> erSensitivityRange = Tuple.Create<int, int>(5, 50);
-        private Tuple<int, int> headSensitivityRange = Tuple.Create<int, int>(20, 100);
+        private readonly Color buttonApplyBackColor;
+        private readonly Tuple<int, int> ctHoldTimeRange = Tuple.Create<int, int>(0, 1000);
+        private readonly Tuple<int, int> ctSensitivityRange = Tuple.Create<int, int>(5, 50);
+        private readonly Tuple<int, int> erHoldTimeRange = Tuple.Create<int, int>(0, 2000);
+        private readonly Tuple<int, int> erSensitivityRange = Tuple.Create<int, int>(5, 50);
+        private readonly Tuple<int, int> headSensitivityRange = Tuple.Create<int, int>(20, 100);
 
         internal WebcamGestureSettingsUserControl(CameraActuator cameraActuator)
         {

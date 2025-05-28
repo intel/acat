@@ -23,9 +23,9 @@ namespace ACAT.Lib.Core.Onboarding
     {
         private static volatile bool _DLLError = false;
         private int _extensionIndex = -1;
-        private List<Type> _extensionsTypeCache = new List<Type>();
-        private List<OnboardingHistoryEntry> _history = new List<OnboardingHistoryEntry>();
-        private List<IOnboardingExtension> _onboardingExtensions = new List<IOnboardingExtension>();
+        private readonly List<Type> _extensionsTypeCache = new List<Type>();
+        private readonly List<OnboardingHistoryEntry> _history = new List<OnboardingHistoryEntry>();
+        private readonly List<IOnboardingExtension> _onboardingExtensions = new List<IOnboardingExtension>();
         private OnboardingSequence _onboardingSequence;
 
         public OnboardingWizard()
@@ -62,10 +62,7 @@ namespace ACAT.Lib.Core.Onboarding
 
         public void AddCustomButton(Control control, OnboardingButtonTypes buttonType)
         {
-            if (EvtAddCustomButton != null)
-            {
-                EvtAddCustomButton(control, buttonType);
-            }
+            EvtAddCustomButton?.Invoke(control, buttonType);
         }
 
         public void AddToHistory(IOnboardingExtension obe, String step)
@@ -226,26 +223,17 @@ namespace ACAT.Lib.Core.Onboarding
 
         public void SetButtonEnable(OnboardingButtonTypes button, bool state)
         {
-            if (EvtSetButtonEnabled != null)
-            {
-                EvtSetButtonEnabled(button, state);
-            }
+            EvtSetButtonEnabled?.Invoke(button, state);
         }
 
         public void SetButtonText(OnboardingButtonTypes button, String text)
         {
-            if (EvtSetButtonText != null)
-            {
-                EvtSetButtonText(button, text);
-            }
+            EvtSetButtonText?.Invoke(button, text);
         }
 
         public void SetButtonVisible(OnboardingButtonTypes button, bool visible)
         {
-            if (EvtSetButtonVisible != null)
-            {
-                EvtSetButtonVisible(button, visible);
-            }
+            EvtSetButtonVisible?.Invoke(button, visible);
         }
 
         private int findOnboardingExtension(IOnboardingExtension extension)

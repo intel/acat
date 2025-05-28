@@ -25,7 +25,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGUtils
         private const String cmdStopStreaming = "stop";
         private const String VID = "0483";
         private const String PID = "5740";
-        private static StringBuilder sbResponse = new StringBuilder();
+        private static readonly StringBuilder sbResponse = new StringBuilder();
 
         public delegate void OpticalSensorDataReceiveError(String msg);
 

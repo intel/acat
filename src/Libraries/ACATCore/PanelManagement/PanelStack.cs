@@ -239,8 +239,6 @@ namespace ACAT.Lib.Core.PanelManagement
             if (_currentPanel != null)
             {
                 Log.Debug("Will close panel. _currentPanel.name is " + _currentPanel.Name);
-
-                Control form = _currentPanel;
                 Form f = _currentPanel;
                 while (true)
                 {
@@ -257,7 +255,7 @@ namespace ACAT.Lib.Core.PanelManagement
                     if (f.Owner != null)
                     {
                         Log.Debug("This one has a owner");
-                        form = f.Owner;
+                        Control form = f.Owner;
                         f = (Form)form;
                     }
                     else
@@ -480,8 +478,6 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <returns>true on success</returns>
         public bool ShowDialog(IPanel parent, IPanel panel)
         {
-            bool retVal = true;
-
             if (!(panel is Form))
             {
                 return false;
@@ -491,6 +487,7 @@ namespace ACAT.Lib.Core.PanelManagement
 
             Log.Debug("showDialog " + form.Name + ", type: " + form.GetType());
 
+            bool retVal;
             // if parent has not been specified, used the current form
             // as the parent and Show as Dialog.  If there is no current form, just
             // show.

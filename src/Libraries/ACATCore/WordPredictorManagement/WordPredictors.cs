@@ -310,10 +310,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
             {
                 Log.Debug();
 
-                if (_nullWordPredictor != null)
-                {
-                    _nullWordPredictor.Dispose();
-                }
+                _nullWordPredictor?.Dispose();
 
                 if (disposing)
                 {

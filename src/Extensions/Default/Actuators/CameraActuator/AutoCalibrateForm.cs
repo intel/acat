@@ -21,7 +21,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
     internal partial class AutoCalibrateForm : Form
     {
         private VideoWindowFinder _videoWindowFinder;
-        CameraActuator _visionActuator;
+        readonly CameraActuator _visionActuator;
         private WindowActiveWatchdog _windowActiveWatchdog;
         private WindowOverlapWatchdog _windowOverlapWatchdog;
         public AutoCalibrateForm(CameraActuator visionActuator)

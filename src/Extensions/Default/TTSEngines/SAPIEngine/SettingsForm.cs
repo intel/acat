@@ -138,7 +138,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
                 }
                 else
                 {
-                    bool result = ConfirmBoxOneOption.ShowDialog("Must select voice", "", StringResources.OK, null, false);
+                    _ = ConfirmBoxOneOption.ShowDialog("Must select voice", "", StringResources.OK, null, false);
                     return;
                 }
             }
@@ -162,10 +162,9 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
             PreferencesEditForm2 form = new PreferencesEditForm2
             {
                 Title = Text,
-                SupportsPreferencesObj = new SAPIEngine()
+                SupportsPreferencesObj = new SAPIEngine(),
+                TopMost = true
             };
-
-            form.TopMost = true;
             form.ShowDialog();
 
             Show();
@@ -315,9 +314,8 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// <returns>enum value</returns>
         private VoiceGender stringToVoiceGender(string gender)
         {
-            VoiceGender voiceGender;
 
-            if (Enum.TryParse(gender, out voiceGender))
+            if (Enum.TryParse(gender, out VoiceGender voiceGender))
             {
                 return voiceGender;
             }

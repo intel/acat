@@ -35,7 +35,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <summary>
         /// Main object of the actuator
         /// </summary>
-        private IActuator _bciActuator = null;
+        private readonly IActuator _bciActuator = null;
         /// <summary>
         /// Interval of the timer
         /// </summary>

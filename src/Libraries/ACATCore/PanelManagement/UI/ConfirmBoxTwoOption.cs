@@ -25,7 +25,6 @@ namespace ACAT.Lib.Core.PanelManagement
 
         public bool Result { get; }
 
-        private bool _EnableOption3 = true;
         /// <summary>
         /// Confirm Box with multiple results
         /// Results: Yes - No - Abort
@@ -53,11 +52,13 @@ namespace ACAT.Lib.Core.PanelManagement
             string opc1Prompt, string opc3Prompt,
             Form parent = null, bool setTopMost = false)
         {
-            var confirmBox = new ConfirmBoxTwoOption();
-            confirmBox.PromptTitle = promptTitle;
-            confirmBox.Prompt = prompt;
-            confirmBox.Op1Prompt = opc1Prompt;
-            confirmBox.Op3Prompt = opc3Prompt;
+            var confirmBox = new ConfirmBoxTwoOption
+            {
+                PromptTitle = promptTitle,
+                Prompt = prompt,
+                Op1Prompt = opc1Prompt,
+                Op3Prompt = opc3Prompt
+            };
             if (parent != null && setTopMost)
             {
                 parent.TopMost = false;

@@ -28,8 +28,8 @@ namespace ACAT.Extensions.Default.UI.Menus
                         "Main AppMenu")]
     public partial class MainMenu : MenuPanel
     {
-        private IActuator _calibrationSupporedActuator;
-        private bool _enableScanTimingConfigure = false;
+        private readonly IActuator _calibrationSupporedActuator;
+        private readonly bool _enableScanTimingConfigure = false;
 
         /// <summary>
         /// Initializes a new instance of the class.

@@ -33,9 +33,11 @@ namespace ACAT.Lib.Core.PanelManagement
 
         public static bool ShowDialog(String prompt, int secondsCounter, Form parent = null)
         {
-            var confirmBoxTimer = new ConfirmBoxTimer();
-            confirmBoxTimer.Prompt = prompt;
-            confirmBoxTimer.SecondsCounter = secondsCounter;
+            var confirmBoxTimer = new ConfirmBoxTimer
+            {
+                Prompt = prompt,
+                SecondsCounter = secondsCounter
+            };
             confirmBoxTimer.ShowDialog(parent);
 
             var result = confirmBoxTimer.Result;

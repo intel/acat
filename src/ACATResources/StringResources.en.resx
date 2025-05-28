@@ -1611,4 +1611,28 @@ The switch is not held down long enough. Set the hold time to 0 and test, and th
   <data name="CalibrationHelp" xml:space="preserve">
     <value>Calibration Help</value>
   </data>
+  <data name="SplashScreenLabelLicense" xml:space="preserve">
+    <value>Licensed and distributed under the \r\nApache v2.0 license by Intel Corporation</value>
+  </data>
+  <data name="SplashScreenLabelAppNameAndVersion" xml:space="preserve">
+    <value>Assistive Context-Aware Toolkit\r\nVersion 2.0</value>
+  </data>
+  <data name="SplashScreenLabelTitle" xml:space="preserve">
+    <value>ACAT</value>
+  </data>
+  <data name="SplashScreenInitializing" xml:space="preserve">
+    <value>Initializing...\r\nThis may take a few minutes</value>
+  </data>
+  <data name="BCISensorUIUserControlBCISignalQualityResultsInfo" xml:space="preserve">
+    <value>Summary of the signal checks per electrode
+
+The signal quality results are a combination of the railing and impedance metrics from the previous tabs
+
+If the quality is red go back to the previous tabs and follow the tips.</value>
+  </data>
+  <data name="BCISensorUIUserControlBCISignalCheckDescription" xml:space="preserve">
+    <value>BCI signal quality is an indicator of how good the contact is between the electrodes on the cap and your scalp.
+
+ACAT uses two metrics - “railing” and “impedance” - to check signal quality for each connected electrode. The slider below provides an indication of the overall quality.</value>
+  </data>
 </root>

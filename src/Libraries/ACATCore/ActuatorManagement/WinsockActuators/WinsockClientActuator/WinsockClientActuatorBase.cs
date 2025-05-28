@@ -154,10 +154,7 @@ namespace ACAT.Lib.Core.InputActuators
 
                     _quitConnect = true;
                     _evtConnectRetry.Set();
-                    if (_connectThread != null)
-                    {
-                        _connectThread.Join(2000);
-                    }
+                    _connectThread?.Join(2000);
 
                     if (disposing)
                     {

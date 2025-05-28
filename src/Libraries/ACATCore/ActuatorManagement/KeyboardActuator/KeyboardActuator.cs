@@ -300,10 +300,7 @@ namespace ACAT.Lib.Core.InputActuators
                 }
                 else
                 {
-                    if (EvtKeyDown != null)
-                    {
-                        EvtKeyDown(this, e);
-                    }
+                    EvtKeyDown?.Invoke(this, e);
                 }
             }
         }
@@ -317,10 +314,7 @@ namespace ACAT.Lib.Core.InputActuators
         {
             try
             {
-                if (EvtKeyPress != null)
-                {
-                    EvtKeyPress(sender, e);
-                }
+                EvtKeyPress?.Invoke(sender, e);
             }
             catch (Exception ex)
             {
@@ -355,10 +349,7 @@ namespace ACAT.Lib.Core.InputActuators
             }
             else
             {
-                if (EvtKeyUp != null)
-                {
-                    EvtKeyUp(this, e);
-                }
+                EvtKeyUp?.Invoke(this, e);
             }
         }
 
@@ -369,10 +360,7 @@ namespace ACAT.Lib.Core.InputActuators
         /// <param name="e">event args</param>
         private void MouseHook_MouseDown(object sender, MouseEventArgs e)
         {
-            if (EvtMouseDown != null)
-            {
-                EvtMouseDown(sender, e);
-            }
+            EvtMouseDown?.Invoke(sender, e);
         }
 
         /// <summary>

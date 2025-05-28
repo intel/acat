@@ -318,10 +318,7 @@ namespace ACAT.Lib.Core.SpellCheckManagement
                 {
                     _spellCheckersTypeCache.Clear();
 
-                    if (_nullSpellChecker != null)
-                    {
-                        _nullSpellChecker.Dispose();
-                    }
+                    _nullSpellChecker?.Dispose();
                 }
 
                 // Release unmanaged resources.

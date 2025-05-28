@@ -301,7 +301,7 @@ namespace ACAT.Applications
 
         public static void CheckDisplayScalingAndResolution()
         {
-            var cultures = ResourceHelper.GetAvailableCultures();
+            _ = ResourceHelper.GetAvailableCultures();
 
             if (Common.AppPreferences.ShowDisplayScaleMessageOnStartup)
             {
@@ -409,17 +409,21 @@ namespace ACAT.Applications
 
         public static void addPanelClassConfigMapForBCI()
         {
-            var panelClassConfigMap = new PanelClassConfigMap();
-            panelClassConfigMap.Default = false;
-            panelClassConfigMap.Description = "An alphabetically arranged keyboard with predictive text/sentences to help you communicate";
-            panelClassConfigMap.Name = "TalkApplicationBCIScannerABC";
-            panelClassConfigMap.ScreenshotFileName = "ABCKeyboardLayout.png";
-            panelClassConfigMap.DisplayNameShort = "Alphabetical";
-            panelClassConfigMap.DisplayNameLong = "ABC Keyboard Layout";
+            var panelClassConfigMap = new PanelClassConfigMap
+            {
+                Default = false,
+                Description = "An alphabetically arranged keyboard with predictive text/sentences to help you communicate",
+                Name = "TalkApplicationBCIScannerABC",
+                ScreenshotFileName = "ABCKeyboardLayout.png",
+                DisplayNameShort = "Alphabetical",
+                DisplayNameLong = "ABC Keyboard Layout"
+            };
 
-            var panelClassConfigMapEntry = new PanelClassConfigMapEntry();
-            panelClassConfigMapEntry.ConfigId = new Guid("18f8796a-c0e2-4d4b-ac20-1e76e0a57bcd");
-            panelClassConfigMapEntry.PanelClass = "TalkApplicationScanner";
+            var panelClassConfigMapEntry = new PanelClassConfigMapEntry
+            {
+                ConfigId = new Guid("18f8796a-c0e2-4d4b-ac20-1e76e0a57bcd"),
+                PanelClass = "TalkApplicationScanner"
+            };
 
             panelClassConfigMap.PanelClassConfigMapEntries.Add(panelClassConfigMapEntry);
 

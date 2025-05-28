@@ -27,7 +27,7 @@ namespace ACAT.Lib.Core.PanelManagement
     /// contains animation and other info for the scanner.  This
     /// allows for mapping different animation files to the same scanner (form).
     /// For instance, a QWERTY layout alphabet scanner in English can have a different
-    /// layout of letters for anothe language like French.
+    /// layout of letters for another language like French.
     /// </summary>
     public class PanelConfigMap
     {
@@ -147,9 +147,8 @@ namespace ACAT.Lib.Core.PanelManagement
         ///
         public static PanelClassConfigMap GetDefaultPanelClassConfigMap()
         {
-            PanelClassConfig panelClassConfig = null;
 
-            if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, out panelClassConfig))
+            if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, out PanelClassConfig panelClassConfig))
             {
                 _currentAppPanelClassConfig = _cultureAppPanelClassConfig[CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName];
             }
@@ -163,9 +162,8 @@ namespace ACAT.Lib.Core.PanelManagement
 
         public static PanelClassConfig GetPanelClassConfigForApp()
         {
-            PanelClassConfig panelClassConfig = null;
 
-            if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, out panelClassConfig))
+            if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, out PanelClassConfig panelClassConfig))
             {
                 _currentAppPanelClassConfig = _cultureAppPanelClassConfig[CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName];
             }
@@ -406,9 +404,8 @@ namespace ACAT.Lib.Core.PanelManagement
                 return false;
             }
 
-            PanelClassConfig panelClassConfig = null;
 
-            if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.Name, out panelClassConfig) ||
+            if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.Name, out PanelClassConfig panelClassConfig) ||
                 _culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, out panelClassConfig) ||
                 _culturePanelClassConfigMapTable.TryGetValue(DefaultCulture, out panelClassConfig))
             {

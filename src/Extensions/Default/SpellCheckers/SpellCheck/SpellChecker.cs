@@ -153,10 +153,7 @@ namespace ACAT.Extensions.Default.SpellCheckers
         public String Lookup(String word)
         {
             var replacement = String.Empty;
-            if (_wordList != null)
-            {
-                _wordList.TryGetValue(word, out replacement);
-            }
+            _wordList?.TryGetValue(word, out replacement);
 
             return replacement;
         }

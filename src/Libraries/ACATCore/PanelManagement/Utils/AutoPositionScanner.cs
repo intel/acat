@@ -238,9 +238,7 @@ namespace ACAT.Lib.Core.PanelManagement
             {
                 unsubscribeFromHookEvents();
 
-                if (_form != null)
-                {
-                    _form.Invoke(new MethodInvoker(delegate
+                _form?.Invoke(new MethodInvoker(delegate
                     {
                         if (_toastForm != null)
                         {
@@ -251,13 +249,9 @@ namespace ACAT.Lib.Core.PanelManagement
                         if (_timer != null)
                         {
                             _timer.Stop();
-                            if (EvtAutoPostionScannerStopped != null)
-                            {
-                                EvtAutoPostionScannerStopped(this, EventArgs.Empty);
-                            }
+                            EvtAutoPostionScannerStopped?.Invoke(this, EventArgs.Empty);
                         }
                     }));
-                }
             }
             catch
             {

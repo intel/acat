@@ -33,7 +33,7 @@ namespace ACAT.Lib.Core.InputActuators
         private const String Step1 = "STEP 1";
         private const String Step2 = "STEP 2";
         IOnboardingWizard _wizard;
-        SwitchType _switchType;
+        readonly SwitchType _switchType;
         public OnboardingHardwareSwitchSetup(SwitchType switchType)
         {
             _switchType = switchType;

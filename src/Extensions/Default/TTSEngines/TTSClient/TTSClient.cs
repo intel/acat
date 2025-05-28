@@ -103,7 +103,7 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
         /// </summary>
         private int _rate;
 
-        private Transport _transport;
+        private readonly Transport _transport;
 
         /// <summary>
         /// Volume setting

@@ -21,12 +21,12 @@ namespace ACAT.Lib.Core.Utility
         /// <summary>
         /// Category (user-defined)
         /// </summary>
-        private String _category;
+        private readonly String _category;
 
         /// <summary>
         /// Friendly description
         /// </summary>
-        private String _description;
+        private readonly String _description;
 
         /// <summary>
         /// Unique identifier
@@ -36,7 +36,7 @@ namespace ACAT.Lib.Core.Utility
         /// <summary>
         /// Friendly name
         /// </summary>
-        private String _name;
+        private readonly String _name;
 
         /// <summary>
         /// Initializes an instance of the class

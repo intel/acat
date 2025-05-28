@@ -160,8 +160,7 @@ namespace ACAT.Lib.Core.Widgets
         /// <returns>true</returns>
         protected override bool highlightOff()
         {
-            bool handled;
-            notifyEvtHighlightOff(out handled);
+            notifyEvtHighlightOff(out bool handled);
             IsHighlightOn = false;
             if (!handled)
             {
@@ -177,9 +176,8 @@ namespace ACAT.Lib.Core.Widgets
         /// <returns>true</returns>
         protected override bool highlightOn()
         {
-            bool handled;
 
-            notifyEvtHighlightOn(out handled);
+            notifyEvtHighlightOn(out bool handled);
             IsHighlightOn = true;
             if (!handled)
             {

@@ -183,9 +183,6 @@
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Eyes Closed Calibration Settings</value>
-  </data>
   <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
   </data>
@@ -225,9 +222,6 @@
   <data name="ButtonExit.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="ButtonExit.Text" xml:space="preserve">
-    <value>Start</value>
-  </data>
   <data name="&gt;&gt;ButtonExit.Name" xml:space="preserve">
     <value>ButtonExit</value>
   </data>
@@ -260,9 +254,6 @@
   </data>
   <data name="ButtonSave.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="ButtonSave.Text" xml:space="preserve">
-    <value>Save</value>
   </data>
   <data name="&gt;&gt;ButtonSave.Name" xml:space="preserve">
     <value>ButtonSave</value>
@@ -695,9 +686,6 @@
   <data name="textBoxInterval.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="textBoxInterval.Text" xml:space="preserve">
-    <value>5000</value>
-  </data>
   <data name="textBoxInterval.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
     <value>Center</value>
   </data>
@@ -733,9 +721,6 @@
   </data>
   <data name="textBoxReps.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
-  </data>
-  <data name="textBoxReps.Text" xml:space="preserve">
-    <value>10</value>
   </data>
   <data name="textBoxReps.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
     <value>Center</value>
@@ -773,9 +758,6 @@
   <data name="labelScanTime.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="labelScanTime.Text" xml:space="preserve">
-    <value>Interval Time (MilSeconds)</value>
-  </data>
   <data name="labelScanTime.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
@@ -811,9 +793,6 @@
   </data>
   <data name="labelTargets.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
-  </data>
-  <data name="labelTargets.Text" xml:space="preserve">
-    <value>Number of Repetitions</value>
   </data>
   <data name="labelTargets.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -1328,9 +1307,6 @@
   <data name="ButtonClose.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="ButtonClose.Text" xml:space="preserve">
-    <value>X</value>
-  </data>
   <data name="&gt;&gt;ButtonClose.Name" xml:space="preserve">
     <value>ButtonClose</value>
   </data>
@@ -1420,9 +1396,6 @@
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>6, 6, 6, 6</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>CalibrationEyesForm</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>CalibrationEyesSettingsForm</value>

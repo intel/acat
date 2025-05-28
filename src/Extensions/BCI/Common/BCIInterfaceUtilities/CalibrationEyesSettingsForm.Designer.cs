@@ -1,4 +1,6 @@
-﻿namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
+﻿using ACATResources;
+
+namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
     partial class CalibrationEyesSettingsForm
     {
@@ -105,6 +107,7 @@
             resources.ApplyResources(this.label1, "label1");
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Name = "label1";
+            this.label1.Text = StringResources.EyesClosedCalibration;
             // 
             // tableLayoutPanel4
             // 
@@ -122,6 +125,7 @@
             this.ButtonExit.BorderRadiusTopLeft = 5;
             this.ButtonExit.BorderRadiusTopRight = 5;
             this.ButtonExit.BorderWidth = 0F;
+            this.ButtonExit.Text = StringResources.Exit;
             resources.ApplyResources(this.ButtonExit, "ButtonExit");
             this.ButtonExit.Name = "ButtonExit";
             this.ButtonExit.UseMnemonic = false;
@@ -139,6 +143,7 @@
             this.ButtonSave.BorderWidth = 0F;
             resources.ApplyResources(this.ButtonSave, "ButtonSave");
             this.ButtonSave.Name = "ButtonSave";
+            this.ButtonSave.Text = StringResources.Save;
             this.ButtonSave.UseMnemonic = false;
             this.ButtonSave.UseVisualStyleBackColor = false;
             this.ButtonSave.Click += new System.EventHandler(this.buttonSave_Click);
@@ -253,6 +258,7 @@
             resources.ApplyResources(this.textBoxInterval, "textBoxInterval");
             this.textBoxInterval.ForeColor = System.Drawing.Color.White;
             this.textBoxInterval.Name = "textBoxInterval";
+            this.textBoxInterval.Text = StringResources.Number5000;
             this.textBoxInterval.TextChanged += new System.EventHandler(this.textBoxInterval_TextChanged);
             // 
             // textBoxReps
@@ -262,6 +268,7 @@
             resources.ApplyResources(this.textBoxReps, "textBoxReps");
             this.textBoxReps.ForeColor = System.Drawing.Color.White;
             this.textBoxReps.Name = "textBoxReps";
+            this.textBoxReps.Text = StringResources.Number10;
             this.textBoxReps.TextChanged += new System.EventHandler(this.textBoxReps_TextChanged);
             // 
             // labelScanTime
@@ -269,12 +276,14 @@
             resources.ApplyResources(this.labelScanTime, "labelScanTime");
             this.labelScanTime.ForeColor = System.Drawing.Color.White;
             this.labelScanTime.Name = "labelScanTime";
+            this.labelScanTime.Text = StringResources.IntervalTime;
             // 
             // labelTargets
             // 
             resources.ApplyResources(this.labelTargets, "labelTargets");
             this.labelTargets.ForeColor = System.Drawing.Color.White;
             this.labelTargets.Name = "labelTargets";
+            this.labelTargets.Text = StringResources.NumberofRepetitions;
             // 
             // tableLayoutPanel7
             // 
@@ -312,6 +321,7 @@
             resources.ApplyResources(this.ButtonClose, "ButtonClose");
             this.ButtonClose.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.ButtonClose.Name = "ButtonClose";
+            this.ButtonClose.Text = StringResources.X;
             this.ButtonClose.UseMnemonic = false;
             this.ButtonClose.UseVisualStyleBackColor = true;
             this.ButtonClose.Click += new System.EventHandler(this.ButtonCancel_Close);

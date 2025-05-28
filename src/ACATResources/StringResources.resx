@@ -1635,4 +1635,19 @@ The switch is not held down long enough. Set the hold time to 0 and test, and th
   <data name="EyesOpen" xml:space="preserve">
     <value>Eyes open</value>
   </data>
+  <data name="Number5000" xml:space="preserve">
+    <value>5000</value>
+  </data>
+  <data name="Number10" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="IntervalTime" xml:space="preserve">
+    <value>Interval Time (MilSeconds)</value>
+  </data>
+  <data name="NumberofRepetitions" xml:space="preserve">
+    <value>Number of Repetitions</value>
+  </data>
+  <data name="CalibrationHelp" xml:space="preserve">
+    <value>Calibration Help</value>
+  </data>
 </root>

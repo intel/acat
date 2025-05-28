@@ -416,6 +416,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calibration Help.
+        /// </summary>
+        public static string CalibrationHelp {
+            get {
+                return ResourceManager.GetString("CalibrationHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calibration in progress. Please focus on the highlighted green target area..
         /// </summary>
         public static string CalibrationInProgrressPrompt {
@@ -1648,6 +1657,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Interval Time (MilSeconds).
+        /// </summary>
+        public static string IntervalTime {
+            get {
+                return ResourceManager.GetString("IntervalTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid form name {0}.
         /// </summary>
         public static string InvalidFormName {
@@ -2417,6 +2435,33 @@ namespace ACATResources {
         public static string Notes {
             get {
                 return ResourceManager.GetString("Notes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 10.
+        /// </summary>
+        public static string Number10 {
+            get {
+                return ResourceManager.GetString("Number10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 5000.
+        /// </summary>
+        public static string Number5000 {
+            get {
+                return ResourceManager.GetString("Number5000", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of Repetitions.
+        /// </summary>
+        public static string NumberofRepetitions {
+            get {
+                return ResourceManager.GetString("NumberofRepetitions", resourceCulture);
             }
         }
         

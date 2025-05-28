@@ -1,4 +1,6 @@
 ﻿
+using ACATResources;
+
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
     partial class ConfirmBoxCalibrationHelp
@@ -57,6 +59,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             resources.ApplyResources(this.labelTitle, "labelTitle");
             this.labelTitle.ForeColor = System.Drawing.Color.White;
             this.labelTitle.Name = "labelTitle";
+            this.labelTitle.Text = StringResources.CalibrationHelp;
             // 
             // webBrowserCalibrationHelp
             // 
@@ -71,6 +74,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutPanel1.SetColumnSpan(this.checkBoxDontShowAgain, 3);
             this.checkBoxDontShowAgain.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.checkBoxDontShowAgain.Name = "checkBoxDontShowAgain";
+            this.checkBoxDontShowAgain.Text = StringResources.CalibrationHelp;
             this.checkBoxDontShowAgain.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel2
@@ -91,6 +95,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             resources.ApplyResources(this.buttonOk, "buttonOk");
             this.buttonOk.ForeColor = System.Drawing.Color.Black;
             this.buttonOk.Name = "buttonOk";
+            this.buttonOk.Text = StringResources.OK;
             this.buttonOk.UseMnemonic = false;
             this.buttonOk.UseVisualStyleBackColor = false;
             this.buttonOk.Click += new System.EventHandler(this.buttonOp3_Click);

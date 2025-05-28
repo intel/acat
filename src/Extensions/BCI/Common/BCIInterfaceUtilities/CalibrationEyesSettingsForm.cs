@@ -29,6 +29,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                         "Application window used as a calibration UI for eyes open or closed settings")]
     public partial class CalibrationEyesSettingsForm : Form
     {
+        #region Properties
         public ResultParams ResultParameters = new ResultParams();
 
         /// <summary>
@@ -54,6 +55,9 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// Maximum amount of repetitions for the data collection
         /// </summary>
         private int _TempMaxRepetitions = 10;
+
+        #endregion
+
         public CalibrationEyesSettingsForm()
         {
             InitializeComponent();
@@ -79,6 +83,9 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             confirmBox.Dispose();
             return retVal;
         }
+
+
+        #region Control Events
 
         private void BtnDownInterval_Click(object sender, EventArgs e)
         {
@@ -114,11 +121,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             ValidateParameters();
         }
 
-        /// <summary>
-        /// Button event (Close)
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void ButtonCancel_Close(object sender, EventArgs e)
         {
             OnFormClosing();
@@ -129,11 +131,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             OnFormClosing();
         }
 
-        /// <summary>
-        /// Button event (Start)
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void buttonSave_Click(object sender, EventArgs e)
         {
             _Interval = _TempInterval;
@@ -144,48 +141,18 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             ValidateParameters();
         }
 
-        /// <summary>
-        /// Event when the main form closes
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void CalibrationEyesForm_FormClosing(object sender, FormClosingEventArgs e)
         {
 
         }
 
-        private void EnableSaveButton(bool enable)
-        {
-            this.Invoke(new MethodInvoker(delegate
-            {
-                ButtonSave.Enabled = enable;
-                ButtonSave.Visible = enable;
-            }));
-        }
-
-        /// <summary>
-        /// Event when loading main form
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
             RequestParameters();
             Thread.Sleep(100);
             InitUI();
         }
-        /// <summary>
-        /// Call to request parameters
-        /// </summary>
-        public void RequestParameters()
-        {
-            if (_bciActuator != null)
-            {
-                _bciActuator.EvtIoctlResponse += BciActuator_EvtIoctlResponse;
-            }
-            BCIMode bCIMode = new BCIMode { BciMode = BCIModes.CALIBRATION_EYESOPENCLOSE, BciCalibrationMode = BCIScanSections.None, };
-            _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedRequestParameters, string.Empty);
-        }
+
         /// <summary>
         /// Handler for the actuator response from BCI
         /// </summary>
@@ -204,51 +171,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                     break;
             }
         }
-        /// <summary>
-        /// Initialize the graphic elements of the UI
-        /// </summary>
-        private void InitUI()
-        {
-            this.Invoke(new MethodInvoker(delegate
-            {
-                textBoxInterval.Text = _TempInterval.ToString();
-                textBoxReps.Text = _TempMaxRepetitions.ToString();
-            }));
-            ValidateParameters();
-        }
-
-        private void OnFormClosing()
-        {
-            try
-            {
-                bool quitApp = true;
-                if (_TempInterval != _Interval || _TempMaxRepetitions != _MaxRepetitions)
-                {
-                    ConfirmBoxTwoOption confirmBox = new ConfirmBoxTwoOption
-                    {
-                        Prompt = "Are you sure to exit without saving?",
-                        Op1Prompt = StringResources.OK,
-                        Op3Prompt = StringResources.Cancel
-                    };
-                    confirmBox.ShowDialog(this);
-                    quitApp = confirmBox.Result;
-                    confirmBox.Dispose();
-                }
-                if (!quitApp)
-                    return;
-            }
-            catch (Exception ex)
-            {
-                Log.Debug("Error in EyesSettingsForm: " + ex.Message);
-            }
-            if (_bciActuator != null)
-            {
-                _bciActuator.EvtIoctlResponse -= BciActuator_EvtIoctlResponse;
-            }
-            ResultParameters = new ResultParams { Interval = _Interval, MaxRepetitions = _MaxRepetitions };
-            this.Close();
-        }
-
+  
         private void textBoxInterval_TextChanged(object sender, EventArgs e)
         {
             bool inputReplace;
@@ -295,6 +218,67 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             ValidateParameters();
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Initialize the graphic elements of the UI
+        /// </summary>
+        private void InitUI()
+        {
+            this.Invoke(new MethodInvoker(delegate
+            {
+                textBoxInterval.Text = _TempInterval.ToString();
+                textBoxReps.Text = _TempMaxRepetitions.ToString();
+            }));
+            ValidateParameters();
+        }
+
+        private void OnFormClosing()
+        {
+            try
+            {
+                bool quitApp = true;
+                if (_TempInterval != _Interval || _TempMaxRepetitions != _MaxRepetitions)
+                {
+                    ConfirmBoxTwoOption confirmBox = new ConfirmBoxTwoOption
+                    {
+                        Prompt = "Are you sure to exit without saving?",
+                        Op1Prompt = StringResources.OK,
+                        Op3Prompt = StringResources.Cancel
+                    };
+                    confirmBox.ShowDialog(this);
+                    quitApp = confirmBox.Result;
+                    confirmBox.Dispose();
+                }
+                if (!quitApp)
+                    return;
+            }
+            catch (Exception ex)
+            {
+                Log.Debug("Error in EyesSettingsForm: " + ex.Message);
+            }
+            if (_bciActuator != null)
+            {
+                _bciActuator.EvtIoctlResponse -= BciActuator_EvtIoctlResponse;
+            }
+            ResultParameters = new ResultParams { Interval = _Interval, MaxRepetitions = _MaxRepetitions };
+            this.Close();
+        }
+        /// <summary>
+        /// Call to request parameters
+        /// </summary>
+        public void RequestParameters()
+        {
+            if (_bciActuator != null)
+            {
+                _bciActuator.EvtIoctlResponse += BciActuator_EvtIoctlResponse;
+            }
+            BCIMode bCIMode = new BCIMode { BciMode = BCIModes.CALIBRATION_EYESOPENCLOSE, BciCalibrationMode = BCIScanSections.None, };
+            _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedRequestParameters, string.Empty);
+        }
+
         /// <summary>
         /// Handles the input of the text box to filter letters and numbers
         /// </summary>
@@ -322,6 +306,16 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             return inputReplace;
         }
 
+
+        private void EnableSaveButton(bool enable)
+        {
+            this.Invoke(new MethodInvoker(delegate
+            {
+                ButtonSave.Enabled = enable;
+                ButtonSave.Visible = enable;
+            }));
+        }
+
         private void ValidateParameters()
         {
             if (_TempInterval != _Interval || _TempMaxRepetitions != _MaxRepetitions)
@@ -335,5 +329,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             public int Interval;
             public int MaxRepetitions;
         }
+
+        #endregion
     }
 }

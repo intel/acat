@@ -18,7 +18,7 @@ namespace ACAT.Lib.Core.Utility.NamedPipe
     public sealed class PipeServer : IDisposable
     {
         private CancellationToken cancellationToken;
-        private CancellationTokenSource cancellationTokenSource;
+        private readonly CancellationTokenSource cancellationTokenSource;
         private bool disposed;
 
         /// <summary>
@@ -165,11 +165,7 @@ namespace ACAT.Lib.Core.Utility.NamedPipe
         /// </param>
         private void OnMessageReceived(MessageReceivedEventArgs e)
         {
-            EventHandler<MessageReceivedEventArgs> handler = MessageReceived;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            MessageReceived?.Invoke(this, e);
         }
 
         /// <summary>

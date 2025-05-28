@@ -23,7 +23,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         /// <summary>
         /// Unique ID for this step
         /// </summary>
-        private String _stepId;
+        private readonly String _stepId;
 
         public UserControlTestBCIConnections(String stepId)
         {

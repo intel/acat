@@ -59,7 +59,7 @@ namespace ACAT.ACATResources
                    select c;
         }
 
-        private static string _assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+        private static readonly string _assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
         public static List<CultureInfo> GetAvailableResourceCultures(Assembly mainAssembly)
         {
             var cultures = new List<CultureInfo>();

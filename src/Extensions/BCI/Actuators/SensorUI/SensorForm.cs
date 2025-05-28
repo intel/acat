@@ -115,12 +115,12 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         /// <summary>
         /// Interval in milliseconds at which timer event for plotting optical sensor data fires
         /// </summary>
-        private int _timer_plot_data_interval_ms = 40;
+        private readonly int _timer_plot_data_interval_ms = 40;
 
         /// <summary>
         /// Interval in milliseconds at which timer event for acquiring and processing data fires
         /// </summary>
-        private int _timer_process_data_interval_ms = 10;
+        private readonly int _timer_process_data_interval_ms = 10;
 
         // Form which acts as parent for / base for all possible user controls displayed during testing process
         public SensorForm(BCIDeviceTester.DeviceTestingState initialState)
@@ -299,7 +299,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
 
                         if (displayReminderGelElectrodes)
                         {
-                            bool confirmed = ConfirmBoxOneOption.ShowDialog("Please remember to add gel to GND and T4 electrodes, if you have not already",
+                            _ = ConfirmBoxOneOption.ShowDialog("Please remember to add gel to GND and T4 electrodes, if you have not already",
                                 "", StringResources.OK, this, false);
                         }
                     }
@@ -333,9 +333,11 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
                 startStopPlotDataTimer(false, state);
                 try
                 {
-                    timerPlotData = new System.Windows.Forms.Timer(this.components);
-                    timerPlotData.Enabled = true;
-                    timerPlotData.Interval = _timer_plot_data_interval_ms; //// 50, 100, 200
+                    timerPlotData = new System.Windows.Forms.Timer(this.components)
+                    {
+                        Enabled = true,
+                        Interval = _timer_plot_data_interval_ms //// 50, 100, 200
+                    };
                     timerPlotData.Stop();
 
                     if (state == DeviceTestingState.ReceivedBCIError_OpticalSensor)
@@ -391,9 +393,11 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
                         timerProcessData = null;
                     }
 
-                    timerProcessData = new System.Windows.Forms.Timer(this.components);
-                    timerProcessData.Enabled = true;
-                    timerProcessData.Interval = _timer_process_data_interval_ms;
+                    timerProcessData = new Timer(this.components)
+                    {
+                        Enabled = true,
+                        Interval = _timer_process_data_interval_ms
+                    };
                     timerProcessData.Stop();
 
                     if (state == DeviceTestingState.BCISignalCheck)
@@ -499,8 +503,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
                     double[,] dataCopy = (double[,])data.Clone();
                     double[,] DAQ_filteredData = DAQ_OpenBCI.daq_filter_data(dataCopy);
 
-                    if (_userControlBCISignalCheck != null)
-                        _userControlBCISignalCheck.ProcessDataSignalCheck(data, DAQ_filteredData);
+                    _userControlBCISignalCheck?.ProcessDataSignalCheck(data, DAQ_filteredData);
                 }
             }
         }
@@ -587,24 +590,15 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
                 if (EvtButtonCancelClicked != null)
                     EvtButtonCancelClicked = null;
 
-                if (_userControlTestBCIConnections != null)
-                    _userControlTestBCIConnections.Dispose();
-                if (_userControlBCIErrorCytonBoard != null)
-                    _userControlBCIErrorCytonBoard.Dispose();
-                if (_userControlBCIErrorUsbDongle != null)
-                    _userControlBCIErrorUsbDongle.Dispose();
-                if (_userControlBCIErrorPortConfig != null)
-                    _userControlBCIErrorPortConfig.Dispose();
-                if (_userControlBCIErrorOpticalSensor != null)
-                    _userControlBCIErrorOpticalSensor.Dispose();
-                if (_userControlBCISignalCheckStartRequired != null)
-                    _userControlBCISignalCheckStartRequired.Dispose();
-                if (_userControlBCISignalCheckStartPrompt != null)
-                    _userControlBCISignalCheckStartPrompt.Dispose();
-                if (_userControlPromptBCIFIlterSettings != null)
-                    _userControlPromptBCIFIlterSettings.Dispose();
-                if (_userControlBCISignalCheck != null)
-                    _userControlBCISignalCheck.Dispose();
+                _userControlTestBCIConnections?.Dispose();
+                _userControlBCIErrorCytonBoard?.Dispose();
+                _userControlBCIErrorUsbDongle?.Dispose();
+                _userControlBCIErrorPortConfig?.Dispose();
+                _userControlBCIErrorOpticalSensor?.Dispose();
+                _userControlBCISignalCheckStartRequired?.Dispose();
+                _userControlBCISignalCheckStartPrompt?.Dispose();
+                _userControlPromptBCIFIlterSettings?.Dispose();
+                _userControlBCISignalCheck?.Dispose();
             }
         }
 
@@ -615,10 +609,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         /// <param name="e"></param>
         private void buttonNext_Click(object sender, EventArgs e)
         {
-            if (EvtButtonNextClicked != null)
-            {
-                EvtButtonNextClicked(_mainFormDeviceTestingState);
-            }
+            EvtButtonNextClicked?.Invoke(_mainFormDeviceTestingState);
         }
 
         /// <summary>
@@ -628,10 +619,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         /// <param name="e"></param>
         private void buttonExit_Click(object sender, EventArgs e)
         {
-            if (EvtButtonCancelClicked != null)
-            {
-                EvtButtonCancelClicked(sender);
-            }
+            EvtButtonCancelClicked?.Invoke(sender);
         }
 
         /// <summary>
@@ -641,10 +629,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         /// <param name="e"></param>
         private void buttonRetest_Click(object sender, EventArgs e)
         {
-            if (EvtButtonRetestClicked != null)
-            {
-                EvtButtonRetestClicked(sender);
-            }
+            EvtButtonRetestClicked?.Invoke(sender);
         }
 
         /// <summary>

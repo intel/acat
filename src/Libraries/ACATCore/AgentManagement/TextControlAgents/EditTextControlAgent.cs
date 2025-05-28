@@ -228,8 +228,7 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
 
             try
             {
-                object objPattern;
-                if (textElement.TryGetCurrentPattern(TextPattern.Pattern, out objPattern))
+                if (textElement.TryGetCurrentPattern(TextPattern.Pattern, out object objPattern))
                 {
                     int nativeHandle = textElement.Current.NativeWindowHandle;
                     if (nativeHandle != 0)

@@ -230,7 +230,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             {
                 Log.Exception(ex);
             }
-            configNodes = null;
+
             return probBars;
         }
 
@@ -356,8 +356,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         public static SharpDX.Mathematics.Interop.RawRectangleF GetRectanglesCRG(Dictionary<List<Control>, string> boxesData, List<Widget>[] widgetsData, SharpDX.DirectWrite.Factory directWriteFactory, out int offsetCRG, out TextFormat buttonTextFormatCRG)
         {
             SharpDX.Mathematics.Interop.RawRectangleF rectangleExtraButtonCRG = new SharpDX.Mathematics.Interop.RawRectangleF();
-            int tempoffsetCRG = 1;
-            TextFormat tempbuttonTextFormatCRG = GetDefaultButtonTextFormat(directWriteFactory, TextAlignment.Center);
+            _ = GetDefaultButtonTextFormat(directWriteFactory, TextAlignment.Center);
             offsetCRG = 1;
             buttonTextFormatCRG = GetDefaultButtonTextFormat(directWriteFactory, TextAlignment.Center);
             int amountBoxesPerUserControl;
@@ -369,8 +368,8 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     var boxData = boxesData.ElementAt(indexBoxData);
                     amountBoxesPerUserControl = AnimationManagerUtils.GetAmountBoxes(boxData.Value);
                     var temprectExtraButtonCRG = SharpDXUtils.GetRectangleCRG(boxData.Key);
-                    tempoffsetCRG = AnimationManagerUtils.GetOffsetCRG(widgetsData[indexBoxData]);
-                    tempbuttonTextFormatCRG = SharpDXUtils.GetTextFormatCRG(widgetsData[indexBoxData], directWriteFactory);
+                    int tempoffsetCRG = AnimationManagerUtils.GetOffsetCRG(widgetsData[indexBoxData]);
+                    TextFormat tempbuttonTextFormatCRG = SharpDXUtils.GetTextFormatCRG(widgetsData[indexBoxData], directWriteFactory);
                     for (int boxIndex = 0; boxIndex < amountBoxesPerUserControl; boxIndex++)
                     {
                         if (temprectExtraButtonCRG.Bottom != 0 && temprectExtraButtonCRG.Top != 0 && temprectExtraButtonCRG.Left != 0 && temprectExtraButtonCRG.Right != 0)
@@ -606,8 +605,10 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                                             fontData.FontName,
                                             GetFontWeight(fontData.FontBold),
                                             GetFontStyle(fontData.FontItalic),
-                                            (float)fontData.FontSize);
-            buttonTextFormat.TextAlignment = textAlignment;
+                                            (float)fontData.FontSize)
+            {
+                TextAlignment = textAlignment
+            };
             return buttonTextFormat;
         }
 
@@ -623,8 +624,10 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                                             "montserrat",
                                             FontWeight.Normal,
                                             SharpDX.DirectWrite.FontStyle.Normal,
-                                            (float)28);
-            buttonTextFormat.TextAlignment = textAlignment;
+                                            (float)28)
+            {
+                TextAlignment = textAlignment
+            };
             return buttonTextFormat;
         }
 

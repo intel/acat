@@ -64,7 +64,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <summary>
         /// Path to the INI files
         /// </summary>
-        private string _pathToFiles = string.Empty;
+        private readonly string _pathToFiles = string.Empty;
 
         /// <summary>
         /// Cancelation object to skip task
@@ -79,12 +79,12 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <summary>
         /// Direction of comunication
         /// </summary>
-        private PipeDirection PipeDirection;
+        private readonly PipeDirection PipeDirection;
 
         /// <summary>
         /// Given Pipe name to be conected
         /// </summary>
-        private string PipeName;
+        private readonly string PipeName;
 
         /// <summary>
         /// Constructor

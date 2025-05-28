@@ -25,17 +25,17 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// Offset added to targets
         /// (this parameter is typically set in settings)
         /// </summary>
-        private int offsetTarget;
+        private readonly int offsetTarget;
 
         /// <summary>
         /// Sample rate of the sensor
         /// </summary>
-        private int sampleRate;
+        private readonly int sampleRate;
 
         /// <summary>
         /// Duration of teh window for feature extraction
         /// </summary>
-        private int windowDuration;
+        private readonly int windowDuration;
 
         /// <summary>
         /// symbols in each group
@@ -62,7 +62,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         public void ParseDataFromBrainflow(double[,] allData, out double[,] rawData, out int[] triggerData, out int numTriggerPulses)
         {
             int numSamples = allData.GetLength(1);
-            int numColumns = allData.GetLength(0);
+            _ = allData.GetLength(0);
 
             rawData = new double[BCIActuatorSettings.Settings.DAQ_NumEEGChannels, numSamples];
             triggerData = new int[numSamples];
@@ -105,7 +105,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 }
 
                 // rawData
-                double[] chData = new double[BCIActuatorSettings.Settings.DAQ_NumEEGChannels];
+                _ = new double[BCIActuatorSettings.Settings.DAQ_NumEEGChannels];
                 for (int ch = 0; ch < BCIActuatorSettings.Settings.DAQ_NumEEGChannels; ch++)
                 {
                     rawData[ch, sampleIdx] = Convert.ToDouble(allData[BCISettingsFixed.DataParser_IdxStartEEGData - 1 + ch, sampleIdx]); //Indexed from 0, value given from 1

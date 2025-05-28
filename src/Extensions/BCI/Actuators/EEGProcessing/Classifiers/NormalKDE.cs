@@ -47,8 +47,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             // Calculate Silverman's bandwidth “silverman” - .9 * A * nobs ** (-1/5.), where A is min(std(X),IQR/1.34)
 
             // Calculate iqr: range from the 25th percentile to the 75th percentile, or midlle 50 percent of a data set
-            double q1, q3;
-            Measures.Quartiles(data, out q1, out q3, false);
+            Measures.Quartiles(data, out double q1, out double q3, false);
             double iqr = q3 - q1;
 
             double minValue = Math.Min(data.StandardDeviation(), iqr / 1.34);
@@ -122,7 +121,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             double[] xVector = Vector.Range(xMin, xMax, stepSize);
 
             BuildKDE(data);
-            double[] nonTargetPDF = CalculateProbabilities(xVector);
+            _ = CalculateProbabilities(xVector);
         }
 
         /// <summary>

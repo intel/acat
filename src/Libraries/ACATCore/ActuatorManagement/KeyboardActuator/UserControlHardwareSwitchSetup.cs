@@ -39,16 +39,16 @@ namespace ACAT.Lib.Core.InputActuators
         private const String headStyle = "a:link{color: rgb(255, 170, 0);}";
         // TODO - Localize Me
         private const String textStyle = "font-family:'Montserrat Medium'; font-size:24px; color:white; text-align:center";
-        private Color _buttonDefaultBackColor;
-        private Color _buttonDefaultForeColor;
-        private Dictionary<String, Button> _buttonMap = new Dictionary<string, Button>();
-        private List<String> _functionKeys = new List<String> { "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "f9", "f10", "f11", "f12" };
+        private readonly Color _buttonDefaultBackColor;
+        private readonly Color _buttonDefaultForeColor;
+        private readonly Dictionary<String, Button> _buttonMap = new Dictionary<string, Button>();
+        private readonly List<String> _functionKeys = new List<String> { "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "f9", "f10", "f11", "f12" };
         // TODO - Localize Me
-        private String _htmlTemplate = "<!DOCTYPE html><html><head><style>{0}</style></head><body style=\"{1}\"><p style=\"{2}\">{3}<font></body></html>";
-        private IOnboardingExtension _onboardingExtension;
-        private String _stepId;
+        private readonly String _htmlTemplate = "<!DOCTYPE html><html><head><style>{0}</style></head><body style=\"{1}\"><p style=\"{2}\">{3}<font></body></html>";
+        private readonly IOnboardingExtension _onboardingExtension;
+        private readonly String _stepId;
         private String _strTriggerHotkey;
-        private OnboardingHardwareSwitchSetup.SwitchType _switchType;
+        private readonly OnboardingHardwareSwitchSetup.SwitchType _switchType;
         private bool canceled = false;
         #endregion
 

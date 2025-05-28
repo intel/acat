@@ -486,7 +486,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             if (Actuator == null)
             {
                 // MessageBox.Show("Error.  Actuator to configure is null");
-                bool result = ConfirmBoxOneOption.ShowDialog("Unexpected Error", "No valid actuators available", "OK");
+                _ = ConfirmBoxOneOption.ShowDialog("Unexpected Error", "No valid actuators available", "OK");
                 Close();
             }
 
@@ -550,7 +550,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         private void setColumnWidths()
         {
-            int w = dataGridView2.Width - SystemInformation.VerticalScrollBarWidth;
+            _ = dataGridView2.Width - SystemInformation.VerticalScrollBarWidth;
 
             setColumnWidthPercent(ShortcutColumn, 30);
             setColumnWidthPercent(CommandColumn, 25);
@@ -646,7 +646,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
             if (!noDuplicateShortcuts())
             {
-                bool result = ConfirmBoxOneOption.ShowDialog("Error! Duplicate shortcuts found.", 
+                _ = ConfirmBoxOneOption.ShowDialog("Error! Duplicate shortcuts found.",
                     "Shortcuts have to be unique. Actuator: " + Actuator.Name.ToString(), StringResources.OK);
                 return false;
             }
@@ -662,7 +662,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
             if (!ok)
             {
-                bool result = ConfirmBoxOneOption.ShowDialog("Warning! You have not set any of the switches to select on trigger.",
+                _ = ConfirmBoxOneOption.ShowDialog("Warning! You have not set any of the switches to select on trigger.",
                     "Actuator: " + Actuator.Name.ToString(), StringResources.OK);
             }
 
@@ -679,7 +679,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             if (!ok)
             {
                 //MessageBox.Show("Warning! You have disabled all switches", Actuator.Name);
-                bool result = ConfirmBoxOneOption.ShowDialog("Warning! You have disabled all switches.",
+                _ = ConfirmBoxOneOption.ShowDialog("Warning! You have disabled all switches.",
                     "Actuator: " + Actuator.Name.ToString(), StringResources.OK);
             }
 

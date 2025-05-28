@@ -1551,7 +1551,7 @@ enables selection of medium sized regions on the Main Talk UI. With default valu
   </data>
   <data name="HintSentenceCalibrationScreenText" xml:space="preserve">
     <value>Sentence Mode Calibration:​
-enables selection of medium sized regions on the Main Talk UI. With default values, this calibration takes ~ 2 mins.​</value>
+enables selection of medium sized regions on the Main Talk UI. With default values, this calibration takes ~ 2 mins.</value>
   </data>
   <data name="HintScanningTimeText" xml:space="preserve">
     <value>Scanning speed controls how fast the regions are highlighted on the screen</value>
@@ -1563,7 +1563,7 @@ enables selection of medium sized regions on the Main Talk UI. With default valu
     <value>Number of targets to be shown during calibration</value>
   </data>
   <data name="HintMinimumScoreText" xml:space="preserve">
-    <value>Minimum score needed for successful calibration </value>
+    <value>Minimum score needed for successful calibration</value>
   </data>
   <data name="HintKeyboardRightCalibrationScreenText" xml:space="preserve">
     <value>(Optional) Keyboard Mode Calibration: ​
@@ -1574,7 +1574,7 @@ enables selection of small sized regions on the Main Talk UI. With default value
 enables selection of small sized regions on the Main Talk UI. With default values, this calibration takes ~ 3 mins.</value>
   </data>
   <data name="HintIterationstargetText" xml:space="preserve">
-    <value>Number of iterations per target </value>
+    <value>Number of iterations per target</value>
   </data>
   <data name="HintEyesOpenCloseCalibrationText" xml:space="preserve">
     <value>Collect EEG data for future eyes open close detection</value>
@@ -1590,13 +1590,13 @@ enables selection of small sized regions on the Main Talk UI. With default value
 Enables selection of large sized regions on the Main Talk UI. With default values, this calibration takes ~ 2 mins.</value>
   </data>
   <data name="CalibrationInProgrressPromptText" xml:space="preserve">
-    <value>Calibration in progress. Please focus on the highlighted green target area. </value>
+    <value>Calibration in progress. Please focus on the highlighted green target area.</value>
   </data>
   <data name="CalibrateOptionalText" xml:space="preserve">
     <value>Calibrate Optional</value>
   </data>
   <data name="CalibrateNowText" xml:space="preserve">
-    <value>Calibrate now </value>
+    <value>Calibrate now</value>
   </data>
   <data name="CalibrationIsEssential" xml:space="preserve">
     <value>Calibration is essential. BCI need to convert your thought into a trigger/switch. There are three calibrations below, each slightly different that you must complete wih a minimum score. You can adjust the scanning speed and try additional calibrations to help improve your accuracy. For more information this video or setup guide.</value>
@@ -1649,5 +1649,29 @@ The switch is not held down long enough. Set the hold time to 0 and test, and th
   </data>
   <data name="CalibrationHelp" xml:space="preserve">
     <value>Calibration Help</value>
+  </data>
+  <data name="SplashScreenLabelLicense" xml:space="preserve">
+    <value>Licensed and distributed under the \r\nApache v2.0 license by Intel Corporation</value>
+  </data>
+  <data name="SplashScreenLabelAppNameAndVersion" xml:space="preserve">
+    <value>"Assistive Context-Aware Toolkit\r\nVersion 2.0</value>
+  </data>
+  <data name="SplashScreenLabelTitle" xml:space="preserve">
+    <value>ACAT</value>
+  </data>
+  <data name="SplashScreenInitializing" xml:space="preserve">
+    <value>Initializing...\r\nThis may take a few minutes</value>
+  </data>
+  <data name="BCISensorUIUserControlBCISignalQualityResultsInfo" xml:space="preserve">
+    <value>Summary of the signal checks per electrode
+
+The signal quality results are a combination of the railing and impedance metrics from the previous tabs
+
+If the quality is red go back to the previous tabs and follow the tips.</value>
+  </data>
+  <data name="BCISensorUIUserControlBCISignalCheckDescription" xml:space="preserve">
+    <value>BCI signal quality is an indicator of how good the contact is between the electrodes on the cap and your scalp.
+
+ACAT uses two metrics - “railing” and “impedance” - to check signal quality for each connected electrode. The slider below provides an indication of the overall quality.</value>
   </data>
 </root>

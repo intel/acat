@@ -9,7 +9,7 @@
 // Makes sure the BCI signals are good before continuing onto calibration.
 // Displays signals from electrodes and does railing and impedance tests
 //
-// The original insipiration from this class is the OpenBCI GUI application:
+// Modified from OpenBCI GUI application:
 // https://github.com/OpenBCI/OpenBCI_GUI
 // It is licensed under the MIT License
 // Copyright (c) 2018 OpenBCI
@@ -40,7 +40,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
     /// </summary>
     public partial class UserControlBCISignalCheck : UserControl
     {
-        private String _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  <head>\r\n  <style>\r\n    a:link{color: rgb(255, 170, 0);}\r\n  " +
+        private readonly String _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  <head>\r\n  <style>\r\n    a:link{color: rgb(255, 170, 0);}\r\n  " +
                             "</style>\r\n  </head>\r\n  <body style=\"background-color:#232433;\">\r\n    " +
                             "<p style=\"font-family:'Montserrat Medium'; font-size:20px; color:white; text-align: center;\">\r\n" +
                             "For additional help on getting good signal quality, watch this <a href=\"$ASSETS_VIDEOS_DIR#ACATOverviewBCI.mp4\">video</a> " +
@@ -78,7 +78,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         /// <summary>
         /// Unique ID for this step
         /// </summary>
-        private String _stepId;
+        private readonly String _stepId;
 
         /// <summary>
         /// Debugging flag - ignore optical sensor error checks
@@ -87,54 +87,54 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
 
         // Lower level Cyton board commands to enable and disable impedance testing for each channel
 
-        // Impedance testing enable / disable commands for deafult 8 channels
-        private const string BCI_CMD_IMPEDENCE_CH1_ENABLE = "x1000100Xz101Z";
-        private const string BCI_CMD_IMPEDENCE_CH1_DISABLE = "x1060110Xz100Z";
-        private const string BCI_CMD_IMPEDENCE_CH2_ENABLE = "x2000100Xz201Z";
-        private const string BCI_CMD_IMPEDENCE_CH2_DISABLE = "x2060110Xz200Z";
-        private const string BCI_CMD_IMPEDENCE_CH3_ENABLE = "x3000100Xz301Z";
-        private const string BCI_CMD_IMPEDENCE_CH3_DISABLE = "x3060110Xz300Z";
-        private const string BCI_CMD_IMPEDENCE_CH4_ENABLE = "x4000100Xz401Z";
-        private const string BCI_CMD_IMPEDENCE_CH4_DISABLE = "x4060110Xz400Z";
-        private const string BCI_CMD_IMPEDENCE_CH5_ENABLE = "x5000100Xz501Z";
-        private const string BCI_CMD_IMPEDENCE_CH5_DISABLE = "x5060110Xz500Z";
-        private const string BCI_CMD_IMPEDENCE_CH6_ENABLE = "x6000100Xz601Z";
-        private const string BCI_CMD_IMPEDENCE_CH6_DISABLE = "x6060110Xz600Z";
-        private const string BCI_CMD_IMPEDENCE_CH7_ENABLE = "x7000100Xz701Z";
-        private const string BCI_CMD_IMPEDENCE_CH7_DISABLE = "x7060110Xz700Z";
-        private const string BCI_CMD_IMPEDENCE_CH8_ENABLE = "x8000100Xz801Z";
-        private const string BCI_CMD_IMPEDENCE_CH8_DISABLE = "x8060110Xz800Z";
+        // Impedance testing enable / disable commands for default 8 channels
+        private const string BCI_CMD_Impedance_CH1_ENABLE = "x1000100Xz101Z";
+        private const string BCI_CMD_Impedance_CH1_DISABLE = "x1060110Xz100Z";
+        private const string BCI_CMD_Impedance_CH2_ENABLE = "x2000100Xz201Z";
+        private const string BCI_CMD_Impedance_CH2_DISABLE = "x2060110Xz200Z";
+        private const string BCI_CMD_Impedance_CH3_ENABLE = "x3000100Xz301Z";
+        private const string BCI_CMD_Impedance_CH3_DISABLE = "x3060110Xz300Z";
+        private const string BCI_CMD_Impedance_CH4_ENABLE = "x4000100Xz401Z";
+        private const string BCI_CMD_Impedance_CH4_DISABLE = "x4060110Xz400Z";
+        private const string BCI_CMD_Impedance_CH5_ENABLE = "x5000100Xz501Z";
+        private const string BCI_CMD_Impedance_CH5_DISABLE = "x5060110Xz500Z";
+        private const string BCI_CMD_Impedance_CH6_ENABLE = "x6000100Xz601Z";
+        private const string BCI_CMD_Impedance_CH6_DISABLE = "x6060110Xz600Z";
+        private const string BCI_CMD_Impedance_CH7_ENABLE = "x7000100Xz701Z";
+        private const string BCI_CMD_Impedance_CH7_DISABLE = "x7060110Xz700Z";
+        private const string BCI_CMD_Impedance_CH8_ENABLE = "x8000100Xz801Z";
+        private const string BCI_CMD_Impedance_CH8_DISABLE = "x8060110Xz800Z";
 
         // Impedance testing enable / disable commands for extended daisy board channels (total 16)
-        private const string BCI_CMD_IMPEDENCE_CH9_ENABLE = "xQ000100XzQ01Z";
-        private const string BCI_CMD_IMPEDENCE_CH9_DISABLE = "xQ060110XzQ00Z";
-        private const string BCI_CMD_IMPEDENCE_CH10_ENABLE = "xW000100XzW01Z";
-        private const string BCI_CMD_IMPEDENCE_CH10_DISABLE = "xW060110XzW00Z";
-        private const string BCI_CMD_IMPEDENCE_CH11_ENABLE = "xE000100XzE01Z";
-        private const string BCI_CMD_IMPEDENCE_CH11_DISABLE = "xE060110XzE00Z";
-        private const string BCI_CMD_IMPEDENCE_CH12_ENABLE = "xR000100Xz401Z";
-        private const string BCI_CMD_IMPEDENCE_CH12_DISABLE = "xR060110Xz400Z";
-        private const string BCI_CMD_IMPEDENCE_CH13_ENABLE = "xT000100Xz501Z";
-        private const string BCI_CMD_IMPEDENCE_CH13_DISABLE = "xT060110Xz500Z";
-        private const string BCI_CMD_IMPEDENCE_CH14_ENABLE = "xY000100Xz601Z";
-        private const string BCI_CMD_IMPEDENCE_CH14_DISABLE = "xY060110Xz600Z";
-        private const string BCI_CMD_IMPEDENCE_CH15_ENABLE = "xU000100Xz701Z";
-        private const string BCI_CMD_IMPEDENCE_CH15_DISABLE = "xU060110Xz700Z";
-        private const string BCI_CMD_IMPEDENCE_CH16_ENABLE = "xI000100Xz801Z";
-        private const string BCI_CMD_IMPEDENCE_CH16_DISABLE = "xI060110Xz800Z";
+        private const string BCI_CMD_Impedance_CH9_ENABLE = "xQ000100XzQ01Z";
+        private const string BCI_CMD_Impedance_CH9_DISABLE = "xQ060110XzQ00Z";
+        private const string BCI_CMD_Impedance_CH10_ENABLE = "xW000100XzW01Z";
+        private const string BCI_CMD_Impedance_CH10_DISABLE = "xW060110XzW00Z";
+        private const string BCI_CMD_Impedance_CH11_ENABLE = "xE000100XzE01Z";
+        private const string BCI_CMD_Impedance_CH11_DISABLE = "xE060110XzE00Z";
+        private const string BCI_CMD_Impedance_CH12_ENABLE = "xR000100Xz401Z";
+        private const string BCI_CMD_Impedance_CH12_DISABLE = "xR060110Xz400Z";
+        private const string BCI_CMD_Impedance_CH13_ENABLE = "xT000100Xz501Z";
+        private const string BCI_CMD_Impedance_CH13_DISABLE = "xT060110Xz500Z";
+        private const string BCI_CMD_Impedance_CH14_ENABLE = "xY000100Xz601Z";
+        private const string BCI_CMD_Impedance_CH14_DISABLE = "xY060110Xz600Z";
+        private const string BCI_CMD_Impedance_CH15_ENABLE = "xU000100Xz701Z";
+        private const string BCI_CMD_Impedance_CH15_DISABLE = "xU060110Xz700Z";
+        private const string BCI_CMD_Impedance_CH16_ENABLE = "xI000100Xz801Z";
+        private const string BCI_CMD_Impedance_CH16_DISABLE = "xI060110Xz800Z";
 
-        private List<String> BCI_CMDS_IMPEDANCE_ENABLE_REQUIRED8CHANNELS =
-            new List<String> { BCI_CMD_IMPEDENCE_CH1_ENABLE, BCI_CMD_IMPEDENCE_CH2_ENABLE, BCI_CMD_IMPEDENCE_CH3_ENABLE, BCI_CMD_IMPEDENCE_CH4_ENABLE,
-                BCI_CMD_IMPEDENCE_CH5_ENABLE, BCI_CMD_IMPEDENCE_CH6_ENABLE, BCI_CMD_IMPEDENCE_CH7_ENABLE, BCI_CMD_IMPEDENCE_CH8_ENABLE };
-        private List<String> BCI_CMDS_IMPEDANCE_DISABLE_REQUIRED8CHANNELS =
-            new List<String> { BCI_CMD_IMPEDENCE_CH1_DISABLE, BCI_CMD_IMPEDENCE_CH2_DISABLE, BCI_CMD_IMPEDENCE_CH3_DISABLE, BCI_CMD_IMPEDENCE_CH4_DISABLE,
-                BCI_CMD_IMPEDENCE_CH5_DISABLE, BCI_CMD_IMPEDENCE_CH6_DISABLE, BCI_CMD_IMPEDENCE_CH7_DISABLE, BCI_CMD_IMPEDENCE_CH8_DISABLE };
-        private List<String> BCI_CMDS_IMPEDANCE_ENABLE_OPTIONAL8CHANNELS =
-            new List<String> { BCI_CMD_IMPEDENCE_CH9_ENABLE, BCI_CMD_IMPEDENCE_CH10_ENABLE, BCI_CMD_IMPEDENCE_CH11_ENABLE, BCI_CMD_IMPEDENCE_CH12_ENABLE,
-                BCI_CMD_IMPEDENCE_CH13_ENABLE, BCI_CMD_IMPEDENCE_CH14_ENABLE, BCI_CMD_IMPEDENCE_CH15_ENABLE, BCI_CMD_IMPEDENCE_CH16_ENABLE };
-        private List<String> BCI_CMDS_IMPEDANCE_DISABLE_OPTIONAL8CHANNELS =
-            new List<String> { BCI_CMD_IMPEDENCE_CH9_DISABLE, BCI_CMD_IMPEDENCE_CH10_DISABLE, BCI_CMD_IMPEDENCE_CH11_DISABLE, BCI_CMD_IMPEDENCE_CH12_DISABLE,
-                BCI_CMD_IMPEDENCE_CH13_DISABLE, BCI_CMD_IMPEDENCE_CH14_DISABLE, BCI_CMD_IMPEDENCE_CH15_DISABLE, BCI_CMD_IMPEDENCE_CH16_DISABLE };
+        private readonly List<String> BCI_CMDS_IMPEDANCE_ENABLE_REQUIRED8CHANNELS =
+            new List<String> { BCI_CMD_Impedance_CH1_ENABLE, BCI_CMD_Impedance_CH2_ENABLE, BCI_CMD_Impedance_CH3_ENABLE, BCI_CMD_Impedance_CH4_ENABLE,
+                BCI_CMD_Impedance_CH5_ENABLE, BCI_CMD_Impedance_CH6_ENABLE, BCI_CMD_Impedance_CH7_ENABLE, BCI_CMD_Impedance_CH8_ENABLE };
+        private readonly List<String> BCI_CMDS_IMPEDANCE_DISABLE_REQUIRED8CHANNELS =
+            new List<String> { BCI_CMD_Impedance_CH1_DISABLE, BCI_CMD_Impedance_CH2_DISABLE, BCI_CMD_Impedance_CH3_DISABLE, BCI_CMD_Impedance_CH4_DISABLE,
+                BCI_CMD_Impedance_CH5_DISABLE, BCI_CMD_Impedance_CH6_DISABLE, BCI_CMD_Impedance_CH7_DISABLE, BCI_CMD_Impedance_CH8_DISABLE };
+        private readonly List<String> BCI_CMDS_IMPEDANCE_ENABLE_OPTIONAL8CHANNELS =
+            new List<String> { BCI_CMD_Impedance_CH9_ENABLE, BCI_CMD_Impedance_CH10_ENABLE, BCI_CMD_Impedance_CH11_ENABLE, BCI_CMD_Impedance_CH12_ENABLE,
+                BCI_CMD_Impedance_CH13_ENABLE, BCI_CMD_Impedance_CH14_ENABLE, BCI_CMD_Impedance_CH15_ENABLE, BCI_CMD_Impedance_CH16_ENABLE };
+        private readonly List<String> BCI_CMDS_IMPEDANCE_DISABLE_OPTIONAL8CHANNELS =
+            new List<String> { BCI_CMD_Impedance_CH9_DISABLE, BCI_CMD_Impedance_CH10_DISABLE, BCI_CMD_Impedance_CH11_DISABLE, BCI_CMD_Impedance_CH12_DISABLE,
+                BCI_CMD_Impedance_CH13_DISABLE, BCI_CMD_Impedance_CH14_DISABLE, BCI_CMD_Impedance_CH15_DISABLE, BCI_CMD_Impedance_CH16_DISABLE };
 
         /// <summary>
         /// Interval im ms at which to update UI elements
@@ -154,7 +154,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         /// <summary>
         /// Last timestamp when overall signal quality was updated
         /// </summary>
-        private long last_timestamp_update_overall_signal_quallity_status = 0;
+        public long last_timestamp_update_overall_signal_quality_status;
 
         /// <summary>
         /// Buffer length in seconds for EEG data to calculate railing
@@ -169,28 +169,28 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         // Lists holding UI elements for all channels
         private List<String> _channelNamesRequired;
         private List<String> _channelNamesOptional;
-        private List<ScannerRoundedButtonControl> _requiredListElectrodesRailingTest;
-        private List<ScannerRoundedButtonControl> _optionalListElectrodesRailingTest;
-        private List<Chart> _requiredListChartsSignalDataRailingTest;
-        private List<Chart> _optionalListChartsSignalDataRailingTest;
-        private List<Title> _requiredListTextsRailingResultsRailingTest;
-        private List<Title> _optionalListTextsRailingResultsRailingTest;
-        private List<ScannerRoundedButtonControl> _requiredListElectrodesImpedanceTest;
-        private List<ScannerRoundedButtonControl> _optionalListElectrodesImpedanceTest;
-        private List<ScannerRoundedButtonControl> _requiredListImpedanceResultsImpedanceTest;
-        private List<ScannerRoundedButtonControl> _optionalListImpedanceResultsImpedanceTest;
-        private List<ScannerRoundedButtonControl> _requiredListElectrodesQualityResults;
-        private List<ScannerRoundedButtonControl> _optionalListElectrodesQualityResults;
-        private List<ScannerRoundedButtonControl> _requiredListRailingResultsQualityResults;
-        private List<ScannerRoundedButtonControl> _optionalListRailingResultsQualityResults;
-        private List<ScannerRoundedButtonControl> _requiredListImpedanceResultsQualityResults;
-        private List<ScannerRoundedButtonControl> _optionalListImpedanceResultsQualityResults;
-        private Dictionary<String, ScannerRoundedButtonControl> _electrodeCapMap;
+        private readonly List<ScannerRoundedButtonControl> _requiredListElectrodesRailingTest;
+        private readonly List<ScannerRoundedButtonControl> _optionalListElectrodesRailingTest;
+        private readonly List<Chart> _requiredListChartsSignalDataRailingTest;
+        private readonly List<Chart> _optionalListChartsSignalDataRailingTest;
+        private readonly List<Title> _requiredListTextsRailingResultsRailingTest;
+        private readonly List<Title> _optionalListTextsRailingResultsRailingTest;
+        private readonly List<ScannerRoundedButtonControl> _requiredListElectrodesImpedanceTest;
+        private readonly List<ScannerRoundedButtonControl> _optionalListElectrodesImpedanceTest;
+        private readonly List<ScannerRoundedButtonControl> _requiredListImpedanceResultsImpedanceTest;
+        private readonly List<ScannerRoundedButtonControl> _optionalListImpedanceResultsImpedanceTest;
+        private readonly List<ScannerRoundedButtonControl> _requiredListElectrodesQualityResults;
+        private readonly List<ScannerRoundedButtonControl> _optionalListElectrodesQualityResults;
+        private readonly List<ScannerRoundedButtonControl> _requiredListRailingResultsQualityResults;
+        private readonly List<ScannerRoundedButtonControl> _optionalListRailingResultsQualityResults;
+        private readonly List<ScannerRoundedButtonControl> _requiredListImpedanceResultsQualityResults;
+        private readonly List<ScannerRoundedButtonControl> _optionalListImpedanceResultsQualityResults;
+        private readonly Dictionary<String, ScannerRoundedButtonControl> _electrodeCapMap;
 
         // Variables related to BCI board configuration
         private int _scaleIdx;
-        private int _Ymin = -200;
-        private int _Ymax = 200;
+        private int _YMin = -200;
+        private int _YMax = 200;
         private int _bufSize;
         private int[] _indEegChannels;
         private int _samplingRate;
@@ -209,7 +209,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         /// <summary>
         /// The index of the current electrode being tested for impedance
         /// </summary>
-        public static int _currentImpedenceTestElectrodeIndex;
+        public static int _currentImpedanceTestElectrodeIndex;
         
         /// <summary>
         /// Holds data / information for each channel 
@@ -222,20 +222,20 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         private double[,] _unfilteredChannelData;
 
         /// <summary>
-        /// Buffer for filtered EEG data for each electode
+        /// Buffer for filtered EEG data for each electrode
         /// </summary>
         private double[,] _filteredChannelData;
 
         /// <summary>
         /// Array holding images to display for signal quality heat map
         /// </summary>
-        private Image[] _signalQualityGradientImages;
+        private readonly Image[] _signalQualityGradientImages;
 
         // Colors for different UI elements which are changed based on signal quality or impedance testing status
-        private Color COLOR_ACAT_DEFAULT_ORANGE = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-        private Color COLOR_STATUS_OK; // Green
-        private Color COLOR_STATUS_ACCEPTABLE; // Yellow
-        private Color COLOR_STATUS_KO; // Red
+        private readonly Color COLOR_ACAT_DEFAULT_ORANGE = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
+        private readonly Color COLOR_STATUS_OK; // Green
+        private readonly Color COLOR_STATUS_ACCEPTABLE; // Yellow
+        private readonly Color COLOR_STATUS_KO; // Red
 
         /// <summary>
         /// Variables representing the different BCI signal check modes
@@ -270,25 +270,27 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             //labelBCISignalCheckDescription.Text = Resources.labelBCISignalCheckDescription;
 
             // Create electrode name / id -> cap electrode mapping
-            _electrodeCapMap = new Dictionary<string, ScannerRoundedButtonControl>();
-            _electrodeCapMap["Cz"] = btnElectrodeCapCz;
-            _electrodeCapMap["C3"] = btnElectrodeCapC3;
-            _electrodeCapMap["C4"] = btnElectrodeCapC4;
-            _electrodeCapMap["Pz"] = btnElectrodeCapPz;
-            _electrodeCapMap["P3"] = btnElectrodeCapP3;
-            _electrodeCapMap["P4"] = btnElectrodeCapP4;
-            _electrodeCapMap["Fz"] = btnElectrodeCapFz;
-            _electrodeCapMap["T5"] = btnElectrodeCapT5;
-            _electrodeCapMap["T6"] = btnElectrodeCapT6;
-            _electrodeCapMap["O1"] = btnElectrodeCapO1;
-            _electrodeCapMap["O2"] = btnElectrodeCapO2;
-            _electrodeCapMap["Fp1"] = btnElectrodeCapFp1;
-            _electrodeCapMap["Fp2"] = btnElectrodeCapFp2;
-            _electrodeCapMap["F3"] = btnElectrodeCapF3;
-            _electrodeCapMap["F4"] = btnElectrodeCapF4;
-            _electrodeCapMap["F7"] = btnElectrodeCapF7;
-            _electrodeCapMap["F8"] = btnElectrodeCapF8;
-            _electrodeCapMap["T3"] = btnElectrodeCapT3;
+            _electrodeCapMap = new Dictionary<string, ScannerRoundedButtonControl>
+            {
+                ["Cz"] = btnElectrodeCapCz,
+                ["C3"] = btnElectrodeCapC3,
+                ["C4"] = btnElectrodeCapC4,
+                ["Pz"] = btnElectrodeCapPz,
+                ["P3"] = btnElectrodeCapP3,
+                ["P4"] = btnElectrodeCapP4,
+                ["Fz"] = btnElectrodeCapFz,
+                ["T5"] = btnElectrodeCapT5,
+                ["T6"] = btnElectrodeCapT6,
+                ["O1"] = btnElectrodeCapO1,
+                ["O2"] = btnElectrodeCapO2,
+                ["Fp1"] = btnElectrodeCapFp1,
+                ["Fp2"] = btnElectrodeCapFp2,
+                ["F3"] = btnElectrodeCapF3,
+                ["F4"] = btnElectrodeCapF4,
+                ["F7"] = btnElectrodeCapF7,
+                ["F8"] = btnElectrodeCapF8,
+                ["T3"] = btnElectrodeCapT3
+            };
 
             // Get UI elements to modify based on signal data, and railing / impedance tests
 
@@ -361,7 +363,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
 
         /// <summary>
         /// Reset saved impedance values and flags used to check whether user has passed signal quality checks
-        /// Called everytime signal check is accessed
+        /// Called every time signal check is accessed
         /// </summary>
         public void resetSavedSignalQualityValues()
         {
@@ -379,10 +381,10 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         /// Process data (buffer + filter) then update UI elements
         /// </summary>
         /// <param name="latestUnfilteredData"></param>
-        /// <param name="runningImpedenceTestingCycle"></param>
+        /// <param name="runningImpedanceTestingCycle"></param>
         public void updateSignalStatus(double[,] latestUnfilteredData, double[,] latestFilteredData)
         {
-            // Concatonate recent data to larger buffer
+            // Concatenate recent data to larger buffer
             AppendDataToBuffer2(latestUnfilteredData, _unfilteredChannelData, _bufSize, out _unfilteredChannelData);
             AppendDataToBuffer2(latestFilteredData, _filteredChannelData, _bufSize, out _filteredChannelData);
 
@@ -397,17 +399,17 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             bool scale_plots = false;
             // At interval INTERVAL_UPDATE_OVERALL_SIGNAL_QUALITY_STATUS_MS, update overall signal quality
             bool update_overall_signal_quality_status = false;
-            if (currentTimestamp - last_timestamp_update_overall_signal_quallity_status > INTERVAL_UPDATE_OVERALL_SIGNAL_QUALITY_STATUS_MS)
+            if (currentTimestamp - last_timestamp_update_overall_signal_quality_status > INTERVAL_UPDATE_OVERALL_SIGNAL_QUALITY_STATUS_MS)
             {
                 update_overall_signal_quality_status = true;
-                last_timestamp_update_overall_signal_quallity_status = currentTimestamp;
+                last_timestamp_update_overall_signal_quality_status = currentTimestamp;
             }
 
             // Iterate through each channel's data and calculate std dev, railing, and update plots
             for (int chIdx = 0; chIdx < _numChannels; chIdx++)
             {
                 // If currently running impedance testing and this channel is not the one being tested
-                if ((_runImpedanceTestingCycle || _impedanceTestingRunning) && chIdx != _currentImpedenceTestElectrodeIndex)
+                if ((_runImpedanceTestingCycle || _impedanceTestingRunning) && chIdx != _currentImpedanceTestElectrodeIndex)
                     continue;
 
                 //////// GetData() function already filters data ////////
@@ -418,7 +420,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
 
                 // If we're currently on impedance testing page and we're running impedance testing
                 // and this channel is the one being tested, compute and update impedance
-                if ((_runImpedanceTestingCycle || _impedanceTestingRunning) && _currentImpedenceTestElectrodeIndex == chIdx)
+                if ((_runImpedanceTestingCycle || _impedanceTestingRunning) && _currentImpedanceTestElectrodeIndex == chIdx)
                 {
                     // Compute impedance
                     int stdCalcStartPos = filteredChanelData.Length - 1 - _samplingRate;
@@ -429,12 +431,12 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
                     }
 
                     double data_std_uV_channel = DataFilter.calc_stddev(filteredChanelData, stdCalcStartPos, stdCalcEndPos);
-                    double impedence = (Math.Sqrt(2.0) * data_std_uV_channel * 1.0e-6) / LEADOFFDRIVE_AMPS;
-                    impedence -= OPENBCI_SERIES_RESISTOR_OHMS;
-                    impedence = impedence / 1000;
+                    double Impedance = (Math.Sqrt(2.0) * data_std_uV_channel * 1.0e-6) / LEADOFFDRIVE_AMPS;
+                    Impedance -= OPENBCI_SERIES_RESISTOR_OHMS;
+                    Impedance /= 1000;
 
                     // Update latest impedance result - save value and update UI
-                    updateImpedanceResult(chIdx, (int)impedence, update_UI, false);
+                    updateImpedanceResult(chIdx, (int)Impedance, update_UI, false);
                 }
 
                 // If we're currently on the railing testing page and we're not running the impedance testing
@@ -572,7 +574,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         }
 
         /// <summary>
-        /// Handler for when BCISignalCheckMode changed programatically - switch to the correspond tab
+        /// Handler for when BCISignalCheckMode changed programmatically - switch to the correspond tab
         /// </summary>
         /// <param name="mode"></param>
         public void changeSignalCheckMode(BCISignalCheckMode mode)
@@ -613,7 +615,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
 
             _Testing_BCIOnboardingIgnoreOpticalSensorChecks = BCIActuatorSettings.Settings.Testing_BCIOnboardingIgnoreOpticalSensorChecks;
 
-            // Get / inititalize variables related to board config used in data processing
+            // Get / initialize variables related to board config used in data processing
             _indEegChannels = DAQ_OpenBCI.indEegChannels;
             _numChannels = BCIActuatorSettings.Settings.DAQ_NumEEGChannels;
             _samplingRate = DAQ_OpenBCI.sampleRate;
@@ -643,7 +645,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             _unfilteredChannelData = new double[_numChannels, _bufSize];
 
             // Get initial chartRailingTest Y axis min/max values based on scale
-            GetGraphYLims(_scaleIdx, out _Ymin, out _Ymax);
+            GetGraphYLimits(_scaleIdx, out _YMin, out _YMax);
 
             String _indEegChannels_str = String.Format("_indEegChannels | length: {0}", _indEegChannels.Length.ToString() + " | ");
             for (int i = 0; i < _indEegChannels.Length; i++)
@@ -693,18 +695,20 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
                 {
                     // Required channel
                     String electrodeName = _channelNamesRequired[chIdx];
-                    _eegChannels[chIdx] = new EEGChannel(electrodeName, chIdx, channelEnabled);
-                    _eegChannels[chIdx].isRequiredElectrode = true;
-                    _eegChannels[chIdx]._channelRawDataIndex = _indEegChannels[chIdx];
-                    _eegChannels[chIdx].ImpedanceTestingEnableCmd = BCI_CMDS_IMPEDANCE_ENABLE_REQUIRED8CHANNELS[chIdx];
-                    _eegChannels[chIdx].ImpedanceTestingDisableCmd = BCI_CMDS_IMPEDANCE_DISABLE_REQUIRED8CHANNELS[chIdx];
-                    _eegChannels[chIdx].lastRailingResult = int.MaxValue;
-                    _eegChannels[chIdx].lastImpedanceResult = int.MaxValue;
-                    _eegChannels[chIdx].signalStatus = SignalStatus.SIGNAL_ERROR;
-                    _eegChannels[chIdx].signalQualityUpdatedCurrentSession = 0;
+                    _eegChannels[chIdx] = new EEGChannel(electrodeName, chIdx, channelEnabled)
+                    {
+                        isRequiredElectrode = true,
+                        _channelRawDataIndex = _indEegChannels[chIdx],
+                        ImpedanceTestingEnableCmd = BCI_CMDS_IMPEDANCE_ENABLE_REQUIRED8CHANNELS[chIdx],
+                        ImpedanceTestingDisableCmd = BCI_CMDS_IMPEDANCE_DISABLE_REQUIRED8CHANNELS[chIdx],
+                        lastRailingResult = int.MaxValue,
+                        lastImpedanceResult = int.MaxValue,
+                        signalStatus = SignalStatus.SIGNAL_ERROR,
+                        signalQualityUpdatedCurrentSession = 0,
 
-                    // Get corresponding railing and impedance UI elements and initialize with default values
-                    _eegChannels[chIdx].electrodeCap = _electrodeCapMap[electrodeName];
+                        // Get corresponding railing and impedance UI elements and initialize with default values
+                        electrodeCap = _electrodeCapMap[electrodeName]
+                    };
                     _eegChannels[chIdx].electrodeCap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
                     _eegChannels[chIdx].electrodeCap.BorderColor = Color.White;
                     _eegChannels[chIdx].electrodeRailingTest = _requiredListElectrodesRailingTest[chIdx];
@@ -725,8 +729,8 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
 
                     // Set Y axis min/max based on scale
                     _eegChannels[chIdx].chartSignalDataRailingTest.ChartAreas[0].AxisY.IsStartedFromZero = false;
-                    _eegChannels[chIdx].chartSignalDataRailingTest.ChartAreas[0].AxisY.Minimum = _Ymin;
-                    _eegChannels[chIdx].chartSignalDataRailingTest.ChartAreas[0].AxisY.Maximum = _Ymax;
+                    _eegChannels[chIdx].chartSignalDataRailingTest.ChartAreas[0].AxisY.Minimum = _YMin;
+                    _eegChannels[chIdx].chartSignalDataRailingTest.ChartAreas[0].AxisY.Maximum = _YMax;
 
                     // Set other plot parameters
                     _eegChannels[chIdx].chartSignalDataRailingTest.Series[0].ChartType = SeriesChartType.FastLine;
@@ -740,18 +744,20 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
 
                     // Real optional channel connected via Cyton Daisy board
                     String electrodeName = _channelNamesOptional[intOptionalChnOffset];
-                    _eegChannels[chIdx] = new EEGChannel(electrodeName, chIdx, channelEnabled);
-                    _eegChannels[chIdx].isRequiredElectrode = false;
-                    _eegChannels[chIdx]._channelRawDataIndex = _indEegChannels[chIdx];
-                    _eegChannels[chIdx].ImpedanceTestingEnableCmd = BCI_CMDS_IMPEDANCE_ENABLE_OPTIONAL8CHANNELS[intOptionalChnOffset];
-                    _eegChannels[chIdx].ImpedanceTestingDisableCmd = BCI_CMDS_IMPEDANCE_DISABLE_OPTIONAL8CHANNELS[intOptionalChnOffset];
-                    _eegChannels[chIdx].lastRailingResult = int.MaxValue;
-                    _eegChannels[chIdx].lastImpedanceResult = int.MaxValue;
-                    _eegChannels[chIdx].signalStatus = SignalStatus.SIGNAL_ERROR;
-                    _eegChannels[chIdx].signalQualityUpdatedCurrentSession = 0;
+                    _eegChannels[chIdx] = new EEGChannel(electrodeName, chIdx, channelEnabled)
+                    {
+                        isRequiredElectrode = false,
+                        _channelRawDataIndex = _indEegChannels[chIdx],
+                        ImpedanceTestingEnableCmd = BCI_CMDS_IMPEDANCE_ENABLE_OPTIONAL8CHANNELS[intOptionalChnOffset],
+                        ImpedanceTestingDisableCmd = BCI_CMDS_IMPEDANCE_DISABLE_OPTIONAL8CHANNELS[intOptionalChnOffset],
+                        lastRailingResult = int.MaxValue,
+                        lastImpedanceResult = int.MaxValue,
+                        signalStatus = SignalStatus.SIGNAL_ERROR,
+                        signalQualityUpdatedCurrentSession = 0,
 
-                    // Get corresponding railing and impedance UI elements and initialize with default values
-                    _eegChannels[chIdx].electrodeCap = _electrodeCapMap[electrodeName];
+                        // Get corresponding railing and impedance UI elements and initialize with default values
+                        electrodeCap = _electrodeCapMap[electrodeName]
+                    };
                     _eegChannels[chIdx].electrodeCap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
                     _eegChannels[chIdx].electrodeCap.BorderColor = Color.White;
                     _eegChannels[chIdx].electrodeRailingTest = _optionalListElectrodesRailingTest[intOptionalChnOffset];
@@ -772,8 +778,8 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
 
                     // Set Y axis min/max based on scale
                     _eegChannels[chIdx].chartSignalDataRailingTest.ChartAreas[0].AxisY.IsStartedFromZero = false;
-                    _eegChannels[chIdx].chartSignalDataRailingTest.ChartAreas[0].AxisY.Minimum = _Ymin;
-                    _eegChannels[chIdx].chartSignalDataRailingTest.ChartAreas[0].AxisY.Maximum = _Ymax;
+                    _eegChannels[chIdx].chartSignalDataRailingTest.ChartAreas[0].AxisY.Minimum = _YMin;
+                    _eegChannels[chIdx].chartSignalDataRailingTest.ChartAreas[0].AxisY.Maximum = _YMax;
 
                     // Set other plot parameters
                     _eegChannels[chIdx].chartSignalDataRailingTest.Series[0].ChartType = SeriesChartType.FastLine;
@@ -827,9 +833,9 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             {
                 _runImpedanceTestingCycle = true;
                 _impedanceTestingRunning = true;
-                _currentImpedenceTestElectrodeIndex = 0;
+                _currentImpedanceTestElectrodeIndex = 0;
 
-                ////// Before running impedence tests ///////
+                ////// Before running impedance tests ///////
                 //// Stop streaming on board, does not consistently register commands while streaming
                 Log.Debug("Stop streaming");
                 DAQ_OpenBCI.Stop_Streaming();
@@ -839,17 +845,17 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
                 {
                     _impedanceTestingRunning = true;
 
-                    EEGChannel currentEegChannel = _eegChannels[_currentImpedenceTestElectrodeIndex];
+                    EEGChannel currentEegChannel = _eegChannels[_currentImpedanceTestElectrodeIndex];
                     String electrodeName = currentEegChannel._electrodeName;
 
-                    Log.Debug("StartImpedanceTesting loop | _currentImpedenceTestElectrodeIndex: " + _currentImpedenceTestElectrodeIndex.ToString() +
+                    Log.Debug("StartImpedanceTesting loop | _currentImpedanceTestElectrodeIndex: " + _currentImpedanceTestElectrodeIndex.ToString() +
                         " | electrodeName: " + electrodeName.ToString());
 
-                    String cmdStartElectrodeImpedenceTest = currentEegChannel.ImpedanceTestingEnableCmd;
-                    String cmdEndElectrodeImpedenceTest = currentEegChannel.ImpedanceTestingDisableCmd;
+                    String cmdStartElectrodeImpedanceTest = currentEegChannel.ImpedanceTestingEnableCmd;
+                    String cmdEndElectrodeImpedanceTest = currentEegChannel.ImpedanceTestingDisableCmd;
 
-                    /////// ******* NOTE - Send impedence enable command multiple times back to back to increase duration of tests (1 command too short) ******* ///////
-                    //String cmdEndElectrodeImpedenceTest = cmdStartElectrodeImpedenceTest + cmdStartElectrodeImpedenceTest;
+                    /////// ******* NOTE - Send Impedance enable command multiple times back to back to increase duration of tests (1 command too short) ******* ///////
+                    //String cmdEndElectrodeImpedanceTest = cmdStartElectrodeImpedanceTest + cmdStartElectrodeImpedanceTest;
 
                     // Set back color of impedance result button in Impedance testing page to orange
                     Invoke(new Action(() =>
@@ -859,9 +865,9 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
 
                     DAQ_OpenBCI.GetData(); // Clear buffer
 
-                    //// Send enable electrode impedence testing commands
-                    Log.Debug(String.Format("Sending enable electrode {0} impedence testing command: {1}", electrodeName, cmdStartElectrodeImpedenceTest));
-                    DAQ_OpenBCI.Config_Board(cmdStartElectrodeImpedenceTest);
+                    //// Send enable electrode Impedance testing commands
+                    Log.Debug(String.Format("Sending enable electrode {0} Impedance testing command: {1}", electrodeName, cmdStartElectrodeImpedanceTest));
+                    DAQ_OpenBCI.Config_Board(cmdStartElectrodeImpedanceTest);
                     Thread.Sleep(750);
 
                     // Make sure DAQ_OpenBCI.deviceInitialized set to true when streaming enabled
@@ -872,7 +878,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
                     DAQ_OpenBCI.Start_Streaming();
                     Thread.Sleep(50);
 
-                    // Wait for a bit then send stop streaming and disable impedence testing commands
+                    // Wait for a bit then send stop streaming and disable impedance testing commands
                     long currentTimestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                     long endImpudenceTestTimestamp = currentTimestamp + 2000;
                     while (currentTimestamp < endImpudenceTestTimestamp)
@@ -891,10 +897,10 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
                     Thread.Sleep(50);
 
                     // Send command to disable impedance testing for specific electrode
-                    Log.Debug(String.Format("Sending disable electrode {0} impedence testing command: {1}", electrodeName, cmdEndElectrodeImpedenceTest));
-                    DAQ_OpenBCI.Config_Board(cmdEndElectrodeImpedenceTest);
+                    Log.Debug(String.Format("Sending disable electrode {0} impedance testing command: {1}", electrodeName, cmdEndElectrodeImpedanceTest));
+                    DAQ_OpenBCI.Config_Board(cmdEndElectrodeImpedanceTest);
                     Thread.Sleep(750);
-                    Log.Debug("Completed impedence testing electrode: " + _currentImpedenceTestElectrodeIndex.ToString());
+                    Log.Debug("Completed impedance testing electrode: " + _currentImpedanceTestElectrodeIndex.ToString());
 
                     // Reset back color of impedance result button in Impedance testing page to transparent
                     Invoke(new Action(() =>
@@ -902,11 +908,11 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
                         currentEegChannel.impedanceResultImpedanceTest.BackColor = Color.Transparent;
                     }));
 
-                    // Increment electode index for impedence testing
-                    _currentImpedenceTestElectrodeIndex += 1;
-                    if (_currentImpedenceTestElectrodeIndex >= _numChannels)
+                    // Increment electrode index for impedance testing
+                    _currentImpedanceTestElectrodeIndex += 1;
+                    if (_currentImpedanceTestElectrodeIndex >= _numChannels)
                     {
-                        _currentImpedenceTestElectrodeIndex = 0;
+                        _currentImpedanceTestElectrodeIndex = 0;
                         if (BCIActuatorSettings.Settings.SignalQuality_StopImpedanceTestAfterOneCycle)
                         {
                             Log.Debug("SignalQuality_StopImpedanceTestAfterOneCycle = true | Stopping impedance testing");
@@ -930,7 +936,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
                     }
                 }
 
-                //// Stopping impedence testing process -  _runImpedanceTestingCycle set to false
+                //// Stopping impedances testing process -  _runImpedanceTestingCycle set to false
                 //// Do opposite of what was done at the beginning on this function to bring board back to default state
 
                 // Reset board to default parameters
@@ -961,7 +967,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
                     updateImpedanceTestingStateLabels(ImpedanceTestingState.NOT_RUNNING);
                 }));
 
-                // Done automatically everytime impedance testing completed
+                // Done automatically every time impedance testing completed
                 // If all electrodes are updated within this session
                 // save this time as time of last signal quality check completed
                 if (_AllElectrodesOverallSignalQualityResult.allElectrodesUpdatedWithinSession == true)
@@ -1020,19 +1026,19 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         private void updateSignalQualityGradient(int numChannelsConsidered,
             int numOverallGoodElectrodes, int numOverallOkElectrodes, int numOverallBadElectrodes)
         {
-            int indxGradientImage = 0;
+            int indexGradientImage = 0;
             double totalPoints = 2 * numChannelsConsidered;
             double points = (2 * numOverallGoodElectrodes) + (1 * numOverallOkElectrodes);
 
-            indxGradientImage = ((int)Math.Round(((points / totalPoints) * _signalQualityGradientImages.Length))) - 1;
-            if (indxGradientImage < 0)
-                indxGradientImage = 0;
-            else if (indxGradientImage > _signalQualityGradientImages.Length - 1)
-                indxGradientImage = _signalQualityGradientImages.Length - 1;
+            indexGradientImage = ((int)Math.Round(((points / totalPoints) * _signalQualityGradientImages.Length))) - 1;
+            if (indexGradientImage < 0)
+                indexGradientImage = 0;
+            else if (indexGradientImage > _signalQualityGradientImages.Length - 1)
+                indexGradientImage = _signalQualityGradientImages.Length - 1;
 
             Invoke(new Action(() =>
             {
-                Image newGradientImage = newGradientImage = _signalQualityGradientImages[indxGradientImage];
+                Image newGradientImage = newGradientImage = _signalQualityGradientImages[indexGradientImage];
                 panelSignalQualitySlider.BackgroundImage = newGradientImage;
             }));
         }
@@ -1096,7 +1102,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
                     // Update from initializeBCISignalCheck (main UI thread) - no invoke required
                     if (loadedSavedValue)
                     {
-                        // Set text + colors for impedance result buttons on impedance testing and quality resulst pages
+                        // Set text + colors for impedance result buttons on impedance testing and quality result pages
                         // White for text + border, transparent background
                         _eegChannels[chIdx].impedanceResultImpedanceTest.Text = impedanceResultText;
                         _eegChannels[chIdx].impedanceResultImpedanceTest.ForeColor = Color.White;
@@ -1226,12 +1232,12 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
                     {
                         //Log.Debug("updateSignalChart | scale_plots == true | channelIndex: " + channelIndex.ToString());
 
-                        // Autoscale
+                        // Autoscaling
                         //_eegChannels[channelIndex].chartSignalDataRailingTest.ChartAreas[0].RecalculateAxesScale();
 
-                        // Use _Ymin, _Ymax
-                        _eegChannels[channelIndex].chartSignalDataRailingTest.ChartAreas[0].AxisY.Minimum = _Ymin;
-                        _eegChannels[channelIndex].chartSignalDataRailingTest.ChartAreas[0].AxisY.Maximum = _Ymax;
+                        // Use _Y min, _Y max
+                        _eegChannels[channelIndex].chartSignalDataRailingTest.ChartAreas[0].AxisY.Minimum = _YMin;
+                        _eegChannels[channelIndex].chartSignalDataRailingTest.ChartAreas[0].AxisY.Maximum = _YMax;
                     }
                 }));
             }
@@ -1361,7 +1367,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         /// </summary>
         /// <param name="min"></param>
         /// <param name="max"></param>
-        private void GetGraphYLims(int scaleIdx, out int yLimMin, out int yLimMax)
+        private void GetGraphYLimits(int scaleIdx, out int yLimMin, out int yLimMax)
         {
             int scale = 100;
 
@@ -1411,13 +1417,13 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         /// <param name="e"></param>
         private void buttonTestImpedance_Click(object sender, EventArgs e)
         {
-            Log.Debug("buttonTestImpedance_Click | _currentImpedenceTestElectrodeIndex: " + _currentImpedenceTestElectrodeIndex.ToString());
+            Log.Debug("buttonTestImpedance_Click | _currentImpedanceTestElectrodeIndex: " + _currentImpedanceTestElectrodeIndex.ToString());
 
             if (_runImpedanceTestingCycle)
             {
                 try
                 {
-                    Log.Debug("Impedence cyclical testing running. Stopping process...");
+                    Log.Debug("Impedance cyclical testing running. Stopping process...");
                     buttonTestImpedance.Enabled = false;
                     buttonTestImpedance.BackColor = Color.Gray;
                     updateImpedanceTestingStateLabels(ImpedanceTestingState.STOP_IN_PROGRESS);
@@ -1435,7 +1441,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
                 // Start impedance testing
                 try
                 {
-                    Log.Debug("Impedence testing not running. Starting process...");
+                    Log.Debug("Impedances testing not running. Starting process...");
                     buttonTestImpedance.Text = "Stop";
                     buttonNext.Enabled = false;
                     buttonNext.BackColor = Color.Gray;

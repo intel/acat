@@ -126,10 +126,7 @@ namespace ACAT.Extensions.BCI.UI.UserControls
 
         private void AnimationManager_EvtPlayerStateChanged(object sender, PlayerStateChangedEventArgs e)
         {
-            if (EvtPlayerStateChanged != null)
-            {
-                EvtPlayerStateChanged(this, e);
-            }
+            EvtPlayerStateChanged?.Invoke(this, e);
         }
     }
 }

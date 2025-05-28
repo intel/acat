@@ -28,13 +28,13 @@ namespace ACAT.Lib.Core.UserControlManagement
         private int _iterations = 1;
         private volatile bool _playerTransitioned = false;
 
-        private IScannerPanel _scannerPanel;
+        private readonly IScannerPanel _scannerPanel;
         private volatile bool _stopTopLevelAnimation = false;
 
-        private TextController _textController;
-        private List<IUserControl> _userControls = new List<IUserControl>();
+        private readonly TextController _textController;
+        private readonly List<IUserControl> _userControls = new List<IUserControl>();
 
-        private Dictionary<Guid, IUserControl> _userControlCache = new Dictionary<Guid, IUserControl>();
+        private readonly Dictionary<Guid, IUserControl> _userControlCache = new Dictionary<Guid, IUserControl>();
 
         public UserControlManager(IScannerPanel scannerPanel, TextController textController)
         {
@@ -116,11 +116,11 @@ namespace ACAT.Lib.Core.UserControlManagement
 
             _playerTransitioned = false;
 
-            var retVal = String.IsNullOrEmpty(userControlKeyName) ? false : addUserControlByKey(parent, userControlKeyName, tag);
+            var retVal = !String.IsNullOrEmpty(userControlKeyName) && addUserControlByKey(parent, userControlKeyName, tag);
 
             if (!retVal)
             {
-                retVal = String.IsNullOrEmpty(userControlName) ? false : addUserControlByName(parent, userControlName, tag);
+                retVal = !String.IsNullOrEmpty(userControlName) && addUserControlByName(parent, userControlName, tag);
             }
 
             return retVal;
@@ -207,7 +207,7 @@ namespace ACAT.Lib.Core.UserControlManagement
                 }
             }
 
-            return (guid != Guid.Empty) ? AddUserControlByGuid(parent, guid) : false;
+            return (guid != Guid.Empty) && AddUserControlByGuid(parent, guid);
         }
 
         public bool PushUserControlByKeyOrName(Control parent, String userControlKeyName, String userControlName, bool replaceCurrent = false)
@@ -272,7 +272,6 @@ namespace ACAT.Lib.Core.UserControlManagement
 
         private bool addUserControlByKey(Control parent, String userControlKeyName, object tag = null)
         {
-            bool retVal = true;
             String userControlName = String.Empty;
 
             if (String.IsNullOrEmpty(userControlKeyName))
@@ -280,6 +279,7 @@ namespace ACAT.Lib.Core.UserControlManagement
                 return false;
             }
 
+            bool retVal;
             try
             {
                 var panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(_scannerPanel.PanelClass);
@@ -308,8 +308,7 @@ namespace ACAT.Lib.Core.UserControlManagement
 
         private bool addUserControlByName(Control parent, String userControlName, object tag = null)
         {
-            bool retVal = true;
-
+            bool retVal;
             try
             {
                 retVal = createAndInitializeUserControl(parent, userControlName, tag);
@@ -381,10 +380,9 @@ namespace ACAT.Lib.Core.UserControlManagement
 
             var guid = mapEntry.UserControlId;
 
-            IUserControl iUserControl;
             UserControl userControl;
 
-            if (!_userControlCache.TryGetValue(guid, out iUserControl))
+            if (!_userControlCache.TryGetValue(guid, out IUserControl iUserControl))
             {
                 userControl = (UserControl)Activator.CreateInstance(mapEntry.UserControlType);
                 iUserControl = (userControl as IUserControl);

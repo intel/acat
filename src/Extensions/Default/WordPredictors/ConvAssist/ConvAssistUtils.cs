@@ -22,7 +22,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
 {
     public class ConvAssistUtils
     {
-        private static byte[] _byteBuffer = new byte[10240];
+        private static readonly byte[] _byteBuffer = new byte[10240];
 
         public static string DefaultEncodingToUTF8(string input)
         {

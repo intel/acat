@@ -28,10 +28,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
 
         public static void Save()
         {
-            if (Settings != null)
-            {
-                Settings.Save();
-            }
+            Settings?.Save();
         }
     }
 }

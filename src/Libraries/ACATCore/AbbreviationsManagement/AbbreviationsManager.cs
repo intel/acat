@@ -69,10 +69,7 @@ namespace ACAT.Lib.Core.AbbreviationsManagement
         /// <returns></returns>
         public bool Init(String abbreviationsFile = null)
         {
-            if (Abbreviations != null)
-            {
-                Abbreviations.Dispose();
-            }
+            Abbreviations?.Dispose();
 
             Abbreviations = new Abbreviations();
 

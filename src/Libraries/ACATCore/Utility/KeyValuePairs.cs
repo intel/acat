@@ -32,8 +32,7 @@ namespace ACAT.Lib.Core.Utility
 
         public bool GetValueBool(String key, out bool value, bool defaultValue)
         {
-            bool retVal = true;
-
+            bool retVal;
             if (KeyExists(key))
             {
                 retVal = bool.TryParse(hash[key].ToString(), out value);
@@ -49,8 +48,7 @@ namespace ACAT.Lib.Core.Utility
 
         public bool GetValueDouble(String key, out double value, double defaultValue = 0)
         {
-            bool retVal = true;
-
+            bool retVal;
             if (KeyExists(key))
             {
                 retVal = Double.TryParse(hash[key].ToString(), out value);
@@ -66,8 +64,7 @@ namespace ACAT.Lib.Core.Utility
 
         public bool GetValueFloat(String key, out float value, float defaultValue)
         {
-            bool retVal = true;
-
+            bool retVal;
             if (KeyExists(key))
             {
                 retVal = float.TryParse(hash[key].ToString(), out value);
@@ -83,8 +80,7 @@ namespace ACAT.Lib.Core.Utility
 
         public bool GetValueInt(String key, out int value, int defaultValue = 0)
         {
-            bool retVal = true;
-
+            bool retVal;
             if (KeyExists(key))
             {
                 retVal = Int32.TryParse(hash[key].ToString(), out value);

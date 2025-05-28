@@ -1424,10 +1424,7 @@ namespace ACAT.Applications.ACATWatch
                 trayIcon = null;
             }
 
-            if (this.trayMenu != null)
-            {
-                this.trayMenu.Dispose();
-            }
+            this.trayMenu?.Dispose();
         }
 
         private void LauncherForm_FormClosing(object sender, FormClosingEventArgs e)

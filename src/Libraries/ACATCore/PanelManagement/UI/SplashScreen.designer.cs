@@ -1,4 +1,6 @@
-﻿namespace ACAT.Lib.Core.PanelManagement
+﻿using ACATResources;
+
+namespace ACAT.Lib.Core.PanelManagement
 {
     partial class SplashScreen 
     {
@@ -34,7 +36,7 @@
             this.labelTitle = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.labelStarting = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.initializing = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -47,7 +49,7 @@
             this.tableLayoutPanel1.Controls.Add(this.labelAppNameAndVersion, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.labelTitle, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 7);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 8);
+            this.tableLayoutPanel1.Controls.Add(this.initializing, 0, 8);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -75,7 +77,7 @@
             this.labelLicense.Name = "labelLicense";
             this.labelLicense.Size = new System.Drawing.Size(560, 58);
             this.labelLicense.TabIndex = 2;
-            this.labelLicense.Text = "Licensed and distributed under the \r\nApache v2.0 license by Intel Corporation";
+            this.labelLicense.Text = StringResources.SplashScreenLabelLicense; //"Licensed and distributed under the \r\nApache v2.0 license by Intel Corporation";
             this.labelLicense.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelAppNameAndVersion
@@ -88,7 +90,7 @@
             this.labelAppNameAndVersion.Name = "labelAppNameAndVersion";
             this.labelAppNameAndVersion.Size = new System.Drawing.Size(674, 88);
             this.labelAppNameAndVersion.TabIndex = 1;
-            this.labelAppNameAndVersion.Text = "Assistive Context-Aware Toolkit\r\nVersion 2.0";
+            this.labelAppNameAndVersion.Text = StringResources.SplashScreenLabelAppNameAndVersion; //";
             this.labelAppNameAndVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelTitle
@@ -101,7 +103,7 @@
             this.labelTitle.Name = "labelTitle";
             this.labelTitle.Size = new System.Drawing.Size(674, 276);
             this.labelTitle.TabIndex = 0;
-            this.labelTitle.Text = "ACAT";
+            this.labelTitle.Text = StringResources.SplashScreenLabelTitle;//"ACAT";
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel2
@@ -128,20 +130,20 @@
             this.labelStarting.Name = "labelStarting";
             this.labelStarting.Size = new System.Drawing.Size(331, 44);
             this.labelStarting.TabIndex = 0;
-            this.labelStarting.Text = "label1";
+            this.labelStarting.Text = "";
             this.labelStarting.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label1
+            // initializing
             // 
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("Montserrat Light", 15.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(3, 562);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(674, 96);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Initializing...\r\nThis may take a few minutes";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.initializing.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.initializing.Font = new System.Drawing.Font("Montserrat Light", 15.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.initializing.ForeColor = System.Drawing.Color.White;
+            this.initializing.Location = new System.Drawing.Point(3, 562);
+            this.initializing.Name = "initializing";
+            this.initializing.Size = new System.Drawing.Size(674, 96);
+            this.initializing.TabIndex = 4;
+            this.initializing.Text = StringResources.SplashScreenInitializing;  //"Initializing...\r\nThis may take a few minutes";
+            this.initializing.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // SplashScreen
             // 
@@ -168,7 +170,7 @@
         private System.Windows.Forms.Label labelTitle;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label labelStarting;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label initializing;
     }
 }
 

@@ -20,7 +20,7 @@ namespace ACAT.Lib.Core.WidgetManagement
     /// Reads panel layout information from the config file of the scanner.
     /// The layout information is essentially captures the parent-child hierarchy of
     /// controls in the UI and also contains the Widget class (.NET type)
-    /// for each widget which will be used to instatiate the widget.
+    /// for each widget which will be used to instantiate the widget.
     /// </summary>
     public class Layout
     {
@@ -61,7 +61,7 @@ namespace ACAT.Lib.Core.WidgetManagement
 
         /// <summary>
         /// Gets the color scheme to use for all the widgets in this layout.
-        /// THis can be overriden for individual widgets
+        /// THis can be overridden for individual widgets
         /// </summary>
         public ColorScheme Colors { get; internal set; }
 
@@ -82,7 +82,7 @@ namespace ACAT.Lib.Core.WidgetManagement
 
         /// <summary>
         /// Gets the color scheme to be used for disabled buttons in this
-        /// layout.  Can be overriden for individual widgets
+        /// layout.  Can be overridden for individual widgets
         /// </summary>
         public ColorScheme DisabledButtonColors { get; internal set; }
 
@@ -119,10 +119,7 @@ namespace ACAT.Lib.Core.WidgetManagement
 
                 Log.IsNull("Widget created ", widget);
 
-                if (widget != null)
-                {
-                    widget.SetLayout(this);
-                }
+                widget?.SetLayout(this);
             }
             catch (Exception ex)
             {
@@ -150,10 +147,7 @@ namespace ACAT.Lib.Core.WidgetManagement
 
                 Log.IsNull("Widget created ", widget);
 
-                if (widget != null)
-                {
-                    widget.SetLayout(this);
-                }
+                widget?.SetLayout(this);
             }
             catch (Exception ex)
             {

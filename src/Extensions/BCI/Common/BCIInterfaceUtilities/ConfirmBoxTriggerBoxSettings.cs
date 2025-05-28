@@ -18,7 +18,7 @@ using ACAT.Lib.Core.Utility;
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
     /// <summary>
-    /// Form that handles different calibraitons options to configure and initialize calibration sesion
+    /// Form that handles different calibrations options to configure and initialize calibration session
     /// </summary>
     /// 
     [DescriptorAttribute("0E41996F-85E7-4809-9F6F-599119853651",
@@ -49,7 +49,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// </summary>
         private CustomToolTip customToolTip = new CustomToolTip();
 
-        private Screen primaryScreen = Screen.PrimaryScreen;
+        private readonly Screen primaryScreen = Screen.PrimaryScreen;
         /// <summary>
         /// Confirm Box with multiple results
         /// </summary>

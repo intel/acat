@@ -132,7 +132,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         private int _currSeqCount = 1;
 
         private int _currtButtonCount = 0;
-        private int _currtButtonCount2 = 0;
+        private readonly int _currtButtonCount2 = 0;
         private int _customLockBoxAnimation = 0;
         /// <summary>
         /// ID of the decided button to be triggered
@@ -161,7 +161,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <summary>
         /// Option to keep the text to not overflow horizontally
         /// </summary>
-        private DrawTextOptions _drawTextOptions = DrawTextOptions.Clip;
+        private readonly DrawTextOptions _drawTextOptions = DrawTextOptions.Clip;
 
         /// <summary>
         /// Flag used to know when Calibration mode has ended
@@ -259,12 +259,12 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <summary>
         /// value used to add pading when drawing text right and left
         /// </summary>
-        private int _PaddingText = 20;
+        private readonly int _PaddingText = 20;
 
         /// <summary>
         /// value used to add pading when drawing text at the bottom
         /// </summary>
-        private int _PaddingTextBottom = 10;
+        private readonly int _PaddingTextBottom = 10;
 
         private MicroTimer _pauseBetweenEpochsTimer;
 
@@ -371,7 +371,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <summary>
         /// Show probabilities bars?
         /// </summary>
-        private bool _showProbabilityIndicator = true;
+        private readonly bool _showProbabilityIndicator = true;
 
         /// <summary>
         /// 
@@ -533,9 +533,11 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             _sessionMode = BCIModes.CALIBRATION;
             _currEpochCount = 1;
             _sequenceDone = false;
-            BCIMode bCIMode = new BCIMode();
-            bCIMode.BciCalibrationMode = bCIScanSections;
-            bCIMode.BciMode = BCIModes.CALIBRATION;
+            BCIMode bCIMode = new BCIMode
+            {
+                BciCalibrationMode = bCIScanSections,
+                BciMode = BCIModes.CALIBRATION
+            };
             if (bCIScanSections == BCIScanSections.Box)//Sets the amount of objects into an array so calibration does not repeat targets
                 BCIUtils.SetTargetValuesForCalibration(_flashingSequenceBoxList.Length);
             else
@@ -838,19 +840,18 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 amountBoxes += AnimationManagerUtils.GetAmountBoxes(val.Value);
             }
             SetInitialObjectsSize(amountBoxes, _amountOfKeyboards);//Sets the size for all the objects used by the class and mostly SharpDX based on the user controls buttons and amount of controls
-            int amountBoxesPerUserControl = 0;
             for (int indexBoxData = 0; indexBoxData < boxesData.Count; indexBoxData++)//populate the objects so they are ready to be used in the UI, is like a second layer of UI but manually fill instead of Windows Controls do the work
             {
                 var boxData = boxesData.ElementAt(indexBoxData);
-                amountBoxesPerUserControl = AnimationManagerUtils.GetAmountBoxes(boxData.Value);
-                var temp_flashingSequenceIDList = new List<int[]>[amountBoxesPerUserControl];
-                var temp_flashingSequenceList = new List<int[]>[amountBoxesPerUserControl];
-                var temp_typeOfBox = new string[amountBoxesPerUserControl];
+                int amountBoxesPerUserControl = AnimationManagerUtils.GetAmountBoxes(boxData.Value);
+                _ = new List<int[]>[amountBoxesPerUserControl];
+                _ = new List<int[]>[amountBoxesPerUserControl];
+                _ = new string[amountBoxesPerUserControl];
                 var temp_rectanglesButtonsList = SharpDXUtils.GetRectanglesButtonsList(boxData, amountBoxesPerUserControl);
                 var temp_rectanglesButtonsRoundList = SharpDXUtils.GetRectanglesButtonsRoundList(boxData, amountBoxesPerUserControl, _RadiusCornersButtons);
                 var temp_ButtonDataList = AnimationManagerUtils.GetButtonDataList(boxData, amountBoxesPerUserControl, _sharpDX_d2dRenderTarget);
-                var temp_ControlsBtns = AnimationManagerUtils.GetControlsBtns(boxData, amountBoxesPerUserControl, out temp_flashingSequenceIDList, out temp_flashingSequenceList);
-                var temp_buttonTextFormatList = SharpDXUtils.GetListButtonTextFormat(boxData, widgetsData[indexBoxData], _directWriteFactory, amountBoxesPerUserControl, out temp_typeOfBox);
+                var temp_ControlsBtns = AnimationManagerUtils.GetControlsBtns(boxData, amountBoxesPerUserControl, out List<int[]>[] temp_flashingSequenceIDList, out List<int[]>[] temp_flashingSequenceList);
+                var temp_buttonTextFormatList = SharpDXUtils.GetListButtonTextFormat(boxData, widgetsData[indexBoxData], _directWriteFactory, amountBoxesPerUserControl, out string[] temp_typeOfBox);
                 var temp_widgets = AnimationManagerUtils.GetBoxWidgetsList(boxData, widgetsData[indexBoxData], amountBoxesPerUserControl);
                 var temp_offsetStrings = AnimationManagerUtils.GetButtonsOffsetList(boxData, widgetsData[indexBoxData], amountBoxesPerUserControl);
                 var temprectProbBars = SharpDXUtils.GetRecProbabilityBars(boxData.Key, boxData.Value, amountBoxesPerUserControl);
@@ -1847,7 +1848,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                                 );
             //create the 2D device 
             _sharpDX_d2dFactory = new SharpDX.Direct2D1.Factory();
-            SharpDX.DXGI.Factory factory = _sharpDX_swapChain.GetParent<SharpDX.DXGI.Factory>();
+            _ = _sharpDX_swapChain.GetParent<SharpDX.DXGI.Factory>();
 
             // New RenderTargetView from the backbuffer
             Texture2D backBuffer = Texture2D.FromSwapChain<Texture2D>(_sharpDX_swapChain, 0);
@@ -2360,7 +2361,6 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// </summary>
         private void StartEpoch()
         {
-            int target = 1;
             switch (_sessionMode)
             {
                 case BCIModes.CALIBRATION:
@@ -2370,6 +2370,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     }
                     if (_currEpochCount <= _CalibrationTargetCount)
                     {
+                        int target;
                         if (_useRandomSelectionTargetCalibration)
                         {
                             while (true)//loop until get a target ID 

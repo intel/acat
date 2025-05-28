@@ -162,10 +162,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
         public bool Open()
         {
             bool deviceFound = false;
-            String devicePath = string.Empty;
             int deviceHandle = -1;
             int index = 0;
-            int size = 0;
             int sizeNeeded = 0;
 
             _usbInterop.SetupDiGetClassDevs();
@@ -176,7 +174,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             {
                 deviceHandle = _usbInterop.SetupDiEnumDeviceInterfaces(index);
                 _usbInterop.SetupDiGetDeviceInterfaceDetail(ref sizeNeeded, 0);
-                size = sizeNeeded;
+                int size = sizeNeeded;
                 _usbInterop.SetupDiGetDeviceInterfaceDetailEx(ref sizeNeeded, size);
 
                 string deviceID = _vendorId + "&" + _productId;
@@ -185,7 +183,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
                 {
                     deviceFound = true;
 
-                    devicePath = _usbInterop.DevicePathName;
+                    string devicePath = _usbInterop.DevicePathName;
 
                     _usbInterop.SetupDiEnumDeviceInterfaces(index);
 
@@ -234,10 +232,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         private void notifyDeviceDisconnected()
         {
-            if (EvtDeviceDisconnected != null)
-            {
-                EvtDeviceDisconnected.BeginInvoke(null, null);
-            }
+            EvtDeviceDisconnected?.BeginInvoke(null, null);
         }
 
         /// <summary>
@@ -246,10 +241,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="data">data</param>
         private void notifyReadData(byte[] data)
         {
-            if (EvtReadDataNotify != null)
-            {
-                EvtReadDataNotify(data);
-            }
+            EvtReadDataNotify?.Invoke(data);
         }
 
         /// <summary>

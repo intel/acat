@@ -29,7 +29,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         /// <summary>
         /// Unique ID for this step
         /// </summary>
-        private String _stepId;
+        private readonly String _stepId;
 
         /// <summary>
         /// When form is closed this is to make the Task finish so is able to be disposed
@@ -46,9 +46,9 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         private const int LuxThresholdDefault = 20;
         private const int LuxIncrement = 1;
 
-        private int _defaultLux;
+        private readonly int _defaultLux;
 
-        private String _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  <head>\r\n  <style>\r\n    a:link{color: rgb(255, 170, 0);}\r\n  </style>\r\n  " +
+        private readonly String _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  <head>\r\n  <style>\r\n    a:link{color: rgb(255, 170, 0);}\r\n  </style>\r\n  " +
                                     "</head>\r\n  <body style=\"background-color:#232433;\">\r\n    " +
                                     "<p style=\"font-family:'Montserrat Medium'; font-size:24px; color:white; text-align: center;\">\r\n    " +
                                     "Adjust the slider and/or the brightness of your monitor and click Retry. The waveform must match the sample waveform. \r\n" +

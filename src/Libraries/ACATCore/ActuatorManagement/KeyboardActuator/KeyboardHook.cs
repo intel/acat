@@ -145,18 +145,12 @@ namespace ACAT.Lib.Core.InputActuators
             switch (wParam)
             {
                 case KeyboardWParam.WM_SYSKEYDOWN:
-                    if (EvtKeyDown != null)
-                    {
-                        EvtKeyDown(this, args);
-                    }
+                    EvtKeyDown?.Invoke(this, args);
 
                     break;
 
                 case KeyboardWParam.WM_KEYDOWN:
-                    if (EvtKeyDown != null)
-                    {
-                        EvtKeyDown(this, args);
-                    }
+                    EvtKeyDown?.Invoke(this, args);
 
                     if (EvtKeyPress != null)
                     {
@@ -185,10 +179,7 @@ namespace ACAT.Lib.Core.InputActuators
 
                 case KeyboardWParam.WM_SYSKEYUP:
                 case KeyboardWParam.WM_KEYUP:
-                    if (EvtKeyUp != null)
-                    {
-                        EvtKeyUp(this, args);
-                    }
+                    EvtKeyUp?.Invoke(this, args);
 
                     break;
             }

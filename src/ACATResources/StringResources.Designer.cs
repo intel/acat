@@ -218,6 +218,30 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BCI signal quality is an indicator of how good the contact is between the electrodes on the cap and your scalp.
+        ///
+        ///ACAT uses two metrics - “railing” and “impedance” - to check signal quality for each connected electrode. The slider below provides an indication of the overall quality..
+        /// </summary>
+        public static string BCISensorUIUserControlBCISignalCheckDescription {
+            get {
+                return ResourceManager.GetString("BCISensorUIUserControlBCISignalCheckDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Summary of the signal checks per electrode
+        ///
+        ///The signal quality results are a combination of the railing and impedance metrics from the previous tabs
+        ///
+        ///If the quality is red go back to the previous tabs and follow the tips..
+        /// </summary>
+        public static string BCISensorUIUserControlBCISignalQualityResultsInfo {
+            get {
+                return ResourceManager.GetString("BCISensorUIUserControlBCISignalQualityResultsInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Beep On Select.
         /// </summary>
         public static string BeepOnSelect {
@@ -380,7 +404,7 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Calibrate now .
+        ///   Looks up a localized string similar to Calibrate now.
         /// </summary>
         public static string CalibrateNowText {
             get {
@@ -434,7 +458,7 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Calibration in progress. Please focus on the highlighted green target area. .
+        ///   Looks up a localized string similar to Calibration in progress. Please focus on the highlighted green target area..
         /// </summary>
         public static string CalibrationInProgrressPromptText {
             get {
@@ -1325,7 +1349,7 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Number of iterations per target .
+        ///   Looks up a localized string similar to Number of iterations per target.
         /// </summary>
         public static string HintIterationstargetText {
             get {
@@ -1383,7 +1407,7 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Minimum score needed for successful calibration .
+        ///   Looks up a localized string similar to Minimum score needed for successful calibration.
         /// </summary>
         public static string HintMinimumScoreText {
             get {
@@ -1457,7 +1481,7 @@ namespace ACATResources {
         
         /// <summary>
         ///   Looks up a localized string similar to Sentence Mode Calibration:​
-        ///enables selection of medium sized regions on the Main Talk UI. With default values, this calibration takes ~ 2 mins.​.
+        ///enables selection of medium sized regions on the Main Talk UI. With default values, this calibration takes ~ 2 mins..
         /// </summary>
         public static string HintSentenceCalibrationScreenText {
             get {
@@ -3532,6 +3556,42 @@ namespace ACATResources {
         public static string SpeakNow {
             get {
                 return ResourceManager.GetString("SpeakNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initializing...\r\nThis may take a few minutes.
+        /// </summary>
+        public static string SplashScreenInitializing {
+            get {
+                return ResourceManager.GetString("SplashScreenInitializing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;Assistive Context-Aware Toolkit\r\nVersion 2.0.
+        /// </summary>
+        public static string SplashScreenLabelAppNameAndVersion {
+            get {
+                return ResourceManager.GetString("SplashScreenLabelAppNameAndVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Licensed and distributed under the \r\nApache v2.0 license by Intel Corporation.
+        /// </summary>
+        public static string SplashScreenLabelLicense {
+            get {
+                return ResourceManager.GetString("SplashScreenLabelLicense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ACAT.
+        /// </summary>
+        public static string SplashScreenLabelTitle {
+            get {
+                return ResourceManager.GetString("SplashScreenLabelTitle", resourceCulture);
             }
         }
         

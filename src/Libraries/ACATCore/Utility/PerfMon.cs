@@ -21,13 +21,13 @@ namespace ACAT.Lib.Core.Utility
     {
         private const int cpuCounterIterations = 50;
         private const int MB = 1048576;
-        private static PerformanceCounter committedMemCounter;
-        private static PerformanceCounter freeMemCounter;
-        private static PerformanceCounter handleCountCounter;
+        private static readonly PerformanceCounter committedMemCounter;
+        private static readonly PerformanceCounter freeMemCounter;
+        private static readonly PerformanceCounter handleCountCounter;
         private static volatile bool inTimer;
-        private static PerformanceCounter pageFileBytesCounter;
-        private static PerformanceCounter privateBytesCounter;
-        private static PerformanceCounter processorTimeCounter;
+        private static readonly PerformanceCounter pageFileBytesCounter;
+        private static readonly PerformanceCounter privateBytesCounter;
+        private static readonly PerformanceCounter processorTimeCounter;
         private static Timer timer;
         private static bool timerPaused;
         private static bool timerStarted;

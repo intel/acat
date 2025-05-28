@@ -39,7 +39,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <summary>
         /// Main object of the actuator
         /// </summary>
-        private IActuator _bciActuator = null;
+        private readonly IActuator _bciActuator = null;
 
         /// <summary>
         /// Counter for the user to know when the data collection will start (seconds)
@@ -74,7 +74,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <summary>
         /// Current mode for BCI
         /// </summary>
-        BCIMode bCIMode = new BCIMode();
+        readonly BCIMode bCIMode = new BCIMode();
 
         /// <summary>
         /// Flag to set UI 
@@ -319,8 +319,10 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             if (_timer == null)
             {
-                _timer = new Timer();
-                _timer.Interval = 3100;
+                _timer = new Timer
+                {
+                    Interval = 3100
+                };
                 _timer.Tick += Timer_Tick;
             }
             else
@@ -328,8 +330,10 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 
             if (_Countertimer == null)
             {
-                _Countertimer = new Timer();
-                _Countertimer.Interval = 10;
+                _Countertimer = new Timer
+                {
+                    Interval = 10
+                };
                 _Countertimer.Tick += Timer_Tick_Countdown;
             }
             else

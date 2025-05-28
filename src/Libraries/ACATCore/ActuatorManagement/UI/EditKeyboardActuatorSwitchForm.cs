@@ -160,8 +160,7 @@ namespace ACAT.Lib.Core.ActuatorManagement.UI
 
         private void showError(String message)
         {
-
-            bool result = ConfirmBoxOneOption.ShowDialog(message.ToString(), "", StringResources.OK);
+            _ = ConfirmBoxOneOption.ShowDialog(message.ToString(), "", StringResources.OK);
         }
 
         private void textBoxKeyboardShortcut_KeyDown(object sender, KeyEventArgs e)

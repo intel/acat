@@ -181,8 +181,7 @@ namespace ACAT.Lib.Core.AgentManagement
                 foreach (XmlNode node in configNodes)
                 {
                     var strGuid = XmlUtils.GetXMLAttrString(node, "agentId").Trim().ToLower();
-                    Guid guid;
-                    if (Guid.TryParse(strGuid, out guid))
+                    if (Guid.TryParse(strGuid, out Guid guid))
                     {
                         if (agentsTable.ContainsKey(guid))
                         {

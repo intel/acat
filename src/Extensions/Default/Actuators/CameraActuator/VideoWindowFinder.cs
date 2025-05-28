@@ -50,9 +50,8 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 
         public void DockVideoWindow(Form form)
         {
-            User32Interop.RECT rect;
 
-            User32Interop.GetWindowRect(VideoWindowHandle, out rect);
+            User32Interop.GetWindowRect(VideoWindowHandle, out User32Interop.RECT rect);
 
             int width = rect.right - rect.left;
             int height = rect.bottom - rect.top;

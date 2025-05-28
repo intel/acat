@@ -79,7 +79,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// <summary>
         /// Decision of the user (for calibration)
         /// </summary>
-        private volatile BCISimpleParameters _CalibrationParameters = new BCISimpleParameters();
+        private readonly BCISimpleParameters _CalibrationParameters = new BCISimpleParameters();
 
         /// <summary>
         /// Should the scanner be dimmed
@@ -925,11 +925,10 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         {
             float auc = animationSharpManager.GetAUC();
             SoundManager.playSound(SoundManager.SoundType.CaregiverAttention);
-            BCIMenuOptions.MainMenuOptions ConfirmBoxRes = BCIMenuOptions.MainMenuOptions.CalibrateOrShowCalibrationModes;
             try
             {
                 OnPause();
-                ConfirmBoxRes = BCIInterfaceUtils.ShowRecalibrationWindow(this, auc);
+                BCIMenuOptions.MainMenuOptions ConfirmBoxRes = BCIInterfaceUtils.ShowRecalibrationWindow(this, auc);
                 OnResume();
                 switch (ConfirmBoxRes)
                 {

@@ -44,10 +44,7 @@ namespace ACAT.Lib.Extension.Onboarding
             {
                 //MessageBox.Show("Actuator selected: " + actuatorSelected);
                 IOnboardingExtension retVal = actuatorSelected.GetOnboardingExtension();
-                if (retVal != null)
-                {
-                    retVal.Initialize(_wizard);
-                }
+                retVal?.Initialize(_wizard);
                 return retVal;
             }
             /*

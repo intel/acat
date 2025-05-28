@@ -36,7 +36,7 @@ namespace ACAT.Lib.Core.InputActuators
         /// <summary>
         /// IP address to bind to
         /// </summary>
-        private String ipToBind;
+        private readonly String ipToBind;
 
         /// <summary>
         /// The socket listener thread
@@ -46,12 +46,12 @@ namespace ACAT.Lib.Core.InputActuators
         /// <summary>
         /// The parent thread
         /// </summary>
-        private Thread parentThread;
+        private readonly Thread parentThread;
 
         /// <summary>
         /// Port to listen on
         /// </summary>
-        private int portToBind;
+        private readonly int portToBind;
 
         /// <summary>
         /// The tcp listnener object

@@ -32,8 +32,10 @@ namespace ACAT.Lib.Core.Utility
             {
                 if (screen.Primary)
                 {
-                    User32Interop.DEVMODE dm = new User32Interop.DEVMODE();
-                    dm.dmSize = (short)Marshal.SizeOf(typeof(User32Interop.DEVMODE));
+                    User32Interop.DEVMODE dm = new User32Interop.DEVMODE
+                    {
+                        dmSize = (short)Marshal.SizeOf(typeof(User32Interop.DEVMODE))
+                    };
                     User32Interop.EnumDisplaySettings(screen.DeviceName, -1, ref dm);
 
                     var dpiScaling = (uint) Math.Round(DpiScaling.ScaleFactor(null, new Point(0, 0)), 0);
@@ -120,8 +122,7 @@ namespace ACAT.Lib.Core.Utility
                 Windows.RestoreWindow(handle);
             }
 
-            User32Interop.RECT rect;
-            User32Interop.GetWindowRect(handle, out rect);
+            User32Interop.GetWindowRect(handle, out User32Interop.RECT rect);
             User32Interop.MoveWindow(handle, other.WorkingArea.Left, other.WorkingArea.Top, rect.right - rect.left, rect.bottom - rect.top, true);
             User32Interop.ShowWindow(handle.ToInt32(), Windows.ShowWindowFlags.SW_SHOWMAXIMIZED);
         }
@@ -152,8 +153,7 @@ namespace ACAT.Lib.Core.Utility
                 Windows.RestoreWindow(handle);
             }
 
-            User32Interop.RECT rect;
-            User32Interop.GetWindowRect(handle, out rect);
+            User32Interop.GetWindowRect(handle, out User32Interop.RECT rect);
             User32Interop.MoveWindow(handle, other.WorkingArea.Left, other.WorkingArea.Top, rect.right - rect.left, rect.bottom - rect.top, true);
         }
     }

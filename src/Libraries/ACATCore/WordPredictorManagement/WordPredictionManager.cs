@@ -390,15 +390,9 @@ namespace ACAT.Lib.Core.WordPredictionManagement
                 if (disposing)
                 {
                     // dispose all managed resources.
-                    if (_activeWordPredictor != null)
-                    {
-                        _activeWordPredictor.Dispose();
-                    }
+                    _activeWordPredictor?.Dispose();
 
-                    if (_wordPredictors != null)
-                    {
-                        _wordPredictors.Dispose();
-                    }
+                    _wordPredictors?.Dispose();
                 }
 
                 // Release unmanaged resources.

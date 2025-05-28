@@ -23,7 +23,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGUtils
     {
         private const int DefaultBaudRate = 115200;
         private long _error = 0;
-        private string _portName;
+        private readonly string _portName;
         private SerialPort _serialPort;
 
         public SerialComm(String portName)

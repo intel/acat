@@ -95,13 +95,13 @@
             this.tableLayoutPanelMain.ForeColor = System.Drawing.Color.White;
             this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
             // 
-            // label1
+            // initializing
             // 
             this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.tableLayoutPanelMain.SetColumnSpan(this.label1, 9);
-            resources.ApplyResources(this.label1, "label1");
+            resources.ApplyResources(this.label1, "initializing");
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Name = "label1";
+            this.label1.Name = "initializing";
             this.tableLayoutPanelMain.SetRowSpan(this.label1, 2);
             // 
             // numericUpDownHoldTime

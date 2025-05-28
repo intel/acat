@@ -135,17 +135,7 @@ namespace ACAT.Lib.Core.UserControlManagement
         /// <returns>Panel config map object</returns>
         public static UserControlConfigMapEntry GetUserControlConfigMapEntry(Guid guid)
         {
-            var retVal = getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.Name, guid);
-            if (retVal == null)
-            {
-                retVal = getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, guid);
-            }
-
-            if (retVal == null)
-            {
-                retVal = getCultureConfigMapEntry(DefaultCulture, guid);
-            }
-
+            var retVal = (getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.Name, guid) ?? getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, guid)) ?? getCultureConfigMapEntry(DefaultCulture, guid);
             return retVal;
         }
 
@@ -158,17 +148,7 @@ namespace ACAT.Lib.Core.UserControlManagement
         /// <returns>Panel config map object</returns>
         public static UserControlConfigMapEntry GetUserControlConfigMapEntry(String name)
         {
-            var retVal = getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.Name, name);
-            if (retVal == null)
-            {
-                retVal = getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, name);
-            }
-
-            if (retVal == null)
-            {
-                retVal = getCultureConfigMapEntry(DefaultCulture, name);
-            }
-
+            var retVal = (getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.Name, name) ?? getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, name)) ?? getCultureConfigMapEntry(DefaultCulture, name);
             return retVal;
         }
 

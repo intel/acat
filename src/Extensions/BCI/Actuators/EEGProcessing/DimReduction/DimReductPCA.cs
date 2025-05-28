@@ -193,7 +193,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         {
             int numTrials = inputData.Count();
             int numChannels = inputData[0].GetLength(1);
-            reducedData = new List<double[]>();
+            _ = new List<double[]>();
             double[][] matrixReducedData = new double[numTrials][];
 
             for (int channelIdx = 0; channelIdx < numChannels; channelIdx++)

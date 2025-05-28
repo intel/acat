@@ -28,16 +28,15 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// </summary>
         private readonly String LogFileFullPathEEG;
 
-        private List<String> logEntries = new List<string>();
+        private readonly List<String> logEntries = new List<string>();
 
         /// <summary>
         /// Name of the audit log file
         /// </summary>
-        private string LogFileName;
+        private readonly string LogFileName;
 
         public CachedLogBCI(string baseFileName, string baseDirPath = null)
         {
-            string logFileFolder = string.Empty;
             if (!String.IsNullOrEmpty(baseFileName))
             {
                 LogFileName = baseFileName + ".csv";
@@ -47,7 +46,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 LogFileName = "CachedLog.csv";
             }
 
-            logFileFolder = CreateDefaulLogPath(baseFileName);
+            string logFileFolder = CreateDefaulLogPath(baseFileName);
             LogFileFullPath = Path.Combine(logFileFolder, Path.GetFileNameWithoutExtension(LogFileName) + CoreGlobals.LogFileSuffix + Path.GetExtension(LogFileName));
             if (!String.IsNullOrEmpty(baseDirPath) && Directory.Exists(baseDirPath))
             {

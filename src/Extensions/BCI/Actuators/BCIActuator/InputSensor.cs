@@ -104,10 +104,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <param name="gesture">type of gesture detected</param>
         private void notifySensorActivate(string gesture)
         {
-            if (EvtSwitchActivate != null)
-            {
-                EvtSwitchActivate(this, new InputSensorSwitchEventArgs(gesture));
-            }
+            EvtSwitchActivate?.Invoke(this, new InputSensorSwitchEventArgs(gesture));
         }
 
         /// <summary>
@@ -119,10 +116,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <param name="gesture">type of gesture detected</param>
         private void notifySensorDeactivate(string gesture)
         {
-            if (EvtSwitchDeactivate != null)
-            {
-                EvtSwitchDeactivate(this, new InputSensorSwitchEventArgs(gesture));
-            }
+            EvtSwitchDeactivate?.Invoke(this, new InputSensorSwitchEventArgs(gesture));
         }
 
         /// <summary>
@@ -134,10 +128,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <param name="gesture">type of gesture detected</param>
         private void notifySensorTrigger(string gesture)
         {
-            if (EvtSwitchTrigger != null)
-            {
-                EvtSwitchTrigger(this, new InputSensorSwitchEventArgs(gesture));
-            }
+            EvtSwitchTrigger?.Invoke(this, new InputSensorSwitchEventArgs(gesture));
         }
     }
 }

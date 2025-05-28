@@ -697,15 +697,9 @@ namespace ACAT.Lib.Extension
 
                 if (String.IsNullOrEmpty(nwords) && String.IsNullOrEmpty(wordAtCaret))
                 {
-                    if (_currentWordWidget != null)
-                    {
-                        _currentWordWidget.SetCurrentWord(String.Empty);
-                    }
+                    _currentWordWidget?.SetCurrentWord(String.Empty);
 
-                    if (_wordListWidgetWidget != null)
-                    {
-                        _wordListWidgetWidget.ClearEntries();
-                    }
+                    _wordListWidgetWidget?.ClearEntries();
 
                     nwords = " ";
                     wordAtCaret = String.Empty;

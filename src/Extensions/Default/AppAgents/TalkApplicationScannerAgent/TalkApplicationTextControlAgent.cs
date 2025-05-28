@@ -22,7 +22,7 @@ namespace ACAT.Extensions.Default.AppAgents.TalkApplicationScannerAgent
 {
     internal class TalkApplicationTextControlAgent : EditTextControlAgent
     {
-        private Control _textControl;
+        private readonly Control _textControl;
 
         public TalkApplicationTextControlAgent(Control textControl, IntPtr handle, AutomationElement editControlElement, ref bool handled) :
             base(handle, editControlElement, ref handled)

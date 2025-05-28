@@ -41,9 +41,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             while (n > 1)
             {
                 int k = rng.Next(n--);
-                T temp = array[n];
-                array[n] = array[k];
-                array[k] = temp;
+                (array[k], array[n]) = (array[n], array[k]);
             }
         }
 

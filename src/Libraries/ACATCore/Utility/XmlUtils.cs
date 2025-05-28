@@ -73,8 +73,7 @@ namespace ACAT.Lib.Core.Utility
         /// <returns>the integer value</returns>
         public static int GetXMLAttrInt(XmlNode node, string attrName, int defaultValue)
         {
-            int retVal = defaultValue;
-
+            int retVal;
             try
             {
                 XmlAttribute attr = node.Attributes[attrName];
@@ -156,7 +155,7 @@ namespace ACAT.Lib.Core.Utility
             {
                 Log.Exception(e);
                 retVal = false;
-                obj = default(T);
+                obj = default;
             }
 
             return retVal;
@@ -170,7 +169,7 @@ namespace ACAT.Lib.Core.Utility
         /// <returns>object</returns>
         public static T XmlFileLoad<T>(string filename)
         {
-            T retVal = default(T);
+            T retVal = default;
 
             try
             {
@@ -194,7 +193,7 @@ namespace ACAT.Lib.Core.Utility
             }
             catch (Exception e)
             {
-                retVal = default(T);
+                retVal = default;
                 Log.Info("Error.  FileName: " + filename + ". Error: " + e.ToString());
             }
 

@@ -119,7 +119,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         private ScannerStatusBar _scannerStatusBar;
 
-        private UserControlManager _userControlManager;
+        private readonly UserControlManager _userControlManager;
 
         /// <summary>
         /// The widget manager object.  Maintains a list of all
@@ -826,10 +826,7 @@ namespace ACAT.Lib.Core.PanelManagement
                     _windowOverlapWatchdog?.Dispose();
 
                     // dispose all managed resources.
-                    if (_widgetManager != null)
-                    {
-                        _widgetManager.Dispose();
-                    }
+                    _widgetManager?.Dispose();
 
                     if (_idleTimer != null)
                     {
@@ -837,10 +834,7 @@ namespace ACAT.Lib.Core.PanelManagement
                         _idleTimer.Dispose();
                     }
 
-                    if (_animationManager != null)
-                    {
-                        _animationManager.Dispose();
-                    }
+                    _animationManager?.Dispose();
                 }
 
                 // Release unmanaged resources.
@@ -1452,10 +1446,7 @@ namespace ACAT.Lib.Core.PanelManagement
         private void runCommandScanner(String command, ref bool handled)
         {
             var dispatcher = _scannerPanel.CommandDispatcher;
-            if (dispatcher != null)
-            {
-                dispatcher.Dispatch(command, ref handled);
-            }
+            dispatcher?.Dispatch(command, ref handled);
         }
 
         /// <summary>

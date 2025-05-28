@@ -45,7 +45,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <summary>
         /// Word predictor object
         /// </summary>
-        private ConvAssistWordPredictor WordPredictor;
+        private readonly ConvAssistWordPredictor WordPredictor;
 
         public WordPredictionsRequestHandler(ConvAssistWordPredictor wordPredictor)
         {
@@ -64,9 +64,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         public WordPredictionResponse ProcessPredictionRequest(WordPredictionRequest request)
         {
             Log.Debug("Predict for: " + request.PrevWords + " " + request.CurrentWord);
-            string[] prediction = { "" };
-            var result = new List<string>();
-            WordPredictionResponse response = null;
             StringBuilder preceedingWords = new StringBuilder();
 
             if (request.PredictionType != PredictionTypes.Words)
@@ -74,6 +71,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 return new WordPredictionResponse(request, new List<String>(), false);
             }
 
+            WordPredictionResponse response;
             try
             {
                 if (_prevMode != WordPredictor.GetMode() ||
@@ -100,7 +98,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                     preceedingWords.Clear();
                     preceedingWords.Append(prevWords);
                     preceedingWords.Append(currentWord);
-
+                    List<string> result;
                     try
                     {
                         Log.Debug("ConvAssist Mode: " + request.WordPredictionMode);

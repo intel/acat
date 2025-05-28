@@ -406,10 +406,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         public void OnError(IActuator source, String message, bool enableConfigure = true)
         {
             var aex = _actuators.find(source);
-            if (aex != null)
-            {
-                aex.OnError(message, enableConfigure);
-            }
+            aex?.OnError(message, enableConfigure);
         }
 
         /// <summary>
@@ -421,19 +418,13 @@ namespace ACAT.Lib.Core.ActuatorManagement
         public void OnInitDone(IActuator source, bool success = true)
         {
             var aex = _actuators.find(source);
-            if (aex != null)
-            {
-                aex.OnInitDone(success);
-            }
+            aex?.OnInitDone(success);
         }
 
         public void OnPostInitDone(IActuator source, bool success = true)
         {
             var aex = _actuators.find(source);
-            if (aex != null)
-            {
-                aex.OnPostInitDone(success);
-            }
+            aex?.OnPostInitDone(success);
         }
 
 
@@ -546,7 +537,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             }
 
             var list = new List<PreferencesCategory>();
-            var keyboardActuator = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
+            _ = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
 
             foreach (var actuator in _actuators.ActuatorList)
             {
@@ -1182,10 +1173,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="switchObj">The switch that caused the trigger</param>
         private void notifySwitchAccepted(IActuatorSwitch switchObj)
         {
-            if (EvtSwitchAccepted != null)
-            {
-                EvtSwitchAccepted(this, new ActuatorSwitchEventArgs(switchObj));
-            }
+            EvtSwitchAccepted?.Invoke(this, new ActuatorSwitchEventArgs(switchObj));
         }
 
         /// <summary>
@@ -1217,10 +1205,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="switchObj">The switch that caused the trigger</param>
         private void notifySwitchDown(IActuatorSwitch switchObj)
         {
-            if (EvtSwitchDown != null)
-            {
-                EvtSwitchDown(this, new ActuatorSwitchEventArgs(switchObj));
-            }
+            EvtSwitchDown?.Invoke(this, new ActuatorSwitchEventArgs(switchObj));
         }
 
         /// <summary>
@@ -1262,10 +1247,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="switchObj">The switch that caused the trigger</param>
         private void notifySwitchRejected(IActuatorSwitch switchObj)
         {
-            if (EvtSwitchRejected != null)
-            {
-                EvtSwitchRejected(this, new ActuatorSwitchEventArgs(switchObj));
-            }
+            EvtSwitchRejected?.Invoke(this, new ActuatorSwitchEventArgs(switchObj));
         }
 
         /// <summary>
@@ -1274,10 +1256,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="switchObj">The switch that caused the trigger</param>
         private void notifySwitchUp(IActuatorSwitch switchObj)
         {
-            if (EvtSwitchUp != null)
-            {
-                EvtSwitchUp(this, new ActuatorSwitchEventArgs(switchObj));
-            }
+            EvtSwitchUp?.Invoke(this, new ActuatorSwitchEventArgs(switchObj));
         }
     }
 }

@@ -39,10 +39,12 @@ namespace ACAT.Lib.Core.PanelManagement
 
         public static bool ShowDialog(String prompt, String decisionPrompt, Form parent = null, bool displayCheckBox = false)
         {
-            var confirmBox = new ConfirmBoxLargeSingleOption();
-            confirmBox.Prompt = prompt;
-            confirmBox.DecisionPrompt = decisionPrompt;
-            confirmBox.DisplayCheckBox = displayCheckBox;
+            var confirmBox = new ConfirmBoxLargeSingleOption
+            {
+                Prompt = prompt,
+                DecisionPrompt = decisionPrompt,
+                DisplayCheckBox = displayCheckBox
+            };
             confirmBox.checkBoxDontShowThisMessage.Text = StringResources.dontShowMessage;
 
             confirmBox.ShowDialog(parent);

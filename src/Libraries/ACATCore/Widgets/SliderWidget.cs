@@ -50,10 +50,7 @@ namespace ACAT.Lib.Core.Widgets
         /// <param name="units">conversion units</param>
         public static void SetState(this SliderWidget sliderWidget, int sliderPosition, decimal units)
         {
-            if (sliderWidget != null)
-            {
-                sliderWidget.SetSliderValue(sliderPosition, 1 / units);
-            }
+            sliderWidget?.SetSliderValue(sliderPosition, 1 / units);
         }
     }
 

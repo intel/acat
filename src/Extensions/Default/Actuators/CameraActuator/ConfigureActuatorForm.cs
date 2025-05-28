@@ -36,9 +36,9 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         private const String textSelectCamera = "Practice the selected gestures a few times.\n\nACAT will indicate below if it detects a successful gesture.\n\nClick on Settings to adjust gesture sensitivity and hold times";
         // TODO - Localize Me
         private const String textSetParameters = "1. Adjust settings.\n2. Click on Apply Changes\n3. Test your gestures until you’re comfortable with the settings.\n\nACAT will indicate below if it detects a successful gesture";
-        private Color _buttonBackColor;
+        private readonly Color _buttonBackColor;
         private bool _gestureDetectedAtleastOnce = false;
-        private CameraActuator _cameraActuator;
+        private readonly CameraActuator _cameraActuator;
         private int _gestureCount = 0;
         private Mode _mode = Mode.SelectCamera;
         private SampleImageForm _sampleImageForm = null;
@@ -151,7 +151,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 
         private void _webcamGestureSelectUserControl_EvtGestureSelected(bool cheekTwitch, bool eyebrowRaise)
         {
-            var switches = _cameraActuator.Switches;
+            _ = _cameraActuator.Switches;
 
             if (cheekTwitch && eyebrowRaise)
             {
@@ -300,12 +300,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 
             setControlsEnable(false);
 
-            var form = Context.AppPanelManager.GetCurrentForm() as Form;
-            if (form == null)
-            {
-                form = this;
-            }
-
+            var form = Context.AppPanelManager.GetCurrentForm() as Form ?? this;
             try
             {
                 form.Invoke(new MethodInvoker(delegate
@@ -446,7 +441,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 
         private void setControlsEnable(bool enable, bool isCalibrating = false)
         {
-            var buttonEnable = (isCalibrating) ? false : enable;
+            var buttonEnable = !isCalibrating && enable;
 
             //Windows.SetEnabled(buttonDone, buttonEnable);
 

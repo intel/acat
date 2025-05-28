@@ -89,14 +89,13 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         public IntPtr DuplicateHandle(IntPtr sourceHandle)
         {
-            IntPtr newHandle;
 
             IntPtr currentProcess = DllImports.GetCurrentProcess();
             bool result = DllImports.DuplicateHandle(
                                     currentProcess,
                                     sourceHandle,
                                     currentProcess,
-                                    out newHandle,
+                                    out IntPtr newHandle,
                                     0,
                                     false,
                                     DllImports.DUPLICATE_SAME_ACCESS);

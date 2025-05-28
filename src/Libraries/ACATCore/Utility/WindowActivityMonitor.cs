@@ -212,9 +212,8 @@ namespace ACAT.Lib.Core.Utility
         [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
         public static Process GetProcessForWindow(IntPtr hwnd)
         {
-            int pid;
 
-            User32Interop.GetWindowThreadProcessId(hwnd, out pid);
+            User32Interop.GetWindowThreadProcessId(hwnd, out int pid);
 
             return Process.GetProcessById(pid);
         }
@@ -287,10 +286,7 @@ namespace ACAT.Lib.Core.Utility
                 _form.Invoke(new MethodInvoker(delegate
                 {
 
-                    if (_timer != null)
-                    {
-                        _timer.Start();
-                    }
+                    _timer?.Start();
                 }));
             }
             catch (Exception ex)
@@ -307,8 +303,10 @@ namespace ACAT.Lib.Core.Utility
         {
             if (_form == null)
             {
-                _form = new Form();
-                _form.Visible = false;
+                _form = new Form
+                {
+                    Visible = false
+                };
                 _form.Show();
                 _form.Visible = false;
             }

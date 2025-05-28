@@ -20,9 +20,9 @@ namespace ACAT.Lib.Core.Utility
         /// <summary>
         /// Paths of the browsers exe
         /// </summary>
-        private static string _chromeBrowserPath = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
+        private static readonly string _chromeBrowserPath = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
 
-        private static string _edgeBrowserPath = @"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe";
+        private static readonly string _edgeBrowserPath = @"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe";
 
         //private static string _firefoxBrowserPath = @"C:\Program Files\Mozilla Firefox\firefox.exe"; // Uncomment if would be used
 
@@ -132,8 +132,8 @@ namespace ACAT.Lib.Core.Utility
                     {
                         FileName = _edgeBrowserPath,
                         Arguments = $"\"{tempFilePathLogs}\"",
+                        WorkingDirectory = Path.GetDirectoryName(tempFilePathLogs)
                     };
-                    processStartInfo.WorkingDirectory = Path.GetDirectoryName(tempFilePathLogs);
                     Process.Start(processStartInfo);
 
                     // Code to open Html local files using Firefox
@@ -151,8 +151,8 @@ namespace ACAT.Lib.Core.Utility
                     {
                         FileName = _chromeBrowserPath,
                         Arguments = $"/c \"{tempFilePathLogs}\"",
+                        WorkingDirectory = Path.GetDirectoryName(tempFilePathLogs)
                     };
-                    processStartInfo.WorkingDirectory = Path.GetDirectoryName(tempFilePathLogs);
                     Process.Start(processStartInfo);
                 }
                 else
@@ -161,8 +161,8 @@ namespace ACAT.Lib.Core.Utility
                     var processStartInfo = new ProcessStartInfo
                     {
                         FileName = tempFilePathLogs,
+                        WorkingDirectory = Path.GetDirectoryName(tempFilePathLogs)
                     };
-                    processStartInfo.WorkingDirectory = Path.GetDirectoryName(tempFilePathLogs);
                     Process.Start(processStartInfo);
                 }
             }

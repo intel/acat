@@ -282,18 +282,14 @@ namespace ACAT.Lib.Core.TTSManagement
         /// <returns>true on success</returns>
         public bool SetActiveEngine(CultureInfo ci = null)
         {
-            bool retVal = true;
-            Guid guid = Guid.Empty;
-            Guid cultureNeutralGuid = Guid.Empty;
-
             if (ci == null)
             {
                 ci = CultureInfo.DefaultThreadCurrentUICulture;
             }
 
-            guid = _ttsEngines.GetPreferredOrDefaultByCulture(ci);
-            cultureNeutralGuid = _ttsEngines.GetPreferredOrDefaultByCulture(null);
-
+            Guid guid = _ttsEngines.GetPreferredOrDefaultByCulture(ci);
+            Guid cultureNeutralGuid = _ttsEngines.GetPreferredOrDefaultByCulture(null);
+            bool retVal;
             if (!Equals(guid, Guid.Empty))  // found something for the specific culture
             {
                 var type = _ttsEngines.Lookup(guid);
@@ -387,15 +383,9 @@ namespace ACAT.Lib.Core.TTSManagement
                 if (disposing)
                 {
                     // dispose all managed resources.
-                    if (ActiveEngine != null)
-                    {
-                        ActiveEngine.Dispose();
-                    }
+                    ActiveEngine?.Dispose();
 
-                    if (_ttsEngines != null)
-                    {
-                        _ttsEngines.Dispose();
-                    }
+                    _ttsEngines?.Dispose();
                 }
 
                 // Release unmanaged resources.
@@ -451,10 +441,7 @@ namespace ACAT.Lib.Core.TTSManagement
         /// <param name="newEngine">the newly activated engine</param>
         private void notifyEngineChanged(ITTSEngine oldEngine, ITTSEngine newEngine)
         {
-            if (EvtEngineChanged != null)
-            {
-                EvtEngineChanged(oldEngine, newEngine);
-            }
+            EvtEngineChanged?.Invoke(oldEngine, newEngine);
         }
 
         /// <summary>

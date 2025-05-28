@@ -768,16 +768,10 @@ namespace ACAT.Lib.Core.PanelManagement
                 {
                     Context.AppPanelManager.EvtDisplaySettingsChanged -= AppPanelManager_EvtDisplaySettingsChanged;
 
-                    if (_windowOverlapWatchdog != null)
-                    {
-                        _windowOverlapWatchdog.Dispose();
-                    }
+                    _windowOverlapWatchdog?.Dispose();
 
                     // dispose all managed resources.
-                    if (_widgetManager != null)
-                    {
-                        _widgetManager.Dispose();
-                    }
+                    _widgetManager?.Dispose();
 
                     if (_idleTimer != null)
                     {
@@ -785,10 +779,7 @@ namespace ACAT.Lib.Core.PanelManagement
                         _idleTimer.Dispose();
                     }
 
-                    if (_animationManager != null)
-                    {
-                        _animationManager.Dispose();
-                    }
+                    _animationManager?.Dispose();
                 }
 
                 // Release unmanaged resources.
@@ -1400,10 +1391,7 @@ namespace ACAT.Lib.Core.PanelManagement
         private void runCommandScanner(String command, ref bool handled)
         {
             var dispatcher = _scannerPanel.CommandDispatcher;
-            if (dispatcher != null)
-            {
-                dispatcher.Dispatch(command, ref handled);
-            }
+            dispatcher?.Dispatch(command, ref handled);
         }
 
         /// <summary>

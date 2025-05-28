@@ -15,7 +15,7 @@ namespace ACAT.Lib.Core.Utility
     /// </summary>
     public static class DataDictionary
     {
-        private static Dictionary<object, object> _dictionary = new Dictionary<object, object>();
+        private static readonly Dictionary<object, object> _dictionary = new Dictionary<object, object>();
 
         public static bool Add(object name, object value, bool replaceIfExists = false)
         {

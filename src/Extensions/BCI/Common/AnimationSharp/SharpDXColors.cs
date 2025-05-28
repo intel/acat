@@ -63,7 +63,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
 
         public SolidColorBrush SolidColorWhite;
 
-        private RenderTarget SharpDX_d2dRenderTarget;
+        private readonly RenderTarget SharpDX_d2dRenderTarget;
         public SharpDXColors(RenderTarget sharpDX_d2dRenderTarget) 
         {
             SharpDX_d2dRenderTarget = sharpDX_d2dRenderTarget;

@@ -55,7 +55,7 @@ namespace ACAT.Lib.Core.Utility
         /// <summary>
         /// Name of the log file
         /// </summary>
-        private static string LogFileName = "ACATLog.txt";
+        private static readonly string LogFileName = "ACATLog.txt";
 
         /// <summary>
         /// Full path to the log file in which the debug messages are stored

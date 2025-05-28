@@ -376,10 +376,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <param name="e">event args</param>
         protected void notifyAgentClose(AgentCloseEventArgs e)
         {
-            if (EvtAgentClose != null)
-            {
-                EvtAgentClose(this, e);
-            }
+            EvtAgentClose?.Invoke(this, e);
         }
 
         /// <summary>
@@ -416,10 +413,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <param name="arg">event arg</param>
         protected void showPanel(object sender, PanelRequestEventArgs arg)
         {
-            if (EvtPanelRequest != null)
-            {
-                EvtPanelRequest.Invoke(this, arg);
-            }
+            EvtPanelRequest?.Invoke(this, arg);
         }
 
         /// <summary>
@@ -430,10 +424,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <param name="textInterface">text agent</param>
         protected void triggerTextChanged(ITextControlAgent textInterface)
         {
-            if (EvtTextChanged != null)
-            {
-                EvtTextChanged(this, new TextChangedEventArgs(textInterface));
-            }
+            EvtTextChanged?.Invoke(this, new TextChangedEventArgs(textInterface));
         }
 
         /// <summary>
@@ -444,10 +435,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <param name="textInterface">text agent</param>
         protected void triggerTextChangedAsync(ITextControlAgent textInterface)
         {
-            if (EvtTextChanged != null)
-            {
-                EvtTextChanged.BeginInvoke(this, new TextChangedEventArgs(textInterface), null, null);
-            }
+            EvtTextChanged?.BeginInvoke(this, new TextChangedEventArgs(textInterface), null, null);
         }
 
         /// <summary>
@@ -462,10 +450,7 @@ namespace ACAT.Lib.Core.AgentManagement
 
                 if (disposing)
                 {
-                    if (_nullTextInterface != null)
-                    {
-                        _nullTextInterface.Dispose();
-                    }
+                    _nullTextInterface?.Dispose();
 
                     OnDispose();
                 }

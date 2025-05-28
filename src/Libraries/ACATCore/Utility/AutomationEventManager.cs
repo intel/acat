@@ -656,8 +656,10 @@ namespace ACAT.Lib.Core.Utility
                         Log.Debug("Adding property changed event " + property.ProgrammaticName +
                                         ".  AutomationID: " + (element.Current.AutomationId ?? "none"));
 
-                        var eventHandlerList = new List<AutomationPropertyChangedEventHandler>();
-                        eventHandlerList.Add(eventHandler);
+                        var eventHandlerList = new List<AutomationPropertyChangedEventHandler>
+                        {
+                            eventHandler
+                        };
                         events.Add(property, eventHandlerList);
                     }
                     else

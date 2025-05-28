@@ -29,8 +29,10 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGUtils
         {
             using (Stream stream = File.Open(filePath, FileMode.Open))
             {
-                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                binaryFormatter.Binder = new PreMergeToMergedDeserializationBinder();
+                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+                {
+                    Binder = new PreMergeToMergedDeserializationBinder()
+                };
 
                 return (T)binaryFormatter.Deserialize(stream);
             }
@@ -49,8 +51,10 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGUtils
         {
             using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
             {
-                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                binaryFormatter.Binder = new PreMergeToMergedDeserializationBinder();
+                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+                {
+                    Binder = new PreMergeToMergedDeserializationBinder()
+                };
                 binaryFormatter.Serialize(stream, objectToWrite);
             }
         }
@@ -64,14 +68,13 @@ internal sealed class PreMergeToMergedDeserializationBinder : SerializationBinde
 {
     public override Type BindToType(string assemblyName, string typeName)
     {
-        Type typeToDeserialize = null;
         string currentAssemblyInfo = Assembly.GetExecutingAssembly().FullName;
 
         //my modification
         string currentAssemblyName = currentAssemblyInfo.Split(',')[0];
         if (assemblyName.StartsWith(currentAssemblyName)) assemblyName = currentAssemblyInfo;
 
-        typeToDeserialize = Type.GetType(string.Format("{0}, {1}", typeName, assemblyName));
+        Type typeToDeserialize = Type.GetType(string.Format("{0}, {1}", typeName, assemblyName));
         return typeToDeserialize;
     }
 }

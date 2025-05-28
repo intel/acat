@@ -42,7 +42,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <summary>
         /// Buttons states
         /// </summary>
-        private Dictionary<ScannerRoundedButtonControl, CalibrationModeControls> _ButtonsState = new Dictionary<ScannerRoundedButtonControl, CalibrationModeControls>();
+        private readonly Dictionary<ScannerRoundedButtonControl, CalibrationModeControls> _ButtonsState = new Dictionary<ScannerRoundedButtonControl, CalibrationModeControls>();
 
         /// <summary>
         /// Mode selected when paramaters show
@@ -69,7 +69,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// </summary>
         private Tuple<BCIMenuOptions.Options, BCISimpleParameters> OptionResult;
 
-        private Screen primaryScreen = Screen.PrimaryScreen;
+        private readonly Screen primaryScreen = Screen.PrimaryScreen;
 
         /// <summary>
         /// Confirm Box with multiple results
@@ -152,10 +152,11 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         private void ButtonCalibrate_Click(object sender, EventArgs e)
         {
             Log.Debug("BCI LOG | Mode Selected: " + _scanSectionsSelected);
-            BCISimpleParameters parameters = new BCISimpleParameters();
+            _ = new BCISimpleParameters();
             try
             {
                 ScannerRoundedButtonControl scannerRoundedButtonControl = (ScannerRoundedButtonControl)sender;
+                BCISimpleParameters parameters;
                 switch (scannerRoundedButtonControl.Name)
                 {
                     case var _ when scannerRoundedButtonControl.Name.Contains("Box"):

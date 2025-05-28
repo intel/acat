@@ -39,10 +39,7 @@ namespace ACAT.Lib.Core.Widgets
         /// <param name="state">the state to set to</param>
         public static void SetState(this CheckBoxWidget widget, Boolean state)
         {
-            if (widget != null)
-            {
-                widget.SetToggleState(state);
-            }
+            widget?.SetToggleState(state);
         }
     }
 

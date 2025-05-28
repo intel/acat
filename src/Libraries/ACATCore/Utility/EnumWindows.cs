@@ -215,8 +215,7 @@ namespace ACAT.Lib.Core.Utility
 
             if (_excludeThisProcess)
             {
-                uint pid = 0;
-                User32Interop.GetWindowThreadProcessId(winHandle, out pid);
+                User32Interop.GetWindowThreadProcessId(winHandle, out uint pid);
 
                 if (pid == 0 || pid == _currentProcess.Id)
                 {

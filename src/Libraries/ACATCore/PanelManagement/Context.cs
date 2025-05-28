@@ -263,64 +263,40 @@ namespace ACAT.Lib.Core.PanelManagement
 
             if (!isEnabled(StartupFlags.NoActuator))
             {
-                if (AppActuatorManager != null)
-                {
-                    AppActuatorManager.Dispose();
-                }
+                AppActuatorManager?.Dispose();
             }
 
             if (!isEnabled(StartupFlags.NoUI))
             {
-                if (AppPanelManager != null)
-                {
-                    AppPanelManager.Dispose();
-                }
+                AppPanelManager?.Dispose();
             }
 
             if (isEnabled(StartupFlags.WordPrediction))
             {
-                if (AppWordPredictionManager != null)
-                {
-                    AppWordPredictionManager.Dispose();
-                }
+                AppWordPredictionManager?.Dispose();
             }
 
             if (isEnabled(StartupFlags.TextToSpeech))
             {
-                if (AppTTSManager != null)
-                {
-                    AppTTSManager.Dispose();
-                }
+                AppTTSManager?.Dispose();
             }
 
             if (isEnabled(StartupFlags.SpellChecker))
             {
-                if (AppSpellCheckManager != null)
-                {
-                    AppSpellCheckManager.Dispose();
-                }
+                AppSpellCheckManager?.Dispose();
             }
 
             if (isEnabled(StartupFlags.Abbreviations))
             {
-                if (AppAbbreviationsManager != null)
-                {
-                    AppAbbreviationsManager.Dispose();
-                }
+                AppAbbreviationsManager?.Dispose();
             }
 
             if (isEnabled(StartupFlags.AgentManager))
             {
-                if (AppAgentMgr != null)
-                {
-                    AppAgentMgr.Dispose();
-                }
+                AppAgentMgr?.Dispose();
             }
 
-            if (AppAutomationEventManger != null)
-            {
-                AppAutomationEventManger.Dispose();
-            }
+            AppAutomationEventManger?.Dispose();
 
             WindowActivityMonitor.Dispose();
         }

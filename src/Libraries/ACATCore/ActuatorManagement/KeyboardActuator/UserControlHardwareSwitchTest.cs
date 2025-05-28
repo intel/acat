@@ -38,17 +38,17 @@ namespace ACAT.Lib.Core.InputActuators
         private const int switchActivationDelay = 300;
         private const String textStyle = "font-family:'Montserrat Medium'; font-size:24px; color:white; text-align:center";
         private int _acceptTime = 0;
-        private Stopwatch _acceptTimer;
-        private Image _buttonActuatedImage;
-        private Image _buttonDefaultImage;
+        private readonly Stopwatch _acceptTimer;
+        private readonly Image _buttonActuatedImage;
+        private readonly Image _buttonDefaultImage;
         private bool _hotkeyActive = false;
-        private String _htmlTemplate = "<!DOCTYPE html><html><head><style>{0}</style></head><body style=\"{1}\"><p style=\"{2}\">{3}<font></body></html>";
+        private readonly String _htmlTemplate = "<!DOCTYPE html><html><head><style>{0}</style></head><body style=\"{1}\"><p style=\"{2}\">{3}<font></body></html>";
         private KeyboardHook _keyboardHook;
-        private IOnboardingExtension _onboardingExtension;
-        private String _stepId;
+        private readonly IOnboardingExtension _onboardingExtension;
+        private readonly String _stepId;
         private String _strTriggerHotkey;
         private bool _switchTested = false;
-        private OnboardingHardwareSwitchSetup.SwitchType _switchType;
+        private readonly OnboardingHardwareSwitchSetup.SwitchType _switchType;
 
         const int minHoldTimeMaxValue = 2000;
 

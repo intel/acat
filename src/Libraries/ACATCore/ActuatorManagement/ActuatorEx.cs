@@ -70,9 +70,9 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <summary>
         /// Has initialization completed?
         /// </summary>
-        private ManualResetEvent initDoneEvent = new ManualResetEvent(false);
+        private readonly ManualResetEvent initDoneEvent = new ManualResetEvent(false);
 
-        private ManualResetEvent postInitDoneEvent = new ManualResetEvent(false);
+        private readonly ManualResetEvent postInitDoneEvent = new ManualResetEvent(false);
 
         /// <summary>
         /// Initializes an instance of the class
@@ -353,10 +353,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         private void hideCalibrationForm()
         {
-            if (calibrationForm != null)
-            {
-                calibrationForm.Hide();
-            }
+            calibrationForm?.Hide();
         }
 
         /// <summary>

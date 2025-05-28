@@ -192,10 +192,7 @@ namespace ACAT.Lib.Core.ThemeManagement
             var theme = Theme.Create(name, themeDir, themeFile);
             if (theme != null)
             {
-                if (_activeTheme != null)
-                {
-                    _activeTheme.Dispose();
-                }
+                _activeTheme?.Dispose();
 
                 _activeTheme = theme;
                 ActiveThemeName = name;
@@ -223,15 +220,9 @@ namespace ACAT.Lib.Core.ThemeManagement
 
                 if (disposing)
                 {
-                    if (DefaultTheme != null)
-                    {
-                        DefaultTheme.Dispose();
-                    }
+                    DefaultTheme?.Dispose();
 
-                    if (_activeTheme != null)
-                    {
-                        _activeTheme.Dispose();
-                    }
+                    _activeTheme?.Dispose();
                 }
 
                 // Release unmanaged resources.

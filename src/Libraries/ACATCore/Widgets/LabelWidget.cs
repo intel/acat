@@ -258,10 +258,7 @@ namespace ACAT.Lib.Core.Widgets
                 UIControl.MouseUp -= uiControl_MouseUp;
             }
 
-            if (_font != null)
-            {
-                _font.Dispose();
-            }
+            _font?.Dispose();
 
             _fontFamily = null;
         }

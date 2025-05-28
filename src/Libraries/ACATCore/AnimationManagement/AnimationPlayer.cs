@@ -153,7 +153,7 @@ namespace ACAT.Lib.Core.AnimationManagement
 
         private ManualScanModes _prevManualScanMode = ManualScanModes.None;
 
-        private System.Diagnostics.Stopwatch _stopwatch;
+        private readonly System.Diagnostics.Stopwatch _stopwatch;
 
         /// <summary>
         /// Timer used for animation
@@ -310,10 +310,7 @@ namespace ACAT.Lib.Core.AnimationManagement
                 }
             }
 
-            if (defaultHome != null)
-            {
-                defaultHome.HighlightOn();
-            }
+            defaultHome?.HighlightOn();
 
             if (!_manualScanPath.Contains(defaultHome))
             {
@@ -366,9 +363,9 @@ namespace ACAT.Lib.Core.AnimationManagement
             {
                 HighlightDefaultHome();
             }
-            else if (widget != null)
+            else
             {
-                widget.HighlightOn();
+                widget?.HighlightOn();
             }
         }
 
@@ -476,10 +473,7 @@ namespace ACAT.Lib.Core.AnimationManagement
 
                 _lastIteration = false;
 
-                if (_timer != null)
-                {
-                    _timer.Stop();
-                }
+                _timer?.Stop();
 
                 if (animation != null)
                 {
@@ -501,10 +495,7 @@ namespace ACAT.Lib.Core.AnimationManagement
 
                 _rootWidget.HighlightOff();
 
-                if (_currentAnimation != null)
-                {
-                    _currentAnimation.Stop();
-                }
+                _currentAnimation?.Stop();
 
                 if (animation == null)
                 {
@@ -629,10 +620,7 @@ namespace ACAT.Lib.Core.AnimationManagement
                     }
                 }
 
-                if (_timer != null)
-                {
-                    _timer.Stop();
-                }
+                _timer?.Stop();
 
                 setPlayerState(PlayerState.Stopped);
 
@@ -1112,42 +1100,27 @@ namespace ACAT.Lib.Core.AnimationManagement
             switch (_manualScanMode)
             {
                 case ManualScanModes.MoveLeft:
-                    if (_timer != null)
-                    {
-                        _timer.Stop();
-                    }
+                    _timer?.Stop();
 
                     highlightNeighborLeft();
 
                     break;
 
                 case ManualScanModes.MoveRight:
-                    if (_timer != null)
-                    {
-                        _timer.Stop();
-                    }
+                    _timer?.Stop();
 
                     highlightNeighborRight();
-                    if (_timer != null)
-                    {
-                        _timer.Stop();
-                    }
+                    _timer?.Stop();
                     break;
 
                 case ManualScanModes.MoveUp:
-                    if (_timer != null)
-                    {
-                        _timer.Stop();
-                    }
+                    _timer?.Stop();
 
                     highlightNeighborAbove();
                     break;
 
                 case ManualScanModes.MoveDown:
-                    if (_timer != null)
-                    {
-                        _timer.Stop();
-                    }
+                    _timer?.Stop();
 
                     highlightNeighborBelow();
                     break;
@@ -1829,10 +1802,7 @@ namespace ACAT.Lib.Core.AnimationManagement
                 if (prevWidgetHighlighted == _highlightedWidget)
                 {
                     Log.Debug("Same widget. Stopping timer");
-                    if (_timer != null)
-                    {
-                        _timer.Stop();
-                    }
+                    _timer?.Stop();
                 }
                 check();
             }

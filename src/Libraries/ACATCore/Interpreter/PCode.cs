@@ -49,10 +49,7 @@ namespace ACAT.Lib.Core.Interpreter
         public void Clear()
         {
             Script = String.Empty;
-            if (ActionVerbList != null)
-            {
-                ActionVerbList.Clear();
-            }
+            ActionVerbList?.Clear();
         }
 
         /// <summary>

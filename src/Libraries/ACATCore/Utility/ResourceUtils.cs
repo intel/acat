@@ -43,10 +43,11 @@ namespace ACAT.Lib.Core.Utility
         {
             var dirs = Directory.EnumerateDirectories(SmartPath.ApplicationPath);
 
-            var list = new List<CultureInfo>();
-
-            //Always add the current culture to the list
-            list.Add(CultureInfo.DefaultThreadCurrentUICulture);
+            var list = new List<CultureInfo>
+            {
+                //Always add the current culture to the list
+                CultureInfo.DefaultThreadCurrentUICulture
+            };
 
             var currentResourcesDir = FileUtils.GetResourcesDir();
             var lastIndex = currentResourcesDir.LastIndexOf("\\");

@@ -30,7 +30,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <summary>
         /// Ignore ACAT. There is a dedicated agent for it
         /// </summary>
-        private static String[] _ignoreAppList = { "acatapp" };
+        private static readonly String[] _ignoreAppList = { "acatapp" };
 
         /// <summary>
         /// Returns the processes supported by this agent.

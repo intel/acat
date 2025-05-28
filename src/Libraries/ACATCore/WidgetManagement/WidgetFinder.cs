@@ -22,7 +22,7 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// <summary>
         /// THe parent widget object
         /// </summary>
-        private Widget _widget;
+        private readonly Widget _widget;
 
         /// <summary>
         /// Initializes an instance of the WidgerFinder class

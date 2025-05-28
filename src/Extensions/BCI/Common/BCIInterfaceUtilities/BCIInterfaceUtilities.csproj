@@ -109,24 +109,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CalibrationEyesSettingsForm.en.resx">
-      <DependentUpon>CalibrationEyesSettingsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CalibrationEyesSettingsForm.es.resx">
-      <DependentUpon>CalibrationEyesSettingsForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ConfirmBoxCalibrationModes.resx">
       <DependentUpon>ConfirmBoxCalibrationModes.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ConfirmBoxCalibrationHelp.resx">
       <DependentUpon>ConfirmBoxCalibrationHelp.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfirmBoxTriggerBoxSettings.en.resx">
-      <DependentUpon>ConfirmBoxTriggerBoxSettings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfirmBoxTriggerBoxSettings.es.resx">
-      <DependentUpon>ConfirmBoxTriggerBoxSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConfirmBoxTriggerBoxSettings.resx">
       <DependentUpon>ConfirmBoxTriggerBoxSettings.cs</DependentUpon>

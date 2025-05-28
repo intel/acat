@@ -48,7 +48,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <returns>Preferences read or null</returns>
         public static T Load<T>(String preferencesFile, bool loadDefaultsOnFail = true, bool saveAfterLoad = true) where T : new()
         {
-            T preferences = default(T);
+            T preferences = default;
 
             if (String.IsNullOrEmpty(preferencesFile))
             {
@@ -71,7 +71,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 if (!XmlUtils.XmlFileSave<T>(preferences, preferencesFile))
                 {
                     Log.Error("Unable to save default preferences!");
-                    preferences = default(T);
+                    preferences = default;
                 }
             }
             return preferences;
@@ -123,10 +123,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// </summary>
         public void NotifyPreferencesChanged()
         {
-            if (EvtPreferencesChanged != null)
-            {
-                EvtPreferencesChanged();
-            }
+            EvtPreferencesChanged?.Invoke();
         }
 
         /// <summary>

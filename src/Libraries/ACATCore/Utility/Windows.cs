@@ -33,7 +33,7 @@ namespace ACAT.Lib.Core.Utility
         private const int ICON_SMALL2 = 2;
         private const int WM_GETICON = 0x7F;
         private static float _dpiX = 0.0f;
-        private static String _taskbarWinClass = "Shell_TrayWnd";
+        private static readonly String _taskbarWinClass = "Shell_TrayWnd";
         private static int _widestScannerWidth = 0; // width of the widest scanner
 
         private static WindowsVersion _windowsVersion = WindowsVersion.Unknown;
@@ -258,14 +258,10 @@ namespace ACAT.Lib.Core.Utility
         /// <returns>true if they do</returns>
         public static bool CheckOverlap(Form form1, Form form2)
         {
-            User32Interop.RECT windowRect;
-            User32Interop.GetWindowRect(form1.Handle, out windowRect);
+            User32Interop.GetWindowRect(form1.Handle, out User32Interop.RECT windowRect);
 
-            User32Interop.RECT rect;
-            User32Interop.GetWindowRect(form2.Handle, out rect);
-
-            User32Interop.RECT intersection;
-            return User32Interop.IntersectRect(out intersection, ref windowRect, ref rect);
+            User32Interop.GetWindowRect(form2.Handle, out User32Interop.RECT rect);
+            return User32Interop.IntersectRect(out _, ref windowRect, ref rect);
         }
 
         /// Closes the form asynchronously in a different thread
@@ -401,8 +397,7 @@ namespace ACAT.Lib.Core.Utility
 
             if (!IsDialog(fgWindow))
             {
-                User32Interop.RECT rect;
-                User32Interop.GetWindowRect(fgWindow, out rect);
+                User32Interop.GetWindowRect(fgWindow, out _);
 
                 int moveX = 0;
                 int moveY = 0;
@@ -881,7 +876,7 @@ namespace ACAT.Lib.Core.Utility
         public static string GetWindowClassName(IntPtr hWnd)
         {
             var sbClassName = new StringBuilder(512);
-            var length = User32Interop.GetClassName(hWnd, sbClassName, sbClassName.Capacity);
+            _ = User32Interop.GetClassName(hWnd, sbClassName, sbClassName.Capacity);
 
             return sbClassName.ToString();
         }
@@ -923,14 +918,13 @@ namespace ACAT.Lib.Core.Utility
         {
             try
             {
-                int processId;
 
                 if (GetOSVersion() != WindowsVersion.Win10)
                 {
                     return false;
                 }
 
-                User32Interop.GetWindowThreadProcessId(handle, out processId);
+                User32Interop.GetWindowThreadProcessId(handle, out int processId);
                 var process = Process.GetProcessById(processId);
                 return (String.Compare(process.ProcessName, "ApplicationFrameHost", true) == 0);
             }
@@ -969,9 +963,8 @@ namespace ACAT.Lib.Core.Utility
                 return false;
             }
 
-            bool isCloaked;
 
-            DwmGetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.Cloaked, out isCloaked, 8);
+            DwmGetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.Cloaked, out bool isCloaked, 8);
 
             return isCloaked;
         }
@@ -1006,12 +999,11 @@ namespace ACAT.Lib.Core.Utility
             bool retVal = false;
 
             AutomationElement window = AutomationElement.FromHandle(handle);
-            object objPattern;
             if (window.Current.ControlType == ControlType.Menu)
             {
                 retVal = true;
             }
-            else if (window.TryGetCurrentPattern(WindowPattern.Pattern, out objPattern))
+            else if (window.TryGetCurrentPattern(WindowPattern.Pattern, out object objPattern))
             {
                 WindowPattern windowPattern = objPattern as WindowPattern;
                 retVal = (!windowPattern.Current.CanMinimize && !windowPattern.Current.CanMaximize) || windowPattern.Current.IsModal;
@@ -1067,15 +1059,12 @@ namespace ACAT.Lib.Core.Utility
             // store windows we have already visited
             var windowCache = new HashSet<IntPtr> { hWnd };
 
-            User32Interop.RECT windowRect;
-            User32Interop.GetWindowRect(hWnd, out windowRect);
+            User32Interop.GetWindowRect(hWnd, out User32Interop.RECT windowRect);
 
             // check if any of the windows intersects with our window
             while ((hWnd = User32Interop.GetWindow(hWnd, User32Interop.GW_HWNDPREV)) != IntPtr.Zero &&
                    !windowCache.Contains(hWnd))
             {
-                User32Interop.RECT rect;
-                User32Interop.RECT intersection;
 
                 windowCache.Add(hWnd);
 
@@ -1088,8 +1077,8 @@ namespace ACAT.Lib.Core.Utility
 
                 if (User32Interop.IsWindowVisible(hWnd) &&
                     !IsMinimized(hWnd) &&
-                    User32Interop.GetWindowRect(hWnd, out rect) &&
-                    User32Interop.IntersectRect(out intersection, ref windowRect, ref rect))
+                    User32Interop.GetWindowRect(hWnd, out User32Interop.RECT rect) &&
+                    User32Interop.IntersectRect(out _, ref windowRect, ref rect))
                 {
                     return true;
                 }
@@ -1118,22 +1107,18 @@ namespace ACAT.Lib.Core.Utility
             // store windows we have already visited
             var windowCache = new HashSet<IntPtr> { hWnd };
 
-            User32Interop.RECT windowRect;
-            User32Interop.GetWindowRect(hWnd, out windowRect);
+            User32Interop.GetWindowRect(hWnd, out User32Interop.RECT windowRect);
 
             // check if any of the windows intersects with our window
             while ((hWnd = User32Interop.GetWindow(hWnd, User32Interop.GW_HWNDPREV)) != IntPtr.Zero &&
                    !windowCache.Contains(hWnd))
             {
-                User32Interop.RECT rect;
-                User32Interop.RECT intersection;
 
                 windowCache.Add(hWnd);
-
                 if (User32Interop.IsWindowVisible(hWnd) &&
                     !IsMinimized(hWnd) &&
-                    User32Interop.GetWindowRect(hWnd, out rect) &&
-                    User32Interop.IntersectRect(out intersection, ref windowRect, ref rect))
+                    User32Interop.GetWindowRect(hWnd, out User32Interop.RECT rect) &&
+                    User32Interop.IntersectRect(out _, ref windowRect, ref rect))
                 {
                     return true;
                 }
@@ -1644,10 +1629,7 @@ namespace ACAT.Lib.Core.Utility
         public static void SetWindowPositionAndNotify(Form form, IntPtr insertAfter, WindowPosition position)
         {
             SetWindowPosition(form, insertAfter, position);
-            if (EvtWindowPositionChanged != null)
-            {
-                EvtWindowPositionChanged(form, position);
-            }
+            EvtWindowPositionChanged?.Invoke(form, position);
         }
 
         /// <summary>
@@ -1660,7 +1642,6 @@ namespace ACAT.Lib.Core.Utility
         public static void SetWindowSizePercent(IntPtr handle, WindowPosition scannerPosition, int percent)
         {
             Log.Debug("Entering...scannerPosition=" + scannerPosition.ToString() + " percent=" + percent.ToString());
-            int screenOffset = 0;
             int moveX = 0;
             int moveY = 0; // not really using Y-axis yet but something to keep in mind for the future
 
@@ -1672,7 +1653,7 @@ namespace ACAT.Lib.Core.Utility
             if (percent > 100)
                 percent = 100;
 
-            screenOffset = 100 - percent;
+            int screenOffset = 100 - percent;
 
             if (handle != IntPtr.Zero)
             {
@@ -2026,10 +2007,7 @@ namespace ACAT.Lib.Core.Utility
                 if (opacity >= 0.8)
                 {
                     SetOpacity(form, 1.0);
-                    if (EvtFadeInComplete != null)
-                    {
-                        EvtFadeInComplete(form);
-                    }
+                    EvtFadeInComplete?.Invoke(form);
                     return;
                 }
                 Thread.Sleep(30);
@@ -2054,10 +2032,7 @@ namespace ACAT.Lib.Core.Utility
                 }
                 else
                 {
-                    if (EvtFadeOutComplete != null)
-                    {
-                        EvtFadeOutComplete(form);
-                    }
+                    EvtFadeOutComplete?.Invoke(form);
                     return;
                 }
             }

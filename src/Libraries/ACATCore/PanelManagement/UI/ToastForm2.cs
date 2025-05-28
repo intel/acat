@@ -33,7 +33,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// How long should the toast stay up?
         /// </summary>
-        private int _timeout = 2000;
+        private readonly int _timeout = 2000;
 
         /// <summary>
         /// Timer used to faded out

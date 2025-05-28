@@ -262,10 +262,7 @@ namespace ACAT.Lib.Core.PanelManagement
             if (scannerCommon != null)
             {
                 Widget widget = PanelCommon.RootWidget.Finder.FindChild("MenuTitle");
-                if (widget != null)
-                {
-                    widget.SetText(title);
-                }
+                widget?.SetText(title);
             }
         }
 
@@ -372,10 +369,7 @@ namespace ACAT.Lib.Core.PanelManagement
                 if (widget != null)
                 {
                     var parent = widget.Parent;
-                    if (parent != null)
-                    {
-                        parent.Remove(widget);
-                    }
+                    parent?.Remove(widget);
                 }
                 panel.Controls.Remove(control);
                 control.Dispose();

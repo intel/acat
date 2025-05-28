@@ -60,7 +60,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         /// <summary>
         /// List of windows / states to visit during debugging process
         /// </summary>
-        private DeviceTestingState[] _DebugStates = new DeviceTestingState[12] {
+        private readonly DeviceTestingState[] _DebugStates = new DeviceTestingState[12] {
             DeviceTestingState.Testing_BCIConnections,
             DeviceTestingState.ReceivedBCIError_UsbDongle,
             DeviceTestingState.ReceivedBCIError_CytonBoard,
@@ -116,7 +116,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         /// <summary>
         /// Amount of iteration for the test in the trigger box
         /// </summary>
-        private int _triggerBoxNumTestIterations = 10;
+        private readonly int _triggerBoxNumTestIterations = 10;
 
         /// <summary>
         /// Start trigger box test
@@ -358,8 +358,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
                 // Exit BCI device testing process completely
 
                 // Send event notification that all BCI device testing completed
-                if (EvtBCIDeviceTestingCompleted != null)
-                    EvtBCIDeviceTestingCompleted();
+                EvtBCIDeviceTestingCompleted?.Invoke();
             }
         }
 
@@ -598,7 +597,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
                 {
                     // Display message to user prompting them to improve signal quality before moving on
                     Log.Debug("Not exiting | Did not pass signal quality criteria");
-                    bool confirmed = ConfirmBoxOneOption.ShowDialog("Signal Quality Checks Failed or Incomplete" +
+                    _ = ConfirmBoxOneOption.ShowDialog("Signal Quality Checks Failed or Incomplete" +
                         "\nYou need to complete both “Railing” and\n“Impedance” tests and get good signals to\nproceed" +
                         "\nPlease refer to the user guide for help", "", StringResources.OK, _mainForm, false);
 
@@ -815,13 +814,10 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
         {
             try
             {
-                if (_mainForm != null)
-                {
-                    _mainForm.Invoke(new Action(() =>
+                _mainForm?.Invoke(new Action(() =>
                     {
                         EvtChangeDeviceTestingState?.Invoke(state);
                     }));
-                }
             }
             catch (Exception ex)
             {
@@ -890,10 +886,8 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
 
                     if (counter >= _triggerBoxNumTestIterations)
                     {
-                        int result;
                         await Task.Delay(200);
-
-                        var status = DAQ_OpenBCI.TriggerTestStop(10, out result, out List<double> dutyCycleList, out double dutyCycleAvg);
+                        var status = DAQ_OpenBCI.TriggerTestStop(10, out int result, out _, out _);
 
                         if (status == DAQ_OpenBCI.ExitCodes.PHOTOSENSOR_STATUS_OK)
                         {

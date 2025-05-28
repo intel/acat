@@ -74,7 +74,7 @@ namespace ACAT.Lib.Extension.Onboarding
                 Thread.CurrentThread.CurrentCulture = selectedItem.CultureInfo;
 
                 //var resourcesAssembly = typeof(ACAT.ACATResources.ResourceHelper).Assembly;
-                var resourceManager = new ComponentResourceManager(typeof(UserControlLanguageSelect));
+                _ = new ComponentResourceManager(typeof(UserControlLanguageSelect));
                 //ApplyResourcesToControls(this, resourceManager);
             }
         }

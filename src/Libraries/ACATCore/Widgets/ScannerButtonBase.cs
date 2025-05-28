@@ -231,10 +231,7 @@ namespace ACAT.Lib.Core.Widgets
         /// </summary>
         private void unInit()
         {
-            if (_font != null)
-            {
-                _font.Dispose();
-            }
+            _font?.Dispose();
 
             _fontFamily = null;
         }

@@ -72,7 +72,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                     // Generate train and test indices to split in folds
                     int[] indTrain = Matrix.Find(indicesFolds, element => element != i);
                     int[] indTest = Matrix.Find(indicesFolds, element => element == i);
-                    List<double> kOutput;
 
                     DimReductRDA DimReductObj = new DimReductRDA(DimReductObj4Params.shrinkParam, DimReductObj4Params.regularizeParam);
 
@@ -80,7 +79,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                     DimReductObj.Learn(data.Get(indTrain), labels.Get(indTrain).ToList());
 
                     // Test in k fold (defined by indTest)
-                    DimReductObj.Reduce(data.Get(indTest), out kOutput);
+                    DimReductObj.Reduce(data.Get(indTest), out List<double> kOutput);
 
                     // Save test in output matrix
                     int j = 0;
@@ -120,7 +119,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                         int endElement = (k + 1) * nElementsFold - 1;
 
                         if (k < extraElementFold)
-                            endElement = endElement + 1;
+                            endElement++;
 
                         endElementPrev = endElement;
 

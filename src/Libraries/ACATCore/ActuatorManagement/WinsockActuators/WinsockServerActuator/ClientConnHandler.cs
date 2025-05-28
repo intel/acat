@@ -178,10 +178,7 @@ namespace ACAT.Lib.Core.InputActuators
         public void WorkerThreadMethod()
         {
             ClientConnectionStatus = ConnectionStatus.Connected;
-            if (OnClientConnStatusChanged != null)
-            {
-                OnClientConnStatusChanged.Invoke(this, ConnectionStatus.Connected);
-            }
+            OnClientConnStatusChanged?.Invoke(this, ConnectionStatus.Connected);
 
             var message = new byte[ReadBufferSize];
             _memoryStream.SetLength(0);
@@ -210,20 +207,14 @@ namespace ACAT.Lib.Core.InputActuators
 
                 // Data has been received, let's process it.
                 Log.Debug("Calling OnClientMsgReceived");
-                if (OnClientMsgReceived != null)
-                {
-                    OnClientMsgReceived.Invoke(message, bytesRead);
-                }
+                OnClientMsgReceived?.Invoke(message, bytesRead);
 
                 Log.Debug("Returned from OnClientMsgReceived");
             }
 
             // Out of the WorkerThreadMethod loop... time to close stuff down.
             ClientConnectionStatus = ConnectionStatus.Disconnected;
-            if (OnClientConnStatusChanged != null)
-            {
-                OnClientConnStatusChanged.Invoke(this, ConnectionStatus.Disconnected);
-            }
+            OnClientConnStatusChanged?.Invoke(this, ConnectionStatus.Disconnected);
 
             tcpClient.Close();
         }

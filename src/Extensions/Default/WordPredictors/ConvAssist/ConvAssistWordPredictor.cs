@@ -70,14 +70,14 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         private readonly ManualResetEvent mevent = new ManualResetEvent(false);
         private readonly Stack<object> sentenceStack;
         private readonly Stack<object> wpStack;
-        private SentencePredictionsRequestHandler _sentencePredictionsRequestHandler;
+        private readonly SentencePredictionsRequestHandler _sentencePredictionsRequestHandler;
 
         /// <summary>
         /// The preferences object
         /// </summary>
         internal static Settings settings;
 
-        private WordPredictionsRequestHandler _wordPredictionsRequestHandler;
+        private readonly WordPredictionsRequestHandler _wordPredictionsRequestHandler;
 
         /// <summary>
         /// Named Pipe object

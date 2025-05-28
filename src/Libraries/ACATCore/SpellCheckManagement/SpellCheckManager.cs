@@ -164,18 +164,14 @@ namespace ACAT.Lib.Core.SpellCheckManagement
         /// <returns>true on success</returns>
         public bool SetActiveSpellChecker(CultureInfo ci = null)
         {
-            bool retVal = true;
-            Guid guid = Guid.Empty;
-            Guid cultureNeutralGuid = Guid.Empty;
-
             if (ci == null)
             {
                 ci = CultureInfo.DefaultThreadCurrentUICulture;
             }
 
-            guid = _spellCheckers.GetPreferredOrDefaultByCulture(ci);
-            cultureNeutralGuid = _spellCheckers.GetPreferredOrDefaultByCulture(null);
-
+            Guid guid = _spellCheckers.GetPreferredOrDefaultByCulture(ci);
+            Guid cultureNeutralGuid = _spellCheckers.GetPreferredOrDefaultByCulture(null);
+            bool retVal;
             if (!Equals(guid, Guid.Empty))  // found something for the specific culture
             {
                 var type = _spellCheckers.Lookup(guid);
@@ -326,15 +322,9 @@ namespace ACAT.Lib.Core.SpellCheckManagement
                 if (disposing)
                 {
                     // dispose all managed resources.
-                    if (_activeSpellChecker != null)
-                    {
-                        _activeSpellChecker.Dispose();
-                    }
+                    _activeSpellChecker?.Dispose();
 
-                    if (_spellCheckers != null)
-                    {
-                        _spellCheckers.Dispose();
-                    }
+                    _spellCheckers?.Dispose();
 
                     Context.EvtCultureChanged -= Context_EvtCultureChanged;
                 }

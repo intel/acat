@@ -1470,25 +1470,6 @@ Click Next when you are comfortable using the switch scanning.</value>
   <data name="PleaseSelectYourLanguage" xml:space="preserve">
     <value>Please select your language</value>
   </data>
-  <data name="HardwareSwitchTestLabel1" xml:space="preserve">
-    <value>The hotkey is configured incorrectly. Go to the previous step to check.
-The switch is not held down long enough. Set the hold time to 0 and test, and then gradually increase it until you reach a value that works for you.</value>
-  </data>
-  <data name="UserControlHardwareSwitchSetupLabelPrompt.Text" xml:space="preserve">
-    <value>ACAT is configured to activate using the hotkey shown in green. Ensure your switch is set up to correspond with ACAT's hotkey (see the user guide for the switch). Alternatively, you can use the buttons below to adjust ACAT's hotkey to align with the key combination triggered by the switch.</value>
-  </data>
-  <data name="UserControlHardwareSwitchSetupLabelTitle_Text" xml:space="preserve">
-    <value>Keyboard / HW Switch Setup</value>
-  </data>
-  <data name="InvalidKeyCombination" xml:space="preserve">
-    <value>Invalid key combination</value>
-  </data>
-  <data name="Warning" xml:space="preserve">
-    <value>Warning</value>
-  </data>
-  <data name="NoDisclaimersFound" xml:space="preserve">
-    <value>No disclaimers found.</value>
-  </data>
   <data name="labelQualityResultsInfo" xml:space="preserve">
     <value>Summary of the signal checks per electrode
 
@@ -1584,6 +1565,25 @@ Enables selection of large sized regions on the Main Talk UI. With default value
   <data name="UserControlHardwareSwitchTestLabel1Text" xml:space="preserve">
     <value>The hotkey is configured incorrectly. Go to the previous step to check. The switch is not being held down long enough. Set the hold time to 0 and test, then gradually increase it until you find a value that works for you.</value>
   </data>
+  <data name="HardwareSwitchTestLabel1" xml:space="preserve">
+    <value>The hotkey is configured incorrectly. Go to the previous step to check.
+The switch is not held down long enough. Set the hold time to 0 and test, and then gradually increase it until you reach a value that works for you.</value>
+  </data>
+  <data name="UserControlHardwareSwitchSetupLabelPrompt.Text" xml:space="preserve">
+    <value>ACAT is configured to activate using the hotkey shown in green. Ensure your switch is set up to correspond with ACAT's hotkey (see the user guide for the switch). Alternatively, you can use the buttons below to adjust ACAT's hotkey to align with the key combination triggered by the switch.</value>
+  </data>
+  <data name="UserControlHardwareSwitchSetupLabelTitle_Text" xml:space="preserve">
+    <value>Keyboard / HW Switch Setup</value>
+  </data>
+  <data name="InvalidKeyCombination" xml:space="preserve">
+    <value>Invalid key combination</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="NoDisclaimersFound" xml:space="preserve">
+    <value>No disclaimers found.</value>
+  </data>
   <data name="EyesClosedCalibration" xml:space="preserve">
     <value>Eyes Closed Calibration</value>
   </data>
@@ -1595,5 +1595,20 @@ Enables selection of large sized regions on the Main Talk UI. With default value
   </data>
   <data name="EyesOpen" xml:space="preserve">
     <value>Eyes open</value>
+  </data>
+  <data name="Number5000" xml:space="preserve">
+    <value>5000</value>
+  </data>
+  <data name="Number10" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="IntervalTime" xml:space="preserve">
+    <value>Interval Time (MilSeconds)</value>
+  </data>
+  <data name="NumberofRepetitions" xml:space="preserve">
+    <value>Number of Repetitions</value>
+  </data>
+  <data name="CalibrationHelp" xml:space="preserve">
+    <value>Calibration Help</value>
   </data>
 </root>

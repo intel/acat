@@ -136,7 +136,7 @@
     <value>¿Cancelar y Salir?</value>
   </data>
   <data name="HintCalibrationBeginACATNotEnalbed" xml:space="preserve">
-    <value>No se puede guardar. La abreviatura para '{0}' ya existe</value>
+    <value>Debes completar las calibraciones antes de continuar</value>
     <comment>{0} es la abreviatura</comment>
   </data>
   <data name="HintEyesOpenCloseCalibration" xml:space="preserve">
@@ -152,7 +152,8 @@
     <value>¿Cerrar el Gestor de Conferencias?</value>
   </data>
   <data name="HintMinimumScore" xml:space="preserve">
-    <value>No se pudo crear la carpeta {0}</value>
+    <value>Puntuación mínima necesaria para una calibración exitosa
+</value>
     <comment>{0} es el nombre de la carpeta</comment>
   </data>
   <data name="HintNumberTargets" xml:space="preserve">
@@ -162,11 +163,12 @@
     <value>Crear Nuevo Archivo</value>
   </data>
   <data name="HintScanningTime" xml:space="preserve">
-    <value>¿Eliminar {0}?</value>
+    <value>La velocidad de escaneo controla la rapidez con la que se resaltan las regiones en la pantalla.
+</value>
     <comment>{0} es la abreviatura que se va a eliminar</comment>
   </data>
   <data name="HintSentenceCalibrationScreen" xml:space="preserve">
-    <value>¿Eliminar {0}?</value>
+    <value>Calibración del modo oración: Permite seleccionar regiones de tamaño mediano en la interfaz principal de conversación. Con los valores predeterminados, esta calibración tarda aproximadamente 2 minutos.</value>
     <comment>{0} es el nombre del archivo a eliminar</comment>
   </data>
   <data name="HintSignalCheck" xml:space="preserve">
@@ -188,7 +190,7 @@
     <value>Búsqueda en Google</value>
   </data>
   <data name="ScanningTime" xml:space="preserve">
-    <value>¿Lanzar {0}?</value>
+    <value>Tiempo de escaneo:</value>
     <comment>{0} es el nombre de la aplicación a lanzar</comment>
   </data>
   <data name="StartTyping" xml:space="preserve">
@@ -1619,5 +1621,32 @@ El interruptor no se mantiene presionado el tiempo suficiente. Configura el tiem
   </data>
   <data name="NoDisclaimersFound" xml:space="preserve">
     <value>No se encontraron advertencias.</value>
+  </data>
+  <data name="EyesClosedCalibration" xml:space="preserve">
+    <value>Calibración a Ojos Cerrado</value>
+  </data>
+  <data name="OpenAndCloseYourEyes" xml:space="preserve">
+    <value>Abre y cierra los ojos cuando se te indique.</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Inicio</value>
+  </data>
+  <data name="EyesOpen" xml:space="preserve">
+    <value>Ojos Abierto</value>
+  </data>
+  <data name="Number5000" xml:space="preserve">
+    <value>5000</value>
+  </data>
+  <data name="Number10" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="IntervalTime" xml:space="preserve">
+    <value>Tiempo de intervalo (Milsegundos)</value>
+  </data>
+  <data name="NumberofRepetitions" xml:space="preserve">
+    <value>Número de repeticiones</value>
+  </data>
+  <data name="CalibrationHelp" xml:space="preserve">
+    <value />
   </data>
 </root>

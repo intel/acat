@@ -141,9 +141,6 @@
   <data name="labelTitle.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="labelTitle.Text" xml:space="preserve">
-    <value>Calibration Help</value>
-  </data>
   <data name="labelTitle.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
   </data>
@@ -210,9 +207,6 @@
   <data name="checkBoxDontShowAgain.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="checkBoxDontShowAgain.Text" xml:space="preserve">
-    <value>Don't show this again</value>
-  </data>
   <data name="&gt;&gt;checkBoxDontShowAgain.Name" xml:space="preserve">
     <value>checkBoxDontShowAgain</value>
   </data>
@@ -248,9 +242,6 @@
   </data>
   <data name="buttonOk.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
-  </data>
-  <data name="buttonOk.Text" xml:space="preserve">
-    <value>Ok</value>
   </data>
   <data name="&gt;&gt;buttonOk.Name" xml:space="preserve">
     <value>buttonOk</value>
@@ -371,9 +362,6 @@
   </data>
   <data name="$this.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>6, 6, 6, 6</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>ACAT</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ConfirmBoxCalibrationHelp</value>

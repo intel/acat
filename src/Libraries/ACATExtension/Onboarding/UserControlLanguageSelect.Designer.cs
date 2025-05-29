@@ -74,7 +74,7 @@ namespace ACAT.Lib.Extension.Onboarding
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(1830, 128);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Please select your language";
+            this.label1.Text = StringResources.PleaseSelectYourLanguage;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // listBoxLanguages

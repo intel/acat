@@ -1635,4 +1635,16 @@ If the quality is red go back to the previous tabs and follow the tips.</value>
 
 ACAT uses two metrics - “railing” and “impedance” - to check signal quality for each connected electrode. The slider below provides an indication of the overall quality.</value>
   </data>
+  <data name="ACAT" xml:space="preserve">
+    <value>ACAT</value>
+  </data>
+  <data name="Thisisapromptforthemessagebox" xml:space="preserve">
+    <value>This is a prompt for the message box that will appear  when needed</value>
+  </data>
+  <data name="Thisisaprompfotitle" xml:space="preserve">
+    <value>This is a prompt for title</value>
+  </data>
+  <data name="Licenses" xml:space="preserve">
+    <value>Licenses</value>
+  </data>
 </root>

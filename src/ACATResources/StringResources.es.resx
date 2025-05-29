@@ -126,9 +126,33 @@
   <data name="CalibrateOptional" xml:space="preserve">
     <value>Añadir Abreviatura</value>
   </data>
+  <data name="CalibrationInProgrressPrompt" xml:space="preserve">
+    <value>Calibración en progreso. Por favor, concéntrate en el área objetivo resaltada en verde.</value>
+  </data>
+  <data name="HintBoxCalibrationScreen" xml:space="preserve">
+    <value>Calibración en modo caja: 
+Permite la selección de regiones de gran tamaño en la interfaz principal de conversación. Con valores predeterminados, esta calibración toma aproximadamente 2 minutos.</value>
+  </data>
+  <data name="HintCalibrationBeginACATEnalbed" xml:space="preserve">
+    <value>Opción de escritura habilitada</value>
+  </data>
   <data name="HintCalibrationBeginACATNotEnalbed" xml:space="preserve">
     <value>Debes completar las calibraciones antes de continuar</value>
     <comment>{0} es la abreviatura</comment>
+  </data>
+  <data name="HintEyesOpenCloseCalibration" xml:space="preserve">
+    <value>Recopilar datos de EEG para la futura detección de ojos abiertos y cerrados</value>
+  </data>
+  <data name="HintIterationstarget" xml:space="preserve">
+    <value>Número de iteraciones por objetivo</value>
+  </data>
+  <data name="HintKeyboardLeftCalibrationScreen" xml:space="preserve">
+    <value>Calibración en modo teclado: 
+Permite la selección de regiones de tamaño pequeño en la interfaz principal de conversación. Con los valores predeterminados, esta calibración toma aproximadamente 3 minutos.</value>
+  </data>
+  <data name="HintKeyboardRightCalibrationScreen" xml:space="preserve">
+    <value>(Opcional) Calibración del modo teclado:
+permite la selección de regiones pequeñas en la interfaz principal de conversación. Con los valores predeterminados, esta calibración toma aproximadamente 4 minutos.</value>
   </data>
   <data name="HintMinimumScore" xml:space="preserve">
     <value>Puntuación mínima necesaria para una calibración exitosa</value>
@@ -153,6 +177,10 @@
   </data>
   <data name="HintTriggerCheck" xml:space="preserve">
     <value>Error</value>
+  </data>
+  <data name="HintWordCalibrationScreen" xml:space="preserve">
+    <value>(Opcional) Calibración en modo palabra:
+permite la selección de regiones de tamaño medio en la interfaz principal de conversación. Con valores predeterminados, esta calibración toma aproximadamente 4 minutos.</value>
   </data>
   <data name="IterationNumber" xml:space="preserve">
     <value>La expansión de la abreviatura está vacía</value>
@@ -1599,6 +1627,9 @@ El interruptor no se mantiene presionado el tiempo suficiente. Configura el tiem
   <data name="EyesClosedCalibration" xml:space="preserve">
     <value>Calibración a Ojos Cerrado</value>
   </data>
+  <data name="OpenAndCloseYourEyes" xml:space="preserve">
+    <value>Abre y cierra los ojos cuando se te indique</value>
+  </data>
   <data name="Start" xml:space="preserve">
     <value>Inicio</value>
   </data>
@@ -1632,37 +1663,6 @@ El interruptor no se mantiene presionado el tiempo suficiente. Configura el tiem
   <data name="SplashScreenInitializing" xml:space="preserve">
     <value>Inicializando...\r\nEsto puede tardar unos minutos</value>
   </data>
-  <data name="CalibrationInProgrressPrompt" xml:space="preserve">
-    <value>Calibración en progreso. Por favor, concéntrate en el área objetivo resaltada en verde.</value>
-  </data>
-  <data name="HintBoxCalibrationScreen" xml:space="preserve">
-    <value>Calibración en modo caja: 
-Permite la selección de regiones de gran tamaño en la interfaz principal de conversación. Con valores predeterminados, esta calibración toma aproximadamente 2 minutos.</value>
-  </data>
-  <data name="HintCalibrationBeginACATEnalbed" xml:space="preserve">
-    <value>Opción de escritura habilitada</value>
-  </data>
-  <data name="HintEyesOpenCloseCalibration" xml:space="preserve">
-    <value>Recopilar datos de EEG para la futura detección de ojos abiertos y cerrados</value>
-  </data>
-  <data name="HintIterationstarget" xml:space="preserve">
-    <value>Número de iteraciones por objetivo</value>
-  </data>
-  <data name="HintKeyboardLeftCalibrationScreen" xml:space="preserve">
-    <value>Calibración en modo teclado: 
-Permite la selección de regiones de tamaño pequeño en la interfaz principal de conversación. Con los valores predeterminados, esta calibración toma aproximadamente 3 minutos.</value>
-  </data>
-  <data name="HintKeyboardRightCalibrationScreen" xml:space="preserve">
-    <value>(Opcional) Calibración del modo teclado:
-permite la selección de regiones pequeñas en la interfaz principal de conversación. Con los valores predeterminados, esta calibración toma aproximadamente 4 minutos.</value>
-  </data>
-  <data name="HintWordCalibrationScreen" xml:space="preserve">
-    <value>(Opcional) Calibración en modo palabra:
-permite la selección de regiones de tamaño medio en la interfaz principal de conversación. Con valores predeterminados, esta calibración toma aproximadamente 4 minutos.</value>
-  </data>
-  <data name="OpenAndCloseYourEyes" xml:space="preserve">
-    <value>Abre y cierra los ojos cuando se te indique</value>
-  </data>
   <data name="BCISensorUIUserControlBCISignalQualityResultsInfo" xml:space="preserve">
     <value>Resumen de las verificaciones de señal por electrodo
 
@@ -1674,5 +1674,17 @@ Si la calidad es roja, regresa a las pestañas anteriores y sigue los consejos.<
     <value>La calidad de la señal BCI es un indicador de qué tan bueno es el contacto entre los electrodos del gorro y tu cuero cabelludo.
 
 ACAT utiliza dos métricas - “saturación” e “impedancia” - para verificar la calidad de la señal de cada electrodo conectado. El control deslizante a continuación proporciona una indicación de la calidad general.</value>
+  </data>
+  <data name="ACAT" xml:space="preserve">
+    <value>ACAT</value>
+  </data>
+  <data name="Thisisapromptforthemessagebox" xml:space="preserve">
+    <value>Este es un mensaje para el cuadro que aparecerá cuando sea necesario.</value>
+  </data>
+  <data name="Thisisaprompfotitle" xml:space="preserve">
+    <value>Este es un texto para el título</value>
+  </data>
+  <data name="Licenses" xml:space="preserve">
+    <value>Licencias</value>
   </data>
 </root>

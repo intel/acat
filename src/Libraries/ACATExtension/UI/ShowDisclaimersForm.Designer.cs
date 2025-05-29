@@ -110,7 +110,7 @@ namespace ACAT.Lib.Extension
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ShowDisclaimersForm";
-            this.Text = "Disclaimers";
+            this.Text = StringResources.Disclaimer;
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);

@@ -110,7 +110,7 @@ namespace ACAT.Lib.Extension
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ShowLicenseForm";
-            this.Text = "Licenses";
+            this.Text = StringResources.Licenses;
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);

@@ -97,6 +97,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ACAT.
+        /// </summary>
+        public static string ACAT {
+            get {
+                return ResourceManager.GetString("ACAT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ACAT Error.
         /// </summary>
         public static string ACATError {
@@ -1865,6 +1874,15 @@ namespace ACATResources {
         public static string Left {
             get {
                 return ResourceManager.GetString("Left", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Licenses.
+        /// </summary>
+        public static string Licenses {
+            get {
+                return ResourceManager.GetString("Licenses", resourceCulture);
             }
         }
         
@@ -3799,6 +3817,24 @@ namespace ACATResources {
         public static string TextToSpeechTestString {
             get {
                 return ResourceManager.GetString("TextToSpeechTestString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is a prompt for title.
+        /// </summary>
+        public static string Thisisaprompfotitle {
+            get {
+                return ResourceManager.GetString("Thisisaprompfotitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is a prompt for the message box that will appear  when needed&quot;.
+        /// </summary>
+        public static string Thisisapromptforthemessagebox {
+            get {
+                return ResourceManager.GetString("Thisisapromptforthemessagebox", resourceCulture);
             }
         }
         

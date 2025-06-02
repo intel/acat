@@ -449,6 +449,24 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calibration error, please restart ACAT.
+        /// </summary>
+        public static string CalibrationError_CalibrationFailed {
+            get {
+                return ResourceManager.GetString("CalibrationError_CalibrationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calibration was incomplete, please restart ACAT.
+        /// </summary>
+        public static string CalibrationError_Incomplete {
+            get {
+                return ResourceManager.GetString("CalibrationError_Incomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calibration Help.
         /// </summary>
         public static string CalibrationHelp {
@@ -499,6 +517,15 @@ namespace ACATResources {
         public static string ChangesNotSavedQuit {
             get {
                 return ResourceManager.GetString("ChangesNotSavedQuit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ClassifiersNotLoadedError.
+        /// </summary>
+        public static string ClassifiersNotLoadedError {
+            get {
+                return ResourceManager.GetString("ClassifiersNotLoadedError", resourceCulture);
             }
         }
         
@@ -2589,6 +2616,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Optical sensor error, please restart ACAT.
+        /// </summary>
+        public static string OpticalSensorError {
+            get {
+                return ResourceManager.GetString("OpticalSensorError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to P.
         /// </summary>
         public static string P {
@@ -3250,6 +3286,15 @@ namespace ACATResources {
         public static string SendSpeechControlSequence {
             get {
                 return ResourceManager.GetString("SendSpeechControlSequence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor error, please restart ACAT.
+        /// </summary>
+        public static string SensorError {
+            get {
+                return ResourceManager.GetString("SensorError", resourceCulture);
             }
         }
         
@@ -3988,6 +4033,15 @@ namespace ACATResources {
         public static string TryoutWord7 {
             get {
                 return ResourceManager.GetString("TryoutWord7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Typing error, please restart ACAT.
+        /// </summary>
+        public static string TypingError {
+            get {
+                return ResourceManager.GetString("TypingError", resourceCulture);
             }
         }
         

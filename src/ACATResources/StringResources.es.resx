@@ -1687,4 +1687,22 @@ ACAT utiliza dos métricas - “saturación” e “impedancia” - para verific
   <data name="Licenses" xml:space="preserve">
     <value>Licencias</value>
   </data>
+  <data name="CalibrationError_CalibrationFailed" xml:space="preserve">
+    <value>Error de calibración, reinicie ACAT</value>
+  </data>
+  <data name="CalibrationError_Incomplete" xml:space="preserve">
+    <value>La calibración no fue completa, reinicie ACAT</value>
+  </data>
+  <data name="ClassifiersNotLoadedError" xml:space="preserve">
+    <value />
+  </data>
+  <data name="OpticalSensorError" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SensorError" xml:space="preserve">
+    <value>Error del sensor, reinicie ACAT</value>
+  </data>
+  <data name="TypingError" xml:space="preserve">
+    <value />
+  </data>
 </root>

@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
+using ACATResources;
 
 namespace ACAT.Extensions.BCI.Common.BCIControl
 {
@@ -37,6 +38,7 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         CalibrationError_OnAnalysisData_NotEnoughPulsesDetected = 313,
         CalibrationError_LoadingClassifiers = 320,
         TypingError_UnknownException = 400,
+        TypingError_ClassifiersNotLoaded = 401,
         TypingError_OnRepetitionEnd_UnknownException = 401,
         TypingError_OnRepetitionEnd_NoPulsesDetected = 402,
         TypingError_OnRepetionEnd_TooManyPulsesReceived = 403,
@@ -46,18 +48,17 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         TypingError_OnRepetitionEnd_SensorDisconected = 407,
         TypingError_OnRepetitionEnd_NoProbabilitiesCalculated = 408,
         TypingError_OnRepetitionEnd_ProabilitiesMarkersMissmatch = 409,
-        TypingError_ClassifiersNotLoaded = 401,
     }
 
     public class BCIMessages
     {
-        public const string CalibrationError_CalibrationFailed = "Calibration error, please restart ACAT";
-        public const string CalibrationError_Incomplete = "Calibration was incomplete, please restart ACAT";
-        public const string OpticalSensorError = "Optical sensor error, please restart ACAT";
-        public const string SensorError = "Sensor error, please restart ACAT";
+        public string CalibrationError_CalibrationFailed = StringResources.CalibrationError_CalibrationFailed;
+        public string CalibrationError_Incomplete = StringResources.CalibrationError_Incomplete;
+        public string ClassifiersNotLoadedError = StringResources.ClassifiersNotLoadedError;
+        public string OpticalSensorError = StringResources.OpticalSensorError;
+        public string SensorError = StringResources.SensorError;
         public const string Status_Ok = "";
-        public const string TypingError = "Typing error, please restart ACAT";
-        public const string ClassifiersNotLoadedError = "Classifiers not loaded, please restart ACAT";
+        public string TypingError = StringResources.TypingError;
     }
 
     public class BCIError

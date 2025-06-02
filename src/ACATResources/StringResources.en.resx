@@ -1647,4 +1647,22 @@ ACAT uses two metrics - “railing” and “impedance” - to check signal qual
   <data name="Licenses" xml:space="preserve">
     <value>Licenses</value>
   </data>
+  <data name="CalibrationError_CalibrationFailed" xml:space="preserve">
+    <value>Calibration error, please restart ACAT</value>
+  </data>
+  <data name="CalibrationError_Incomplete" xml:space="preserve">
+    <value>Calibration was incomplete, please restart ACAT</value>
+  </data>
+  <data name="ClassifiersNotLoadedError" xml:space="preserve">
+    <value>Classifiers not loaded, please restart ACAT</value>
+  </data>
+  <data name="OpticalSensorError" xml:space="preserve">
+    <value>Optical sensor error, please restart ACAT</value>
+  </data>
+  <data name="SensorError" xml:space="preserve">
+    <value>Sensor error, please restart ACAT</value>
+  </data>
+  <data name="TypingError" xml:space="preserve">
+    <value>Typing error, please restart ACAT</value>
+  </data>
 </root>

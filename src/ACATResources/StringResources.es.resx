@@ -183,7 +183,7 @@ permite la selección de regiones pequeñas en la interfaz principal de conversa
 permite la selección de regiones de tamaño medio en la interfaz principal de conversación. Con valores predeterminados, esta calibración toma aproximadamente 4 minutos.</value>
   </data>
   <data name="IterationNumber" xml:space="preserve">
-    <value>La expansión de la abreviatura está vacía</value>
+    <value>Objetivo #</value>
   </data>
   <data name="Of" xml:space="preserve">
     <value>El archivo ya existe</value>
@@ -748,7 +748,7 @@ permite la selección de regiones de tamaño medio en la interfaz principal de c
     <value>Nueva Ventana</value>
   </data>
   <data name="Next" xml:space="preserve">
-    <value>Siguiente</value>
+    <value>Siga</value>
   </data>
   <data name="NextField" xml:space="preserve">
     <value>Siguiente Campo</value>
@@ -1378,9 +1378,6 @@ Para obtener instrucciones sobre cómo cambiar la resolución de la pantalla, co
   <data name="Back" xml:space="preserve">
     <value>Atrás</value>
   </data>
-  <data name="Scan Speed" xml:space="preserve">
-    <value>Velocidad de Escaneo</value>
-  </data>
   <data name="Exit Application" xml:space="preserve">
     <value>Salir de la Aplicación</value>
   </data>
@@ -1634,7 +1631,7 @@ El interruptor no se mantiene presionado el tiempo suficiente. Configura el tiem
     <value>Inicio</value>
   </data>
   <data name="EyesOpen" xml:space="preserve">
-    <value>Ojos Abierto</value>
+    <value>Ojos Abiertos</value>
   </data>
   <data name="Number5000" xml:space="preserve">
     <value>5000</value>
@@ -1679,7 +1676,7 @@ ACAT utiliza dos métricas - “saturación” e “impedancia” - para verific
     <value>ACAT</value>
   </data>
   <data name="Thisisapromptforthemessagebox" xml:space="preserve">
-    <value>Este es un mensaje para el cuadro que aparecerá cuando sea necesario.</value>
+    <value>Este es un mensaje para el cuadro que aparecerá cuando sea necesario</value>
   </data>
   <data name="Thisisaprompfotitle" xml:space="preserve">
     <value>Este es un texto para el título</value>
@@ -1694,15 +1691,72 @@ ACAT utiliza dos métricas - “saturación” e “impedancia” - para verific
     <value>La calibración no fue completa, reinicie ACAT</value>
   </data>
   <data name="ClassifiersNotLoadedError" xml:space="preserve">
-    <value />
+    <value>Clasificadores no cargados, reinicie ACAT</value>
   </data>
   <data name="OpticalSensorError" xml:space="preserve">
-    <value />
+    <value>Error del sensor óptico, reinicie ACAT</value>
   </data>
   <data name="SensorError" xml:space="preserve">
     <value>Error del sensor, reinicie ACAT</value>
   </data>
   <data name="TypingError" xml:space="preserve">
-    <value />
+    <value>Error tipográfico, por favor reinicie ACAT</value>
+  </data>
+  <data name="labelCountdown" xml:space="preserve">
+    <value>Presione \"Iniciar\" para comenzar la calibración ocular</value>
+  </data>
+  <data name="Calibrationfinished" xml:space="preserve">
+    <value>Calibración finalizada</value>
+  </data>
+  <data name="exitwithoutsaving" xml:space="preserve">
+    <value>¿Salir sin guardar?</value>
+  </data>
+  <data name="Startbyselectinga" xml:space="preserve">
+    <value>Comience seleccionando un</value>
+  </data>
+  <data name="ClickOn" xml:space="preserve">
+    <value>Hacer clic en</value>
+  </data>
+  <data name="thatcorrespondstothe" xml:space="preserve">
+    <value>que corresponde a la</value>
+  </data>
+  <data name="thatyouhaveselected" xml:space="preserve">
+    <value>que has seleccionado si ya tienes una</value>
+  </data>
+  <data name="Completeatleastthreemodes" xml:space="preserve">
+    <value>Completa al menos tres modos.</value>
+  </data>
+  <data name="tohelpyouincreaseyourscore" xml:space="preserve">
+    <value>para ayudarle a aumentar su puntuación.</value>
+  </data>
+  <data name="thatyouarehappywith" xml:space="preserve">
+    <value>Que estés contento/a con no es necesario recalibrar.</value>
+  </data>
+  <data name="Optionallyyoucanadjustthe" xml:space="preserve">
+    <value>Opcionalmente, puede ajustar</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>Parametros</value>
+  </data>
+  <data name="Score" xml:space="preserve">
+    <value>Puntos</value>
+  </data>
+  <data name="MinimumScore" xml:space="preserve">
+    <value>Puntos Minimos*</value>
+  </data>
+  <data name="AdvancedOptions" xml:space="preserve">
+    <value>Opciones Avanzadas</value>
+  </data>
+  <data name="Iterationspertarget" xml:space="preserve">
+    <value>Iteraciones por objetivo</value>
+  </data>
+  <data name="NumberofTargets" xml:space="preserve">
+    <value>Numero de Objetivos</value>
+  </data>
+  <data name="RunallthreeoFThecalibrationsabove" xml:space="preserve">
+    <value>Ejecute las tres calibraciones anteriores</value>
+  </data>
+  <data name="BeginusingACAT" xml:space="preserve">
+    <value>Empieze a usar Acat</value>
   </data>
 </root>

@@ -142,6 +142,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Advanced Options.
+        /// </summary>
+        public static string AdvancedOptions {
+            get {
+                return ResourceManager.GetString("AdvancedOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Appointment.
         /// </summary>
         public static string Appointment {
@@ -256,6 +265,15 @@ namespace ACATResources {
         public static string BeepOnSelect {
             get {
                 return ResourceManager.GetString("BeepOnSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Begin using ACAT.
+        /// </summary>
+        public static string BeginusingACAT {
+            get {
+                return ResourceManager.GetString("BeginusingACAT", resourceCulture);
             }
         }
         
@@ -467,6 +485,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calibration finished.
+        /// </summary>
+        public static string Calibrationfinished {
+            get {
+                return ResourceManager.GetString("Calibrationfinished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calibration Help.
         /// </summary>
         public static string CalibrationHelp {
@@ -544,6 +571,15 @@ namespace ACATResources {
         public static string ClearTalkWindow {
             get {
                 return ResourceManager.GetString("ClearTalkWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click On.
+        /// </summary>
+        public static string ClickOn {
+            get {
+                return ResourceManager.GetString("ClickOn", resourceCulture);
             }
         }
         
@@ -634,6 +670,15 @@ namespace ACATResources {
         public static string ColumnIterations {
             get {
                 return ResourceManager.GetString("ColumnIterations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Complete at least three modes..
+        /// </summary>
+        public static string Completeatleastthreemodes {
+            get {
+                return ResourceManager.GetString("Completeatleastthreemodes", resourceCulture);
             }
         }
         
@@ -1054,6 +1099,15 @@ namespace ACATResources {
         public static string ExitQuestion {
             get {
                 return ResourceManager.GetString("ExitQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit without saving?.
+        /// </summary>
+        public static string exitwithoutsaving {
+            get {
+                return ResourceManager.GetString("exitwithoutsaving", resourceCulture);
             }
         }
         
@@ -1780,6 +1834,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Iterations per target.
+        /// </summary>
+        public static string Iterationspertarget {
+            get {
+                return ResourceManager.GetString("Iterationspertarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to J.
         /// </summary>
         public static string J {
@@ -1814,6 +1877,15 @@ namespace ACATResources {
         public static string labelBCISignalCheckDescription {
             get {
                 return ResourceManager.GetString("labelBCISignalCheckDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Press \&quot;Start\&quot; to begin \nEye calibration.
+        /// </summary>
+        public static string labelCountdown {
+            get {
+                return ResourceManager.GetString("labelCountdown", resourceCulture);
             }
         }
         
@@ -2144,6 +2216,15 @@ namespace ACATResources {
         public static string MinActuationHoldTime {
             get {
                 return ResourceManager.GetString("MinActuationHoldTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum Score*.
+        /// </summary>
+        public static string MinimumScore {
+            get {
+                return ResourceManager.GetString("MinimumScore", resourceCulture);
             }
         }
         
@@ -2535,6 +2616,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Number of Targets.
+        /// </summary>
+        public static string NumberofTargets {
+            get {
+                return ResourceManager.GetString("NumberofTargets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to O.
         /// </summary>
         public static string O {
@@ -2625,6 +2715,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Optionally, you can adjust the.
+        /// </summary>
+        public static string Optionallyyoucanadjustthe {
+            get {
+                return ResourceManager.GetString("Optionallyyoucanadjustthe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to P.
         /// </summary>
         public static string P {
@@ -2657,6 +2756,15 @@ namespace ACATResources {
         public static string PageUp {
             get {
                 return ResourceManager.GetString("PageUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameters.
+        /// </summary>
+        public static string Parameters {
+            get {
+                return ResourceManager.GetString("Parameters", resourceCulture);
             }
         }
         
@@ -3101,6 +3209,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Run all three of the calibrations above.
+        /// </summary>
+        public static string RunallthreeoFThecalibrationsabove {
+            get {
+                return ResourceManager.GetString("RunallthreeoFThecalibrationsabove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to S.
         /// </summary>
         public static string S {
@@ -3146,15 +3263,6 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scan Speed.
-        /// </summary>
-        public static string Scan_Speed {
-            get {
-                return ResourceManager.GetString("Scan Speed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Scanning time:.
         /// </summary>
         public static string ScanningTime {
@@ -3187,6 +3295,15 @@ namespace ACATResources {
         public static string ScanTime {
             get {
                 return ResourceManager.GetString("ScanTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Score.
+        /// </summary>
+        public static string Score {
+            get {
+                return ResourceManager.GetString("Score", resourceCulture);
             }
         }
         
@@ -3668,6 +3785,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start by selecting a.
+        /// </summary>
+        public static string Startbyselectinga {
+            get {
+                return ResourceManager.GetString("Startbyselectinga", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Starting ACAT.
         /// </summary>
         public static string StartingACAT {
@@ -3866,6 +3992,33 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to that corresponds to the.
+        /// </summary>
+        public static string thatcorrespondstothe {
+            get {
+                return ResourceManager.GetString("thatcorrespondstothe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to that you are happy with it&apos;s not necessary to recalibrate..
+        /// </summary>
+        public static string thatyouarehappywith {
+            get {
+                return ResourceManager.GetString("thatyouarehappywith", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to that you have selected.
+        /// </summary>
+        public static string thatyouhaveselected {
+            get {
+                return ResourceManager.GetString("thatyouhaveselected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This is a prompt for title.
         /// </summary>
         public static string Thisisaprompfotitle {
@@ -3934,6 +4087,15 @@ namespace ACATResources {
         public static string TitleTimingsMsecs {
             get {
                 return ResourceManager.GetString("TitleTimingsMsecs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to to help you increase your score..
+        /// </summary>
+        public static string tohelpyouincreaseyourscore {
+            get {
+                return ResourceManager.GetString("tohelpyouincreaseyourscore", resourceCulture);
             }
         }
         

@@ -153,7 +153,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(1016, 130);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Eyes Closed Calibration";
+            this.label1.Text = StringResources.EyesClosedCalibration;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label2
@@ -166,7 +166,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(1016, 90);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Open and close your eyes when prompted";
+            this.label2.Text = StringResources.OpenAndCloseYourEyes;
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel4
@@ -207,7 +207,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonExit.Name = "ButtonExit";
             this.ButtonExit.Size = new System.Drawing.Size(194, 64);
             this.ButtonExit.TabIndex = 4;
-            this.ButtonExit.Text = "Exit";
+            this.ButtonExit.Text = StringResources.Exit;
             this.ButtonExit.UseMnemonic = false;
             this.ButtonExit.UseVisualStyleBackColor = false;
             this.ButtonExit.Click += new System.EventHandler(this.ButtonExit_Click);
@@ -228,7 +228,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonCancel.Name = "ButtonCancel";
             this.ButtonCancel.Size = new System.Drawing.Size(194, 64);
             this.ButtonCancel.TabIndex = 3;
-            this.ButtonCancel.Text = "Cancel";
+            this.ButtonCancel.Text = StringResources.Cancel;
             this.ButtonCancel.UseMnemonic = false;
             this.ButtonCancel.UseVisualStyleBackColor = false;
             this.ButtonCancel.Click += new System.EventHandler(this.ButtonCancel_Click_1);
@@ -249,7 +249,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonStart.Name = "ButtonStart";
             this.ButtonStart.Size = new System.Drawing.Size(194, 64);
             this.ButtonStart.TabIndex = 2;
-            this.ButtonStart.Text = "Start";
+            this.ButtonStart.Text = StringResources.Start;
             this.ButtonStart.UseMnemonic = false;
             this.ButtonStart.UseVisualStyleBackColor = false;
             this.ButtonStart.Click += new System.EventHandler(this.buttonStart_Click);
@@ -310,7 +310,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.labelInstruction.Name = "labelInstruction";
             this.labelInstruction.Size = new System.Drawing.Size(1016, 90);
             this.labelInstruction.TabIndex = 5;
-            this.labelInstruction.Text = "Eyes open";
+            this.labelInstruction.Text = StringResources.EyesOpen;
             this.labelInstruction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel5

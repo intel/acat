@@ -1,4 +1,6 @@
 ﻿
+using ACATResources;
+
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
     partial class ConfirmBoxCalibrationModes
@@ -206,6 +208,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             resources.ApplyResources(this.labelParametersTitle, "labelParametersTitle");
             this.labelParametersTitle.ForeColor = System.Drawing.Color.White;
             this.labelParametersTitle.Name = "labelParametersTitle";
+            this.labelParametersTitle.Text = StringResources.Parameters;
             // 
             // tableLayoutPanelTitleModes
             // 
@@ -220,6 +223,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             resources.ApplyResources(this.labelModeTitle, "labelModeTitle");
             this.labelModeTitle.ForeColor = System.Drawing.Color.White;
             this.labelModeTitle.Name = "labelModeTitle";
+            this.labelModeTitle.Text = StringResources.Mode;
             // 
             // labelScoreTitle
             // 
@@ -227,6 +231,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutPanelTitleModes.SetColumnSpan(this.labelScoreTitle, 2);
             this.labelScoreTitle.ForeColor = System.Drawing.Color.White;
             this.labelScoreTitle.Name = "labelScoreTitle";
+            this.labelScoreTitle.Text = StringResources.Score;
             // 
             // panel2
             // 
@@ -240,6 +245,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutPanel1.SetColumnSpan(this.labelTitle, 2);
             this.labelTitle.ForeColor = System.Drawing.SystemColors.Control;
             this.labelTitle.Name = "labelTitle";
+            this.labelTitle.Text = StringResources.CalibrateNow;
             // 
             // tableLayoutConfigurations
             // 
@@ -283,6 +289,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             resources.ApplyResources(this.labelMinimumScore, "labelMinimumScore");
             this.labelMinimumScore.ForeColor = System.Drawing.Color.White;
             this.labelMinimumScore.Name = "labelMinimumScore";
+            this.labelMinimumScore.Text = "77";
             // 
             // customSliderMinimumScore
             // 
@@ -375,6 +382,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             resources.ApplyResources(this.label4, "label4");
             this.label4.ForeColor = System.Drawing.Color.White;
             this.label4.Name = "label4";
+            this.label4.Text = StringResources.MinimumScore;
             // 
             // tableLayoutPanel15
             // 
@@ -429,6 +437,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             resources.ApplyResources(this.labelIterationstarget, "labelIterationstarget");
             this.labelIterationstarget.ForeColor = System.Drawing.Color.White;
             this.labelIterationstarget.Name = "labelIterationstarget";
+            this.labelIterationstarget.Text = "77";
             // 
             // customSliderIterationstarget
             // 
@@ -521,6 +530,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             resources.ApplyResources(this.label5, "label5");
             this.label5.ForeColor = System.Drawing.Color.White;
             this.label5.Name = "label5";
+            this.label5.Text = StringResources.Iterationspertarget;
             // 
             // tableLayoutPanel17
             // 
@@ -583,6 +593,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             resources.ApplyResources(this.label7, "label7");
             this.label7.ForeColor = System.Drawing.Color.White;
             this.label7.Name = "label7";
+            this.label7.Text = StringResources.ScanSpeed;
             // 
             // tableLayoutPanel19
             // 
@@ -697,12 +708,14 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             resources.ApplyResources(this.labelScanningTime, "labelScanningTime");
             this.labelScanningTime.ForeColor = System.Drawing.Color.White;
             this.labelScanningTime.Name = "labelScanningTime";
+            this.labelScanningTime.Text = "2000";
             // 
             // label2
             // 
             resources.ApplyResources(this.label2, "label2");
             this.label2.ForeColor = System.Drawing.Color.White;
             this.label2.Name = "label2";
+            this.label2.Text = "ms";
             // 
             // tableLayoutNumberTargets
             // 
@@ -734,6 +747,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             resources.ApplyResources(this.labelNumberTargets, "labelNumberTargets");
             this.labelNumberTargets.ForeColor = System.Drawing.Color.White;
             this.labelNumberTargets.Name = "labelNumberTargets";
+            this.labelNumberTargets.Text = "77";
             // 
             // customSliderNumberTargets
             // 
@@ -826,6 +840,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             resources.ApplyResources(this.label6, "label6");
             this.label6.ForeColor = System.Drawing.Color.White;
             this.label6.Name = "label6";
+            this.label6.Text = StringResources.NumberofTargets;
             // 
             // tableLayoutPanel22
             // 
@@ -977,6 +992,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             resources.ApplyResources(this.labelCalibrationMessage, "labelCalibrationMessage");
             this.labelCalibrationMessage.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.labelCalibrationMessage.Name = "labelCalibrationMessage";
+            this.labelCalibrationMessage.Text = StringResources.RunallthreeoFThecalibrationsabove;
             // 
             // tableLayoutPanelAdditionalOptions
             // 
@@ -1361,6 +1377,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonBeginACAT.Click += new System.EventHandler(this.ButtonBeginACAT_Click);
             this.ButtonBeginACAT.MouseEnter += new System.EventHandler(this.ButtonInfoModes_MouseEnter);
             this.ButtonBeginACAT.MouseLeave += new System.EventHandler(this.ButtonInfoModes_MouseLeave);
+            this.ButtonBeginACAT.Text = StringResources.BeginusingACAT;
             // 
             // tableLayoutPanelExit
             // 
@@ -1382,6 +1399,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonExit.UseMnemonic = false;
             this.ButtonExit.UseVisualStyleBackColor = true;
             this.ButtonExit.Click += new System.EventHandler(this.ButtonExit_Click_1);
+            this.ButtonExit.Text = StringResources.Exit;
             // 
             // tableLayoutPaneladvancedOpt
             // 
@@ -1403,6 +1421,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOtherTest.UseMnemonic = false;
             this.ButtonOtherTest.UseVisualStyleBackColor = true;
             this.ButtonOtherTest.Click += new System.EventHandler(this.ButtonOtherTest_Click);
+            this.ButtonOtherTest.Text = StringResources.AdvancedOptions;
             // 
             // tableLayoutPanel12
             // 

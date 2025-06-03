@@ -52,13 +52,7 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
 
     public class BCIMessages
     {
-        public string CalibrationError_CalibrationFailed = StringResources.CalibrationError_CalibrationFailed;
-        public string CalibrationError_Incomplete = StringResources.CalibrationError_Incomplete;
-        public string ClassifiersNotLoadedError = StringResources.ClassifiersNotLoadedError;
-        public string OpticalSensorError = StringResources.OpticalSensorError;
-        public string SensorError = StringResources.SensorError;
         public const string Status_Ok = "";
-        public string TypingError = StringResources.TypingError;
     }
 
     public class BCIError

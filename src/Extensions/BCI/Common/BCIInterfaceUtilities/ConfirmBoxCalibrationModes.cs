@@ -606,7 +606,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             ButtonDownNumberTargets.Text = "-";
             ButtonDownScanningTime.Text = "-";
             ButtonUpNumberTargets.Text = "+";
-            ButtonExit.Text = "Exit ACAT";
+          //  ButtonExit.Text = "Exit ACAT";
             ButtonInfoBox.Text = "?";
             ButtonInfoIterationsTarget.Text = "?";
             ButtonInfoKeyboardL.Text = "?";
@@ -621,7 +621,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             ButtonOpcKeyboardR.Text = "Keyboard(Right)";
             ButtonOpcSentence.Text = "Setence";
             ButtonOpcWord.Text = "Word*";
-            ButtonOtherTest.Text = "Advanced Options";
+            //ButtonOtherTest.Text = "Advanced Options";
             ButtonRestoreDefaults.Text = "Restore";
             ButtonUpIterationstarget.Text = "Additional Calibrations*";
             ButtonUpMinimumScore.Text = "Advanced";
@@ -629,25 +629,25 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             checkBoxAdvancesParameters.Text = "Additional Calibrations*";
             checkBoxAdditionalCalibrations.Text = "Advanced";
 
-            label2.Text = "ms";
-            label4.Text = "Minimum Score*";
-            label5.Text = "Iterations per target";
-            label6.Text = "Number of Targets";
-            label7.Text = "Scanning speed";
-            labelCalibrationMessage.Text = "Run all three of the calibrations above";
-            labelIterationstarget.Text = "77";
-            labelMinimumScore.Text = "77";
-            labelModeTitle.Text = "Mode";
-            labelNumberTargets.Text = "77";
-            labelParametersTitle.Text = "Parameters";
-            labelScanningTime.Text = "2000";
+            //label2.Text = "ms";
+            //label4.Text = "Minimum Score*";
+          //  label5.Text = StringResources.Iterationspertarget;
+          //  label6.Text = "Number of Targets";
+          //  label7.Text = "Scanning speed";
+           // labelCalibrationMessage.Text = "Run all three of the calibrations above";
+           // labelIterationstarget.Text = "77";
+           // labelMinimumScore.Text = "77";
+            //labelModeTitle.Text = "Mode";
+           // labelNumberTargets.Text = "77";
+          //  labelParametersTitle.Text = "Parameters";
+           // labelScanningTime.Text = "2000";
             labelScoreBox.Text = "-";
             labelScoreKeyboardL.Text = "-";
             labelScoreKeyboardR.Text = "-";
             labelScoreSentence.Text = "-";
-            labelScoreTitle.Text = "Score";
+           // labelScoreTitle.Text = "Score";
             labelScoreWord.Text = "-";
-            labelTitle.Text = "Calibrate";
+            //labelTitle.Text = "Calibrate";
 
         }
 

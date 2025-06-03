@@ -807,7 +807,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
             catch (Exception e)
             {
-                error = new BCIError(BCIErrorCodes.CalibrationError_LoadingClassifiers, BCIMessages.ClassifiersNotLoadedError);
+                error = new BCIError(BCIErrorCodes.CalibrationError_LoadingClassifiers, StringResources.ClassifiersNotLoadedError);
                 Log.Debug("Error " + BCIErrorCodes.CalibrationError_LoadingClassifiers.ToString() + " " + "Excepction: " + e.Message);
             }
 
@@ -896,7 +896,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
             catch (Exception e)
             {
-                error = new BCIError(BCIErrorCodes.CalibrationError_LoadingClassifiers, BCIMessages.ClassifiersNotLoadedError);
+                error = new BCIError(BCIErrorCodes.CalibrationError_LoadingClassifiers, StringResources.ClassifiersNotLoadedError);
                 Log.Debug("Error " + BCIErrorCodes.CalibrationError_LoadingClassifiers.ToString() + " " + "Excepction: " + e.Message);
             }
 
@@ -1156,14 +1156,14 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                     if (auc == -1)// Error when training classifiers
                     {
                         Log.Debug("Error when training classifiers");
-                        error = new BCIError(BCIErrorCodes.CalibrationError_OnAnalyzingData_TrainingClassifiersError, BCIMessages.CalibrationError_CalibrationFailed);
+                        error = new BCIError(BCIErrorCodes.CalibrationError_OnAnalyzingData_TrainingClassifiersError, StringResources.CalibrationError_CalibrationFailed);
                     }
                 }
                 catch (Exception e)
                 {
                     auc = -1;
                     Log.Debug(e.Message);
-                    error = new BCIError(BCIErrorCodes.CalibrationError_OnAnalyzingData_UnknownException, BCIMessages.CalibrationError_CalibrationFailed);
+                    error = new BCIError(BCIErrorCodes.CalibrationError_OnAnalyzingData_UnknownException, StringResources.CalibrationError_CalibrationFailed);
                 }
             }
             else
@@ -1215,7 +1215,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                         double[,] allData = DAQ_OpenBCI.GetData();
 
                         if (allData == null || allData.Length == 0)
-                            sensorError = new BCIError(BCIErrorCodes.SensorError_DataNotReceived, BCIMessages.SensorError);
+                            sensorError = new BCIError(BCIErrorCodes.SensorError_DataNotReceived, StringResources.SensorError);
                         else
                         {
                             // Write marker values to file
@@ -1235,7 +1235,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                             if (numTriggerPulsesDetected == 0)
                             {
                                 Log.Debug("Optical sensor error. No pulses were detected");
-                                sensorError = new BCIError(BCIErrorCodes.OpticalSensorError_NoPulsesDetected, BCIMessages.OpticalSensorError);
+                                sensorError = new BCIError(BCIErrorCodes.OpticalSensorError_NoPulsesDetected, StringResources.OpticalSensorError);
                             }
                             // Note: Removed code since we can't guarantee the number of pulses received given bluetooth delays
                             //else if (numTriggerPulsesDetected > numTriggerPulsesExpected)
@@ -1256,7 +1256,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                     }
                     catch (Exception e)
                     {
-                        sensorError = new BCIError(BCIErrorCodes.CalibrationError_UnknwonException, BCIMessages.CalibrationError_CalibrationFailed);
+                        sensorError = new BCIError(BCIErrorCodes.CalibrationError_UnknwonException, StringResources.CalibrationError_CalibrationFailed);
                         Log.Debug(e.Message);
                     }
                 }
@@ -1517,7 +1517,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                                     }
 
                                     if (!LoadClassifiers())
-                                        error = new BCIError(BCIErrorCodes.TypingError_ClassifiersNotLoaded, BCIMessages.ClassifiersNotLoadedError);
+                                        error = new BCIError(BCIErrorCodes.TypingError_ClassifiersNotLoaded, StringResources.ClassifiersNotLoadedError);
 
                                     // Load trained classifier
                                     sessionID = "EEG_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_Typing"; // Create new files
@@ -1551,7 +1551,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                             }
                         }
                         if (!sensorReady)
-                            error = new BCIError(BCIErrorCodes.SensorError_StartSessionFailed, BCIMessages.SensorError);
+                            error = new BCIError(BCIErrorCodes.SensorError_StartSessionFailed, StringResources.SensorError);
 
                         Thread.Sleep(1000);// To make sure all markers are sent correctly
                     }
@@ -1753,7 +1753,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
                             if (numKOChannels >= 3)
                             {
-                                error = new BCIError(BCIErrorCodes.SensorError_BadSignalQuality, BCIMessages.SensorError);
+                                error = new BCIError(BCIErrorCodes.SensorError_BadSignalQuality, StringResources.SensorError);
                                 statusSignal = SignalStatus.SIGNAL_KO;
                             }
 
@@ -1834,17 +1834,17 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                         }
                         else
                         {
-                            error = new BCIError(BCIErrorCodes.TypingError_OnRepetitionEnd_DataNotReceived, BCIMessages.TypingError); // no data received, send error
+                            error = new BCIError(BCIErrorCodes.TypingError_OnRepetitionEnd_DataNotReceived, StringResources.TypingError); // no data received, send error
                         }
                     }
                     else
                     {
-                        error = new BCIError(BCIErrorCodes.TypingError_OnRepetitionEnd_SensorDisconected, BCIMessages.TypingError); // device not acquiring data. Start?
+                        error = new BCIError(BCIErrorCodes.TypingError_OnRepetitionEnd_SensorDisconected, StringResources.TypingError); // device not acquiring data. Start?
                     }
                 }
                 catch (Exception e)
                 {
-                    error = new BCIError(BCIErrorCodes.TypingError_OnRepetitionEnd_UnknownException, BCIMessages.TypingError);// Error when processing data
+                    error = new BCIError(BCIErrorCodes.TypingError_OnRepetitionEnd_UnknownException, StringResources.TypingError);// Error when processing data
                     Log.Debug("Error: " + error.ErrorCode + " Message" + error.ErrorMessage + " Excepcion: " + e.Message);
                 }
 

@@ -7,6 +7,7 @@
 
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Lib.Core.Utility;
+using ACATResources;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -85,11 +86,23 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             string htmlContent = "<!DOCTYPE html><html><head></head><body style=\"background-color:#232433;\">" +
                 "<ol style=\"font-family:'Montserrat Medium'; font-size:18px; color:white; text-align: left;\">" +
-                "<li>Start by selecting a <span style=\"font-family: 'Montserrat Black'; font-size:25px\">mode</span>.</li>" +
-                "<li>Click on <span style=\"font-family: 'Montserrat Black'; font-size:25px\">calibrate</span> that corresponds to the <span style=\"font-family: 'Montserrat Black'; font-size:25px\">mode</span> that you have selected. if you already have a <span style=\"font-family: 'Montserrat Black'; font-size:25px\">score</span> that you are happy with it's not necessary to recalibrate.</li>" +
-                "<li>Optionally, you can adjust the <span style=\"font-family: 'Montserrat Black'; font-size:25px\">parameters</span> to help you increase your score.</li>" +
-                "<li>Complete at least three modes.</li>" +
-                "</ol></body></html>";
+                "<li>"+
+                StringResources.Startbyselectinga+
+                " <span style=\"font-family: 'Montserrat Black'; font-size:25px\">mode</span>.</li><li>"+
+                StringResources.ClickOn+
+                "<span style=\"font-family: 'Montserrat Black'; font-size:25px\">calibrate</span>"+
+                StringResources.thatcorrespondstothe+
+                "<span style=\"font-family: 'Montserrat Black'; font-size:25px\">mode</span>"+
+                StringResources.thatyouhaveselected+
+                " <span style=\"font-family: 'Montserrat Black'; font-size:25px\">score</span> "+
+                StringResources.thatyouarehappywith+
+                "</li><li>"+
+                StringResources.Optionallyyoucanadjustthe+
+                " <span style=\"font-family: 'Montserrat Black'; font-size:25px\">parameters</span> " +
+                StringResources.tohelpyouincreaseyourscore+
+                "</li><li>"+
+                StringResources.Completeatleastthreemodes
+                +"</li></ol></body></html>";
             webBrowserCalibrationHelp.DocumentText = htmlContent;
         }
     }

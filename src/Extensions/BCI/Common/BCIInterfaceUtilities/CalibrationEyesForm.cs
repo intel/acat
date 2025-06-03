@@ -21,6 +21,7 @@ using static ACAT.Extensions.BCI.Common.BCIControl.BCICalibrationEyesClosedItera
 using System.Windows.Forms;
 using System;
 using System.Drawing;
+using ACATResources;
 
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
@@ -241,7 +242,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 pictureBoxEyesClosed.Visible = false;
                 pictureBoxEyesOpen.Visible = false;
                 labelInstruction.Text = string.Empty;
-                labelCountdown.Text = "Press \"Start\" to begin \nEye calibration";
+                labelCountdown.Text = StringResources.labelCountdown;
                 ButtonCancel.Visible = false;
                 ButtonCancel.Enabled = false;
             }));
@@ -276,8 +277,8 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             {
                 pictureBoxEyesClosed.Visible = false;
                 pictureBoxEyesOpen.Visible = false;
-                labelInstruction.Text = "Calibration finished";
-                labelCountdown.Text = "Press \"Start\" to begin \nEye calibration";
+                labelInstruction.Text = StringResources.Calibrationfinished;
+                labelCountdown.Text = StringResources.labelCountdown;
                 labelCountdown.Visible = true;
             }));
             _Repetitions = 0;

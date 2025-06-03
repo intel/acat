@@ -1378,9 +1378,6 @@ For guidance on changing the display resolution, please refer to the ACAT User G
   <data name="Back" xml:space="preserve">
     <value>Back</value>
   </data>
-  <data name="Scan Speed" xml:space="preserve">
-    <value>Scan Speed</value>
-  </data>
   <data name="Exit Application" xml:space="preserve">
     <value>Exit Application</value>
   </data>
@@ -1678,7 +1675,7 @@ ACAT uses two metrics - “railing” and “impedance” - to check signal qual
     <value>ACAT</value>
   </data>
   <data name="Thisisapromptforthemessagebox" xml:space="preserve">
-    <value>This is a prompt for the message box that will appear  when needed"</value>
+    <value>This is a prompt for the message box that will appear  when needed</value>
   </data>
   <data name="Thisisaprompfotitle" xml:space="preserve">
     <value>This is a prompt for title</value>
@@ -1703,5 +1700,62 @@ ACAT uses two metrics - “railing” and “impedance” - to check signal qual
   </data>
   <data name="TypingError" xml:space="preserve">
     <value>Typing error, please restart ACAT</value>
+  </data>
+  <data name="labelCountdown" xml:space="preserve">
+    <value>Press \"Start\" to begin \nEye calibration</value>
+  </data>
+  <data name="Calibrationfinished" xml:space="preserve">
+    <value>Calibration finished</value>
+  </data>
+  <data name="exitwithoutsaving" xml:space="preserve">
+    <value>Exit without saving?</value>
+  </data>
+  <data name="Startbyselectinga" xml:space="preserve">
+    <value>Start by selecting a</value>
+  </data>
+  <data name="ClickOn" xml:space="preserve">
+    <value>Click On</value>
+  </data>
+  <data name="thatcorrespondstothe" xml:space="preserve">
+    <value>that corresponds to the</value>
+  </data>
+  <data name="thatyouhaveselected" xml:space="preserve">
+    <value>that you have selected</value>
+  </data>
+  <data name="Completeatleastthreemodes" xml:space="preserve">
+    <value>Complete at least three modes.</value>
+  </data>
+  <data name="tohelpyouincreaseyourscore" xml:space="preserve">
+    <value>to help you increase your score.</value>
+  </data>
+  <data name="thatyouarehappywith" xml:space="preserve">
+    <value>that you are happy with it's not necessary to recalibrate.</value>
+  </data>
+  <data name="Optionallyyoucanadjustthe" xml:space="preserve">
+    <value>Optionally, you can adjust the</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>Parameters</value>
+  </data>
+  <data name="Score" xml:space="preserve">
+    <value>Score</value>
+  </data>
+  <data name="MinimumScore" xml:space="preserve">
+    <value>Minimum Score*</value>
+  </data>
+  <data name="AdvancedOptions" xml:space="preserve">
+    <value>Advanced Options</value>
+  </data>
+  <data name="Iterationspertarget" xml:space="preserve">
+    <value>Iterations per target</value>
+  </data>
+  <data name="NumberofTargets" xml:space="preserve">
+    <value>Number of Targets</value>
+  </data>
+  <data name="RunallthreeoFThecalibrationsabove" xml:space="preserve">
+    <value>Run all three of the calibrations above</value>
+  </data>
+  <data name="BeginusingACAT" xml:space="preserve">
+    <value>Begin using ACAT</value>
   </data>
 </root>

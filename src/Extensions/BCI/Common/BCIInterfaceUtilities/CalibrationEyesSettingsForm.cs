@@ -244,7 +244,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 {
                     ConfirmBoxTwoOption confirmBox = new ConfirmBoxTwoOption
                     {
-                        Prompt = "Are you sure to exit without saving?",
+                        Prompt = StringResources.exitwithoutsaving,
                         Op1Prompt = StringResources.OK,
                         Op3Prompt = StringResources.Cancel
                     };

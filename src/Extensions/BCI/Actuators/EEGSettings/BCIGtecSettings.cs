@@ -482,7 +482,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             Scanning_FocalCircleColor = "green";
             Scanning_IsFocalCircleFilled = false;
 
-            SignalMonitor_ScaleIdx = 2; //
+            SignalMonitor_ScaleIdx = 3; //
             SignalControl_WindowDurationForVrmsMeaseurment = 1000; //1 second
 
             SignalControl_RecheckNeeded = true; // by default, force user to do signal quality tests and calibration
@@ -502,8 +502,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             TriggerTest_MinDutyCycleToPassTriggerTest = 0.5f; // 0.5
 
             // SignalQuality_RecheckNeeded = true;
-            SignalQuality_LastRailingValues = new int[16];
-            for (int i = 0; i < 16; i++)
+            SignalQuality_LastRailingValues = new int[8];
+            for (int i = 0; i < 8; i++)
                 SignalQuality_LastRailingValues[i] = int.MaxValue;
 
             SignalQuality_PassedLastOverallQualityCheck = false;

@@ -697,6 +697,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 Log.Debug("BCI LOG | Exception occurred during initilization: " + ex.Message);
                 return;
             }
+
             SharpDXColors = new SharpDXColors(_sharpDX_d2dRenderTarget);
             BCIUtils = new BCIUtils();
             AnimationManagerUtils.SetDefaultParameters();
@@ -707,6 +708,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             _directWriteFactory = new SharpDX.DirectWrite.Factory();
             _amountOfKeyboards = 0;
             _nextTarget = GetButtomFromIndex(1);
+
             _ = UpdateStringsFromButtons().ConfigureAwait(false);//Task to update strings for SharpDX since it uses strings and not the Windows butons properties 
             _actuator = Context.AppActuatorManager.GetActuator(new Guid("77809D19-F450-4D36-A633-D818400B3D9A"));
             if (_actuator != null)
@@ -1808,6 +1810,11 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <returns></returns>
         private ButtonsData GetButtomFromIndex(int index)
         {
+            if (_ButtonDataList == null)
+            {
+                return new ButtonsData();
+            }
+
             try
             {
                 if (_sessionMode == BCIModes.TYPING)
@@ -1819,6 +1826,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             {
                 return new ButtonsData();
             }
+
             return new ButtonsData();
         }
 

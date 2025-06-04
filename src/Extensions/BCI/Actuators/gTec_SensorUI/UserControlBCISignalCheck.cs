@@ -71,7 +71,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private const int PROCESSING_BUFFER_SIZE_SEC = 5;
 
         // Constants found in OpenBCI_GUI application (OpenBCI_GUI.pde, InterfaceSerial.pde, etc.) to calculate impedance
-        private const int GAIN = 24;
+        private const int GAIN = 1;
 
         // Lists holding UI elements for all channels
         private List<String> _channelNamesRequired;
@@ -82,8 +82,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
         // Variables related to BCI board configuration
         private int _scaleIdx;
-        private int _Ymin = -200;
-        private int _Ymax = 200;
+        private int _Ymin = -400;
+        private int _Ymax = 400;
         private int _bufSize;
         private int[] _indEegChannels;
         private int _samplingRate;
@@ -247,11 +247,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 //////// BCI Default Filter - Notch and FrontEnd ////////
                 double[] filteredChanelData = _filteredChannelData.GetRow(chIdx);
 
-                // If we're currently on the railing testing page and we're not running the impedance testing
+                // If we're currently on the railing testing page
                 if (_currentBCISignalCheckMode == BCISignalCheckMode.TEST_RAILING)
                 {
                     // Compute railing on latest buffer of UNFILTERED data
-                    double railingResPercentage = DataFilter.get_railed_percentage(unfilteredChannelData, GAIN);
+                    double railingResPercentage = DataFilter.get_railed_percentage(filteredChanelData, GAIN);
 
                     // Update latest railing result - save value, get signal status, and update UI
                     updateRailingTestResult(chIdx, (int)railingResPercentage, update_UI);
@@ -556,11 +556,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                         //Log.Debug("updateSignalChart | scale_plots == true | channelIndex: " + channelIndex.ToString());
 
                         // Autoscale
-                        //_eegChannels[channelIndex].chartSignalDataRailingTest.ChartAreas[0].RecalculateAxesScale();
+                        _eegChannels[channelIndex].chartSignalDataRailingTest.ChartAreas[0].RecalculateAxesScale();
 
                         // Use _Ymin, _Ymax
-                        _eegChannels[channelIndex].chartSignalDataRailingTest.ChartAreas[0].AxisY.Minimum = _Ymin;
-                        _eegChannels[channelIndex].chartSignalDataRailingTest.ChartAreas[0].AxisY.Maximum = _Ymax;
+                        //_eegChannels[channelIndex].chartSignalDataRailingTest.ChartAreas[0].AxisY.Minimum = _Ymin;
+                        //_eegChannels[channelIndex].chartSignalDataRailingTest.ChartAreas[0].AxisY.Maximum = _Ymax;
                     }
                 }));
             }

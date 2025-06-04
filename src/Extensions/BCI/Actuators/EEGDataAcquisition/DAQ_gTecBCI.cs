@@ -21,6 +21,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Gtec.Unicorn;
+using ACAT.Extensions.BCI.Common.BCIControl;
 
 namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 {
@@ -32,7 +33,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         public String SettingsFileName = "BCIGtecActuatorSettings.xml";
 
         // ********** Params set here (not read from settings)
-        // private readonly string[] otherChannelsPinsNameList = { "x", "D11", "D12", "D13", "D17", "D18", "x" };
         // private readonly int[] otherChannelsPinsIdxList = {12, 13, 14, 15, 16, 17, 18}; this is returnet when DeviceObj.get_other_channels();
         private readonly string boardLogFileName = "boardLog";
 
@@ -108,6 +108,11 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Buffer to store data and calculate signal stauts
         /// </summary>
         private double[,] _bufferSignalStatus;
+
+        /// <summary>
+        /// Buffer for triggertest
+        /// </summary>
+        private List<double> _bufferTriggerTest;
 
         /// <summary>
         /// Flag, true when trigger test is in progress
@@ -310,6 +315,10 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         //DeviceObj.config_board("/3");
 
                         indEegChannels = BoardShim.get_eeg_channels(boardID);
+                        int[] accel = BoardShim.get_accel_channels(boardID);
+                        int[] gyro = BoardShim.get_gyro_channels(boardID);
+                        int timestamp = BoardShim.get_timestamp_channel(boardID);    
+                        int battery = BoardShim.get_battery_channel(boardID);
                         int[] indOtherChannels = BoardShim.get_other_channels(boardID); //indOtherChannels = 12...18
                         sampleRate = BoardShim.get_sampling_rate(boardID);
                         BCISettingsFixed.DAQ_SampleRate = sampleRate;
@@ -477,6 +486,22 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 {
                     // Get data
                     rawData = DeviceObj.get_board_data();
+
+                    // raw data is in 2d array Apply scaling factor so I can show in uV
+                    //  TODO: Celal Added scaling factor to convert to uV
+                    //const double ScalingFactorToMicrovolts = 0.001;
+                    //if (rawData != null)
+                    //{
+                    //    int rows = rawData.GetLength(0);
+                    //    int cols = rawData.GetLength(1);
+                    //    for (int i = 0; i < indEegChannels.Length; i++)
+                    //    {
+                    //        for (int j = 0; j < cols; j++)
+                    //        {
+                    //            rawData[i, j] *= ScalingFactorToMicrovolts;
+                    //        }
+                    //    }
+                    //}
 
                     if (rawData != null && rawData.Length > 0)
                     {
@@ -907,6 +932,43 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     break;
             }
         }
+
+        /// <summary>
+        /// Gets status
+        /// </summary>
+        /// <returns></returns>v
+        public SignalStatus GetStatus(out SignalStatus[] statusSignals)
+        {
+            SignalStatus statusAllSignals = SignalStatus.SIGNAL_ERROR;
+            statusSignals = new SignalStatus[indEegChannels.Length];
+
+            for (int channelIdx = 0; channelIdx < indEegChannels.Length; channelIdx++)
+                statusSignals[channelIdx] = SignalStatus.SIGNAL_ERROR;
+
+            if (status == BoardStatus.BOARD_ACQUIRINGDATA)
+            {
+                try
+                {
+                    double[,] allData = GetData();
+
+                    if (_bufferSignalStatus != null && _bufferSignalStatus.Length > 0)
+                    {
+                        // Set overall status and status signals as OK (temprarily until railing is implemented)
+                        statusAllSignals = SignalStatus.SIGNAL_OK;
+                        for (int channelIdx = 0; channelIdx < indEegChannels.Length; channelIdx++)
+                            statusSignals[channelIdx] = SignalStatus.SIGNAL_OK;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Debug("Exception: " + e.Message);
+                }
+            }
+            return statusAllSignals;
+        }
     }
     #endregion Utils
+
+
+
 }

@@ -31,7 +31,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     /// </summary>
     public class GTecDeviceTester
     {
-        DAQ_gTecBCI gTecBCI = null;
+        public DAQ_gTecBCI gTecBCI = null;
 
 
         /// <summary>
@@ -443,7 +443,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 // Next button clicked from UserControlBCISignalCheck
                 case "buttonNext_userControlBCISignalCheck":
 
-                    bool exitBCIOnboarding = false;
+                    // TODO: Set true for temporary
+                    bool exitBCIOnboarding = true;
 
                     // Get current signal quality check status (user currently passes or fails the checks)
                     // Is updated every INTERVAL_UPDATE_OVERALL_SIGNAL_QUALITY_STATUS_MS while user is in signal check
@@ -507,7 +508,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                         // Display message to user prompting them to improve signal quality before moving on
                         Log.Debug("Not exiting | Did not pass signal quality criteria");
                         bool confirmed = ConfirmBoxSingleOption.ShowDialog("Signal Quality Checks Failed or Incomplete" +
-                            "\nYou need to complete both “Railing” and\n“Impedance” tests and get good signals to\nproceed" +
+                            "\nYou need to complete “Railing” test and get good signals to\nproceed" +
                             "\nPlease refer to the user guide for help", "Ok", _mainForm, false);
                     }
 

@@ -493,20 +493,23 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         public async Task InitializeBCI()
         {
             //STEP - 0
-            await Task.Delay(50);
             _scannerCommon.UserControlManager.AddUserControlByKeyOrName(scannerPanelWordPredictions, "wordPrediction", "WordPredictionUserControlBCI");
             _scannerCommon.UserControlManager.AddUserControlByKeyOrName(scannerPanelSentences, "sentencePrediction", "PhrasesUserControlBCI");
             _scannerCommon.UserControlManager.AddUserControlByKeyOrName(scannerPanelKeyboard, "keyboard", "KeyboardABCUserControlBCI");
             Windows.SetText(_textBoxTalkWindow, BCIInterfaceUtils.INITIALIZING);
-            await Task.Delay(50);
+
+       
             animationSharpManager.Init(this);
             animationSharpManager.CRGText = GetCRGText();
+            
             var widgets = SaveUserControlWidgets();
             SetUserControlData(widgets, WordPredictionUserControlBCI.getpathConfigFile(), PhrasesUserControlBCI.getpathConfigFile(), KeyboardABCUserControlBCI.getpathConfigFile(),true);
             await Task.Delay(700);
+
             animationSharpManager.DrawMainLayout();
             Windows.SetText(_textBoxTalkWindow, string.Empty);
             await Task.Delay(25);
+            
             EvtBCIInitState?.Invoke(BCIState.ReqCalibrationStatus);
         }
 

@@ -1,4 +1,6 @@
 ﻿
+using ACATResources;
+
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
     partial class RemapCalibrationForm
@@ -124,7 +126,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.labelTitle.Name = "labelTitle";
             this.labelTitle.Size = new System.Drawing.Size(1788, 384);
             this.labelTitle.TabIndex = 16;
-            this.labelTitle.Text = "Remap your calibrations";
+            this.labelTitle.Text = StringResources.RemapCalibrations;
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // tableLayoutPanel1
@@ -304,7 +306,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(822, 97);
             this.label4.TabIndex = 19;
-            this.label4.Text = "Calibration mode";
+            this.label4.Text = StringResources.Calibrationmode;
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label3
@@ -318,7 +320,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(822, 97);
             this.label3.TabIndex = 18;
-            this.label3.Text = "Applied to section";
+            this.label3.Text = StringResources.AppliedtoSection;
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // tableLayoutWord
@@ -373,7 +375,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOpcWord.Name = "ButtonOpcWord";
             this.ButtonOpcWord.Size = new System.Drawing.Size(748, 98);
             this.ButtonOpcWord.TabIndex = 17;
-            this.ButtonOpcWord.Text = "Word";
+            this.ButtonOpcWord.Text = StringResources.Word;
             this.ButtonOpcWord.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ButtonOpcWord.UseMnemonic = false;
             this.ButtonOpcWord.UseVisualStyleBackColor = false;
@@ -430,7 +432,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOpcKeyboardR.Name = "ButtonOpcKeyboardR";
             this.ButtonOpcKeyboardR.Size = new System.Drawing.Size(748, 98);
             this.ButtonOpcKeyboardR.TabIndex = 17;
-            this.ButtonOpcKeyboardR.Text = "Keyboard (Right)";
+            this.ButtonOpcKeyboardR.Text = StringResources.KeyboardRight;
             this.ButtonOpcKeyboardR.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ButtonOpcKeyboardR.UseMnemonic = false;
             this.ButtonOpcKeyboardR.UseVisualStyleBackColor = false;
@@ -487,7 +489,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOpcKeyboardL.Name = "ButtonOpcKeyboardL";
             this.ButtonOpcKeyboardL.Size = new System.Drawing.Size(748, 98);
             this.ButtonOpcKeyboardL.TabIndex = 17;
-            this.ButtonOpcKeyboardL.Text = "Keyboard (Left)";
+            this.ButtonOpcKeyboardL.Text = StringResources.KeyboardLeft;
             this.ButtonOpcKeyboardL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ButtonOpcKeyboardL.UseMnemonic = false;
             this.ButtonOpcKeyboardL.UseVisualStyleBackColor = false;
@@ -544,7 +546,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOpcSentence.Name = "ButtonOpcSentence";
             this.ButtonOpcSentence.Size = new System.Drawing.Size(748, 98);
             this.ButtonOpcSentence.TabIndex = 17;
-            this.ButtonOpcSentence.Text = "Sentence";
+            this.ButtonOpcSentence.Text = StringResources.Sentence;
             this.ButtonOpcSentence.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ButtonOpcSentence.UseMnemonic = false;
             this.ButtonOpcSentence.UseVisualStyleBackColor = false;
@@ -588,7 +590,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOpcBox.Name = "ButtonOpcBox";
             this.ButtonOpcBox.Size = new System.Drawing.Size(748, 98);
             this.ButtonOpcBox.TabIndex = 17;
-            this.ButtonOpcBox.Text = "Box";
+            this.ButtonOpcBox.Text = StringResources.Box;
             this.ButtonOpcBox.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ButtonOpcBox.UseMnemonic = false;
             this.ButtonOpcBox.UseVisualStyleBackColor = false;
@@ -644,7 +646,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonRestoreDefaults.Name = "ButtonRestoreDefaults";
             this.ButtonRestoreDefaults.Size = new System.Drawing.Size(343, 89);
             this.ButtonRestoreDefaults.TabIndex = 2;
-            this.ButtonRestoreDefaults.Text = "Restore defaults";
+            this.ButtonRestoreDefaults.Text = StringResources.RestoreDefaults;
             this.ButtonRestoreDefaults.UseMnemonic = false;
             this.ButtonRestoreDefaults.UseVisualStyleBackColor = true;
             this.ButtonRestoreDefaults.Click += new System.EventHandler(this.ButtonRestoreDefaults_Click);
@@ -783,7 +785,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonDone.Name = "ButtonDone";
             this.ButtonDone.Size = new System.Drawing.Size(460, 94);
             this.ButtonDone.TabIndex = 0;
-            this.ButtonDone.Text = "Done";
+            this.ButtonDone.Text = StringResources.Done;
             this.ButtonDone.UseMnemonic = false;
             this.ButtonDone.UseVisualStyleBackColor = false;
             this.ButtonDone.Click += new System.EventHandler(this.ButtonDone_Click);
@@ -820,7 +822,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonCancel.Name = "ButtonCancel";
             this.ButtonCancel.Size = new System.Drawing.Size(488, 160);
             this.ButtonCancel.TabIndex = 0;
-            this.ButtonCancel.Text = "Cancel";
+            this.ButtonCancel.Text = StringResources.Cancel;
             this.ButtonCancel.UseMnemonic = false;
             this.ButtonCancel.UseVisualStyleBackColor = true;
             this.ButtonCancel.Click += new System.EventHandler(this.ButtonCancel_Click_1);

@@ -460,7 +460,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             this.WindowState = FormWindowState.Maximized;
             InitializeButtonsState();
-            SetDefaultStringsToControls();
             ShowAllOptions(false);
             InitializeCustomSliders();
             SetUIElements();
@@ -592,42 +591,42 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             customSliderMinimumScore.Minimum = 10;
             customSliderMinimumScore.Maximum = 100;
         }
-
-        private void SetDefaultStringsToControls()
+        // TODO Delete after testing if all labels are correct
+       /* private void SetDefaultStringsToControls()
         {
-            ButtonBeginACAT.Text = "Begin using ACAT";
-            ButtonCalibrateBox.Text = "Calibrate Now";
-            ButtonCalibrateKeyboardL.Text = "Calibrate Now";
-            ButtonCalibrateKeyboardR.Text = "Recalibrate";
-            ButtonCalibrateSentence.Text = "Calibrate Optional";
-            ButtonCalibrateWord.Text = "Calibrate Now";
-            ButtonDownIterationstarget.Text = "-";
-            ButtonDownMinimumScore.Text = "-";
-            ButtonDownNumberTargets.Text = "-";
-            ButtonDownScanningTime.Text = "-";
-            ButtonUpNumberTargets.Text = "+";
+          //  ButtonBeginACAT.Text = "Begin using ACAT";
+          //  ButtonCalibrateBox.Text = "Calibrate Now";
+          //  ButtonCalibrateKeyboardL.Text = "Calibrate Now";
+          //  ButtonCalibrateKeyboardR.Text = "Recalibrate";
+           // ButtonCalibrateSentence.Text = "Calibrate Optional";
+           // ButtonCalibrateWord.Text = "Calibrate Now";
+          //  ButtonDownIterationstarget.Text = "-";
+         //   ButtonDownMinimumScore.Text = "-";
+          //  ButtonDownNumberTargets.Text = "-";
+          //  ButtonDownScanningTime.Text = "-";
+           // ButtonUpNumberTargets.Text = "+";
           //  ButtonExit.Text = "Exit ACAT";
-            ButtonInfoBox.Text = "?";
-            ButtonInfoIterationsTarget.Text = "?";
-            ButtonInfoKeyboardL.Text = "?";
-            ButtonInfoKeyboardR.Text = "?";
-            ButtonInfoMinimumScore.Text = "?";
-            ButtonInfoNumberTargets.Text = "?";
-            ButtonInfoScanningTime.Text = "?";
-            ButtonInfoSentence.Text = "?";
-            ButtonInfoWord.Text = "?";
-            ButtonOpcBox.Text = "Box";
-            ButtonOpcKeyboardL.Text = "Keyboard(Left)";
-            ButtonOpcKeyboardR.Text = "Keyboard(Right)";
-            ButtonOpcSentence.Text = "Setence";
-            ButtonOpcWord.Text = "Word*";
+          //  ButtonInfoBox.Text = "?";
+         //   ButtonInfoIterationsTarget.Text = "?";
+         //   ButtonInfoKeyboardL.Text = "?";
+          //  ButtonInfoKeyboardR.Text = "?";
+          //  ButtonInfoMinimumScore.Text = "?";
+         //   ButtonInfoNumberTargets.Text = "?";
+         //   ButtonInfoScanningTime.Text = "?";
+        //    ButtonInfoSentence.Text = "?";
+           // ButtonInfoWord.Text = "?";
+          //  ButtonOpcBox.Text = "Box";
+           // ButtonOpcKeyboardL.Text = "Keyboard(Left)";
+          //  ButtonOpcKeyboardR.Text = "Keyboard(Right)";
+          //  ButtonOpcSentence.Text = "Setence";
+          //  ButtonOpcWord.Text = "Word*";
             //ButtonOtherTest.Text = "Advanced Options";
-            ButtonRestoreDefaults.Text = "Restore";
-            ButtonUpIterationstarget.Text = "Additional Calibrations*";
-            ButtonUpMinimumScore.Text = "Advanced";
+         //   ButtonRestoreDefaults.Text = "Restore";
+           // ButtonUpIterationstarget.Text = "Additional Calibrations*";
+         //   ButtonUpMinimumScore.Text = "Advanced";
 
-            checkBoxAdvancesParameters.Text = "Additional Calibrations*";
-            checkBoxAdditionalCalibrations.Text = "Advanced";
+          //  checkBoxAdvancesParameters.Text = "Additional Calibrations*";
+          //  checkBoxAdditionalCalibrations.Text = "Advanced";
 
             //label2.Text = "ms";
             //label4.Text = "Minimum Score*";
@@ -641,15 +640,16 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
            // labelNumberTargets.Text = "77";
           //  labelParametersTitle.Text = "Parameters";
            // labelScanningTime.Text = "2000";
-            labelScoreBox.Text = "-";
-            labelScoreKeyboardL.Text = "-";
-            labelScoreKeyboardR.Text = "-";
-            labelScoreSentence.Text = "-";
+           // labelScoreBox.Text = "-";
+           // labelScoreKeyboardL.Text = "-";
+           // labelScoreKeyboardR.Text = "-";
+           // labelScoreSentence.Text = "-";
            // labelScoreTitle.Text = "Score";
-            labelScoreWord.Text = "-";
+           // labelScoreWord.Text = "-";
             //labelTitle.Text = "Calibrate";
 
-        }
+        }*/ 
+
 
         /// <summary>
         /// Process the result from the actuator to display the scores of calibrations if applicable

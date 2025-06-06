@@ -283,6 +283,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonUpMinimumScore.UseMnemonic = false;
             this.ButtonUpMinimumScore.UseVisualStyleBackColor = true;
             this.ButtonUpMinimumScore.Click += new System.EventHandler(this.ButtonUp_Click);
+            this.ButtonUpMinimumScore.Text = StringResources.AdvancedOptions;
             // 
             // labelMinimumScore
             // 
@@ -368,6 +369,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonDownMinimumScore.UseMnemonic = false;
             this.ButtonDownMinimumScore.UseVisualStyleBackColor = true;
             this.ButtonDownMinimumScore.Click += new System.EventHandler(this.ButtonDown_Click);
+            this.ButtonDownMinimumScore.Text = "-";
             // 
             // tableLayoutPanel14
             // 
@@ -406,6 +408,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonInfoMinimumScore.UseVisualStyleBackColor = false;
             this.ButtonInfoMinimumScore.MouseEnter += new System.EventHandler(this.ButtonInfoParameters_MouseEnter);
             this.ButtonInfoMinimumScore.MouseLeave += new System.EventHandler(this.ButtonInfoModes_MouseLeave);
+            this.ButtonInfoMinimumScore.Text = "?";
             // 
             // tableLayoutIterationsTarget
             // 
@@ -431,6 +434,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonUpIterationstarget.UseMnemonic = false;
             this.ButtonUpIterationstarget.UseVisualStyleBackColor = true;
             this.ButtonUpIterationstarget.Click += new System.EventHandler(this.ButtonUp_Click);
+            this.ButtonUpIterationstarget.Text = StringResources.Additional_Calibrations + "*";
             // 
             // labelIterationstarget
             // 
@@ -516,6 +520,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonDownIterationstarget.UseMnemonic = false;
             this.ButtonDownIterationstarget.UseVisualStyleBackColor = true;
             this.ButtonDownIterationstarget.Click += new System.EventHandler(this.ButtonDown_Click);
+            this.ButtonDownIterationstarget.Text = "-";
             // 
             // tableLayoutPanel16
             // 
@@ -554,6 +559,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonInfoIterationsTarget.UseVisualStyleBackColor = false;
             this.ButtonInfoIterationsTarget.MouseEnter += new System.EventHandler(this.ButtonInfoParameters_MouseEnter);
             this.ButtonInfoIterationsTarget.MouseLeave += new System.EventHandler(this.ButtonInfoModes_MouseLeave);
+            this.ButtonInfoIterationsTarget.Text = "?";
             // 
             // tableLayoutScanningTime
             // 
@@ -617,6 +623,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonInfoScanningTime.UseVisualStyleBackColor = false;
             this.ButtonInfoScanningTime.MouseEnter += new System.EventHandler(this.ButtonInfoParameters_MouseEnter);
             this.ButtonInfoScanningTime.MouseLeave += new System.EventHandler(this.ButtonInfoModes_MouseLeave);
+            this.ButtonInfoScanningTime.Text = "?";
             // 
             // customSliderScanningTime
             // 
@@ -695,6 +702,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonDownScanningTime.UseMnemonic = false;
             this.ButtonDownScanningTime.UseVisualStyleBackColor = true;
             this.ButtonDownScanningTime.Click += new System.EventHandler(this.ButtonDown_Click);
+            this.ButtonDownScanningTime.Text = "-";
             // 
             // tableLayoutPanel20
             // 
@@ -741,6 +749,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonUpNumberTargets.UseMnemonic = false;
             this.ButtonUpNumberTargets.UseVisualStyleBackColor = true;
             this.ButtonUpNumberTargets.Click += new System.EventHandler(this.ButtonUp_Click);
+            this.ButtonUpNumberTargets.Text = "+";
             // 
             // labelNumberTargets
             // 
@@ -826,6 +835,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonDownNumberTargets.UseMnemonic = false;
             this.ButtonDownNumberTargets.UseVisualStyleBackColor = true;
             this.ButtonDownNumberTargets.Click += new System.EventHandler(this.ButtonDown_Click);
+            this.ButtonDownNumberTargets.Text = "-";
             // 
             // tableLayoutPanel21
             // 
@@ -864,6 +874,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonInfoNumberTargets.UseVisualStyleBackColor = false;
             this.ButtonInfoNumberTargets.MouseEnter += new System.EventHandler(this.ButtonInfoParameters_MouseEnter);
             this.ButtonInfoNumberTargets.MouseLeave += new System.EventHandler(this.ButtonInfoModes_MouseLeave);
+            this.ButtonInfoNumberTargets.Text = "?";
             // 
             // panel1
             // 
@@ -893,6 +904,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonRestoreDefaults.UseMnemonic = false;
             this.ButtonRestoreDefaults.UseVisualStyleBackColor = true;
             this.ButtonRestoreDefaults.Click += new System.EventHandler(this.ButtonRestoreDefaults_Click);
+            this.ButtonRestoreDefaults.Text = StringResources.RestoreDefaults;
             // 
             // checkBoxAdvancesParameters
             // 
@@ -901,6 +913,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.checkBoxAdvancesParameters.Name = "checkBoxAdvancesParameters";
             this.checkBoxAdvancesParameters.UseVisualStyleBackColor = true;
             this.checkBoxAdvancesParameters.CheckedChanged += new System.EventHandler(this.checkBoxAdvancesParameters_CheckedChanged);
+            this.checkBoxAdvancesParameters.Text = StringResources.Additional_Calibrations + "*";
             // 
             // tableLayoutKeyboardLeft
             // 
@@ -926,6 +939,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonCalibrateKeyboardL.UseMnemonic = false;
             this.ButtonCalibrateKeyboardL.UseVisualStyleBackColor = true;
             this.ButtonCalibrateKeyboardL.Click += new System.EventHandler(this.ButtonCalibrate_Click);
+            this.ButtonCalibrateKeyboardL.Text = StringResources.CalibrateNow;
             // 
             // tableLayoutPanel9
             // 
@@ -949,6 +963,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonInfoKeyboardL.UseVisualStyleBackColor = false;
             this.ButtonInfoKeyboardL.MouseEnter += new System.EventHandler(this.ButtonInfoModes_MouseEnter);
             this.ButtonInfoKeyboardL.MouseLeave += new System.EventHandler(this.ButtonInfoModes_MouseLeave);
+            this.ButtonInfoKeyboardL.Text = "?";
             // 
             // ButtonOpcKeyboardL
             // 
@@ -965,6 +980,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOpcKeyboardL.UseMnemonic = false;
             this.ButtonOpcKeyboardL.UseVisualStyleBackColor = false;
             this.ButtonOpcKeyboardL.Click += new System.EventHandler(this.ButtonOpc_Click);
+            this.ButtonOpcKeyboardL.Text = StringResources.KeyboardLeft;
             // 
             // labelScoreKeyboardL
             // 
@@ -1025,6 +1041,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonCalibrateKeyboardR.UseMnemonic = false;
             this.ButtonCalibrateKeyboardR.UseVisualStyleBackColor = true;
             this.ButtonCalibrateKeyboardR.Click += new System.EventHandler(this.ButtonCalibrate_Click);
+            this.ButtonCalibrateKeyboardR.Text = StringResources.Recalibrate;
             // 
             // tableLayoutPanel11
             // 
@@ -1048,6 +1065,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonInfoKeyboardR.UseVisualStyleBackColor = false;
             this.ButtonInfoKeyboardR.MouseEnter += new System.EventHandler(this.ButtonInfoModes_MouseEnter);
             this.ButtonInfoKeyboardR.MouseLeave += new System.EventHandler(this.ButtonInfoModes_MouseLeave);
+            this.ButtonInfoKeyboardR.Text = "?";
             // 
             // ButtonOpcKeyboardR
             // 
@@ -1064,6 +1082,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOpcKeyboardR.UseMnemonic = false;
             this.ButtonOpcKeyboardR.UseVisualStyleBackColor = false;
             this.ButtonOpcKeyboardR.Click += new System.EventHandler(this.ButtonOpc_Click);
+            this.ButtonOpcKeyboardR.Text = StringResources.KeyboardRight;
             // 
             // labelScoreKeyboardR
             // 
@@ -1102,6 +1121,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonCalibrateWord.UseMnemonic = false;
             this.ButtonCalibrateWord.UseVisualStyleBackColor = true;
             this.ButtonCalibrateWord.Click += new System.EventHandler(this.ButtonCalibrate_Click);
+            this.ButtonCalibrateWord.Text = StringResources.CalibrateNow;
             // 
             // tableLayoutPanel10
             // 
@@ -1125,6 +1145,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonInfoWord.UseVisualStyleBackColor = false;
             this.ButtonInfoWord.MouseEnter += new System.EventHandler(this.ButtonInfoModes_MouseEnter);
             this.ButtonInfoWord.MouseLeave += new System.EventHandler(this.ButtonInfoModes_MouseLeave);
+            this.ButtonInfoWord.Text = "?";
             // 
             // ButtonOpcWord
             // 
@@ -1141,6 +1162,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOpcWord.UseMnemonic = false;
             this.ButtonOpcWord.UseVisualStyleBackColor = false;
             this.ButtonOpcWord.Click += new System.EventHandler(this.ButtonOpc_Click);
+            this.ButtonOpcWord.Text = StringResources.Word + "*";
             // 
             // labelScoreWord
             // 
@@ -1179,6 +1201,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonCalibrateSentence.UseMnemonic = false;
             this.ButtonCalibrateSentence.UseVisualStyleBackColor = true;
             this.ButtonCalibrateSentence.Click += new System.EventHandler(this.ButtonCalibrate_Click);
+            this.ButtonCalibrateSentence.Text = StringResources.CalibrateOptionalText;
             // 
             // tableLayoutPanel8
             // 
@@ -1202,6 +1225,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonInfoSentence.UseVisualStyleBackColor = false;
             this.ButtonInfoSentence.MouseEnter += new System.EventHandler(this.ButtonInfoModes_MouseEnter);
             this.ButtonInfoSentence.MouseLeave += new System.EventHandler(this.ButtonInfoModes_MouseLeave);
+            this.ButtonInfoSentence.Text = "?";
             // 
             // ButtonOpcSentence
             // 
@@ -1218,6 +1242,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOpcSentence.UseMnemonic = false;
             this.ButtonOpcSentence.UseVisualStyleBackColor = false;
             this.ButtonOpcSentence.Click += new System.EventHandler(this.ButtonOpc_Click);
+            this.ButtonOpcSentence.Text = StringResources.Sentence;
             // 
             // labelScoreSentence
             // 
@@ -1256,6 +1281,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonCalibrateBox.UseMnemonic = false;
             this.ButtonCalibrateBox.UseVisualStyleBackColor = true;
             this.ButtonCalibrateBox.Click += new System.EventHandler(this.ButtonCalibrate_Click);
+            this.ButtonCalibrateBox.Text = StringResources.CalibrateNow;
             // 
             // ButtonOpcBox
             // 
@@ -1272,6 +1298,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOpcBox.UseMnemonic = false;
             this.ButtonOpcBox.UseVisualStyleBackColor = false;
             this.ButtonOpcBox.Click += new System.EventHandler(this.ButtonOpc_Click);
+            this.ButtonOpcBox.Text = StringResources.Box;
             // 
             // labelScoreBox
             // 
@@ -1301,6 +1328,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonInfoBox.UseVisualStyleBackColor = false;
             this.ButtonInfoBox.MouseEnter += new System.EventHandler(this.ButtonInfoModes_MouseEnter);
             this.ButtonInfoBox.MouseLeave += new System.EventHandler(this.ButtonInfoModes_MouseLeave);
+            this.ButtonInfoBox.Text = "?";
             // 
             // LineBoxSelection
             // 
@@ -1316,6 +1344,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.checkBoxAdditionalCalibrations.Name = "checkBoxAdditionalCalibrations";
             this.checkBoxAdditionalCalibrations.UseVisualStyleBackColor = true;
             this.checkBoxAdditionalCalibrations.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.checkBoxAdditionalCalibrations.Text = StringResources.AdvancedOptions;
             // 
             // webBrowser
             // 

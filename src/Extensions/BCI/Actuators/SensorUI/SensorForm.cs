@@ -138,41 +138,51 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             // user controls actually added to form
             _userControlTestBCIConnections = new UserControlTestBCIConnections(BCIDeviceTester.DeviceTestingState.Testing_BCIConnections.ToString());
             _userControlTestBCIConnections.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
+            _userControlTestBCIConnections.Dock = DockStyle.Fill;
 
             _userControlBCIErrorCytonBoard = new UserControlBCIErrorCytonBoard(BCIDeviceTester.DeviceTestingState.ReceivedBCIError_CytonBoard.ToString());
             _userControlBCIErrorCytonBoard.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCIErrorCytonBoard.buttonRetry.Click += new System.EventHandler(this.buttonRetest_Click);
+            _userControlBCIErrorCytonBoard.Dock = DockStyle.Fill;
 
             _userControlBCIErrorUsbDongle = new UserControlBCIErrorUsbDongle(BCIDeviceTester.DeviceTestingState.ReceivedBCIError_UsbDongle.ToString());
             _userControlBCIErrorUsbDongle.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCIErrorUsbDongle.buttonRetry.Click += new System.EventHandler(this.buttonRetest_Click);
+            _userControlBCIErrorUsbDongle.Dock = DockStyle.Fill;
 
             _userControlBCIErrorPortConfig = new UserControlBCIErrorPortConfig(BCIDeviceTester.DeviceTestingState.ReceivedBCIError_PortConfig.ToString());
             _userControlBCIErrorPortConfig.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
+            _userControlBCIErrorPortConfig.Dock = DockStyle.Fill;
 
             _userControlBCIErrorOpticalSensor = new UserControlBCIErrorOpticalSensor(BCIDeviceTester.DeviceTestingState.ReceivedBCIError_OpticalSensor.ToString());
             _userControlBCIErrorOpticalSensor.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCIErrorOpticalSensor.buttonRetry.Click += new System.EventHandler(this.buttonRetest_Click);
+            _userControlBCIErrorOpticalSensor.Dock = DockStyle.Fill;
 
             _userControlBCISignalCheckStartRequired = new UserControlBCISignalCheckStartRequired(BCIDeviceTester.DeviceTestingState.BCISignalCheckStartRequired.ToString() + "_Required");
             _userControlBCISignalCheckStartRequired.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCISignalCheckStartRequired.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
+            _userControlBCISignalCheckStartRequired.Dock = DockStyle.Fill;
 
             _userControlBCISignalCheckStartPrompt = new UserControlBCISignalCheckStartPrompt(BCIDeviceTester.DeviceTestingState.BCISignalCheckStartPrompt.ToString() + "_Prompt");
             _userControlBCISignalCheckStartPrompt.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCISignalCheckStartPrompt.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
+            _userControlBCISignalCheckStartPrompt.Dock = DockStyle.Fill;
 
             _userControlPromptBCIFIlterSettings = new UserControlBCIFilterSettings(BCIDeviceTester.DeviceTestingState.PromptFilterSettings.ToString());
             _userControlPromptBCIFIlterSettings.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlPromptBCIFIlterSettings.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
+            _userControlPromptBCIFIlterSettings.Dock = DockStyle.Fill;
 
             _userControlBCISignalCheck = new UserControlBCISignalCheck(BCIDeviceTester.DeviceTestingState.BCISignalCheck.ToString());
             _userControlBCISignalCheck.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCISignalCheck.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
+            _userControlBCISignalCheck.Dock = DockStyle.Fill;
 
             _userControlBCIErrorOpticalSensorDetect = new UserControlBCIErrorOpticalSensorDetect(BCIDeviceTester.DeviceTestingState.OpticalSensorDetectError.ToString());
             _userControlBCIErrorOpticalSensorDetect.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             _userControlBCIErrorOpticalSensorDetect.buttonRetry.Click += new System.EventHandler(this.buttonRetest_Click);
+            _userControlBCIErrorOpticalSensorDetect.Dock = DockStyle.Fill;
 
             // Set current signal check view mode for last screens
             // Default = Railing Test screen

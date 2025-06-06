@@ -96,7 +96,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.654111F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.140636F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1022, 766);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1020, 764);
             this.tableLayoutPanelMain.TabIndex = 9;
             // 
             // buttonExit
@@ -110,7 +110,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.buttonExit.Font = new System.Drawing.Font("Montserrat Thin", 36F, System.Drawing.FontStyle.Underline);
             this.buttonExit.ForeColor = System.Drawing.Color.Silver;
             this.buttonExit.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.buttonExit.Location = new System.Drawing.Point(112, 657);
+            this.buttonExit.Location = new System.Drawing.Point(112, 650);
             this.buttonExit.Margin = new System.Windows.Forms.Padding(0);
             this.buttonExit.Name = "buttonExit";
             this.buttonExit.Size = new System.Drawing.Size(128, 58);
@@ -127,7 +127,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.labelTitle.Dock = System.Windows.Forms.DockStyle.Fill;
             this.labelTitle.Font = new System.Drawing.Font("Montserrat", 28F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTitle.ForeColor = System.Drawing.Color.White;
-            this.labelTitle.Location = new System.Drawing.Point(112, 47);
+            this.labelTitle.Location = new System.Drawing.Point(112, 46);
             this.labelTitle.Margin = new System.Windows.Forms.Padding(0);
             this.labelTitle.Name = "labelTitle";
             this.labelTitle.Size = new System.Drawing.Size(795, 86);
@@ -149,12 +149,12 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.tableLayoutPanelBCIError.Controls.Add(this.buttonRetry, 2, 0);
             this.tableLayoutPanelBCIError.Font = new System.Drawing.Font("Montserrat Medium", 19F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tableLayoutPanelBCIError.ForeColor = System.Drawing.Color.White;
-            this.tableLayoutPanelBCIError.Location = new System.Drawing.Point(112, 295);
+            this.tableLayoutPanelBCIError.Location = new System.Drawing.Point(112, 292);
             this.tableLayoutPanelBCIError.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanelBCIError.Name = "tableLayoutPanelBCIError";
             this.tableLayoutPanelBCIError.RowCount = 1;
             this.tableLayoutPanelBCIError.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelBCIError.Size = new System.Drawing.Size(795, 200);
+            this.tableLayoutPanelBCIError.Size = new System.Drawing.Size(795, 199);
             this.tableLayoutPanelBCIError.TabIndex = 70;
             this.tableLayoutPanelBCIError.Text = "Row for error visualization";
             // 
@@ -177,7 +177,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.buttonRetry.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
             this.buttonRetry.Image = ((System.Drawing.Image)(resources.GetObject("buttonRetry.Image")));
             this.buttonRetry.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonRetry.Location = new System.Drawing.Point(545, 66);
+            this.buttonRetry.Location = new System.Drawing.Point(545, 65);
             this.buttonRetry.Margin = new System.Windows.Forms.Padding(15, 0, 0, 0);
             this.buttonRetry.Name = "buttonRetry";
             this.buttonRetry.Size = new System.Drawing.Size(225, 68);
@@ -195,7 +195,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.tableLayoutPanelMain.SetColumnSpan(this.tableLayoutPanelSpacerBottom, 3);
             this.tableLayoutPanelSpacerBottom.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelSpacerBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanelSpacerBottom.Location = new System.Drawing.Point(112, 715);
+            this.tableLayoutPanelSpacerBottom.Location = new System.Drawing.Point(112, 713);
             this.tableLayoutPanelSpacerBottom.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanelSpacerBottom.Name = "tableLayoutPanelSpacerBottom";
             this.tableLayoutPanelSpacerBottom.RowCount = 1;
@@ -215,42 +215,48 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.tableLayoutPanelSpacerTop.Name = "tableLayoutPanelSpacerTop";
             this.tableLayoutPanelSpacerTop.RowCount = 1;
             this.tableLayoutPanelSpacerTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelSpacerTop.Size = new System.Drawing.Size(795, 47);
+            this.tableLayoutPanelSpacerTop.Size = new System.Drawing.Size(795, 46);
             this.tableLayoutPanelSpacerTop.TabIndex = 73;
             // 
             // webBrowserTop
             // 
             this.tableLayoutPanelMain.SetColumnSpan(this.webBrowserTop, 3);
             this.webBrowserTop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowserTop.Location = new System.Drawing.Point(115, 183);
+            this.webBrowserTop.Location = new System.Drawing.Point(115, 181);
             this.webBrowserTop.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowserTop.Name = "webBrowserTop";
             this.tableLayoutPanelMain.SetRowSpan(this.webBrowserTop, 3);
             this.webBrowserTop.ScrollBarsEnabled = false;
-            this.webBrowserTop.Size = new System.Drawing.Size(789, 109);
+            this.webBrowserTop.Size = new System.Drawing.Size(789, 108);
             this.webBrowserTop.TabIndex = 81;
             // 
             // webBrowserBottom
             // 
             this.tableLayoutPanelMain.SetColumnSpan(this.webBrowserBottom, 3);
             this.webBrowserBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowserBottom.Location = new System.Drawing.Point(115, 545);
+            this.webBrowserBottom.Location = new System.Drawing.Point(115, 540);
             this.webBrowserBottom.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowserBottom.Name = "webBrowserBottom";
             this.tableLayoutPanelMain.SetRowSpan(this.webBrowserBottom, 3);
             this.webBrowserBottom.ScrollBarsEnabled = false;
-            this.webBrowserBottom.Size = new System.Drawing.Size(789, 109);
+            this.webBrowserBottom.Size = new System.Drawing.Size(789, 107);
             this.webBrowserBottom.TabIndex = 82;
             // 
             // UserControlBCIErrorOpticalSensorDetect
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.tableLayoutPanelMain);
+            this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(0);
+            this.MaximumSize = new System.Drawing.Size(1022, 766);
+            this.MinimumSize = new System.Drawing.Size(1022, 766);
             this.Name = "UserControlBCIErrorOpticalSensorDetect";
-            this.Size = new System.Drawing.Size(1022, 766);
+            this.Size = new System.Drawing.Size(1020, 764);
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.tableLayoutPanelMain.PerformLayout();
             this.tableLayoutPanelBCIError.ResumeLayout(false);

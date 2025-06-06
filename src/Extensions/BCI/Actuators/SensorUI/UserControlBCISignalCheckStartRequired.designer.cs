@@ -414,13 +414,18 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             // 
             // UserControlBCISignalCheckStartRequired
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.Controls.Add(this.tableLayoutPanelMain);
             this.DoubleBuffered = true;
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.Margin = new System.Windows.Forms.Padding(0);
+            this.MaximumSize = new System.Drawing.Size(1022, 766);
+            this.MinimumSize = new System.Drawing.Size(1022, 766);
             this.Name = "UserControlBCISignalCheckStartRequired";
             this.Size = new System.Drawing.Size(1022, 766);
             this.tableLayoutPanelMain.ResumeLayout(false);

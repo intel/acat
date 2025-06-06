@@ -1,4 +1,6 @@
 ﻿
+using ACATResources;
+
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
     partial class OtherTestForm
@@ -102,7 +104,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.labelTitle.Name = "labelTitle";
             this.labelTitle.Size = new System.Drawing.Size(1592, 250);
             this.labelTitle.TabIndex = 16;
-            this.labelTitle.Text = "Advanced Options";
+            this.labelTitle.Text = StringResources.AdvancedOptions;
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // tableLayoutPanel1
@@ -208,7 +210,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOpcEyesOpenClose.Name = "ButtonOpcEyesOpenClose";
             this.ButtonOpcEyesOpenClose.Size = new System.Drawing.Size(463, 76);
             this.ButtonOpcEyesOpenClose.TabIndex = 17;
-            this.ButtonOpcEyesOpenClose.Text = "Eyes Open/Close Calibration";
+            this.ButtonOpcEyesOpenClose.Text = StringResources.HintEyesOpenCloseCalibrationText;
             this.ButtonOpcEyesOpenClose.UseMnemonic = false;
             this.ButtonOpcEyesOpenClose.UseVisualStyleBackColor = false;
             this.ButtonOpcEyesOpenClose.Visible = false;
@@ -289,7 +291,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOpcSignalCheck.Name = "ButtonOpcSignalCheck";
             this.ButtonOpcSignalCheck.Size = new System.Drawing.Size(463, 76);
             this.ButtonOpcSignalCheck.TabIndex = 17;
-            this.ButtonOpcSignalCheck.Text = "Signal Check";
+            this.ButtonOpcSignalCheck.Text = StringResources.SignalCheck;
             this.ButtonOpcSignalCheck.UseMnemonic = false;
             this.ButtonOpcSignalCheck.UseVisualStyleBackColor = false;
             this.ButtonOpcSignalCheck.Click += new System.EventHandler(this.ButtonOpc_Click);
@@ -370,7 +372,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOpcTriggerCheck.Name = "ButtonOpcTriggerCheck";
             this.ButtonOpcTriggerCheck.Size = new System.Drawing.Size(463, 76);
             this.ButtonOpcTriggerCheck.TabIndex = 17;
-            this.ButtonOpcTriggerCheck.Text = "Trigger Check";
+            this.ButtonOpcTriggerCheck.Text = StringResources.TriggerTest;
             this.ButtonOpcTriggerCheck.UseMnemonic = false;
             this.ButtonOpcTriggerCheck.UseVisualStyleBackColor = false;
             this.ButtonOpcTriggerCheck.Click += new System.EventHandler(this.ButtonOpc_Click);
@@ -413,7 +415,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOpcReMapCalibrations.Name = "ButtonOpcReMapCalibrations";
             this.ButtonOpcReMapCalibrations.Size = new System.Drawing.Size(463, 76);
             this.ButtonOpcReMapCalibrations.TabIndex = 17;
-            this.ButtonOpcReMapCalibrations.Text = "Remap Calibrations";
+            this.ButtonOpcReMapCalibrations.Text = StringResources.RemapCalibrations;
             this.ButtonOpcReMapCalibrations.UseMnemonic = false;
             this.ButtonOpcReMapCalibrations.UseVisualStyleBackColor = false;
             this.ButtonOpcReMapCalibrations.Click += new System.EventHandler(this.ButtonOpc_Click);
@@ -542,7 +544,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonCancel.Name = "ButtonCancel";
             this.ButtonCancel.Size = new System.Drawing.Size(325, 102);
             this.ButtonCancel.TabIndex = 0;
-            this.ButtonCancel.Text = "Back";
+            this.ButtonCancel.Text = StringResources.Back;
             this.ButtonCancel.UseMnemonic = false;
             this.ButtonCancel.UseVisualStyleBackColor = true;
             this.ButtonCancel.Click += new System.EventHandler(this.ButtonCancel_Click_1);

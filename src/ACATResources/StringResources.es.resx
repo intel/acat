@@ -1759,4 +1759,43 @@ ACAT utiliza dos métricas - “saturación” e “impedancia” - para verific
   <data name="BeginusingACAT" xml:space="preserve">
     <value>Empieze a usar Acat</value>
   </data>
+  <data name="KeyboardLeft" xml:space="preserve">
+    <value>Teclado(Izquierdo)</value>
+  </data>
+  <data name="KeyboardRight" xml:space="preserve">
+    <value>Teclado(Derecho)</value>
+  </data>
+  <data name="Word" xml:space="preserve">
+    <value>Palabra</value>
+  </data>
+  <data name="Box" xml:space="preserve">
+    <value>Caja</value>
+  </data>
+  <data name="Additional Calibrations" xml:space="preserve">
+    <value>Calibraciones Adicionales</value>
+  </data>
+  <data name="TriggerTest" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Hinttooltip" xml:space="preserve">
+    <value>Hint tooltip</value>
+  </data>
+  <data name="CustomToolTip" xml:space="preserve">
+    <value>customtooltip</value>
+  </data>
+  <data name="SignalCheck" xml:space="preserve">
+    <value>Signal Check</value>
+  </data>
+  <data name="RemapCalibrations" xml:space="preserve">
+    <value>Localizar Calibraciones</value>
+  </data>
+  <data name="Calibrationmode" xml:space="preserve">
+    <value>Calibration mode</value>
+  </data>
+  <data name="AppliedtoSection" xml:space="preserve">
+    <value>Applied to section</value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value />
+  </data>
 </root>

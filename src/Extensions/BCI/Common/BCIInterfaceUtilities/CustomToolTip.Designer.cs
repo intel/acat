@@ -1,4 +1,6 @@
-﻿namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
+﻿using ACATResources;
+
+namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
     partial class CustomToolTip
     {
@@ -62,7 +64,7 @@
             this.labelTooltip.Name = "labelTooltip";
             this.labelTooltip.Size = new System.Drawing.Size(383, 193);
             this.labelTooltip.TabIndex = 0;
-            this.labelTooltip.Text = "Hint tooltip";
+            this.labelTooltip.Text = StringResources.Hinttooltip;
             this.labelTooltip.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // scannerRoundedButtonControl1
@@ -97,7 +99,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "CustomToolTip";
             this.Padding = new System.Windows.Forms.Padding(4);
-            this.Text = "CustomToolTip";
+            this.Text = StringResources.CustomToolTip;
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);

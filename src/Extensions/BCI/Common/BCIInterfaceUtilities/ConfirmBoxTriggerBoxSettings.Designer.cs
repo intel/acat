@@ -1,4 +1,6 @@
 ﻿
+using ACATResources;
+
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
     partial class ConfirmBoxTriggerBoxSettings
@@ -125,7 +127,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.labelTitle.Name = "labelTitle";
             this.labelTitle.Size = new System.Drawing.Size(1192, 250);
             this.labelTitle.TabIndex = 16;
-            this.labelTitle.Text = "Trigger Test";
+            this.labelTitle.Text = StringResources.TriggerTest;
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // tableLayoutPanel1
@@ -252,7 +254,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(228, 54);
             this.label7.TabIndex = 0;
-            this.label7.Text = "Scanning time*";
+            this.label7.Text = StringResources.ScanningTime+ "*";
             this.label7.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // tableLayoutPanel19
@@ -609,7 +611,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(335, 54);
             this.label6.TabIndex = 0;
-            this.label6.Text = "Number of repetitions*";
+            this.label6.Text = StringResources.NumberofRepetitions+ "*";
             this.label6.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // tableLayoutPanel22
@@ -694,7 +696,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonRestoreDefaults.Name = "ButtonRestoreDefaults";
             this.ButtonRestoreDefaults.Size = new System.Drawing.Size(287, 68);
             this.ButtonRestoreDefaults.TabIndex = 2;
-            this.ButtonRestoreDefaults.Text = "Restore defaults";
+            this.ButtonRestoreDefaults.Text = StringResources.RestoreDefaults;
             this.ButtonRestoreDefaults.UseMnemonic = false;
             this.ButtonRestoreDefaults.UseVisualStyleBackColor = true;
             this.ButtonRestoreDefaults.Click += new System.EventHandler(this.ButtonRestoreDefaults_Click);
@@ -738,7 +740,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonStartTriggerTest.Name = "ButtonStartTriggerTest";
             this.ButtonStartTriggerTest.Size = new System.Drawing.Size(182, 58);
             this.ButtonStartTriggerTest.TabIndex = 0;
-            this.ButtonStartTriggerTest.Text = "Start now";
+            this.ButtonStartTriggerTest.Text = StringResources.Start;
             this.ButtonStartTriggerTest.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ButtonStartTriggerTest.UseMnemonic = false;
             this.ButtonStartTriggerTest.UseVisualStyleBackColor = true;
@@ -762,7 +764,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOpcTriggerTest.Name = "ButtonOpcTriggerTest";
             this.ButtonOpcTriggerTest.Size = new System.Drawing.Size(258, 62);
             this.ButtonOpcTriggerTest.TabIndex = 17;
-            this.ButtonOpcTriggerTest.Text = "Trigger Test";
+            this.ButtonOpcTriggerTest.Text = StringResources.TriggerTest;
             this.ButtonOpcTriggerTest.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ButtonOpcTriggerTest.UseMnemonic = false;
             this.ButtonOpcTriggerTest.UseVisualStyleBackColor = false;
@@ -936,7 +938,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonExit.Name = "ButtonExit";
             this.ButtonExit.Size = new System.Drawing.Size(304, 102);
             this.ButtonExit.TabIndex = 0;
-            this.ButtonExit.Text = "Cancel";
+            this.ButtonExit.Text = StringResources.Cancel;
             this.ButtonExit.UseMnemonic = false;
             this.ButtonExit.UseVisualStyleBackColor = true;
             this.ButtonExit.Click += new System.EventHandler(this.ButtonExit_Click_1);

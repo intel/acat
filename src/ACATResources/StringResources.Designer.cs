@@ -124,6 +124,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Additional Calibrations.
+        /// </summary>
+        public static string Additional_Calibrations {
+            get {
+                return ResourceManager.GetString("Additional Calibrations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Addr. Book.
         /// </summary>
         public static string AddrBook {
@@ -147,6 +156,15 @@ namespace ACATResources {
         public static string AdvancedOptions {
             get {
                 return ResourceManager.GetString("AdvancedOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Applied to section.
+        /// </summary>
+        public static string AppliedtoSection {
+            get {
+                return ResourceManager.GetString("AppliedtoSection", resourceCulture);
             }
         }
         
@@ -274,6 +292,15 @@ namespace ACATResources {
         public static string BeginusingACAT {
             get {
                 return ResourceManager.GetString("BeginusingACAT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Box.
+        /// </summary>
+        public static string Box {
+            get {
+                return ResourceManager.GetString("Box", resourceCulture);
             }
         }
         
@@ -530,6 +557,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calibration mode.
+        /// </summary>
+        public static string Calibrationmode {
+            get {
+                return ResourceManager.GetString("Calibrationmode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string Cancel {
@@ -782,6 +818,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CustomToolTip.
+        /// </summary>
+        public static string CustomToolTip {
+            get {
+                return ResourceManager.GetString("CustomToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to D.
         /// </summary>
         public static string D {
@@ -856,6 +901,15 @@ namespace ACATResources {
         public static string DocumentIsEmpty {
             get {
                 return ResourceManager.GetString("DocumentIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Done.
+        /// </summary>
+        public static string Done {
+            get {
+                return ResourceManager.GetString("Done", resourceCulture);
             }
         }
         
@@ -1598,6 +1652,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hint tooltip.
+        /// </summary>
+        public static string Hinttooltip {
+            get {
+                return ResourceManager.GetString("Hinttooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         public static string HintTriggerCheck {
@@ -1857,6 +1920,24 @@ namespace ACATResources {
         public static string K {
             get {
                 return ResourceManager.GetString("K", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keyboard(Left).
+        /// </summary>
+        public static string KeyboardLeft {
+            get {
+                return ResourceManager.GetString("KeyboardLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keyboard(Right).
+        /// </summary>
+        public static string KeyboardRight {
+            get {
+                return ResourceManager.GetString("KeyboardRight", resourceCulture);
             }
         }
         
@@ -3088,6 +3169,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remap Calibrations.
+        /// </summary>
+        public static string RemapCalibrations {
+            get {
+                return ResourceManager.GetString("RemapCalibrations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rename.
         /// </summary>
         public static string Rename {
@@ -3605,6 +3695,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Signal Check.
+        /// </summary>
+        public static string SignalCheck {
+            get {
+                return ResourceManager.GetString("SignalCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Slower.
         /// </summary>
         public static string Slower {
@@ -4028,7 +4127,7 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a prompt for the message box that will appear  when needed&quot;.
+        ///   Looks up a localized string similar to This is a prompt for the message box that will appear  when needed.
         /// </summary>
         public static string Thisisapromptforthemessagebox {
             get {
@@ -4114,6 +4213,15 @@ namespace ACATResources {
         public static string ToUnlockUseYourSwitchToTypeThePinShownInTheBox {
             get {
                 return ResourceManager.GetString("ToUnlockUseYourSwitchToTypeThePinShownInTheBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trigger Test.
+        /// </summary>
+        public static string TriggerTest {
+            get {
+                return ResourceManager.GetString("TriggerTest", resourceCulture);
             }
         }
         
@@ -4474,6 +4582,15 @@ namespace ACATResources {
         public static string WindowSwitch {
             get {
                 return ResourceManager.GetString("WindowSwitch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Word.
+        /// </summary>
+        public static string Word {
+            get {
+                return ResourceManager.GetString("Word", resourceCulture);
             }
         }
         

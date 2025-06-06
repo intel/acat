@@ -234,8 +234,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
         }
 
-
-
         private void ConfirmBox_Load(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Maximized;
@@ -276,7 +274,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             customToolTip = null;
         }
 
-
         private void customSliderNumberTargets_ValueChanged(object sender, EventArgs e)
         {
             labelNumberTargets.Text = customSliderNumberTargets.Value.ToString();
@@ -287,7 +284,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             labelScanningTime.Text = customSliderScanningTime.Value.ToString();
         }
 
-
         private void InitializeCustomSliders()
         {
             customSliderScanningTime.Minimum = 50;
@@ -295,8 +291,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             customSliderNumberTargets.Minimum = 1;
             customSliderNumberTargets.Maximum = 200;
         }
-
-
 
         /// <summary>
         /// Sets the color for buttons being selected
@@ -325,6 +319,5 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             ButtonOpcTriggerTest_Click(ButtonOpcTriggerTest, EventArgs.Empty);
         }
-
     }
 }

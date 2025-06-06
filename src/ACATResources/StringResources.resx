@@ -1758,4 +1758,43 @@ ACAT uses two metrics - “railing” and “impedance” - to check signal qual
   <data name="BeginusingACAT" xml:space="preserve">
     <value>Begin using ACAT</value>
   </data>
+  <data name="KeyboardLeft" xml:space="preserve">
+    <value>Keyboard(Left)</value>
+  </data>
+  <data name="KeyboardRight" xml:space="preserve">
+    <value>Keyboard(Right)</value>
+  </data>
+  <data name="Word" xml:space="preserve">
+    <value>Word</value>
+  </data>
+  <data name="Box" xml:space="preserve">
+    <value>Box</value>
+  </data>
+  <data name="Additional Calibrations" xml:space="preserve">
+    <value>Additional Calibrations</value>
+  </data>
+  <data name="TriggerTest" xml:space="preserve">
+    <value>Trigger Test</value>
+  </data>
+  <data name="Hinttooltip" xml:space="preserve">
+    <value>Hint tooltip</value>
+  </data>
+  <data name="CustomToolTip" xml:space="preserve">
+    <value>CustomToolTip</value>
+  </data>
+  <data name="SignalCheck" xml:space="preserve">
+    <value>Signal Check</value>
+  </data>
+  <data name="RemapCalibrations" xml:space="preserve">
+    <value>Remap Calibrations</value>
+  </data>
+  <data name="Calibrationmode" xml:space="preserve">
+    <value>Calibration mode</value>
+  </data>
+  <data name="AppliedtoSection" xml:space="preserve">
+    <value>Applied to section</value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value>Done</value>
+  </data>
 </root>

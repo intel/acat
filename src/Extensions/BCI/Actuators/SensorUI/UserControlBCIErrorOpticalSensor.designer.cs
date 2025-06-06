@@ -100,8 +100,8 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             // 
             // tableLayoutPanelMain
             // 
-            this.tableLayoutPanelMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.tableLayoutPanelMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.tableLayoutPanelMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
@@ -138,7 +138,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.975747F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5.340979F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1022, 766);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1020, 764);
             this.tableLayoutPanelMain.TabIndex = 9;
             // 
             // luxSlider
@@ -160,7 +160,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             0,
             0,
             0});
-            this.luxSlider.Location = new System.Drawing.Point(386, 218);
+            this.luxSlider.Location = new System.Drawing.Point(385, 218);
             this.luxSlider.Margin = new System.Windows.Forms.Padding(0);
             this.luxSlider.Maximum = new decimal(new int[] {
             60,
@@ -187,7 +187,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             0});
             this.luxSlider.ShowDivisionsText = false;
             this.luxSlider.ShowSmallScale = false;
-            this.luxSlider.Size = new System.Drawing.Size(249, 92);
+            this.luxSlider.Size = new System.Drawing.Size(248, 92);
             this.luxSlider.SmallChange = new decimal(new int[] {
             1,
             0,
@@ -221,7 +221,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.tableLayoutPanelSpacerTop.Name = "tableLayoutPanelSpacerTop";
             this.tableLayoutPanelSpacerTop.RowCount = 1;
             this.tableLayoutPanelSpacerTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelSpacerTop.Size = new System.Drawing.Size(747, 38);
+            this.tableLayoutPanelSpacerTop.Size = new System.Drawing.Size(744, 38);
             this.tableLayoutPanelSpacerTop.TabIndex = 73;
             // 
             // labelTitle
@@ -232,7 +232,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.tableLayoutPanelMain.SetColumnSpan(this.labelTitle, 3);
             this.labelTitle.Font = new System.Drawing.Font("Montserrat", 34F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTitle.ForeColor = System.Drawing.Color.White;
-            this.labelTitle.Location = new System.Drawing.Point(220, 40);
+            this.labelTitle.Location = new System.Drawing.Point(219, 40);
             this.labelTitle.Margin = new System.Windows.Forms.Padding(0);
             this.labelTitle.Name = "labelTitle";
             this.labelTitle.Size = new System.Drawing.Size(580, 64);
@@ -265,7 +265,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.tableLayoutPanelBCIOpticalSensor.RowCount = 2;
             this.tableLayoutPanelBCIOpticalSensor.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanelBCIOpticalSensor.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanelBCIOpticalSensor.Size = new System.Drawing.Size(747, 184);
+            this.tableLayoutPanelBCIOpticalSensor.Size = new System.Drawing.Size(744, 184);
             this.tableLayoutPanelBCIOpticalSensor.TabIndex = 70;
             this.tableLayoutPanelBCIOpticalSensor.Text = "Row for error visualization";
             // 
@@ -299,7 +299,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.chartExample.ChartAreas.Add(chartArea1);
             this.tableLayoutPanelBCIOpticalSensor.SetColumnSpan(this.chartExample, 5);
             this.chartExample.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.chartExample.Location = new System.Drawing.Point(138, 92);
+            this.chartExample.Location = new System.Drawing.Point(137, 92);
             this.chartExample.Margin = new System.Windows.Forms.Padding(0);
             this.chartExample.Name = "chartExample";
             series1.BorderWidth = 3;
@@ -332,7 +332,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             series1.Points.Add(dataPoint22);
             series1.ShadowColor = System.Drawing.Color.Transparent;
             this.chartExample.Series.Add(series1);
-            this.chartExample.Size = new System.Drawing.Size(609, 92);
+            this.chartExample.Size = new System.Drawing.Size(607, 92);
             this.chartExample.TabIndex = 61;
             this.chartExample.Text = "Chart Example";
             title1.Alignment = System.Drawing.ContentAlignment.MiddleLeft;
@@ -383,7 +383,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.chartSignal.ChartAreas.Add(chartArea2);
             this.tableLayoutPanelBCIOpticalSensor.SetColumnSpan(this.chartSignal, 5);
             this.chartSignal.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.chartSignal.Location = new System.Drawing.Point(138, 0);
+            this.chartSignal.Location = new System.Drawing.Point(137, 0);
             this.chartSignal.Margin = new System.Windows.Forms.Padding(0);
             this.chartSignal.Name = "chartSignal";
             series2.BorderWidth = 3;
@@ -392,7 +392,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             series2.Color = System.Drawing.Color.Red;
             series2.Name = "Signal";
             this.chartSignal.Series.Add(series2);
-            this.chartSignal.Size = new System.Drawing.Size(609, 92);
+            this.chartSignal.Size = new System.Drawing.Size(607, 92);
             this.chartSignal.TabIndex = 60;
             this.chartSignal.Text = "Chart Signal";
             // 
@@ -408,7 +408,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.panelImageOpticalSensorError.Margin = new System.Windows.Forms.Padding(0, 0, 10, 0);
             this.panelImageOpticalSensorError.Name = "panelImageOpticalSensorError";
             this.tableLayoutPanelBCIOpticalSensor.SetRowSpan(this.panelImageOpticalSensorError, 2);
-            this.panelImageOpticalSensorError.Size = new System.Drawing.Size(128, 184);
+            this.panelImageOpticalSensorError.Size = new System.Drawing.Size(127, 184);
             this.panelImageOpticalSensorError.TabIndex = 0;
             // 
             // tableLayoutPanelSpacerBottom
@@ -418,12 +418,12 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.tableLayoutPanelMain.SetColumnSpan(this.tableLayoutPanelSpacerBottom, 3);
             this.tableLayoutPanelSpacerBottom.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelSpacerBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanelSpacerBottom.Location = new System.Drawing.Point(137, 720);
+            this.tableLayoutPanelSpacerBottom.Location = new System.Drawing.Point(137, 718);
             this.tableLayoutPanelSpacerBottom.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanelSpacerBottom.Name = "tableLayoutPanelSpacerBottom";
             this.tableLayoutPanelSpacerBottom.RowCount = 1;
             this.tableLayoutPanelSpacerBottom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelSpacerBottom.Size = new System.Drawing.Size(747, 46);
+            this.tableLayoutPanelSpacerBottom.Size = new System.Drawing.Size(744, 46);
             this.tableLayoutPanelSpacerBottom.TabIndex = 74;
             // 
             // buttonExit
@@ -437,10 +437,10 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.buttonExit.Font = new System.Drawing.Font("Montserrat Thin", 36F, System.Drawing.FontStyle.Underline);
             this.buttonExit.ForeColor = System.Drawing.Color.Silver;
             this.buttonExit.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.buttonExit.Location = new System.Drawing.Point(137, 657);
+            this.buttonExit.Location = new System.Drawing.Point(137, 656);
             this.buttonExit.Margin = new System.Windows.Forms.Padding(0);
             this.buttonExit.Name = "buttonExit";
-            this.buttonExit.Size = new System.Drawing.Size(145, 61);
+            this.buttonExit.Size = new System.Drawing.Size(145, 60);
             this.buttonExit.TabIndex = 84;
             this.buttonExit.Text = "Exit";
             this.buttonExit.UseCompatibleTextRendering = true;
@@ -455,19 +455,19 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.webBrowserTop.Name = "webBrowserTop";
             this.tableLayoutPanelMain.SetRowSpan(this.webBrowserTop, 2);
             this.webBrowserTop.ScrollBarsEnabled = false;
-            this.webBrowserTop.Size = new System.Drawing.Size(741, 99);
+            this.webBrowserTop.Size = new System.Drawing.Size(738, 99);
             this.webBrowserTop.TabIndex = 85;
             // 
             // webBrowserBottom
             // 
             this.tableLayoutPanelMain.SetColumnSpan(this.webBrowserBottom, 3);
             this.webBrowserBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowserBottom.Location = new System.Drawing.Point(140, 556);
+            this.webBrowserBottom.Location = new System.Drawing.Point(140, 555);
             this.webBrowserBottom.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowserBottom.Name = "webBrowserBottom";
             this.tableLayoutPanelMain.SetRowSpan(this.webBrowserBottom, 3);
             this.webBrowserBottom.ScrollBarsEnabled = false;
-            this.webBrowserBottom.Size = new System.Drawing.Size(741, 98);
+            this.webBrowserBottom.Size = new System.Drawing.Size(738, 98);
             this.webBrowserBottom.TabIndex = 86;
             // 
             // tableLayoutPanel1
@@ -487,7 +487,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(249, 92);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(248, 92);
             this.tableLayoutPanel1.TabIndex = 88;
             // 
             // buttonLuxSliderMinus
@@ -501,7 +501,7 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.buttonLuxSliderMinus.Margin = new System.Windows.Forms.Padding(0);
             this.buttonLuxSliderMinus.Name = "buttonLuxSliderMinus";
             this.tableLayoutPanel1.SetRowSpan(this.buttonLuxSliderMinus, 3);
-            this.buttonLuxSliderMinus.Size = new System.Drawing.Size(63, 92);
+            this.buttonLuxSliderMinus.Size = new System.Drawing.Size(62, 92);
             this.buttonLuxSliderMinus.TabIndex = 1;
             this.buttonLuxSliderMinus.Text = "-";
             this.buttonLuxSliderMinus.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -518,14 +518,14 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             this.tableLayoutPanel2.Controls.Add(this.buttonLuxSliderPlus, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.panel1, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(638, 221);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(636, 221);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 3;
             this.tableLayoutPanelMain.SetRowSpan(this.tableLayoutPanel2, 2);
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(243, 86);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(242, 86);
             this.tableLayoutPanel2.TabIndex = 89;
             // 
             // buttonLuxSliderPlus
@@ -590,13 +590,19 @@ namespace ACAT.Extensions.BCI.Actuators.SensorUI
             // 
             // UserControlBCIErrorOpticalSensor
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.tableLayoutPanelMain);
+            this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(0);
+            this.MaximumSize = new System.Drawing.Size(1022, 766);
+            this.MinimumSize = new System.Drawing.Size(1022, 766);
             this.Name = "UserControlBCIErrorOpticalSensor";
-            this.Size = new System.Drawing.Size(1022, 766);
+            this.Size = new System.Drawing.Size(1020, 764);
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.tableLayoutPanelMain.PerformLayout();
             this.tableLayoutPanelBCIOpticalSensor.ResumeLayout(false);

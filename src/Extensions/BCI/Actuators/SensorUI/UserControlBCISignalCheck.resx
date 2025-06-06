@@ -117,11 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="labelBCISignalCheckDescription.Text" xml:space="preserve">
+    <value>BCI signal quality is an indicator of how good the contact is between the electrodes on the cap and your scalp.
+
+ACAT uses two metrics - “railing” and “impedance” - to check signal quality for each connected electrode. The slider below provides an indication of the overall quality.</value>
+  </data>
+  <data name="labelQualityResultsInfo1.Text" xml:space="preserve">
+    <value>Summary of the signal checks per electrode
+
+The signal quality results are a combination of the railing and impedance metrics from the previous tabs
+
+If the quality is red go back to the previous tabs and follow the tips.</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="panelSignalQuality.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAcQAAAHfCAYAAADOTqhHAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        EAAACxABrSO9dQAASmRJREFUeF7tnU2rNdd5pvsn9D9I/kCMf4AFPTYaeNBBAk8yMBlo1IZMBCKENHRE
+        DgAACw4BQL7hQQAASmRJREFUeF7tnU2rNdd5pvsn9D9I/kCMf4AFPTYaeNBBAk8yMBlo1IZMBCKENHRE
         0gOjFsTQbeGJgwYBmzg0QjTuBDRQnMYxWAgR4lYQVqxE/ordtj4sxb2u4/O8qrd0196ratfHelbdN1y8
         77lX7XP23lW1nrWe9VH/7le/+pUxZj9+s/CZwh8UvlD4KwE+5RzH8er3GGNWRprGmFUhsH258I+FnxQI
         egQ8+A+CKOM4jgde/zuFf19Qf8MYcyPSNMbcDD07ghjB7NuF/1T4ZEEdew1ex+v5PREcl/4uY8wE0jTG

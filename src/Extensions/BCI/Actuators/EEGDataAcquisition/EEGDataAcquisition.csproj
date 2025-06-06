@@ -71,6 +71,7 @@
     <PackageReference Include="brainflow" Version="5.5.0" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAQ_gTecBCI.cs" />
     <Compile Include="DAQ_OpenBCI.cs" />
     <Compile Include="FileManagement\FileNames.cs" />
     <Compile Include="FileManagement\FileWriter.cs" />

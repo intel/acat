@@ -107,6 +107,11 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         //[StringDescriptor("BCI sensor port", "COM4")]
         public string DAQ_ComPort { get; set; }
 
+
+        [StringDescriptor("Name of the GTec blueooth device", "")]
+        public string GTecDeviceName { get; set; }
+
+
         /// <summary>
         /// Index where the data from the optical sensor is sent
         /// This can change depending on the port where is connected
@@ -199,28 +204,28 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         /// </summary>
         public bool SignalControl_RecheckNeeded { get; set; }
 
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #1 in required group", "Cz")]
+        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #1 in required group", "Cz")] // Cz
         public String SignalControl_RequiredChannel_Channel1_Name;
 
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #2 in required group", "C3")]
+        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #2 in required group", "C3")] // C3
         public String SignalControl_RequiredChannel_Channel2_Name;
 
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #3 in required group", "C4")]
+        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #3 in required group", "C4")] // C4
         public String SignalControl_RequiredChannel_Channel3_Name;
 
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #4 in required group", "Pz")]
+        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #4 in required group", "Pz")] // Pz
         public String SignalControl_RequiredChannel_Channel4_Name;
 
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #5 in required group", "P3")]
+        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #5 in required group", "P3")] // P3
         public String SignalControl_RequiredChannel_Channel5_Name;
 
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #6 in required group", "P4")]
+        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #6 in required group", "P4")] // P4
         public String SignalControl_RequiredChannel_Channel6_Name;
 
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #7 in required group", "T5")]
+        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #7 in required group", "T5")] // T5
         public String SignalControl_RequiredChannel_Channel7_Name;
 
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #8 in required group", "Fz")]
+        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #8 in required group", "Fz")] // Fz
         public String SignalControl_RequiredChannel_Channel8_Name;
 
         [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #9 in optional group", "T6")]
@@ -634,6 +639,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             Testing_DuplicateRequiredChannelsAsOptionalChannels = false;
 
             ShowDisclaimerOnStartup = true;
+
+            GTecDeviceName = "";
         }
 
         /// <summary>

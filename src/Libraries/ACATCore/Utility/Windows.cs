@@ -1443,6 +1443,11 @@ namespace ACAT.Lib.Core.Utility
         /// <param name="topMost">set to true for topmost, false otherwise</param>
         public static void SetTopMost(Form form, bool topMost = true)
         {
+            if (form == null)
+            {
+                return;
+            }
+
             if (form.InvokeRequired)
             {
                 form.Invoke(new setTopMost(SetTopMost), form, topMost);

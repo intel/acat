@@ -41,7 +41,8 @@ namespace ACAT.Lib.Core.Utility
             "EEGDataAcquisition.dll",
             "EEGProcessing.dll",
             "EEGSettings.dll",
-            "SensorUI.dll",
+            "openBCISensorUI.dll",
+            "gTecSensorUI.dll",
             "animationsharp.dll",
             "BCIInterfaceUtilities.dll"
         };

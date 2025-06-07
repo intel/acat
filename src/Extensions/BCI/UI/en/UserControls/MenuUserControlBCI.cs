@@ -20,7 +20,7 @@ using System.Windows.Forms;
 
 namespace ACAT.Extensions.BCI.UI.UserControls
 {
-    [DescriptorAttribute("4F0E7278-1495-4AF6-B609-E91A2421FCB0",
+    [Descriptor("4F0E7278-1495-4AF6-B609-E91A2421FCB0",
         "KeyboardControl",
         "User Control keyboard Modes BCI")]
 

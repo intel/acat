@@ -27,7 +27,7 @@ using System.Windows.Forms;
 
 namespace ACAT.Extensions.Default.UI.Menus
 {
-    [DescriptorAttribute("BF9D82F4-B43F-4188-B8AD-D0EE2F5D7E2B",
+    [Descriptor("BF9D82F4-B43F-4188-B8AD-D0EE2F5D7E2B",
                         "YesNoResponseScanner ",
                         "Yes No Response Scanner")]
     public partial class YesNoResponseScanner : Form, IScannerPanel, IExtension
@@ -307,7 +307,7 @@ namespace ACAT.Extensions.Default.UI.Menus
         /// Window proc
         /// </summary>
         /// <param name="m"></param>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         protected override void WndProc(ref Message m)
         {
             if (scannerCommon != null)

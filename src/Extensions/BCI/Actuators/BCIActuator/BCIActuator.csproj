@@ -71,7 +71,11 @@
       <Project>{4B6B654F-50AF-4291-A464-11D73C1AFDF7}</Project>
       <Name>EEGUtils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SensorUI\SensorUI.csproj">
+    <ProjectReference Include="..\gTec_SensorUI\gTecSensorUI.csproj">
+      <Project>{85991714-E58E-4A19-B7D4-9D9AD10DB9EC}</Project>
+      <Name>gTecSensorUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\openBCI_SensorUI\openBCISensorUI.csproj">
       <Project>{380FC7B3-D784-422A-8D85-510A9E8698C6}</Project>
       <Name>SensorUI</Name>
     </ProjectReference>
@@ -103,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -63,7 +63,7 @@ namespace ACAT.Lib.Core.Utility
                 }
             }
 
-            if (!XmlUtils.XmlFileSave<GlobalPreferences>(retVal, prefFile))
+            if (!XmlUtils.XmlFileSave(retVal, prefFile))
             {
                 Log.Error("Unable to save global preferences!");
                 retVal = null;
@@ -102,7 +102,7 @@ namespace ACAT.Lib.Core.Utility
         public static bool Save(GlobalPreferences prefs, String preferencesFile)
         {
             // save current settings into current file and preset file
-            var retVal = XmlUtils.XmlFileSave<GlobalPreferences>(prefs, preferencesFile);
+            var retVal = XmlUtils.XmlFileSave(prefs, preferencesFile);
 
             if (retVal == false)
             {

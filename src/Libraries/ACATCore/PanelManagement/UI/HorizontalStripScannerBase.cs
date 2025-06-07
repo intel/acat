@@ -260,7 +260,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         /// <param name="m">Windows message</param>
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         protected override void WndProc(ref Message m)
         {
             _scannerCommon?.HandleWndProc(m);

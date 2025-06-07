@@ -21,7 +21,7 @@ namespace ACAT.Lib.Extension
     /// <summary>
     /// Displays a code that the user must type to unlock the screen
     /// </summary>
-    [DescriptorAttribute("4D767749-D9C6-450E-A1D6-169074F2F66A",
+    [Descriptor("4D767749-D9C6-450E-A1D6-169074F2F66A",
                     "UserControlScreenLock",
                     "User Control to lock the screen")]
     public partial class UserControlScreenLock : UserControl, IUserControl

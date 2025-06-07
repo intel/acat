@@ -1605,22 +1605,22 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 // Large header texts
                 foreach (Label labelResize in new List<Label> { labelBCISignalCheck, labelRailingTest, labelImpedanceTest, labelQualityResults })
                 {
-                    labelResize.Font = new System.Drawing.Font("Montserrat", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    labelResize.Font = new Font("Montserrat", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
                 }
 
                 // Bold smaller texts
                 foreach (Label labelResize in new List<Label> { labelRailingTestInfo2, labelImpedanceTestInfo2, labelQualityResultsInfo2 })
                 {
-                    labelResize.Font = new System.Drawing.Font("Montserrat SemiBold", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    labelResize.Font = new Font("Montserrat SemiBold", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
                 }
 
                 // Normal smaller texts
                 foreach (Label labelResize in new List<Label> { labelBCISignalCheckDescription, labelRailingTestInfo1, labelRailingTestInfo3, labelImpedanceTestInfo1, labelQualityResultsInfo1 })
                 {
-                    labelResize.Font = new System.Drawing.Font("Montserrat", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    labelResize.Font = new Font("Montserrat", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
                 }
 
-                tabControlSignalQuality.Font = new System.Drawing.Font("Montserrat Medium", 11.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                tabControlSignalQuality.Font = new Font("Montserrat Medium", 11.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 
             }
             catch (Exception ex)

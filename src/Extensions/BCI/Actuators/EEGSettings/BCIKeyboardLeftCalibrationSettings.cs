@@ -80,7 +80,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         /// <returns>true on success</returns>
         public override bool Save()
         {
-            return Save<BCIKeyboardLeftCalibrationSettings>(this, SettingsFilePath);
+            return Save(this, SettingsFilePath);
         }
     }
 }

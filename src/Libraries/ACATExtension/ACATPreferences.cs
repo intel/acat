@@ -93,7 +93,7 @@ namespace ACAT.Lib.Extension
         public override bool Save()
         {
             return !String.IsNullOrEmpty(PreferencesFilePath) &&
-                Save<ACATPreferences>(this, PreferencesFilePath);
+                Save(this, PreferencesFilePath);
         }
 
         /// <summary>

@@ -179,7 +179,7 @@ namespace ACAT.Lib.Core.Utility
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("Preferences: ");
-            sb.Append(XmlUtils.XmlSerializeToString<Preferences>(this));
+            sb.Append(XmlUtils.XmlSerializeToString(this));
             return sb.ToString();
         }
 

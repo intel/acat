@@ -658,7 +658,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// the scanner has closed
         /// </summary>
         /// <param name="panelClass">the name of the scanner that was closed</param>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public void OnPanelClosed(String panelClass)
         {
             Log.Debug();
@@ -763,7 +763,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <summary>
         /// Requests to display the contextual menu
         /// </summary>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public void ShowContextMenu()
         {
             // this will force an activateagent call which

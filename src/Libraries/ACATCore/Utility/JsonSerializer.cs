@@ -6,7 +6,7 @@ namespace ACAT.Lib.Core.Utility
     {
         public static string Serialize<TValue>(TValue message)
         {
-            return System.Text.Json.JsonSerializer.Serialize<TValue>(message);
+            return System.Text.Json.JsonSerializer.Serialize(message);
 
         }
 

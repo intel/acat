@@ -22,7 +22,7 @@ namespace ACAT.Lib.Extension
     /// <summary>
     /// A generic scanner form that acts a a container for a user control
     /// </summary>
-    [DescriptorAttribute("6889D5CA-2D64-4123-AB0E-179D3C41560C",
+    [Descriptor("6889D5CA-2D64-4123-AB0E-179D3C41560C",
                     "UserControlContainerForm",
                     "Generic container form for a usercontrol")]
     public partial class UserControlContainerForm : Form, IScannerPanel
@@ -254,7 +254,7 @@ namespace ACAT.Lib.Extension
         /// Window procedure
         /// </summary>
         /// <param name="m">windows message</param>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         protected override void WndProc(ref Message m)
         {
             const int WM_SYSCOMMAND = 0x0112;

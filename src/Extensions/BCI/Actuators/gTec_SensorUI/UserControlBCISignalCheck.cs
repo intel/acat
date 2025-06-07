@@ -33,7 +33,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     /// </summary>
     public partial class UserControlBCISignalCheck : UserControl
     {
-        private String _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  <head>\r\n  <style>\r\n    a:link{color: rgb(255, 170, 0);}\r\n  " +
+        private readonly String _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  <head>\r\n  <style>\r\n    a:link{color: rgb(255, 170, 0);}\r\n  " +
                             "</style>\r\n  </head>\r\n  <body style=\"background-color:#232433;\">\r\n    " +
                             "<p style=\"font-family:'Montserrat Medium'; font-size:20px; color:white; text-align: center;\">\r\n" +
                             "For additional help on getting good signal quality, watch this <a href=\"$ASSETS_VIDEOS_DIR#ACATOverviewBCI.mp4\">video</a> " +
@@ -75,10 +75,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
         // Lists holding UI elements for all channels
         private List<String> _channelNamesRequired;
-        private List<ScannerRoundedButtonControl> _requiredListElectrodesRailingTest;
-        private List<Chart> _requiredListChartsSignalDataRailingTest;
-        private List<Title> _requiredListTextsRailingResultsRailingTest;
-        private Dictionary<String, ScannerRoundedButtonControl> _electrodeCapMap;
+        private readonly List<ScannerRoundedButtonControl> _requiredListElectrodesRailingTest;
+        private readonly List<Chart> _requiredListChartsSignalDataRailingTest;
+        private readonly List<Title> _requiredListTextsRailingResultsRailingTest;
+        private readonly Dictionary<String, ScannerRoundedButtonControl> _electrodeCapMap;
 
         // Variables related to BCI board configuration
         private int _scaleIdx;
@@ -112,13 +112,13 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <summary>
         /// Array holding images to display for signal quality heat map
         /// </summary>
-        private Image[] _signalQualityGradientImages;
+        private readonly Image[] _signalQualityGradientImages;
 
         // Colors for different UI elements which are changed based on signal quality or impedance testing status
-        private Color COLOR_ACAT_DEFAULT_ORANGE = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-        private Color COLOR_STATUS_OK; // Green
-        private Color COLOR_STATUS_ACCEPTABLE; // Yellow
-        private Color COLOR_STATUS_KO; // Red
+        private readonly Color COLOR_ACAT_DEFAULT_ORANGE = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
+        private readonly Color COLOR_STATUS_OK; // Green
+        private readonly Color COLOR_STATUS_ACCEPTABLE; // Yellow
+        private readonly Color COLOR_STATUS_KO; // Red
 
         /// <summary>
         /// Variables representing the different BCI signal check modes
@@ -149,15 +149,17 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             buttonNext_userControlBCISignalCheck.Visible = true;
 
             // Create electrode name / id -> cap electrode mapping
-            _electrodeCapMap = new Dictionary<string, ScannerRoundedButtonControl>();
-            _electrodeCapMap["Cz"] = btnElectrodeCapCz;
-            _electrodeCapMap["C3"] = btnElectrodeCapC3;
-            _electrodeCapMap["C4"] = btnElectrodeCapC4;
-            _electrodeCapMap["Pz"] = btnElectrodeCapPz;
-            _electrodeCapMap["P3"] = btnElectrodeCapP3;
-            _electrodeCapMap["P4"] = btnElectrodeCapP4;
-            _electrodeCapMap["T5"] = btnElectrodeCapFz;
-            _electrodeCapMap["Fz"] = btnElectrodeCapT5;
+            _electrodeCapMap = new Dictionary<string, ScannerRoundedButtonControl>
+            {
+                ["Cz"] = btnElectrodeCapCz,
+                ["C3"] = btnElectrodeCapC3,
+                ["C4"] = btnElectrodeCapC4,
+                ["Pz"] = btnElectrodeCapPz,
+                ["P3"] = btnElectrodeCapP3,
+                ["P4"] = btnElectrodeCapP4,
+                ["T5"] = btnElectrodeCapFz,
+                ["Fz"] = btnElectrodeCapT5
+            };
             
 
             // Get UI elements to modify based on signal data, and railing / impedance tests
@@ -242,7 +244,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             for (int chIdx = 0; chIdx < _numChannels; chIdx++)
             {
                 //////// GetData() function already filters data ////////
-                double[] unfilteredChannelData = _unfilteredChannelData.GetRow(chIdx);
+                _ = _unfilteredChannelData.GetRow(chIdx);
 
                 //////// BCI Default Filter - Notch and FrontEnd ////////
                 double[] filteredChanelData = _filteredChannelData.GetRow(chIdx);
@@ -373,15 +375,17 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 {
                     // Required channel
                     String electrodeName = _channelNamesRequired[chIdx];
-                    _eegChannels[chIdx] = new EEGChannel(electrodeName, chIdx, channelEnabled);
-                    _eegChannels[chIdx].isRequiredElectrode = true;
-                    _eegChannels[chIdx]._channelRawDataIndex = _indEegChannels[chIdx];
-                    _eegChannels[chIdx].lastRailingResult = int.MaxValue;
-                    _eegChannels[chIdx].signalStatus = SignalStatus.SIGNAL_ERROR;
-                    _eegChannels[chIdx].signalQualityUpdatedCurrentSession = 0;
+                    _eegChannels[chIdx] = new EEGChannel(electrodeName, chIdx, channelEnabled)
+                    {
+                        isRequiredElectrode = true,
+                        _channelRawDataIndex = _indEegChannels[chIdx],
+                        lastRailingResult = int.MaxValue,
+                        signalStatus = SignalStatus.SIGNAL_ERROR,
+                        signalQualityUpdatedCurrentSession = 0,
 
-                    // Get corresponding railing and impedance UI elements and initialize with default values
-                    _eegChannels[chIdx].electrodeCap = _electrodeCapMap[electrodeName];
+                        // Get corresponding railing and impedance UI elements and initialize with default values
+                        electrodeCap = _electrodeCapMap[electrodeName]
+                    };
                     _eegChannels[chIdx].electrodeCap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
                     _eegChannels[chIdx].electrodeCap.BorderColor = Color.White;
                     _eegChannels[chIdx].electrodeRailingTest = _requiredListElectrodesRailingTest[chIdx];
@@ -757,22 +761,22 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 // Large header texts
                 foreach (Label labelResize in new List<Label> { labelBCISignalCheck, labelRailingTest })
                 {
-                    labelResize.Font = new System.Drawing.Font("Montserrat", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    labelResize.Font = new Font("Montserrat", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
                 }
 
                 // Bold smaller texts
                 foreach (Label labelResize in new List<Label> { labelRailingTestInfo2 })
                 {
-                    labelResize.Font = new System.Drawing.Font("Montserrat SemiBold", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    labelResize.Font = new Font("Montserrat SemiBold", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
                 }
 
                 // Normal smaller texts
                 foreach (Label labelResize in new List<Label> { labelBCISignalCheckDescription, labelRailingTestInfo1, labelRailingTestInfo3 })
                 {
-                    labelResize.Font = new System.Drawing.Font("Montserrat", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    labelResize.Font = new Font("Montserrat", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
                 }
 
-                tabControlSignalQuality.Font = new System.Drawing.Font("Montserrat Medium", 11.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                tabControlSignalQuality.Font = new Font("Montserrat Medium", 11.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 
             }
             catch (Exception ex)

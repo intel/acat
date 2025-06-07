@@ -19,7 +19,7 @@ namespace ACAT.Lib.Core.InputActuators
     /// <summary>
     /// An onboarding extension to configure the hotkey for a switch
     /// </summary>
-    [DescriptorAttribute("E5435A02-4F3E-43FB-9F3C-BA32C859870F",
+    [Descriptor("E5435A02-4F3E-43FB-9F3C-BA32C859870F",
                         "OnboardingHardwareSwitchSetup",
                         "Hardware switch select onboarding")]
     public class OnboardingHardwareSwitchSetup : OnboardingExtensionBase

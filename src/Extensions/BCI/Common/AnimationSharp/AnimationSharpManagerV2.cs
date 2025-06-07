@@ -300,7 +300,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <summary>
         /// Rounded Rectangles for each button in the Form
         /// </summary>
-        private List<SharpDX.Direct2D1.RoundedRectangle>[] _rectanglesButtonsRoundList;
+        private List<RoundedRectangle>[] _rectanglesButtonsRoundList;
 
         /// <summary>
         /// Rectangles for each progress Bar in the Form
@@ -1862,7 +1862,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             Texture2D backBuffer = Texture2D.FromSwapChain<Texture2D>(_sharpDX_swapChain, 0);
             Surface surface = backBuffer.QueryInterface<Surface>();
             _sharpDX_d2dRenderTarget = new RenderTarget(_sharpDX_d2dFactory, surface,
-                                                                    new RenderTargetProperties(new SharpDX.Direct2D1.PixelFormat(Format.Unknown, SharpDX.Direct2D1.AlphaMode.Premultiplied)));
+                                                                    new RenderTargetProperties(new PixelFormat(Format.Unknown, SharpDX.Direct2D1.AlphaMode.Premultiplied)));
             return true;
         }
 
@@ -2194,7 +2194,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             {
                 _amountOfKeyboards = recentAmountOfBoxes;
                 _rectanglesButtonsList = new List<SharpDX.Mathematics.Interop.RawRectangleF>[recentAmountOfBoxes];
-                _rectanglesButtonsRoundList = new List<SharpDX.Direct2D1.RoundedRectangle>[recentAmountOfBoxes];
+                _rectanglesButtonsRoundList = new List<RoundedRectangle>[recentAmountOfBoxes];
                 _buttonsStringsList = new List<string>[recentAmountOfBoxes];
                 _ButtonDataList = new List<ButtonsData>[recentAmountOfBoxes];
                 _ControlsBtns = new List<ScannerButtonControl>[recentAmountOfBoxes];

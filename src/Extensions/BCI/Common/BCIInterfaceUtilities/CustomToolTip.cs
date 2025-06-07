@@ -16,7 +16,7 @@ using System.Windows.Forms;
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
 
-    [DescriptorAttribute("3BC92A59-0B89-475D-8E2E-636CA9482740",
+    [Descriptor("3BC92A59-0B89-475D-8E2E-636CA9482740",
             "CustomToolTip",
             "Application window used to display a Custom Tooltip")]
     public partial class CustomToolTip : Form

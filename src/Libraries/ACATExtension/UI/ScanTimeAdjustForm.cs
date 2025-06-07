@@ -23,7 +23,7 @@ namespace ACAT.Lib.Extension
     /// The width of the scanner is dynamically
     /// computed depending on how many menu items are there
     /// </summary>
-    [DescriptorAttribute("D6AE907B-CB4B-417E-9FCC-E587D976FFD7",
+    [Descriptor("D6AE907B-CB4B-417E-9FCC-E587D976FFD7",
                 "ScanTimeAdjustScanner",
                 "Adjust scan time")]
     public partial class ScanTimeAdjustForm : Form, IScannerPanel
@@ -280,7 +280,7 @@ namespace ACAT.Lib.Extension
         /// </summary>
         /// <param name="m">Windows message</param>
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         protected override void WndProc(ref Message m)
         {
             _scannerCommon?.HandleWndProc(m);

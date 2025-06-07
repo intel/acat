@@ -35,7 +35,7 @@ using System.Windows.Forms;
 
 namespace ACAT.Extensions.Default.UI.Scanners
 {
-    [DescriptorAttribute("D9A5B53F-7119-445B-BDEA-F76EC53077F1",
+    [Descriptor("D9A5B53F-7119-445B-BDEA-F76EC53077F1",
                         "TalkApplicationScanner",
                         "Talk application main window")]
     public partial class TalkApplicationScanner : Form, IScannerPanel, ISupportsStatusBar
@@ -391,7 +391,7 @@ namespace ACAT.Extensions.Default.UI.Scanners
             base.OnFormClosing(e);
         }
 
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         protected override void WndProc(ref Message m)
         {
             const int WM_SYSCOMMAND = 0x0112;

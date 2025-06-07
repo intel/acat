@@ -218,7 +218,7 @@ namespace ACAT.Lib.Core.WidgetManagement
             return GraphPath;
         }
 
-        private void ScannerButtonControl_EnabledChanged(object sender, System.EventArgs e)
+        private void ScannerButtonControl_EnabledChanged(object sender, EventArgs e)
         {
             if (Image != null && grayscale != null)
             {

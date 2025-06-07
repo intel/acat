@@ -17,7 +17,7 @@ namespace ACAT.Lib.Core.TTSManagement
     /// Represents a 'no-op' text-to-speech engine.  Has no TTS
     /// functionality. Useful if there is no active TTS engine.
     /// </summary>
-    [DescriptorAttribute("A98DA439-A6A9-48EF-AC8D-3D3588363341",
+    [Descriptor("A98DA439-A6A9-48EF-AC8D-3D3588363341",
                         "Null Text-to-speech Engine",
                         "Text-to-speech disabled")]
     public class NullTTSEngine : ExtensionInvoker, ITTSEngine

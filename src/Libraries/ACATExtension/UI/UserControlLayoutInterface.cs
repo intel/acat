@@ -18,7 +18,7 @@ namespace ACAT.Lib.Extension
     /// <summary>
     /// The ACAT talk interface description of the main keyboard layout
     /// </summary>
-    [DescriptorAttribute("30D1EF21-E8F5-4E78-8D98-C8E93B992A81",
+    [Descriptor("30D1EF21-E8F5-4E78-8D98-C8E93B992A81",
                         "UserControlDefaultTalkInterface",
                     "User Control show description of keboard")]
     public partial class UserControlLayoutInterface : UserControl, IUserControl

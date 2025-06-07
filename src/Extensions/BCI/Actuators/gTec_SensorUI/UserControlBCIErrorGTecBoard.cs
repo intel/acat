@@ -13,6 +13,7 @@
 
 using ACAT.ACATResources;
 using ACAT.Lib.Core.Utility;
+using ACATResources;
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -24,7 +25,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     /// </summary>
     public partial class UserControlBCIErrorGTecBoard : UserControl
     {
-        private string _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  " +
+        private readonly string _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  " +
                                     "<head>\r\n  <style>\r\n    a:link{color: rgb(255, 170, 0);}\r\n  </style>\r\n  </head>\r\n  " +
                                     "<body style=\"background-color:#232433;\">\r\n    " +
                                     "<p style=\"font-family:'Montserrat Medium'; font-size:24px; color:white; text-align: center;\">\r\n    " +
@@ -40,7 +41,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             webBrowserTop.DocumentText = html;
 
             webBrowserBottom.DocumentCompleted += WebBrowserDesc_DocumentCompleted;
-            var htmlContent = R.GetString("BCIOnboardingBottomHtmlText");
+            var htmlContent = StringResources.BCIOnboardingBottomHtmlText;
             html = htmlContent.Replace(CoreGlobals.MacroACATUserGuide, HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName));
             webBrowserBottom.DocumentText = html;
         }

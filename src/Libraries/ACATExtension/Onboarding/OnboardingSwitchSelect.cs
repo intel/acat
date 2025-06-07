@@ -17,7 +17,7 @@ namespace ACAT.Lib.Extension.Onboarding
     /// The onboarding extension that lets the user select the input
     /// trigger switch
     /// </summary>
-    [DescriptorAttribute("301DBC87-C98C-491A-A2EE-D17863EAB831",
+    [Descriptor("301DBC87-C98C-491A-A2EE-D17863EAB831",
                     "OnboardingSwitchSelect",
                     "Switch select onboarding")]
     public class OnboardingSwitchSelect : OnboardingExtensionBase

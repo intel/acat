@@ -92,7 +92,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         /// <returns>true on success</returns>
         public override bool Save()
         {
-            return Save<BCITypingCalibrationAllowedMappingsRestricted>(this, SettingsFilePath);
+            return Save(this, SettingsFilePath);
         }
     }
 }

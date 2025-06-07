@@ -36,7 +36,7 @@ namespace ACAT.Extensions.Default.UI.Menus
     /// spaces between the yes and the no to give the user time to make
     /// the choice
     /// </summary>
-    [DescriptorAttribute("81C9DA24-C9DD-44D6-B3A6-7364C4109CAA",
+    [Descriptor("81C9DA24-C9DD-44D6-B3A6-7364C4109CAA",
                         "YesNoScanner ",
                         "Yes No Scanner")]
     public partial class YesNoScanner : Form, IScannerPanel, IExtension
@@ -338,7 +338,7 @@ namespace ACAT.Extensions.Default.UI.Menus
         /// Window proc
         /// </summary>
         /// <param name="m"></param>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         protected override void WndProc(ref Message m)
         {
             if (scannerCommon != null)

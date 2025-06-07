@@ -20,7 +20,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
     /// Form that handles different calibraitons options to configure and initialize calibration sesion
     /// </summary>
 
-    [DescriptorAttribute("5A13AD81-2943-4A11-885F-37D4C2F19918",
+    [Descriptor("5A13AD81-2943-4A11-885F-37D4C2F19918",
         "RemapCalibrationForm",
         "Application window used to display the remap of calibrations")]
     public partial class RemapCalibrationForm : Form

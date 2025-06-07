@@ -40,7 +40,7 @@ namespace ACAT.Lib.Core.Onboarding
         /// <returns>true on success</returns>
         public override bool Save()
         {
-            return Save<OnboardingSequence>(this, SettingsFilePath);
+            return Save(this, SettingsFilePath);
         }
     }
 }

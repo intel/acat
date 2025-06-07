@@ -323,7 +323,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void _mainForm_EvtFormClosed(object sender, System.Windows.Forms.FormClosedEventArgs e)
+        private void _mainForm_EvtFormClosed(object sender, FormClosedEventArgs e)
         {
             Log.Debug("OpenBCIDeviceTester | _mainForm_EvtFormClosed | _deviceTestingState: " + _deviceTestingState.ToString());
 

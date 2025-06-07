@@ -24,7 +24,7 @@ using System.Speech.Synthesis;
 
 namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
 {
-    [DescriptorAttribute("B7AB6188-AE23-40E3-9E6A-F8AA8A81E2BF",
+    [Descriptor("B7AB6188-AE23-40E3-9E6A-F8AA8A81E2BF",
                         "Speech Synthesizer TTS Engine",
                         "Text to Speech based on the Microsoft Speech Synthesizer")]
     public class SAPIEngine : ExtensionInvoker, ITTSEngine, ISupportsPreferences

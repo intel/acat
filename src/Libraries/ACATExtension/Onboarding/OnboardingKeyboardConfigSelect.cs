@@ -16,7 +16,7 @@ namespace ACAT.Lib.Extension.Onboarding
     /// The onboarding extension that lets the user select the preferred
     /// keyboard configuration
     /// </summary>
-    [DescriptorAttribute("65B95DE3-BF5A-4AE8-B44D-F5E7950AB8D6",
+    [Descriptor("65B95DE3-BF5A-4AE8-B44D-F5E7950AB8D6",
                         "OnboardingKeyboardConfigSelect",
                         "Keyboard configuration select onboarding")]
     public class OnboardingKeyboardConfigSelect : OnboardingExtensionBase

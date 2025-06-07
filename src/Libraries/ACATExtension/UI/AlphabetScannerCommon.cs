@@ -475,7 +475,7 @@ namespace ACAT.Lib.Extension
         /// function in the Alphabet scanner.
         /// </summary>
         /// <param name="m">windows message</param>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public bool WndProc(ref Message m)
         {
             return _scannerCommon.HandleWndProc(m);

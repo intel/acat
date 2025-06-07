@@ -69,7 +69,7 @@ namespace ACAT.Lib.Core.Utility
         /// Converts object to string
         /// </summary>
         /// <returns>String represntation of the object</returns>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public override String ToString()
         {
             try

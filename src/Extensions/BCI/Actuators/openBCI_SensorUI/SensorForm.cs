@@ -83,7 +83,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// Current devie testing state
         /// </summary>
         //private static volatile OpenBCIDeviceTester.DeviceTestingState _currentDeviceTestingState;
-        private OpenBCIDeviceTester.DeviceTestingState _mainFormDeviceTestingState;
+        private DeviceTestingState _mainFormDeviceTestingState;
 
         /// <summary>
         /// Delegate for button click events
@@ -123,7 +123,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         private readonly int _timer_process_data_interval_ms = 10;
 
         // Form which acts as parent for / base for all possible user controls displayed during testing process
-        public SensorForm(OpenBCIDeviceTester.DeviceTestingState initialState)
+        public SensorForm(DeviceTestingState initialState)
         {
             InitializeComponent();
             TriggerBox.BackColor = Color.Black;
@@ -137,51 +137,51 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             // Intensive resource controls (ex: Optical sensor, EEG display) have separate initialize() functions that are not called until
             // user controls actually added to form
             _userControlTestBCIConnections = new UserControlTestBCIConnections(OpenBCIDeviceTester.DeviceTestingState.Testing_BCIConnections.ToString());
-            _userControlTestBCIConnections.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
+            _userControlTestBCIConnections.buttonExit.Click += new EventHandler(this.buttonExit_Click);
             _userControlTestBCIConnections.Dock = DockStyle.Fill;
 
             _userControlBCIErrorCytonBoard = new UserControlBCIErrorCytonBoard(OpenBCIDeviceTester.DeviceTestingState.ReceivedBCIError_CytonBoard.ToString());
-            _userControlBCIErrorCytonBoard.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            _userControlBCIErrorCytonBoard.buttonRetry.Click += new System.EventHandler(this.buttonRetest_Click);
+            _userControlBCIErrorCytonBoard.buttonExit.Click += new EventHandler(this.buttonExit_Click);
+            _userControlBCIErrorCytonBoard.buttonRetry.Click += new EventHandler(this.buttonRetest_Click);
             _userControlBCIErrorCytonBoard.Dock = DockStyle.Fill;
 
             _userControlBCIErrorUsbDongle = new UserControlBCIErrorUsbDongle(OpenBCIDeviceTester.DeviceTestingState.ReceivedBCIError_UsbDongle.ToString());
-            _userControlBCIErrorUsbDongle.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            _userControlBCIErrorUsbDongle.buttonRetry.Click += new System.EventHandler(this.buttonRetest_Click);
+            _userControlBCIErrorUsbDongle.buttonExit.Click += new EventHandler(this.buttonExit_Click);
+            _userControlBCIErrorUsbDongle.buttonRetry.Click += new EventHandler(this.buttonRetest_Click);
             _userControlBCIErrorUsbDongle.Dock = DockStyle.Fill;
 
             _userControlBCIErrorPortConfig = new UserControlBCIErrorPortConfig(OpenBCIDeviceTester.DeviceTestingState.ReceivedBCIError_PortConfig.ToString());
-            _userControlBCIErrorPortConfig.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
+            _userControlBCIErrorPortConfig.buttonExit.Click += new EventHandler(this.buttonExit_Click);
             _userControlBCIErrorPortConfig.Dock = DockStyle.Fill;
 
             _userControlBCIErrorOpticalSensor = new UserControlBCIErrorOpticalSensor(OpenBCIDeviceTester.DeviceTestingState.ReceivedBCIError_OpticalSensor.ToString());
-            _userControlBCIErrorOpticalSensor.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            _userControlBCIErrorOpticalSensor.buttonRetry.Click += new System.EventHandler(this.buttonRetest_Click);
+            _userControlBCIErrorOpticalSensor.buttonExit.Click += new EventHandler(this.buttonExit_Click);
+            _userControlBCIErrorOpticalSensor.buttonRetry.Click += new EventHandler(this.buttonRetest_Click);
             _userControlBCIErrorOpticalSensor.Dock = DockStyle.Fill;
 
             _userControlBCISignalCheckStartRequired = new UserControlBCISignalCheckStartRequired(OpenBCIDeviceTester.DeviceTestingState.BCISignalCheckStartRequired.ToString() + "_Required");
-            _userControlBCISignalCheckStartRequired.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            _userControlBCISignalCheckStartRequired.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
+            _userControlBCISignalCheckStartRequired.buttonExit.Click += new EventHandler(this.buttonExit_Click);
+            _userControlBCISignalCheckStartRequired.buttonNext.Click += new EventHandler(this.buttonNext_Click);
             _userControlBCISignalCheckStartRequired.Dock = DockStyle.Fill;
 
             _userControlBCISignalCheckStartPrompt = new UserControlBCISignalCheckStartPrompt(OpenBCIDeviceTester.DeviceTestingState.BCISignalCheckStartPrompt.ToString() + "_Prompt");
-            _userControlBCISignalCheckStartPrompt.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            _userControlBCISignalCheckStartPrompt.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
+            _userControlBCISignalCheckStartPrompt.buttonExit.Click += new EventHandler(this.buttonExit_Click);
+            _userControlBCISignalCheckStartPrompt.buttonNext.Click += new EventHandler(this.buttonNext_Click);
             _userControlBCISignalCheckStartPrompt.Dock = DockStyle.Fill;
 
             _userControlPromptBCIFIlterSettings = new UserControlBCIFilterSettings(OpenBCIDeviceTester.DeviceTestingState.PromptFilterSettings.ToString());
-            _userControlPromptBCIFIlterSettings.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            _userControlPromptBCIFIlterSettings.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
+            _userControlPromptBCIFIlterSettings.buttonExit.Click += new EventHandler(this.buttonExit_Click);
+            _userControlPromptBCIFIlterSettings.buttonNext.Click += new EventHandler(this.buttonNext_Click);
             _userControlPromptBCIFIlterSettings.Dock = DockStyle.Fill;
 
             _userControlBCISignalCheck = new UserControlBCISignalCheck(OpenBCIDeviceTester.DeviceTestingState.BCISignalCheck.ToString());
-            _userControlBCISignalCheck.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            _userControlBCISignalCheck.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
+            _userControlBCISignalCheck.buttonExit.Click += new EventHandler(this.buttonExit_Click);
+            _userControlBCISignalCheck.buttonNext.Click += new EventHandler(this.buttonNext_Click);
             _userControlBCISignalCheck.Dock = DockStyle.Fill;
 
             _userControlBCIErrorOpticalSensorDetect = new UserControlBCIErrorOpticalSensorDetect(OpenBCIDeviceTester.DeviceTestingState.OpticalSensorDetectError.ToString());
-            _userControlBCIErrorOpticalSensorDetect.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            _userControlBCIErrorOpticalSensorDetect.buttonRetry.Click += new System.EventHandler(this.buttonRetest_Click);
+            _userControlBCIErrorOpticalSensorDetect.buttonExit.Click += new EventHandler(this.buttonExit_Click);
+            _userControlBCIErrorOpticalSensorDetect.buttonRetry.Click += new EventHandler(this.buttonRetest_Click);
             _userControlBCIErrorOpticalSensorDetect.Dock = DockStyle.Fill;
 
             // Set current signal check view mode for last screens
@@ -205,7 +205,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// Replaces user control displayed in tableLayoutPanelContainer
         /// </summary>
         /// <param name="state"></param>
-        public void changeDeviceTestingState(OpenBCIDeviceTester.DeviceTestingState state)
+        public void changeDeviceTestingState(DeviceTestingState state)
         {
             Log.Debug("SensorForm | changeDeviceTestingState | state: " + state.ToString());
 
@@ -289,8 +289,8 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                         // Set 1 column and row style such that user control will appear in the top right of primary screen (TriggerBox placed correctly)
                         tableLayoutPanelMain.ColumnCount = 1;
                         tableLayoutPanelMain.RowCount = 1;
-                        tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1920));
-                        tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1080));
+                        tableLayoutPanelMain.ColumnStyles.Add(new ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1920));
+                        tableLayoutPanelMain.RowStyles.Add(new RowStyle(System.Windows.Forms.SizeType.Absolute, 1080));
                         tableLayoutPanelMain.Controls.Add(newUserControl, 0, 0);
 
                         newUserControl.Dock = DockStyle.Fill;
@@ -343,7 +343,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 startStopPlotDataTimer(false, state);
                 try
                 {
-                    timerPlotData = new System.Windows.Forms.Timer(this.components)
+                    timerPlotData = new Timer(this.components)
                     {
                         Enabled = true,
                         Interval = _timer_plot_data_interval_ms //// 50, 100, 200
@@ -352,7 +352,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 
                     if (state == DeviceTestingState.ReceivedBCIError_OpticalSensor)
                     {
-                        timerPlotData.Tick += new System.EventHandler(this.PlotOpticalSensorData_Tick);
+                        timerPlotData.Tick += new EventHandler(this.PlotOpticalSensorData_Tick);
                     }
 
                     timerPlotData.Start();
@@ -412,7 +412,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 
                     if (state == DeviceTestingState.BCISignalCheck)
                     {
-                        timerProcessData.Tick += new System.EventHandler(ProcessDataSignalCheck_Tick);
+                        timerProcessData.Tick += new EventHandler(ProcessDataSignalCheck_Tick);
                     }
 
                     timerProcessData.Start();
@@ -651,47 +651,47 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             Log.Debug("SensorForm | modifyUserControlsForDebugMode");
 
             _userControlTestBCIConnections.buttonExit.AutoSize = true;
-            _userControlTestBCIConnections.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 13F);
+            _userControlTestBCIConnections.buttonExit.Font = new Font("Montserrat Medium", 13F);
             _userControlTestBCIConnections.buttonExit.ForeColor = Color.Red;
             _userControlTestBCIConnections.buttonExit.Text = "[Developer Mode]";
 
             _userControlBCIErrorCytonBoard.buttonExit.AutoSize = true;
-            _userControlBCIErrorCytonBoard.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 13F);
+            _userControlBCIErrorCytonBoard.buttonExit.Font = new Font("Montserrat Medium", 13F);
             _userControlBCIErrorCytonBoard.buttonExit.ForeColor = Color.Red;
             _userControlBCIErrorCytonBoard.buttonExit.Text = "[Developer Mode]";
 
             _userControlBCIErrorUsbDongle.buttonExit.AutoSize = true;
-            _userControlBCIErrorUsbDongle.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 13F);
+            _userControlBCIErrorUsbDongle.buttonExit.Font = new Font("Montserrat Medium", 13F);
             _userControlBCIErrorUsbDongle.buttonExit.ForeColor = Color.Red;
             _userControlBCIErrorUsbDongle.buttonExit.Text = "[Developer Mode]";
 
             _userControlBCIErrorPortConfig.buttonExit.AutoSize = true;
-            _userControlBCIErrorPortConfig.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 13F);
+            _userControlBCIErrorPortConfig.buttonExit.Font = new Font("Montserrat Medium", 13F);
             _userControlBCIErrorPortConfig.buttonExit.ForeColor = Color.Red;
             _userControlBCIErrorPortConfig.buttonExit.Text = "[Developer Mode]";
 
             _userControlBCIErrorOpticalSensor.buttonExit.AutoSize = true;
-            _userControlBCIErrorOpticalSensor.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 13F);
+            _userControlBCIErrorOpticalSensor.buttonExit.Font = new Font("Montserrat Medium", 13F);
             _userControlBCIErrorOpticalSensor.buttonExit.ForeColor = Color.Red;
             _userControlBCIErrorOpticalSensor.buttonExit.Text = "[Developer Mode]";
 
             _userControlBCISignalCheckStartRequired.buttonExit.AutoSize = true;
-            _userControlBCISignalCheckStartRequired.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 11F);
+            _userControlBCISignalCheckStartRequired.buttonExit.Font = new Font("Montserrat Medium", 11F);
             _userControlBCISignalCheckStartRequired.buttonExit.ForeColor = Color.Red;
             _userControlBCISignalCheckStartRequired.buttonExit.Text = "[Developer Mode]";
 
             _userControlBCISignalCheckStartPrompt.buttonExit.AutoSize = true;
-            _userControlBCISignalCheckStartPrompt.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 11F);
+            _userControlBCISignalCheckStartPrompt.buttonExit.Font = new Font("Montserrat Medium", 11F);
             _userControlBCISignalCheckStartPrompt.buttonExit.ForeColor = Color.Red;
             _userControlBCISignalCheckStartPrompt.buttonExit.Text = "[Developer Mode]";
 
             _userControlPromptBCIFIlterSettings.buttonExit.AutoSize = true;
-            _userControlPromptBCIFIlterSettings.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 11F);
+            _userControlPromptBCIFIlterSettings.buttonExit.Font = new Font("Montserrat Medium", 11F);
             _userControlPromptBCIFIlterSettings.buttonExit.ForeColor = Color.Red;
             _userControlPromptBCIFIlterSettings.buttonExit.Text = "[Developer Mode]";
 
             _userControlBCISignalCheck.buttonExit.AutoSize = true;
-            _userControlBCISignalCheck.buttonExit.Font = new System.Drawing.Font("Montserrat Medium", 11F);
+            _userControlBCISignalCheck.buttonExit.Font = new Font("Montserrat Medium", 11F);
             _userControlBCISignalCheck.buttonExit.ForeColor = Color.Red;
             _userControlBCISignalCheck.buttonExit.Text = "[Developer Mode]";
         }

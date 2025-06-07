@@ -18,7 +18,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
     /// A message box with three button options
     /// </summary>
 
-    [DescriptorAttribute("E4B7E06F-B1F3-48EC-AF5A-557AB2A809C8",
+    [Descriptor("E4B7E06F-B1F3-48EC-AF5A-557AB2A809C8",
                 "ConfirmBoxCalibrationHelp",
                 "Application window used to display a help for calibration")]
     public partial class ConfirmBoxCalibrationHelp : Form
@@ -53,7 +53,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 int x = parent.Left + (parent.Width - confirmBox.Width) / 2; // Center horizontally
                 int y = parent.Bottom - confirmBox.Height - 50; // Align to the bottom of the main form
                 // Set the location of the smaller form
-                confirmBox.Location = new System.Drawing.Point(x, y);
+                confirmBox.Location = new Point(x, y);
             }else
                 confirmBox.CenterToScreen();
             confirmBox.BringToFront();

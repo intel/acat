@@ -339,7 +339,7 @@ namespace ACAT.Lib.Core.Utility
             }
         }
 
-        public static void DockWindow(IntPtr fgWindow, Form panel, Windows.WindowPosition scannerPosition)
+        public static void DockWindow(IntPtr fgWindow, Form panel, WindowPosition scannerPosition)
         {
             Log.Debug("fgWindow is null is : " + (fgWindow == IntPtr.Zero));
 
@@ -373,7 +373,7 @@ namespace ACAT.Lib.Core.Utility
             }
         }
 
-        public static void DockWindowWithLargestScanner(IntPtr fgWindow, Form panel, Windows.WindowPosition scannerPosition)
+        public static void DockWindowWithLargestScanner(IntPtr fgWindow, Form panel, WindowPosition scannerPosition)
         {
             Log.Debug("#$#$#$#$  fgWindow is null is : " + (fgWindow == IntPtr.Zero));
 
@@ -1885,7 +1885,7 @@ namespace ACAT.Lib.Core.Utility
         /// <param name="scanner">The scanner to dock to</param>
         /// <param name="scannerPosition">Position of the scanner</param>
         /// <param name="dockWithLargestScanner">Set to true if dock to the largest scanner</param>
-        public static void ToggleForegroundWindowMaximizeDock(Form scanner, Windows.WindowPosition scannerPosition, bool dockWithLargestScanner = false)
+        public static void ToggleForegroundWindowMaximizeDock(Form scanner, WindowPosition scannerPosition, bool dockWithLargestScanner = false)
         {
             IntPtr fgWindow = GetForegroundWindow();
 

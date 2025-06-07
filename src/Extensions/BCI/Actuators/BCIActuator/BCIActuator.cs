@@ -38,7 +38,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
     /// <summary>
     /// BCI Actuator ID
     /// </summary>
-    [DescriptorAttribute("77809D19-F450-4D36-A633-D818400B3D9A",
+    [Descriptor("77809D19-F450-4D36-A633-D818400B3D9A",
                             "BCI EEG Actuator",
                             "BCI Actuator")]
     internal class BCIActuator : ActuatorBase, ISupportsPreferences
@@ -1349,7 +1349,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                                 if (numTriggerPulsesDetected == 0)
                                 {
                                     Log.Debug("Optical sensor error. No pulses were detected");
-                                    sensorError = new BCIError(BCIErrorCodes.OpticalSensorError_NoPulsesDetected, BCIMessages.OpticalSensorError);
+                                    sensorError = new BCIError(BCIErrorCodes.OpticalSensorError_NoPulsesDetected, StringResources.OpticalSensorError);
                                 }
                                 // Note: Removed code since we can't guarantee the number of pulses received given bluetooth delays
                                 //else if (numTriggerPulsesDetected > numTriggerPulsesExpected)
@@ -1363,7 +1363,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
                                 // Log results
                                 var bciLogEntry = new BCILogEntryEyesClosed(BCIActuatorSettings.Settings.EyesClosed_EnableDetection, 0, eyesClosedDetected, alphaValues, betaValues, avgAlpha, avgBeta);
-                                var jsonString = JsonConvert.SerializeObject(bciLogEntry);
+                                var jsonString = JsonSerializer.Serialize(bciLogEntry);
                                 AuditLog.Audit(new AuditEvent("BCIEyesClosed", jsonString));
                                 Log.Debug("Line added to audit file: " + jsonString);
                             } 

@@ -44,11 +44,11 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         private int _sensitivityInitialValue;
         private List<String> _switches;
         private readonly Color buttonApplyBackColor;
-        private readonly Tuple<int, int> ctHoldTimeRange = Tuple.Create<int, int>(0, 1000);
-        private readonly Tuple<int, int> ctSensitivityRange = Tuple.Create<int, int>(5, 50);
-        private readonly Tuple<int, int> erHoldTimeRange = Tuple.Create<int, int>(0, 2000);
-        private readonly Tuple<int, int> erSensitivityRange = Tuple.Create<int, int>(5, 50);
-        private readonly Tuple<int, int> headSensitivityRange = Tuple.Create<int, int>(20, 100);
+        private readonly Tuple<int, int> ctHoldTimeRange = Tuple.Create(0, 1000);
+        private readonly Tuple<int, int> ctSensitivityRange = Tuple.Create(5, 50);
+        private readonly Tuple<int, int> erHoldTimeRange = Tuple.Create(0, 2000);
+        private readonly Tuple<int, int> erSensitivityRange = Tuple.Create(5, 50);
+        private readonly Tuple<int, int> headSensitivityRange = Tuple.Create(20, 100);
 
         internal WebcamGestureSettingsUserControl(CameraActuator cameraActuator)
         {

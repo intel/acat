@@ -197,7 +197,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             int indexBox = 0;
             try
             {
-                List<AnimationSharpManagerV2.ButtonsData>[] tempmatrixButtonListAll = AnimationManagerUtils.GetMatrixButtons(boxesData.Key, renderTarget, boxesData.Value, totalAmountOfBoxes);
+                List<ButtonsData>[] tempmatrixButtonListAll = AnimationManagerUtils.GetMatrixButtons(boxesData.Key, renderTarget, boxesData.Value, totalAmountOfBoxes);
                 for (int boxIndex = 0; boxIndex < totalAmountOfBoxes; boxIndex++)
                 {
                     buttonDataList[indexBox] = tempmatrixButtonListAll[boxIndex];
@@ -595,13 +595,13 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <param name="amountBoxes">amount of boxes in the layout</param>
         /// <param name="margin"></param>
         /// <returns></returns>
-        public static List<AnimationSharpManagerV2.ButtonsData>[] GetMatrixButtons(List<Control> controls, RenderTarget sharpDX_d2dRenderTarget, string configFilePath, int amountBoxes, int margin = 0)
+        public static List<ButtonsData>[] GetMatrixButtons(List<Control> controls, RenderTarget sharpDX_d2dRenderTarget, string configFilePath, int amountBoxes, int margin = 0)
         {
             var configNodes = GetNodesList(configFilePath, XmlSectionName.ACATLayoutLayouts);
             string xmlSection = XmlSectionName.KeyboardBoxMapping.ToLower();
             int index = 0;
-            List<AnimationSharpManagerV2.ButtonsData>[] matrixButtonList = Enumerable.Range(0, amountBoxes).Select(_ => new List<AnimationSharpManagerV2.ButtonsData>()).ToArray();
-            AnimationSharpManagerV2.ButtonsData currMatrixButton = new AnimationSharpManagerV2.ButtonsData();
+            List<ButtonsData>[] matrixButtonList = Enumerable.Range(0, amountBoxes).Select(_ => new List<ButtonsData>()).ToArray();
+            ButtonsData currMatrixButton = new ButtonsData();
             try
             {
                 foreach (XmlNode node in configNodes)

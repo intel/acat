@@ -28,7 +28,7 @@ namespace ACAT.Lib.Core.Utility
     /// </summary>
     public class Kernel32Interop
     {
-        [FlagsAttribute]
+        [Flags]
         public enum EXECUTION_STATE : uint
         {
             ES_AWAYMODE_REQUIRED = 0x00000040,

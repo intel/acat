@@ -20,7 +20,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
     /// </summary>
     ///
 
-    [DescriptorAttribute("AEC69561-1525-4C71-8388-651277AFABC3",
+    [Descriptor("AEC69561-1525-4C71-8388-651277AFABC3",
         "OtherTestForm",
         "Application window used to display other test for BCI")]
     public partial class OtherTestForm : Form

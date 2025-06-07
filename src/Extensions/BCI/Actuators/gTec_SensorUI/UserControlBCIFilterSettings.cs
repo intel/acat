@@ -24,7 +24,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <summary>
         /// Unique ID for this step
         /// </summary>
-        private String _stepId;
+        private readonly String _stepId;
 
         /// <summary>
         /// User control allowing selection of filter settings

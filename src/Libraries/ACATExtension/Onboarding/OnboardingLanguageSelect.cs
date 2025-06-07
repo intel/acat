@@ -16,7 +16,7 @@ namespace ACAT.Lib.Extension.Onboarding
     /// The onboarding extension that lets the user select the input
     /// trigger switch
     /// </summary>
-    [DescriptorAttribute("F2803F8A-D639-459C-9F27-5742BAD4E405",
+    [Descriptor("F2803F8A-D639-459C-9F27-5742BAD4E405",
                     "OnboardingLanguageSelect",
                     "Language select onboarding")]
     public class OnboardingLanguageSelect : OnboardingExtensionBase

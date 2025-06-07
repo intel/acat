@@ -210,8 +210,8 @@ namespace ACAT.Lib.Core.Utility
         [DllImport("user32.dll", SetLastError = true)]
         public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
-        [DllImportAttribute("user32.dll", EntryPoint = "GetWindowThreadProcessId")]
-        public static extern int GetWindowThreadProcessId([InAttribute()] IntPtr handle, out int lpdwProcessId);
+        [DllImport("user32.dll", EntryPoint = "GetWindowThreadProcessId")]
+        public static extern int GetWindowThreadProcessId([In()] IntPtr handle, out int lpdwProcessId);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern bool InsertMenu(IntPtr hMenu, int uPosition, int uFlags, int uIDNewItem, string lpNewItem);
@@ -433,17 +433,17 @@ namespace ACAT.Lib.Core.Utility
                 this.Y = y;
             }
 
-            public POINT(System.Drawing.Point pt)
+            public POINT(Point pt)
                 : this(pt.X, pt.Y)
             {
             }
 
-            public static implicit operator System.Drawing.Point(POINT p)
+            public static implicit operator Point(POINT p)
             {
-                return new System.Drawing.Point(p.X, p.Y);
+                return new Point(p.X, p.Y);
             }
 
-            public static implicit operator POINT(System.Drawing.Point p)
+            public static implicit operator POINT(Point p)
             {
                 return new POINT(p.X, p.Y);
             }
@@ -462,9 +462,9 @@ namespace ACAT.Lib.Core.Utility
         {
             public int flags;
             public int length;
-            public System.Drawing.Point ptMaxPosition;
-            public System.Drawing.Point ptMinPosition;
-            public System.Drawing.Rectangle rcNormalPosition;
+            public Point ptMaxPosition;
+            public Point ptMinPosition;
+            public Rectangle rcNormalPosition;
             public int showCmd;
         }
     }

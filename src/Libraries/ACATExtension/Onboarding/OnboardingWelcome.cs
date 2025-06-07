@@ -14,7 +14,7 @@ namespace ACAT.Lib.Extension.Onboarding
     /// <summary>
     /// The onboarding extension that displays the Welcome screen
     /// </summary>
-    [DescriptorAttribute("6D8DA00E-5035-4B7F-A646-ED9F840A13BF",
+    [Descriptor("6D8DA00E-5035-4B7F-A646-ED9F840A13BF",
                     "OnboardingWelcome",
                     "Welcome onboarding")]
     public class OnboardingWelcome : OnboardingExtensionBase

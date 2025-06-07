@@ -24,7 +24,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
     /// word prediction) and have the text converted to speech.  The keyboard
     /// layout is ABC.
     /// </summary>
-    [DescriptorAttribute("36F021B7-615F-48FD-BA88-01679D9B4B61",
+    [Descriptor("36F021B7-615F-48FD-BA88-01679D9B4B61",
                         "CalibrationEyesSettingsForm",
                         "Application window used as a calibration UI for eyes open or closed settings")]
     public partial class CalibrationEyesSettingsForm : Form

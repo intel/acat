@@ -26,7 +26,7 @@ using System.Windows.Forms;
 
 namespace ACAT.Extensions.BCI.UI.UserControls
 {
-    [DescriptorAttribute("05011FAB-2725-4DCE-BFFE-5EA0F8E11F62",
+    [Descriptor("05011FAB-2725-4DCE-BFFE-5EA0F8E11F62",
         "SentencesUserControl",
         "User Control for Sentence Prediction BCI")]
     public partial class PhrasesUserControlBCI : UserControl, IUserControl

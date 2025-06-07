@@ -17,7 +17,7 @@ using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Lib.Core.Audit;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
-using Newtonsoft.Json;
+using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -326,13 +326,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             try
             {
-                if (_mainForm != null)
-                {
-                    _mainForm.Invoke(new Action(() =>
+                _mainForm?.Invoke(new Action(() =>
                     {
                         EvtUpdateOnboardingStatus?.Invoke(state, resultParams);
                     }));
-                }
             }
             catch (Exception ex)
             {
@@ -486,7 +483,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     int[] impedanceValues = new int[16];
                     var bciLogEntry = new BCILogEntrySignalQuality(channelNames, enabledChannels, railingValues, impedanceValues, exitBCIOnboarding); // 5th param
 
-                    var jsonString = JsonConvert.SerializeObject(bciLogEntry);
+                    var jsonString = JsonSerializer.Serialize(bciLogEntry);
                     AuditLog.Audit(new AuditEvent("BCISignalQuality", jsonString));
 
                     // Based on the status of all electrodes
@@ -507,9 +504,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     {
                         // Display message to user prompting them to improve signal quality before moving on
                         Log.Debug("Not exiting | Did not pass signal quality criteria");
-                        bool confirmed = ConfirmBoxSingleOption.ShowDialog("Signal Quality Checks Failed or Incomplete" +
-                            "\nYou need to complete “Railing” test and get good signals to\nproceed" +
-                            "\nPlease refer to the user guide for help", "Ok", _mainForm, false);
+                        bool confirmed = ConfirmBoxOneOption.ShowDialog("Signal Quality Checks Failed or Incomplete" +
+                        "\nYou need to complete both “Railing” and\n“Impedance” tests and get good signals to\nproceed" +
+                        "\nPlease refer to the user guide for help", "", StringResources.OK, _mainForm, false);
                     }
 
                     break;
@@ -555,8 +552,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             if (maxTimeHasElapsed)
             {
                 _currentOnboardingUserState = OnboardingUserState.SignalCheckRequired_MaxTimeElapsed;
-                Dictionary<String, object> resultParms = new Dictionary<String, object>();
-                resultParms["maxTimeMins"] = maxTimeMins;
+                Dictionary<string, object> dictionary = new Dictionary<String, object>
+                {
+                    ["maxTimeMins"] = maxTimeMins
+                };
+                Dictionary<String, object> resultParms = dictionary;
                 updateOnboardingStatus(_currentOnboardingUserState, resultParms);
             }
 
@@ -639,7 +639,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void _mainForm_EvtFormClosed(object sender, System.Windows.Forms.FormClosedEventArgs e)
+        private void _mainForm_EvtFormClosed(object sender, FormClosedEventArgs e)
         {
             Log.Debug("gTecDeviceTester | _mainForm_EvtFormClosed");
         }
@@ -652,7 +652,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <returns></returns>
         private bool confirmExit(Form parent)
         {
-            return ConfirmBox.ShowDialog("Onboarding incomplete. Quit anyway?", parent, true);
+            return ConfirmBoxTwoOption.ShowDialog("Onboarding incomplete.",
+                "Quit anyway?", StringResources.Yes, StringResources.No, parent, true);
         }
 
 

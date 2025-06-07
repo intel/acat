@@ -107,7 +107,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// <returns>true on success</returns>
         public override bool Save()
         {
-            bool retVal = Save<SAPISettings>(this, PreferencesFilePath);
+            bool retVal = Save(this, PreferencesFilePath);
             if (retVal)
             {
                 NotifyPreferencesChanged();

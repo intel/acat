@@ -111,7 +111,7 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
         /// <returns>true on success</returns>
         public override bool Save()
         {
-            bool retVal = Save<TTSClientSettings>(this, PreferencesFilePath);
+            bool retVal = Save(this, PreferencesFilePath);
             if (retVal)
             {
                 NotifyPreferencesChanged();

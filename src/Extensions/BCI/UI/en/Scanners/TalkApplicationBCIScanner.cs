@@ -45,7 +45,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
     /// word prediction) and have the text converted to speech.  The keyboard
     /// layout is ABC.
     /// </summary>
-    [DescriptorAttribute("48222D57-1EA8-44FF-8706-C2399D0B4CFA",
+    [Descriptor("48222D57-1EA8-44FF-8706-C2399D0B4CFA",
                         "TalkApplicationScannerSmallLayout",
                         "Talk application window with circular layout with large buttons, added features")]
     public partial class TalkApplicationBCIScanner : Form, IScannerPanel, ISupportsStatusBar
@@ -607,7 +607,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// Window procedure
         /// </summary>
         /// <param name="m">windows message</param>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         protected override void WndProc(ref Message m)
         {
             const int WM_SYSCOMMAND = 0x0112;

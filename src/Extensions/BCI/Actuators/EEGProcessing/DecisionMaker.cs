@@ -191,7 +191,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 // Update channel subset
                 TrainedClassifiersObj.UpdateChannelSubset(availableChannels);
 
-                List<string> markerValuesString = markerValues.ConvertAll<string>(x => x.ToString());
+                List<string> markerValuesString = markerValues.ConvertAll(x => x.ToString());
                 Log.Debug("Reduce data w/ " + data2parse.Length + " samples and " + String.Join(", ", markerValuesString) + " markers");
 
                 // Append incomplete data and markers

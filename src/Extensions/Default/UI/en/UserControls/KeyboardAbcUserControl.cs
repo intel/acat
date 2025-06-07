@@ -19,7 +19,7 @@ using System.Windows.Forms;
 
 namespace ACAT.Extensions.Default.UI.Scanners.UserControls
 {
-    [DescriptorAttribute("17E10490-5322-4C8A-801A-656A79BBA4EF",
+    [Descriptor("17E10490-5322-4C8A-801A-656A79BBA4EF",
                     "KeyboardAbcUserControl",
                     "User Control for Abc keyboard")]
     public partial class KeyboardAbcUserControl : UserControl, IUserControl

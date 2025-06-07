@@ -1,5 +1,5 @@
 ﻿
-namespace BCIActuator
+namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 {
     partial class UserControlBCIDeviceSelection
     {

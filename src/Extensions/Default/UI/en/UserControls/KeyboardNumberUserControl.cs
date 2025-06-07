@@ -20,7 +20,7 @@ using System.Windows.Forms;
 
 namespace ACAT.Extensions.Default.UI.Scanners.UserControls
 {
-    [DescriptorAttribute("F8E111D9-796A-4FE0-AC1E-7CD24839FD78",
+    [Descriptor("F8E111D9-796A-4FE0-AC1E-7CD24839FD78",
                     "KeyboardNumberUserControl",
                     "User Control for number keyboard")]
     public partial class KeyboardNumberUserControl : UserControl, IUserControl

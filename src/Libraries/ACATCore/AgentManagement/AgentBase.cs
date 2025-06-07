@@ -247,7 +247,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <param name="command">The command verb</param>
         /// <param name="arg">optional arguments</param>
         /// <param name="handled">set appropriately</param>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public virtual void OnRunCommand(String command, object arg, ref bool handled)
         {
             handled = true;

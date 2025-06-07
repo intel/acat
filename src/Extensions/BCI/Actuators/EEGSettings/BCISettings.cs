@@ -285,19 +285,19 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         //[LongDescriptorAttribute("Unix timestamp (seconds) of user's last impedance check completed", 0, long.MaxValue, 0)]
         public long SignalQuality_TimeOfLastImpedanceCheck​;
 
-        [IntDescriptorAttribute("Maximum time elapsed (minutes) since user's last impedance check to allow before forcing a recheck", 0, 600, 360)]
+        [IntDescriptor("Maximum time elapsed (minutes) since user's last impedance check to allow before forcing a recheck", 0, 600, 360)]
         public int SignalQuality_MaxTimeMinsElapsedSinceLastImpedanceCheck​;
 
         //[BoolDescriptor("If the user passed the last overall signal quality check that was executed (saved on user Exit or continuation to calibration")]
         public bool SignalQuality_PassedLastOverallQualityCheck;
 
-        [IntDescriptorAttribute("Minimum number of electrodes with good status (green) required for overall good sensing quality", 0, 8, 5)]
+        [IntDescriptor("Minimum number of electrodes with good status (green) required for overall good sensing quality", 0, 8, 5)]
         public int SignalQuality_MinOverallGoodChannels;
 
-        [IntDescriptorAttribute("Maximum number of electrodes allowed with ok status (yellow) required for overall ok sensing quality", 0, 8, 3)]
+        [IntDescriptor("Maximum number of electrodes allowed with ok status (yellow) required for overall ok sensing quality", 0, 8, 3)]
         public int SignalQuality_MaxOverallOKChannels​;
 
-        [IntDescriptorAttribute("Maximum number of electrodes with bad status (red) allowed to avoid overall bad sensing quality", 0, 8, 0)]
+        [IntDescriptor("Maximum number of electrodes with bad status (red) allowed to avoid overall bad sensing quality", 0, 8, 0)]
         public int SignalQuality_MaxOverallBadChannels​;
 
         [BoolDescriptor("Whether to stop impedance testing after it completes one full cycle through all electrodes", true)]
@@ -321,16 +321,16 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
 
         //// Default ranges for parameters with Cap attached
 
-        [IntDescriptorAttribute("Upper bound (percentage) of the range of railing values considered good (green)", 0, 20, 10)]
+        [IntDescriptor("Upper bound (percentage) of the range of railing values considered good (green)", 0, 20, 10)]
         public int SignalQuality_RailingGoodMaxThreshold​;
 
-        [IntDescriptorAttribute("Upper bound (percentage) of the range of railing values considered ok (yellow)", 0, 25, 20)]
+        [IntDescriptor("Upper bound (percentage) of the range of railing values considered ok (yellow)", 0, 25, 20)]
         public int SignalQuality_RailingOkMaxThreshold​;
 
-        [IntDescriptorAttribute("Upper bound (kilo Ohms) of the range of impedance values considered good (green)", 0, 1000, 100)]
+        [IntDescriptor("Upper bound (kilo Ohms) of the range of impedance values considered good (green)", 0, 1000, 100)]
         public int SignalQuality_ImpedanceGoodMaxThreshold​;
 
-        [IntDescriptorAttribute("Upper bound (kilo Ohms) of the range of impedance values considered ok (yellow)", 0, 1000, 200)]
+        [IntDescriptor("Upper bound (kilo Ohms) of the range of impedance values considered ok (yellow)", 0, 1000, 200)]
         public int SignalQuality_ImpedanceOkMaxThreshold​;
 
         //// Default ranges for parameters with Cap attached
@@ -660,7 +660,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         /// <returns>true on success</returns>
         public override bool Save()
         {
-            return Save<BCISettings>(this, SettingsFilePath);
+            return Save(this, SettingsFilePath);
         }
 
         public bool GetClassifier_EnableChannel(int channelIndx)

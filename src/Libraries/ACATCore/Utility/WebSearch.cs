@@ -100,7 +100,7 @@ namespace ACAT.Lib.Core.Utility
         /// </summary>
         /// <param name="searchTerm">search text</param>
         /// <returns>process launched</returns>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public Process WikiSearch(String searchTerm)
         {
             Process retVal = null;

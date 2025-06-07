@@ -91,8 +91,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 // Start timer 
                 try
                 {
-                    _updateTimer = new Timer();
-                    _updateTimer.Interval = 5000; // 5 seconds
+                    _updateTimer = new Timer
+                    {
+                        Interval = 5000 // 5 seconds
+                    };
                     _updateTimer.Tick += UpdateTimer_Tick;
                     _updateTimer.Start();
                 }
@@ -128,8 +130,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="e"></param>
         private void UpdateTimer_Tick(object sender, EventArgs e)
         {
-            Dictionary<String, object> requestParams = new Dictionary<String, object>();
-            requestParams["paired"] = true;
+            Dictionary<String, object> requestParams = new Dictionary<String, object>
+            {
+                ["paired"] = true
+            };
             EvtBluetoothRequest(DAQ_gTecBCI.BluetoothEvent.SCAN_DEVICES_REQUEST, requestParams);
 
             requestParams["paired"] = false;

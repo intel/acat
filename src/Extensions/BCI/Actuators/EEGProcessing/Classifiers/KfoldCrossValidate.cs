@@ -45,7 +45,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             if (_partitioningMethod.ToLower() == "sequential" || _partitioningMethod.ToLower() == "random")
                 partitioningMethod = _partitioningMethod.ToLower();
             else
-                throw new System.ArgumentException("Parameter" + _partitioningMethod + " not supported in crossValidation", "original");
+                throw new ArgumentException("Parameter" + _partitioningMethod + " not supported in crossValidation", "original");
         }
 
         /// <summary>

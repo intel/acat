@@ -17,9 +17,7 @@ using brainflow;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using Gtec.Unicorn;
 using ACAT.Extensions.BCI.Common.BCIControl;
 
@@ -39,7 +37,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         private readonly bool boardLoggerEnabled = false;
 
         // ********* Params read from settings
-        private int boardID = (int)BoardIds.UNICORN_BOARD;
+        private readonly int boardID = (int)BoardIds.UNICORN_BOARD;
 
         /// <summary>
         /// Sample rate
@@ -112,7 +110,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// <summary>
         /// Buffer for triggertest
         /// </summary>
-        private List<double> _bufferTriggerTest;
+        private readonly List<double> _bufferTriggerTest;
 
         /// <summary>
         /// Flag, true when trigger test is in progress
@@ -746,7 +744,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             return result;
         }
 
-        private Queue<Dictionary<ExitCodes, string>> warnings = new Queue<Dictionary<ExitCodes, string>>();
+        private readonly Queue<Dictionary<ExitCodes, string>> warnings = new Queue<Dictionary<ExitCodes, string>>();
         private readonly int limit = 10;
 
         /// <summary>
@@ -765,7 +763,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             else
             {
-                var release = warnings.Dequeue();
+                _ = warnings.Dequeue();
                 warnings.Enqueue(data);
             }
         }
@@ -848,9 +846,11 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 {
                     devices = Unicorn.GetAvailableDevices(paired);
                     
-                    Dictionary<String, object> eventParams = new Dictionary<String, object>();
-                    eventParams["paired"] = paired;
-                    eventParams["devices"] = devices;
+                    Dictionary<String, object> eventParams = new Dictionary<String, object>
+                    {
+                        ["paired"] = paired,
+                        ["devices"] = devices
+                    };
                     EvtBluetoothResult(BluetoothEvent.SCAN_DEVICES_RESULT, eventParams);
                 }
                 catch (Gtec.Unicorn.DeviceException ex)
@@ -872,8 +872,10 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             // Check if there is a device name saved in settings
             if (string.IsNullOrEmpty(BCIGtecActuatorSettings.Settings.GTecDeviceName))
             {
-                Dictionary<String, object> eventParams = new Dictionary<String, object>();
-                eventParams["error"] = "String GTecDeviceName is null or empty";
+                Dictionary<String, object> eventParams = new Dictionary<String, object>
+                {
+                    ["error"] = "String GTecDeviceName is null or empty"
+                };
                 EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, eventParams);
                 return false;
             }
@@ -896,16 +898,20 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     catch (Gtec.Unicorn.DeviceException ex)
                     {
                         Log.Debug($"Error: {ex.Message}");
-                        Dictionary<String, object> eventParams = new Dictionary<String, object>();
-                        eventParams["error"] = ex.Message;
+                        Dictionary<String, object> eventParams = new Dictionary<String, object>
+                        {
+                            ["error"] = ex.Message
+                        };
                         EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, eventParams);
                         return false;
                     }
                     catch (Exception ex)
                     {
                         Log.Debug($"Unexpected error: {ex.Message}");
-                        Dictionary<String, object> eventParams = new Dictionary<String, object>();
-                        eventParams["error"] = ex.Message;
+                        Dictionary<String, object> eventParams = new Dictionary<String, object>
+                        {
+                            ["error"] = ex.Message
+                        };
                         EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, eventParams);
                         return false;
                     }
@@ -918,7 +924,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// </summary>
         /// <param name="bluetoothEvent">Type of bluetooth request to handle</param>
         /// <param name="eventParams">Any extra params sent with bluetooth event request</param>
-        public void bluetoothRequestHandler(DAQ_gTecBCI.BluetoothEvent bluetoothEvent, Dictionary<String, object> eventParams)
+        public void bluetoothRequestHandler(BluetoothEvent bluetoothEvent, Dictionary<String, object> eventParams)
         {
             Log.Debug("DAQ_gTecBCI | bluetoothRequestHandler | bluetoothEvent: " + bluetoothEvent.ToString());
 

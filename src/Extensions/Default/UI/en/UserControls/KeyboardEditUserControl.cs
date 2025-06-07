@@ -20,7 +20,7 @@ using System.Windows.Forms;
 
 namespace ACAT.Extensions.Default.UI.Scanners.UserControls
 {
-    [DescriptorAttribute("82C88926-74B3-4FDA-B881-4ACF9998F4AF",
+    [Descriptor("82C88926-74B3-4FDA-B881-4ACF9998F4AF",
                     "KeyboardEditUserControl",
                     "User Control for Qwerty keyboard")]
     public partial class KeyboardEditUserControl

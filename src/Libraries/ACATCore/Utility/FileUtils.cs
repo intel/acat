@@ -614,7 +614,7 @@ namespace ACAT.Lib.Core.Utility
         /// </summary>
         /// <param name="processName">name of the process to check</param>
         /// <returns>true if it is</returns>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public static bool IsRunning(String processName)
         {
             Process[] pname = Process.GetProcessesByName(processName);
@@ -644,7 +644,7 @@ namespace ACAT.Lib.Core.Utility
         /// </summary>
         /// <param name="executable">path to the executable</param>
         /// <returns>true on success</returns>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public static bool Run(String executable, ProcessWindowStyle style = ProcessWindowStyle.Normal)
         {
             bool retVal = true;

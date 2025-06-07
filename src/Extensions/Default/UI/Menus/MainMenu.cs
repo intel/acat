@@ -23,7 +23,7 @@ using System.Windows.Forms;
 
 namespace ACAT.Extensions.Default.UI.Menus
 {
-    [DescriptorAttribute("148257A1-A8B7-4E75-93F0-56AFCD5B2A3E",
+    [Descriptor("148257A1-A8B7-4E75-93F0-56AFCD5B2A3E",
                         "MainMenu",
                         "Main AppMenu")]
     public partial class MainMenu : MenuPanel

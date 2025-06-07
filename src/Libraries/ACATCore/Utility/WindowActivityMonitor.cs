@@ -175,7 +175,7 @@ namespace ACAT.Lib.Core.Utility
         /// that is currently focused etc
         /// </summary>
         /// <returns>window monitor info</returns>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public static WindowActivityMonitorInfo GetForegroundWindowInfo()
         {
             const int maxTries = 3;
@@ -209,7 +209,7 @@ namespace ACAT.Lib.Core.Utility
         /// </summary>
         /// <param name="hwnd">window handle</param>
         /// <returns>parent process</returns>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public static Process GetProcessForWindow(IntPtr hwnd)
         {
 
@@ -377,7 +377,7 @@ namespace ACAT.Lib.Core.Utility
         /// has no changed to a new control since the last call.
         /// </summary>
         /// <param name="flag">see notes above</param>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         private static void getActiveWindow(bool flag = false)
         {
             AutomationElement focusedElement = null;

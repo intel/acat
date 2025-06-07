@@ -68,7 +68,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
             if (preferences != null && saveAfterLoad)
             {
-                if (!XmlUtils.XmlFileSave<T>(preferences, preferencesFile))
+                if (!XmlUtils.XmlFileSave(preferences, preferencesFile))
                 {
                     Log.Error("Unable to save default preferences!");
                     preferences = default;
@@ -97,7 +97,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         public static bool Save<T>(T prefs, String preferencesFile)
         {
             // save current settings into current file and preset file
-            var retVal = XmlUtils.XmlFileSave<T>(prefs, preferencesFile);
+            var retVal = XmlUtils.XmlFileSave(prefs, preferencesFile);
 
             if (retVal == false)
             {
@@ -139,7 +139,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         {
             var sb = new StringBuilder();
             sb.Append("Preferences: ");
-            sb.Append(XmlUtils.XmlSerializeToString<PreferencesBase>(this));
+            sb.Append(XmlUtils.XmlSerializeToString(this));
             return sb.ToString();
         }
     }

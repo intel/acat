@@ -1,5 +1,6 @@
 ﻿using ACAT.ACATResources;
 using ACAT.Lib.Core.Utility;
+using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -57,7 +58,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             {
                 list.Add("PDF");
                 list.Add("true");
-                list.Add(R.GetString("PDFLoaderHtml"));
+                list.Add(StringResources.PDFLoaderHtml);
                 list.Add(param1);
                 list.Add(param2);
             }

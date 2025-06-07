@@ -29,7 +29,7 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
     /// the supported protocols
     /// </summary>
     ///
-    [DescriptorAttribute("33A07974-72A5-4147-A8EA-7B001520C175",
+    [Descriptor("33A07974-72A5-4147-A8EA-7B001520C175",
                         "TTS Client",
                         "Text to Speech client that sends the text to be converted to a server using the supported protocols")]
     public class TTSClient : ExtensionInvoker, ITTSEngine, ISupportsPreferences

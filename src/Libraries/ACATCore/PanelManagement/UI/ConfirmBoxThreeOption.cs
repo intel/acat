@@ -16,7 +16,7 @@ namespace ACAT.Lib.Core.PanelManagement
     /// A message box with three button options
     /// </summary>
 
-    [DescriptorAttribute("592656B9-0534-480A-A27E-4BFF4D0C6742",
+    [Descriptor("592656B9-0534-480A-A27E-4BFF4D0C6742",
                 "ConfirmBoxTwoOption",
                 "Application window used to display a three options")]
     public partial class ConfirmBoxThreeOption : Form

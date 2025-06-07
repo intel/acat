@@ -133,12 +133,12 @@ namespace ACAT.Lib.Core.Utility
 
             _stopTimer = false;
 
-            System.Threading.ThreadStart threadStart = delegate ()
+            void threadStart()
             {
                 NotificationTimer(ref _timerIntervalInMicroSec,
                                   ref _ignoreEventIfLateBy,
                                   ref _stopTimer);
-            };
+            }
 
             _threadTimer = new System.Threading.Thread(threadStart)
             {

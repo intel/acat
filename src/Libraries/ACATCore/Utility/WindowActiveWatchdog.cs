@@ -41,8 +41,14 @@ namespace ACAT.Lib.Core.Utility
             _form.TopMost = false;
             _form.TopMost = true;
 
+
             _form.Deactivate += _form_Deactivate;
             _form.VisibleChanged += _form_VisibleChanged;
+
+#if DEBUG
+            // in debug mode disable the watchdog to allow for debugging
+            _paused = true;
+#endif
         }
 
         /// <summary>
@@ -62,7 +68,11 @@ namespace ACAT.Lib.Core.Utility
         /// </summary>
         public void Pause()
         {
+#if DEBUG
+            return;
+#else
             _paused = true;
+#endif
         }
 
         /// <summary>
@@ -70,8 +80,12 @@ namespace ACAT.Lib.Core.Utility
         /// </summary>
         public void Resume()
         {
+#if DEBUG
+            return;
+#else
             _paused = false;
             reactivateForm();
+#endif
         }
 
         /// <summary>
@@ -129,19 +143,21 @@ namespace ACAT.Lib.Core.Utility
         /// <param name="e">event arg</param>
         private void _form_VisibleChanged(object sender, EventArgs e)
         {
-            try
+            if (!_paused)
             {
-                if (_form != null && _form.Visible)
+                try
                 {
-                    reactivateForm();
+                    if (_form != null && _form.Visible)
+                    {
+                        reactivateForm();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug(ex.ToString());
                 }
             }
-            catch (Exception ex)
-            {
-                Log.Debug(ex.ToString());
-            }
         }
-
         /// <summary>
         /// Sets focus to the form
         /// </summary>

@@ -533,6 +533,16 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
             showDisclaimer();
 
+            // Check if Gtec is available
+         
+
+            // check if OpenBCI is available
+
+            //  If both avaiable, show selection dialog
+
+            // otherwise run corresponding TestDevice call
+
+
             // BCI Headset Selection
             if (_device == Device.GTEC)
             {

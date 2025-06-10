@@ -40,7 +40,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public enum OnboardingUserState
         {
             Testing_BCIConnections, // Screen that displays "connecting..." status
-            // ErrorUsbDeviceDisconnected, // Screen shown to the user if the usb device could not be detected
             ErrorBluetoothDisconnected, // Screen shown to the user if bluetooth connection could not be established with device
             
             SignalCheckRequired_MaxTimeElapsed, // Screen telling user that signal check required because maximum time between signal checks has elapsed
@@ -50,9 +49,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             PromptUser_FilterSettings, // Screen prompting user to set BCI filter settings (50Hz / 60Hz)
 
             BCISignalCheck, // Main signal check screen
-
-            // LostConnectionError, // Occurs when device has lost its connection
-            // SignalQualityError, // Occurs when it has been determined that signal quality o=is poor
 
             ExitBCITesting, // Exit BCI testing process completely
 
@@ -72,7 +68,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <summary>
         /// Used to signal BCI form is fully loaded
         /// </summary>
-        public bool _FormFullySHown = false;
+        public bool _FormFullyShown = false;
 
         /// <summary>
         /// Maximum amount of time after not receiving data (after initially receiving good data) to throw error
@@ -196,7 +192,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _mainForm.FormClosed += _mainForm_EvtFormClosed;
 
             // Wait until control fully drawn to set flag which begins connecting to BCI devices
-            _mainForm.Paint += (s, args) => { _FormFullySHown = true; handleMainFormShown(this, null); };
+            _mainForm.Paint += (s, args) => { _FormFullyShown = true; handleMainFormShown(this, null); };
 
             // Show main form
             _mainForm.ShowDialog();

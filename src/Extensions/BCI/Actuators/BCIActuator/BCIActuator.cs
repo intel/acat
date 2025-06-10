@@ -79,10 +79,11 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         public enum Device
         {
             GTEC,
-            OPENBCI
+            OPENBCI,
+            BOTH
         }
 
-        public Device _device = Device.GTEC;
+        public Device _device;
 
         /// <summary>
         /// OpenBCI device tester
@@ -533,18 +534,18 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
             showDisclaimer();
 
+            //TODO IN PROCESS
+
             // Check if Gtec is available
-         
-
             // check if OpenBCI is available
-
             //  If both avaiable, show selection dialog
-
             // otherwise run corresponding TestDevice call
 
-
-            // BCI Headset Selection
-            if (_device == Device.GTEC)
+            if (_device == Device.BOTH)
+            {
+                showBciBoardSelection();
+            }
+            else if (_device == Device.GTEC)
             {
                 TestGtecDevice();
             }
@@ -552,10 +553,26 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             {
                 TestBCIDevices();
             }
-            else
+
+
+
+            /*bool gtecAvailable = IsGtecAvailable();
+            bool openBciAvailable = IsOpenBciAvailable();
+
+            if (gtecAvailable && openBciAvailable)
             {
                 showBciBoardSelection();
             }
+            else if (gtecAvailable)
+            {
+                TestGtecDevice();
+            }
+            else if (openBciAvailable)
+            {
+                TestBCIDevices();
+            }*/
+
+
 
             WindowActivityMonitor.Resume();
 

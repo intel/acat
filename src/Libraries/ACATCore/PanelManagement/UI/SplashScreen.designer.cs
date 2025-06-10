@@ -142,7 +142,7 @@ namespace ACAT.Lib.Core.PanelManagement
             this.initializing.Name = "initializing";
             this.initializing.Size = new System.Drawing.Size(674, 96);
             this.initializing.TabIndex = 4;
-            this.initializing.Text = StringResources.SplashScreenInitializing;  //"Initializing...\r\nThis may take a few minutes";
+            this.initializing.Text = StringResources.Initializing+ "...\r\n"+StringResources.Thismaytakeafewminutes;  //"Initializing...\r\nThis may take a few minutes";
             this.initializing.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // SplashScreen

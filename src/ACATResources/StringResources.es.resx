@@ -1775,7 +1775,7 @@ ACAT utiliza dos métricas - “saturación” e “impedancia” - para verific
     <value>Calibraciones Adicionales</value>
   </data>
   <data name="TriggerTest" xml:space="preserve">
-    <value />
+    <value>Prueba Disparador</value>
   </data>
   <data name="Hinttooltip" xml:space="preserve">
     <value>Hint tooltip</value>
@@ -1796,6 +1796,27 @@ ACAT utiliza dos métricas - “saturación” e “impedancia” - para verific
     <value>Applied to section</value>
   </data>
   <data name="Done" xml:space="preserve">
+    <value>Listo</value>
+  </data>
+  <data name="Initializing" xml:space="preserve">
+    <value>Iniciando</value>
+  </data>
+  <data name="Thismaytakeafewminutes" xml:space="preserve">
+    <value>Puede tardar unos minutos.</value>
+  </data>
+  <data name="PleaseSelectBCIHeadset" xml:space="preserve">
+    <value>Seleccionar Diadema BCI</value>
+  </data>
+  <data name="DeviceSelection" xml:space="preserve">
+    <value>Seleccion de dispositivo</value>
+  </data>
+  <data name="SignalQualityChecksFailed" xml:space="preserve">
+    <value>Calidad de señal Fallida o Incompleta</value>
+  </data>
+  <data name="Youneedtocompleteboth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Pleaserefertotheuserguideforhelp" xml:space="preserve">
     <value />
   </data>
 </root>

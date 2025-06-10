@@ -500,9 +500,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     {
                         // Display message to user prompting them to improve signal quality before moving on
                         Log.Debug("Not exiting | Did not pass signal quality criteria");
-                        bool confirmed = ConfirmBoxOneOption.ShowDialog("Signal Quality Checks Failed or Incomplete" +
-                        "\nYou need to complete both “Railing” and\n“Impedance” tests and get good signals to\nproceed" +
-                        "\nPlease refer to the user guide for help", "", StringResources.OK, _mainForm, false);
+                        bool confirmed = ConfirmBoxOneOption.ShowDialog(StringResources.SignalQualityChecksFailed +
+                        "\n"+StringResources.Youneedtocompleteboth +"\n“ +Impedance” tests and get good signals to"+"\n"+"proceed" +
+                        "\n"+StringResources.Pleaserefertotheuserguideforhelp, "", StringResources.OK, _mainForm, false);
                     }
 
                     break;

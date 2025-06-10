@@ -1,4 +1,6 @@
 ﻿
+using ACATResources;
+
 namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 {
     partial class UserControlBCIDeviceSelection
@@ -110,7 +112,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             this.tableLayoutPanelMain.SetRowSpan(this.labelTitle, 5);
             this.labelTitle.Size = new System.Drawing.Size(889, 95);
             this.labelTitle.TabIndex = 0;
-            this.labelTitle.Text = "Please Select BCI Headset";
+            this.labelTitle.Text = StringResources.PleaseSelectBCIHeadset;
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // buttonGtecUnicorn
@@ -137,7 +139,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             this.tableLayoutPanelMain.SetRowSpan(this.buttonOpenBCI, 5);
             this.buttonOpenBCI.Size = new System.Drawing.Size(327, 89);
             this.buttonOpenBCI.TabIndex = 2;
-            this.buttonOpenBCI.Text = "Open BCI";
+            this.buttonOpenBCI.Text = StringResources.Open+"BCI";
             this.buttonOpenBCI.UseVisualStyleBackColor = true;
             this.buttonOpenBCI.Click += new System.EventHandler(this.buttonOpenBCI_Click);
             // 
@@ -148,7 +150,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             this.ClientSize = new System.Drawing.Size(895, 475);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.Name = "UserControlBCIDeviceSelection";
-            this.Text = "BCI Device Selection";
+            this.Text = "BCI "+StringResources.DeviceSelection;
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.tableLayoutPanelMain.PerformLayout();
             this.ResumeLayout(false);

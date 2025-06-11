@@ -32,6 +32,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using gTecSensorUI;
 
 namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 {
@@ -80,7 +81,6 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         {
             GTEC,
             OPENBCI,
-            BOTH
         }
 
         public Device _device;
@@ -541,23 +541,10 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             //  If both avaiable, show selection dialog
             // otherwise run corresponding TestDevice call
 
-            if (_device == Device.BOTH)
-            {
-                showBciBoardSelection();
-            }
-            else if (_device == Device.GTEC)
-            {
-                TestGtecDevice();
-            }
-            else if (_device == Device.OPENBCI)
-            {
-                TestBCIDevices();
-            }
+            bool gtecAvailable = GTecDeviceTester.GtecDeviceAvailable;
+            // bool openBciAvailable = IsOpenBciAvailable();
+            bool openBciAvailable = true;
 
-
-
-            /*bool gtecAvailable = IsGtecAvailable();
-            bool openBciAvailable = IsOpenBciAvailable();
 
             if (gtecAvailable && openBciAvailable)
             {
@@ -570,7 +557,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             else if (openBciAvailable)
             {
                 TestBCIDevices();
-            }*/
+            }
 
 
 

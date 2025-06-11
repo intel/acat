@@ -11,15 +11,16 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
+using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Lib.Core.Utility;
 using Accord.Math;
 using brainflow;
+using Gtec.Unicorn;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Gtec.Unicorn;
-using ACAT.Extensions.BCI.Common.BCIControl;
 
 namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 {
@@ -141,9 +142,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             BOARD_ACQUIRINGDATA,
         };
 
-        public ExitCodes sensorStatus;
+        public ExitCode sensorStatus;
 
-        public enum ExitCodes
+        public enum ExitCode
         {
             STATUS_OK,
             PORT_ALREADY_OPEN_ERROR,
@@ -231,6 +232,20 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 return true;
             else
                 return false;
+        }
+
+        static public bool IsDeviceAvailable()
+        {
+            bool result = false;
+            // check if drivers are installed
+            result = Unicorn.IsDeviceLibraryLoadable();
+
+
+            // and if the device is available
+            IList<string> devices = Unicorn.GetAvailableDevices(true);
+
+
+            return result && devices.Count > 0;
         }
 
         /// <summary>
@@ -331,7 +346,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 
                         deviceInitialized = true;
                         
-                        AddWarning(ExitCodes.IDLE, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  STATUS                 MESSAGE: Device initialized at serial port: " + serial_number);
+                        AddWarning(ExitCode.IDLE, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  STATUS                 MESSAGE: Device initialized at serial port: " + serial_number);
                         Log.Debug("Board initialized. Status: " + status.ToString());
                         
                         return true;
@@ -343,7 +358,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             catch (Exception e)
             {
                 Log.Debug(e.Message);
-                sensorStatus = getErrorCode(e.Message, ExitCodes.BOARD_NOT_READY_ERROR);
+                sensorStatus = getErrorCode(e.Message, ExitCode.BOARD_NOT_READY_ERROR);
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING             MESSAGE: Error Code: " + sensorStatus);
                 return false;
             }
@@ -392,7 +407,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e) //needs to handle error better
             {
-                sensorStatus = getErrorCode(e.Message, ExitCodes.BOARD_NOT_CREATED_ERROR);
+                sensorStatus = getErrorCode(e.Message, ExitCode.BOARD_NOT_CREATED_ERROR);
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING             MESSAGE: Error Code: " + sensorStatus);
                 Log.Debug("Exception:" + e.Message + " Error code:" + sensorStatus);
                 success = false;
@@ -431,7 +446,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                sensorStatus = getErrorCode(e.Message, ExitCodes.SYNC_TIMEOUT_ERROR);
+                sensorStatus = getErrorCode(e.Message, ExitCode.SYNC_TIMEOUT_ERROR);
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING               MESSAGE: Error Code: " + sensorStatus);
                 Log.Debug("Exception:" + e.Message + " Error code: " + sensorStatus);
                 return false;
@@ -462,7 +477,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                sensorStatus = getErrorCode(e.Message, ExitCodes.UNABLE_TO_CLOSE);
+                sensorStatus = getErrorCode(e.Message, ExitCode.UNABLE_TO_CLOSE);
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING             MESSAGE: Error Code: " + sensorStatus);
                 Log.Debug("Exception:" + e.Message + " Error code: " + sensorStatus);
                 return false;
@@ -625,8 +640,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                sensorStatus = getErrorCode(e.Message, ExitCodes.SET_PORT_ERROR);
-                if (sensorStatus == ExitCodes.ANOTHER_BOARD_IS_CREATED_ERROR)
+                sensorStatus = getErrorCode(e.Message, ExitCode.SET_PORT_ERROR);
+                if (sensorStatus == ExitCode.ANOTHER_BOARD_IS_CREATED_ERROR)
                     portAlreadyOpen = true;
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING             MESSAGE: Error Code: " + sensorStatus);
                 Log.Debug("Exception: " + e.Message);
@@ -640,9 +655,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// <param name="message"></param>
         /// <param name="defaultErrorCode"></param>
         /// <returns></returns>
-        private ExitCodes getErrorCode(string message, ExitCodes defaultErrorCode)
+        private ExitCode getErrorCode(string message, ExitCode defaultErrorCode)
         {
-            foreach (ExitCodes code in Enum.GetValues(typeof(ExitCodes)))
+            foreach (ExitCode code in Enum.GetValues(typeof(ExitCode)))
             {
                 if (message.Contains(code.ToString()))
                     return code;
@@ -744,16 +759,16 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             return result;
         }
 
-        private readonly Queue<Dictionary<ExitCodes, string>> warnings = new Queue<Dictionary<ExitCodes, string>>();
+        private readonly Queue<Dictionary<ExitCode, string>> warnings = new Queue<Dictionary<ExitCode, string>>();
         private readonly int limit = 10;
 
         /// <summary>
         /// Add a warning to the queue
         /// </summary>
         /// <param name="info">string warnings</param>
-        public void AddWarning(ExitCodes code, String info)
+        public void AddWarning(ExitCode code, String info)
         {
-            var data = new Dictionary<ExitCodes, string>
+            var data = new Dictionary<ExitCode, string>
             {
                 { code, info }
             };
@@ -772,9 +787,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Gets the available warnings in the queue
         /// </summary>
         /// <returns>Warnings</returns>
-        public Dictionary<ExitCodes, string> getWarning()
+        public Dictionary<ExitCode, string> getWarning()
         {
-            Dictionary<ExitCodes, string> info = null;
+            Dictionary<ExitCode, string> info = null;
             try
             {
                 if (warnings.Count() > 0)

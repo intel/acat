@@ -178,6 +178,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             FormClosing += Handle_FormCLosing;
 
+            updateOnboardingStatus(OnboardingUserState.Testing_BCIConnections, null);
+
         }
 
         /// <summary>

@@ -45,10 +45,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelSpacerTop = new System.Windows.Forms.TableLayoutPanel();
+            this.pictureBoxTestBCIConnections = new System.Windows.Forms.PictureBox();
             this.buttonExit_userControlTestBCIConnections = new System.Windows.Forms.Button();
             this.tableLayoutPanelSpacerBottom = new System.Windows.Forms.TableLayoutPanel();
             this.labelTitle = new System.Windows.Forms.Label();
-            this.pictureBoxTestBCIConnections = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxTestBCIConnections)).BeginInit();
             this.SuspendLayout();
@@ -82,7 +82,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.565657F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.17172F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.565657F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1022, 766);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1024, 768);
             this.tableLayoutPanelMain.TabIndex = 9;
             this.tableLayoutPanelMain.UseWaitCursor = true;
             // 
@@ -98,9 +98,24 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelSpacerTop.Name = "tableLayoutPanelSpacerTop";
             this.tableLayoutPanelSpacerTop.RowCount = 1;
             this.tableLayoutPanelSpacerTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelSpacerTop.Size = new System.Drawing.Size(1022, 50);
+            this.tableLayoutPanelSpacerTop.Size = new System.Drawing.Size(1024, 50);
             this.tableLayoutPanelSpacerTop.TabIndex = 73;
             this.tableLayoutPanelSpacerTop.UseWaitCursor = true;
+            // 
+            // pictureBoxTestBCIConnections
+            // 
+            this.pictureBoxTestBCIConnections.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pictureBoxTestBCIConnections.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.pictureBoxTestBCIConnections.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBoxTestBCIConnections.Image = global::gTecSensorUI.Properties.Resources.BCI_Connecting_GIF;
+            this.pictureBoxTestBCIConnections.Location = new System.Drawing.Point(260, 231);
+            this.pictureBoxTestBCIConnections.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBoxTestBCIConnections.Name = "pictureBoxTestBCIConnections";
+            this.pictureBoxTestBCIConnections.Size = new System.Drawing.Size(501, 302);
+            this.pictureBoxTestBCIConnections.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxTestBCIConnections.TabIndex = 0;
+            this.pictureBoxTestBCIConnections.TabStop = false;
+            this.pictureBoxTestBCIConnections.UseWaitCursor = true;
             // 
             // buttonExit_userControlTestBCIConnections
             // 
@@ -113,7 +128,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.buttonExit_userControlTestBCIConnections.Font = new System.Drawing.Font("Montserrat Thin", 36F, System.Drawing.FontStyle.Underline);
             this.buttonExit_userControlTestBCIConnections.ForeColor = System.Drawing.Color.Silver;
             this.buttonExit_userControlTestBCIConnections.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.buttonExit_userControlTestBCIConnections.Location = new System.Drawing.Point(135, 655);
+            this.buttonExit_userControlTestBCIConnections.Location = new System.Drawing.Point(135, 656);
             this.buttonExit_userControlTestBCIConnections.Margin = new System.Windows.Forms.Padding(0);
             this.buttonExit_userControlTestBCIConnections.Name = "buttonExit_userControlTestBCIConnections";
             this.buttonExit_userControlTestBCIConnections.Size = new System.Drawing.Size(149, 58);
@@ -130,12 +145,12 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelMain.SetColumnSpan(this.tableLayoutPanelSpacerBottom, 5);
             this.tableLayoutPanelSpacerBottom.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelSpacerBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanelSpacerBottom.Location = new System.Drawing.Point(0, 713);
+            this.tableLayoutPanelSpacerBottom.Location = new System.Drawing.Point(0, 714);
             this.tableLayoutPanelSpacerBottom.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanelSpacerBottom.Name = "tableLayoutPanelSpacerBottom";
             this.tableLayoutPanelSpacerBottom.RowCount = 1;
             this.tableLayoutPanelSpacerBottom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelSpacerBottom.Size = new System.Drawing.Size(1022, 53);
+            this.tableLayoutPanelSpacerBottom.Size = new System.Drawing.Size(1024, 54);
             this.tableLayoutPanelSpacerBottom.TabIndex = 74;
             this.tableLayoutPanelSpacerBottom.UseWaitCursor = true;
             // 
@@ -149,37 +164,21 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.labelTitle.Location = new System.Drawing.Point(135, 50);
             this.labelTitle.Margin = new System.Windows.Forms.Padding(0);
             this.labelTitle.Name = "labelTitle";
-            this.labelTitle.Size = new System.Drawing.Size(750, 131);
+            this.labelTitle.Size = new System.Drawing.Size(751, 131);
             this.labelTitle.TabIndex = 6;
             this.labelTitle.Text = "Brain Computer Interface Setup";
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.labelTitle.UseCompatibleTextRendering = true;
             this.labelTitle.UseWaitCursor = true;
             // 
-            // pictureBoxTestBCIConnections
-            // 
-            this.pictureBoxTestBCIConnections.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pictureBoxTestBCIConnections.Cursor = System.Windows.Forms.Cursors.WaitCursor;
-            this.pictureBoxTestBCIConnections.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBoxTestBCIConnections.Image = global::gTecSensorUI.Properties.Resources.BCI_Connecting_GIF;
-            this.pictureBoxTestBCIConnections.Location = new System.Drawing.Point(260, 231);
-            this.pictureBoxTestBCIConnections.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBoxTestBCIConnections.Name = "pictureBoxTestBCIConnections";
-            this.pictureBoxTestBCIConnections.Size = new System.Drawing.Size(500, 301);
-            this.pictureBoxTestBCIConnections.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBoxTestBCIConnections.TabIndex = 0;
-            this.pictureBoxTestBCIConnections.TabStop = false;
-            this.pictureBoxTestBCIConnections.UseWaitCursor = true;
-            // 
             // UserControlTestBCIConnections
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.tableLayoutPanelMain);
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "UserControlTestBCIConnections";
-            this.Size = new System.Drawing.Size(1022, 766);
+            this.Size = new System.Drawing.Size(1024, 768);
             this.tableLayoutPanelMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxTestBCIConnections)).EndInit();
             this.ResumeLayout(false);

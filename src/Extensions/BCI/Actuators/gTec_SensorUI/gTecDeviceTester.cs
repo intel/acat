@@ -105,6 +105,20 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public static int _Testing_useSensor_TestIndex = 0;
         private OnboardingUserState[] _DebugStates;
 
+        public bool GtecDeviceAvailable {
+            get
+            {
+                if (!_Testing_useSensor)
+                {
+                    return true; // If not using sensor, then always available
+                }
+                else
+                {
+                    return DAQ_gTecBCI.IsDeviceAvailable();
+                }
+            }
+        }
+
         /// <summary>
         /// Tests BCI devices - connections to the hw and data quality
         /// Displays errors accordingly - After an error, starts at the beginning of the process (testing device connections)
@@ -301,16 +315,15 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             _mainForm.BringToFront();
 
+            // Go to screen that displays "connecting..." status
+            _currentOnboardingUserState = OnboardingUserState.Testing_BCIConnections;
+            updateOnboardingStatus(_currentOnboardingUserState, null);
+
             if (_Testing_useSensor)
             {
-                // Go to screen that displays "connecting..." status
-                _currentOnboardingUserState = OnboardingUserState.Testing_BCIConnections;
-                updateOnboardingStatus(_currentOnboardingUserState, null);
-
                 // Non-zero value is needed for startBCIDeviceTesting so "connecting..." screen has time to show to the user
                 Thread t = new Thread(() => startBCIDeviceTesting(3));
                 t.Start();
-
             }
         }
 

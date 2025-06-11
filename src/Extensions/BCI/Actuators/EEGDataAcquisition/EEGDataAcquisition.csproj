@@ -46,6 +46,9 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="UnicornDotNet">
+      <Version>1.24.0</Version>
+    </PackageReference>
     <ProjectReference Include="$(SolutionDir)Libraries\ACATCore\Core.csproj">
       <Project>{827ad764-63dd-4b12-974d-2b70cc877051}</Project>
       <Name>Core</Name>
@@ -69,9 +72,6 @@
     <PackageReference Include="Accord" Version="3.8.0.0" />
     <PackageReference Include="Accord.Math" Version="3.8.0.0" />
     <PackageReference Include="brainflow" Version="5.5.0" />
-    <Reference Include="UnicornDotNet">
-      <HintPath>..\..\..\..\..\..\..\..\OneDrive - Intel Corporation\Documents\gtec\Unicorn Suite\Hybrid Black\Unicorn DotNet\Lib\UnicornDotNet.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAQ_gTecBCI.cs" />

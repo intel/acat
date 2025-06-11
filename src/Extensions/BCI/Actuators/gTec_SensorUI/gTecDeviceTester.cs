@@ -105,7 +105,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public static int _Testing_useSensor_TestIndex = 0;
         private OnboardingUserState[] _DebugStates;
 
-        public bool GtecDeviceAvailable {
+        public static bool GtecDeviceAvailable {
             get
             {
                 if (!_Testing_useSensor)

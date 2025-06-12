@@ -11,6 +11,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACATResources;
+
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
     /// <summary>
@@ -114,7 +116,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.buttonExit_userControlBCIErrorgTecBoard.Name = "buttonExit_userControlBCIErrorgTecBoard";
             this.buttonExit_userControlBCIErrorgTecBoard.Size = new System.Drawing.Size(128, 58);
             this.buttonExit_userControlBCIErrorgTecBoard.TabIndex = 76;
-            this.buttonExit_userControlBCIErrorgTecBoard.Text = "Exit";
+            this.buttonExit_userControlBCIErrorgTecBoard.Text = StringResources.Exit;
             this.buttonExit_userControlBCIErrorgTecBoard.UseCompatibleTextRendering = true;
             this.buttonExit_userControlBCIErrorgTecBoard.UseVisualStyleBackColor = false;
             // 
@@ -131,7 +133,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.labelTitle.Name = "labelTitle";
             this.labelTitle.Size = new System.Drawing.Size(798, 86);
             this.labelTitle.TabIndex = 6;
-            this.labelTitle.Text = "BCI gTec Board Error";
+            this.labelTitle.Text = "BCI gTec "+StringResources.BoardError;
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.labelTitle.UseCompatibleTextRendering = true;
             // 
@@ -154,7 +156,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelBCIError.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelBCIError.Size = new System.Drawing.Size(795, 200);
             this.tableLayoutPanelBCIError.TabIndex = 70;
-            this.tableLayoutPanelBCIError.Text = "Row for error visualization";
+            this.tableLayoutPanelBCIError.Text = StringResources.Rowforerrorvisualization;
             // 
             // buttonRetry_userControlBCIErrorgTecBoard
             // 
@@ -179,7 +181,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.buttonRetry_userControlBCIErrorgTecBoard.Name = "buttonRetry_userControlBCIErrorgTecBoard";
             this.buttonRetry_userControlBCIErrorgTecBoard.Size = new System.Drawing.Size(199, 61);
             this.buttonRetry_userControlBCIErrorgTecBoard.TabIndex = 85;
-            this.buttonRetry_userControlBCIErrorgTecBoard.Text = "Retry";
+            this.buttonRetry_userControlBCIErrorgTecBoard.Text = StringResources.Retry;
             this.buttonRetry_userControlBCIErrorgTecBoard.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.buttonRetry_userControlBCIErrorgTecBoard.UseCompatibleTextRendering = true;
             this.buttonRetry_userControlBCIErrorgTecBoard.UseMnemonic = false;

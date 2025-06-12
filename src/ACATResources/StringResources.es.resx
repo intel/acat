@@ -1819,4 +1819,13 @@ ACAT utiliza dos métricas - “saturación” e “impedancia” - para verific
   <data name="Pleaserefertotheuserguideforhelp" xml:space="preserve">
     <value />
   </data>
+  <data name="BoardError" xml:space="preserve">
+    <value>Board Error</value>
+  </data>
+  <data name="Rowforerrorvisualization" xml:space="preserve">
+    <value>Fila de error de Visualizacion</value>
+  </data>
+  <data name="Retry" xml:space="preserve">
+    <value>Reintentar</value>
+  </data>
 </root>

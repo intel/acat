@@ -296,6 +296,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Board Error.
+        /// </summary>
+        public static string BoardError {
+            get {
+                return ResourceManager.GetString("BoardError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Box.
         /// </summary>
         public static string Box {
@@ -3299,6 +3308,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Retry.
+        /// </summary>
+        public static string Retry {
+            get {
+                return ResourceManager.GetString("Retry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rewind.
         /// </summary>
         public static string Rewind {
@@ -3322,6 +3340,15 @@ namespace ACATResources {
         public static string RightClick {
             get {
                 return ResourceManager.GetString("RightClick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Row for error visualization.
+        /// </summary>
+        public static string Rowforerrorvisualization {
+            get {
+                return ResourceManager.GetString("Rowforerrorvisualization", resourceCulture);
             }
         }
         

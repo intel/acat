@@ -179,7 +179,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// The input sensor that detects
         /// input swtich activity.
         /// </summary>
-        private InputSensor _sensor;
+        private BCIInputSensor _sensor;
 
         /// <summary>
         /// List to store average alpha values
@@ -473,7 +473,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <returns>the switch object</returns>
         public override IActuatorSwitch CreateSwitch()
         {
-            return new SampleActuatorSwitch();
+            return new BCIActuatorSwitch();
         }
 
         /// <summary>
@@ -512,7 +512,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             useSensor = BCIActuatorSettings.Settings.Testing_UseSensor;
 
             // perform initialization here.
-            _sensor = new InputSensor();
+            _sensor = new BCIInputSensor();
 
             _sensor.EvtSwitchActivate += sensor_EvtSwitchActivate;
             _sensor.EvtSwitchDeactivate += sensor_EvtSwitchDeactivate;
@@ -816,12 +816,12 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         {
             foreach (IActuatorSwitch switchObj in Switches)
             {
-                if (switchObj is SampleActuatorSwitch)
+                if (switchObj is BCIActuatorSwitch)
                 {
-                    var actuatorSwitch = (SampleActuatorSwitch)switchObj;
+                    var actuatorSwitch = (BCIActuatorSwitch)switchObj;
                     if (actuatorSwitch.Source == switchSource)
                     {
-                        return new SampleActuatorSwitch(switchObj);
+                        return new BCIActuatorSwitch(switchObj);
                     }
                 }
             }

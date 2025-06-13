@@ -283,8 +283,8 @@
     <Compile Include="PreferencesManagement\ACATConfigMainForm.Designer.cs">
       <DependentUpon>ACATConfigMainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PreferencesManagement\BoolDescriptorAttribute.cs" />
-    <Compile Include="PreferencesManagement\FloatDescriptorAttribute.cs" />
+    <Compile Include="Utility\Preferences\Attributes\BoolDescriptorAttribute.cs" />
+    <Compile Include="Utility\Preferences\Attributes\FloatDescriptorAttribute.cs" />
     <Compile Include="PreferencesManagement\PreferencesEditForm2.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -304,15 +304,15 @@
     <Compile Include="PreferencesManagement\PreferencesCategorySelectForm.Designer.cs">
       <DependentUpon>PreferencesCategorySelectForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PreferencesManagement\IntDescriptorAttribute.cs" />
-    <Compile Include="PreferencesManagement\LongDescriptorAttribute.cs" />
+    <Compile Include="Utility\Preferences\Attributes\IntDescriptorAttribute.cs" />
+    <Compile Include="Utility\Preferences\Attributes\LongDescriptorAttribute.cs" />
     <Compile Include="PreferencesManagement\PreferencesEditForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PreferencesManagement\PreferencesEditForm.Designer.cs">
       <DependentUpon>PreferencesEditForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PreferencesManagement\StringDescriptorAttribute.cs" />
+    <Compile Include="Utility\Preferences\Attributes\StringDescriptorAttribute.cs" />
     <Compile Include="PanelManagement\CommandDispatcher\IRunCommandDispatcher.cs" />
     <Compile Include="PanelManagement\CommandDispatcher\IRunCommandHandler.cs" />
     <Compile Include="PanelManagement\CommandDispatcher\RunCommandHandler.cs" />
@@ -424,8 +424,8 @@
     <Compile Include="Utility\AudioController.cs" />
     <Compile Include="Utility\AutomationEventManager.cs" />
     <Compile Include="Utility\BlockingQueue.cs" />
-    <Compile Include="PreferencesManagement\Interfaces\IPreferences.cs" />
-    <Compile Include="PreferencesManagement\Interfaces\ISupportsPreferences.cs" />
+    <Compile Include="Utility\Preferences\Interfaces\IPreferences.cs" />
+    <Compile Include="Utility\Preferences\Interfaces\ISupportsPreferences.cs" />
     <Compile Include="Utility\CachedLog.cs" />
     <Compile Include="Utility\CryptoInterop.cs" />
     <Compile Include="Utility\DataDictionary.cs" />
@@ -448,7 +448,7 @@
     <Compile Include="Utility\NamedPipe\PipeServer.cs" />
     <Compile Include="Utility\PerfMon.cs" />
     <Compile Include="Utility\PerfMonData.cs" />
-    <Compile Include="Utility\Preferences.cs" />
+    <Compile Include="PreferencesManagement\Preferences.cs" />
     <Compile Include="Utility\ResourceUtils.cs" />
     <Compile Include="Utility\ScannerFocus.cs" />
     <Compile Include="Utility\SoundManager.cs" />
@@ -470,7 +470,7 @@
     <Compile Include="PanelManagement\Common\PanelRequestEventArgs.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="PreferencesManagement\PreferencesBase.cs" />
+    <Compile Include="Utility\Preferences\PreferencesBase.cs" />
     <Compile Include="Utility\RoundedCornerControl.cs" />
     <Compile Include="Utility\SmartPath.cs" />
     <Compile Include="Utility\SyncLock.cs" />

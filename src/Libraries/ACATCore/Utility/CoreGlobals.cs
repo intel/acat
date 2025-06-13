@@ -7,6 +7,7 @@
 
 using System;
 using System.Diagnostics;
+using ACAT.Lib.Core.PreferencesManagement;
 
 namespace ACAT.Lib.Core.Utility
 {

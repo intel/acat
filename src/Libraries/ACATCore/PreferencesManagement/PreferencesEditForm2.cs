@@ -17,6 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.PanelManagement;
+using ACAT.Lib.Core.Utility;
 using ACATResources;
 using System;
 using System.ComponentModel;

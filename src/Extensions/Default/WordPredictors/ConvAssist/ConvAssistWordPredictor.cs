@@ -12,9 +12,8 @@
 //#define DEBUG_CONVASSIST
 
 
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.Utility;
+using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.WordPredictionManagement;
 using ACATResources;
 using System;

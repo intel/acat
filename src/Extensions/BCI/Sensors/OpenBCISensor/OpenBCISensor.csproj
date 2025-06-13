@@ -1,0 +1,303 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{380FC7B3-D784-422A-8D85-510A9E8698C6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>openBCISensorUI</RootNamespace>
+    <AssemblyName>openBCISensorUI</AssemblyName>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>false</Deterministic>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
+    <Optimize>true</Optimize>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
+    <Optimize>true</Optimize>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="lioncs.ColorSlider" Version="1.0.0" />
+    <PackageReference Include="Accord" Version="3.8.0.0" />
+    <PackageReference Include="Accord.Math" Version="3.8.0.0" />
+    <PackageReference Include="brainflow" Version="5.5.0" />
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Serialization" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="OpenBCISettings.cs" />
+    <Compile Include="DAQ_OpenBCI.cs" />
+    <Compile Include="OpenBCIDeviceTester.cs" />
+    <Compile Include="EEGChannel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\SensorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\SensorForm.designer.cs">
+      <DependentUpon>SensorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControlBCIBase.cs" />
+    <Compile Include="UI\UserControlBCIErrorOpticalSensorDetect.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControlBCIErrorOpticalSensorDetect.designer.cs">
+      <DependentUpon>UserControlBCIErrorOpticalSensorDetect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControlBCIErrorPortConfig.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControlBCIErrorPortConfig.designer.cs">
+      <DependentUpon>UserControlBCIErrorPortConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControlBCIErrorCytonBoard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControlBCIErrorCytonBoard.designer.cs">
+      <DependentUpon>UserControlBCIErrorCytonBoard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControlBCIFilterSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControlBCIFilterSettings.designer.cs">
+      <DependentUpon>UserControlBCIFilterSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControlBCIErrorUsbDongle.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControlBCIErrorUsbDongle.designer.cs">
+      <DependentUpon>UserControlBCIErrorUsbDongle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControlBCIErrorOpticalSensor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControlBCIErrorOpticalSensor.designer.cs">
+      <DependentUpon>UserControlBCIErrorOpticalSensor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControlBCISignalCheck.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControlBCISignalCheck.designer.cs">
+      <DependentUpon>UserControlBCISignalCheck.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControlBCISignalCheckStartPrompt.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControlBCISignalCheckStartPrompt.designer.cs">
+      <DependentUpon>UserControlBCISignalCheckStartPrompt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControlBCISignalCheckStartRequired.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControlBCISignalCheckStartRequired.designer.cs">
+      <DependentUpon>UserControlBCISignalCheckStartRequired.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControlTestBCIConnections.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControlTestBCIConnections.designer.cs">
+      <DependentUpon>UserControlTestBCIConnections.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utils.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\SensorForm.resx">
+      <DependentUpon>SensorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControlBCIErrorOpticalSensorDetect.resx">
+      <DependentUpon>UserControlBCIErrorOpticalSensorDetect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControlBCIErrorPortConfig.resx">
+      <DependentUpon>UserControlBCIErrorPortConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControlBCIErrorCytonBoard.resx">
+      <DependentUpon>UserControlBCIErrorCytonBoard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControlBCIFilterSettings.resx">
+      <DependentUpon>UserControlBCIFilterSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControlBCIErrorUsbDongle.resx">
+      <DependentUpon>UserControlBCIErrorUsbDongle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControlBCIErrorOpticalSensor.resx">
+      <DependentUpon>UserControlBCIErrorOpticalSensor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControlBCISignalCheck.resx">
+      <DependentUpon>UserControlBCISignalCheck.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControlBCISignalCheckStartPrompt.resx">
+      <DependentUpon>UserControlBCISignalCheckStartPrompt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControlBCISignalCheckStartRequired.resx">
+      <DependentUpon>UserControlBCISignalCheckStartRequired.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControlTestBCIConnections.resx">
+      <DependentUpon>UserControlTestBCIConnections.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pause-black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PauseImg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PinOutBoard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PinOutDescription.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\play-black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PlayImg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SuccessOS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TestOS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TryAgainOS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OfflineReconnect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Loading.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\testinOS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GIFConnectingToBCIBoard_SpedUp2x.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ImageCytonBoardError.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ImageUsbDongleError.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\redo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SignalQualityGradients2\BCISignalCheck_CapViewIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SignalQualityGradients2\signalQualityGradient_4AcceptableChannels.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SignalQualityGradients2\signalQualityGradient_5AcceptableChannels.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SignalQualityGradients2\signalQualityGradient_6AcceptableChannels.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SignalQualityGradients2\signalQualityGradient_7AcceptableChannels.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SignalQualityGradients2\signalQualityGradient_8AcceptableChannels.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SignalQualityGradients2\signalQualityGradient_Default.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SignalQualityGradients2\signalQualityGradient_1AcceptableChannel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SignalQualityGradients2\signalQualityGradient_2AcceptableChannels.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SignalQualityGradients2\signalQualityGradient_3AcceptableChannels.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\ACATResources\ACATResources.csproj">
+      <Project>{a0990d4e-f25b-430c-bda3-40a72560b877}</Project>
+      <Name>ACATResources</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Libraries\ACATCore\Core.csproj">
+      <Project>{827ad764-63dd-4b12-974d-2b70cc877051}</Project>
+      <Name>Core</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\BCIActuatorSettings\BCIActuatorSettings.csproj">
+      <Project>{1761f46f-2543-45a2-b5d8-0591c078d9c6}</Project>
+      <Name>BCIActuatorSettings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\BCIControl\BCIControl.csproj">
+      <Project>{DEFAA2BE-C13E-4350-9EFA-9370755B63D3}</Project>
+      <Name>BCIControl</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\EEGUtilities\EEGUtils.csproj">
+      <Project>{4b6b654f-50af-4291-a464-11d73c1afdf7}</Project>
+      <Name>EEGUtils</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cap_new.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BCIUsbDongle.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

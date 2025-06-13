@@ -13,26 +13,20 @@
 //#define OPTICAL_SENSOR
 
 using ACATResources;
-using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
-using ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing;
-using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
-using ACAT.Extensions.BCI.Actuators.EEG.EEGUtils;
-using ACAT.Extensions.BCI.Actuators.gTecSensorUI;
-using ACAT.Extensions.BCI.Actuators.openBCISensorUI;
-using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.Utility;
+using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Extension;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
-using gTecSensorUI;
+using ACAT.Lib.Core.PanelManagement;
+using ACAT.Extensions.BCI.Common;
+using ACAT.Extensions.BCI.Common.BCIControl;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing;
 
 namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 {
@@ -77,23 +71,23 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
         // Probably want to make one parent DeviceTester class and children = OpenBCI, gTec device testers?
         
-        public enum Device
-        {
-            GTEC,
-            OPENBCI,
-        }
+        //public enum Device
+        //{
+        //    GTEC,
+        //    OPENBCI,
+        //}
 
-        public Device _device;
+        //public Device _device = Device.GTEC;
 
-        /// <summary>
-        /// OpenBCI device tester
-        /// </summary>
-        public OpenBCIDeviceTester _bciDeviceTester = null;
+        ///// <summary>
+        ///// OpenBCI device tester
+        ///// </summary>
+        //public OpenBCIDeviceTester _bciDeviceTester = null;
 
-        /// <summary>
-        /// gTec device tester
-        /// </summary>
-        public GTecDeviceTester _gtecDeviceTester = null;
+        ///// <summary>
+        ///// gTec device tester
+        ///// </summary>
+        //public GTecDeviceTester _gtecDeviceTester = null;
 
         /// <summary>
         /// Name of the file that stores the settings for
@@ -179,7 +173,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// The input sensor that detects
         /// input swtich activity.
         /// </summary>
-        private InputSensor _sensor;
+        //private InputSensor _sensor;
 
         /// <summary>
         /// List to store average alpha values
@@ -226,37 +220,41 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         {
             try
             {
+                Log.Debug("BCIActuator constructor called");
                 // Load settings
-                BCIActuatorSettings.Load();
-                BCIGtecActuatorSettings.Load();
+                //OpenBCISensorSettings.Load();
+                //BCIGtecActuatorSettings.Load();
 
-                DictCalibrationParameters = new Dictionary<BCIScanSections, CalibrationParametersForSection>();
+                //_bciDeviceTester = new OpenBCIDeviceTester();
+                //_gtecDeviceTester = new GTecDeviceTester();
 
-                BCIBoxCalibrationSettings.SettingsFilePath = UserManager.GetFullPath(BoxCalibrationSettingsFileName);
-                BoxCalibrationSettings = BCIBoxCalibrationSettings.Load();
-                DictCalibrationParameters.Add(BCIScanSections.Box, new CalibrationParametersForSection(BCIScanSections.Box, BoxCalibrationSettings.ScanTime, BoxCalibrationSettings.NumberOfTargets, BoxCalibrationSettings.NumberOfIterationsPerTarget, BoxCalibrationSettings.MinimumScoreRequired));
+                //    DictCalibrationParameters = new Dictionary<BCIScanSections, CalibrationParametersForSection>();
 
-                BCIWordCalibrationSettings.SettingsFilePath = UserManager.GetFullPath(WordCalibratioSettingsFileName);
-                WordCalibrationSettings = BCIWordCalibrationSettings.Load();
-                DictCalibrationParameters.Add(BCIScanSections.Word, new CalibrationParametersForSection(BCIScanSections.Word, WordCalibrationSettings.ScanTime, WordCalibrationSettings.NumberOfTargets, WordCalibrationSettings.NumberOfIterationsPerTarget, WordCalibrationSettings.MinimumScoreRequired));
+                //    ACAT.Extensions.BCI.Common.BCIBoxCalibrationSettings.SettingsFilePath = UserManager.GetFullPath(BoxCalibrationSettingsFileName);
+                //    BoxCalibrationSettings = BCIBoxCalibrationSettings.Load();
+                //    DictCalibrationParameters.Add(BCIScanSections.Box, new CalibrationParametersForSection(BCIScanSections.Box, BoxCalibrationSettings.ScanTime, BoxCalibrationSettings.NumberOfTargets, BoxCalibrationSettings.NumberOfIterationsPerTarget, BoxCalibrationSettings.MinimumScoreRequired));
 
-                BCISentenceCalibrationSettings.SettingsFilePath = UserManager.GetFullPath(SentenceCalibratioSettingsFileName);
-                SentenceCalibrationSettings = BCISentenceCalibrationSettings.Load();
-                DictCalibrationParameters.Add(BCIScanSections.Sentence, new CalibrationParametersForSection(BCIScanSections.Sentence, SentenceCalibrationSettings.ScanTime, SentenceCalibrationSettings.NumberOfTargets, SentenceCalibrationSettings.NumberOfIterationsPerTarget, SentenceCalibrationSettings.MinimumScoreRequired));
+                //    BCIWordCalibrationSettings.SettingsFilePath = UserManager.GetFullPath(WordCalibratioSettingsFileName);
+                //    WordCalibrationSettings = BCIWordCalibrationSettings.Load();
+                //    DictCalibrationParameters.Add(BCIScanSections.Word, new CalibrationParametersForSection(BCIScanSections.Word, WordCalibrationSettings.ScanTime, WordCalibrationSettings.NumberOfTargets, WordCalibrationSettings.NumberOfIterationsPerTarget, WordCalibrationSettings.MinimumScoreRequired));
 
-                BCIKeyboardLeftCalibrationSettings.SettingsFilePath = UserManager.GetFullPath(KeyboardLeftCalibratioSettingsFileName);
-                KeyboardLeftCalibrationSettings = BCIKeyboardLeftCalibrationSettings.Load();
-                DictCalibrationParameters.Add(BCIScanSections.KeyboardL, new CalibrationParametersForSection(BCIScanSections.KeyboardL, KeyboardLeftCalibrationSettings.ScanTime, KeyboardLeftCalibrationSettings.NumberOfTargets, KeyboardLeftCalibrationSettings.NumberOfIterationsPerTarget, KeyboardLeftCalibrationSettings.MinimumScoreRequired));
+                //    BCISentenceCalibrationSettings.SettingsFilePath = UserManager.GetFullPath(SentenceCalibratioSettingsFileName);
+                //    SentenceCalibrationSettings = BCISentenceCalibrationSettings.Load();
+                //    DictCalibrationParameters.Add(BCIScanSections.Sentence, new CalibrationParametersForSection(BCIScanSections.Sentence, SentenceCalibrationSettings.ScanTime, SentenceCalibrationSettings.NumberOfTargets, SentenceCalibrationSettings.NumberOfIterationsPerTarget, SentenceCalibrationSettings.MinimumScoreRequired));
 
-                BCIKeyboardRightCalibrationSettings.SettingsFilePath = UserManager.GetFullPath(KeyboardRightCalibratioSettingsFileName);
-                KeyboardRightCalibrationSettings = BCIKeyboardRightCalibrationSettings.Load();
-                DictCalibrationParameters.Add(BCIScanSections.KeyboardR, new CalibrationParametersForSection(BCIScanSections.KeyboardR, KeyboardRightCalibrationSettings.ScanTime, KeyboardRightCalibrationSettings.NumberOfTargets, KeyboardRightCalibrationSettings.NumberOfIterationsPerTarget, KeyboardRightCalibrationSettings.MinimumScoreRequired, KeyboardRightCalibrationSettings.UseRandomTargetsFlag, KeyboardRightCalibrationSettings.Sequence));
+                //    BCIKeyboardLeftCalibrationSettings.SettingsFilePath = UserManager.GetFullPath(KeyboardLeftCalibratioSettingsFileName);
+                //    KeyboardLeftCalibrationSettings = BCIKeyboardLeftCalibrationSettings.Load();
+                //    DictCalibrationParameters.Add(BCIScanSections.KeyboardL, new CalibrationParametersForSection(BCIScanSections.KeyboardL, KeyboardLeftCalibrationSettings.ScanTime, KeyboardLeftCalibrationSettings.NumberOfTargets, KeyboardLeftCalibrationSettings.NumberOfIterationsPerTarget, KeyboardLeftCalibrationSettings.MinimumScoreRequired));
 
-                BCITypingCalibrationMappings.SettingsFilePath = UserManager.GetFullPath(MappingFileName);
-                TypingCalibrationMappings = BCITypingCalibrationMappings.Load();
+                //    BCIKeyboardRightCalibrationSettings.SettingsFilePath = UserManager.GetFullPath(KeyboardRightCalibratioSettingsFileName);
+                //    KeyboardRightCalibrationSettings = BCIKeyboardRightCalibrationSettings.Load();
+                //    DictCalibrationParameters.Add(BCIScanSections.KeyboardR, new CalibrationParametersForSection(BCIScanSections.KeyboardR, KeyboardRightCalibrationSettings.ScanTime, KeyboardRightCalibrationSettings.NumberOfTargets, KeyboardRightCalibrationSettings.NumberOfIterationsPerTarget, KeyboardRightCalibrationSettings.MinimumScoreRequired, KeyboardRightCalibrationSettings.UseRandomTargetsFlag, KeyboardRightCalibrationSettings.Sequence));
 
-                // Create list of files to copy to the session folder
-                FilesToCopy = new List<String> { BCIActuatorSettings.SettingsFileName, BoxCalibrationSettingsFileName, WordCalibratioSettingsFileName, SentenceCalibratioSettingsFileName, KeyboardLeftCalibratioSettingsFileName, KeyboardRightCalibratioSettingsFileName, MappingFileName };
+                //    BCITypingCalibrationMappings.SettingsFilePath = UserManager.GetFullPath(MappingFileName);
+                //    TypingCalibrationMappings = BCITypingCalibrationMappings.Load();
+
+                //    // Create list of files to copy to the session folder
+                //    FilesToCopy = new List<String> { BCIActuatorSettings.SettingsFileName, BoxCalibrationSettingsFileName, WordCalibratioSettingsFileName, SentenceCalibratioSettingsFileName, KeyboardLeftCalibratioSettingsFileName, KeyboardRightCalibratioSettingsFileName, MappingFileName };
             }
             catch (Exception e)
             {
@@ -296,65 +294,65 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         private Dictionary<BCIScanSections, BCIClassifierInfo> GetAvailableClassifiers()
         {
             Dictionary<BCIScanSections, BCIClassifierInfo> availableClassifiers = new Dictionary<BCIScanSections, BCIClassifierInfo>();
-            bool[] currentChannels = new bool[] { BCIActuatorSettings.Settings.Classifier_EnableChannel1, BCIActuatorSettings.Settings.Classifier_EnableChannel2, BCIActuatorSettings.Settings.Classifier_EnableChannel3, BCIActuatorSettings.Settings.Classifier_EnableChannel4, BCIActuatorSettings.Settings.Classifier_EnableChannel5, BCIActuatorSettings.Settings.Classifier_EnableChannel6, BCIActuatorSettings.Settings.Classifier_EnableChannel7, BCIActuatorSettings.Settings.Classifier_EnableChannel8, BCIActuatorSettings.Settings.Classifier_EnableChannel9, BCIActuatorSettings.Settings.Classifier_EnableChannel10, BCIActuatorSettings.Settings.Classifier_EnableChannel11, BCIActuatorSettings.Settings.Classifier_EnableChannel12, BCIActuatorSettings.Settings.Classifier_EnableChannel13, BCIActuatorSettings.Settings.Classifier_EnableChannel14, BCIActuatorSettings.Settings.Classifier_EnableChannel15, BCIActuatorSettings.Settings.Classifier_EnableChannel16 };
+            //bool[] currentChannels = new bool[] { BCIActuatorSettings.Classifier_EnableChannel1, BCIActuatorSettings.Classifier_EnableChannel2, BCIActuatorSettings.Classifier_EnableChannel3, BCIActuatorSettings.Classifier_EnableChannel4, BCIActuatorSettings.Classifier_EnableChannel5, BCIActuatorSettings.Classifier_EnableChannel6, BCIActuatorSettings.Classifier_EnableChannel7, BCIActuatorSettings.Classifier_EnableChannel8, BCIActuatorSettings.Classifier_EnableChannel9, BCIActuatorSettings.Classifier_EnableChannel10, BCIActuatorSettings.Classifier_EnableChannel11, BCIActuatorSettings.Classifier_EnableChannel12, BCIActuatorSettings.Classifier_EnableChannel13, BCIActuatorSettings.Classifier_EnableChannel14, BCIActuatorSettings.Classifier_EnableChannel15, BCIActuatorSettings.Classifier_EnableChannel16 };
 
-            //If recheck needed, all classifiers need to be recalibrated
-            if (BCISettingsFixed.SignalControl_RecheckNeeded)
-            {
-                Log.Debug("Signal recheck needed.No available classifiers");
-                return availableClassifiers;
-            }
+            ////If recheck needed, all classifiers need to be recalibrated
+            //if (BCISettingsFixed.SignalControl_RecheckNeeded)
+            //{
+            //    Log.Debug("Signal recheck needed.No available classifiers");
+            //    return availableClassifiers;
+            //}
 
-            try
-            {
-                // Load mappings if haven't laoded before
-                if (DictTypingCalibrationMappings == null)
-                    LoadTypingMappings();
+            //try
+            //{
+            //    // Load mappings if haven't laoded before
+            //    if (DictTypingCalibrationMappings == null)
+            //        LoadTypingMappings();
 
-                foreach (BCIScanSections scanSection in Enum.GetValues(typeof(BCIScanSections)))
-                {
-                    String classifierFileName = BCIActuatorSettings.Settings.Calibration_TrainedClassifiersFilePath + "_" + scanSection;
-                    String classifierFilePath = Path.Combine(UserManager.CurrentUserDir, classifierFileName);
-                    BCIClassifierStatus classifierStatus = BCIClassifierStatus.NotFound;
+            //    foreach (BCIScanSections scanSection in Enum.GetValues(typeof(BCIScanSections)))
+            //    {
+            //        String classifierFileName = BCIActuatorSettings.Calibration_TrainedClassifiersFilePath + "_" + scanSection;
+            //        String classifierFilePath = Path.Combine(UserManager.CurrentUserDir, classifierFileName);
+            //        BCIClassifierStatus classifierStatus = BCIClassifierStatus.NotFound;
 
-                    if (File.Exists(classifierFilePath))
-                    {
-                        DecisionMaker tmpDecisionMaker = new DecisionMaker(classifierFilePath);
+            //        if (File.Exists(classifierFilePath))
+            //        {
+            //            DecisionMaker tmpDecisionMaker = new DecisionMaker(classifierFilePath);
 
-                        // Find if classifier is available and add to dictionary
-                        if (tmpDecisionMaker != null && tmpDecisionMaker.TrainedClassifiersObj != null)
-                        {
-                            // Check if classifier is required
-                            bool isRequired = true;
-                            if(DictTypingCalibrationMappings!=null)
-                                isRequired = DictTypingCalibrationMappings.ContainsValue(scanSection);
-                            float auc = -1;
+            //            // Find if classifier is available and add to dictionary
+            //            if (tmpDecisionMaker != null && tmpDecisionMaker.TrainedClassifiersObj != null)
+            //            {
+            //                // Check if classifier is required
+            //                bool isRequired = true;
+            //                if(DictTypingCalibrationMappings!=null)
+            //                    isRequired = DictTypingCalibrationMappings.ContainsValue(scanSection);
+            //                float auc = -1;
 
-                            // Check if current available channels are different that channels used in calibration (in the classifier)
-                            // NOTE: Status set to Expired, in a future release a new status should be created for this condition
-                            if (!AreChannelsEqual(currentChannels, tmpDecisionMaker.TrainedClassifiersObj.channelSubset))
-                                classifierStatus = BCIClassifierStatus.Expired;
-                            // Check if classifier expired
-                            else if (DateTime.Now.Subtract(tmpDecisionMaker.TrainedClassifiersObj.calibrationTime).TotalMinutes > BCIActuatorSettings.Settings.Calibration_MaxElapsedTimeToForceRecalibration)
-                                classifierStatus = BCIClassifierStatus.Expired;
-                            else
-                            {
-                                classifierStatus = BCIClassifierStatus.Ok;
-                                auc = tmpDecisionMaker.TrainedClassifiersObj.meanAUC;
-                            }
+            //                // Check if current available channels are different that channels used in calibration (in the classifier)
+            //                // NOTE: Status set to Expired, in a future release a new status should be created for this condition
+            //                if (!AreChannelsEqual(currentChannels, tmpDecisionMaker.TrainedClassifiersObj.channelSubset))
+            //                    classifierStatus = BCIClassifierStatus.Expired;
+            //                // Check if classifier expired
+            //                else if (DateTime.Now.Subtract(tmpDecisionMaker.TrainedClassifiersObj.calibrationTime).TotalMinutes > BCIActuatorSettings.Calibration_MaxElapsedTimeToForceRecalibration)
+            //                    classifierStatus = BCIClassifierStatus.Expired;
+            //                else
+            //                {
+            //                    classifierStatus = BCIClassifierStatus.Ok;
+            //                    auc = tmpDecisionMaker.TrainedClassifiersObj.meanAUC;
+            //                }
 
-                            // Add classifier to dictionary
-                            BCIClassifierInfo classifierInfo = new BCIClassifierInfo(isRequired, scanSection, classifierStatus, auc);
-                            availableClassifiers.Add(scanSection, classifierInfo);
-                            Log.Debug("Classifier: " + scanSection + " found | AUC:" + availableClassifiers[scanSection].Auc + " isRequired:" + isRequired + " Status:" + classifierStatus);
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Debug(e.Message);
-            }
+            //                // Add classifier to dictionary
+            //                BCIClassifierInfo classifierInfo = new BCIClassifierInfo(isRequired, scanSection, classifierStatus, auc);
+            //                availableClassifiers.Add(scanSection, classifierInfo);
+            //                Log.Debug("Classifier: " + scanSection + " found | AUC:" + availableClassifiers[scanSection].Auc + " isRequired:" + isRequired + " Status:" + classifierStatus);
+            //            }
+            //        }
+            //    }
+            //}
+            //catch (Exception e)
+            //{
+            //    Log.Debug(e.Message);
+            //}
             return availableClassifiers;
         }
 
@@ -398,50 +396,50 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             try
             {
                 LoadTypingMappings();
-                EEGProcessingGlobals.DecisionMakerDict = new Dictionary<BCIScanSections, DecisionMaker>();
-                bool[] currentChannels = new bool[] { BCIActuatorSettings.Settings.Classifier_EnableChannel1, BCIActuatorSettings.Settings.Classifier_EnableChannel2, BCIActuatorSettings.Settings.Classifier_EnableChannel3, BCIActuatorSettings.Settings.Classifier_EnableChannel4, BCIActuatorSettings.Settings.Classifier_EnableChannel5, BCIActuatorSettings.Settings.Classifier_EnableChannel6, BCIActuatorSettings.Settings.Classifier_EnableChannel7, BCIActuatorSettings.Settings.Classifier_EnableChannel8, BCIActuatorSettings.Settings.Classifier_EnableChannel9, BCIActuatorSettings.Settings.Classifier_EnableChannel10, BCIActuatorSettings.Settings.Classifier_EnableChannel11, BCIActuatorSettings.Settings.Classifier_EnableChannel12, BCIActuatorSettings.Settings.Classifier_EnableChannel13, BCIActuatorSettings.Settings.Classifier_EnableChannel14, BCIActuatorSettings.Settings.Classifier_EnableChannel15, BCIActuatorSettings.Settings.Classifier_EnableChannel16 };
+                //EEGProcessingGlobals.DecisionMakerDict = new Dictionary<BCIScanSections, DecisionMaker>();
+                //bool[] currentChannels = new bool[] { BCIActuatorSettings.Classifier_EnableChannel1, BCIActuatorSettings.Classifier_EnableChannel2, BCIActuatorSettings.Classifier_EnableChannel3, BCIActuatorSettings.Classifier_EnableChannel4, BCIActuatorSettings.Classifier_EnableChannel5, BCIActuatorSettings.Classifier_EnableChannel6, BCIActuatorSettings.Classifier_EnableChannel7, BCIActuatorSettings.Classifier_EnableChannel8, BCIActuatorSettings.Classifier_EnableChannel9, BCIActuatorSettings.Classifier_EnableChannel10, BCIActuatorSettings.Classifier_EnableChannel11, BCIActuatorSettings.Classifier_EnableChannel12, BCIActuatorSettings.Classifier_EnableChannel13, BCIActuatorSettings.Classifier_EnableChannel14, BCIActuatorSettings.Classifier_EnableChannel15, BCIActuatorSettings.Classifier_EnableChannel16 };
 
-                foreach (var typingMapping in DictTypingCalibrationMappings)
-                {
-                    String classifierFileName = BCIActuatorSettings.Settings.Calibration_TrainedClassifiersFilePath + "_" + typingMapping.Value;
-                    String classifierFilePath = Path.Combine(UserManager.CurrentUserDir, classifierFileName);
+                //foreach (var typingMapping in DictTypingCalibrationMappings)
+                //{
+                //    String classifierFileName = BCIActuatorSettings.Calibration_TrainedClassifiersFilePath + "_" + typingMapping.Value;
+                //    String classifierFilePath = Path.Combine(UserManager.CurrentUserDir, classifierFileName);
 
-                    if (File.Exists(classifierFilePath))
-                    {
-                        Log.Debug("Section: " + typingMapping.Key + " | Loading classifier:" + typingMapping.Value + " from:" + classifierFilePath);
-                        DecisionMaker tmpDecisionMaker = new DecisionMaker(classifierFilePath);
+                //    if (File.Exists(classifierFilePath))
+                //    {
+                //        Log.Debug("Section: " + typingMapping.Key + " | Loading classifier:" + typingMapping.Value + " from:" + classifierFilePath);
+                //        DecisionMaker tmpDecisionMaker = new DecisionMaker(classifierFilePath);
 
-                        if (tmpDecisionMaker != null && tmpDecisionMaker.TrainedClassifiersObj != null)
-                        {
-                            // Set scan time for the section as the one used for calibration
-                            DictCalibrationParameters[typingMapping.Key].ScanTime = tmpDecisionMaker.TrainedClassifiersObj.calibrationParameters.ScanTime;
+                //        if (tmpDecisionMaker != null && tmpDecisionMaker.TrainedClassifiersObj != null)
+                //        {
+                //            // Set scan time for the section as the one used for calibration
+                //            DictCalibrationParameters[typingMapping.Key].ScanTime = tmpDecisionMaker.TrainedClassifiersObj.calibrationParameters.ScanTime;
 
-                            // Add classifier to dictionary (if not expired and current channels and calibration channels are the same)
-                            if (DateTime.Now.Subtract(tmpDecisionMaker.TrainedClassifiersObj.calibrationTime).TotalMinutes < BCIActuatorSettings.Settings.Calibration_MaxElapsedTimeToForceRecalibration
-                             && AreChannelsEqual(currentChannels, tmpDecisionMaker.TrainedClassifiersObj.channelSubset))
-                            {
-                                EEGProcessingGlobals.DecisionMakerDict.Add(typingMapping.Key, tmpDecisionMaker);
+                //            // Add classifier to dictionary (if not expired and current channels and calibration channels are the same)
+                //            if (DateTime.Now.Subtract(tmpDecisionMaker.TrainedClassifiersObj.calibrationTime).TotalMinutes < BCIActuatorSettings.Calibration_MaxElapsedTimeToForceRecalibration
+                //             && AreChannelsEqual(currentChannels, tmpDecisionMaker.TrainedClassifiersObj.channelSubset))
+                //            {
+                //                EEGProcessingGlobals.DecisionMakerDict.Add(typingMapping.Key, tmpDecisionMaker);
 
-                                Log.Debug(typingMapping.Key.ToString() + " typing section -  Using " + typingMapping.Value.ToString() + " classifier. Status: loaded");
+                //                Log.Debug(typingMapping.Key.ToString() + " typing section -  Using " + typingMapping.Value.ToString() + " classifier. Status: loaded");
 
-                                var bciLogEntry = new BCILogEntryClassifierLoaded(typingMapping.Key.ToString(), typingMapping.Value.ToString(), tmpDecisionMaker.TrainedClassifiersObj.trainedClassifiersSessionID, tmpDecisionMaker.TrainedClassifiersObj.meanAUC,
-                                  DictCalibrationParameters[typingMapping.Key].ScanTime, DictCalibrationParameters[typingMapping.Key].TargetCount, DictCalibrationParameters[typingMapping.Key].IterationsPerTarget, DictCalibrationParameters[typingMapping.Key].MinimumScoreRequired, !missingClassifier);
-                                var jsonString = JsonSerializer.Serialize(bciLogEntry);
-                                AuditLog.Audit(new AuditEvent("BCIClassifierLoaded", jsonString));
-                            }
-                        }
-                        else
-                        {
-                            missingClassifier = true;
-                            Log.Debug(typingMapping.Key.ToString() + " typing section -  Using " + typingMapping.Value.ToString() + " classifier. Status: missing!!");
-                        }
-                    }
-                    else
-                    {
-                        missingClassifier = true;
-                        Log.Debug(typingMapping.Key.ToString() + " typing section. Classifier file not found. -  Using " + typingMapping.Value.ToString() + " classifier. Status: missing!!");
-                    }
-                }
+                //                var bciLogEntry = new BCILogEntryClassifierLoaded(typingMapping.Key.ToString(), typingMapping.Value.ToString(), tmpDecisionMaker.TrainedClassifiersObj.trainedClassifiersSessionID, tmpDecisionMaker.TrainedClassifiersObj.meanAUC,
+                //                  DictCalibrationParameters[typingMapping.Key].ScanTime, DictCalibrationParameters[typingMapping.Key].TargetCount, DictCalibrationParameters[typingMapping.Key].IterationsPerTarget, DictCalibrationParameters[typingMapping.Key].MinimumScoreRequired, !missingClassifier);
+                //                var jsonString = JsonSerializer.Serialize(bciLogEntry);
+                //                AuditLog.Audit(new AuditEvent("BCIClassifierLoaded", jsonString));
+                //            }
+                //        }
+                //        else
+                //        {
+                //            missingClassifier = true;
+                //            Log.Debug(typingMapping.Key.ToString() + " typing section -  Using " + typingMapping.Value.ToString() + " classifier. Status: missing!!");
+                //        }
+                //    }
+                //    else
+                //    {
+                //        missingClassifier = true;
+                //        Log.Debug(typingMapping.Key.ToString() + " typing section. Classifier file not found. -  Using " + typingMapping.Value.ToString() + " classifier. Status: missing!!");
+                //    }
+                //}
             }
             catch (Exception e)
             {
@@ -473,7 +471,8 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <returns>the switch object</returns>
         public override IActuatorSwitch CreateSwitch()
         {
-            return new SampleActuatorSwitch();
+            throw new NotImplementedException();
+            //return new SampleActuatorSwitch();
         }
 
         /// <summary>
@@ -482,7 +481,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <returns>default preferences object</returns>
         public override IPreferences GetDefaultPreferences()
         {
-            return PreferencesBase.LoadDefaults<BCISettings>();
+            return PreferencesBase.LoadDefaults<BCIActuatorSettings>();
         }
 
         /// <summary>
@@ -491,7 +490,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <returns>preferences object</returns>
         public override IPreferences GetPreferences()
         {
-            return BCIActuatorSettings.Settings;
+            return new BCIActuatorSettings();
         }
 
         public override IEnumerable<String> GetSupportedKeyboardConfigs()
@@ -509,19 +508,19 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
             CoreGlobals.ACATUserGuideFileName = "ACAT BCI User Guide.pdf";
 
-            useSensor = BCIActuatorSettings.Settings.Testing_UseSensor;
+            //useSensor = BCIActuatorSettings.Testing_UseSensor;
 
-            // perform initialization here.
-            _sensor = new InputSensor();
+            //// perform initialization here.
+            //_sensor = new InputSensor();
 
-            _sensor.EvtSwitchActivate += sensor_EvtSwitchActivate;
-            _sensor.EvtSwitchDeactivate += sensor_EvtSwitchDeactivate;
-            _sensor.EvtSwitchTrigger += sensor_EvtSwitchTrigger;
+            //_sensor.EvtSwitchActivate += sensor_EvtSwitchActivate;
+            //_sensor.EvtSwitchDeactivate += sensor_EvtSwitchDeactivate;
+            //_sensor.EvtSwitchTrigger += sensor_EvtSwitchTrigger;
 
-            actuatorState = State.Running;
+            actuatorState = State.Stopped;
             OnInitDone();
 
-            return true;
+            return false;
         }
 
         /// <summary>
@@ -530,38 +529,31 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <returns>true</returns>
         public override bool PostInit()
         {
-            WindowActivityMonitor.Pause();
+            //WindowActivityMonitor.Pause();
 
-            showDisclaimer();
+            //showDisclaimer();
 
-            //TODO IN PROCESS
+            ////TODO IN PROCESS
 
-            // Check if Gtec is available
-            // check if OpenBCI is available
-            //  If both avaiable, show selection dialog
-            // otherwise run corresponding TestDevice call
+            //// Check if Gtec is available
+            //bool gtecAvailable = _gtecDeviceTester.GtecDeviceAvailable;
 
-            bool gtecAvailable = GTecDeviceTester.GtecDeviceAvailable;
-            // bool openBciAvailable = IsOpenBciAvailable();
-            bool openBciAvailable = true;
+            //// check if OpenBCI is available
+            //bool openBCIAvailable = _bciDeviceTester.OpenBCIDeviceAvailable;
 
-
-            if (gtecAvailable && openBciAvailable)
-            {
-                showBciBoardSelection();
-            }
-            else if (gtecAvailable)
-            {
-                TestGtecDevice();
-            }
-            else if (openBciAvailable)
-            {
-                TestBCIDevices();
-            }
-
-
-
-            WindowActivityMonitor.Resume();
+            ////  If both avaiable, show selection dialog
+            //if (!gtecAvailable && !openBCIAvailable)
+            //{
+            //    var _ = ConfirmBoxOneOption.ShowDialog("BCI Error", "No BCI Headset is available.  Please check your installation and try again.", StringResources.Exit);
+            //    return false;
+            //}
+            //else if (gtecAvailable && openBCIAvailable)
+            //{
+            //    // If both available, show selection dialog
+            //    showBciBoardSelection();
+            //}
+ 
+            //WindowActivityMonitor.Resume();
 
             OnPostInitDone();
             if (actuatorState == State.Stopped)
@@ -792,19 +784,19 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         // private void bciDeviceTestingCompleted(object sender, System.Windows.Forms.FormClosedEventArgs e)
         private void bciDeviceTestingCompleted()
         {
-            // Set actuatorState based on OpenBCIDeviceTester._ExitOnboardingEarly flag
-            if(_device == Device.OPENBCI)
-            {
-                actuatorState = (OpenBCIDeviceTester.ExitOnboardingEarly) ? State.Stopped : State.Running;
-            } else
-            {
-                actuatorState = (GTecDeviceTester.ExitOnboardingEarly) ? State.Stopped : State.Running;
-            }
+            //// Set actuatorState based on OpenBCIDeviceTester._ExitOnboardingEarly flag
+            //if(_device == Device.OPENBCI)
+            //{
+            //    actuatorState = (OpenBCIDeviceTester.ExitOnboardingEarly) ? State.Stopped : State.Running;
+            //} else
+            //{
+            //    actuatorState = (GTecDeviceTester.ExitOnboardingEarly) ? State.Stopped : State.Running;
+            //}
             
-            Log.Debug("\nbciDeviceTestingCompleted | actuatorState: " + actuatorState.ToString());
+            //Log.Debug("\nbciDeviceTestingCompleted | actuatorState: " + actuatorState.ToString());
 
-            SendIoctlResponse((int)OpCodes.CalibrationWindowClose, String.Empty);
-            Log.Debug("IoctRequest " + OpCodes.CalibrationWindowClose + " sent. Message: empty");
+            //SendIoctlResponse((int)OpCodes.CalibrationWindowClose, String.Empty);
+            //Log.Debug("IoctRequest " + OpCodes.CalibrationWindowClose + " sent. Message: empty");
         }
 
         /// <summary>
@@ -814,17 +806,17 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <returns>Switch object, null if not found</returns>
         private IActuatorSwitch find(String switchSource)
         {
-            foreach (IActuatorSwitch switchObj in Switches)
-            {
-                if (switchObj is SampleActuatorSwitch)
-                {
-                    var actuatorSwitch = (SampleActuatorSwitch)switchObj;
-                    if (actuatorSwitch.Source == switchSource)
-                    {
-                        return new SampleActuatorSwitch(switchObj);
-                    }
-                }
-            }
+            //foreach (IActuatorSwitch switchObj in Switches)
+            //{
+            //    if (switchObj is SampleActuatorSwitch)
+            //    {
+            //        var actuatorSwitch = (SampleActuatorSwitch)switchObj;
+            //        if (actuatorSwitch.Source == switchSource)
+            //        {
+            //            return new SampleActuatorSwitch(switchObj);
+            //        }
+            //    }
+            //}
 
             return null;
         }
@@ -837,12 +829,12 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         {
             Log.Debug("TriggerTest parameters requested");
 
-            // Send parameters to ACAT
-            var bciTriggerTestParameters = new BCITriggerTestParameters(BCIActuatorSettings.Settings.TriggerTest_NumRepetitions, BCIActuatorSettings.Settings.TriggerTest_ScanTime);
-            var str = JsonSerializer.Serialize(bciTriggerTestParameters);
-            Log.Debug(" Sending parameters. Scan time: " + bciTriggerTestParameters.ScanTime + " | Num repetitions: " + bciTriggerTestParameters.NumRepetitions);
-            SendIoctlResponse((int)OpCodes.TriggerTestSendParameters, str);
-            Log.Debug("IoctRequest " + OpCodes.TriggerTestSendParameters + " sent. Message: empty");
+            //// Send parameters to ACAT
+            //var bciTriggerTestParameters = new BCITriggerTestParameters(BCIActuatorSettings.TriggerTest_NumRepetitions, BCIActuatorSettings.TriggerTest_ScanTime);
+            //var str = JsonSerializer.Serialize(bciTriggerTestParameters);
+            //Log.Debug(" Sending parameters. Scan time: " + bciTriggerTestParameters.ScanTime + " | Num repetitions: " + bciTriggerTestParameters.NumRepetitions);
+            //SendIoctlResponse((int)OpCodes.TriggerTestSendParameters, str);
+            //Log.Debug("IoctRequest " + OpCodes.TriggerTestSendParameters + " sent. Message: empty");
         }
 
         /// <summary>
@@ -941,82 +933,82 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         {
             Log.Debug("Request Map options received");
 
-            BCIError error;
+            //BCIError error;
 
-            Dictionary<BCIScanSections, List<BCIClassifierInfo>> DictClassifierInfoForAvailableMappings = new Dictionary<BCIScanSections, List<BCIClassifierInfo>>();
+            //Dictionary<BCIScanSections, List<BCIClassifierInfo>> DictClassifierInfoForAvailableMappings = new Dictionary<BCIScanSections, List<BCIClassifierInfo>>();
 
-            try
-            {
-                Dictionary<BCIScanSections, List<BCIScanSections>> DictAllowedMappings = new Dictionary<BCIScanSections, List<BCIScanSections>>();
+            //try
+            //{
+            //    Dictionary<BCIScanSections, List<BCIScanSections>> DictAllowedMappings = new Dictionary<BCIScanSections, List<BCIScanSections>>();
 
-                // Load classifiers
-                LoadClassifiers();
+            //    // Load classifiers
+            //    LoadClassifiers();
 
-                // Get available classifiers
-                Dictionary<BCIScanSections, BCIClassifierInfo> availableClassifiers = GetAvailableClassifiers();
+            //    // Get available classifiers
+            //    Dictionary<BCIScanSections, BCIClassifierInfo> availableClassifiers = GetAvailableClassifiers();
 
-                // Read allowed mappings
-                if (BCIActuatorSettings.Settings.Calibration_UseAdvanceModeForTypingMappings)
-                {
-                    // Read settings file
-                    BCITypingCalibrationAllowedMappingsAdvanced.SettingsFilePath = UserManager.GetFullPath(AllowedMappingsAdvanceFilename);
-                    var allowedTypingMappings = BCITypingCalibrationAllowedMappingsAdvanced.Load();
+            //    // Read allowed mappings
+            //    if (BCIActuatorSettings.Calibration_UseAdvanceModeForTypingMappings)
+            //    {
+            //        // Read settings file
+            //        BCITypingCalibrationAllowedMappingsAdvanced.SettingsFilePath = UserManager.GetFullPath(AllowedMappingsAdvanceFilename);
+            //        var allowedTypingMappings = BCITypingCalibrationAllowedMappingsAdvanced.Load();
 
-                    ///File up dictionary with info from settings
-                    DictAllowedMappings.Add(BCIScanSections.Box, allowedTypingMappings.Box.Select(x => (BCIScanSections)Enum.Parse(typeof(BCIScanSections), x)).ToList());
-                    DictAllowedMappings.Add(BCIScanSections.Word, allowedTypingMappings.Word.Select(x => (BCIScanSections)Enum.Parse(typeof(BCIScanSections), x)).ToList());
-                    DictAllowedMappings.Add(BCIScanSections.Sentence, allowedTypingMappings.Sentence.Select(x => (BCIScanSections)Enum.Parse(typeof(BCIScanSections), x)).ToList());
-                    DictAllowedMappings.Add(BCIScanSections.KeyboardL, allowedTypingMappings.KeyboardL.Select(x => (BCIScanSections)Enum.Parse(typeof(BCIScanSections), x)).ToList());
-                    DictAllowedMappings.Add(BCIScanSections.KeyboardR, allowedTypingMappings.KeyboardR.Select(x => (BCIScanSections)Enum.Parse(typeof(BCIScanSections), x)).ToList());
-                }
-                else
-                {
-                    // Read settings file
-                    BCITypingCalibrationAllowedMappingsRestricted.SettingsFilePath = UserManager.GetFullPath(AllowedMappingsRestrictedFilename);
-                    var allowedTypingMappings = BCITypingCalibrationAllowedMappingsRestricted.Load();
+            //        ///File up dictionary with info from settings
+            //        DictAllowedMappings.Add(BCIScanSections.Box, allowedTypingMappings.Box.Select(x => (BCIScanSections)Enum.Parse(typeof(BCIScanSections), x)).ToList());
+            //        DictAllowedMappings.Add(BCIScanSections.Word, allowedTypingMappings.Word.Select(x => (BCIScanSections)Enum.Parse(typeof(BCIScanSections), x)).ToList());
+            //        DictAllowedMappings.Add(BCIScanSections.Sentence, allowedTypingMappings.Sentence.Select(x => (BCIScanSections)Enum.Parse(typeof(BCIScanSections), x)).ToList());
+            //        DictAllowedMappings.Add(BCIScanSections.KeyboardL, allowedTypingMappings.KeyboardL.Select(x => (BCIScanSections)Enum.Parse(typeof(BCIScanSections), x)).ToList());
+            //        DictAllowedMappings.Add(BCIScanSections.KeyboardR, allowedTypingMappings.KeyboardR.Select(x => (BCIScanSections)Enum.Parse(typeof(BCIScanSections), x)).ToList());
+            //    }
+            //    else
+            //    {
+            //        // Read settings file
+            //        BCITypingCalibrationAllowedMappingsRestricted.SettingsFilePath = UserManager.GetFullPath(AllowedMappingsRestrictedFilename);
+            //        var allowedTypingMappings = BCITypingCalibrationAllowedMappingsRestricted.Load();
 
-                    // File up dictionary with info from settings
-                    DictAllowedMappings.Add(BCIScanSections.Box, allowedTypingMappings.Box.Select(x => (BCIScanSections)Enum.Parse(typeof(BCIScanSections), x)).ToList());
-                    DictAllowedMappings.Add(BCIScanSections.Word, allowedTypingMappings.Word.Select(x => (BCIScanSections)Enum.Parse(typeof(BCIScanSections), x)).ToList());
-                    DictAllowedMappings.Add(BCIScanSections.Sentence, allowedTypingMappings.Sentence.Select(x => (BCIScanSections)Enum.Parse(typeof(BCIScanSections), x)).ToList());
-                    DictAllowedMappings.Add(BCIScanSections.KeyboardL, allowedTypingMappings.KeyboardL.Select(x => (BCIScanSections)Enum.Parse(typeof(BCIScanSections), x)).ToList());
-                    DictAllowedMappings.Add(BCIScanSections.KeyboardR, allowedTypingMappings.KeyboardR.Select(x => (BCIScanSections)Enum.Parse(typeof(BCIScanSections), x)).ToList());
-                }
+            //        // File up dictionary with info from settings
+            //        DictAllowedMappings.Add(BCIScanSections.Box, allowedTypingMappings.Box.Select(x => (BCIScanSections)Enum.Parse(typeof(BCIScanSections), x)).ToList());
+            //        DictAllowedMappings.Add(BCIScanSections.Word, allowedTypingMappings.Word.Select(x => (BCIScanSections)Enum.Parse(typeof(BCIScanSections), x)).ToList());
+            //        DictAllowedMappings.Add(BCIScanSections.Sentence, allowedTypingMappings.Sentence.Select(x => (BCIScanSections)Enum.Parse(typeof(BCIScanSections), x)).ToList());
+            //        DictAllowedMappings.Add(BCIScanSections.KeyboardL, allowedTypingMappings.KeyboardL.Select(x => (BCIScanSections)Enum.Parse(typeof(BCIScanSections), x)).ToList());
+            //        DictAllowedMappings.Add(BCIScanSections.KeyboardR, allowedTypingMappings.KeyboardR.Select(x => (BCIScanSections)Enum.Parse(typeof(BCIScanSections), x)).ToList());
+            //    }
 
-                // For every section, find list of available classifiers
-                foreach (BCIScanSections typingSection in DictAllowedMappings.Keys)
-                {
-                    List<BCIClassifierInfo> availableClassifiersForSection = new List<BCIClassifierInfo>();
+            //    // For every section, find list of available classifiers
+            //    foreach (BCIScanSections typingSection in DictAllowedMappings.Keys)
+            //    {
+            //        List<BCIClassifierInfo> availableClassifiersForSection = new List<BCIClassifierInfo>();
 
-                    // Find classifier for section
-                    foreach (BCIScanSections availableClassifierForSection in DictAllowedMappings[typingSection])
-                    {
-                        // Add classifier if exists and not expired
-                        if (availableClassifiers.ContainsKey(availableClassifierForSection) && availableClassifiers[availableClassifierForSection].ClassifierStatus == BCIClassifierStatus.Ok)
-                        {
-                            availableClassifiersForSection.Add(availableClassifiers[availableClassifierForSection]);
-                            Log.Debug("Section:" + typingSection + " Available classifier:" + availableClassifierForSection + " Auc:" + availableClassifiers[availableClassifierForSection].Auc);
-                        }
-                        else
-                            Log.Debug("Section:" + typingSection + " Classsifier:" + DictAllowedMappings[typingSection] + " is not available");
-                    }
-                    // Add classifier found in dictionary
-                    DictClassifierInfoForAvailableMappings.Add(typingSection, availableClassifiersForSection);
-                }
-                error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
-            }
-            catch (Exception e)
-            {
-                error = new BCIError(BCIErrorCodes.CalibrationError_LoadingClassifiers, StringResources.ClassifiersNotLoadedError);
-                Log.Debug("Error " + BCIErrorCodes.CalibrationError_LoadingClassifiers.ToString() + " " + "Excepction: " + e.Message);
-            }
+            //        // Find classifier for section
+            //        foreach (BCIScanSections availableClassifierForSection in DictAllowedMappings[typingSection])
+            //        {
+            //            // Add classifier if exists and not expired
+            //            if (availableClassifiers.ContainsKey(availableClassifierForSection) && availableClassifiers[availableClassifierForSection].ClassifierStatus == BCIClassifierStatus.Ok)
+            //            {
+            //                availableClassifiersForSection.Add(availableClassifiers[availableClassifierForSection]);
+            //                Log.Debug("Section:" + typingSection + " Available classifier:" + availableClassifierForSection + " Auc:" + availableClassifiers[availableClassifierForSection].Auc);
+            //            }
+            //            else
+            //                Log.Debug("Section:" + typingSection + " Classsifier:" + DictAllowedMappings[typingSection] + " is not available");
+            //        }
+            //        // Add classifier found in dictionary
+            //        DictClassifierInfoForAvailableMappings.Add(typingSection, availableClassifiersForSection);
+            //    }
+            //    error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
+            //}
+            //catch (Exception e)
+            //{
+            //    error = new BCIError(BCIErrorCodes.CalibrationError_LoadingClassifiers, StringResources.ClassifiersNotLoadedError);
+            //    Log.Debug("Error " + BCIErrorCodes.CalibrationError_LoadingClassifiers.ToString() + " " + "Excepction: " + e.Message);
+            //}
 
-            // Send response to ACAT
-            var bciMapOptions = new BCIMapOptions(BCIActuatorSettings.Settings.Calibration_UseAdvanceModeForTypingMappings, DictClassifierInfoForAvailableMappings, DictTypingCalibrationMappings, error);
-            var str = JsonSerializer.Serialize(bciMapOptions);
-            Log.Debug("Sending map options. Is advanced: " + bciMapOptions.IsAdvanced + " | error: " + (BCIErrorCodes)error.ErrorCode);
-            SendIoctlResponse((int)OpCodes.SendMapOptions, str);
-            Log.Debug("IoctRequest " + OpCodes.SendMapOptions + " sent. Message: " + str);
+            //// Send response to ACAT
+            //var bciMapOptions = new BCIMapOptions(BCIActuatorSettings.Calibration_UseAdvanceModeForTypingMappings, DictClassifierInfoForAvailableMappings, DictTypingCalibrationMappings, error);
+            //var str = JsonSerializer.Serialize(bciMapOptions);
+            //Log.Debug("Sending map options. Is advanced: " + bciMapOptions.IsAdvanced + " | error: " + (BCIErrorCodes)error.ErrorCode);
+            //SendIoctlResponse((int)OpCodes.SendMapOptions, str);
+            //Log.Debug("IoctRequest " + OpCodes.SendMapOptions + " sent. Message: " + str);
         }
 
         /// <summary>
@@ -1082,17 +1074,17 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <param name="request"></param>
         private void OnTriggerTestSaveParameters(String request)
         {
-            Log.Debug("Received OnTriggerTestSaveParameters");
+            //Log.Debug("Received OnTriggerTestSaveParameters");
 
-            // Receive parameters from ACAT
-            var bciTriggerTestParameters = JsonSerializer.Deserialize<BCITriggerTestParameters>(request);
+            //// Receive parameters from ACAT
+            //var bciTriggerTestParameters = JsonSerializer.Deserialize<BCITriggerTestParameters>(request);
 
-            // Save parameters to settings
-            BCIActuatorSettings.Settings.TriggerTest_NumRepetitions = bciTriggerTestParameters.NumRepetitions;
-            BCIActuatorSettings.Settings.TriggerTest_ScanTime = bciTriggerTestParameters.ScanTime;
-            BCIActuatorSettings.Settings.Save();
+            //// Save parameters to settings
+            //BCIActuatorSettings.TriggerTest_NumRepetitions = bciTriggerTestParameters.NumRepetitions;
+            //BCIActuatorSettings.TriggerTest_ScanTime = bciTriggerTestParameters.ScanTime;
+            //BCIActuatorSettings.Save();
 
-            Log.Debug("Eyes closed parameters (Scan time: " + BCIActuatorSettings.Settings.TriggerTest_ScanTime + " , num repetitions: " + BCIActuatorSettings.Settings.TriggerTest_NumRepetitions + ") received from ACAT and saved to BCISettings file");
+            //Log.Debug("Eyes closed parameters (Scan time: " + BCIActuatorSettings.TriggerTest_ScanTime + " , num repetitions: " + BCIActuatorSettings.TriggerTest_NumRepetitions + ") received from ACAT and saved to BCISettings file");
         }
 
         /// <summary>
@@ -1101,11 +1093,11 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <param name="request"></param>
         private void OnTriggerTestStart(String request)
         {
-            Log.Debug("Trigger test start");
-            _ = DAQ_OpenBCI.TriggerTestStart();
-            Log.Debug("Trigger test started");
-            SendIoctlResponse((int)OpCodes.TriggerTestStartReady, null);
-            Log.Debug("IoctRequest " + OpCodes.TriggerTestStartReady + " sent. Message:null ");
+            //Log.Debug("Trigger test start");
+            //_ = DAQ_OpenBCI.TriggerTestStart();
+            //Log.Debug("Trigger test started");
+            //SendIoctlResponse((int)OpCodes.TriggerTestStartReady, null);
+            //Log.Debug("IoctRequest " + OpCodes.TriggerTestStartReady + " sent. Message:null ");
         }
 
         /// <summary>
@@ -1114,19 +1106,19 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <param name="request"></param>
         private void OnTriggerTestStop(String request)
         {
-            Log.Debug("Trigger test stop");
-            DAQ_OpenBCI.ExitCodes exitCode = DAQ_OpenBCI.TriggerTestStop(BCIActuatorSettings.Settings.TriggerTest_NumRepetitions, out _, out List<double> dutyCycleList, out double dutyCycleAvg);
+            //Log.Debug("Trigger test stop");
+            //DAQ_OpenBCI.ExitCodes exitCode = DAQ_OpenBCI.TriggerTestStop(BCIActuatorSettings.TriggerTest_NumRepetitions, out _, out List<double> dutyCycleList, out double dutyCycleAvg);
 
-                bool triggerTestSuccesful = false;
-                if (exitCode == DAQ_OpenBCI.ExitCodes.PHOTOSENSOR_STATUS_OK)
-                    triggerTestSuccesful = true;
+            //    bool triggerTestSuccesful = false;
+            //    if (exitCode == DAQ_OpenBCI.ExitCodes.PHOTOSENSOR_STATUS_OK)
+            //        triggerTestSuccesful = true;
 
-            // Send parameters to ACAT
-            var bciTriggerTest = new BCITriggerTestResult(triggerTestSuccesful, dutyCycleList, dutyCycleAvg);
-            var str = JsonSerializer.Serialize(bciTriggerTest);
-            Log.Debug("Sending trigger test results. TriggerTestSuccesful: " + triggerTestSuccesful + " | dutyCycleAvg: " + dutyCycleAvg + " | dutyCycle for individual pulses: " + dutyCycleList.ToArray().ToString());
-            SendIoctlResponse((int)OpCodes.TriggerTestResult, str);
-            Log.Debug("IoctRequest " + OpCodes.TriggerTestResult + " sent. Message: " + str);
+            //// Send parameters to ACAT
+            //var bciTriggerTest = new BCITriggerTestResult(triggerTestSuccesful, dutyCycleList, dutyCycleAvg);
+            //var str = JsonSerializer.Serialize(bciTriggerTest);
+            //Log.Debug("Sending trigger test results. TriggerTestSuccesful: " + triggerTestSuccesful + " | dutyCycleAvg: " + dutyCycleAvg + " | dutyCycle for individual pulses: " + dutyCycleList.ToArray().ToString());
+            //SendIoctlResponse((int)OpCodes.TriggerTestResult, str);
+            //Log.Debug("IoctRequest " + OpCodes.TriggerTestResult + " sent. Message: " + str);
         }
 
         /// <summary>
@@ -1135,13 +1127,13 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <param name="request"></param>
         private void OnCalibrationEyesClosedRequestParameters(String request)
         {
-            Log.Debug("Requesting calibration for eyes close parameters");
-            // Send parameters to ACAT
-            var bciCalibrationEyesClosedParameters = new BCICalibrationEyesClosedParameters(BCIActuatorSettings.Settings.EyesClosedCalibration_NumRepetitions, BCIActuatorSettings.Settings.EyesClosedCalibration_IntervalDuration);
-            var str = JsonSerializer.Serialize(bciCalibrationEyesClosedParameters);
-            Log.Debug("Sending eyes close parameters. Num repetitions: " + bciCalibrationEyesClosedParameters.NumRepetitions + " | Interval duration: " + bciCalibrationEyesClosedParameters.IntervalDuration);
-            SendIoctlResponse((int)OpCodes.CalibrationEyesClosedSendParameters, str);
-            Log.Debug("IoctRequest " + OpCodes.CalibrationEyesClosedSendParameters + " sent. Message: " + str);
+            //Log.Debug("Requesting calibration for eyes close parameters");
+            //// Send parameters to ACAT
+            //var bciCalibrationEyesClosedParameters = new BCICalibrationEyesClosedParameters(BCIActuatorSettings.EyesClosedCalibration_NumRepetitions, BCIActuatorSettings.EyesClosedCalibration_IntervalDuration);
+            //var str = JsonSerializer.Serialize(bciCalibrationEyesClosedParameters);
+            //Log.Debug("Sending eyes close parameters. Num repetitions: " + bciCalibrationEyesClosedParameters.NumRepetitions + " | Interval duration: " + bciCalibrationEyesClosedParameters.IntervalDuration);
+            //SendIoctlResponse((int)OpCodes.CalibrationEyesClosedSendParameters, str);
+            //Log.Debug("IoctRequest " + OpCodes.CalibrationEyesClosedSendParameters + " sent. Message: " + str);
         }
 
         /// <summary>
@@ -1150,17 +1142,17 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <param name="request"></param>
         private void OnCalibrationEyesClosedSaveParameters(String request)
         {
-            Log.Debug("Calibration eyes closed save parameters called");
+            //Log.Debug("Calibration eyes closed save parameters called");
 
-            // Receive parameters from ACAT
-            var bciCalibrationEyesClosedParameters = JsonSerializer.Deserialize<BCICalibrationEyesClosedParameters>(request);
+            //// Receive parameters from ACAT
+            //var bciCalibrationEyesClosedParameters = JsonSerializer.Deserialize<BCICalibrationEyesClosedParameters>(request);
 
-            // Save parameters to settings
-            BCIActuatorSettings.Settings.EyesClosedCalibration_IntervalDuration = bciCalibrationEyesClosedParameters.IntervalDuration;
-            BCIActuatorSettings.Settings.EyesClosedCalibration_NumRepetitions = bciCalibrationEyesClosedParameters.NumRepetitions;
-            BCIActuatorSettings.Settings.Save();
+            //// Save parameters to settings
+            //BCIActuatorSettings.EyesClosedCalibration_IntervalDuration = bciCalibrationEyesClosedParameters.IntervalDuration;
+            //BCIActuatorSettings.EyesClosedCalibration_NumRepetitions = bciCalibrationEyesClosedParameters.NumRepetitions;
+            //BCIActuatorSettings.Save();
 
-            Log.Debug("Eyes closed parameters (Interval duration: " + BCIActuatorSettings.Settings.EyesClosedCalibration_IntervalDuration + " , num repetitions: " + BCIActuatorSettings.Settings.EyesClosedCalibration_NumRepetitions + ") received from ACAT and saved to BCISettings file");
+            //Log.Debug("Eyes closed parameters (Interval duration: " + BCIActuatorSettings.EyesClosedCalibration_IntervalDuration + " , num repetitions: " + BCIActuatorSettings.EyesClosedCalibration_NumRepetitions + ") received from ACAT and saved to BCISettings file");
         }
 
         /// <summary>
@@ -1181,7 +1173,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             //        bool eyesClosedDetected = DAQ_OpenBCI.DetectEyesClosed(out double[] alphaValues, out double avgAlpha, out double[] betaValues, out double avgBeta);
 
             //        // Log results
-            //        var bciLogEntry = new BCILogEntryEyesClosed(BCIActuatorSettings.Settings.EyesClosed_EnableDetection, 0, eyesClosedDetected, alphaValues, betaValues, avgAlpha, avgBeta, bciEyesClosedIterationEnd.BciEyesClosedMode.ToString());
+            //        var bciLogEntry = new BCILogEntryEyesClosed(BCIActuatorSettings.EyesClosed_EnableDetection, 0, eyesClosedDetected, alphaValues, betaValues, avgAlpha, avgBeta, bciEyesClosedIterationEnd.BciEyesClosedMode.ToString());
             //        var jsonString = JsonConvert.SerializeObject(bciLogEntry);
             //        AuditLog.Audit(new AuditEvent("BCIEyesClosedCalibration", jsonString));
             //        Log.Debug("Saved to audit file:" + jsonString);
@@ -1234,82 +1226,82 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         {
             Log.Debug("Calibartion End Received");
 
-            var bciCalibrationEnd = JsonSerializer.Deserialize<BCICalibrationEnd>(request);
+            //var bciCalibrationEnd = JsonSerializer.Deserialize<BCICalibrationEnd>(request);
 
-            float auc = 0f;
-            BCIError error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
-            bool calibrationSuccesful = false;
+            //float auc = 0f;
+            //BCIError error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
+            //bool calibrationSuccesful = false;
 
-            if (useSensor)
-            {
-                try
-                {
-                    // Get all the data and stop sensor
-                    if (_device == Device.OPENBCI)
-                    {
-                        Thread.Sleep(2000); // Delay to ensure enough data is collected
-                        DAQ_OpenBCI.GetData();
-                        DAQ_OpenBCI.EndSession();
-                    } else
-                    {
-                        _gtecDeviceTester.gTecBCI.GetData();
-                        _gtecDeviceTester.gTecBCI.EndSession();
-                    }
+            //if (useSensor)
+            //{
+            //    try
+            //    {
+            //        // Get all the data and stop sensor
+            //        if (_device == Device.OPENBCI)
+            //        {
+            //            Thread.Sleep(2000); // Delay to ensure enough data is collected
+            //            DAQ_OpenBCI.GetData();
+            //            DAQ_OpenBCI.EndSession();
+            //        } else
+            //        {
+            //            _gtecDeviceTester.gTecBCI.GetData();
+            //            _gtecDeviceTester.gTecBCI.EndSession();
+            //        }
 
 
-                    // Train classifiers and estimate threshold for eyes closed detection
-                    var FeatureExtractionObj = new FeatureExtraction(bciCalibrationEnd.FlashingSequence, DictCalibrationParameters[_currentCalibrationMode]);
+            //        // Train classifiers and estimate threshold for eyes closed detection
+            //        var FeatureExtractionObj = new FeatureExtraction(bciCalibrationEnd.FlashingSequence, DictCalibrationParameters[_currentCalibrationMode]);
 
-                    // Eyes closed estimation
-                    if (_device == Device.OPENBCI)
-                    {
-                        if (!BCIActuatorSettings.Settings.EyesClosed_UseFixThreshold)
-                        {
-                            BCIActuatorSettings.Settings.EyesClosed_AdaptiveThreshold = FeatureExtractionObj.LearnEyesClosedAdaptiveThreshold(avgAlphaValues);
-                            BCIActuatorSettings.Save();
-                            DAQ_OpenBCI.SetEyesClosedAdaptiveThreshold(BCIActuatorSettings.Settings.EyesClosed_AdaptiveThreshold);
-                        }
-                    }
+            //        // Eyes closed estimation
+            //        if (_device == Device.OPENBCI)
+            //        {
+            //            if (!BCIActuatorSettings.EyesClosed_UseFixThreshold)
+            //            {
+            //                BCIActuatorSettings.EyesClosed_AdaptiveThreshold = FeatureExtractionObj.LearnEyesClosedAdaptiveThreshold(avgAlphaValues);
+            //                BCIActuatorSettings.Save();
+            //                DAQ_OpenBCI.SetEyesClosedAdaptiveThreshold(BCIActuatorSettings.EyesClosed_AdaptiveThreshold);
+            //            }
+            //        }
                     
-                    auc = FeatureExtractionObj.Learn(sessionID); // will return -1 if error when training classifiers
+            //        auc = FeatureExtractionObj.Learn(sessionID); // will return -1 if error when training classifiers
 
-                    if (auc * 100 >= DictCalibrationParameters[_currentCalibrationMode].MinimumScoreRequired)
-                        calibrationSuccesful = true;
+            //        if (auc * 100 >= DictCalibrationParameters[_currentCalibrationMode].MinimumScoreRequired)
+            //            calibrationSuccesful = true;
 
-                    Log.Debug("Session: " + sessionID + " Calibrated succesfully: " + calibrationSuccesful + " - AUC: " + auc);
+            //        Log.Debug("Session: " + sessionID + " Calibrated succesfully: " + calibrationSuccesful + " - AUC: " + auc);
 
-                    if (auc == -1)// Error when training classifiers
-                    {
-                        Log.Debug("Error when training classifiers");
-                        error = new BCIError(BCIErrorCodes.CalibrationError_OnAnalyzingData_TrainingClassifiersError, StringResources.CalibrationError_CalibrationFailed);
-                    }
-                }
-                catch (Exception e)
-                {
-                    auc = -1;
-                    Log.Debug(e.Message);
-                    error = new BCIError(BCIErrorCodes.CalibrationError_OnAnalyzingData_UnknownException, StringResources.CalibrationError_CalibrationFailed);
-                }
-            }
-            else
-            {
-                // For Debugging / Testing: calibrate from old file when selected from settings
-                if (BCIActuatorSettings.Settings.Testing_ForceRecalibrateFromFile && BCIActuatorSettings.Settings.Testing_CalibrationFileId != null)
-                {
-                    auc = RecalibrateFromFile();
-                    Log.Debug("Recalibrated from file. AUC: " + auc);
-                }
-                calibrationSuccesful = true;
-            }
+            //        if (auc == -1)// Error when training classifiers
+            //        {
+            //            Log.Debug("Error when training classifiers");
+            //            error = new BCIError(BCIErrorCodes.CalibrationError_OnAnalyzingData_TrainingClassifiersError, StringResources.CalibrationError_CalibrationFailed);
+            //        }
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        auc = -1;
+            //        Log.Debug(e.Message);
+            //        error = new BCIError(BCIErrorCodes.CalibrationError_OnAnalyzingData_UnknownException, StringResources.CalibrationError_CalibrationFailed);
+            //    }
+            //}
+            //else
+            //{
+            //    // For Debugging / Testing: calibrate from old file when selected from settings
+            //    if (BCIActuatorSettings.Testing_ForceRecalibrateFromFile && BCIActuatorSettings.Testing_CalibrationFileId != null)
+            //    {
+            //        auc = RecalibrateFromFile();
+            //        Log.Debug("Recalibrated from file. AUC: " + auc);
+            //    }
+            //    calibrationSuccesful = true;
+            //}
 
-            _isSessionInProgress = false;
+            //_isSessionInProgress = false;
 
-            // Send auc to ACAT
-            var bciCalibrationResult = new BCICalibrationResult(auc, calibrationSuccesful, error);
-            var str = JsonSerializer.Serialize(bciCalibrationResult);
-            Log.Debug("Sending response. Calibration succesful: " + calibrationSuccesful + " | AUC: " + auc);
-            SendIoctlResponse((int)OpCodes.CalibrationResult, str);
-            Log.Debug("IoctRequest " + OpCodes.CalibrationResult + " sent. Message: " + str);
+            //// Send auc to ACAT
+            //var bciCalibrationResult = new BCICalibrationResult(auc, calibrationSuccesful, error);
+            //var str = JsonSerializer.Serialize(bciCalibrationResult);
+            //Log.Debug("Sending response. Calibration succesful: " + calibrationSuccesful + " | AUC: " + auc);
+            //SendIoctlResponse((int)OpCodes.CalibrationResult, str);
+            //Log.Debug("IoctRequest " + OpCodes.CalibrationResult + " sent. Message: " + str);
         }
 
         /// <summary>
@@ -1319,95 +1311,95 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <param name="request"></param>
         private void OnCalibrationEndRepetition(String request)
         {
-            Log.Debug("Calibration end repetition received");
+            //Log.Debug("Calibration end repetition received");
 
-            BCIError sensorError = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
-            SignalStatus statusSignal = SignalStatus.SIGNAL_KO;
-            int numTriggerPulsesExpected = 0;
-            int numTriggerPulsesDetected = 0;
-            _isSessionInProgress = true;
+            //BCIError sensorError = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
+            //SignalStatus statusSignal = SignalStatus.SIGNAL_KO;
+            //int numTriggerPulsesExpected = 0;
+            //int numTriggerPulsesDetected = 0;
+            //_isSessionInProgress = true;
 
-            if (useSensor)
-            {
-                var bciCalibrationInput = JsonSerializer.Deserialize<BCICalibrationInput>(request);
-                if (bciCalibrationInput != null)
-                {
-                    try
-                    {
-                        if (BCIActuatorSettings.Settings.DAQ_DelayAfterCalibrationRepetition > 0)
-                            Thread.Sleep(BCIActuatorSettings.Settings.DAQ_DelayAfterCalibrationRepetition); // Delay added to have same behavior as typing
+            //if (useSensor)
+            //{
+            //    var bciCalibrationInput = JsonSerializer.Deserialize<BCICalibrationInput>(request);
+            //    if (bciCalibrationInput != null)
+            //    {
+            //        try
+            //        {
+            //            if (BCIActuatorSettings.DAQ_DelayAfterCalibrationRepetition > 0)
+            //                Thread.Sleep(BCIActuatorSettings.DAQ_DelayAfterCalibrationRepetition); // Delay added to have same behavior as typing
 
-                        double[,] allData = _device == Device.OPENBCI ? DAQ_OpenBCI.GetData() : _gtecDeviceTester.gTecBCI.GetData();
+            //            double[,] allData = _device == Device.OPENBCI ? DAQ_OpenBCI.GetData() : _gtecDeviceTester.gTecBCI.GetData();
 
-                        if (allData == null || allData.Length == 0)
-                            sensorError = new BCIError(BCIErrorCodes.SensorError_DataNotReceived, StringResources.SensorError);
-                        else
-                        {
-                            // Write marker values to file
-                            DAQ_OpenBCI.WriteMarkerValues2File(bciCalibrationInput.RowColumnIDs);
+            //            if (allData == null || allData.Length == 0)
+            //                sensorError = new BCIError(BCIErrorCodes.SensorError_DataNotReceived, StringResources.SensorError);
+            //            else
+            //            {
+            //                // Write marker values to file
+            //                DAQ_OpenBCI.WriteMarkerValues2File(bciCalibrationInput.RowColumnIDs);
 
-                            // Get signal status
-                            if (_device == Device.OPENBCI)
-                            {
-                                var overallStatus = DAQ_OpenBCI.GetStatus(out SignalStatus[] signalStatus, out SignalStatus opticalSensorStatus);
-                                if (overallStatus == SignalStatus.SIGNAL_OK)
-                                    statusSignal = SignalStatus.SIGNAL_OK;
+            //                // Get signal status
+            //                if (_device == Device.OPENBCI)
+            //                {
+            //                    var overallStatus = DAQ_OpenBCI.GetStatus(out SignalStatus[] signalStatus, out SignalStatus opticalSensorStatus);
+            //                    if (overallStatus == SignalStatus.SIGNAL_OK)
+            //                        statusSignal = SignalStatus.SIGNAL_OK;
 
 
-                                if (DataParserObj == null)
-                                    DataParserObj = new DataParser(BCISettingsFixed.DAQ_SampleRate, BCIActuatorSettings.Settings.FeatureExtraction_WindowDurationInMs, BCIActuatorSettings.Settings.Calibration_OffsetTarget, null);
+            //                    if (DataParserObj == null)
+            //                        DataParserObj = new DataParser(BCISettingsFixed.DAQ_SampleRate, BCIActuatorSettings.FeatureExtraction_WindowDurationInMs, BCIActuatorSettings.Calibration_OffsetTarget, null);
 
-                                DataParserObj.ParseDataFromBrainflow(allData, out _, out _, out numTriggerPulsesDetected);
+            //                    DataParserObj.ParseDataFromBrainflow(allData, out _, out _, out numTriggerPulsesDetected);
 
-                                numTriggerPulsesExpected = bciCalibrationInput.RowColumnIDs.Count;
-                                if (numTriggerPulsesDetected == 0)
-                                {
-                                    Log.Debug("Optical sensor error. No pulses were detected");
-                                    sensorError = new BCIError(BCIErrorCodes.OpticalSensorError_NoPulsesDetected, StringResources.OpticalSensorError);
-                                }
-                                // Note: Removed code since we can't guarantee the number of pulses received given bluetooth delays
-                                //else if (numTriggerPulsesDetected > numTriggerPulsesExpected)
-                                //    sensorError = new BCIError(BCIErrorCodes.OpticalSensorError_TooManyPulsesDetected, BCIMessages.OpticalSensorError);
-                                //else if (numTriggerPulsesDetected < numTriggerPulsesExpected)
-                                //    sensorError = new BCIError(BCIErrorCodes.OpticalSensorError_NotEnoughPulsesDetected, BCIMessages.OpticalSensorError);
+            //                    numTriggerPulsesExpected = bciCalibrationInput.RowColumnIDs.Count;
+            //                    if (numTriggerPulsesDetected == 0)
+            //                    {
+            //                        Log.Debug("Optical sensor error. No pulses were detected");
+            //                        sensorError = new BCIError(BCIErrorCodes.OpticalSensorError_NoPulsesDetected, StringResources.OpticalSensorError);
+            //                    }
+            //                    // Note: Removed code since we can't guarantee the number of pulses received given bluetooth delays
+            //                    //else if (numTriggerPulsesDetected > numTriggerPulsesExpected)
+            //                    //    sensorError = new BCIError(BCIErrorCodes.OpticalSensorError_TooManyPulsesDetected, BCIMessages.OpticalSensorError);
+            //                    //else if (numTriggerPulsesDetected < numTriggerPulsesExpected)
+            //                    //    sensorError = new BCIError(BCIErrorCodes.OpticalSensorError_NotEnoughPulsesDetected, BCIMessages.OpticalSensorError);
 
-                                // Save AlphaValues
-                                bool eyesClosedDetected = DAQ_OpenBCI.DetectEyesClosed(out double[] alphaValues, out double avgAlpha, out double[] betaValues, out double avgBeta);
-                                avgAlphaValues.Add(avgAlpha);
+            //                    // Save AlphaValues
+            //                    bool eyesClosedDetected = DAQ_OpenBCI.DetectEyesClosed(out double[] alphaValues, out double avgAlpha, out double[] betaValues, out double avgBeta);
+            //                    avgAlphaValues.Add(avgAlpha);
 
-                                // Log results
-                                var bciLogEntry = new BCILogEntryEyesClosed(BCIActuatorSettings.Settings.EyesClosed_EnableDetection, 0, eyesClosedDetected, alphaValues, betaValues, avgAlpha, avgBeta);
-                                var jsonString = JsonSerializer.Serialize(bciLogEntry);
-                                AuditLog.Audit(new AuditEvent("BCIEyesClosed", jsonString));
-                                Log.Debug("Line added to audit file: " + jsonString);
-                            } 
-                            else
-                            {
-                                //TODO Need to add log for Gtec Device as well!
-                            }
+            //                    // Log results
+            //                    var bciLogEntry = new BCILogEntryEyesClosed(BCIActuatorSettings.EyesClosed_EnableDetection, 0, eyesClosedDetected, alphaValues, betaValues, avgAlpha, avgBeta);
+            //                    var jsonString = JsonSerializer.Serialize(bciLogEntry);
+            //                    AuditLog.Audit(new AuditEvent("BCIEyesClosed", jsonString));
+            //                    Log.Debug("Line added to audit file: " + jsonString);
+            //                } 
+            //                else
+            //                {
+            //                    //TODO Need to add log for Gtec Device as well!
+            //                }
                      
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        sensorError = new BCIError(BCIErrorCodes.CalibrationError_UnknwonException, StringResources.CalibrationError_CalibrationFailed);
-                        Log.Debug(e.Message);
-                    }
-                }
-            }
+            //            }
+            //        }
+            //        catch (Exception e)
+            //        {
+            //            sensorError = new BCIError(BCIErrorCodes.CalibrationError_UnknwonException, StringResources.CalibrationError_CalibrationFailed);
+            //            Log.Debug(e.Message);
+            //        }
+            //    }
+            //}
 
-            if (sensorError.ErrorCode != BCIErrorCodes.Status_Ok)
-            {
-                String txt = "Error on calibration repetition end (Error: " + sensorError.ErrorCode + " Message: " + sensorError.ErrorMessage + ") Expected pulses: " + numTriggerPulsesExpected + " - Detected pulses: " + numTriggerPulsesDetected;
-                Log.Debug(txt);
-            }
+            //if (sensorError.ErrorCode != BCIErrorCodes.Status_Ok)
+            //{
+            //    String txt = "Error on calibration repetition end (Error: " + sensorError.ErrorCode + " Message: " + sensorError.ErrorMessage + ") Expected pulses: " + numTriggerPulsesExpected + " - Detected pulses: " + numTriggerPulsesDetected;
+            //    Log.Debug(txt);
+            //}
 
-            // Send result
-            var bciCalibrationResult = new BCISensorStatus(sensorError, statusSignal);
-            var str = JsonSerializer.Serialize(bciCalibrationResult);
-            Log.Debug("Sending response. SensorError:" + (BCIErrorCodes)bciCalibrationResult.Error.ErrorCode);
-            SendIoctlResponse((int)OpCodes.CalibrationEndRepetitionResult, str);
-            Log.Debug("IoctRequest " + OpCodes.CalibrationEndRepetitionResult + " sent. Message: " + str);
+            //// Send result
+            //var bciCalibrationResult = new BCISensorStatus(sensorError, statusSignal);
+            //var str = JsonSerializer.Serialize(bciCalibrationResult);
+            //Log.Debug("Sending response. SensorError:" + (BCIErrorCodes)bciCalibrationResult.Error.ErrorCode);
+            //SendIoctlResponse((int)OpCodes.CalibrationEndRepetitionResult, str);
+            //Log.Debug("IoctRequest " + OpCodes.CalibrationEndRepetitionResult + " sent. Message: " + str);
         }
 
         /// <summary>
@@ -1416,13 +1408,13 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <param name="request"></param>
         private void OnHighlightOnOff(String request)
         {
-            float marker = float.Parse(request);
-            if (_device == Device.OPENBCI) {
-                DAQ_OpenBCI.InsertMarker(marker);
-            }
-            else {
-                _gtecDeviceTester.gTecBCI.InsertMarker(marker);
-            }
+            //float marker = float.Parse(request);
+            //if (_device == Device.OPENBCI) {
+            //    DAQ_OpenBCI.InsertMarker(marker);
+            //}
+            //else {
+            //    _gtecDeviceTester.gTecBCI.InsertMarker(marker);
+            //}
         }
 
         /// <summary>
@@ -1432,59 +1424,59 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <param name="request"></param>
         private void OnLanguageModelProbabilities(String request)
         {
-            Log.Debug("Language model probabilities received");
+            //Log.Debug("Language model probabilities received");
 
-            var bciLanguageModelProbabilities = JsonSerializer.Deserialize<BCILanguageModelProbabilities>(request);
-            bool enableLanguageModelprobabilities = false;
-            BCIScanSections currentSection = BCIScanSections.None;
-            String languageModelProbabilityType = "";
-            epochIdx++;
+            //var bciLanguageModelProbabilities = JsonSerializer.Deserialize<BCILanguageModelProbabilities>(request);
+            //bool enableLanguageModelprobabilities = false;
+            //BCIScanSections currentSection = BCIScanSections.None;
+            //String languageModelProbabilityType = "";
+            //epochIdx++;
 
-            // Restart classifiers (nextcharacterprobs = clear talk window, resume after pause, etc)
-            Log.Debug("Restarting all probabilities");
-            EEGProcessingGlobals.RestartAllDecisionMakerProbabilities();
+            //// Restart classifiers (nextcharacterprobs = clear talk window, resume after pause, etc)
+            //Log.Debug("Restarting all probabilities");
+            //EEGProcessingGlobals.RestartAllDecisionMakerProbabilities();
 
-            // Add next character probabilities (flag will be turn on/off if they shouldn't be
-            // applied). By doing it this way, next character probabilities will be saved in logs
+            //// Add next character probabilities (flag will be turn on/off if they shouldn't be
+            //// applied). By doing it this way, next character probabilities will be saved in logs
 
-            switch (bciLanguageModelProbabilities.LanguageModelProbabilityType)
-            {
-                case ProbabilityType.NextCharacterProbabilities:
-                    languageModelProbabilityType = "characters";
-                    enableLanguageModelprobabilities = BCIActuatorSettings.Settings.Classifier_UseNextCharacterProbabilities;
-                    currentSection = BCIScanSections.KeyboardR;
-                    break;
+            //switch (bciLanguageModelProbabilities.LanguageModelProbabilityType)
+            //{
+            //    case ProbabilityType.NextCharacterProbabilities:
+            //        languageModelProbabilityType = "characters";
+            //        enableLanguageModelprobabilities = BCIActuatorSettings.Classifier_UseNextCharacterProbabilities;
+            //        currentSection = BCIScanSections.KeyboardR;
+            //        break;
 
-                case ProbabilityType.NextWordProbabilities:
-                    enableLanguageModelprobabilities = BCIActuatorSettings.Settings.Classifier_UseNextWordProbabilities;
-                    languageModelProbabilityType = "words";
-                    currentSection = BCIScanSections.Word;
-                    break;
+            //    case ProbabilityType.NextWordProbabilities:
+            //        enableLanguageModelprobabilities = BCIActuatorSettings.Classifier_UseNextWordProbabilities;
+            //        languageModelProbabilityType = "words";
+            //        currentSection = BCIScanSections.Word;
+            //        break;
 
-                case ProbabilityType.NextSentenceProbabilities:
-                    languageModelProbabilityType = "sentences";
-                    break;
-            }
+            //    case ProbabilityType.NextSentenceProbabilities:
+            //        languageModelProbabilityType = "sentences";
+            //        break;
+            //}
 
-            if (bciLanguageModelProbabilities.LanguageModelProbabilities != null)
-            {
-                if (EEGProcessingGlobals.DecisionMakerDict.ContainsKey(currentSection))
-                {
-                    EEGProcessingGlobals.DecisionMakerDict[currentSection].AddNextCharacterProbabilities(bciLanguageModelProbabilities.LanguageModelProbabilities);
-                    EEGProcessingGlobals.DecisionMakerDict[currentSection].enableLanguageModelProbabilities = enableLanguageModelprobabilities;
-                    Log.Debug("Probabilities for " + currentSection + " added to. Use LM for section: " + enableLanguageModelprobabilities);
-                }
-                else
-                {
-                    Log.Debug("Probabilities not added");
-                }
-            }
+            //if (bciLanguageModelProbabilities.LanguageModelProbabilities != null)
+            //{
+            //    if (EEGProcessingGlobals.DecisionMakerDict.ContainsKey(currentSection))
+            //    {
+            //        EEGProcessingGlobals.DecisionMakerDict[currentSection].AddNextCharacterProbabilities(bciLanguageModelProbabilities.LanguageModelProbabilities);
+            //        EEGProcessingGlobals.DecisionMakerDict[currentSection].enableLanguageModelProbabilities = enableLanguageModelprobabilities;
+            //        Log.Debug("Probabilities for " + currentSection + " added to. Use LM for section: " + enableLanguageModelprobabilities);
+            //    }
+            //    else
+            //    {
+            //        Log.Debug("Probabilities not added");
+            //    }
+            //}
 
-            // Add LMprobabilities to log file
-            var bciLogEntry = new BCILogEntryLanguageModelProbabilitiesReceived(languageModelProbabilityType, bciLanguageModelProbabilities.LanguageModelProbabilities, enableLanguageModelprobabilities);
-            var jsonString = JsonSerializer.Serialize(bciLogEntry);
-            AuditLog.Audit(new AuditEvent("BCILanguageModelProbabilitiesReceived", jsonString));
-            Log.Debug("Line added to audit file: " + jsonString);
+            //// Add LMprobabilities to log file
+            //var bciLogEntry = new BCILogEntryLanguageModelProbabilitiesReceived(languageModelProbabilityType, bciLanguageModelProbabilities.LanguageModelProbabilities, enableLanguageModelprobabilities);
+            //var jsonString = JsonSerializer.Serialize(bciLogEntry);
+            //AuditLog.Audit(new AuditEvent("BCILanguageModelProbabilitiesReceived", jsonString));
+            //Log.Debug("Line added to audit file: " + jsonString);
         }
 
         /// <summary>
@@ -1493,24 +1485,24 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <param name="request"></param>
         private void OnPause(String request)
         {
-            if (String.Compare(request, "true", true) == 0)
-            {
-                // pause the acutator
-                onResumeFlagActivated = false;
-            }
-            else
-            {
-                // resume the actuator
-                //Clear data in actuator
-                if (useSensor)
-                {
-                    if (_device == Device.OPENBCI) { DAQ_OpenBCI.GetData();}
-                    else { _gtecDeviceTester.gTecBCI.GetData(); }
+            //if (String.Compare(request, "true", true) == 0)
+            //{
+            //    // pause the acutator
+            //    onResumeFlagActivated = false;
+            //}
+            //else
+            //{
+            //    // resume the actuator
+            //    //Clear data in actuator
+            //    if (useSensor)
+            //    {
+            //        if (_device == Device.OPENBCI) { DAQ_OpenBCI.GetData();}
+            //        else { _gtecDeviceTester.gTecBCI.GetData(); }
 
-                    EEGProcessingGlobals.RestartAllDecisionMakerProbabilities();
-                    onResumeFlagActivated = true;
-                }
-            }
+            //        EEGProcessingGlobals.RestartAllDecisionMakerProbabilities();
+            //        onResumeFlagActivated = true;
+            //    }
+            //}
         }
 
         /// <summary>
@@ -1521,88 +1513,88 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <param name="request"></param>
         private void OnRequestParameters(String request)
         {
-            bool recalibrationRequired = true;
-            float lastCalibrationAUC = 0.99f;
-            BCIError error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
+            //bool recalibrationRequired = true;
+            //float lastCalibrationAUC = 0.99f;
+            //BCIError error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
 
-            var bciUserInputParameters = JsonSerializer.Deserialize<BCIUserInputParameters>(request);
-            Log.Debug("Request parameters for mode " + bciUserInputParameters.BciMode);
+            //var bciUserInputParameters = JsonSerializer.Deserialize<BCIUserInputParameters>(request);
+            //Log.Debug("Request parameters for mode " + bciUserInputParameters.BciMode);
 
-            switch (bciUserInputParameters.BciMode)
-            {
-                case BCIModes.TYPING:
-                    // If typing mode, load classifiers and change scan time to the scan time used in calibration
-                    if (!_isSessionInProgress)
-                        LoadClassifiers();
-                    break;
+            //switch (bciUserInputParameters.BciMode)
+            //{
+            //    case BCIModes.TYPING:
+            //        // If typing mode, load classifiers and change scan time to the scan time used in calibration
+            //        if (!_isSessionInProgress)
+            //            LoadClassifiers();
+            //        break;
 
-                case BCIModes.CALIBRATION:
-                    Log.Debug("Calibration mode: " + bciUserInputParameters.BciCalibrationMode + " Scan time: " + bciUserInputParameters.ScanTime + " | Number of targets: " + bciUserInputParameters.NumTargets + " | Number of iterations per target: " + bciUserInputParameters.NumIterationsPerTarget + " | Minimum score required: " + bciUserInputParameters.MinScoreRequired);
+            //    case BCIModes.CALIBRATION:
+            //        Log.Debug("Calibration mode: " + bciUserInputParameters.BciCalibrationMode + " Scan time: " + bciUserInputParameters.ScanTime + " | Number of targets: " + bciUserInputParameters.NumTargets + " | Number of iterations per target: " + bciUserInputParameters.NumIterationsPerTarget + " | Minimum score required: " + bciUserInputParameters.MinScoreRequired);
 
-                    // Update settings for the corresponding section from parameters sent from ACAT
-                    switch (bciUserInputParameters.BciCalibrationMode)
-                    {
-                        case BCIScanSections.Box:
-                            BoxCalibrationSettings.ScanTime = bciUserInputParameters.ScanTime;
-                            BoxCalibrationSettings.NumberOfTargets = bciUserInputParameters.NumTargets;
-                            BoxCalibrationSettings.NumberOfIterationsPerTarget = bciUserInputParameters.NumIterationsPerTarget;
-                            BoxCalibrationSettings.MinimumScoreRequired = bciUserInputParameters.MinScoreRequired;
-                            BoxCalibrationSettings.Save();
-                            Log.Debug("Parameters saved for box calibration");
-                            break;
+            //        // Update settings for the corresponding section from parameters sent from ACAT
+            //        switch (bciUserInputParameters.BciCalibrationMode)
+            //        {
+            //            case BCIScanSections.Box:
+            //                BoxCalibrationSettings.ScanTime = bciUserInputParameters.ScanTime;
+            //                BoxCalibrationSettings.NumberOfTargets = bciUserInputParameters.NumTargets;
+            //                BoxCalibrationSettings.NumberOfIterationsPerTarget = bciUserInputParameters.NumIterationsPerTarget;
+            //                BoxCalibrationSettings.MinimumScoreRequired = bciUserInputParameters.MinScoreRequired;
+            //                BoxCalibrationSettings.Save();
+            //                Log.Debug("Parameters saved for box calibration");
+            //                break;
 
-                        case BCIScanSections.Word:
-                            WordCalibrationSettings.ScanTime = bciUserInputParameters.ScanTime;
-                            WordCalibrationSettings.NumberOfTargets = bciUserInputParameters.NumTargets;
-                            WordCalibrationSettings.NumberOfIterationsPerTarget = bciUserInputParameters.NumIterationsPerTarget;
-                            WordCalibrationSettings.MinimumScoreRequired = bciUserInputParameters.MinScoreRequired;
-                            WordCalibrationSettings.Save();
-                            Log.Debug("Parameters saved for calibration");
-                            break;
+            //            case BCIScanSections.Word:
+            //                WordCalibrationSettings.ScanTime = bciUserInputParameters.ScanTime;
+            //                WordCalibrationSettings.NumberOfTargets = bciUserInputParameters.NumTargets;
+            //                WordCalibrationSettings.NumberOfIterationsPerTarget = bciUserInputParameters.NumIterationsPerTarget;
+            //                WordCalibrationSettings.MinimumScoreRequired = bciUserInputParameters.MinScoreRequired;
+            //                WordCalibrationSettings.Save();
+            //                Log.Debug("Parameters saved for calibration");
+            //                break;
 
-                        case BCIScanSections.Sentence:
-                            SentenceCalibrationSettings.ScanTime = bciUserInputParameters.ScanTime;
-                            SentenceCalibrationSettings.NumberOfTargets = bciUserInputParameters.NumTargets;
-                            SentenceCalibrationSettings.NumberOfIterationsPerTarget = bciUserInputParameters.NumIterationsPerTarget;
-                            SentenceCalibrationSettings.MinimumScoreRequired = bciUserInputParameters.MinScoreRequired;
-                            SentenceCalibrationSettings.Save();
-                            Log.Debug("Parameters saved for sentence calibration");
-                            break;
+            //            case BCIScanSections.Sentence:
+            //                SentenceCalibrationSettings.ScanTime = bciUserInputParameters.ScanTime;
+            //                SentenceCalibrationSettings.NumberOfTargets = bciUserInputParameters.NumTargets;
+            //                SentenceCalibrationSettings.NumberOfIterationsPerTarget = bciUserInputParameters.NumIterationsPerTarget;
+            //                SentenceCalibrationSettings.MinimumScoreRequired = bciUserInputParameters.MinScoreRequired;
+            //                SentenceCalibrationSettings.Save();
+            //                Log.Debug("Parameters saved for sentence calibration");
+            //                break;
 
-                        case BCIScanSections.KeyboardL:
-                            KeyboardLeftCalibrationSettings.ScanTime = bciUserInputParameters.ScanTime;
-                            KeyboardLeftCalibrationSettings.NumberOfTargets = bciUserInputParameters.NumTargets;
-                            KeyboardLeftCalibrationSettings.NumberOfIterationsPerTarget = bciUserInputParameters.NumIterationsPerTarget;
-                            KeyboardLeftCalibrationSettings.MinimumScoreRequired = bciUserInputParameters.MinScoreRequired;
-                            KeyboardLeftCalibrationSettings.Save();
-                            Log.Debug("Parameters saved for keyboard Left calibration");
-                            break;
+            //            case BCIScanSections.KeyboardL:
+            //                KeyboardLeftCalibrationSettings.ScanTime = bciUserInputParameters.ScanTime;
+            //                KeyboardLeftCalibrationSettings.NumberOfTargets = bciUserInputParameters.NumTargets;
+            //                KeyboardLeftCalibrationSettings.NumberOfIterationsPerTarget = bciUserInputParameters.NumIterationsPerTarget;
+            //                KeyboardLeftCalibrationSettings.MinimumScoreRequired = bciUserInputParameters.MinScoreRequired;
+            //                KeyboardLeftCalibrationSettings.Save();
+            //                Log.Debug("Parameters saved for keyboard Left calibration");
+            //                break;
 
-                        case BCIScanSections.KeyboardR:
-                            KeyboardRightCalibrationSettings.ScanTime = bciUserInputParameters.ScanTime;
-                            KeyboardRightCalibrationSettings.NumberOfTargets = bciUserInputParameters.NumTargets;
-                            KeyboardRightCalibrationSettings.NumberOfIterationsPerTarget = bciUserInputParameters.NumIterationsPerTarget;
-                            KeyboardRightCalibrationSettings.MinimumScoreRequired = bciUserInputParameters.MinScoreRequired;
-                            KeyboardRightCalibrationSettings.Save();
-                            Log.Debug("Paramters saved for keyboard right calibration");
-                            break;
-                    }
+            //            case BCIScanSections.KeyboardR:
+            //                KeyboardRightCalibrationSettings.ScanTime = bciUserInputParameters.ScanTime;
+            //                KeyboardRightCalibrationSettings.NumberOfTargets = bciUserInputParameters.NumTargets;
+            //                KeyboardRightCalibrationSettings.NumberOfIterationsPerTarget = bciUserInputParameters.NumIterationsPerTarget;
+            //                KeyboardRightCalibrationSettings.MinimumScoreRequired = bciUserInputParameters.MinScoreRequired;
+            //                KeyboardRightCalibrationSettings.Save();
+            //                Log.Debug("Paramters saved for keyboard right calibration");
+            //                break;
+            //        }
 
-                    // Update parameter
-                    DictCalibrationParameters[bciUserInputParameters.BciCalibrationMode].ScanTime = bciUserInputParameters.ScanTime;
-                    DictCalibrationParameters[bciUserInputParameters.BciCalibrationMode].TargetCount = bciUserInputParameters.NumTargets;
-                    DictCalibrationParameters[bciUserInputParameters.BciCalibrationMode].IterationsPerTarget = bciUserInputParameters.NumIterationsPerTarget;
-                    DictCalibrationParameters[bciUserInputParameters.BciCalibrationMode].MinimumScoreRequired = bciUserInputParameters.MinScoreRequired;
-                    Log.Debug("Parameters updated in the " + bciUserInputParameters.BciCalibrationMode + " dictionary");
-                    break;
-            }
+            //        // Update parameter
+            //        DictCalibrationParameters[bciUserInputParameters.BciCalibrationMode].ScanTime = bciUserInputParameters.ScanTime;
+            //        DictCalibrationParameters[bciUserInputParameters.BciCalibrationMode].TargetCount = bciUserInputParameters.NumTargets;
+            //        DictCalibrationParameters[bciUserInputParameters.BciCalibrationMode].IterationsPerTarget = bciUserInputParameters.NumIterationsPerTarget;
+            //        DictCalibrationParameters[bciUserInputParameters.BciCalibrationMode].MinimumScoreRequired = bciUserInputParameters.MinScoreRequired;
+            //        Log.Debug("Parameters updated in the " + bciUserInputParameters.BciCalibrationMode + " dictionary");
+            //        break;
+            //}
 
-            // Send parameters to ACAT
-            var bciParameters = new BCIParameters(DictCalibrationParameters, recalibrationRequired, lastCalibrationAUC, BCIActuatorSettings.Settings.Scanning_PauseTime, BCIActuatorSettings.Settings.Scanning_ShortPauseTime, BCIActuatorSettings.Settings.Scanning_ShowDecisionTime, BCIActuatorSettings.Settings.Scanning_DelayAfterDecision, BCIActuatorSettings.Settings.Scanning_DelayToGetReady, BCIActuatorSettings.Settings.Testing_MinimumProbabiltyToDisplayBarOnTyping, BCIActuatorSettings.Settings.Scanning_FocalCircleColor, BCIActuatorSettings.Settings.Scanning_IsFocalCircleFilled, error);
-            var str = JsonSerializer.Serialize(bciParameters);
-            Log.Debug("Sending parameters. Error:" + (BCIErrorCodes)bciParameters.Error.ErrorCode + " RecalibrationRequired:" + bciParameters.CalibrationRequiredFlag + " | Pause time:" + bciParameters.Scanning_PauseTime + ", Short pause time:" + bciParameters.Scanning_ShortPauseTime + ", Show decision time: " + bciParameters.Scanning_ShowDecisionTime + ", Delay after decision:" + bciParameters.Scanning_DelayAfterDecision + ", Minimum probability to display bars on typing:" + bciParameters.MinProbablityToDisplayBarOnTyping);
-            SendIoctlResponse((int)OpCodes.SendParameters, str);
-            Log.Debug("IoctRequest " + OpCodes.SendParameters + " sent. Message: " + str);
+            //// Send parameters to ACAT
+            //var bciParameters = new BCIParameters(DictCalibrationParameters, recalibrationRequired, lastCalibrationAUC, BCIActuatorSettings.Scanning_PauseTime, BCIActuatorSettings.Scanning_ShortPauseTime, BCIActuatorSettings.Scanning_ShowDecisionTime, BCIActuatorSettings.Scanning_DelayAfterDecision, BCIActuatorSettings.Scanning_DelayToGetReady, BCIActuatorSettings.Testing_MinimumProbabiltyToDisplayBarOnTyping, BCIActuatorSettings.Scanning_FocalCircleColor, BCIActuatorSettings.Scanning_IsFocalCircleFilled, error);
+            //var str = JsonSerializer.Serialize(bciParameters);
+            //Log.Debug("Sending parameters. Error:" + (BCIErrorCodes)bciParameters.Error.ErrorCode + " RecalibrationRequired:" + bciParameters.CalibrationRequiredFlag + " | Pause time:" + bciParameters.Scanning_PauseTime + ", Short pause time:" + bciParameters.Scanning_ShortPauseTime + ", Show decision time: " + bciParameters.Scanning_ShowDecisionTime + ", Delay after decision:" + bciParameters.Scanning_DelayAfterDecision + ", Minimum probability to display bars on typing:" + bciParameters.MinProbablityToDisplayBarOnTyping);
+            //SendIoctlResponse((int)OpCodes.SendParameters, str);
+            //Log.Debug("IoctRequest " + OpCodes.SendParameters + " sent. Message: " + str);
         }
 
         /// <summary>
@@ -1611,117 +1603,117 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <param name="request"></param>
         private void OnSessionStart(String request)
         {
-            BCIError error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
-            bool sensorReady = false;
-            String sessionDirectory = null;
-            avgAlphaValues = new List<double>();
+            //BCIError error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
+            //bool sensorReady = false;
+            //String sessionDirectory = null;
+            //avgAlphaValues = new List<double>();
 
-            try
-            {
-                var bciModeObj = JsonSerializer.Deserialize<BCIMode>(request);
+            //try
+            //{
+            //    var bciModeObj = JsonSerializer.Deserialize<BCIMode>(request);
 
-                if (bciModeObj != null)
-                {
-                    Log.Debug("Start session: " + bciModeObj.BciMode);
+            //    if (bciModeObj != null)
+            //    {
+            //        Log.Debug("Start session: " + bciModeObj.BciMode);
 
-                    if (useSensor)
-                    {
-                        // Empty sensor buffer. If device not started, start the device
-                        bool deviceStarted = false;
-                        _currentCalibrationMode = bciModeObj.BciCalibrationMode;
+            //        if (useSensor)
+            //        {
+            //            // Empty sensor buffer. If device not started, start the device
+            //            bool deviceStarted = false;
+            //            _currentCalibrationMode = bciModeObj.BciCalibrationMode;
 
-                        if (_device == Device.OPENBCI)
-                        {
-                            if (DAQ_OpenBCI.IsAcquiring())
-                                DAQ_OpenBCI.GetData(); // empty buffer
-                            else
-                                deviceStarted = DAQ_OpenBCI.Start();
-                        } else
-                        {
-                            if (_gtecDeviceTester.gTecBCI.IsAcquiring())
-                                _gtecDeviceTester.gTecBCI.GetData(); // empty buffer
-                            else
-                                deviceStarted = _gtecDeviceTester.gTecBCI.Start();
-                        }
+            //            if (_device == Device.OPENBCI)
+            //            {
+            //                if (DAQ_OpenBCI.IsAcquiring())
+            //                    DAQ_OpenBCI.GetData(); // empty buffer
+            //                else
+            //                    deviceStarted = DAQ_OpenBCI.Start();
+            //            } else
+            //            {
+            //                if (_gtecDeviceTester.gTecBCI.IsAcquiring())
+            //                    _gtecDeviceTester.gTecBCI.GetData(); // empty buffer
+            //                else
+            //                    deviceStarted = _gtecDeviceTester.gTecBCI.Start();
+            //            }
 
-                        if (( _device == Device.OPENBCI ? DAQ_OpenBCI.IsAcquiring() : _gtecDeviceTester.gTecBCI.IsAcquiring() ) || deviceStarted)
-                        {
-                            switch (bciModeObj.BciMode)
-                            {
-                                case BCIModes.CALIBRATION_EYESOPENCLOSE:
-                                    sessionID = "EEG_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_CalibrationEyesOpenClose"; // Create new files
-                                    break;
+            //            if (( _device == Device.OPENBCI ? DAQ_OpenBCI.IsAcquiring() : _gtecDeviceTester.gTecBCI.IsAcquiring() ) || deviceStarted)
+            //            {
+            //                switch (bciModeObj.BciMode)
+            //                {
+            //                    case BCIModes.CALIBRATION_EYESOPENCLOSE:
+            //                        sessionID = "EEG_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_CalibrationEyesOpenClose"; // Create new files
+            //                        break;
 
-                                case BCIModes.CALIBRATION:
-                                    sessionID = "EEG_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_Calibration_" + _currentCalibrationMode.ToString(); // Create new files
-                                    break;
+            //                    case BCIModes.CALIBRATION:
+            //                        sessionID = "EEG_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_Calibration_" + _currentCalibrationMode.ToString(); // Create new files
+            //                        break;
 
-                                case BCIModes.TYPING:
+            //                    case BCIModes.TYPING:
 
-                                    // For Debugging / Testing: calibrate from old file when selected from settings
-                                    if (BCIActuatorSettings.Settings.Testing_ForceRecalibrateFromFile && BCIActuatorSettings.Settings.Testing_CalibrationFileId != null)
-                                    {
-                                        Log.Debug("Recalibrating from file");
-                                        float auc = RecalibrateFromFile();
-                                        Log.Debug("Recalibrated from file. AUC: " + auc);
-                                    }
+            //                        // For Debugging / Testing: calibrate from old file when selected from settings
+            //                        if (BCIActuatorSettings.Testing_ForceRecalibrateFromFile && BCIActuatorSettings.Testing_CalibrationFileId != null)
+            //                        {
+            //                            Log.Debug("Recalibrating from file");
+            //                            float auc = RecalibrateFromFile();
+            //                            Log.Debug("Recalibrated from file. AUC: " + auc);
+            //                        }
 
-                                    if (!LoadClassifiers())
-                                        error = new BCIError(BCIErrorCodes.TypingError_ClassifiersNotLoaded, StringResources.ClassifiersNotLoadedError);
+            //                        if (!LoadClassifiers())
+            //                            error = new BCIError(BCIErrorCodes.TypingError_ClassifiersNotLoaded, StringResources.ClassifiersNotLoadedError);
 
-                                    // Load trained classifier
-                                    sessionID = "EEG_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_Typing"; // Create new files
-                                    epochIdx = 0;
-                                    seqIdx = 0;
-                                    break;
+            //                        // Load trained classifier
+            //                        sessionID = "EEG_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_Typing"; // Create new files
+            //                        epochIdx = 0;
+            //                        seqIdx = 0;
+            //                        break;
 
-                                case BCIModes.TRIGGERTEST:
-                                    sessionID = "EEG_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_TriggerTest"; // Create new files
-                                    break;
-                            }
+            //                    case BCIModes.TRIGGERTEST:
+            //                        sessionID = "EEG_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_TriggerTest"; // Create new files
+            //                        break;
+            //                }
 
-                            // Start session
-                            Log.Debug("Starting session: " + sessionID);
-                            sensorReady = _device == Device.OPENBCI ? DAQ_OpenBCI.StartSession(sessionID, true) : _gtecDeviceTester.gTecBCI.StartSession(sessionID, true);
-                            sessionDirectory = _device == Device.OPENBCI ? DAQ_OpenBCI.GetSessionDirectory() : _gtecDeviceTester.gTecBCI.GetSessionDirectory();
-                            _isSessionInProgress = false; // set to true on calibrationEndRepetition and TypingEndRepetition
+            //                // Start session
+            //                Log.Debug("Starting session: " + sessionID);
+            //                sensorReady = _device == Device.OPENBCI ? DAQ_OpenBCI.StartSession(sessionID, true) : _gtecDeviceTester.gTecBCI.StartSession(sessionID, true);
+            //                sessionDirectory = _device == Device.OPENBCI ? DAQ_OpenBCI.GetSessionDirectory() : _gtecDeviceTester.gTecBCI.GetSessionDirectory();
+            //                _isSessionInProgress = false; // set to true on calibrationEndRepetition and TypingEndRepetition
 
-                            // Copy files to folder
-                            string filePathCopyTo, filePathCopyFrom;
-                            foreach (String fileName in FilesToCopy)
-                            {
-                                filePathCopyTo = Path.Combine(sessionDirectory, fileName);
-                                filePathCopyFrom = UserManager.GetFullPath(fileName);
-                                Log.Debug("Copying files from: " + filePathCopyFrom + " to " + filePathCopyTo);
-                                if (!String.IsNullOrEmpty(filePathCopyTo) && !String.IsNullOrEmpty(filePathCopyFrom) && File.Exists(filePathCopyFrom) && Directory.Exists(sessionDirectory))
-                                {
-                                    File.Copy(filePathCopyFrom, filePathCopyTo);
-                                    Log.Debug("FIles copied from: " + filePathCopyFrom + " to " + filePathCopyTo);
-                                }
-                            }
-                        }
-                        if (!sensorReady)
-                            error = new BCIError(BCIErrorCodes.SensorError_StartSessionFailed, StringResources.SensorError);
+            //                // Copy files to folder
+            //                string filePathCopyTo, filePathCopyFrom;
+            //                foreach (String fileName in FilesToCopy)
+            //                {
+            //                    filePathCopyTo = Path.Combine(sessionDirectory, fileName);
+            //                    filePathCopyFrom = UserManager.GetFullPath(fileName);
+            //                    Log.Debug("Copying files from: " + filePathCopyFrom + " to " + filePathCopyTo);
+            //                    if (!String.IsNullOrEmpty(filePathCopyTo) && !String.IsNullOrEmpty(filePathCopyFrom) && File.Exists(filePathCopyFrom) && Directory.Exists(sessionDirectory))
+            //                    {
+            //                        File.Copy(filePathCopyFrom, filePathCopyTo);
+            //                        Log.Debug("FIles copied from: " + filePathCopyFrom + " to " + filePathCopyTo);
+            //                    }
+            //                }
+            //            }
+            //            if (!sensorReady)
+            //                error = new BCIError(BCIErrorCodes.SensorError_StartSessionFailed, StringResources.SensorError);
 
-                        Thread.Sleep(1000);// To make sure all markers are sent correctly
-                    }
-                    else // dummy sensor
-                    {
-                        sensorReady = true;
-                    }
-                }
+            //            Thread.Sleep(1000);// To make sure all markers are sent correctly
+            //        }
+            //        else // dummy sensor
+            //        {
+            //            sensorReady = true;
+            //        }
+            //    }
 
-                // Send start session results to ACAT
-                var bciStartSessionResults = new BCIStartSessionResult(sensorReady, sessionDirectory, sessionID, error);
-                var str = JsonSerializer.Serialize(bciStartSessionResults);
-                Log.Debug("Sending response. Error: " + (BCIErrorCodes)error.ErrorCode + " Sensor ready: " + bciStartSessionResults.SensorReady + " | session ID: " + sessionID + " | directory: " + sessionDirectory);
-                SendIoctlResponse((int)OpCodes.StartSessionResult, str);
-                Log.Debug("IoctRequest " + OpCodes.StartSessionResult + " sent. Message: " + str);
-            }
-            catch (Exception e)
-            {
-                Log.Debug(e.Message);
-            }
+            //    // Send start session results to ACAT
+            //    var bciStartSessionResults = new BCIStartSessionResult(sensorReady, sessionDirectory, sessionID, error);
+            //    var str = JsonSerializer.Serialize(bciStartSessionResults);
+            //    Log.Debug("Sending response. Error: " + (BCIErrorCodes)error.ErrorCode + " Sensor ready: " + bciStartSessionResults.SensorReady + " | session ID: " + sessionID + " | directory: " + sessionDirectory);
+            //    SendIoctlResponse((int)OpCodes.StartSessionResult, str);
+            //    Log.Debug("IoctRequest " + OpCodes.StartSessionResult + " sent. Message: " + str);
+            //}
+            //catch (Exception e)
+            //{
+            //    Log.Debug(e.Message);
+            //}
         }
 
         /// <summary>
@@ -1731,86 +1723,88 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <returns></returns>
         private float RecalibrateFromFile()
         {
-            float auc = 0;
-            sessionID = BCIActuatorSettings.Settings.Testing_CalibrationFileId;
-            FeatureExtraction FeatureExtractionObj;
+            throw new NotImplementedException();
 
-            try
-            {
-                String strToFind = "_Calibration_";
-                int idxCalibrationType = sessionID.LastIndexOf(strToFind);
-                if (idxCalibrationType != -1)
-                {
-                    string calibrationType = sessionID.Substring(idxCalibrationType + strToFind.Length);
-                    Log.Debug("Recalibrating from file " + sessionID + " | Test ID: " + BCIActuatorSettings.Settings.Testing_TestID + " | Calibration type:" + calibrationType);
+            //float auc = 0;
+            //sessionID = BCIActuatorSettings.Testing_CalibrationFileId;
+            //FeatureExtraction FeatureExtractionObj;
 
-                    switch (calibrationType.ToLower())
-                    {
-                        case "box":
-                            FeatureExtractionObj = new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.Box], 0, 4, false);
-                            break;
+            //try
+            //{
+            //    String strToFind = "_Calibration_";
+            //    int idxCalibrationType = sessionID.LastIndexOf(strToFind);
+            //    if (idxCalibrationType != -1)
+            //    {
+            //        string calibrationType = sessionID.Substring(idxCalibrationType + strToFind.Length);
+            //        Log.Debug("Recalibrating from file " + sessionID + " | Test ID: " + BCIActuatorSettings.Testing_TestID + " | Calibration type:" + calibrationType);
 
-                        case "word":
-                            FeatureExtractionObj = new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.Word], 0, 10, false);
-                            break;
+            //        switch (calibrationType.ToLower())
+            //        {
+            //            case "box":
+            //                FeatureExtractionObj = new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.Box], 0, 4, false);
+            //                break;
 
-                        case "sentence":
-                            FeatureExtractionObj = new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.Sentence], 0, 5, false);
-                            break;
+            //            case "word":
+            //                FeatureExtractionObj = new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.Word], 0, 10, false);
+            //                break;
 
-                        case "keyboardl":
-                            FeatureExtractionObj = new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.KeyboardL], 4, 3, true);
-                            break;
+            //            case "sentence":
+            //                FeatureExtractionObj = new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.Sentence], 0, 5, false);
+            //                break;
 
-                        case "keyboardr":
-                            FeatureExtractionObj = new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.KeyboardR], 4, 7, true);
-                            break;
+            //            case "keyboardl":
+            //                FeatureExtractionObj = new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.KeyboardL], 4, 3, true);
+            //                break;
 
-                        default:
-                            FeatureExtractionObj = new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.KeyboardR], 4, 7, true);
-                            break;
-                    }
-                }
-                else
-                {
-                    switch (BCIActuatorSettings.Settings.Testing_TestID)
-                    {
-                        case 1:
-                            FeatureExtractionObj = new FeatureExtraction(null, null, 6, 6, true);
-                            break;
+            //            case "keyboardr":
+            //                FeatureExtractionObj = new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.KeyboardR], 4, 7, true);
+            //                break;
 
-                        case 2:
-                            FeatureExtractionObj = new FeatureExtraction(null, null, 0, 5, false);
-                            break;
+            //            default:
+            //                FeatureExtractionObj = new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.KeyboardR], 4, 7, true);
+            //                break;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        switch (BCIActuatorSettings.Testing_TestID)
+            //        {
+            //            case 1:
+            //                FeatureExtractionObj = new FeatureExtraction(null, null, 6, 6, true);
+            //                break;
 
-                        case 3:
-                            FeatureExtractionObj = new FeatureExtraction(null, null, 0, 5, false);
-                            break;
+            //            case 2:
+            //                FeatureExtractionObj = new FeatureExtraction(null, null, 0, 5, false);
+            //                break;
 
-                        case 4:
-                            FeatureExtractionObj = new FeatureExtraction(null, null, 6, 6, true);
-                            break;
+            //            case 3:
+            //                FeatureExtractionObj = new FeatureExtraction(null, null, 0, 5, false);
+            //                break;
 
-                        case 5:
-                            FeatureExtractionObj = new FeatureExtraction(null, null, 4, 7, true);
-                            break;
+            //            case 4:
+            //                FeatureExtractionObj = new FeatureExtraction(null, null, 6, 6, true);
+            //                break;
 
-                        default:
-                            FeatureExtractionObj = new FeatureExtraction(null, null, 4, 7, true);
-                            break;
-                    }
-                }
+            //            case 5:
+            //                FeatureExtractionObj = new FeatureExtraction(null, null, 4, 7, true);
+            //                break;
 
-                Log.Debug(" Recalibrating file " + sessionID);
-                // Train classifiers
-                auc = FeatureExtractionObj.Learn(sessionID); // will return -1 if error when training classifiers
-                Log.Debug("Recalibrated with AUC: " + auc);
-            }
-            catch (Exception e)
-            {
-                Log.Debug(e.Message);
-            }
-            return auc;
+            //            default:
+            //                FeatureExtractionObj = new FeatureExtraction(null, null, 4, 7, true);
+            //                break;
+            //        }
+            //    }
+
+            //    Log.Debug(" Recalibrating file " + sessionID);
+            //    // Train classifiers
+            //    auc = FeatureExtractionObj.Learn(sessionID); // will return -1 if error when training classifiers
+            //    Log.Debug("Recalibrated with AUC: " + auc);
+            //}
+            //catch (Exception e)
+            //{
+            //    Log.Debug(e.Message);
+            //}
+            //return auc;
         }
 
         /// <summary>
@@ -1847,271 +1841,271 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <param name="request"></param>
         private void OnTypingRepetitionEnd(String request)
         {
-            bool decidedFlag = false;
-            int decidedButtonID = 3;
-            string decidedButtonLabel = "";
-            _isSessionInProgress = true;
+            //bool decidedFlag = false;
+            //int decidedButtonID = 3;
+            //string decidedButtonLabel = "";
+            //_isSessionInProgress = true;
 
-            BCIError error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
-            int repetition = 0;
-            bool returnToBoxScanningFlag = false;
-            bool eyesClosedDetected = false;
-            SignalStatus statusSignal = SignalStatus.SIGNAL_OK;
+            //BCIError error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
+            //int repetition = 0;
+            //bool returnToBoxScanningFlag = false;
+            //bool eyesClosedDetected = false;
+            //SignalStatus statusSignal = SignalStatus.SIGNAL_OK;
 
-            SortedDictionary<int, double> posteriorProbs = null;
-            Dictionary<int, double> eegProbs = null;
-            Dictionary<int, double> nextCharProbs = null;
-            Dictionary<int, double> posteriorProbsDict = null;
+            //SortedDictionary<int, double> posteriorProbs = null;
+            //Dictionary<int, double> eegProbs = null;
+            //Dictionary<int, double> nextCharProbs = null;
+            //Dictionary<int, double> posteriorProbsDict = null;
 
-            var bciTypingRepetitionEnd = JsonSerializer.Deserialize<BCITypingRepetitionEnd>(request);
-            BCIScanSections currentScanSection = bciTypingRepetitionEnd.ScanningSection;
-            Log.Debug("On typing Repetition end called for section: " + bciTypingRepetitionEnd.ScanningSection);
+            //var bciTypingRepetitionEnd = JsonSerializer.Deserialize<BCITypingRepetitionEnd>(request);
+            //BCIScanSections currentScanSection = bciTypingRepetitionEnd.ScanningSection;
+            //Log.Debug("On typing Repetition end called for section: " + bciTypingRepetitionEnd.ScanningSection);
 
-            if (useSensor)
-            {
-                try
-                {
-                    Thread.Sleep(BCIActuatorSettings.Settings.DAQ_DelayAfterTypingRepetition);
-                    if ( _device == Device.OPENBCI ? DAQ_OpenBCI.IsAcquiring() : _gtecDeviceTester.gTecBCI.IsAcquiring())
-                    {
-                        double[,] allSamples = _device == Device.OPENBCI ? DAQ_OpenBCI.GetData() : _gtecDeviceTester.gTecBCI.GetData();
+            //if (useSensor)
+            //{
+            //    try
+            //    {
+            //        Thread.Sleep(BCIActuatorSettings.DAQ_DelayAfterTypingRepetition);
+            //        if ( _device == Device.OPENBCI ? DAQ_OpenBCI.IsAcquiring() : _gtecDeviceTester.gTecBCI.IsAcquiring())
+            //        {
+            //            double[,] allSamples = _device == Device.OPENBCI ? DAQ_OpenBCI.GetData() : _gtecDeviceTester.gTecBCI.GetData();
 
-                        if (allSamples != null && allSamples.Length > 0)
-                        {
+            //            if (allSamples != null && allSamples.Length > 0)
+            //            {
                           
-                            // Fix for Problem 1: Initialize the variable 'overallStatus' with a default value.  
-                            SignalStatus overallStatus = SignalStatus.SIGNAL_ERROR;
+            //                // Fix for Problem 1: Initialize the variable 'overallStatus' with a default value.  
+            //                SignalStatus overallStatus = SignalStatus.SIGNAL_ERROR;
 
-                            // Fix for Problem 2: Declare 'signalStatus' before using it.  
-                            SignalStatus[] signalStatus;
+            //                // Fix for Problem 2: Declare 'signalStatus' before using it.  
+            //                SignalStatus[] signalStatus;
 
-                            // Fix for Problem 3 and Problem 4: Ensure 'signalStatus' is properly initialized by calling the appropriate method.  
-                            if (_device == Device.OPENBCI)
-                            {
-                                // Write marker values to file
-                                DAQ_OpenBCI.WriteMarkerValues2File(bciTypingRepetitionEnd.RowColumnIDs);
-                                overallStatus = DAQ_OpenBCI.GetStatus(out signalStatus, out SignalStatus opticalSensorStatus);
-                            }
-                            else
-                            {
-                                _gtecDeviceTester.gTecBCI.WriteMarkerValues2File(bciTypingRepetitionEnd.RowColumnIDs);
-                                overallStatus = _gtecDeviceTester.gTecBCI.GetStatus(out signalStatus);
-                            }
+            //                // Fix for Problem 3 and Problem 4: Ensure 'signalStatus' is properly initialized by calling the appropriate method.  
+            //                if (_device == Device.OPENBCI)
+            //                {
+            //                    // Write marker values to file
+            //                    DAQ_OpenBCI.WriteMarkerValues2File(bciTypingRepetitionEnd.RowColumnIDs);
+            //                    overallStatus = DAQ_OpenBCI.GetStatus(out signalStatus, out SignalStatus opticalSensorStatus);
+            //                }
+            //                else
+            //                {
+            //                    _gtecDeviceTester.gTecBCI.WriteMarkerValues2File(bciTypingRepetitionEnd.RowColumnIDs);
+            //                    overallStatus = _gtecDeviceTester.gTecBCI.GetStatus(out signalStatus);
+            //                }
 
-                            bool[] availableChannels = new bool[signalStatus.Length];
-                            int numKOChannels = 0;
-                            for (int channelIdx = 0; channelIdx < signalStatus.Length; channelIdx++)
-                            {
-                                switch (signalStatus[channelIdx])
-                                {
-                                    case SignalStatus.SIGNAL_KO:
-                                    case SignalStatus.SIGNAL_ERROR:
-                                        numKOChannels++;
-                                        availableChannels[channelIdx] = false;
-                                        break;
+            //                bool[] availableChannels = new bool[signalStatus.Length];
+            //                int numKOChannels = 0;
+            //                for (int channelIdx = 0; channelIdx < signalStatus.Length; channelIdx++)
+            //                {
+            //                    switch (signalStatus[channelIdx])
+            //                    {
+            //                        case SignalStatus.SIGNAL_KO:
+            //                        case SignalStatus.SIGNAL_ERROR:
+            //                            numKOChannels++;
+            //                            availableChannels[channelIdx] = false;
+            //                            break;
 
-                                    case SignalStatus.SIGNAL_OK:
-                                    case SignalStatus.SIGNAL_ACCEPTABLE:
-                                        availableChannels[channelIdx] = true;
-                                        break;
-                                }
-                            }
+            //                        case SignalStatus.SIGNAL_OK:
+            //                        case SignalStatus.SIGNAL_ACCEPTABLE:
+            //                            availableChannels[channelIdx] = true;
+            //                            break;
+            //                    }
+            //                }
 
-                            if (numKOChannels >= 3)
-                            {
-                                error = new BCIError(BCIErrorCodes.SensorError_BadSignalQuality, StringResources.SensorError);
-                                statusSignal = SignalStatus.SIGNAL_KO;
-                            }
+            //                if (numKOChannels >= 3)
+            //                {
+            //                    error = new BCIError(BCIErrorCodes.SensorError_BadSignalQuality, StringResources.SensorError);
+            //                    statusSignal = SignalStatus.SIGNAL_KO;
+            //                }
 
-                            if (!BCIActuatorSettings.Settings.DAQ_DisableChannelsAutomatically)
-                            {
-                                error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
+            //                if (!BCIActuatorSettings.DAQ_DisableChannelsAutomatically)
+            //                {
+            //                    error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
 
-                                availableChannels = new bool[] { BCIActuatorSettings.Settings.Classifier_EnableChannel1, BCIActuatorSettings.Settings.Classifier_EnableChannel2, BCIActuatorSettings.Settings.Classifier_EnableChannel3, BCIActuatorSettings.Settings.Classifier_EnableChannel4, BCIActuatorSettings.Settings.Classifier_EnableChannel5, BCIActuatorSettings.Settings.Classifier_EnableChannel6, BCIActuatorSettings.Settings.Classifier_EnableChannel7, BCIActuatorSettings.Settings.Classifier_EnableChannel8, BCIActuatorSettings.Settings.Classifier_EnableChannel9, BCIActuatorSettings.Settings.Classifier_EnableChannel10, BCIActuatorSettings.Settings.Classifier_EnableChannel11, BCIActuatorSettings.Settings.Classifier_EnableChannel12, BCIActuatorSettings.Settings.Classifier_EnableChannel13, BCIActuatorSettings.Settings.Classifier_EnableChannel14, BCIActuatorSettings.Settings.Classifier_EnableChannel15, BCIActuatorSettings.Settings.Classifier_EnableChannel16 };
+            //                    availableChannels = new bool[] { BCIActuatorSettings.Classifier_EnableChannel1, BCIActuatorSettings.Classifier_EnableChannel2, BCIActuatorSettings.Classifier_EnableChannel3, BCIActuatorSettings.Classifier_EnableChannel4, BCIActuatorSettings.Classifier_EnableChannel5, BCIActuatorSettings.Classifier_EnableChannel6, BCIActuatorSettings.Classifier_EnableChannel7, BCIActuatorSettings.Classifier_EnableChannel8, BCIActuatorSettings.Classifier_EnableChannel9, BCIActuatorSettings.Classifier_EnableChannel10, BCIActuatorSettings.Classifier_EnableChannel11, BCIActuatorSettings.Classifier_EnableChannel12, BCIActuatorSettings.Classifier_EnableChannel13, BCIActuatorSettings.Classifier_EnableChannel14, BCIActuatorSettings.Classifier_EnableChannel15, BCIActuatorSettings.Classifier_EnableChannel16 };
 
-                                //for (int channelIdx = 0; channelIdx < availableChannels.Length; channelIdx++)
-                                //    availableChannels[channelIdx] = true;
-                            }
+            //                    //for (int channelIdx = 0; channelIdx < availableChannels.Length; channelIdx++)
+            //                    //    availableChannels[channelIdx] = true;
+            //                }
 
-                            // Check if eyes open / closed
-                            eyesClosedDetected = DAQ_OpenBCI.DetectEyesClosed(out double[] alphaValues, out double avgAlpha, out double[] betaValues, out double avgBeta);
+            //                // Check if eyes open / closed
+            //                eyesClosedDetected = DAQ_OpenBCI.DetectEyesClosed(out double[] alphaValues, out double avgAlpha, out double[] betaValues, out double avgBeta);
 
-                            // Log values for eyes open /closed
-                            var bciLogEntry2 = new BCILogEntryEyesClosed(BCIActuatorSettings.Settings.EyesClosed_EnableDetection, DAQ_OpenBCI.GetEyesClosedThreshold(), eyesClosedDetected, alphaValues, betaValues, avgAlpha, avgBeta);
-                            var jsonString2 = JsonSerializer.Serialize(bciLogEntry2);
-                            AuditLog.Audit(new AuditEvent("BCIEyesClosed", jsonString2));
+            //                // Log values for eyes open /closed
+            //                var bciLogEntry2 = new BCILogEntryEyesClosed(BCIActuatorSettings.EyesClosed_EnableDetection, DAQ_OpenBCI.GetEyesClosedThreshold(), eyesClosedDetected, alphaValues, betaValues, avgAlpha, avgBeta);
+            //                var jsonString2 = JsonSerializer.Serialize(bciLogEntry2);
+            //                AuditLog.Audit(new AuditEvent("BCIEyesClosed", jsonString2));
 
-                            if (BCIActuatorSettings.Settings.EyesClosed_EnableDetection)
-                            {
-                                Log.Debug("Eyes closed detected");
-                                returnToBoxScanningFlag = eyesClosedDetected;
-                                if (eyesClosedDetected)
-                                {
-                                    EEGProcessingGlobals.RestartAllDecisionMakerProbabilities();
-                                    SoundManager.playSound(SoundManager.SoundType.OpenEyes);
-                                    Thread.Sleep(BCIActuatorSettings.Settings.EyesClosed_DelayToStartAnimationAfterDetection);
-                                }
-                            }
+            //                if (BCIActuatorSettings.EyesClosed_EnableDetection)
+            //                {
+            //                    Log.Debug("Eyes closed detected");
+            //                    returnToBoxScanningFlag = eyesClosedDetected;
+            //                    if (eyesClosedDetected)
+            //                    {
+            //                        EEGProcessingGlobals.RestartAllDecisionMakerProbabilities();
+            //                        SoundManager.playSound(SoundManager.SoundType.OpenEyes);
+            //                        Thread.Sleep(BCIActuatorSettings.EyesClosed_DelayToStartAnimationAfterDetection);
+            //                    }
+            //                }
 
-                            if (!returnToBoxScanningFlag)
-                            {
-                                // Reduce and compute posterior probabilities
-                                decidedButtonID = 0;
-                                decidedFlag = false;
-                                Log.Debug("Calculating posterior probabilities");
-                                EEGProcessingGlobals.DecisionMakerDict[currentScanSection].ComputePosteriorProbs(allSamples,
-                                                                     bciTypingRepetitionEnd.RowColumnIDs,
-                                                                     bciTypingRepetitionEnd.FlashingSequence,
-                                                                     availableChannels,
-                                                                     out decidedFlag,
-                                                                     out decidedButtonID,
-                                                                     out repetition,
-                                                                     out posteriorProbs,
-                                                                     out eegProbs,
-                                                                     out nextCharProbs);
+            //                if (!returnToBoxScanningFlag)
+            //                {
+            //                    // Reduce and compute posterior probabilities
+            //                    decidedButtonID = 0;
+            //                    decidedFlag = false;
+            //                    Log.Debug("Calculating posterior probabilities");
+            //                    EEGProcessingGlobals.DecisionMakerDict[currentScanSection].ComputePosteriorProbs(allSamples,
+            //                                                         bciTypingRepetitionEnd.RowColumnIDs,
+            //                                                         bciTypingRepetitionEnd.FlashingSequence,
+            //                                                         availableChannels,
+            //                                                         out decidedFlag,
+            //                                                         out decidedButtonID,
+            //                                                         out repetition,
+            //                                                         out posteriorProbs,
+            //                                                         out eegProbs,
+            //                                                         out nextCharProbs);
 
-                                // Save data for log
-                                if (posteriorProbs != null)
-                                    posteriorProbsDict = posteriorProbs.ToDictionary(x => x.Key, x => x.Value);
-                                if (bciTypingRepetitionEnd.ButtonTextValues.ContainsKey(decidedButtonID))
-                                    decidedButtonLabel = bciTypingRepetitionEnd.ButtonTextValues[decidedButtonID];
+            //                    // Save data for log
+            //                    if (posteriorProbs != null)
+            //                        posteriorProbsDict = posteriorProbs.ToDictionary(x => x.Key, x => x.Value);
+            //                    if (bciTypingRepetitionEnd.ButtonTextValues.ContainsKey(decidedButtonID))
+            //                        decidedButtonLabel = bciTypingRepetitionEnd.ButtonTextValues[decidedButtonID];
 
-                                // Calculate number of buttons highlighted. Those highlighted are shown in the flashingSequence
-                                // NOTE: Don't use buttontextvalues as some buttons might be displayed but not highlighted.
-                                List<int> buttonIds = new List<int>();
-                                foreach (int[] rowcolumn in bciTypingRepetitionEnd.FlashingSequence.Values)
-                                    foreach (int buttonId in rowcolumn)
-                                        if (!buttonIds.Contains(buttonId))
-                                            buttonIds.Add(buttonId);
+            //                    // Calculate number of buttons highlighted. Those highlighted are shown in the flashingSequence
+            //                    // NOTE: Don't use buttontextvalues as some buttons might be displayed but not highlighted.
+            //                    List<int> buttonIds = new List<int>();
+            //                    foreach (int[] rowcolumn in bciTypingRepetitionEnd.FlashingSequence.Values)
+            //                        foreach (int buttonId in rowcolumn)
+            //                            if (!buttonIds.Contains(buttonId))
+            //                                buttonIds.Add(buttonId);
 
-                                if (posteriorProbs == null || posteriorProbs.Count == 0)
-                                {
-                                    //error = new BCIError(BCIErrorCodes.TypingError_OnRepetitionEnd_NoProbabilitiesCalculated, BCIMessages.TypingError); // no probabilities returned. optical sensor dead?
-                                    Log.Debug("Probabilities not returned from DeicisionMaker");
-                                }
-                                else if (posteriorProbs.Count != buttonIds.Count)
-                                {
-                                    //  error = new BCIError(BCIErrorCodes.TypingError_OnRepetitionEnd_ProabilitiesMarkersMissmatch, BCIMessages.TypingError);
-                                    Log.Debug("Number of probabilities different than number of highlights. Num buttons: " + buttonIds.Count + " Num Probabilities: " + posteriorProbs.Count);
-                                }
+            //                    if (posteriorProbs == null || posteriorProbs.Count == 0)
+            //                    {
+            //                        //error = new BCIError(BCIErrorCodes.TypingError_OnRepetitionEnd_NoProbabilitiesCalculated, BCIMessages.TypingError); // no probabilities returned. optical sensor dead?
+            //                        Log.Debug("Probabilities not returned from DeicisionMaker");
+            //                    }
+            //                    else if (posteriorProbs.Count != buttonIds.Count)
+            //                    {
+            //                        //  error = new BCIError(BCIErrorCodes.TypingError_OnRepetitionEnd_ProabilitiesMarkersMissmatch, BCIMessages.TypingError);
+            //                        Log.Debug("Number of probabilities different than number of highlights. Num buttons: " + buttonIds.Count + " Num Probabilities: " + posteriorProbs.Count);
+            //                    }
 
-                                Log.Debug("Posterior probabilities calculated. Repetition: " + repetition + " Decided:" + decidedFlag + " DecisionLabel:" + decidedButtonLabel + " DecisionID: " + decidedButtonID + " Probabilities" + eegProbs.ToString());
-                            }
-                        }
-                        else
-                        {
-                            error = new BCIError(BCIErrorCodes.TypingError_OnRepetitionEnd_DataNotReceived, StringResources.TypingError); // no data received, send error
-                        }
-                    }
-                    else
-                    {
-                        error = new BCIError(BCIErrorCodes.TypingError_OnRepetitionEnd_SensorDisconected, StringResources.TypingError); // device not acquiring data. Start?
-                    }
-                }
-                catch (Exception e)
-                {
-                    error = new BCIError(BCIErrorCodes.TypingError_OnRepetitionEnd_UnknownException, StringResources.TypingError);// Error when processing data
-                    Log.Debug("Error: " + error.ErrorCode + " Message" + error.ErrorMessage + " Excepcion: " + e.Message);
-                }
+            //                    Log.Debug("Posterior probabilities calculated. Repetition: " + repetition + " Decided:" + decidedFlag + " DecisionLabel:" + decidedButtonLabel + " DecisionID: " + decidedButtonID + " Probabilities" + eegProbs.ToString());
+            //                }
+            //            }
+            //            else
+            //            {
+            //                error = new BCIError(BCIErrorCodes.TypingError_OnRepetitionEnd_DataNotReceived, StringResources.TypingError); // no data received, send error
+            //            }
+            //        }
+            //        else
+            //        {
+            //            error = new BCIError(BCIErrorCodes.TypingError_OnRepetitionEnd_SensorDisconected, StringResources.TypingError); // device not acquiring data. Start?
+            //        }
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        error = new BCIError(BCIErrorCodes.TypingError_OnRepetitionEnd_UnknownException, StringResources.TypingError);// Error when processing data
+            //        Log.Debug("Error: " + error.ErrorCode + " Message" + error.ErrorMessage + " Excepcion: " + e.Message);
+            //    }
 
-                // Display error on logs
-                if (error.ErrorCode != BCIErrorCodes.Status_Ok)
-                    Log.Debug("Error: " + error.ErrorCode + " Message" + error.ErrorMessage);
-            }
-            else
-            {
-                // Dummy sensor
-                Thread.Sleep(BCIActuatorSettings.Settings.DAQ_DelayAfterTypingRepetition); // To simulate the sensor behavior
+            //    // Display error on logs
+            //    if (error.ErrorCode != BCIErrorCodes.Status_Ok)
+            //        Log.Debug("Error: " + error.ErrorCode + " Message" + error.ErrorMessage);
+            //}
+            //else
+            //{
+            //    // Dummy sensor
+            //    Thread.Sleep(BCIActuatorSettings.DAQ_DelayAfterTypingRepetition); // To simulate the sensor behavior
 
-                /* Uncomment to test return to box scanning
-                Random rndReturnToBoxScanning = new Random();
-                if (rndReturnToBoxScanning.Next(1, 2) == 1) //1 of every 3 iterations (on average), will send decidedLabel = true;
-                    returnToBoxScanningFlag = false;
-                */
+            //    /* Uncomment to test return to box scanning
+            //    Random rndReturnToBoxScanning = new Random();
+            //    if (rndReturnToBoxScanning.Next(1, 2) == 1) //1 of every 3 iterations (on average), will send decidedLabel = true;
+            //        returnToBoxScanningFlag = false;
+            //    */
 
-                seqIdx++;
-                decidedFlag = false;
-                decidedButtonID = 1;
-                decidedButtonLabel = "a";
-                float prob = 0;
-                int decidedIdx;
-                Random rndprob = new Random();
-                posteriorProbs = new SortedDictionary<int, double>();
-                Random rndDecision = new Random();
-                Random rndDecisionID = new Random();
-                float totalProbs = 0;
-                foreach (int buttonID in bciTypingRepetitionEnd.FlashingSequence.Keys)
-                {
-                    if (!posteriorProbs.ContainsKey(buttonID))
-                    {
-                        prob = rndprob.Next(1, 10) * 0.1f;
-                        posteriorProbs.Add(buttonID, prob);
-                        totalProbs += prob;
-                    }
-                }
+            //    seqIdx++;
+            //    decidedFlag = false;
+            //    decidedButtonID = 1;
+            //    decidedButtonLabel = "a";
+            //    float prob = 0;
+            //    int decidedIdx;
+            //    Random rndprob = new Random();
+            //    posteriorProbs = new SortedDictionary<int, double>();
+            //    Random rndDecision = new Random();
+            //    Random rndDecisionID = new Random();
+            //    float totalProbs = 0;
+            //    foreach (int buttonID in bciTypingRepetitionEnd.FlashingSequence.Keys)
+            //    {
+            //        if (!posteriorProbs.ContainsKey(buttonID))
+            //        {
+            //            prob = rndprob.Next(1, 10) * 0.1f;
+            //            posteriorProbs.Add(buttonID, prob);
+            //            totalProbs += prob;
+            //        }
+            //    }
 
-                // Normalize probabilities
-                foreach (int buttonID in bciTypingRepetitionEnd.FlashingSequence.Keys)
-                    posteriorProbs[buttonID] = posteriorProbs[buttonID] / totalProbs;
+            //    // Normalize probabilities
+            //    foreach (int buttonID in bciTypingRepetitionEnd.FlashingSequence.Keys)
+            //        posteriorProbs[buttonID] = posteriorProbs[buttonID] / totalProbs;
 
-                if (BCIActuatorSettings.Settings.Classifier_MaxDecisionSequences >= 1) //Hack to make decision every maxDecisionSequences
-                {
-                    if (seqIdx == BCIActuatorSettings.Settings.Classifier_MaxDecisionSequences)
-                        decidedFlag = true;
-                }
-                else //make decision randomly
-                {
-                    if (rndDecision.Next(1, 4) == 1) //1 of every 4 iterations (on average), will send decidedLabel = true;
-                        decidedFlag = true;
-                }
+            //    if (BCIActuatorSettings.Classifier_MaxDecisionSequences >= 1) //Hack to make decision every maxDecisionSequences
+            //    {
+            //        if (seqIdx == BCIActuatorSettings.Classifier_MaxDecisionSequences)
+            //            decidedFlag = true;
+            //    }
+            //    else //make decision randomly
+            //    {
+            //        if (rndDecision.Next(1, 4) == 1) //1 of every 4 iterations (on average), will send decidedLabel = true;
+            //            decidedFlag = true;
+            //    }
 
-                if (decidedFlag)
-                {
-                    decidedIdx = rndDecisionID.Next(posteriorProbs.Keys.Count);
-                    decidedButtonID = posteriorProbs.Keys.ElementAt(decidedIdx);
-                    posteriorProbs[decidedButtonID] = rndprob.Next(1, 10) * 0.01f + 0.9;
-                    decidedButtonLabel = bciTypingRepetitionEnd.ButtonTextValues[decidedButtonID];
-                    seqIdx = 0;
-                }
+            //    if (decidedFlag)
+            //    {
+            //        decidedIdx = rndDecisionID.Next(posteriorProbs.Keys.Count);
+            //        decidedButtonID = posteriorProbs.Keys.ElementAt(decidedIdx);
+            //        posteriorProbs[decidedButtonID] = rndprob.Next(1, 10) * 0.01f + 0.9;
+            //        decidedButtonLabel = bciTypingRepetitionEnd.ButtonTextValues[decidedButtonID];
+            //        seqIdx = 0;
+            //    }
 
-                error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
-            }
+            //    error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
+            //}
 
-            if (onResumeFlagActivated)
-                error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
+            //if (onResumeFlagActivated)
+            //    error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
 
-            if (repetition == 1)
-            {
-                // Add log entry (only for the first repetition) for new scanning section
-                var bciScanningSectionStarted = new BCILogEntrNewScanningSectionStarted(bciTypingRepetitionEnd.ScanningSection.ToString(), bciTypingRepetitionEnd.ButtonTextValues, (EEGProcessingGlobals.DecisionMakerDict[currentScanSection].enableLanguageModelProbabilities && nextCharProbs != null));
-                var jsonString2 = JsonSerializer.Serialize(bciScanningSectionStarted);
-                AuditLog.Audit(new AuditEvent("BCIScanningSectionStarted", jsonString2));
-            }
+            //if (repetition == 1)
+            //{
+            //    // Add log entry (only for the first repetition) for new scanning section
+            //    var bciScanningSectionStarted = new BCILogEntrNewScanningSectionStarted(bciTypingRepetitionEnd.ScanningSection.ToString(), bciTypingRepetitionEnd.ButtonTextValues, (EEGProcessingGlobals.DecisionMakerDict[currentScanSection].enableLanguageModelProbabilities && nextCharProbs != null));
+            //    var jsonString2 = JsonSerializer.Serialize(bciScanningSectionStarted);
+            //    AuditLog.Audit(new AuditEvent("BCIScanningSectionStarted", jsonString2));
+            //}
 
-            // Log results
-            var bciLogEntry = new BCILogEntryTypingEnd(decidedButtonLabel, decidedButtonID, decidedFlag, repetition, bciTypingRepetitionEnd.ScanningSection.ToString(),
-                bciTypingRepetitionEnd.RowColumnIDs, bciTypingRepetitionEnd.FlashingSequence, nextCharProbs, eegProbs, posteriorProbsDict);
-            var jsonString = JsonSerializer.Serialize(bciLogEntry);
-            AuditLog.Audit(new AuditEvent("BCIRepetitionEnd", jsonString));
-            Log.Debug("Results: " + jsonString);
+            //// Log results
+            //var bciLogEntry = new BCILogEntryTypingEnd(decidedButtonLabel, decidedButtonID, decidedFlag, repetition, bciTypingRepetitionEnd.ScanningSection.ToString(),
+            //    bciTypingRepetitionEnd.RowColumnIDs, bciTypingRepetitionEnd.FlashingSequence, nextCharProbs, eegProbs, posteriorProbsDict);
+            //var jsonString = JsonSerializer.Serialize(bciLogEntry);
+            //AuditLog.Audit(new AuditEvent("BCIRepetitionEnd", jsonString));
+            //Log.Debug("Results: " + jsonString);
 
-            // Send results to application
-            var bciTypingRepetitionResult = new BCITypingRepetitionResult
-            {
-                ReturnToBoxScanningFlag = returnToBoxScanningFlag,
-                DecidedFlag = decidedFlag,
-                DecidedId = decidedButtonID,
-                Error = error,
-                StatusSignal = statusSignal,
-            };
+            //// Send results to application
+            //var bciTypingRepetitionResult = new BCITypingRepetitionResult
+            //{
+            //    ReturnToBoxScanningFlag = returnToBoxScanningFlag,
+            //    DecidedFlag = decidedFlag,
+            //    DecidedId = decidedButtonID,
+            //    Error = error,
+            //    StatusSignal = statusSignal,
+            //};
 
-            if (posteriorProbs != null)
-                bciTypingRepetitionResult.PosteriorProbs = posteriorProbs;
+            //if (posteriorProbs != null)
+            //    bciTypingRepetitionResult.PosteriorProbs = posteriorProbs;
 
-            var str = JsonSerializer.Serialize(bciTypingRepetitionResult);
-            Log.Debug("Sending response. Error: " + (BCIErrorCodes)error.ErrorCode + " | Decided:" + decidedFlag + "DecidedID:" + decidedButtonID + " ReturnToBoxScanning:" + returnToBoxScanningFlag + " StatusSignal: " + statusSignal);
-            SendIoctlResponse((int)OpCodes.TypingEndRepetitionResult, str);
-            Log.Debug("IoctRequest " + OpCodes.TypingEndRepetitionResult + " sent. Message: " + str);
+            //var str = JsonSerializer.Serialize(bciTypingRepetitionResult);
+            //Log.Debug("Sending response. Error: " + (BCIErrorCodes)error.ErrorCode + " | Decided:" + decidedFlag + "DecidedID:" + decidedButtonID + " ReturnToBoxScanning:" + returnToBoxScanningFlag + " StatusSignal: " + statusSignal);
+            //SendIoctlResponse((int)OpCodes.TypingEndRepetitionResult, str);
+            //Log.Debug("IoctRequest " + OpCodes.TypingEndRepetitionResult + " sent. Message: " + str);
         }
 
         /// <summary>
@@ -2173,16 +2167,14 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// </summary>
         private void TestBCIDevices()
         {
-            _bciDeviceTester = new OpenBCIDeviceTester();
-            _bciDeviceTester.EvtBCIDeviceTestingCompleted += bciDeviceTestingCompleted;
-            _bciDeviceTester.initialize();
+            //_bciDeviceTester.EvtBCIDeviceTestingCompleted += bciDeviceTestingCompleted;
+            //_bciDeviceTester.initialize();
         }
 
         private void TestGtecDevice()
         {
-            _gtecDeviceTester = new GTecDeviceTester();
-            _gtecDeviceTester.EvtBCIDeviceTestingCompleted += bciDeviceTestingCompleted;
-            _gtecDeviceTester.initialize();
+            //_gtecDeviceTester.EvtBCIDeviceTestingCompleted += bciDeviceTestingCompleted;
+            //_gtecDeviceTester.initialize();
         }
 
         /// <summary>
@@ -2193,33 +2185,33 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         {
             actuatorState = State.Stopped;
 
-            if (_device == Device.OPENBCI)
-            {
-                DAQ_OpenBCI.Stop();
-            } else
-            {
-                if(_gtecDeviceTester?.gTecBCI != null)
-                {
-                    _gtecDeviceTester.gTecBCI.Stop();
-                }
-            }
+            //if (_device == Device.OPENBCI)
+            //{
+            //    DAQ_OpenBCI.Stop();
+            //} else
+            //{
+            //    if(_gtecDeviceTester?.gTecBCI != null)
+            //    {
+            //        _gtecDeviceTester.gTecBCI.Stop();
+            //    }
+            //}
 
-            if (_device == Device.OPENBCI)
-            {
-                try
-                {
-                    //#if OPTICAL_SENSOR
-                    if (OpticalSensorComm.IsConnected())
-                    {
-                        OpticalSensorComm.StopStreaming();
-                        OpticalSensorComm.Close();
-                    }
-                    //#endif
-                }
-                catch
-                {
-                }
-            }
+            //if (_device == Device.OPENBCI)
+            //{
+            //    try
+            //    {
+            //        //#if OPTICAL_SENSOR
+            //        if (OpticalSensorComm.IsConnected())
+            //        {
+            //            OpticalSensorComm.StopStreaming();
+            //            OpticalSensorComm.Close();
+            //        }
+            //        //#endif
+            //    }
+            //    catch
+            //    {
+            //    }
+            //}
         }
 
         /// <summary>
@@ -2227,16 +2219,16 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// </summary>
         private void showDisclaimer()
         {
-            if (!BCIActuatorSettings.Settings.ShowDisclaimerOnStartup)
-            {
-                return;
-            }
+            //if (!BCIActuatorSettings.ShowDisclaimerOnStartup)
+            //{
+            //    return;
+            //}
 
-            if (DisclaimerDialog.ShowDialog(StringResources.DisclaimerBCI, null, true))
-            {
-                BCIActuatorSettings.Settings.ShowDisclaimerOnStartup = false;
-                BCIActuatorSettings.Settings.Save();
-            }
+            //if (DisclaimerDialog.ShowDialog(StringResources.DisclaimerBCI, null, true))
+            //{
+            //    BCIActuatorSettings.ShowDisclaimerOnStartup = false;
+            //    BCIActuatorSettings.Save();
+            //}
         }
     }
 }

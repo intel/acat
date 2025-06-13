@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Utility;
+using ACAT.Lib.Core.PreferencesManagement;
 using ACAT.Lib.Core.WidgetManagement;
 using System;
 using System.Drawing;

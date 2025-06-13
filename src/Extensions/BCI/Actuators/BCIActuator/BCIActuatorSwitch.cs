@@ -29,7 +29,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
     /// SwtichConfigMap.xml and Actuators.xml.   Refer to
     /// the ACAT Developers Guide for details on these files.
     /// </summary>
-    public class SampleActuatorSwitch : ActuatorSwitchBase
+    public class BCIActuatorSwitch : ActuatorSwitchBase
     {
         /// <summary>
         /// Has this object been disposed?
@@ -39,7 +39,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <summary>
         /// Initializes a new instance of the class
         /// </summary>
-        public SampleActuatorSwitch()
+        public BCIActuatorSwitch()
         {
         }
 
@@ -48,7 +48,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// members over from switchObj
         /// </summary>
         /// <param name="switchObj">Switch object to clone</param>
-        public SampleActuatorSwitch(IActuatorSwitch switchObj)
+        public BCIActuatorSwitch(IActuatorSwitch switchObj)
             : base(switchObj)
         {
         }

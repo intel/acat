@@ -15,49 +15,13 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
     internal delegate void ActuatorSwitchEvent(object sender, InputSensorSwitchEventArgs e);
 
     /// <summary>
-    /// This is a sample sensor class.  This is the one that interacts
-    /// with the sensor hardware, detects switch actuations and triggers.
-    /// It then raises events indicating the type of switch activity.
-    /// An example would be a camera sensor that detects facial gestures.
-    /// It could detect multiple gestures such as a mouth twitch,
-    /// cheek twitch, eyebrow raise, smile, frown etc and raise events
-    /// indicating which type of gesture was detected.  
-    /// Gestures can be mapped to actions.  The default gesture is a
-    /// switch activation which selects the currently highlighted
-    /// element in a swtich scanning interface.
-    /// Each Gesture is treated as an actuator switch.  This is 
-    /// analogous to assigning keyboard hot keys to actions.  Each
-    /// hotkey can be treated as a switch, which when activated, 
-    /// executes the assigned action.
-    /// Mapping of switches to actions is done through two 
-    /// actuator configuration files - Actuators.xml and SwitchConfigMap.xml.
-    /// Refer to the ACAT Developer's Guide for details on these two files.
-    /// 
-    /// A Note about switch activity events:
-    /// 
-    /// Some sensors have the ability to detect a swtich-down and
-    /// switch-up events, and some have the ability to just detect
-    /// when a swtich was triggered. If your sensor is able to
-    /// detect all three types of events, you must choose which ones
-    /// you want to use.  You can't use all three.  You can eiter 
-    /// choose to notify ACAT about:
-    /// a) A swtich-down event followed by a swtich-up event
-    ///       OR
-    /// b) A switch trigger event.
-    /// 
-    /// Do NOT do both a) and b).
-    /// 
-    /// So in this class, you must either call:
-    /// a) notifySensorActivate() followed by notifySensorDectivate
-    ///        OR
-    /// b) notifySensorTrigger()
     /// </summary>
-    internal class InputSensor
+    internal class BCIInputSensor
     {
         /// <summary>
         /// Initializes an instance of the class
         /// </summary>
-        public InputSensor()
+        public BCIInputSensor()
         {
         }
 

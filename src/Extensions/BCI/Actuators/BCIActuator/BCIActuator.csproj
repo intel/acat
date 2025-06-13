@@ -87,10 +87,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BCIActuator.cs" />
-    <Compile Include="InputSensor.cs" />
+    <Compile Include="BCIInputSensor.cs" />
     <Compile Include="InputSensorSwitchEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SampleActuatorSwitch.cs" />
+    <Compile Include="BCIActuatorSwitch.cs" />
     <Compile Include="UserControlBCIBoardSelection.cs">
       <SubType>Form</SubType>
     </Compile>

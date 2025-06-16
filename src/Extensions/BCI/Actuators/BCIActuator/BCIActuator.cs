@@ -1338,12 +1338,13 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                             sensorError = new BCIError(BCIErrorCodes.SensorError_DataNotReceived, BCIMessages.SensorError);
                         else
                         {
-                            // Write marker values to file
-                            DAQ_OpenBCI.WriteMarkerValues2File(bciCalibrationInput.RowColumnIDs);
-
+                            
                             // Get signal status
                             if (_device == Device.OPENBCI)
                             {
+                                // Write marker values to file
+                                DAQ_OpenBCI.WriteMarkerValues2File(bciCalibrationInput.RowColumnIDs);
+
                                 var overallStatus = DAQ_OpenBCI.GetStatus(out SignalStatus[] signalStatus, out SignalStatus opticalSensorStatus);
                                 if (overallStatus == SignalStatus.SIGNAL_OK)
                                     statusSignal = SignalStatus.SIGNAL_OK;
@@ -1379,6 +1380,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                             else
                             {
                                 //TODO Need to add log for Gtec Device as well!
+                                _gtecDeviceTester.gTecBCI.WriteMarkerValues2File(bciCalibrationInput.RowColumnIDs);
                             }
                      
                         }

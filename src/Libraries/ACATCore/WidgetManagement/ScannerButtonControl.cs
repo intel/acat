@@ -27,6 +27,11 @@ namespace ACAT.Lib.Core.WidgetManagement
             this.EnabledChanged += ScannerButtonControl_EnabledChanged;
         }
 
+        public ScannerButtonControl(string name): this()
+        {
+            Name = name;
+        }
+
         private void ScannerButtonControl_EnabledChanged(object sender, System.EventArgs e)
         {
             if (Image != null && grayscale != null)

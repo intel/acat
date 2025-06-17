@@ -9,6 +9,7 @@ using ACAT.Lib.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -280,22 +281,46 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// </summary>
         private static void loadWidgetTypeCollection(IEnumerable<String> extensionDirs)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            _widgetTypeCollection = new List<String>();
-            var types = assembly.GetTypes();
-            foreach (var type in types)
+            foreach (var dllPath in Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll", SearchOption.AllDirectories))
             {
-                if (typeof(Widget).IsAssignableFrom(type))
+                var isLoaded = AppDomain.CurrentDomain.GetAssemblies()
+                    .Where(a => !a.IsDynamic && !string.IsNullOrEmpty(a.Location))
+                    .Any(a => string.Equals(Path.GetFullPath(a.Location), Path.GetFullPath(dllPath), StringComparison.OrdinalIgnoreCase));
+
+                if (!isLoaded)
                 {
-                    _widgetTypeCollection.Add(type.FullName);
+                    try
+                    {
+                        Assembly.LoadFrom(dllPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log or handle if the assembly fails to load
+                        Console.WriteLine($"Failed to load {dllPath}: {ex.Message}");
+                    }
                 }
             }
 
-            foreach (var dir in extensionDirs)
-            {
-                var targetDir = dir + "\\Widgets";
-                load(targetDir);
-            }
+
+            _widgetTypeCollection = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(assembly =>
+                {
+                    try
+                    {
+                        return assembly.GetTypes();
+                    }
+                    catch (ReflectionTypeLoadException ex)
+                    {
+                        // Fallback for partially loaded assemblies (e.g., missing dependencies)
+                        return ex.Types.Where(t => t != null)!;
+                    }
+                })
+                .Where(t => typeof(Widget).IsAssignableFrom(t) &&
+                            !t.IsAbstract &&
+                            t.FullName != null)
+                .Select(t => t.FullName!)
+                .Distinct() // Optional: Avoid duplicates
+                .ToList();
         }
 
         /// <summary>

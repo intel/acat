@@ -60,10 +60,10 @@
     <UseWinFormsOutOfProcDesigner>True</UseWinFormsOutOfProcDesigner>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)Libraries\ACATCore\Core.csproj">
+    <ProjectReference Include="C:\Users\mbeale\source\repos\acat\src\Libraries\ACATCore\Core.csproj">
       <Project>{827ad764-63dd-4b12-974d-2b70cc877051}</Project>
       <Name>Core</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="$(SolutionDir)Libraries\ACATExtension\Extension.csproj">
       <Project>{17feda57-1f08-4e19-9dc3-a2c00ec792a3}</Project>
@@ -75,6 +75,12 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CursorNavigationScanner.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CursorNavigationScanner.Designer.cs">
+      <DependentUpon>CursorNavigationScanner.cs</DependentUpon>
+    </Compile>
     <Compile Include="WordPredictionSetModeScanner.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -115,6 +121,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="YesNoScanner.resx">
       <DependentUpon>YesNoScanner.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CursorNavigationScanner.resx">
+      <DependentUpon>CursorNavigationScanner.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

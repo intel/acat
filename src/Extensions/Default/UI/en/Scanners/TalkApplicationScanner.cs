@@ -1,8 +1,5 @@
-﻿////////////////////////////////////////////////////////////////////////////
-//
-// Copyright 2013-2019; 2023 Intel Corporation
+﻿// Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
-//
 //
 // TalkApplicationScanner.cs
 //
@@ -11,8 +8,6 @@
 // and the keyboard.
 // It also handles commands associated with keys such as Undo, Backspace,
 // text navigation etc.
-//
-////////////////////////////////////////////////////////////////////////////
 
 using ACATResources;
 using ACAT.Lib.Core.AgentManagement;
@@ -20,18 +15,18 @@ using ACAT.Lib.Core.Audit;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
 using ACAT.Lib.Core.ThemeManagement;
-using ACAT.Lib.Core.TTSManagement;
-using ACAT.Lib.Core.UserControlManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WidgetManagement;
-using ACAT.Lib.Core.WordPredictionManagement;
 using ACAT.Lib.Extension;
 using ACAT.Lib.Extension.CommandHandlers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Permissions;
 using System.Windows.Forms;
+using ACAT.Lib.Core.TTSManagement;
+using ACAT.Lib.Core.UserControlManagement;
+using ACAT.Lib.Core.WordPredictionManagement;
+using System.Linq;
 
 namespace ACAT.Extensions.Default.UI.Scanners
 {
@@ -53,7 +48,7 @@ namespace ACAT.Extensions.Default.UI.Scanners
         /// The AlphabetScannerCommon object. Has a number of
         /// helper functions
         /// </summary>
-        private readonly ScannerCommon2 _scannerCommon;
+        private readonly ScannerCommon _scannerCommon;
 
         /// <summary>
         /// Should the scanner be dimmed
@@ -85,7 +80,7 @@ namespace ACAT.Extensions.Default.UI.Scanners
         /// </summary>
         public TalkApplicationScanner()
         {
-            _scannerCommon = new ScannerCommon2(this);
+            _scannerCommon = new ScannerCommon(this);
 
             InitializeComponent();
 
@@ -134,15 +129,10 @@ namespace ACAT.Extensions.Default.UI.Scanners
         public IPanelCommon PanelCommon
         { get { return _scannerCommon; } }
 
-        public ScannerCommon ScannerCommon
-        {
-            get { return null; }
-        }
-
         /// <summary>
         /// Gets the scanner common object
         /// </summary>
-        public ScannerCommon2 ScannerCommon2
+        public ScannerCommon ScannerCommon
         {
             get { return _scannerCommon; }
         }
@@ -152,7 +142,7 @@ namespace ACAT.Extensions.Default.UI.Scanners
         /// </summary>
         public ScannerStatusBar ScannerStatusBar
         {
-            get { return ScannerCommon2.StatusBar; }
+            get { return ScannerCommon.StatusBar; }
         }
 
         /// <summary>
@@ -307,8 +297,8 @@ namespace ACAT.Extensions.Default.UI.Scanners
 
             Log.Debug("CALIBTEST calling scannercommon2.pause");
             _scannerCommon.OnPause(_dimScanner ?
-                                ScannerCommon2.PauseDisplayMode.FadeScanner :
-                                ScannerCommon2.PauseDisplayMode.None);
+                                ScannerCommon.PauseDisplayMode.FadeScanner :
+                                ScannerCommon.PauseDisplayMode.None);
 
             if (panelTextBox.Controls.Count > 0)
             {

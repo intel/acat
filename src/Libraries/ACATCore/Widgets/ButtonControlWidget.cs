@@ -48,6 +48,22 @@ namespace ACAT.Lib.Core.Widgets
             }
         }
 
+        public ButtonControlWidget(
+        Control uiControl,
+        string name,
+        string label,
+        string command,
+        string fontname,
+        int fontsize,
+        bool bold) : this(uiControl)
+        {
+
+            uiControl.Name = name;
+            uiControl.Text = label;
+            uiControl.Font = new Font(fontname, fontsize, bold ? FontStyle.Bold : FontStyle.Regular);
+            //uiControl.Click += (sender, e) => WidgetManager.Instance.ExecuteCommand(command);
+        }
+
         /// <summary>
         /// Set the font specified in the attribute object and also set
         /// the text for the Button

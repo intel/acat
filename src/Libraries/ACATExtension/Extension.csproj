@@ -272,6 +272,9 @@
     <EmbeddedResource Include="UI\HorizontalStripScanner2.resx">
       <DependentUpon>HorizontalStripScanner2.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\MenuPanel.resx">
+      <DependentUpon>MenuPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\ScanTimeAdjustForm.resx">
       <DependentUpon>ScanTimeAdjustForm.cs</DependentUpon>
       <Generator>ResXFileCodeGeneratorEx</Generator>

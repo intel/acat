@@ -64,7 +64,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// The AlphabetScannerCommon object. Has a number of
         /// helper functions
         /// </summary>
-        private readonly ScannerCommon2 _scannerCommon;
+        private readonly ScannerCommon _scannerCommon;
 
         /// <summary>
         /// Main object of the actuator
@@ -183,7 +183,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// </summary>
         public TalkApplicationBCIScanner()
         {
-            _scannerCommon = new ScannerCommon2(this);
+            _scannerCommon = new ScannerCommon(this);
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
             SubscribeToEvents();
@@ -252,15 +252,10 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// </summary>
         public IPanelCommon PanelCommon { get { return _scannerCommon; } }
 
-        public ScannerCommon ScannerCommon
-        {
-            get { return null; }
-        }
-
         /// <summary>
         /// Gets the scanner common object
         /// </summary>
-        public ScannerCommon2 ScannerCommon2
+        public ScannerCommon ScannerCommon
         {
             get { return _scannerCommon; }
         }
@@ -269,7 +264,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// </summary>
         public ScannerStatusBar ScannerStatusBar
         {
-            get { return ScannerCommon2.StatusBar; }
+            get { return ScannerCommon.StatusBar; }
         }
 
         /// <summary>
@@ -531,8 +526,8 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             _windowActiveWatchdog?.Pause();
             _scannerCommon.UserControlManager.OnPause();
             _scannerCommon.OnPause(_dimScanner ?
-                                ScannerCommon2.PauseDisplayMode.FadeScanner :
-                                ScannerCommon2.PauseDisplayMode.None);
+                                ScannerCommon.PauseDisplayMode.FadeScanner :
+                                ScannerCommon.PauseDisplayMode.None);
             if (panelTextbox.Controls.Count > 0 && panelTextbox.Controls[0] is ITalkWindowTextBox)
             {
                 ITalkWindowTextBox tb = panelTextbox.Controls[0] as ITalkWindowTextBox;

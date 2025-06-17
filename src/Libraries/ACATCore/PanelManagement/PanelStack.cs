@@ -8,6 +8,7 @@
 using ACAT.Lib.Core.Audit;
 using ACAT.Lib.Core.Utility;
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Automation;
 using System.Windows.Forms;
@@ -607,73 +608,117 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="winHandle">target window handle</param>
         /// <param name="focusedElement">Target focused element</param>
         /// <returns></returns>
+        /// 
         private Form createPanel(
-                        String panelClass,
-                        String panelTitle,
-                        Type type,
-                        IntPtr winHandle,
-                        AutomationElement focusedElement)
+            string panelClass,
+            string panelTitle,
+            Type type,
+            IntPtr winHandle,
+            AutomationElement focusedElement)
         {
-            Form retVal = null;
-            Log.Debug("***  panelClass: [" + panelClass + "], panel: [" + type.FullName + "]" +
-                        " title: [" + (panelTitle ?? "null") + "]");
-            try
+            Log.Debug($"*** panelClass: [{panelClass}], panel: [{type.FullName}] title: [{panelTitle ?? "null"}]");
+
+            var constructorArgSets = new object[][]
             {
-                Type[] types = { typeof(String) };
-                ConstructorInfo info = type.GetConstructor(types);
-                Object obj;
+                new object[] { panelClass },
+                new object[] { panelClass, winHandle },
+                new object[] { panelClass, panelTitle },
+                new object[] { panelClass, winHandle, focusedElement },
+                new object[] { } // for backward compatibility
+            };
 
-                if (info != null)
+            foreach (var args in constructorArgSets)
+            {
+                try
                 {
-                    obj = Activator.CreateInstance(type, panelClass);
-                }
-                else
-                {
-                    types = new[] { typeof(String), typeof(IntPtr) };
-                    info = type.GetConstructor(types);
+                    var argTypes = Array.ConvertAll(args, a => a?.GetType() ?? typeof(object));
+                    var ctor = type.GetConstructor(argTypes);
 
-                    if (info != null)
+                    if (ctor != null)
                     {
-                        obj = Activator.CreateInstance(type, panelClass, winHandle);
-                    }
-                    else
-                    {
-                        types = new[] { typeof(String), typeof(String) };
-                        info = type.GetConstructor(types);
-                        if (info != null)
-                        {
-                            obj = Activator.CreateInstance(type, panelClass, panelTitle);
-                        }
-                        else
-                        {
-                            types = new[] { typeof(String), typeof(IntPtr), typeof(AutomationElement) };
-                            info = type.GetConstructor(types);
-                            if (info != null)
-                            {
-                                obj = Activator.CreateInstance(type, panelClass, winHandle, focusedElement);
-                            }
-                            else
-                            {
-                                Log.Debug("Creating " + type + " with default constructor");
-                                obj = Activator.CreateInstance(type);
-                            }
-                        }
+                        var obj = ctor.Invoke(args);
+                        if (obj is Form form)
+                            return form;
                     }
                 }
 
-                if (obj is Form)
+                catch (Exception ex)
                 {
-                    retVal = obj as Form;
+                    Log.Debug($"Constructor failed with args ({string.Join(", ", args.Select(a => a?.ToString() ?? "null"))}): {ex}");
                 }
             }
-            catch (Exception ex)
-            {
-                Log.Debug(ex.ToString());
-                retVal = null;
-            }
 
-            return retVal;
+            Log.Debug($"No suitable constructor found for {type.FullName}");
+            return null;
         }
+
+        //private Form createPanel(
+        //                String panelClass,
+        //                String panelTitle,
+        //                Type type,
+        //                IntPtr winHandle,
+        //                AutomationElement focusedElement)
+        //{
+        //    Form retVal = null;
+        //    Log.Debug("***  panelClass: [" + panelClass + "], panel: [" + type.FullName + "]" +
+        //                " title: [" + (panelTitle ?? "null") + "]");
+        //    try
+        //    {
+        //        Type[] types = { typeof(String) };
+        //        ConstructorInfo info = type.GetConstructor(types);
+        //        Object obj;
+
+        //        if (info != null)
+        //        {
+        //            obj = Activator.CreateInstance(type, panelClass);
+        //        }
+        //        else
+        //        {
+        //            types = new[] { typeof(String), typeof(IntPtr) };
+        //            info = type.GetConstructor(types);
+
+        //            if (info != null)
+        //            {
+        //                obj = Activator.CreateInstance(type, panelClass, winHandle);
+        //            }
+        //            else
+        //            {
+        //                types = new[] { typeof(String), typeof(String) };
+        //                info = type.GetConstructor(types);
+        //                if (info != null)
+        //                {
+        //                    obj = Activator.CreateInstance(type, panelClass, panelTitle);
+        //                }
+        //                else
+        //                {
+        //                    types = new[] { typeof(String), typeof(IntPtr), typeof(AutomationElement) };
+        //                    info = type.GetConstructor(types);
+        //                    if (info != null)
+        //                    {
+        //                        obj = Activator.CreateInstance(type, panelClass, winHandle, focusedElement);
+        //                    }
+        //                    else
+        //                    {
+        //                        Log.Debug("Creating " + type + " with default constructor");
+        //                        obj = Activator.CreateInstance(type);
+        //                    }
+        //                }
+        //            }
+        //        }
+
+        //        if (obj is Form)
+        //        {
+        //            retVal = obj as Form;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Log.Debug(ex.ToString());
+        //        retVal = null;
+        //    }
+
+        //    return retVal;
+        //}
 
         /// <summary>
         /// Initialzies the specified scanner panel
@@ -692,7 +737,7 @@ namespace ACAT.Lib.Core.PanelManagement
 
             var panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(arg.PanelClass);
 
-            Log.Debug("panelClass:  " + arg.PanelClass + ", ConfigFIle: " + ((panelConfigMapEntry != null) ? panelConfigMapEntry.ConfigFileName : String.Empty));
+            Log.Debug("panelClass:  " + arg.PanelClass + ", ConfigFile: " + ((panelConfigMapEntry != null) ? panelConfigMapEntry.ConfigFileName : String.Empty));
             return scannerPanel.Initialize(startupArg);
         }
 

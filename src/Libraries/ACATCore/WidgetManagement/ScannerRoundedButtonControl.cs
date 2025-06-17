@@ -38,6 +38,20 @@ namespace ACAT.Lib.Core.WidgetManagement
             this.EnabledChanged += ScannerButtonControl_EnabledChanged;
         }
 
+        public ScannerRoundedButtonControl(
+            string name, 
+            string label, 
+            string command, 
+            string fontname, 
+            int fontsize,
+            bool bold) : this()
+        {
+            
+            this.Name = name;
+            this.Text = label;
+            this.Font = new Font(fontname, fontsize, bold ? FontStyle.Bold : FontStyle.Regular);
+        }
+
         /// <summary>
         /// Button property category
         /// </summary>

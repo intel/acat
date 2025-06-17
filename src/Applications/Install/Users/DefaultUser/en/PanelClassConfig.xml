@@ -50,5 +50,26 @@
         </PanelClassConfigMap>
       </PanelClassConfigMaps>
     </PanelClassConfig>
+    <PanelClassConfig>
+      <AppDescription>Mouse Control App</AppDescription>
+      <AppId>ACATApp</AppId>
+      <AppName>ACAT App</AppName>
+      <PanelClassConfigMaps>
+        <PanelClassConfigMap>
+          <Default>true</Default>
+          <Description>Toolbar with buttons to help move and interact with the system mouse</Description>
+          <Name>Mouse</Name>
+          <ScreenshotFileName>ABCKeyboardLayout.png</ScreenshotFileName>
+          <DisplayNameShort>Mouse</DisplayNameShort>
+          <DisplayNameLong>Mouse</DisplayNameLong>
+          <PanelClassConfigMapEntries>
+            <PanelClassConfigMapEntry>
+              <ConfigId>3BFBA375-13F7-461B-A7C7-57BFFA9D21AD</ConfigId>
+              <PanelClass>MouseScanner</PanelClass>
+            </PanelClassConfigMapEntry>
+          </PanelClassConfigMapEntries>
+        </PanelClassConfigMap>
+      </PanelClassConfigMaps>
+    </PanelClassConfig>
   </PanelClassConfigs>
 </AppPanelClassConfig>

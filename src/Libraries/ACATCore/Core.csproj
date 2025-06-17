@@ -30,7 +30,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
@@ -214,8 +214,6 @@
     <Compile Include="Onboarding\OnboardingSequence.cs" />
     <Compile Include="Onboarding\OnboardingSequenceItem.cs" />
     <Compile Include="Onboarding\OnboardingWizard.cs" />
-    <Compile Include="PanelManagement\Common\ScannerCommon2.cs" />
-    <Compile Include="PanelManagement\Common\ScannerPositionSizeController2.cs" />
     <Compile Include="PanelManagement\PanelConfigMap\AppPanelClassConfig.cs" />
     <Compile Include="PanelManagement\PanelConfigMap\PanelClassConfig.cs" />
     <Compile Include="PanelManagement\PanelConfigMap\PanelClassConfigMap.cs" />
@@ -441,6 +439,10 @@
     <Compile Include="Utility\KeyValuePairs.cs" />
     <Compile Include="Utility\LanguageSettings.cs" />
     <Compile Include="Utility\MicroSecondTimer.cs" />
+    <Compile Include="Utility\Mouse\GridMouseMover.cs" />
+    <Compile Include="Utility\Mouse\MouseGridScanWindow.xaml.cs">
+      <DependentUpon>MouseGridScanWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility\NamedPipe\MessageReceivedArgs.cs" />
     <Compile Include="Utility\NamedPipe\PipeClient.cs" />
     <Compile Include="Utility\NamedPipe\PipeClientState.cs" />
@@ -529,6 +531,7 @@
     <Compile Include="WidgetManagement\WidgetEventArg.cs" />
     <Compile Include="WidgetManagement\WidgetFinder.cs" />
     <Compile Include="WidgetManagement\WidgetManager.cs" />
+    <Compile Include="Widgets\ACATFlowLayoutPanel.cs" />
     <Compile Include="Widgets\BoxWidget.cs" />
     <Compile Include="Widgets\ButtonControlWidget.cs" />
     <Compile Include="Widgets\ButtonWidgetBase.cs" />
@@ -544,6 +547,7 @@
     <Compile Include="Widgets\ScannerButton.cs" />
     <Compile Include="Widgets\ScannerButtonBase.cs" />
     <Compile Include="Widgets\SliderWidget.cs" />
+    <Compile Include="Widgets\ACATTableLayoutPanel.cs" />
     <Compile Include="Widgets\TabStopScannerButton.cs" />
     <Compile Include="Widgets\TextBoxWidget.cs" />
     <Compile Include="Widgets\CheckBoxWidget.cs" />
@@ -678,12 +682,15 @@
     <EmbeddedResource Include="MouseCursor.png" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="UIAutomationClient" />
     <Reference Include="UIAutomationProvider" />
@@ -703,6 +710,12 @@
       <Project>{a0990d4e-f25b-430c-bda3-40a72560b877}</Project>
       <Name>ACATResources</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Utility\Mouse\MouseGridScanWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -49,13 +49,7 @@ namespace ACAT.Extensions.Default.UI.Scanners.UserControls
             get { return _keyboardCommon.SyncObj; }
         }
 
-        public IUserControlCommon UserControlCommon
-        {
-            get
-            {
-                return _keyboardCommon;
-            }
-        }
+        public IUserControlCommon UserControlCommon => _keyboardCommon;
 
         public bool Initialize(UserControlConfigMapEntry mapEntry, TextController textController, IScannerPanel scanner)
         {

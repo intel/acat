@@ -39,7 +39,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         ScannerPositionSizeController PositionSizeController { get; }
 
-        ScannerPositionSizeController2 PositionSizeController2 { get; }
+        //ScannerPositionSizeController2 PositionSizeController2 { get; }
 
         /// <summary>
         /// Gets the widget that reprensents the form

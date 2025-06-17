@@ -111,6 +111,7 @@ namespace ACAT.Lib.Core.PanelManagement
             PerfMon = 128,
             NoUI = 256,
             NoActuator = 512,
+            MouseScanner = 1024,
             All = 0xffff
         }
 

@@ -133,10 +133,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// Gets the object that manages the size and position
         /// of the panel
         /// </summary>
-        public ScannerPositionSizeController PositionSizeController
-        { get { return null; } }
-
-        public ScannerPositionSizeController2 PositionSizeController2 { get; }
+        public ScannerPositionSizeController PositionSizeController2 { get; }
 
         /// <summary>
         /// Gets the widget that reprensents the form
@@ -157,6 +154,8 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public WidgetManager WidgetManager
         { get { return _widgetManager; } }
+
+        public ScannerPositionSizeController PositionSizeController => throw new NotImplementedException();
 
         /// <summary>
         /// Sets the style of the form.  No sys menu

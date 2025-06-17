@@ -33,7 +33,7 @@ namespace ACAT.Lib.Extension
         /// The AlphabetScannerCommon object. Has a number of
         /// helper functions
         /// </summary>
-        private readonly ScannerCommon2 _scannerCommon;
+        private readonly ScannerCommon _scannerCommon;
 
         private String _panelClass;
         private bool _pauseWatchdog;
@@ -41,7 +41,7 @@ namespace ACAT.Lib.Extension
 
         public UserControlContainerForm()
         {
-            _scannerCommon = new ScannerCommon2(this);
+            _scannerCommon = new ScannerCommon(this);
 
             InitializeComponent();
 
@@ -97,15 +97,10 @@ namespace ACAT.Lib.Extension
         public IPanelCommon PanelCommon
         { get { return _scannerCommon; } }
 
-        public ScannerCommon ScannerCommon
-        {
-            get { return null; }
-        }
-
         /// <summary>
         /// Gets the scanner common object
         /// </summary>
-        public ScannerCommon2 ScannerCommon2
+        public ScannerCommon ScannerCommon
         {
             get { return _scannerCommon; }
         }
@@ -183,8 +178,8 @@ namespace ACAT.Lib.Extension
             _scannerCommon.UserControlManager.OnPause();
 
             _scannerCommon.OnPause(true ?
-                                ScannerCommon2.PauseDisplayMode.FadeScanner :
-                                ScannerCommon2.PauseDisplayMode.None);
+                                ScannerCommon.PauseDisplayMode.FadeScanner :
+                                ScannerCommon.PauseDisplayMode.None);
         }
 
         /// <summary>

@@ -195,9 +195,10 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             SignalControl_WindowDurationForVrmsMeaseurment = BCIGtecActuatorSettings.Settings.SignalControl_WindowDurationForVrmsMeaseurment;
             SignalControl_MinDutyCycleToPassTriggerTest = BCIGtecActuatorSettings.Settings.TriggerTest_MinDutyCycleToPassTriggerTest;
             Log.Debug("DAQ settings loaded. Min duty cycle to pass trigger test" + SignalControl_MinDutyCycleToPassTriggerTest + " Window duration for uVrmsMeasurement: " + SignalControl_WindowDurationForVrmsMeaseurment);
-
+            
+            // Gtec Does not have hardware trigger so we will keep both same for ML that support openbci
             BCISettingsFixed.DataParser_IdxTriggerSignal_Hw = 16;
-            BCISettingsFixed.DataParser_IdxTriggerSignal_Sw = 24;
+            BCISettingsFixed.DataParser_IdxTriggerSignal_Sw = 19;
             BCISettingsFixed.DimReduct_DownsampleRate = 2;
 
             BCIGtecActuatorSettings.Save();

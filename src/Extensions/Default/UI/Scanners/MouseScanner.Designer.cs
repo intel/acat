@@ -1,9 +1,4 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
-using ACAT.Lib.Core.Widgets;
-using ACAT.Lib.Core.WidgetManagement;
-
-namespace ACAT.Extensions.Default.UI.Menus
+﻿namespace ACAT.Lib.Extension
 {
     partial class MouseScanner
     {

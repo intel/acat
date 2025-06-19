@@ -70,7 +70,7 @@ namespace ACAT.Applications.ACATApp
                 return;
             }
 
-            CoreGlobals.AppId = "ACATAPp";
+            CoreGlobals.AppId = "ACATApp";
             CoreGlobals.ACATUserGuideFileName = "ACAT User Guide.pdf";
             global::ACAT.Lib.Core.Utility.FatalErrorHandler.EvtFatalError += CoreGlobals_EvtFatalError;
 
@@ -109,18 +109,18 @@ namespace ACAT.Applications.ACATApp
 
             AuditLog.Audit(new AuditEvent("Application", "start"));
 
-            AppCommon.addBCIActuatorSetting();
-            AppCommon.addPanelClassConfigMapForBCI();
+            //AppCommon.addBCIActuatorSetting();
+            //AppCommon.addPanelClassConfigMapForBCI();
 
             CommandDescriptors.Init();
 
             Common.AppPreferences.PreferredPanelConfigNames = String.Empty;
 
 
-            if (!doOnboarding())
-            {
-                return;
-            }
+            //if (!doOnboarding())
+            //{
+            //    return;
+            //}
 
             splash = new Splash(2000);
             splash.Show();
@@ -194,6 +194,8 @@ namespace ACAT.Applications.ACATApp
                     }
 
                     Context.AppAgentMgr.AddAgent(form.Handle, agent);
+                    form.ShowInTaskbar = true;
+
                     Context.AppPanelManager.ShowDialog(form as IPanel);
                 }
                 else

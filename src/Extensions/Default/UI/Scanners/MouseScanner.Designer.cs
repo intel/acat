@@ -25,9 +25,8 @@
             this.MouseScannerButtons.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.MouseScannerButtons.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MouseScannerButtons.Location = new System.Drawing.Point(0, 0);
-            this.MouseScannerButtons.Margin = new System.Windows.Forms.Padding(10, 10, 10, 10);
             this.MouseScannerButtons.Name = "MouseScannerButtons";
-            this.MouseScannerButtons.Size = new System.Drawing.Size(994, 883);
+            this.MouseScannerButtons.Size = new System.Drawing.Size(284, 261);
             this.MouseScannerButtons.TabIndex = 0;
             this.MouseScannerButtons.WrapContents = false;
             // 
@@ -36,13 +35,14 @@
             this.AccessibleDescription = "ACAT Mouse Controls";
             this.AccessibleName = "ACAT Mouse Controls";
             this.AccessibleRole = System.Windows.Forms.AccessibleRole.Application;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(21F, 44F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(994, 883);
+            this.ClientSize = new System.Drawing.Size(284, 261);
             this.Controls.Add(this.MouseScannerButtons);
-            this.Margin = new System.Windows.Forms.Padding(10, 10, 10, 10);
+            this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.MaximizeBox = false;
             this.Name = "MouseScanner";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;

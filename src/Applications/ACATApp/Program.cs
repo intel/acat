@@ -178,6 +178,7 @@ namespace ACAT.Applications.ACATApp
 
                 var startupArg = new StartupArg("MouseScanner")
                 {
+                    DialogMode = false,
                     QuitAppOnFormClose = true
                 };
 

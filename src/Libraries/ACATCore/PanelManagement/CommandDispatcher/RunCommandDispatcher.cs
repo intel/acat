@@ -70,7 +70,7 @@ namespace ACAT.Lib.Core.PanelManagement.CommandDispatcher
             return retVal;
         }
 
-        public virtual bool Dispatch2(Object source, String command, ref bool handled)
+        public virtual bool Dispatch(Object source, String command, ref bool handled)
         {
             IRunCommandHandler runCommand = Commands.Get(command);
 

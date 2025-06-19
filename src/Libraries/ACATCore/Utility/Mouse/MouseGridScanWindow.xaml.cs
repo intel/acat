@@ -336,18 +336,6 @@ namespace ACAT.Lib.Core.Utility
             }
         }
 
-        private static System.Drawing.Point GetLineIntersectionOnScreen(Line horizLine, Line vertLine, Canvas canvas)
-        {
-            double x = (Canvas.GetLeft(vertLine));
-            if (double.IsNaN(x)) x = 0;
-
-            double y = Canvas.GetTop(horizLine);
-            if (double.IsNaN(y)) y = 0;
-
-            var screenPoint = canvas.PointToScreen(new Point(x, y));
-
-            return new System.Drawing.Point((int)screenPoint.X, (int)screenPoint.Y);
-        }
 
         /// <summary>
         /// Pauses horiz rectnagle animation.
@@ -401,12 +389,12 @@ namespace ACAT.Lib.Core.Utility
             };
 
             Storyboard storyboard = new Storyboard();
-            animation.Completed += animationOnCompleted;
+            //animation.Completed += animationOnCompleted;
             animation.Duration = new Duration(TimeSpan.FromSeconds(_durationLine));
             animation.AutoReverse = true;
             animation.RepeatBehavior = _lineRepeatBehavior;
 
-            animation.Completed += animationOnCompleted;
+            //animation.Completed += animationOnCompleted;
 
             if (direction == Direction.Horizontal)
             {
@@ -479,7 +467,7 @@ namespace ACAT.Lib.Core.Utility
                 RepeatBehavior = _rectangleRepeatBehavior
             };
 
-            _rectHorizAnimation.Completed += animationOnCompleted;
+            //_rectHorizAnimation.Completed += animationOnCompleted;
             Storyboard.SetTarget(_rectHorizAnimation, _rectHoriz);
             Storyboard.SetTargetProperty(_rectHorizAnimation, new PropertyPath(Canvas.TopProperty));
             _rectHorizStoryboard = new Storyboard();
@@ -509,8 +497,6 @@ namespace ACAT.Lib.Core.Utility
             Log.Debug($"Setting cursor position to {winFormsPoint}");
 
             System.Windows.Forms.Cursor.Position = winFormsPoint;
-
-            executeTransitionState();
         }
 
         private void animateDone()
@@ -667,7 +653,7 @@ namespace ACAT.Lib.Core.Utility
                 RepeatBehavior = _rectangleRepeatBehavior
             };
 
-            _rectVertAnimation.Completed += animationOnCompleted;
+            //_rectVertAnimation.Completed += animationOnCompleted;
 
             Storyboard.SetTarget(_rectVertAnimation, _rectVert);
             Storyboard.SetTargetProperty(_rectVertAnimation, new PropertyPath(Canvas.LeftProperty));
@@ -693,7 +679,14 @@ namespace ACAT.Lib.Core.Utility
         /// </summary>
         private void transitionState()
         {
-            Dispatcher.BeginInvoke(new Action(executeTransitionState));
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                executeTransitionState();
+                if (_currentState == States.Done)
+                {
+                    executeTransitionState();
+                }
+            }));
         }
 
         [StructLayout(LayoutKind.Sequential)]

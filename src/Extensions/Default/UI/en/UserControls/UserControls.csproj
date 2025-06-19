@@ -87,12 +87,6 @@
     <Compile Include="KeyboardEditUserControl.Designer.cs">
       <DependentUpon>KeyboardEditUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="MouseInterfaceUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MouseInterfaceUserControl.Designer.cs">
-      <DependentUpon>MouseInterfaceUserControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="KeyboardQwertyUserControl.cs">
       <SubType>UserControl</SubType>

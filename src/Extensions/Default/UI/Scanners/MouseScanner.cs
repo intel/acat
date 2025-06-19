@@ -17,6 +17,7 @@ using ACAT.Lib.Core.WidgetManagement;
 using ACAT.Lib.Extension.CommandHandlers;
 using ACAT.Lib.Core.AgentManagement;
 using System.Security.Permissions;
+using System.Collections.Generic;
 
 namespace ACAT.Lib.Extension
 {
@@ -31,17 +32,31 @@ namespace ACAT.Lib.Extension
 
         private ScannerCommon _scannerCommon;
 
-        public MouseScanner()
+        public MouseScanner(String panelClass, String title)
         {
             InitializeComponent();
             _dispatcher = new Dispatcher(this);
-        }
-
-        public MouseScanner(String panelClass, String title) : this()
-        {
             Load += MouseScanner_Load;
             FormClosing += MouseScanner_FormClosing;
             Text = title;
+
+            // Add the mouse control buttons to the flow layout
+            // panel.  These are the buttons that will be used to control
+            // the mouse movement and actions.
+
+            var buttons = new List<ScannerButtonControl>
+                {
+                    new ScannerButtonControl { Name = "GoBack", AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Dock = DockStyle.Fill },
+                    new ScannerButtonControl { Name = "ScanDown", AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Dock = DockStyle.Fill },
+                    new ScannerButtonControl { Name = "ScanUp", AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Dock = DockStyle.Fill },
+                    new ScannerButtonControl { Name = "AutoPosition", AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Dock = DockStyle.Fill },
+                    new ScannerButtonControl { Name = "LeftClick", AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Dock = DockStyle.Fill },
+                    new ScannerButtonControl { Name = "RightClick", AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Dock = DockStyle.Fill },
+                    new ScannerButtonControl { Name = "LeftDoubleClick", AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Dock = DockStyle.Fill },
+                    new ScannerButtonControl { Name = "LeftClickAndHold", AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Dock = DockStyle.Fill }
+                };
+
+            MouseScannerButtons.Controls.AddRange(buttons.ToArray());
         }
 
         public virtual RunCommandDispatcher CommandDispatcher => _dispatcher;
@@ -88,6 +103,15 @@ namespace ACAT.Lib.Extension
                 return false;
             }
 
+            CommandDispatcher.Commands.Add(new CommandHandler("CmdScanVerticalDown"));
+            CommandDispatcher.Commands.Add(new CommandHandler("CmdScanVerticalUp"));
+            CommandDispatcher.Commands.Add(new CommandHandler("CmdLeftClick"));
+            CommandDispatcher.Commands.Add(new CommandHandler("CmdLeftDoubleClick"));
+            CommandDispatcher.Commands.Add(new CommandHandler("CmdLeftClickAndHold"));
+            CommandDispatcher.Commands.Add(new CommandHandler("CmdRightClick"));
+            CommandDispatcher.Commands.Add(new CommandHandler("CmdGoBack"));
+
+
             _rootWidget = PanelCommon.RootWidget;
             return true;
         }
@@ -114,7 +138,7 @@ namespace ACAT.Lib.Extension
 
         public void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
         {
-            throw new NotImplementedException();
+            handled = false;
         }
 
         public void SetTargetControl(Form parent, Widget widget)
@@ -143,52 +167,25 @@ namespace ACAT.Lib.Extension
         private void MouseScanner_Load(object sender, EventArgs e)
         {
             _scannerCommon.OnLoad();
+
+            Context.AppActuatorManager.EvtSwitchHook += GridMouseEvtSwitchHook;
             PanelCommon.AnimationManager.Start(_rootWidget);
         }
 
-        private readonly IActuator _calibrationSupportedActuator;
-        private readonly bool _enableScanTimingConfigure = true;
+        private void GridMouseEvtSwitchHook(IActuatorSwitch switchObj, ref bool handled)
+        {
+            handled = false;
+
+            if (_gridMouseMover != null)
+            {
+                _gridMouseMover.Actuate();
+                handled = true;
+            }
+        }
+
+        //private readonly IActuator _calibrationSupportedActuator;
+        //private readonly bool _enableScanTimingConfigure = true;
         private GridMouseMover _gridMouseMover;
-
-        ///// <summary>
-        ///// Initializes a new instance of the <see cref="ACATForm"/> class.
-        ///// </summary>
-        //public MouseScanner(String panelClass, String panelTitle) 
-        //    : base(panelClass, StringResources.MouseScanner)
-        //{
-        //    commandDispatcher.Commands.Add(new CommandHandler("CmdScanVerticalDown"));
-        //    commandDispatcher.Commands.Add(new CommandHandler("CmdScanVerticalUp"));
-        //    commandDispatcher.Commands.Add(new CommandHandler("CmdLeftClick"));
-        //    commandDispatcher.Commands.Add(new CommandHandler("CmdLeftDoubleClick"));
-        //    commandDispatcher.Commands.Add(new CommandHandler("CmdLeftClickAndHold"));
-        //    commandDispatcher.Commands.Add(new CommandHandler("CmdRightClick"));
-        //    commandDispatcher.Commands.Add(new CommandHandler("CmdGoBack"));
-
-        //    _calibrationSupportedActuator = Context.AppActuatorManager.GetCalibrationSupportedActuator();
-
-        //    Load += MouseScanner_Load;
-
-        //    InitializeComponent();
-
-        //    // Add the mouse control buttons to the flow layout
-        //    // panel.  These are the buttons that will be used to control
-        //    // the mouse movement and actions.
-
-        //    var buttons = new List<ScannerButtonControl>
-        //    {
-        //        new ScannerButtonControl { Name = "GoBack", AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Dock = DockStyle.Fill },
-        //        new ScannerButtonControl { Name = "ScanDown", AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Dock = DockStyle.Fill },
-        //        new ScannerButtonControl { Name = "ScanUp", AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Dock = DockStyle.Fill },
-        //        new ScannerButtonControl { Name = "AutoPosition", AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Dock = DockStyle.Fill },
-        //        new ScannerButtonControl { Name = "LeftClick", AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Dock = DockStyle.Fill },
-        //        new ScannerButtonControl { Name = "RightClick", AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Dock = DockStyle.Fill },
-        //        new ScannerButtonControl { Name = "LeftDoubleClick", AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Dock = DockStyle.Fill },
-        //        new ScannerButtonControl { Name = "LeftClickAndHold", AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Dock = DockStyle.Fill }
-        //    };
-
-        //    MouseScannerButtons.Controls.AddRange(buttons.ToArray());
-        //}
-
 
         private GridMouseMover createGridMouseMover()
         {
@@ -211,20 +208,22 @@ namespace ACAT.Lib.Extension
             return prop != null ? (int)prop.GetValue(obj) : fallback;
         }
 
+        
 
-        /// <summary>
-        /// Event handler for mouse down.  Treat this as a switch
-        /// activation.
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="mouseEventArgs">event args</param>
-        private void MouseScannerScreen_EvtMouseDown(object sender, MouseEventArgs mouseEventArgs)
-        {
-            if (_gridMouseMover != null)
-            {
-                _gridMouseMover.Actuate();
-            }
-        }
+
+        ///// <summary>
+        ///// Event handler for mouse down.  Treat this as a switch
+        ///// activation.
+        ///// </summary>
+        ///// <param name="sender">event sender</param>
+        ///// <param name="mouseEventArgs">event args</param>
+        //private void MouseScannerScreen_EvtMouseDown(object sender, MouseEventArgs mouseEventArgs)
+        //{
+        //    if (_gridMouseMover != null)
+        //    {
+        //        _gridMouseMover.Actuate();
+        //    }
+        //}
 
         /// <summary>
         /// Starts moving the mouse in the grid mode, in the specified
@@ -233,6 +232,7 @@ namespace ACAT.Lib.Extension
         /// <param name="direction">down or up</param>
         private void startGridSweep(GridMouseMover.Direction direction)
         {
+            OnPause();
 
             _gridMouseMover = createGridMouseMover();
 
@@ -243,67 +243,70 @@ namespace ACAT.Lib.Extension
             _gridMouseMover.Start();
 
             _gridMouseMover = null;
+
+            OnResume();
         }
 
-        ///// <summary>
-        ///// Handles all  the commands for the mouse scanner
-        ///// </summary>
-        //private class CommandHandler : RunCommandHandler
-        //{
-        //    /// <summary>
-        //    /// Initializes an instance of the handler
-        //    /// </summary>
-        //    /// <param name="cmd">the command</param>
-        //    public CommandHandler(String cmd)
-        //        : base(cmd)
-        //    {
-        //    }
+        /// <summary>
+        /// Handles all  the commands for the mouse scanner
+        /// </summary>
+        private class CommandHandler : RunCommandHandler
+        {
+            /// <summary>
+            /// Initializes an instance of the handler
+            /// </summary>
+            /// <param name="cmd">the command</param>
+            public CommandHandler(String cmd)
+                : base(cmd)
+            {
+            }
 
-        //    /// <summary>
-        //    /// Executes the command
-        //    /// </summary>
-        //    /// <param name="handled">set to true if handled</param>
-        //    /// <returns>true</returns>
-        //    public override bool Execute(ref bool handled)
-        //    {
-        //        handled = true;
+            /// <summary>
+            /// Executes the command
+            /// </summary>
+            /// <param name="handled">set to true if handled</param>
+            /// <returns>true</returns>
+            public override bool Execute(ref bool handled)
+            {
+                handled = true;
 
-        //        var form = Dispatcher.Scanner.Form as MouseScanner;
+                var form = Dispatcher.Scanner.Form as MouseScanner;
 
-        //        switch (Command)
-        //        {
-        //            case "CmdScanVerticalDown":
-        //                form.startGridSweep(GridMouseMover.Direction.Down);
-        //                break;
+                switch (Command)
+                {
+                    case "CmdScanVerticalDown":
+                        form.startGridSweep(GridMouseMover.Direction.Down);
+                        break;
 
-        //            case "CmdScanVerticalUp":
-        //                form.startGridSweep(GridMouseMover.Direction.Up);
-        //                break;
+                    case "CmdScanVerticalUp":
+                        form.startGridSweep(GridMouseMover.Direction.Up);
+                        break;
 
-        //            case "CmdLeftClick":
-        //                MouseUtils.SimulateLeftMouseClick();
-        //                break;
 
-        //            case "CmdLeftDoubleClick":
-        //                MouseUtils.SimulateLeftMouseDoubleClick();
-        //                break;
+                    //case "CmdLeftClick":
+                    //    MouseUtils.SimulateLeftMouseClick();
+                    //    break;
 
-        //            case "CmdLeftClickAndHold":
-        //                MouseUtils.SimulateLeftMouseDrag();
-        //                break;
+                    //case "CmdLeftDoubleClick":
+                    //    MouseUtils.SimulateLeftMouseDoubleClick();
+                    //    break;
 
-        //            case "CmdRightClick":
-        //                MouseUtils.SimulateRightMouseClick();
-        //                break;
+                    //case "CmdLeftClickAndHold":
+                    //    MouseUtils.SimulateLeftMouseDrag();
+                    //    break;
 
-        //            default:
-        //                handled = false;
-        //                break;
-        //        }
+                    //case "CmdRightClick":
+                    //    MouseUtils.SimulateRightMouseClick();
+                    //    break;
 
-        //        return true;
-        //    }
-        //}
+                    default:
+                        handled = false;
+                        break;
+                }
+
+                return true;
+            }
+        }
 
         public class Dispatcher : DefaultCommandDispatcher
         { 

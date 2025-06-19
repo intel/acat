@@ -54,7 +54,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// The root directory under ACAT from where the scanners/dialog/menus
         /// are loaded
         /// </summary>
-        public static String UiRootDir = "UI";
+        public static String UiRootDir = "";
 
         /// <summary>
         /// Singleton instance of PanelManager

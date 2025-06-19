@@ -77,6 +77,7 @@
     <ProjectReference Include="..\UserControls\UserControls.csproj">
       <Project>{0F38EE30-BF4C-4CFF-B795-C16828520DEA}</Project>
       <Name>UserControls</Name>
+      <Private>False</Private>
     </ProjectReference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />

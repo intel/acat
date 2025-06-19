@@ -125,22 +125,27 @@
     <ProjectReference Include="..\..\ACATResources\ACATResources.csproj">
       <Project>{a0990d4e-f25b-430c-bda3-40a72560b877}</Project>
       <Name>ACATResources</Name>
+    <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\Extensions\Default\UI\Scanners\Scanners.csproj">
       <Project>{a1bbaf69-3c3d-4e90-9cd1-0a7e165691c5}</Project>
       <Name>Scanners</Name>
+    <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\ACATCore\Core.csproj">
       <Project>{827ad764-63dd-4b12-974d-2b70cc877051}</Project>
       <Name>Core</Name>
+    <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\ACATExtension\Extension.csproj">
       <Project>{17feda57-1f08-4e19-9dc3-a2c00ec792a3}</Project>
       <Name>Extension</Name>
+    <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\AppCommon\AppCommon.csproj">
       <Project>{9a6ff395-2444-439a-990d-1bab13bf56fd}</Project>
       <Name>AppCommon</Name>
+    <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

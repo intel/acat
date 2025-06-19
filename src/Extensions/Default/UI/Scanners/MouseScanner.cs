@@ -168,6 +168,11 @@ namespace ACAT.Lib.Extension
         {
             _scannerCommon.OnLoad();
 
+            // Override all the stuff ScannerCommon did
+            _scannerCommon.PauseOverlapWatchdog();
+            FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            ControlBox = true;
+
             Context.AppActuatorManager.EvtSwitchHook += GridMouseEvtSwitchHook;
             PanelCommon.AnimationManager.Start(_rootWidget);
         }

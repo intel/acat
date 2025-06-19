@@ -15,8 +15,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-//using System.Windows.Documents;
-//using System.Windows.Forms;
 using System.Xml;
 
 namespace ACAT.Lib.Core.PanelManagement
@@ -552,13 +550,6 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="mapEntry">map entry to add</param>
         private static void addToMapTable(List<Guid> configIdTable, PanelConfigMapEntry mapEntry)
         {
-#if DEBUG
-            if (mapEntry.ConfigId.Equals(new Guid("C753E412-0A2C-40A2-B47C-954C620573ED")))
-            {
-                Log.Debug("Breakpoint");
-            }
-#endif
-
             if (!configIdTable.Contains(mapEntry.ConfigId))
             {
                 configIdTable.Add(mapEntry.ConfigId);

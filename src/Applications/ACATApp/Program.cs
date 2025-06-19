@@ -117,10 +117,10 @@ namespace ACAT.Applications.ACATApp
             Common.AppPreferences.PreferredPanelConfigNames = String.Empty;
 
 
-            //if (!doOnboarding())
-            //{
-            //    return;
-            //}
+            if (!doOnboarding())
+            {
+                return;
+            }
 
             splash = new Splash(2000);
             splash.Show();

@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ACAT.Extensions.Default.AppAgents.TalkApplicationScannerAgent</RootNamespace>
-    <AssemblyName>TalkApplicationScannerAgent</AssemblyName>
+    <AssemblyName>ACAT.Extensions.Default.AppAgents.TalkApplicationScannerAgent</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>

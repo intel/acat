@@ -8,6 +8,7 @@
 using ACAT.Lib.Core.Utility;
 using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Threading;
 
 namespace ACAT.Lib.Core.PanelManagement

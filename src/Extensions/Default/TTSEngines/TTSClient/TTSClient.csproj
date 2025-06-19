@@ -6,8 +6,8 @@
     <ProjectGuid>{F0AFB84F-8106-46E2-AB3B-984C4A4429CE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TTSClient</RootNamespace>
-    <AssemblyName>TTSClient</AssemblyName>
+    <RootNamespace>ACAT.Extensions.Default.TTSEngines.TTSClient</RootNamespace>
+    <AssemblyName>ACAT.Extensions.Default.TTSEngines.TTSClient</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>false</Deterministic>

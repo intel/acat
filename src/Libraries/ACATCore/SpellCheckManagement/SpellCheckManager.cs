@@ -32,7 +32,7 @@ namespace ACAT.Lib.Core.SpellCheckManagement
         /// <summary>
         /// Name of the folder under which the Word predictor DLLs are located
         /// </summary>
-        public static String SpellCheckersRootName = "SpellCheckers";
+        public static String SpellCheckersRootName = "";
 
         /// <summary>
         /// Word prediction manager instance

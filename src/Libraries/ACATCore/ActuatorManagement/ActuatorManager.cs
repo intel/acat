@@ -48,7 +48,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// The base directory under which all the actuator Dll's are
         /// located.
         /// </summary>
-        public static String ActuatorsRootDir = "Actuators";
+        public static String ActuatorsRootDir = "";
 
         /// <summary>
         /// Input config file that contains a list of all actuators and

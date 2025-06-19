@@ -36,7 +36,7 @@ namespace ACAT.Lib.Core.TTSManagement
         /// <summary>
         /// The root directory where all the TTS engines are located.
         /// </summary>
-        public static String TTSRootDir = "TTSEngines";
+        public static String TTSRootDir = "";
 
         /// <summary>
         /// Upper bound for the volume

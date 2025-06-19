@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace ACAT.Lib.Core.PanelManagement
 {
@@ -657,32 +658,11 @@ namespace ACAT.Lib.Core.PanelManagement
         private static void getExtensionDirs()
         {
             _extensionDirs.Clear();
-            var dirs = CoreGlobals.AppPreferences.Extensions.Split(',');
-            var extensionDirRootPath = FileUtils.GetExtensionDir();
-            if (Directory.Exists(extensionDirRootPath))
-            {
-                foreach (var str in dirs)
-                {
-                    var dir = str.Trim();
-                    if (Path.IsPathRooted(dir))
-                    {
-                        _extensionDirs.Add(dir);
-                    }
-                    else
-                    {
-                        var fullPath = FileUtils.GetExtensionDir(dir);
-                        if (Directory.Exists(fullPath))
-                        {
-                            var attr = File.GetAttributes(fullPath);
-                            if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
-                            {
-                                Log.Debug("Adding Extensiondir " + fullPath);
-                                _extensionDirs.Add(fullPath);
-                            }
-                        }
-                    }
-                }
-            }
+            // TODO: Add support for multiple extension directories
+            //var dirs = CoreGlobals.AppPreferences.Extensions.Split(',');
+
+            _extensionDirs.Add(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+
         }
 
         /// <summary>

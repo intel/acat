@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CameraActuator")]
+[assembly: AssemblyTitle("ACAT.Extensions.Default.Actuators.CameraActuator")]
 [assembly: AssemblyDescription("Assistive Context-Aware Toolkit (ACAT)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("https://www.intel.com/content/www/us/en/developer/tools/open/acat/overview.html")]

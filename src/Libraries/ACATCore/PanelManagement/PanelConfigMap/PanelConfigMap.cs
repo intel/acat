@@ -240,26 +240,27 @@ namespace ACAT.Lib.Core.PanelManagement
             // first walk the extension directories
             foreach (string dir in extensionDirs)
             {
-                String extensionDir = dir + "\\" + AgentManager.AppAgentsRootDir;
-                load(extensionDir);
+                // TODO - FIX THIS HACK
+                //String extensionDir = dir + "\\" + AgentManager.AppAgentsRootDir;
+                load(dir, "ACAT.Extensions.*.dll");
                 if(_DLLError)
                     return false;
 
-                extensionDir = dir + "\\" + AgentManager.FunctionalAgentsRootDir;
-                load(extensionDir);
-                if (_DLLError)
-                    return false;
+                //extensionDir = dir + "\\" + AgentManager.FunctionalAgentsRootDir;
+                //load(extensionDir);
+                //if (_DLLError)
+                //    return false;
 
-                extensionDir = dir + "\\" + PanelManager.UiRootDir;
-                load(extensionDir);
-                if (_DLLError)
-                    return false;
+                //extensionDir = dir + "\\" + PanelManager.UiRootDir;
+                //load(extensionDir);
+                //if (_DLLError)
+                //    return false;
             }
 
             // load the panels from the default culture (which is English)
             var resourcesDir = FileUtils.GetDefaultResourcesDir();
             Log.Debug("DefaultResourcesDir: " + resourcesDir);
-            load(resourcesDir);
+            load(resourcesDir, "*.xml");
 
             _cultureConfigIdMapTable.Add(_loadCulture, _loadPanelConfigMapTable);
 
@@ -479,13 +480,6 @@ namespace ACAT.Lib.Core.PanelManagement
             var removeList = new List<PanelConfigMapEntry>();
             foreach (var mapEntry in _masterPanelConfigMapTable.Values)
             {
-#if DEBUG
-                if (mapEntry.ConfigId.Equals(new Guid("C753E412-0A2C-40A2-B47C-954C620573ED")))
-                {
-                    Log.Debug("Breakpoint");
-                }
-#endif
-
                 Log.Debug("Looking up " + mapEntry.ToString());
                 if (_formsCache.ContainsKey(mapEntry.FormId))
                 {
@@ -685,11 +679,11 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         /// <param name="dir">Directory to walk</param>
         /// <param name="resursive">Recursively search?</param>
-        private static void load(String dir, bool resursive = true)
+        private static void load(String dir, String wildcard = "*.*", bool resursive = true)
         {
             if (Directory.Exists(dir) && !_DLLError)
             {
-                var walker = new DirectoryWalker(dir, "*.*");
+                var walker = new DirectoryWalker(dir, wildcard);
                 Log.Debug("Walking dir " + dir);
                 walker.Walk(new OnFileFoundDelegate(onFileFound));
             }
@@ -828,12 +822,11 @@ namespace ACAT.Lib.Core.PanelManagement
             }
             else
             {
-                String extension = Path.GetExtension(filePath);
-                if (String.Compare(extension, ".dll", true) == 0)
+                if (String.Compare(Path.GetExtension(filePath), ".dll", true) == 0)
                 {
                     onDllFound(filePath);
                 }
-                else if (String.Compare(extension, ".xml", true) == 0)
+                else if (String.Compare(Path.GetExtension(filePath), ".xml", true) == 0)
                 {
                     onXmlFileFound(filePath);
                 }

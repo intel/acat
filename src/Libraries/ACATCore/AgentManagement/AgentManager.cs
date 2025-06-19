@@ -105,12 +105,12 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <summary>
         /// Root directory from which application agents will be loaded
         /// </summary>
-        public static string AppAgentsRootDir = "AppAgents";
+        public static string AppAgentsRootDir = "";
 
         /// <summary>
         /// Root directory from which functional agents will be loaded
         /// </summary>
-        public static String FunctionalAgentsRootDir = "FunctionalAgents";
+        public static String FunctionalAgentsRootDir = "";
 
         /// <summary>
         /// Agent to handle Dialogs

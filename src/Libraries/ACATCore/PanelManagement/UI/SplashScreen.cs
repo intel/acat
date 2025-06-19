@@ -43,13 +43,18 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             InitializeComponent();
 
-            Windows.SetWindowPosition(this, Windows.WindowPosition.CenterScreen);
+            //Windows.SetWindowPosition(this, Windows.WindowPosition.CenterScreen);
 
             FormClosing += Form1_FormClosing;
 
             ShowInTaskbar = false;
+            TopMost = false;
+            StartPosition = FormStartPosition.CenterScreen;
+            FormBorderStyle = FormBorderStyle.None;
 
-            TopMost = true;
+
+
+            //TopMost = true;
 
             //_watchDog = new WindowOverlapWatchdog(this);
 

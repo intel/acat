@@ -324,7 +324,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <param name="path">Directory path</param>
         private void loadAgentsFromDir(String path)
         {
-            var walker = new DirectoryWalker(path, "*.dll");
+            var walker = new DirectoryWalker(path, "ACAT.Extensions.Default.AppAgents.*.dll");
             walker.Walk(new OnFileFoundDelegate(onAgentDllFound));
         }
 
@@ -335,13 +335,15 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <param name="extensionDirs"></param>
         private void loadCache(IEnumerable<String> extensionDirs)
         {
+            //TODO: Fix this hack
             foreach (String dir in extensionDirs)
             {
-                var path = Path.Combine(dir, AgentManager.AppAgentsRootDir);
-                loadAgentsFromDir(path);
+                loadAgentsFromDir(dir);
+                //    var path = Path.Combine(dir, AgentManager.AppAgentsRootDir);
+                //    loadAgentsFromDir(path);
 
-                path = Path.Combine(dir, AgentManager.FunctionalAgentsRootDir);
-                loadAgentsFromDir(path);
+                //    path = Path.Combine(dir, AgentManager.FunctionalAgentsRootDir);
+                //    loadAgentsFromDir(path);
             }
         }
 

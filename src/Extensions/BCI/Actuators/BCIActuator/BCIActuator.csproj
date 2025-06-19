@@ -54,30 +54,37 @@
     <ProjectReference Include="..\..\Common\BCIControl\BCIControl.csproj">
       <Project>{DEFAA2BE-C13E-4350-9EFA-9370755B63D3}</Project>
       <Name>BCIControl</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\EEGDataAcquisition\EEGDataAcquisition.csproj">
       <Project>{7079E2BD-D443-4D8F-AC83-8CCFA64A1149}</Project>
       <Name>EEGDataAcquisition</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\EEGProcessing\EEGProcessing.csproj">
       <Project>{8CA216C6-7476-4696-BA70-FB86A2920EBF}</Project>
       <Name>EEGProcessing</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\EEGSettings\EEGSettings.csproj">
       <Project>{1761F46F-2543-45A2-B5D8-0591C078D9C6}</Project>
       <Name>EEGSettings</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\EEGUtilities\EEGUtils.csproj">
       <Project>{4B6B654F-50AF-4291-A464-11D73C1AFDF7}</Project>
       <Name>EEGUtils</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\gTec_SensorUI\gTecSensorUI.csproj">
       <Project>{85991714-E58E-4A19-B7D4-9D9AD10DB9EC}</Project>
       <Name>gTecSensorUI</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\openBCI_SensorUI\openBCISensorUI.csproj">
       <Project>{380FC7B3-D784-422A-8D85-510A9E8698C6}</Project>
       <Name>SensorUI</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\Libraries\ACATExtension\Extension.csproj">
       <Project>{17feda57-1f08-4e19-9dc3-a2c00ec792a3}</Project>

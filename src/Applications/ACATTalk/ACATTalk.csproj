@@ -104,6 +104,7 @@
     <ProjectReference Include="..\..\Extensions\Default\UI\Scanners\Scanners.csproj">
       <Project>{a1bbaf69-3c3d-4e90-9cd1-0a7e165691c5}</Project>
       <Name>Scanners</Name>
+    <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\ACATCore\Core.csproj">
       <Project>{827ad764-63dd-4b12-974d-2b70cc877051}</Project>

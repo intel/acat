@@ -650,7 +650,7 @@ namespace ACAT.Lib.Core.UserControlManagement
                 dispatcher.Dispatch(command, ref handled);
                 if (!handled)
                 {
-                    dispatcher.Dispatch2(_userControl, command, ref handled);
+                    dispatcher.Dispatch(_userControl, command, ref handled);
                 }
             }
         }

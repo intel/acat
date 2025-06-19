@@ -83,12 +83,6 @@
       <DependentUpon>MainMenu.cs</DependentUpon>
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="MouseScanner.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MouseScanner.Designer.cs">
-      <DependentUpon>MouseScanner.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -100,9 +94,6 @@
   <ItemGroup>
     <EmbeddedResource Include="MainMenu.resx">
       <DependentUpon>MainMenu.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MouseScanner.resx">
-      <DependentUpon>MouseScanner.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

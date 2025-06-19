@@ -155,7 +155,7 @@ namespace ACAT.Lib.Extension
 
         /// <summary>
         /// Called to check if the specified widget in arg should
-        /// be enabled or not.  This function is called perfiodically
+        /// be enabled or not.  This function is called periodically
         /// because application context may change any time. Set
         /// the handled property in arg to true if this is handled.
         /// </summary>

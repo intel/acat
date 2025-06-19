@@ -239,26 +239,32 @@
     <ProjectReference Include="..\..\..\..\ACATResources\ACATResources.csproj">
       <Project>{a0990d4e-f25b-430c-bda3-40a72560b877}</Project>
       <Name>ACATResources</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\Libraries\ACATCore\Core.csproj">
       <Project>{827ad764-63dd-4b12-974d-2b70cc877051}</Project>
       <Name>Core</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\Common\BCIControl\BCIControl.csproj">
       <Project>{DEFAA2BE-C13E-4350-9EFA-9370755B63D3}</Project>
       <Name>BCIControl</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\EEGDataAcquisition\EEGDataAcquisition.csproj">
       <Project>{7079e2bd-d443-4d8f-ac83-8ccfa64a1149}</Project>
       <Name>EEGDataAcquisition</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\EEGSettings\EEGSettings.csproj">
       <Project>{1761f46f-2543-45a2-b5d8-0591c078d9c6}</Project>
       <Name>EEGSettings</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\EEGUtilities\EEGUtils.csproj">
       <Project>{4b6b654f-50af-4291-a464-11d73c1afdf7}</Project>
       <Name>EEGUtils</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

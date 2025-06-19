@@ -95,7 +95,6 @@ namespace ACAT.Lib.Core.Utility
         {
             _window = new MouseGridScanWindow
             {
-                EnableVerticalGridRectangle = EnableVerticalGridRectangle,
                 GridLineCycles = GridLineCycles,
                 GridLineSpeed = GridLineSpeed,
                 GridLineThickness = GridLineThickness,

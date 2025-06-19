@@ -6,8 +6,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Drawing;
-using System.Reflection;
+//using System.Drawing;
+//using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,10 +16,13 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+//using static ACAT.Lib.Core.Utility.GridMouseMover;
+//using static ACAT.Lib.Core.Utility.User32Interop;
 using Color = System.Windows.Media.Color;
 using Image = System.Windows.Controls.Image;
 using Point = System.Windows.Point;
 using Rectangle = System.Windows.Shapes.Rectangle;
+using System.Windows.Forms;
 
 namespace ACAT.Lib.Core.Utility
 {
@@ -38,11 +41,6 @@ namespace ACAT.Lib.Core.Utility
         /// Used for the state machine
         /// </summary>
         private States _currentState = States.Begin;
-
-        /// <summary>
-        /// Bitmap representation of the cursor pointer
-        /// </summary>
-        private Image _cursorImage;
 
         /// <summary>
         /// Time period to scan horizontal rectangle vertically
@@ -184,17 +182,9 @@ namespace ACAT.Lib.Core.Utility
             HorizontalRect,
             HorizontalLine,
             VerticalRect,
-            MoveMouse,
+            VerticalLine,
             Done
         }
-
-        /// <summary>
-        /// Gets or sets whether the vertical grid rectangle should be
-        /// enabled or not.  If disabled, the mouse cursor is animated
-        /// to lock the X coordinate.
-        ///
-        /// </summary>
-        public bool EnableVerticalGridRectangle { get; set; }
 
         /// <summary>
         /// Gets or sets the color of the grid line
@@ -346,6 +336,19 @@ namespace ACAT.Lib.Core.Utility
             }
         }
 
+        private static System.Drawing.Point GetLineIntersectionOnScreen(Line horizLine, Line vertLine, Canvas canvas)
+        {
+            double x = (Canvas.GetLeft(vertLine));
+            if (double.IsNaN(x)) x = 0;
+
+            double y = Canvas.GetTop(horizLine);
+            if (double.IsNaN(y)) y = 0;
+
+            var screenPoint = canvas.PointToScreen(new Point(x, y));
+
+            return new System.Drawing.Point((int)screenPoint.X, (int)screenPoint.Y);
+        }
+
         /// <summary>
         /// Pauses horiz rectnagle animation.
         /// Moves the horizontal line within the horizontal rectangle.
@@ -359,8 +362,93 @@ namespace ACAT.Lib.Core.Utility
             _rectHoriz.Stroke = new SolidColorBrush(GridRectanglePausedBorderColor);
             _rectHoriz.Fill = new SolidColorBrush();
 
-            moveHorizontalLine(point);
+            _lineHorizAnimation = new DoubleAnimation
+            {
+                From = (GridRectangleDirection == GridMouseMover.Direction.Down) ? point.Y : point.Y + _rectHoriz.Height,
+                To = (GridRectangleDirection == GridMouseMover.Direction.Down) ? point.Y + _rectHoriz.Height : point.Y
+            };
+
+            MoveLine(Direction.Horizontal, point, _lineHorizAnimation);
         }
+
+        private void animateVerticalLine()
+        {
+            var point = _rectVert.PointToScreen(new Point(0, 0));
+
+            _rectVertStoryboard.Pause(this);
+            _rectVert.Opacity = 1.0;
+            _rectVert.Stroke = new SolidColorBrush(GridRectanglePausedBorderColor);
+            _rectVert.Fill = new SolidColorBrush();
+
+            _lineVertAnimation = new DoubleAnimation
+            {
+                From = point.X,
+                To = point.X + _rectVert.Width
+            };
+
+            MoveLine(Direction.Vertical, point, _lineVertAnimation);
+
+        }
+
+        public enum Direction { Horizontal, Vertical }
+
+        private void MoveLine(Direction direction, Point point, DoubleAnimation animation)
+        {
+            Line line = new Line
+            {
+                StrokeThickness = GridLineThickness,
+                Stroke = new SolidColorBrush(GridLineColor)
+            };
+
+            Storyboard storyboard = new Storyboard();
+            animation.Completed += animationOnCompleted;
+            animation.Duration = new Duration(TimeSpan.FromSeconds(_durationLine));
+            animation.AutoReverse = true;
+            animation.RepeatBehavior = _lineRepeatBehavior;
+
+            animation.Completed += animationOnCompleted;
+
+            if (direction == Direction.Horizontal)
+            {
+                animation.From = (GridRectangleDirection == GridMouseMover.Direction.Down)
+                    ? point.Y
+                    : point.Y + _rectHoriz.Height;
+                animation.To = (GridRectangleDirection == GridMouseMover.Direction.Down)
+                    ? point.Y + _rectHoriz.Height
+                    : point.Y;
+
+                line.X1 = 0;
+                line.X2 = ((Canvas)Content).RenderSize.Width;
+                line.Y1 = 0;
+                line.Y2 = 0;
+
+                Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.TopProperty));
+                _lineHoriz = line;
+                _lineHorizAnimation = animation;
+                _lineHorizStoryboard = storyboard;
+            }
+            else // Vertical
+            {
+                animation.From = point.X;
+                animation.To = point.X + _rectVert.Width;
+
+                line.Y1 = 0;
+                line.Y2 = ((Canvas)Content).RenderSize.Height;
+                line.X1 = 0;
+                line.X2 = 0;
+
+                Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.LeftProperty));
+                _lineVert = line;
+                _lineVertAnimation = animation;
+                _lineVertStoryboard = storyboard;
+            }
+
+            addToCanvas(line);
+            Storyboard.SetTarget(animation, line);
+            storyboard.Children.Add(animation);
+            storyboard.Begin(this, true);
+        }
+
 
         /// <summary>
         /// Creates and moves horiz rectangle vertically across the display
@@ -399,62 +487,7 @@ namespace ACAT.Lib.Core.Utility
             _rectHorizStoryboard.Begin(this, true);
         }
 
-        /// <summary>
-        /// Creates and moves vertical line horizontally within the
-        /// vertical rectangle
-        /// </summary>
-        /// <param name="point">Origin of the rectangle</param>
-        private void animateLineVertical(Point point)
-        {
-            _lineVertAnimation = new DoubleAnimation
-            {
-                From = point.X,
-                To = point.X + _rectVert.Width
-            };
 
-            _lineVertAnimation.Completed += animationOnCompleted;
-
-            _lineVert = new Line
-            {
-                Y1 = 0,
-                Y2 = ((Canvas)Content).RenderSize.Height,
-                X1 = 0,
-                X2 = 0,
-                StrokeThickness = GridLineThickness,
-                Stroke = new SolidColorBrush(GridLineColor)
-            };
-            addToCanvas(_lineVert);
-
-            _lineVertAnimation.Duration = new Duration(TimeSpan.FromSeconds(_durationLine));
-            _lineVertAnimation.AutoReverse = true;
-            _lineVertAnimation.RepeatBehavior = _lineRepeatBehavior;
-            Storyboard.SetTarget(_lineVertAnimation, _lineVert);
-            Storyboard.SetTargetProperty(_lineVertAnimation, new PropertyPath(Canvas.LeftProperty));
-            _lineVertStoryboard = new Storyboard();
-            _lineVertStoryboard.Children.Add(_lineVertAnimation);
-            _lineVertStoryboard.Begin(this, true);
-        }
-
-        /// <summary>
-        /// Animates the movmement of the mouse cursor along a
-        /// horizontal line
-        /// </summary>
-        private void animateMouseMove()
-        {
-            _rectVertStoryboard.Pause(this);
-            _rectVert.Opacity = 1.0;
-            _rectVert.Stroke = new SolidColorBrush(GridRectanglePausedBorderColor);
-            _rectVert.Fill = new SolidColorBrush();
-#if LineVertical
-            pt = RectVert.PointToScreen(new Point(0, 0));
-            animateLineVertical(pt);
-#else
-            var rectPosition = _rectVert.PointToScreen(new Point(0, 0));
-            var from = new Point(rectPosition.X, _lineHorizPausePoint.Y);
-            var to = new Point(rectPosition.X + GridRectangleHeight, _lineHorizPausePoint.Y);
-            moveImage(_cursorImage, from, to);
-#endif
-        }
 
         /// <summary>
         /// Simulates final movement of the cursor to the desired
@@ -462,19 +495,36 @@ namespace ACAT.Lib.Core.Utility
         /// </summary>
         private void animateSetCursorPos()
         {
-            if (EnableVerticalGridRectangle)
-            {
-                removeFromCanvas(_rectVert);
-#if LineVertical
-                lineVertStoryboard.Pause(this);
-#endif
-            }
+            _lineVertStoryboard.Pause(this);
+            removeFromCanvas(_rectVert);
 
-            _finalCursorPos = _cursorImage.PointToScreen(new Point(0, 0));
+            double x = Canvas.GetLeft(_lineVert);
+            if (double.IsNaN(x)) x = 0;
+            double y = Canvas.GetTop(_lineHoriz);
+            if (double.IsNaN(y)) y = 0;
 
-            moveImageFinal(_cursorImage, _finalCursorPos);
+            System.Windows.Point screen = MyCanvas.PointToScreen(new System.Windows.Point(x, y));
+            System.Drawing.Point winFormsPoint = new System.Drawing.Point((int)screen.X, (int)screen.Y);
+
+            Log.Debug($"Setting cursor position to {winFormsPoint}");
+
+            System.Windows.Forms.Cursor.Position = winFormsPoint;
+
+            executeTransitionState();
         }
 
+        private void animateDone()
+        {
+            removeFromCanvas(_lineHoriz);
+            removeFromCanvas (_lineVert);
+
+            _lineHorizStoryboard.Stop(this);
+            _lineVertStoryboard.Stop(this);
+            _rectHorizStoryboard.Stop(this);
+            _rectVertStoryboard.Stop(this);
+
+            Close();
+        }
         /// <summary>
         /// Animates movement of the vertical rectangle horizontally
         /// across the display
@@ -485,16 +535,8 @@ namespace ACAT.Lib.Core.Utility
 
             removeFromCanvas(_rectHoriz);
 
-            if (EnableVerticalGridRectangle)
-            {
-                moveVerticalRectangle();
-                _lineHorizPausePoint = _lineHoriz.PointToScreen(new Point(0, 0));
-            }
-            else
-            {
-                Point point = _lineHoriz.PointToScreen(new Point(0, 0));
-                moveImageAcrossDisplay(_cursorImage, point.Y);
-            }
+            moveVerticalRectangle();
+            _lineHorizPausePoint = _lineHoriz.PointToScreen(new Point(0, 0));
         }
 
         /// <summary>
@@ -505,8 +547,6 @@ namespace ACAT.Lib.Core.Utility
         /// <param name="eventArgs">event args</param>
         private void animationOnCompleted(object sender, EventArgs eventArgs)
         {
-            Mouse.OverrideCursor = null;
-
             Close();
         }
 
@@ -520,29 +560,6 @@ namespace ACAT.Lib.Core.Utility
             _durationLine = _gridRectangleHeight / _gridLineSpeed;
         }
 
-        /// <summary>
-        /// Converts a System.Drawing.Image image object to a WPF
-        /// image
-        /// </summary>
-        /// <param name="gdiImage">source image</param>
-        /// <returns>WPF image</returns>
-        private Image convertToWPFImage(System.Drawing.Image gdiImage)
-        {
-            var image = new Image();
-            var bitmap = new Bitmap(gdiImage);
-
-            IntPtr hBitmap = bitmap.GetHbitmap();
-            var bitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(hBitmap,
-                                                                    IntPtr.Zero,
-                                                                    Int32Rect.Empty,
-                                                                    BitmapSizeOptions.FromEmptyOptions());
-
-            image.Source = bitmapSource;
-            image.Width = bitmapSource.Width;
-            image.Height = bitmapSource.Height;
-            image.Stretch = Stretch.Fill;
-            return image;
-        }
 
         /// <summary>
         /// Executes state transition
@@ -563,30 +580,26 @@ namespace ACAT.Lib.Core.Utility
 
                 case States.HorizontalLine:
                     animateVerticalRectangle();
-                    _currentState = (EnableVerticalGridRectangle) ? States.VerticalRect : States.MoveMouse;
+                    _currentState = States.VerticalRect;
                     break;
 
                 case States.VerticalRect:
-                    animateMouseMove();
-                    _currentState = States.MoveMouse;
+                    animateVerticalLine();
+                    _currentState = States.VerticalLine;
                     break;
 
-                case States.MoveMouse:
+                case States.VerticalLine:
                     animateSetCursorPos();
                     _currentState = States.Done;
                     break;
-            }
-        }
 
-        /// <summary>
-        /// Returns the current mouse pointer position
-        /// </summary>
-        /// <returns>x,y location of mouse pointer</returns>
-        private Point getCursorPos()
-        {
-            Win32Point w32Mouse = new Win32Point();
-            GetCursorPos(ref w32Mouse);
-            return new Point(w32Mouse.X, w32Mouse.Y);
+                case States.Done:
+                    animateDone();
+                    break;
+
+                default:
+                    throw new InvalidOperationException("Unexpected state in state machine.");
+            }
         }
 
         /// <summary>
@@ -598,7 +611,6 @@ namespace ACAT.Lib.Core.Utility
             GridRectangleCycles = 2;
             GridRectangleHeight = 120;
             GridLineThickness = 2;
-            EnableVerticalGridRectangle = true;
             GridRectangleDirection = GridMouseMover.Direction.Down;
             GridRectanglePausedBorderColor = Colors.Gray;
             GridRectangleBorderColor = Colors.Black;
@@ -613,32 +625,6 @@ namespace ACAT.Lib.Core.Utility
             Width = SystemParameters.PrimaryScreenWidth;
             Height = SystemParameters.PrimaryScreenHeight;
 
-            _cursorImage = loadBitmap("ACAT.Lib.Core.MouseCursor.png");
-        }
-
-        /// <summary>
-        /// Returns a bitmap of the resource specified
-        /// </summary>
-        /// <param name="imageName">filename of the bitmap</param>
-        /// <returns>bitmap image object</returns>
-        private Image loadBitmap(string imageName)
-        {
-            try
-            {
-                var myAssembly = Assembly.GetExecutingAssembly();
-                var myStream = myAssembly.GetManifestResourceStream(imageName);
-                if (myStream != null)
-                {
-                    var image = new Bitmap(myStream);
-                    return convertToWPFImage(image);
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Exception(ex);
-            }
-
-            return new Image();
         }
 
         /// <summary>
@@ -652,117 +638,6 @@ namespace ACAT.Lib.Core.Utility
             Topmost = true;
 
             transitionState();
-        }
-
-        /// <summary>
-        /// Animates the horizontal line vertically within the
-        /// horiz rectangle
-        /// </summary>
-        /// <param name="point">origin of the horiz rectange</param>
-        private void moveHorizontalLine(Point point)
-        {
-            _lineHorizAnimation = new DoubleAnimation
-            {
-                From = (GridRectangleDirection == GridMouseMover.Direction.Down) ? point.Y : point.Y + _rectHoriz.Height,
-                To = (GridRectangleDirection == GridMouseMover.Direction.Down) ? point.Y + _rectHoriz.Height : point.Y
-            };
-
-            _lineHorizAnimation.Completed += animationOnCompleted;
-
-            _lineHoriz = new Line
-            {
-                X1 = 0,
-                X2 = ((Canvas)Content).RenderSize.Width,
-                Y1 = 0,
-                Y2 = 0,
-                StrokeThickness = GridLineThickness,
-                Stroke = new SolidColorBrush(GridLineColor)
-            };
-            addToCanvas(_lineHoriz);
-
-            _lineHorizAnimation.Duration = new Duration(TimeSpan.FromSeconds(_durationLine));
-            _lineHorizAnimation.RepeatBehavior = _lineRepeatBehavior;
-            Storyboard.SetTarget(_lineHorizAnimation, _lineHoriz);
-            Storyboard.SetTargetProperty(_lineHorizAnimation, new PropertyPath(Canvas.TopProperty));
-            _lineHorizStoryboard = new Storyboard();
-            _lineHorizStoryboard.Children.Add(_lineHorizAnimation);
-
-            _lineHorizStoryboard.Begin(this, true);
-        }
-
-        /// <summary>
-        /// Moves the specified image from the 'from' location to
-        /// the 'to' location
-        /// </summary>
-        /// <param name="image">image object</param>
-        /// <param name="from">starting position</param>
-        /// <param name="to">final position</param>
-        private void moveImage(Image image, Point from, Point to)
-        {
-            removeFromCanvas(_lineHoriz);
-            addToCanvas(image);
-
-            var trans = new TranslateTransform();
-            image.RenderTransform = trans;
-            var doubleAnimation1 = new DoubleAnimation(from.X, to.X, TimeSpan.FromSeconds(_durationLine));
-            var doubleAnimation2 = new DoubleAnimation(to.Y, to.Y, TimeSpan.FromSeconds(_durationLine));
-            doubleAnimation1.Completed += animationOnCompleted;
-            Mouse.OverrideCursor = Cursors.None;
-            doubleAnimation1.RepeatBehavior = _lineRepeatBehavior;
-            trans.BeginAnimation(TranslateTransform.XProperty, doubleAnimation1);
-            trans.BeginAnimation(TranslateTransform.YProperty, doubleAnimation2);
-        }
-
-        /// <summary>
-        /// Moves image along a horizontal line at the specifed Y offset
-        /// </summary>
-        /// <param name="image">image to move</param>
-        /// <param name="yOffset">Y offset of the line</param>
-        private void moveImageAcrossDisplay(Image image, double yOffset)
-        {
-            removeFromCanvas(_lineHoriz);
-            addToCanvas(image);
-
-            var translateTransform = new TranslateTransform();
-            _cursorImage.RenderTransform = translateTransform;
-            var doubleAnimation1 = new DoubleAnimation(0, SystemParameters.PrimaryScreenWidth, TimeSpan.FromSeconds(_durationVert));
-            var doubleAnimation2 = new DoubleAnimation(yOffset, yOffset, TimeSpan.FromSeconds(_durationVert));
-            doubleAnimation1.Completed += animationOnCompleted;
-            Mouse.OverrideCursor = Cursors.None;
-            doubleAnimation1.RepeatBehavior = _lineRepeatBehavior;
-            translateTransform.BeginAnimation(TranslateTransform.XProperty, doubleAnimation1);
-            translateTransform.BeginAnimation(TranslateTransform.YProperty, doubleAnimation2);
-        }
-
-        /// <summary>
-        /// Simulates final movement of the cursor
-        /// </summary>
-        /// <param name="image">cursor image</param>
-        /// <param name="to">final position</param>
-        private void moveImageFinal(Image image, Point to)
-        {
-            var trans = new TranslateTransform();
-            image.RenderTransform = trans;
-
-            var from = new Point(to.X + 100, to.Y + 100);
-            var doubleAnimation1 = new DoubleAnimation(from.X, to.X, TimeSpan.FromSeconds(0.25));
-            var doubleAnimation2 = new DoubleAnimation(from.Y, to.Y, TimeSpan.FromSeconds(0.25));
-
-            doubleAnimation1.Completed += moveImageFinalCompleted;
-
-            trans.BeginAnimation(TranslateTransform.XProperty, doubleAnimation1);
-            trans.BeginAnimation(TranslateTransform.YProperty, doubleAnimation2);
-        }
-
-        /// <summary>
-        /// Final movement of the cursor completed.
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="eventArgs">event args</param>
-        private void moveImageFinalCompleted(object sender, EventArgs eventArgs)
-        {
-            SetCursorPos((int)_finalCursorPos.X, (int)_finalCursorPos.Y);
-            animationOnCompleted(sender, eventArgs);
         }
 
         /// <summary>

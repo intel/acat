@@ -8,8 +8,8 @@
     <ProjectGuid>{206B241A-C6B7-4EA1-B557-21F7F29EDFB2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CameraActuator</RootNamespace>
-    <AssemblyName>CameraActuator</AssemblyName>
+    <RootNamespace>ACAT.Extensions.Default.Actuators.CameraActuator</RootNamespace>
+    <AssemblyName>ACAT.Extensions.Default.Actuators.CameraActuator</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>

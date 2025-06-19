@@ -31,7 +31,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// <summary>
         /// Name of the folder under which the Word predictor DLLs are located
         /// </summary>
-        public static String WordPredictorsRootName = "WordPredictors";
+        public static String WordPredictorsRootName = "";
 
         /// <summary>
         /// Word prediction manager instance

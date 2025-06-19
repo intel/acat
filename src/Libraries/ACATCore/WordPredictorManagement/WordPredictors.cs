@@ -332,7 +332,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// <param name="resursive">true if deep-descend</param>
         private void loadWordPredictorsTypesIntoCache(String dir, String culture, bool resursive = true)
         {
-            DirectoryWalker walker = new DirectoryWalker(dir, "*.dll");
+            DirectoryWalker walker = new DirectoryWalker(dir, "ACAT.Extensions.Default.WordPredictors.*.dll");
             _dirWalkCurrentCulture = culture;
             walker.Walk(new OnFileFoundDelegate(onFileFound));
         }
@@ -371,17 +371,52 @@ namespace ACAT.Lib.Core.WordPredictionManagement
                 }
                 if (!_DLLError)
                 {
-                    foreach (Type type in Assembly.LoadFile(dllName).GetTypes())
+                    try
                     {
-                        if (typeof(IWordPredictor).IsAssignableFrom(type))
+                        var assembly = Assembly.LoadFile(dllName);
+
+                        Type[] types;
+                        try
                         {
-                            DescriptorAttribute attr = DescriptorAttribute.GetDescriptor(type);
-                            if (attr != null && attr.Id != Guid.Empty)
-                            {
-                                Add(attr.Id, _dirWalkCurrentCulture, type);
-                                break;
-                            }
+                            // Handle type loading issues gracefully
+                            types = assembly.GetTypes();
                         }
+                        catch (ReflectionTypeLoadException ex)
+                        {
+                            // Some types couldn't load, fall back to what we can access
+                            types = ex.Types.Where(t => t != null).ToArray();
+                        }
+
+                        var matchingType = types
+                            .Where(type =>
+                                type.IsClass && !type.IsAbstract &&
+                                typeof(IWordPredictor).IsAssignableFrom(type))
+                            .FirstOrDefault(type =>
+                            {
+                                var attr = DescriptorAttribute.GetDescriptor(type);
+                                return attr != null && attr.Id != Guid.Empty;
+                            });
+
+                        if (matchingType != null)
+                        {
+                            var attr = DescriptorAttribute.GetDescriptor(matchingType);
+                            Add(attr.Id, _dirWalkCurrentCulture, matchingType);
+                        }
+                    }
+                    catch (FileNotFoundException ex)
+                    {
+                        // Log or handle file not found
+                        Log.Error($"Assembly file not found: {dllName} - {ex.Message}");
+                    }
+                    catch (BadImageFormatException ex)
+                    {
+                        // Log or handle non-.NET assembly
+                        Log.Error($"Invalid assembly format: {dllName} - {ex.Message}");
+                    }
+                    catch (Exception ex)
+                    {
+                        // Catch-all for unexpected errors
+                        Log.Error($"Failed to process assembly: {dllName} - {ex}");
                     }
                 }
 

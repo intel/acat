@@ -34,14 +34,11 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         {
             get
             {
-                switch (Protocol)
+                return Protocol switch
                 {
-                    case TransportProtocol.Http:
-                        return _settings.HttpSettings.Format;
-
-                    default:
-                        return TTSFormat.Text;
-                }
+                    TransportProtocol.Http => _settings.HttpSettings.Format,
+                    _ => TTSFormat.Text,
+                };
             }
         }
 

@@ -1455,23 +1455,12 @@ namespace ACAT.Core.WidgetManagement
         /// <returns></returns>
         private EnabledStates parseEnabledValue(String value)
         {
-            EnabledStates retVal;
-
-            switch (value.ToLower())
+            var retVal = value.ToLower() switch
             {
-                case "false":
-                    retVal = EnabledStates.Disabled;
-                    break;
-
-                case "contextual":
-                    retVal = EnabledStates.Contextual;
-                    break;
-
-                default:
-                    retVal = EnabledStates.Enabled;
-                    break;
-            }
-
+                "false" => EnabledStates.Disabled,
+                "contextual" => EnabledStates.Contextual,
+                _ => EnabledStates.Enabled,
+            };
             return retVal;
         }
 

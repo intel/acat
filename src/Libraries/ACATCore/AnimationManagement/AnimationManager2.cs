@@ -1207,10 +1207,7 @@ namespace ACAT.Core.AnimationManagement
         {
             try
             {
-                if (_soundPlayer == null)
-                {
-                    _soundPlayer = new SoundPlayer(FileUtils.GetSoundPath("beep.wav"));
-                }
+                _soundPlayer ??= new SoundPlayer(FileUtils.GetSoundPath("beep.wav"));
 
                 _soundPlayer?.Play();
             }

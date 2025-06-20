@@ -150,7 +150,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         public static PanelManager Instance
         {
-            get { return _instance ?? (_instance = new PanelManager()); }
+            get { return _instance ??= new PanelManager(); }
         }
 
         /// <summary>

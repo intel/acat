@@ -7,8 +7,8 @@
     <ProjectGuid>{BC49E4D4-DE61-4210-A860-90A67E1F4075}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ACAT.Extensions.Default.WordPredictors.ConvAssist</RootNamespace>
-    <AssemblyName>ACAT.Extensions.Default.WordPredictors.ConvAssist</AssemblyName>
+    <RootNamespace>ACAT.Extensions.WordPredictors.ConvAssist</RootNamespace>
+    <AssemblyName>ACAT.Extensions.WordPredictors.ConvAssist</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

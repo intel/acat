@@ -1,4 +1,6 @@
-﻿namespace ACAT.Extensions.Default.UI.Menus
+﻿using ACAT.Core.WidgetManagement;
+
+namespace ACAT.Extensions.UI.Menus
 {
     partial class YesNoResponseScanner
     {
@@ -30,11 +32,11 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.Row1 = new System.Windows.Forms.TableLayoutPanel();
-            this.ItemText0 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.ItemText1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.ItemText2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.ItemText3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.ItemText4 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ItemText0 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ItemText1 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ItemText2 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ItemText3 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ItemText4 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.PromptRow = new System.Windows.Forms.TableLayoutPanel();
             this.Prompt = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
@@ -230,10 +232,10 @@
         private System.Windows.Forms.TableLayoutPanel Row1;
         private System.Windows.Forms.TableLayoutPanel PromptRow;
         private System.Windows.Forms.Label Prompt;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ItemText1;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ItemText2;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ItemText3;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ItemText4;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ItemText0;
+        private ScannerRoundedButtonControl ItemText1;
+        private ScannerRoundedButtonControl ItemText2;
+        private ScannerRoundedButtonControl ItemText3;
+        private ScannerRoundedButtonControl ItemText4;
+        private ScannerRoundedButtonControl ItemText0;
     }
 }

@@ -18,18 +18,18 @@
 // </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
-using ACAT.Lib.Extension;
-using ACAT.Lib.Extension.CommandHandlers;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Extension;
+using ACAT.Extension.CommandHandlers;
 using System;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.UI.Scanners
+namespace ACAT.Extensions.UI.Scanners
 {
     /// <summary>
     /// This is the text cursor navigation scanner. It can
@@ -103,7 +103,8 @@ namespace ACAT.Extensions.Default.UI.Scanners
         /// <summary>
         /// Gets the PanelCommon object
         /// </summary>
-        public IPanelCommon PanelCommon { get { return _scannerCommon; } }
+        public IPanelCommon PanelCommon
+        { get { return _scannerCommon; } }
 
         /// <summary>
         /// Gets the scanner common object

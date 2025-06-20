@@ -5,13 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.AgentManagement.TextInterface;
-using ACAT.Lib.Core.InputActuators;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.AgentManagement.TextInterface;
+using ACAT.Core.InputActuators;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// For the event raised when an agent exits

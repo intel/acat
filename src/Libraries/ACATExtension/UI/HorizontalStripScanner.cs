@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
-using ACAT.Lib.Extension.CommandHandlers;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Extension.CommandHandlers;
 using System;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     /// <summary>
     /// This is a scanner with a single row of buttons.

@@ -9,9 +9,9 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Threading;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
     class SharpDXWidget
     {

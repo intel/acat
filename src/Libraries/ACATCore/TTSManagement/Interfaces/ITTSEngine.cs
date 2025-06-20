@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
+using ACAT.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace ACAT.Lib.Core.TTSManagement
+namespace ACAT.Core.TTSManagement
 {
     /// <summary>
     /// Indicates a bookmark has been reached in the text-to-speech

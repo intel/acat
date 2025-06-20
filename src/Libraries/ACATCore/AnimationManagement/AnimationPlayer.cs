@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.Interpreter;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.UserControlManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.Audit;
+using ACAT.Core.Interpreter;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.UserControlManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,7 @@ using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.AnimationManagement
+namespace ACAT.Core.AnimationManagement
 {
     /// <summary>
     /// Current state of the animation player

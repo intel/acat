@@ -5,13 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.Onboarding;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.Onboarding;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using System;
 
-namespace ACAT.Lib.Extension.Onboarding
+namespace ACAT.Extension.Onboarding
 {
     /// <summary>
     /// The onboarding extension that lets the user select the input
@@ -24,6 +24,7 @@ namespace ACAT.Lib.Extension.Onboarding
     {
         // TODO - Localize Me
         private const String Step1 = "STEP 1";
+
         private IOnboardingWizard _wizard;
         private IActuator actuatorSelected = null;
 

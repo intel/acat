@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core
+namespace ACAT.Core
 {
     public partial class ExtendedTableLayout : TableLayoutPanel
     {

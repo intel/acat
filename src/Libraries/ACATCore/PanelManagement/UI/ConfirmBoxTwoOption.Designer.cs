@@ -1,5 +1,6 @@
-﻿
-namespace ACAT.Lib.Core.PanelManagement
+﻿using ACAT.Core.WidgetManagement;
+
+namespace ACAT.Core.PanelManagement
 {
     partial class ConfirmBoxTwoOption
     {
@@ -32,8 +33,8 @@ namespace ACAT.Lib.Core.PanelManagement
             this.labelPrompt = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.labelTitle = new System.Windows.Forms.Label();
-            this.buttonOp3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.buttonOp1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonOp3 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonOp1 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -161,9 +162,9 @@ namespace ACAT.Lib.Core.PanelManagement
         #endregion
 
         private System.Windows.Forms.Label labelPrompt;
-        private ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonOp1;
+        private ScannerRoundedButtonControl buttonOp1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonOp3;
+        private ScannerRoundedButtonControl buttonOp3;
         private System.Windows.Forms.Label labelTitle;
     }
 }

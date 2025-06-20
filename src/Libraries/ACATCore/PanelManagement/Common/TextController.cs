@@ -5,15 +5,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AbbreviationsManagement;
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.AbbreviationsManagement;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// Implements the ITextController interface.  Contains helper

@@ -11,7 +11,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Utility functions to manipulate images

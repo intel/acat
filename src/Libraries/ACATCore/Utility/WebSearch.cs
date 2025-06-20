@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.Security.Permissions;
 using System.Text;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Performs a google or a wiki search on a search

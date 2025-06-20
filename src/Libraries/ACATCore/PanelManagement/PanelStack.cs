@@ -5,15 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Audit;
+using ACAT.Core.Utility;
 using System;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// The panel stack represents a "stack" of panels (or
@@ -608,7 +607,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="winHandle">target window handle</param>
         /// <param name="focusedElement">Target focused element</param>
         /// <returns></returns>
-        /// 
+        ///
         private Form createPanel(
             string panelClass,
             string panelTitle,
@@ -641,7 +640,6 @@ namespace ACAT.Lib.Core.PanelManagement
                             return form;
                     }
                 }
-
                 catch (Exception ex)
                 {
                     Log.Debug($"Constructor failed with args ({string.Join(", ", args.Select(a => a?.ToString() ?? "null"))}): {ex}");

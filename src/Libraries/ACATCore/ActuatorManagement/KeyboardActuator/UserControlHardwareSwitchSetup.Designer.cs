@@ -1,4 +1,4 @@
-﻿namespace ACAT.Lib.Core.InputActuators
+﻿namespace ACAT.Core.InputActuators
 {
     partial class UserControlHardwareSwitchSetup
     {
@@ -30,23 +30,23 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControlHardwareSwitchSetup));
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonF12 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.buttonF11 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.buttonF10 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.buttonF9 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.buttonF8 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.buttonF7 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.buttonF6 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.buttonF5 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.buttonF4 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.buttonF3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.buttonF2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonF12 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonF11 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonF10 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonF9 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonF8 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonF7 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonF6 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonF5 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonF4 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonF3 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonF2 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.webBrowser = new System.Windows.Forms.WebBrowser();
             this.labelPrompt = new System.Windows.Forms.Label();
             this.labelTitle = new System.Windows.Forms.Label();
-            this.buttonF1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonF1 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.scannerPanel1 = new ACAT.Lib.Core.WidgetManagement.ScannerPanel();
+            this.scannerPanel1 = new ACAT.Core.WidgetManagement.ScannerPanel();
             this.tableLayoutPanelMain.SuspendLayout();
             this.SuspendLayout();
             // 

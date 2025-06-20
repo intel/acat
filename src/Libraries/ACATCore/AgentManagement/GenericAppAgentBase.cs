@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement.TextInterface;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.AgentManagement.TextInterface;
+using ACAT.Core.Utility;
 using System;
 using System.Windows.Automation;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// Base class for application agents.  Does most of the heavy lifting in

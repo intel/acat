@@ -10,12 +10,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PanelManagement;
 using ACATResources;
-using ACAT.Lib.Core.PanelManagement;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.ActuatorManagement.UI
+namespace ACAT.Core.ActuatorManagement.UI
 {
     public partial class EditKeyboardActuatorSwitchForm : Form
     {

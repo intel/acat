@@ -8,7 +8,7 @@
 using System;
 using System.Collections;
 
-namespace ACAT.Lib.Core.AnimationManagement
+namespace ACAT.Core.AnimationManagement
 {
     /// <summary>
     /// Maintains a system-wide name value pairs for variables that

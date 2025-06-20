@@ -12,7 +12,7 @@ using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// This is a wrapper class for the .NET UI Automation API.
@@ -374,7 +374,6 @@ namespace ACAT.Lib.Core.Utility
                 }
                 catch
                 {
-
                 }
 
                 // Release unmanaged resources.

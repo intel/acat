@@ -1,13 +1,13 @@
-﻿using System;
-////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 //
 ////////////////////////////////////////////////////////////////////////////
 using ACATResources;
+using System;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     public static class FatalErrorHandler
     {
@@ -32,7 +32,6 @@ namespace ACAT.Lib.Core.Utility
         public static void SymlinkOrJunctionError(String filename)
         {
             OnFatalError(String.Format(StringResources.SymlinkFatalError, filename));
-
         }
     }
 }

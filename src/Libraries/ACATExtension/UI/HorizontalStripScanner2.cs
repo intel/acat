@@ -5,11 +5,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     /// <summary>
     /// This is a scanner with a single row of buttons.Closes the

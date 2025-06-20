@@ -5,13 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.UserManagement;
+using ACAT.Core.UserManagement;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Useful resource-related functions
@@ -232,7 +232,6 @@ namespace ACAT.Lib.Core.Utility
                 CultureInfo.DefaultThreadCurrentCulture = culture;
                 CultureInfo.DefaultThreadCurrentUICulture = culture;
             }
-
             catch (Exception ex)
             {
                 Log.Error("Error setting culture to " + language + ", " + ex + ", will use English as the default");

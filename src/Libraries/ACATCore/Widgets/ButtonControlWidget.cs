@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.ThemeManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.ThemeManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Widgets
+namespace ACAT.Core.Widgets
 {
     /// <summary>
     /// A widget that uses a Button as the UI control.  Can be used
@@ -57,7 +57,6 @@ namespace ACAT.Lib.Core.Widgets
         int fontsize,
         bool bold) : this(uiControl)
         {
-
             uiControl.Name = name;
             uiControl.Text = label;
             uiControl.Font = new Font(fontname, fontsize, bold ? FontStyle.Bold : FontStyle.Regular);

@@ -5,19 +5,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.Onboarding;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACATResources;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.Onboarding;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Web;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension.Onboarding
+namespace ACAT.Extension.Onboarding
 {
     /// <summary>
     /// User control that allows the user to select the input switch
@@ -212,7 +211,7 @@ namespace ACAT.Lib.Extension.Onboarding
                 if (index > 0)
                 {
                     param1 = str.Substring(0, index);
-                    param2 = str.Substring(index + 1, str.Length - index -1);
+                    param2 = str.Substring(index + 1, str.Length - index - 1);
                 }
                 else
                 {
@@ -221,7 +220,7 @@ namespace ACAT.Lib.Extension.Onboarding
             }
 
             List<String> list = new List<String>();
-            
+
             if (param2.ToLower().EndsWith(".mp4"))
             {
                 list.Add("Video");
@@ -245,11 +244,9 @@ namespace ACAT.Lib.Extension.Onboarding
             }
             catch
             {
-
             }
             finally
             {
-
             }
         }
     }

@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Manages third party attributions that could be displayed in an

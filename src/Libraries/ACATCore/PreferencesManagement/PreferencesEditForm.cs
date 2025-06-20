@@ -16,9 +16,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement.UI;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PreferencesManagement.UI;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACATResources;
 using System;
 using System.Collections.Generic;
@@ -32,7 +32,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using System.Windows.Threading;
 
-namespace ACAT.Lib.Core.PreferencesManagement
+namespace ACAT.Core.PreferencesManagement
 {
     /// <summary>
     /// A generic preferences editor for a class that
@@ -66,7 +66,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         private float _designTimeAspectRatio = 0.0f;
 
         /// <summary>
-        /// Has first call to OnClientSizeChanged been made?                                   
+        /// Has first call to OnClientSizeChanged been made?
         /// </summary>
         private bool _firstClientChangedCall = true;
 
@@ -76,14 +76,14 @@ namespace ACAT.Lib.Core.PreferencesManagement
         public bool _wrapText = true;
 
         /// <summary>
-        /// Delegate for the event triggered when the user makes a change to a preference setting 
+        /// Delegate for the event triggered when the user makes a change to a preference setting
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="arg">event args</param>
         public delegate void NotifyPreferencesChangeMade();
 
         /// <summary>
-        /// Event raised when the user makes a change to a preference setting 
+        /// Event raised when the user makes a change to a preference setting
         /// </summary>
         public event NotifyPreferencesChangeMade EvtPreferencesChangeMade;
 
@@ -293,8 +293,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
             dataGridView.Rows[rowNum].Tag = property;
         }
 
-
-
         /// <summary>
         /// Check if form filled correctly, if not, return false
         /// If validated, check if changes have been made to form and if so prompt user asking if they want to save
@@ -302,7 +300,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <returns></returns>
         public bool validateAndSave()
         {
-
             // Update preferences based on latest values then save
             updatePreferences();
 
@@ -310,9 +307,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             Preferences.Save();
 
             return true;
-
         }
-
 
         /// <summary>
         /// User clicked wrap text checkbox
@@ -326,7 +321,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 _wrapText = ((CheckBox)sender).Checked;
                 wrapText(_wrapText);
             }
-
         }
 
         /// <summary>
@@ -336,7 +330,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <param name="e">event args</param>
         public void buttonDefaults_Click(object sender, EventArgs e)
         {
-            if (ConfirmBoxTwoOption.ShowDialog("Restore default settings?", 
+            if (ConfirmBoxTwoOption.ShowDialog("Restore default settings?",
                 "This cannot be undone.", StringResources.Yes, StringResources.No, this, true))
             {
                 _isDirty = true;
@@ -363,7 +357,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <param name="e">event args</param>
         private void dataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            
         }
 
         /// <summary>
@@ -398,7 +391,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     // Property is integer type
                     if (isInt(property))
                     {
-
                         // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
                         if (Int32.TryParse(value, out int intValue))
                         {
@@ -445,11 +437,9 @@ namespace ACAT.Lib.Core.PreferencesManagement
                         }
                     }
 
-
                     // Property is float type
                     else if (isFloat(property))
                     {
-
                         // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
                         try
                         {
@@ -490,7 +480,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                                 newVal = defaultVal;
                             }
                         }
-
                     }
                 }
 
@@ -505,7 +494,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     // Field is integer type
                     if (isInt(fieldInfo))
                     {
-
                         // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
                         if (Int32.TryParse(value, out int intValue))
                         {
@@ -555,7 +543,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     // Field is float type
                     else if (isFloat(fieldInfo))
                     {
-
                         // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
                         try
                         {
@@ -600,7 +587,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 }
             }
 
-
             if (e.Cancel)
             {
                 if (!String.IsNullOrEmpty(name) && !String.IsNullOrEmpty(newVal))
@@ -608,11 +594,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     ((DataGridViewTextBoxCell)cell).Value = newVal;
                     ((DataGridView)sender).RefreshEdit();
                 }
-
             }
-
         }
-
 
         /// <summary>
         /// Something changed. Set dirty flag
@@ -635,7 +618,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
             _isDirty = true;
             EvtPreferencesChangeMade();
         }
-
 
         /// <summary>
         /// Returns the custom attribute for a boolean field
@@ -864,7 +846,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
             ValueColumn.Width = dataGridView.Width / 5;
             DefaultColumn.Width = dataGridView.Width / 5;
             RangeColumn.Width = dataGridView.Width / 5;
-
 
             dataGridView.Sort(SettingColumn, ListSortDirection.Ascending);
             SettingColumn.HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending;
@@ -1264,7 +1245,5 @@ namespace ACAT.Lib.Core.PreferencesManagement
             DescriptionColumn.DefaultCellStyle.WrapMode = (onOff) ? DataGridViewTriState.True : DataGridViewTriState.False;
             dataGridView.AutoResizeRows();
         }
-
-
     }
 }

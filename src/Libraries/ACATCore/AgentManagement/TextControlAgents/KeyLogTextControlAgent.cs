@@ -5,11 +5,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.AgentManagement.TextInterface
+namespace ACAT.Core.AgentManagement.TextInterface
 {
     /// <summary>
     /// Uses key logging to manipulate text in the target text control. Use

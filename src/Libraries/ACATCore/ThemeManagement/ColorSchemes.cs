@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 
-namespace ACAT.Lib.Core.ThemeManagement
+namespace ACAT.Core.ThemeManagement
 {
     /// <summary>
     /// Encapsulates a list of color scheme objects for the various ui elements

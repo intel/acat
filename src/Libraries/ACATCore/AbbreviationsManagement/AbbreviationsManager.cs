@@ -12,11 +12,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using System;
 
-namespace ACAT.Lib.Core.AbbreviationsManagement
+namespace ACAT.Core.AbbreviationsManagement
 {
     public class AbbreviationsManager : IDisposable
     {

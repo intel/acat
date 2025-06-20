@@ -5,9 +5,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 
-namespace ACAT.Lib.Core.Extensions
+namespace ACAT.Core.Extensions
 {
     /// <summary>
     /// Interface to enable callers to invoke methods/properties

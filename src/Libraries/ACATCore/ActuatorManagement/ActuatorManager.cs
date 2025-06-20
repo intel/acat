@@ -17,20 +17,20 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.InputActuators;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Audit;
+using ACAT.Core.Extensions;
+using ACAT.Core.InputActuators;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// Manages all the actuators.  Responsible for reading the
@@ -114,7 +114,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         private Thread _thread;
 
-        
         /// <summary>
         /// Prevents a default instance of ActuatorManager class from being created
         /// </summary>
@@ -262,7 +261,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
             _activeSwitches = new Dictionary<String, IActuatorSwitch>();
             _nonActuateSwitches = new Dictionary<String, IActuatorSwitch>();
             _syncObjectSwitches = new object();
-
 
             calibrationQueue = new BlockingQueue<object>();
 
@@ -427,7 +425,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
             aex?.OnPostInitDone(success);
         }
 
-
         /// <summary>
         /// Pauses all the acutators.  No events will be triggered
         /// </summary>
@@ -527,7 +524,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
         /// <summary>
         /// Returns form that displays preferences selection form for actuators and allows configuration.
-        /// User can enable/disable actuators and also configure settings for each actuator.  
+        /// User can enable/disable actuators and also configure settings for each actuator.
         /// </summary>
         public Form GetPreferencesSelectionForm(IntPtr parentControlHandle)
         {
@@ -653,7 +650,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
             return GetActuator(typeof(SwitchInterfaceActuator));
         }
 
-
         public bool CheckScanTimingConfigureEnable()
         {
             var keyboardActuator = Context.AppActuatorManager.GetKeyboardActuator();
@@ -677,7 +673,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
             return false;
         }
-
 
         public void ShowTryoutDialog(bool startup = false)
         {
@@ -738,12 +733,11 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
             if (!dialogShown && Context.AppActuatorManager.Actuators.Count() == 1 && keyboardActuator != null &&
                 keyboardActuator.SupportsScanTimingsConfigureDialog)
-               
+
             {
                 keyboardActuator.ShowScanTimingsConfigureDialog();
             }
         }
-
 
         /// <summary>
         /// Action to execute when the user intitiates it
@@ -775,7 +769,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
                         calibrationQueue.Enqueue("Stop");
                     }
 
-
                     if (_thread != null)
                     {
                         Log.Debug("Calling thread.join");
@@ -804,7 +797,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
         private void act(IActuatorSwitch switchObj)
         {
             bool handled = false;
-
 
             var actuator = switchObj.Actuator;
             var action = switchObj.GetTriggerScanMode();

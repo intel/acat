@@ -8,7 +8,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.AgentManagement.TextInterface
+namespace ACAT.Core.AgentManagement.TextInterface
 {
     /// <summary>
     /// Used for text navigation

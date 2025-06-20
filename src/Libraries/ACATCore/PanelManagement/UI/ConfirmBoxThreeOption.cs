@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// A message box with three button options
@@ -26,6 +26,7 @@ namespace ACAT.Lib.Core.PanelManagement
         public DialogResult Result;
 
         private readonly bool _EnableOption3 = true;
+
         /// <summary>
         /// Confirm Box with multiple results
         /// Results: Yes - No - Abort
@@ -43,6 +44,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// If not then the regular Yes/no window will Show
         /// </summary>
         public int Op1LabelFont { get; set; }
+
         public String Op1Prompt { get; set; }
         public int Op2LabelFont { get; set; }
         public String Op2Prompt { get; set; }
@@ -52,12 +54,12 @@ namespace ACAT.Lib.Core.PanelManagement
         public String PromptTitle { get; set; }
 
         public static DialogResult ShowDialog(
-            String promptTitle, 
+            String promptTitle,
             String prompt,
-            string opc1Prompt, 
-            string opc2Prompt, 
-            string opc3Prompt, 
-            Form parent = null, 
+            string opc1Prompt,
+            string opc2Prompt,
+            string opc3Prompt,
+            Form parent = null,
             bool setTopMost = false)
         {
             var confirmBox = new ConfirmBoxThreeOption
@@ -100,6 +102,7 @@ namespace ACAT.Lib.Core.PanelManagement
             //OptionsResult = BCIMenuOptions.MainMenuOptions.TypingOrRecalibrate;
             Close();
         }
+
         private void ConfirmBox_Load(object sender, EventArgs e)
         {
             CenterToScreen();

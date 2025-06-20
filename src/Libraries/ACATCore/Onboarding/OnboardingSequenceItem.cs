@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.Onboarding
+namespace ACAT.Core.Onboarding
 {
     /// <summary>
     /// Holds the ID of the extension that is a part of

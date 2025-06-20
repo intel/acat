@@ -5,10 +5,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ThemeManagement;
+using ACAT.Core.ThemeManagement;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Widgets
+namespace ACAT.Core.Widgets
 {
     /// <summary>
     /// Represents the text in a contextual menu

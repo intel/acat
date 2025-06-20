@@ -6,9 +6,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
+using ACAT.Core.PanelManagement;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// All functional agents must derive from this interface.  Functional agents

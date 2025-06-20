@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.PanelManagement.CommandDispatcher
+namespace ACAT.Core.PanelManagement.CommandDispatcher
 {
     /// <summary>
     /// Interface for commands that will be executed

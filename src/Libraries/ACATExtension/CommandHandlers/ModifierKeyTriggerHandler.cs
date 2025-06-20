@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.Utility;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension.CommandHandlers
+namespace ACAT.Extension.CommandHandlers
 {
     /// <summary>
     /// The Command string represents which modifier key to

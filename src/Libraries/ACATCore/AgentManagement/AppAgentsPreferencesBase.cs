@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using System.ComponentModel.DataAnnotations;
 using System;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// Base class for the settings for all the application agents.

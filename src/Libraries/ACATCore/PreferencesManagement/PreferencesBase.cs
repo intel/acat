@@ -13,11 +13,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Text;
 
-namespace ACAT.Lib.Core.PreferencesManagement
+namespace ACAT.Core.PreferencesManagement
 {
     /// <summary>
     /// Use this as the base class for any derived class that

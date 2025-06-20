@@ -9,7 +9,7 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// A message box with a countdown timer

@@ -5,10 +5,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 
-namespace ACAT.Lib.Core.Onboarding
+namespace ACAT.Core.Onboarding
 {
     /// <summary>
     /// Reason for navigation in the onboarding process

@@ -5,8 +5,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -14,7 +14,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-namespace ACAT.Lib.Core.TTSManagement
+namespace ACAT.Core.TTSManagement
 {
     /// <summary>
     /// Holds a sorted list of pronunciation objects.  Raises events when

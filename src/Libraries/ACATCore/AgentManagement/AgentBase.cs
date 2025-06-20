@@ -5,18 +5,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement.TextInterface;
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.AgentManagement.TextInterface;
+using ACAT.Core.Extensions;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// Base class for all application agents.  Implements some of the

@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Audit;
+using ACAT.Core.Audit;
 using System;
 using System.Diagnostics;
 using System.Security.Permissions;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Monitors the activity of the foreground window and notifies
@@ -212,7 +212,6 @@ namespace ACAT.Lib.Core.Utility
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public static Process GetProcessForWindow(IntPtr hwnd)
         {
-
             User32Interop.GetWindowThreadProcessId(hwnd, out int pid);
 
             return Process.GetProcessById(pid);
@@ -285,7 +284,6 @@ namespace ACAT.Lib.Core.Utility
             {
                 _form.Invoke(new MethodInvoker(delegate
                 {
-
                     _timer?.Start();
                 }));
             }
@@ -311,8 +309,6 @@ namespace ACAT.Lib.Core.Utility
                 _form.Visible = false;
             }
 
-
-
             if (_timer == null)
             {
                 _form.Invoke(new MethodInvoker(delegate
@@ -321,9 +317,6 @@ namespace ACAT.Lib.Core.Utility
                     _timer.Tick += _timer_Tick;
                     _timer.Start();
                 }));
-
-
-                
             }
 
             return true;
@@ -337,7 +330,7 @@ namespace ACAT.Lib.Core.Utility
         /// <param name="e">event arg</param>
         private static void _timer_Tick(object sender, EventArgs e)
         {
-            if(_ispaused)
+            if (_ispaused)
             {
                 return;
             }
@@ -359,7 +352,7 @@ namespace ACAT.Lib.Core.Utility
         /// <summary>
         /// Returns true if a window with the specified title should be
         /// ignored  Some windows in Win10 cause the Automation.FocusedElement
-        /// to freeze.  
+        /// to freeze.
         /// </summary>
         /// <param name="title">title of the window</param>
         /// <returns>true if it should</returns>
@@ -369,7 +362,7 @@ namespace ACAT.Lib.Core.Utility
         }
 
         /// <summary>
-        /// This is the heart of WindowActivityMonitor.  It checks which 
+        /// This is the heart of WindowActivityMonitor.  It checks which
         /// window currently has focus, and within the window, which UI control
         /// has focus and raises an event to notify apps.  THe event is raised
         /// only if the focus changeed since the previous call to this function.

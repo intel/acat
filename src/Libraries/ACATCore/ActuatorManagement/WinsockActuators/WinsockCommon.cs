@@ -13,12 +13,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 
-namespace ACAT.Lib.Core.InputActuators
+namespace ACAT.Core.InputActuators
 {
     /// <summary>
     /// A helper class for winsock based actuators.  Data

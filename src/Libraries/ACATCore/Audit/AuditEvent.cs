@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.Audit
+namespace ACAT.Core.Audit
 {
     /// <summary>
     /// Represents a general audit log event. Use this when an

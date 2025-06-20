@@ -13,7 +13,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.AbbreviationsManagement
+namespace ACAT.Core.AbbreviationsManagement
 {
     /// <summary>
     /// Represents argument used by the event that is raised to indicate that

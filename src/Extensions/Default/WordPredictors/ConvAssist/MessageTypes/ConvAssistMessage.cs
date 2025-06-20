@@ -10,10 +10,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.WordPredictionManagement;
+using ACAT.Core.WordPredictionManagement;
 using System;
 
-namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
     [Serializable]
     internal class ConvAssistMessage
@@ -23,7 +23,8 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         public WordPredictionModes PredictionType { get; set; }
 
         // Parameterless constructor for deserialization
-        public ConvAssistMessage() { }
+        public ConvAssistMessage()
+        { }
 
         // this is the JSON representation of the data
         /// <summary>

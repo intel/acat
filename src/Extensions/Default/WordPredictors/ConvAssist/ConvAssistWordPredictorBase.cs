@@ -11,18 +11,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WordPredictionManagement;
-using ACAT.Lib.Extension;
+using ACAT.Core.Extensions;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WordPredictionManagement;
+using ACAT.Extension;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 
-namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
     /// <summary>
     /// Base class for all word prediction extensions that use

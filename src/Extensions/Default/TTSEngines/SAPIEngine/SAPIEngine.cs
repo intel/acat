@@ -11,18 +11,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.TTSManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.TTSManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Speech.Synthesis;
 
-namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
+namespace ACAT.Extensions.TTSEngines.SAPIEngine
 {
     [Descriptor("B7AB6188-AE23-40E3-9E6A-F8AA8A81E2BF",
                         "Speech Synthesizer TTS Engine",
@@ -102,7 +102,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
             Synthesizer.SpeakCompleted += Synthesizer_SpeakCompleted;
         }
 
-//#pragma warning disable
+        //#pragma warning disable
 
         /// <summary>
         /// Triggered when bookmark reached after async text to speech
@@ -124,7 +124,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// </summary>
         public event TTSVoiceChanged EvtVoiceChanged;
 
-//#pragma warning enable
+        //#pragma warning enable
 
         /// <summary>
         /// Gets or sets the culture info for the voice to use

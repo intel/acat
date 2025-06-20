@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 
-namespace ACAT.Extensions.Default.Actuators.CameraActuator
+namespace ACAT.Extensions.Actuators.CameraActuator
 {
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
         Guid("29840822-5B84-11D0-BD3B-00A0C911CE86"),

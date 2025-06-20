@@ -10,13 +10,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
-using System.ComponentModel.DataAnnotations;
+using ACAT.Core.PreferencesManagement;
 using System;
 using System.Xml.Serialization;
 
-namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
     /// <summary>
     /// Preference settings for the ConvAssist word predictor (English)

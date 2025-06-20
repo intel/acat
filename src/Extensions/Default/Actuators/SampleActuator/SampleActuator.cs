@@ -12,12 +12,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using System;
 
-namespace ACAT.Extensions.Default.Actuators.SampleActuator
+namespace ACAT.Extensions.Actuators.SampleActuator
 {
     [DescriptorAttribute("FE3DE70B-8084-46C1-BAB1-905B215C7738",
                             "Sample Actuator",

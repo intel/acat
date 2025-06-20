@@ -11,18 +11,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.TTSManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.TTSManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace ACAT.Extensions.Default.TTSEngines.TTSClient
+namespace ACAT.Extensions.TTSEngines.TTSClient
 {
     /// <summary>
     /// Converts text to speech by sending the text string to a TTS server using

@@ -18,13 +18,13 @@
 // </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
-using ACAT.Lib.Core.PanelManagement;
+using ACAT.Core.PanelManagement;
 
 namespace ACAT.Applications.ACATDashboard
 {

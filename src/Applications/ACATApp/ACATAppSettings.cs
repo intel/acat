@@ -20,7 +20,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 
 #region SupressStyleCopWarnings
 

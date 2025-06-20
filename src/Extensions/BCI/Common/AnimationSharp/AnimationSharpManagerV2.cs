@@ -13,10 +13,10 @@
 
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACATResources;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using SharpDX.Direct2D1;
 using SharpDX.Direct3D11;
 using SharpDX.DirectWrite;
@@ -533,7 +533,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             _sessionMode = BCIModes.CALIBRATION;
             _currEpochCount = 1;
             _sequenceDone = false;
-            BCIMode bCIMode = new BCIMode
+            BCIMode bCIMode = new()
             {
                 BciCalibrationMode = bCIScanSections,
                 BciMode = BCIModes.CALIBRATION
@@ -620,7 +620,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     //This is to avoid if a log is created right after another and share the same name but only changes the time it was created by a few seconds, avoid append the new log into the old log since the name is the same 
                     //Part of the name goes up to minutes not seconds so it have the possibility that the name is the same only applies in the log folder
                     //This is to when the log is saved in the same folder
-                    Random rand = new Random();
+                    Random rand = new();
                     int randomIndex = rand.Next(1, 300);
                     baseFileName = _sessionMode.ToString() + "_" + (_triggerTestActive ? "" : _ScanningSection.ToString()) + "_" + randomIndex;
                     _cachedLog = new CachedLogBCI(baseFileName, path);
@@ -771,11 +771,8 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         public void RequestParameters(BCIMode bCIMode, BCISimpleParameters bCISimpleParameters = null)
         {
             _ScanningSection = bCIMode.BciCalibrationMode;
-            if (bCISimpleParameters == null)
-            {
-                bCISimpleParameters = new BCISimpleParameters();
-            }
-            BCIUserInputParameters bCIUserInputParameters = new BCIUserInputParameters
+            bCISimpleParameters ??= new BCISimpleParameters();
+            BCIUserInputParameters bCIUserInputParameters = new()
             {
                 BciMode = bCIMode.BciMode,
                 BciCalibrationMode = bCIMode.BciCalibrationMode,
@@ -922,7 +919,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         {
             _sessionMode = BCIModes.TRIGGERTEST;
             _triggerTestActive = true;
-            BCIMode bCIMode = new BCIMode { BciMode = BCIModes.TRIGGERTEST };
+            BCIMode bCIMode = new() { BciMode = BCIModes.TRIGGERTEST };
             var strBciMode = JsonSerializer.Serialize(bCIMode);
             _actuator.IoctlRequest((int)OpCodes.StartSession, strBciMode);
             _actuator.IoctlRequest((int)OpCodes.TriggerTestStart, string.Empty);
@@ -938,7 +935,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             _currEpochCount = 0;
             _isBoxScannig = true;
             _numberOfSequences = _amountOfKeyboards;
-            BCIMode bCIMode = new BCIMode { BciMode = BCIModes.TYPING };
+            BCIMode bCIMode = new() { BciMode = BCIModes.TYPING };
             var strBciMode = JsonSerializer.Serialize(bCIMode);
             _actuator.IoctlRequest((int)OpCodes.StartSession, strBciMode);
         }
@@ -994,7 +991,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 {
                     for (int id = 0; id < _flashingSequenceIDBoxList.Length; id++)
                     {
-                        List<int> seq = new List<int>() { id + 1 };
+                        List<int> seq = new() { id + 1 };
                         bciCalibrationEnd.FlashingSequence.Add(id + 1, seq.ToArray());
                     }
                 }
@@ -1102,7 +1099,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     }
                     for (int id = 0; id < _flashingSequenceIDBoxList.Length; id++)
                     {
-                        List<int> seq = new List<int>() { id + 1 };
+                        List<int> seq = new() { id + 1 };
                         bciTypingRepetitionEnd.FlashingSequence.Add(id + 1, seq.ToArray());
                     }
                     try
@@ -1145,7 +1142,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             var bciLanguageModelProbabilities = new BCILanguageModelProbabilities();
             try
             {
-                Dictionary<int, double> nextProbs = new Dictionary<int, double>();
+                Dictionary<int, double> nextProbs = new();
                 if (_typeOfBox[_activeKeyboard] != null)
                 {
                     switch (_typeOfBox[_activeKeyboard].ToLower())
@@ -1329,7 +1326,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <param name="turnOnNow">Highlight the trigger box</param>
         private void ChangeColorButtons(int buttonID, bool highlightOn, bool useExtraBox, int type, bool turnOnNow = false)
         {
-            List<int> l = new List<int> { buttonID };
+            List<int> l = new() { buttonID };
             if (!_stopAnimation && !_changeUserControl)
                 ChangeColorButtons(l, highlightOn, useExtraBox, type, turnOnNow);
         }
@@ -1410,7 +1407,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         colorBorderExtraBox = SharpDXColors.SolidColorBrushExtraBoxOff;
                         colorRectExtraBox = SharpDXColors.SolidColorBrushExtraBoxOff;
                     }
-                    SharpDX.DirectWrite.Factory directWriteFactory = new SharpDX.DirectWrite.Factory();
+                    SharpDX.DirectWrite.Factory directWriteFactory = new();
                     if (!_stopAnimation && !_changeUserControl)
                     {
                         _sharpDX_d2dRenderTarget.BeginDraw();
@@ -1499,7 +1496,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         _sharpDX_d2dRenderTarget.FillRoundedRectangle(_rectanglesButtonsRoundList[activekeyboard][buttonID], colorRect);
                         _sharpDX_d2dRenderTarget.DrawRoundedRectangle(_rectanglesButtonsRoundList[activekeyboard][buttonID], (highlightOn ? colorRect : solidColorBrush), _BorderWidth);
                     }
-                    SharpDX.Mathematics.Interop.RawRectangleF rect = new SharpDX.Mathematics.Interop.RawRectangleF(_rectanglesButtonsList[activekeyboard][buttonID].Left + _PaddingText, _rectanglesButtonsList[activekeyboard][buttonID].Top + _offsetStrings[activekeyboard][buttonID], _rectanglesButtonsList[activekeyboard][buttonID].Right - _PaddingText, _rectanglesButtonsList[activekeyboard][buttonID].Bottom - _PaddingTextBottom);
+                    SharpDX.Mathematics.Interop.RawRectangleF rect = new(_rectanglesButtonsList[activekeyboard][buttonID].Left + _PaddingText, _rectanglesButtonsList[activekeyboard][buttonID].Top + _offsetStrings[activekeyboard][buttonID], _rectanglesButtonsList[activekeyboard][buttonID].Right - _PaddingText, _rectanglesButtonsList[activekeyboard][buttonID].Bottom - _PaddingTextBottom);
                     if (!_stopAnimation && !_changeUserControl)
                         _sharpDX_d2dRenderTarget.DrawText(_buttonsStringsList[activekeyboard][buttonID], _buttonTextFormatList[activekeyboard][buttonID], rect, highlightOn ? SharpDXColors.SolidColorBrushButtonTextOn : solidColorBrush, _drawTextOptions);
                 }
@@ -1636,7 +1633,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         {
                             if (!_stopAnimation && drawArea && !_changeUserControl)
                                 _sharpDX_d2dRenderTarget.DrawRoundedRectangle(roundedRectangle, _ButtonDataList[ii][i].borderColor, _BorderWidth);
-                            SharpDX.Mathematics.Interop.RawRectangleF rect2 = new SharpDX.Mathematics.Interop.RawRectangleF(rect.Left + _PaddingText, rect.Top + _offsetStrings[ii][i], rect.Right - _PaddingText, rect.Bottom - _PaddingTextBottom);
+                            SharpDX.Mathematics.Interop.RawRectangleF rect2 = new(rect.Left + _PaddingText, rect.Top + _offsetStrings[ii][i], rect.Right - _PaddingText, rect.Bottom - _PaddingTextBottom);
                             if (!_stopAnimation && drawArea && !_changeUserControl)
                                 _sharpDX_d2dRenderTarget.DrawText(_buttonsStringsList[ii][i], _buttonTextFormatList[ii][i], rect2, SharpDXColors.SolidColorBrushButtonTextOff, _drawTextOptions);// highli
                         }
@@ -1644,7 +1641,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         {
                             if (!_stopAnimation && drawArea && !_changeUserControl)
                                 _sharpDX_d2dRenderTarget.DrawRoundedRectangle(roundedRectangle, SharpDXColors.SolidColorBrushDisabledButton, _BorderWidth);
-                            SharpDX.Mathematics.Interop.RawRectangleF rect2 = new SharpDX.Mathematics.Interop.RawRectangleF(rect.Left + _PaddingText, rect.Top + _offsetStrings[ii][i], rect.Right - _PaddingText, rect.Bottom - _PaddingTextBottom);
+                            SharpDX.Mathematics.Interop.RawRectangleF rect2 = new(rect.Left + _PaddingText, rect.Top + _offsetStrings[ii][i], rect.Right - _PaddingText, rect.Bottom - _PaddingTextBottom);
                             if (!_stopAnimation && drawArea && !_changeUserControl)
                                 _sharpDX_d2dRenderTarget.DrawText(_buttonsStringsList[ii][i], _buttonTextFormatList[ii][i], rect2, SharpDXColors.SolidColorBrushDisabledButton, _drawTextOptions);// highli
                         }
@@ -1655,7 +1652,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     {
                         if (!_stopAnimation && !_changeUserControl)
                             _sharpDX_d2dRenderTarget.DrawRectangle(_rectangleExtraButtonCRG, SharpDXColors.SolidColorBrushExtraBoxOn);
-                        SharpDX.Mathematics.Interop.RawRectangleF rectCRG = new SharpDX.Mathematics.Interop.RawRectangleF(_rectangleExtraButtonCRG.Left, _rectangleExtraButtonCRG.Top + _offsetCRG, _rectangleExtraButtonCRG.Right, _rectangleExtraButtonCRG.Bottom);
+                        SharpDX.Mathematics.Interop.RawRectangleF rectCRG = new(_rectangleExtraButtonCRG.Left, _rectangleExtraButtonCRG.Top + _offsetCRG, _rectangleExtraButtonCRG.Right, _rectangleExtraButtonCRG.Bottom);
                         if (!_stopAnimation && !_changeUserControl)
                             _sharpDX_d2dRenderTarget.DrawText(CRGText, _buttonTextFormatCRG, rectCRG, SharpDXColors.SolidColorBrushButtonTextOff);
                     }
@@ -1836,7 +1833,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <returns></returns>
         private string GetCalibrationInProgressText()
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new();
             stringBuilder.Clear();
             stringBuilder.Append(StringResources.ResourceManager.GetString("CalibrationInProgrressPrompt"));
             stringBuilder.AppendLine();
@@ -2275,7 +2272,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             _currentCalibrationTarget = decision;
             bool highlight = true;
             int index = FindIndexFromID(decision.id);
-            List<int> d = new List<int> { index };
+            List<int> d = new() { index };
             if (_ReturnToBoxScanning)
                 highlight = false;
             if (!_stopAnimation && !_changeUserControl)
@@ -2285,7 +2282,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 else
                     ChangeColorButtons(d, highlight, true, 4); //turn on
             }
-            List<int> seq = new List<int>() { decision.id - 1 };
+            List<int> seq = new() { decision.id - 1 };
             NewEntryLog(true, false, seq, 0, true);
             if (!_changeUserControl)
                 _showDecisionTimer.Start();
@@ -2319,7 +2316,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 else
                     ChangeColorButtons(d, highlight, true, 4); //turn on
             }
-            List<int> seq = new List<int>() { decision - 1 };
+            List<int> seq = new() { decision - 1 };
             NewEntryLog(true, false, seq, 0, true);
             if (!_changeUserControl)
                 _showDecisionTimer.Start();
@@ -2338,7 +2335,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 var indexButton = FindIndexFromID(_currentCalibrationTarget.id);
                 if (!_stopAnimation && !_changeUserControl)
                     ChangeColorButtons(indexButton, false, true, 2); //Stop displaying the decision
-                List<int> seq = new List<int>() { _currentCalibrationTarget.id - 1 };
+                List<int> seq = new() { _currentCalibrationTarget.id - 1 };
                 NewEntryLog(false, false, seq, 0, true);
                 if (!_changeUserControl && (_isBoxScannig || _lockAnimation) && !_stopAnimation)
                 {
@@ -2435,7 +2432,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
 
                         if (!_stopAnimation && !_changeUserControl)// Display target in a color
                         {
-                            List<int> intList = new List<int> { target };
+                            List<int> intList = new() { target };
                             if (_ScanningSection == BCIScanSections.Box)
                             {
                                 _activeKeyboard = _currentCalibrationTarget.id - 1;
@@ -2529,7 +2526,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             else
             {
                 int targetOff = FindIndexFromID(_currentCalibrationTarget.id);// target off
-                List<int> t = new List<int> { targetOff };
+                List<int> t = new() { targetOff };
                 if (!_stopAnimation && !_changeUserControl)
                 {
                     if (_sessionMode == BCIModes.CALIBRATION)

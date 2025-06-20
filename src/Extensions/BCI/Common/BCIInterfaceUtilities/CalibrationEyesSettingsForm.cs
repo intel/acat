@@ -7,9 +7,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System;
@@ -30,7 +30,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
     public partial class CalibrationEyesSettingsForm : Form
     {
         #region Properties
-        public ResultParams ResultParameters = new ResultParams();
+        public ResultParams ResultParameters = new();
 
         /// <summary>
         /// Main object of the actuator
@@ -135,7 +135,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             _Interval = _TempInterval;
             _MaxRepetitions = _TempMaxRepetitions;
-            BCICalibrationEyesClosedParameters bCICalibrationEyesClosedParameters = new BCICalibrationEyesClosedParameters(_MaxRepetitions, _Interval);
+            BCICalibrationEyesClosedParameters bCICalibrationEyesClosedParameters = new(_MaxRepetitions, _Interval);
             var str = JsonSerializer.Serialize(bCICalibrationEyesClosedParameters);
             _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedSaveParameters, str);
             ValidateParameters();
@@ -242,7 +242,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 bool quitApp = true;
                 if (_TempInterval != _Interval || _TempMaxRepetitions != _MaxRepetitions)
                 {
-                    ConfirmBoxTwoOption confirmBox = new ConfirmBoxTwoOption
+                    ConfirmBoxTwoOption confirmBox = new()
                     {
                         Prompt = StringResources.exitwithoutsaving,
                         Op1Prompt = StringResources.OK,
@@ -275,7 +275,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             {
                 _bciActuator.EvtIoctlResponse += BciActuator_EvtIoctlResponse;
             }
-            BCIMode bCIMode = new BCIMode { BciMode = BCIModes.CALIBRATION_EYESOPENCLOSE, BciCalibrationMode = BCIScanSections.None, };
+            BCIMode bCIMode = new() { BciMode = BCIModes.CALIBRATION_EYESOPENCLOSE, BciCalibrationMode = BCIScanSections.None, };
             _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedRequestParameters, string.Empty);
         }
 

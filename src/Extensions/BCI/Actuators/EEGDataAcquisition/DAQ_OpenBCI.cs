@@ -13,7 +13,7 @@
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGUtils;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using Accord.Math;
 using brainflow;
 using Microsoft.Win32;
@@ -491,7 +491,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         Log.Debug("Port " + port + " tested. Result: " + sensorConnected);
                     }
 
-                    BrainFlowInputParams input_params = new BrainFlowInputParams();
+                    BrainFlowInputParams input_params = new();
 
                     if (sensorConnected)
                     {
@@ -511,7 +511,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         // Saves result to _daisyBoardStatus and settings (DAQ_NumEEGChannels)
                         if (_daisyBoardStatus == DaisyBoardStatus.UNKNOWN)
                         {
-                            Thread daisyCheckThread = new Thread(() => cytonIsDaisyAttached(serialPort));
+                            Thread daisyCheckThread = new(() => cytonIsDaisyAttached(serialPort));
                             daisyCheckThread.Start();
                             daisyCheckThread.Join();
                         }
@@ -711,8 +711,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         // Append data to buffer for triggerTest
                         if (triggerTestInProgressFlag)
                         {
-                            if (_bufferTriggerTest == null)
-                                _bufferTriggerTest = new List<double>();
+                            _bufferTriggerTest ??= new List<double>();
                             _bufferTriggerTest.AddRange(rawData.GetRow(indOpticalSensorChannel));
                         }
 
@@ -763,8 +762,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     // Append data to buffer for triggerTest
                     if (triggerTestInProgressFlag)
                     {
-                        if (_bufferTriggerTest == null)
-                            _bufferTriggerTest = new List<double>();
+                        _bufferTriggerTest ??= new List<double>();
                         _bufferTriggerTest.AddRange(rawData.GetRow(indOpticalSensorChannel));
                     }
 
@@ -804,8 +802,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         {
             if (saveDataToFile)
             {
-                if (FileWriterObj == null)
-                    FileWriterObj = new FileWriter();
+                FileWriterObj ??= new FileWriter();
 
                 FileWriterObj.WriteMarkerValueToFile(markerValues);
             }
@@ -1018,7 +1015,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 // Keep only last N samples in buffer (N samples are used to calculate status)
                 int numSamplesCurrBuffer = inBuffer.GetLength(1);
                 int numSamplesToKeep = (numSamplesInBuffer * sampleRate) / 1000;
-                List<int> idxToKeep = new List<int>();
+                List<int> idxToKeep = new();
                 for (int i = numSamplesCurrBuffer - numSamplesToKeep; i < numSamplesCurrBuffer; i++)
                 {
                     if (i >= 0)
@@ -1082,7 +1079,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         bool pulseOffDetected = false;
                         int numSamplesOn = 0;
                         int numSamplesOff = 0;
-                        List<float> dutycycleList = new List<float>();
+                        List<float> dutycycleList = new();
 
                         // Flip signal (triggertest signal is reversed)
                         for (int sampleIdx = 0; sampleIdx < numSamples; sampleIdx++)
@@ -1239,7 +1236,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             try
             {
                 Log.Debug("Testing port " + port);
-                BrainFlowInputParams input_params = new BrainFlowInputParams
+                BrainFlowInputParams input_params = new()
                 {
                     serial_port = port
                 };
@@ -1421,7 +1418,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             return result;
         }
 
-        private static readonly Queue<Dictionary<ExitCodes, string>> warnings = new Queue<Dictionary<ExitCodes, string>>();
+        private static readonly Queue<Dictionary<ExitCodes, string>> warnings = new();
         private static readonly int limit = 10;
 
         /// <summary>

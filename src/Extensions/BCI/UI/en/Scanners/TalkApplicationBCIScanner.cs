@@ -15,19 +15,19 @@ using ACAT.Extensions.BCI.Common.AnimationSharp;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Extensions.BCI.Common.BCIInterfaceUtilities;
 using ACAT.Extensions.BCI.UI.UserControls;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.ThemeManagement;
-using ACAT.Lib.Core.TTSManagement;
-using ACAT.Lib.Core.UserControlManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
-using ACAT.Lib.Core.WordPredictionManagement;
-using ACAT.Lib.Extension.CommandHandlers;
-using ACAT.Lib.Extension;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.Audit;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.ThemeManagement;
+using ACAT.Core.TTSManagement;
+using ACAT.Core.UserControlManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Core.WordPredictionManagement;
+using ACAT.Extension.CommandHandlers;
+using ACAT.Extension;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -79,7 +79,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// <summary>
         /// Decision of the user (for calibration)
         /// </summary>
-        private readonly BCISimpleParameters _CalibrationParameters = new BCISimpleParameters();
+        private readonly BCISimpleParameters _CalibrationParameters = new();
 
         /// <summary>
         /// Should the scanner be dimmed
@@ -297,7 +297,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         {
             //STEP - 5
             await Task.Delay(5);
-            BCIMode bCIMode = new BCIMode();
+            BCIMode bCIMode = new();
             if (_RequestCalibration)
                 bCIMode.BciMode = BCIModes.CALIBRATION;
             else
@@ -332,7 +332,6 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                     animationSharpManager.TypingRequest();
                     break;
                 default:
-                    break;
             }
             await Task.Delay(25);
         }
@@ -439,7 +438,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
 
         public List<Control> GetControls(string type, Control control)
         {
-            List<Control> controls = new List<Control>();
+            List<Control> controls = new();
             foreach (Control c in control.Controls)
             {
                 if (c.GetType().Name == type)
@@ -478,7 +477,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             _screenLockTextBoxUserControl.EvtScreenUnlocked += ScreenLockTextBoxUserControl_EvtScreenUnlocked;
             AddTextBoxUserControl(_textBoxUserControl);
             Context.AppWordPredictionManager.ActiveWordPredictor.EvtModeChanged += ActiveWordPredictor_EvtModeChanged;
-            _scannerCommon.UserControlManager.GridScanIterations = Lib.Extension.Common.AppPreferences.GridScanIterations;
+            _scannerCommon.UserControlManager.GridScanIterations = ACAT.Extension.Common.AppPreferences.GridScanIterations;
             return retVal;
         }
         /// <summary>
@@ -639,7 +638,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                     AddTextBoxUserControl(_textBoxUserControl);
                 }
             }));
-            if (Lib.Extension.Common.AppPreferences.ClearTalkWindowOnTypeModeChange)
+            if (ACAT.Extension.Common.AppPreferences.ClearTalkWindowOnTypeModeChange)
             {
                 Windows.SetText(_textBoxTalkWindow, String.Empty);
             }
@@ -873,7 +872,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             //STEP - 2
             _bciActuator.EvtIoctlResponse -= BciActuator_EvtIoctlResponse;
             OnPause();
-            Tuple<BCIMenuOptions.Options, BCISimpleParameters> result = new Tuple<BCIMenuOptions.Options, BCISimpleParameters>(BCIMenuOptions.Options.Box, new BCISimpleParameters());
+            Tuple<BCIMenuOptions.Options, BCISimpleParameters> result = new(BCIMenuOptions.Options.Box, new BCISimpleParameters());
             result = BCIInterfaceUtils.ShowCalibrationModesWindow(bciCalibrationStatus, bciCalibrationStatus.OkToGoToTyping, this);
             OnResume();
             _bciActuator.EvtIoctlResponse += BciActuator_EvtIoctlResponse;
@@ -1269,11 +1268,11 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         private List<Widget>[] SaveUserControlWidgets()
         {
             List<Widget>[] allWidgets = new List<Widget>[3];
-            List<IUserControl> listWords = new List<IUserControl>();
+            List<IUserControl> listWords = new();
             UserControlManager.FindAllUserControls(scannerPanelWordPredictions, listWords);
-            List<IUserControl> listSentences = new List<IUserControl>();
+            List<IUserControl> listSentences = new();
             UserControlManager.FindAllUserControls(scannerPanelSentences, listSentences);
-            List<IUserControl> listKeyboard = new List<IUserControl>();
+            List<IUserControl> listKeyboard = new();
             UserControlManager.FindAllUserControls(scannerPanelKeyboard, listKeyboard);
 
 
@@ -1349,7 +1348,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             var panelWordPredictions = GetControls("ScannerButtonControl", scannerPanelWordPredictions.Controls[0]);
             var panelSentences = GetControls("ScannerButtonControl", scannerPanelSentences.Controls[0]);
             var panelKeyboard = GetControls("ScannerButtonControl", scannerPanelKeyboard.Controls[0]);
-            Dictionary<List<Control>, string> boxesData = new Dictionary<List<Control>, string>()
+            Dictionary<List<Control>, string> boxesData = new()
                     {
                         { panelWordPredictions, panel1Path },
                         { panelSentences, panel2Path },
@@ -1452,7 +1451,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             animationSharpManager.EvtBCIStartCalibration += BCIShowRecalibrationWindowMessage;
             animationSharpManager.EvtBCICalibrationComplete += BCIShowCalibrationResult;
             animationSharpManager.EvtBCIUpdateTexttBox += UpdatetextBoxEvt;
-            LEDStatusUserControl userControlLED = new LEDStatusUserControl  {  Dock = DockStyle.Fill  };
+            LEDStatusUserControl userControlLED = new() {  Dock = DockStyle.Fill  };
             panelLEDStatus.Controls.Add(userControlLED);
         }
 
@@ -1747,7 +1746,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                             break;
                         case "CmdSaveToCanned":
                             form._TextToLearnCanned = form.GetTextCannedPhrases();
-                            StringBuilder stringBuilder = new StringBuilder();
+                            StringBuilder stringBuilder = new();
                             stringBuilder.Append(BCIInterfaceUtils.SAVEPROMPT);
                             stringBuilder.AppendLine();
                             string val = form.CropText(36, form._TextToLearnCanned);

@@ -10,7 +10,7 @@
 // to the BCI gTec board
 //
 ////////////////////////////////////////////////////////////////////////////
-
+using ACAT.Core.WidgetManagement;
 using ACATResources;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
@@ -50,7 +50,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.buttonExit_userControlBCIErrorgTecBoard = new System.Windows.Forms.Button();
             this.labelTitle = new System.Windows.Forms.Label();
             this.tableLayoutPanelBCIError = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonRetry_userControlBCIErrorgTecBoard = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonRetry_userControlBCIErrorgTecBoard = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanelSpacerBottom = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelSpacerTop = new System.Windows.Forms.TableLayoutPanel();
             this.webBrowserTop = new System.Windows.Forms.WebBrowser();
@@ -267,7 +267,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelBCIError;
         public System.Windows.Forms.Button buttonExit_userControlBCIErrorgTecBoard;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelSpacerBottom;
-        public Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonRetry_userControlBCIErrorgTecBoard;
+        public ScannerRoundedButtonControl buttonRetry_userControlBCIErrorgTecBoard;
         private System.Windows.Forms.WebBrowser webBrowserTop;
         private System.Windows.Forms.WebBrowser webBrowserBottom;
     }

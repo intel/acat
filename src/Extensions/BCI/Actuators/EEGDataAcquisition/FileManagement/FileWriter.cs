@@ -11,8 +11,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -153,7 +153,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         private void WriteDataToFile(StreamWriter sw, double[,] data)
         {
            
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new();
             try
             {
                 EnterCriticalSection(_syncObj);
@@ -200,7 +200,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// <summary>
         /// Used the synchronization for multiple calls
         /// </summary>
-        private readonly object _syncObj = new object();
+        private readonly object _syncObj = new();
 
         private void EnterCriticalSection(object syncObj)
         {

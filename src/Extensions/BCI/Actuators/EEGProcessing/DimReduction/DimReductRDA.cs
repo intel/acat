@@ -116,8 +116,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             priors = new double[numClasses];
 
             int numFeatures = inputData[0].Length;
-            List<double[]> meank = new List<double[]>(); //mean for class k
-            List<double[,]> Sk = new List<double[,]>(); //covariance for class k
+            List<double[]> meank = new(); //mean for class k
+            List<double[,]> Sk = new(); //covariance for class k
             double[,] S = new double[numFeatures, numFeatures]; // All classes
 
             this.priors = new double[numClasses];
@@ -130,7 +130,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 numTrialsPerClass[classIdx] = indClass.Length;
                 numTotalTrials += indClass.Length;
 
-                Stopwatch sw = new Stopwatch();
+                Stopwatch sw = new();
                 sw.Start();
                 //var tmpClassData = trialClassData.; // (1, ;
                 double[,] classData = trialClassData.ToArray().ToMatrix();
@@ -212,7 +212,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             //int numSamples = inputData[0].Length;
             int numClasses = this.means.Length;
 
-            List<double[]> classProjections = new List<double[]>();
+            List<double[]> classProjections = new();
             for (int classIdx = 0; classIdx < numClasses; classIdx++)
             {
                 double[,] classData = inputData.ToArray().ToMatrix();

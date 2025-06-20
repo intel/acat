@@ -1,4 +1,5 @@
-﻿using ACATResources;
+﻿using ACAT.Core.WidgetManagement;
+using ACATResources;
 
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
@@ -37,18 +38,18 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonExit = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.ButtonSave = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonExit = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonSave = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.panelOptions = new System.Windows.Forms.Panel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutIterationPerTarget = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutMinScore = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutScanningTime = new System.Windows.Forms.TableLayoutPanel();
-            this.BtnDownInterval = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.BtnUpInterval = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.BtnDownInterval = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.BtnUpInterval = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutTargets = new System.Windows.Forms.TableLayoutPanel();
-            this.BtnDownRepetitions = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.BtnUpRepetitions = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.BtnDownRepetitions = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.BtnUpRepetitions = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.textBoxInterval = new System.Windows.Forms.TextBox();
             this.textBoxReps = new System.Windows.Forms.TextBox();
             this.labelScanTime = new System.Windows.Forms.Label();
@@ -57,7 +58,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonClose = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonClose = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -585,24 +586,24 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonSave;
+        private ScannerRoundedButtonControl ButtonSave;
         private System.Windows.Forms.Panel panelOptions;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonClose;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonExit;
+        private ScannerRoundedButtonControl ButtonClose;
+        private ScannerRoundedButtonControl ButtonExit;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.TableLayoutPanel tableLayoutIterationPerTarget;
         private System.Windows.Forms.TableLayoutPanel tableLayoutMinScore;
         private System.Windows.Forms.TableLayoutPanel tableLayoutScanningTime;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl BtnDownInterval;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl BtnUpInterval;
+        private ScannerRoundedButtonControl BtnDownInterval;
+        private ScannerRoundedButtonControl BtnUpInterval;
         private System.Windows.Forms.Label labelScanTime;
         private System.Windows.Forms.TextBox textBoxInterval;
         private System.Windows.Forms.TextBox textBoxReps;
         private System.Windows.Forms.Label labelTargets;
         private System.Windows.Forms.TableLayoutPanel tableLayoutTargets;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl BtnDownRepetitions;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl BtnUpRepetitions;
+        private ScannerRoundedButtonControl BtnDownRepetitions;
+        private ScannerRoundedButtonControl BtnUpRepetitions;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;

@@ -6,9 +6,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System;
@@ -197,7 +197,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// </summary>
         private BCICalibrationUpdatedMappings GetMappingsValues()
         {
-            BCICalibrationUpdatedMappings bCICalibrationUpdatedMappings = new BCICalibrationUpdatedMappings();
+            BCICalibrationUpdatedMappings bCICalibrationUpdatedMappings = new();
             try
             {
                 bCICalibrationUpdatedMappings.DictUpdatedMappings.Add(BCIScanSections.Box, GetScanningSection(comboBoxBox.SelectedItem.ToString()));
@@ -385,7 +385,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 }
             }
 
-            List<String> list = new List<String>();
+            List<String> list = new();
 
             if (param2.ToLower().EndsWith(".mp4"))
             {

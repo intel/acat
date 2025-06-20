@@ -9,7 +9,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +25,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGUtils
         private const String cmdStopStreaming = "stop";
         private const String VID = "0483";
         private const String PID = "5740";
-        private static readonly StringBuilder sbResponse = new StringBuilder();
+        private static readonly StringBuilder sbResponse = new();
 
         public delegate void OpticalSensorDataReceiveError(String msg);
 

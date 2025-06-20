@@ -327,7 +327,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             bool clientready = false;
             var tcs = new TaskCompletionSource<bool>();
 
-            Task.Run(async () =>
+            await Task.Run(async () =>
             {
                 while (!clientready)
                 {

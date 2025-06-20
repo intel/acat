@@ -1021,22 +1021,20 @@ namespace ACAT.Core.PanelManagement
                 {
                     bool abbreviationDetected = false;
 
-                    using (AgentContext context = Context.AppAgentMgr.ActiveContext())
+                    using AgentContext context = Context.AppAgentMgr.ActiveContext();
+                    if (!DialogMode)
                     {
-                        if (!DialogMode)
+                        if (context.TextAgent().ExpandAbbreviations())
                         {
-                            if (context.TextAgent().ExpandAbbreviations())
-                            {
-                                abbreviationDetected = checkAndExpandAbbreviation();
-                            }
+                            abbreviationDetected = checkAndExpandAbbreviation();
                         }
+                    }
 
-                        if (!abbreviationDetected && !context.TextAgent().SupportsSpellCheck())
-                        {
-                            Log.Debug("Calling spellccheck " + Kernel32Interop.GetCurrentThreadId());
-                            TextController.SpellCheck();
-                            Log.Debug("Returned from spellccheck " + Kernel32Interop.GetCurrentThreadId());
-                        }
+                    if (!abbreviationDetected && !context.TextAgent().SupportsSpellCheck())
+                    {
+                        Log.Debug("Calling spellccheck " + Kernel32Interop.GetCurrentThreadId());
+                        TextController.SpellCheck();
+                        Log.Debug("Returned from spellccheck " + Kernel32Interop.GetCurrentThreadId());
                     }
                 }
             }

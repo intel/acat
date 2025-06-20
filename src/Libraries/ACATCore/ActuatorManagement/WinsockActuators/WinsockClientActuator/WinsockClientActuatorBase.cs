@@ -313,10 +313,7 @@ namespace ACAT.Core.InputActuators
                 try
                 {
                     Log.Debug("Trying to connecting to tcp/ip server");
-                    if (socketClient == null)
-                    {
-                        socketClient = createSocketClient();
-                    }
+                    socketClient ??= createSocketClient();
 
                     if (socketClient != null)
                     {

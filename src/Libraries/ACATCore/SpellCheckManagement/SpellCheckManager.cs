@@ -164,10 +164,7 @@ namespace ACAT.Core.SpellCheckManagement
         /// <returns>true on success</returns>
         public bool SetActiveSpellChecker(CultureInfo ci = null)
         {
-            if (ci == null)
-            {
-                ci = CultureInfo.DefaultThreadCurrentUICulture;
-            }
+            ci ??= CultureInfo.DefaultThreadCurrentUICulture;
 
             Guid guid = _spellCheckers.GetPreferredOrDefaultByCulture(ci);
             Guid cultureNeutralGuid = _spellCheckers.GetPreferredOrDefaultByCulture(null);

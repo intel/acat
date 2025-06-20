@@ -81,10 +81,7 @@ namespace ACAT.Core.Utility
         /// </summary>
         public void Actuate()
         {
-            if (_window != null)
-            {
-                _window.Actuate();
-            }
+            _window?.Actuate();
         }
 
         /// <summary>

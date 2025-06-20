@@ -185,10 +185,7 @@ namespace ACAT.Core.PanelManagement
             {
                 retVal = getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, panel);
 
-                if (retVal == null)
-                {
-                    retVal = getCultureConfigMapEntry(DefaultCulture, panel);
-                }
+                retVal ??= getCultureConfigMapEntry(DefaultCulture, panel);
             }
 
             return retVal;
@@ -314,10 +311,7 @@ namespace ACAT.Core.PanelManagement
         /// <returns>true on success</returns>
         public static bool Load(Assembly assembly)
         {
-            if (_formsCache == null)
-            {
-                _formsCache = new Hashtable();
-            }
+            _formsCache ??= new Hashtable();
 
             return loadTypesFromAssembly(assembly);
         }
@@ -692,15 +686,9 @@ namespace ACAT.Core.PanelManagement
         /// <param name="language"></param>
         private static void loadPanelClassConfig(String language)
         {
-            if (_cultureAppPanelClassConfig == null)
-            {
-                _cultureAppPanelClassConfig = new Dictionary<string, AppPanelClassConfig>();
-            }
+            _cultureAppPanelClassConfig ??= new Dictionary<string, AppPanelClassConfig>();
 
-            if (_culturePanelClassConfigMapTable == null)
-            {
-                _culturePanelClassConfigMapTable = new Dictionary<string, PanelClassConfig>();
-            }
+            _culturePanelClassConfigMapTable ??= new Dictionary<string, PanelClassConfig>();
 
             var panelClassConfigFilePath = Path.Combine(UserManager.CurrentUserDir, language, PanelClassConfigFileName);
 

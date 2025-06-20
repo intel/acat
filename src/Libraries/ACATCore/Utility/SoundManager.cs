@@ -64,10 +64,7 @@ namespace ACAT.Core.Utility
                     switch (soundType)
                     {
                         case SoundType.Custom:
-                            if (_soundPlayer == null)
-                            {
-                                _soundPlayer = new SoundPlayer();
-                            }
+                            _soundPlayer ??= new SoundPlayer();
                             if (customPath != null)
                                 SetSoundFile(_soundPlayer, customPath);
                             break;

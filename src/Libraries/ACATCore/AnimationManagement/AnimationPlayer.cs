@@ -1170,10 +1170,7 @@ namespace ACAT.Core.AnimationManagement
                     }
                 }
 
-                if (above == null)
-                {
-                    above = _highlightedWidget.Above[0];
-                }
+                above ??= _highlightedWidget.Above[0];
 
                 Log.Debug("above: " + above.Name);
                 above.HighlightOn();
@@ -1230,10 +1227,7 @@ namespace ACAT.Core.AnimationManagement
                     }
                 }
 
-                if (below == null)
-                {
-                    below = _highlightedWidget.Below[0];
-                }
+                below ??= _highlightedWidget.Below[0];
 
                 Log.Debug("below: " + below.Name);
                 below.HighlightOn();
@@ -1289,10 +1283,7 @@ namespace ACAT.Core.AnimationManagement
                     }
                 }
 
-                if (left == null)
-                {
-                    left = _highlightedWidget.Left[0];
-                }
+                left ??= _highlightedWidget.Left[0];
 
                 Log.Debug("Left: " + left.Name);
                 left.HighlightOn();
@@ -1348,10 +1339,7 @@ namespace ACAT.Core.AnimationManagement
                     }
                 }
 
-                if (right == null)
-                {
-                    right = _highlightedWidget.Right[0];
-                }
+                right ??= _highlightedWidget.Right[0];
 
                 Log.Debug("Right: " + right.Name);
                 right.HighlightOn();

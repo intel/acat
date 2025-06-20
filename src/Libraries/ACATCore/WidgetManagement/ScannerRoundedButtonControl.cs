@@ -173,17 +173,13 @@ namespace ACAT.Core.WidgetManagement
             e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
             base.OnPaint(e);
             RectangleF Rect = new RectangleF(0, 0, this.Width, this.Height);
-            using (GraphicsPath GraphPath = GetRoundPath(Rect, BorderRadiusTopLeft, BorderRadiusBottomLeft, BorderRadiusTopRight, BorderRadiusBottomRight, BorderWidth))
-            {
-                //GraphicsPath GraphInnerPath = GetRoundPath(Rect, BorderRadiusLeft, BorderRadiusRight, BorderWidth);
-                //Pen pen = new Pen(BorderColor, BorderWidth);
-                this.Region = new Region(GraphPath);
-                using (Pen pen = new Pen(BorderColor, BorderWidth))
-                {
-                    pen.Alignment = PenAlignment.Inset;
-                    e.Graphics.DrawPath(pen, GraphPath);
-                }
-            }
+            using GraphicsPath GraphPath = GetRoundPath(Rect, BorderRadiusTopLeft, BorderRadiusBottomLeft, BorderRadiusTopRight, BorderRadiusBottomRight, BorderWidth);
+            //GraphicsPath GraphInnerPath = GetRoundPath(Rect, BorderRadiusLeft, BorderRadiusRight, BorderWidth);
+            //Pen pen = new Pen(BorderColor, BorderWidth);
+            this.Region = new Region(GraphPath);
+            using Pen pen = new Pen(BorderColor, BorderWidth);
+            pen.Alignment = PenAlignment.Inset;
+            e.Graphics.DrawPath(pen, GraphPath);
         }
 
         /// <summary>

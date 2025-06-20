@@ -36,31 +36,16 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         private async void sendHttp(String data, TTSFormat format)
         {
             string Url = "http://localhost:8004";
-            StringContent stringContent;
-
-            switch (format)
+            StringContent stringContent = format switch
             {
-                case TTSFormat.Json:
-                    stringContent = new StringContent(data, Encoding.UTF8, "application/json");
-                    break;
-
-                case TTSFormat.SSML:
-                    stringContent = new StringContent(data, Encoding.UTF8, "application/xml");
-                    break;
-
-                case TTSFormat.Text:
-                default:
-
-                    stringContent = new StringContent(data, Encoding.UTF8, "text/plain");
-                    break;
-            }
-
+                TTSFormat.Json => new StringContent(data, Encoding.UTF8, "application/json"),
+                TTSFormat.SSML => new StringContent(data, Encoding.UTF8, "application/xml"),
+                _ => new StringContent(data, Encoding.UTF8, "text/plain"),
+            };
             try
             {
-                using (var client = new HttpClient())
-                {
-                    var response = await client.PostAsync(Url, stringContent);
-                }
+                using var client = new HttpClient();
+                var response = await client.PostAsync(Url, stringContent);
             }
             catch (Exception ex)
             {

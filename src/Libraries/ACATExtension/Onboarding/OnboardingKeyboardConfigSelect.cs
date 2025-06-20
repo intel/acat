@@ -38,11 +38,10 @@ namespace ACAT.Extension.Onboarding
 
         public override IOnboardingUserControl GetNextStep(String stepID)
         {
-            switch (stepID)
+            return stepID switch
             {
-                default:
-                    return null;
-            }
+                _ => null,
+            };
         }
 
         public override IOnboardingUserControl GetStep(String stepId)

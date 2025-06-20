@@ -189,7 +189,7 @@ namespace ACAT.Core.ActuatorManagement
         /// </summary>
         public static ActuatorManager Instance
         {
-            get { return _instance ?? (_instance = new ActuatorManager()); }
+            get { return _instance ??= new ActuatorManager(); }
         }
 
         /// <summary>

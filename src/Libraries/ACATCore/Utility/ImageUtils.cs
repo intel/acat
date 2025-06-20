@@ -27,14 +27,10 @@ namespace ACAT.Core.Utility
         {
             if (icon != null)
             {
-                using (var memoryStream = new MemoryStream())
-                {
-                    icon.Save(memoryStream);
-                    using (var bitmap = (Bitmap)Image.FromStream(memoryStream))
-                    {
-                        return new Bitmap(bitmap);
-                    }
-                }
+                using var memoryStream = new MemoryStream();
+                icon.Save(memoryStream);
+                using var bitmap = (Bitmap)Image.FromStream(memoryStream);
+                return new Bitmap(bitmap);
             }
 
             return null;

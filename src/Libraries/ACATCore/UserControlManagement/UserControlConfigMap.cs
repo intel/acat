@@ -280,10 +280,7 @@ namespace ACAT.Core.UserControlManagement
         /// <returns>true on success</returns>
         public static bool Load(Assembly assembly)
         {
-            if (_userControlsCache == null)
-            {
-                _userControlsCache = new Hashtable();
-            }
+            _userControlsCache ??= new Hashtable();
 
             return loadTypesFromAssembly(assembly);
         }

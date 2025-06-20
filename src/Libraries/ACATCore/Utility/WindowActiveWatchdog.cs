@@ -29,7 +29,7 @@ namespace ACAT.Core.Utility
         /// <summary>
         /// Pause the watchdog?
         /// </summary>
-        private bool _paused;
+        private readonly bool _paused;
 
         /// <summary>
         /// Constructor.  Allocates resources, event handlers

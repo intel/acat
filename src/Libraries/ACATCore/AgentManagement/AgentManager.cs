@@ -1051,10 +1051,7 @@ namespace ACAT.Core.AgentManagement
                     // contextual menu, do so
                     if (getContextMenu)
                     {
-                        if (agent == null)
-                        {
-                            agent = _genericAppAgent;
-                        }
+                        agent ??= _genericAppAgent;
 
                         Log.Debug("agent : " + agent.Name);
                         agent.OnContextMenuRequest(monitorInfo);
@@ -1180,15 +1177,9 @@ namespace ACAT.Core.AgentManagement
                 }
             }
 
-            if (agent == null)
-            {
-                agent = DefaultAgentForContextSwitchDisable;
-            }
+            agent ??= DefaultAgentForContextSwitchDisable;
 
-            if (agent == null)
-            {
-                agent = _genericAppAgent;
-            }
+            agent ??= _genericAppAgent;
 
             Log.Debug("agent : " + agent.Name);
 

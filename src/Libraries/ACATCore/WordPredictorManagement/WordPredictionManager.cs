@@ -301,10 +301,7 @@ namespace ACAT.Core.WordPredictionManagement
         /// <returns>true on success</returns>
         public bool SetActiveWordPredictor(CultureInfo ci = null)
         {
-            if (ci == null)
-            {
-                ci = CultureInfo.DefaultThreadCurrentUICulture;
-            }
+            ci ??= CultureInfo.DefaultThreadCurrentUICulture;
 
             Guid guid = _wordPredictors.GetPreferredOrDefaultByCulture(ci);
             Guid cultureNeutralGuid = _wordPredictors.GetPreferredOrDefaultByCulture(null);

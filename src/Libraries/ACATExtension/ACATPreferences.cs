@@ -104,54 +104,20 @@ namespace ACAT.Extension
         /// <returns>value of the variable from the settings</returns>
         protected override int resolveVariableInt(String variableName, int defaultValue)
         {
-            int retVal;
-            switch (variableName)
+            var retVal = variableName switch
             {
-                case "@FirstPauseTime":
-                    retVal = FirstPauseTime;
-                    break;
-
-                case "@ScanTime":
-                    retVal = ScanTime;
-                    break;
-
-                case "@GridScanIterations":
-                    retVal = GridScanIterations;
-                    break;
-
-                case "@RowScanIterations":
-                    retVal = RowScanIterations;
-                    break;
-
-                case "@ColumnScanIterations":
-                    retVal = ColumnScanIterations;
-                    break;
-
-                case "@WordPredictionScanIterations":
-                    retVal = WordPredictionScanIterations;
-                    break;
-
-                case "@MenuDialogScanTime":
-                    retVal = MenuDialogScanTime;
-                    break;
-
-                case "@FirstRepeatTime":
-                    retVal = FirstRepeatTime;
-                    break;
-
-                case "@WordPredictionFirstPauseTime":
-                    retVal = WordPredictionFirstPauseTime;
-                    break;
-
-                case "@StripScannerColumnIterations":
-                    retVal = StripScannerColumnIterations;
-                    break;
-
-                default:
-                    retVal = base.resolveVariableInt(variableName, defaultValue);
-                    break;
-            }
-
+                "@FirstPauseTime" => FirstPauseTime,
+                "@ScanTime" => ScanTime,
+                "@GridScanIterations" => GridScanIterations,
+                "@RowScanIterations" => RowScanIterations,
+                "@ColumnScanIterations" => ColumnScanIterations,
+                "@WordPredictionScanIterations" => WordPredictionScanIterations,
+                "@MenuDialogScanTime" => MenuDialogScanTime,
+                "@FirstRepeatTime" => FirstRepeatTime,
+                "@WordPredictionFirstPauseTime" => WordPredictionFirstPauseTime,
+                "@StripScannerColumnIterations" => StripScannerColumnIterations,
+                _ => base.resolveVariableInt(variableName, defaultValue),
+            };
             return retVal;
         }
     }

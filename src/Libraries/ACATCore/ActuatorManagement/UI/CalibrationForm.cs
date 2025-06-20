@@ -148,15 +148,13 @@ namespace ACAT.Core.ActuatorManagement
             {
                 const int thickness = BorderThickness;
                 const int halfThickness = thickness / 2;
-                using (var pen = new Pen(Color.Black, thickness))
-                {
-                    e.Graphics.DrawRectangle(
-                        pen,
-                        new Rectangle(halfThickness,
-                        halfThickness,
-                        BorderPanel.ClientSize.Width - thickness,
-                        BorderPanel.ClientSize.Height - thickness));
-                }
+                using var pen = new Pen(Color.Black, thickness);
+                e.Graphics.DrawRectangle(
+                    pen,
+                    new Rectangle(halfThickness,
+                    halfThickness,
+                    BorderPanel.ClientSize.Width - thickness,
+                    BorderPanel.ClientSize.Height - thickness));
             }
         }
 

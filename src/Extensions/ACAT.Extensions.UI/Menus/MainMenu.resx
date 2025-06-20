@@ -131,6 +131,6 @@
     <value>MainMenu</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ACAT.Lib.Extension.MenuPanel, ACATExtension, Version=3.12.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ACAT.Extension.MenuPanel, ACATExtension, Version=3.12.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

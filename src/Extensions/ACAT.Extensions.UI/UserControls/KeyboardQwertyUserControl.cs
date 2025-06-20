@@ -10,14 +10,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AnimationManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.UserControlManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.AnimationManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.UserControlManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.UI.Scanners.UserControls
+namespace ACAT.Extensions.UI.Scanners.UserControls
 {
     [Descriptor("C4668F6A-79D6-4D27-8C68-18172A49F333",
                     "KeyboardQwertyUserControl",

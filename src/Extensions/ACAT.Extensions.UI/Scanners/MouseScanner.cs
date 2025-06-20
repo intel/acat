@@ -6,20 +6,20 @@
 // enables the user to move the mouse around the display using grid scanning
 // technique.  The user can also click, double click, drag, right click etc.
 
-using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.Audit;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Extension.CommandHandlers;
 using System;
-using System.Windows.Forms;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.WidgetManagement;
-using ACAT.Lib.Extension.CommandHandlers;
-using ACAT.Lib.Core.AgentManagement;
-using System.Security.Permissions;
 using System.Collections.Generic;
+using System.Security.Permissions;
+using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     [DescriptorAttribute("802B03F0-1294-4D06-A601-2CEBFBFA5D9C",
                         "MouseScanner",
@@ -75,7 +75,6 @@ namespace ACAT.Lib.Extension
 
         public ScannerCommon ScannerCommon => _scannerCommon;
 
-
         public SyncLock SyncObj => _scannerCommon.SyncObj;
 
         public ITextController TextController => _scannerCommon.TextController;
@@ -110,7 +109,6 @@ namespace ACAT.Lib.Extension
             CommandDispatcher.Commands.Add(new CommandHandler("CmdLeftClickAndHold"));
             CommandDispatcher.Commands.Add(new CommandHandler("CmdRightClick"));
             CommandDispatcher.Commands.Add(new CommandHandler("CmdGoBack"));
-
 
             _rootWidget = PanelCommon.RootWidget;
             return true;
@@ -150,6 +148,7 @@ namespace ACAT.Lib.Extension
             _scannerCommon.OnFormClosing(e);
             base.OnFormClosing(e);
         }
+
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         protected override void WndProc(ref Message m)
@@ -212,9 +211,6 @@ namespace ACAT.Lib.Extension
             var prop = obj.GetType().GetProperty(propertyName);
             return prop != null ? (int)prop.GetValue(obj) : fallback;
         }
-
-        
-
 
         ///// <summary>
         ///// Event handler for mouse down.  Treat this as a switch
@@ -287,7 +283,6 @@ namespace ACAT.Lib.Extension
                         form.startGridSweep(GridMouseMover.Direction.Up);
                         break;
 
-
                     //case "CmdLeftClick":
                     //    MouseUtils.SimulateLeftMouseClick();
                     //    break;
@@ -314,7 +309,7 @@ namespace ACAT.Lib.Extension
         }
 
         public class Dispatcher : DefaultCommandDispatcher
-        { 
+        {
             public Dispatcher(IScannerPanel panel)
                 : base(panel)
             {

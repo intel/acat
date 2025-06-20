@@ -19,13 +19,13 @@
     </WidgetAttributes>
 
     <Layout>
-        <Widget class="ScannerButton" name="B2" colorScheme="ScannerButton"/>
-        <Widget class="ScannerButton" name="B3" colorScheme="ScannerButton"/>
-        <Widget class="ScannerButton" name="B4" colorScheme="ScannerButton"/>
-        <Widget class="ScannerButton" name="B5" colorScheme="ScannerButton"/>
-        <Widget class="ScannerButton" name="B6" colorScheme="ScannerButton"/>
-        <Widget class="ScannerButton" name="B7" colorScheme="ScannerButton"/>
-        <Widget class="ScannerButton" name="B8" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="B2" colorScheme="ScannerButton" />
+        <Widget class="ScannerButton" name="B3" colorScheme="ScannerButton" />
+        <Widget class="ScannerButton" name="B4" colorScheme="ScannerButton" />
+        <Widget class="ScannerButton" name="B5" colorScheme="ScannerButton" />
+        <Widget class="ScannerButton" name="B6" colorScheme="ScannerButton" />
+        <Widget class="ScannerButton" name="B7" colorScheme="ScannerButton" />
+        <Widget class="ScannerButton" name="B8" colorScheme="ScannerButton" />
     </Layout>
 
     <Animations>
@@ -34,13 +34,13 @@
                       autoStart="true"
                       start="true"
                       firstPauseTime="@FirstPauseTime">
-            <Widget name="B2" onSelect="actuate(@SelectedWidget)"/>
+            <Widget name="B2" onSelect="actuate(@SelectedWidget)" />
             <Widget name="B3" />
-            <Widget name="B4" onSelect="actuate(@SelectedWidget); transition(ButtonPressed)"/>
+            <Widget name="B4" onSelect="actuate(@SelectedWidget); transition(ButtonPressed)" />
             <Widget name="B5" />
-            <Widget name="B6" onSelect="actuate(@SelectedWidget); transition(ButtonPressed)"/>
-            <Widget name="B7"/>
-            <Widget name="B8" onSelect="actuate(@SelectedWidget)"/>
+            <Widget name="B6" onSelect="actuate(@SelectedWidget); transition(ButtonPressed)" />
+            <Widget name="B7" />
+            <Widget name="B8" onSelect="actuate(@SelectedWidget)" />
         </Animation>
 
         <Animation name="ButtonPressed"
@@ -49,7 +49,5 @@
                             onEnd="transition(TopLevelRotation)">
             <Widget name="@SelectedWidget" firstPauseTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
         </Animation>
-
     </Animations>
 </ACAT>
-

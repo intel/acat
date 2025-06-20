@@ -32,7 +32,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 
 namespace ACAT.Applications.ACATDashboard
 {

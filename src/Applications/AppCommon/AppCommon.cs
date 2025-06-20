@@ -18,21 +18,18 @@
 // </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.ACATResources;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
+using ACAT.Extension;
 using ACATResources;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Extension;
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-using ACAT.ACATResources;
-
 
 namespace ACAT.Applications
 {
@@ -353,7 +350,6 @@ namespace ACAT.Applications
             return true;
         }
 
-
         /// <summary>
         /// Sets the paths to the settings file for the app
         /// </summary>
@@ -362,7 +358,6 @@ namespace ACAT.Applications
             ACATPreferences.PreferencesFilePath = ProfileManager.GetFullPath("Settings.xml");
             ACATPreferences.DefaultPreferencesFilePath = ProfileManager.GetFullPath("DefaultSettings.xml");
         }
-
 
         public static void addBCIActuatorSetting()
         {

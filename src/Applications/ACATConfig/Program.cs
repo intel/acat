@@ -11,18 +11,13 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Applications;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Extension;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
+using ACAT.Extension;
 using ACATExtension.CommandHandlers;
 using System;
-using System.ComponentModel;
-using System.IO;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.Pkcs;
 using System.Windows.Forms;
 
 namespace ACATConfig
@@ -83,8 +78,6 @@ namespace ACATConfig
 
             AppCommon.LoadGlobalSettings();
 
-
-
             AppCommon.SetUserName();
             AppCommon.SetProfileName();
 
@@ -142,7 +135,6 @@ namespace ACATConfig
                 Context.AppPanelManager.GetCurrentForm().OnPause();
                 var form = Context.AppPanelManager.GetCurrentForm().PanelCommon.RootWidget.UIControl as Form;
                 ConfirmBoxLargeSingleOption.ShowDialog(reason, "OK", form);
-
             }
             else
             {

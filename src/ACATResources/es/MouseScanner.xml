@@ -5,17 +5,16 @@
   <!ENTITY fontSize "44">
 ]>
 
-
 <ACAT>
   <WidgetAttributes>
     <WidgetAttribute name="GoBack" label="&#x75;" value="@CmdGoBack" fontname="&buttonFontName;" fontsize="&fontSize;" bold="&usebold;" />
     <WidgetAttribute name="ScanDown" label="Y" value="@CmdScanVerticalDown" fontname="&buttonFontName;" fontsize="&fontSize;" bold="&usebold;" />
     <WidgetAttribute name="ScanUp" label="Z" value="@CmdScanVerticalUp"  fontname="&buttonFontName;" fontsize="&fontSize;" bold="&usebold;" />
     <WidgetAttribute name="AutoPosition" label="[" value="@CmdAutoPositionScanner" fontname="&buttonFontName;" fontsize="&fontSize;"  bold="&usebold;" />
-    <WidgetAttribute name="LeftClick" label="Q" value="@CmdLeftClick" fontname="&buttonFontName;" fontsize="&fontSize;" bold="&usebold;"/>
-    <WidgetAttribute name="RightClick" label="R" value="@CmdRightClick"  fontname="&buttonFontName;" fontsize="&fontSize;" bold="&usebold;"/>
-    <WidgetAttribute name="LeftDoubleClick" label="S" value="@CmdLeftDoubleClick" fontname="&buttonFontName;" fontsize="&fontSize;" bold="&usebold;"/>
-    <WidgetAttribute name="LeftClickAndHold" label="U" value="@CmdLeftClickAndHold"  fontname="&buttonFontName;" fontsize="&fontSize;" bold="&usebold;"/>
+    <WidgetAttribute name="LeftClick" label="Q" value="@CmdLeftClick" fontname="&buttonFontName;" fontsize="&fontSize;" bold="&usebold;" />
+    <WidgetAttribute name="RightClick" label="R" value="@CmdRightClick"  fontname="&buttonFontName;" fontsize="&fontSize;" bold="&usebold;" />
+    <WidgetAttribute name="LeftDoubleClick" label="S" value="@CmdLeftDoubleClick" fontname="&buttonFontName;" fontsize="&fontSize;" bold="&usebold;" />
+    <WidgetAttribute name="LeftClickAndHold" label="U" value="@CmdLeftClickAndHold"  fontname="&buttonFontName;" fontsize="&fontSize;" bold="&usebold;" />
     <!-- <WidgetAttribute name="B9" label="y" value="@CmdPrevPage" fontname="ACAT Alpha" fontsize="&fontSize;" bold="&usebold;" />
     <WidgetAttribute name="B10" label="z" value="@CmdNextPage"  fontname="ACAT Alpha" fontsize="&fontSize;" bold="&usebold;" />
     <WidgetAttribute name="B11" label="m" value="@CmdEnterKey" fontname="&buttonFontName;" fontsize="&fontSize;"  bold="&usebold;" />
@@ -24,17 +23,17 @@
 
   <Layout colorScheme="Dialog">
     <Widget class="WinControlWidget" name="MouseScannerButtons">
-      <Widget class="ScannerButton" name="GoBack" colorScheme="Menu" enabled="Enabled" defaultEnabled="true"/>
-      <Widget class="ScannerButton" name="ScanDown" colorScheme="Menu" enabled="Enabled" defaultEnabled="true"/>
-      <Widget class="ScannerButton" name="ScanUp" colorScheme="Menu" enabled="Enabled" defaultEnabled="true"/>
-      <Widget class="ScannerButton" name="AutoPosition" colorScheme="Menu" enabled="Enabled" defaultEnabled="true"/>
-      <Widget class="ScannerButton" name="LeftClick" colorScheme="Menu" enabled="Enabled" defaultEnabled="true"/>
-      <Widget class="ScannerButton" name="RightClick" colorScheme="Menu" enabled="Enabled" defaultEnabled="true"/>
-      <Widget class="ScannerButton" name="LeftDoubleClick" colorScheme="Menu" enabled="Enabled" defaultEnabled="true"/>
-      <Widget class="ScannerButton" name="LeftClickAndHold" colorScheme="Menu" enabled="Enabled" defaultEnabled="true"/>
+      <Widget class="ScannerButton" name="GoBack" colorScheme="Menu" enabled="Enabled" defaultEnabled="true" />
+      <Widget class="ScannerButton" name="ScanDown" colorScheme="Menu" enabled="Enabled" defaultEnabled="true" />
+      <Widget class="ScannerButton" name="ScanUp" colorScheme="Menu" enabled="Enabled" defaultEnabled="true" />
+      <Widget class="ScannerButton" name="AutoPosition" colorScheme="Menu" enabled="Enabled" defaultEnabled="true" />
+      <Widget class="ScannerButton" name="LeftClick" colorScheme="Menu" enabled="Enabled" defaultEnabled="true" />
+      <Widget class="ScannerButton" name="RightClick" colorScheme="Menu" enabled="Enabled" defaultEnabled="true" />
+      <Widget class="ScannerButton" name="LeftDoubleClick" colorScheme="Menu" enabled="Enabled" defaultEnabled="true" />
+      <Widget class="ScannerButton" name="LeftClickAndHold" colorScheme="Menu" enabled="Enabled" defaultEnabled="true" />
     </Widget>
   </Layout>
- 
+
   <Animations>
       <Animation name="TopLevelRotation"
             start="true"
@@ -44,14 +43,14 @@
             iterations="@GridScanIterations"
             onSelect="actuate(@SelectedWidget); transition(ButtonRotation)">
       <Widget name="GoBack" />
-      <Widget name="ScanDown"/>
-      <Widget name="ScanUp"/>
-      <Widget name="AutoPosition"/>
-      <Widget name="LeftClick"/>
-      <Widget name="RightClick"/>
-      <Widget name="LeftDoubleClick"/>
-      <Widget name="LeftClickAndHold"/>
-    </Animation>    
+      <Widget name="ScanDown" />
+      <Widget name="ScanUp" />
+      <Widget name="AutoPosition" />
+      <Widget name="LeftClick" />
+      <Widget name="RightClick" />
+      <Widget name="LeftDoubleClick" />
+      <Widget name="LeftClickAndHold" />
+    </Animation>
 
 <!--    <Animation name="TopLevelRotation"
               iterations="@ColumnScanIterations"
@@ -59,13 +58,13 @@
               firstPauseTime="@FirstPauseTime"
              onSelect="actuate(@SelectedWidget); transition(ButtonRotation)">
       <Widget name="GoBack" />
-      <Widget name="ScanDown"/>
-      <Widget name="ScanUp"/>
-      <Widget name="AutoPosition"/>
-      <Widget name="LeftClick"/>
-      <Widget name="RightClick"/>
-      <Widget name="LeftDoubleClick"/>
-      <Widget name="LeftClickAndHold"/>
+      <Widget name="ScanDown" />
+      <Widget name="ScanUp" />
+      <Widget name="AutoPosition" />
+      <Widget name="LeftClick" />
+      <Widget name="RightClick" />
+      <Widget name="LeftDoubleClick" />
+      <Widget name="LeftClickAndHold" />
     </Animation>
   -->
     <Animation name="ButtonPressed"

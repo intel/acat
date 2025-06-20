@@ -86,14 +86,11 @@ namespace ACAT.Core.InputActuators
 
         public override IOnboardingUserControl GetNextStep(string currentStepID)
         {
-            switch (currentStepID)
+            return currentStepID switch
             {
-                case Step1:
-                    return GetStep(Step2);
-
-                default:
-                    return null;
-            }
+                Step1 => GetStep(Step2),
+                _ => null,
+            };
         }
 
         public override bool IsLastStep(string stepId)

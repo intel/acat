@@ -115,10 +115,8 @@ namespace ACAT.Core.Utility
                 string tempFilePathLogs = Path.Combine(FileUtils.GetLogsDir(), "TempFile.html");
                 try
                 {
-                    using (StreamWriter writer = new StreamWriter(tempFilePathLogs))
-                    {
-                        writer.Write(htmlContent);
-                    }
+                    using StreamWriter writer = new StreamWriter(tempFilePathLogs);
+                    writer.Write(htmlContent);
                 }
                 catch (Exception exp)
                 {

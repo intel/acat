@@ -285,10 +285,7 @@ namespace ACAT.Extension
         {
             //return;
 
-            if (_windowActiveWatchdog == null)
-            {
-                _windowActiveWatchdog = new WindowActiveWatchdog(this);
-            }
+            _windowActiveWatchdog ??= new WindowActiveWatchdog(this);
 
             _pauseWatchdog = false;
         }

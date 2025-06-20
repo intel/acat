@@ -411,10 +411,8 @@ namespace ACAT.Extension
                 // text in the target window
                 if (!KeyStateTracker.IsShiftOn())
                 {
-                    using (AgentContext context = Context.AppAgentMgr.ActiveContext())
-                    {
-                        context.TextAgent().SetSelectMode(false);
-                    }
+                    using AgentContext context = Context.AppAgentMgr.ActiveContext();
+                    context.TextAgent().SetSelectMode(false);
                 }
             }
             catch (Exception ex)

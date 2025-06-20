@@ -282,10 +282,7 @@ namespace ACAT.Core.TTSManagement
         /// <returns>true on success</returns>
         public bool SetActiveEngine(CultureInfo ci = null)
         {
-            if (ci == null)
-            {
-                ci = CultureInfo.DefaultThreadCurrentUICulture;
-            }
+            ci ??= CultureInfo.DefaultThreadCurrentUICulture;
 
             Guid guid = _ttsEngines.GetPreferredOrDefaultByCulture(ci);
             Guid cultureNeutralGuid = _ttsEngines.GetPreferredOrDefaultByCulture(null);

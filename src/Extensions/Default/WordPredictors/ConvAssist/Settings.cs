@@ -10,11 +10,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
 using System;
 using System.Xml.Serialization;
 
-namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
     /// <summary>
     /// Preference settings for the ConvAssist word predictor (English)
@@ -48,7 +48,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
 
         [BoolDescriptor("Enable small model sentence prediction ")]
         public bool EnableSmallVocabularySentencePrediction = false;
-
 
         [BoolDescriptor("Enable sentence prediction")]
         public bool Test_GeneralSentencePrediction = false;

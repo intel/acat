@@ -13,7 +13,7 @@
 
 using System;
 
-namespace ACAT.Extensions.Default.Actuators.SampleActuator
+namespace ACAT.Extensions.Actuators.SampleActuator
 {
     internal class InputSensorSwitchEventArgs : EventArgs
     {

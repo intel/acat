@@ -13,7 +13,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace ACAT.Extensions.Default.Actuators.CameraActuator
+namespace ACAT.Extensions.Actuators.CameraActuator
 {
     public class CameraSensor
     {

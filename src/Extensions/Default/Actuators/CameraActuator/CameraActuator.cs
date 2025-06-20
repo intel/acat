@@ -13,11 +13,11 @@
 
 //#define ACAT_ACTUATE
 
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using ACATResources;
 using System;
 using System.Linq;
@@ -25,7 +25,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.Actuators.CameraActuator
+namespace ACAT.Extensions.Actuators.CameraActuator
 {
     /// <summary>
     /// Uses a camera to detect facial gestures and trigger ACAT.
@@ -42,7 +42,6 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 
         public String PreferredCamera;
 
-        
         /// <summary>
         /// Name of the file that stores the settings for
         /// this actuator

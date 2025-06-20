@@ -10,13 +10,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
+
 using System;
 using System.IO;
 using System.Speech.Synthesis;
 using System.Xml.Serialization;
 
-namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
+namespace ACAT.Extensions.TTSEngines.SAPIEngine
 {
     /// <summary>
     /// Microsoft Speech Synth Text to speech settings

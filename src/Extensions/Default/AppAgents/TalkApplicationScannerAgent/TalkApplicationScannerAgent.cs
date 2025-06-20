@@ -10,16 +10,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.AgentManagement.TextInterface;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.AgentManagement.TextInterface;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.AppAgents.TalkApplicationScannerAgent
+namespace ACAT.Extensions.AppAgents.TalkApplicationScannerAgent
 {
     [Descriptor("AAF2B6C4-2F31-403D-BF45-7C35FA8B4FFC",
                             "Talk Application Agent",

@@ -5,16 +5,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Onboarding;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Onboarding;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension.Onboarding
+namespace ACAT.Extension.Onboarding
 {
     /// <summary>
     /// User control that allows the user to select the keyboard type like
@@ -63,7 +63,7 @@ namespace ACAT.Lib.Extension.Onboarding
             var actuatorConfig = Context.AppActuatorManager.GetActuatorConfig();
             var keyboardActuator = Context.AppActuatorManager.GetKeyboardActuator();
 
-            if(keyboardActuator == null)
+            if (keyboardActuator == null)
             {
                 return false;
             }

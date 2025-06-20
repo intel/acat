@@ -8,7 +8,7 @@
 using System;
 using System.Xml.Serialization;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Contains global settings for ACAT. These are
@@ -26,6 +26,7 @@ namespace ACAT.Lib.Core.Utility
 
         [NonSerialized, XmlIgnore]
         public static String PreferencesFilePath = String.Empty;
+
         /// <summary>
         /// Default profile for the user
         /// </summary>

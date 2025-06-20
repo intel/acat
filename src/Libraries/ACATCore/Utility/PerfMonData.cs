@@ -8,7 +8,7 @@
 using System;
 using System.Text;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Data tracked by Perfomance Monitor

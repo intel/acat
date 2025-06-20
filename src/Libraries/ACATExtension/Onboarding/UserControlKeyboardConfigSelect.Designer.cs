@@ -1,6 +1,6 @@
 ﻿using ACATResources;
 
-namespace ACAT.Lib.Extension.Onboarding
+namespace ACAT.Extension.Onboarding
 {
     partial class UserControlKeyboardConfigSelect
     {
@@ -39,7 +39,7 @@ namespace ACAT.Lib.Extension.Onboarding
             this.pictureBoxScreenShot = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.labelDescription = new System.Windows.Forms.Label();
-            this.listBoxKeyboardConfigs = new ACAT.Lib.Core.PanelManagement.ListBoxUserControl();
+            this.listBoxKeyboardConfigs = new ACAT.Core.PanelManagement.ListBoxUserControl();
             this.tableLayoutPanelMain.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -225,7 +225,7 @@ namespace ACAT.Lib.Extension.Onboarding
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.PictureBox pictureBoxScreenShot;
-        private ACAT.Lib.Core.PanelManagement.ListBoxUserControl listBoxKeyboardConfigs;
+        private ACAT.Core.PanelManagement.ListBoxUserControl listBoxKeyboardConfigs;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Label labelDescription;
     }

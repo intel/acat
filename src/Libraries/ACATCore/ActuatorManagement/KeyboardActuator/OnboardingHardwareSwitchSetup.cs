@@ -10,11 +10,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Onboarding;
+using ACAT.Core.Utility;
 using System;
-using ACAT.Lib.Core.Onboarding;
 
-namespace ACAT.Lib.Core.InputActuators
+namespace ACAT.Core.InputActuators
 {
     /// <summary>
     /// An onboarding extension to configure the hotkey for a switch
@@ -32,8 +32,9 @@ namespace ACAT.Lib.Core.InputActuators
 
         private const String Step1 = "STEP 1";
         private const String Step2 = "STEP 2";
-        IOnboardingWizard _wizard;
-        readonly SwitchType _switchType;
+        private IOnboardingWizard _wizard;
+        private readonly SwitchType _switchType;
+
         public OnboardingHardwareSwitchSetup(SwitchType switchType)
         {
             _switchType = switchType;
@@ -52,8 +53,9 @@ namespace ACAT.Lib.Core.InputActuators
 
         public override IOnboardingUserControl GetFirstStep()
         {
-            return GetStep(Step1); 
+            return GetStep(Step1);
         }
+
         public override IOnboardingUserControl GetStep(String stepId)
         {
             switch (stepId)
@@ -84,7 +86,7 @@ namespace ACAT.Lib.Core.InputActuators
 
         public override IOnboardingUserControl GetNextStep(string currentStepID)
         {
-            switch(currentStepID)
+            switch (currentStepID)
             {
                 case Step1:
                     return GetStep(Step2);
@@ -112,4 +114,3 @@ namespace ACAT.Lib.Core.InputActuators
         }
     }
 }
-

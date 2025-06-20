@@ -11,10 +11,10 @@ using System.IO;
 using System.Text;
 using System.Timers;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
-    ///  Has functions to track performance monitor stats such as 
+    ///  Has functions to track performance monitor stats such as
     ///  free memory, handles, page file bytes, processor time etc
     /// </summary>
     public static class PerfMon
@@ -159,7 +159,6 @@ namespace ACAT.Lib.Core.Utility
                 file?.Close();
                 file?.Dispose();
             }
-
 
             return true;
         }

@@ -5,9 +5,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,7 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace ACAT.Lib.Core.TTSManagement
+namespace ACAT.Core.TTSManagement
 {
     /// <summary>
     /// Maintains a list of TTS engines that were discovered.  The
@@ -51,10 +51,12 @@ namespace ACAT.Lib.Core.TTSManagement
         /// Has this object been disposed
         /// </summary>
         private bool _disposed;
+
         /// <summary>
         /// If one of the dll found has an error with the certificate
         /// </summary>
         private static volatile bool _DLLError = false;
+
         /// <summary>
         /// The object that holds the preferred TTS Engines
         /// </summary>
@@ -254,7 +256,7 @@ namespace ACAT.Lib.Core.TTSManagement
                     var extensionRoot = Path.Combine(extensionDir, root);
                     extensionRoot = Path.Combine(extensionRoot, TTSManager.TTSRootDir);
 
-                    loadTTSEngineTypesIntoCache(extensionRoot, language, recursive); 
+                    loadTTSEngineTypesIntoCache(extensionRoot, language, recursive);
                     if (_DLLError)
                         return false;
                 }
@@ -409,7 +411,6 @@ namespace ACAT.Lib.Core.TTSManagement
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {

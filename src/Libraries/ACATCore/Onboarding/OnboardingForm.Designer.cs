@@ -1,5 +1,5 @@
 ﻿
-namespace ACAT.Lib.Core.Onboarding
+namespace ACAT.Core.Onboarding
 {
     partial class OnboardingForm
     {

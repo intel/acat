@@ -15,7 +15,7 @@
 using System;
 using System.Threading;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// Opens a HID device and reads data from it.  Notifies

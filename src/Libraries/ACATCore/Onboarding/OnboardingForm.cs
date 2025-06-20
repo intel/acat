@@ -5,8 +5,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACATResources;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Onboarding
+namespace ACAT.Core.Onboarding
 {
     /// <summary>
     /// The container form for a single step in the onboarding process.
@@ -44,6 +44,7 @@ namespace ACAT.Lib.Core.Onboarding
 
             FormClosing += OnboardingForm_FormClosing;
         }
+
         private void _onboardingWizard_EvtGoBack(IOnboardingExtension source)
         {
             goBack();
@@ -254,7 +255,7 @@ namespace ACAT.Lib.Core.Onboarding
             {
                 if (!File.Exists(OnboardingFileName))
                 {
-                    ConfirmBoxOneOption.ShowDialog("Onboarding file " + OnboardingFileName + " does not exist","",StringResources.OK);
+                    ConfirmBoxOneOption.ShowDialog("Onboarding file " + OnboardingFileName + " does not exist", "", StringResources.OK);
                     QuitOnboarding = true;
                     Close();
                     return;
@@ -266,7 +267,7 @@ namespace ACAT.Lib.Core.Onboarding
 
             if (Sequence == null || Sequence.OnboardingSequenceItems.Count == 0)
             {
-                ConfirmBoxOneOption.ShowDialog("Onboarding sequence is null or empty","",StringResources.OK);
+                ConfirmBoxOneOption.ShowDialog("Onboarding sequence is null or empty", "", StringResources.OK);
                 QuitOnboarding = true;
                 Close();
                 return;

@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.UserManagement;
+using ACAT.Core.UserManagement;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -16,7 +16,7 @@ using System.Security.Permissions;
 using System.Text;
 using System.Threading;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Contains functions to contruct paths relative to
@@ -426,7 +426,8 @@ namespace ACAT.Lib.Core.Utility
 
         public static String GetHomeDir()
         {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ACAT");
+            //return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ACAT");
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ACAT");
         }
 
         /// <summary>
@@ -819,7 +820,6 @@ namespace ACAT.Lib.Core.Utility
                 return false;
             }
 
-
             FileAttributes attributes = GetFileAttributes(path);
 
             if ((attributes & FileAttributes.ReparsePoint) == FileAttributes.ReparsePoint)
@@ -861,6 +861,5 @@ namespace ACAT.Lib.Core.Utility
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern FileAttributes GetFileAttributes(string fileName);
-
     }
 }

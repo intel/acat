@@ -17,7 +17,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-namespace ACAT.Lib.Core.InputActuators
+namespace ACAT.Core.InputActuators
 {
     /// <summary>
     /// A generic TCP socket client to send data to a TCP server.  Supports

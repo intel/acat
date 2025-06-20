@@ -6,15 +6,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Reflection;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// Maintains a cache of application agent objects.  The cache is
@@ -324,7 +323,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <param name="path">Directory path</param>
         private void loadAgentsFromDir(String path)
         {
-            var walker = new DirectoryWalker(path, "ACAT.Extensions.Default.AppAgents.*.dll");
+            var walker = new DirectoryWalker(path, "ACAT.Extensions.AppAgents.*.dll");
             walker.Walk(new OnFileFoundDelegate(onAgentDllFound));
         }
 

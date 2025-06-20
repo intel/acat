@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.UserControlManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.UserControlManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// How is a panel being displayed?
@@ -397,7 +397,7 @@ namespace ACAT.Lib.Core.PanelManagement
             PanelConfigMap.Reset();
 
             var retVal = PanelConfigMap.Load(extensionDirs);
-            if(!retVal)
+            if (!retVal)
                 return false;
 
             retVal = UserControlConfigMap.Load(extensionDirs);

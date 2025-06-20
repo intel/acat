@@ -8,7 +8,7 @@
 using System;
 using System.Linq;
 
-namespace ACAT.Lib.Core.AgentManagement.TextInterface
+namespace ACAT.Core.AgentManagement.TextInterface
 {
     /// <summary>
     /// Interfaces a text control that disallows editing.  Only

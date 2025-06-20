@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// A message box with one button option
@@ -40,6 +40,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// If not then the regular Yes/no window will Show
         /// </summary>
         public int DecisionPromptFont { get; set; }
+
         public String DecisionPrompt { get; set; }
         public String Prompt { get; set; }
         public String PromptTitle { get; set; }
@@ -72,7 +73,6 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             Close();
         }
-
 
         private void ConfirmBox_Load(object sender, EventArgs e)
         {

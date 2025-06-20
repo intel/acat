@@ -11,15 +11,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Utility;
 using ACATResources;
-using ACAT.Lib.Core.Utility;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// Form to display the status of calibration. Displays calibration status

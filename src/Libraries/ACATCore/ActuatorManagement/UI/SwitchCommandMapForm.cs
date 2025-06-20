@@ -10,13 +10,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.CommandManagement;
+using ACAT.Core.PanelManagement;
 using ACATResources;
-using ACAT.Lib.Core.CommandManagement;
-using ACAT.Lib.Core.PanelManagement;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     public partial class SwitchCommandMapForm : Form
     {

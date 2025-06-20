@@ -5,15 +5,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Onboarding
+namespace ACAT.Core.Onboarding
 {
     /// <summary>
     /// Represents the onboarding wizard controller. Controls navigation
@@ -155,8 +155,8 @@ namespace ACAT.Lib.Core.Onboarding
             _onboardingSequence = sequence;
 
             loadOnboardingExtensions();
-            if(_DLLError)
-                return false;  
+            if (_DLLError)
+                return false;
 
             if (_onboardingSequence.OnboardingSequenceItems.Count == 0)
             {
@@ -302,7 +302,6 @@ namespace ACAT.Lib.Core.Onboarding
         {
             try
             {
-
                 String extension = Path.GetExtension(dllName);
                 if (String.Compare(extension, ".dll", true) == 0 && !_DLLError)
                 {
@@ -340,7 +339,6 @@ namespace ACAT.Lib.Core.Onboarding
                         }
                     }
                 }
-
             }
             catch
             {

@@ -11,7 +11,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Helper functions to parse an xml file, extracts attributes, serialize
@@ -173,7 +173,7 @@ namespace ACAT.Lib.Core.Utility
 
             try
             {
-                lock(_lock)
+                lock (_lock)
                 {
                     if (!FileUtils.VerifyNotJunctionOrSymlink(filename))
                     {
@@ -258,7 +258,7 @@ namespace ACAT.Lib.Core.Utility
             var serializer = new XmlSerializer(typeof(T));
             var sb = new StringBuilder();
 
-            lock(_lock)
+            lock (_lock)
             {
                 using (TextWriter writer = new StringWriter(sb))
                 {

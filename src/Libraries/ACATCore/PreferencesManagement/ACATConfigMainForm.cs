@@ -10,16 +10,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PreferencesManagement
+namespace ACAT.Core.PreferencesManagement
 {
     /// <summary>
     /// Main form for ACAT Config application
@@ -118,14 +118,17 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// Event raised when the default theme is changed
         /// </summary>
         public event NotifyThemeChanged EvtThemeChanged;
+
         /// <summary>
         /// Event raised when the user clicks Defaults button
         /// </summary>
         private event NotifyResetToDefaultButtonClicked EvtResetToDefaultButtonClicked;
+
         /// <summary>
         /// Event raised when the user clicks Wrap Text check box button
         /// </summary>
         private event NotifyWrapTextCheckBoxClicked EvtWrapTextCheckBoxClicked;
+
         /// <summary>
         /// Sets handlers for button press events on this form (Done, Defaults, Wrap Text)
         /// </summary>
@@ -214,6 +217,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             ConfirmBoxOneOption.ShowDialog("Please exercise caution when changing ACAT settings.",
                 "Refer to the ACAT User Guide for help", StringResources.OK, this);
         }
+
         /// <summary>
         /// Handle Exit button press - save any changes if made, Close form
         /// </summary>
@@ -643,6 +647,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 }
             }
         }
+
         /// <summary>
         /// Displays the message in a MessageBox
         /// </summary>

@@ -12,14 +12,14 @@
 // switch object.
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.Onboarding;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.Onboarding;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.InputActuators
+namespace ACAT.Core.InputActuators
 {
     [Descriptor("D91A1877-C92B-4D7E-9AB6-F01F30B12DF9",
                         "Keyboard Actuator",
@@ -258,7 +258,6 @@ namespace ACAT.Lib.Core.InputActuators
                 return;
             }
 
-            
             Log.Debug("Keydown: " + e.KeyCode.ToString());
 
             // check if this is one of the keys we recognize.  If so, trigger

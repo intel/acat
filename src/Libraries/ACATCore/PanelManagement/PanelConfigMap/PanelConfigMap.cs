@@ -5,9 +5,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,7 +16,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// PanelConfigMap is an xml file that contains a mapping between the
@@ -29,8 +28,8 @@ namespace ACAT.Lib.Core.PanelManagement
     /// </summary>
     public class PanelConfigMap
     {
-
         private static volatile bool _DLLError = false;
+
         /// <summary>
         /// Name of the panel class config file. This file contains a
         /// list of panel configurations to use
@@ -145,7 +144,6 @@ namespace ACAT.Lib.Core.PanelManagement
         ///
         public static PanelClassConfigMap GetDefaultPanelClassConfigMap()
         {
-
             if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, out PanelClassConfig panelClassConfig))
             {
                 _currentAppPanelClassConfig = _cultureAppPanelClassConfig[CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName];
@@ -160,7 +158,6 @@ namespace ACAT.Lib.Core.PanelManagement
 
         public static PanelClassConfig GetPanelClassConfigForApp()
         {
-
             if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, out PanelClassConfig panelClassConfig))
             {
                 _currentAppPanelClassConfig = _cultureAppPanelClassConfig[CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName];
@@ -243,7 +240,7 @@ namespace ACAT.Lib.Core.PanelManagement
                 // TODO - FIX THIS HACK
                 //String extensionDir = dir + "\\" + AgentManager.AppAgentsRootDir;
                 load(dir, "ACAT.Extensions.*.dll");
-                if(_DLLError)
+                if (_DLLError)
                     return false;
 
                 //extensionDir = dir + "\\" + AgentManager.FunctionalAgentsRootDir;
@@ -402,7 +399,6 @@ namespace ACAT.Lib.Core.PanelManagement
             {
                 return false;
             }
-
 
             if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.Name, out PanelClassConfig panelClassConfig) ||
                 _culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, out panelClassConfig) ||
@@ -689,7 +685,6 @@ namespace ACAT.Lib.Core.PanelManagement
             }
         }
 
-
         /// <summary>
         /// For this application, load the panel configurations to use from
         /// the panelclassconfig.xml file
@@ -788,7 +783,6 @@ namespace ACAT.Lib.Core.PanelManagement
                 }
                 if (!_DLLError)
                     loadTypesFromAssembly(Assembly.LoadFile(dllName));
-                
             }
             catch (Exception ex)
             {

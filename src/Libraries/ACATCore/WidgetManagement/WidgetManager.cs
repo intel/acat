@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +13,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
     /// <summary>
     /// Caches the .NET types of all the widgets in the Core DLL as well
@@ -300,7 +300,6 @@ namespace ACAT.Lib.Core.WidgetManagement
                     }
                 }
             }
-
 
             _widgetTypeCollection = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(assembly =>

@@ -5,10 +5,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WordPredictorManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WordPredictorManagement;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -16,7 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace ACAT.Lib.Core.WordPredictionManagement
+namespace ACAT.Core.WordPredictionManagement
 {
     /// <summary>
     /// Maintains a list of discovered word predictors in an internal cache.
@@ -50,10 +50,12 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// Has this object been disposed
         /// </summary>
         private bool _disposed = false;
+
         /// <summary>
         /// If one of the dll found has an error with the certificate
         /// </summary>
         private static volatile bool _DLLError = false;
+
         /// <summary>
         /// The object that holds the preferred word predictors
         /// </summary>
@@ -332,7 +334,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// <param name="resursive">true if deep-descend</param>
         private void loadWordPredictorsTypesIntoCache(String dir, String culture, bool resursive = true)
         {
-            DirectoryWalker walker = new DirectoryWalker(dir, "ACAT.Extensions.Default.WordPredictors.*.dll");
+            DirectoryWalker walker = new DirectoryWalker(dir, "ACAT.Extensions.WordPredictors.*.dll");
             _dirWalkCurrentCulture = culture;
             walker.Walk(new OnFileFoundDelegate(onFileFound));
         }
@@ -346,7 +348,6 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         {
             try
             {
-
                 var retVal = VerifyDigitalSignature.ValidateCertificate(dllName);
                 if (retVal && !_DLLError)
                 {
@@ -419,7 +420,6 @@ namespace ACAT.Lib.Core.WordPredictionManagement
                         Log.Error($"Failed to process assembly: {dllName} - {ex}");
                     }
                 }
-
             }
             catch (Exception ex)
             {

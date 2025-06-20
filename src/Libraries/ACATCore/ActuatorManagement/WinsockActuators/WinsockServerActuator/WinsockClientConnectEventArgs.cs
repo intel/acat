@@ -12,7 +12,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.InputActuators
+namespace ACAT.Core.InputActuators
 {
     /// <summary>
     /// Argument for the event raised when a TCP/IP client connects

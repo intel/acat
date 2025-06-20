@@ -6,25 +6,23 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
+
 //using System.Drawing;
 //using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-//using static ACAT.Lib.Core.Utility.GridMouseMover;
-//using static ACAT.Lib.Core.Utility.User32Interop;
+
+//using static ACAT.Core.Utility.GridMouseMover;
+//using static ACAT.Core.Utility.User32Interop;
 using Color = System.Windows.Media.Color;
-using Image = System.Windows.Controls.Image;
 using Point = System.Windows.Point;
 using Rectangle = System.Windows.Shapes.Rectangle;
-using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Handles all animations relative to scanning the display to
@@ -60,7 +58,7 @@ namespace ACAT.Lib.Core.Utility
         /// <summary>
         /// Final X,Y position of the cursor
         /// </summary>
-        private Point _finalCursorPos;
+        //private Point _finalCursorPos;
 
         /// <summary>
         /// How many times to scan the grid line within the grid rectangle
@@ -336,7 +334,6 @@ namespace ACAT.Lib.Core.Utility
             }
         }
 
-
         /// <summary>
         /// Pauses horiz rectnagle animation.
         /// Moves the horizontal line within the horizontal rectangle.
@@ -375,10 +372,10 @@ namespace ACAT.Lib.Core.Utility
             };
 
             MoveLine(Direction.Vertical, point, _lineVertAnimation);
-
         }
 
-        public enum Direction { Horizontal, Vertical }
+        public enum Direction
+        { Horizontal, Vertical }
 
         private void MoveLine(Direction direction, Point point, DoubleAnimation animation)
         {
@@ -437,7 +434,6 @@ namespace ACAT.Lib.Core.Utility
             storyboard.Begin(this, true);
         }
 
-
         /// <summary>
         /// Creates and moves horiz rectangle vertically across the display
         /// </summary>
@@ -475,8 +471,6 @@ namespace ACAT.Lib.Core.Utility
             _rectHorizStoryboard.Begin(this, true);
         }
 
-
-
         /// <summary>
         /// Simulates final movement of the cursor to the desired
         /// location.
@@ -502,7 +496,7 @@ namespace ACAT.Lib.Core.Utility
         private void animateDone()
         {
             removeFromCanvas(_lineHoriz);
-            removeFromCanvas (_lineVert);
+            removeFromCanvas(_lineVert);
 
             _lineHorizStoryboard.Stop(this);
             _lineVertStoryboard.Stop(this);
@@ -511,6 +505,7 @@ namespace ACAT.Lib.Core.Utility
 
             Close();
         }
+
         /// <summary>
         /// Animates movement of the vertical rectangle horizontally
         /// across the display
@@ -545,7 +540,6 @@ namespace ACAT.Lib.Core.Utility
             _durationVert = SystemParameters.PrimaryScreenWidth / _gridRectangleSpeed;
             _durationLine = _gridRectangleHeight / _gridLineSpeed;
         }
-
 
         /// <summary>
         /// Executes state transition
@@ -610,7 +604,6 @@ namespace ACAT.Lib.Core.Utility
             Top = 0;
             Width = SystemParameters.PrimaryScreenWidth;
             Height = SystemParameters.PrimaryScreenHeight;
-
         }
 
         /// <summary>

@@ -8,7 +8,7 @@
 using System;
 using System.Text;
 
-namespace ACAT.Lib.Core.Audit
+namespace ACAT.Core.Audit
 {
     /// <summary>
     /// Base class for all audit logs events

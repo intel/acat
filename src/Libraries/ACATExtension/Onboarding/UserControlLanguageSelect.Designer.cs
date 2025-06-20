@@ -1,7 +1,7 @@
 ﻿
 using ACATResources;
 
-namespace ACAT.Lib.Extension.Onboarding
+namespace ACAT.Extension.Onboarding
 {
     partial class UserControlLanguageSelect
     {
@@ -33,7 +33,7 @@ namespace ACAT.Lib.Extension.Onboarding
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
-            this.listBoxLanguages = new ACAT.Lib.Core.PanelManagement.ListBoxUserControl();
+            this.listBoxLanguages = new ACAT.Core.PanelManagement.ListBoxUserControl();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -109,7 +109,7 @@ namespace ACAT.Lib.Extension.Onboarding
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private ACAT.Lib.Core.PanelManagement.ListBoxUserControl listBoxLanguages;
+        private ACAT.Core.PanelManagement.ListBoxUserControl listBoxLanguages;
         private System.Windows.Forms.Label label1;
     }
 }

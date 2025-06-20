@@ -77,6 +77,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         /// <summary>
         /// List of default classifiers
         /// </summary>
-        public static List<BCIScanSections> Classifier_DefaultClassifiers = new List<BCIScanSections>() { BCIScanSections.Box, BCIScanSections.Sentence, BCIScanSections.KeyboardL };
+        public static List<BCIScanSections> Classifier_DefaultClassifiers = new() { BCIScanSections.Box, BCIScanSections.Sentence, BCIScanSections.KeyboardL };
     }
 }

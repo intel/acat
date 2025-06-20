@@ -17,7 +17,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
 {
     public partial class TimedGraphDisplayerForm1x2 : Form
     {
-        private readonly Timer formCloser = new Timer();
+        private readonly Timer formCloser = new();
 
         public TimedGraphDisplayerForm1x2()
         {

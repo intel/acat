@@ -15,10 +15,10 @@ using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGUtils;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.Audit;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using ACATResources;
 using System;
 using System.Collections.Generic;
@@ -333,7 +333,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 // Resources already released - last thing that happens is main form closed handler
 
                 // Start in separate thread so you can do any waits without freezing main thread
-                Thread t = new Thread(() =>
+                Thread t = new(() =>
                 {
                     // Wait a bit until starting initialization again
                     Thread.Sleep(250);
@@ -646,7 +646,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 changeDeviceTestingState(DeviceTestingState.Testing_BCIConnections); // display "connecting" screen
 
                 // Start startBCIDeviceTesting() function from separate non-UI thread
-                Thread t = new Thread(() => startBCIDeviceTesting(0));
+                Thread t = new(() => startBCIDeviceTesting(0));
                 t.Start();
 
                 return; // Do not run anything after - device retesting process already started
@@ -779,7 +779,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             {
                 // Automatically start device testing when main form is shown
                 // Start startBCIDeviceTesting() function from separate non-UI thread
-                Thread t = new Thread(() => startBCIDeviceTesting(0));
+                Thread t = new(() => startBCIDeviceTesting(0));
                 t.Start();
             }
         }

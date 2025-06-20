@@ -12,7 +12,7 @@
 
 using ACAT.Extensions.BCI.Common.AnimationSharp;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;

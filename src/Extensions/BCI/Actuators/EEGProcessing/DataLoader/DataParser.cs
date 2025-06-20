@@ -11,7 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;

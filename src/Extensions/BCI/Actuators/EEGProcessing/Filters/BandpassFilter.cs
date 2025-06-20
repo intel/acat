@@ -87,7 +87,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             filteredData = FilterData(unfilteredData);
 
             // Delay trigger signal to adjust with delay that filter introduces to data
-            List<int> afterFilter = new List<int>();
+            List<int> afterFilter = new();
             for (int i = 0; i < groupDelay; i++)
                 afterFilter.Add(0);
             for (int sampleIdx = 0; sampleIdx < triggerSignal.Length - groupDelay; sampleIdx++)

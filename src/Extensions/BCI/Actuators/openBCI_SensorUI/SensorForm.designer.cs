@@ -9,6 +9,7 @@
 // Main form / UI for BCI Onboarding and Signal Check
 //
 ////////////////////////////////////////////////////////////////////////////
+using ACAT.Core.WidgetManagement;
 
 namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 {
@@ -49,7 +50,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             this.tableLayoutPanelSpacerBottom = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelContainer = new System.Windows.Forms.TableLayoutPanel();
             this.panelTriggerBox = new System.Windows.Forms.Panel();
-            this.TriggerBox = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.TriggerBox = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.labelTriggerBox = new System.Windows.Forms.Label();
             this.pictureBoxTriggerBox = new System.Windows.Forms.PictureBox();
             this.timerPlotData = new System.Windows.Forms.Timer(this.components);
@@ -213,7 +214,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         public System.Windows.Forms.TableLayoutPanel tableLayoutPanelContainer;
         private System.Windows.Forms.Timer timerPlotData;
         public System.Windows.Forms.Panel panelTriggerBox;
-        public Lib.Core.WidgetManagement.ScannerRoundedButtonControl TriggerBox;
+        public ScannerRoundedButtonControl TriggerBox;
         public System.Windows.Forms.Label labelTriggerBox;
         public System.Windows.Forms.PictureBox pictureBoxTriggerBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelSpacerBottom;

@@ -6,7 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using ACATResources;
 using System;
 using System.Drawing;

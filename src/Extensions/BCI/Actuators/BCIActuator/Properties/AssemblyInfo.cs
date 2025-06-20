@@ -1,11 +1,12 @@
-﻿using System.Reflection;
+﻿using System.Resources;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BCIActuator")]
+[assembly: AssemblyTitle("ACAT.Extensions.BCI.Actuators.BCIActuator")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
@@ -21,3 +22,4 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("acd93bc0-e644-40be-9749-d0665a90e43c")]
+[assembly: NeutralResourcesLanguage("en")]

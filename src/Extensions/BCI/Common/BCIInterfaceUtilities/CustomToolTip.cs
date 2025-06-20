@@ -8,7 +8,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;

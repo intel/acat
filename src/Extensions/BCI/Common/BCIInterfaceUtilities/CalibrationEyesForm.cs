@@ -12,10 +12,10 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
-//using ACAT.Lib.Core;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
+//using ACAT.Core;
 using static ACAT.Extensions.BCI.Common.BCIControl.BCICalibrationEyesClosedIterationEnd;
 //using System.Drawing;
 using System.Windows.Forms;
@@ -75,7 +75,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <summary>
         /// Current mode for BCI
         /// </summary>
-        readonly BCIMode bCIMode = new BCIMode();
+        readonly BCIMode bCIMode = new();
 
         /// <summary>
         /// Flag to set UI 
@@ -183,7 +183,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                     panelTriggerBox.BackColor = eyeOpen ? Color.White : Color.Black;
                 }));
 
-                BCICalibrationEyesClosedIterationEnd bCICalibrationEyesClosedIterationEnd = new BCICalibrationEyesClosedIterationEnd { BciEyesClosedMode = eyeOpen ? BCIEyesClosedModes.EyesOpened : BCIEyesClosedModes.EyesClosed, };
+                BCICalibrationEyesClosedIterationEnd bCICalibrationEyesClosedIterationEnd = new() { BciEyesClosedMode = eyeOpen ? BCIEyesClosedModes.EyesOpened : BCIEyesClosedModes.EyesClosed, };
                 _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedIterationEnd, JsonSerializer.Serialize(bCICalibrationEyesClosedIterationEnd));
             }
             else
@@ -304,7 +304,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// </summary>
         private void ShowCalibrationEyesSettingsForm()
         {
-            CalibrationEyesSettingsForm calibrationEyesSettingsForm = new CalibrationEyesSettingsForm();
+            CalibrationEyesSettingsForm calibrationEyesSettingsForm = new();
             calibrationEyesSettingsForm.ShowDialog();
             var parameters = calibrationEyesSettingsForm.ResultParameters;
             calibrationEyesSettingsForm.Dispose();

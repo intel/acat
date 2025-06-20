@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ACAT Scanners")]
+[assembly: AssemblyTitle("ACAT.Extensions.BCI.UI.Scanners")]
 [assembly: AssemblyDescription("Assistive Context-Aware Toolkit (ACAT)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("http://01.org/acat")]

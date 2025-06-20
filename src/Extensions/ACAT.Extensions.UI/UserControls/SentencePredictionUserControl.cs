@@ -12,19 +12,19 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AnimationManagement;
-using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.TTSManagement;
-using ACAT.Lib.Core.UserControlManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
-using ACAT.Lib.Core.WordPredictionManagement;
-using ACAT.Lib.Extension;
+using ACAT.Core.AnimationManagement;
+using ACAT.Core.Audit;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.TTSManagement;
+using ACAT.Core.UserControlManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Core.WordPredictionManagement;
+using ACAT.Extension;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.UI.UserControls
+namespace ACAT.Extensions.UI.UserControls
 {
     [Descriptor("07E0D588-1E80-4A07-BC26-FA4C8BCF5589",
                     "SentencePredictionUserControl",

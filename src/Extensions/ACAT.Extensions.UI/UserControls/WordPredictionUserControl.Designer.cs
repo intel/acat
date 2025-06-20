@@ -1,5 +1,6 @@
-﻿
-namespace ACAT.Extensions.Default.UI.UserControls
+﻿using ACAT.Core.WidgetManagement;
+
+namespace ACAT.Extensions.UI.UserControls
 {
     partial class WordPredictionUserControl
     {
@@ -30,16 +31,16 @@ namespace ACAT.Extensions.Default.UI.UserControls
         private void InitializeComponent()
         {
             this.WordPredictionBox = new System.Windows.Forms.TableLayoutPanel();
-            this.PWLItem1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.PWLItem2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.PWLItem3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.PWLItem4 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.PWLItem5 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.PWLItem6 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.PWLItem7 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.PWLItem8 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.PWLItem9 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.PWLItem10 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.PWLItem1 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.PWLItem2 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.PWLItem3 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.PWLItem4 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.PWLItem5 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.PWLItem6 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.PWLItem7 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.PWLItem8 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.PWLItem9 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.PWLItem10 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.WordPredictionBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -297,15 +298,15 @@ namespace ACAT.Extensions.Default.UI.UserControls
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel WordPredictionBox;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl PWLItem1;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl PWLItem2;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl PWLItem3;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl PWLItem4;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl PWLItem5;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl PWLItem6;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl PWLItem7;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl PWLItem8;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl PWLItem9;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl PWLItem10;
+        private ScannerRoundedButtonControl PWLItem1;
+        private ScannerRoundedButtonControl PWLItem2;
+        private ScannerRoundedButtonControl PWLItem3;
+        private ScannerRoundedButtonControl PWLItem4;
+        private ScannerRoundedButtonControl PWLItem5;
+        private ScannerRoundedButtonControl PWLItem6;
+        private ScannerRoundedButtonControl PWLItem7;
+        private ScannerRoundedButtonControl PWLItem8;
+        private ScannerRoundedButtonControl PWLItem9;
+        private ScannerRoundedButtonControl PWLItem10;
     }
 }

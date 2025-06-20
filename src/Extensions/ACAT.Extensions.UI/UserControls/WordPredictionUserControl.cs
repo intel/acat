@@ -10,16 +10,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AnimationManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.UserControlManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
-using ACAT.Lib.Core.WordPredictionManagement;
-using ACAT.Lib.Extension;
+using ACAT.Core.AnimationManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.UserControlManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Core.WordPredictionManagement;
+using ACAT.Extension;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.UI.UserControls
+namespace ACAT.Extensions.UI.UserControls
 {
     [Descriptor("531C7B62-A09F-4772-8C7E-915E2C0AD014",
                     "WordPredictionUserControl",

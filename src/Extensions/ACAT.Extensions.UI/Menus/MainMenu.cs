@@ -11,17 +11,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.Utility;
+using ACAT.Extension;
 using ACATResources;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Extension;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.UI.Menus
+namespace ACAT.Extensions.UI.Menus
 {
     [Descriptor("148257A1-A8B7-4E75-93F0-56AFCD5B2A3E",
                         "MainMenu",

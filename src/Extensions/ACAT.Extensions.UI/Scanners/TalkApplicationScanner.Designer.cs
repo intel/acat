@@ -1,4 +1,4 @@
-﻿namespace ACAT.Extensions.Default.UI.Scanners
+﻿namespace ACAT.Extensions.UI.Scanners
 {
     partial class TalkApplicationScanner
     {

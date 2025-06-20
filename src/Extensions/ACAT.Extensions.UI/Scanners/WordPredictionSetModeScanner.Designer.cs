@@ -1,4 +1,4 @@
-﻿namespace ACAT.Lib.Extension
+﻿namespace ACAT.Extension
 {
     partial class WordPredictionSetModeScanner
     {

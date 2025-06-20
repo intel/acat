@@ -1,5 +1,5 @@
 ﻿
-namespace ACAT.Extensions.Default.UI.UserControls
+namespace ACAT.Extensions.UI.UserControls
 {
     partial class SentencePredictionUserControl
     {
@@ -30,11 +30,11 @@ namespace ACAT.Extensions.Default.UI.UserControls
         private void InitializeComponent()
         {
             this.SentencePredictionBox = new System.Windows.Forms.TableLayoutPanel();
-            this.SPLItem1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.SPLItem2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.SPLItem3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.SPLItem4 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.SPLItem5 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.SPLItem1 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.SPLItem2 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.SPLItem3 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.SPLItem4 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.SPLItem5 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.SentencePredictionBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -185,10 +185,10 @@ namespace ACAT.Extensions.Default.UI.UserControls
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel SentencePredictionBox;
-        private ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl SPLItem1;
-        private ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl SPLItem2;
-        private ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl SPLItem3;
-        private ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl SPLItem4;
-        private ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl SPLItem5;
+        private ACAT.Core.WidgetManagement.ScannerRoundedButtonControl SPLItem1;
+        private ACAT.Core.WidgetManagement.ScannerRoundedButtonControl SPLItem2;
+        private ACAT.Core.WidgetManagement.ScannerRoundedButtonControl SPLItem3;
+        private ACAT.Core.WidgetManagement.ScannerRoundedButtonControl SPLItem4;
+        private ACAT.Core.WidgetManagement.ScannerRoundedButtonControl SPLItem5;
     }
 }

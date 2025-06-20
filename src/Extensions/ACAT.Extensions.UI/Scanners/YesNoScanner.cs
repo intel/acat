@@ -13,22 +13,22 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.InputActuators;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
-using ACAT.Lib.Extension;
-using ACAT.Lib.Extension.CommandHandlers;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.Extensions;
+using ACAT.Core.InputActuators;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Extension;
+using ACAT.Extension.CommandHandlers;
 using System;
 using System.Collections.Generic;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.UI.Menus
+namespace ACAT.Extensions.UI.Menus
 {
     /// <summary>
     /// Scanner that displays a Yes/No dialog with a prompt. The strings
@@ -443,6 +443,7 @@ namespace ACAT.Extensions.Default.UI.Menus
 
             PanelCommon.AnimationManager.Start(rootWidget);
         }
+
         /// <summary>
         /// Handles commands. We have yes and no.  Sets
         /// the choice and closes the scanner

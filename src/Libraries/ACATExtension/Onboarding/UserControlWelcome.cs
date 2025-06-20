@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Onboarding;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Onboarding;
+using ACAT.Core.Utility;
 using ACATResources;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension.Onboarding
+namespace ACAT.Extension.Onboarding
 {
     /// <summary>
     /// User control that displays the Welcome screen
@@ -65,7 +65,6 @@ namespace ACAT.Lib.Extension.Onboarding
 
             //var prompt = startPrompt.Replace("xxx", timeout.ToString());
             var prompt = StringResources.startPrompt.Replace("xxx", timeout.ToString());
-           
 
             if (Common.AppPreferences.OnboardingComplete)
             {
@@ -132,8 +131,6 @@ namespace ACAT.Lib.Extension.Onboarding
         {
             //var prompt = startPrompt.Replace("xxx", _timeLeft.ToString() + ((_timeLeft > 1) ? " secs" : " sec"));
             var prompt = StringResources.startPrompt.Replace("xxx", _timeLeft.ToString() + ((_timeLeft > 1) ? " secs" : " sec"));
-          
-
 
             Windows.SetText(labelCountdown, "\r\n\r\n" + prompt);
         }

@@ -10,11 +10,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Onboarding;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Onboarding;
+using ACAT.Core.Utility;
 using System;
 
-namespace ACAT.Lib.Core.InputActuators
+namespace ACAT.Core.InputActuators
 {
     /// <summary>
     /// The ACAT interface for an external switch switch (off-the-shelf)

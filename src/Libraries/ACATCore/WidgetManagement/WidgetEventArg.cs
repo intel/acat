@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
     /// <summary>
     /// Event argument for widget events

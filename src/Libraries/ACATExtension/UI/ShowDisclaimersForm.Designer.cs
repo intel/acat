@@ -1,6 +1,6 @@
 ﻿using ACATResources;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     partial class ShowDisclaimersForm
     {

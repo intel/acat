@@ -5,13 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.UserControlManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.UserControlManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Reflection;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     /// <summary>
     /// Contains system wide globals and also initializes the extension
@@ -77,7 +77,6 @@ namespace ACAT.Lib.Extension
         {
             var guid = UserControlConfigMap.GetUserControlId(typeof(UserControlDefaultTryout));
             UserControlConfigMap.AddUserControlToCache(guid, typeof(UserControlDefaultTryout));
-
 
             guid = UserControlConfigMap.GetUserControlId(typeof(UserControlLayoutInterface));
             UserControlConfigMap.AddUserControlToCache(guid, typeof(UserControlLayoutInterface));

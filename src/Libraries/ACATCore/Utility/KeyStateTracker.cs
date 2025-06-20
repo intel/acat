@@ -10,7 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Tracks the state of Shift, Ctrl and Alt keys.  On the UI, if

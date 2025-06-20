@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Represents the name, a brief description and a GUID

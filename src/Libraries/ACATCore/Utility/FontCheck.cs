@@ -8,7 +8,7 @@
 using System;
 using System.Drawing;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Checks if the specified font or the Montserrat font has been installed

@@ -5,9 +5,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,7 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace ACAT.Lib.Core.SpellCheckManagement
+namespace ACAT.Core.SpellCheckManagement
 {
     /// <summary>
     /// Maintains a list of discovered SpellCheckers in an internal cache.
@@ -53,10 +53,12 @@ namespace ACAT.Lib.Core.SpellCheckManagement
         /// Has this object been disposed
         /// </summary>
         private bool _disposed;
+
         /// <summary>
         /// If one of the dll found has an error with the certificate
         /// </summary>
         private static volatile bool _DLLError = false;
+
         /// <summary>
         /// Initializes an instance of the class
         /// </summary>
@@ -350,7 +352,6 @@ namespace ACAT.Lib.Core.SpellCheckManagement
         {
             try
             {
-
                 var retVal = VerifyDigitalSignature.ValidateCertificate(dllName);
                 if (retVal && !_DLLError)
                 {
@@ -388,7 +389,6 @@ namespace ACAT.Lib.Core.SpellCheckManagement
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {

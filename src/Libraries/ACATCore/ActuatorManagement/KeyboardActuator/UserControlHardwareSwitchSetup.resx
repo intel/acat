@@ -151,7 +151,7 @@
     <value>buttonF12</value>
   </data>
   <data name="&gt;&gt;buttonF12.Type" xml:space="preserve">
-    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ACAT.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;buttonF12.Parent" xml:space="preserve">
     <value>tableLayoutPanelMain</value>
@@ -184,7 +184,7 @@
     <value>buttonF11</value>
   </data>
   <data name="&gt;&gt;buttonF11.Type" xml:space="preserve">
-    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ACAT.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;buttonF11.Parent" xml:space="preserve">
     <value>tableLayoutPanelMain</value>
@@ -217,7 +217,7 @@
     <value>buttonF10</value>
   </data>
   <data name="&gt;&gt;buttonF10.Type" xml:space="preserve">
-    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ACAT.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;buttonF10.Parent" xml:space="preserve">
     <value>tableLayoutPanelMain</value>
@@ -250,7 +250,7 @@
     <value>buttonF9</value>
   </data>
   <data name="&gt;&gt;buttonF9.Type" xml:space="preserve">
-    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ACAT.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;buttonF9.Parent" xml:space="preserve">
     <value>tableLayoutPanelMain</value>
@@ -283,7 +283,7 @@
     <value>buttonF8</value>
   </data>
   <data name="&gt;&gt;buttonF8.Type" xml:space="preserve">
-    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ACAT.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;buttonF8.Parent" xml:space="preserve">
     <value>tableLayoutPanelMain</value>
@@ -316,7 +316,7 @@
     <value>buttonF7</value>
   </data>
   <data name="&gt;&gt;buttonF7.Type" xml:space="preserve">
-    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ACAT.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;buttonF7.Parent" xml:space="preserve">
     <value>tableLayoutPanelMain</value>
@@ -349,7 +349,7 @@
     <value>buttonF6</value>
   </data>
   <data name="&gt;&gt;buttonF6.Type" xml:space="preserve">
-    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ACAT.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;buttonF6.Parent" xml:space="preserve">
     <value>tableLayoutPanelMain</value>
@@ -382,7 +382,7 @@
     <value>buttonF5</value>
   </data>
   <data name="&gt;&gt;buttonF5.Type" xml:space="preserve">
-    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ACAT.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;buttonF5.Parent" xml:space="preserve">
     <value>tableLayoutPanelMain</value>
@@ -415,7 +415,7 @@
     <value>buttonF4</value>
   </data>
   <data name="&gt;&gt;buttonF4.Type" xml:space="preserve">
-    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ACAT.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;buttonF4.Parent" xml:space="preserve">
     <value>tableLayoutPanelMain</value>
@@ -448,7 +448,7 @@
     <value>buttonF3</value>
   </data>
   <data name="&gt;&gt;buttonF3.Type" xml:space="preserve">
-    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ACAT.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;buttonF3.Parent" xml:space="preserve">
     <value>tableLayoutPanelMain</value>
@@ -481,7 +481,7 @@
     <value>buttonF2</value>
   </data>
   <data name="&gt;&gt;buttonF2.Type" xml:space="preserve">
-    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ACAT.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;buttonF2.Parent" xml:space="preserve">
     <value>tableLayoutPanelMain</value>
@@ -610,7 +610,7 @@
     <value>buttonF1</value>
   </data>
   <data name="&gt;&gt;buttonF1.Type" xml:space="preserve">
-    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ACAT.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;buttonF1.Parent" xml:space="preserve">
     <value>tableLayoutPanelMain</value>
@@ -673,7 +673,7 @@
     <value>scannerPanel1</value>
   </data>
   <data name="&gt;&gt;scannerPanel1.Type" xml:space="preserve">
-    <value>ACAT.Lib.Core.WidgetManagement.ScannerPanel, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ACAT.Core.WidgetManagement.ScannerPanel, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;scannerPanel1.Parent" xml:space="preserve">
     <value>tableLayoutPanelMain</value>

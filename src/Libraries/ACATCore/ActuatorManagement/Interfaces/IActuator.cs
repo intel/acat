@@ -11,13 +11,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.Onboarding;
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.Extensions;
+using ACAT.Core.Onboarding;
+using ACAT.Core.PreferencesManagement;
 using System;
 using System.Collections.Generic;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// Delegate for the event raised when an actuator wants to send custom data

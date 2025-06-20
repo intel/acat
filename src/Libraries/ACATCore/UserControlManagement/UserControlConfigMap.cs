@@ -5,8 +5,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,12 +16,12 @@ using System.Linq;
 using System.Reflection;
 using System.Xml;
 
-namespace ACAT.Lib.Core.UserControlManagement
+namespace ACAT.Core.UserControlManagement
 {
     /// <summary>
     /// UserControlConfigMap is an xml file that contains a mapping between the
     /// user control and the name of the xml file that
-    /// contains animation and other info for the user control. 
+    /// contains animation and other info for the user control.
     /// </summary>
     public class UserControlConfigMap
     {
@@ -47,10 +47,12 @@ namespace ACAT.Lib.Core.UserControlManagement
         private static List<Guid> _loadUserControlConfigMapTable;
 
         private static Dictionary<Guid, UserControlConfigMapEntry> _masterUserControlConfigMapTable;
+
         /// <summary>
         /// If one of the dll found has an error with the certificate
         /// </summary>
         private static volatile bool _DLLError = false;
+
         /// <summary>
         /// Caches the class Type of user controls
         /// </summary>
@@ -213,7 +215,7 @@ namespace ACAT.Lib.Core.UserControlManagement
                 //load(extensionDir);
 
                 String extensionDir = dir + "\\" + PanelManager.UiRootDir;
-                load(extensionDir); 
+                load(extensionDir);
                 if (_DLLError)
                     return false;
             }
@@ -568,7 +570,6 @@ namespace ACAT.Lib.Core.UserControlManagement
                     }
                     loadTypesFromAssembly(Assembly.LoadFile(dllName));
                 }
-                
             }
             catch (Exception ex)
             {

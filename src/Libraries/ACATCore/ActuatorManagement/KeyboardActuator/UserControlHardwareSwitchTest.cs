@@ -11,21 +11,20 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.Onboarding;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.Onboarding;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.InputActuators
+namespace ACAT.Core.InputActuators
 {
     /// <summary>
     /// User control used in onboarding that allows the user to configure
@@ -50,7 +49,7 @@ namespace ACAT.Lib.Core.InputActuators
         private bool _switchTested = false;
         private readonly OnboardingHardwareSwitchSetup.SwitchType _switchType;
 
-        const int minHoldTimeMaxValue = 2000;
+        private const int minHoldTimeMaxValue = 2000;
 
         public UserControlHardwareSwitchTest(IOnboardingWizard wizard, IOnboardingExtension onboardingExtension, String stepId, OnboardingHardwareSwitchSetup.SwitchType switchType)
         {
@@ -63,7 +62,6 @@ namespace ACAT.Lib.Core.InputActuators
 
             _buttonDefaultImage = ImageUtils.LoadImage(Path.Combine(FileUtils.GetImagePath("SwitchTestDefault.png")));
             _buttonActuatedImage = ImageUtils.LoadImage(Path.Combine(FileUtils.GetImagePath("SwitchTestActivated.png")));
-            
 
             buttonSwitchTest.BackgroundImage = _buttonDefaultImage;
 
@@ -78,7 +76,7 @@ namespace ACAT.Lib.Core.InputActuators
             numericUpDownHoldTime.Maximum = minHoldTimeMaxValue;
             numericUpDownHoldTime.Minimum = 0;
             numericUpDownHoldTime.Increment = 50;
-            
+
             numericUpDownHoldTime.Value = CoreGlobals.AppPreferences.MinActuationHoldTime;
 
             _keyboardHook.SetHook();
@@ -147,7 +145,6 @@ namespace ACAT.Lib.Core.InputActuators
 
             Log.Debug("Keyup hotkey: " + hotKey);
 
-
             if (String.Compare(e.KeyCode.ToString(), _strTriggerHotkey, true) == 0)
             {
                 _hotkeyActive = false;
@@ -183,8 +180,6 @@ namespace ACAT.Lib.Core.InputActuators
                                         Context.AppActuatorManager.GetSwitchInterfaceActuator();
 
             String html = String.Format(_htmlTemplate, headStyle, bodyStyle, textStyle, "Click <a href=" + HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName) + "#SwitchTest>here</a> for help");
-
-            
 
             webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
             webBrowser.DocumentText = html;
@@ -265,7 +260,6 @@ namespace ACAT.Lib.Core.InputActuators
             {
                 CoreGlobals.AppPreferences.MinActuationHoldTime = (int)numericUpDownHoldTime.Value;
                 CoreGlobals.AppPreferences.Save();
-
             }
 
             return retVal; ;
@@ -302,9 +296,8 @@ namespace ACAT.Lib.Core.InputActuators
 
         private void numericUpDownHoldTime_textChanged(object sender, EventArgs e)
         {
-            
             var str = ((Control)numericUpDownHoldTime).Text;
-            
+
             try
             {
                 if (String.IsNullOrEmpty(str))
@@ -321,9 +314,9 @@ namespace ACAT.Lib.Core.InputActuators
             }
             catch
             {
-
             }
         }
+
         private void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             webBrowser.Navigating -= WebBrowser_Navigating;
@@ -374,11 +367,9 @@ namespace ACAT.Lib.Core.InputActuators
             }
             catch
             {
-
             }
             finally
             {
-
             }
         }
     }

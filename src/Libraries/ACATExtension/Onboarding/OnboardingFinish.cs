@@ -5,11 +5,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Onboarding;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Onboarding;
+using ACAT.Core.Utility;
 using System;
 
-namespace ACAT.Lib.Extension.Onboarding
+namespace ACAT.Extension.Onboarding
 {
     /// <summary>
     /// The onboarding extension that signifies the end of onboarding
@@ -21,6 +21,7 @@ namespace ACAT.Lib.Extension.Onboarding
     {
         // TODO - Localize Me
         private const String Step1 = "STEP 1";
+
         private IOnboardingWizard _wizard;
 
         public override IDescriptor Descriptor

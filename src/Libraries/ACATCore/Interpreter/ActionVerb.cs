@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ACAT.Lib.Core.Interpreter
+namespace ACAT.Core.Interpreter
 {
     /// <summary>
     /// An action verb consists of a function name and arguments.

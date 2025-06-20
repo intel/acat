@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACATResources;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
 using System;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     /// <summary>
     /// A form to display disclaimers. Disclaimers are added to
@@ -74,7 +74,6 @@ namespace ACAT.Lib.Extension
                 {
                     textBoxDisclaimers.Text += text;
                 }
-                
             }
             catch
             {

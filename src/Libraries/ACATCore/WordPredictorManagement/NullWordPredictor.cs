@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace ACAT.Lib.Core.WordPredictionManagement
+namespace ACAT.Core.WordPredictionManagement
 {
     /// <summary>
     /// The null word predictor basically does nothing.  It is used
@@ -159,7 +159,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         }
 
         /// <summary>
-        /// Post Init 
+        /// Post Init
         /// </summary>
         /// <returns>true</returns>
         public bool PostInit()

@@ -5,11 +5,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.IO;
 
-namespace ACAT.Lib.Core.UserManagement
+namespace ACAT.Core.UserManagement
 {
     /// <summary>
     /// ACAT supports multiple profiles for each user. Applications

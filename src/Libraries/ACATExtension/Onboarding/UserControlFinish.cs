@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Onboarding;
+using ACAT.Core.Onboarding;
+using ACATResources;
 using System;
 using System.Windows.Forms;
-using ACATResources;
 
-namespace ACAT.Lib.Extension.Onboarding
+namespace ACAT.Extension.Onboarding
 {
     /// <summary>
     /// The usercontrol that is displayed at the end of onboarding

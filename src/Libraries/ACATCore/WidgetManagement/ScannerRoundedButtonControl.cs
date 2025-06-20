@@ -11,7 +11,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
     /// <summary>
     /// A button with rounded corners whose radius can be configured
@@ -39,14 +39,13 @@ namespace ACAT.Lib.Core.WidgetManagement
         }
 
         public ScannerRoundedButtonControl(
-            string name, 
-            string label, 
-            string command, 
-            string fontname, 
+            string name,
+            string label,
+            string command,
+            string fontname,
             int fontsize,
             bool bold) : this()
         {
-            
             this.Name = name;
             this.Text = label;
             this.Font = new Font(fontname, fontsize, bold ? FontStyle.Bold : FontStyle.Regular);

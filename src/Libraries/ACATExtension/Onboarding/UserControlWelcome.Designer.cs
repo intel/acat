@@ -1,6 +1,6 @@
 ﻿
 using ACATResources;
-namespace ACAT.Lib.Extension.Onboarding
+namespace ACAT.Extension.Onboarding
 {
     partial class UserControlWelcome
     {

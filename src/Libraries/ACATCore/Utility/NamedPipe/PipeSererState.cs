@@ -9,7 +9,7 @@ using System.IO.Pipes;
 using System.Text;
 using System.Threading;
 
-namespace ACAT.Lib.Core.Utility.NamedPipe
+namespace ACAT.Core.Utility.NamedPipe
 {
     internal class PipeServerState
     {

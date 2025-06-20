@@ -12,16 +12,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PreferencesManagement
+namespace ACAT.Core.PreferencesManagement
 {
     /// <summary>
     /// Displays a list of categories allowing the user to enable/disable
@@ -111,7 +111,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         public IntPtr ParentControlHandle { get; set; }
 
         /// <summary>
-        /// Delegate for the event triggered when the user saves 
+        /// Delegate for the event triggered when the user saves
         /// new preferences
         /// </summary>
         /// <param name="sender">event sender</param>
@@ -124,14 +124,14 @@ namespace ACAT.Lib.Core.PreferencesManagement
         public event NotifySavePreferencesCategories EvtSavePreferences;
 
         /// <summary>
-        /// Delegate for the event triggered when the user makes a change to a preference setting 
+        /// Delegate for the event triggered when the user makes a change to a preference setting
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="arg">event args</param>
         public delegate void NotifyPreferencesChangeMade();
 
         /// <summary>
-        /// Event raised when the user makes a change to a preference setting 
+        /// Event raised when the user makes a change to a preference setting
         /// </summary>
         public event NotifyPreferencesChangeMade EvtPreferencesChangeMade;
 
@@ -141,8 +141,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <param name="sender"></param>
         /// <param name="preferencesCategory"></param>
         public delegate void PreferencesCategorySelected(object sender, ISupportsPreferences preferencesCategory);
-        public event PreferencesCategorySelected EvtPreferencesCategorySelected;
 
+        public event PreferencesCategorySelected EvtPreferencesCategorySelected;
 
         /// <summary>
         ///  Check if form filled correctly, if not, return false
@@ -164,10 +164,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
             // Send event notification that preferences are to be saved
             EvtSavePreferences?.Invoke(this, this.PreferencesCategories);
 
-            return true; 
-
+            return true;
         }
-
 
         /// <summary>
         /// Client size changed
@@ -182,7 +180,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 _firstClientChangedCall = false;
             }
         }
-
 
         /// <summary>
         /// If the user clicked in a cell.  If its is the
@@ -207,15 +204,12 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 var category = tag as PreferencesCategory;
                 if (category.PreferenceObj is ISupportsPreferences)
                 {
-
                     // Call event notifying that new preferences cateogry selected - handler set in ACATConfigMainForm.cs
                     EvtPreferencesCategorySelected(this, (ISupportsPreferences)category.PreferenceObj);
                     return;
-
                 }
             }
         }
-
 
         /// <summary>
         /// If the user clicked on the Enable column, and if AllowMultiEnable
@@ -252,7 +246,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
                 dataGridView2.Invalidate();
             }
-
         }
 
         /// <summary>
@@ -326,9 +319,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             initializeUI();
 
             refreshDataGridView();
-
         }
-
 
         /// <summary>
         /// Refreshes the Gridview with data from the Categories
@@ -504,7 +495,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
             dataGridView2.AutoResizeRows();
         }
 
-
         /// <summary>
         /// User clicked wrap text checkbox
         /// </summary>
@@ -517,8 +507,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 bool doWrapText = ((CheckBox)sender).Checked;
                 wrapText(doWrapText);
             }
-
         }
-
     }
 }

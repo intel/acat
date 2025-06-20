@@ -5,16 +5,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AbbreviationsManagement;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.CommandManagement;
-using ACAT.Lib.Core.SpellCheckManagement;
-using ACAT.Lib.Core.ThemeManagement;
-using ACAT.Lib.Core.TTSManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
-using ACAT.Lib.Core.WordPredictionManagement;
+using ACAT.Core.AbbreviationsManagement;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.CommandManagement;
+using ACAT.Core.SpellCheckManagement;
+using ACAT.Core.ThemeManagement;
+using ACAT.Core.TTSManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Core.WordPredictionManagement;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -22,7 +22,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// Encapsulates system wide global shared objects. Creates
@@ -662,7 +662,6 @@ namespace ACAT.Lib.Core.PanelManagement
             //var dirs = CoreGlobals.AppPreferences.Extensions.Split(',');
 
             _extensionDirs.Add(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-
         }
 
         /// <summary>

@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PreferencesManagement;
 using System;
 using System.Reflection;
 using System.Text;
-using ACAT.Lib.Core.PreferencesManagement;
 using System.Xml.Serialization;
 using System.ComponentModel.DataAnnotations;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>*
     /// Contains system-wide preference settings.  Settings are serialized

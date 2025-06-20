@@ -1,4 +1,4 @@
-﻿namespace ACAT.Lib.Core.PanelManagement
+﻿namespace ACAT.Core.PanelManagement
 {
     partial class MenuPanelBase
     {
@@ -44,36 +44,36 @@
             this.Row12 = new System.Windows.Forms.TableLayoutPanel();
             this.Row13 = new System.Windows.Forms.TableLayoutPanel();
             this.Row14 = new System.Windows.Forms.TableLayoutPanel();
-            this.ItemIcon8 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemText8 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemIcon7 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemText7 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemIcon6 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemText6 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemIcon5 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemText5 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemIcon4 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemText4 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemIcon3 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemText3 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemIcon2 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemText2 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemIcon1 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemText1 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.MenuTitle = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.MenuTitleIcon = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemIcon9 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemText9 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemIcon10 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemText10 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemIcon11 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemText11 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemIcon12 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemText12 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemIcon13 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemText13 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemIcon14 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.ItemText14 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemIcon8 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemText8 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemIcon7 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemText7 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemIcon6 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemText6 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemIcon5 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemText5 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemIcon4 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemText4 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemIcon3 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemText3 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemIcon2 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemText2 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemIcon1 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemText1 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.MenuTitle = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.MenuTitleIcon = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemIcon9 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemText9 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemIcon10 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemText10 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemIcon11 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemText11 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemIcon12 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemText12 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemIcon13 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemText13 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemIcon14 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.ItemText14 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
             this.tableLayoutPanel1.SuspendLayout();
             this.Row8.SuspendLayout();
             this.Row7.SuspendLayout();

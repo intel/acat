@@ -1,9 +1,9 @@
-﻿using ACAT.Lib.Core.Utility;
+﻿using ACAT.Core.Utility;
 using System;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// Docks a scanner to a specified parent window at a specified

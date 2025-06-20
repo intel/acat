@@ -5,10 +5,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 
-namespace ACAT.Lib.Core.Extensions
+namespace ACAT.Core.Extensions
 {
     /// <summary>
     /// Used as arugment to events rasised by the extension invoker

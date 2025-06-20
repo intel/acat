@@ -9,7 +9,7 @@ using System;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Useful text functions.  This class contains functions to get the current sentence,

@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility.NamedPipe;
+using ACAT.Core.Utility.NamedPipe;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -13,12 +13,12 @@ using System.IO.Pipes;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
-    /// Communicates with ACATWatcher which is a separate process, to 
+    /// Communicates with ACATWatcher which is a separate process, to
     /// set focus to a specified window. Setting focus is tricky. Doesn't
-    /// always work if ACAT sets focus to one of its own windows. works 
+    /// always work if ACAT sets focus to one of its own windows. works
     /// better if a different process does it, hence ACATWatcher
     /// </summary>
     public static class ScannerFocus

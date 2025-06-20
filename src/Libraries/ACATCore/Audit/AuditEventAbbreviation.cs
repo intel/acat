@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.Audit
+namespace ACAT.Core.Audit
 {
     /// <summary>
     /// Represents audit log entry of an abbreviation expansion

@@ -4208,7 +4208,7 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This may take a few minutes.
+        ///   Looks up a localized string similar to This may take a few minutes..
         /// </summary>
         public static string Thismaytakeafewminutes {
             get {

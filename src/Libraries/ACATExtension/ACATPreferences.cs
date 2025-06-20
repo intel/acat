@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Xml.Serialization;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     /// <summary>
     /// ACAT preferences that can be serialized/deserialized to a file
@@ -37,7 +37,7 @@ namespace ACAT.Lib.Extension
 
         [IntDescriptor("Number of times the buttons in the strip scanner are scanned. Strip scanners are typically used for accented letters in non-English languages", 1, 10)]
         public int StripScannerColumnIterations = 2;
-        
+
         [BoolDescriptor("Enable suggestions for sentence completion")]
         public bool UseSentencePrediction = true;
 

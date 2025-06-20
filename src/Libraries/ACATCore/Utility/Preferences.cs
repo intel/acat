@@ -5,13 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PreferencesManagement;
 using System;
 using System.Reflection;
 using System.Text;
-using ACAT.Lib.Core.PreferencesManagement;
 using System.Xml.Serialization;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>*
     /// Contains system-wide preference settings.  Settings are serialized
@@ -76,7 +76,7 @@ namespace ACAT.Lib.Core.Utility
 
         [BoolDescriptor("Enable Text-to-speech")]
         public bool EnableTextToSpeech = true;
-        
+
         [BoolDescriptor("Enable Performance Monitor to monitor and log Memory and CPU utilization statistics")]
         public bool PerMonEnable = false;
 
@@ -136,7 +136,6 @@ namespace ACAT.Lib.Core.Utility
 
         //[IntDescriptor("Hide the scanner if no actuator switch trigger is detected for this length of time ", 3000, 60000)]
         public int HideOnIdleTimeout = 5000;
-
 
         [BoolDescriptor("Enable in App sounds")]
         public bool EnableSounds = true;

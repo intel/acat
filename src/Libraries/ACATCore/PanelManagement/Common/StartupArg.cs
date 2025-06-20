@@ -8,7 +8,7 @@
 using System;
 using System.Windows.Automation;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// Argument used in the call to display a scanner.  Has all

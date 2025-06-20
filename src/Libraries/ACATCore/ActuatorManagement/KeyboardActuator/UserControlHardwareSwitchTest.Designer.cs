@@ -1,4 +1,4 @@
-﻿namespace ACAT.Lib.Core.InputActuators
+﻿namespace ACAT.Core.InputActuators
 {
     partial class UserControlHardwareSwitchTest
     {

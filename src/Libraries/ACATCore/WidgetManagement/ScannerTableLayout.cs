@@ -1,8 +1,7 @@
-﻿
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
     public partial class ScannerTableLayout : TableLayoutPanel
     {
@@ -18,13 +17,10 @@ namespace ACAT.Lib.Core.WidgetManagement
 
         private void ScannerTableLayout_EnabledChanged(object sender, System.EventArgs e)
         {
-            
         }
-
 
         protected override CreateParams CreateParams
         {
-
             get
             {
                 const int WS_EX_TRANSPARENT = 0x20;
@@ -32,8 +28,6 @@ namespace ACAT.Lib.Core.WidgetManagement
                 cp.ExStyle |= WS_EX_TRANSPARENT;
                 return cp;
             }
-
         }
-
     }
 }

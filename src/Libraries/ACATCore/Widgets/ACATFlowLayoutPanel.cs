@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using ACAT.Lib.Core.WidgetManagement;
 
-namespace ACAT.Lib.Core.Widgets
+namespace ACAT.Core.Widgets
 {
     public class ACATFlowLayoutPanel : FlowLayoutPanel
     {
@@ -16,10 +15,12 @@ namespace ACAT.Lib.Core.Widgets
             FlowDirection = FlowDirection.LeftToRight;
             WrapContents = false;
         }
+
         protected override void OnLayout(LayoutEventArgs e)
         {
             base.OnLayout(e);
         }
+
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);

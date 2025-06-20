@@ -1,7 +1,7 @@
 ﻿
 using ACATResources;
 
-namespace ACAT.Lib.Extension.Onboarding
+namespace ACAT.Extension.Onboarding
 {
     partial class UserControlSwitchSelect
     {
@@ -32,7 +32,7 @@ namespace ACAT.Lib.Extension.Onboarding
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.listBoxActuators = new ACAT.Lib.Core.PanelManagement.ListBoxUserControl();
+            this.listBoxActuators = new ACAT.Core.PanelManagement.ListBoxUserControl();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -184,7 +184,7 @@ namespace ACAT.Lib.Extension.Onboarding
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private ACAT.Lib.Core.PanelManagement.ListBoxUserControl listBoxActuators;
+        private ACAT.Core.PanelManagement.ListBoxUserControl listBoxActuators;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;

@@ -8,7 +8,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     public static class CryptoInterop
     {

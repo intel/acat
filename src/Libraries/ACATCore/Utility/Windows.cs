@@ -15,7 +15,7 @@ using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Contains numerous functions for window manipulation,
@@ -918,7 +918,6 @@ namespace ACAT.Lib.Core.Utility
         {
             try
             {
-
                 if (GetOSVersion() != WindowsVersion.Win10)
                 {
                     return false;
@@ -962,7 +961,6 @@ namespace ACAT.Lib.Core.Utility
             {
                 return false;
             }
-
 
             DwmGetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.Cloaked, out bool isCloaked, 8);
 
@@ -1065,7 +1063,6 @@ namespace ACAT.Lib.Core.Utility
             while ((hWnd = User32Interop.GetWindow(hWnd, User32Interop.GW_HWNDPREV)) != IntPtr.Zero &&
                    !windowCache.Contains(hWnd))
             {
-
                 windowCache.Add(hWnd);
 
                 // is this a form created by our app?
@@ -1113,7 +1110,6 @@ namespace ACAT.Lib.Core.Utility
             while ((hWnd = User32Interop.GetWindow(hWnd, User32Interop.GW_HWNDPREV)) != IntPtr.Zero &&
                    !windowCache.Contains(hWnd))
             {
-
                 windowCache.Add(hWnd);
                 if (User32Interop.IsWindowVisible(hWnd) &&
                     !IsMinimized(hWnd) &&
@@ -1563,7 +1559,6 @@ namespace ACAT.Lib.Core.Utility
             }
             catch
             {
-
             }
         }
 

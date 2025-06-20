@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Event args for when the focus changes in Windows.r Focus

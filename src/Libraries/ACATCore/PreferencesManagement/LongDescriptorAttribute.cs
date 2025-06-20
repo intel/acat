@@ -12,7 +12,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.PreferencesManagement
+namespace ACAT.Core.PreferencesManagement
 {
     /// <summary>
     /// Custom attribute for long fields/properties

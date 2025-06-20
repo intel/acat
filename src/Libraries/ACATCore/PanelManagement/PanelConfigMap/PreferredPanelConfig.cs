@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Xml;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 
 #region SupressStyleCopWarnings
 
@@ -60,7 +60,7 @@ using ACAT.Lib.Core.Utility;
 
 #endregion SupressStyleCopWarnings
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// Stores a mapping between preferred config names and the scanners

@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.IO;
 using System.Xml;
 
-namespace ACAT.Lib.Core.ThemeManagement
+namespace ACAT.Core.ThemeManagement
 {
     /// <summary>
     /// Contains all the attribtues for a Theme. This includes

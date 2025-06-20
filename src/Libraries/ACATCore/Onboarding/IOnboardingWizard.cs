@@ -7,7 +7,7 @@
 
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Onboarding
+namespace ACAT.Core.Onboarding
 {
     public enum OnboardingButtonTypes
     {

@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.PanelManagement.CommandDispatcher
+namespace ACAT.Core.PanelManagement.CommandDispatcher
 {
     /// <summary>
     /// Base class for handling a command.  A command (an action verb)

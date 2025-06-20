@@ -5,9 +5,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 
-namespace ACAT.Lib.Core.Onboarding
+namespace ACAT.Core.Onboarding
 {
     /// <summary>
     /// The base class for onboarding extensions

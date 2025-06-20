@@ -6,34 +6,35 @@
 ////////////////////////////////////////////////////////////////////////////
 
 //using ACATResources;
-using ACAT.Lib.Core.Onboarding;
-using ACAT.Lib.Core.Utility;
 using ACAT.ACATResources;
+using ACAT.Core.Onboarding;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
-using System.Windows.Forms;
 using System.Threading;
-using System.ComponentModel;
+using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension.Onboarding
+namespace ACAT.Extension.Onboarding
 {
-
     public class LanguageItem
     {
         public String DisplayName { get; set; }
         public CultureInfo CultureInfo { get; set; }
+
         public override String ToString()
         {
             return DisplayName;
         }
 
-        public LanguageItem(string name, CultureInfo info) {
+        public LanguageItem(string name, CultureInfo info)
+        {
             DisplayName = name;
             CultureInfo = info;
         }
     }
+
     /// <summary>
     /// User control that allows the user to select the input switch
     /// </summary>
@@ -87,6 +88,7 @@ namespace ACAT.Lib.Extension.Onboarding
                 ApplyResourcesToControls(childControl, resources);
             }
         }
+
         public IOnboardingExtension OnboardingExtension
         {
             get
@@ -110,11 +112,12 @@ namespace ACAT.Lib.Extension.Onboarding
 
         public void OnAdded()
         {
-                    //if (listBoxLanguages.Items.Count > 0)
+            //if (listBoxLanguages.Items.Count > 0)
             //{
             //    listBoxLanguages.SelectedIndex = listBoxLanguages.Items.IndexOf(currentCulture);
             //}
         }
+
         public bool OnPreAdd()
         {
             return true;
@@ -138,5 +141,5 @@ namespace ACAT.Lib.Extension.Onboarding
         {
             return true;
         }
-   }
+    }
 }

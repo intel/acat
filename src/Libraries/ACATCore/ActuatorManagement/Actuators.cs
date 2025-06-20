@@ -13,17 +13,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Remoting.Channels;
-using System.Windows.Forms.VisualStyles;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// Contains a collection of actuators in the system.  Creates
@@ -53,10 +51,12 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// Has this object been disposed
         /// </summary>
         private bool _disposed = false;
+
         /// <summary>
         /// If one of the dll found has an error with the certificate
         /// </summary>
         private static volatile bool _DLLError = false;
+
         /// <summary>
         /// Initializes the Actuator object
         /// </summary>
@@ -198,8 +198,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
                 String extensionDir = dir + "\\" + ActuatorManager.ActuatorsRootDir;
                 loadActuatorTypesIntoCache(extensionDir);
             }
-            if(_DLLError)
-                return false;   
+            if (_DLLError)
+                return false;
             if (!File.Exists(configFile))
             {
                 return false;
@@ -438,7 +438,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         private void loadActuatorTypesIntoCache(String dir, bool resursive = true)
         {
             var walker = new DirectoryWalker(dir, "*.dll");
-        
+
             walker.Walk(new OnDirectoryFoundDelegate(onDirFound), new OnFileFoundDelegate(onFileFound));
         }
 
@@ -461,7 +461,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             try
             {
-
                 var retVal = VerifyDigitalSignature.ValidateCertificate(dllName);
                 if (retVal && !_DLLError)
                 {
@@ -499,7 +498,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
                         }
                     }
                 }
-                
             }
             catch (Exception ex)
             {

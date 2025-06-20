@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.Onboarding
+namespace ACAT.Core.Onboarding
 {
     /// <summary>
     /// Interface for the user control that is the GUI for

@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     public static class DpiScaling
     {
@@ -39,6 +39,7 @@ namespace ACAT.Lib.Core.Utility
         /// Flag, if OS supports DPI per monitor
         /// </summary>
         private static bool _isSupportingDpiPerMonitor;
+
         /// <summary>
         /// DPI type
         /// </summary>

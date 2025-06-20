@@ -5,15 +5,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WordPredictionManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WordPredictionManagement;
 using System;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.AgentManagement.TextInterface
+namespace ACAT.Core.AgentManagement.TextInterface
 {
     /// <summary>
     /// Base class for all text control agents.  Text control

@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// Keeps watch if the form is getting obscured by other
@@ -164,7 +164,6 @@ namespace ACAT.Lib.Core.PanelManagement
             while ((windowHandle = User32Interop.GetWindow(windowHandle, User32Interop.GW_HWNDPREV)) != IntPtr.Zero &&
                    !cache.Contains(windowHandle))
             {
-
                 cache.Add(windowHandle);
 
                 bool isScanner = false;

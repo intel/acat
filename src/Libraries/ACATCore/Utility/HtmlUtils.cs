@@ -13,7 +13,7 @@ using System.IO;
 using System.Text;
 using System.Web;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     public class HtmlUtils
     {

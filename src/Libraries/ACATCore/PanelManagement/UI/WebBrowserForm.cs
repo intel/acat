@@ -8,7 +8,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// A form that has an embedded WebBrowser control

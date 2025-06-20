@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace ACAT.Lib.Core.Audit
+namespace ACAT.Core.Audit
 {
     /// <summary>
     /// Handles audit logging application events.  Events are
@@ -162,7 +162,6 @@ namespace ACAT.Lib.Core.Audit
                         }
                         catch
                         {
-
                         }
                         finally
                         {
@@ -171,7 +170,6 @@ namespace ACAT.Lib.Core.Audit
                             sw?.Dispose();
                         }
                     }
-
                 }
             }
         }

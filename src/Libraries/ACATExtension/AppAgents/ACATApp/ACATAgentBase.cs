@@ -5,13 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace ACAT.Lib.Extension.AppAgents.ACATApp
+namespace ACAT.Extension.AppAgents.ACATApp
 {
     /// <summary>
     /// The Application agent for the executing assembly.

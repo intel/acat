@@ -11,20 +11,19 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.Onboarding;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACATResources;
-using ACAT.Lib.Core.Onboarding;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace ACAT.Lib.Core.InputActuators
+namespace ACAT.Core.InputActuators
 {
     /// <summary>
     /// User control used in onboarding that allows the user to configure
@@ -33,24 +32,31 @@ namespace ACAT.Lib.Core.InputActuators
     public partial class UserControlHardwareSwitchSetup : UserControl, IOnboardingUserControl
     {
         #region Properties
+
         // TODO - Localize Me
         private const String bodyStyle = " background-color:#232433;";
+
         // TODO - Localize Me
         private const String headStyle = "a:link{color: rgb(255, 170, 0);}";
+
         // TODO - Localize Me
         private const String textStyle = "font-family:'Montserrat Medium'; font-size:24px; color:white; text-align:center";
+
         private readonly Color _buttonDefaultBackColor;
         private readonly Color _buttonDefaultForeColor;
         private readonly Dictionary<String, Button> _buttonMap = new Dictionary<string, Button>();
         private readonly List<String> _functionKeys = new List<String> { "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "f9", "f10", "f11", "f12" };
+
         // TODO - Localize Me
         private readonly String _htmlTemplate = "<!DOCTYPE html><html><head><style>{0}</style></head><body style=\"{1}\"><p style=\"{2}\">{3}<font></body></html>";
+
         private readonly IOnboardingExtension _onboardingExtension;
         private readonly String _stepId;
         private String _strTriggerHotkey;
         private readonly OnboardingHardwareSwitchSetup.SwitchType _switchType;
         private bool canceled = false;
-        #endregion
+
+        #endregion Properties
 
         public UserControlHardwareSwitchSetup(IOnboardingWizard wizard, IOnboardingExtension onboardingExtension, String stepId, OnboardingHardwareSwitchSetup.SwitchType switchType)
         {
@@ -118,12 +124,9 @@ namespace ACAT.Lib.Core.InputActuators
                 bookmark = "SwitchConfigure";
             }
 
-            
-
-
-            String html = String.Format(_htmlTemplate, headStyle, bodyStyle, textStyle, "Click <a href=" + HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName) + "#" + bookmark +">here</a> for help");
+            String html = String.Format(_htmlTemplate, headStyle, bodyStyle, textStyle, "Click <a href=" + HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName) + "#" + bookmark + ">here</a> for help");
             Log.Debug(html);
-                
+
             webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
             webBrowser.DocumentText = html;
 
@@ -165,6 +168,7 @@ namespace ACAT.Lib.Core.InputActuators
         }
 
         #region On Events
+
         public void OnAdded()
         {
         }
@@ -209,9 +213,10 @@ namespace ACAT.Lib.Core.InputActuators
             config.Save();
         }
 
-        #endregion
+        #endregion On Events
 
         #region Querys
+
         public bool QueryCancelOnboarding()
         {
             canceled = true;
@@ -244,7 +249,7 @@ namespace ACAT.Lib.Core.InputActuators
             return true;
         }
 
-        #endregion
+        #endregion Querys
 
         #region Control Events
 
@@ -310,15 +315,13 @@ namespace ACAT.Lib.Core.InputActuators
             }
             catch
             {
-
             }
             finally
             {
-
             }
         }
 
-        #endregion
+        #endregion Control Events
 
         #region Methods
 
@@ -414,6 +417,7 @@ namespace ACAT.Lib.Core.InputActuators
 
             return false;
         }
+
         private void resetFunctionKeysState()
         {
             foreach (var key in _buttonMap.Keys)
@@ -475,9 +479,8 @@ namespace ACAT.Lib.Core.InputActuators
             buttonF11.Text = "F11";
             buttonF12.Text = "F12";
             labelTitle.Text = "Keyboard / HW Switch Setup";
-
         }
 
-        #endregion
+        #endregion Methods
     }
 }

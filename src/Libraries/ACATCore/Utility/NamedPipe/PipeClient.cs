@@ -9,7 +9,7 @@ using System;
 using System.IO.Pipes;
 using System.Text;
 
-namespace ACAT.Lib.Core.Utility.NamedPipe
+namespace ACAT.Core.Utility.NamedPipe
 {
     public sealed class PipeClient : IDisposable
     {

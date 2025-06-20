@@ -8,7 +8,7 @@
 using System;
 using System.Collections;
 
-namespace ACAT.Lib.Core.Interpreter
+namespace ACAT.Core.Interpreter
 {
     /// <summary>
     /// Maintains a system-wide name value pairs for variables that

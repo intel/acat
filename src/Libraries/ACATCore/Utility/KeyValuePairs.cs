@@ -9,7 +9,7 @@ using System;
 using System.Collections;
 using System.Text;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Maintains a keyvalue pair table where the value can be a bool,

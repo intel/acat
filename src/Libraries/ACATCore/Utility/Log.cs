@@ -5,16 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-
 #define DbgView
 
 using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Handles logging application messages of a variety of criticalities (Debug - Fatal)
@@ -99,11 +97,9 @@ namespace ACAT.Lib.Core.Utility
                 LogFileName = "ACATLog.txt";
             }
 
-
             logFileFullPath = Path.Combine(logFileFolder, LogFileName);
 
             logFileFullPath = Path.ChangeExtension(logFileFullPath, null) + CoreGlobals.LogFileSuffix + ".txt";
-
         } // end method
 
         /// <summary>
@@ -155,7 +151,6 @@ namespace ACAT.Lib.Core.Utility
         /// </summary>
         public static void Debug()
         {
-
 #if !DEBUG
             if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugMessagesEnable)
             {
@@ -163,8 +158,8 @@ namespace ACAT.Lib.Core.Utility
                 Trace.WriteLine(output);
             }
 #else
-        string output = formatClassNameAndMethod("DEBUG", new StackTrace().GetFrame(1));
-        Trace.WriteLine(output);
+            string output = formatClassNameAndMethod("DEBUG", new StackTrace().GetFrame(1));
+            Trace.WriteLine(output);
 #endif
         }
 
@@ -181,8 +176,8 @@ namespace ACAT.Lib.Core.Utility
                 Trace.WriteLine(output);
             }
 #else
-        string output = formatClassNameAndMethod("DEBUG", new StackTrace().GetFrame(1)) + message;
-        Trace.WriteLine(output);
+            string output = formatClassNameAndMethod("DEBUG", new StackTrace().GetFrame(1)) + message;
+            Trace.WriteLine(output);
 #endif
         }
 
@@ -387,13 +382,12 @@ namespace ACAT.Lib.Core.Utility
             }
 
             var elapsed = nowUtc - Process.GetCurrentProcess().StartTime.ToUniversalTime();
-            
+
             MethodBase methodBase = stackFrame.GetMethod();
 
             var elapsedSincePrev = nowUtc - prevMessageTimeStamp;
 
-
-            var prefix2 = "[" + strNow + ", " + ((int) (elapsed.TotalMilliseconds / 1000)) + "." + (int)(elapsed.TotalMilliseconds % 1000) + ", " + elapsedSincePrev?.Seconds + "." + elapsedSincePrev?.Milliseconds + " " + prefix + "] ";
+            var prefix2 = "[" + strNow + ", " + ((int)(elapsed.TotalMilliseconds / 1000)) + "." + (int)(elapsed.TotalMilliseconds % 1000) + ", " + elapsedSincePrev?.Seconds + "." + elapsedSincePrev?.Milliseconds + " " + prefix + "] ";
 
             prevMessageTimeStamp = nowUtc;
 

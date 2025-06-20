@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// All dynamically discovered and loaded classes such as

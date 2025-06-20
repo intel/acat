@@ -1,4 +1,4 @@
-﻿namespace ACAT.Lib.Core.WidgetManagement
+﻿namespace ACAT.Core.WidgetManagement
 {
     partial class ScannerButtonControl
     {

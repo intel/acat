@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.AgentManagement.TextInterface
+namespace ACAT.Core.AgentManagement.TextInterface
 {
     /// <summary>
     /// Argument to the event that's raised when the text changes

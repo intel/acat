@@ -8,7 +8,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Checks if the specified form has lost focus, and if so,
@@ -40,7 +40,6 @@ namespace ACAT.Lib.Core.Utility
             _form = form;
             _form.TopMost = false;
             _form.TopMost = true;
-
 
             _form.Deactivate += _form_Deactivate;
             _form.VisibleChanged += _form_VisibleChanged;
@@ -158,6 +157,7 @@ namespace ACAT.Lib.Core.Utility
                 }
             }
         }
+
         /// <summary>
         /// Sets focus to the form
         /// </summary>

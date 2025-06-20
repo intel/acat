@@ -32,24 +32,24 @@
 			<Widget class="ScannerButton" name="SPLItem5" />
 		</Widget>
 		<Layouts name="ProgressBarsBoxMapping">
-			<Widget name="PBMain1" tagID="1"/>
+			<Widget name="PBMain1" tagID="1" />
 		</Layouts>
 		<Layouts name="ProgressBarsMapping">
-			<Widget name="PB1" tagID="1"/>
-			<Widget name="PB2" tagID="2"/>
-			<Widget name="PB3" tagID="3"/>
-			<Widget name="PB4" tagID="4"/>
-			<Widget name="PB5" tagID="5"/>
+			<Widget name="PB1" tagID="1" />
+			<Widget name="PB2" tagID="2" />
+			<Widget name="PB3" tagID="3" />
+			<Widget name="PB4" tagID="4" />
+			<Widget name="PB5" tagID="5" />
 		</Layouts>
 		<Layouts name="KeyboardBoxMapping">
-			<Widget name="SPLItem1" tagID="1" borderColor="BCIColorCodedRegion1"/>
-			<Widget name="SPLItem2" tagID="2" borderColor="BCIColorCodedRegion1"/>
-			<Widget name="SPLItem3" tagID="3" borderColor="BCIColorCodedRegion1"/>
-			<Widget name="SPLItem4" tagID="4" borderColor="BCIColorCodedRegion1"/>
-			<Widget name="SPLItem5" tagID="5" borderColor="BCIColorCodedRegion1"/>
+			<Widget name="SPLItem1" tagID="1" borderColor="BCIColorCodedRegion1" />
+			<Widget name="SPLItem2" tagID="2" borderColor="BCIColorCodedRegion1" />
+			<Widget name="SPLItem3" tagID="3" borderColor="BCIColorCodedRegion1" />
+			<Widget name="SPLItem4" tagID="4" borderColor="BCIColorCodedRegion1" />
+			<Widget name="SPLItem5" tagID="5" borderColor="BCIColorCodedRegion1" />
 		</Layouts>
 		<Layouts name="KeyboardType">
-			<Widget name="Sentences"/>
+			<Widget name="Sentences" />
 		</Layouts>
 	</Layout>
 
@@ -62,22 +62,22 @@
 		<!--First level main layout-->
 		<Animation name="KeyboardSequences">
 			<Animation name="Row">
-				<Widget name="SPLItem1" tagID="1"/>
+				<Widget name="SPLItem1" tagID="1" />
 			</Animation>
 			<Animation name="Row">
-				<Widget name="SPLItem2" tagID="2"/>
+				<Widget name="SPLItem2" tagID="2" />
 			</Animation>
 			<Animation name="Row">
-				<Widget name="SPLItem3" tagID="3"/>
+				<Widget name="SPLItem3" tagID="3" />
 			</Animation>
 			<Animation name="Row">
-				<Widget name="SPLItem4" tagID="4"/>
+				<Widget name="SPLItem4" tagID="4" />
 			</Animation>
 			<Animation name="Row">
-				<Widget name="SPLItem5" tagID="5"/>
+				<Widget name="SPLItem5" tagID="5" />
 			</Animation>
 		</Animation>
-		
+
 		<Animation name="ButtonPressed"
 			 onEnter=""
 			 iterations="-1"
@@ -85,29 +85,22 @@
 			<Widget name="@SelectedWidget" firstPauseTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
 		</Animation>
 
-
-
 		<Animation name="FunctionRotation"
 					iterations="@RowScanIterations"
 				   firstPauseTime="@FirstPauseTime"
 				   onEnd="transition(TopLevelRotation)">
-
 		</Animation>
 
 		<Animation name="KeyboardRotation"
 					iterations="@RowScanIterations"
 				   firstPauseTime="@FirstPauseTime"
 				   onEnd="transition(TopLevelRotation)">
-
 		</Animation>
 
 		<Animation name="SpeechRotation"
 					iterations="@RowScanIterations"
 				   firstPauseTime="@FirstPauseTime"
 				   onEnd="transition(TopLevelRotation)">
-
 		</Animation>
-
-
 	</Animations>
 </ACAT>

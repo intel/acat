@@ -437,7 +437,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="resursive">Descend recursively</param>
         private void loadActuatorTypesIntoCache(String dir, bool resursive = true)
         {
-            var walker = new DirectoryWalker(dir, "*.dll");
+            var walker = new DirectoryWalker(dir, "ACAT.*.dll");
 
             walker.Walk(new OnDirectoryFoundDelegate(onDirFound), new OnFileFoundDelegate(onFileFound));
         }
@@ -445,7 +445,7 @@ namespace ACAT.Core.ActuatorManagement
         private void onDirFound(String dirName)
         {
             Log.Debug("Found directory " + dirName);
-            String[] skipdirs = { "external" };
+            String[] skipdirs = { "external", "ConvAssist" };
             foreach (var _ in skipdirs.Where(skipdir => dirName.ToLower().Contains(skipdir)).Select(skipdir => new { }))
             {
                 return;

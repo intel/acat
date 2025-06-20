@@ -1814,10 +1814,10 @@ ACAT utiliza dos métricas - “saturación” e “impedancia” - para verific
     <value>Calidad de señal Fallida o Incompleta</value>
   </data>
   <data name="Youneedtocompleteboth" xml:space="preserve">
-    <value />
+    <value>Necesitas completar tanto «Barandilla» como</value>
   </data>
   <data name="Pleaserefertotheuserguideforhelp" xml:space="preserve">
-    <value />
+    <value>Por favor, consulta la guía del usuario para obtener ayuda</value>
   </data>
   <data name="BoardError" xml:space="preserve">
     <value>Board Error</value>

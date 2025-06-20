@@ -14,7 +14,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 
-namespace ACAT.ACATResources 
+namespace ACAT.ACATResources
 {
     /// <summary>
     /// Access language dependent strings through this class
@@ -33,7 +33,6 @@ namespace ACAT.ACATResources
         /// Root name of the resource in the assembly
         /// </summary>
         private const String BaseName = "ACATResources.ACATResources";
-
 
         /// <summary>
         /// Has the class been initialized?
@@ -60,6 +59,7 @@ namespace ACAT.ACATResources
         }
 
         private static readonly string _assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+
         public static List<CultureInfo> GetAvailableResourceCultures(Assembly mainAssembly)
         {
             var cultures = new List<CultureInfo>();

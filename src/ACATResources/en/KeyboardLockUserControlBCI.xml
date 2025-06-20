@@ -12,17 +12,14 @@
 ]>
 
 <ACAT>
-	
+
   <WidgetAttributes>
 
-	  
-	<WidgetAttribute name="B6" label="1" value="1" fontname="&characterButtonFontName;"    fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
-	<WidgetAttribute name="B7" label="2" value="2" fontname="&characterButtonFontName;"    fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
-	<WidgetAttribute name="B8" label="3" value="3" fontname="&characterButtonFontName;"    fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
-	<WidgetAttribute name="B9" label="4" value="4" fontname="&characterButtonFontName;"    fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
-	<WidgetAttribute name="B10" label="5" value="5" fontname="&functionButtonFontName;"    fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;"/>
-
-
+	<WidgetAttribute name="B6" label="1" value="1" fontname="&characterButtonFontName;"    fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;" />
+	<WidgetAttribute name="B7" label="2" value="2" fontname="&characterButtonFontName;"    fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;" />
+	<WidgetAttribute name="B8" label="3" value="3" fontname="&characterButtonFontName;"    fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;" />
+	<WidgetAttribute name="B9" label="4" value="4" fontname="&characterButtonFontName;"    fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;" />
+	<WidgetAttribute name="B10" label="5" value="5" fontname="&functionButtonFontName;"    fontsize="&characterButtonFontSize;"  bold="&usebold;"  extendedAttributes="gazeRepeatEnable=true;" />
   </WidgetAttributes>
 
   <Layout>
@@ -35,25 +32,25 @@
 	  </Widget>
 
 	  <Layouts name="ProgressBarsBoxMapping">
-		  <Widget name="PBMain1" tagID="1"/>
+		  <Widget name="PBMain1" tagID="1" />
 	  </Layouts>
 
 	  <Layouts name="ProgressBarsMapping">
-		  <Widget name="PB6" tagID="1"/>
-		  <Widget name="PB7" tagID="2"/>
-		  <Widget name="PB8" tagID="3"/>
-		  <Widget name="PB9" tagID="4"/>
-		  <Widget name="PB10" tagID="5"/>
+		  <Widget name="PB6" tagID="1" />
+		  <Widget name="PB7" tagID="2" />
+		  <Widget name="PB8" tagID="3" />
+		  <Widget name="PB9" tagID="4" />
+		  <Widget name="PB10" tagID="5" />
 	  </Layouts>
 	  <Layouts name="KeyboardBoxMapping">
-		<Widget name="B6" tagID="1"/>
-		<Widget name="B7" tagID="2"/>
-		<Widget name="B8" tagID="3"/>
-		<Widget name="B9" tagID="4"/>
-		<Widget name="B10" tagID="5"/>
+		<Widget name="B6" tagID="1" />
+		<Widget name="B7" tagID="2" />
+		<Widget name="B8" tagID="3" />
+		<Widget name="B9" tagID="4" />
+		<Widget name="B10" tagID="5" />
 	  </Layouts>
 	  <Layouts name="KeyboardType">
-		  <Widget name="Menus"/>
+		  <Widget name="Menus" />
 	  </Layouts>
   </Layout>
 
@@ -64,52 +61,45 @@
     </Animation>
 	<Animation name="KeyboardSequences">
 		<Animation name="Column">
-			<Widget name="B6" tagID="1"/>
+			<Widget name="B6" tagID="1" />
 		</Animation>
 		<Animation name="Column">
-			<Widget name="B7" tagID="2"/>
+			<Widget name="B7" tagID="2" />
 		</Animation>
 		<Animation name="Column">
-			<Widget name="B8" tagID="3"/>
+			<Widget name="B8" tagID="3" />
 		</Animation>
 		<Animation name="Column">
-			<Widget name="B9" tagID="4"/>
+			<Widget name="B9" tagID="4" />
 		</Animation>
 		<Animation name="Column">
-			<Widget name="B10" tagID="5"/>
+			<Widget name="B10" tagID="5" />
 		</Animation>
 	</Animation>
-   
+
 	  <Animation name="ButtonPressed"
 		   onEnter=""
 		   iterations="-1"
 		   onEnd="transition(TopLevelRotation)">
 		  <Widget name="@SelectedWidget" firstPauseTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
 	  </Animation>
-	  
-	  
 
     <Animation name="FunctionRotation"
                 iterations="@RowScanIterations"
                firstPauseTime="@FirstPauseTime"
                onEnd="transition(TopLevelRotation)">
-      
     </Animation>
 
     <Animation name="KeyboardRotation"
                 iterations="@RowScanIterations"
                firstPauseTime="@FirstPauseTime"
                onEnd="transition(TopLevelRotation)">
-
     </Animation>
 
     <Animation name="SpeechRotation"
                 iterations="@RowScanIterations"
                firstPauseTime="@FirstPauseTime"
                onEnd="transition(TopLevelRotation)">
-
     </Animation>
-
-
   </Animations>
 </ACAT>

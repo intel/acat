@@ -6,7 +6,7 @@
     </WidgetAttributes>
 
     <Layout>
-        <Widget class="ScannerButton" name="B1" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="B1" colorScheme="ScannerButton" />
     </Layout>
 
     <Animations>
@@ -16,7 +16,7 @@
                 scanTime="@ScanTime"
                 firstPauseTime="@FirstPauseTime"
                 iterations="@GridScanIterations">
-            <Widget name="B1" onSelect="actuate(B1);transition(TopLevelRotation)"/>
+            <Widget name="B1" onSelect="actuate(B1);transition(TopLevelRotation)" />
         </Animation>
     </Animations>
 </ACAT>

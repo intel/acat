@@ -1,5 +1,5 @@
 ﻿using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.WidgetManagement;
 using System;
 using System.Windows.Forms.DataVisualization.Charting;
 

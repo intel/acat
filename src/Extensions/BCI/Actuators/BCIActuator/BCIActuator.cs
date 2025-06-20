@@ -20,19 +20,17 @@ using ACAT.Extensions.BCI.Actuators.EEG.EEGUtils;
 using ACAT.Extensions.BCI.Actuators.gTecSensorUI;
 using ACAT.Extensions.BCI.Actuators.openBCISensorUI;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Extension;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.Audit;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
+using ACAT.Extension;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
-using gTecSensorUI;
 
 namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 {
@@ -295,7 +293,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <returns></returns>
         private Dictionary<BCIScanSections, BCIClassifierInfo> GetAvailableClassifiers()
         {
-            Dictionary<BCIScanSections, BCIClassifierInfo> availableClassifiers = new Dictionary<BCIScanSections, BCIClassifierInfo>();
+            Dictionary<BCIScanSections, BCIClassifierInfo> availableClassifiers = new();
             bool[] currentChannels = new bool[] { BCIActuatorSettings.Settings.Classifier_EnableChannel1, BCIActuatorSettings.Settings.Classifier_EnableChannel2, BCIActuatorSettings.Settings.Classifier_EnableChannel3, BCIActuatorSettings.Settings.Classifier_EnableChannel4, BCIActuatorSettings.Settings.Classifier_EnableChannel5, BCIActuatorSettings.Settings.Classifier_EnableChannel6, BCIActuatorSettings.Settings.Classifier_EnableChannel7, BCIActuatorSettings.Settings.Classifier_EnableChannel8, BCIActuatorSettings.Settings.Classifier_EnableChannel9, BCIActuatorSettings.Settings.Classifier_EnableChannel10, BCIActuatorSettings.Settings.Classifier_EnableChannel11, BCIActuatorSettings.Settings.Classifier_EnableChannel12, BCIActuatorSettings.Settings.Classifier_EnableChannel13, BCIActuatorSettings.Settings.Classifier_EnableChannel14, BCIActuatorSettings.Settings.Classifier_EnableChannel15, BCIActuatorSettings.Settings.Classifier_EnableChannel16 };
 
             //If recheck needed, all classifiers need to be recalibrated
@@ -319,7 +317,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
                     if (File.Exists(classifierFilePath))
                     {
-                        DecisionMaker tmpDecisionMaker = new DecisionMaker(classifierFilePath);
+                        DecisionMaker tmpDecisionMaker = new(classifierFilePath);
 
                         // Find if classifier is available and add to dictionary
                         if (tmpDecisionMaker != null && tmpDecisionMaker.TrainedClassifiersObj != null)
@@ -344,7 +342,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                             }
 
                             // Add classifier to dictionary
-                            BCIClassifierInfo classifierInfo = new BCIClassifierInfo(isRequired, scanSection, classifierStatus, auc);
+                            BCIClassifierInfo classifierInfo = new(isRequired, scanSection, classifierStatus, auc);
                             availableClassifiers.Add(scanSection, classifierInfo);
                             Log.Debug("Classifier: " + scanSection + " found | AUC:" + availableClassifiers[scanSection].Auc + " isRequired:" + isRequired + " Status:" + classifierStatus);
                         }
@@ -409,7 +407,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                     if (File.Exists(classifierFilePath))
                     {
                         Log.Debug("Section: " + typingMapping.Key + " | Loading classifier:" + typingMapping.Value + " from:" + classifierFilePath);
-                        DecisionMaker tmpDecisionMaker = new DecisionMaker(classifierFilePath);
+                        DecisionMaker tmpDecisionMaker = new(classifierFilePath);
 
                         if (tmpDecisionMaker != null && tmpDecisionMaker.TrainedClassifiersObj != null)
                         {
@@ -550,14 +548,16 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
             if (gtecAvailable && openBciAvailable)
             {
-                showBciBoardSelection();
+                SelectBCIDevice();
             }
             else if (gtecAvailable)
             {
+                _device = Device.GTEC;
                 TestGtecDevice();
             }
             else if (openBciAvailable)
             {
+                _device = Device.OPENBCI;
                 TestBCIDevices();
             }
 
@@ -576,6 +576,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         void startgTecUnicornTesting()
         {
             Log.Debug("startgTecUnicornTesting");
+            _device = Device.GTEC;
             closeBciBoardSelection();
             TestGtecDevice();
         }
@@ -586,6 +587,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         void startOpenBCITesting()
         {
             Log.Debug("startOpenBCITesting");
+            _device = Device.OPENBCI;
             closeBciBoardSelection();
             TestBCIDevices();
         }
@@ -593,16 +595,17 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <summary>
         /// Show form to select the BCI headset to use
         /// </summary>
-        void showBciBoardSelection()
+        void SelectBCIDevice()
         {
             if (_deviceSelectionForm == null)
             {
-                Log.Debug("showBciBoardSelection | Creating new _deviceSelectionForm");
+                Log.Debug("SelectBCIDevice | Creating new _deviceSelectionForm");
                 _deviceSelectionForm = new UserControlBCIDeviceSelection();
                 _deviceSelectionForm.EvtgtecUnicornSelected += startgTecUnicornTesting;
                 _deviceSelectionForm.EvtOpenBCISelected += startOpenBCITesting;
-                _deviceSelectionForm.ShowDialog();
             }
+
+            _deviceSelectionForm.ShowDialog();
         }
 
         /// <summary>
@@ -855,7 +858,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
             BCIError error;
             BCIClassifierStatus overallStatus = BCIClassifierStatus.NotFound;
-            Dictionary<BCIScanSections, BCIClassifierInfo> DictClassifierInfo = new Dictionary<BCIScanSections, BCIClassifierInfo>();
+            Dictionary<BCIScanSections, BCIClassifierInfo> DictClassifierInfo = new();
             bool areMoreClassifiersThanMapping = false;
             bool showOnlyDefaults = true;
 
@@ -943,11 +946,11 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
             BCIError error;
 
-            Dictionary<BCIScanSections, List<BCIClassifierInfo>> DictClassifierInfoForAvailableMappings = new Dictionary<BCIScanSections, List<BCIClassifierInfo>>();
+            Dictionary<BCIScanSections, List<BCIClassifierInfo>> DictClassifierInfoForAvailableMappings = new();
 
             try
             {
-                Dictionary<BCIScanSections, List<BCIScanSections>> DictAllowedMappings = new Dictionary<BCIScanSections, List<BCIScanSections>>();
+                Dictionary<BCIScanSections, List<BCIScanSections>> DictAllowedMappings = new();
 
                 // Load classifiers
                 LoadClassifiers();
@@ -986,7 +989,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                 // For every section, find list of available classifiers
                 foreach (BCIScanSections typingSection in DictAllowedMappings.Keys)
                 {
-                    List<BCIClassifierInfo> availableClassifiersForSection = new List<BCIClassifierInfo>();
+                    List<BCIClassifierInfo> availableClassifiersForSection = new();
 
                     // Find classifier for section
                     foreach (BCIScanSections availableClassifierForSection in DictAllowedMappings[typingSection])
@@ -1237,7 +1240,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             var bciCalibrationEnd = JsonSerializer.Deserialize<BCICalibrationEnd>(request);
 
             float auc = 0f;
-            BCIError error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
+            BCIError error = new(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
             bool calibrationSuccesful = false;
 
             if (useSensor)
@@ -1321,7 +1324,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         {
             Log.Debug("Calibration end repetition received");
 
-            BCIError sensorError = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
+            BCIError sensorError = new(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
             SignalStatus statusSignal = SignalStatus.SIGNAL_KO;
             int numTriggerPulsesExpected = 0;
             int numTriggerPulsesDetected = 0;
@@ -1354,8 +1357,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                                     statusSignal = SignalStatus.SIGNAL_OK;
 
 
-                                if (DataParserObj == null)
-                                    DataParserObj = new DataParser(BCISettingsFixed.DAQ_SampleRate, BCIActuatorSettings.Settings.FeatureExtraction_WindowDurationInMs, BCIActuatorSettings.Settings.Calibration_OffsetTarget, null);
+                                DataParserObj ??= new DataParser(BCISettingsFixed.DAQ_SampleRate, BCIActuatorSettings.Settings.FeatureExtraction_WindowDurationInMs, BCIActuatorSettings.Settings.Calibration_OffsetTarget, null);
 
                                 DataParserObj.ParseDataFromBrainflow(allData, out _, out _, out numTriggerPulsesDetected);
 
@@ -1523,7 +1525,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         {
             bool recalibrationRequired = true;
             float lastCalibrationAUC = 0.99f;
-            BCIError error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
+            BCIError error = new(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
 
             var bciUserInputParameters = JsonSerializer.Deserialize<BCIUserInputParameters>(request);
             Log.Debug("Request parameters for mode " + bciUserInputParameters.BciMode);
@@ -1611,7 +1613,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <param name="request"></param>
         private void OnSessionStart(String request)
         {
-            BCIError error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
+            BCIError error = new(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
             bool sensorReady = false;
             String sessionDirectory = null;
             avgAlphaValues = new List<double>();
@@ -1744,61 +1746,27 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                     string calibrationType = sessionID.Substring(idxCalibrationType + strToFind.Length);
                     Log.Debug("Recalibrating from file " + sessionID + " | Test ID: " + BCIActuatorSettings.Settings.Testing_TestID + " | Calibration type:" + calibrationType);
 
-                    switch (calibrationType.ToLower())
+                    FeatureExtractionObj = calibrationType.ToLower() switch
                     {
-                        case "box":
-                            FeatureExtractionObj = new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.Box], 0, 4, false);
-                            break;
-
-                        case "word":
-                            FeatureExtractionObj = new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.Word], 0, 10, false);
-                            break;
-
-                        case "sentence":
-                            FeatureExtractionObj = new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.Sentence], 0, 5, false);
-                            break;
-
-                        case "keyboardl":
-                            FeatureExtractionObj = new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.KeyboardL], 4, 3, true);
-                            break;
-
-                        case "keyboardr":
-                            FeatureExtractionObj = new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.KeyboardR], 4, 7, true);
-                            break;
-
-                        default:
-                            FeatureExtractionObj = new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.KeyboardR], 4, 7, true);
-                            break;
-                    }
+                        "box" => new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.Box], 0, 4, false),
+                        "word" => new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.Word], 0, 10, false),
+                        "sentence" => new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.Sentence], 0, 5, false),
+                        "keyboardl" => new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.KeyboardL], 4, 3, true),
+                        "keyboardr" => new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.KeyboardR], 4, 7, true),
+                        _ => new FeatureExtraction(null, DictCalibrationParameters[BCIScanSections.KeyboardR], 4, 7, true),
+                    };
                 }
                 else
                 {
-                    switch (BCIActuatorSettings.Settings.Testing_TestID)
+                    FeatureExtractionObj = BCIActuatorSettings.Settings.Testing_TestID switch
                     {
-                        case 1:
-                            FeatureExtractionObj = new FeatureExtraction(null, null, 6, 6, true);
-                            break;
-
-                        case 2:
-                            FeatureExtractionObj = new FeatureExtraction(null, null, 0, 5, false);
-                            break;
-
-                        case 3:
-                            FeatureExtractionObj = new FeatureExtraction(null, null, 0, 5, false);
-                            break;
-
-                        case 4:
-                            FeatureExtractionObj = new FeatureExtraction(null, null, 6, 6, true);
-                            break;
-
-                        case 5:
-                            FeatureExtractionObj = new FeatureExtraction(null, null, 4, 7, true);
-                            break;
-
-                        default:
-                            FeatureExtractionObj = new FeatureExtraction(null, null, 4, 7, true);
-                            break;
-                    }
+                        1 => new FeatureExtraction(null, null, 6, 6, true),
+                        2 => new FeatureExtraction(null, null, 0, 5, false),
+                        3 => new FeatureExtraction(null, null, 0, 5, false),
+                        4 => new FeatureExtraction(null, null, 6, 6, true),
+                        5 => new FeatureExtraction(null, null, 4, 7, true),
+                        _ => new FeatureExtraction(null, null, 4, 7, true),
+                    };
                 }
 
                 Log.Debug(" Recalibrating file " + sessionID);
@@ -1852,7 +1820,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             string decidedButtonLabel = "";
             _isSessionInProgress = true;
 
-            BCIError error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
+            BCIError error = new(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
             int repetition = 0;
             bool returnToBoxScanningFlag = false;
             bool eyesClosedDetected = false;
@@ -1978,7 +1946,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
                                 // Calculate number of buttons highlighted. Those highlighted are shown in the flashingSequence
                                 // NOTE: Don't use buttontextvalues as some buttons might be displayed but not highlighted.
-                                List<int> buttonIds = new List<int>();
+                                List<int> buttonIds = new();
                                 foreach (int[] rowcolumn in bciTypingRepetitionEnd.FlashingSequence.Values)
                                     foreach (int buttonId in rowcolumn)
                                         if (!buttonIds.Contains(buttonId))
@@ -2035,10 +2003,10 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                 decidedButtonLabel = "a";
                 float prob = 0;
                 int decidedIdx;
-                Random rndprob = new Random();
+                Random rndprob = new();
                 posteriorProbs = new SortedDictionary<int, double>();
-                Random rndDecision = new Random();
-                Random rndDecisionID = new Random();
+                Random rndDecision = new();
+                Random rndDecisionID = new();
                 float totalProbs = 0;
                 foreach (int buttonID in bciTypingRepetitionEnd.FlashingSequence.Keys)
                 {

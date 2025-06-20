@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{85991714-E58E-4A19-B7D4-9D9AD10DB9EC}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>gTecSensorUI</RootNamespace>
-    <AssemblyName>gTecSensorUI</AssemblyName>
+    <RootNamespace>ACAT.Extensions.BCI.Actuators.gTecSensorUI</RootNamespace>
+    <AssemblyName>ACAT.Extensions.BCI.Actuators.gTecSensorUI</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -134,6 +134,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserControlBCIFilterSettings.resx">
       <DependentUpon>UserControlBCIFilterSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControlBCISignalCheck.en.resx">
+      <DependentUpon>UserControlBCISignalCheck.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControlBCISignalCheck.es.resx">
+      <DependentUpon>UserControlBCISignalCheck.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControlErrorBluetoothDisconnected.resx">
       <DependentUpon>UserControlErrorBluetoothDisconnected.cs</DependentUpon>

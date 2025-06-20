@@ -7,8 +7,8 @@
 
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACATResources;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System.Drawing;
 using System.Windows.Forms;
 using System;
@@ -28,7 +28,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <summary>
         /// Custom Tooltip object
         /// </summary>
-        private CustomToolTip customToolTip = new CustomToolTip();
+        private CustomToolTip customToolTip = new();
 
         private BCIMenuOptions.Options Options;
 

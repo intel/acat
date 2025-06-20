@@ -10,8 +10,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
@@ -649,34 +649,18 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         public bool GetClassifier_EnableChannel(int channelIndx)
         {
             int channelName = channelIndx + 1;
-            switch (channelName)
+            return channelName switch
             {
-                case 1:
-                    return Classifier_EnableChannel1;
-
-                case 2:
-                    return Classifier_EnableChannel2;
-
-                case 3:
-                    return Classifier_EnableChannel3;
-
-                case 4:
-                    return Classifier_EnableChannel4;
-
-                case 5:
-                    return Classifier_EnableChannel5;
-
-                case 6:
-                    return Classifier_EnableChannel6;
-
-                case 7:
-                    return Classifier_EnableChannel7;
-
-                case 8:
-                    return Classifier_EnableChannel8;
-
-            }
-            return false;
+                1 => Classifier_EnableChannel1,
+                2 => Classifier_EnableChannel2,
+                3 => Classifier_EnableChannel3,
+                4 => Classifier_EnableChannel4,
+                5 => Classifier_EnableChannel5,
+                6 => Classifier_EnableChannel6,
+                7 => Classifier_EnableChannel7,
+                8 => Classifier_EnableChannel8,
+                _ => false,
+            };
         }
 
         public bool SetClassifier_EnableChannel(int channelIndx, bool newVal)

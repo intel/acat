@@ -6,14 +6,14 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.WidgetManagement;
 using System.Drawing;
 using ACATResources;
 using System.Windows.Forms;
 using System;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
@@ -47,7 +47,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <summary>
         /// Custom Tooltip object
         /// </summary>
-        private CustomToolTip customToolTip = new CustomToolTip();
+        private CustomToolTip customToolTip = new();
 
         private readonly Screen primaryScreen = Screen.PrimaryScreen;
         /// <summary>
@@ -102,7 +102,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 {
                     case var _ when scannerRoundedButtonControl.Name.Contains("TriggerTest"):
                         OptionResult = new Tuple<BCIMenuOptions.Options, BCISimpleParameters>(BCIMenuOptions.Options.TriggerTest, GetTriggerTestParameters());
-                        BCITriggerTestParameters bciTriggerTestParameters = new BCITriggerTestParameters((int)customSliderNumberTargets.Value, (int)customSliderScanningTime.Value);
+                        BCITriggerTestParameters bciTriggerTestParameters = new((int)customSliderNumberTargets.Value, (int)customSliderScanningTime.Value);
                         var str = JsonSerializer.Serialize(bciTriggerTestParameters);
                         _bciActuator?.IoctlRequest((int)OpCodes.TriggerTestSaveParameters, str);
                         break;

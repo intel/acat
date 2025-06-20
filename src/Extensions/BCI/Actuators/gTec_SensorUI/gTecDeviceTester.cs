@@ -14,9 +14,9 @@
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Audit;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACATResources;
 using System;
 using System.Collections.Generic;
@@ -300,7 +300,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // Test gTec bluetooth device connection based on device name in settings (result of test are handled as events)
             if (_Testing_useSensor == true)
             {
-                gTecBCI.connectionTestAsync();
+                await gTecBCI.connectionTestAsync();
             }
         }
 
@@ -322,7 +322,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             if (_Testing_useSensor)
             {
                 // Non-zero value is needed for startBCIDeviceTesting so "connecting..." screen has time to show to the user
-                Thread t = new Thread(() => startBCIDeviceTesting(3));
+                Thread t = new Thread(start: () => startBCIDeviceTesting(3));
                 t.Start();
             }
         }

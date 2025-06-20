@@ -13,8 +13,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -232,7 +232,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 else
                     Log.Debug("Data not reduced. Scores returned null. Will reduce in new iteration");
 
-                List<double> appendedTrialScores = new List<double>();
+                List<double> appendedTrialScores = new();
                 if (incompleteTrialScores != null)
                 {
                     Log.Debug("Creating appended list with " + incompleteTrialScores.Count + " scores");
@@ -265,7 +265,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                     {
                         // Get only trialscores corresponding to the flashingSequence
                         // List<double> completeTrialScores = new List<double>(appendedTrialScores);
-                        List<double> completeTrialScores = new List<double>(appendedTrialScores.GetRange(0, flashingSequence.Count));
+                        List<double> completeTrialScores = new(appendedTrialScores.GetRange(0, flashingSequence.Count));
 
                         Log.Debug("Calculating probabilities for " + completeTrialScores.Count + " scores corresponding to " + flashingSequence.Count + " trials");
                         ComputePosteriorProbs(completeTrialScores.ToArray(), flashingSequence, out decided, out decidedButtonID, out repetition, out posteriorProbs, out eegProbs, out nextCharacterProbs);
@@ -352,7 +352,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                     }
 
                     // ======================== 1. Calculate posterior probabilities for each label =====================
-                    Dictionary<int, double> logPosteriors = new Dictionary<int, double>();
+                    Dictionary<int, double> logPosteriors = new();
                     eegProbs = new Dictionary<int, double>();
                     repetition = 0;
                     double maxLogPosteriors = Double.MinValue;

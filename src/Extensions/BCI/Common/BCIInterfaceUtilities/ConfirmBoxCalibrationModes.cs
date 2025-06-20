@@ -7,10 +7,10 @@
 
 using ACATResources;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -42,7 +42,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <summary>
         /// Buttons states
         /// </summary>
-        private readonly Dictionary<ScannerRoundedButtonControl, CalibrationModeControls> _ButtonsState = new Dictionary<ScannerRoundedButtonControl, CalibrationModeControls>();
+        private readonly Dictionary<ScannerRoundedButtonControl, CalibrationModeControls> _ButtonsState = new();
 
         /// <summary>
         /// Mode selected when paramaters show
@@ -57,7 +57,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <summary>
         /// Custom Tooltip object
         /// </summary>
-        private CustomToolTip customToolTip = new CustomToolTip();
+        private CustomToolTip customToolTip = new();
 
         /// <summary>
         /// IF typing is enalbed
@@ -542,7 +542,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <returns></returns>
         private BCISimpleParameters GetCalibrationParametersDefault(BCIScanSections bCIScanSections)
         {
-            BCISimpleParameters bciSimpleParameters = new BCISimpleParameters();
+            BCISimpleParameters bciSimpleParameters = new();
             try
             {
                 bciSimpleParameters = new BCISimpleParameters
@@ -900,7 +900,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 }
             }
 
-            List<String> list = new List<String>();
+            List<String> list = new();
 
             if (param2.ToLower().EndsWith(".mp4"))
             {

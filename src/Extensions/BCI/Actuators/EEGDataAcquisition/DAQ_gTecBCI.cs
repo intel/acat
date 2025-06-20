@@ -12,7 +12,7 @@
 
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using Accord.Math;
 using brainflow;
 using Gtec.Unicorn;
@@ -108,15 +108,15 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// </summary>
         private double[,] _bufferSignalStatus;
 
-        /// <summary>
-        /// Buffer for triggertest
-        /// </summary>
-        private readonly List<double> _bufferTriggerTest;
+        ///// <summary>
+        ///// Buffer for triggertest
+        ///// </summary>
+        //private readonly List<double> _bufferTriggerTest;
 
         /// <summary>
         /// Flag, true when trigger test is in progress
         /// </summary>
-        private bool triggerTestInProgressFlag;
+        //private bool triggerTestInProgressFlag;
 
         /// <summary>
         /// Index of the EEG channels in data returned from sensor
@@ -236,9 +236,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 
         static public bool IsDeviceAvailable()
         {
-            bool result = false;
             // check if drivers are installed
-            result = Unicorn.IsDeviceLibraryLoadable();
+            bool result = Unicorn.IsDeviceLibraryLoadable();
 
 
             // and if the device is available
@@ -299,7 +298,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     //    Log.Debug("Port " + serial_number + " tested. Result: " + sensorConnected);
                     //}
 
-                    BrainFlowInputParams input_params = new BrainFlowInputParams();
+                    BrainFlowInputParams input_params = new();
 
                     if (sensorConnected)
                     {
@@ -391,7 +390,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     Log.Debug("Stream started");
 
                     status = BoardStatus.BOARD_ACQUIRINGDATA;
-                    triggerTestInProgressFlag = false;
+                    //triggerTestInProgressFlag = false;
 
                     if (saveDataToFile)
                     {
@@ -572,8 +571,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         {
             if (saveDataToFile)
             {
-                if (FileWriterObj == null)
-                    FileWriterObj = new FileWriter();
+                FileWriterObj ??= new FileWriter();
 
                 FileWriterObj.WriteMarkerValueToFile(markerValues);
             }
@@ -599,7 +597,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 // Keep only last N samples in buffer (N samples are used to calculate status)
                 int numSamplesCurrBuffer = inBuffer.GetLength(1);
                 int numSamplesToKeep = (numSamplesInBuffer * sampleRate) / 1000;
-                List<int> idxToKeep = new List<int>();
+                List<int> idxToKeep = new();
                 for (int i = numSamplesCurrBuffer - numSamplesToKeep; i < numSamplesCurrBuffer; i++)
                 {
                     if (i >= 0)
@@ -629,7 +627,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             try
             {
                 Log.Debug("Testing port " + serial_number);
-                BrainFlowInputParams input_params = new BrainFlowInputParams();
+                BrainFlowInputParams input_params = new();
                 //input_params.serial_number = serial_number;
 
                 DeviceObj = new BoardShim(boardID, input_params);
@@ -745,7 +743,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 }
                 if (status == BoardStatus.BOARD_ACQUIRINGDATA)
                 {
-                    triggerTestInProgressFlag = false;
+                    //triggerTestInProgressFlag = false;
                     GetData(); // Empty buffer
                 }
                 Log.Debug("Session closed");
@@ -759,7 +757,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             return result;
         }
 
-        private readonly Queue<Dictionary<ExitCode, string>> warnings = new Queue<Dictionary<ExitCode, string>>();
+        private readonly Queue<Dictionary<ExitCode, string>> warnings = new();
         private readonly int limit = 10;
 
         /// <summary>
@@ -852,7 +850,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// </summary>
         /// <param name="paired">Whether to get paired Unicorn devices (false = get unpaired devices)</param>
         /// <returns></returns>
-        public async Task<IList<string>> scanDevicesAsync(bool paired = true)
+        public async Task<IList<string>> ScanDevicesAsync(bool paired = true)
         {
             return await Task.Run(() =>
             {
@@ -861,7 +859,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 {
                     devices = Unicorn.GetAvailableDevices(paired);
                     
-                    Dictionary<String, object> eventParams = new Dictionary<String, object>
+                    Dictionary<String, object> eventParams = new()
                     {
                         ["paired"] = paired,
                         ["devices"] = devices
@@ -887,7 +885,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             // Check if there is a device name saved in settings
             if (string.IsNullOrEmpty(BCIGtecActuatorSettings.Settings.GTecDeviceName))
             {
-                Dictionary<String, object> eventParams = new Dictionary<String, object>
+                Dictionary<String, object> eventParams = new()
                 {
                     ["error"] = "String GTecDeviceName is null or empty"
                 };
@@ -902,18 +900,16 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     try
                     {
                         Log.Debug($"Selected device: {BCIGtecActuatorSettings.Settings.GTecDeviceName}, trying to connect...");
-                        using (Unicorn device = new Unicorn(BCIGtecActuatorSettings.Settings.GTecDeviceName))
-                        {
-                            device.Dispose();
-                            Log.Debug($"Device: {device} is connected...");
-                            EvtBluetoothResult(BluetoothEvent.SUCCESSFUL_CONNECTION, null);
-                            return true;
-                        }
+                        using Unicorn device = new(BCIGtecActuatorSettings.Settings.GTecDeviceName);
+                        device.Dispose();
+                        Log.Debug($"Device: {device} is connected...");
+                        EvtBluetoothResult(BluetoothEvent.SUCCESSFUL_CONNECTION, null);
+                        return true;
                     }
                     catch (Gtec.Unicorn.DeviceException ex)
                     {
                         Log.Debug($"Error: {ex.Message}");
-                        Dictionary<String, object> eventParams = new Dictionary<String, object>
+                        Dictionary<String, object> eventParams = new()
                         {
                             ["error"] = ex.Message
                         };
@@ -923,7 +919,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     catch (Exception ex)
                     {
                         Log.Debug($"Unexpected error: {ex.Message}");
-                        Dictionary<String, object> eventParams = new Dictionary<String, object>
+                        Dictionary<String, object> eventParams = new()
                         {
                             ["error"] = ex.Message
                         };
@@ -946,7 +942,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             switch (bluetoothEvent)
             {
                 case DAQ_gTecBCI.BluetoothEvent.SCAN_DEVICES_REQUEST:
-                    scanDevicesAsync((bool)eventParams["paired"]);
+                    _ = ScanDevicesAsync((bool)eventParams["paired"]);
                     break;
 
                 default:

@@ -6,10 +6,10 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.ThemeManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.ThemeManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using SharpDX.Direct2D1;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,31 +34,31 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <summary>
         /// List of the current letter probabilities 
         /// </summary>
-        private static List<KeyValuePair<string, double>> _lettersProbs = new List<KeyValuePair<string, double>>();
+        private static List<KeyValuePair<string, double>> _lettersProbs = new();
 
         /// <summary>
         /// List of the previous letter probabilities 
         /// </summary>
-        private static List<KeyValuePair<string, double>> _prevLettersProbs = new List<KeyValuePair<string, double>>();
+        private static List<KeyValuePair<string, double>> _prevLettersProbs = new();
 
         /// <summary>
         /// List of the previous letter probabilities 
         /// </summary>
-        private static List<KeyValuePair<string, double>> _prevWordsProbs = new List<KeyValuePair<string, double>>();
+        private static List<KeyValuePair<string, double>> _prevWordsProbs = new();
 
         /// <summary>
         /// List of the current letter probabilities 
         /// </summary>
-        private static readonly Dictionary<string, double> _sentenceProbs = new Dictionary<string, double>();
+        private static readonly Dictionary<string, double> _sentenceProbs = new();
 
         /// <summary>
         /// Parameters used by BCI
         /// </summary>
-        private static readonly Dictionary<string, int> _UIBCIparameters = new Dictionary<string, int>();
+        private static readonly Dictionary<string, int> _UIBCIparameters = new();
         /// <summary>
         /// List of the current letter probabilities 
         /// </summary>
-        private static List<KeyValuePair<string, double>> _wordsProbs = new List<KeyValuePair<string, double>>();
+        private static List<KeyValuePair<string, double>> _wordsProbs = new();
         /// <summary>
         /// Signal status
         /// </summary>
@@ -224,7 +224,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             int indexkeyboard = 0;
             int indexarray = 0;
             int tempindex = 0;
-            List<int> seq = new List<int>();
+            List<int> seq = new();
             List<int[]>[] flashingSeqAll = Enumerable.Range(0, amountBoxes).Select(_ => new List<int[]>()).ToArray();
             if (indexkeyboard < amountBoxes)
             {
@@ -490,7 +490,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <returns></returns>
         public static Dictionary<int, double> GetLettersProbs(List<ScannerButtonControl> controls, bool get = false)
         {
-            Dictionary<int, double> nextProbs = new Dictionary<int, double>();
+            Dictionary<int, double> nextProbs = new();
             try
             {
                 if (!_prevLettersProbs.Equals(_lettersProbs) || get == true)
@@ -527,7 +527,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <returns></returns>
         public static Dictionary<int, double> GetLettersProbs(List<Widget> controls, bool get = false)
         {
-            Dictionary<int, double> nextProbs = new Dictionary<int, double>();
+            Dictionary<int, double> nextProbs = new();
             try
             {
                 if (!_prevLettersProbs.Equals(_lettersProbs) || get == true)
@@ -601,7 +601,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             string xmlSection = XmlSectionName.KeyboardBoxMapping.ToLower();
             int index = 0;
             List<ButtonsData>[] matrixButtonList = Enumerable.Range(0, amountBoxes).Select(_ => new List<ButtonsData>()).ToArray();
-            ButtonsData currMatrixButton = new ButtonsData();
+            ButtonsData currMatrixButton = new();
             try
             {
                 foreach (XmlNode node in configNodes)
@@ -726,7 +726,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             int index = 0;
             var configNodes = GetNodesList(configFilePath, XmlSectionName.ACATAnimationsAnimation);
             string xmlSection = XmlSectionName.KeyboardSequences.ToLower();
-            List<int> seq = new List<int>();
+            List<int> seq = new();
             List<int[]>[] flashingSeqAll = Enumerable.Range(0, amountBoxes).Select(_ => new List<int[]>()).ToArray();
             try
             {
@@ -801,7 +801,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <returns></returns>
         public static Dictionary<int, double> GetWordsProbs(List<ScannerButtonControl> controls, bool get = false)
         {
-            Dictionary<int, double> nextProbs = new Dictionary<int, double>();
+            Dictionary<int, double> nextProbs = new();
             try
             {
                 if (!_prevWordsProbs.Equals(_wordsProbs) || get == true)

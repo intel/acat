@@ -9,8 +9,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.Utility;
 
 namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 {

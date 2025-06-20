@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,7 +28,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// </summary>
         private readonly String LogFileFullPathEEG;
 
-        private readonly List<String> logEntries = new List<string>();
+        private readonly List<String> logEntries = new();
 
         /// <summary>
         /// Name of the audit log file

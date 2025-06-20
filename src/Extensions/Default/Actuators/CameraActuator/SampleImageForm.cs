@@ -13,7 +13,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.Actuators.CameraActuator
+namespace ACAT.Extensions.Actuators.CameraActuator
 {
     public partial class SampleImageForm : Form
     {

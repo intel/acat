@@ -10,10 +10,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Extension.AppAgents.ACATApp;
+using ACAT.Core.Utility;
+using ACAT.Extension.AppAgents.ACATApp;
 
-namespace ACAT.Extensions.Default.AppAgents.ACATApp
+namespace ACAT.Extensions.AppAgents.ACATApp
 {
     [Descriptor("066A06E9-7178-4058-A6BC-CFA803A67088",
                             "ACAT Agent",

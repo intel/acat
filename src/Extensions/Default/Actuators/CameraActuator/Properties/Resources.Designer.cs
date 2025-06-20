@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ACAT.Extensions.Default.Actuators.CameraActuator.Properties {
+namespace ACAT.Extensions.Actuators.CameraActuator.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ACAT.Extensions.Default.Actuators.CameraActuator.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ACAT.Extensions.Actuators.CameraActuator.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

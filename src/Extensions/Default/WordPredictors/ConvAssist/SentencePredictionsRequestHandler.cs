@@ -10,15 +10,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WordPredictionManagement;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WordPredictionManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
     internal class SentencePredictionsRequestHandler
     {

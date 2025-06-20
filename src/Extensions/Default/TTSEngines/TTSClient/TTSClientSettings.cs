@@ -10,12 +10,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
 using System;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace ACAT.Extensions.Default.TTSEngines.TTSClient
+namespace ACAT.Extensions.TTSEngines.TTSClient
 {
     public enum TransportProtocol
     {

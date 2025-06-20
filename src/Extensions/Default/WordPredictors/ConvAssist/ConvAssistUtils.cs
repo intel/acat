@@ -10,15 +10,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Extension;
+using ACAT.Core.Utility;
+using ACAT.Extension;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
     public class ConvAssistUtils
     {
@@ -104,7 +104,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             StringBuilder sb = new StringBuilder();
             foreach (char c in str)
             {
-                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' 
+                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.'
                         || c == '_' || (includeApostrophes && c == '\''))
                 {
                     sb.Append(c);

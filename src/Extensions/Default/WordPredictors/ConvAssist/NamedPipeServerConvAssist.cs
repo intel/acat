@@ -12,11 +12,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.Utility.NamedPipe;
-using ACAT.Lib.Core.WordPredictionManagement;
-using ACAT.Lib.Extension;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.Utility.NamedPipe;
+using ACAT.Core.WordPredictionManagement;
+using ACAT.Extension;
 using System;
 using System.Globalization;
 using System.IO;
@@ -25,7 +25,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
     /// <summary>
     /// Type os the events being tracked
@@ -202,7 +202,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             return true;
         }
 
-
         public async Task SendParams()
         {
             try
@@ -343,9 +342,8 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                     await Task.Delay(1000);
                 }
             });
-                
+
             bool timeout = await ConvAssistUtils.WithTimeout(tcs.Task, TimeSpan.FromSeconds(30));
-            
         }
 
         /// <summary>
@@ -370,7 +368,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                         tcs.SetException(ex);
                     }
                 }, new PipeServerStateConvAssist(NamedPipeServer, token));
-                
+
                 try
                 {
                     success = await ConvAssistUtils.WithTimeout(tcs.Task, TimeSpan.FromSeconds(timeout_sec));
@@ -402,10 +400,8 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 PipeServer_EvtClientConnected();
             }
 
-
             return success;
         }
-        
 
         /// <summary>
         /// Stops the pipe server.
@@ -473,7 +469,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch
             {
-
             }
             finally
             {

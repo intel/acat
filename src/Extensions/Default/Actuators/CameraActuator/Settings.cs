@@ -10,14 +10,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
 
-namespace ACAT.Extensions.Default.Actuators.CameraActuator
+namespace ACAT.Extensions.Actuators.CameraActuator
 {
     [Serializable]
     public class Settings : PreferencesBase

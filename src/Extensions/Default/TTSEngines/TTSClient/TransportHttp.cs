@@ -11,12 +11,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Net.Http;
 using System.Text;
 
-namespace ACAT.Extensions.Default.TTSEngines.TTSClient
+namespace ACAT.Extensions.TTSEngines.TTSClient
 {
     [Serializable]
     public class TransportHttp : ITTSTransport

@@ -15,17 +15,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.SpellCheckManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
+using ACAT.Core.SpellCheckManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Xml;
 
-namespace ACAT.Extensions.Default.SpellCheckers
+namespace ACAT.Extensions.SpellCheckers
 {
     [DescriptorAttribute("9DB43B3D-A407-4FC5-8025-89497E5B9767",
                         "ACAT SpellChecker",

@@ -11,12 +11,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.Actuators.CameraActuator
+namespace ACAT.Extensions.Actuators.CameraActuator
 {
     public class VideoWindowFinder : IDisposable
     {
@@ -50,7 +50,6 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 
         public void DockVideoWindow(Form form)
         {
-
             User32Interop.GetWindowRect(VideoWindowHandle, out User32Interop.RECT rect);
 
             int width = rect.right - rect.left;

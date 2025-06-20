@@ -1,5 +1,5 @@
 ﻿using ACATResources;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -43,7 +43,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 }
             }
 
-            List<String> list = new List<String>();
+            List<String> list = new();
 
             if (param2.ToLower().EndsWith(".mp4"))
             {

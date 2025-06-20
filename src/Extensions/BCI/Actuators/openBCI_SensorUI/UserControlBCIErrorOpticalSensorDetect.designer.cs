@@ -10,6 +10,7 @@
 // to the optical sensor
 //
 ////////////////////////////////////////////////////////////////////////////
+using ACAT.Core.WidgetManagement;
 
 namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 {
@@ -49,7 +50,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             this.buttonExit = new System.Windows.Forms.Button();
             this.labelTitle = new System.Windows.Forms.Label();
             this.tableLayoutPanelBCIError = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonRetry = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonRetry = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanelSpacerBottom = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelSpacerTop = new System.Windows.Forms.TableLayoutPanel();
             this.webBrowserTop = new System.Windows.Forms.WebBrowser();
@@ -275,7 +276,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelBCIError;
         public System.Windows.Forms.Button buttonExit;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelSpacerBottom;
-        public Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonRetry;
+        public ScannerRoundedButtonControl buttonRetry;
         private System.Windows.Forms.WebBrowser webBrowserTop;
         private System.Windows.Forms.WebBrowser webBrowserBottom;
     }

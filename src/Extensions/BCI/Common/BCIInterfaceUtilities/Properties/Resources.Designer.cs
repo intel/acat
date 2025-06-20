@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BCIInterfaceUtilities.Properties {
+namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace BCIInterfaceUtilities.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BCIInterfaceUtilities.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ACAT.Extensions.BCI.Common.BCIInterfaceUtilities.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

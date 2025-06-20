@@ -21,10 +21,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     /// </summary>
     public partial class UserControlBCIFilterSettings : UserControl
     {
-        /// <summary>
-        /// Unique ID for this step
-        /// </summary>
-        private readonly String _stepId;
+        ///// <summary>
+        ///// Unique ID for this step
+        ///// </summary>
+        //private readonly String _stepId;
 
         /// <summary>
         /// User control allowing selection of filter settings

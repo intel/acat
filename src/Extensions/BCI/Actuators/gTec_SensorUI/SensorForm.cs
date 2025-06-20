@@ -11,8 +11,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -339,7 +339,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         /// <returns></returns>
         /// Run only once per new set of state changes receieved
-        public async Task TaskStartStopDataProcessing(OnboardingUserState state)
+        public void TaskStartStopDataProcessing(OnboardingUserState state)
         {
             // Start task which processes data for signal status checks
             if (state == OnboardingUserState.BCISignalCheck)

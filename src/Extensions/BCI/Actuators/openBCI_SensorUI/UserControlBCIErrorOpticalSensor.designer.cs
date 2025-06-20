@@ -9,6 +9,7 @@
 // User control which displays information on errors related to the optical sensor
 //
 ////////////////////////////////////////////////////////////////////////////
+using ACAT.Core.WidgetManagement;
 
 namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 {
@@ -88,7 +89,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonLuxSliderPlus = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.buttonRetry = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonRetry = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanelMain.SuspendLayout();
             this.tableLayoutPanelBCIOpticalSensor.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartExample)).BeginInit();
@@ -637,6 +638,6 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Button buttonLuxSliderPlus;
         private System.Windows.Forms.Panel panel1;
-        public Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonRetry;
+        public ScannerRoundedButtonControl buttonRetry;
     }
 }

@@ -19,8 +19,8 @@
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using ACATResources;
 using Accord.Math;
 using brainflow;
@@ -124,16 +124,20 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         private const string BCI_CMD_Impedance_CH16_DISABLE = "xI060110Xz800Z";
 
         private readonly List<String> BCI_CMDS_IMPEDANCE_ENABLE_REQUIRED8CHANNELS =
-            new List<String> { BCI_CMD_Impedance_CH1_ENABLE, BCI_CMD_Impedance_CH2_ENABLE, BCI_CMD_Impedance_CH3_ENABLE, BCI_CMD_Impedance_CH4_ENABLE,
+            new()
+            { BCI_CMD_Impedance_CH1_ENABLE, BCI_CMD_Impedance_CH2_ENABLE, BCI_CMD_Impedance_CH3_ENABLE, BCI_CMD_Impedance_CH4_ENABLE,
                 BCI_CMD_Impedance_CH5_ENABLE, BCI_CMD_Impedance_CH6_ENABLE, BCI_CMD_Impedance_CH7_ENABLE, BCI_CMD_Impedance_CH8_ENABLE };
         private readonly List<String> BCI_CMDS_IMPEDANCE_DISABLE_REQUIRED8CHANNELS =
-            new List<String> { BCI_CMD_Impedance_CH1_DISABLE, BCI_CMD_Impedance_CH2_DISABLE, BCI_CMD_Impedance_CH3_DISABLE, BCI_CMD_Impedance_CH4_DISABLE,
+            new()
+            { BCI_CMD_Impedance_CH1_DISABLE, BCI_CMD_Impedance_CH2_DISABLE, BCI_CMD_Impedance_CH3_DISABLE, BCI_CMD_Impedance_CH4_DISABLE,
                 BCI_CMD_Impedance_CH5_DISABLE, BCI_CMD_Impedance_CH6_DISABLE, BCI_CMD_Impedance_CH7_DISABLE, BCI_CMD_Impedance_CH8_DISABLE };
         private readonly List<String> BCI_CMDS_IMPEDANCE_ENABLE_OPTIONAL8CHANNELS =
-            new List<String> { BCI_CMD_Impedance_CH9_ENABLE, BCI_CMD_Impedance_CH10_ENABLE, BCI_CMD_Impedance_CH11_ENABLE, BCI_CMD_Impedance_CH12_ENABLE,
+            new()
+            { BCI_CMD_Impedance_CH9_ENABLE, BCI_CMD_Impedance_CH10_ENABLE, BCI_CMD_Impedance_CH11_ENABLE, BCI_CMD_Impedance_CH12_ENABLE,
                 BCI_CMD_Impedance_CH13_ENABLE, BCI_CMD_Impedance_CH14_ENABLE, BCI_CMD_Impedance_CH15_ENABLE, BCI_CMD_Impedance_CH16_ENABLE };
         private readonly List<String> BCI_CMDS_IMPEDANCE_DISABLE_OPTIONAL8CHANNELS =
-            new List<String> { BCI_CMD_Impedance_CH9_DISABLE, BCI_CMD_Impedance_CH10_DISABLE, BCI_CMD_Impedance_CH11_DISABLE, BCI_CMD_Impedance_CH12_DISABLE,
+            new()
+            { BCI_CMD_Impedance_CH9_DISABLE, BCI_CMD_Impedance_CH10_DISABLE, BCI_CMD_Impedance_CH11_DISABLE, BCI_CMD_Impedance_CH12_DISABLE,
                 BCI_CMD_Impedance_CH13_DISABLE, BCI_CMD_Impedance_CH14_DISABLE, BCI_CMD_Impedance_CH15_DISABLE, BCI_CMD_Impedance_CH16_DISABLE };
 
         /// <summary>
@@ -339,19 +343,19 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 
             // Load images for signal quality gradient / heatmap
             _signalQualityGradientImages = new Image[9];
-            _signalQualityGradientImages[0] = global::openBCISensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel; // for heatmap - 0 is the same as 1 accepted channel
-            _signalQualityGradientImages[1] = global::openBCISensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel;
-            _signalQualityGradientImages[2] = global::openBCISensorUI.Properties.Resources.signalQualityGradient_2AcceptableChannels;
-            _signalQualityGradientImages[3] = global::openBCISensorUI.Properties.Resources.signalQualityGradient_3AcceptableChannels;
-            _signalQualityGradientImages[4] = global::openBCISensorUI.Properties.Resources.signalQualityGradient_4AcceptableChannels;
-            _signalQualityGradientImages[5] = global::openBCISensorUI.Properties.Resources.signalQualityGradient_5AcceptableChannels;
-            _signalQualityGradientImages[6] = global::openBCISensorUI.Properties.Resources.signalQualityGradient_6AcceptableChannels;
-            _signalQualityGradientImages[7] = global::openBCISensorUI.Properties.Resources.signalQualityGradient_7AcceptableChannels;
-            _signalQualityGradientImages[8] = global::openBCISensorUI.Properties.Resources.signalQualityGradient_8AcceptableChannels;
+            _signalQualityGradientImages[0] = Properties.Resources.signalQualityGradient_1AcceptableChannel; // for heatmap - 0 is the same as 1 accepted channel
+            _signalQualityGradientImages[1] = Properties.Resources.signalQualityGradient_1AcceptableChannel;
+            _signalQualityGradientImages[2] = Properties.Resources.signalQualityGradient_2AcceptableChannels;
+            _signalQualityGradientImages[3] = Properties.Resources.signalQualityGradient_3AcceptableChannels;
+            _signalQualityGradientImages[4] = Properties.Resources.signalQualityGradient_4AcceptableChannels;
+            _signalQualityGradientImages[5] = Properties.Resources.signalQualityGradient_5AcceptableChannels;
+            _signalQualityGradientImages[6] = Properties.Resources.signalQualityGradient_6AcceptableChannels;
+            _signalQualityGradientImages[7] = Properties.Resources.signalQualityGradient_7AcceptableChannels;
+            _signalQualityGradientImages[8] = Properties.Resources.signalQualityGradient_8AcceptableChannels;
 
             // Initialize colors so don't have to constantly create them
             COLOR_ACAT_DEFAULT_ORANGE = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            ColorConverter colorConverter = new ColorConverter();
+            ColorConverter colorConverter = new();
             COLOR_STATUS_OK = (Color)colorConverter.ConvertFromString("#00FF00"); // Green
             COLOR_STATUS_ACCEPTABLE = (Color)colorConverter.ConvertFromString("#FFFF00"); // Yellow
             COLOR_STATUS_KO = (Color)colorConverter.ConvertFromString("#FF4040"); // Red
@@ -485,7 +489,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// <returns></returns>
         public OverallSignalQualityResult getElectrodeSignalQualityResults()
         {
-            OverallSignalQualityResult newResult = new OverallSignalQualityResult();
+            OverallSignalQualityResult newResult = new();
 
             int numOverallSignalQualityCheckChannelsConsidered = 0;
             int numOverallSignalQualityCheckChannelsUpdated = 0;
@@ -1267,7 +1271,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 // Keep only last N samples in buffer (N samples are used to calculate status)
                 int numSamplesCurrBuffer = inBuffer.GetLength(1);
 
-                List<int> idxToKeep = new List<int>();
+                List<int> idxToKeep = new();
                 for (int i = numSamplesCurrBuffer - numSamplesToKeep; i < numSamplesCurrBuffer; i++)
                 {
                     if (i >= 0)
@@ -1455,7 +1459,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 }
 
                 // Start thread doing impedance testing
-                Thread t = new Thread(() => StartImpedanceTesting());
+                Thread t = new(() => StartImpedanceTesting());
                 t.Start();
             }
         }

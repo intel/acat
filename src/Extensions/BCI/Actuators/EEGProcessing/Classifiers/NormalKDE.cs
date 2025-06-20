@@ -75,7 +75,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 for (int fitSampleIdx = 0; fitSampleIdx < data2fit.Length; fitSampleIdx++)
                 {
                     // Build NormPDF for each sample
-                    NormalDistribution NormalDistributionObj = new NormalDistribution(mean: data2fit[fitSampleIdx], stdDev: kernelWidth);
+                    NormalDistribution NormalDistributionObj = new(mean: data2fit[fitSampleIdx], stdDev: kernelWidth);
                     double v = NormalDistributionObj.ProbabilityDensityFunction(data[sampleIdx]);
                     sum += v;
                 }
@@ -94,7 +94,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// <returns></returns>
         public double[] generateSamples(int numSamples)
         {
-            NormalDistribution NormalDistributionObj = new NormalDistribution(mean: 0, stdDev: 1);
+            NormalDistribution NormalDistributionObj = new(mean: 0, stdDev: 1);
             double[] gaussianRandomSamples = NormalDistributionObj.Generate(numSamples);
 
             int[] indices = UniformDiscreteDistribution.Random(0, data2fit.Length, numSamples);
@@ -132,16 +132,16 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         {
             // Generate normal gaussian samples
             int numSamples = 100;
-            NormalDistribution normalPDFObj1 = new NormalDistribution(mean: -2, stdDev: 0.5);
-            NormalDistribution normalPDFObj2 = new NormalDistribution(mean: 2, stdDev: 1.5);
+            NormalDistribution normalPDFObj1 = new(mean: -2, stdDev: 0.5);
+            NormalDistribution normalPDFObj2 = new(mean: 2, stdDev: 1.5);
             double[] samplesPDF1 = normalPDFObj1.Generate(numSamples);
             double[] samplesPDF2 = normalPDFObj2.Generate(numSamples);
 
             double[] x = Vector.Range(-10.0, 10.0, 0.2);
 
             // Build KDE Objects
-            NormalKDE KDEObj1 = new NormalKDE();
-            NormalKDE KDEObj2 = new NormalKDE();
+            NormalKDE KDEObj1 = new();
+            NormalKDE KDEObj2 = new();
             KDEObj1.BuildKDE(samplesPDF1);
             KDEObj2.BuildKDE(samplesPDF2);
 
@@ -149,12 +149,12 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             double[] pdfT = KDEObj1.CalculateProbabilities(x);
             double[] pdfNT = KDEObj2.CalculateProbabilities(x);
 
-            GraphDisplayerForm1x2 graphForm = new GraphDisplayerForm1x2();
+            GraphDisplayerForm1x2 graphForm = new();
             GraphPane graphPaneObjRight = graphForm.graphControlRight.GraphPane;
 
             // Add datapoints for display
-            PointPairList graphTargetPoints = new PointPairList();
-            PointPairList graphNontargetPoints = new PointPairList();
+            PointPairList graphTargetPoints = new();
+            PointPairList graphNontargetPoints = new();
             for (int i = 0; i < pdfT.Length; i++)
             {
                 graphNontargetPoints.Add(x[i], pdfNT[i]);

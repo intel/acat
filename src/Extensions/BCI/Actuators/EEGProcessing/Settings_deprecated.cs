@@ -1,4 +1,4 @@
-﻿using ACAT.Lib.Core.PreferencesManagement;
+﻿using ACAT.Core.PreferencesManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace ACAT.Extensions.Default.Actuators.EEG.EEGProcessing
+namespace ACAT.Extensions.Actuators.EEG.EEGProcessing
 {
     [Serializable]
     public class Settings : PreferencesBase

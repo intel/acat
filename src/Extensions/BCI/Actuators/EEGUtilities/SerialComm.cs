@@ -7,7 +7,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -68,8 +68,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGUtils
         {
             var pattern = String.Format("^VID_{0}.PID_{1}", VID, PID);
 
-            Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
-            List<string> comPortNames = new List<string>();
+            Regex regex = new(pattern, RegexOptions.IgnoreCase);
+            List<string> comPortNames = new();
 
             RegistryKey regKey1 = Registry.LocalMachine;
             RegistryKey regKey2 = regKey1.OpenSubKey("SYSTEM\\CurrentControlSet\\Enum");

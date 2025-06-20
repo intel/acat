@@ -10,7 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
 using System;
 using System.Xml.Serialization;
 
@@ -666,57 +666,26 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         public bool GetClassifier_EnableChannel(int channelIndx)
         {
             int channelName = channelIndx + 1;
-            switch (channelName)
+            return channelName switch
             {
-                case 1:
-                    return Classifier_EnableChannel1;
-
-                case 2:
-                    return Classifier_EnableChannel2;
-
-                case 3:
-                    return Classifier_EnableChannel3;
-
-                case 4:
-                    return Classifier_EnableChannel4;
-
-                case 5:
-                    return Classifier_EnableChannel5;
-
-                case 6:
-                    return Classifier_EnableChannel6;
-
-                case 7:
-                    return Classifier_EnableChannel7;
-
-                case 8:
-                    return Classifier_EnableChannel8;
-
-                case 9:
-                    return Classifier_EnableChannel9;
-
-                case 10:
-                    return Classifier_EnableChannel10;
-
-                case 11:
-                    return Classifier_EnableChannel11;
-
-                case 12:
-                    return Classifier_EnableChannel12;
-
-                case 13:
-                    return Classifier_EnableChannel13;
-
-                case 14:
-                    return Classifier_EnableChannel14;
-
-                case 15:
-                    return Classifier_EnableChannel15;
-
-                case 16:
-                    return Classifier_EnableChannel16;
-            }
-            return false;
+                1 => Classifier_EnableChannel1,
+                2 => Classifier_EnableChannel2,
+                3 => Classifier_EnableChannel3,
+                4 => Classifier_EnableChannel4,
+                5 => Classifier_EnableChannel5,
+                6 => Classifier_EnableChannel6,
+                7 => Classifier_EnableChannel7,
+                8 => Classifier_EnableChannel8,
+                9 => Classifier_EnableChannel9,
+                10 => Classifier_EnableChannel10,
+                11 => Classifier_EnableChannel11,
+                12 => Classifier_EnableChannel12,
+                13 => Classifier_EnableChannel13,
+                14 => Classifier_EnableChannel14,
+                15 => Classifier_EnableChannel15,
+                16 => Classifier_EnableChannel16,
+                _ => false,
+            };
         }
 
         public bool SetClassifier_EnableChannel(int channelIndx, bool newVal)

@@ -14,8 +14,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.Utility.NamedPipe;
+using ACAT.Core.Utility;
+using ACAT.Core.Utility.NamedPipe;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -1312,7 +1312,6 @@ namespace ACAT.Applications.ACATWatch
             User32Interop.GetWindowLong(focusOnWindowHandle, User32Interop.GWL_STYLE);
             IntPtr fg = User32Interop.GetForegroundWindow();
             Log.Debug("Fg window handle: " + fg.ToInt32());
-
 
             User32Interop.GetWindowThreadProcessId(User32Interop.GetForegroundWindow(), out uint h);
 

@@ -11,17 +11,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACATResources;
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.Onboarding;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Extension;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.Audit;
+using ACAT.Core.Onboarding;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
+using ACAT.Extension;
 using ACATExtension.CommandHandlers;
+using ACATResources;
 using System;
 using System.Windows.Forms;
+
 #if ENABLE_DIGITAL_VERIFICATION
 using System.ComponentModel;
 using System.IO;
@@ -37,13 +38,12 @@ namespace ACAT.Applications.ACATTalk
     /// </summary>
     internal static class Program
     {
-        static Splash splash = null;
-        static Guid welcome = new Guid("6d8da00e-5035-4b7f-a646-ed9f840a13bf");
-        static Guid languageSelect = new Guid("{F2803F8A-D639-459C-9F27-5742BAD4E405}");
-        static Guid switchSelect = new Guid("301dbc87-c98c-491a-a2ee-d17863eab831");
-        static Guid keyboardConfig = new Guid("65b95de3-bf5a-4ae8-b44d-f5e7950ab8d6");
-        static Guid finish = new Guid("e03754b3-85af-4f43-855e-47e20f7400c2");
-
+        private static Splash splash = null;
+        private static Guid welcome = new Guid("6d8da00e-5035-4b7f-a646-ed9f840a13bf");
+        private static Guid languageSelect = new Guid("{F2803F8A-D639-459C-9F27-5742BAD4E405}");
+        private static Guid switchSelect = new Guid("301dbc87-c98c-491a-a2ee-d17863eab831");
+        private static Guid keyboardConfig = new Guid("65b95de3-bf5a-4ae8-b44d-f5e7950ab8d6");
+        private static Guid finish = new Guid("e03754b3-85af-4f43-855e-47e20f7400c2");
 
         /// <summary>
         /// The main entry point for the application.
@@ -72,7 +72,7 @@ namespace ACAT.Applications.ACATTalk
 
             CoreGlobals.AppId = "ACATTalk";
             CoreGlobals.ACATUserGuideFileName = "ACAT User Guide.pdf";
-            global::ACAT.Lib.Core.Utility.FatalErrorHandler.EvtFatalError += CoreGlobals_EvtFatalError;
+            global::ACAT.Core.Utility.FatalErrorHandler.EvtFatalError += CoreGlobals_EvtFatalError;
 
             FileUtils.LogAssemblyInfo();
 
@@ -82,7 +82,7 @@ namespace ACAT.Applications.ACATTalk
             AppCommon.SetProfileName();
 
             bool freshInstallForUser = !UserManager.UserExists(UserManager.CurrentUser);
-            
+
             if (!AppCommon.CreateUserAndProfile())
             {
                 return;
@@ -98,7 +98,7 @@ namespace ACAT.Applications.ACATTalk
             }
 
             User32Interop.SetProcessDPIAware();
-            
+
             AppCommon.CheckDisplayScalingAndResolution();
 
             Common.AppPreferences.AppName = "ACAT Talk";
@@ -115,7 +115,6 @@ namespace ACAT.Applications.ACATTalk
             CommandDescriptors.Init();
 
             Common.AppPreferences.PreferredPanelConfigNames = String.Empty;
-
 
             if (!doOnboarding())
             {
@@ -141,7 +140,7 @@ namespace ACAT.Applications.ACATTalk
                 splash.Close();
                 splash = null;
 
-                ConfirmBoxOneOption.ShowDialog(Context.GetInitCompletionStatus(), "",StringResources.OK);
+                ConfirmBoxOneOption.ShowDialog(Context.GetInitCompletionStatus(), "", StringResources.OK);
                 if (Context.IsInitFatal())
                 {
                     return;
@@ -234,13 +233,12 @@ namespace ACAT.Applications.ACATTalk
 
             ScannerFocus.Stop();
 
-            if (Context.AppPanelManager != null  && Context.AppPanelManager.GetCurrentForm() != null &&
+            if (Context.AppPanelManager != null && Context.AppPanelManager.GetCurrentForm() != null &&
                 Context.AppPanelManager.GetCurrentForm().PanelCommon != null && Context.AppPanelManager.GetCurrentForm().PanelCommon.RootWidget != null)
             {
                 Context.AppPanelManager.GetCurrentForm().OnPause();
                 var form = Context.AppPanelManager.GetCurrentForm().PanelCommon.RootWidget.UIControl as Form;
                 ConfirmBoxLargeSingleOption.ShowDialog(reason, "OK", form);
-                
             }
             else
             {
@@ -421,6 +419,5 @@ namespace ACAT.Applications.ACATTalk
         }
 
 #endif
-        
     }
 }

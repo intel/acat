@@ -1,5 +1,7 @@
 ﻿
-namespace ACAT.Extensions.Default.UI.Scanners.UserControls
+using ACAT.Core.WidgetManagement;
+
+namespace ACAT.Extensions.UI.Scanners.UserControls
 {
     partial class KeyboardEditUserControl
     {
@@ -32,33 +34,33 @@ namespace ACAT.Extensions.Default.UI.Scanners.UserControls
             this.KeyboardBox = new System.Windows.Forms.TableLayoutPanel();
             this.Keyboard = new System.Windows.Forms.TableLayoutPanel();
             this.Row1 = new System.Windows.Forms.TableLayoutPanel();
-            this.B1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B4 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B5 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B6 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B1 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B2 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B3 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B4 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B5 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B6 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.Row2 = new System.Windows.Forms.TableLayoutPanel();
-            this.B7 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B8 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B9 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B10 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B11 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B12 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B7 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B8 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B9 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B10 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B11 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B12 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.Row3 = new System.Windows.Forms.TableLayoutPanel();
-            this.B13 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B14 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B15 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B16 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B17 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B18 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B13 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B14 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B15 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B16 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B17 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B18 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.Row4 = new System.Windows.Forms.TableLayoutPanel();
-            this.B19 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B20 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B21 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B22 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B23 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B24 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B19 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B20 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B21 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B22 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B23 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B24 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.KeyboardBox.SuspendLayout();
             this.Keyboard.SuspendLayout();
             this.Row1.SuspendLayout();
@@ -680,32 +682,32 @@ namespace ACAT.Extensions.Default.UI.Scanners.UserControls
         private System.Windows.Forms.TableLayoutPanel KeyboardBox;
         private System.Windows.Forms.TableLayoutPanel Keyboard;
         private System.Windows.Forms.TableLayoutPanel Row1;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B1;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B2;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B3;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B4;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B5;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B6;
+        private ScannerRoundedButtonControl B1;
+        private ScannerRoundedButtonControl B2;
+        private ScannerRoundedButtonControl B3;
+        private ScannerRoundedButtonControl B4;
+        private ScannerRoundedButtonControl B5;
+        private ScannerRoundedButtonControl B6;
         private System.Windows.Forms.TableLayoutPanel Row2;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B7;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B8;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B9;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B10;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B11;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B12;
+        private ScannerRoundedButtonControl B7;
+        private ScannerRoundedButtonControl B8;
+        private ScannerRoundedButtonControl B9;
+        private ScannerRoundedButtonControl B10;
+        private ScannerRoundedButtonControl B11;
+        private ScannerRoundedButtonControl B12;
         private System.Windows.Forms.TableLayoutPanel Row3;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B13;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B14;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B15;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B16;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B17;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B18;
+        private ScannerRoundedButtonControl B13;
+        private ScannerRoundedButtonControl B14;
+        private ScannerRoundedButtonControl B15;
+        private ScannerRoundedButtonControl B16;
+        private ScannerRoundedButtonControl B17;
+        private ScannerRoundedButtonControl B18;
         private System.Windows.Forms.TableLayoutPanel Row4;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B19;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B20;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B21;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B22;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B23;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl B24;
+        private ScannerRoundedButtonControl B19;
+        private ScannerRoundedButtonControl B20;
+        private ScannerRoundedButtonControl B21;
+        private ScannerRoundedButtonControl B22;
+        private ScannerRoundedButtonControl B23;
+        private ScannerRoundedButtonControl B24;
     }
 }

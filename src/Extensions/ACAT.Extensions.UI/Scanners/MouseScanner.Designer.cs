@@ -1,11 +1,11 @@
-﻿namespace ACAT.Lib.Extension
+﻿namespace ACAT.Extension
 {
     partial class MouseScanner
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        //private System.ComponentModel.IContainer components = null;
 
         #region Windows Form Designer generated code
 
@@ -15,7 +15,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.MouseScannerButtons = new ACAT.Lib.Core.Widgets.ACATFlowLayoutPanel();
+            this.MouseScannerButtons = new ACAT.Core.Widgets.ACATFlowLayoutPanel();
             this.SuspendLayout();
             // 
             // MouseScannerButtons
@@ -54,6 +54,6 @@
 
         #endregion
 
-        private ACAT.Lib.Core.Widgets.ACATFlowLayoutPanel MouseScannerButtons;
+        private ACAT.Core.Widgets.ACATFlowLayoutPanel MouseScannerButtons;
     }
 }

@@ -135,6 +135,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Menus\MainMenu.resx">
       <DependentUpon>MainMenu.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Scanners\MouseScanner.resx">
       <DependentUpon>MouseScanner.cs</DependentUpon>

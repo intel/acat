@@ -9,26 +9,26 @@
 // It also handles commands associated with keys such as Undo, Backspace,
 // text navigation etc.
 
+using ACAT.Core.AgentManagement;
+using ACAT.Core.Audit;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.ThemeManagement;
+using ACAT.Core.TTSManagement;
+using ACAT.Core.UserControlManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Core.WordPredictionManagement;
+using ACAT.Extension;
+using ACAT.Extension.CommandHandlers;
 using ACATResources;
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.ThemeManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
-using ACAT.Lib.Extension;
-using ACAT.Lib.Extension.CommandHandlers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Permissions;
 using System.Windows.Forms;
-using ACAT.Lib.Core.TTSManagement;
-using ACAT.Lib.Core.UserControlManagement;
-using ACAT.Lib.Core.WordPredictionManagement;
-using System.Linq;
 
-namespace ACAT.Extensions.Default.UI.Scanners
+namespace ACAT.Extensions.UI.Scanners
 {
     [Descriptor("D9A5B53F-7119-445B-BDEA-F76EC53077F1",
                         "TalkApplicationScanner",
@@ -81,6 +81,7 @@ namespace ACAT.Extensions.Default.UI.Scanners
         public TalkApplicationScanner()
         {
             _scannerCommon = new ScannerCommon(this);
+
 
             InitializeComponent();
 
@@ -421,7 +422,7 @@ namespace ACAT.Extensions.Default.UI.Scanners
                     addTextBoxUserControl(_textBoxUserControl);
                 }
             }));
-            
+
             if (Common.AppPreferences.ClearTalkWindowOnTypeModeChange)
             {
                 Windows.SetText(_textBoxTalkWindow, String.Empty);

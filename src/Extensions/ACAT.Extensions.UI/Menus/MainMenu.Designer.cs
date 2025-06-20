@@ -1,4 +1,4 @@
-﻿namespace ACAT.Extensions.Default.UI.Menus
+﻿namespace ACAT.Extensions.UI.Menus
 {
     partial class MainMenu
     {

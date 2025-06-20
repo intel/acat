@@ -18,7 +18,7 @@
 // </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Serialization;

@@ -40,7 +40,7 @@ namespace ACATConfig
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="arg">event args</param>
-        private static void form_EvtLanguageChanged(object sender, ACATConfigMainForm.PreferencesLanguageChanged arg)
+     /*   private static void form_EvtLanguageChanged(object sender, ACATConfigMainForm.PreferencesLanguageChanged arg)
         {
             Common.AppPreferences.Language = arg.CI.TwoLetterISOLanguageName;
             ResourceUtils.SetCulture(Common.AppPreferences.Language);
@@ -48,7 +48,7 @@ namespace ACATConfig
             {
                 Common.AppPreferences.Save();
             }
-        }
+        }*/
 
         /// <summary>
         /// The main entry point for the application.
@@ -122,7 +122,7 @@ namespace ACATConfig
             splash.Close();
 
             var form = new ACATConfigMainForm();
-            form.EvtLanguageChanged += form_EvtLanguageChanged;
+            //form.EvtLanguageChanged += form_EvtLanguageChanged;
             Application.Run(form);
         }
 

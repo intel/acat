@@ -17,8 +17,11 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 {
     public class CameraSensor
     {
+#if DEBUG
+        private const string DllFilePath = "acat_gestures_dll_d.dll";
+#else
         private const string DllFilePath = "acat_gestures_dll.dll";
-
+#endif
         public delegate void CameraEventCallback(string text);
 
         [DllImport(DllFilePath, CallingConvention = CallingConvention.StdCall)]

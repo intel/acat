@@ -16,7 +16,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PreferencesManagement.UI;
 using ACAT.Lib.Core.PanelManagement;
+using ACAT.Lib.Core.PreferencesManagement.UI;
 using ACAT.Lib.Core.Utility;
 using ACATResources;
 using System;
@@ -28,6 +30,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Windows.Forms.Integration;
 
 namespace ACAT.Lib.Core.PreferencesManagement
 {
@@ -968,6 +971,12 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <param name="e">eent args</param>
         private void PreferencesEditForm_Load(object sender, EventArgs e)
         {
+            // For WPF Controls
+            if (System.Windows.Application.Current == null)
+            {
+                new System.Windows.Application();
+            }
+
             float currentAspectRatio = (float)ClientSize.Height / ClientSize.Width;
 
             if (_designTimeAspectRatio != 0.0f && currentAspectRatio != _designTimeAspectRatio)
@@ -1125,14 +1134,21 @@ namespace ACAT.Lib.Core.PreferencesManagement
             flowPanel.Controls.Add(description);
 
             var props = prefs.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            //.Where(m => m.MemberType == MemberTypes.Field || m.MemberType == MemberTypes.Property)
-            //.ToArray();
-
+            var panelBuilder = new SettingsPanelBuilder();
             foreach (var prop in props)
             {
-                var proppanel = CreatedLabeledPanel(prop);
+                //var proppanel = CreatedLabeledPanel(prop);
+                //flowPanel.Controls.Add(proppanel);
+                var panel = panelBuilder.CreateLabeledPanel(prop, prefs);
 
-                flowPanel.Controls.Add(proppanel);
+                var host = new ElementHost
+                {
+                    Child = panel,
+                    AutoSize = true,
+                    Margin = new Padding(10),
+                    Dock = DockStyle.Top
+                };   
+                flowPanel.Controls.Add(host);
             }
         }
 

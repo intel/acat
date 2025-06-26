@@ -38,6 +38,17 @@ namespace ACAT.Lib.Core.Utility
         /// </summary>
         private readonly String _name;
 
+        public DescriptorAttribute(string description)
+        {
+            _description = description;
+        }
+
+        public DescriptorAttribute(string description, string category)
+        {
+            _description = description;
+            _category = category;
+        }
+
         /// <summary>
         /// Initializes an instance of the class
         /// </summary>
@@ -117,7 +128,7 @@ namespace ACAT.Lib.Core.Utility
         }
 
         /// <summary>
-        /// Regurns the descriptor object for the class bu querying
+        /// Returns the descriptor object for the class by querying
         /// custom attributes and looking for the one that is of
         /// type DescriptorAttribute
         /// </summary>

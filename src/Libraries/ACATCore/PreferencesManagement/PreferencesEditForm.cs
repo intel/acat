@@ -20,10 +20,13 @@ using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
 using ACATResources;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace ACAT.Lib.Core.PreferencesManagement
@@ -1003,6 +1006,63 @@ namespace ACAT.Lib.Core.PreferencesManagement
             };
         }
 
+        Control CreatedLabeledPanel(PropertyInfo prop)
+        {
+            Control control;
+            Font font = new Font("Montserrat", 18);
+
+            var controlFactory = new Dictionary<Type, Func<PropertyInfo, Control>>
+                {
+                    { typeof(bool), member => new CheckBox() },
+                    { typeof(int), member => new TrackBar {Minimum = 0, Maximum = 100 } },
+                    { typeof(float), member => new TrackBar {Minimum = 0, Maximum=100 } },
+                    { typeof(string), member => new TextBox() }
+                };
+
+            var type = prop.PropertyType;
+            if (controlFactory.TryGetValue(type, out var controlBuilder))
+            {
+                control = controlBuilder(prop);
+                control.Tag = prop;
+                control.ForeColor = Color.White;                
+            }
+            else
+            {
+                control = new Label { Text = $"Unsupported Type: {prop.Name} ({prop.PropertyType.Name})" };
+            }
+
+            var panel = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.LeftToRight,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                Dock = DockStyle.Fill,
+                WrapContents = true,
+                BackColor = Color.Transparent,
+                Margin = new Padding(15)
+            };
+
+            var descriptionAttr = prop.GetCustomAttribute<DescriptorAttribute>();
+            var labelText = descriptionAttr?.Description ?? "MISSING DESCRIPTION";
+
+            var label = new Label
+            {
+                Text = labelText,
+                AutoSize = true,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Margin = new Padding(0, 6, 5, 0),
+                ForeColor = Color.White,
+                Font = font
+            };
+
+            control.Margin = new Padding(0, 3, 0, 0);
+
+            panel.Controls.Add(label);
+            panel.Controls.Add(control);
+
+            return panel;
+
+        }
 
         /// <summary>
         /// Populates the grid view with preferences data
@@ -1010,128 +1070,69 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <param name="prefs">preferences</param>
         private void refreshGridView(IPreferences prefs)
         {
-            // Do Clear of datagrid rows in try/catch block - sometimes throws exception
-            bool clearSuccessful = true;
-            try
-            {
-                dataGridView.Rows.Clear();
-            }
-            catch
-            {
-                Log.Debug("PreferencesEditForm | refreshGridView | clearSuccessful == false");
-                clearSuccessful = false;
-            }
-            if (!clearSuccessful)
-                return;
+            //// Do Clear of datagrid rows in try/catch block - sometimes throws exception
+            //bool clearSuccessful = true;
+            //try
+            //{
+            //    dataGridView.Rows.Clear();
+            //}
+            //catch
+            //{
+            //    Log.Debug("PreferencesEditForm | refreshGridView | clearSuccessful == false");
+            //    clearSuccessful = false;
+            //}
+            //if (!clearSuccessful)
+            //    return;
 
+            // HACK until we fix the Form...
+            var flowPanel = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.TopDown,
+                BackColor = Color.Transparent,
+                AutoSize = false,
+                AutoScroll = false,
+                Dock = DockStyle.Fill,
+
+            };
+            flowPanel.HorizontalScroll.Visible = false;
+            flowPanel.HorizontalScroll.Maximum = 0;
+
+            var parent = dataGridView.Parent;                
+            parent.Controls.Remove(dataGridView);
+            parent.Controls.Add(flowPanel);
 
             wrapText(_wrapText);
 
-            var members = prefs.GetType().GetMembers();
-            foreach (var memberInfo in members)
+            var descriptor = prefs.GetType().GetCustomAttribute<DescriptorAttribute>();
+            Label category = new Label
             {
-                var name = memberInfo.Name;
-                MemberInfo[] member = prefs.GetType().GetMember(name);
-                if (member.Length == 0)
-                {
-                    continue;
-                }
+                AutoSize = true,
+                Dock = DockStyle.Fill,
+                Text = descriptor?.Category ?? "UNKNOWN CATEGORY",
+                Font = new Font("Montserrat", 24, FontStyle.Bold),
+                ForeColor = Color.White
+            };
+            flowPanel.Controls.Add(category);
 
-                switch (member[0].MemberType)
-                {
-                    case MemberTypes.Field:
-                        FieldInfo fieldInfo = prefs.GetType().GetField(name);
-                        if (isInt(fieldInfo))
-                        {
-                            var intDescriptor = getIntAttribute(fieldInfo);
-                            if (intDescriptor != null)
-                            {
-                                addIntegerRow(prefs, fieldInfo, intDescriptor);
-                            }
-                        }
-                        else if (isBool(fieldInfo))
-                        {
-                            var boolDescriptor = getBoolAttribute(fieldInfo);
-                            if (boolDescriptor != null)
-                            {
-                                addCheckBoxRow(prefs, fieldInfo, boolDescriptor);
-                            }
-                        }
-                        else if (isString(fieldInfo))
-                        {
-                            var stringDescriptor = getStringAttribute(fieldInfo);
-                            if (stringDescriptor != null)
-                            {
-                                addStringRow(prefs, fieldInfo, stringDescriptor);
-                            }
-                        }
-                        else if (isFloat(fieldInfo))
-                        {
-                            var floatDescriptor = getFloatAttribute(fieldInfo);
-                            if (floatDescriptor != null)
-                            {
-                                addFloatRow(prefs, fieldInfo, floatDescriptor);
-                            }
-                        }
-                        break;
 
-                    case MemberTypes.Property:
-                        var property = prefs.GetType().GetProperty(name);
-                        if (isInt(property))
-                        {
-                            var intDescriptor = getIntAttribute(property);
-                            if (intDescriptor != null)
-                            {
-                                addIntegerRow(prefs, property, intDescriptor);
-                            }
-                        }
-                        else if (isBool(property))
-                        {
-                            var boolDescriptor = getBoolAttribute(property);
-                            if (boolDescriptor != null)
-                            {
-                                addCheckBoxRow(prefs, property, boolDescriptor);
-                            }
-                        }
-                        else if (isString(property))
-                        {
-                            var stringDescriptor = getStringAttribute(property);
-                            if (stringDescriptor != null)
-                            {
-                                addStringRow(prefs, property, stringDescriptor);
-                            }
+            Label description = new Label {
+                AutoSize = true,
+                Dock = DockStyle.Fill,
+                Text = descriptor?.Description ?? "UNKNOWN DESCRIPTION",
+                Font = new Font("Montserrat", 20, FontStyle.Regular),
+                ForeColor = Color.White
+            };
+            flowPanel.Controls.Add(description);
 
-                        }
-                        else if (isFloat(property))
-                        {
-                            var floatDescriptor = getFloatAttribute(property);
-                            if (floatDescriptor != null)
-                            {
-                                addFloatRow(prefs, property, floatDescriptor);
-                            }
-                        }
+            var props = prefs.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            //.Where(m => m.MemberType == MemberTypes.Field || m.MemberType == MemberTypes.Property)
+            //.ToArray();
 
-                        break;
-                }
-
-            }
-
-            if (dataGridView.Rows.Count == 0)
+            foreach (var prop in props)
             {
-                MessageBox.Show("No configurable settings found", Text);
-                Close();
-            }
+                var proppanel = CreatedLabeledPanel(prop);
 
-            dataGridView.AutoResizeRows();
-
-            // Sort first column ascending everytime grid is refreshed
-            dataGridView.Sort(SettingColumn, ListSortDirection.Ascending);
-            SettingColumn.HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending;
-
-            if (dataGridView.Rows.Count > 0)
-            {
-                dataGridView.CurrentCell = dataGridView.Rows[0].Cells[0];
-                dataGridView.Rows[0].Selected = true;
+                flowPanel.Controls.Add(proppanel);
             }
         }
 

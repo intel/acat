@@ -6,6 +6,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Lib.Core.Utility;
+using System.ComponentModel.DataAnnotations;
 using System;
 
 namespace ACAT.Lib.Core.AgentManagement
@@ -29,7 +31,8 @@ namespace ACAT.Lib.Core.AgentManagement
         /// window and display the appropriate scanner.  If false,
         /// always displays the Alphabet scanner.
         /// </summary>
-        [BoolDescriptor("Auto-display contextual menu when the app window gets focus", true)]
-        public bool AutoSwitchScannerEnable { get; set; }
+        [Descriptor("Auto-display contextual menu when the app window gets focus")]
+        [UIHint("ToggleSwitch")]
+        public bool AutoSwitchScannerEnable { get; set; } = true;
     }
 }

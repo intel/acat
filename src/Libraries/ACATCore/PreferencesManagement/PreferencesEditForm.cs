@@ -16,9 +16,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.PreferencesManagement.UI;
-using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.PreferencesManagement.UI;
+using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.Utility;
 using ACATResources;
 using System;
@@ -31,6 +30,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
+using System.Windows.Threading;
 
 namespace ACAT.Lib.Core.PreferencesManagement
 {
@@ -974,6 +974,18 @@ namespace ACAT.Lib.Core.PreferencesManagement
             // For WPF Controls
             if (System.Windows.Application.Current == null)
             {
+         
+
+
+                // Initialize WPF Dispatcher safely
+                Dispatcher dispatcher = Dispatcher.CurrentDispatcher;
+
+                // Schedule optional startup logic on the WPF Dispatcher
+                dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() =>
+                {
+                    Console.WriteLine("WPF Dispatcher is ready");
+                }));
+
                 new System.Windows.Application();
             }
 

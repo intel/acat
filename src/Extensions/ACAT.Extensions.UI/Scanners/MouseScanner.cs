@@ -35,6 +35,8 @@ namespace ACAT.Extension
         public MouseScanner(String panelClass, String title)
         {
             InitializeComponent();
+
+            _scannerCommon = new ScannerCommon(this);
             _dispatcher = new Dispatcher(this);
             Load += MouseScanner_Load;
             FormClosing += MouseScanner_FormClosing;

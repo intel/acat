@@ -35,10 +35,6 @@ namespace ACAT.Extensions.UI.Scanners
                         "Talk application main window")]
     public partial class TalkApplicationScanner : Form, IScannerPanel, ISupportsStatusBar
     {
-        private const Int32 HTCAPTION = 0x00000002;
-
-        private const Int32 WM_NCLBUTTONDOWN = 0xA1;
-
         /// <summary>
         /// The command dispatcher object
         /// </summary>
@@ -385,17 +381,14 @@ namespace ACAT.Extensions.UI.Scanners
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         protected override void WndProc(ref Message m)
         {
-            const int WM_SYSCOMMAND = 0x0112;
-            const int SC_MOVE = 0xF010;
-
-            if (m.Msg == WM_NCLBUTTONDOWN) //cancels the drag this is IMP
+            if (m.Msg == ACAT.Win32.Win32Constants.WM_NCLBUTTONDOWN) //cancels the drag this is IMP
             {
-                if (m.WParam.ToInt32() == HTCAPTION) return;
+                if (m.WParam.ToInt32() == ACAT.Win32.Win32Constants.HTCAPTION) return;
             }
-            else if (m.Msg == WM_SYSCOMMAND)
+            else if (m.Msg == ACAT.Win32.Win32Constants.WM_SYSCOMMAND)
             {
                 int command = m.WParam.ToInt32() & 0xfff0;
-                if (command == SC_MOVE)
+                if (command == ACAT.Win32.Win32Constants.SC_MOVE)
                 {
                     base.WndProc(ref m);
                     return;
@@ -826,7 +819,7 @@ namespace ACAT.Extensions.UI.Scanners
                         break;
 
                     case "CmdMainMenu":
-                        form._dispatcher.DefaultDispatch(Command, ref handled);
+                        form._dispatcher.DispatchCommand(Command, ref handled);
 
                         break;
 

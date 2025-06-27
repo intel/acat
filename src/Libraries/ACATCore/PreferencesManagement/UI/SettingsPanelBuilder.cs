@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 
 
-namespace ACAT.Core.PreferencesManagement.UI
+namespace ACAT.Lib.Core.PreferencesManagement.UI
 { 
  
     public class SettingsPanelBuilder

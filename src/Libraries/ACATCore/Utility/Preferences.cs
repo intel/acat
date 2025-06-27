@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using ACAT.Lib.Core.PreferencesManagement;
 using System.Xml.Serialization;
+using System.ComponentModel.DataAnnotations;
 
 namespace ACAT.Lib.Core.Utility
 {
@@ -29,16 +30,23 @@ namespace ACAT.Lib.Core.Utility
         public String AppName = "ACAT";
 
         // Scanner settings
-        [IntDescriptor("First repeat time for sticky buttons (in msecs)", 200, 3000)]
+        [Descriptor("First repeat time for sticky buttons (in msecs)")]
+        [Range(200, 3000)]
+        [UIHint("Slider")]
         public int FirstRepeatTime = 1000;
 
-        [IntDescriptor("Scan time (in msecs)", 100, 3000)]
+        [Descriptor("Scan time (in msecs)")]
+        [Range(100, 3000)]
+        [UIHint("Slider")]
         public int ScanTime = 1000;
 
-        [IntDescriptor("Extra time to pause on the first row/column/button (in msecs)", 0, 3000)]
+        [Descriptor("Extra time to pause on the first row/column/button (in msecs)")]
+        [Range(0, 3000)]
+        [UIHint("Slider")]
         public int FirstPauseTime = 250;
 
-        [BoolDescriptor("Play a beep on a selection")]
+        [Descriptor("Play a beep on a selection")]
+        [UIHint("ToggleSwitch")]
         public bool SelectClick = false;
 
         public float ScannerScaleFactor = 10.0f;
@@ -48,20 +56,25 @@ namespace ACAT.Lib.Core.Utility
 
         public String Theme = "Default";
 
-        [BoolDescriptor("Include disabled buttons in the scanning cycle", true)]
+        [Descriptor("Include disabled buttons in the scanning cycle")]
+        [UIHint("ToggleSwitch")]
         public bool ScanDisabledElements = true;
 
         public Windows.WindowPosition ScannerPosition = Windows.WindowPosition.MiddleRight;
 
         public String PreferredPanelConfigNames = "AlphabetQwerty";
 
-        [IntDescriptor("Minimum hold time for the actuator switch to trigger (in msecs)", 0, 2000)]
+        [Descriptor("Minimum hold time for the actuator switch to trigger (in msecs)")]
+        [Range(0, 2000)]
+        [UIHint("Slider")]
         public int MinActuationHoldTime = 0;
 
-        [BoolDescriptor("Expand an abbreviation only if a space, comma or a period is inserted after the abbreviation")]
+        [Descriptor("Expand an abbreviation only if a space, comma or a period is inserted after the abbreviation")]
+        [UIHint("ToggleSwitch")]
         public bool ExpandAbbreviationsOnSeparator = false;
 
-        [BoolDescriptor("Log application messages to a file. Use with caution. This will slow down the app and also consume disk space.  Use only for troubleshooting")]
+        [Descriptor("Log application messages to a file. Use with caution. This will slow down the app and also consume disk space.  Use only for troubleshooting")]
+        [UIHint("ToggleSwitch")]
         public bool EnableLogs = false;
 
         public bool DebugLogMessagesToFile = false;
@@ -69,51 +82,70 @@ namespace ACAT.Lib.Core.Utility
 
         public bool DebugAssertOnError = false;
 
-        [BoolDescriptor("Enable audit logging of important events.  Use with caution.  This will slow down the app.  Use only for troubleshooting)")]
+        [Descriptor("Enable audit logging of important events.  Use with caution.  This will slow down the app.  Use only for troubleshooting)")]
+        [UIHint("ToggleSwitch")]
         public bool AuditLogEnable = false;
 
         public String AuditLogFilter = "*";
 
-        [BoolDescriptor("Enable Text-to-speech")]
+        [Descriptor("Enable Text-to-speech")]
+        [UIHint("ToggleSwitch")]
         public bool EnableTextToSpeech = true;
         
-        [BoolDescriptor("Enable Performance Monitor to monitor and log Memory and CPU utilization statistics")]
+        [Descriptor("Enable Performance Monitor to monitor and log Memory and CPU utilization statistics")]
+        [UIHint("ToggleSwitch")]
         public bool PerMonEnable = false;
 
-        [BoolDescriptor("Monitor and log CPU utilization")]
+        [Descriptor("Monitor and log CPU utilization")]
+        [UIHint("ToggleSwitch")]
         public bool PerMonCPUEnable = false;
 
-        [BoolDescriptor("Monitor and log memory utilization")]
+        [Descriptor("Monitor and log memory utilization")]
+        [UIHint("ToggleSwitch")]
         public bool PerMonMemoryEnable = false;
 
-        [IntDescriptor("How often to monitor and log Performance Monitor statistics (in seconds) ", 5, 3600, 15)]
-        public int PerfMonLogInterval = 60;
+        [IntDescriptor("How often to monitor and log Performance Monitor statistics (in seconds) ")]
+        [Range(5, 3600)]
+        [UIHint("Slider")]
+        public int PerfMonLogInterval = 15;
 
-        [BoolDescriptor("Include empty grid elements in the grid level scanning sequence")]
+        [Descriptor("Include empty grid elements in the grid level scanning sequence")]
+        [UIHint("ToggleSwitch")]
         public bool TopLevelScanIncludeEmptyGrids = true;
 
-        [BoolDescriptor("Display the actuator switch dialog on startup")]
+        [Descriptor("Display the actuator switch dialog on startup")]
+        [UIHint("ToggleSwitch")]
         public bool ShowSwitchTryoutOnStartup = true;
 
-        [BoolDescriptor("Display the ACAT Talk application interface description on startup")]
+        [Descriptor("Display the ACAT Talk application interface description on startup")]
+        [UIHint("ToggleSwitch")]
         public bool ShowTalkInterfaceDescOnStartup = true;
 
-        [IntDescriptor("Number of times the grid (top level) is scanned", 1, 10)]
+        [Descriptor("Number of times the grid (top level) is scanned")]
+        [Range(1, 10)]
+        [UIHint("Slider")]
         public int GridScanIterations = 4;
 
-        [IntDescriptor("Number of times the rows in a grid are scanned", 1, 10)]
+        [Descriptor("Number of times the rows in a grid are scanned")]
+        [Range(1, 10)]
+        [UIHint("Slider")]
         public int RowScanIterations = 1;
 
-        [IntDescriptor("Number of times the buttons in a row are scanned", 1, 10)]
+        [Descriptor("Number of times the buttons in a row are scanned")]
+        [Range(1, 10)]
+        [UIHint("Slider")]
         public int ColumnScanIterations = 1;
 
-        [BoolDescriptor("Prevent the system from going to sleep and the display from turning off")]
+        [Descriptor("Prevent the system from going to sleep and the display from turning off")]
+        [UIHint("ToggleSwitch")]
         public bool DisableSystemSleepMode = false;
 
-        [BoolDescriptor("Check display scale factor is set to 100% or 125% and display warning if it is not")]
+        [Descriptor("Check display scale factor is set to 100% or 125% and display warning if it is not")]
+        [UIHint("ToggleSwitch")]
         public bool ShowDisplayScaleMessageOnStartup = true;
 
-        [BoolDescriptor("Display calibration window help")]
+        [Descriptor("Display calibration window help")]
+        [UIHint("ToggleSwitch")]
         public bool ShowCalibrationHelp = true;
 
         public bool OnboardingComplete = false;
@@ -138,7 +170,8 @@ namespace ACAT.Lib.Core.Utility
         public int HideOnIdleTimeout = 5000;
 
 
-        [BoolDescriptor("Enable in App sounds")]
+        [Descriptor("Enable in App sounds")]
+        [UIHint("ToggleSwitch")]
         public bool EnableSounds = true;
 
         // unused variables for ACAT Talk. These will be used in ACAT App

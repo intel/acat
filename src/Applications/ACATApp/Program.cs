@@ -18,6 +18,7 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using ACAT.Extension;
+using ACATApp.UI;
 using ACATExtension.CommandHandlers;
 using ACATResources;
 using System;
@@ -175,13 +176,13 @@ namespace ACAT.Applications.ACATApp
 
                 //showTalkInterfaceDescription();
 
-                var startupArg = new StartupArg("MouseScanner")
+                var startupArg = new StartupArg("ACATDashboard")
                 {
                     DialogMode = false,
                     QuitAppOnFormClose = true
                 };
 
-                var form = PanelManager.Instance.CreatePanel("MouseScanner", startupArg);
+                var form = PanelManager.Instance.CreatePanel("ACATDashboard", startupArg);
                 if (form != null)
                 {
                     // Add ad-hoc agent that will handle the form
@@ -199,7 +200,7 @@ namespace ACAT.Applications.ACATApp
                 }
                 else
                 {
-                    MessageBox.Show(String.Format(StringResources.InvalidFormName, "MouseScanner"));
+                    MessageBox.Show(String.Format(StringResources.InvalidFormName, "ACATDashboard"));
                     return;
                 }
 

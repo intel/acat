@@ -14,7 +14,6 @@ using System.Xml.Serialization;
 using System.ComponentModel.DataAnnotations;
 
 namespace ACAT.Core.Utility
-namespace ACAT.Core.Utility
 {
     /// <summary>*
     /// Contains system-wide preference settings.  Settings are serialized

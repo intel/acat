@@ -16,7 +16,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.PreferencesManagement.UI;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACATResources;
@@ -27,10 +26,10 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using System.Windows.Threading;
+using ACAT.Lib.Core.PreferencesManagement.UI;
 
 namespace ACAT.Core.PreferencesManagement
 {

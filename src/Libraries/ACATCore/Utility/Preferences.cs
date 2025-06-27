@@ -6,7 +6,6 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PreferencesManagement;
-using ACAT.Core.PreferencesManagement;
 using System;
 using System.Reflection;
 using System.Text;

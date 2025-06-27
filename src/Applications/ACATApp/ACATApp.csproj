@@ -81,9 +81,6 @@
     <Compile Include="UI\ACATAppMainMenu.cs" />
     <Compile Include="UI\ACATAppToolbar.cs" />
     <Compile Include="UI\ACATDashboard.cs" />
-    <Compile Include="UI\UserControl1.xaml.cs">
-      <DependentUpon>UserControl1.xaml</DependentUpon>
-    </Compile>
     <Content Include="Properties\ACATApp.ico" />
     <Content Include="License.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -157,12 +154,6 @@
       <Name>AppCommon</Name>
       <Private>False</Private>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="UI\UserControl1.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

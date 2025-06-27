@@ -1,4 +1,4 @@
-﻿using ACAT.Lib.Core.Utility;
+﻿using ACAT.Core.Utility;
 using MahApps.Metro.Controls;
 using System;
 using System.ComponentModel.DataAnnotations;

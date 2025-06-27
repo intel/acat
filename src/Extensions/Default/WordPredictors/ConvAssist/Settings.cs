@@ -11,8 +11,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PreferencesManagement;
-using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
 
 namespace ACAT.Extensions.WordPredictors.ConvAssist

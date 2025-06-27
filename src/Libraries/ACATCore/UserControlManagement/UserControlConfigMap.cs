@@ -650,7 +650,7 @@ namespace ACAT.Core.UserControlManagement
         /// Found an XML file. Store the complete path to the file
         /// to the location map table
         /// </summary>
-        /// <param name="xmlFileName">name of theo xml file</param>
+        /// <param name="xmlFileName">name of the xml file</param>
         private static void onXmlFileFound(String xmlFileName)
         {
             String fileName = Path.GetFileName(xmlFileName).ToLower();

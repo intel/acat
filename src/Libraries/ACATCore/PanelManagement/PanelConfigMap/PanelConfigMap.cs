@@ -122,7 +122,7 @@ namespace ACAT.Core.PanelManagement
         /// <returns>the full file name</returns>
         public static String GetCurrentCulturePanelClassConfigFile()
         {
-            return Path.Combine(UserManager.CurrentUserDir, CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, PanelClassConfigFileName);
+            return Path.Combine(FileUtils.GetDefaultResourcesDir(), PanelClassConfigFileName);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace ACAT.Core.PanelManagement
         /// <returns>the full filename</returns>
         public static String GetDefaultPanelClassConfigFileName()
         {
-            return Path.Combine(UserManager.CurrentUserDir, DefaultCulture, PanelClassConfigFileName);
+            return Path.Combine(FileUtils.GetDefaultResourcesDir(), PanelClassConfigFileName);
         }
 
         /// <summary>
@@ -413,7 +413,7 @@ namespace ACAT.Core.PanelManagement
         /// <returns></returns>
         public static bool AddPanelClassConfigMap(String appId, String language, PanelClassConfigMap panelClassConfigMap)
         {
-            var panelClassConfigFilePath = Path.Combine(UserManager.CurrentUserDir, language, PanelClassConfigFileName);
+            var panelClassConfigFilePath = Path.Combine(FileUtils.GetDefaultResourcesDir(), PanelClassConfigFileName);
 
             if (File.Exists(panelClassConfigFilePath))
             {
@@ -690,7 +690,7 @@ namespace ACAT.Core.PanelManagement
 
             _culturePanelClassConfigMapTable ??= new Dictionary<string, PanelClassConfig>();
 
-            var panelClassConfigFilePath = Path.Combine(UserManager.CurrentUserDir, language, PanelClassConfigFileName);
+            var panelClassConfigFilePath = Path.Combine(FileUtils.GetDefaultResourcesDir(), PanelClassConfigFileName);
 
             if (File.Exists(panelClassConfigFilePath) && !_culturePanelClassConfigMapTable.ContainsKey(language))
             {

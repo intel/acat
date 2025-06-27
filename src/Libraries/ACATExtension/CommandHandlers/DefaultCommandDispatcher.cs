@@ -29,7 +29,7 @@ namespace ACAT.Extension.CommandHandlers
             init();
         }
 
-        public bool DefaultDispatch(String command, ref bool handled)
+        public bool DispatchCommand(String command, ref bool handled)
         {
             IRunCommandHandler runCommand = DefaultRunCommands.Get(command);
 

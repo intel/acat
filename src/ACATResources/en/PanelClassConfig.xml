@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <AppPanelClassConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <PanelClassConfigs>
+    <!-- ACAT Talk Application -->
     <PanelClassConfig>
       <AppDescription>Reduced functionality which supports the Talk window to communicate</AppDescription>
       <AppId>ACATTalk</AppId>
       <AppName>ACAT Talk Application</AppName>
       <PanelClassConfigMaps>
+        <!-- TalkApplicationABC -->
         <PanelClassConfigMap>
           <Default>true</Default>
           <Description>An alphabetically arranged keyboard with predictive text/sentences to help you communicate</Description>
@@ -20,6 +22,7 @@
             </PanelClassConfigMapEntry>
           </PanelClassConfigMapEntries>
         </PanelClassConfigMap>
+        <!-- TalkApplicationQwerty -->
         <PanelClassConfigMap>
           <Default>false</Default>
           <Description>A full QWERTY keyboard with predictive text/sentences to help you communicate</Description>
@@ -34,7 +37,8 @@
             </PanelClassConfigMapEntry>
           </PanelClassConfigMapEntries>
         </PanelClassConfigMap>
-		<PanelClassConfigMap>
+        <!-- TalkApplicationBCIScannerABC -->
+		    <PanelClassConfigMap>
           <Default>false</Default>
           <Description>An alphabetically arranged keyboard with predictive text/sentences to help you communicate</Description>
           <Name>TalkApplicationBCIScannerABC</Name>
@@ -50,22 +54,23 @@
         </PanelClassConfigMap>
       </PanelClassConfigMaps>
     </PanelClassConfig>
+    <!-- ACAT Dashboard -->
     <PanelClassConfig>
-      <AppDescription>Mouse Control App</AppDescription>
+      <AppDescription>ACAT Dashboard Application</AppDescription>
       <AppId>ACATApp</AppId>
       <AppName>ACAT App</AppName>
       <PanelClassConfigMaps>
         <PanelClassConfigMap>
           <Default>true</Default>
-          <Description>Toolbar with buttons to help move and interact with the system mouse</Description>
-          <Name>Mouse</Name>
+          <Description>Main ACAT Dashboard Widgets</Description>
+          <Name>ACATDashboard</Name>
           <ScreenshotFileName>ABCKeyboardLayout.png</ScreenshotFileName>
-          <DisplayNameShort>Mouse</DisplayNameShort>
-          <DisplayNameLong>Mouse</DisplayNameLong>
+          <DisplayNameShort>ACATDashboard</DisplayNameShort>
+          <DisplayNameLong>ACAT Dashboard</DisplayNameLong>
           <PanelClassConfigMapEntries>
             <PanelClassConfigMapEntry>
               <ConfigId>3BFBA375-13F7-461B-A7C7-57BFFA9D21AD</ConfigId>
-              <PanelClass>MouseScanner</PanelClass>
+              <PanelClass>ACATDashboard</PanelClass>
             </PanelClassConfigMapEntry>
           </PanelClassConfigMapEntries>
         </PanelClassConfigMap>

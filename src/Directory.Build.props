@@ -29,7 +29,7 @@
     <InformationalVersion>$(VersionPrefix)</InformationalVersion>
 
     <!-- Base output locations -->
-    <BaseOutputPath>$(SolutionDir)..\artifacts\</BaseOutputPath>
+    <BaseOutputPath>$(SolutionDir)artifacts\</BaseOutputPath>
     <BuildPath>$(BaseOutputPath)bin\$(Platform)\$(Configuration)\</BuildPath>
     <IntermediatePath>$(BaseOutputPath)obj\$(Platform)\$(Configuration)\</IntermediatePath>
 

@@ -559,6 +559,12 @@
     <Compile Include="Widgets\SentenceListItemWidget.cs" />
     <Compile Include="Widgets\WordListWidget.cs" />
     <Compile Include="Widgets\WordListItemWidget.cs" />
+    <Compile Include="Win32\NativeMethods.cs" />
+    <Compile Include="Win32\Win32Constants.cs" />
+    <Compile Include="Win32\Win32Delegates.cs" />
+    <Compile Include="Win32\Win32Enums.cs" />
+    <Compile Include="Win32\Win32Helper.cs" />
+    <Compile Include="Win32\Win32Structures.cs" />
     <Compile Include="WordPredictorManagement\Interfaces\IWordPredictor.cs" />
     <Compile Include="WordPredictorManagement\NullWordPredictor.cs" />
     <Compile Include="WordPredictorManagement\PreferredWordPredictor.cs" />
@@ -678,9 +684,6 @@
     <EmbeddedResource Include="WidgetManagement\ScannerTableLayout.resx">
       <DependentUpon>ScannerTableLayout.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="MouseCursor.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />

@@ -7,9 +7,12 @@
 
 using ACAT.Core.PreferencesManagement;
 using ACAT.Core.Utility;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Xml.Serialization;
 
+namespace ACAT.Extension
 namespace ACAT.Extension
 {
     /// <summary>
@@ -119,7 +122,20 @@ namespace ACAT.Extension
         protected override int resolveVariableInt(String variableName, int defaultValue)
         {
             var retVal = variableName switch
+            var retVal = variableName switch
             {
+                "@FirstPauseTime" => FirstPauseTime,
+                "@ScanTime" => ScanTime,
+                "@GridScanIterations" => GridScanIterations,
+                "@RowScanIterations" => RowScanIterations,
+                "@ColumnScanIterations" => ColumnScanIterations,
+                "@WordPredictionScanIterations" => WordPredictionScanIterations,
+                "@MenuDialogScanTime" => MenuDialogScanTime,
+                "@FirstRepeatTime" => FirstRepeatTime,
+                "@WordPredictionFirstPauseTime" => WordPredictionFirstPauseTime,
+                "@StripScannerColumnIterations" => StripScannerColumnIterations,
+                _ => base.resolveVariableInt(variableName, defaultValue),
+            };
                 "@FirstPauseTime" => FirstPauseTime,
                 "@ScanTime" => ScanTime,
                 "@GridScanIterations" => GridScanIterations,

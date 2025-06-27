@@ -6,12 +6,14 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
 using System;
 using System.Reflection;
 using System.Text;
 using System.Xml.Serialization;
 using System.ComponentModel.DataAnnotations;
 
+namespace ACAT.Core.Utility
 namespace ACAT.Core.Utility
 {
     /// <summary>*

@@ -9,6 +9,7 @@ using ACAT.Lib.Core.PreferencesManagement;
 using ACAT.Lib.Core.Utility;
 using System.ComponentModel.DataAnnotations;
 using System;
+using System.ComponentModel;
 
 namespace ACAT.Lib.Core.AgentManagement
 {

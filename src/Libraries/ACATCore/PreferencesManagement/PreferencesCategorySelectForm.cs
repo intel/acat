@@ -19,6 +19,7 @@ using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace ACAT.Lib.Core.PreferencesManagement
@@ -335,6 +336,38 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// </summary>
         private void refreshDataGridView()
         {
+
+            var flowPanel = new TableLayoutPanel
+            {
+                BackColor = Color.Transparent,
+                AutoSize = false,
+                AutoScroll = false,
+                Dock = DockStyle.Fill,
+                ColumnCount = 1,
+                RowCount = 0,
+                GrowStyle = TableLayoutPanelGrowStyle.AddRows
+            };
+            var categoryLabel = new Label
+            {
+                Font = new Font("Montserrat", 28, FontStyle.Bold),
+                ForeColor = Color.White,
+                Text = this.AccessibilityObject.Name,
+                Dock = DockStyle.Top,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Margin = new Padding(0, 0, 0, 10),
+                Padding = new Padding(0, 0, 0, 10),
+                BackColor = Color.Transparent,
+                Anchor = AnchorStyles.Top | AnchorStyles.Left,
+                AutoSize = true,
+            };
+
+            flowPanel.Controls.Add(categoryLabel);
+
+
+            var parent = dataGridView2.Parent;
+            parent.Controls.Remove(dataGridView2);
+            parent.Controls.Add(flowPanel);
+
             foreach (var category in PreferencesCategories)
             {
                 if (!(category.PreferenceObj is IExtension))
@@ -348,51 +381,81 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     continue;
                 }
 
-                int rowNum = dataGridView2.Rows.Add(desc.Name, desc.Description);
-                dataGridView2.Rows[rowNum].Tag = category;
-
-                IPreferences prefs = null;
-                bool supportsCustomDialog = false;
-
-                if (category.PreferenceObj is ISupportsPreferences)
+                var categoryItem = new TableLayoutPanel
                 {
-                    prefs = (category.PreferenceObj as ISupportsPreferences).GetPreferences();
-                    supportsCustomDialog = (category.PreferenceObj as ISupportsPreferences).SupportsPreferencesDialog;
-                }
+                    AutoSize = true,
+                    AutoSizeMode = AutoSizeMode.GrowOnly,
+                    Margin = new Padding(10),
+                    Padding = new Padding(10),
+                    BackColor = Color.FromArgb(48, 49, 64),
+                    Dock = DockStyle.Fill,
 
-                // If there are no preferences, replace the button cell
-                // with a read-only textbox cell
-                if (prefs == null && !supportsCustomDialog)
-                {
-                    var textBoxCell = new DataGridViewTextBoxCell();
-                    dataGridView2[ConfigureColumn.Name, rowNum] = textBoxCell;
-                    textBoxCell.ReadOnly = true;
-                }
-                // Cell is "Setup" button
-                else
-                {
-                    (dataGridView2[ConfigureColumn.Name, rowNum] as DataGridViewButtonCell).Value = "Setup";
-                }
 
-                (dataGridView2[EnableColumn.Name, rowNum] as DataGridViewCheckBoxCell).Value = category.Enable;
-                if (!category.AllowEnable)
+                };
+
+
+                var label = new Label
                 {
-                    (dataGridView2[EnableColumn.Name, rowNum] as DataGridViewCheckBoxCell).ReadOnly = true;
-                }
+                    Text = desc.Name,
+                    AutoSize = true,
+                    Font = new Font("Montserrat", 24, FontStyle.Bold),
+                    ForeColor = Color.White,
+                    Margin = new Padding(0, 0, 0, 5)
+                };
+                categoryItem.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
+                categoryItem.Controls.Add(label, 0, 0);
+
+                var descriptionLabel = new Label
+                {
+                    Text = desc.Description,
+                    AutoSize = true,
+                    Font = new Font("Segoe UI", 20, FontStyle.Italic),
+                    ForeColor = Color.White,
+                    Margin = new Padding(0, 0, 0, 5)
+                };
+                var row = categoryItem.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                categoryItem.Controls.Add(descriptionLabel, 0, 1);
+
+                var checkBox = new CheckBox
+                {
+                    Text = "Enable",
+                    Checked = category.Enable,
+                    Enabled = category.AllowEnable,
+                    AutoSize = true,
+                    Margin = new Padding(0, 0, 0, 5)
+                };
+                var col = categoryItem.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+                categoryItem.Controls.Add(checkBox, col, 0);
+
+                var setupButton = new Button
+                {
+                    Text = ">",
+                    Font = new Font("Montserrat", 24, FontStyle.Bold),
+                    ForeColor = Color.White,
+                    AutoSize = true,
+                    BackColor = Color.Transparent,
+                    Enabled = (category.PreferenceObj is ISupportsPreferences) && ((category.PreferenceObj as ISupportsPreferences).SupportsPreferencesDialog || (category.PreferenceObj as ISupportsPreferences).GetPreferences() != null)
+                };
+                col = categoryItem.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+                categoryItem.Controls.Add(setupButton, col, 0);
+                categoryItem.SetRowSpan(setupButton, 2);
+
+                flowPanel.Controls.Add(categoryItem);
             }
 
-            // Sort first column ascending everytime grid is refreshed
-            dataGridView2.Sort(CategoryNameColumn, ListSortDirection.Ascending);
-            dataGridView2.AutoResizeRows();
 
-            // Wrap text everytime grid is refreshed
-            wrapText(true);
+            //// Sort first column ascending everytime grid is refreshed
+            //dataGridView2.Sort(CategoryNameColumn, ListSortDirection.Ascending);
+            //dataGridView2.AutoResizeRows();
 
-            if (dataGridView2.Rows.Count > 0)
-            {
-                dataGridView2.CurrentCell = dataGridView2.Rows[0].Cells[0];
-                dataGridView2.Rows[0].Selected = true;
-            }
+            //// Wrap text everytime grid is refreshed
+            //wrapText(true);
+
+            //if (dataGridView2.Rows.Count > 0)
+            //{
+            //    dataGridView2.CurrentCell = dataGridView2.Rows[0].Cells[0];
+            //    dataGridView2.Rows[0].Selected = true;
+            //}
         }
 
         /// <summary>

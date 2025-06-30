@@ -38,7 +38,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
 
         [Descriptor("For internal use, automatically duplicate the required channels as optional channels (simulate connection of daisy board)")]
         [UIHint("ToggleSwitch")]
-        public bool Testing_DuplicateRequiredChannelsAsOptionalChannels = false;
+        [DefaultValue(false)]
+        public bool Testing_DuplicateRequiredChannelsAsOptionalChannels { get; set; }  =  false;
 
         // [BoolDescriptor("For internal use, force recalibration from file in Testing_CalibrationFileId", false)]
         public bool Testing_ForceRecalibrateFromFile;
@@ -59,56 +60,67 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         [Descriptor("Pause time (ins ms)")]
         [Range(100, 5000)]
         [UIHint("Slider")]
-        public int Scanning_PauseTime { get; set; } = 300;
+        [DefaultValue(300)]
+        public int Scanning_PauseTime { get; set; }  =  300;
 
         [Descriptor("Pause time (ins ms)")]
         [Range(100, 5000)]
         [UIHint("Slider")]
-        public int Scanning_ShortPauseTime { get; set; } = 300;
+        [DefaultValue(300)]
+        public int Scanning_ShortPauseTime { get; set; }  =  300;
 
         [Descriptor("Time (ins ms) when decision is shown")]
         [Range(200, 5000)]
         [UIHint("Slider")]
-        public int Scanning_ShowDecisionTime { get; set; } = 2000;
+        [DefaultValue(2000)]
+        public int Scanning_ShowDecisionTime { get; set; }  =  2000;
 
         [Descriptor("Delay (in ms) after a decision is made")]
         [Range(0, 20000)]
         [UIHint("Slider")]
-        public int Scanning_DelayAfterDecision { get; set; } = 5000;
+        [DefaultValue(5000)]
+        public int Scanning_DelayAfterDecision { get; set; }  =  5000;
 
         [Descriptor("Delay (in ms) to get ready before typing")]
         [Range(0, 20000)]
         [UIHint("Slider")]
-        public int Scanning_DelayToGetReady { get; set; } = 3000;
+        [DefaultValue(3000)]
+        public int Scanning_DelayToGetReady { get; set; }  =  3000;
 
         [Descriptor("Is focal circle filled?")]
         [UIHint("ToggleSwitch")]
-        public bool Scanning_IsFocalCircleFilled = false;
+        [DefaultValue(false)]
+        public bool Scanning_IsFocalCircleFilled { get; set; }  =  false;
 
         [Descriptor("Color of the focal circle. Available options: green, yellow.")]
         [UIHint("TextBox")]
-        public String Scanning_FocalCircleColor = "green";
+        [DefaultValue("green")]
+        public String Scanning_FocalCircleColor { get; set; }  =  "green";
 
         // ************************** Calibration *********************************** //
 
         //[Descriptor("Offset added to target in calibration")]
         //[Range(0, 10000)]
         //[UIHint("Slider")]
-        // public int Calibration_OffsetTarget = 1000;
+        [DefaultValue(1000)]
+        // public int Calibration_OffsetTarget { get; set; }  =  1000;
         public int Calibration_OffsetTarget;
 
         [IntDescriptor("Maximum elapsed time to force calibrating again")]
         [Range(30, 600)]
         [UIHint("Slider")]
-        public int Calibration_MaxElapsedTimeToForceRecalibration = 360;
+        [DefaultValue(360)]
+        public int Calibration_MaxElapsedTimeToForceRecalibration { get; set; }  =  360;
 
         [Descriptor("Path where the trained classifiers are stored")]
         [UIHint("TextBox")]
-        public string Calibration_TrainedClassifiersFilePath = "Actuators\\BCI\\TrainedClassifiers";
+        [DefaultValue("Actuators\\BCI\\TrainedClassifiers")]
+        public string Calibration_TrainedClassifiersFilePath { get; set; }  =  "Actuators\\BCI\\TrainedClassifiers";
 
         [Descriptor("Display popup window with signals after calibration")]
         [UIHint("ToggleSwitch")]
-        public bool Calibration_DisplaySignalsAfterCalibrationFlag = false;
+        [DefaultValue(false)]
+        public bool Calibration_DisplaySignalsAfterCalibrationFlag { get; set; }  =  false;
 
         [Descriptor("Use advance mode for typing-calibration mappins?")]
         [UIHint("ToggleSwitch")]
@@ -128,16 +140,19 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         /// </summary>
         [Descriptor("Name of the GTec blueooth device")]
         [UIHint("TextBox")]
-        public string GTecDeviceName { get; set; } = "";
+        [DefaultValue("")]
+        public string GTecDeviceName { get; set; }  =  "";
 
 
         [Descriptor("Automatically disable bad channels while typing")]
         [UIHint("ToggleSwitch")]
-        public bool DAQ_DisableChannelsAutomatically = true;
+        [DefaultValue(true)]
+        public bool DAQ_DisableChannelsAutomatically { get; set; }  =  true;
 
         [Descriptor("Display filter settings screen before displaying EEG signals screen")]
         [UIHint("ToggleSwitch")]
-        public bool DAQ_ShowFilterSettings = true;
+        [DefaultValue(true)]
+        public bool DAQ_ShowFilterSettings { get; set; }  =  true;
 
         /// <summary>
         /// Index of the frontend filter:
@@ -150,11 +165,11 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         /// Default: 4 (bandpass 5-50Hz)
         /// </summary>
         ///
-        //[Descriptor("Index of the eeg filter where 0=no filter, 1=bandpass[1-50]Hz, 2=bandpass[7-13]Hz, 3=bandpass[15-50]Hz, 4=bandpass[5-50Hz], 5=highpass 20Hz")]
-       // [Range(0, 5)]
-       // [UIHint("Slider")]
-       // public int DAQ_FrontendFilterIdx { get; set; } = 4;
-        public int DAQ_FrontendFilterIdx { get; set; }
+        [Descriptor("Index of the eeg filter where 0=no filter, 1=bandpass[1-50]Hz, 2=bandpass[7-13]Hz, 3=bandpass[15-50]Hz, 4=bandpass[5-50Hz], 5=highpass 20Hz")]
+        [Range(0, 5)]
+        [UIHint("Slider")]
+        [DefaultValue(4)]
+       public int DAQ_FrontendFilterIdx { get; set; }  =  4;
 
         /// <summary>
         /// Index of the notch filter:
@@ -165,7 +180,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         [Descriptor("Index of the notch filter where 0=no filter, 1=50Hz (Europe), 2=60Hz (US)")]
         [Range(0, 2)]
         [UIHint("Slider")]
-        public int DAQ_NotchFilterIdx { get; set; } = 2;
+        [DefaultValue(2)]
+        public int DAQ_NotchFilterIdx { get; set; }  =  2;
 
         /// <summary>
         /// Directory where data will be saved
@@ -173,14 +189,16 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         ///
         [Descriptor("Directory where EEG data will be saved")]
         [UIHint("TextBox")]
-        public String DAQ_OutputDirectory { get; set; } = "EEGData";
+        [DefaultValue("EEGData")]
+        public String DAQ_OutputDirectory { get; set; }  =  "EEGData";
 
         /// <summary>
         /// True if data will be saved to a file
         /// </summary>
         [Descriptor("Save filtered eeg data from typing to a file? NOTE: Calibration data from current session will always be saved to a file.")]
         [UIHint("ToggleSwitch")]
-        public bool DAQ_SaveToFileFlag { get; set; } = true;
+        [DefaultValue(true)]
+        public bool DAQ_SaveToFileFlag { get; set; }  =  true;
 
         /// <summary>
         /// Saves raw data in addition to filtered data
@@ -197,7 +215,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         [Descriptor("Delay after calibration repetition to mimic typing")]
         [Range(0, 3000)]
         [UIHint("Slider")]
-        public int DAQ_DelayAfterCalibrationRepetition = 0;
+        [DefaultValue(0)]
+        public int DAQ_DelayAfterCalibrationRepetition { get; set; }  =  0;
 
         // ************************** Signal control *********************************** //
 
@@ -219,7 +238,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         [Descriptor("Duration (in ms) of the window used to calculate the status of each channel")]
         [Range(100, 10000)]
         [UIHint("Slider")]
-        public int SignalControl_WindowDurationForVrmsMeaseurment { get; set; } = 1000;
+        [DefaultValue(1000)]
+        public int SignalControl_WindowDurationForVrmsMeaseurment { get; set; }  =  1000;
 
         /// <summary>
         /// Boolen, true if recheck for signal quality required
@@ -240,23 +260,28 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
 
         [Descriptor("Short name / id (ex: Pz, C3, etc.) of channel #4 in required group")] // Pz
         [UIHint("TextBox")]
-        public String SignalControl_RequiredChannel_Channel4_Name = "Pz";
+        [DefaultValue("Pz")]
+        public String SignalControl_RequiredChannel_Channel4_Name { get; set; }  =  "Pz";
 
         [Descriptor("Short name / id (ex: Pz, C3, etc.) of channel #5 in required group")] // P3
         [UIHint("TextBox")]
-        public String SignalControl_RequiredChannel_Channel5_Name = "P3";
+        [DefaultValue("P3")]
+        public String SignalControl_RequiredChannel_Channel5_Name { get; set; }  =  "P3";
 
         [Descriptor("Short name / id (ex: Pz, C3, etc.) of channel #6 in required group")] // P4
         [UIHint("TextBox")]
-        public String SignalControl_RequiredChannel_Channel6_Name = "P4";
+        [DefaultValue("P4")]
+        public String SignalControl_RequiredChannel_Channel6_Name { get; set; }  =  "P4";
 
         [Descriptor("Short name / id (ex: Pz, C3, etc.) of channel #7 in required group")] // T5
         [UIHint("TextBox")]
-        public String SignalControl_RequiredChannel_Channel7_Name = "T5";
+        [DefaultValue("T5")]
+        public String SignalControl_RequiredChannel_Channel7_Name { get; set; }  =  "T5";
 
         [Descriptor("Short name / id (ex: Pz, C3, etc.) of channel #8 in required group")] // Fz
         [UIHint("TextBox")]
-        public String SignalControl_RequiredChannel_Channel8_Name = "Fz";
+        [DefaultValue("Fz")]
+        public String SignalControl_RequiredChannel_Channel8_Name { get; set; }  =  "Fz";
 
         // ************************** Signal control *********************************** //
 
@@ -337,67 +362,83 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         /// </summary>
         [Descriptor("Whether channel #1 is enabled / utilized by the algorithm during processing")]
         [UIHint("ToggleSwitch")]
-        public bool Classifier_EnableChannel1 = true;
+        [DefaultValue(true)]
+        public bool Classifier_EnableChannel1 { get; set; }  =  true;
 
         [Descriptor("Whether channel #2 is enabled / utilized by the algorithm during processing")]
         [UIHint("ToggleSwitch")]
-        public bool Classifier_EnableChannel2 = true;
+        [DefaultValue(true)]
+        public bool Classifier_EnableChannel2 { get; set; }  =  true;
 
         [Descriptor("Whether channel #3 is enabled / utilized by the algorithm during processing")]
         [UIHint("ToggleSwitch")]
-        public bool Classifier_EnableChannel3 = true;
+        [DefaultValue(true)]
+        public bool Classifier_EnableChannel3 { get; set; }  =  true;
 
         [Descriptor("Whether channel #4 is enabled / utilized by the algorithm during processing")]
         [UIHint("ToggleSwitch")]
-        public bool Classifier_EnableChannel4 = true;
+        [DefaultValue(true)]
+        public bool Classifier_EnableChannel4 { get; set; }  =  true;
 
         [Descriptor("Whether channel #5 is enabled / utilized by the algorithm during processing")]
         [UIHint("ToggleSwitch")]
-        public bool Classifier_EnableChannel5 = true;
+        [DefaultValue(true)]
+        public bool Classifier_EnableChannel5 { get; set; }  =  true;
 
         [Descriptor("Whether channel #6 is enabled / utilized by the algorithm during processing")]
         [UIHint("ToggleSwitch")]
-        public bool Classifier_EnableChannel6 = true;
+        [DefaultValue(true)]
+        public bool Classifier_EnableChannel6 { get; set; }  =  true;
 
         [Descriptor("Whether channel #7 is enabled / utilized by the algorithm during processing")]
         [UIHint("ToggleSwitch")]
-        public bool Classifier_EnableChannel7 = true;
+        [DefaultValue(true)]
+        public bool Classifier_EnableChannel7 { get; set; }  =  true;
 
         [Descriptor("Whether channel #8 is enabled / utilized by the algorithm during processing")]
         [UIHint("ToggleSwitch")]
-        public bool Classifier_EnableChannel8 = true;
+        [DefaultValue(true)]
+        public bool Classifier_EnableChannel8 { get; set; }  =  true;
 
         [Descriptor("Whether channel #9 is enabled / utilized by the algorithm during processing")]
         [UIHint("ToggleSwitch")]
-        public bool Classifier_EnableChannel9 = true;
+        [DefaultValue(true)]
+        public bool Classifier_EnableChannel9 { get; set; }  =  true;
 
         [Descriptor("Whether channel #10 is enabled / utilized by the algorithm during processing")]
         [UIHint("ToggleSwitch")]
-        public bool Classifier_EnableChannel10 = true;
+        [DefaultValue(true)]
+        public bool Classifier_EnableChannel10 { get; set; }  =  true;
 
         [Descriptor("Whether channel #11 is enabled / utilized by the algorithm during processing")]
         [UIHint("ToggleSwitch")]
-        public bool Classifier_EnableChannel11 = true;
+        [DefaultValue(true)]
+        public bool Classifier_EnableChannel11 { get; set; }  =  true;
 
         [Descriptor("Whether channel #12 is enabled / utilized by the algorithm during processing")]
         [UIHint("ToggleSwitch")]
-        public bool Classifier_EnableChannel12 = true;
+        [DefaultValue(true)]
+        public bool Classifier_EnableChannel12 { get; set; }  =  true;
 
         [Descriptor("Whether channel #13 is enabled / utilized by the algorithm during processing")]
         [UIHint("ToggleSwitch")]
-        public bool Classifier_EnableChannel13 = true;
+        [DefaultValue(true)]
+        public bool Classifier_EnableChannel13 { get; set; }  =  true;
 
         [Descriptor("Whether channel #14 is enabled / utilized by the algorithm during processing")]
         [UIHint("ToggleSwitch")]
-        public bool Classifier_EnableChannel14 = true;
+        [DefaultValue(true)]
+        public bool Classifier_EnableChannel14 { get; set; }  =  true;
 
         [Descriptor("Whether channel #15 is enabled / utilized by the algorithm during processing")]
         [UIHint("ToggleSwitch")]
-        public bool Classifier_EnableChannel15 = true;
+        [DefaultValue(true)]
+        public bool Classifier_EnableChannel15 { get; set; }  =  true;
 
         [Descriptor("Whether channel #16 is enabled / utilized by the algorithm during processing")]
         [UIHint("ToggleSwitch")]
-        public bool Classifier_EnableChannel16 = true;
+        [DefaultValue(true)]
+        public bool Classifier_EnableChannel16 { get; set; }  =  true;
 
         // [StringDescriptor("Method to use for signal quality check ('Top8' = Signal quality check only on top 8 channels | 'AllEnabled' = Signal quality check on all channels enabled with Classifier_EnableChannel1-16)" , "AllEnabled")]
         public String SignalQuality_AcceptanceMode;

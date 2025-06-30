@@ -33,6 +33,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// </summary>
         [Descriptor("Auto-display contextual menu when the app window gets focus")]
         [UIHint("ToggleSwitch")]
-        public bool AutoSwitchScannerEnable { get; set; } = true;
+        [DefaultValue(true)]
+        public bool AutoSwitchScannerEnable { get; set; } =  true;
     }
 }

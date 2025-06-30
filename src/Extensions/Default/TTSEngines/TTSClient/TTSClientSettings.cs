@@ -16,6 +16,7 @@ using System.ComponentModel.DataAnnotations;
 using System;
 using System.IO;
 using System.Xml.Serialization;
+using System.ComponentModel;
 
 namespace ACAT.Extensions.Default.TTSEngines.TTSClient
 {

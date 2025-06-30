@@ -17,6 +17,7 @@ using System;
 using System.IO;
 using System.Speech.Synthesis;
 using System.Xml.Serialization;
+using System.ComponentModel;
 
 namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
 {

@@ -15,6 +15,7 @@ using ACAT.Lib.Core.Utility;
 using System.ComponentModel.DataAnnotations;
 using System;
 using System.Xml.Serialization;
+using System.ComponentModel;
 
 namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
 {
@@ -26,8 +27,8 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
     {
         [Descriptor("A string of characters that should be filtered out from the predicted words, eg, punctuations")]
         [UIHint("TextBox")]
-        [DefaultValue(String.Empty)]
-        public String FilterChars { get; set; }  =  String.Empty;
+        [DefaultValue("")]
+        public String FilterChars { get; set; }  =  "";
 
         /// <summary>
         /// Path to the file where preferences are stored

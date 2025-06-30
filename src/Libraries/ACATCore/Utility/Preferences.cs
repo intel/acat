@@ -11,6 +11,7 @@ using System.Text;
 using ACAT.Lib.Core.PreferencesManagement;
 using System.Xml.Serialization;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace ACAT.Lib.Core.Utility
 {

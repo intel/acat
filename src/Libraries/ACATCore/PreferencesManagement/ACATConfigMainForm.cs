@@ -198,24 +198,10 @@ namespace ACAT.Lib.Core.PreferencesManagement
             IntPtr formHandle = this.Handle;
 
             // Handle category-specific initialization
-            switch (newConfigCategory)
+              switch (newConfigCategory)
             {
                 case "General":
-                    var generalSettings = new GeneralSettingsCategory();
-                    var generalForm = new PreferencesEditForm
-                    {
-                        SupportsPreferencesObj = generalSettings,
-                        Title = "General Settings"
-                    };
-
-                    NotifyWrapTextCheckBoxClicked wrapTextHandler = generalForm.checkBoxWrapText_CheckedChanged;
-                    NotifyResetToDefaultButtonClicked resetHandler = generalForm.buttonDefaults_Click;
-                    bool wrapTextDefault = generalForm._wrapText;
-
-                    buttonResetToDefault.Visible = true;
-                    SetNewFormButtonHandlers(resetHandler, wrapTextHandler, wrapTextDefault);
-
-                    newPreferencesSelectForm = generalForm;
+                    newPreferencesSelectForm = CreateGeneralPreferencesForm();
                     break;
 
                 case "Actuators":
@@ -224,7 +210,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                         ShowError("Actuator");
                         return;
                     }
-
                     newPreferencesSelectForm = Context.AppActuatorManager.GetPreferencesSelectionForm(parentControlHandle);
                     break;
 
@@ -234,7 +219,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                         ShowError("Word Prediction");
                         return;
                     }
-
                     newPreferencesSelectForm = Context.AppWordPredictionManager.GetPreferencesSelectionForm(parentControlHandle);
                     break;
 
@@ -244,8 +228,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                         ShowError("Text-to-Speech");
                         return;
                     }
-
-                    newPreferencesSelectForm = Context.AppTTSManager.GetPreferencesSelectionForm(parentControlHandle);
+                   newPreferencesSelectForm = Context.AppTTSManager.GetPreferencesSelectionForm(parentControlHandle);
                     break;
             }
 
@@ -314,15 +297,32 @@ namespace ACAT.Lib.Core.PreferencesManagement
             newPreferencesSelectForm.Show();
         }
 
+        private PreferencesEditForm CreateGeneralPreferencesForm()
+        {
+            var generalSettings = new GeneralSettingsCategory();
+
+            var generalForm = new PreferencesEditForm
+            {
+                SupportsPreferencesObj = generalSettings,
+                Title = "General Settings"
+            };
+
+            // Hook up handlers and defaults
+            NotifyWrapTextCheckBoxClicked wrapTextHandler = generalForm.checkBoxWrapText_CheckedChanged;
+            NotifyResetToDefaultButtonClicked resetHandler = generalForm.buttonDefaults_Click;
+            bool wrapTextDefault = generalForm._wrapText;
+
+            buttonResetToDefault.Visible = true;
+            SetNewFormButtonHandlers(resetHandler, wrapTextHandler, wrapTextDefault);
+
+            return generalForm;
+        }
+
+
         private void ShowError(string category)
         {
             MessageBox.Show($"Error loading {category} extensions", "ACAT Config", MessageBoxButtons.OK);
         }
-
-        /*private void handlePreferenceChangeMade()
-        {
-            buttonSave.Visible = true;
-        }*/
 
         /// <summary>
         /// Handler for when preferences category is selected ("Setup" button in "Configure" column)
@@ -475,84 +475,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 if (!saveButtonPressed)
                     ((Form)shownForm).Close();
             }
-
-
-            /*   bool shownFormDirty = false;
-                bool userSaveConfirmation = false;
-
-                if (_shownPreferenceForms != null && _shownPreferenceForms.Count >= 1)
-                {
-                    int numFormsOpen = _shownPreferenceForms.Count;
-                    if (saveButtonPressed)
-                    {
-                        numFormsOpen = 1;
-                    }
-
-                    for (int i = 0; i < numFormsOpen; i++)
-                    {
-                        if (_shownPreferenceForms.Count == 0)
-                        {
-                            break;
-                        }
-
-                        var shownForm = _shownPreferenceForms.Peek();
-
-                        if (shownForm.GetType() == typeof(PreferencesEditForm))
-                        {
-                            _ = ((PreferencesEditForm)shownForm).Validate();
-                        }
-
-                        if (!saveButtonPressed)
-                        {
-                            _shownPreferenceForms.Pop();
-                        }
-
-                        if (shownForm.GetType() == typeof(PreferencesCategorySelectForm))
-                        {
-                            if (((PreferencesCategorySelectForm)shownForm)._isDirty)
-                            {
-                                shownFormDirty = true;
-                            }
-                        }
-                        else if (shownForm.GetType() == typeof(PreferencesEditForm))
-                        {
-                            if (((PreferencesEditForm)shownForm)._isDirty)
-                            {
-                                shownFormDirty = true;
-                            }
-                        }
-
-                        if (shownFormDirty == true && userSaveConfirmation == false)
-                        {
-                            userSaveConfirmation = ConfirmBoxTwoOption.ShowDialog("Save changes?", "", StringResources.Yes, StringResources.No, this, true);
-                        }
-
-                        if (shownForm.GetType() == typeof(PreferencesCategorySelectForm))
-                        {
-                            if (userSaveConfirmation == true)
-                            {
-                                ((PreferencesCategorySelectForm)shownForm).validateAndSave();
-                            }
-                            ((PreferencesCategorySelectForm)shownForm)._isDirty = false;
-                        }
-                        else if (shownForm.GetType() == typeof(PreferencesEditForm))
-                        {
-                            if (userSaveConfirmation == true)
-                            {
-                                ((PreferencesEditForm)shownForm).validateAndSave();
-                            }
-                            ((PreferencesEditForm)shownForm)._isDirty = false;
-                        }
-
-                        if (!saveButtonPressed)
-                        {
-                            ((Form)shownForm).Close();
-                        }
-                    }
-                }
-
-
-                */
         }
 
         /* public class PreferencesLanguageChanged

@@ -1,6 +1,6 @@
 ﻿using ACAT.Core.WidgetManagement;
 
-namespace ACAT.Extensions.UI.Scanners.UserControls
+namespace ACAT.Scanners.UserControls
 {
     partial class KeyboardQwertyUserControl
     {
@@ -1140,7 +1140,7 @@ namespace ACAT.Extensions.UI.Scanners.UserControls
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Black;
+            this.BackColor = System.Drawing.Color.FromArgb(35, 36, 51);;
             this.Controls.Add(this.KeyboardBox);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "KeyboardQwertyUserControl";

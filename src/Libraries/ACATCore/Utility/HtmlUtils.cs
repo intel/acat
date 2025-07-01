@@ -206,7 +206,6 @@ namespace ACAT.Core.Utility
 
         public static object DecodeHtml(string desc)
         {
-            //throw new NotImplementedException();
             return HttpUtility.HtmlDecode(desc);
         }
     }

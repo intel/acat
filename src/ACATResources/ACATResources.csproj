@@ -96,7 +96,10 @@
     <Content Include="en\MenuUserControlBCI.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="en\MouseScanner.xml">
+    <Content Include="en\PointerScannerUserControl.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+        <Content Include="en\ACATDashboard.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="en\NumericUserControlBCI.xml">

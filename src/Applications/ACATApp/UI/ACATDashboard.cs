@@ -7,7 +7,9 @@ using ACAT.Core.Widgets;
 using ACAT.Extension;
 using ACAT.Extension.CommandHandlers;
 using ACAT.Extensions.UI.Scanners.UserControls;
+using ACAT.Scanners.UserControls;
 using ACAT.Win32;
+using ACATApp.Utilities;
 using ACATResources;
 using System;
 using System.Collections.Generic;
@@ -16,13 +18,45 @@ using System.Windows.Forms;
 
 namespace ACAT.Extensions.UI.Scanners
 {
-    [Descriptor("7923DB0E-F4AF-4DDD-8FF4-5EDA5C034850", "ACATDashboard", "Main ACAT Dashboard Window")]
+    [Descriptor("7923DB0E-F4AF-4DDD-8FF4-5EDA5C034850",
+        "ACATDashboard",
+        "Main ACAT Dashboard Window")]
     public class ACATDashboard : Form, IScannerPanel
     {
         private Dispatcher _dispatcher;
+
         private TableLayoutPanel _panel;
 
-        public IDescriptor Descriptor => throw new NotImplementedException();
+        private UserControl _currentUIElement;
+
+        private UserControl currentUIElement
+        {
+            get { return _currentUIElement; }
+            set
+            {
+                if (_currentUIElement != value)
+                {
+                    _currentUIElement = value;
+                    OnCurrentControlChanged(EventArgs.Empty);
+                }
+            }
+        }
+
+        #region ACAT Dashboard Custom
+        public event EventHandler CurrentControlChanged;
+
+        protected virtual void OnCurrentControlChanged(EventArgs e)
+        {
+            CurrentControlChanged?.Invoke(this, e);
+        }
+
+        private UserControl mainMenu;
+        private KeyboardQwertyUserControl keyboardControl;
+        private PointerScannerUserControl pointerScanner;
+        #endregion
+
+        public IDescriptor Descriptor => DescriptorAttribute.GetDescriptor(GetType());
+
 
         public SyncLock SyncObj
         {
@@ -36,16 +70,11 @@ namespace ACAT.Extensions.UI.Scanners
             get { return this; }
         }
 
-        public string _panelClass;
-
         private readonly ScannerCommon _scannerCommon;
 
         public ITextController TextController => throw new NotImplementedException();
 
         private ScannerHelper _scannerHelper;
-        private FlowLayoutPanel mainMenu;
-        private KeyboardQwertyUserControl keyboardControl;
-        private MouseScanner mouseScanner;
 
         public void OnPause()
         {
@@ -55,8 +84,6 @@ namespace ACAT.Extensions.UI.Scanners
         public void OnResume()
         {
             _scannerCommon.UserControlManager.OnResume();
-            //_scannerCommon.AnimationManager.OnResume(_scannerCommon.RootWidget);
-            //showMainMenu();
         }
 
         public bool CheckCommandEnabled(CommandEnabledArg arg)
@@ -66,7 +93,7 @@ namespace ACAT.Extensions.UI.Scanners
 
         public void OnFocusChanged(WindowActivityMonitorInfo monitorInfo)
         {
-            throw new NotImplementedException();
+            _scannerCommon.OnFocusChanged(monitorInfo);
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -77,32 +104,57 @@ namespace ACAT.Extensions.UI.Scanners
 
         public bool OnQueryPanelChange(PanelRequestEventArgs eventArg)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public void OnWidgetActuated(WidgetActuatedEventArgs widgetActuatedEvent, ref bool handled)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void SetTargetControl(Form parent, Widget widget)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public ACATDashboard()
         {
             _scannerCommon = new ScannerCommon(this);
 
-            InitializeComponents();
+            InitializeComponent();
+
+            CurrentControlChanged += ACATDashboard_CurrentControlChanged;
 
             _dispatcher = new Dispatcher(this);
 
         }
 
+        private void ACATDashboard_CurrentControlChanged(object sender, EventArgs e)
+        {
+            var toolbar = _panel.GetControlFromPosition(0, 0) as TableLayoutPanel;
+
+            if (currentUIElement == mainMenu)
+            {
+                toolbar.Controls.Find("Settings", true)[0].Visible = true;
+                toolbar.Controls.Find("Help", true)[0].Visible = true;
+                toolbar.Controls.Find("About", true)[0].Visible = true;
+                toolbar.Controls.Find("Home", true)[0].Visible = false;
+            }
+            else
+            {
+                toolbar.Controls.Find("Settings", true)[0].Visible = false;
+                toolbar.Controls.Find("Help", true)[0].Visible = false;
+                toolbar.Controls.Find("About", true)[0].Visible = false;
+                toolbar.Controls.Find("Home", true)[0].Visible = true;
+            }
+
+            toolbar.Controls.Find("Minimize", true)[0].Visible = true;
+            toolbar.Controls.Find("CloseButton", true)[0].Visible = true;
+        }
+
         public bool Initialize(StartupArg startupArg)
         {
-            _panelClass = startupArg.PanelClass;
+            PanelClass = startupArg.PanelClass;
 
             _scannerHelper = new ScannerHelper(this, startupArg);
 
@@ -114,6 +166,7 @@ namespace ACAT.Extensions.UI.Scanners
             var acatIconFont = new Font("ACAT ICON", 18, FontStyle.Regular);
             var acatFont1Font = new Font("ACAT Font 1", 18, FontStyle.Regular);
 
+
             Label appName = new Label
             {
                 Name = "ACAT",
@@ -123,7 +176,7 @@ namespace ACAT.Extensions.UI.Scanners
                 Padding = new Padding(10),
                 TextAlign = ContentAlignment.MiddleCenter,
                 Anchor = AnchorStyles.Top | AnchorStyles.Left,
-                ForeColor = Color.White
+                ForeColor = Color.AntiqueWhite
             };
 
             var ToolbarButtons = new List<ScannerRoundedButtonControl>
@@ -131,6 +184,7 @@ namespace ACAT.Extensions.UI.Scanners
                     new ScannerRoundedButtonControl { Name = "Settings", Text = "i", Font = acatFont1Font },
                     new ScannerRoundedButtonControl { Name = "Help", Text = "F", Font = acatFont1Font },
                     new ScannerRoundedButtonControl { Name = "About", Text = "!", Font = defaultFont },
+                    new ScannerRoundedButtonControl { Name = "Home", Text = "M", Font = acatIconFont },
                     new ScannerRoundedButtonControl { Name = "Minimize", Text = "_", Font = defaultFont },
                     new ScannerRoundedButtonControl { Name = "CloseButton", Text = "X", Font = defaultFont }
                 };
@@ -162,6 +216,7 @@ namespace ACAT.Extensions.UI.Scanners
             foreach (var button in ToolbarButtons)
             {
                 FormatButton(button, new Size(36, 36));
+                button.Visible = false; // Initially hide the buttons
                 button.Click += (sender, e) =>
                 {
                     var scannerButton = sender as ScannerRoundedButtonControl;
@@ -177,6 +232,9 @@ namespace ACAT.Extensions.UI.Scanners
                                 break;
                             case "About":
                                 ShowAboutPanel();
+                                break;
+                            case "Home":
+                                showMainMenu();
                                 break;
                             case "Minimize":
                                 this.WindowState = FormWindowState.Minimized;
@@ -199,6 +257,8 @@ namespace ACAT.Extensions.UI.Scanners
 
             mainMenu = BuildMainMenuPanel(acatIconFont, acatFont1Font);
             _panel.Controls.Add(mainMenu, 0, 1);
+
+            currentUIElement = mainMenu;
 
             return true;
         }
@@ -224,6 +284,12 @@ namespace ACAT.Extensions.UI.Scanners
         {
             Bitmap bmp = new Bitmap(size.Height, size.Width);
 
+            if (button.Name == "Windows")
+            {
+                bmp = ButtonIconGenerator.WindowsStartButton(size.Height);
+                return bmp;
+            }
+
             using (Graphics g = Graphics.FromImage(bmp))
             {
                 g.Clear(Color.Transparent);
@@ -242,26 +308,36 @@ namespace ACAT.Extensions.UI.Scanners
             return bmp;
         }
 
-        private FlowLayoutPanel BuildMainMenuPanel(Font acatIconFont, Font acatFont1Font)
+        private UserControl BuildMainMenuPanel(Font acatIconFont, Font acatFont1Font)
         {
+            UserControl panel = new UserControl
+            {
+                Dock = DockStyle.Fill,
+                //AutoSize = true,
+                //AutoSizeMode = AutoSizeMode.GrowOnly,
+                BackColor = Color.Transparent,
+                Padding = new Padding(0, 0, 0, 0),
+                Size = new Size(550, 100)
+            };
+
             var MainMenuButtons = new List<ScannerRoundedButtonControl>
                 {
                     new ScannerRoundedButtonControl { Name = "ACatTalk", Text = "h", Font = new Font(acatIconFont.FontFamily, 44) },
                     new ScannerRoundedButtonControl { Name = "QuickTalk",Text = "i", Font =  new Font(acatIconFont.FontFamily, 44) },
                     new ScannerRoundedButtonControl { Name = "PointerControl", Text = "q", Font = new Font(acatIconFont.FontFamily, 44) },
                     new ScannerRoundedButtonControl { Name = "Keyboard", Text = "e", Font = new Font(acatFont1Font.FontFamily, 44) },
-                    new ScannerRoundedButtonControl { Name = "System", Text = "M", Font = new Font(acatIconFont.FontFamily, 44) },
+                    new ScannerRoundedButtonControl { Name = "Windows", Text = "" },
                     new ScannerRoundedButtonControl { Name = "Location", Text = "L", Font = new Font(acatIconFont.FontFamily, 44) },
                 };
 
-            var MainMenu = new FlowLayoutPanel
+            var MainMenu = new TableLayoutPanel
             {
-                FlowDirection = FlowDirection.LeftToRight,
+                BackColor = Color.Transparent,
                 Dock = DockStyle.Top,
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                WrapContents = false,
-                Padding = new Padding(0, 0, 0, 0)
+                Padding = new Padding(0, 0, 0, 0),
+                GrowStyle = TableLayoutPanelGrowStyle.AddColumns,
             };
 
 
@@ -272,21 +348,6 @@ namespace ACAT.Extensions.UI.Scanners
             {
                 FormatButton(button, new Size(80, 80));
 
-                //button.Font = MenuFont;
-                //button.TextAlign = ContentAlignment.MiddleCenter;
-                //button.TextImageRelation = TextImageRelation.ImageAboveText;
-                //button.Text = button.Name switch
-                //{
-                //    "ACatTalk" => "ACAT Talk",
-                //    "QuickTalk" => "Quick Talk",
-                //    "PointerControl" => "Pointer",
-                //    "Keyboard" => "Keyboard",
-                //    "System" => "System",
-                //    "Location" => "Location",
-                //    _ => button.Text
-                //};
-                //button.ForeColor = Color.White;
-
                 button.Click += (sender, e) =>
                 {
                     var scannerButton = sender as ScannerRoundedButtonControl;
@@ -295,10 +356,12 @@ namespace ACAT.Extensions.UI.Scanners
                         this.OnScannerButtonClicked(scannerButton.Name);
                     }
                 };
-                MainMenu.Controls.Add(button);
+                var col = MainMenu.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+                MainMenu.Controls.Add(button, col, 0);
             }
 
-            return MainMenu;
+            panel.Controls.Add(MainMenu);
+            return panel;
         }
 
         private void OnScannerButtonClicked(string name)
@@ -331,10 +394,17 @@ namespace ACAT.Extensions.UI.Scanners
 
         private void showPointerControl()
         {
-            this.Hide();
-            mouseScanner = new MouseScanner("MouseScanner", "Pointer Control");
-            mouseScanner.ShowDialog();
-            this.Show();
+            if (pointerScanner == null)
+            {
+                pointerScanner = new PointerScannerUserControl();
+                _scannerCommon.UserControlManager.AddUserControlByKeyOrName(pointerScanner, "usercontrol", "PointerScannerUserControl");
+            }
+
+            _panel.Controls.Remove(currentUIElement);
+            _panel.Controls.Add(pointerScanner, 0, 1);
+
+            currentUIElement = pointerScanner;
+
         }
 
         private void showAcatTalk()
@@ -396,18 +466,21 @@ namespace ACAT.Extensions.UI.Scanners
 
             _panel.Controls.Remove(mainMenu);
             _panel.Controls.Add(keyboardControl, 0, 1);
+
+            currentUIElement = keyboardControl;
         }
 
         private void showMainMenu()
         {
-            if (keyboardControl != null)
+            _panel.Controls.Remove(currentUIElement);
+
+            if (mainMenu == null)
             {
-                _panel.Controls.Remove(keyboardControl);
-                keyboardControl = null;
+                mainMenu = BuildMainMenuPanel(new Font("ACAT ICON", 44), new Font("ACAT Font 1", 44));
             }
-            _panel.Controls.Remove(mainMenu);
-            mainMenu = BuildMainMenuPanel(new Font("ACAT ICON", 44), new Font("ACAT Font 1", 44));
+
             _panel.Controls.Add(mainMenu, 0, 1);
+            currentUIElement = mainMenu;
         }
 
         private void Toolbar_MouseDown(object sender, MouseEventArgs e)
@@ -424,7 +497,7 @@ namespace ACAT.Extensions.UI.Scanners
             //throw new NotImplementedException();
         }
 
-        private void InitializeComponents()
+        private void InitializeComponent()
         {
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.None;
@@ -433,12 +506,15 @@ namespace ACAT.Extensions.UI.Scanners
 
             _panel = new TableLayoutPanel
             {
-                BackColor = Color.FromArgb(35, 36, 51),
+                BackColor = Color.Transparent,
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                GrowStyle = TableLayoutPanelGrowStyle.AddRows,
                 Dock = DockStyle.Fill,
             };
+
+            _panel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            _panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            _panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
             this.Controls.Add(_panel);
         }
@@ -451,10 +527,7 @@ namespace ACAT.Extensions.UI.Scanners
         /// <summary>
         /// Gets the panel class for the scanner
         /// </summary>
-        public String PanelClass
-        {
-            get { return _panelClass; }
-        }
+        public String PanelClass { get; private set; }
 
         /// <summary>
         /// Gets the PanelCommon object

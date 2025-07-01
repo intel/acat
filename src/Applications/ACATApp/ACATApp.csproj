@@ -81,6 +81,7 @@
     <Compile Include="UI\ACATAppMainMenu.cs" />
     <Compile Include="UI\ACATAppToolbar.cs" />
     <Compile Include="UI\ACATDashboard.cs" />
+    <Compile Include="Utilities\ButtonIconGenerator.cs" />
     <Content Include="Properties\ACATApp.ico" />
     <Content Include="License.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

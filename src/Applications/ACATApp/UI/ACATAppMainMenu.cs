@@ -28,7 +28,7 @@ namespace ACATApp.UI
                 {
                     new ScannerButtonControl { Name = "ACatTalk", Text = "h", Font = new Font(acatIconFont.FontFamily, 44) },
                     new ScannerButtonControl { Name = "QuickTalk",Text = "i", Font =  new Font(acatIconFont.FontFamily, 44) },
-                    //new ScannerButtonControl { Name = "PointerControl", Text = "q", Font = new Font(acatIconFont.FontFamily, 44) },
+                    new ScannerButtonControl { Name = "PointerControl", Text = "q", Font = new Font(acatIconFont.FontFamily, 44) },
                     new ScannerButtonControl { Name = "Keyboard", Text = "e", Font = new Font(acatFont1Font.FontFamily, 44) },
                     new ScannerButtonControl { Name = "System", Text = "M", Font = new Font(acatIconFont.FontFamily, 44) },
                     new ScannerButtonControl { Name = "Location", Text = "L", Font = new Font(acatIconFont.FontFamily, 44) },
@@ -52,7 +52,7 @@ namespace ACATApp.UI
                 button.Dock = DockStyle.Fill;
                 button.AutoSize = true;
                 button.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-                button.BackColor = Color.FromArgb(35, 36, 51);
+                button.BackColor = Color.Transparent;
                 button.ForeColor = Color.White;
                 MainMenu.Controls.Add(button);
             }
@@ -63,12 +63,13 @@ namespace ACATApp.UI
 
         public bool Initialize(StartupArg initArg)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return true;
         }
 
         public void OnButtonActuated(Widget widget)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void OnPause()

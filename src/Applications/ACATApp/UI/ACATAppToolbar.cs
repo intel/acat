@@ -107,6 +107,7 @@ namespace ACATApp.UI
                     new ScannerButtonControl { Name = "Settings", Text = "i", Font = acatFont1Font, AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink},
                     new ScannerButtonControl { Name = "Help", Text = "F", Font = acatFont1Font,AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink },
                     new ScannerButtonControl { Name = "About", Text = "!", Font = defaultFont,AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink },
+                    new ScannerButtonControl { Name = "Home", Text = "_", Font = defaultFont,AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink },
                     new ScannerButtonControl { Name = "Minimize", Text = "_", Font = defaultFont,AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink },
                     new ScannerButtonControl { Name = "CloseButton", Text = "X", Font = defaultFont, AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink }
                 };
@@ -138,7 +139,7 @@ namespace ACATApp.UI
             foreach (var button in ToolbarButtons)
             {
                 //button.Font = defaultFont;
-                button.BackColor = Color.FromArgb(35, 36, 51);
+                button.BackColor = Color.Transparent;
                 button.ForeColor = Color.White;
 
                 buttonPanel.Controls.Add(button);

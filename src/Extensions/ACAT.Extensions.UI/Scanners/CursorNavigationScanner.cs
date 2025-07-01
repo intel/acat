@@ -331,7 +331,7 @@ namespace ACAT.Extensions.UI.Scanners
 
         public void OnWidgetActuated(WidgetActuatedEventArgs widgetActuatedEvent, ref bool handled)
         {
-            throw new NotImplementedException();
+            handled = false;
         }
     }
 }

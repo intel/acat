@@ -56,12 +56,6 @@
     <Compile Include="Menus\MainMenu.Designer.cs">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </Compile>
-    <Compile Include="Scanners\MouseScanner.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Scanners\MouseScanner.Designer.cs">
-      <DependentUpon>MouseScanner.cs</DependentUpon>
-    </Compile>
     <Compile Include="Scanners\TalkApplicationScanner.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,6 +110,7 @@
     <Compile Include="UserControls\KeyboardQwertyUserControl.Designer.cs">
       <DependentUpon>KeyboardQwertyUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\PointerScannerUserControl.cs" />
     <Compile Include="UserControls\SentencePredictionUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -136,9 +131,6 @@
     <EmbeddedResource Include="Menus\MainMenu.resx">
       <DependentUpon>MainMenu.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Scanners\MouseScanner.resx">
-      <DependentUpon>MouseScanner.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Scanners\TalkApplicationScanner.resx">
       <DependentUpon>TalkApplicationScanner.cs</DependentUpon>

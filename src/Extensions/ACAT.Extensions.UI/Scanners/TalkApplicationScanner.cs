@@ -573,7 +573,7 @@ namespace ACAT.Extensions.UI.Scanners
                         break;
                 }
 
-                labelCurrentTypingMode.Text = "Mode: " + modeStr;
+                //labelCurrentTypingMode.Text = "Mode: " + modeStr;
             }));
         }
 

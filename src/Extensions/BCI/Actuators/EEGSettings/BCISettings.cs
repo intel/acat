@@ -15,6 +15,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using ACAT.Lib.Core.Utility;
 using System.Xml.Serialization;
+using System.ComponentModel;
 
 namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
 {

@@ -97,6 +97,35 @@ namespace ACAT.Lib.Core.PreferencesManagement
             Load += PreferencesEditForm_Load;
         }
 
+        private FlowLayoutPanel CreateFlowPanel()
+        {
+            var panel = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.TopDown,
+                BackColor = Color.Transparent,
+                AutoSize = false,
+                AutoScroll = false,
+                Dock = DockStyle.Fill
+            };
+
+            panel.HorizontalScroll.Visible = false;
+            panel.HorizontalScroll.Maximum = 0;
+
+            return panel;
+        }
+
+        private Label CreateLabel(string text, int fontSize, FontStyle fontStyle)
+        {
+            return new Label
+            {
+                AutoSize = true,
+                Dock = DockStyle.Fill,
+                Text = text,
+                Font = new Font("Montserrat", fontSize, fontStyle),
+                ForeColor = Color.White
+            };
+        }
+
         /// <summary>
         /// Gets or sets the preferences object
         /// </summary>
@@ -106,6 +135,9 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// Gets or sets the title / text for header of settings column of the form
         /// </summary>
         public String Title { get; set; }
+
+
+
 
         /// <summary>
         /// Client size changed
@@ -1085,83 +1117,52 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
         }
 
+
+        private void ReplaceDataGridWith(Control newControl)
+        {
+            var parent = dataGridView.Parent;
+            parent.Controls.Remove(dataGridView);
+            parent.Controls.Add(newControl);
+        }
+
+        private void AddPreferencePropertiesToPanel(FlowLayoutPanel panel, IPreferences prefs)
+        {
+            var props = prefs.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var builder = new SettingsPanelBuilder();
+
+            foreach (var prop in props)
+            {
+                var propPanel = builder.CreateLabeledPanel(prop, prefs);
+
+                var host = new ElementHost
+                {
+                    Child = propPanel,
+                    AutoSize = true,
+                    Margin = new Padding(10),
+                    Dock = DockStyle.Top
+                };
+
+                panel.Controls.Add(host);
+            }
+        }
+
         /// <summary>
         /// Populates the grid view with preferences data
         /// </summary>
         /// <param name="prefs">preferences</param>
         private void refreshGridView(IPreferences prefs)
         {
-            //// Do Clear of datagrid rows in try/catch block - sometimes throws exception
-            //bool clearSuccessful = true;
-            //try
-            //{
-            //    dataGridView.Rows.Clear();
-            //}
-            //catch
-            //{
-            //    Log.Debug("PreferencesEditForm | refreshGridView | clearSuccessful == false");
-            //    clearSuccessful = false;
-            //}
-            //if (!clearSuccessful)
-            //    return;
+            var flowPanel = CreateFlowPanel();
 
-            // HACK until we fix the Form...
-            var flowPanel = new FlowLayoutPanel
-            {
-                FlowDirection = FlowDirection.TopDown,
-                BackColor = Color.Transparent,
-                AutoSize = false,
-                AutoScroll = false,
-                Dock = DockStyle.Fill,
-
-            };
-            flowPanel.HorizontalScroll.Visible = false;
-            flowPanel.HorizontalScroll.Maximum = 0;
-
-            var parent = dataGridView.Parent;                
-            parent.Controls.Remove(dataGridView);
-            parent.Controls.Add(flowPanel);
-
+            ReplaceDataGridWith(flowPanel);
             wrapText(_wrapText);
 
             var descriptor = prefs.GetType().GetCustomAttribute<DescriptorAttribute>();
-            Label category = new Label
-            {
-                AutoSize = true,
-                Dock = DockStyle.Fill,
-                Text = descriptor?.Category ?? "UNKNOWN CATEGORY",
-                Font = new Font("Montserrat", 24, FontStyle.Bold),
-                ForeColor = Color.White
-            };
-            flowPanel.Controls.Add(category);
 
+            flowPanel.Controls.Add(CreateLabel(descriptor?.Category ?? "UNKNOWN CATEGORY", 24, FontStyle.Bold));
+            flowPanel.Controls.Add(CreateLabel(descriptor?.Description ?? "UNKNOWN DESCRIPTION", 20, FontStyle.Regular));
 
-            Label description = new Label {
-                AutoSize = true,
-                Dock = DockStyle.Fill,
-                Text = descriptor?.Description ?? "UNKNOWN DESCRIPTION",
-                Font = new Font("Montserrat", 20, FontStyle.Regular),
-                ForeColor = Color.White
-            };
-            flowPanel.Controls.Add(description);
-
-            var props = prefs.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            var panelBuilder = new SettingsPanelBuilder();
-            foreach (var prop in props)
-            {
-                //var proppanel = CreatedLabeledPanel(prop);
-                //flowPanel.Controls.Add(proppanel);
-                var panel = panelBuilder.CreateLabeledPanel(prop, prefs);
-
-                var host = new ElementHost
-                {
-                    Child = panel,
-                    AutoSize = true,
-                    Margin = new Padding(10),
-                    Dock = DockStyle.Top
-                };   
-                flowPanel.Controls.Add(host);
-            }
+            AddPreferencePropertiesToPanel(flowPanel, prefs);
         }
 
         /// <summary>

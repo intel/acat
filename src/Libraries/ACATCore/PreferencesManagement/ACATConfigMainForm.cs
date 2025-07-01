@@ -60,7 +60,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         {
             InitializeComponent();
             Load += ACATConfigMainForm_Load;
-            Shown += ACATConfigMainForm_Shown;
+     //       Shown += ACATConfigMainForm_Shown;
             _configCategoryList = new List<Tuple<String, CheckBox>>
             {
                 new Tuple<String, CheckBox>(checkBoxCategoryGeneral.Text.ToString(), checkBoxCategoryGeneral),

@@ -144,6 +144,130 @@ namespace ACAT.Lib.Core.PreferencesManagement
         public delegate void PreferencesCategorySelected(object sender, ISupportsPreferences preferencesCategory);
         public event PreferencesCategorySelected EvtPreferencesCategorySelected;
 
+        private Button CreateSetupButton(PreferencesCategory category)
+        {
+            bool enabled = category.PreferenceObj is ISupportsPreferences prefs &&
+                           (prefs.SupportsPreferencesDialog || prefs.GetPreferences() != null);
+
+            var button = new Button
+            {
+                Text = ">",
+                Font = new Font("Montserrat", 24, FontStyle.Bold),
+                ForeColor = Color.White,
+                AutoSize = true,
+                BackColor = Color.FromArgb(48, 49, 64),
+                Enabled = enabled,
+                FlatStyle = FlatStyle.Flat
+            };
+
+            button.FlatAppearance.BorderSize = 0;
+
+            return button;
+        }
+
+        private CheckBox CreateCheckBox(PreferencesCategory category)
+        {
+            return new CheckBox
+            {
+                Text = "Enable",
+                Checked = category.Enable,
+                Enabled = category.AllowEnable,
+                Anchor = AnchorStyles.None,
+                AutoSize = true,
+                Margin = new Padding(0, 0, 0, 5)
+            };
+        }
+
+        private Label CreateDescriptionLabel(string description)
+        {
+            return new Label
+            {
+                Text = description,
+                AutoSize = true,
+                Font = new Font("Segoe UI", 20, FontStyle.Italic),
+                ForeColor = Color.White,
+                Margin = new Padding(0, 0, 0, 5)
+            };
+        }
+
+        private Label CreateLabel(string text)
+        {
+            return new Label
+            {
+                Text = text,
+                AutoSize = true,
+                Font = new Font("Montserrat", 24, FontStyle.Bold),
+                ForeColor = Color.White,
+                Margin = new Padding(0, 0, 0, 5)
+            };
+        }
+
+        private TableLayoutPanel CreateCategoryPanel()
+        {
+            var panel = new TableLayoutPanel
+            {
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowOnly,
+                Margin = new Padding(10),
+                Padding = new Padding(10),
+                BackColor = Color.FromArgb(48, 49, 64),
+                Dock = DockStyle.Fill,
+            };
+
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F)); // Label + description
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));     // Checkbox
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));     // Setup button
+
+            panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));    // Row 0: Title
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F)); // Spacer row for centering
+            panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));    // Row 2: Description
+
+            return panel;
+        }
+
+        private TableLayoutPanel CreateFlowPanel()
+        {
+            return new TableLayoutPanel
+            {
+                BackColor = Color.Transparent,
+                AutoSize = false,
+                AutoScroll = false,
+                Dock = DockStyle.Fill,
+                ColumnCount = 1,
+                RowCount = 0,
+                GrowStyle = TableLayoutPanelGrowStyle.AddRows
+            };
+        }
+
+        private Label CreateCategoryHeaderLabel(string title)
+        {
+            return new Label
+            {
+                Font = new Font("Montserrat", 28, FontStyle.Bold),
+                ForeColor = Color.White,
+                Text = title,
+                Dock = DockStyle.Top,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Margin = new Padding(0, 0, 0, 10),
+                Padding = new Padding(0, 0, 0, 10),
+                BackColor = Color.Transparent,
+                Anchor = AnchorStyles.Top | AnchorStyles.Left,
+                AutoSize = true
+            };
+        }
+
+
+        private bool IsValidExtensionCategory(PreferencesCategory category, out IDescriptor descriptor)
+        {
+            descriptor = null;
+
+            var extension = category.PreferenceObj as IExtension;
+            if (extension == null)
+                return false;
+
+            descriptor = extension.Descriptor;
+            return descriptor != null;
+        }
 
         /// <summary>
         ///  Check if form filled correctly, if not, return false
@@ -288,8 +412,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
             setColumnHeaderText();
 
-            dataGridView2.CellContentClick += dataGridView2_CellContentClick;
-            dataGridView2.CellValueChanged += dataGridView2_CellValueChanged;
+       //     dataGridView2.CellContentClick += dataGridView2_CellContentClick;
+       //     dataGridView2.CellValueChanged += dataGridView2_CellValueChanged;
 
             Paint += (s, args) =>
             {
@@ -337,32 +461,10 @@ namespace ACAT.Lib.Core.PreferencesManagement
         private void refreshDataGridView()
         {
 
-            var flowPanel = new TableLayoutPanel
-            {
-                BackColor = Color.Transparent,
-                AutoSize = false,
-                AutoScroll = false,
-                Dock = DockStyle.Fill,
-                ColumnCount = 1,
-                RowCount = 0,
-                GrowStyle = TableLayoutPanelGrowStyle.AddRows
-            };
-            var categoryLabel = new Label
-            {
-                Font = new Font("Montserrat", 28, FontStyle.Bold),
-                ForeColor = Color.White,
-                Text = this.AccessibilityObject.Name,
-                Dock = DockStyle.Top,
-                TextAlign = ContentAlignment.MiddleLeft,
-                Margin = new Padding(0, 0, 0, 10),
-                Padding = new Padding(0, 0, 0, 10),
-                BackColor = Color.Transparent,
-                Anchor = AnchorStyles.Top | AnchorStyles.Left,
-                AutoSize = true,
-            };
+            var flowPanel = CreateFlowPanel();
 
-            flowPanel.Controls.Add(categoryLabel);
-
+            var headerLabel = CreateCategoryHeaderLabel(this.AccessibilityObject.Name);
+            flowPanel.Controls.Add(headerLabel);
 
             var parent = dataGridView2.Parent;
             parent.Controls.Remove(dataGridView2);
@@ -370,79 +472,21 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
             foreach (var category in PreferencesCategories)
             {
-                if (!(category.PreferenceObj is IExtension))
-                {
+                if (!IsValidExtensionCategory(category, out var desc))
                     continue;
-                }
 
-                IDescriptor desc = (category.PreferenceObj as IExtension).Descriptor;
-                if (desc == null)
-                {
-                    continue;
-                }
+                var categoryItem = CreateCategoryPanel();
+                categoryItem.Controls.Add(CreateLabel(desc.Name), 0, 0);   // Add title at (0, 0)
+                categoryItem.Controls.Add(CreateDescriptionLabel(desc.Description), 0, 2);    // Add description at (0, 2)
 
-                var categoryItem = new TableLayoutPanel
-                {
-                    AutoSize = true,
-                    AutoSizeMode = AutoSizeMode.GrowOnly,
-                    Margin = new Padding(10),
-                    Padding = new Padding(10),
-                    BackColor = Color.FromArgb(48, 49, 64),
-                    Dock = DockStyle.Fill,
-
-
-                };
-
-
-                var label = new Label
-                {
-                    Text = desc.Name,
-                    AutoSize = true,
-                    Font = new Font("Montserrat", 24, FontStyle.Bold),
-                    ForeColor = Color.White,
-                    Margin = new Padding(0, 0, 0, 5)
-                };
-                categoryItem.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
-                categoryItem.Controls.Add(label, 0, 0);
-
-                var descriptionLabel = new Label
-                {
-                    Text = desc.Description,
-                    AutoSize = true,
-                    Font = new Font("Segoe UI", 20, FontStyle.Italic),
-                    ForeColor = Color.White,
-                    Margin = new Padding(0, 0, 0, 5)
-                };
-                var row = categoryItem.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                categoryItem.Controls.Add(descriptionLabel, 0, 1);
-
-                var checkBox = new CheckBox
-                {
-                    Text = "Enable",
-                    Checked = category.Enable,
-                    Enabled = category.AllowEnable,
-                    AutoSize = true,
-                    Margin = new Padding(0, 0, 0, 5)
-                };
-                var col = categoryItem.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-                categoryItem.Controls.Add(checkBox, col, 0);
-
-                var setupButton = new Button
-                {
-                    Text = ">",
-                    Font = new Font("Montserrat", 24, FontStyle.Bold),
-                    ForeColor = Color.White,
-                    AutoSize = true,
-                    BackColor = Color.Transparent,
-                    Enabled = (category.PreferenceObj is ISupportsPreferences) && ((category.PreferenceObj as ISupportsPreferences).SupportsPreferencesDialog || (category.PreferenceObj as ISupportsPreferences).GetPreferences() != null)
-                };
-                col = categoryItem.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-                categoryItem.Controls.Add(setupButton, col, 0);
-                categoryItem.SetRowSpan(setupButton, 2);
+                categoryItem.Controls.Add(CreateCheckBox(category), 1, 1);
+                categoryItem.SetRowSpan(CreateCheckBox(category), 2);
+                var setupButton = CreateSetupButton(category);
+                categoryItem.Controls.Add(setupButton, 2, 0);
+                categoryItem.SetRowSpan(setupButton, 3);
 
                 flowPanel.Controls.Add(categoryItem);
             }
-
 
             //// Sort first column ascending everytime grid is refreshed
             //dataGridView2.Sort(CategoryNameColumn, ListSortDirection.Ascending);
@@ -580,8 +624,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 bool doWrapText = ((CheckBox)sender).Checked;
                 wrapText(doWrapText);
             }
-
         }
-
     }
 }

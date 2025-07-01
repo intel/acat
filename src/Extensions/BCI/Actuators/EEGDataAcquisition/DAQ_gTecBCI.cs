@@ -15,7 +15,7 @@ using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Lib.Core.Utility;
 using Accord.Math;
 using brainflow;
-using Gtec.Unicorn;
+//using Gtec.Unicorn; 
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -236,6 +236,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 
         static public bool IsDeviceAvailable()
         {
+            return false;
+
+            /* Disabled until we can build 64 bit
             bool result = false;
             // check if drivers are installed
             result = Unicorn.IsDeviceLibraryLoadable();
@@ -246,6 +249,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 
 
             return result && devices.Count > 0;
+            //*/
         }
 
         /// <summary>
@@ -857,6 +861,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             return await Task.Run(() =>
             {
                 IList<string> devices = new List<string>();
+
+                return devices;
+                /* Disabled until we can build 64 bit
                 try
                 {
                     devices = Unicorn.GetAvailableDevices(paired);
@@ -873,6 +880,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     Log.Debug($"Error: {ex.Message}");
                 }
                 return devices;
+                */
             });
         }
 
@@ -899,6 +907,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 // Use Unicorn API to try to initialize device (throws exception if device can't be initialized
                 return await Task.Run(() =>
                 {
+                    return false;
+
+                /* Disabled until we can build 64 bit
                     try
                     {
                         Log.Debug($"Selected device: {BCIGtecActuatorSettings.Settings.GTecDeviceName}, trying to connect...");
@@ -930,7 +941,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, eventParams);
                         return false;
                     }
-                });
+                //*/
+            });
             }
         }
 

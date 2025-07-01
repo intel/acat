@@ -266,7 +266,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 return false;
 
             descriptor = extension.Descriptor;
-            return descriptor != null;
+            return descriptor != null && descriptor.HasSettings;
         }
 
         /// <summary>

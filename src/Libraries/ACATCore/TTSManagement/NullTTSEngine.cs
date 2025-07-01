@@ -19,7 +19,8 @@ namespace ACAT.Lib.Core.TTSManagement
     /// </summary>
     [Descriptor("A98DA439-A6A9-48EF-AC8D-3D3588363341",
                         "Null Text-to-speech Engine",
-                        "Text-to-speech disabled")]
+                        "Text-to-speech disabled",
+                         HasSettings = false)]
     public class NullTTSEngine : ExtensionInvoker, ITTSEngine
     {
         private static int _nextBookmark = 1;

@@ -437,7 +437,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="resursive">Descend recursively</param>
         private void loadActuatorTypesIntoCache(String dir, bool resursive = true)
         {
-            var walker = new DirectoryWalker(dir, "*.dll");
+            var walker = new DirectoryWalker(dir, @"*Actuator.dll");
         
             walker.Walk(new OnDirectoryFoundDelegate(onDirFound), new OnFileFoundDelegate(onFileFound));
         }

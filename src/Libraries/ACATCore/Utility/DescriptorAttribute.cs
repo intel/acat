@@ -37,6 +37,8 @@ namespace ACAT.Lib.Core.Utility
         /// Friendly name
         /// </summary>
         private readonly String _name;
+        
+        public bool HasSettings { get; set; } = true;
 
         public DescriptorAttribute(string description)
         {
@@ -65,6 +67,19 @@ namespace ACAT.Lib.Core.Utility
                 _guid = Guid.Empty;
             }
         }
+
+        public DescriptorAttribute(String id, String name, String description, bool has_settings)
+        {
+            _name = name;
+            _category = String.Empty;
+            _description = description;
+            if (!Guid.TryParse(id, out _guid))
+            {
+                _guid = Guid.Empty;
+            }
+            HasSettings = has_settings;
+        }
+
 
         /// <summary>
         /// Initializes an instance of the class

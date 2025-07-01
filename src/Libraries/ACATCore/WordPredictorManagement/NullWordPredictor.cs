@@ -18,9 +18,11 @@ namespace ACAT.Lib.Core.WordPredictionManagement
     /// The null word predictor basically does nothing.  It is used
     /// where no word predictor is currently valid.
     /// </summary>
-    [Descriptor("3EF5A318-6357-467D-BF45-9C925CF72FF4",
-                            "Null Word Predictor",
-                            "Disable word prediction")]
+    [Descriptor("3EF5A318-6357-467D-BF45-9C925CF72FF4",         // GUID
+                            "Null Word Predictor",              // Name
+                            "Disable word prediction",          // Description
+                            HasSettings = false                // Has Settings
+    )]
     public class NullWordPredictor : IWordPredictor, ISupportsPreferences, IExtension
     {
         protected WordPredictionModes _wordPredictionMode = WordPredictionModes.Sentence;

@@ -36,5 +36,7 @@ namespace ACAT.Lib.Core.Utility
         /// Name of the module
         /// </summary>
         String Name { get; }
+
+        bool HasSettings { get; }
     }
 }

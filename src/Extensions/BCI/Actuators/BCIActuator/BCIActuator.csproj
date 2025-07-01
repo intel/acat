@@ -1,8 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E969CC07-051E-4C48-9B8C-D6616243FB28}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -10,10 +12,6 @@
     <AssemblyName>BCIActuator</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <Deterministic>false</Deterministic>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -79,7 +77,7 @@
       <Project>{380FC7B3-D784-422A-8D85-510A9E8698C6}</Project>
       <Name>SensorUI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Libraries\ACATExtension\Extension.csproj">
+    <ProjectReference Include="$(SolutionDir)Libraries\ACATExtension\Extension.csproj">
       <Project>{17feda57-1f08-4e19-9dc3-a2c00ec792a3}</Project>
       <Name>Extension</Name>
       <Private>False</Private>
@@ -110,10 +108,12 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
+<!-- DISABLED UNTIL WE CAN BUILD 64-BIT
   <ItemGroup>
     <PackageReference Include="UnicornDotNet">
       <Version>1.24.0</Version>
     </PackageReference>
   </ItemGroup>
+-->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

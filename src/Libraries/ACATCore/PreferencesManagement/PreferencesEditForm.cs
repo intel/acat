@@ -93,6 +93,13 @@ namespace ACAT.Lib.Core.PreferencesManagement
         public PreferencesEditForm()
         {
             InitializeComponent();
+
+            // For WPF Controls
+            if (System.Windows.Application.Current == null)
+            {
+                new System.Windows.Application();
+            }
+
             Text = "Settings";
             Load += PreferencesEditForm_Load;
         }
@@ -1003,24 +1010,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <param name="e">eent args</param>
         private void PreferencesEditForm_Load(object sender, EventArgs e)
         {
-            // For WPF Controls
-            if (System.Windows.Application.Current == null)
-            {
-         
-
-
-                // Initialize WPF Dispatcher safely
-                Dispatcher dispatcher = Dispatcher.CurrentDispatcher;
-
-                // Schedule optional startup logic on the WPF Dispatcher
-                dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() =>
-                {
-                    Console.WriteLine("WPF Dispatcher is ready");
-                }));
-
-                new System.Windows.Application();
-            }
-
             float currentAspectRatio = (float)ClientSize.Height / ClientSize.Width;
 
             if (_designTimeAspectRatio != 0.0f && currentAspectRatio != _designTimeAspectRatio)

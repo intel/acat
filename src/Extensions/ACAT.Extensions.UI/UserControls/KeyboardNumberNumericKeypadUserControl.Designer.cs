@@ -1,6 +1,6 @@
 ﻿using ACAT.Core.WidgetManagement;
 
-namespace ACAT.Extensions.UI.Scanners.UserControls
+namespace ACAT.Scanners.UserControls
 {
     partial class KeyboardNumberNumericKeypadUserControl
     {

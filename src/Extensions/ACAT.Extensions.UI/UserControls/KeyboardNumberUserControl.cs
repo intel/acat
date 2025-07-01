@@ -11,88 +11,19 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.AnimationManagement;
-using ACAT.Core.PanelManagement;
-using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
-using ACAT.Core.WidgetManagement;
-using System.Windows.Forms;
+using ACAT.UserControls;
 
-namespace ACAT.Extensions.UI.Scanners.UserControls
+namespace ACAT.Scanners.UserControls
 {
     [Descriptor("F8E111D9-796A-4FE0-AC1E-7CD24839FD78",
                     "KeyboardNumberUserControl",
                     "User Control for number keyboard")]
-    public partial class KeyboardNumberUserControl : UserControl, IUserControl
+    public partial class KeyboardNumberUserControl : KeyboardUserControl
     {
-        private UserControlKeyboardCommon _keyboardCommon;
-
         public KeyboardNumberUserControl()
         {
             InitializeComponent();
-        }
-
-        public event AnimationPlayerStateChanged EvtPlayerStateChanged;
-
-        /// <summary>
-        /// Gets the descriptor for this class
-        /// </summary>
-        public IDescriptor Descriptor
-        {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
-        }
-
-        /// <summary>
-        /// Gets the snchronization object
-        /// </summary>
-        public SyncLock SyncObj
-        {
-            get { return _keyboardCommon.SyncObj; }
-        }
-
-        public IUserControlCommon UserControlCommon
-        {
-            get
-            {
-                return _keyboardCommon;
-            }
-        }
-
-        public bool Initialize(UserControlConfigMapEntry mapEntry, TextController textController, IScannerPanel scanner)
-        {
-            _keyboardCommon = new UserControlKeyboardCommon(this, mapEntry, textController, scanner);
-
-            bool retVal = _keyboardCommon.Initialize();
-
-            _keyboardCommon.AnimationManager.EvtPlayerStateChanged += AnimationManager_EvtPlayerStateChanged;
-
-            return retVal;
-        }
-
-        public void OnLoad()
-        {
-            _keyboardCommon.OnLoad();
-            _keyboardCommon.AnimationManager.OnLoad(_keyboardCommon.RootWidget);
-        }
-
-        public void OnPause()
-        {
-            _keyboardCommon.OnPause();
-        }
-
-        public void OnResume()
-        {
-            _keyboardCommon.OnResume();
-        }
-
-        public void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
-        {
-            handled = false;
-        }
-
-        private void AnimationManager_EvtPlayerStateChanged(object sender, PlayerStateChangedEventArgs e)
-        {
-            EvtPlayerStateChanged?.Invoke(this, e);
         }
     }
 }

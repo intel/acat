@@ -58,6 +58,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// </summary>
         public ACATConfigMainForm()
         {
+
+
             InitializeComponent();
             Load += ACATConfigMainForm_Load;
      //       Shown += ACATConfigMainForm_Shown;
@@ -312,7 +314,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             NotifyResetToDefaultButtonClicked resetHandler = generalForm.buttonDefaults_Click;
             bool wrapTextDefault = generalForm._wrapText;
 
-            buttonResetToDefault.Visible = true;
+         //   buttonResetToDefault.Visible = true;
             SetNewFormButtonHandlers(resetHandler, wrapTextHandler, wrapTextDefault);
 
             return generalForm;
@@ -402,7 +404,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                         {
                             // Log.Debug("handlePreferencesCategorySelected | DefaultPreferences != null");
                             HandlerResetToDefaultsButtonClicked = ((PreferencesEditForm)newPreferencesEditForm).buttonDefaults_Click;
-                            buttonResetToDefault.Visible = true;
+                          //  buttonResetToDefault.Visible = true;
                         }
 
                         SetNewFormButtonHandlers(HandlerResetToDefaultsButtonClicked, HandlerWrapTextButtonClicked, wrapTextBoxChecked);

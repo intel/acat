@@ -143,9 +143,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// </summary>
         public String Title { get; set; }
 
-
-
-
         /// <summary>
         /// Client size changed
         /// </summary>
@@ -159,6 +156,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 _firstClientChangedCall = false;
             }
         }
+
+        #region Can Be Deleted but wait
 
         /// <summary>
         /// Adds a row for a boolean property
@@ -331,14 +330,12 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
             dataGridView.Rows[rowNum].Tag = property;
         }
+        
+        #endregion
 
 
-
-        /// <summary>
-        /// Check if form filled correctly, if not, return false
-        /// If validated, check if changes have been made to form and if so prompt user asking if they want to save
-        /// </summary>
-        /// <returns></returns>
+        //Check if form filled correctly, if not, return false
+        //If validated, check if changes have been made to form and if so prompt user asking if they want to save
         public bool validateAndSave()
         {
 
@@ -353,11 +350,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         }
 
 
-        /// <summary>
-        /// User clicked wrap text checkbox
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
+        // User clicked wrap text checkbox
         public void checkBoxWrapText_CheckedChanged(object sender, EventArgs e)
         {
             if (sender.GetType() == typeof(CheckBox))
@@ -368,11 +361,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
         }
 
-        /// <summary>
-        /// User clicked Defaults button
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
+        // User clicked Defaults button
         public void buttonDefaults_Click(object sender, EventArgs e)
         {
             if (ConfirmBoxTwoOption.ShowDialog("Restore default settings?", 
@@ -1021,7 +1010,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
             CenterToScreen();
 
-            initializeGridView();
+           initializeGridView();
 
             if (!String.IsNullOrEmpty(Title))
             {
@@ -1047,65 +1036,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 }
             };
         }
-
-        Control CreatedLabeledPanel(PropertyInfo prop)
-        {
-            Control control;
-            Font font = new Font("Montserrat", 18);
-
-            var controlFactory = new Dictionary<Type, Func<PropertyInfo, Control>>
-                {
-                    { typeof(bool), member => new CheckBox() },
-                    { typeof(int), member => new TrackBar {Minimum = 0, Maximum = 100 } },
-                    { typeof(float), member => new TrackBar {Minimum = 0, Maximum=100 } },
-                    { typeof(string), member => new TextBox() }
-                };
-
-            var type = prop.PropertyType;
-            if (controlFactory.TryGetValue(type, out var controlBuilder))
-            {
-                control = controlBuilder(prop);
-                control.Tag = prop;
-                control.ForeColor = Color.White;                
-            }
-            else
-            {
-                control = new Label { Text = $"Unsupported Type: {prop.Name} ({prop.PropertyType.Name})" };
-            }
-
-            var panel = new FlowLayoutPanel
-            {
-                FlowDirection = FlowDirection.LeftToRight,
-                AutoSize = true,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                Dock = DockStyle.Fill,
-                WrapContents = true,
-                BackColor = Color.Transparent,
-                Margin = new Padding(15)
-            };
-
-            var descriptionAttr = prop.GetCustomAttribute<DescriptorAttribute>();
-            var labelText = descriptionAttr?.Description ?? "MISSING DESCRIPTION";
-
-            var label = new Label
-            {
-                Text = labelText,
-                AutoSize = true,
-                TextAlign = ContentAlignment.MiddleLeft,
-                Margin = new Padding(0, 6, 5, 0),
-                ForeColor = Color.White,
-                Font = font
-            };
-
-            control.Margin = new Padding(0, 3, 0, 0);
-
-            panel.Controls.Add(label);
-            panel.Controls.Add(control);
-
-            return panel;
-
-        }
-
 
         private void ReplaceDataGridWith(Control newControl)
         {
@@ -1169,11 +1099,139 @@ namespace ACAT.Lib.Core.PreferencesManagement
             ConfirmBoxOneOption.Dispose();
         }
 
+        private void SavePreferencesFromPanel(FlowLayoutPanel panel, IPreferences prefs)
+        {
+            var props = prefs.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (var prop in props)
+            {
+                // Find the ElementHost that wraps the WPF user control for this property
+                foreach (Control control in panel.Controls)
+                {
+                    var host = control as ElementHost;
+                    if (host?.Child == null)
+                        continue;
+
+                    // Assuming CreateLabeledPanel returns a control that implements IPreferenceEditor
+                    var editor = host.Child as IPreferenceEditor;
+                    if (editor == null)
+                        continue;
+
+                    if (editor.PropertyName == prop.Name)
+                    {
+                        object value = editor.GetValue();
+
+                        try
+                        {
+                            prop.SetValue(prefs, value);
+                        }
+                        catch
+                        {
+                            // Optional: log or handle invalid value conversion
+                        }
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        public interface IPreferenceEditor
+        {
+            string PropertyName { get; }
+            object GetValue();
+        }
+
         /// <summary>
         /// Updates preferneces using the data in the grid view
         /// </summary>
         private void updatePreferences()
         {
+            // Iterate over each row in the DataGridView
+            foreach (DataGridViewRow row in dataGridView.Rows)
+            {
+
+                string name = row.Cells[SettingColumn.Name].Value as string;                // Get the setting name from the "Setting" column
+                var valueCell = row.Cells[ValueColumn.Name];                                // Get the value cell from the "Value" column
+                object editedValue = valueCell.EditedFormattedValue;                       // Get the edited value entered by the user
+                FieldInfo field = getField(Preferences, name);                            // Try to get a field from the Preferences object that matches the setting name
+                PropertyInfo property = null;
+
+                // If no field is found, try getting a property instead
+                if (field == null)
+                {
+                    property = getProperty(Preferences, name);
+                }
+
+                // If neither a field nor a property is found, skip this row
+                if (field == null && property == null)
+                {
+                    continue;
+                }
+                Type memberType = null;                                               // Determine the type of the target member (field or property)
+                if (field != null)
+                {
+                    memberType = field.FieldType;
+                }
+                else
+                {
+                    memberType = property.PropertyType;
+                }
+
+                object parsedValue = null;                                        // Will store the parsed and converted value (if successful)
+
+                try
+                {
+                    // Handle integer values from text box cells
+                    if (memberType == typeof(int) && valueCell is DataGridViewTextBoxCell)
+                    {
+                        int intValue;
+                        if (int.TryParse(editedValue as string, out intValue))
+                        {
+                            parsedValue = intValue;
+                        }
+                    }
+                    // Handle boolean values from checkbox cells
+                    else if (memberType == typeof(bool) && valueCell is DataGridViewCheckBoxCell)
+                    {
+                        parsedValue = editedValue;
+                    }
+                    // Handle string values from text box cells
+                    else if (memberType == typeof(string) && valueCell is DataGridViewTextBoxCell)
+                    {
+                        parsedValue = editedValue as string;
+                    }
+                    // Handle float values from text box cells
+                    else if (memberType == typeof(float) && valueCell is DataGridViewTextBoxCell)
+                    {
+                        float floatValue;
+                        if (float.TryParse(editedValue as string, NumberStyles.Float, CultureInfo.InvariantCulture, out floatValue))
+                        {
+                            parsedValue = floatValue;
+                        }
+                    }
+
+                    // If a valid value was parsed, apply it to the Preferences object
+                    if (parsedValue != null)
+                    {
+                        if (field != null)
+                        {
+                            field.SetValue(Preferences, parsedValue);
+                        }
+                        else
+                        {
+                            property.SetValue(Preferences, parsedValue);
+                        }
+                    }
+                }
+                catch
+                {
+                    // Silently ignore parsing errors; optionally log if needed
+                }
+            }
+
+
+            /*
             foreach (DataGridViewRow row in dataGridView.Rows)
             {
                 String name = row.Cells[SettingColumn.Name].Value as String;
@@ -1243,6 +1301,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     }
                 }
             }
+
+            */
         }
 
         /// <summary>

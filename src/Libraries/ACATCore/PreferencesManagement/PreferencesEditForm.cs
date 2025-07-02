@@ -34,62 +34,40 @@ using System.Windows.Threading;
 
 namespace ACAT.Lib.Core.PreferencesManagement
 {
-    /// <summary>
-    /// A generic preferences editor for a class that
-    /// has fields and properties which are intergers,
-    /// strings, bool or floats. Picks those fields and
-    /// properties which are qualified by custom attributes
-    /// (BoolDescritpor, IntDescriptor etc). Displays the
-    /// settings as a gridview. Does validation of data
-    /// to make sure it is within range etc.
-    /// </summary>
     public partial class PreferencesEditForm : Form
     {
-        /// <summary>
-        /// Default values for the preferences
-        /// </summary>
-        public IPreferences DefaultPreferences;
+        #region Properties
 
-        /// <summary>
-        /// The preferences object
-        /// </summary>
-        public IPreferences Preferences;
+        public IPreferences DefaultPreferences;                                 //Default values for the preferences
 
-        /// <summary>
-        /// Did the user change anything in the form
-        /// </summary>
-        public bool _isDirty = false;
+        public IPreferences Preferences;                                        //The preferences object
+        public ISupportsPreferences SupportsPreferencesObj { get; set; }        //Gets or sets the preferences object
 
-        /// <summary>
-        /// Aspect ratio of form at design time
-        /// </summary>
-        private float _designTimeAspectRatio = 0.0f;
+        public interface IPreferenceEditor
+        {
+            string PropertyName { get; }
+            object GetValue();
+        }
 
-        /// <summary>
-        /// Has first call to OnClientSizeChanged been made?                                   
-        /// </summary>
-        private bool _firstClientChangedCall = true;
+        public bool _isDirty = false;                                           //Did the user change anything in the form
 
-        /// <summary>
-        /// Whether the text should be wrapped or not
-        /// </summary>
-        public bool _wrapText = true;
+        private float _designTimeAspectRatio = 0.0f;                            //Aspect ratio of form at design time
+                                  
+        private bool _firstClientChangedCall = true;                            //Has first call to OnClientSizeChanged been made? 
 
-        /// <summary>
-        /// Delegate for the event triggered when the user makes a change to a preference setting 
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="arg">event args</param>
+        public bool _wrapText = true;                                           // Whether the text should be wrapped or not
+
+        public String Title { get; set; }                                       //Gets or sets the title / text for header of settings column of the form
+
+        #endregion
+
+        //Delegate for the event triggered when the user makes a change to a preference setting 
         public delegate void NotifyPreferencesChangeMade();
 
-        /// <summary>
-        /// Event raised when the user makes a change to a preference setting 
-        /// </summary>
+        //Event raised when the user makes a change to a preference setting 
         public event NotifyPreferencesChangeMade EvtPreferencesChangeMade;
 
-        /// <summary>
-        /// Initializes an instance of the class
-        /// </summary>
+        //Initializes an instance of the class
         public PreferencesEditForm()
         {
             InitializeComponent();
@@ -103,6 +81,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
             Text = "Settings";
             Load += PreferencesEditForm_Load;
         }
+
+        #region Controls
 
         private FlowLayoutPanel CreateFlowPanel()
         {
@@ -121,6 +101,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
             return panel;
         }
 
+        private FlowLayoutPanel _flowPanel;
+
         private Label CreateLabel(string text, int fontSize, FontStyle fontStyle)
         {
             return new Label
@@ -133,222 +115,16 @@ namespace ACAT.Lib.Core.PreferencesManagement
             };
         }
 
-        /// <summary>
-        /// Gets or sets the preferences object
-        /// </summary>
-        public ISupportsPreferences SupportsPreferencesObj { get; set; }
-
-        /// <summary>
-        /// Gets or sets the title / text for header of settings column of the form
-        /// </summary>
-        public String Title { get; set; }
-
-        /// <summary>
-        /// Client size changed
-        /// </summary>
-        /// <param name="e">event args</param>
-        protected override void OnClientSizeChanged(EventArgs e)
-        {
-            base.OnClientSizeChanged(e);
-            if (_firstClientChangedCall)
-            {
-                _designTimeAspectRatio = (float)ClientSize.Height / ClientSize.Width;
-                _firstClientChangedCall = false;
-            }
-        }
-
-        #region Can Be Deleted but wait
-
-        /// <summary>
-        /// Adds a row for a boolean property
-        /// </summary>
-        /// <param name="obj">preferences object</param>
-        /// <param name="property">the boolean property</param>
-        /// <param name="attr">descriptor for the property</param>
-        private void addCheckBoxRow(object obj, PropertyInfo property, BoolDescriptorAttribute attr)
-        {
-            var str = getDefaultValue(property.Name);
-
-            var ii = dataGridView.Rows.Add(property.Name,
-                                            attr.Description,
-                                            property.GetValue(obj, null).ToString(),
-                                            getDefaultValue(property.Name),
-                                            "N/A");
-
-            dataGridView[ValueColumn.Name, ii] = new DataGridViewCheckBoxCell
-            {
-                Value = property.GetValue(obj, null)
-            };
-
-            bool defaultValue = (String.Compare(str, "True", true) == 0);
-            dataGridView[DefaultColumn.Name, ii] = new DataGridViewCheckBoxCell
-            {
-                Value = defaultValue
-            };
-
-            dataGridView.Rows[ii].Tag = property;
-        }
-
-        /// <summary>
-        /// Adds a row for a boolean field
-        /// </summary>
-        /// <param name="obj">preferences object</param>
-        /// <param name="fieldInfo">the boolean field</param>
-        /// <param name="attr">descriptor for the field</param>
-        private void addCheckBoxRow(object obj, FieldInfo fieldInfo, BoolDescriptorAttribute attr)
-        {
-            var ii = dataGridView.Rows.Add(fieldInfo.Name,
-                                            attr.Description,
-                                            fieldInfo.GetValue(obj).ToString(),
-                                            getDefaultValue(fieldInfo.Name),
-                                            "N/A");
-
-            var checkBoxCell = new DataGridViewCheckBoxCell
-            {
-                Value = fieldInfo.GetValue(obj)
-            };
-
-            dataGridView[ValueColumn.Name, ii] = checkBoxCell;
-
-            checkBoxCell = new DataGridViewCheckBoxCell { Value = false };
-
-            dataGridView[DefaultColumn.Name, ii] = checkBoxCell;
-
-            dataGridView.Rows[ii].Tag = fieldInfo;
-        }
-
-        /// <summary>
-        /// Adds a row for a float field
-        /// </summary>
-        /// <param name="obj">preferences object</param>
-        /// <param name="fieldInfo">the float field</param>
-        /// <param name="attr">descriptor for the field</param>
-        private void addFloatRow(object obj, FieldInfo fieldInfo, FloatDescriptorAttribute attr)
-        {
-            String range = attr.MinValue + " to " + attr.MaxValue;
-
-            int rowNum = dataGridView.Rows.Add(fieldInfo.Name,
-                                                attr.Description,
-                                                fieldInfo.GetValue(obj).ToString(),
-                                                getDefaultValue(fieldInfo.Name),
-                                                range);
-
-            dataGridView.Rows[rowNum].Tag = fieldInfo;
-        }
-
-        /// <summary>
-        /// Adds a row for a float property
-        /// </summary>
-        /// <param name="obj">preferences object</param>
-        /// <param name="property">the float property</param>
-        /// <param name="attr">descriptor for the property</param>
-        private void addFloatRow(object obj, PropertyInfo property, FloatDescriptorAttribute attr)
-        {
-            String range = attr.MinValue + " to " + attr.MaxValue;
-
-            int rowNum = dataGridView.Rows.Add(property.Name,
-                                            attr.Description,
-                                            property.GetValue(obj, null).ToString(),
-                                            getDefaultValue(property.Name),
-                                            range);
-
-            dataGridView.Rows[rowNum].Tag = property;
-        }
-
-        /// <summary>
-        /// Adds a row for a integer field
-        /// </summary>
-        /// <param name="obj">preferences object</param>
-        /// <param name="fieldInfo">the integer field</param>
-        /// <param name="attr">descriptor for the field</param>
-        private void addIntegerRow(object obj, FieldInfo fieldInfo, IntDescriptorAttribute attr)
-        {
-            String range = attr.MinValue + " to " + attr.MaxValue;
-
-            int rowNum = dataGridView.Rows.Add(fieldInfo.Name,
-                                                attr.Description,
-                                                fieldInfo.GetValue(obj).ToString(),
-                                                getDefaultValue(fieldInfo.Name),
-                                                range);
-
-            dataGridView.Rows[rowNum].Tag = fieldInfo;
-        }
-
-        /// <summary>
-        /// Adds a row for a integer property
-        /// </summary>
-        /// <param name="obj">preferences object</param>
-        /// <param name="property">the integer property</param>
-        /// <param name="attr">descriptor for the property</param>
-        private void addIntegerRow(object obj, PropertyInfo property, IntDescriptorAttribute attr)
-        {
-            String range = attr.MinValue + " to " + attr.MaxValue;
-
-            int rowNum = dataGridView.Rows.Add(property.Name,
-                                                attr.Description,
-                                                property.GetValue(obj, null).ToString(),
-                                                getDefaultValue(property.Name),
-                                                range);
-
-            dataGridView.Rows[rowNum].Tag = property;
-        }
-
-        /// <summary>
-        /// Adds a row for a String field
-        /// </summary>
-        /// <param name="obj">preferences object</param>
-        /// <param name="fieldInfo">the string field</param>
-        /// <param name="attr">descriptor for the field</param>
-        private void addStringRow(object obj, FieldInfo fieldInfo, StringDescriptorAttribute attr)
-        {
-            String range = "N/A";
-
-            int rowNum = dataGridView.Rows.Add(fieldInfo.Name,
-                                                attr.Description,
-                                                fieldInfo.GetValue(obj).ToString(),
-                                                getDefaultValue(fieldInfo.Name),
-                                                range);
-
-            dataGridView.Rows[rowNum].Tag = fieldInfo;
-        }
-
-        /// <summary>
-        /// Adds a row for a string property
-        /// </summary>
-        /// <param name="obj">preferences object</param>
-        /// <param name="property">the string property</param>
-        /// <param name="attr">descriptor for the property</param>
-        private void addStringRow(object obj, PropertyInfo property, StringDescriptorAttribute attr)
-        {
-            String range = "N/A";
-
-            int rowNum = dataGridView.Rows.Add(property.Name,
-                                                attr.Description,
-                                                property.GetValue(obj, null).ToString(),
-                                                getDefaultValue(property.Name),
-                                                range);
-
-            dataGridView.Rows[rowNum].Tag = property;
-        }
-        
         #endregion
 
-
-        //Check if form filled correctly, if not, return false
-        //If validated, check if changes have been made to form and if so prompt user asking if they want to save
+        //Check if form filled correctly, if not, return false If validated, check if changes have been made to form and if so prompt user asking if they want to save
         public bool validateAndSave()
         {
-
-            // Update preferences based on latest values then save
-            updatePreferences();
-
-            // Save preferences
-            Preferences.Save();
+            updatePreferences();            //Update preferences based on latest values then save
+            Preferences.Save();             //Save preferences
 
             return true;
-
         }
-
 
         // User clicked wrap text checkbox
         public void checkBoxWrapText_CheckedChanged(object sender, EventArgs e)
@@ -368,39 +144,19 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 "This cannot be undone.", StringResources.Yes, StringResources.No, this, true))
             {
                 _isDirty = true;
-                refreshGridView(DefaultPreferences);
+                refreshPanel(DefaultPreferences);
                 EvtPreferencesChangeMade();
             }
         }
 
-        /// <summary>
-        /// Gets a yes/no response
-        /// </summary>
-        /// <param name="prompt">prompt to display</param>
-        /// <returns>Yes or no</returns>
+        //Gets a yes/no response
         private bool confirm(String prompt)
         {
             return ConfirmBoxTwoOption.ShowDialog(prompt.ToString(), "",
                 StringResources.Yes, StringResources.No, this, true);
         }
 
-        /// <summary>
-        /// Occurs when edit mode stopped for the current selected cell
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void dataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
-        {
-            
-        }
-
-        /// <summary>
-        /// Here's where checking is done on the validity of the data
-        /// If it is an integer for eg, make sure that all the text
-        /// in the cell are digits and that the integer is within range.
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
+        //Here's where checking is done on the validity of the data If it is an integer for eg, make sure that all the text in the cell are digits and that the integer is within range.
         private void dataGridView_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
             var senderGrid = (DataGridView)sender;
@@ -641,73 +397,21 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
         }
 
-
-        /// <summary>
-        /// Something changed. Set dirty flag
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
+        //Something changed. Set dirty flag
         private void DataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             _isDirty = true;
             EvtPreferencesChangeMade();
         }
 
-        /// <summary>
-        /// Something changed. Set dirty flag
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
+        //Something changed. Set dirty flag
         private void DataGridView_CurrentCellDirtyStateChanged(object sender, EventArgs e)
         {
             _isDirty = true;
             EvtPreferencesChangeMade();
         }
 
-
-        /// <summary>
-        /// Returns the custom attribute for a boolean field
-        /// </summary>
-        /// <param name="field">the field</param>
-        /// <returns>attribute, null if not found</returns>
-        private BoolDescriptorAttribute getBoolAttribute(FieldInfo field)
-        {
-            var attributes = field.GetCustomAttributes(false);
-            foreach (var attribute in attributes)
-            {
-                if (attribute.GetType() == typeof(BoolDescriptorAttribute))
-                {
-                    return (BoolDescriptorAttribute)attribute;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Returns the custom attribute for a boolean property
-        /// </summary>
-        /// <param name="property">the property</param>
-        /// <returns>attribute, null if not found</returns>
-        private BoolDescriptorAttribute getBoolAttribute(PropertyInfo property)
-        {
-            var attributes = property.GetCustomAttributes(false);
-            foreach (var attribute in attributes)
-            {
-                if (attribute.GetType() == typeof(BoolDescriptorAttribute))
-                {
-                    return (BoolDescriptorAttribute)attribute;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Returns the default value for the specified field
-        /// </summary>
-        /// <param name="fieldName">name of the field</param>
-        /// <returns>the default value</returns>
+        //Returns the default value for the specified field
         private String getDefaultValue(String fieldName)
         {
             var members = DefaultPreferences.GetType().GetMembers();
@@ -740,22 +444,13 @@ namespace ACAT.Lib.Core.PreferencesManagement
             return String.Empty;
         }
 
-        /// <summary>
-        /// Returns the field info for the specified field name
-        /// </summary>
-        /// <param name="obj">The object</param>
-        /// <param name="name">anme of hte field</param>
-        /// <returns>FieldInfo</returns>
+        //Returns the field info for the specified field name
         private FieldInfo getField(object obj, String name)
         {
             return obj.GetType().GetFields().FirstOrDefault(field => String.Compare(field.Name, name) == 0);
         }
 
-        /// <summary>
-        /// Returns the custom attribute for a float field
-        /// </summary>
-        /// <param name="field">the field</param>
-        /// <returns>attribute, null if not found</returns>
+        //Returns the custom attribute for a float field
         private FloatDescriptorAttribute getFloatAttribute(FieldInfo field)
         {
             var attributes = field.GetCustomAttributes(false);
@@ -770,11 +465,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             return null;
         }
 
-        /// <summary>
-        /// Returns the custom attribute for a float property
-        /// </summary>
-        /// <param name="property">the property</param>
-        /// <returns>attribute, null if not found</returns>
+        //Returns the custom attribute for a float property
         private FloatDescriptorAttribute getFloatAttribute(PropertyInfo property)
         {
             var attributes = property.GetCustomAttributes(false);
@@ -790,11 +481,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             return null;
         }
 
-        /// <summary>
         /// Returns the custom attribute for an integer field
-        /// </summary>
-        /// <param name="field">the field</param>
-        /// <returns>attribute, null if not found</returns>
         private IntDescriptorAttribute getIntAttribute(FieldInfo field)
         {
             var attributes = field.GetCustomAttributes(false);
@@ -809,11 +496,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             return null;
         }
 
-        /// <summary>
-        /// Returns the custom attribute for a integer property
-        /// </summary>
-        /// <param name="property">the property</param>
-        /// <returns>attribute, null if not found</returns>
+        //Returns the custom attribute for a integer property
         private IntDescriptorAttribute getIntAttribute(PropertyInfo property)
         {
             var attributes = property.GetCustomAttributes(false);
@@ -829,59 +512,13 @@ namespace ACAT.Lib.Core.PreferencesManagement
             return null;
         }
 
-        /// <summary>
-        /// Returns the property info for the specified property
-        /// </summary>
-        /// <param name="obj"the object></param>
-        /// <param name="name">name of the property</param>
-        /// <returns>Property info</returns>
+        //Returns the property info for the specified property
         private PropertyInfo getProperty(object obj, String name)
         {
             return obj.GetType().GetProperties().FirstOrDefault(property => String.Compare(property.Name, name) == 0);
         }
 
-        /// <summary>
-        /// Returns the custom attribute for a string field
-        /// </summary>
-        /// <param name="field">the field</param>
-        /// <returns>attribute, null if not found</returns>
-        private StringDescriptorAttribute getStringAttribute(FieldInfo field)
-        {
-            var attributes = field.GetCustomAttributes(false);
-            foreach (var attribute in attributes)
-            {
-                if (attribute.GetType() == typeof(StringDescriptorAttribute))
-                {
-                    return (StringDescriptorAttribute)attribute;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Returns the custom attribute for a String property
-        /// </summary>
-        /// <param name="property">the property</param>
-        /// <returns>attribute, null if not found</returns>
-        private StringDescriptorAttribute getStringAttribute(PropertyInfo property)
-        {
-            var attributes = property.GetCustomAttributes(false);
-
-            foreach (var attribute in attributes)
-            {
-                if (attribute.GetType() == typeof(StringDescriptorAttribute))
-                {
-                    return (StringDescriptorAttribute)attribute;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Formats the datagridview
-        /// </summary>
+        //Formats the datagridview>
         private void initializeGridView()
         {
             dataGridView.RowHeadersVisible = false;
@@ -903,100 +540,9 @@ namespace ACAT.Lib.Core.PreferencesManagement
             RangeColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
 
             dataGridView.CellValidating += dataGridView_CellValidating;
-            dataGridView.CellEndEdit += dataGridView_CellEndEdit;
         }
 
-        /// <summary>
-        /// Returns true if the property is a bool
-        /// </summary>
-        /// <param name="property">property</param>
-        /// <returns>true if it is</returns>
-        private bool isBool(PropertyInfo property)
-        {
-            return property.PropertyType == typeof(Boolean) ||
-                    property.PropertyType == typeof(bool);
-        }
-
-        /// <summary>
-        /// Returns true if the field is a bool
-        /// </summary>
-        /// <param name="field">field</param>
-        /// <returns>true if it is</returns>
-        private bool isBool(FieldInfo field)
-        {
-            return field.FieldType == typeof(Boolean) ||
-                    field.FieldType == typeof(bool);
-        }
-
-        /// <summary>
-        /// Returns true if the property is a float
-        /// </summary>
-        /// <param name="property">property</param>
-        /// <returns>true if it is</returns>
-        private bool isFloat(PropertyInfo property)
-        {
-            return property.PropertyType == typeof(float);
-        }
-
-        /// <summary>
-        /// Returns true if the field is a float
-        /// </summary>
-        /// <param name="field">field</param>
-        /// <returns>true if it is</returns>
-        private bool isFloat(FieldInfo field)
-        {
-            return field.FieldType == typeof(float);
-        }
-
-        /// <summary>
-        /// Returns true if the property is a integer
-        /// </summary>
-        /// <param name="property">property</param>
-        /// <returns>true if it is</returns>
-        private bool isInt(PropertyInfo property)
-        {
-            return property.PropertyType == typeof(int) ||
-                    property.PropertyType == typeof(Int32);
-        }
-
-        /// <summary>
-        /// Returns true if the field is an integer
-        /// </summary>
-        /// <param name="field">field</param>
-        /// <returns>true if it is</returns>
-        private bool isInt(FieldInfo field)
-        {
-            return field.FieldType == typeof(int) ||
-                    field.FieldType == typeof(Int32);
-        }
-
-        /// <summary>
-        /// Returns true if the field is a string
-        /// </summary>
-        /// <param name="field">field</param>
-        /// <returns>true if it is</returns>
-        private bool isString(FieldInfo field)
-        {
-            return field.FieldType == typeof(String) ||
-                    field.FieldType == typeof(string);
-        }
-
-        /// <summary>
-        /// Returns true if the property is a string
-        /// </summary>
-        /// <param name="property">property</param>
-        /// <returns>true if it is</returns>
-        private bool isString(PropertyInfo property)
-        {
-            return property.PropertyType == typeof(String) ||
-                    property.PropertyType == typeof(string);
-        }
-
-        /// <summary>
-        /// Form loader.  Initialize the grid and populate it
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">eent args</param>
+        //Form loader.  Initialize the grid and populate it
         private void PreferencesEditForm_Load(object sender, EventArgs e)
         {
             float currentAspectRatio = (float)ClientSize.Height / ClientSize.Width;
@@ -1027,7 +573,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             // Refresh grid view and set handlers which change _dirty flag after form has been fully painted / shown
             Paint += (s, args) =>
             {
-                refreshGridView(Preferences);
+                refreshPanel(Preferences);
 
                 if (dataGridView != null)
                 {
@@ -1065,38 +611,35 @@ namespace ACAT.Lib.Core.PreferencesManagement
             }
         }
 
-        /// <summary>
-        /// Populates the grid view with preferences data
-        /// </summary>
-        /// <param name="prefs">preferences</param>
-        private void refreshGridView(IPreferences prefs)
+        //Populates the grid view with preferences data
+        private void refreshPanel(IPreferences prefs)
         {
-            var flowPanel = CreateFlowPanel();
+            if (_flowPanel == null)
+            {
+                _flowPanel = CreateFlowPanel();
+            }
 
-            ReplaceDataGridWith(flowPanel);
+            ReplaceDataGridWith(_flowPanel);
             wrapText(_wrapText);
 
             var descriptor = prefs.GetType().GetCustomAttribute<DescriptorAttribute>();
 
-            flowPanel.Controls.Add(CreateLabel(descriptor?.Category ?? "UNKNOWN CATEGORY", 24, FontStyle.Bold));
-            flowPanel.Controls.Add(CreateLabel(descriptor?.Description ?? "UNKNOWN DESCRIPTION", 20, FontStyle.Regular));
+            _flowPanel.Controls.Add(CreateLabel(descriptor?.Category ?? "UNKNOWN CATEGORY", 24, FontStyle.Bold));
+            _flowPanel.Controls.Add(CreateLabel(descriptor?.Description ?? "UNKNOWN DESCRIPTION", 20, FontStyle.Regular));
 
-            AddPreferencePropertiesToPanel(flowPanel, prefs);
+            AddPreferencePropertiesToPanel(_flowPanel, prefs);
         }
 
-        /// <summary>
-        /// Displays a error status mesage
-        /// </summary>
-        /// <param name="status">text of the status</param>
+        //Displays a error status mesage
         private void showErrorStatus(String settingName, String status)
         {
-            ConfirmBoxOneOption ConfirmBoxOneOption = new ConfirmBoxOneOption
+            using (var confirmBox = new ConfirmBoxOneOption
             {
-                Prompt = "Error\n" + settingName + "\n" + status,
-                DecisionPrompt = "OK"
-            };
-            ConfirmBoxOneOption.ShowDialog(this);
-            ConfirmBoxOneOption.Dispose();
+                Prompt = $"Error\n{settingName}\n{status}",DecisionPrompt = "OK"
+            })
+            {
+                confirmBox.ShowDialog(this);
+            }
         }
 
         private void SavePreferencesFromPanel(FlowLayoutPanel panel, IPreferences prefs)
@@ -1105,14 +648,12 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
             foreach (var prop in props)
             {
-                // Find the ElementHost that wraps the WPF user control for this property
                 foreach (Control control in panel.Controls)
                 {
                     var host = control as ElementHost;
                     if (host?.Child == null)
                         continue;
 
-                    // Assuming CreateLabeledPanel returns a control that implements IPreferenceEditor
                     var editor = host.Child as IPreferenceEditor;
                     if (editor == null)
                         continue;
@@ -1127,7 +668,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                         }
                         catch
                         {
-                            // Optional: log or handle invalid value conversion
                         }
 
                         break;
@@ -1136,15 +676,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             }
         }
 
-        public interface IPreferenceEditor
-        {
-            string PropertyName { get; }
-            object GetValue();
-        }
-
-        /// <summary>
-        /// Updates preferneces using the data in the grid view
-        /// </summary>
+        //Updates preferneces using the data in the grid view
         private void updatePreferences()
         {
             // Iterate over each row in the DataGridView
@@ -1305,16 +837,356 @@ namespace ACAT.Lib.Core.PreferencesManagement
             */
         }
 
-        /// <summary>
-        /// Wraps/unwraps text
-        /// </summary>
-        /// <param name="onOff">to do or not to do</param>
+        //Wraps/unwraps text
         private void wrapText(bool onOff)
         {
+            // Loop through each row (TableLayoutPanel) in the FlowPanel
+            foreach (Control control in _flowPanel.Controls)
+            {
+                if (control is TableLayoutPanel rowPanel)
+                {
+                    foreach (Control inner in rowPanel.Controls)
+                    {
+                        if (inner is Label label)
+                        {
+                            label.AutoSize = false;
+                            label.MaximumSize = onOff ? new Size(rowPanel.Width - 10, 0) : Size.Empty;
+                        }
+                    }
+                }
+            }
+
+            _flowPanel.PerformLayout();
+            /*
             DescriptionColumn.DefaultCellStyle.WrapMode = (onOff) ? DataGridViewTriState.True : DataGridViewTriState.False;
             dataGridView.AutoResizeRows();
+            */
         }
 
+
+        #region CuelloButNoYet
+
+        //Client size changed
+        protected override void OnClientSizeChanged(EventArgs e)
+        {
+            base.OnClientSizeChanged(e);
+            if (_firstClientChangedCall)
+            {
+                _designTimeAspectRatio = (float)ClientSize.Height / ClientSize.Width;
+                _firstClientChangedCall = false;
+            }
+        }
+
+        /// <summary>
+        /// Adds a row for a boolean property
+        /// </summary>
+        /// <param name="obj">preferences object</param>
+        /// <param name="property">the boolean property</param>
+        /// <param name="attr">descriptor for the property</param>
+        private void addCheckBoxRow(object obj, PropertyInfo property, BoolDescriptorAttribute attr)
+        {
+            var str = getDefaultValue(property.Name);
+
+            var ii = dataGridView.Rows.Add(property.Name,
+                                            attr.Description,
+                                            property.GetValue(obj, null).ToString(),
+                                            getDefaultValue(property.Name),
+                                            "N/A");
+
+            dataGridView[ValueColumn.Name, ii] = new DataGridViewCheckBoxCell
+            {
+                Value = property.GetValue(obj, null)
+            };
+
+            bool defaultValue = (String.Compare(str, "True", true) == 0);
+            dataGridView[DefaultColumn.Name, ii] = new DataGridViewCheckBoxCell
+            {
+                Value = defaultValue
+            };
+
+            dataGridView.Rows[ii].Tag = property;
+        }
+
+        /// <summary>
+        /// Adds a row for a boolean field
+        /// </summary>
+        /// <param name="obj">preferences object</param>
+        /// <param name="fieldInfo">the boolean field</param>
+        /// <param name="attr">descriptor for the field</param>
+        private void addCheckBoxRow(object obj, FieldInfo fieldInfo, BoolDescriptorAttribute attr)
+        {
+            var ii = dataGridView.Rows.Add(fieldInfo.Name,
+                                            attr.Description,
+                                            fieldInfo.GetValue(obj).ToString(),
+                                            getDefaultValue(fieldInfo.Name),
+                                            "N/A");
+
+            var checkBoxCell = new DataGridViewCheckBoxCell
+            {
+                Value = fieldInfo.GetValue(obj)
+            };
+
+            dataGridView[ValueColumn.Name, ii] = checkBoxCell;
+
+            checkBoxCell = new DataGridViewCheckBoxCell { Value = false };
+
+            dataGridView[DefaultColumn.Name, ii] = checkBoxCell;
+
+            dataGridView.Rows[ii].Tag = fieldInfo;
+        }
+
+        /// <summary>
+        /// Adds a row for a float field
+        /// </summary>
+        /// <param name="obj">preferences object</param>
+        /// <param name="fieldInfo">the float field</param>
+        /// <param name="attr">descriptor for the field</param>
+        private void addFloatRow(object obj, FieldInfo fieldInfo, FloatDescriptorAttribute attr)
+        {
+            String range = attr.MinValue + " to " + attr.MaxValue;
+
+            int rowNum = dataGridView.Rows.Add(fieldInfo.Name,
+                                                attr.Description,
+                                                fieldInfo.GetValue(obj).ToString(),
+                                                getDefaultValue(fieldInfo.Name),
+                                                range);
+
+            dataGridView.Rows[rowNum].Tag = fieldInfo;
+        }
+
+        /// <summary>
+        /// Adds a row for a float property
+        /// </summary>
+        /// <param name="obj">preferences object</param>
+        /// <param name="property">the float property</param>
+        /// <param name="attr">descriptor for the property</param>
+        private void addFloatRow(object obj, PropertyInfo property, FloatDescriptorAttribute attr)
+        {
+            String range = attr.MinValue + " to " + attr.MaxValue;
+
+            int rowNum = dataGridView.Rows.Add(property.Name,
+                                            attr.Description,
+                                            property.GetValue(obj, null).ToString(),
+                                            getDefaultValue(property.Name),
+                                            range);
+
+            dataGridView.Rows[rowNum].Tag = property;
+        }
+
+        /// <summary>
+        /// Adds a row for a integer field
+        /// </summary>
+        /// <param name="obj">preferences object</param>
+        /// <param name="fieldInfo">the integer field</param>
+        /// <param name="attr">descriptor for the field</param>
+        private void addIntegerRow(object obj, FieldInfo fieldInfo, IntDescriptorAttribute attr)
+        {
+            String range = attr.MinValue + " to " + attr.MaxValue;
+
+            int rowNum = dataGridView.Rows.Add(fieldInfo.Name,
+                                                attr.Description,
+                                                fieldInfo.GetValue(obj).ToString(),
+                                                getDefaultValue(fieldInfo.Name),
+                                                range);
+
+            dataGridView.Rows[rowNum].Tag = fieldInfo;
+        }
+
+        /// <summary>
+        /// Adds a row for a integer property
+        /// </summary>
+        /// <param name="obj">preferences object</param>
+        /// <param name="property">the integer property</param>
+        /// <param name="attr">descriptor for the property</param>
+        private void addIntegerRow(object obj, PropertyInfo property, IntDescriptorAttribute attr)
+        {
+            String range = attr.MinValue + " to " + attr.MaxValue;
+
+            int rowNum = dataGridView.Rows.Add(property.Name,
+                                                attr.Description,
+                                                property.GetValue(obj, null).ToString(),
+                                                getDefaultValue(property.Name),
+                                                range);
+
+            dataGridView.Rows[rowNum].Tag = property;
+        }
+
+        /// <summary>
+        /// Adds a row for a String field
+        /// </summary>
+        /// <param name="obj">preferences object</param>
+        /// <param name="fieldInfo">the string field</param>
+        /// <param name="attr">descriptor for the field</param>
+        private void addStringRow(object obj, FieldInfo fieldInfo, StringDescriptorAttribute attr)
+        {
+            String range = "N/A";
+
+            int rowNum = dataGridView.Rows.Add(fieldInfo.Name,
+                                                attr.Description,
+                                                fieldInfo.GetValue(obj).ToString(),
+                                                getDefaultValue(fieldInfo.Name),
+                                                range);
+
+            dataGridView.Rows[rowNum].Tag = fieldInfo;
+        }
+
+        /// <summary>
+        /// Adds a row for a string property
+        /// </summary>
+        /// <param name="obj">preferences object</param>
+        /// <param name="property">the string property</param>
+        /// <param name="attr">descriptor for the property</param>
+        private void addStringRow(object obj, PropertyInfo property, StringDescriptorAttribute attr)
+        {
+            String range = "N/A";
+
+            int rowNum = dataGridView.Rows.Add(property.Name,
+                                                attr.Description,
+                                                property.GetValue(obj, null).ToString(),
+                                                getDefaultValue(property.Name),
+                                                range);
+
+            dataGridView.Rows[rowNum].Tag = property;
+        }
+
+
+        /// <summary>
+        /// Returns the custom attribute for a boolean field
+        /// </summary>
+        /// <param name="field">the field</param>
+        /// <returns>attribute, null if not found</returns>
+        private BoolDescriptorAttribute getBoolAttribute(FieldInfo field)
+        {
+            var attributes = field.GetCustomAttributes(false);
+            foreach (var attribute in attributes)
+            {
+                if (attribute.GetType() == typeof(BoolDescriptorAttribute))
+                {
+                    return (BoolDescriptorAttribute)attribute;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Returns the custom attribute for a boolean property
+        /// </summary>
+        /// <param name="property">the property</param>
+        /// <returns>attribute, null if not found</returns>
+        private BoolDescriptorAttribute getBoolAttribute(PropertyInfo property)
+        {
+            var attributes = property.GetCustomAttributes(false);
+            foreach (var attribute in attributes)
+            {
+                if (attribute.GetType() == typeof(BoolDescriptorAttribute))
+                {
+                    return (BoolDescriptorAttribute)attribute;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Returns the custom attribute for a string field
+        /// </summary>
+        /// <param name="field">the field</param>
+        /// <returns>attribute, null if not found</returns>
+        private StringDescriptorAttribute getStringAttribute(FieldInfo field)
+        {
+            var attributes = field.GetCustomAttributes(false);
+            foreach (var attribute in attributes)
+            {
+                if (attribute.GetType() == typeof(StringDescriptorAttribute))
+                {
+                    return (StringDescriptorAttribute)attribute;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Returns the custom attribute for a String property
+        /// </summary>
+        /// <param name="property">the property</param>
+        /// <returns>attribute, null if not found</returns>
+        private StringDescriptorAttribute getStringAttribute(PropertyInfo property)
+        {
+            var attributes = property.GetCustomAttributes(false);
+
+            foreach (var attribute in attributes)
+            {
+                if (attribute.GetType() == typeof(StringDescriptorAttribute))
+                {
+                    return (StringDescriptorAttribute)attribute;
+                }
+            }
+
+            return null;
+        }
+
+        /// Returns true if the property is a float
+        private bool isFloat(PropertyInfo property)
+        {
+            return property.PropertyType == typeof(float);
+        }
+
+        /// Returns true if the field is a float
+        private bool isFloat(FieldInfo field)
+        {
+            return field.FieldType == typeof(float);
+        }
+
+        /// Returns true if the property is a integer
+        private bool isInt(PropertyInfo property)
+        {
+            return property.PropertyType == typeof(int) ||
+                    property.PropertyType == typeof(Int32);
+        }
+
+        /// Returns true if the field is an integer
+        private bool isInt(FieldInfo field)
+        {
+            return field.FieldType == typeof(int) ||
+                    field.FieldType == typeof(Int32);
+        }
+
+        /// Returns true if the field is a string
+        private bool isString(FieldInfo field)
+        {
+            return field.FieldType == typeof(String) ||
+                    field.FieldType == typeof(string);
+        }
+
+        /// Returns true if the property is a string
+        private bool isString(PropertyInfo property)
+        {
+            return property.PropertyType == typeof(String) ||
+                    property.PropertyType == typeof(string);
+        }
+
+        /// <summary>
+        /// Returns true if the property is a bool
+        /// </summary>
+        /// <param name="property">property</param>
+        /// <returns>true if it is</returns>
+        private bool isBool(PropertyInfo property)
+        {
+            return property.PropertyType == typeof(Boolean) ||
+                    property.PropertyType == typeof(bool);
+        }
+
+        /// Returns true if the field is a bool
+        private bool isBool(FieldInfo field)
+        {
+            return field.FieldType == typeof(Boolean) ||
+                    field.FieldType == typeof(bool);
+        }
+
+
+        #endregion
 
     }
 }

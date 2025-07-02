@@ -24,26 +24,42 @@ using System.Windows.Forms;
 
 namespace ACAT.Lib.Core.PreferencesManagement
 {
-    /// <summary>
-    /// Displays a list of categories allowing the user to enable/disable
-    /// a category, change settings for a category etc. The category could
-    /// be a word predictor, a spellchecker, actuator etc.
-    /// </summary>
     public partial class PreferencesCategorySelectForm : Form
     {
-        /// <summary>
-        /// List of preference categories to display
-        /// </summary>
-        public IEnumerable<PreferencesCategory> PreferencesCategories;
 
-        /// <summary>
-        /// Did the user change anything in the form
-        /// </summary>
-        public bool _isDirty = false;
+        public IEnumerable<PreferencesCategory> PreferencesCategories;         //List of preference categories to display
+    
+        public bool _isDirty = false;                                          //Did the user change anything in the form
+        public bool AllowMultiEnable { get; set; }                           //Gets or sets the property on whether to allow enabling or disabling multiple categories or just one at a time (like a radio button)
+        public bool ShowEnable { get; set; }                                 //Gets or sets whether to show the enable column
+        public bool DisallowEnable { get; set; }                             //Gets or sets whether the Enable column should be readonly
+        
+        private bool _firstClientChangedCall = true;                         //Has first call to OnClientSizeChanged been made?
 
-        /// <summary>
-        /// Initializes an instance of the class
-        /// </summary>
+        private float _designTimeAspectRatio = 0.0f;                         //Aspect ratio of form at design time
+        public String CategoryColumnHeaderText { get; set; }                 //Gets or sets the column header text for the category column
+        public String ConfigureColumnHeaderText { get; set; }                //Gets or sets the column header text for the configure column
+        public String DescriptionColumnHeaderText { get; set; }              //Gets or sets the column header text of the description column
+        public String EnableColumnHeaderText { get; set; }                   //Gets or sets the column header text for enabling/disabling a category
+        public String Title { get; set; }                                    //Gets or sets the title of the form
+        public IntPtr ParentControlHandle { get; set; }                      //Gets or sets the handle of the parent control for the form
+
+
+
+        //Delegate for the event triggered when the user saves new preferences
+        public delegate void NotifySavePreferencesCategories(object sender, IEnumerable<PreferencesCategory> preferencesCategories);
+        //Event raised when preferences cateogry selected - show custom Preferences dialog or default Preferences edit form
+        public delegate void PreferencesCategorySelected(object sender, ISupportsPreferences preferencesCategory);
+        //Delegate for the event triggered when the user makes a change to a preference setting 
+        public delegate void NotifyPreferencesChangeMade();
+        //Event raised when the user selects Done and then elects to save changes
+        public event NotifySavePreferencesCategories EvtSavePreferences;
+        //Event raised when the user makes a change to a preference setting 
+        public event NotifyPreferencesChangeMade EvtPreferencesChangeMade;
+
+        public event PreferencesCategorySelected EvtPreferencesCategorySelected;
+
+        //Initializes an instance of the class
         public PreferencesCategorySelectForm()
         {
             InitializeComponent();
@@ -54,95 +70,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             Load += OnLoad;
         }
 
-        /// <summary>
-        /// Gets or sets the property on whether to allow enabling
-        /// or disabling multiple categories or just one at a time
-        /// (like a radio button)
-        /// </summary>
-        public bool AllowMultiEnable { get; set; }
-
-        /// <summary>
-        /// Gets or sets the column header text for the category column
-        /// </summary>
-        public String CategoryColumnHeaderText { get; set; }
-
-        /// <summary>
-        /// Gets or sets the column header text for the configure column
-        /// </summary>
-        public String ConfigureColumnHeaderText { get; set; }
-
-        /// <summary>
-        /// Gets or sets the column header text of the description column
-        /// </summary>
-        public String DescriptionColumnHeaderText { get; set; }
-
-        /// <summary>
-        /// Gets or sets whether the Enable column should be readonly
-        /// </summary>
-        public bool DisallowEnable { get; set; }
-
-        /// <summary>
-        /// Gets or sets whether to show the enable column
-        /// </summary>
-        public bool ShowEnable { get; set; }
-
-        /// <summary>
-        /// Gets or sets the column header text for enabling/disabling a category
-        /// </summary>
-        public String EnableColumnHeaderText { get; set; }
-
-        /// <summary>
-        /// Gets or sets the title of the form
-        /// </summary>
-        public String Title { get; set; }
-
-        /// <summary>
-        /// Aspect ratio of form at design time
-        /// </summary>
-        private float _designTimeAspectRatio = 0.0f;
-
-        /// <summary>
-        /// Has first call to OnClientSizeChanged been made?
-        /// </summary>
-        private bool _firstClientChangedCall = true;
-
-        /// <summary>
-        /// Gets or sets the handle of the parent control for the form
-        /// </summary>
-        public IntPtr ParentControlHandle { get; set; }
-
-        /// <summary>
-        /// Delegate for the event triggered when the user saves 
-        /// new preferences
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="arg">event args</param>
-        public delegate void NotifySavePreferencesCategories(object sender, IEnumerable<PreferencesCategory> preferencesCategories);
-
-        /// <summary>
-        /// Event raised when the user selects Done and then elects to save changes
-        /// </summary>
-        public event NotifySavePreferencesCategories EvtSavePreferences;
-
-        /// <summary>
-        /// Delegate for the event triggered when the user makes a change to a preference setting 
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="arg">event args</param>
-        public delegate void NotifyPreferencesChangeMade();
-
-        /// <summary>
-        /// Event raised when the user makes a change to a preference setting 
-        /// </summary>
-        public event NotifyPreferencesChangeMade EvtPreferencesChangeMade;
-
-        /// <summary>
-        /// Event raised when preferences cateogry selected - show custom Preferences dialog or default Preferences edit form
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="preferencesCategory"></param>
-        public delegate void PreferencesCategorySelected(object sender, ISupportsPreferences preferencesCategory);
-        public event PreferencesCategorySelected EvtPreferencesCategorySelected;
+        #region controls
 
         private Button CreateSetupButton(PreferencesCategory category)
         {
@@ -239,6 +167,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
             };
         }
 
+        private TableLayoutPanel _flowPanel;
+
         private Label CreateCategoryHeaderLabel(string title)
         {
             return new Label
@@ -255,7 +185,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 AutoSize = true
             };
         }
-
+        
+        #endregion
 
         private bool IsValidExtensionCategory(PreferencesCategory category, out IDescriptor descriptor)
         {
@@ -289,15 +220,10 @@ namespace ACAT.Lib.Core.PreferencesManagement
             // Send event notification that preferences are to be saved
             EvtSavePreferences?.Invoke(this, this.PreferencesCategories);
 
-            return true; 
-
+            return true;
         }
 
-
-        /// <summary>
-        /// Client size changed
-        /// </summary>
-        /// <param name="e">event args</param>
+        //Client size changed
         protected override void OnClientSizeChanged(EventArgs e)
         {
             base.OnClientSizeChanged(e);
@@ -308,15 +234,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             }
         }
 
-
-        /// <summary>
-        /// If the user clicked in a cell.  If its is the
-        /// Configure column, bring up the preferences form for the
-        /// category so the user can set the preferences for
-        /// that category
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
+        // If the user clicked in a cell.  If its is the Configure column, bring up the preferences form for the category so the user can set the preferences for that category
         private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             var senderGrid = (DataGridView)sender;
@@ -341,13 +259,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             }
         }
 
-
-        /// <summary>
-        /// If the user clicked on the Enable column, and if AllowMultiEnable
-        /// is false, then make sure only one cell is checked in the column
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
+        //If the user clicked on the Enable column, and if AllowMultiEnable is false, then make sure only one cell is checked in the column
         private void dataGridView2_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             var senderGrid = dataGridView2;
@@ -380,11 +292,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
         }
 
-        /// <summary>
-        /// Dirty state changed
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
+        // Dirty state changed
         private void dataGridView2_CurrentCellDirtyStateChanged(object sender, EventArgs e)
         {
             if (dataGridView2.IsCurrentCellDirty)
@@ -396,9 +304,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             EvtPreferencesChangeMade();
         }
 
-        /// <summary>
-        /// Initializes the UI controls
-        /// </summary>
+        //Initializes the UI controls
         private void initializeUI()
         {
             dataGridView2.AutoResizeRows();
@@ -408,12 +314,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
             dataGridView2.ScrollBars = ScrollBars.Vertical;
             dataGridView2.RowHeadersVisible = false;
 
-            setColumnWidths();
-
-            setColumnHeaderText();
-
-       //     dataGridView2.CellContentClick += dataGridView2_CellContentClick;
-       //     dataGridView2.CellValueChanged += dataGridView2_CellValueChanged;
+            dataGridView2.CellContentClick += dataGridView2_CellContentClick;
+            dataGridView2.CellValueChanged += dataGridView2_CellValueChanged;
 
             Paint += (s, args) =>
             {
@@ -424,12 +326,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             };
         }
 
-        /// <summary>
-        /// OnLoad handler for the form. Init the UI and populate
-        /// the datagridview
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="eventArgs">eventargs</param>
+        //OnLoad handler for the form. Init the UI and populate the datagridview
         private void OnLoad(object sender, EventArgs eventArgs)
         {
             float currentAspectRatio = (float)ClientSize.Height / ClientSize.Width;
@@ -454,21 +351,30 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
         }
 
+        private void CheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (sender is CheckBox cb && cb.Tag is PreferencesCategory category)
+            {
+                category.Enable = cb.Checked;
+            }
+        }
 
-        /// <summary>
-        /// Refreshes the Gridview with data from the Categories
-        /// </summary>
+        //Refreshes the Gridview with data from the Categories
         private void refreshDataGridView()
         {
 
-            var flowPanel = CreateFlowPanel();
+            if (_flowPanel == null)
+            {
+                _flowPanel = CreateFlowPanel();
+                var parent = dataGridView2.Parent;
+                parent.Controls.Remove(dataGridView2);
+                parent.Controls.Add(_flowPanel);
+            }
+
+            _flowPanel.Controls.Clear(); // clear old category rows
 
             var headerLabel = CreateCategoryHeaderLabel(this.AccessibilityObject.Name);
-            flowPanel.Controls.Add(headerLabel);
-
-            var parent = dataGridView2.Parent;
-            parent.Controls.Remove(dataGridView2);
-            parent.Controls.Add(flowPanel);
+            _flowPanel.Controls.Add(headerLabel);
 
             foreach (var category in PreferencesCategories)
             {
@@ -476,16 +382,20 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     continue;
 
                 var categoryItem = CreateCategoryPanel();
-                categoryItem.Controls.Add(CreateLabel(desc.Name), 0, 0);   // Add title at (0, 0)
-                categoryItem.Controls.Add(CreateDescriptionLabel(desc.Description), 0, 2);    // Add description at (0, 2)
+                categoryItem.Controls.Add(CreateLabel(desc.Name), 0, 0);  // title
+                categoryItem.Controls.Add(CreateDescriptionLabel(desc.Description), 0, 2);  // description
 
-                categoryItem.Controls.Add(CreateCheckBox(category), 1, 1);
-                categoryItem.SetRowSpan(CreateCheckBox(category), 2);
+                var checkBox = CreateCheckBox(category);
+                checkBox.Tag = category;
+                checkBox.CheckedChanged += CheckBox_CheckedChanged;
+                categoryItem.Controls.Add(checkBox, 1, 1);
+                categoryItem.SetRowSpan(checkBox, 2);
+
                 var setupButton = CreateSetupButton(category);
                 categoryItem.Controls.Add(setupButton, 2, 0);
                 categoryItem.SetRowSpan(setupButton, 3);
 
-                flowPanel.Controls.Add(categoryItem);
+                _flowPanel.Controls.Add(categoryItem);
             }
 
             //// Sort first column ascending everytime grid is refreshed
@@ -502,69 +412,26 @@ namespace ACAT.Lib.Core.PreferencesManagement
             //}
         }
 
-        /// <summary>
-        /// Sets the text for the column headers
-        /// </summary>
-        private void setColumnHeaderText()
-        {
-            if (!String.IsNullOrEmpty(CategoryColumnHeaderText))
-            {
-                CategoryNameColumn.HeaderText = CategoryColumnHeaderText;
-            }
-
-            if (!String.IsNullOrEmpty(DescriptionColumnHeaderText))
-            {
-                DescriptionColumn.HeaderText = DescriptionColumnHeaderText;
-            }
-
-            if (!String.IsNullOrEmpty(EnableColumnHeaderText))
-            {
-                EnableColumn.HeaderText = EnableColumnHeaderText;
-            }
-
-            if (!String.IsNullOrEmpty(ConfigureColumnHeaderText))
-            {
-                ConfigureColumn.HeaderText = ConfigureColumnHeaderText;
-            }
-        }
-
-        /// <summary>
-        /// Sets the widths of the columns
-        /// </summary>
-        private void setColumnWidths()
-        {
-            int w = SystemInformation.VerticalScrollBarWidth;
-
-            if (ShowEnable)
-            {
-                CategoryNameColumn.Width = (dataGridView2.Width - w) * 3 / 8;
-                DescriptionColumn.Width = (dataGridView2.Width - w) * 3 / 8;
-                EnableColumn.Width = (dataGridView2.Width - w) / 8;
-                ConfigureColumn.Width = (dataGridView2.Width - w) / 8;
-                EnableColumn.Resizable = DataGridViewTriState.False;
-            }
-            else
-            {
-                CategoryNameColumn.Width = (dataGridView2.Width - w) * 3 / 8;
-                DescriptionColumn.Width = (dataGridView2.Width - w) * 4 / 8;
-                ConfigureColumn.Width = (dataGridView2.Width - w) * 1 / 8;
-
-                EnableColumn.Visible = false;
-            }
-
-            EnableColumn.ReadOnly = DisallowEnable;
-
-            ConfigureColumn.Resizable = DataGridViewTriState.False;
-
-            CategoryNameColumn.ReadOnly = true;
-        }
-
-        /// <summary>
-        /// Update the preferencesCategories list with the current
-        /// state of the controls in the form
-        /// </summary>
+        // Update the preferencesCategories list with the current state of the controls in the form
         private void updateDataFromUI()
         {
+            if (_flowPanel == null) return;
+
+            foreach (Control categoryPanel in _flowPanel.Controls)
+            {
+                if (categoryPanel is TableLayoutPanel tablePanel)
+                {
+                    foreach (Control ctrl in tablePanel.Controls)
+                    {
+                        if (ctrl is CheckBox cb && cb.Tag is PreferencesCategory category)
+                        {
+                            category.Enable = cb.Checked;
+                            break;
+                        }
+                    }
+                }
+            }
+            /*
             for (int ii = 0; ii < dataGridView2.Rows.Count; ii++)
             {
                 var category = dataGridView2.Rows[ii].Tag as PreferencesCategory;
@@ -573,13 +440,11 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     category.Enable = (Boolean)dataGridView2[EnableColumn.Name, ii].Value;
                 }
             }
+
+            */
         }
 
-        /// <summary>
-        /// Perform validation to make sure everything is oK.
-        /// Display error if validation failed
-        /// </summary>
-        /// <returns>true if so</returns>
+        //Perform validation to make sure everything is oK Display error if validation failed
         private bool validate()
         {
             if (AllowMultiEnable)
@@ -587,6 +452,23 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 return true;
             }
 
+            foreach (Control control in _flowPanel.Controls)
+            {
+                if (control is TableLayoutPanel categoryPanel)
+                {
+                    foreach (Control innerControl in categoryPanel.Controls)
+                    {
+                        if (innerControl is CheckBox checkBox &&
+                            checkBox.Tag is PreferencesCategory category &&
+                            checkBox.Checked)
+                        {
+                            return true; // At least one is enabled
+                        }
+                    }
+                }
+            }
+
+            /*
             for (int ii = 0; ii < dataGridView2.Rows.Count; ii++)
             {
                 if ((Boolean)dataGridView2[EnableColumn.Name, ii].Value)
@@ -595,28 +477,40 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 }
             }
 
+            */
             ConfirmBoxOneOption.ShowDialog("You must enable at least one as default.", "", StringResources.OK, this, true);
 
             return false;
         }
 
-        /// <summary>
-        /// Turns wrapping on /off in the rows
-        /// </summary>
-        /// <param name="onOff">turn it on /off</param>
+        //Turns wrapping on /off in the rows
         public void wrapText(bool onOff)
         {
+            foreach (Control control in _flowPanel.Controls)
+            {
+                if (control is TableLayoutPanel categoryPanel)
+                {
+                    foreach (Control inner in categoryPanel.Controls)
+                    {
+                        if (inner is Label label)
+                        {
+                            label.AutoSize = false;
+                            label.MaximumSize = onOff ? new Size(categoryPanel.Width - 10, 0) : Size.Empty;
+                            label.AutoEllipsis = !onOff;
+                        }
+                    }
+                }
+            }
+
+            _flowPanel.PerformLayout();
+            /*
             DataGridViewTextBoxColumn tbc = dataGridView2.Columns[1] as DataGridViewTextBoxColumn;
             tbc.DefaultCellStyle.WrapMode = (onOff) ? DataGridViewTriState.True : DataGridViewTriState.False;
             dataGridView2.AutoResizeRows();
+            */
         }
 
-
-        /// <summary>
-        /// User clicked wrap text checkbox
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
+        // User clicked wrap text checkbox
         public void checkBoxWrapText_CheckedChanged(object sender, EventArgs e)
         {
             if (sender.GetType() == typeof(CheckBox))

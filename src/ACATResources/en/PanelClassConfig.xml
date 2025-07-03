@@ -1,78 +1,97 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-16"?>
 <AppPanelClassConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <PanelClassConfigs>
-    <!-- ACAT Talk Application -->
     <PanelClassConfig>
       <AppDescription>Reduced functionality which supports the Talk window to communicate</AppDescription>
       <AppId>ACATTalk</AppId>
       <AppName>ACAT Talk Application</AppName>
       <PanelClassConfigMaps>
-        <!-- TalkApplicationABC -->
+        <!-- 
+          Name:TalkApplicationABC
+          Description: An alphabetically arranged keyboard with predictive text/sentences to help you communicate
+          Panel Container Class: TalkApplicationScanner
+          ConfigId: de5b9e7c-610f-463f-941-6b8dda9a35b3
+        -->
         <PanelClassConfigMap>
           <Default>true</Default>
           <Description>An alphabetically arranged keyboard with predictive text/sentences to help you communicate</Description>
-          <Name>TalkApplicationABC</Name>
-          <ScreenshotFileName>ABCKeyboardLayout.png</ScreenshotFileName>
-          <DisplayNameShort>Alphabetical</DisplayNameShort>
           <DisplayNameLong> ABC Keyboard Layout</DisplayNameLong>
+          <DisplayNameShort>Alphabetical</DisplayNameShort>
+          <Name>TalkApplicationABC</Name>
           <PanelClassConfigMapEntries>
             <PanelClassConfigMapEntry>
               <ConfigId>de5b9e7c-610f-463f-94f1-6b8dda9a35b3</ConfigId>
               <PanelClass>TalkApplicationScanner</PanelClass>
             </PanelClassConfigMapEntry>
           </PanelClassConfigMapEntries>
+          <ScreenshotFileName>ABCKeyboardLayout.png</ScreenshotFileName>
         </PanelClassConfigMap>
-        <!-- TalkApplicationQwerty -->
+        <!-- 
+          Name:TalkApplicationQwerty
+          Description: A full QWERTY keyboard with predictive text/sentences to help you communicate
+          Panel Container Class: TalkApplicationScanner
+          ConfigId: f802386c-31ca-4a0d-bc6f-78e71c730d11
+        -->
         <PanelClassConfigMap>
           <Default>false</Default>
           <Description>A full QWERTY keyboard with predictive text/sentences to help you communicate</Description>
-          <Name>TalkApplicationQwerty</Name>
-          <ScreenshotFileName>QWERTYKeyboardLayout.png</ScreenshotFileName>
-          <DisplayNameShort>QWERTY</DisplayNameShort>
           <DisplayNameLong> QWERTY Keyboard Layout</DisplayNameLong>
+          <DisplayNameShort>QWERTY</DisplayNameShort>
+          <Name>TalkApplicationQwerty</Name>
           <PanelClassConfigMapEntries>
             <PanelClassConfigMapEntry>
               <ConfigId>f802386c-31ca-4a0d-bc6f-78e71c730d11</ConfigId>
               <PanelClass>TalkApplicationScanner</PanelClass>
             </PanelClassConfigMapEntry>
           </PanelClassConfigMapEntries>
+          <ScreenshotFileName>QWERTYKeyboardLayout.png</ScreenshotFileName>
         </PanelClassConfigMap>
-        <!-- TalkApplicationBCIScannerABC -->
-		    <PanelClassConfigMap>
+        <!-- 
+          Name:TalkApplicationBCIScannerABC
+          Description: An alphabetically arranged keyboard with predictive text/sentences to help you communicate
+          Panel Container Class: TalkApplicationScanner
+          ConfigId: 18f8796a-c0e2-4d4b-ac20-1e76e0a57bcd
+        -->
+        <PanelClassConfigMap>
           <Default>false</Default>
           <Description>An alphabetically arranged keyboard with predictive text/sentences to help you communicate</Description>
-          <Name>TalkApplicationBCIScannerABC</Name>
-          <ScreenshotFileName>ABCKeyboardLayout.png</ScreenshotFileName>
-          <DisplayNameShort>Alphabetical</DisplayNameShort>
           <DisplayNameLong> ABC Keyboard Layout</DisplayNameLong>
+          <DisplayNameShort>Alphabetical</DisplayNameShort>
+          <Name>TalkApplicationBCIScannerABC</Name>
           <PanelClassConfigMapEntries>
             <PanelClassConfigMapEntry>
               <ConfigId>18f8796a-c0e2-4d4b-ac20-1e76e0a57bcd</ConfigId>
               <PanelClass>TalkApplicationScanner</PanelClass>
             </PanelClassConfigMapEntry>
           </PanelClassConfigMapEntries>
+          <ScreenshotFileName>ABCKeyboardLayout.png</ScreenshotFileName>
         </PanelClassConfigMap>
       </PanelClassConfigMaps>
     </PanelClassConfig>
-    <!-- ACAT Dashboard -->
     <PanelClassConfig>
       <AppDescription>ACAT Dashboard Application</AppDescription>
-      <AppId>ACATApp</AppId>
-      <AppName>ACAT App</AppName>
+      <AppId>ACATDashboard</AppId>
+      <AppName>ACAT Dashboard Application</AppName>
       <PanelClassConfigMaps>
+        <!-- 
+          Name:DashboardApplicationDefault
+          Description: Main ACAT Application Dashboard
+          Panel Container Class: DashboardAppScanner
+          ConfigId: 3bfba375-13f7-461b-a7c7-57bffa9d21ad
+      -->
         <PanelClassConfigMap>
           <Default>true</Default>
           <Description>Main ACAT Dashboard Widgets</Description>
-          <Name>ACATDashboard</Name>
-          <ScreenshotFileName>ABCKeyboardLayout.png</ScreenshotFileName>
-          <DisplayNameShort>ACATDashboard</DisplayNameShort>
           <DisplayNameLong>ACAT Dashboard</DisplayNameLong>
+          <DisplayNameShort>ACATDashboard</DisplayNameShort>
+          <Name>DashboardApplicationDefault</Name>
           <PanelClassConfigMapEntries>
             <PanelClassConfigMapEntry>
-              <ConfigId>3BFBA375-13F7-461B-A7C7-57BFFA9D21AD</ConfigId>
-              <PanelClass>ACATDashboard</PanelClass>
+              <ConfigId>3bfba375-13f7-461b-a7c7-57bffa9d21ad</ConfigId>
+              <PanelClass>DashboardAppScanner</PanelClass>
             </PanelClassConfigMapEntry>
           </PanelClassConfigMapEntries>
+          <ScreenshotFileName />
         </PanelClassConfigMap>
       </PanelClassConfigMaps>
     </PanelClassConfig>

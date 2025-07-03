@@ -61,26 +61,14 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
         #endregion
 
+        #region events
         //Delegate for the event triggered when the user makes a change to a preference setting 
         public delegate void NotifyPreferencesChangeMade();
 
         //Event raised when the user makes a change to a preference setting 
         public event NotifyPreferencesChangeMade EvtPreferencesChangeMade;
 
-        //Initializes an instance of the class
-        public PreferencesEditForm()
-        {
-            InitializeComponent();
-
-            // For WPF Controls
-            if (System.Windows.Application.Current == null)
-            {
-                new System.Windows.Application();
-            }
-
-            Text = "Settings";
-            Load += PreferencesEditForm_Load;
-        }
+        #endregion
 
         #region Controls
 
@@ -105,17 +93,131 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
         private Label CreateLabel(string text, int fontSize, FontStyle fontStyle)
         {
-            return new Label
+            var label = new Label
             {
                 AutoSize = true,
                 Dock = DockStyle.Fill,
                 Text = text,
                 Font = new Font("Montserrat", fontSize, fontStyle),
-                ForeColor = Color.White
+                ForeColor = Color.White,
+                Margin = new Padding(0, 0, 0, 5),
             };
+
+            return label;
         }
 
         #endregion
+
+        private static bool _initialized;
+
+        public static void EnsureInitialized()
+        {
+            var existingApp = System.Windows.Application.Current;
+
+            if (!_initialized && existingApp == null)
+            {
+                new System.Windows.Application(); // Don't call Run()
+                _initialized = true;
+            }
+            else
+            {
+               // existingApp.Shutdown();
+            }
+        }
+
+        //Initializes an instance of the class
+        public PreferencesEditForm()
+        {
+            InitializeComponent();
+
+            CenterToScreen();
+            
+         
+            Text = "Settings";
+            Load += PreferencesEditForm_Load;
+        }
+
+        //Form loader.  Initialize the grid and populate it
+        private void PreferencesEditForm_Load(object sender, EventArgs e)
+        {
+            float currentAspectRatio = (float)ClientSize.Height / ClientSize.Width;
+
+            if (_designTimeAspectRatio != 0.0f && currentAspectRatio != _designTimeAspectRatio)
+            {
+                ClientSize = new System.Drawing.Size(ClientSize.Width, (int)(_designTimeAspectRatio * ClientSize.Width));
+            }
+
+            Activate();
+
+            CenterToScreen();
+
+            //initializeGridView();
+
+            if (!String.IsNullOrEmpty(Title))
+            {
+                Text = Title;
+                SettingColumn.HeaderText = Title;
+            }
+
+            Preferences = SupportsPreferencesObj.GetPreferences();
+            DefaultPreferences = SupportsPreferencesObj.GetDefaultPreferences();
+            _isDirty = false;
+            Paint += (s, args) =>
+            {
+                refreshPanel(Preferences);
+                AttachInputEvents(_flowPanel);
+            };
+
+            /*
+            // Refresh grid view and set handlers which change _dirty flag after form has been fully painted / shown
+            Paint += (s, args) =>
+            {
+                refreshPanel(Preferences);
+
+                if (dataGridView != null)
+                {
+                    dataGridView.CellValueChanged += DataGridView_CellValueChanged;
+                    dataGridView.CurrentCellDirtyStateChanged += DataGridView_CurrentCellDirtyStateChanged;
+                }
+            };
+
+            */
+        }
+
+        //Populates the grid view with preferences data
+        private void refreshPanel(IPreferences prefs)
+        {
+            if (_flowPanel == null)
+            {
+                _flowPanel = CreateFlowPanel();
+            }
+
+            ReplaceDataGridWith(_flowPanel);
+            wrapText(_wrapText);
+
+            var descriptor = prefs.GetType().GetCustomAttribute<DescriptorAttribute>();
+
+            _flowPanel.Controls.Add(CreateLabel(descriptor?.Category ?? "UNKNOWN CATEGORY", 24, FontStyle.Bold));
+            _flowPanel.Controls.Add(CreateLabel(descriptor?.Description ?? "UNKNOWN DESCRIPTION", 20, FontStyle.Regular));
+
+            var props = prefs.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var builder = new SettingsPanelBuilder();
+
+            foreach (var prop in props)
+            {
+                var propPanel = builder.CreateLabeledPanel(prop, prefs);
+
+                var host = new ElementHost
+                {
+                    Child = propPanel,
+                    AutoSize = true,
+                    Margin = new Padding(10),
+                    Dock = DockStyle.Top
+                };
+
+                _flowPanel.Controls.Add(host);
+            }
+        }
 
         //Check if form filled correctly, if not, return false If validated, check if changes have been made to form and if so prompt user asking if they want to save
         public bool validateAndSave()
@@ -126,6 +228,34 @@ namespace ACAT.Lib.Core.PreferencesManagement
             return true;
         }
 
+        private void AttachInputEvents(Control container)
+        {
+            foreach (Control ctrl in container.Controls)
+            {
+                var panel = ctrl as TableLayoutPanel;
+                if (panel == null)
+                    continue;
+
+                foreach (Control input in panel.Controls)
+                {
+                    if (input is CheckBox cb)
+                    {
+                        cb.CheckedChanged += OnValueChanged;
+                    }
+                    else if (input is TextBox tb)
+                    {
+                        tb.TextChanged += OnValueChanged;
+                    }
+                }
+            }
+        }
+
+        private void OnValueChanged(object sender, EventArgs e)
+        {
+            _isDirty = true;
+            EvtPreferencesChangeMade();
+        }
+
         // User clicked wrap text checkbox
         public void checkBoxWrapText_CheckedChanged(object sender, EventArgs e)
         {
@@ -134,7 +264,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 _wrapText = ((CheckBox)sender).Checked;
                 wrapText(_wrapText);
             }
-
         }
 
         // User clicked Defaults button
@@ -156,478 +285,106 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 StringResources.Yes, StringResources.No, this, true);
         }
 
-        //Here's where checking is done on the validity of the data If it is an integer for eg, make sure that all the text in the cell are digits and that the integer is within range.
-        private void dataGridView_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        // replace dataGridView_CellValidating
+        private void InputTextBox_Validating(object sender, CancelEventArgs e)
         {
-            var senderGrid = (DataGridView)sender;
-            e.Cancel = false;
-            String name = null;
-            String newVal = null;
-            var cell = senderGrid[e.ColumnIndex, e.RowIndex];
-            if (e.ColumnIndex == 2 && e.RowIndex >= 0 && cell is DataGridViewTextBoxCell)
+            var textBox = sender as TextBox;
+            string inputValue = textBox.Text?.Trim();
+            object tag = textBox.Tag;
+
+            if (tag == null)
+                return;
+
+            string name = null;
+            Type memberType = null;
+            object currentValue = null;
+            string defaultVal = null;
+
+            FieldInfo field = tag as FieldInfo;
+            PropertyInfo property = tag as PropertyInfo;
+
+            if (field != null)
             {
-                var textBox = cell as DataGridViewTextBoxCell;
-                String value = textBox.EditedFormattedValue as string;
+                name = field.Name;
+                memberType = field.FieldType;
+                currentValue = field.GetValue(Preferences);
+                defaultVal = getDefaultValue(name);
+            }
+            else if (property != null)
+            {
+                name = property.Name;
+                memberType = property.PropertyType;
+                currentValue = property.GetValue(Preferences);
+                defaultVal = getDefaultValue(name);
+            }
+            else
+            {
+                return;
+            }
 
-                string prevVal;
-                string defaultVal;
-                // Cell is PropertyInfo
-                if (senderGrid.Rows[e.RowIndex].Tag is PropertyInfo)
+            string prevVal = currentValue?.ToString();
+            string newVal = null;
+
+            try
+            {
+                if (memberType == typeof(int))
                 {
-                    PropertyInfo property = senderGrid.Rows[e.RowIndex].Tag as PropertyInfo;
-                    name = property.Name;
-                    prevVal = property.GetValue(Preferences, null).ToString();
-                    defaultVal = getDefaultValue(name);
-
-                    // Property is integer type
-                    if (isInt(property))
+                    if (int.TryParse(inputValue, out int intVal))
                     {
-
-                        // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
-                        if (Int32.TryParse(value, out int intValue))
+                        var descriptor = field != null ? getIntAttribute(field) : getIntAttribute(property);
+                        if (descriptor != null && (intVal < descriptor.MinValue || intVal > descriptor.MaxValue))
                         {
-                            var intDescriptor = getIntAttribute(property);
-                            if (intDescriptor != null)
-                            {
-                                if (intValue < intDescriptor.MinValue || intValue > intDescriptor.MaxValue)
-                                {
-                                    e.Cancel = true;
-                                    showErrorStatus(name, "Out of range");
-                                    newVal = prevVal;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            e.Cancel = true;
-                            showErrorStatus(name, "Must be numeric");
-                            newVal = prevVal;
-                        }
-
-                        // If previous cell value not valid, set to default value
-                        if (String.IsNullOrEmpty(newVal))
-                        {
+                            showErrorStatus(name, "Out of range");
                             newVal = defaultVal;
-                        }
-                        else if (!String.IsNullOrEmpty(newVal))
-                        {
-                            if (Int32.TryParse(newVal, out int intValue2))
-                            {
-                                var intDescriptor = getIntAttribute(property);
-                                if (intDescriptor != null)
-                                {
-                                    if (intValue2 < intDescriptor.MinValue || intValue2 > intDescriptor.MaxValue)
-                                    {
-                                        newVal = defaultVal;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                newVal = defaultVal;
-                            }
+                            e.Cancel = true;
                         }
                     }
-
-
-                    // Property is float type
-                    else if (isFloat(property))
+                    else
                     {
-
-                        // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
-                        try
-                        {
-                            var floatDescriptor = getFloatAttribute(property);
-                            var floatValue = float.Parse(value, CultureInfo.InvariantCulture.NumberFormat);
-                            if (floatValue < floatDescriptor.MinValue || floatValue > floatDescriptor.MaxValue)
-                            {
-                                e.Cancel = true;
-                                showErrorStatus(name, "Out of range");
-                                newVal = prevVal;
-                            }
-                        }
-                        catch
-                        {
-                            e.Cancel = true;
-                            showErrorStatus(name, "Must be numeric");
-                            newVal = prevVal;
-                        }
-
-                        // If previous cell value not valid, set to default value
-                        if (String.IsNullOrEmpty(newVal))
-                        {
-                            newVal = defaultVal;
-                        }
-                        else if (!String.IsNullOrEmpty(newVal))
-                        {
-                            try
-                            {
-                                var floatDescriptor = getFloatAttribute(property);
-                                var floatValue = float.Parse(newVal, CultureInfo.InvariantCulture.NumberFormat);
-                                if (floatValue < floatDescriptor.MinValue || floatValue > floatDescriptor.MaxValue)
-                                {
-                                    newVal = defaultVal;
-                                }
-                            }
-                            catch
-                            {
-                                newVal = defaultVal;
-                            }
-                        }
-
+                        showErrorStatus(name, "Must be numeric");
+                        newVal = defaultVal;
+                        e.Cancel = true;
                     }
                 }
-
-                // Cell is FieldInfo
-                else if (senderGrid.Rows[e.RowIndex].Tag is FieldInfo)
+                else if (memberType == typeof(float))
                 {
-                    FieldInfo fieldInfo = senderGrid.Rows[e.RowIndex].Tag as FieldInfo;
-                    name = fieldInfo.Name;
-                    prevVal = fieldInfo.GetValue(Preferences).ToString();
-                    defaultVal = getDefaultValue(name);
-
-                    // Field is integer type
-                    if (isInt(fieldInfo))
+                    if (float.TryParse(inputValue, NumberStyles.Float, CultureInfo.InvariantCulture, out float floatVal))
                     {
-
-                        // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
-                        if (Int32.TryParse(value, out int intValue))
+                        var descriptor = field != null ? getFloatAttribute(field) : getFloatAttribute(property);
+                        if (descriptor != null && (floatVal < descriptor.MinValue || floatVal > descriptor.MaxValue))
                         {
-                            var intDescriptor = getIntAttribute(fieldInfo);
-                            if (intDescriptor != null)
-                            {
-                                if (intValue < intDescriptor.MinValue || intValue > intDescriptor.MaxValue)
-                                {
-                                    e.Cancel = true;
-                                    showErrorStatus(name, "Out of range");
-                                    newVal = prevVal;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            e.Cancel = true;
-                            showErrorStatus(name, "Must be numeric");
-                            newVal = prevVal;
-                        }
-
-                        // If previous cell value not valid, set to default value
-                        if (String.IsNullOrEmpty(newVal))
-                        {
+                            showErrorStatus(name, "Out of range");
                             newVal = defaultVal;
-                        }
-                        else if (!String.IsNullOrEmpty(newVal))
-                        {
-                            if (Int32.TryParse(newVal, out int intValue2))
-                            {
-                                var intDescriptor = getIntAttribute(fieldInfo);
-                                if (intDescriptor != null)
-                                {
-                                    if (intValue2 < intDescriptor.MinValue || intValue2 > intDescriptor.MaxValue)
-                                    {
-                                        newVal = defaultVal;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                newVal = defaultVal;
-                            }
+                            e.Cancel = true;
                         }
                     }
-
-                    // Field is float type
-                    else if (isFloat(fieldInfo))
+                    else
                     {
-
-                        // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
-                        try
-                        {
-                            var floatDescriptor = getFloatAttribute(fieldInfo);
-                            var floatValue = float.Parse(value, CultureInfo.InvariantCulture.NumberFormat);
-                            if (floatValue < floatDescriptor.MinValue || floatValue > floatDescriptor.MaxValue)
-                            {
-                                e.Cancel = true;
-                                showErrorStatus(name, "Out of range");
-                                newVal = prevVal;
-                            }
-                        }
-                        catch
-                        {
-                            e.Cancel = true;
-                            showErrorStatus(name, "Must be numeric");
-                            newVal = prevVal;
-                        }
-
-                        // If previous cell value not valid, set to default value
-                        if (String.IsNullOrEmpty(newVal))
-                        {
-                            newVal = defaultVal;
-                        }
-                        else if (!String.IsNullOrEmpty(newVal))
-                        {
-                            try
-                            {
-                                var floatDescriptor = getFloatAttribute(fieldInfo);
-                                var floatValue = float.Parse(newVal, CultureInfo.InvariantCulture.NumberFormat);
-                                if (floatValue < floatDescriptor.MinValue || floatValue > floatDescriptor.MaxValue)
-                                {
-                                    newVal = defaultVal;
-                                }
-                            }
-                            catch
-                            {
-                                newVal = defaultVal;
-                            }
-                        }
+                        showErrorStatus(name, "Must be numeric");
+                        newVal = defaultVal;
+                        e.Cancel = true;
                     }
                 }
             }
-
-
-            if (e.Cancel)
+            catch
             {
-                if (!String.IsNullOrEmpty(name) && !String.IsNullOrEmpty(newVal))
-                {
-                    ((DataGridViewTextBoxCell)cell).Value = newVal;
-                    ((DataGridView)sender).RefreshEdit();
-                }
-
+                newVal = defaultVal;
+                e.Cancel = true;
             }
 
-        }
-
-        //Something changed. Set dirty flag
-        private void DataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            _isDirty = true;
-            EvtPreferencesChangeMade();
-        }
-
-        //Something changed. Set dirty flag
-        private void DataGridView_CurrentCellDirtyStateChanged(object sender, EventArgs e)
-        {
-            _isDirty = true;
-            EvtPreferencesChangeMade();
-        }
-
-        //Returns the default value for the specified field
-        private String getDefaultValue(String fieldName)
-        {
-            var members = DefaultPreferences.GetType().GetMembers();
-            foreach (var memberInfo in members)
+            if (e.Cancel && !string.IsNullOrEmpty(newVal))
             {
-                var name = memberInfo.Name;
-                if (String.Compare(name, fieldName) != 0)
-                {
-                    continue;
-                }
-
-                MemberInfo[] member = DefaultPreferences.GetType().GetMember(name);
-                if (member.Length == 0)
-                {
-                    continue;
-                }
-
-                switch (member[0].MemberType)
-                {
-                    case MemberTypes.Field:
-                        FieldInfo fieldInfo = DefaultPreferences.GetType().GetField(name);
-                        return fieldInfo.GetValue(DefaultPreferences).ToString();
-
-                    case MemberTypes.Property:
-                        var property = DefaultPreferences.GetType().GetProperty(name);
-                        return property.GetValue(DefaultPreferences, null).ToString();
-                }
+                textBox.Text = newVal;
             }
-
-            return String.Empty;
         }
 
-        //Returns the field info for the specified field name
-        private FieldInfo getField(object obj, String name)
-        {
-            return obj.GetType().GetFields().FirstOrDefault(field => String.Compare(field.Name, name) == 0);
-        }
 
-        //Returns the custom attribute for a float field
-        private FloatDescriptorAttribute getFloatAttribute(FieldInfo field)
-        {
-            var attributes = field.GetCustomAttributes(false);
-            foreach (var attribute in attributes)
-            {
-                if (attribute.GetType() == typeof(FloatDescriptorAttribute))
-                {
-                    return (FloatDescriptorAttribute)attribute;
-                }
-            }
-
-            return null;
-        }
-
-        //Returns the custom attribute for a float property
-        private FloatDescriptorAttribute getFloatAttribute(PropertyInfo property)
-        {
-            var attributes = property.GetCustomAttributes(false);
-
-            foreach (var attribute in attributes)
-            {
-                if (attribute.GetType() == typeof(FloatDescriptorAttribute))
-                {
-                    return (FloatDescriptorAttribute)attribute;
-                }
-            }
-
-            return null;
-        }
-
-        /// Returns the custom attribute for an integer field
-        private IntDescriptorAttribute getIntAttribute(FieldInfo field)
-        {
-            var attributes = field.GetCustomAttributes(false);
-            foreach (var attribute in attributes)
-            {
-                if (attribute.GetType() == typeof(IntDescriptorAttribute))
-                {
-                    return (IntDescriptorAttribute)attribute;
-                }
-            }
-
-            return null;
-        }
-
-        //Returns the custom attribute for a integer property
-        private IntDescriptorAttribute getIntAttribute(PropertyInfo property)
-        {
-            var attributes = property.GetCustomAttributes(false);
-
-            foreach (var attribute in attributes)
-            {
-                if (attribute.GetType() == typeof(IntDescriptorAttribute))
-                {
-                    return (IntDescriptorAttribute)attribute;
-                }
-            }
-
-            return null;
-        }
-
-        //Returns the property info for the specified property
-        private PropertyInfo getProperty(object obj, String name)
-        {
-            return obj.GetType().GetProperties().FirstOrDefault(property => String.Compare(property.Name, name) == 0);
-        }
-
-        //Formats the datagridview>
-        private void initializeGridView()
-        {
-            dataGridView.RowHeadersVisible = false;
-            dataGridView.ScrollBars = ScrollBars.Vertical;
-
-            SettingColumn.Width = (dataGridView.Width) / 5;
-            DescriptionColumn.Width = dataGridView.Width / 5;
-            ValueColumn.Width = dataGridView.Width / 5;
-            DefaultColumn.Width = dataGridView.Width / 5;
-            RangeColumn.Width = dataGridView.Width / 5;
-
-
-            dataGridView.Sort(SettingColumn, ListSortDirection.Ascending);
-            SettingColumn.HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending;
-
-            DescriptionColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
-            ValueColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
-            DefaultColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
-            RangeColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
-
-            dataGridView.CellValidating += dataGridView_CellValidating;
-        }
-
-        //Form loader.  Initialize the grid and populate it
-        private void PreferencesEditForm_Load(object sender, EventArgs e)
-        {
-            float currentAspectRatio = (float)ClientSize.Height / ClientSize.Width;
-
-            if (_designTimeAspectRatio != 0.0f && currentAspectRatio != _designTimeAspectRatio)
-            {
-                ClientSize = new System.Drawing.Size(ClientSize.Width, (int)(_designTimeAspectRatio * ClientSize.Width));
-            }
-
-            Activate();
-
-            CenterToScreen();
-
-           initializeGridView();
-
-            if (!String.IsNullOrEmpty(Title))
-            {
-                Text = Title;
-                SettingColumn.HeaderText = Title;
-            }
-
-            // Get Preferences and DefaultPreferences
-            Preferences = SupportsPreferencesObj.GetPreferences();
-            DefaultPreferences = SupportsPreferencesObj.GetDefaultPreferences();
-
-            _isDirty = false;
-
-            // Refresh grid view and set handlers which change _dirty flag after form has been fully painted / shown
-            Paint += (s, args) =>
-            {
-                refreshPanel(Preferences);
-
-                if (dataGridView != null)
-                {
-                    dataGridView.CellValueChanged += DataGridView_CellValueChanged;
-                    dataGridView.CurrentCellDirtyStateChanged += DataGridView_CurrentCellDirtyStateChanged;
-                }
-            };
-        }
-
+      
         private void ReplaceDataGridWith(Control newControl)
         {
             var parent = dataGridView.Parent;
             parent.Controls.Remove(dataGridView);
             parent.Controls.Add(newControl);
-        }
-
-        private void AddPreferencePropertiesToPanel(FlowLayoutPanel panel, IPreferences prefs)
-        {
-            var props = prefs.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            var builder = new SettingsPanelBuilder();
-
-            foreach (var prop in props)
-            {
-                var propPanel = builder.CreateLabeledPanel(prop, prefs);
-
-                var host = new ElementHost
-                {
-                    Child = propPanel,
-                    AutoSize = true,
-                    Margin = new Padding(10),
-                    Dock = DockStyle.Top
-                };
-
-                panel.Controls.Add(host);
-            }
-        }
-
-        //Populates the grid view with preferences data
-        private void refreshPanel(IPreferences prefs)
-        {
-            if (_flowPanel == null)
-            {
-                _flowPanel = CreateFlowPanel();
-            }
-
-            ReplaceDataGridWith(_flowPanel);
-            wrapText(_wrapText);
-
-            var descriptor = prefs.GetType().GetCustomAttribute<DescriptorAttribute>();
-
-            _flowPanel.Controls.Add(CreateLabel(descriptor?.Category ?? "UNKNOWN CATEGORY", 24, FontStyle.Bold));
-            _flowPanel.Controls.Add(CreateLabel(descriptor?.Description ?? "UNKNOWN DESCRIPTION", 20, FontStyle.Regular));
-
-            AddPreferencePropertiesToPanel(_flowPanel, prefs);
         }
 
         //Displays a error status mesage
@@ -679,6 +436,64 @@ namespace ACAT.Lib.Core.PreferencesManagement
         //Updates preferneces using the data in the grid view
         private void updatePreferences()
         {
+            foreach (Control settingPanel in _flowPanel.Controls)
+            {
+                var rowPanel = settingPanel as TableLayoutPanel;
+                if (rowPanel == null)
+                    continue;
+
+                Label nameLabel = rowPanel.GetControlFromPosition(0, 0) as Label;
+                Control inputControl = rowPanel.GetControlFromPosition(1, 0); // Assumes control at (1, 0)
+
+                if (nameLabel == null || inputControl == null)
+                    continue;
+
+                string name = nameLabel.Text;
+                FieldInfo field = getField(Preferences, name);
+                PropertyInfo property = field == null ? getProperty(Preferences, name) : null;
+
+                if (field == null && property == null)
+                    continue;
+
+                Type memberType = field?.FieldType ?? property.PropertyType;
+                object parsedValue = null;
+
+                try
+                {
+                    if (memberType == typeof(int) && inputControl is TextBox tb1)
+                    {
+                        if (int.TryParse(tb1.Text, out int intVal))
+                            parsedValue = intVal;
+                    }
+                    else if (memberType == typeof(float) && inputControl is TextBox tb2)
+                    {
+                        if (float.TryParse(tb2.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float floatVal))
+                            parsedValue = floatVal;
+                    }
+                    else if (memberType == typeof(string) && inputControl is TextBox tb3)
+                    {
+                        parsedValue = tb3.Text;
+                    }
+                    else if (memberType == typeof(bool) && inputControl is CheckBox cb)
+                    {
+                        parsedValue = cb.Checked;
+                    }
+
+                    if (parsedValue != null)
+                    {
+                        if (field != null)
+                            field.SetValue(Preferences, parsedValue);
+                        else
+                            property.SetValue(Preferences, parsedValue);
+                    }
+                }
+                catch
+                {
+                }
+            }
+
+
+            /*
             // Iterate over each row in the DataGridView
             foreach (DataGridViewRow row in dataGridView.Rows)
             {
@@ -758,10 +573,12 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 }
                 catch
                 {
-                    // Silently ignore parsing errors; optionally log if needed
+                  
                 }
             }
 
+
+            */
 
             /*
             foreach (DataGridViewRow row in dataGridView.Rows)
@@ -866,6 +683,21 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
         #region CuelloButNoYet
 
+        /*
+        //Something changed. Set dirty flag
+        private void DataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            _isDirty = true;
+            EvtPreferencesChangeMade();
+        }
+
+        //Something changed. Set dirty flag
+        private void DataGridView_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            _isDirty = true;
+            EvtPreferencesChangeMade();
+        }
+
         //Client size changed
         protected override void OnClientSizeChanged(EventArgs e)
         {
@@ -875,8 +707,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 _designTimeAspectRatio = (float)ClientSize.Height / ClientSize.Width;
                 _firstClientChangedCall = false;
             }
-        }
-
+        }*/
+        /*
         /// <summary>
         /// Adds a row for a boolean property
         /// </summary>
@@ -1183,6 +1015,385 @@ namespace ACAT.Lib.Core.PreferencesManagement
         {
             return field.FieldType == typeof(Boolean) ||
                     field.FieldType == typeof(bool);
+        }
+
+        */
+        //Returns the default value for the specified field
+        private String getDefaultValue(String fieldName)
+        {
+            var members = DefaultPreferences.GetType().GetMembers();
+            foreach (var memberInfo in members)
+            {
+                var name = memberInfo.Name;
+                if (String.Compare(name, fieldName) != 0)
+                {
+                    continue;
+                }
+
+                MemberInfo[] member = DefaultPreferences.GetType().GetMember(name);
+                if (member.Length == 0)
+                {
+                    continue;
+                }
+
+                switch (member[0].MemberType)
+                {
+                    case MemberTypes.Field:
+                        FieldInfo fieldInfo = DefaultPreferences.GetType().GetField(name);
+                        return fieldInfo.GetValue(DefaultPreferences).ToString();
+
+                    case MemberTypes.Property:
+                        var property = DefaultPreferences.GetType().GetProperty(name);
+                        return property.GetValue(DefaultPreferences, null).ToString();
+                }
+            }
+
+            return String.Empty;
+        }
+
+        //Returns the field info for the specified field name
+        private FieldInfo getField(object obj, String name)
+        {
+            return obj.GetType().GetFields().FirstOrDefault(field => String.Compare(field.Name, name) == 0);
+        }
+
+        //Returns the custom attribute for a float field
+        private FloatDescriptorAttribute getFloatAttribute(FieldInfo field)
+        {
+            var attributes = field.GetCustomAttributes(false);
+            foreach (var attribute in attributes)
+            {
+                if (attribute.GetType() == typeof(FloatDescriptorAttribute))
+                {
+                    return (FloatDescriptorAttribute)attribute;
+                }
+            }
+
+            return null;
+        }
+
+        //Returns the custom attribute for a float property
+        private FloatDescriptorAttribute getFloatAttribute(PropertyInfo property)
+        {
+            var attributes = property.GetCustomAttributes(false);
+
+            foreach (var attribute in attributes)
+            {
+                if (attribute.GetType() == typeof(FloatDescriptorAttribute))
+                {
+                    return (FloatDescriptorAttribute)attribute;
+                }
+            }
+
+            return null;
+        }
+
+        /// Returns the custom attribute for an integer field
+        private IntDescriptorAttribute getIntAttribute(FieldInfo field)
+        {
+            var attributes = field.GetCustomAttributes(false);
+            foreach (var attribute in attributes)
+            {
+                if (attribute.GetType() == typeof(IntDescriptorAttribute))
+                {
+                    return (IntDescriptorAttribute)attribute;
+                }
+            }
+
+            return null;
+        }
+
+        //Returns the custom attribute for a integer property
+        private IntDescriptorAttribute getIntAttribute(PropertyInfo property)
+        {
+            var attributes = property.GetCustomAttributes(false);
+
+            foreach (var attribute in attributes)
+            {
+                if (attribute.GetType() == typeof(IntDescriptorAttribute))
+                {
+                    return (IntDescriptorAttribute)attribute;
+                }
+            }
+
+            return null;
+        }
+
+        //Returns the property info for the specified property
+        private PropertyInfo getProperty(object obj, String name)
+        {
+            return obj.GetType().GetProperties().FirstOrDefault(property => String.Compare(property.Name, name) == 0);
+        }
+
+        /*
+        //Formats the datagridview>
+        private void initializeGridView()
+        {
+            dataGridView.RowHeadersVisible = false;
+            dataGridView.ScrollBars = ScrollBars.Vertical;
+
+            SettingColumn.Width = (dataGridView.Width) / 5;
+            DescriptionColumn.Width = dataGridView.Width / 5;
+            ValueColumn.Width = dataGridView.Width / 5;
+            DefaultColumn.Width = dataGridView.Width / 5;
+            RangeColumn.Width = dataGridView.Width / 5;
+
+
+            dataGridView.Sort(SettingColumn, ListSortDirection.Ascending);
+            SettingColumn.HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending;
+
+            DescriptionColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
+            ValueColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
+            DefaultColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
+            RangeColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
+
+          //  dataGridView.CellValidating += dataGridView_CellValidating;
+        }
+
+        */
+
+        //Here's where checking is done on the validity of the data If it is an integer for eg, make sure that all the text in the cell are digits and that the integer is within range.
+        private void dataGridView_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            /*
+            var senderGrid = (DataGridView)sender;
+            e.Cancel = false;
+            String name = null;
+            String newVal = null;
+            var cell = senderGrid[e.ColumnIndex, e.RowIndex];
+            if (e.ColumnIndex == 2 && e.RowIndex >= 0 && cell is DataGridViewTextBoxCell)
+            {
+                var textBox = cell as DataGridViewTextBoxCell;
+                String value = textBox.EditedFormattedValue as string;
+
+                string prevVal;
+                string defaultVal;
+                // Cell is PropertyInfo
+                if (senderGrid.Rows[e.RowIndex].Tag is PropertyInfo)
+                {
+                    PropertyInfo property = senderGrid.Rows[e.RowIndex].Tag as PropertyInfo;
+                    name = property.Name;
+                    prevVal = property.GetValue(Preferences, null).ToString();
+                    defaultVal = getDefaultValue(name);
+
+                    // Property is integer type
+                    if (isInt(property))
+                    {
+
+                        // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
+                        if (Int32.TryParse(value, out int intValue))
+                        {
+                            var intDescriptor = getIntAttribute(property);
+                            if (intDescriptor != null)
+                            {
+                                if (intValue < intDescriptor.MinValue || intValue > intDescriptor.MaxValue)
+                                {
+                                    e.Cancel = true;
+                                    showErrorStatus(name, "Out of range");
+                                    newVal = prevVal;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            e.Cancel = true;
+                            showErrorStatus(name, "Must be numeric");
+                            newVal = prevVal;
+                        }
+
+                        // If previous cell value not valid, set to default value
+                        if (String.IsNullOrEmpty(newVal))
+                        {
+                            newVal = defaultVal;
+                        }
+                        else if (!String.IsNullOrEmpty(newVal))
+                        {
+                            if (Int32.TryParse(newVal, out int intValue2))
+                            {
+                                var intDescriptor = getIntAttribute(property);
+                                if (intDescriptor != null)
+                                {
+                                    if (intValue2 < intDescriptor.MinValue || intValue2 > intDescriptor.MaxValue)
+                                    {
+                                        newVal = defaultVal;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                newVal = defaultVal;
+                            }
+                        }
+                    }
+
+
+                    // Property is float type
+                    else if (isFloat(property))
+                    {
+
+                        // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
+                        try
+                        {
+                            var floatDescriptor = getFloatAttribute(property);
+                            var floatValue = float.Parse(value, CultureInfo.InvariantCulture.NumberFormat);
+                            if (floatValue < floatDescriptor.MinValue || floatValue > floatDescriptor.MaxValue)
+                            {
+                                e.Cancel = true;
+                                showErrorStatus(name, "Out of range");
+                                newVal = prevVal;
+                            }
+                        }
+                        catch
+                        {
+                            e.Cancel = true;
+                            showErrorStatus(name, "Must be numeric");
+                            newVal = prevVal;
+                        }
+
+                        // If previous cell value not valid, set to default value
+                        if (String.IsNullOrEmpty(newVal))
+                        {
+                            newVal = defaultVal;
+                        }
+                        else if (!String.IsNullOrEmpty(newVal))
+                        {
+                            try
+                            {
+                                var floatDescriptor = getFloatAttribute(property);
+                                var floatValue = float.Parse(newVal, CultureInfo.InvariantCulture.NumberFormat);
+                                if (floatValue < floatDescriptor.MinValue || floatValue > floatDescriptor.MaxValue)
+                                {
+                                    newVal = defaultVal;
+                                }
+                            }
+                            catch
+                            {
+                                newVal = defaultVal;
+                            }
+                        }
+
+                    }
+                }
+
+                // Cell is FieldInfo
+                else if (senderGrid.Rows[e.RowIndex].Tag is FieldInfo)
+                {
+                    FieldInfo fieldInfo = senderGrid.Rows[e.RowIndex].Tag as FieldInfo;
+                    name = fieldInfo.Name;
+                    prevVal = fieldInfo.GetValue(Preferences).ToString();
+                    defaultVal = getDefaultValue(name);
+
+                    // Field is integer type
+                    if (isInt(fieldInfo))
+                    {
+
+                        // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
+                        if (Int32.TryParse(value, out int intValue))
+                        {
+                            var intDescriptor = getIntAttribute(fieldInfo);
+                            if (intDescriptor != null)
+                            {
+                                if (intValue < intDescriptor.MinValue || intValue > intDescriptor.MaxValue)
+                                {
+                                    e.Cancel = true;
+                                    showErrorStatus(name, "Out of range");
+                                    newVal = prevVal;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            e.Cancel = true;
+                            showErrorStatus(name, "Must be numeric");
+                            newVal = prevVal;
+                        }
+
+                        // If previous cell value not valid, set to default value
+                        if (String.IsNullOrEmpty(newVal))
+                        {
+                            newVal = defaultVal;
+                        }
+                        else if (!String.IsNullOrEmpty(newVal))
+                        {
+                            if (Int32.TryParse(newVal, out int intValue2))
+                            {
+                                var intDescriptor = getIntAttribute(fieldInfo);
+                                if (intDescriptor != null)
+                                {
+                                    if (intValue2 < intDescriptor.MinValue || intValue2 > intDescriptor.MaxValue)
+                                    {
+                                        newVal = defaultVal;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                newVal = defaultVal;
+                            }
+                        }
+                    }
+
+                    // Field is float type
+                    else if (isFloat(fieldInfo))
+                    {
+
+                        // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
+                        try
+                        {
+                            var floatDescriptor = getFloatAttribute(fieldInfo);
+                            var floatValue = float.Parse(value, CultureInfo.InvariantCulture.NumberFormat);
+                            if (floatValue < floatDescriptor.MinValue || floatValue > floatDescriptor.MaxValue)
+                            {
+                                e.Cancel = true;
+                                showErrorStatus(name, "Out of range");
+                                newVal = prevVal;
+                            }
+                        }
+                        catch
+                        {
+                            e.Cancel = true;
+                            showErrorStatus(name, "Must be numeric");
+                            newVal = prevVal;
+                        }
+
+                        // If previous cell value not valid, set to default value
+                        if (String.IsNullOrEmpty(newVal))
+                        {
+                            newVal = defaultVal;
+                        }
+                        else if (!String.IsNullOrEmpty(newVal))
+                        {
+                            try
+                            {
+                                var floatDescriptor = getFloatAttribute(fieldInfo);
+                                var floatValue = float.Parse(newVal, CultureInfo.InvariantCulture.NumberFormat);
+                                if (floatValue < floatDescriptor.MinValue || floatValue > floatDescriptor.MaxValue)
+                                {
+                                    newVal = defaultVal;
+                                }
+                            }
+                            catch
+                            {
+                                newVal = defaultVal;
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            if (e.Cancel)
+            {
+                if (!String.IsNullOrEmpty(name) && !String.IsNullOrEmpty(newVal))
+                {
+                    ((DataGridViewTextBoxCell)cell).Value = newVal;
+                    ((DataGridView)sender).RefreshEdit();
+                }
+
+            }
+
+            */
+
         }
 
 

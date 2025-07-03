@@ -21,20 +21,12 @@ using System.Windows.Forms;
 
 namespace ACAT.Lib.Core.PreferencesManagement
 {
-    /// <summary>
-    /// Main form for ACAT Config application
-    /// </summary>
     public partial class ACATConfigMainForm : Form
     {
-        /// <summary>
-        /// Holds information on high level preferenes category in list of checkboxes on left side of the screen
-        /// </summary>
-        public List<Tuple<String, CheckBox>> _configCategoryList;
+     
+        public List<Tuple<String, CheckBox>> _configCategoryList;    // Holds information on high level preferenes category in list of checkboxes on left side of the screen
 
-        /// <summary>
-        /// Keeps track of which preferences forms are currently displayed
-        /// </summary>
-        private static Stack<Form> _shownPreferenceForms;
+        private static Stack<Form> _shownPreferenceForms;           // Keeps track of which preferences forms are currently displayed
 
         /// <summary>
         /// Aspect ratio of form at design time
@@ -59,10 +51,9 @@ namespace ACAT.Lib.Core.PreferencesManagement
         public ACATConfigMainForm()
         {
 
-
             InitializeComponent();
             Load += ACATConfigMainForm_Load;
-     //       Shown += ACATConfigMainForm_Shown;
+          //  Shown += ACATConfigMainForm_Shown;
             _configCategoryList = new List<Tuple<String, CheckBox>>
             {
                 new Tuple<String, CheckBox>(checkBoxCategoryGeneral.Text.ToString(), checkBoxCategoryGeneral),
@@ -198,15 +189,18 @@ namespace ACAT.Lib.Core.PreferencesManagement
             // Create new PreferencesCategorySelectForm or PreferencesEditForm depending on which high level category selected
             Form newPreferencesSelectForm = null;
             IntPtr formHandle = this.Handle;
+            var existingApp = System.Windows.Application.Current;
 
             // Handle category-specific initialization
-              switch (newConfigCategory)
+            switch (newConfigCategory)
             {
                 case "General":
+                    //PreferencesEditForm.EnsureInitialized();
                     newPreferencesSelectForm = CreateGeneralPreferencesForm();
                     break;
 
                 case "Actuators":
+                    //PreferencesEditForm.EnsureInitialized();
                     if (!Context.AppActuatorManager.LoadExtensions(Context.ExtensionDirs, true))
                     {
                         ShowError("Actuator");
@@ -216,6 +210,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     break;
 
                 case "Word Prediction":
+                    //PreferencesEditForm.EnsureInitialized();
                     if (!Context.AppWordPredictionManager.LoadExtensions(Context.ExtensionDirs))
                     {
                         ShowError("Word Prediction");
@@ -225,6 +220,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     break;
 
                 case "Text to Speech":
+                    //PreferencesEditForm.EnsureInitialized();
                     if (!Context.AppTTSManager.LoadExtensions(Context.ExtensionDirs))
                     {
                         ShowError("Text-to-Speech");
@@ -326,12 +322,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
             MessageBox.Show($"Error loading {category} extensions", "ACAT Config", MessageBoxButtons.OK);
         }
 
-        /// <summary>
-        /// Handler for when preferences category is selected ("Setup" button in "Configure" column)
-        /// Load custom preferences dialog called by ShowPreferencesDialog, or load default PreferencesEditForm2
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="supportsPreferences"></param>
+        //Handler for when preferences category is selected ("Setup" button in "Configure" column)
+        //Load custom preferences dialog called by ShowPreferencesDialog, or load default PreferencesEditForm2
         private void handlePreferencesCategorySelected(object sender, ISupportsPreferences supportsPreferences)
         {
             try
@@ -404,7 +396,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                         {
                             // Log.Debug("handlePreferencesCategorySelected | DefaultPreferences != null");
                             HandlerResetToDefaultsButtonClicked = ((PreferencesEditForm)newPreferencesEditForm).buttonDefaults_Click;
-                          //  buttonResetToDefault.Visible = true;
+                            buttonResetToDefault.Visible = true;
                         }
 
                         SetNewFormButtonHandlers(HandlerResetToDefaultsButtonClicked, HandlerWrapTextButtonClicked, wrapTextBoxChecked);

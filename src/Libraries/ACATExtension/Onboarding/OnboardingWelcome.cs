@@ -14,7 +14,7 @@ namespace ACAT.Extension.Onboarding
     /// <summary>
     /// The onboarding extension that displays the Welcome screen
     /// </summary>
-    [Descriptor("6D8DA00E-5035-4B7F-A646-ED9F840A13BF",
+    [ClassDescriptor("6D8DA00E-5035-4B7F-A646-ED9F840A13BF",
                     "OnboardingWelcome",
                     "Welcome onboarding")]
     public class OnboardingWelcome : OnboardingExtensionBase
@@ -24,9 +24,9 @@ namespace ACAT.Extension.Onboarding
 
         private IOnboardingWizard _wizard;
 
-        public override IDescriptor Descriptor
+        public override ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         public override IOnboardingUserControl GetFirstStep()

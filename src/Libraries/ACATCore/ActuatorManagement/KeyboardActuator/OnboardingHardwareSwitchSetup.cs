@@ -19,7 +19,7 @@ namespace ACAT.Core.InputActuators
     /// <summary>
     /// An onboarding extension to configure the hotkey for a switch
     /// </summary>
-    [Descriptor("E5435A02-4F3E-43FB-9F3C-BA32C859870F",
+    [ClassDescriptor("E5435A02-4F3E-43FB-9F3C-BA32C859870F",
                         "OnboardingHardwareSwitchSetup",
                         "Hardware switch select onboarding")]
     public class OnboardingHardwareSwitchSetup : OnboardingExtensionBase
@@ -46,9 +46,9 @@ namespace ACAT.Core.InputActuators
             return true;
         }
 
-        public override IDescriptor Descriptor
+        public override ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         public override IOnboardingUserControl GetFirstStep()

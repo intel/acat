@@ -21,7 +21,7 @@ using System.Windows.Forms;
 
 namespace ACAT.Extensions.UI.UserControls
 {
-    [Descriptor("531C7B62-A09F-4772-8C7E-915E2C0AD014",
+    [ClassDescriptor("531C7B62-A09F-4772-8C7E-915E2C0AD014",
                     "WordPredictionUserControl",
                     "User Control for Word Prediction")]
     public partial class WordPredictionUserControl : UserControl, IUserControl
@@ -39,9 +39,9 @@ namespace ACAT.Extensions.UI.UserControls
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>

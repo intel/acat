@@ -36,7 +36,7 @@ namespace ACAT.Extensions.UI.Menus
     /// spaces between the yes and the no to give the user time to make
     /// the choice
     /// </summary>
-    [Descriptor("81C9DA24-C9DD-44D6-B3A6-7364C4109CAA",
+    [ClassDescriptor("81C9DA24-C9DD-44D6-B3A6-7364C4109CAA",
                         "YesNoScanner ",
                         "Yes No Scanner")]
     public partial class YesNoScanner : Form, IScannerPanel, IExtension
@@ -141,9 +141,9 @@ namespace ACAT.Extensions.UI.Menus
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>

@@ -265,7 +265,7 @@ namespace ACAT.Core.Onboarding
 
         private Guid getId(Type type)
         {
-            var descAttribute = DescriptorAttribute.GetDescriptor(type);
+            var descAttribute = ClassDescriptorAttribute.GetDescriptor(type);
             Guid retVal = Guid.Empty;
             if (descAttribute != null)
             {

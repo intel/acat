@@ -514,7 +514,7 @@ namespace ACAT.Core.PanelManagement
         /// <returns>The descirptor guid</returns>
         internal static Guid GetFormId(Type type)
         {
-            var descAttribute = DescriptorAttribute.GetDescriptor(type);
+            var descAttribute = ClassDescriptorAttribute.GetDescriptor(type);
             Guid retVal = Guid.Empty;
             if (descAttribute != null)
             {
@@ -647,16 +647,18 @@ namespace ACAT.Core.PanelManagement
         /// <returns>the object, null if not found</returns>
         private static PanelConfigMapEntry getMapEntryFromPanelClassConfigMap(String panelClass)
         {
-            var panelClassConfigMapEntry = (getClassConfigMapEntryForCulture(CultureInfo.DefaultThreadCurrentUICulture.Name, panelClass) ??
-                                            getClassConfigMapEntryForCulture(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, panelClass)) ??
-                                           getClassConfigMapEntryForCulture(DefaultCulture, panelClass);
+            //var panelClassConfigMapEntry = (getClassConfigMapEntryForCulture(CultureInfo.DefaultThreadCurrentUICulture.Name, panelClass) ??
+            //                                getClassConfigMapEntryForCulture(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, panelClass)) ??
+            //                               getClassConfigMapEntryForCulture(DefaultCulture, panelClass);
 
-            if (panelClassConfigMapEntry == null)
+            var entry = getClassConfigMapEntryForCulture(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, panelClass);
+
+            if (entry == null)
             {
                 return null;
             }
 
-            var configId = panelClassConfigMapEntry.ConfigId;
+            var configId = entry.ConfigId;
 
             return (_masterPanelConfigMapTable.ContainsKey(configId))
                             ? _masterPanelConfigMapTable[configId]

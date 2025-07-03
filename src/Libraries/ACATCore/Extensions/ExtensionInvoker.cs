@@ -74,7 +74,7 @@ namespace ACAT.Core.Extensions
         /// <summary>
         /// Returns the descriptor object (always null for this class)
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
             get { return null; }
         }

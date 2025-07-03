@@ -19,7 +19,7 @@ namespace ACAT.Core.InputActuators
     /// <summary>
     /// The ACAT interface for an external switch switch (off-the-shelf)
     /// </summary>
-    [Descriptor("790324B9-C733-49CA-9A28-C49357BB7C14",
+    [ClassDescriptor("790324B9-C733-49CA-9A28-C49357BB7C14",
                         "Switch Interface",
                         "External hardware switch")]
     public class SwitchInterfaceActuator : KeyboardActuator

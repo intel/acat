@@ -4,9 +4,9 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 //
-// FloatDescriptorAttribute.cs
+// IntDescriptorAttribute.cs
 //
-// Custom attribute for float fields/properties
+// Custom attribute for int/Int32 fields/properties
 //
 ////////////////////////////////////////////////////////////////////////////
 
@@ -15,9 +15,9 @@ using System;
 namespace ACAT.Core.PreferencesManagement
 {
     /// <summary>
-    /// Custom attribute for float fields/properties
+    /// Custom attribute for int/Int32 fields/properties
     /// </summary>
-    public class FloatDescriptorAttribute : Attribute
+    public class IntDescriptorAttribute : DescriptorAttribute
     {
         /// <summary>
         /// Initializes an instance of hte class
@@ -26,12 +26,8 @@ namespace ACAT.Core.PreferencesManagement
         /// <param name="minvalue">lower bound</param>
         /// <param name="maxvalue">upper bound</param>
         /// <param name="defaultvalue">default value</param>
-        public FloatDescriptorAttribute(String desc,
-                                        float minvalue = float.MinValue,
-                                        float maxvalue = float.MaxValue,
-                                        float defaultvalue = 0)
+        public IntDescriptorAttribute(String desc, int minvalue = int.MinValue, int maxvalue = int.MaxValue, int defaultvalue = 0) : base(desc)
         {
-            Description = desc;
             MinValue = minvalue;
             MaxValue = maxvalue;
             DefaultValue = defaultvalue;
@@ -40,21 +36,16 @@ namespace ACAT.Core.PreferencesManagement
         /// <summary>
         /// Gets or sets the default value
         /// </summary>
-        public float DefaultValue { get; set; }
-
-        /// <summary>
-        /// Gets or sets the description
-        /// </summary>
-        public String Description { get; private set; }
+        public int DefaultValue { get; set; }
 
         /// <summary>
         /// Gets or sets the upper bound
         /// </summary>
-        public float MaxValue { get; private set; }
+        public int MaxValue { get; private set; }
 
         /// <summary>
         /// Gets or sets the lower bound
         /// </summary>
-        public float MinValue { get; private set; }
+        public int MinValue { get; private set; }
     }
 }

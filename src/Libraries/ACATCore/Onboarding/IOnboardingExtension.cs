@@ -30,7 +30,7 @@ namespace ACAT.Core.Onboarding
     /// </summary>
     public interface IOnboardingExtension
     {
-        IDescriptor Descriptor { get; }
+        ClassDescriptorAttribute Descriptor { get; }
 
         bool StartOverOnBackwardNavigation { get; }
 

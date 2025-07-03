@@ -61,9 +61,9 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <summary>
         /// Returns the ACAT descriptor for this class
         /// </summary>
-        public virtual IDescriptor Descriptor
+        public virtual ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>

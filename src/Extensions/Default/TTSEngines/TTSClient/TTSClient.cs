@@ -29,7 +29,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
     /// the supported protocols
     /// </summary>
     ///
-    [Descriptor("33A07974-72A5-4147-A8EA-7B001520C175",
+    [ClassDescriptor("33A07974-72A5-4147-A8EA-7B001520C175",
                         "TTS Client",
                         "Text to Speech client that sends the text to be converted to a server using the supported protocols")]
     public class TTSClient : ExtensionInvoker, ITTSEngine, ISupportsPreferences
@@ -153,9 +153,9 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>

@@ -20,7 +20,7 @@ namespace ACAT.Core.Extensions
         /// <summary>
         /// Returns the IDescriptor object for the class
         /// </summary>
-        IDescriptor Descriptor { get; }
+        ClassDescriptorAttribute Descriptor { get; }
 
         /// <summary>
         /// Returns the extension invoker object

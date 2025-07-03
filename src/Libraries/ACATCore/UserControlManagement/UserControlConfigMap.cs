@@ -171,7 +171,7 @@ namespace ACAT.Core.UserControlManagement
         /// <returns>The descirptor guid</returns>
         public static Guid GetUserControlId(Type type)
         {
-            var descAttribute = DescriptorAttribute.GetDescriptor(type);
+            var descAttribute = ClassDescriptorAttribute.GetDescriptor(type);
             Guid retVal = Guid.Empty;
             if (descAttribute != null)
             {

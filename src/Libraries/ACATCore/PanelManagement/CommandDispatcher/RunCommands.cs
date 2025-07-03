@@ -52,22 +52,22 @@ namespace ACAT.Core.PanelManagement.CommandDispatcher
         /// </summary>
         /// <param name="runCommandHandler">Handler to add</param>
         /// <returns>true on success</returns>
-        public bool Add(RunCommandHandler runCommandHandler)
+        public bool Add(RunCommandHandler handler)
         {
             bool ret = true;
 
             try
             {
-                runCommandHandler.Dispatcher = _dispatcher;
-                if (!_runCommandLookupTable.ContainsKey(runCommandHandler.Command))
-                {
-                    _runCommandLookupTable.Add(runCommandHandler.Command, runCommandHandler);
-                }
-                else
-                {
-                    _runCommandLookupTable[runCommandHandler.Command] = runCommandHandler;
-                }
+                if (handler == null)
+                    throw new ArgumentNullException(nameof(handler));
+
+                if (string.IsNullOrWhiteSpace(handler.Command))
+                    throw new ArgumentException("Command name cannot be null or whitespace.", nameof(handler.Command));
+
+                handler.Dispatcher = _dispatcher;
+                _runCommandLookupTable[handler.Command] = handler;
             }
+
             catch (Exception ex)
             {
                 Log.Exception(ex);

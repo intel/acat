@@ -21,7 +21,7 @@ namespace ACAT.Extension
     /// <summary>
     /// Displays a code that the user must type to unlock the screen
     /// </summary>
-    [Descriptor("4D767749-D9C6-450E-A1D6-169074F2F66A",
+    [ClassDescriptor("4D767749-D9C6-450E-A1D6-169074F2F66A",
                     "UserControlScreenLock",
                     "User Control to lock the screen")]
     public partial class UserControlScreenLock : UserControl, IUserControl
@@ -42,9 +42,9 @@ namespace ACAT.Extension
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>

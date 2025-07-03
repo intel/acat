@@ -98,7 +98,7 @@ namespace ACAT.Core.WordPredictionManagement
         /// Returns a descriptor which contains a user readable name, a
         /// short textual description and a unique GUID.
         /// </summary>
-        IDescriptor Descriptor { get; }
+        ClassDescriptorAttribute Descriptor { get; }
 
         /// <summary>
         /// Whether puncutations should be a part of the prediction. For

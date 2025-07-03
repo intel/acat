@@ -14,7 +14,7 @@ namespace ACAT.Core.Onboarding
     /// </summary>
     public abstract class OnboardingExtensionBase : IOnboardingExtension
     {
-        public abstract IDescriptor Descriptor { get; }
+        public abstract ClassDescriptorAttribute Descriptor { get; }
         public virtual bool StartOverOnBackwardNavigation => false;
 
         public virtual IOnboardingUserControl GetFirstStep()

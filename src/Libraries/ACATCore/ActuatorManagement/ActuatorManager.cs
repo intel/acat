@@ -237,7 +237,7 @@ namespace ACAT.Core.ActuatorManagement
         {
             foreach (var actuator in _actuators.ActuatorList)
             {
-                var descAttribute = DescriptorAttribute.GetDescriptor(actuator.GetType());
+                var descAttribute = ClassDescriptorAttribute.GetDescriptor(actuator.GetType());
 
                 if (descAttribute != null)
                 {

@@ -21,7 +21,7 @@ using System.Windows.Forms;
 
 namespace ACAT.Core.InputActuators
 {
-    [Descriptor("D91A1877-C92B-4D7E-9AB6-F01F30B12DF9",
+    [ClassDescriptor("D91A1877-C92B-4D7E-9AB6-F01F30B12DF9",
                         "Keyboard Actuator",
                         "Handles Keyboard and Mouse input")]
     public class KeyboardActuator : ActuatorBase

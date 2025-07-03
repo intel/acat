@@ -4,9 +4,9 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 //
-// StringDescriptorAttribute.cs
+// BoolDescriptorAttribute.cs
 //
-// Custom attribute for String fields/properties
+// Custom attribute for boolean fields/properties
 //
 ////////////////////////////////////////////////////////////////////////////
 
@@ -15,29 +15,23 @@ using System;
 namespace ACAT.Core.PreferencesManagement
 {
     /// <summary>
-    /// Custom attribute for String fields/properties
+    /// Custom attribute for boolean fields/properties
     /// </summary>
-    public class StringDescriptorAttribute : Attribute
+    public class BoolDescriptorAttribute : DescriptorAttribute
     {
         /// <summary>
         /// Initializes an instance of the class
         /// </summary>
         /// <param name="desc">Description of the field/property</param>
         /// <param name="defaultvalue">Default value</param>
-        public StringDescriptorAttribute(String desc, String defaultvalue = "")
+        public BoolDescriptorAttribute(String desc, bool defaultvalue = false) : base(desc)
         {
-            Description = desc;
             DefaultValue = defaultvalue;
         }
 
         /// <summary>
         /// Gets or sets the default value
         /// </summary>
-        public String DefaultValue { get; set; }
-
-        /// <summary>
-        /// Gets or sets the description
-        /// </summary>
-        public String Description { get; private set; }
+        public bool DefaultValue { get; }
     }
 }

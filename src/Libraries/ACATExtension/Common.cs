@@ -68,7 +68,6 @@ namespace ACAT.Extension
         {
             Context.AppPanelManager.AddFormToCache(typeof(MenuPanel));
             Context.AppPanelManager.AddFormToCache(typeof(HorizontalStripScanner));
-            Context.AppPanelManager.AddFormToCache(typeof(HorizontalStripScanner2));
             Context.AppPanelManager.AddFormToCache(typeof(UserControlContainerForm));
             Context.AppPanelManager.AddFormToCache(typeof(ScanTimeAdjustForm));
         }

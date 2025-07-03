@@ -27,7 +27,7 @@ using System.Windows.Forms;
 
 namespace ACAT.Extensions.UI.Menus
 {
-    [Descriptor("BF9D82F4-B43F-4188-B8AD-D0EE2F5D7E2B",
+    [ClassDescriptor("BF9D82F4-B43F-4188-B8AD-D0EE2F5D7E2B",
                         "YesNoResponseScanner ",
                         "Yes No Response Scanner")]
     public partial class YesNoResponseScanner : Form, IScannerPanel, IExtension
@@ -111,10 +111,7 @@ namespace ACAT.Extensions.UI.Menus
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
-        {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
-        }
+        public ClassDescriptorAttribute Descriptor => ClassDescriptorAttribute.GetDescriptor(GetType());
 
         /// <summary>
         /// Gets the form

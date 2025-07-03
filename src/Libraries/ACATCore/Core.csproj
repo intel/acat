@@ -281,8 +281,9 @@
     <Compile Include="PreferencesManagement\ACATConfigMainForm.Designer.cs">
       <DependentUpon>ACATConfigMainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PreferencesManagement\BoolDescriptorAttribute.cs" />
-    <Compile Include="PreferencesManagement\FloatDescriptorAttribute.cs" />
+    <Compile Include="PreferencesManagement\Attributes\BoolDescriptorAttribute.cs" />
+    <Compile Include="PreferencesManagement\Attributes\DescriptorAttribute.cs" />
+    <Compile Include="PreferencesManagement\Attributes\FloatDescriptorAttribute.cs" />
     <Compile Include="PreferencesManagement\PreferencesEditForm2.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -302,15 +303,15 @@
     <Compile Include="PreferencesManagement\PreferencesCategorySelectForm.Designer.cs">
       <DependentUpon>PreferencesCategorySelectForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PreferencesManagement\IntDescriptorAttribute.cs" />
-    <Compile Include="PreferencesManagement\LongDescriptorAttribute.cs" />
+    <Compile Include="PreferencesManagement\Attributes\IntDescriptorAttribute.cs" />
+    <Compile Include="PreferencesManagement\Attributes\LongDescriptorAttribute.cs" />
     <Compile Include="PreferencesManagement\PreferencesEditForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PreferencesManagement\PreferencesEditForm.Designer.cs">
       <DependentUpon>PreferencesEditForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PreferencesManagement\StringDescriptorAttribute.cs" />
+    <Compile Include="PreferencesManagement\Attributes\StringDescriptorAttribute.cs" />
     <Compile Include="PanelManagement\CommandDispatcher\IRunCommandDispatcher.cs" />
     <Compile Include="PanelManagement\CommandDispatcher\IRunCommandHandler.cs" />
     <Compile Include="PanelManagement\CommandDispatcher\RunCommandHandler.cs" />
@@ -458,7 +459,7 @@
     <Compile Include="Utility\SoundManager.cs" />
     <Compile Include="Utility\VerifyDigitalSignature.cs" />
     <Compile Include="Utility\XmlUtils.cs" />
-    <Compile Include="Utility\DescriptorAttribute.cs" />
+    <Compile Include="Utility\ClassDescriptorAttribute.cs" />
     <Compile Include="Utility\DirectoryWalker.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
@@ -466,7 +467,6 @@
     <Compile Include="Utility\FocusChangedEventArgs.cs" />
     <Compile Include="Utility\GlobalPreferences.cs" />
     <Compile Include="Utility\ImageUtils.cs" />
-    <Compile Include="Utility\Interfaces\IDescriptor.cs" />
     <Compile Include="Utility\KeyStateTracker.cs" />
     <Compile Include="Utility\Log.cs" />
     <Compile Include="Utility\Mouse\MouseUtils.cs" />

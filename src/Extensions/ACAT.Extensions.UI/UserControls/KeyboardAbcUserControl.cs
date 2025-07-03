@@ -15,7 +15,7 @@ using ACAT.UserControls;
 
 namespace ACAT.Scanners.UserControls
 {
-    [Descriptor("17E10490-5322-4C8A-801A-656A79BBA4EF",
+    [ClassDescriptor("17E10490-5322-4C8A-801A-656A79BBA4EF",
                     "KeyboardAbcUserControl",
                     "User Control for Abc keyboard")]
     public partial class KeyboardAbcUserControl : KeyboardUserControl

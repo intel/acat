@@ -21,7 +21,7 @@ using System.Windows.Forms;
 
 namespace ACAT.Extensions.AppAgents.TalkApplicationScannerAgent
 {
-    [Descriptor("AAF2B6C4-2F31-403D-BF45-7C35FA8B4FFC",
+    [ClassDescriptor("AAF2B6C4-2F31-403D-BF45-7C35FA8B4FFC",
                             "Talk Application Agent",
                             "Manages interactions with the Talk Window with Embedded Scanner")]
     internal class TalkApplicationScannerAgent : AgentBase

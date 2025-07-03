@@ -17,7 +17,7 @@ namespace ACAT.Extension
     /// Contextual menu with icons and text. Use this
     /// as the base class for Contextual menus.
     /// </summary>
-    [Descriptor("6307D870-D90E-45ED-8A7E-43A3BA97D868",
+    [ClassDescriptor("6307D870-D90E-45ED-8A7E-43A3BA97D868",
                         "MenuPanel",
                         "AppMenu with Icons and Text")]
     public partial class MenuPanel : MenuPanelBase

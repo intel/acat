@@ -112,7 +112,7 @@ namespace ACAT.Core.TTSManagement
             {
                 foreach (var type in Collection)
                 {
-                    IDescriptor descriptor = DescriptorAttribute.GetDescriptor(type);
+                    ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(type);
                     if (descriptor != null && Guid.Equals(guid, descriptor.Id))
                     {
                         Log.Debug("Found TTS engine of type " + type);
@@ -185,7 +185,7 @@ namespace ACAT.Core.TTSManagement
 
             if (foundTuple != null)
             {
-                IDescriptor descriptor = DescriptorAttribute.GetDescriptor(foundTuple.Item2);
+                ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(foundTuple.Item2);
                 if (descriptor != null)
                 {
                     Log.Debug("Found TTS Engine for culture " + (ci != null ? ci.TwoLetterISOLanguageName : "Neutral") + "[" + descriptor.Name + "]");
@@ -279,7 +279,7 @@ namespace ACAT.Core.TTSManagement
 
             foreach (Type type in Collection)
             {
-                IDescriptor descriptor = DescriptorAttribute.GetDescriptor(type);
+                ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(type);
                 if (descriptor != null && Equals(guid, descriptor.Id))
                 {
                     Log.Debug("Found TTS Engine of type " + type);
@@ -403,7 +403,7 @@ namespace ACAT.Core.TTSManagement
                     {
                         if (typeof(ITTSEngine).IsAssignableFrom(type))
                         {
-                            DescriptorAttribute attr = DescriptorAttribute.GetDescriptor(type);
+                            ClassDescriptorAttribute attr = ClassDescriptorAttribute.GetDescriptor(type);
                             if (attr != null && attr.Id != Guid.Empty)
                             {
                                 Add(attr.Id, _dirWalkCurrentCulture, type);

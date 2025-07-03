@@ -251,7 +251,7 @@ namespace ACAT.Core.ActuatorManagement
             bool isDirty = false;
             foreach (var actuatorType in _actuatorsTypeCache.Values)
             {
-                var attr = DescriptorAttribute.GetDescriptor(actuatorType);
+                var attr = ClassDescriptorAttribute.GetDescriptor(actuatorType);
                 if (attr != null && attr.Id != Guid.Empty)
                 {
                     var actuatorSetting = Config.Find(attr.Id);
@@ -413,7 +413,7 @@ namespace ACAT.Core.ActuatorManagement
         /// </summary>
         private void addKeyboardActuatorToCache()
         {
-            var attr = DescriptorAttribute.GetDescriptor(typeof(InputActuators.KeyboardActuator));
+            var attr = ClassDescriptorAttribute.GetDescriptor(typeof(InputActuators.KeyboardActuator));
             if (attr != null)
             {
                 addActuatorToCache(attr.Id, typeof(InputActuators.KeyboardActuator));
@@ -422,7 +422,7 @@ namespace ACAT.Core.ActuatorManagement
 
         private void addSwitchInterfaceActuatorTocache()
         {
-            var attr = DescriptorAttribute.GetDescriptor(typeof(InputActuators.SwitchInterfaceActuator));
+            var attr = ClassDescriptorAttribute.GetDescriptor(typeof(InputActuators.SwitchInterfaceActuator));
             if (attr != null)
             {
                 addActuatorToCache(attr.Id, typeof(InputActuators.SwitchInterfaceActuator));
@@ -490,7 +490,7 @@ namespace ACAT.Core.ActuatorManagement
                     {
                         if (typeof(ActuatorBase).IsAssignableFrom(type))
                         {
-                            var attr = DescriptorAttribute.GetDescriptor(type);
+                            var attr = ClassDescriptorAttribute.GetDescriptor(type);
                             if (attr != null && attr.Id != Guid.Empty)
                             {
                                 addActuatorToCache(attr.Id, type);

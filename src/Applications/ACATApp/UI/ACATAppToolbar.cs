@@ -26,7 +26,7 @@ namespace ACATApp.UI
 
         public ITextController TextController => throw new NotImplementedException();
 
-        public IDescriptor Descriptor => throw new NotImplementedException();
+        public ClassDescriptorAttribute Descriptor => throw new NotImplementedException();
 
         public IPanelCommon PanelCommon => throw new NotImplementedException();
 

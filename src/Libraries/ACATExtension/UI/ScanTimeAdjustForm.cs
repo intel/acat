@@ -23,7 +23,7 @@ namespace ACAT.Extension
     /// The width of the scanner is dynamically
     /// computed depending on how many menu items are there
     /// </summary>
-    [Descriptor("D6AE907B-CB4B-417E-9FCC-E587D976FFD7",
+    [ClassDescriptor("D6AE907B-CB4B-417E-9FCC-E587D976FFD7",
                 "ScanTimeAdjustScanner",
                 "Adjust scan time")]
     public partial class ScanTimeAdjustForm : Form, IScannerPanel
@@ -79,9 +79,9 @@ namespace ACAT.Extension
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>

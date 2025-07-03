@@ -13,7 +13,7 @@ using static ACAT.Core.PanelManagement.ScannerPositionSizeController;
 
 namespace ACAT.Extensions.UI.Scanners.UserControls
 {
-    [Descriptor("802B03F0-1294-4D06-A601-2CEBFBFA5D9C",
+    [ClassDescriptor("802B03F0-1294-4D06-A601-2CEBFBFA5D9C",
                     "PointerScanner",
                     "User Control for Pointer Scanner")]
     public partial class PointerScannerUserControl : UserControl, IUserControl
@@ -80,7 +80,7 @@ namespace ACAT.Extensions.UI.Scanners.UserControls
             //commandDispatcher.Commands.Add(new CommandHandler("CmdGoBack"));
         }
 
-        public IDescriptor Descriptor => DescriptorAttribute.GetDescriptor(GetType());
+        public ClassDescriptorAttribute Descriptor => ClassDescriptorAttribute.GetDescriptor(GetType());
 
         public SyncLock SyncObj => _keyboardCommon.SyncObj;
 

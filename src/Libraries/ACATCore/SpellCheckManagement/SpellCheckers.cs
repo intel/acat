@@ -156,7 +156,7 @@ namespace ACAT.Core.SpellCheckManagement
 
             if (foundTuple != null)
             {
-                IDescriptor descriptor = DescriptorAttribute.GetDescriptor(foundTuple.Item2);
+                ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(foundTuple.Item2);
                 if (descriptor != null)
                 {
                     Log.Debug("Found spellchecker for culture " + (ci != null ? ci.TwoLetterISOLanguageName : "Neutral") + "[" + descriptor.Name + "]");
@@ -249,7 +249,7 @@ namespace ACAT.Core.SpellCheckManagement
 
             foreach (Type type in Collection)
             {
-                IDescriptor descriptor = DescriptorAttribute.GetDescriptor(type);
+                ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(type);
                 if (descriptor != null && Equals(guid, descriptor.Id))
                 {
                     Log.Debug("Found spellchecker of type " + type);
@@ -381,7 +381,7 @@ namespace ACAT.Core.SpellCheckManagement
                     {
                         if (typeof(ISpellChecker).IsAssignableFrom(type))
                         {
-                            var attr = DescriptorAttribute.GetDescriptor(type);
+                            var attr = ClassDescriptorAttribute.GetDescriptor(type);
                             if (attr != null && attr.Id != Guid.Empty)
                             {
                                 Add(attr.Id, _dirWalkCurrentCulture, type);

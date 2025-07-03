@@ -31,7 +31,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
     /// English language word prediction extension.
     /// Uses the ConvAssist word predictor for next word prediction.
     /// </summary>
-    [Descriptor("1505D4A3-26AD-451F-9FD3-44EC92271AF3",
+    [ClassDescriptor("1505D4A3-26AD-451F-9FD3-44EC92271AF3",
                             "ConvAssist Word Predictor (English)",
                             "The ConvAssist predictive text engine with enhanced language modeling capabilities fine-tuned for AAC uses")]
     public class ConvAssistWordPredictor : ConvAssistWordPredictorBase

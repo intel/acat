@@ -17,7 +17,7 @@ namespace ACAT.Extension
     /// <summary>
     /// This is a scanner with a single row of buttons.
     /// </summary>
-    [Descriptor("4287E55B-3364-46B5-A5B2-6C8BE3C57F1E",
+    [ClassDescriptor("4287E55B-3364-46B5-A5B2-6C8BE3C57F1E",
                     "HorizontalStripScanner",
                     "Horizontal strip of buttons")]
     public partial class HorizontalStripScanner : HorizontalStripScannerBase
@@ -27,13 +27,6 @@ namespace ACAT.Extension
         /// commands, just call Commands.Add on this object
         /// </summary>
         protected Dispatcher commandDispatcher;
-
-        /// <summary>
-        /// Initalizes a new instance of the class
-        /// </summary>
-        public HorizontalStripScanner()
-        {
-        }
 
         /// <summary>
         /// Initializes a new instance of the class.

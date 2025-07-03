@@ -19,7 +19,7 @@ namespace ACAT.Core.PanelManagement
         /// Gets the Descriptor for the panel. Descriptor
         /// contains name and ID of the panel
         /// </summary>
-        IDescriptor Descriptor { get; }
+        ClassDescriptorAttribute Descriptor { get; }
 
         /// <summary>
         /// Gets the PanelCommon interface that contains properties

@@ -14,6 +14,7 @@
 
 using ACAT.Core.Extensions;
 using ACAT.Core.PanelManagement;
+using ACAT.Core.PreferencesManagement;
 using ACAT.Core.Utility;
 using ACATResources;
 using System;
@@ -333,7 +334,7 @@ namespace ACAT.Core.PreferencesManagement
                     continue;
                 }
 
-                IDescriptor desc = (category.PreferenceObj as IExtension).Descriptor;
+                ClassDescriptorAttribute desc = (category.PreferenceObj as IExtension).Descriptor;
                 if (desc == null)
                 {
                     continue;

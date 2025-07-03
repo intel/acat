@@ -20,7 +20,7 @@ namespace ACAT.Core.SpellCheckManagement
         /// Returns a descriptor which contains a user readable name, a
         /// short textual description and a unique GUID.
         /// </summary>
-        IDescriptor Descriptor { get; }
+        ClassDescriptorAttribute Descriptor { get; }
 
         /// <summary>
         /// Initialize the spell checker

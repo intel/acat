@@ -30,7 +30,7 @@ using System.Windows.Forms;
 
 namespace ACAT.Extensions.UI.Scanners
 {
-    [Descriptor("D9A5B53F-7119-445B-BDEA-F76EC53077F1",
+    [ClassDescriptor("D9A5B53F-7119-445B-BDEA-F76EC53077F1",
                         "TalkApplicationScanner",
                         "Talk application main window")]
     public partial class TalkApplicationScanner : Form, IScannerPanel, ISupportsStatusBar
@@ -99,10 +99,7 @@ namespace ACAT.Extensions.UI.Scanners
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
-        {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
-        }
+        public ClassDescriptorAttribute Descriptor => ClassDescriptorAttribute.GetDescriptor(GetType());
 
         /// <summary>
         /// Gets this form object

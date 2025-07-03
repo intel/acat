@@ -14,7 +14,7 @@ namespace ACAT.Extension.Onboarding
     /// <summary>
     /// The onboarding extension that signifies the end of onboarding
     /// </summary>
-    [Descriptor("E03754B3-85AF-4F43-855E-47E20F7400C2",
+    [ClassDescriptor("E03754B3-85AF-4F43-855E-47E20F7400C2",
                         "OnboardingFinish",
                         "Final step in onboarding")]
     public class OnboardingFinish : OnboardingExtensionBase
@@ -24,9 +24,9 @@ namespace ACAT.Extension.Onboarding
 
         private IOnboardingWizard _wizard;
 
-        public override IDescriptor Descriptor
+        public override ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         public override IOnboardingUserControl GetFirstStep()

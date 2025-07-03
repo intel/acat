@@ -160,7 +160,7 @@ namespace ACAT.Core.WordPredictionManagement
 
             if (foundTuple != null)
             {
-                IDescriptor descriptor = DescriptorAttribute.GetDescriptor(foundTuple.Item2);
+                ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(foundTuple.Item2);
                 if (descriptor != null)
                 {
                     Log.Debug("Found word predictor for culture " + (ci != null ? ci.TwoLetterISOLanguageName : "Neutral") + "[" + descriptor.Name + "]");
@@ -252,7 +252,7 @@ namespace ACAT.Core.WordPredictionManagement
 
             foreach (Type type in Collection)
             {
-                IDescriptor descriptor = DescriptorAttribute.GetDescriptor(type);
+                ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(type);
                 if (descriptor != null && Equals(guid, descriptor.Id))
                 {
                     Log.Debug("Found word predictor of type " + type);
@@ -394,13 +394,13 @@ namespace ACAT.Core.WordPredictionManagement
                                 typeof(IWordPredictor).IsAssignableFrom(type))
                             .FirstOrDefault(type =>
                             {
-                                var attr = DescriptorAttribute.GetDescriptor(type);
+                                var attr = ClassDescriptorAttribute.GetDescriptor(type);
                                 return attr != null && attr.Id != Guid.Empty;
                             });
 
                         if (matchingType != null)
                         {
-                            var attr = DescriptorAttribute.GetDescriptor(matchingType);
+                            var attr = ClassDescriptorAttribute.GetDescriptor(matchingType);
                             Add(attr.Id, _dirWalkCurrentCulture, matchingType);
                         }
                     }

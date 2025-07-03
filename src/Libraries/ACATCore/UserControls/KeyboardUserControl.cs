@@ -32,7 +32,7 @@ namespace ACAT.UserControls
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor => DescriptorAttribute.GetDescriptor(GetType());
+        public ClassDescriptorAttribute Descriptor => ClassDescriptorAttribute.GetDescriptor(GetType());
 
         /// <summary>
         /// Gets the snchronization object

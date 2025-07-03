@@ -36,7 +36,7 @@ namespace ACAT.Extensions.UI.Scanners
     /// be used to browse or navigate through a document.  It has
     /// arrow keys, page up page down, home end, and clipboard operations.
     /// </summary>
-    [DescriptorAttribute("E2FAC808-D05A-435B-84DA-5F9A7B65A94C",
+    [ClassDescriptor("E2FAC808-D05A-435B-84DA-5F9A7B65A94C",
                         "CursorNavigationScanner",
                         "Cursor Navigation Scanner")]
     public partial class CursorNavigationScanner : Form, IScannerPanel, ISupportsStatusBar
@@ -77,14 +77,6 @@ namespace ACAT.Extensions.UI.Scanners
         public RunCommandDispatcher CommandDispatcher
         {
             get { return _defaultCommandDispatcher; }
-        }
-
-        /// <summary>
-        /// Gets the descriptor for this class
-        /// </summary>
-        public IDescriptor Descriptor
-        {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>
@@ -159,6 +151,8 @@ namespace ACAT.Extensions.UI.Scanners
                 return Windows.SetFormStyles(base.CreateParams);
             }
         }
+
+        public ClassDescriptorAttribute Descriptor => ClassDescriptorAttribute.GetDescriptor(GetType());
 
         /// <summary>
         /// Invoked to check if a scanner button should be enabled.  Uses context

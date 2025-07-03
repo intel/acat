@@ -15,7 +15,7 @@ namespace ACAT.Extension.Onboarding
     /// The onboarding extension that lets the user select the input
     /// trigger switch
     /// </summary>
-    [Descriptor("F2803F8A-D639-459C-9F27-5742BAD4E405",
+    [ClassDescriptor("F2803F8A-D639-459C-9F27-5742BAD4E405",
                     "OnboardingLanguageSelect",
                     "Language select onboarding")]
     public class OnboardingLanguageSelect : OnboardingExtensionBase
@@ -25,9 +25,9 @@ namespace ACAT.Extension.Onboarding
 
         private IOnboardingWizard _wizard;
 
-        public override IDescriptor Descriptor
+        public override ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         public override IOnboardingUserControl GetFirstStep()

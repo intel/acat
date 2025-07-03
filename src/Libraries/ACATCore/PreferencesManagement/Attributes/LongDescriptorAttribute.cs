@@ -4,9 +4,9 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 //
-// IntDescriptorAttribute.cs
+// LongDescriptorAttribute.cs
 //
-// Custom attribute for int/Int32 fields/properties
+// Custom attribute for long fields/properties
 //
 ////////////////////////////////////////////////////////////////////////////
 
@@ -15,9 +15,9 @@ using System;
 namespace ACAT.Core.PreferencesManagement
 {
     /// <summary>
-    /// Custom attribute for int/Int32 fields/properties
+    /// Custom attribute for long fields/properties
     /// </summary>
-    public class IntDescriptorAttribute : Attribute
+    public class LongDescriptorAttribute : DescriptorAttribute
     {
         /// <summary>
         /// Initializes an instance of hte class
@@ -26,9 +26,8 @@ namespace ACAT.Core.PreferencesManagement
         /// <param name="minvalue">lower bound</param>
         /// <param name="maxvalue">upper bound</param>
         /// <param name="defaultvalue">default value</param>
-        public IntDescriptorAttribute(String desc, int minvalue = int.MinValue, int maxvalue = int.MaxValue, int defaultvalue = 0)
+        public LongDescriptorAttribute(String desc, long minvalue = long.MinValue, long maxvalue = long.MaxValue, long defaultvalue = 0) : base(desc)
         {
-            Description = desc;
             MinValue = minvalue;
             MaxValue = maxvalue;
             DefaultValue = defaultvalue;
@@ -37,21 +36,16 @@ namespace ACAT.Core.PreferencesManagement
         /// <summary>
         /// Gets or sets the default value
         /// </summary>
-        public int DefaultValue { get; set; }
-
-        /// <summary>
-        /// Gets or sets the description
-        /// </summary>
-        public String Description { get; private set; }
+        public long DefaultValue { get; set; }
 
         /// <summary>
         /// Gets or sets the upper bound
         /// </summary>
-        public int MaxValue { get; private set; }
+        public long MaxValue { get; private set; }
 
         /// <summary>
         /// Gets or sets the lower bound
         /// </summary>
-        public int MinValue { get; private set; }
+        public long MinValue { get; private set; }
     }
 }

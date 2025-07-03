@@ -139,12 +139,6 @@
     <Compile Include="UI\DisclaimerDialog.Designer.cs">
       <DependentUpon>DisclaimerDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\HorizontalStripScanner2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\HorizontalStripScanner2.Designer.cs">
-      <DependentUpon>HorizontalStripScanner2.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\HorizontalStripScanner.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -211,12 +205,7 @@
     <Compile Include="UI\TalkWindowTextBoxUserControl.Designer.cs">
       <DependentUpon>TalkWindowTextBoxUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\UserControlContainerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\UserControlContainerForm.Designer.cs">
-      <DependentUpon>UserControlContainerForm.cs</DependentUpon>
-    </Compile>
+    <Compile Include="UI\UserControlContainerForm.cs" />
     <Compile Include="UI\ScannerHelper.cs" />
     <Compile Include="UI\DialogUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -269,8 +258,8 @@
     <EmbeddedResource Include="UI\DisclaimerDialog.resx">
       <DependentUpon>DisclaimerDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\HorizontalStripScanner2.resx">
-      <DependentUpon>HorizontalStripScanner2.cs</DependentUpon>
+    <EmbeddedResource Include="UI\HorizontalStripScanner.resx">
+      <DependentUpon>HorizontalStripScanner.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MenuPanel.resx">
       <DependentUpon>MenuPanel.cs</DependentUpon>
@@ -297,9 +286,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\TalkWindowTextBoxUserControl.resx">
       <DependentUpon>TalkWindowTextBoxUserControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\UserControlContainerForm.resx">
-      <DependentUpon>UserControlContainerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\UserControlLayoutInterface.resx">
       <DependentUpon>UserControlLayoutInterface.cs</DependentUpon>

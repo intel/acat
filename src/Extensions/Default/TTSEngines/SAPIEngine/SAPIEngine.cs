@@ -24,7 +24,7 @@ using System.Speech.Synthesis;
 
 namespace ACAT.Extensions.TTSEngines.SAPIEngine
 {
-    [Descriptor("B7AB6188-AE23-40E3-9E6A-F8AA8A81E2BF",
+    [ClassDescriptor("B7AB6188-AE23-40E3-9E6A-F8AA8A81E2BF",
                         "Speech Synthesizer TTS Engine",
                         "Text to Speech based on the Microsoft Speech Synthesizer")]
     public class SAPIEngine : ExtensionInvoker, ITTSEngine, ISupportsPreferences
@@ -134,9 +134,9 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public new IDescriptor Descriptor
+        public new ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>

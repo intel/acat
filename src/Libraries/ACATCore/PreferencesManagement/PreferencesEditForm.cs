@@ -1043,7 +1043,7 @@ namespace ACAT.Core.PreferencesManagement
                 Margin = new Padding(15)
             };
 
-            var descriptionAttr = prop.GetCustomAttribute<DescriptorAttribute>();
+            var descriptionAttr = prop.GetCustomAttribute<ClassDescriptorAttribute>();
             var labelText = descriptionAttr?.Description ?? "MISSING DESCRIPTION";
 
             var label = new Label
@@ -1104,7 +1104,7 @@ namespace ACAT.Core.PreferencesManagement
 
             wrapText(_wrapText);
 
-            var descriptor = prefs.GetType().GetCustomAttribute<DescriptorAttribute>();
+            var descriptor = prefs.GetType().GetCustomAttribute<ClassDescriptorAttribute>();
             Label category = new Label
             {
                 AutoSize = true,

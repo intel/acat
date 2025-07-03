@@ -81,9 +81,9 @@ namespace ACAT.Core.AgentManagement
         /// <summary>
         /// Gets the descriptor object for this agent
         /// </summary>
-        public virtual IDescriptor Descriptor
+        public virtual ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>

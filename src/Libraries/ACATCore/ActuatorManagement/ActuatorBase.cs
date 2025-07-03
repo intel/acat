@@ -86,9 +86,9 @@ namespace ACAT.Core.ActuatorManagement
         /// <summary>
         /// Gets the descriptor for the actuator class
         /// </summary>
-        public virtual IDescriptor Descriptor
+        public virtual ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>

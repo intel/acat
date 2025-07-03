@@ -16,7 +16,7 @@ namespace ACAT.Core.SpellCheckManagement
     /// The null spellchecker basically does nothing.  It is used
     /// where no SpellChecker is currently active/valid.
     /// </summary>
-    [Descriptor("CCC45241-9BA0-4BD9-AB37-DC2C960772F4",
+    [ClassDescriptor("CCC45241-9BA0-4BD9-AB37-DC2C960772F4",
                         "Null Spell Checker",
                         "No spell checking functionality.")]
     public class NullSpellChecker : ISpellChecker, IExtension
@@ -29,9 +29,9 @@ namespace ACAT.Core.SpellCheckManagement
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>

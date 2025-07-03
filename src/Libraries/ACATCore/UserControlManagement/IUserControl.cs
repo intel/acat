@@ -25,7 +25,7 @@ namespace ACAT.Core.UserControlManagement
         /// Gets the Descriptor for the panel. Descriptor
         /// contains name and ID of the panel
         /// </summary>
-        IDescriptor Descriptor { get; }
+        ClassDescriptorAttribute Descriptor { get; }
 
         /// <summary>
         /// Used for synchronization

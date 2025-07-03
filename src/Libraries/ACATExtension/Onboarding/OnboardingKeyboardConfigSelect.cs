@@ -16,7 +16,7 @@ namespace ACAT.Extension.Onboarding
     /// The onboarding extension that lets the user select the preferred
     /// keyboard configuration
     /// </summary>
-    [Descriptor("65B95DE3-BF5A-4AE8-B44D-F5E7950AB8D6",
+    [ClassDescriptor("65B95DE3-BF5A-4AE8-B44D-F5E7950AB8D6",
                         "OnboardingKeyboardConfigSelect",
                         "Keyboard configuration select onboarding")]
     public class OnboardingKeyboardConfigSelect : OnboardingExtensionBase
@@ -26,9 +26,9 @@ namespace ACAT.Extension.Onboarding
 
         private IOnboardingWizard _wizard;
 
-        public override IDescriptor Descriptor
+        public override ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         public override IOnboardingUserControl GetFirstStep()

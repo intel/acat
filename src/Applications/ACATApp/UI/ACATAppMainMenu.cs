@@ -13,7 +13,7 @@ namespace ACATApp.UI
 {
     public class ACATAppMainMenu : UserControl
     {
-        public IDescriptor Descriptor => throw new NotImplementedException();
+        public ClassDescriptorAttribute Descriptor => throw new NotImplementedException();
 
         public IPanelCommon PanelCommon => throw new NotImplementedException();
 

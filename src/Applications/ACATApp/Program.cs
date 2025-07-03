@@ -71,7 +71,7 @@ namespace ACAT.Applications.ACATApp
                 return;
             }
 
-            CoreGlobals.AppId = "ACATApp";
+            CoreGlobals.AppId = "ACATDashboard";
             CoreGlobals.ACATUserGuideFileName = "ACAT User Guide.pdf";
             global::ACAT.Core.Utility.FatalErrorHandler.EvtFatalError += CoreGlobals_EvtFatalError;
 
@@ -176,13 +176,13 @@ namespace ACAT.Applications.ACATApp
 
                 //showTalkInterfaceDescription();
 
-                var startupArg = new StartupArg("ACATDashboard")
+                var startupArg = new StartupArg("DashboardAppScanner")
                 {
-                    DialogMode = false,
+                    DialogMode = true,
                     QuitAppOnFormClose = true
                 };
 
-                var form = PanelManager.Instance.CreatePanel("ACATDashboard", startupArg);
+                var form = PanelManager.Instance.CreatePanel("DashboardAppScanner", startupArg);
                 if (form != null)
                 {
                     // Add ad-hoc agent that will handle the form
@@ -200,7 +200,7 @@ namespace ACAT.Applications.ACATApp
                 }
                 else
                 {
-                    MessageBox.Show(String.Format(StringResources.InvalidFormName, "ACATDashboard"));
+                    MessageBox.Show(String.Format(StringResources.InvalidFormName, startupArg.ToString()));
                     return;
                 }
 

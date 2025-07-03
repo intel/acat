@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+
+<ACAT>
+  <WidgetAttributes />
+
+  <Layout>
+    <Widget class="WinControlWidget"  name="panelToolbar" />
+    <Widget class="WinControlWidget"  name="panelMainMenu" />
+    <!-- <Widget class="WinControlWidget"  name="panelKeyboard" />
+    <Widget class="WinControlWidget"  name="panelPointerScanner" /> -->
+  </Layout>
+
+  <Animations />
+</ACAT>

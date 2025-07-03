@@ -99,7 +99,7 @@
     <Content Include="en\PointerScannerUserControl.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-        <Content Include="en\ACATDashboard.xml">
+        <Content Include="en\DashboardApplicationScanner.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="en\NumericUserControlBCI.xml">
@@ -123,7 +123,7 @@
     <Content Include="en\TalkApplicationBCIScannerNewUI.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="en\TalkApplicationScannerQwerty.xml">
+    <Content Include="en\TalkApplicationScanner.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="en\TTSYesNoUserControlBCI2.xml">
@@ -219,7 +219,7 @@
     <Content Include="es\TalkApplicationBCIScannerNewUI.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="es\TalkApplicationScannerQwerty.xml">
+    <Content Include="es\TalkApplicationScanner.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="es\TTSYesNoUserControlBCI2.xml">

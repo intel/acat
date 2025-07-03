@@ -204,6 +204,19 @@ namespace ACAT.Core.Utility.NamedPipe
             catch (Exception ex)
             {
                 Log.Debug("Error in ReadCallback: " + ex.Message);
+
+                // Check to make sure the Pipe is still around
+                try
+                {
+                    var checkPipe = (PipeServerState)ar.AsyncState;
+                    checkPipe.PipeServer.Write(checkPipe.Buffer, 0, checkPipe.Buffer.Length);
+                }
+                catch (Exception e)
+                {
+                   // Something happened to the pipe. Just send an Exit message to the client
+                    Log.Debug("Pipe is not connected. Sending exit message to client. " + e.Message);
+                    OnMessageReceived(new MessageReceivedEventArgs("quit"));
+                }
             }
         }
 

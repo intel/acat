@@ -136,7 +136,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 Margin = new Padding(10),
                 Padding = new Padding(10),
                 BackColor = Color.FromArgb(48, 49, 64),
-                Dock = DockStyle.Fill,
+                Dock = DockStyle.Top,
             };
 
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F)); // Label + description

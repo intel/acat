@@ -33,7 +33,7 @@ namespace ACAT.Core.Extensions
         /// <summary>
         /// Returns the IDescriptor object
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
             get { return null; }
         }

@@ -47,7 +47,7 @@ namespace ACAT.Core.UserControlManagement
         /// <summary>
         /// The animation manager object.  Manages all animations
         /// </summary>
-        private AnimationManager2 _animationManager;
+        private UserControlAnimationManager _animationManager;
 
         /// <summary>
         /// Has this object been disposed
@@ -103,7 +103,7 @@ namespace ACAT.Core.UserControlManagement
         /// <summary>
         /// Gets the Animation Manager object
         /// </summary>
-        public AnimationManager2 AnimationManager
+        public UserControlAnimationManager AnimationManager
         { get { return _animationManager; } }
 
         /// <summary>
@@ -381,7 +381,7 @@ namespace ACAT.Core.UserControlManagement
 
             try
             {
-                //AnimationManager.Resume();
+                //PanelAnimationManager.Resume();
             }
             catch (Exception ex)
             {
@@ -537,7 +537,7 @@ namespace ACAT.Core.UserControlManagement
         {
             bool retVal;
 
-            _animationManager = new AnimationManager2();
+            _animationManager = new UserControlAnimationManager();
             retVal = _animationManager.Init(panelConfigMapEntry);
 
             if (!retVal)

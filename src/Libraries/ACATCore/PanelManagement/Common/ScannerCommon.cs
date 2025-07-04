@@ -60,7 +60,7 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// The animation manager object.  Manages all animations
         /// </summary>
-        private AnimationManager _animationManager;
+        private PanelAnimationManager _animationManager;
 
         /// <summary>
         /// Aspect ratio of the form at design time
@@ -192,7 +192,7 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Gets the Animation Manager object
         /// </summary>
-        public AnimationManager AnimationManager
+        public PanelAnimationManager AnimationManager
         { get { return _animationManager; } }
 
         /// <summary>
@@ -1245,7 +1245,7 @@ namespace ACAT.Core.PanelManagement
         {
             bool retVal = true;
 
-            _animationManager = new AnimationManager();
+            _animationManager = new PanelAnimationManager();
             if (_animationManager.Init(panelConfigMapEntry, _rootWidget))
             {
                 _animationManager.EvtPlayerStateChanged += animationManager_EvtPlayerStateChanged;

@@ -766,8 +766,6 @@ namespace ACAT.Extensions.UI.Scanners
                 switch (Command)
                 {
                     case "CmdAutocompleteWithFirstWord":
-                        //form.ScannerCommon.AnimationManager.Interrupt();
-                        //form._alphabetScannerCommon.AutocompleteWithFirstWord();
                         break;
 
                     case "CmdTalkWindowClear":
@@ -776,14 +774,6 @@ namespace ACAT.Extensions.UI.Scanners
                         {
                             Windows.SetText(form._textBoxTalkWindow, String.Empty);
                         }
-                        /*
-                        if (form.panelTextBox.Controls.Count > 0)
-                        {
-                            form._prevUserControl = form.panelTextBox.Controls[0] as UserControl;
-                        }
-
-                        form.addTextBoxUserControl(form._screenLockTextBoxUserControl);
-                        */
                         break;
 
                     case "CmdNumberScanner":

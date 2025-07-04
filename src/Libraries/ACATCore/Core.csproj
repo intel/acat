@@ -170,7 +170,11 @@
     <Compile Include="AgentManagement\UnsupportedAppAgent.cs" />
     <Compile Include="AnimationManagement\Animation.cs" />
     <Compile Include="AnimationManagement\AnimationManager.cs" />
-    <Compile Include="AnimationManagement\AnimationManager2.cs" />
+    <Compile Include="AnimationManagement\Interfaces\IAnimationManager.cs" />
+    <Compile Include="AnimationManagement\Interfaces\IPanelAnimationManager.cs" />
+    <Compile Include="AnimationManagement\Interfaces\IUserControlAnimationManager.cs" />
+    <Compile Include="AnimationManagement\PanelAnimationManager.cs" />
+    <Compile Include="AnimationManagement\UserControlAnimationManager.cs" />
     <Compile Include="AnimationManagement\AnimationMouseClickEventArgs.cs" />
     <Compile Include="AnimationManagement\AnimationPlayer.cs" />
     <Compile Include="AnimationManagement\Animations.cs" />

@@ -1,11 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
-//
-// Copyright 2013-2019; 2023 Intel Corporation
-// SPDX-License-Identifier: Apache-2.0
-//
-////////////////////////////////////////////////////////////////////////////
-
-using ACAT.Core.ActuatorManagement;
+﻿using ACAT.Core.ActuatorManagement;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.Audit;
 using ACAT.Core.CommandManagement;
@@ -16,9 +9,6 @@ using ACAT.Core.WidgetManagement;
 using System;
 using System.Collections.Generic;
 using System.Media;
-
-namespace ACAT.Core.AnimationManagement
-{
     /// <summary>
     /// Enmeration of the different modes for manual scanning
     /// </summary>
@@ -90,83 +80,68 @@ namespace ACAT.Core.AnimationManagement
         TogglePause
     }
 
-    /// <summary>
-    /// Manages the display states of the various widgets, starts and stops
-    /// animations and and also handles transitions between animations.
-    /// </summary>
-    public class AnimationManager : IDisposable
+
+namespace ACAT.Core.AnimationManagement
+{
+    public partial class AnimationManager : IAnimationManager, IDisposable
     {
         /// <summary>
         /// Collection of animations for this panel
         /// </summary>
-        private readonly AnimationsCollection _animationsCollection;
+        protected readonly AnimationsCollection _animationsCollection;
 
         /// <summary>
         /// Interpret script
         /// </summary>
-        private readonly Interpret _interpreter;
+        protected readonly Interpret _interpreter;
 
         /// <summary>
         /// Stores transient variables for animation
         /// </summary>
-        private readonly Variables _variables;
+        internal readonly Variables _variables;
 
         /// <summary>
         /// The panel to which this Animation Manager belongs
         /// </summary>
-        private Widget _currentPanel;
+        protected  Widget _currentPanel;
 
         /// <summary>
         /// has this object been disposed off yet?
         /// </summary>
-        private bool _disposed;
+        protected  bool _disposed;
 
         /// <summary>
         /// Points to the first animation in the sequence
         /// </summary>
-        private Animation _firstAnimation;
+        protected Animation _firstAnimation;
 
-        /// <summary>
-        /// Panel class this scanner represents
-        /// </summary>
-        private String _panelClass = String.Empty;
-
-        private PanelConfigMapEntry _panelConfigMapEntry;
 
         /// <summary>
         /// The animation player that actually plays the animation
         /// </summary>
-        private AnimationPlayer _player;
+        internal AnimationPlayer _player;
 
         /// <summary>
         /// Plays beeps
         /// </summary>
-        private SoundPlayer _soundPlayer;
+        protected  SoundPlayer _soundPlayer;
 
         /// <summary>
         /// Animation that was in progress when a swtich-accept event was
         /// received
         /// </summary>
-        private Animation _switchAcceptedAnimation;
+        protected  Animation _switchAcceptedAnimation;
 
         /// <summary>
         /// Highlighted widget when a switch accept event is recrived
         /// </summary>
-        private AnimationWidget _switchAcceptedHighlightedWidget;
+        protected  AnimationWidget _switchAcceptedHighlightedWidget;
 
         /// <summary>
         /// Animation that was in progress when a switch-down was received
         /// </summary>
-        private Animation _switchDownAnimation;
+        protected  Animation _switchDownAnimation;
 
-        /// <summary>
-        /// Highlighted widget when a switchdown event is received
-        /// </summary>
-        private AnimationWidget _switchDownHighlightedWidget;
-
-        /// <summary>
-        /// Initializes the AnimationManager class
-        /// </summary>
         public AnimationManager()
         {
             _interpreter = new Interpret();
@@ -178,6 +153,11 @@ namespace ACAT.Core.AnimationManagement
             _variables = new Variables();
             resetSwitchEventStates();
         }
+
+        /// <summary>
+        /// Highlighted widget when a switchdown event is received
+        /// </summary>
+        protected  AnimationWidget _switchDownHighlightedWidget;
 
         /// <summary>
         /// Delegate for the event raised when the player state changes
@@ -208,7 +188,7 @@ namespace ACAT.Core.AnimationManagement
         /// <summary>
         /// Get interpreter object used by the animation manager
         /// </summary>
-        public Interpret Interpreter
+        public  Interpret Interpreter
         {
             get { return _interpreter; }
         }
@@ -216,12 +196,13 @@ namespace ACAT.Core.AnimationManagement
         /// <summary>
         /// Gets/sets whether an actuator switch is currently active
         /// </summary>
-        public bool IsSwitchActive { get; set; }
+        public  bool IsSwitchActive { get; set; }
+
 
         /// <summary>
         /// Disposes resources
         /// </summary>
-        public void Dispose()
+        public  void Dispose()
         {
             Dispose(true);
 
@@ -234,12 +215,12 @@ namespace ACAT.Core.AnimationManagement
         /// Returns player state
         /// </summary>
         /// <returns></returns>
-        public PlayerState GetPlayerState()
+        public  PlayerState GetPlayerState()
         {
             return (_player != null) ? _player.State : PlayerState.Unknown;
         }
 
-        public void HighlightDefaultHome()
+        public  void HighlightDefaultHome()
         {
             if (CoreGlobals.AppPreferences.EnableManualScan)
             {
@@ -247,44 +228,11 @@ namespace ACAT.Core.AnimationManagement
             }
         }
 
-        /// <summary>
-        /// Allcoate resources, parse the config file which contains all the
-        /// animations and create a list of animation objects. Subscribe to
-        /// events. The parameter panelConfigMapEntry contains all the info about
-        /// the current scanner
-        /// </summary>
-        /// <param name="panelConfigMapEntry">Config object for the panel</param>
-        /// <returns>true on success</returns>
-        public bool Init(PanelConfigMapEntry panelConfigMapEntry, Widget panelWidget = null)
-        {
-            _panelConfigMapEntry = panelConfigMapEntry;
-
-            _currentPanel = panelWidget;
-
-            _panelClass = panelConfigMapEntry.PanelClass;
-
-            bool retVal = _animationsCollection.Load(panelConfigMapEntry.ConfigFileName);
-            if (retVal)
-            {
-                retVal = _interpreter.LoadScripts(panelConfigMapEntry.ConfigFileName);
-            }
-
-            if (retVal)
-            {
-                subscribeToInterpreterEvents();
-
-                subscribeToActuatorEvents();
-            }
-
-            Log.Debug("returning from Anim manager init()");
-
-            return retVal;
-        }
 
         /// <summary>
         /// Interrupt the animation sequence
         /// </summary>
-        public void Interrupt()
+        public  void Interrupt()
         {
             _player?.Interrupt();
         }
@@ -292,7 +240,7 @@ namespace ACAT.Core.AnimationManagement
         /// <summary>
         /// Pause animcation
         /// </summary>
-        public void Pause()
+        public  void Pause()
         {
             _player?.Pause();
         }
@@ -303,7 +251,7 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         /// <param name="args">args to resolve</param>
         /// <returns>The arglist with variables resolved</returns>
-        public List<String> ResolveArgs(List<String> args)
+        public  List<String> ResolveArgs(List<String> args)
         {
             var argList = new List<String>();
 
@@ -341,7 +289,7 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         /// <param name="arg">"true" or "false"</param>
         /// <returns>translated value</returns>
-        public bool ResolveBool(String arg)
+        public  bool ResolveBool(String arg)
         {
             return String.Compare(arg, "true", true) == 0;
         }
@@ -349,7 +297,7 @@ namespace ACAT.Core.AnimationManagement
         /// <summary>
         /// Transitions to the starting sequence
         /// </summary>
-        public void Restart()
+        public  void Restart()
         {
             if (_firstAnimation != null)
             {
@@ -360,7 +308,7 @@ namespace ACAT.Core.AnimationManagement
         /// <summary>
         /// Resumes animation
         /// </summary>
-        public void Resume()
+        public  void Resume()
         {
             if (_player != null)
             {
@@ -381,7 +329,7 @@ namespace ACAT.Core.AnimationManagement
         /// by setting the @SelectedWidget variable
         /// </summary>
         /// <param name="widgetName">Name of the widget</param>
-        public void SetSelectedWidget(String widgetName)
+        public  void SetSelectedWidget(String widgetName)
         {
             Widget selectedWidget = _currentPanel.Finder.FindChild(widgetName);
             if (selectedWidget != null)
@@ -395,7 +343,7 @@ namespace ACAT.Core.AnimationManagement
         /// by setting the @SelectedWidget variable
         /// </summary>
         /// <param name="selectedWidget">the widget object</param>
-        public void SetSelectedWidget(Widget selectedWidget)
+        public  void SetSelectedWidget(Widget selectedWidget)
         {
             _variables.Set(Variables.SelectedWidget, selectedWidget);
             Widget widget = selectedWidget;
@@ -423,119 +371,17 @@ namespace ACAT.Core.AnimationManagement
             }
         }
 
-        /// <summary>
-        /// Starts the animation sequence for the specified panel. It starts
-        /// with the animation that has the 'start' attribute set to true in
-        /// the xml file
-        /// </summary>
-        /// <param name="panelWidget">Which panel to start the animations for?</param>
-        /// <param name="animationName">Name of the animation sequence</param>
-        public void Start(Widget panelWidget, String animationName = null)
-        {
-            Log.Debug("Start animation for panel " + panelWidget.Name);
-
-            if (_player != null)
-            {
-                _player.EvtPlayerStateChanged -= _player_EvtPlayerStateChanged;
-                _player.Dispose();
-            }
-
-            resetSwitchEventStates();
-
-            _currentPanel = panelWidget;
-
-            subscribeToMouseClickEvents(panelWidget);
-
-            _player = new AnimationPlayer(panelWidget, _interpreter, _variables);
-            _player.EvtPlayerStateChanged += _player_EvtPlayerStateChanged;
-            _variables.Set(Variables.SelectedWidget, panelWidget);
-            _variables.Set(Variables.CurrentPanel, panelWidget);
-
-            // get all the animations for the specified animation name.
-            var animations = getAnimations(animationName);
-
-            if (!CoreGlobals.AppPreferences.EnableAutoStartScan)
-            {
-                Transition();
-            }
-            else
-            {
-                if (animations == null)
-                {
-                    Log.Error("Could not find animations entry for panel " + panelWidget.Name);
-                    return;
-                }
-
-                // transition to the one that is marked as "first"
-                var firstAnimation = animations.GetFirst();
-                if (firstAnimation == null)
-                {
-                    return;
-                }
-
-                foreach (var animation in animations.Values)
-                {
-                    animation.EvtResolveWidgetChildren += animation_EvtResolveWidgetChildren;
-                }
-
-                _firstAnimation = firstAnimation;
-
-                Transition(firstAnimation);
-            }
-        }
 
         /// <summary>
         /// Stop playing animations
         /// </summary>
-        public void Stop()
+        public  void Stop()
         {
             if (_player != null)
             {
                 Log.Debug("Before animation player stop");
                 _player.Stop();
                 Log.Debug("After animation player stop");
-            }
-        }
-
-        /// <summary>
-        /// Transition to the target animation named 'animationName'
-        /// </summary>
-        /// <param name="animationName">Name of the animation to transition to</param>
-        public void Transition(String animationName)
-        {
-            try
-            {
-                Log.Debug();
-
-                Log.Debug("_currentPanel: " + _currentPanel);
-
-                resetSwitchEventStates();
-
-                if (_player == null)
-                {
-                    Log.Debug("_player is null");
-                    return;
-                }
-
-                if (_player.State != PlayerState.Running)
-                {
-                    return;
-                }
-
-                var animations = _animationsCollection["default"];
-                var animation = animations[animationName];
-                if (animation == null)
-                {
-                    Log.Debug("Transition: animation is NULL!");
-                    return;
-                }
-
-                Log.Debug("Calling player transition");
-                _player.Transition(animation);
-            }
-            catch (Exception ex)
-            {
-                Log.Debug(ex.ToString());
             }
         }
 
@@ -571,11 +417,12 @@ namespace ACAT.Core.AnimationManagement
             }
         }
 
+
         /// <summary>
         /// Disposes resources
         /// </summary>
         /// <param name="disposing">disposed yet?</param>
-        protected virtual void Dispose(bool disposing)
+        protected  void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
             if (!_disposed)
@@ -606,221 +453,18 @@ namespace ACAT.Core.AnimationManagement
             _disposed = true;
         }
 
-        /// <summary>
-        /// Event triggered when the player state changes
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void _player_EvtPlayerStateChanged(object sender, PlayerStateChangedEventArgs e)
-        {
-            if (EvtPlayerStateChanged != null)
-            {
-                var delegates = EvtPlayerStateChanged.GetInvocationList();
-                foreach (var del in delegates)
-                {
-                    var playerstateChanged = (PlayerStateChanged)del;
-                    playerstateChanged.BeginInvoke(sender, e, null, null);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Event handler for event raised when the actuator manager has
-        /// decided that the switch has been engaged long enough to be
-        /// treated as a valid trigger
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void actuatorManager_EvtSwitchAccepted(object sender, ActuatorSwitchEventArgs e)
+        protected  void actuatorManager_EvtSwitchAccepted(object sender, ActuatorSwitchEventArgs e)
         {
             setSwitchState(true);
         }
 
-        /// <summary>
-        /// A switch was activated. Figure out the context and execute the
-        /// appropriate action. The input manager triggers this event.  Every
-        /// switch has an associated action.  It could be a command or the switch
-        /// can be used to select highlighted item on a trigger.
-        /// The action is executed depending on the state of the animation player.
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void actuatorManager_EvtSwitchActivated(object sender, ActuatorSwitchEventArgs e)
-        {
-            IActuatorSwitch switchObj = e.SwitchObj;
-            try
-            {
-                if (_currentPanel == null)
-                {
-                    return;
-                }
-
-                Log.Debug("switch: " + switchObj.Name);
-                Log.Debug("   Panel: " + _currentPanel.Name);
-
-                if (_currentPanel.UIControl is System.Windows.Forms.Form)
-                {
-                    bool visible = Windows.GetVisible(_currentPanel.UIControl);
-                    Log.Debug("Form: " + _currentPanel.UIControl.Name + ", visible: " + visible);
-                    if (!visible)
-                    {
-                        return;
-                    }
-                }
-
-                // get the action associated with the switch
-                String onTrigger = switchObj.Command;
-                if (String.IsNullOrEmpty(onTrigger))
-                {
-                    Log.Debug("OnTrigger is null. returning");
-                    return;
-                }
-
-                var manualScanMode = (!CoreGlobals.AppPreferences.EnableManualScan)
-                    ? ManualScanModes.None
-                    : mapTriggerScanMode(switchObj.GetTriggerScanMode());
-
-                if (_player == null)
-                {
-                    if (String.Compare(onTrigger, SwitchSetting.TriggerCommand, true) != 0)
-                    {
-                        runSwitchMappedCommand(switchObj);
-                    }
-                    return;
-                }
-
-                Log.Debug("playerState: " + _player.State);
-
-                // execute action if the player is in the right state.
-                if (_player.State != PlayerState.Stopped &&
-                    _player.State != PlayerState.Unknown &&
-                    _player.State != PlayerState.Paused &&
-                    manualScanMode == ManualScanModes.None &&
-                    String.Compare(onTrigger, SwitchSetting.TriggerCommand, true) != 0)
-                {
-                    runSwitchMappedCommand(switchObj);
-                    return;
-                }
-
-                if (CoreGlobals.AppPreferences.EnableManualScan)
-                {
-                    Log.Debug("HOOO form: " + _currentPanel.UIControl.Name + " Player state: " + _player.State);
-
-                    if (_player.State == PlayerState.Paused)
-                    {
-                        Log.Debug(_currentPanel.Name + ": Player is paused. Returning");
-                        return;
-                    }
-
-                    if (switchObj.IsSelectTriggerSwitch())
-                    {
-                        var widget = _player.HighlightedWidget;
-                        if (widget != null)
-                        {
-                            Log.Debug("Actuate. widgetname: " + widget.Name + " Text: " + widget.GetText());
-                            _player.Interrupt();
-                            _player.ManualScanActuateWidget(widget);
-                        }
-                    }
-                    else
-                    {
-                        _player.TransitionManualScan(manualScanMode);
-                    }
-
-                    return;
-                }
-
-                if (_player.State == PlayerState.Timeout || _player.State == PlayerState.Interrupted)
-                {
-                    Log.Debug("Calling player transition for firstanimation");
-                    _player.Transition(_firstAnimation);
-                    return;
-                }
-
-                Log.Debug("Player state is " + _player.State);
-                if (_player.State != PlayerState.Running)
-                {
-                    Log.Debug(_currentPanel.Name + ": Player is not Running. Returning");
-                    return;
-                }
-
-                playBeep(switchObj);
-
-                AnimationWidget highlightedWidget = _player.HighlightedAnimationWidget;
-                Animation currentAnimation = _player.CurrentAnimation;
-
-                highlightedWidget = _switchDownHighlightedWidget;
-                currentAnimation = _switchDownAnimation;
-
-                if (highlightedWidget == null)
-                {
-                    highlightedWidget = _switchAcceptedHighlightedWidget;
-                    currentAnimation = _switchAcceptedAnimation;
-                }
-
-                if (highlightedWidget == null)
-                {
-                    highlightedWidget = _player.HighlightedAnimationWidget;
-                    currentAnimation = _player.CurrentAnimation;
-                }
-
-                resetSwitchEventStates();
-
-                if (currentAnimation != null && highlightedWidget != null)
-                {
-                    setSwitchState(false);
-
-                    var widgetName = (highlightedWidget.UIWidget is IButtonWidget) ?
-                                                        "Button" :
-                                                        highlightedWidget.UIWidget.Name;
-
-                    AuditLog.Audit(new AuditEventUISwitchDetect(switchObj.Name,
-                                                            _currentPanel.Name,
-                                                            highlightedWidget.UIWidget.GetType().Name,
-                                                            widgetName));
-
-                    Log.Debug(_currentPanel.Name + ": Switch on " +
-                                highlightedWidget.UIWidget.Name + " type: " +
-                                highlightedWidget.UIWidget.GetType().Name);
-
-                    // check if the widget has a onSelect code fragment. If so execute it.  Otherwise
-                    // then check if the animation seq that this widget is a part of, has a onSelect.
-                    // If it does, execute that.
-
-                    PCode code;
-                    SetSelectedWidget(highlightedWidget.UIWidget);
-                    if (highlightedWidget.OnSelect.HasCode())
-                    {
-                        code = highlightedWidget.OnSelect;
-                        _interpreter.Execute(code);
-                    }
-                    else if (currentAnimation.OnSelect.HasCode())
-                    {
-                        code = currentAnimation.OnSelect;
-                        _interpreter.Execute(code);
-                    }
-                }
-                else
-                {
-                    Log.Debug(_currentPanel.Name + ": No current animation or highlighed widget!!");
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Debug(ex.ToString());
-            }
-            finally
-            {
-                setSwitchState(false);
-            }
-        }
 
         /// <summary>
         /// Event handler for when an actuator switch is down
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
-        private void actuatorManager_EvtSwitchDown(object sender, ActuatorSwitchEventArgs e)
+        protected  void actuatorManager_EvtSwitchDown(object sender, ActuatorSwitchEventArgs e)
         {
             setSwitchState(true);
 
@@ -846,7 +490,7 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event argument</param>
-        private void actuatorManager_EvtSwitchRejected(object sender, ActuatorSwitchEventArgs e)
+        protected  void actuatorManager_EvtSwitchRejected(object sender, ActuatorSwitchEventArgs e)
         {
             resetSwitchEventStates();
 
@@ -858,7 +502,7 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
-        private void actuatorManager_EvtSwitchUp(object sender, ActuatorSwitchEventArgs e)
+        protected  void actuatorManager_EvtSwitchUp(object sender, ActuatorSwitchEventArgs e)
         {
         }
 
@@ -869,7 +513,7 @@ namespace ACAT.Core.AnimationManagement
         /// <param name="args">list of names to add to</param>
         /// <param name="variableName">variable to resolve</param>
         /// <param name="defaultValue">default value</param>
-        private void addArg(List<String> args, String variableName, String defaultValue)
+        protected  void addArg(List<String> args, String variableName, String defaultValue)
         {
             var widget = (Widget)_variables.Get(variableName);
             args.Add(widget != null ? widget.Name : defaultValue);
@@ -881,7 +525,7 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
-        private void animation_EvtResolveWidgetChildren(object sender, ResolveWidgetChildrenEventArgs e)
+        protected  void animation_EvtResolveWidgetChildren(object sender, ResolveWidgetChildrenEventArgs e)
         {
             if (EvtResolveWidgetChildren != null)
             {
@@ -903,7 +547,7 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">Argument list</param>
-        private void AppInterpreter_EvtActuateNotify(object sender, InterpreterEventArgs e)
+        protected  void AppInterpreter_EvtActuateNotify(object sender, InterpreterEventArgs e)
         {
             List<String> resolvedArgs = ResolveArgs(e.Args);
             if (resolvedArgs.Count > 0)
@@ -930,7 +574,7 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">Argument list</param>
-        private void AppInterpreter_EvtBeep(object sender, InterpreterEventArgs e)
+        protected  void AppInterpreter_EvtBeep(object sender, InterpreterEventArgs e)
         {
             playDefaultBeep();
         }
@@ -941,38 +585,9 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">Argument list</param>
-        private void AppInterpreter_EvtHighlightNotify(object sender, InterpreterEventArgs e)
+        protected virtual void AppInterpreter_EvtHighlightNotify(object sender, InterpreterEventArgs e)
         {
-            if (e.Args.Count == 0)
-            {
-                return;
-            }
-
-            bool onOff = false;
-            List<String> resolvedArgs = ResolveArgs(e.Args);
-
-            if (e.Args.Count > 1)
-            {
-                // translate argument from "true" "false" to a boolean
-                onOff = ResolveBool(e.Args[1]);
-            }
-
-            var widgetName = resolvedArgs[0];
-            var widget = _currentPanel.Finder.FindChild(widgetName);
-            if (widget != null)
-            {
-                // turn off everything except the one we want
-                Widget parent = widget.Parent;
-                foreach (Widget child in parent.Children)
-                {
-                    child.HighlightOff();
-                }
-
-                if (onOff)
-                {
-                    widget.HighlightOn();
-                }
-            }
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -981,7 +596,7 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">Argument list</param>
-        private void AppInterpreter_EvtHighlightSelectedNotify(object sender, InterpreterEventArgs e)
+        protected void AppInterpreter_EvtHighlightSelectedNotify(object sender, InterpreterEventArgs e)
         {
             if (e.Args.Count == 0)
             {
@@ -1020,7 +635,7 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">Argument list</param>
-        private void AppInterpreter_EvtSelectNotify(object sender, InterpreterEventArgs e)
+        protected  void AppInterpreter_EvtSelectNotify(object sender, InterpreterEventArgs e)
         {
             List<String> resolvedArgs = ResolveArgs(e.Args);
             if (resolvedArgs.Count > 0)
@@ -1035,7 +650,7 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event arg</param>
-        private void AppInterpreter_EvtStop(object sender, InterpreterEventArgs e)
+        protected  void AppInterpreter_EvtStop(object sender, InterpreterEventArgs e)
         {
             Interrupt();
         }
@@ -1046,7 +661,7 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">Argument list</param>
-        private void AppInterpreter_EvtTransitionNotify(object sender, InterpreterEventArgs e)
+        protected  void AppInterpreter_EvtTransitionNotify(object sender, InterpreterEventArgs e)
         {
             Log.Debug();
 
@@ -1055,7 +670,7 @@ namespace ACAT.Core.AnimationManagement
             {
                 String targetAnimation = resolvedArgs[0];
                 Log.Debug(targetAnimation);
-                Transition(targetAnimation);
+                Transition(GetAnimation(targetAnimation));
             }
         }
 
@@ -1065,7 +680,7 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
-        private void button_EvtMouseClicked(object sender, WidgetEventArgs e)
+        protected  void button_EvtMouseClicked(object sender, WidgetEventArgs e)
         {
             if (_player == null)
             {
@@ -1098,7 +713,7 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         /// <param name="name">Name of animation</param>
         /// <returns>Animation collection</returns>
-        private Animations getAnimations(String name)
+        protected  Animations getAnimations(String name)
         {
             Animations animations = null;
             if (_animationsCollection.Count > 0)
@@ -1110,11 +725,20 @@ namespace ACAT.Core.AnimationManagement
         }
 
         /// <summary>
+        /// Transition to the target animation named 'animation'
+        /// </summary>
+        /// <param name="animation">Name of the animation to transition to</param>
+        protected Animation GetAnimation(String animationName = null)
+        {
+            return _animationsCollection["default"][animationName];
+        }
+
+        /// <summary>
         /// Maps the switch trigger scan mode to a scan mode
         /// </summary>
         /// <param name="triggerScanMode">The switch trigger scan mode</param>
         /// <returns>scan mode</returns>
-        private ManualScanModes mapTriggerScanMode(TriggerScanModes triggerScanMode)
+        protected ManualScanModes mapTriggerScanMode(TriggerScanModes triggerScanMode)
         {
             var scanMode = ManualScanModes.None;
 
@@ -1177,7 +801,7 @@ namespace ACAT.Core.AnimationManagement
         /// the default beep
         /// </summary>
         /// <param name="switchObj">the source siwtch</param>
-        private void playBeep(IActuatorSwitch switchObj)
+        protected  void playBeep(IActuatorSwitch switchObj)
         {
             try
             {
@@ -1202,7 +826,7 @@ namespace ACAT.Core.AnimationManagement
         /// <summary>
         /// Plays the default beep sound.
         /// </summary>
-        private void playDefaultBeep()
+        protected  void playDefaultBeep()
         {
             try
             {
@@ -1219,7 +843,7 @@ namespace ACAT.Core.AnimationManagement
         /// <summary>
         /// Sets all the variables related to switch events
         /// </summary>
-        private void resetSwitchEventStates()
+        protected  void resetSwitchEventStates()
         {
             _switchDownHighlightedWidget = null;
             _switchAcceptedHighlightedWidget = null;
@@ -1227,71 +851,8 @@ namespace ACAT.Core.AnimationManagement
             _switchAcceptedAnimation = null;
         }
 
-        /// <summary>
-        /// Runds the command mapped to the specified switch. Checks
-        /// the command permissions if it CAN be executed.
-        /// </summary>
-        /// <param name="switchObj">The switch object</param>
-        private void runSwitchMappedCommand(IActuatorSwitch switchObj)
-        {
-            bool runCommand = true;
-            String onTrigger = switchObj.Command;
 
-            var form = _currentPanel.UIControl;
-            if (form is IScannerPanel)
-            {
-                var panelCommon = (form as IScannerPanel).PanelCommon;
-                var arg = new CommandEnabledArg(null, onTrigger);
-                panelCommon.CheckCommandEnabled(new CommandEnabledArg(null, onTrigger));
-
-                if (arg.Handled)
-                {
-                    if (!arg.Enabled)
-                    {
-                        Log.Debug("Command " + onTrigger + " is not currently enabled");
-                        return;
-                    }
-                    else
-                    {
-                        Log.Debug("Command " + onTrigger + " IS ENABLED");
-                    }
-                }
-                else
-                {
-                    Log.Debug("arg.handled is false for " + onTrigger);
-
-                    var strTrigger = onTrigger;
-                    if (strTrigger[0] == '@')
-                    {
-                        strTrigger = strTrigger.Substring(1);
-                    }
-                    var cmdDescriptor = CommandManager.Instance.AppCommandTable.Get(strTrigger);
-                    if (cmdDescriptor != null && !cmdDescriptor.EnableSwitchMap)
-                    {
-                        Log.Debug("EnableswitchMap is not enabled for " + onTrigger);
-                        runCommand = false;
-                    }
-                }
-            }
-            else
-            {
-                Log.Debug("Dialog is active. Will not handle");
-                runCommand = false;
-            }
-
-            if (runCommand)
-            {
-                Log.Debug("Executing OnTrigger command " + onTrigger + " for panel..." + _currentPanel.Name);
-                PCode pcode = new PCode { Script = "run(" + onTrigger + ")" };
-                var parser = new Parser();
-                if (parser.Parse(pcode.Script, ref pcode))
-                {
-                    _interpreter.Execute(pcode);
-                }
-            }
-        }
-
-        private void setSwitchState(bool state)
+        protected  void setSwitchState(bool state)
         {
             IsSwitchActive = state;
             if (_player != null)
@@ -1303,7 +864,7 @@ namespace ACAT.Core.AnimationManagement
         /// <summary>
         /// Subscribes to events from the actuator manager
         /// </summary>
-        private void subscribeToActuatorEvents()
+        protected void subscribeToActuatorEvents()
         {
             ActuatorManager.Instance.EvtSwitchActivated += actuatorManager_EvtSwitchActivated;
             ActuatorManager.Instance.EvtSwitchDown += actuatorManager_EvtSwitchDown;
@@ -1312,12 +873,17 @@ namespace ACAT.Core.AnimationManagement
             ActuatorManager.Instance.EvtSwitchRejected += actuatorManager_EvtSwitchRejected;
         }
 
+        protected virtual void actuatorManager_EvtSwitchActivated(object sender, ActuatorSwitchEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Subscribes to the various events we are interested in from the interpreter.
         /// While the animation is executing, the interpreter interprets the code associated
         /// with the animation and raises events as and when the code needs to be acted on.
         /// </summary>
-        private void subscribeToInterpreterEvents()
+        protected  void subscribeToInterpreterEvents()
         {
             _interpreter.EvtTransitionNotify += AppInterpreter_EvtTransitionNotify;
             _interpreter.EvtActuateNotify += AppInterpreter_EvtActuateNotify;
@@ -1333,7 +899,7 @@ namespace ACAT.Core.AnimationManagement
         /// layout
         /// </summary>
         /// <param name="rootWidget">Root widget for the scanner</param>
-        private void subscribeToMouseClickEvents(Widget rootWidget)
+        protected  void subscribeToMouseClickEvents(Widget rootWidget)
         {
             var list = new List<Widget>();
             rootWidget.Finder.FindAllButtons(list);
@@ -1346,7 +912,7 @@ namespace ACAT.Core.AnimationManagement
         /// <summary>
         /// Unsubscribes from actuator events
         /// </summary>
-        private void unsubscribeFromActuatorEvents()
+        protected  void unsubscribeFromActuatorEvents()
         {
             ActuatorManager.Instance.EvtSwitchActivated -= actuatorManager_EvtSwitchActivated;
             ActuatorManager.Instance.EvtSwitchDown -= actuatorManager_EvtSwitchDown;
@@ -1359,7 +925,7 @@ namespace ACAT.Core.AnimationManagement
         /// Unsubscribe button events
         /// </summary>
         /// <param name="rootWidget">root widget for the scanner</param>
-        private void unsubscribeToMouseClickEvents(Widget rootWidget)
+        protected  void unsubscribeToMouseClickEvents(Widget rootWidget)
         {
             if (rootWidget != null)
             {
@@ -1368,6 +934,24 @@ namespace ACAT.Core.AnimationManagement
                 foreach (var button in list)
                 {
                     button.EvtMouseClicked -= button_EvtMouseClicked;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Event triggered when the player state changes
+        /// </summary>
+        /// <param name="sender">event sender</param>
+        /// <param name="e">event args</param>
+        protected void _player_EvtPlayerStateChanged(object sender, PlayerStateChangedEventArgs e)
+        {
+            if (EvtPlayerStateChanged != null)
+            {
+                var delegates = EvtPlayerStateChanged.GetInvocationList();
+                foreach (var del in delegates)
+                {
+                    var playerstateChanged = (PlayerStateChanged)del;
+                    playerstateChanged.BeginInvoke(sender, e, null, null);
                 }
             }
         }

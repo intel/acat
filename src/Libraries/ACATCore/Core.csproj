@@ -419,6 +419,7 @@
     <Compile Include="UserControlManagement\IUserControlCommon.cs" />
     <Compile Include="UserControlManagement\UserControlConfigMap.cs" />
     <Compile Include="UserControlManagement\UserControlConfigMapEntry.cs" />
+    <Compile Include="UserControlManagement\UserControlCommon.cs" />
     <Compile Include="UserControlManagement\UserControlKeyboardCommon.cs" />
     <Compile Include="UserControlManagement\UserControlManager.cs" />
     <Compile Include="UserControls\KeyboardUserControl.cs" />

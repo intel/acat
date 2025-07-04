@@ -115,6 +115,7 @@ namespace ACAT.Lib.Core.PanelManagement
             this.buttonOp3.TabIndex = 3;
             this.buttonOp3.Text = "Op3";
             this.buttonOp3.UseMnemonic = false;
+            this.buttonOp3.DialogResult = System.Windows.Forms.DialogResult.No; // Set the dialog result for buttonOp3
             this.buttonOp3.UseVisualStyleBackColor = false;
             this.buttonOp3.Click += new System.EventHandler(this.buttonOp3_Click);
             // 
@@ -137,6 +138,7 @@ namespace ACAT.Lib.Core.PanelManagement
             this.buttonOp1.Size = new System.Drawing.Size(438, 114);
             this.buttonOp1.TabIndex = 1;
             this.buttonOp1.Text = "Op1";
+            this.buttonOp1.DialogResult = System.Windows.Forms.DialogResult.Yes; // Set the dialog result for buttonOp1
             this.buttonOp1.UseMnemonic = false;
             this.buttonOp1.UseVisualStyleBackColor = false;
             this.buttonOp1.Click += new System.EventHandler(this.buttonOp1_Click);

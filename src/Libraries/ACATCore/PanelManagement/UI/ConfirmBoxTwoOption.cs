@@ -64,7 +64,7 @@ namespace ACAT.Lib.Core.PanelManagement
                 parent.TopMost = false;
                 confirmBox.TopMost = true;
             }
-            confirmBox.ShowDialog(parent);
+            DialogResult result = confirmBox.ShowDialog(parent);
             if (parent != null && setTopMost)
             {
                 parent.TopMost = true;
@@ -72,7 +72,7 @@ namespace ACAT.Lib.Core.PanelManagement
             }
             confirmBox.Dispose();
             //TODO:  FIXME !!!
-            return false;
+            return result == DialogResult.Yes;
         }
 
         private void buttonOp1_Click(object sender, EventArgs e)

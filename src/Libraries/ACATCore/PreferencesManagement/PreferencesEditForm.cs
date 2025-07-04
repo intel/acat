@@ -153,11 +153,11 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
             //initializeGridView();
 
-            if (!String.IsNullOrEmpty(Title))
+           /* if (!String.IsNullOrEmpty(Title))
             {
                 Text = Title;
                 SettingColumn.HeaderText = Title;
-            }
+            }*/
 
             Preferences = SupportsPreferencesObj.GetPreferences();
             DefaultPreferences = SupportsPreferencesObj.GetDefaultPreferences();
@@ -192,7 +192,9 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 _flowPanel = CreateFlowPanel();
             }
 
-            ReplaceDataGridWith(_flowPanel);
+            //tableLayoutPanel1.Controls.Remove(dataGridView);
+            tableLayoutPanel1.Controls.Add(_flowPanel);
+
             wrapText(_wrapText);
 
             var descriptor = prefs.GetType().GetCustomAttribute<DescriptorAttribute>();
@@ -376,15 +378,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
             {
                 textBox.Text = newVal;
             }
-        }
-
-
-      
-        private void ReplaceDataGridWith(Control newControl)
-        {
-            var parent = dataGridView.Parent;
-            parent.Controls.Remove(dataGridView);
-            parent.Controls.Add(newControl);
         }
 
         //Displays a error status mesage

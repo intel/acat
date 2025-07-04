@@ -19,7 +19,7 @@ namespace ACAT.Core.UserControlManagement
         /// <summary>
         /// Gets the Animation Manager object
         /// </summary>
-        AnimationManager2 AnimationManager { get; }
+        UserControlAnimationManager AnimationManager { get; }
 
         /// <summary>
         /// Gets the widget that reprensents the form

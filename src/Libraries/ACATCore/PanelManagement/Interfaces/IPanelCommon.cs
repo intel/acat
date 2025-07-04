@@ -21,7 +21,7 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Gets the Animation Manager object
         /// </summary>
-        AnimationManager AnimationManager { get; }
+        PanelAnimationManager AnimationManager { get; }
 
         /// <summary>
         /// Gets the Panel config ID

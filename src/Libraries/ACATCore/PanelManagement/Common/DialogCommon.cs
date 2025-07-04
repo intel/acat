@@ -30,7 +30,7 @@ namespace ACAT.Core.PanelManagement
     /// call the methods in this class whereever they are needed. Refer
     /// to the documentation for the methods in this class for info on when these
     /// methods need to be invoked.
-    /// This class creates the WidgetManager and AnimationManager objects
+    /// This class creates the WidgetManager and PanelAnimationManager objects
     /// required by the form and has getters for the various fields.
     /// </summary>
     public class DialogCommon : IDisposable, IPanelCommon
@@ -53,7 +53,7 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// The animation manager for this form
         /// </summary>
-        private AnimationManager _animationManager;
+        private PanelAnimationManager _animationManager;
 
         /// <summary>
         /// Has this object been disposed off?
@@ -108,7 +108,7 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Gets the Animation Manager object
         /// </summary>
-        public AnimationManager AnimationManager
+        public PanelAnimationManager AnimationManager
         { get { return _animationManager; } }
 
         /// <summary>
@@ -428,7 +428,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         private bool initAnimationManager(PanelConfigMapEntry panelConfigMapEntry)
         {
-            _animationManager = new AnimationManager();
+            _animationManager = new PanelAnimationManager();
 
             bool retVal = _animationManager.Init(panelConfigMapEntry);
             if (!retVal)

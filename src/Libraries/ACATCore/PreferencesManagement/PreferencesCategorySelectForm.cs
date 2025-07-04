@@ -260,9 +260,9 @@ namespace ACAT.Lib.Core.PreferencesManagement
             if (_flowPanel == null)
             {
                 _flowPanel = CreateFlowPanel();
-                var parent = dataGridView2.Parent;
-                parent.Controls.Remove(dataGridView2);
-                parent.Controls.Add(_flowPanel);
+                //var parent = tableLayoutPanel1;
+               // parent.Controls.Remove(dataGridView2);
+                tableLayoutPanel1.Controls.Add(_flowPanel);
             }
 
             _flowPanel.Controls.Clear(); // clear old category rows
@@ -464,7 +464,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         {
             var senderGrid = (DataGridView)sender;
 
-            if (e.RowIndex >= 0 && senderGrid.Columns[e.ColumnIndex] == ConfigureColumn)
+          /*  if (e.RowIndex >= 0 && senderGrid.Columns[e.ColumnIndex] == ConfigureColumn)
             {
                 var tag = senderGrid.Rows[e.RowIndex].Tag;
                 if (!(tag is PreferencesCategory))
@@ -481,20 +481,20 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     return;
 
                 }
-            }
+            }*/
         }
 
         //If the user clicked on the Enable column, and if AllowMultiEnable is false, then make sure only one cell is checked in the column
         private void dataGridView2_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            var senderGrid = dataGridView2;
+           // var senderGrid = dataGridView2;
 
             if (e.RowIndex < 0)
             {
                 return;
             }
 
-            if (senderGrid.Columns[e.ColumnIndex] == EnableColumn && !AllowMultiEnable)
+          /*  if (senderGrid.Columns[e.ColumnIndex] == EnableColumn && !AllowMultiEnable)
             {
                 var row = dataGridView2.Rows[e.RowIndex];
 
@@ -513,17 +513,17 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 }
 
                 dataGridView2.Invalidate();
-            }
+            }*/
 
         }
 
         // Dirty state changed
         private void dataGridView2_CurrentCellDirtyStateChanged(object sender, EventArgs e)
         {
-            if (dataGridView2.IsCurrentCellDirty)
+         /*   if (dataGridView2.IsCurrentCellDirty)
             {
                 dataGridView2.CommitEdit(DataGridViewDataErrorContexts.Commit);
-            }
+            }*/
 
             _isDirty = true;
             EvtPreferencesChangeMade();
@@ -533,9 +533,9 @@ namespace ACAT.Lib.Core.PreferencesManagement
         //Initializes the UI controls
         private void initializeUI()
         {
-            dataGridView2.AutoResizeRows();
+         /*   dataGridView2.AutoResizeRows();
 
-            CategoryNameColumn.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+         //   CategoryNameColumn.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
             dataGridView2.ScrollBars = ScrollBars.Vertical;
             dataGridView2.RowHeadersVisible = false;
@@ -549,7 +549,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 {
                     dataGridView2.CurrentCellDirtyStateChanged += dataGridView2_CurrentCellDirtyStateChanged;
                 }
-            };
+            };*/
         }
         #endregion
     }

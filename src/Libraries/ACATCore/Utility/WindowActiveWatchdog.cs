@@ -38,13 +38,13 @@ namespace ACAT.Core.Utility
         public WindowActiveWatchdog(Form form)
         {
             _form = form;
+#if DEBUG
             _form.TopMost = false;
             _form.TopMost = true;
 
             _form.Deactivate += _form_Deactivate;
             _form.VisibleChanged += _form_VisibleChanged;
 
-#if DEBUG
             // in debug mode disable the watchdog to allow for debugging
             _paused = true;
 #endif

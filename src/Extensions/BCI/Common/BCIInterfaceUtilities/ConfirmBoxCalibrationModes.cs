@@ -23,7 +23,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
     /// Form that handles different calibraitons options to configure and initialize calibration sesion
     /// </summary>
     ///
-    [Descriptor("4C48F7B3-FB3F-4857-9C36-E4148BA8FE5D",
+    [ClassDescriptor("4C48F7B3-FB3F-4857-9C36-E4148BA8FE5D",
                         "ConfirmBoxCalibrationModes",
                         "Application window used as a calibration UI for different modes")]
     public partial class ConfirmBoxCalibrationModes : Form

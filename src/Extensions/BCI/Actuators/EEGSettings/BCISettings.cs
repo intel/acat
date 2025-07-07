@@ -13,7 +13,6 @@
 using ACAT.Core.PreferencesManagement;
 using System;
 using System.ComponentModel.DataAnnotations;
-using ACAT.Lib.Core.Utility;
 using System.Xml.Serialization;
 
 namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings

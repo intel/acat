@@ -22,7 +22,7 @@ using System.Windows.Forms;
 
 namespace ACAT.Extensions.BCI.UI.UserControls
 {
-    [Descriptor("531C7B62-A09F-4772-8C7E-915E2C0AD015",
+    [ClassDescriptorAttribute("531C7B62-A09F-4772-8C7E-915E2C0AD015",
             "WordPredictionUserControl",
             "User Control for Word Prediction BCI")]
 
@@ -42,9 +42,9 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>

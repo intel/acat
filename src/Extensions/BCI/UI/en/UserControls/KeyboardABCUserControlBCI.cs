@@ -20,7 +20,7 @@ using System.Windows.Forms;
 
 namespace ACAT.Extensions.BCI.UI.UserControls
 {
-    [Descriptor("79BF6DA3-0505-4356-BF68-FAE63A051C12",
+    [ClassDescriptorAttribute("79BF6DA3-0505-4356-BF68-FAE63A051C12",
         "KeyboardControl",
         "User Control keyboard BCI")]
 
@@ -40,9 +40,9 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>

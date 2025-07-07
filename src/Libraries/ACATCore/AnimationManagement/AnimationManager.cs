@@ -157,7 +157,7 @@ namespace ACAT.Core.AnimationManagement
         /// <summary>
         /// Highlighted widget when a switchdown event is received
         /// </summary>
-        protected  AnimationWidget _switchDownHighlightedWidget;
+        protected AnimationWidget _switchDownHighlightedWidget;
 
         /// <summary>
         /// Delegate for the event raised when the player state changes
@@ -380,7 +380,14 @@ namespace ACAT.Core.AnimationManagement
             if (_player != null)
             {
                 Log.Debug("Before animation player stop");
-                _player.Stop();
+                try
+                {
+                    _player.Stop();
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug(ex.ToString());
+                }
                 Log.Debug("After animation player stop");
             }
         }
@@ -453,7 +460,7 @@ namespace ACAT.Core.AnimationManagement
             _disposed = true;
         }
 
-        protected  void actuatorManager_EvtSwitchAccepted(object sender, ActuatorSwitchEventArgs e)
+        protected virtual void actuatorManager_EvtSwitchAccepted(object sender, ActuatorSwitchEventArgs e)
         {
             setSwitchState(true);
         }
@@ -464,7 +471,7 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
-        protected  void actuatorManager_EvtSwitchDown(object sender, ActuatorSwitchEventArgs e)
+        protected virtual void actuatorManager_EvtSwitchDown(object sender, ActuatorSwitchEventArgs e)
         {
             setSwitchState(true);
 
@@ -661,7 +668,7 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">Argument list</param>
-        protected  void AppInterpreter_EvtTransitionNotify(object sender, InterpreterEventArgs e)
+        protected void AppInterpreter_EvtTransitionNotify(object sender, InterpreterEventArgs e)
         {
             Log.Debug();
 
@@ -670,8 +677,14 @@ namespace ACAT.Core.AnimationManagement
             {
                 String targetAnimation = resolvedArgs[0];
                 Log.Debug(targetAnimation);
-                Transition(GetAnimation(targetAnimation));
+                //Transition(GetAnimation(targetAnimation));
+                TransitionFromName(targetAnimation);
             }
+        }
+
+        public virtual void TransitionFromName(String targetAnimation)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -680,7 +693,7 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
-        protected  void button_EvtMouseClicked(object sender, WidgetEventArgs e)
+        protected void button_EvtMouseClicked(object sender, WidgetEventArgs e)
         {
             if (_player == null)
             {

@@ -17,12 +17,8 @@ namespace ACAT.Core.AnimationManagement
         private String name { get; set; } = null;
 
         public delegate void PlayerAnimationTransition(object sender, String animationName, bool isTopLevel);
-        //public delegate void PlayerStateChanged(object sender, PlayerStateChangedEventArgs e);
-        //public delegate void ResolveWidgetChildren(object sender, ResolveWidgetChildrenEventArgs e);
 
         public event PlayerAnimationTransition EvtPlayerAnimationTransition;
-        //public event PlayerStateChanged EvtPlayerStateChanged;
-        //public event ResolveWidgetChildren EvtResolveWidgetChildren;
 
         public UserControlAnimationManager() : base() { }
 
@@ -123,6 +119,50 @@ namespace ACAT.Core.AnimationManagement
                 Log.Debug("CALIBTEST: UserControlAnimationManager.Start.  " + _firstAnimation.Name);
                 Transition(_firstAnimation);
             }
+        }
+
+        public override void TransitionFromName(string animationName)
+        {
+            try
+            {
+                Log.Debug();
+
+                Log.Debug("_currentPanel: " + _currentPanel);
+
+                resetSwitchEventStates();
+
+                if (_player == null)
+                {
+                    Log.Debug("_player is null");
+                    return;
+                }
+
+                if (_player.State != PlayerState.Running)
+                {
+                    return;
+                }
+
+                var animations = _animationsCollection["default"];
+                var animation = animations[animationName];
+                if (animation == null)
+                {
+                    Log.Debug("Transition: animation is NULL!");
+                    return;
+                }
+
+                Log.Debug("Calling player transition");
+                EvtPlayerAnimationTransition?.Invoke(this, animation.Name, animation.IsFirst);
+                _player.Transition(animation);
+            }
+            catch (Exception ex)
+            {
+                Log.Debug(ex.ToString());
+            }
+        }
+
+        protected override void actuatorManager_EvtSwitchDown(object sender, ActuatorSwitchEventArgs e)
+        {
+            base.actuatorManager_EvtSwitchDown(sender, e);
         }
 
         /// <summary>

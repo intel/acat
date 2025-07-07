@@ -81,6 +81,7 @@
     <Compile Include="Scanners\YesNoScanner.Designer.cs">
       <DependentUpon>YesNoScanner.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\ACATAppToolbar.cs" />
     <Compile Include="UserControls\KeyboardAbcUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -118,6 +119,7 @@
     <Compile Include="UserControls\SentencePredictionUserControl.Designer.cs">
       <DependentUpon>SentencePredictionUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\ToolbarUserControl.cs" />
     <Compile Include="UserControls\WordPredictionUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

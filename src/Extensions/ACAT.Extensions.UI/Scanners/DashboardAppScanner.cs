@@ -1,6 +1,7 @@
 ﻿using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Extension;
+using ACAT.Extensions.UI.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -16,56 +17,68 @@ namespace ACAT.Extensions.UI.Scanners
                 Description = "Scanner for Dashboard Applications")]
     public partial class DashboardAppScanner : UserControlContainerForm
     {
-        private TableLayoutPanel mainPanel = new TableLayoutPanel
-        {
-            Dock = DockStyle.Fill,
-            AutoSize = true,
-            GrowStyle = TableLayoutPanelGrowStyle.AddRows
-        };
+        //private TableLayoutPanel mainPanel = new TableLayoutPanel
+        //{
+        //    AccessibleName = "MainPanel",
+        //    Name = "MainPanel",
+        //    Dock = DockStyle.Fill,
+        //    AutoSize = true,
+        //    GrowStyle = TableLayoutPanelGrowStyle.AddRows
+        //};
 
-        private Panel panelToolbar = new Panel
-        {
-            BackColor = Color.Red,
-            Size = new Size(800, 40),
-            Dock = DockStyle.Top,
-            Padding = new Padding(5),
-            Margin = new Padding(10)
-        };
-        private Panel panelMainMenu = new Panel
-        {
-            BackColor = Color.Blue,
-            Size = new Size(800, 80),
-            Dock = DockStyle.Top,
-            Padding = new Padding(5),
-            Margin = new Padding(10)
-        };
+        //private Panel panelToolbar = new Panel
+        //{
+        //    AccessibleName="ToolbarPanel",
+        //    BackColor = Color.Transparent,
+        //    Dock = DockStyle.Top,
+        //    Padding = new Padding(5),
+        //    Margin = new Padding(10),
+        //    Size = new Size(1600, 100)
+        //    //AutoSize = true,
+        //    //AutoSizeMode = AutoSizeMode.GrowOnly
+        //};
+
+        //private Panel panelMainMenu = new Panel
+        //{
+        //    AccessibleName = "MainMenuPanel",
+        //    BackColor = Color.Blue,
+        //    Dock = DockStyle.Top,
+        //    Padding = new Padding(5),
+        //    Margin = new Padding(10),
+        //    AutoSize = true,
+        //    AutoSizeMode = AutoSizeMode.GrowOnly
+        //};
 
         protected override void InitializeComponent()
         {
-            // Initialize components specific to the DashboardAppScanner
-            // This could include setting up controls, event handlers, etc.
-            // For example:
+            base.InitializeComponent();
+
             Text = "ACAT Dashboard";
-            Size = new System.Drawing.Size(800, 120);
-            AutoSize = true;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            Size = new Size(1600, 1200);
+            BackColor = Color.FromArgb(35, 36, 51);
+            ForeColor = Color.White;
 
+            mainPanel.Controls.Add(new ToolbarUserControl());
 
-            mainPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            mainPanel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            mainPanel.Controls.Add(panelToolbar, 0, 0);
-            mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            mainPanel.Controls.Add(panelMainMenu, 0, 1);
+            //mainPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            //mainPanel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            //mainPanel.Controls.Add(panelToolbar, 0, 0);
+            //mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            //mainPanel.Controls.Add(panelMainMenu, 0, 1);
+
+            //Controls.Add(mainPanel);
+
         }
 
         public override bool Initialize(StartupArg startup)
         {
-            if (base.Initialize(startup)) {
-                Controls.Add(mainPanel);
-                Size = mainPanel.Size;
-            }
-
-            return true;
+            return base.Initialize(startup);
+            //bool success = false;
+            //if (base.Initialize(startup)) 
+            //{
+            //    //success = ScannerCommon.UserControlManager.AddUserControlByKeyOrName(panelToolbar, "ToolbarUserControl", "ToolbarUserControl");
+            //    //success = success && ScannerCommon.UserControlManager.AddUserControlByKeyOrName(panelMainMenu, "", "");
+            //}
         }
     }
 }

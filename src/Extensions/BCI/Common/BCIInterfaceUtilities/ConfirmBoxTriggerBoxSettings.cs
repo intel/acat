@@ -21,7 +21,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
     /// Form that handles different calibrations options to configure and initialize calibration session
     /// </summary>
     /// 
-    [Descriptor("0E41996F-85E7-4809-9F6F-599119853651",
+    [ClassDescriptor("0E41996F-85E7-4809-9F6F-599119853651",
                         "ConfirmBoxTriggerBoxSettings",
                         "Application window used as a configuration UI for trigger test")]
     public partial class ConfirmBoxTriggerBoxSettings : Form

@@ -22,7 +22,7 @@ using System.Windows.Forms;
 
 namespace ACAT.Extensions.BCI.UI.UserControls
 {
-    [Descriptor("E0B51282-FB40-4842-8006-AFFA564D7F6F",
+    [ClassDescriptorAttribute("E0B51282-FB40-4842-8006-AFFA564D7F6F",
         "KeyboardControl",
         "User Control keyboard BCI")]
     public partial class TTSYesNoUserControlBCI2 : UserControl, IUserControl
@@ -41,9 +41,9 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>

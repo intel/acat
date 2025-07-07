@@ -45,7 +45,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
     /// word prediction) and have the text converted to speech.  The keyboard
     /// layout is ABC.
     /// </summary>
-    [Descriptor("48222D57-1EA8-44FF-8706-C2399D0B4CFA",
+    [ClassDescriptor("48222D57-1EA8-44FF-8706-C2399D0B4CFA",
                         "TalkApplicationScannerSmallLayout",
                         "Talk application window with circular layout with large buttons, added features")]
     public partial class TalkApplicationBCIScanner : Form, IScannerPanel, ISupportsStatusBar
@@ -226,9 +226,9 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>

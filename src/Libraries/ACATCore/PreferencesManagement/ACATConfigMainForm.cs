@@ -401,11 +401,11 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
                         SetNewFormButtonHandlers(HandlerResetToDefaultsButtonClicked, HandlerWrapTextButtonClicked, wrapTextBoxChecked);
 
-                        // newPreferencesEditForm.EvtPreferencesChangeMade += handlePreferenceChangeMade;
+                      //  newPreferencesEditForm.EvtPreferencesChangeMade += handlePreferenceChangeMade;
 
                         newPreferencesEditForm.EvtPreferencesChangeMade += () => buttonSave.Visible = true;
 
-                        //newPreferencesEditForm.FormClosing += handlePreferencesEditFormClosing;
+                       // newPreferencesEditForm.FormClosing += handlePreferencesEditFormClosing;
 
                         newPreferencesEditForm.FormClosing += (_, e) =>
                         {

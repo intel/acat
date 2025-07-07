@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
 
 namespace ACAT.Lib.Core.PreferencesManagement
@@ -78,10 +79,17 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 AutoSize = true,
                 BackColor = Color.FromArgb(48, 49, 64),
                 Enabled = enabled,
-                FlatStyle = FlatStyle.Flat
+                FlatStyle = FlatStyle.Flat,
+                TextAlign = ContentAlignment.MiddleRight,  
+                Anchor = AnchorStyles.Right,                
+                Margin = new Padding(0),                  
+                Padding = new Padding(0, 5, 10, 5),         
             };
 
             button.FlatAppearance.BorderSize = 0;
+            button.FlatAppearance.MouseOverBackColor = button.BackColor;
+            button.FlatAppearance.MouseDownBackColor = button.BackColor;
+            button.FlatAppearance.CheckedBackColor = button.BackColor;
 
             return button;
         }
@@ -91,6 +99,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             var checkBox = new CheckBox
             {
                 Text = "Enable",
+                Font = new Font("Segoe UI", 20),
                 Checked = category.Enable,
                 Enabled = category.AllowEnable,
                 Anchor = AnchorStyles.None,
@@ -107,12 +116,38 @@ namespace ACAT.Lib.Core.PreferencesManagement
         {
             return new Label
             {
-                Text = description,
+                Text = InsertLineBreaks(description, 60),
                 AutoSize = true,
                 Font = new Font("Segoe UI", 20, FontStyle.Italic),
                 ForeColor = Color.White,
                 Margin = new Padding(0, 0, 0, 5)
             };
+        }
+
+        private string InsertLineBreaks(string text, int maxLineLength)
+        {
+            if (string.IsNullOrWhiteSpace(text) || text.Length <= maxLineLength)
+                return text;
+
+            var words = text.Split(' ');
+            var result = new List<string>();
+            var line = new StringBuilder();
+
+            foreach (var word in words)
+            {
+                if ((line.Length + word.Length + 1) > maxLineLength)
+                {
+                    result.Add(line.ToString().TrimEnd());
+                    line.Clear();
+                }
+
+                line.Append(word + " ");
+            }
+
+            if (line.Length > 0)
+                result.Add(line.ToString().TrimEnd());
+
+            return string.Join("\n", result);
         }
 
         private Label CreateLabel(string text)
@@ -140,8 +175,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
             };
 
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F)); // Label + description
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));     // Checkbox
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));     // Setup button
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F)); // Checkbox
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F)); // Setup button
 
             panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));    // Row 0: Title
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F)); // Spacer row for centering
@@ -260,8 +295,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
             if (_flowPanel == null)
             {
                 _flowPanel = CreateFlowPanel();
-                //var parent = tableLayoutPanel1;
-               // parent.Controls.Remove(dataGridView2);
                 tableLayoutPanel1.Controls.Add(_flowPanel);
             }
 

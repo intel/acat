@@ -415,13 +415,14 @@
     <Compile Include="TTSManagement\TTSStatusChangedEventArgs.cs" />
     <Compile Include="TTSManagement\TTSValue.cs" />
     <Compile Include="TTSManagement\TTSVoiceChangedEventArgs.cs" />
-    <Compile Include="UserControlManagement\IUserControl.cs" />
-    <Compile Include="UserControlManagement\IUserControlCommon.cs" />
+    <Compile Include="UserControlManagement\Interfaces\IUserControl.cs" />
+    <Compile Include="UserControlManagement\Interfaces\IUserControlCommon.cs" />
     <Compile Include="UserControlManagement\UserControlConfigMap.cs" />
     <Compile Include="UserControlManagement\UserControlConfigMapEntry.cs" />
     <Compile Include="UserControlManagement\UserControlCommon.cs" />
     <Compile Include="UserControlManagement\UserControlKeyboardCommon.cs" />
     <Compile Include="UserControlManagement\UserControlManager.cs" />
+    <Compile Include="UserControls\GenericUserControl.cs" />
     <Compile Include="UserControls\KeyboardUserControl.cs" />
     <Compile Include="UserManagement\ProfileManager.cs" />
     <Compile Include="UserManagement\UserManager.cs" />

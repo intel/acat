@@ -7,36 +7,17 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using System;
-using System.Collections.Generic;
-using System.Media;
-////////////////////////////////////////////////////////////////////////////
-//
-// Copyright 2013-2019; 2023 Intel Corporation
-// SPDX-License-Identifier: Apache-2.0
-//
-////////////////////////////////////////////////////////////////////////////
 
 namespace ACAT.Core.AnimationManagement
 {
     public class PanelAnimationManager : AnimationManager, IPanelAnimationManager
     {
-        /// <summary>
-        /// Panel class this scanner represents
-        /// </summary>
         private String _panelClass = String.Empty;
 
         private PanelConfigMapEntry _panelConfigMapEntry;
 
         public PanelAnimationManager() : base() { }
 
-        /// <summary>
-        /// Allcoate resources, parse the config file which contains all the
-        /// animations and create a list of animation objects. Subscribe to
-        /// events. The parameter panelConfigMapEntry contains all the info about
-        /// the current scanner
-        /// </summary>
-        /// <param name="panelConfigMapEntry">Config object for the panel</param>
-        /// <returns>true on success</returns>
         public bool Init(PanelConfigMapEntry panelConfigMapEntry, Widget panelWidget = null)
         {
             _panelConfigMapEntry = panelConfigMapEntry;
@@ -63,13 +44,6 @@ namespace ACAT.Core.AnimationManagement
             return retVal;
         }
 
-        /// <summary>
-        /// Starts the animation sequence for the specified panel. It starts
-        /// with the animation that has the 'start' attribute set to true in
-        /// the xml file
-        /// </summary>
-        /// <param name="panelWidget">Which panel to start the animations for?</param>
-        /// <param name="animationName">Name of the animation sequence</param>
         public void Start(Widget panelWidget, String animationName = null)
         {
             Log.Debug("Start animation for panel " + panelWidget.Name);
@@ -128,7 +102,7 @@ namespace ACAT.Core.AnimationManagement
         /// Transition to the target animation named 'animationName'
         /// </summary>
         /// <param name="animationName">Name of the animation to transition to</param>
-        public void TransitionFromName(String animationName)
+        public override void TransitionFromName(String animationName)
         {
             try
             {
@@ -165,6 +139,13 @@ namespace ACAT.Core.AnimationManagement
                 Log.Debug(ex.ToString());
             }
         }
+
+        protected override void actuatorManager_EvtSwitchDown(object sender, ActuatorSwitchEventArgs e)
+        {
+            base.actuatorManager_EvtSwitchDown(sender, e);
+        }
+
+
         protected override void actuatorManager_EvtSwitchActivated(object sender, ActuatorSwitchEventArgs e)
         {
             IActuatorSwitch switchObj = e.SwitchObj;

@@ -19,15 +19,15 @@ using System.Windows.Forms;
 
 namespace ACAT.UserControls
 {
-    public partial class KeyboardUserControl : UserControl, IUserControl
+    public partial class GenericUserControl : UserControl, IUserControl
     {
-        protected UserControlKeyboardCommon _keyboardCommon { get; set; }
+        protected UserControlCommon _userControlCommon { get; set; }
 
-        public KeyboardUserControl()
+        public GenericUserControl()
         {
         }
 
-        public virtual event AnimationPlayerStateChanged EvtPlayerStateChanged;
+        public event AnimationPlayerStateChanged EvtPlayerStateChanged;
 
         /// <summary>
         /// Gets the descriptor for this class
@@ -37,35 +37,35 @@ namespace ACAT.UserControls
         /// <summary>
         /// Gets the snchronization object
         /// </summary>
-        public SyncLock SyncObj => _keyboardCommon.SyncObj;
+        public SyncLock SyncObj => _userControlCommon.SyncObj;
 
-        public IUserControlCommon UserControlCommon => _keyboardCommon;
+        public IUserControlCommon UserControlCommon => _userControlCommon;
 
         public virtual bool Initialize(UserControlConfigMapEntry mapEntry, TextController textController, IScannerPanel scanner)
         {
-            _keyboardCommon = new UserControlKeyboardCommon(this, mapEntry, textController, scanner);
+            _userControlCommon = new UserControlCommon(this, mapEntry, scanner);
 
-            bool retVal = _keyboardCommon.Initialize();
+            bool retVal = _userControlCommon.Initialize();
 
-            _keyboardCommon.AnimationManager.EvtPlayerStateChanged += AnimationManager_EvtPlayerStateChanged;
+            _userControlCommon.AnimationManager.EvtPlayerStateChanged += AnimationManager_EvtPlayerStateChanged;
 
             return retVal;
         }
 
         public virtual void OnLoad()
         {
-            _keyboardCommon.OnLoad();
-            _keyboardCommon.AnimationManager.OnLoad(_keyboardCommon.RootWidget);
+            _userControlCommon.OnLoad();
+            _userControlCommon.AnimationManager.OnLoad(_userControlCommon.RootWidget);
         }
 
         public virtual void OnPause()
         {
-            _keyboardCommon.OnPause();
+            _userControlCommon.OnPause();
         }
 
         public virtual void OnResume()
         {
-            _keyboardCommon.OnResume();
+            _userControlCommon.OnResume();
         }
 
         public virtual void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)

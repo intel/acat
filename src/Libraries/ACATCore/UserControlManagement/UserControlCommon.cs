@@ -38,7 +38,12 @@ namespace ACAT.Core.UserControlManagement
         public bool previewMode { get; set; }
         public Widget RootWidget { get; private set; }
         public Form ScannerForm { get; private set; }
-        public SyncLock SyncObj { get; private set; }
+        public SyncLock SyncObj
+        {
+            get { 
+                return this.SyncLock; 
+            } 
+        }
         public WidgetManager WidgetManager { get; private set; }
         private bool disposed { get; set; }
         private UserControlConfigMapEntry mapEntry { get; }

@@ -227,7 +227,6 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             {
                 // Load settings
                 BCIActuatorSettings.Load();
-                BCIGtecActuatorSettings.Load();
 
                 DictCalibrationParameters = new Dictionary<BCIScanSections, CalibrationParametersForSection>();
 
@@ -398,7 +397,23 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             {
                 LoadTypingMappings();
                 EEGProcessingGlobals.DecisionMakerDict = new Dictionary<BCIScanSections, DecisionMaker>();
-                bool[] currentChannels = new bool[] { BCIActuatorSettings.Settings.Classifier_EnableChannel1, BCIActuatorSettings.Settings.Classifier_EnableChannel2, BCIActuatorSettings.Settings.Classifier_EnableChannel3, BCIActuatorSettings.Settings.Classifier_EnableChannel4, BCIActuatorSettings.Settings.Classifier_EnableChannel5, BCIActuatorSettings.Settings.Classifier_EnableChannel6, BCIActuatorSettings.Settings.Classifier_EnableChannel7, BCIActuatorSettings.Settings.Classifier_EnableChannel8, BCIActuatorSettings.Settings.Classifier_EnableChannel9, BCIActuatorSettings.Settings.Classifier_EnableChannel10, BCIActuatorSettings.Settings.Classifier_EnableChannel11, BCIActuatorSettings.Settings.Classifier_EnableChannel12, BCIActuatorSettings.Settings.Classifier_EnableChannel13, BCIActuatorSettings.Settings.Classifier_EnableChannel14, BCIActuatorSettings.Settings.Classifier_EnableChannel15, BCIActuatorSettings.Settings.Classifier_EnableChannel16 };
+                bool[] currentChannels = new bool[] { BCIActuatorSettings.Settings.Classifier_EnableChannel1, 
+                                                      BCIActuatorSettings.Settings.Classifier_EnableChannel2,
+                                                      BCIActuatorSettings.Settings.Classifier_EnableChannel3, 
+                                                      BCIActuatorSettings.Settings.Classifier_EnableChannel4, 
+                                                      BCIActuatorSettings.Settings.Classifier_EnableChannel5, 
+                                                      BCIActuatorSettings.Settings.Classifier_EnableChannel6, 
+                                                      BCIActuatorSettings.Settings.Classifier_EnableChannel7, 
+                                                      BCIActuatorSettings.Settings.Classifier_EnableChannel8, 
+                                                      BCIActuatorSettings.Settings.Classifier_EnableChannel9, 
+                                                      BCIActuatorSettings.Settings.Classifier_EnableChannel10,
+                                                      BCIActuatorSettings.Settings.Classifier_EnableChannel11, 
+                                                      BCIActuatorSettings.Settings.Classifier_EnableChannel12, 
+                                                      BCIActuatorSettings.Settings.Classifier_EnableChannel13, 
+                                                      BCIActuatorSettings.Settings.Classifier_EnableChannel14, 
+                                                      BCIActuatorSettings.Settings.Classifier_EnableChannel15,
+                                                      BCIActuatorSettings.Settings.Classifier_EnableChannel16 
+                                                    };
 
                 foreach (var typingMapping in DictTypingCalibrationMappings)
                 {
@@ -1339,12 +1354,13 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                             sensorError = new BCIError(BCIErrorCodes.SensorError_DataNotReceived, StringResources.SensorError);
                         else
                         {
-                            // Write marker values to file
-                            DAQ_OpenBCI.WriteMarkerValues2File(bciCalibrationInput.RowColumnIDs);
-
+                            
                             // Get signal status
                             if (_device == Device.OPENBCI)
                             {
+                                // Write marker values to file
+                                DAQ_OpenBCI.WriteMarkerValues2File(bciCalibrationInput.RowColumnIDs);
+
                                 var overallStatus = DAQ_OpenBCI.GetStatus(out SignalStatus[] signalStatus, out SignalStatus opticalSensorStatus);
                                 if (overallStatus == SignalStatus.SIGNAL_OK)
                                     statusSignal = SignalStatus.SIGNAL_OK;
@@ -1380,6 +1396,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                             else
                             {
                                 //TODO Need to add log for Gtec Device as well!
+                                _gtecDeviceTester.gTecBCI.WriteMarkerValues2File(bciCalibrationInput.RowColumnIDs);
                             }
                      
                         }
@@ -1929,23 +1946,27 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                                 //    availableChannels[channelIdx] = true;
                             }
 
-                            // Check if eyes open / closed
-                            eyesClosedDetected = DAQ_OpenBCI.DetectEyesClosed(out double[] alphaValues, out double avgAlpha, out double[] betaValues, out double avgBeta);
-
-                            // Log values for eyes open /closed
-                            var bciLogEntry2 = new BCILogEntryEyesClosed(BCIActuatorSettings.Settings.EyesClosed_EnableDetection, DAQ_OpenBCI.GetEyesClosedThreshold(), eyesClosedDetected, alphaValues, betaValues, avgAlpha, avgBeta);
-                            var jsonString2 = JsonSerializer.Serialize(bciLogEntry2);
-                            AuditLog.Audit(new AuditEvent("BCIEyesClosed", jsonString2));
-
-                            if (BCIActuatorSettings.Settings.EyesClosed_EnableDetection)
+                            if (_device == Device.OPENBCI)
                             {
-                                Log.Debug("Eyes closed detected");
-                                returnToBoxScanningFlag = eyesClosedDetected;
-                                if (eyesClosedDetected)
+                                // Check if eyes open / closed
+                                eyesClosedDetected = DAQ_OpenBCI.DetectEyesClosed(out double[] alphaValues, out double avgAlpha, out double[] betaValues, out double avgBeta);
+
+                                // Log values for eyes open /closed
+                                var bciLogEntry2 = new BCILogEntryEyesClosed(BCIActuatorSettings.Settings.EyesClosed_EnableDetection, DAQ_OpenBCI.GetEyesClosedThreshold(), eyesClosedDetected, alphaValues, betaValues, avgAlpha, avgBeta);
+                                var jsonString2 = JsonSerializer.Serialize(bciLogEntry2);
+                                AuditLog.Audit(new AuditEvent("BCIEyesClosed", jsonString2));
+
+                                if (BCIActuatorSettings.Settings.EyesClosed_EnableDetection)
                                 {
-                                    EEGProcessingGlobals.RestartAllDecisionMakerProbabilities();
-                                    SoundManager.playSound(SoundManager.SoundType.OpenEyes);
-                                    Thread.Sleep(BCIActuatorSettings.Settings.EyesClosed_DelayToStartAnimationAfterDetection);
+                                    Log.Debug("Eyes closed detected");
+                                    returnToBoxScanningFlag = eyesClosedDetected;
+                                    if (eyesClosedDetected)
+                                    {
+                                        EEGProcessingGlobals.RestartAllDecisionMakerProbabilities();
+                                        SoundManager.playSound(SoundManager.SoundType.OpenEyes);
+                                        Thread.Sleep(BCIActuatorSettings.Settings.EyesClosed_DelayToStartAnimationAfterDetection);
+
+                                    }
                                 }
                             }
 

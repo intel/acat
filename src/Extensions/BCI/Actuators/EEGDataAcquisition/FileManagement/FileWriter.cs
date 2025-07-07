@@ -116,7 +116,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             if (isFileOpened)
             {
                 sw.WriteLine("%");
-                sw.WriteLine("%  OpenBCI-Brainflow EEG Data");
+                sw.WriteLine("%  Brainflow EEG Data");
                 sw.WriteLine("%  Raw data?  " + isRawData);
                 sw.WriteLine("%  Sample rate: " + sampleRate);
                 sw.WriteLine("%  Indices EEG channels: [" + String.Join(",", indEEGChannels) + "]");

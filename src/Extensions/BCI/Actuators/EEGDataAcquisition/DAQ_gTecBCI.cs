@@ -28,7 +28,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// <summary>
         /// Settings
         /// </summary>
-        public String SettingsFileName = "BCIGtecActuatorSettings.xml";
+        public String SettingsFileName = "BCIActuatorSettings.xml";
 
         // ********** Params set here (not read from settings)
         // private readonly int[] otherChannelsPinsIdxList = {12, 13, 14, 15, 16, 17, 18}; this is returnet when DeviceObj.get_other_channels();
@@ -190,21 +190,34 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// </summary>
         public void LoadSettings()
         {
-            SignalControl_WindowDurationForVrmsMeaseurment = BCIGtecActuatorSettings.Settings.SignalControl_WindowDurationForVrmsMeaseurment;
-            SignalControl_MinDutyCycleToPassTriggerTest = BCIGtecActuatorSettings.Settings.TriggerTest_MinDutyCycleToPassTriggerTest;
+            SignalControl_WindowDurationForVrmsMeaseurment = BCIActuatorSettings.Settings.SignalControl_WindowDurationForVrmsMeaseurment;
+            SignalControl_MinDutyCycleToPassTriggerTest = BCIActuatorSettings.Settings.TriggerTest_MinDutyCycleToPassTriggerTest;
             Log.Debug("DAQ settings loaded. Min duty cycle to pass trigger test" + SignalControl_MinDutyCycleToPassTriggerTest + " Window duration for uVrmsMeasurement: " + SignalControl_WindowDurationForVrmsMeaseurment);
-
-            BCISettingsFixed.DataParser_IdxTriggerSignal_Hw = 16;
-            BCISettingsFixed.DataParser_IdxTriggerSignal_Sw = 24;
+            
+            // Gtec Does not have hardware trigger so we will keep both same for ML that support openbci
+            BCISettingsFixed.DataParser_IdxTriggerSignal_Sw = 19;
             BCISettingsFixed.DimReduct_DownsampleRate = 2;
 
-            BCIGtecActuatorSettings.Save();
-            Log.Debug("Sensor set to " + BCIGtecActuatorSettings.Settings.DAQ_NumEEGChannels + " channels. SensorID: " + BCISettingsFixed.DAQ_SensorId + " , Downsample rate: " + BCISettingsFixed.DimReduct_DownsampleRate +
+            // Gtec use software triggers
+            BCIActuatorSettings.Settings.DataParser_UseSoftwareTrigers = true;
+
+            // Gtec does not use 9 to 16 it is only 8 channels
+            BCIActuatorSettings.Settings.Classifier_EnableChannel9 = false;
+            BCIActuatorSettings.Settings.Classifier_EnableChannel10 = false;
+            BCIActuatorSettings.Settings.Classifier_EnableChannel11 = false;
+            BCIActuatorSettings.Settings.Classifier_EnableChannel12 = false;
+            BCIActuatorSettings.Settings.Classifier_EnableChannel13 = false;
+            BCIActuatorSettings.Settings.Classifier_EnableChannel14 = false;
+            BCIActuatorSettings.Settings.Classifier_EnableChannel15 = false;
+            BCIActuatorSettings.Settings.Classifier_EnableChannel16 = false;
+
+            BCIActuatorSettings.Save();
+            Log.Debug("Sensor set to " + BCIActuatorSettings.Settings.DAQ_NumEEGChannels + " channels. SensorID: " + BCISettingsFixed.DAQ_SensorId + " , Downsample rate: " + BCISettingsFixed.DimReduct_DownsampleRate +
                       " , Idx hw trigger signal: " + BCISettingsFixed.DataParser_IdxTriggerSignal_Hw + " , Idx sw trigger signal: " + BCISettingsFixed.DataParser_IdxTriggerSignal_Sw);
 
-            saveDataToFile = BCIGtecActuatorSettings.Settings.DAQ_SaveToFileFlag;
-            frontendFilterIdx = BCIGtecActuatorSettings.Settings.DAQ_FrontendFilterIdx;
-            notchFilterIdx = BCIGtecActuatorSettings.Settings.DAQ_NotchFilterIdx;
+            saveDataToFile = BCIActuatorSettings.Settings.DAQ_SaveToFileFlag;
+            frontendFilterIdx = BCIActuatorSettings.Settings.DAQ_FrontendFilterIdx;
+            notchFilterIdx = BCIActuatorSettings.Settings.DAQ_NotchFilterIdx;
 
             Log.Debug(" Frontend filter: " + frontendFilterIdx + " Notch filter: " + notchFilterIdx);
         }
@@ -291,8 +304,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         Log.Debug("Sensor connected to port " + serial_number);
 
                         // Save port to settings
-                        BCIGtecActuatorSettings.Settings.GTecDeviceName = serial_number;
-                        BCIGtecActuatorSettings.Save();
+                        BCIActuatorSettings.Settings.GTecDeviceName = serial_number;
+                        BCIActuatorSettings.Save();
                         Log.Debug("Port: " + serial_number + " saved to settings");
 
                         
@@ -321,7 +334,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         sampleRate = BoardShim.get_sampling_rate(boardID);
                         BCISettingsFixed.DAQ_SampleRate = sampleRate;
 
-                        BCIGtecActuatorSettings.Save();
+                        BCIActuatorSettings.Save();
 
                         FrontendFilter = new Filter(frontendFilterIdx, Filter.FilterTypes.Frontend);
                         NotchFilter = new Filter(notchFilterIdx, Filter.FilterTypes.Notch);
@@ -515,7 +528,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         if (saveDataToFile && FileWriterObj != null && FileWriterObj.isFileOpened)
                         {
                             FileWriterObj.WriteFilteredDataToFile(filteredData);
-                            if (BCIGtecActuatorSettings.Settings.DAQ_SaveAditionalFileWithRawData)
+                            if (BCIActuatorSettings.Settings.DAQ_SaveAditionalFileWithRawData)
                                 FileWriterObj.WriteRawDataToFile(rawData);
                         }
                     }
@@ -684,7 +697,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 if (forceSavingData)
                     saveDataToFile = forceSavingData; // THis is useful for calibration where data should always be saved
                 else
-                    saveDataToFile = BCIGtecActuatorSettings.Settings.DAQ_SaveToFileFlag;
+                    saveDataToFile = BCIActuatorSettings.Settings.DAQ_SaveToFileFlag;
 
                 if (status == BoardStatus.BOARD_ACQUIRINGDATA)
                 {
@@ -870,7 +883,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         public async Task<bool> connectionTestAsync()
         {
             // Check if there is a device name saved in settings
-            if (string.IsNullOrEmpty(BCIGtecActuatorSettings.Settings.GTecDeviceName))
+            if (string.IsNullOrEmpty(BCIActuatorSettings.Settings.GTecDeviceName))
             {
                 Dictionary<String, object> eventParams = new Dictionary<String, object>
                 {
@@ -886,8 +899,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 {
                     try
                     {
-                        Log.Debug($"Selected device: {BCIGtecActuatorSettings.Settings.GTecDeviceName}, trying to connect...");
-                        using (Unicorn device = new Unicorn(BCIGtecActuatorSettings.Settings.GTecDeviceName))
+                        Log.Debug($"Selected device: {BCIActuatorSettings.Settings.GTecDeviceName}, trying to connect...");
+                        using (Unicorn device = new Unicorn(BCIActuatorSettings.Settings.GTecDeviceName))
                         {
                             device.Dispose();
                             Log.Debug($"Device: {device} is connected...");

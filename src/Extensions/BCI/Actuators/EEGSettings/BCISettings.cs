@@ -505,7 +505,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             CrossValidation_NumFolds = 10;
             CrossaValidation_SortMethod = "sequential";
 
-            DataParser_UseSoftwareTrigers = false;
+            DataParser_UseSoftwareTrigers = true;
 
             // Required Channels
             Classifier_EnableChannel1 = true;

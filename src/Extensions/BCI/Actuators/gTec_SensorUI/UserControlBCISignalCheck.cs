@@ -209,9 +209,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         public void resetSavedSignalQualityValues()
         {
-            BCIGtecActuatorSettings.Settings.SignalControl_RecheckNeeded = true;
-            BCIGtecActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck = false;
-            BCIGtecActuatorSettings.Save();
+            BCIActuatorSettings.Settings.SignalControl_RecheckNeeded = true;
+            BCIActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck = false;
+            BCIActuatorSettings.Save();
         }
 
         /// <summary>
@@ -287,16 +287,16 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
 
             // Check if number of good/ok/bad channels allows user to pass overall signal quality check
-            if (numGoodChannels >= BCIGtecActuatorSettings.Settings.SignalQuality_MinOverallGoodChannels && 
-                numOkChannels <= BCIGtecActuatorSettings.Settings.SignalQuality_MaxOverallOKChannels​ &&
-                numBadChannels <= BCIGtecActuatorSettings.Settings.SignalQuality_MaxOverallBadChannels​)
+            if (numGoodChannels >= BCIActuatorSettings.Settings.SignalQuality_MinOverallGoodChannels && 
+                numOkChannels <= BCIActuatorSettings.Settings.SignalQuality_MaxOverallOKChannels​ &&
+                numBadChannels <= BCIActuatorSettings.Settings.SignalQuality_MaxOverallBadChannels​)
             {
                 // All electrodes have valid values (none have status Error) and overall signal quality criteria met
-                BCIGtecActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck = true;
+                BCIActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck = true;
             }
             else
             {
-                BCIGtecActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck = false;
+                BCIActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck = false;
             }
 
 
@@ -324,9 +324,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             // Get / inititalize variables related to board config used in data processing
             _indEegChannels = gTecBCI.indEegChannels;
-            _numChannels = BCIGtecActuatorSettings.Settings.DAQ_NumEEGChannels;
+            _numChannels = BCIActuatorSettings.Settings.DAQ_NumEEGChannels;
             _samplingRate = gTecBCI.sampleRate;
-            _scaleIdx = BCIGtecActuatorSettings.Settings.SignalMonitor_ScaleIdx;
+            _scaleIdx = BCIActuatorSettings.Settings.SignalMonitor_ScaleIdx;
 
             _bufSize = _samplingRate * PROCESSING_BUFFER_SIZE_SEC;
             _unfilteredChannelData = new double[_numChannels, _bufSize];
@@ -355,10 +355,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             // Get required and optional electrode names from settings
             _channelNamesRequired =
-            new List<String> { BCIGtecActuatorSettings.Settings.SignalControl_RequiredChannel_Channel1_Name,BCIGtecActuatorSettings.Settings.SignalControl_RequiredChannel_Channel2_Name,
-                BCIGtecActuatorSettings.Settings.SignalControl_RequiredChannel_Channel3_Name,BCIGtecActuatorSettings.Settings.SignalControl_RequiredChannel_Channel4_Name,
-                BCIGtecActuatorSettings.Settings.SignalControl_RequiredChannel_Channel5_Name,BCIGtecActuatorSettings.Settings.SignalControl_RequiredChannel_Channel6_Name,
-                BCIGtecActuatorSettings.Settings.SignalControl_RequiredChannel_Channel7_Name,BCIGtecActuatorSettings.Settings.SignalControl_RequiredChannel_Channel8_Name};
+            new List<String> { BCIActuatorSettings.Settings.SignalControl_RequiredChannel_Channel1_Name,BCIActuatorSettings.Settings.SignalControl_RequiredChannel_Channel2_Name,
+                BCIActuatorSettings.Settings.SignalControl_RequiredChannel_Channel3_Name,BCIActuatorSettings.Settings.SignalControl_RequiredChannel_Channel4_Name,
+                BCIActuatorSettings.Settings.SignalControl_RequiredChannel_Channel5_Name,BCIActuatorSettings.Settings.SignalControl_RequiredChannel_Channel6_Name,
+                BCIActuatorSettings.Settings.SignalControl_RequiredChannel_Channel7_Name,BCIActuatorSettings.Settings.SignalControl_RequiredChannel_Channel8_Name};
 
             // For each electrode - initialize object which tracks each channel's data, signal quality, and manages corresponding plots and UI elements
             for (int chIdx = 0; chIdx < _numChannels; chIdx++)
@@ -369,7 +369,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 // Set index of channel's data in raw data
                 // Get corresponding UI elements for this channel
 
-                bool channelEnabled = BCIGtecActuatorSettings.Settings.GetClassifier_EnableChannel(chIdx);
+                bool channelEnabled = BCIActuatorSettings.Settings.GetClassifier_EnableChannel(chIdx);
 
                 if (chIdx < 8)
                 {
@@ -454,7 +454,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             try
             {
                 // Save railing result percentage in settings
-                BCIGtecActuatorSettings.Settings.SignalQuality_LastRailingValues[chIdx] = railingResultPercentage;
+                BCIActuatorSettings.Settings.SignalQuality_LastRailingValues[chIdx] = railingResultPercentage;
 
                 // Get signal quality status based on current railing percentage and thresholds in settings
                 // SignalStatus.SIGNAL_OK (green), SignalStatus.SIGNAL_ACCEPTABLE (yellow), SignalStatus.SIGNAL_KO (red)
@@ -464,14 +464,14 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 {
                     _eegChannels[chIdx].lastRailingResult = railingResultPercentage;
 
-                    if (railingResultPercentage <= BCIGtecActuatorSettings.Settings.SignalQuality_RailingGoodMaxThreshold)
+                    if (railingResultPercentage <= BCIActuatorSettings.Settings.SignalQuality_RailingGoodMaxThreshold)
                         signalQualityStatus = SignalStatus.SIGNAL_OK;
                     //else if (railingResultPercentage <= BCIGtecActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold)
                         //signalQualityStatus = SignalStatus.SIGNAL_ACCEPTABLE;
-                    else if (railingResultPercentage > BCIGtecActuatorSettings.Settings.SignalQuality_RailingGoodMaxThreshold && 
-                        railingResultPercentage <= BCIGtecActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold​)
+                    else if (railingResultPercentage > BCIActuatorSettings.Settings.SignalQuality_RailingGoodMaxThreshold && 
+                        railingResultPercentage <= BCIActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold​)
                         signalQualityStatus = SignalStatus.SIGNAL_ACCEPTABLE;
-                    else if (railingResultPercentage > BCIGtecActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold)
+                    else if (railingResultPercentage > BCIActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold)
                         signalQualityStatus = SignalStatus.SIGNAL_KO;
 
                     _eegChannels[chIdx].timeLastUpdatedSec = DateTimeOffset.Now.ToUnixTimeSeconds();

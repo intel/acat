@@ -327,13 +327,13 @@ namespace ACAT.Core.UserControlManagement
 
             if (!isTopLevel)
             {
-                Log.Debug("AP1: SETTING _PlayterTransitioned to TRUE");
+                Log.Debug("AP1: SETTING _PlayerTransitioned to TRUE");
                 _playerTransitioned = true;
                 _iterationCount = 0;
             }
             else
             {
-                Log.Debug("AP1: SETTING _PlayterTransitioned to FALSE");
+                Log.Debug("AP1: SETTING _PlayerTransitioned to FALSE");
                 _playerTransitioned = false;
             }
         }

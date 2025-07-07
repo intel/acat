@@ -14,6 +14,7 @@ using ACAT.Core.WidgetManagement;
 using ACAT.Extension.CommandHandlers;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
@@ -55,7 +56,15 @@ namespace ACAT.Extension
         }
 
         protected virtual void InitializeComponent() 
-        { 
+        {
+            mainPanel = new Panel
+            {
+                Dock = DockStyle.Fill,
+                Name = "mainPanel",
+                AccessibleName = "mainPanel",
+                Size = new Size(800, 600),
+                BackColor = Color.Blue
+            };
         }
 
         /// <summary>
@@ -125,6 +134,8 @@ namespace ACAT.Extension
             get { return _scannerCommon.TextController; }
         }
 
+        public Panel mainPanel { get; private set; }
+
         /// <summary>
         /// Invoked to check if a scanner button should be enabled.  Uses context
         /// to determine the 'enabled' state.
@@ -150,7 +161,7 @@ namespace ACAT.Extension
 
             _scannerCommon.UserControlManager.GridScanIterations = Common.AppPreferences.GridScanIterations;
 
-            //_scannerCommon.UserControlManager.AddUserControlByKeyOrName(panelContainer, "embedUserControl", EmbeddedUserControlName);
+            _scannerCommon.UserControlManager.AddUserControlByKeyOrName(mainPanel, "embedUserControl", EmbeddedUserControlName);
 
             List<IUserControl> list = new List<IUserControl>();
 

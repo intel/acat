@@ -288,6 +288,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 categoryForm.EvtPreferencesCategorySelected += handlePreferencesCategorySelected;
             }
 
+
             // Push new preferences select form to stack
             _shownPreferenceForms.Push(newPreferencesSelectForm);
 
@@ -401,11 +402,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
                         SetNewFormButtonHandlers(HandlerResetToDefaultsButtonClicked, HandlerWrapTextButtonClicked, wrapTextBoxChecked);
 
-                      //  newPreferencesEditForm.EvtPreferencesChangeMade += handlePreferenceChangeMade;
-
+                        //Set handler for when preferences setting change made
                         newPreferencesEditForm.EvtPreferencesChangeMade += () => buttonSave.Visible = true;
-
-                       // newPreferencesEditForm.FormClosing += handlePreferencesEditFormClosing;
 
                         newPreferencesEditForm.FormClosing += (_, e) =>
                         {
@@ -416,7 +414,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
                             }
                         };
 
-                        // Push new preferences edit form to stack
+                        //Push new preferences edit form to stack
                         _shownPreferenceForms.Push(newPreferencesEditForm);
                         newPreferencesEditForm.Show();
                     }

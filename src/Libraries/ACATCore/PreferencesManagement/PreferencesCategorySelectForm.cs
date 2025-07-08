@@ -83,13 +83,26 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 TextAlign = ContentAlignment.MiddleRight,  
                 Anchor = AnchorStyles.Right,                
                 Margin = new Padding(0),                  
-                Padding = new Padding(0, 5, 10, 5),         
+                Padding = new Padding(0, 5, 10, 5),
+                Tag = category
             };
 
             button.FlatAppearance.BorderSize = 0;
             button.FlatAppearance.MouseOverBackColor = button.BackColor;
             button.FlatAppearance.MouseDownBackColor = button.BackColor;
             button.FlatAppearance.CheckedBackColor = button.BackColor;
+
+            if (enabled)
+            {
+                button.Click += (s, e) =>
+                {
+                    if (button.Tag is PreferencesCategory clickedCategory &&
+                        clickedCategory.PreferenceObj is ISupportsPreferences supportsPrefs)
+                    {
+                        EvtPreferencesCategorySelected?.Invoke(this, supportsPrefs);
+                    }
+                };
+            }
 
             return button;
         }
@@ -181,6 +194,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));    // Row 0: Title
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F)); // Spacer row for centering
             panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));    // Row 2: Description
+
 
             return panel;
         }

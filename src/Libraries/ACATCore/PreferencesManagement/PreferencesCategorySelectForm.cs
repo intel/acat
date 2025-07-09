@@ -66,6 +66,9 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
         #region controls
 
+        private List<Button> _setupButtons = new List<Button>();
+        private List<CheckBox> _CheckBox = new List<CheckBox>();
+
         private Button CreateSetupButton(PreferencesCategory category)
         {
             bool enabled = category.PreferenceObj is ISupportsPreferences prefs &&
@@ -92,10 +95,20 @@ namespace ACAT.Lib.Core.PreferencesManagement
             button.FlatAppearance.MouseDownBackColor = button.BackColor;
             button.FlatAppearance.CheckedBackColor = button.BackColor;
 
+            _setupButtons.Add(button);
+
             if (enabled)
             {
                 button.Click += (s, e) =>
                 {
+                    //Hide all other setup buttons
+                 /*   foreach (var b in _setupButtons)
+                        b.Visible = false;
+
+                    // Hide all CheckBoxes
+                    foreach (var cb in _CheckBox)
+                        cb.Visible = false;*/
+
                     if (button.Tag is PreferencesCategory clickedCategory &&
                         clickedCategory.PreferenceObj is ISupportsPreferences supportsPrefs)
                     {
@@ -119,6 +132,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 AutoSize = true,
                 Margin = new Padding(0, 0, 0, 5)
             };
+
+            _CheckBox.Add(checkBox);
 
             checkBox.CheckedChanged += CheckBox_CheckedChanged;
 
@@ -305,6 +320,12 @@ namespace ACAT.Lib.Core.PreferencesManagement
         //Refreshes the Panel with data from the Categories
         private void refreshPanel()
         {
+            /*foreach (var btn in _setupButtons)
+                btn.Visible = true;
+
+            foreach (var cb in _CheckBox)
+                cb.Visible = true;*/
+
 
             if (_flowPanel == null)
             {
@@ -317,12 +338,14 @@ namespace ACAT.Lib.Core.PreferencesManagement
             var headerLabel = CreateCategoryHeaderLabel(this.AccessibilityObject.Name);
             _flowPanel.Controls.Add(headerLabel);
 
+       
+
             foreach (var category in PreferencesCategories)
             {
                 if (!IsValidExtensionCategory(category, out var desc))
                     continue;
-
                 var categoryItem = CreateCategoryPanel();
+
                 categoryItem.Controls.Add(CreateLabel(desc.Name), 0, 0);  // title
                 categoryItem.Controls.Add(CreateDescriptionLabel(desc.Description), 0, 2);  // description
 
@@ -336,8 +359,14 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 categoryItem.Controls.Add(setupButton, 2, 0);
                 categoryItem.SetRowSpan(setupButton, 3);
 
+
+               
+
+
                 _flowPanel.Controls.Add(categoryItem);
             }
+
+          
 
             //// Sort first column ascending everytime grid is refreshed
             //dataGridView2.Sort(CategoryNameColumn, ListSortDirection.Ascending);

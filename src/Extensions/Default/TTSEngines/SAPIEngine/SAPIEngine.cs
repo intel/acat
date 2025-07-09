@@ -414,12 +414,13 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// <returns>true on success</returns>
         public virtual bool ShowPreferencesDialog()
         {
-            // var form = new SettingsForm();
+            
             var form = new SettingsForm();
             form.ShowDialog();
             form.Dispose();
-
-            return true;
+            
+            return false;
+            
         }
 
         /// <summary>

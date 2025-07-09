@@ -339,9 +339,68 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 // Show custom preferences dialog if available
                 if (supportsPreferences.SupportsPreferencesDialog)
                 {
-                    senderForm.Hide();
-                    supportsPreferences.ShowPreferencesDialog();
-                    senderForm.Show();
+                    #region MessUp
+                    var prefs = supportsPreferences.GetPreferences();
+
+                    if (prefs != null)
+                    {
+                        PreferencesEditForm newPreferencesEditForm = new PreferencesEditForm
+                        {
+                            Title = "Select Voice"
+                        };
+
+                        // Get handle of control you will make parent of new form
+                        IntPtr parentControlHandle = tableLayoutPanelConfigSettings.Handle;
+
+                        newPreferencesEditForm.Dock = DockStyle.Fill;
+
+                        //// Change window style according to SetParent documentation
+                        //// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setparent
+                        IntPtr handle = newPreferencesEditForm.Handle;
+                        IntPtr style = (IntPtr)User32Interop.GetWindowLong(handle, -16);
+                        uint currentStyle = (uint)style.ToInt32();
+                        currentStyle &= ~User32Interop.WS_POPUP;
+                        currentStyle |= User32Interop.WS_CHILD;
+                        IntPtr newStyle = new IntPtr((int)currentStyle);
+                        User32Interop.SetWindowLong(handle, -16, newStyle);
+
+
+                        // Use lower level User32Interop function to set parent of PreferencesEditForm to target control
+                        User32Interop.SetParent(newPreferencesEditForm.Handle, parentControlHandle);
+
+                        // Set handlers for button press events of main form
+                        NotifyWrapTextCheckBoxClicked HandlerWrapTextButtonClicked = ((PreferencesEditForm)newPreferencesEditForm).checkBoxWrapText_CheckedChanged;
+                        bool wrapTextBoxChecked = ((PreferencesEditForm)newPreferencesEditForm)._wrapText;
+
+                        // Get whether preferences supports reset to default function
+                        NotifyResetToDefaultButtonClicked HandlerResetToDefaultsButtonClicked = null;
+                        IPreferences DefaultPreferences = supportsPreferences.GetDefaultPreferences();
+
+                        SetNewFormButtonHandlers(HandlerResetToDefaultsButtonClicked, HandlerWrapTextButtonClicked, wrapTextBoxChecked);
+
+                        //Set handler for when preferences setting change made
+                        newPreferencesEditForm.EvtPreferencesChangeMade += () => buttonSave.Visible = true;
+
+
+                        newPreferencesEditForm.FormClosing += (_, e) =>
+                        {
+                            if (_shownPreferenceForms?.Count > 0)
+                            {
+                                _shownPreferenceForms.Pop();
+                                _shownPreferenceForms.Peek()?.Show();
+                            }
+                        };
+                        //Push new preferences edit form to stack
+                        _shownPreferenceForms.Push(newPreferencesEditForm);
+                        newPreferencesEditForm.Show();
+                    }
+
+
+                    //   senderForm.Hide();
+                    // supportsPreferences.ShowPreferencesDialog();
+                    //   senderForm.Show();
+
+                    #endregion
                 }
 
                 // Otherwise show generic PreferencesEditForm

@@ -175,27 +175,6 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         }
 
         /// <summary>
-        /// Voice checkbox toggled. Set ui state
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void checkBoxSelectVoice_CheckedChanged(object sender, EventArgs e)
-        {
-            _dirty = true;
-            setComboBoxStates();
-        }
-
-        /// <summary>
-        /// User selected something in the gender combo box
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void ComboBoxGender_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            _dirty = true;
-        }
-
-        /// <summary>
         /// User selected something in the voice combo box
         /// </summary>
         /// <param name="sender">event sender</param>
@@ -246,13 +225,6 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
                 voiceName += gender;
                 comboBoxSelectVoice.Items.Add(voiceName);
             }
-        }
-
-        /// <summary>
-        /// Update the enabled states of the combo boxes
-        /// </summary>
-        private void setComboBoxStates()
-        {
         }
 
         /// <summary>
@@ -307,23 +279,6 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         }
 
         /// <summary>
-        /// Converts a string representation of the gender to
-        /// the enum. Returns NotSet if string is invalid
-        /// </summary>
-        /// <param name="gender">string to convert</param>
-        /// <returns>enum value</returns>
-        private VoiceGender stringToVoiceGender(string gender)
-        {
-
-            if (Enum.TryParse(gender, out VoiceGender voiceGender))
-            {
-                return voiceGender;
-            }
-
-            return VoiceGender.NotSet;
-        }
-
-        /// <summary>
         /// Updates the UI with values from the settings object
         /// </summary>
         /// <param name="settings">the TTS settings object</param>
@@ -348,8 +303,6 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
             {
                 comboBoxSelectVoice.SelectedIndex = (selectedIndex >= 0) ? selectedIndex : 0;
             }
-
-            setComboBoxStates();
         }
     }
 }

@@ -31,6 +31,9 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using System.Windows.Threading;
+using System.Security.Cryptography;
+using static System.Net.Mime.MediaTypeNames;
+using System.Speech.Synthesis;
 
 namespace ACAT.Lib.Core.PreferencesManagement
 {
@@ -59,6 +62,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
         public String Title { get; set; }                                       //Gets or sets the title / text for header of settings column of the form
 
+        private SpeechSynthesizer _speechSynthesizer;                           //The Microsoft speech synthesizer object
+
         #endregion
 
         #region events
@@ -71,6 +76,18 @@ namespace ACAT.Lib.Core.PreferencesManagement
         #endregion
 
         #region Controls
+
+        private Label CreateDescriptionLabel(string description)
+        {
+            return new Label
+            {
+                Text = description,
+                AutoSize = true,
+                Font = new Font("Segoe UI", 20, FontStyle.Italic),
+                ForeColor = Color.White,
+                Margin = new Padding(0, 0, 0, 5)
+            };
+        }
 
         private FlowLayoutPanel CreateFlowPanel()
         {
@@ -91,6 +108,30 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
         private FlowLayoutPanel _flowPanel;
 
+        private TableLayoutPanel CreateCategoryPanel()
+        {
+            var panel = new TableLayoutPanel
+            {
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowOnly,
+                Margin = new Padding(10),
+                Padding = new Padding(10),
+               // BackColor = Color.FromArgb(48, 49, 64),
+                Dock = DockStyle.Top,
+            };
+
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F)); // Label + description
+            //panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F)); // Setup button
+
+            panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));    // Row 0: Title
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F)); // Spacer row for centering
+            panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));    // Row 2: Description
+
+
+            return panel;
+        }
+
+
         private Label CreateLabel(string text, int fontSize, FontStyle fontStyle)
         {
             var label = new Label
@@ -105,6 +146,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
             return label;
         }
+
 
         #endregion
 
@@ -131,7 +173,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
             InitializeComponent();
 
             CenterToScreen();
-            
          
             Text = "Settings";
             Load += PreferencesEditForm_Load;
@@ -151,21 +192,110 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
             CenterToScreen();
 
-            //initializeGridView();
-
-           /* if (!String.IsNullOrEmpty(Title))
+            if (Title != "Select Voice")
             {
-                Text = Title;
-                SettingColumn.HeaderText = Title;
-            }*/
 
-            Preferences = SupportsPreferencesObj.GetPreferences();
-            DefaultPreferences = SupportsPreferencesObj.GetDefaultPreferences();
+                Preferences = SupportsPreferencesObj.GetPreferences();
+                DefaultPreferences = SupportsPreferencesObj.GetDefaultPreferences();
+            }
+
             _isDirty = false;
+
+            if (Title == "Select Voice")
+            {
+                if (_flowPanel == null)
+                {
+                    _flowPanel = CreateFlowPanel();
+                }
+
+                tableLayoutPanel1.Controls.Add(_flowPanel);
+
+                wrapText(_wrapText);
+                
+                var comboBox = new ComboBox
+                {
+                    DropDownStyle = ComboBoxStyle.DropDownList,
+                    Font = new Font("Montserrat", 12, FontStyle.Regular),
+                    ForeColor = Color.White,
+                    BackColor = Color.FromArgb(48, 49, 64),
+                    //   Dock = DockStyle.Top,
+                    FlatStyle = FlatStyle.Flat,
+                    Width = 350,
+                    Margin = new Padding(10),
+                    DrawMode = DrawMode.OwnerDrawFixed,
+                    Cursor = Cursors.Hand
+
+                };
+                // Fix dropdown list background/foreground (optional)
+                comboBox.FlatStyle = FlatStyle.Popup;
+
+                
+
+
+                comboBox.DrawItem += delegate (object s, DrawItemEventArgs args)
+                {
+                    args.DrawBackground();
+
+                    if (args.Index >= 0)
+                    {
+                        string text = comboBox.Items[args.Index].ToString();
+
+                        Brush textBrush = new SolidBrush(Color.White);
+
+                       args.Graphics.DrawString(text, comboBox.Font, textBrush, args.Bounds);
+                       textBrush.Dispose();
+                    }
+
+                    args.DrawFocusRectangle();
+                };
+
+                _speechSynthesizer = new SpeechSynthesizer();
+
+                IEnumerable<InstalledVoice> ins = true
+                ? _speechSynthesizer.GetInstalledVoices(CultureInfo.DefaultThreadCurrentUICulture)
+                : _speechSynthesizer.GetInstalledVoices();
+
+                string[] options = { "DAVID(Male)", "ZIRA(Female)" };
+                //string selectedOption = "DAVID(Male)";
+        
+
+
+                foreach (InstalledVoice installedvoice in ins)
+                {
+                    String voiceName = installedvoice.VoiceInfo.Name.ToString();
+                    String gender = " ";
+                    if (voiceName.ToUpper().Contains("DAVID"))
+                    {
+                        gender += "(Male)";
+                    }
+                    else if (voiceName.ToUpper().Contains("ZIRA"))
+                    {
+                        gender += "(Female)";
+                    }
+                    voiceName += gender;
+                    comboBox.Items.Add(voiceName);
+                }
+
+                //comboBox.Items.AddRange(options);
+                //comboBox.SelectedItem = selectedOption;
+                var categoryItem = CreateCategoryPanel();
+                categoryItem.Controls.Add(comboBox);
+
+                _flowPanel.Controls.Add(CreateLabel("Text to Speech", 24, FontStyle.Bold));
+                _flowPanel.Controls.Add(CreateLabel(Title, 20, FontStyle.Regular));
+                _flowPanel.Controls.Add(categoryItem);
+            }
+
+
+
             Paint += (s, args) =>
             {
-                refreshPanel(Preferences);
-                AttachInputEvents(_flowPanel);
+                if (Title != "Select Voice")
+                {
+                    refreshPanel(Preferences);
+
+                    AttachInputEvents(_flowPanel);
+                }
             };
 
             /*
@@ -192,10 +322,15 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 _flowPanel = CreateFlowPanel();
             }
 
+
+
+
             //tableLayoutPanel1.Controls.Remove(dataGridView);
             tableLayoutPanel1.Controls.Add(_flowPanel);
 
             wrapText(_wrapText);
+
+            
 
             var descriptor = prefs.GetType().GetCustomAttribute<DescriptorAttribute>();
 

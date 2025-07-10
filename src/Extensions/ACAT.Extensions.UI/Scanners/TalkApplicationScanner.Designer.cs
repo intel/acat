@@ -1,4 +1,7 @@
-﻿namespace ACAT.Extensions.UI.Scanners
+﻿using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Extension.CommandHandlers;
+
+namespace ACAT.Extensions.UI.Scanners
 {
     partial class TalkApplicationScanner
     {
@@ -6,6 +9,28 @@
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
+
+        private System.Windows.Forms.Label labelCurrentTypingMode;
+
+        private System.Windows.Forms.Panel panelKeyboard;
+
+        private System.Windows.Forms.Panel panelSentencePrediction;
+
+        private System.Windows.Forms.Panel panelTextBox;
+
+        private System.Windows.Forms.Panel panelWordPrediction;
+
+        private System.Windows.Forms.TableLayoutPanel ScannerBorder;
+
+        private System.Windows.Forms.StatusStrip statusStrip;
+
+        private System.Windows.Forms.TableLayoutPanel tableLayoutTop;
+
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -26,7 +51,7 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        protected override void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TalkApplicationScanner));
             this.ScannerBorder = new System.Windows.Forms.TableLayoutPanel();
@@ -212,17 +237,5 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TableLayoutPanel ScannerBorder;
-        private System.Windows.Forms.StatusStrip statusStrip;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
-        private System.Windows.Forms.Panel panelKeyboard;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutTop;
-        private System.Windows.Forms.Panel panelWordPrediction;
-        private System.Windows.Forms.Panel panelSentencePrediction;
-        private System.Windows.Forms.Panel panelTextBox;
-        private System.Windows.Forms.Label labelCurrentTypingMode;
     }
 }

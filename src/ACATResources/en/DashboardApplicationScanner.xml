@@ -4,10 +4,8 @@
   <WidgetAttributes />
 
   <Layout>
-    <Widget class="WinControlWidget"  name="panelToolbar" />
-    <Widget class="WinControlWidget"  name="panelMainMenu" />
-    <!-- <Widget class="WinControlWidget"  name="panelKeyboard" />
-    <Widget class="WinControlWidget"  name="panelPointerScanner" /> -->
+    <Widget class="WinControlWidget"  name="panelTopToolbar" />
+    <Widget class="WinControlWidget"  name="panelDashboardControls" />
   </Layout>
 
   <Animations />

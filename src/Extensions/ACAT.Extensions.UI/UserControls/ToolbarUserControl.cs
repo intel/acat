@@ -12,15 +12,20 @@ namespace ACAT.Extensions.UI.UserControls
         Description = "User control for the toolbar in the ACAT Dashboard")]
     public class ToolbarUserControl : GenericUserControl
     {
+        private Font acatFont1Font = new Font("ACAT Font 1", 28);
         private Font defaultFont = new Font("Montserrat", 28);
-        private Font acatFont1Font = new Font("ACATFont1", 28);
-
         public ToolbarUserControl()
         {
             InitializeComponent();
         }
 
         public TableLayoutPanel tableLayout { get; private set; }
+
+        protected override bool HandleInitialize()
+        {
+            return true;
+        }
+
 
         private void InitializeComponent()
         {
@@ -30,10 +35,10 @@ namespace ACAT.Extensions.UI.UserControls
             // 
             this.Name = "ToolbarUserControl";
             this.AccessibleName = "ToolbarUserControl";
-            this.Size = new System.Drawing.Size(800, 50);
-            this.ResumeLayout(false);
+            this.Size = new System.Drawing.Size(800, 120);
             this.AutoSize = true;
-            this.AutoSizeMode = AutoSizeMode.GrowOnly;
+            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.Padding = new Padding(10);
 
             Label appName = new Label
             {
@@ -47,15 +52,7 @@ namespace ACAT.Extensions.UI.UserControls
                 ForeColor = Color.White
             };
 
-            var ToolbarButtons = new List<Control>
-                {
-                    new ScannerButtonControl { Name = "Settings", Text = "i", Font = acatFont1Font, AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink},
-                    new ScannerButtonControl { Name = "Help", Text = "F", Font = acatFont1Font,AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink },
-                    new ScannerButtonControl { Name = "About", Text = "!", Font = defaultFont,AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink },
-                    new ScannerButtonControl { Name = "Home", Text = "_", Font = defaultFont,AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink }
-                    //new ScannerButtonControl { Name = "Minimize", Text = "_", Font = defaultFont,AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink },
-                    //new ScannerButtonControl { Name = "CloseButton", Text = "X", Font = defaultFont, AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink }
-                };
+            List<Control> ToolbarButtons = CreateToolbarButtons();
 
             tableLayout = new TableLayoutPanel
             {
@@ -64,31 +61,34 @@ namespace ACAT.Extensions.UI.UserControls
                 Dock = DockStyle.Top,
                 ColumnCount = 2,
                 RowCount = 1,
-                Padding = new Padding(2)
+                Padding = new Padding(2),
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink
             };
+            tableLayout.SuspendLayout();
             tableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-            tableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+            tableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
-            var buttonPanel = new FlowLayoutPanel
+            var buttonPanel = new TableLayoutPanel
             {
                 Name = "ButtonPanel",
                 AccessibleName = "ButtonPanel",
-                FlowDirection = FlowDirection.LeftToRight,
-                AutoSize = true,
+                Size = new Size(800, 60),
+                //AutoSize = true,
                 Dock = DockStyle.Fill,
                 Anchor = AnchorStyles.Top | AnchorStyles.Right,
-                WrapContents = false
+                ColumnCount = 0, // Start with no columns, will add dynamically
+                RowCount = 1,
+                GrowStyle = TableLayoutPanelGrowStyle.AddColumns
             };
-
-
-            // Add the buttons to the tableLayout
-            foreach (var button in ToolbarButtons)
+        
+            buttonPanel.SuspendLayout();
+            buttonPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            var buttons = CreateToolbarButtons();
+            foreach (var button in buttons)
             {
-                //button.Font = defaultFont;
-                button.BackColor = Color.Transparent;
-                button.ForeColor = Color.White;
-
+                buttonPanel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
                 buttonPanel.Controls.Add(button);
             }
 
@@ -97,7 +97,49 @@ namespace ACAT.Extensions.UI.UserControls
 
             this.Controls.Add(tableLayout);
 
+            buttonPanel.ResumeLayout();
+            tableLayout.ResumeLayout();
             this.ResumeLayout();
+        }
+
+        private List<Control> CreateToolbarButtons()
+        {
+            // Correcting the array initialization issue by using a List of tuples instead of an invalid array initializer
+            var buttons = new List<(string Name, string Text)>
+            {
+                ("Settings", "i"),
+                ("Help", "F"),
+                ("About", "!"),
+                ("Home", "C")
+            };
+
+            var ToolbarButtons = new List<Control>();
+
+            // Create buttons with specific properties
+            foreach (var button in buttons)
+            {
+                var scannerButton = new ScannerRoundedButtonControl
+                {
+                    BorderColor = System.Drawing.Color.DimGray,
+                    BorderRadiusBottomLeft = 12,
+                    BorderRadiusBottomRight = 12,
+                    BorderRadiusTopLeft = 12,
+                    BorderRadiusTopRight = 12,
+                    BorderWidth = 3F,
+                    Dock = System.Windows.Forms.DockStyle.Fill,
+                    FlatStyle = System.Windows.Forms.FlatStyle.Flat,
+                    ForeColor = System.Drawing.Color.White,
+                    Name = button.Name,
+                    Size = new System.Drawing.Size(60, 60),
+                    TabIndex = 0,
+                    Text = button.Text,
+                    UseMnemonic = false,
+                    UseVisualStyleBackColor = true,
+                };
+                ToolbarButtons.Add(scannerButton);
+            }
+
+            return ToolbarButtons;
         }
     }
 }

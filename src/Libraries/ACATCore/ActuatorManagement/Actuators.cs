@@ -445,7 +445,7 @@ namespace ACAT.Core.ActuatorManagement
         private void onDirFound(String dirName)
         {
             Log.Debug("Found directory " + dirName);
-            String[] skipdirs = { "external", "ConvAssist" };
+            String[] skipdirs = { "external", "ConvAssistApp", "de", "en", "es", "Assets", "Install" };
             foreach (var _ in skipdirs.Where(skipdir => dirName.ToLower().Contains(skipdir)).Select(skipdir => new { }))
             {
                 return;

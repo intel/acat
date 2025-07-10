@@ -146,6 +146,7 @@
       <DependentUpon>HorizontalStripScanner.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\ITalkWindowTextBox.cs" />
+    <Compile Include="UI\ScannerForms\GenericScannerForm.cs" />
     <Compile Include="UI\ScanTimeAdjustForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -227,6 +228,8 @@
     <Compile Include="UI\UserControlDefaultTryout.Designer.cs">
       <DependentUpon>UserControlDefaultTryout.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\UserControls\GenericUserControl.cs" />
+    <Compile Include="UI\UserControls\KeyboardUserControl.cs" />
     <Compile Include="UI\UserControlWordPredictionCommon.cs" />
   </ItemGroup>
   <ItemGroup>

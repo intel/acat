@@ -74,8 +74,7 @@ namespace ACAT.Core.Widgets
 
             var fontFamily = Fonts.Instance.GetFontFamily(new[]
                                             {   widgetAttribute.FontName,
-                                                CoreGlobals.AppPreferences.FontName,
-                                                "Arial" });
+                                                CoreGlobals.AppPreferences.FontName });
 
             if (fontFamily != null)
             {

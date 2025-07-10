@@ -81,6 +81,7 @@
     <Compile Include="Scanners\YesNoScanner.Designer.cs">
       <DependentUpon>YesNoScanner.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\DashboardUserControl.cs" />
     <Compile Include="UserControls\ACATAppToolbar.cs" />
     <Compile Include="UserControls\KeyboardAbcUserControl.cs">
       <SubType>UserControl</SubType>

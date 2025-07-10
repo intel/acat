@@ -1,67 +1,39 @@
 <?xml version="1.0" ?>
 <!DOCTYPE ACAT [
+  <!ENTITY functionButtonFontName "ACAT FONT 1">
+  <!ENTITY functionButtonAltFontName "Montserrat Regular">
+  <!ENTITY functionButtonFontSize "28">
 ]>
 
 <ACAT>
   <WidgetAttributes>
-        <WidgetAttribute name="Settings" value="@CmdGoBack" />
-        <WidgetAttribute name="Help" value="@CmdTypingModeSentence" />
-        <WidgetAttribute name="Phrase" value="@CmdTypingModePhrase" />
-        <WidgetAttribute name="Shorthand" value="@CmdTypingModeShortHand" />
+        <WidgetAttribute name="Settings" value="@CmdGoBack" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="Help" value="@CmdTypingModeSentence" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="About" value="@CmdTypingModePhrase" fontname="&functionButtonAltFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="Home" value="@CmdTypingModeShortHand" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />
   </WidgetAttributes>
 
   <Layout>
-	  <Widget class="BoxWidget"  name="ToolbarUserControl">
-		  <Widget class="ScannerButton" name="Settings" />
-		  <Widget class="ScannerButton" name="Help" />
-		  <Widget class="ScannerButton" name="About" />
-		  <Widget class="ScannerButton" name="Home" />
-	  </Widget>
+	  <Widget class="BoxWidget"  name="ToolbarTableLayoutPanel">
+      <Widget class="RowWidget" name ="ButtonPanel" >
+		    <Widget class="ScannerButton" name="Settings" colorScheme="ScannerButton" />
+		    <Widget class="ScannerButton" name="Help" colorScheme="ScannerButton" />
+		    <Widget class="ScannerButton" name="About" colorScheme="ScannerButton" />
+		    <Widget class="ScannerButton" name="Home" colorScheme="ScannerButton" />
+  	  </Widget>
+    </Widget>
   </Layout>
 
   <Animations>
-    <Animation name="TopLevelRotation"
-               start="true"
-               iterations="@GridScanIterations">
-    </Animation>
-	<Animation name="KeyboardSequences">
-		<Animation name="Column">
-			<Widget name="Settings" tagID="1" />
-		</Animation>
-		<Animation name="Column">
-			<Widget name="Help" tagID="2" />
-		</Animation>
-		<Animation name="Column">
-			<Widget name="About" tagID="3" />
-		</Animation>
-		<Animation name="Column">
-			<Widget name="Home" tagID="4" />
-		</Animation>
-	</Animation>
-
-	  <Animation name="ButtonPressed"
-		   onEnter=""
-		   iterations="-1"
-		   onEnd="transition(TopLevelRotation)">
-		  <Widget name="@SelectedWidget" firstPauseTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
-	  </Animation>
-
-    <Animation name="FunctionRotation"
-                iterations="@RowScanIterations"
-               firstPauseTime="@FirstPauseTime"
-               onEnd="transition(TopLevelRotation)">
-    </Animation>
-
-    <Animation name="KeyboardRotation"
-                iterations="@RowScanIterations"
-               firstPauseTime="@FirstPauseTime"
-               onEnd="transition(TopLevelRotation)">
-    </Animation>
-
-    <Animation name="SpeechRotation"
-                iterations="@RowScanIterations"
-               firstPauseTime="@FirstPauseTime"
-               onEnd="transition(TopLevelRotation)">
+    <Animation name="ToolbarListRotation"
+                   iterations="@WordPredictionScanIterations"
+                   firstPauseTime="@WordPredictionFirstPauseTime"
+                   onSelect="actuate(@SelectedWidget); transition(ToolbarListRotation)"
+                   onEnd="transition(ToolbarListRotation)">
+      <Widget name="Settings" />
+      <Widget name="Help" />
+      <Widget name="About" />
+      <Widget name="Home" />
     </Animation>
   </Animations>
 </ACAT>

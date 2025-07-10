@@ -76,28 +76,33 @@ namespace ACAT.Core.Widgets
         {
             base.SetWidgetAttribute(attribute);
 
-            _fontFamily = Fonts.Instance.GetFontFamily(new[]
-                                                    {   widgetAttribute.FontName,
-                                                        CoreGlobals.AppPreferences.FontName,
-                                                        "Arial" });
-            if (_fontFamily != null)
+            if (widgetAttribute.FontName != null)
             {
-                FontStyle fontStyle = FontStyle.Regular;
-                if (widgetAttribute.FontBold)
+                _fontFamily = Fonts.Instance.GetFontFamily(new[]
+                                                        {   widgetAttribute.FontName,
+                                                            CoreGlobals.AppPreferences.FontName });
+                if (_fontFamily != null)
                 {
-                    fontStyle |= FontStyle.Bold;
+                    FontStyle fontStyle = FontStyle.Regular;
+                    if (widgetAttribute.FontBold)
+                    {
+                        fontStyle |= FontStyle.Bold;
+                    }
+                    if (widgetAttribute.FontItalic)
+                    {
+                        fontStyle |= FontStyle.Italic;
+                    }
+                    _font = new Font(_fontFamily, widgetAttribute.FontSize, fontStyle);
+                    UIControl.Font = _font;
                 }
-                if (widgetAttribute.FontItalic)
-                {
-                    fontStyle |= FontStyle.Italic;
-                }
-                _font = new Font(_fontFamily, widgetAttribute.FontSize, fontStyle);
-                UIControl.Font = _font;
-            }
 
+            }
             _originalFontSize = _font.Size;
 
-            SetText(widgetAttribute.Label);
+            if (!string.IsNullOrEmpty(widgetAttribute.Label))
+            {
+                SetText(widgetAttribute.Label);
+            }
 
             if (attribute.Alignment != null)
             {

@@ -422,8 +422,6 @@
     <Compile Include="UserControlManagement\UserControlCommon.cs" />
     <Compile Include="UserControlManagement\UserControlKeyboardCommon.cs" />
     <Compile Include="UserControlManagement\UserControlManager.cs" />
-    <Compile Include="UserControls\GenericUserControl.cs" />
-    <Compile Include="UserControls\KeyboardUserControl.cs" />
     <Compile Include="UserManagement\ProfileManager.cs" />
     <Compile Include="UserManagement\UserManager.cs" />
     <Compile Include="Utility\Disclaimers.cs" />
@@ -733,6 +731,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UserControls\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

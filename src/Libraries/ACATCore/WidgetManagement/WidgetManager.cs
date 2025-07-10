@@ -63,8 +63,8 @@ namespace ACAT.Core.WidgetManagement
             _layout = new Layout();
             _rootWidget = new Widget(control);
 
-            Log.Debug("control name is : " + control.Name);
-            Log.Debug("_rootWidget.name is  : " + _rootWidget.Name);
+            Log.Debug("control name is " + control.Name);
+            Log.Debug("_rootWidget.name is " + _rootWidget.Name);
         }
 
         /// <summary>

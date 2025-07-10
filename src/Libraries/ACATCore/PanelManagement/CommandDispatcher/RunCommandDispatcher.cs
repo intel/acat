@@ -74,7 +74,7 @@ namespace ACAT.Core.PanelManagement.CommandDispatcher
         {
             IRunCommandHandler runCommand = Commands.Get(command);
 
-            bool retVal = runCommand != null && runCommand.Execute2(source, ref handled);
+            bool retVal = runCommand != null && runCommand.Execute(ref handled, source);
 
             return retVal;
         }

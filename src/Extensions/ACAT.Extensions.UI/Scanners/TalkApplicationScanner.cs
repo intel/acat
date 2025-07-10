@@ -15,17 +15,13 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.ThemeManagement;
 using ACAT.Core.TTSManagement;
-using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
-using ACAT.Core.WidgetManagement;
 using ACAT.Core.WordPredictionManagement;
 using ACAT.Extension;
 using ACAT.Extension.CommandHandlers;
+using ACAT.Scanners;
 using ACATResources;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Permissions;
 using System.Windows.Forms;
 
 namespace ACAT.Extensions.UI.Scanners
@@ -33,32 +29,11 @@ namespace ACAT.Extensions.UI.Scanners
     [ClassDescriptor("D9A5B53F-7119-445B-BDEA-F76EC53077F1",
                         "TalkApplicationScanner",
                         "Talk application main window")]
-    public partial class TalkApplicationScanner : Form, IScannerPanel, ISupportsStatusBar
+    public partial class TalkApplicationScanner : GenericScannerForm, ISupportsStatusBar
     {
-        /// <summary>
-        /// The command dispatcher object
-        /// </summary>
-        private readonly Dispatcher _dispatcher;
+        public override DefaultCommandDispatcher _dispatcher { get; }
+        public override RunCommandDispatcher CommandDispatcher => _dispatcher;
 
-        /// <summary>
-        /// The AlphabetScannerCommon object. Has a number of
-        /// helper functions
-        /// </summary>
-        private readonly ScannerCommon _scannerCommon;
-
-        /// <summary>
-        /// Should the scanner be dimmed
-        /// </summary>
-        private bool _dimScanner;
-
-        private String _panelClass;
-
-        //private UserControl _prevUserControl = null;
-
-        /// <summary>
-        /// The ScannerHelper object
-        /// </summary>
-        private ScannerHelper _scannerHelper;
 
         private TalkWindowTextBoxPhraseModeUserControl _textBoxPhraseModeUserControl;
 
@@ -66,113 +41,23 @@ namespace ACAT.Extensions.UI.Scanners
 
         private TalkWindowTextBoxUserControl _textBoxUserControl;
 
-        /// <summary>
-        /// Ensures that the window stays focused
-        /// </summary>
-        private WindowActiveWatchdog _windowActiveWatchdog;
-
-        /// <summary>
-        /// Initializes a new instance of the class.
-        /// </summary>
-        public TalkApplicationScanner()
+        public TalkApplicationScanner() : base()
         {
-            _scannerCommon = new ScannerCommon(this);
-
-
-            InitializeComponent();
-
-            subscribeToEvents();
-
-            _dimScanner = true;
-
-            _dispatcher = new Dispatcher(this);
+            _dispatcher = new TalkAppDispatcher(this);
         }
 
-        /// <summary>
-        /// Gets the command dispatcher object
-        /// </summary>
-        public RunCommandDispatcher CommandDispatcher
-        {
-            get { return _dispatcher; } //_alphabetScannerCommon.Dispatcher; }
-        }
-
-        /// <summary>
-        /// Gets the descriptor for this class
-        /// </summary>
-        public ClassDescriptorAttribute Descriptor => ClassDescriptorAttribute.GetDescriptor(GetType());
-
-        /// <summary>
-        /// Gets this form object
-        /// </summary>
-        public Form Form
-        {
-            get { return this; }
-        }
-
-        /// <summary>
-        /// Gets the panel class for the scanner
-        /// </summary>
-        public String PanelClass
-        {
-            get { return _panelClass; }
-        }
-
-        /// <summary>
-        /// Gets the PanelCommon object
-        /// </summary>
-        public IPanelCommon PanelCommon
-        { get { return _scannerCommon; } }
-
-        /// <summary>
-        /// Gets the scanner common object
-        /// </summary>
-        public ScannerCommon ScannerCommon
-        {
-            get { return _scannerCommon; }
-        }
-
-        /// <summary>
-        /// Gets the status bar control for this scanner
-        /// </summary>
         public ScannerStatusBar ScannerStatusBar
         {
             get { return ScannerCommon.StatusBar; }
         }
 
-        /// <summary>
-        /// Gets the synch object
-        /// </summary>
-        public SyncLock SyncObj
-        {
-            get { return _scannerCommon.SyncObj; }
-        }
 
-        /// <summary>
-        /// Gets the text controller object for this scanner
-        /// </summary>
-        public ITextController TextController
+        public override ITextController TextController
         {
             get { return _scannerCommon.TextController; }
         }
 
-        /// <summary>
-        /// Set the form style
-        /// </summary>
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                base.CreateParams.ExStyle |= Windows.WindowStyleFlags.WS_EX_COMPOSITED;
-                return base.CreateParams;
-            }
-        }
-
-        /// <summary>
-        /// Invoked to check if a scanner button should be enabled.  Uses context
-        /// to determine the 'enabled' state.
-        /// </summary>
-        /// <param name="arg">info about the scanner button</param>
-        public bool CheckCommandEnabled(CommandEnabledArg arg)
+        public override bool CheckCommandEnabled(CommandEnabledArg arg)
         {
             switch (arg.Command)
             {
@@ -211,89 +96,25 @@ namespace ACAT.Extensions.UI.Scanners
             return true;
         }
 
-        /// <summary>
-        /// Returns all the controls in the form (recusrively finds them)
-        /// </summary>
-        /// <param name="control">parent control</param>
-        /// <param name="type">type of control to look for</param>
-        /// <returns>list of controls</returns>
-        public IEnumerable<Control> GetAll(Control control, Type type)
+        public override bool HandleInitialize(StartupArg startupArg)
         {
-            var controls = control.Controls.Cast<Control>();
-
-            return controls.SelectMany(ctrl => GetAll(ctrl, type))
-                                      .Concat(controls)
-                                      .Where(c => c.GetType() == type);
-        }
-
-        /// <summary>
-        /// Intitialize the class
-        /// </summary>
-        /// <param name="startupArg">startup params</param>
-        /// <returns>true on cussess</returns>
-        public bool Initialize(StartupArg startupArg)
-        {
-            _panelClass = startupArg.PanelClass;
-
-            _scannerHelper = new ScannerHelper(this, startupArg);
-
-            bool retVal = _scannerCommon.Initialize(startupArg);
-
-            if (retVal)
-            {
-                _scannerCommon.SetStatusBar(statusStrip);
-            }
-
-            ControlBox = true;
 
             _scannerCommon.UserControlManager.GridScanIterations = Common.AppPreferences.GridScanIterations;
-
             _scannerCommon.UserControlManager.AddUserControlByKeyOrName(panelWordPrediction, "wordPrediction", "WordPredictionUserControl");
-
             _scannerCommon.UserControlManager.AddUserControlByKeyOrName(panelSentencePrediction, "sentencePrediction", "SentencePredictionUserControl");
-
             _scannerCommon.UserControlManager.AddUserControlByKeyOrName(panelKeyboard, "keyboard", "KeyboardQwertyUserControl");
-
             _textBoxUserControl = new TalkWindowTextBoxUserControl(this, panelTextBox);
             _textBoxPhraseModeUserControl = new TalkWindowTextBoxPhraseModeUserControl(this, panelTextBox);
 
             addTextBoxUserControl(_textBoxUserControl);
 
-            List<IUserControl> list = new List<IUserControl>();
-
-            UserControlManager.FindAllUserControls(this, list);
-
             Context.AppWordPredictionManager.ActiveWordPredictor.EvtModeChanged += ActiveWordPredictor_EvtModeChanged;
 
-            return retVal;
+            return true;
         }
 
-        /// <summary>
-        /// Invoked when the focus changes either in the active window or when the
-        /// active window itself changes.
-        /// </summary>
-        /// <param name="monitorInfo">Info about focused element</param>
-        public void OnFocusChanged(WindowActivityMonitorInfo monitorInfo)
+        protected override void HandlePause()
         {
-            _scannerCommon.OnFocusChanged(monitorInfo);
-        }
-
-        /// <summary>
-        /// Pauses animations
-        /// </summary>
-        public void OnPause()
-        {
-            Log.Debug("CALIBTEST TalkScanner OnPause. Pausing watchdog");
-            _windowActiveWatchdog?.Pause();
-
-            Log.Debug("CALIBTEST calling usercontrolmanager.pause");
-            _scannerCommon.UserControlManager.OnPause();
-
-            Log.Debug("CALIBTEST calling scannercommon2.pause");
-            _scannerCommon.OnPause(_dimScanner ?
-                                ScannerCommon.PauseDisplayMode.FadeScanner :
-                                ScannerCommon.PauseDisplayMode.None);
-
             if (panelTextBox.Controls.Count > 0)
             {
                 ITalkWindowTextBox tb = panelTextBox.Controls[0] as ITalkWindowTextBox;
@@ -301,101 +122,55 @@ namespace ACAT.Extensions.UI.Scanners
             }
         }
 
-        /// <summary>
-        /// Not used
-        /// </summary>
-        /// <param name="eventArg"></param>
-        /// <returns></returns>
-        public bool OnQueryPanelChange(PanelRequestEventArgs eventArg)
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// Resumes animation
-        /// </summary>
-        public void OnResume()
+        protected override void HandleResume()
         {
             if (panelTextBox.Controls.Count > 0)
             {
                 ITalkWindowTextBox tb = panelTextBox.Controls[0] as ITalkWindowTextBox;
                 tb.OnResume();
             }
+        }
 
-            Log.Debug("CALIBTEST TalkScanner OnResume. Resuming watchdog");
-            _windowActiveWatchdog?.Resume();
+        protected override void ScannerFormLoaded(object sender, EventArgs e)
+        {
+            var icon = ImageUtils.GetEntryAssemblyIcon();
+            if (icon != null)
+            {
+                Icon = icon;
+            }
 
-            _dimScanner = true;
+            _textBoxTalkWindow.Focus();
 
-            Log.Debug("CALIBTEST TalkScanner OnResume. calling user control manager.OnREsume");
-            _scannerCommon.UserControlManager.OnResume();
+            WordPredictionManager.Instance.ActiveWordPredictor.PredictionWordCount = 10;
 
-            Log.Debug("CALIBTEST TalkScanner OnResume. calling scannercommon2 resume");
-            _scannerCommon.OnResume();
+            _scannerCommon.OnLoad();
+
+            setColorScheme();
 
             _scannerCommon.ResizeToFitDesktop(this);
+
+            _windowActiveWatchdog = new WindowActiveWatchdog(this);
         }
 
-        /// <summary>
-        /// Triggered when the user actuates a widget
-        /// </summary>
-        /// <param name="widget">widget actuated</param>
-        /// <param name="handled">was this handled?</param>
-        public void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
+        protected override void ScannerShown(object sender, EventArgs e)
         {
-            //_alphabetScannerCommon.OnWidgetActuated(e, ref handled);
+            setModeLabel(Context.AppWordPredictionManager.ActiveWordPredictor.GetMode());
+
+            ScannerFocus.SetFocus(this);
         }
 
-        /// <summary>
-        /// Not used
-        /// </summary>
-        /// <param name="parent"></param>
-        /// <param name="widget"></param>
-        public void SetTargetControl(Form parent, Widget widget)
+        protected override void subscribeToEvents()
         {
+            Load += ScannerFormLoaded;
+            Shown += ScannerShown;
+            FormClosing += ScannerFormClosing;
         }
 
-        /// <summary>
-        /// Size of the client changed
-        /// </summary>
-        /// <param name="e">event args</param>
-        protected override void OnClientSizeChanged(EventArgs e)
+        protected override void updateControlsFromTheme(ColorScheme colorScheme)
         {
-            base.OnClientSizeChanged(e);
-            _scannerCommon.OnClientSizeChanged();
-        }
-
-        /// <summary>
-        /// Form is closing. Release resources
-        /// </summary>
-        /// <param name="e">closing param</param>
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            _scannerCommon.OnFormClosing(e);
-            base.OnFormClosing(e);
-        }
-
-        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
-        protected override void WndProc(ref Message m)
-        {
-            if (m.Msg == ACAT.Win32.Win32Constants.WM_NCLBUTTONDOWN) //cancels the drag this is IMP
-            {
-                if (m.WParam.ToInt32() == ACAT.Win32.Win32Constants.HTCAPTION) return;
-            }
-            else if (m.Msg == ACAT.Win32.Win32Constants.WM_SYSCOMMAND)
-            {
-                int command = m.WParam.ToInt32() & 0xfff0;
-                if (command == ACAT.Win32.Win32Constants.SC_MOVE)
-                {
-                    base.WndProc(ref m);
-                    return;
-                }
-            }
-
-            if (!_scannerCommon.HandleWndProc(m))
-            {
-                base.WndProc(ref m);
-            }
+            _textBoxTalkWindow.BackColor = colorScheme.Background;
+            _textBoxTalkWindow.ForeColor = colorScheme.Foreground;
+            panelTextBox.BackColor = colorScheme.Background;
         }
 
         private void ActiveWordPredictor_EvtModeChanged(WordPredictionModes newMode)
@@ -450,14 +225,6 @@ namespace ACAT.Extensions.UI.Scanners
             }
         }
 
-        /// <summary>
-        /// Window procedure
-        /// </summary>
-        /// <param name="m">windows message</param>
-        /// <summary>
-        /// Returns the previous para of text from where the cursor is
-        /// </summary>
-        /// <returns>text of previous para</returns>
         private String getPreviousPara()
         {
             int index = _textBoxTalkWindow.SelectionStart;
@@ -529,27 +296,6 @@ namespace ACAT.Extensions.UI.Scanners
                 }
             }
         }
-
-        /// <summary>
-        /// Removes all the watchdogs
-        /// </summary>
-        private void removeWatchdogs()
-        {
-            if (_windowActiveWatchdog != null)
-            {
-                _windowActiveWatchdog.Dispose();
-                _windowActiveWatchdog = null;
-            }
-        }
-
-        private void setColorScheme()
-        {
-            var colorScheme = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(ColorSchemes.TalkWindowSchemeName);
-            _textBoxTalkWindow.BackColor = colorScheme.Background;
-            _textBoxTalkWindow.ForeColor = colorScheme.Foreground;
-            panelTextBox.BackColor = colorScheme.Background;
-        }
-
         private void setModeLabel(WordPredictionModes mode)
         {
             Invoke(new MethodInvoker(delegate
@@ -581,80 +327,9 @@ namespace ACAT.Extensions.UI.Scanners
                 return;
             }
 
-            /*
-            using (var context = Context.AppAgentMgr.ActiveContext())
-            {
-                context.TextAgent().GetParagraphAtCaret(out textToSpeak);
-            }
-            */
-
             String textToSpeak = getPreviousPara();
             ttsAndLearn(textToSpeak);
         }
-
-        /// <summary>
-        /// Subscribes to the various events
-        /// </summary>
-        private void subscribeToEvents()
-        {
-            Load += TalkApplicationScanner_Load;
-            Shown += TalkApplicationScanner_Shown;
-            FormClosing += TalkApplicationScanner_FormClosing;
-        }
-
-        /// <summary>
-        /// Release resources and stop threads/timers
-        /// </summary>
-        private void TalkApplicationScanner_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            removeWatchdogs();
-
-            _scannerCommon.OnClosing();
-            _scannerCommon.Dispose();
-        }
-
-        /// <summary>
-        /// The form has loaded.  Perform initialization.
-        /// </summary>
-        private void TalkApplicationScanner_Load(object sender, EventArgs e)
-        {
-            var icon = ImageUtils.GetEntryAssemblyIcon();
-            if (icon != null)
-            {
-                Icon = icon;
-            }
-
-            _textBoxTalkWindow.Focus();
-
-            WordPredictionManager.Instance.ActiveWordPredictor.PredictionWordCount = 10;
-
-            _scannerCommon.OnLoad();
-
-            setColorScheme();
-
-            _scannerCommon.ResizeToFitDesktop(this);
-
-            _windowActiveWatchdog = new WindowActiveWatchdog(this);
-        }
-
-        /// <summary>
-        /// Event handler for when form is shown
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void TalkApplicationScanner_Shown(object sender, EventArgs e)
-        {
-            setModeLabel(Context.AppWordPredictionManager.ActiveWordPredictor.GetMode());
-
-            ScannerFocus.SetFocus(this);
-        }
-
-        /// <summary>
-        /// Key press event for the text box.  If user hit enter,
-        /// convert text to speech
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="keyPressEventArgs">event args</param>
         private void TextBoxTalkWindowOnKeyPress(object sender, KeyPressEventArgs keyPressEventArgs)
         {
             try
@@ -692,10 +367,6 @@ namespace ACAT.Extensions.UI.Scanners
             }
         }
 
-        /// <summary>
-        /// Converts the specified text to speech
-        /// </summary>
-        /// <param name="text">text to convert</param>
         private void textToSpeech(String text)
         {
             if (!String.IsNullOrEmpty(text))
@@ -708,10 +379,6 @@ namespace ACAT.Extensions.UI.Scanners
             }
         }
 
-        /// <summary>
-        /// Converts the current para to speech and notify app about this
-        /// </summary>
-        /// <param name="text">text to convert</param>
         private void ttsAndLearn(String text)
         {
             if (!String.IsNullOrEmpty(text))
@@ -742,16 +409,8 @@ namespace ACAT.Extensions.UI.Scanners
             }
         }
 
-        /// <summary>
-        /// Handles yes/no command, sets the choice and then
-        /// closes the scanner
-        /// </summary>
         private class CommandHandler : RunCommandHandler
         {
-            /// <summary>
-            /// Initializes a new instance of the class.
-            /// </summary>
-            /// <param name="cmd">the command to execute</param>
             public CommandHandler(String cmd)
                 : base(cmd)
             {
@@ -849,12 +508,7 @@ namespace ACAT.Extensions.UI.Scanners
                 return true;
             }
 
-            /// <summary>
-            /// Executes the command
-            /// </summary>
-            /// <param name="handled">true if it was handled</param>
-            /// <returns>true on success</returns>
-            public override bool Execute2(object source, ref bool handled)
+            public override bool Execute(ref bool handled, object source = null)
             {
                 handled = true;
 
@@ -876,16 +530,9 @@ namespace ACAT.Extensions.UI.Scanners
             }
         }
 
-        /// <summary>
-        /// Command dispatcher
-        /// </summary>
-        private class Dispatcher : DefaultCommandDispatcher
+        private class TalkAppDispatcher : DefaultCommandDispatcher
         {
-            /// <summary>
-            /// Initializes a new instance of the class.
-            /// </summary>
-            /// <param name="panel">the scanner object</param>
-            public Dispatcher(IScannerPanel panel)
+                            public TalkAppDispatcher(IScannerPanel panel)
                 : base(panel)
             {
                 Commands.Add(new CommandHandler("CmdTalkWindowClear"));

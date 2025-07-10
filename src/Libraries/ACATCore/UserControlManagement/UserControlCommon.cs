@@ -391,7 +391,7 @@ namespace ACAT.Core.UserControlManagement
                             break;
                         }
 
-                        Log.Debug("widget.Enabled set to : " + widget.Enabled + " for feature " + widget.SubClass);
+                        Log.Debug($"widget.Enabled set to: {widget.Enabled} for feature {widget.Name}");
                     }
                 }
             }

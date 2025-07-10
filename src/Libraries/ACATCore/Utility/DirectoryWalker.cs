@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace ACAT.Core.Utility
 {
@@ -83,6 +84,16 @@ namespace ACAT.Core.Utility
             Walk(dirFoundDelegate, null);
         }
 
+        private bool isSkippableDirectory(String dirPath)
+        {
+            String[] skipdirs = { "external", "ConvAssistApp", "Install" };
+
+            string dirName = Path.GetFileName(dirPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
+
+             return skipdirs.Any(skip =>
+                dirName.IndexOf(skip, StringComparison.OrdinalIgnoreCase) >= 0);
+        }
+
         /// <summary>
         /// Walks the directory.  If reecursive is true, goes
         /// into all the subfolders as well. Finds all the matching
@@ -92,7 +103,7 @@ namespace ACAT.Core.Utility
         /// <param name="recursive">set to true for recursive</param>
         public void Walk(OnFileFoundDelegate fileFoundDelegate, bool recursive = true)
         {
-            Walk(null, fileFoundDelegate);
+            Walk(null, fileFoundDelegate, recursive);
         }
 
         /// <summary>
@@ -118,8 +129,11 @@ namespace ACAT.Core.Utility
                 {
                     listFiles(_rootDir);
                 }
-
-                listDirs(_rootDir, recursive);
+                
+                if (recursive) 
+                {
+                    listDirs(_rootDir, recursive);
+                }
             }
         }
 
@@ -137,6 +151,11 @@ namespace ACAT.Core.Utility
 
                 foreach (var dir in dirs)
                 {
+                    if (isSkippableDirectory(dir))
+                    {
+                        continue;
+                    }
+
                     _dirFoundDelegate?.Invoke(dir);
 
                     if (_fileFoundDelegate != null)
@@ -167,7 +186,7 @@ namespace ACAT.Core.Utility
         /// <param name="dirPath">the folder</param>
         private void listFiles(string dirPath)
         {
-            if (dirPath.Contains("\\External"))
+            if (isSkippableDirectory(dirPath))
             {
                 return;
             }

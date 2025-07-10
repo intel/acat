@@ -116,7 +116,7 @@ namespace ACAT.Core.AnimationManagement
             }
             else
             {
-                Log.Debug("CALIBTEST: UserControlAnimationManager.Start.  " + _firstAnimation.Name);
+                Log.Debug("CALIBTEST: UserControlAnimationManager.Start.");
                 Transition(_firstAnimation);
             }
         }

@@ -63,6 +63,7 @@
     <Content Include="en\*.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="en\DashboardUserControl.xml" />
     <Content Include="es\*.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

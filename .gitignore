@@ -358,3 +358,5 @@ src/Redistributable/
 src/Setup/ACATSetup*.exe
 src/Setup/*.nsi
 src/Applications/ACATConfigurator/*
+
+.vscode/

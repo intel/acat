@@ -49,7 +49,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
             }
             catch (Exception ex)
             {
-                Log.Debug("*** Could not send TTS request over http to " + Url + ". Exception: " + ex);
+                Log.Exception("*** Could not send TTS request over http to " + Url + ". Exception: " + ex);
             }
         }
     }

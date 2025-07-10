@@ -122,7 +122,7 @@ namespace ACAT.Extension.CommandHandlers
             }
             catch (Exception e)
             {
-                Log.Debug("Error creating dialog of type " + name + ". Exception: " + e);
+                Log.Exception("Error creating dialog of type " + name + ". Exception: " + e);
             }
         }
     }

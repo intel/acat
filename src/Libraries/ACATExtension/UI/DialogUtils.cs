@@ -188,7 +188,7 @@ namespace ACAT.Extension
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
@@ -217,7 +217,7 @@ namespace ACAT.Extension
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
@@ -250,7 +250,7 @@ namespace ACAT.Extension
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
@@ -279,7 +279,7 @@ namespace ACAT.Extension
             }
             catch (Exception e)
             {
-                Log.Debug("Error creating task switcher dialog. Exception: " + e);
+                Log.Exception("Error creating task switcher dialog. Exception: " + e);
             }
         }
 

@@ -136,7 +136,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("ConvAssist Predict Exception " + ex);
+                Log.Exception("ConvAssist Predict Exception " + ex);
                 response = new WordPredictionResponse(request, new List<String>(), false);
             }
             finally
@@ -226,7 +226,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             }
             catch (Exception words)
             {
-                Log.Debug("ConvAssist Predict Words " + words);
+                Log.Exception("ConvAssist Predict Words " + words);
             }
             // Keyword to split between predictions
             retVal.Add("&LETTERS");
@@ -254,7 +254,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             }
             catch (Exception letters)
             {
-                Log.Debug("ConvAssist Predict letters " + letters);
+                Log.Exception("ConvAssist Predict letters " + letters);
             }
             return retVal;
         }

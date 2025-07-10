@@ -360,7 +360,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("startStopPlotDataTimer | Exception: " + e.ToString());
+                    Log.Exception("startStopPlotDataTimer | Exception: " + e.ToString());
                 }
             }
             else
@@ -377,7 +377,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("startStopPlotDataTimer | Exception: " + e.ToString());
+                    Log.Exception("startStopPlotDataTimer | Exception: " + e.ToString());
                 }
             }
         }
@@ -420,7 +420,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("startStopProcessDataTimer | Exception: " + e.ToString());
+                    Log.Exception("startStopProcessDataTimer | Exception: " + e.ToString());
                 }
             }
             else
@@ -437,7 +437,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("startStopProcessDataTimer | Exception: " + e.ToString());
+                    Log.Exception("startStopProcessDataTimer | Exception: " + e.ToString());
                 }
             }
         }

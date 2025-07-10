@@ -164,7 +164,7 @@ namespace ACAT.Core.AgentManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 

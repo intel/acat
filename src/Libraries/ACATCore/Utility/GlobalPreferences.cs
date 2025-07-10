@@ -53,7 +53,7 @@ namespace ACAT.Core.Utility
 
             if (retVal == null)
             {
-                Log.Debug("Could not load global preferences from " + prefFile + ". Creating a new one");
+                Log.Error($"Could not load global preferences from {prefFile}. Creating a new one.");
                 if (loadDefaultsOnFail)
                 {
                     retVal = new GlobalPreferences();

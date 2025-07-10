@@ -349,7 +349,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
@@ -473,7 +473,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     if (disposing)
                     {
@@ -600,7 +600,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug("Exception " + ex);
+                    Log.Exception("Exception " + ex);
                 }
             }
             else if (gesture == "CALIB_END") // end camera calibration
@@ -776,7 +776,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
             }
             catch (Exception ex)
             {
-                Log.Debug("acatVision threw an exception:   " + ex.ToString());
+                Log.Exception("acatVision threw an exception:   " + ex.ToString());
                 Log.Exception(ex);
             }
 

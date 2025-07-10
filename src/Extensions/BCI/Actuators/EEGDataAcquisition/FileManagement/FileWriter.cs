@@ -173,8 +173,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                             }
                             catch (Exception ex)
                             {
-                                Log.Debug(data[channelIdx, sampleIdx].ToString());
-                                Log.Debug(ex.ToString());
+                                Log.Exception(data[channelIdx, sampleIdx].ToString());
+                                Log.Exception(ex.ToString());
                             }
                             if (channelIdx < numChannels - 1)
                                 stringBuilder.Append(", ");
@@ -189,7 +189,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
             finally
             {

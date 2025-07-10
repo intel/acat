@@ -155,7 +155,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception e)
             {
-                Log.Debug("exception: " + e);
+                Log.Exception("Exception: " + e);
             }
             Log.Debug("EXIT");
         }
@@ -289,7 +289,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
@@ -497,7 +497,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception e)
             {
-                Log.Debug("exception: " + e);
+                Log.Exception("Exception: " + e);
                 _currentFocusedElement = null;
             }
         }

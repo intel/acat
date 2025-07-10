@@ -272,7 +272,7 @@ namespace ACAT.Core.WidgetManagement
             }
             catch (Exception e)
             {
-                Log.Debug("Error creating widget " + widgetName, e);
+                Log.Exception("Error creating widget " + widgetName, e);
                 widget = null;
             }
 

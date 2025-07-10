@@ -115,12 +115,12 @@ namespace ACAT.Core.TTSManagement
                     ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(type);
                     if (descriptor != null && Guid.Equals(guid, descriptor.Id))
                     {
-                        Log.Debug("Found TTS engine of type " + type);
+                        Log.Debug($"Found TTS engine of type {type}");
                         return type;
                     }
                 }
 
-                Log.Debug("Could not find TTS engine for id " + guid.ToString());
+                Log.Error($"Could not find TTS engine for id {guid.ToString()}");
                 return null;
             }
         }
@@ -282,12 +282,12 @@ namespace ACAT.Core.TTSManagement
                 ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(type);
                 if (descriptor != null && Equals(guid, descriptor.Id))
                 {
-                    Log.Debug("Found TTS Engine of type " + type);
+                    Log.Debug($"Found TTS Engine of type {type}");
                     return type;
                 }
             }
 
-            Log.Debug("Could not find TTS Engine for id " + guid);
+            Log.Error($"Could not find TTS Engine for id {guid}");
             return null;
         }
 
@@ -335,7 +335,7 @@ namespace ACAT.Core.TTSManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -414,7 +414,7 @@ namespace ACAT.Core.TTSManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Could get types from assembly " + dllName + ". Exception : " + ex.ToString());
+                Log.Exception("Could get types from assembly " + dllName + ". Exception : " + ex.ToString());
             }
         }
     }

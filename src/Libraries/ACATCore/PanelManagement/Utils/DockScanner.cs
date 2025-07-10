@@ -85,7 +85,7 @@ namespace ACAT.Core.PanelManagement
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug(ex.ToString());
+                    Log.Exception(ex.ToString());
                     _automationElementDockTo = null;
                 }
             }
@@ -124,7 +124,7 @@ namespace ACAT.Core.PanelManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {

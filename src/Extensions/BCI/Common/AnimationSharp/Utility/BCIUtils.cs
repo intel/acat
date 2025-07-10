@@ -94,7 +94,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception es)
             {
-                Log.Debug("Error no highlight log saved: " + es);
+                Log.Exception("Error no highlight log saved: " + es);
             }
             return sb.ToString();
         }

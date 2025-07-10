@@ -233,7 +233,7 @@ namespace ACAT.Core.Extensions
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
             return result;
@@ -287,7 +287,7 @@ namespace ACAT.Core.Extensions
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 

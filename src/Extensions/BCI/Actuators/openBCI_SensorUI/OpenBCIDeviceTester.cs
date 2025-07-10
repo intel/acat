@@ -710,7 +710,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception e)
             {
-                Log.Debug("_mainForm_EvtButtonExitClicked_DEBUG exception: " + e.ToString());
+                Log.Exception("_mainForm_EvtButtonExitClicked_DEBUG exception: " + e.ToString());
             }
         }
 
@@ -1120,7 +1120,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception ex)
             {
-                Log.Debug("OPTSEN: OpenBCIDeviceTester | Failed to open optical sensor COM port. " + ex.Message);
+                Log.Exception("OPTSEN: OpenBCIDeviceTester | Failed to open optical sensor COM port. " + ex.Message);
                 return false;
             }
         }

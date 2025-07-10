@@ -88,7 +88,7 @@ namespace ACAT.Core.UserControlManagement
             }
             catch (Exception es)
             {
-                Log.Debug("Error geting widgets: " + es.ToString());
+                Log.Exception("Error geting widgets: " + es.ToString());
             }
             return Widgets;
         }
@@ -298,7 +298,7 @@ namespace ACAT.Core.UserControlManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Unable to load userControl " + userControlName + ", exception: " + ex.ToString());
+                Log.Exception("Unable to load userControl " + userControlName + ", exception: " + ex.ToString());
                 retVal = false;
             }
 
@@ -314,7 +314,7 @@ namespace ACAT.Core.UserControlManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Unable to load userControl " + userControlName + ", exception: " + ex.ToString());
+                Log.Exception("Unable to load userControl " + userControlName + ", exception: " + ex.ToString());
                 retVal = false;
             }
 

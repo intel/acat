@@ -264,7 +264,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             }
             catch (Exception e)
             {
-                //Log.Debug(e.getClass().getName()); e)
+                //Log.Exception(e.getClass().getName()); e)
                 Log.Debug(e.Message);
             }
         }
@@ -300,7 +300,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 }
                 catch (Exception e)
                 {
-                    Log.Debug(e.Message);
+                    Log.Exception(e.Message);
                 }
             }
 

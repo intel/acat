@@ -52,7 +52,7 @@ namespace ACAT.Core.Utility
                 catch (Exception ex)
                 {
                     disposePipeClient();
-                    Log.Debug("Could not communicate with ACATWatcher. Will retry" + ex.ToString());
+                    Log.Exception("Could not communicate with ACATWatcher. Will retry" + ex.ToString());
                 }
             }
         }
@@ -78,7 +78,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug("Could not communicate with ACATWatch. " + ex.ToString());
+                Log.Exception("Could not communicate with ACATWatch. " + ex.ToString());
                 try
                 {
                     disposePipeClient();
@@ -95,7 +95,7 @@ namespace ACAT.Core.Utility
                 }
                 catch (Exception ex1)
                 {
-                    Log.Debug(ex1.ToString());
+                    Log.Exception(ex1.ToString());
                 }
             }
 
@@ -142,7 +142,7 @@ namespace ACAT.Core.Utility
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug("Could not send quit message to ACATWatcher. " + ex.ToString());
+                    Log.Exception("Could not send quit message to ACATWatcher. " + ex.ToString());
                 }
             }
         }

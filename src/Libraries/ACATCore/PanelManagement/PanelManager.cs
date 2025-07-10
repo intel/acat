@@ -244,7 +244,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         public void CloseCurrentPanel()
         {
-            Log.Debug();
+            Log.Verbose();
 
             if (_stack.Count > 0)
             {
@@ -567,7 +567,7 @@ namespace ACAT.Core.PanelManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 Context.EvtCultureChanged -= Context_EvtCultureChanged;
 

@@ -175,7 +175,7 @@ namespace ACAT.Extensions.UI.Scanners
 
             if (!_scannerCommon.Initialize(startupArg))
             {
-                Log.Debug("Could not initialize form " + Name);
+                Log.Warning("Could not initialize form " + Name);
                 return false;
             }
 
@@ -199,7 +199,7 @@ namespace ACAT.Extensions.UI.Scanners
         /// </summary>
         public void OnPause()
         {
-            Log.Debug();
+            Log.Verbose();
 
             _scannerCommon.OnPause();
         }
@@ -219,7 +219,7 @@ namespace ACAT.Extensions.UI.Scanners
         /// </summary>
         public void OnResume()
         {
-            Log.Debug();
+            Log.Verbose();
 
             _scannerCommon.OnResume();
         }

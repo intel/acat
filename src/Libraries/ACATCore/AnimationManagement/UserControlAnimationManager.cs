@@ -125,7 +125,7 @@ namespace ACAT.Core.AnimationManagement
         {
             try
             {
-                Log.Debug();
+                Log.Verbose();
 
                 Log.Debug("_currentPanel: " + _currentPanel);
 
@@ -156,7 +156,7 @@ namespace ACAT.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
@@ -320,7 +320,7 @@ namespace ACAT.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
             finally
             {

@@ -98,7 +98,7 @@ namespace ACAT.Core.Utility
             {
                 if (disposing)
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     try
                     {
@@ -107,7 +107,7 @@ namespace ACAT.Core.Utility
                     }
                     catch (Exception e)
                     {
-                        Log.Debug(e.ToString());
+                        Log.Exception(e.ToString());
                     }
 
                     _form = null;
@@ -153,7 +153,7 @@ namespace ACAT.Core.Utility
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug(ex.ToString());
+                    Log.Exception(ex.ToString());
                 }
             }
         }
@@ -163,7 +163,7 @@ namespace ACAT.Core.Utility
         /// </summary>
         private void focusThisForm()
         {
-            Log.Debug();
+            Log.Verbose();
 
             try
             {
@@ -195,7 +195,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
             Log.Debug("Returning");

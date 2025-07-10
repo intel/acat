@@ -211,11 +211,11 @@ namespace ACAT.Core.InputActuators
             }
             catch (SocketException se)
             {
-                Log.Debug(se.ToString());
+                Log.Exception(se.ToString());
             }
             catch (Exception e)
             {
-                Log.Debug(e.ToString());
+                Log.Exception(e.ToString());
             }
             if (listenThread != null)
             {

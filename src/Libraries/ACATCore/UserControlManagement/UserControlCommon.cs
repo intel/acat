@@ -193,7 +193,7 @@ namespace ACAT.Core.UserControlManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
@@ -212,7 +212,7 @@ namespace ACAT.Core.UserControlManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
@@ -221,7 +221,7 @@ namespace ACAT.Core.UserControlManagement
             // Check to see if Dispose has already been called.
             if (!disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {

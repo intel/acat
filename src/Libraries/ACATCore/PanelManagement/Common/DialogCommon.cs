@@ -343,14 +343,14 @@ namespace ACAT.Core.PanelManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
                     PanelManager.Instance.EvtScannerShow -= Instance_EvtScannerShow;
 
                     // dispose all managed resources.
-                    Log.Debug();
+                    Log.Verbose();
 
                     _animationManager?.Dispose();
 

@@ -173,7 +173,7 @@ namespace ACAT.Core.ThemeManagement
             var themeDir = GetThemeDir(name);
             if (String.IsNullOrEmpty(themeDir))
             {
-                Log.Debug("Could not find Theme " + name + ", using default");
+                Log.Error($"Could not find Theme {name}, using default.");
                 themeDir = GetThemeDir(DefaultThemeName);
                 if (String.IsNullOrEmpty(themeDir))
                 {
@@ -185,7 +185,7 @@ namespace ACAT.Core.ThemeManagement
 
             var themeFile = Path.Combine(themeDir, ThemeConfigFileName);
 
-            Log.Debug("Creating Theme " + name + ", themeDir: " + themeDir);
+            Log.Debug($"Creating Theme {name}, themeDir: {themeDir}");
 
             // create the Theme object. This parses the Theme xml file and
             // creates the Theme object
@@ -196,11 +196,11 @@ namespace ACAT.Core.ThemeManagement
 
                 _activeTheme = theme;
                 ActiveThemeName = name;
-                Log.Debug("Created Theme successfully. active Theme is " + _activeTheme.Name);
+                Log.Debug("$Created Theme successfully. active Theme is {_activeTheme.Name}.");
             }
             else
             {
-                Log.Debug("Error creating Theme");
+                Log.Error($"Error creating theme with name {theme}");
                 retVal = false;
             }
 
@@ -216,7 +216,7 @@ namespace ACAT.Core.ThemeManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {

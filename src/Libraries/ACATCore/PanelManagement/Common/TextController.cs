@@ -207,11 +207,11 @@ namespace ACAT.Core.PanelManagement
             }
             catch (InvalidAgentContextException iace)
             {
-                Log.Debug("Agent Context is invalid " + iace);
+                Log.Exception("Agent Context is invalid " + iace);
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
             finally
             {
@@ -414,7 +414,7 @@ namespace ACAT.Core.PanelManagement
         /// <returns>true on success</returns>
         public bool HandlePunctuation(ArrayList modifiers, char punctuation)
         {
-            Log.Debug();
+            Log.Verbose();
 
             try
             {

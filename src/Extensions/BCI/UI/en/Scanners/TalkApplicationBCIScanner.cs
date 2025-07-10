@@ -947,7 +947,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             }
             catch (Exception es)
             {
-                Log.Debug("BCI LOG | " + es.Message.ToString());
+                Log.Exception("BCI LOG | " + es.Message.ToString());
             }
         }
 
@@ -993,7 +993,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error in BCI Init state: " + bCIState + "  Messagge: " + ex.Message);
+                Log.Exception("BCI LOG | Error in BCI Init state: " + bCIState + "  Messagge: " + ex.Message);
             }
         }
 
@@ -1083,7 +1083,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             }
             catch (Exception e)
             {
-                Log.Debug("BCI LOG | Error in ExitApplication() BCI: " + e.Message);
+                Log.Exception("BCI LOG | Error in ExitApplication() BCI: " + e.Message);
             }
         }
 

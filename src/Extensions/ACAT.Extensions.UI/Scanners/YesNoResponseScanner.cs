@@ -163,7 +163,7 @@ namespace ACAT.Extensions.UI.Menus
         {
             get
             {
-                Log.Debug();
+                Log.Verbose();
                 return Windows.SetFormStyles(base.CreateParams);
             }
         }
@@ -202,7 +202,7 @@ namespace ACAT.Extensions.UI.Menus
         /// <returns>true on success</returns>
         public bool Initialize(StartupArg startupArg)
         {
-            Log.Debug();
+            Log.Verbose();
             PanelClass = startupArg.PanelClass;
             startupCommandArg = startupArg.Arg;
             this.startupArg = startupArg;
@@ -211,7 +211,7 @@ namespace ACAT.Extensions.UI.Menus
 
             if (!scannerCommon.Initialize(startupArg))
             {
-                Log.Debug("Could not initialize form " + Name);
+                Log.Warning("Could not initialize form " + Name);
                 return false;
             }
 
@@ -234,7 +234,7 @@ namespace ACAT.Extensions.UI.Menus
         /// </summary>
         public virtual void OnPause()
         {
-            Log.Debug();
+            Log.Verbose();
 
             scannerCommon.OnPause();
         }
@@ -254,7 +254,7 @@ namespace ACAT.Extensions.UI.Menus
         /// </summary>
         public virtual void OnResume()
         {
-            Log.Debug();
+            Log.Verbose();
 
             scannerCommon.OnResume();
         }
@@ -347,7 +347,7 @@ namespace ACAT.Extensions.UI.Menus
         /// </summary>
         private void YesNoResponseScanner_Load(object sender, EventArgs e)
         {
-            Log.Debug();
+            Log.Verbose();
 
             scannerCommon.OnLoad();
 

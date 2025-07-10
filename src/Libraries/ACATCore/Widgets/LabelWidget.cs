@@ -145,7 +145,7 @@ namespace ACAT.Core.Widgets
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     if (disposing)
                     {
@@ -197,7 +197,7 @@ namespace ACAT.Core.Widgets
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 

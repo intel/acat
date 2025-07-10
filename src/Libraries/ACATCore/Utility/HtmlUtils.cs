@@ -166,7 +166,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug("Error loading HTML script: " + ex.Message);
+                Log.Exception("Error loading HTML script: " + ex.Message);
             }
         }
 

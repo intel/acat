@@ -444,7 +444,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
             }
             catch (Exception ex)
             {
-                Log.Debug("exception caught! ex=" + ex.Message);
+                Log.Exception("Exception caught! ex=" + ex.Message);
             }
 
             return true;
@@ -479,7 +479,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 
@@ -509,7 +509,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
             }
             catch (Exception ex)
             {
-                Log.Debug("exception caught! ex=" + ex.Message);
+                Log.Exception("Exception caught! ex=" + ex.Message);
             }
 
             return true;
@@ -559,7 +559,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 
@@ -616,7 +616,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -733,7 +733,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
             }
             catch (Exception ex)
             {
-                Log.Debug("Error setting TTS settings " + ex);
+                Log.Exception("Error setting TTS settings " + ex);
             }
         }
 
@@ -752,7 +752,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
             }
             catch (Exception ex)
             {
-                Log.Debug("Invalid bookmark " + e.Bookmark + ", exception: " + ex);
+                Log.Exception("Invalid bookmark " + e.Bookmark + ", exception: " + ex);
             }
         }
 

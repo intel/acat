@@ -136,7 +136,7 @@ namespace ACAT.Core.UserManagement
             {
                 MessageBox.Show("Error creating dir. ex: " + ex);
 
-                Log.Debug(ex.ToString());
+                long.Exception(ex.ToString());
                 retVal = false;
             }
 

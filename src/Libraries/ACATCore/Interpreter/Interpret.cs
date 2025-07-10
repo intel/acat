@@ -228,7 +228,7 @@ namespace ACAT.Core.Interpreter
             }
             catch (Exception e)
             {
-                Log.Debug("Error executing verb " + actionVerb.Action + ". Exception: " + e.ToString());
+                Log.Exception("Error executing verb " + actionVerb.Action + ". Exception: " + e.ToString());
                 retVal = false;
             }
 

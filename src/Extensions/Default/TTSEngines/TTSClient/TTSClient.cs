@@ -420,7 +420,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
             }
             catch (Exception ex)
             {
-                Log.Debug("exception caught! ex=" + ex.Message);
+                Log.Exception("Exception caught! ex=" + ex.Message);
             }
 
             return true;
@@ -448,7 +448,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 
@@ -481,7 +481,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
             }
             catch (Exception ex)
             {
-                Log.Debug("exception caught! ex=" + ex.Message);
+                Log.Exception("Exception caught! ex=" + ex.Message);
             }
 
             return true;
@@ -515,7 +515,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 
@@ -567,7 +567,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -621,7 +621,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
             }
             catch (Exception ex)
             {
-                Log.Debug("Could not create temp directory for TTSClient. " + ex);
+                Log.Exception("Could not create temp directory for TTSClient. " + ex);
                 path = ".\\";
             }
 
@@ -806,7 +806,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
             }
             catch (Exception ex)
             {
-                Log.Debug("Error writing to temp file " + fileName + ". Exception: " + ex);
+                Log.Exception("Error writing to temp file " + fileName + ". Exception: " + ex);
                 return false;
             }
 

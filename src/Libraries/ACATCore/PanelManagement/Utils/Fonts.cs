@@ -81,7 +81,7 @@ namespace ACAT.Core.PanelManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Could not add font file " + fontFileName + ", exception: " + ex);
+                Log.Exception("Could not add font file " + fontFileName + ", exception: " + ex);
                 retVal = false;
             }
             return retVal;

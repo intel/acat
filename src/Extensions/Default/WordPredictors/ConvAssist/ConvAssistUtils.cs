@@ -146,7 +146,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             }
             catch (Exception es)
             {
-                Log.Debug("ConvAssist Predict " + es);
+                Log.Exception("ConvAssist Predict " + es);
             }
             return newList;
         }

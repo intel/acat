@@ -661,7 +661,7 @@ namespace ACAT.Core.AgentManagement
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public void OnPanelClosed(String panelClass)
         {
-            Log.Debug();
+            Log.Verbose();
             Log.Debug("panelClass : " + panelClass);
             Log.Debug(" currentAgent: " + _currentAgent);
             if (_currentAgent != null)
@@ -1100,7 +1100,7 @@ namespace ACAT.Core.AgentManagement
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug(ex.ToString());
+                    Log.Exception(ex.ToString());
                 }
                 finally
                 {
@@ -1209,7 +1209,7 @@ namespace ACAT.Core.AgentManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -1413,7 +1413,7 @@ namespace ACAT.Core.AgentManagement
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug(ex.ToString());
+                    Log.Exception(ex.ToString());
                 }
 
                 _notifyTextChangedLock = false;
@@ -1422,7 +1422,7 @@ namespace ACAT.Core.AgentManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
             finally
             {

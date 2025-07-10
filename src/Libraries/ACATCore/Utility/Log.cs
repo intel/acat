@@ -149,7 +149,7 @@ namespace ACAT.Core.Utility
         /// <summary>
         /// Logs the name of the function that called this function.
         /// </summary>
-        public static void Debug()
+        public static void Verbose()
         {
 #if !DEBUG
             if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugMessagesEnable)

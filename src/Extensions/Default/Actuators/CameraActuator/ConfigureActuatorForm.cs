@@ -117,7 +117,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
         private void _videoWindowFinder_EvtVideoWindowDisplayed(IntPtr handle)
         {
-            Log.Debug();
+            Log.Verbose();
 
             try
             {
@@ -319,7 +319,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 

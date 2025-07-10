@@ -102,7 +102,7 @@ namespace ACAT.Extensions.AppAgents.TalkApplicationScannerAgent
         /// <param name="handled">set to true if handled</param>
         public override void OnFocusChanged(WindowActivityMonitorInfo monitorInfo, ref bool handled)
         {
-            Log.Debug();
+            Log.Verbose();
 
             _windowHandle = monitorInfo.FgHwnd;
 

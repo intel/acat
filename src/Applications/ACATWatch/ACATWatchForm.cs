@@ -1448,7 +1448,7 @@ namespace ACAT.Applications.ACATWatch
             }
             catch (Exception ex)
             {
-                Log.Debug("Failed to start pipe server " + ex.ToString());
+                Log.Exception("Failed to start pipe server " + ex.ToString());
             }
         }
 
@@ -1490,7 +1490,7 @@ namespace ACAT.Applications.ACATWatch
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.Message);
+                Log.Exception(ex.Message);
             }
         }
     }

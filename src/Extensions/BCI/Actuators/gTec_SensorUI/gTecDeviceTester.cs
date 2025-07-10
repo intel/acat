@@ -235,7 +235,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     }
                     catch (Exception ex)
                     {
-                        Log.Debug("gTecDeviceTester | bluetoothResultHandler | Exception: " + ex.Message);
+                        Log.Exception("gTecDeviceTester | bluetoothResultHandler | Exception: " + ex.Message);
                     }
 
                     // We were seeing if device could be connected to from the start of the testing process
@@ -696,7 +696,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception e)
             {
-                Log.Debug("_mainForm_EvtButtonExitClicked_DEBUG exception: " + e.ToString());
+                Log.Exception("_mainForm_EvtButtonExitClicked_DEBUG exception: " + e.ToString());
             }
         }
     }

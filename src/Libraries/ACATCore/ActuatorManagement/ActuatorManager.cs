@@ -382,7 +382,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="enableConfigure">should the "configure" be enabled</param>
         public void OnEndCalibration(IActuator source, String errorMessage = "", bool enableConfigure = true)
         {
-            Log.Debug();
+            Log.Verbose();
             Log.Debug("Calling isCalibratingActuator");
 
             if (isCalibratingActuator(source))
@@ -757,7 +757,7 @@ namespace ACAT.Core.ActuatorManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -1218,7 +1218,7 @@ namespace ACAT.Core.ActuatorManagement
                 return;
             }
 
-            Log.Debug();
+            Log.Verbose();
 
             var delegates = EvtSwitchHook.GetInvocationList();
             foreach (var del in delegates)

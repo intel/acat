@@ -940,7 +940,7 @@ namespace ACAT.Core.WidgetManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
             return true;
@@ -1169,7 +1169,7 @@ namespace ACAT.Core.WidgetManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {

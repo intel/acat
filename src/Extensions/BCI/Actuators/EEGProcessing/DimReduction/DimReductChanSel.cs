@@ -85,7 +85,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
             }
             return true;
         }

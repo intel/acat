@@ -630,7 +630,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
             }
             return result;
         }
@@ -702,7 +702,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
             }
 
             yLimMax = scale;
@@ -781,7 +781,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.Message);
+                Log.Exception(ex.Message);
             }
         }
     }

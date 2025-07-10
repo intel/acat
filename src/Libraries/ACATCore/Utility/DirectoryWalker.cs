@@ -29,7 +29,7 @@ namespace ACAT.Core.Utility
     /// </remarks>
     /// <param name="rootDir">directory to walk</param>
     /// <param name="fileWildCard">files to find</param>
-    public class DirectoryWalker(String rootDir, String fileWildCard)
+    public class DirectoryWalker
     {
         /// <summary>
         /// Invoked when a directory is found
@@ -44,12 +44,12 @@ namespace ACAT.Core.Utility
         /// <summary>
         /// The directory to walk
         /// </summary>
-        private readonly String _rootDir = rootDir;
+        private readonly String _rootDir;
 
         /// <summary>
         /// Files to look for
         /// </summary>
-        private String _wildCard = fileWildCard;
+        private String _wildCard;
 
         /// <summary>
         /// Initialzies an instance of the class.  Finds all
@@ -60,6 +60,16 @@ namespace ACAT.Core.Utility
         {
         }
         
+        public DirectoryWalker(String rootDir, String fileWildCard)
+        {
+            if (String.IsNullOrEmpty(rootDir) || !Directory.Exists(rootDir))
+            {
+                throw new DirectoryNotFoundException($"Directory not found: {rootDir}");
+            }
+            _rootDir = rootDir;
+            _wildCard = fileWildCard;
+        }
+
         private bool IsSkippableDirectory(String dirPath)
         {
             String[] skipdirs = { "external", "ConvAssistApp", "Install" };
@@ -72,12 +82,12 @@ namespace ACAT.Core.Utility
 
         public void Walk(OnDirectoryFoundDelegate dirFoundDelegate, bool recursive = false )
         {
-            
+            Walk(dirFoundDelegate, null, recursive);   
         }
 
         public void Walk(OnFileFoundDelegate fileFoundDelegate, bool recursive = false )
         {
-
+            Walk(null, fileFoundDelegate, recursive);
         }
         
         /// <summary>
@@ -88,8 +98,8 @@ namespace ACAT.Core.Utility
         /// <param name="dirFoundDelegate">Invoked when a subfolder is found</param>
         /// <param name="fileFoundDelegate">Invoked when a file is found</param>
         /// <param name="recursive">Set to true for recursive. Default false</param>
-        public void Walk(OnDirectoryFoundDelegate dirFoundDelegate = null,
-                        OnFileFoundDelegate fileFoundDelegate = null,
+        public void Walk(OnDirectoryFoundDelegate dirFoundDelegate,
+                        OnFileFoundDelegate fileFoundDelegate,
                         bool recursive = false)
         {
             if (Directory.Exists(_rootDir) && (dirFoundDelegate != null || fileFoundDelegate != null))
@@ -103,12 +113,12 @@ namespace ACAT.Core.Utility
 
                 if (fileFoundDelegate != null)
                 {
-                    listFiles(_rootDir);
+                    ListFiles(_rootDir);
                 }
 
                 if (recursive)
                 {
-                    listDirs(_rootDir, recursive);
+                    ListDirs(_rootDir, recursive);
                 }
             }
         }
@@ -127,7 +137,7 @@ namespace ACAT.Core.Utility
 
                 foreach (var dir in dirs)
                 {
-                    if (isSkippableDirectory(dir))
+                    if (IsSkippableDirectory(dir))
                     {
                         continue;
                     }
@@ -136,12 +146,12 @@ namespace ACAT.Core.Utility
 
                     if (_fileFoundDelegate != null)
                     {
-                        listFiles(dir);
+                        ListFiles(dir);
                     }
 
                     if (recursive)
                     {
-                        listDirs(dir, recursive);
+                        ListDirs(dir, recursive);
                     }
                 }
             }
@@ -155,7 +165,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.message);
+                Log.Exception(ex.Message);
             }
         }
 
@@ -166,7 +176,7 @@ namespace ACAT.Core.Utility
         /// <param name="dirPath">the folder</param>
         private void ListFiles(string dirPath)
         {
-            if (isSkippableDirectory(dirPath))
+            if (IsSkippableDirectory(dirPath))
             {
                 return;
             }

@@ -280,7 +280,7 @@ namespace ACAT.Core.Onboarding
             loadOnboardingExtensionsIntoCache(".");
         }
 
-        private void loadOnboardingExtensionsIntoCache(String dir, bool resursive = true)
+        private void loadOnboardingExtensionsIntoCache(String dir, bool recursive = true)
         {
 #if FIXME
             var walker = new DirectoryWalker(dir, "*.dll");

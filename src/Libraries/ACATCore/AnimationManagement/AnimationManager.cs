@@ -571,7 +571,7 @@ namespace ACAT.Core.AnimationManagement
                 }
                 else
                 {
-                    Log.Warning("Did not actuate.  Could not find widget  " + widgetName);
+                    Log.Warn("Did not actuate.  Could not find widget  " + widgetName);
                 }
             }
         }

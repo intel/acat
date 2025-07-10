@@ -288,7 +288,7 @@ namespace ACAT.Core.ActuatorManagement
                     }
                     else
                     {
-                        Log.Warning("Warning.  Switch " + actuatorSwitch.Name + " defined more than once");
+                        Log.Warn("Warning.  Switch " + actuatorSwitch.Name + " defined more than once");
                     }
                 }
             }

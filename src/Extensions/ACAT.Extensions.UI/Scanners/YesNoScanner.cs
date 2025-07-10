@@ -244,7 +244,7 @@ namespace ACAT.Extensions.UI.Menus
 
             if (!scannerCommon.Initialize(startupArg))
             {
-                Log.Warning("Could not initialize form " + Name);
+                Log.Warn("Could not initialize form " + Name);
                 return false;
             }
 

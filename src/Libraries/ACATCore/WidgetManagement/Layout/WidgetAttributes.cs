@@ -129,7 +129,7 @@ namespace ACAT.Core.WidgetManagement
                     widgetAttribute.Dispose();
                 }
             }
-            catch (FileNotFoundException e)
+            catch (FileNotFoundException)
             {
                 Log.Exception($"Could not load config file. File does not exist - {configFile}");
                 retVal = false;            

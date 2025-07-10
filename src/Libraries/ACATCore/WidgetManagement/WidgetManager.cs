@@ -234,8 +234,8 @@ namespace ACAT.Core.WidgetManagement
         /// to look for dll's that may contain widgets
         /// </summary>
         /// <param name="dir">Directory to walk</param>
-        /// <param name="resursive">Recursively search?</param>
-        private static void load(String dir, bool resursive = true)
+        /// <param name="recursive">Recursively search?</param>
+        private static void load(String dir, bool recursive = true)
         {
             var walker = new DirectoryWalker(dir, "*.dll");
             Log.Debug("Walking dir " + dir);

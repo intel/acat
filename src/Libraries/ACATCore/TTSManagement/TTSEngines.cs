@@ -357,8 +357,8 @@ namespace ACAT.Core.TTSManagement
         /// </summary>
         /// <param name="dir">dir to descend into</param>
         /// <param name="culture">culture (optional) of the TTS Engine</param>
-        /// <param name="resursive">true if deep-descend</param>
-        private void loadTTSEngineTypesIntoCache(String dir, String culture, bool resursive = true)
+        /// <param name="recursive">true if deep-descend</param>
+        private void loadTTSEngineTypesIntoCache(String dir, String culture, bool recursive = true)
         {
             DirectoryWalker walker = new DirectoryWalker(dir, "*.dll");
             _dirWalkCurrentCulture = culture;

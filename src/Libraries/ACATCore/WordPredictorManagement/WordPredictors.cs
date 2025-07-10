@@ -260,7 +260,7 @@ namespace ACAT.Core.WordPredictionManagement
                 }
             }
 
-            Log.Debug("Could not find word predictor for id " + guid.ToString());
+            Log.Error($"Could not find word predictor for id {guid.ToString()}");
             return null;
         }
 
@@ -310,7 +310,7 @@ namespace ACAT.Core.WordPredictionManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 _nullWordPredictor?.Dispose();
 
@@ -423,7 +423,7 @@ namespace ACAT.Core.WordPredictionManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Could get types from assembly " + dllName + ". Exception : " + ex.ToString());
+                Log.Exception("Could get types from assembly " + dllName + ". Exception : " + ex.ToString());
             }
         }
     }

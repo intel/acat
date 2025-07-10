@@ -934,7 +934,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                             }
                             catch (Exception ex)
                             {
-                                Log.Debug(ex.Message);
+                                Log.Exception(ex.Message);
                             }
                         }
                     }
@@ -1283,7 +1283,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
             }
             return result;
         }
@@ -1362,7 +1362,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
             }
         }
 
@@ -1407,7 +1407,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
             }
 
             yLimMax = scale;
@@ -1437,7 +1437,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug(ex.Message);
+                    Log.Exception(ex.Message);
                 }
             }
             else if (!_runImpedanceTestingCycle)
@@ -1455,7 +1455,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug(ex.Message);
+                    Log.Exception(ex.Message);
                 }
 
                 // Start thread doing impedance testing
@@ -1553,7 +1553,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.Message);
+                Log.Exception(ex.Message);
             }
         }
 
@@ -1629,7 +1629,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.Message);
+                Log.Exception(ex.Message);
             }
         }
     }

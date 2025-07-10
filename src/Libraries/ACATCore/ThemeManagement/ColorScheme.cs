@@ -523,7 +523,7 @@ namespace ACAT.Core.ThemeManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -573,7 +573,7 @@ namespace ACAT.Core.ThemeManagement
             }
             else
             {
-                Log.Debug("Could not find bitmap file " + bitmapFile);
+                Log.Error($"Could not find bitmap file {bitmapFile}");
             }
 
             return retVal;

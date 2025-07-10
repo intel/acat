@@ -179,7 +179,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetBoxWidgetsList: " + ex.Message);
+                Log.Exception("Error in GetBoxWidgetsList: " + ex.Message);
                 return new List<Widget>[totalAmountOfBoxes];
             }
             return widgets;
@@ -206,7 +206,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetButtonDataList: " + ex.Message);
+                Log.Exception("Error in GetButtonDataList: " + ex.Message);
                 return new List<ButtonsData>[totalAmountOfBoxes];
             }
             return buttonDataList;
@@ -279,7 +279,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetButtonsOffsetList: " + ex.Message);
+                Log.Exception("Error in GetButtonsOffsetList: " + ex.Message);
                 return new List<int>[totalAmountOfBoxes];
             }
             return offsetStrings;
@@ -311,7 +311,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetButtonsStringsList: " + ex.Message);
+                Log.Exception("Error in GetButtonsStringsList: " + ex.Message);
                 return new List<string>[totalAmountOfBoxes];
             }
             return buttonsStringsList;
@@ -397,7 +397,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetControlsBtns: " + ex.Message);
+                Log.Exception("Error in GetControlsBtns: " + ex.Message);
                 flashingSequenceIDList = new List<int[]>[totalAmountOfBoxes];
                 flashingSequenceList = new List<int[]>[totalAmountOfBoxes];
                 return new List<ScannerButtonControl>[totalAmountOfBoxes];
@@ -476,7 +476,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetFlashingSequenceIDBoxList: " + ex.Message);
+                Log.Exception("Error in GetFlashingSequenceIDBoxList: " + ex.Message);
                 return new List<int>[totalAmountOfBoxes];
             }
             return flashingSequenceIDBoxList;
@@ -514,7 +514,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception es)
             {
-                Log.Debug("Exception geting values probs " + es);
+                Log.Exception("Exception geting values probs " + es);
             }
             return nextProbs;
         }
@@ -569,7 +569,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Exception in getLettersProbs: " + ex.Message.ToString());
+                Log.Exception("Exception in getLettersProbs: " + ex.Message.ToString());
                 return _ = new Dictionary<int, double>();
             }
             return nextProbs;
@@ -826,7 +826,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception es)
             {
-                Log.Debug("Exception geting values probs " + es);
+                Log.Exception("Exception geting values probs " + es);
             }
             return nextProbs;
         }

@@ -208,7 +208,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error ButtonCalibrate_Click " + ex.Message);
+                Log.Exception("BCI LOG | Error ButtonCalibrate_Click " + ex.Message);
             }
         }
 
@@ -361,7 +361,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error ButtonOpc_Click " + ex.Message);
+                Log.Exception("BCI LOG | Error ButtonOpc_Click " + ex.Message);
             }
         }
 
@@ -523,7 +523,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Exception DisplayCalibrationHelp " + ex.Message);
+                Log.Exception("BCI LOG | Exception DisplayCalibrationHelp " + ex.Message);
             }
         }
 
@@ -555,7 +555,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error GetCalibrationParametersDefault | " + ex.Message.ToString());
+                Log.Exception("BCI LOG | Error GetCalibrationParametersDefault | " + ex.Message.ToString());
             }
             return bciSimpleParameters;
         }
@@ -686,7 +686,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error ProcessCalibrationStatusResult | " + ex.Message.ToString());
+                Log.Exception("BCI LOG | Error ProcessCalibrationStatusResult | " + ex.Message.ToString());
             }
         }
 

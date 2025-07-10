@@ -134,7 +134,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("ConvAssist Predict Exception " + ex);
+                Log.Exception("ConvAssist Predict Exception " + ex);
 
                 _prevSentencePredictionResults = new List<string>();
                 response = new WordPredictionResponse(request, new List<String>(), false);
@@ -203,7 +203,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             }
             catch (Exception sentencesLetters)
             {
-                Log.Debug("ConvAssist Predict sentencesLetters " + sentencesLetters);
+                Log.Exception("ConvAssist Predict sentencesLetters " + sentencesLetters);
             }
             return retVal;
         }

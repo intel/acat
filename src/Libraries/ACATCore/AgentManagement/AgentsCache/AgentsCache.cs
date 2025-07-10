@@ -58,7 +58,7 @@ namespace ACAT.Core.AgentManagement
         /// </summary>
         public AgentsCache()
         {
-            Log.Debug();
+            Log.Verbose();
 
             _agentCache = new List<IApplicationAgent>();
             _agentLookupTableByProcessName = new Hashtable();
@@ -260,7 +260,7 @@ namespace ACAT.Core.AgentManagement
         /// <returns>true on success</returns>
         public bool Init(IEnumerable<String> extensionDirs)
         {
-            Log.Debug();
+            Log.Verbose();
 
             loadCache(extensionDirs);
 
@@ -313,7 +313,7 @@ namespace ACAT.Core.AgentManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Could not load agent " + agentType + ", exception: " + ex);
+                Log.Exception("Could not load agent " + agentType + ", exception: " + ex);
             }
         }
 
@@ -370,7 +370,7 @@ namespace ACAT.Core.AgentManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 

@@ -354,7 +354,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("ConvAssist Exception " + ex);
+                Log.Exception("ConvAssist Exception " + ex);
                 response = new WordPredictionResponse(request, new List<String>(), false);
             }
 

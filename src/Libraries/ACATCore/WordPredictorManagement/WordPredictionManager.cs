@@ -380,7 +380,7 @@ namespace ACAT.Core.WordPredictionManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 Context.EvtCultureChanged -= Context_EvtCultureChanged;
 
@@ -431,7 +431,7 @@ namespace ACAT.Core.WordPredictionManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Unable to load WordPredictor " + type + ", assembly: " + type.Assembly.FullName + ". Exception: " + ex);
+                Log.Exception("Unable to load WordPredictor " + type + ", assembly: " + type.Assembly.FullName + ". Exception: " + ex);
                 retVal = false;
             }
 

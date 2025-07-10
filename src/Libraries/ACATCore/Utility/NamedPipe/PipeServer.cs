@@ -203,7 +203,7 @@ namespace ACAT.Core.Utility.NamedPipe
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in ReadCallback: " + ex.Message);
+                Log.Exception("Error in ReadCallback: " + ex.Message);
 
                 // Check to make sure the Pipe is still around
                 try

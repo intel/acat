@@ -396,7 +396,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("startStopProcessDataTimer | Exception: " + e.ToString());
+                    Log.Exception("startStopProcessDataTimer | Exception: " + e.ToString());
                 }
             }
             else
@@ -413,7 +413,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("startStopProcessDataTimer | Exception: " + e.ToString());
+                    Log.Exception("startStopProcessDataTimer | Exception: " + e.ToString());
                 }
             }
 

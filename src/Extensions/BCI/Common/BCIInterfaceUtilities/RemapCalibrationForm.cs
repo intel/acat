@@ -109,7 +109,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("Error AddItemsToComboBox: " + ex.Message);
+                Log.Exception("Error AddItemsToComboBox: " + ex.Message);
             }
         }
 
@@ -208,7 +208,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("Error SaveMappingsValues: " + ex.Message);
+                Log.Exception("Error SaveMappingsValues: " + ex.Message);
             }
             return bCICalibrationUpdatedMappings;
         }
@@ -286,7 +286,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error ProcessMapOptionsAnswer: " + ex.Message);
+                Log.Exception("BCI LOG | Error ProcessMapOptionsAnswer: " + ex.Message);
             }
         }
 
@@ -340,7 +340,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error SetDefaultItemInComboBox: " + ex.Message);
+                Log.Exception("BCI LOG | Error SetDefaultItemInComboBox: " + ex.Message);
             }
         }
 

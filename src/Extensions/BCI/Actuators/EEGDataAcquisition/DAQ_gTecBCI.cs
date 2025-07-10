@@ -356,7 +356,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
                 sensorStatus = getErrorCode(e.Message, ExitCode.BOARD_NOT_READY_ERROR);
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING             MESSAGE: Error Code: " + sensorStatus);
                 return false;
@@ -408,7 +408,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             {
                 sensorStatus = getErrorCode(e.Message, ExitCode.BOARD_NOT_CREATED_ERROR);
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING             MESSAGE: Error Code: " + sensorStatus);
-                Log.Debug("Exception:" + e.Message + " Error code:" + sensorStatus);
+                Log.Exception("Exception:" + e.Message + " Error code:" + sensorStatus);
                 success = false;
             }
             Log.Debug("Device started: " + success);
@@ -447,7 +447,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             {
                 sensorStatus = getErrorCode(e.Message, ExitCode.SYNC_TIMEOUT_ERROR);
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING               MESSAGE: Error Code: " + sensorStatus);
-                Log.Debug("Exception:" + e.Message + " Error code: " + sensorStatus);
+                Log.Exception("Exception:" + e.Message + " Error code: " + sensorStatus);
                 return false;
             }
         }
@@ -478,7 +478,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             {
                 sensorStatus = getErrorCode(e.Message, ExitCode.UNABLE_TO_CLOSE);
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING             MESSAGE: Error Code: " + sensorStatus);
-                Log.Debug("Exception:" + e.Message + " Error code: " + sensorStatus);
+                Log.Exception("Exception:" + e.Message + " Error code: " + sensorStatus);
                 return false;
             }
         }
@@ -537,7 +537,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                Log.Debug("Exception: " + e.Message);
+                Log.Exception("Exception: " + e.Message);
             }
 
             if (returnFilteredData)
@@ -609,7 +609,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
             }
             return result;
         }
@@ -642,7 +642,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 if (sensorStatus == ExitCode.ANOTHER_BOARD_IS_CREATED_ERROR)
                     portAlreadyOpen = true;
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING             MESSAGE: Error Code: " + sensorStatus);
-                Log.Debug("Exception: " + e.Message);
+                Log.Exception("Exception: " + e.Message);
                 return false;
             }
         }
@@ -722,7 +722,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                Log.Debug("Exception " + e.Message);
+                Log.Exception("Exception " + e.Message);
             }
             return result;
         }
@@ -751,7 +751,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                Log.Debug("Exception " + e.Message);
+                Log.Exception("Exception " + e.Message);
             }
 
             return result;
@@ -795,7 +795,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
                 return info;
             }
             return info;
@@ -868,7 +868,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 }
                 catch (Gtec.Unicorn.DeviceException ex)
                 {
-                    Log.Debug($"Error: {ex.Message}");
+                    Log.Exception($"Error: {ex.Message}");
                 }
                 return devices;
             });
@@ -908,7 +908,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     }
                     catch (Gtec.Unicorn.DeviceException ex)
                     {
-                        Log.Debug($"Error: {ex.Message}");
+                        Log.Exception($"Error: {ex.Message}");
                         Dictionary<String, object> eventParams = new()
                         {
                             ["error"] = ex.Message
@@ -918,7 +918,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     }
                     catch (Exception ex)
                     {
-                        Log.Debug($"Unexpected error: {ex.Message}");
+                        Log.Exception($"Unexpected error: {ex.Message}");
                         Dictionary<String, object> eventParams = new()
                         {
                             ["error"] = ex.Message
@@ -978,7 +978,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("Exception: " + e.Message);
+                    Log.Exception("Exception: " + e.Message);
                 }
             }
             return statusAllSignals;

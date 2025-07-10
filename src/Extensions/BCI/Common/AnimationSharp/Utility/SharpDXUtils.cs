@@ -99,7 +99,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetListButtonTextFormat: " + ex.Message);
+                Log.Exception("Error in GetListButtonTextFormat: " + ex.Message);
                 return new List<TextFormat>[totalAmountOfBoxes];
             }
             return buttonTextFormatList;
@@ -310,7 +310,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetRectanglesButtonsList: " + ex.Message);
+                Log.Exception("Error in GetRectanglesButtonsList: " + ex.Message);
                 return new List<RawRectangleF>[totalAmountOfBoxes];
             }
             return rectanglesButtonsList;
@@ -338,7 +338,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetRectanglesButtonsRoundList: " + ex.Message);
+                Log.Exception("Error in GetRectanglesButtonsRoundList: " + ex.Message);
                 return new List<RoundedRectangle>[totalAmountOfBoxes];
             }
             return rectanglesButtonsRoundList;
@@ -384,7 +384,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetRectanglesCRG: " + ex.Message);
+                Log.Exception("Error in GetRectanglesCRG: " + ex.Message);
                 return rectangleExtraButtonCRG;
             }
             return rectangleExtraButtonCRG;
@@ -416,7 +416,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetRectanglesTriggerBox: " + ex.Message);
+                Log.Exception("Error in GetRectanglesTriggerBox: " + ex.Message);
                 return rectangleExtraButton;
             }
             return rectangleExtraButton;

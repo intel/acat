@@ -552,7 +552,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 value = '\0';
             }
 
@@ -1286,7 +1286,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         {
             String str = String.Empty;
 
-            Log.Debug();
+            Log.Verbose();
 
             if (handleText == IntPtr.Zero)
             {
@@ -1312,7 +1312,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// </summary>
         protected void learn()
         {
-            Log.Debug();
+            Log.Verbose();
 
             if (!WordPredictionManager.Instance.ActiveWordPredictor.SupportsLearning)
             {
@@ -1382,7 +1382,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         {
             Int32 ret = 0;
 
-            Log.Debug();
+            Log.Verbose();
 
             if (handleText == IntPtr.Zero)
             {
@@ -1455,7 +1455,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         {
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {

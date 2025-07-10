@@ -131,7 +131,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error ButtonCalibrate_Click: " + ex.Message);
+                Log.Exception("BCI LOG | Error ButtonCalibrate_Click: " + ex.Message);
                 Close();
             }
         }

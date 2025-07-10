@@ -386,7 +386,7 @@ namespace ACAT.Core.AnimationManagement
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug(ex.ToString());
+                    Log.Exception(ex.ToString());
                 }
                 Log.Debug("After animation player stop");
             }
@@ -420,7 +420,7 @@ namespace ACAT.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
@@ -434,7 +434,7 @@ namespace ACAT.Core.AnimationManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -565,13 +565,13 @@ namespace ACAT.Core.AnimationManagement
                 var widget = _currentPanel.Finder.FindChild(widgetName);
                 if (widget != null)
                 {
-                    Log.Debug("Actuate. widgetname: " + widget.Name + " Text: " + widget.GetText());
+                    Log.Info("Actuate. widgetname: " + widget.Name + " Text: " + widget.GetText());
 
                     widget.Actuate();
                 }
                 else
                 {
-                    Log.Debug("Did not actuate.  Could not find widget  " + widgetName);
+                    Log.Warning("Did not actuate.  Could not find widget  " + widgetName);
                 }
             }
         }
@@ -670,7 +670,7 @@ namespace ACAT.Core.AnimationManagement
         /// <param name="e">Argument list</param>
         protected void AppInterpreter_EvtTransitionNotify(object sender, InterpreterEventArgs e)
         {
-            Log.Debug();
+            Log.Verbose();
 
             List<String> resolvedArgs = ResolveArgs(e.Args);
             if (resolvedArgs.Count > 0)

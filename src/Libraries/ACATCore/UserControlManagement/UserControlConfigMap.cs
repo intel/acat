@@ -519,7 +519,7 @@ namespace ACAT.Core.UserControlManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 
@@ -570,7 +570,7 @@ namespace ACAT.Core.UserControlManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Could get types from assembly " + dllName + ". Exception : " + ex);
+                Log.Exception("Could get types from assembly " + dllName + ". Exception : " + ex);
                 if (ex is ReflectionTypeLoadException)
                 {
                     var typeLoadException = (ReflectionTypeLoadException)ex;

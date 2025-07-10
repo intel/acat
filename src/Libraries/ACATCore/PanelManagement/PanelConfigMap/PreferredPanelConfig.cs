@@ -240,7 +240,7 @@ namespace ACAT.Core.PanelManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 

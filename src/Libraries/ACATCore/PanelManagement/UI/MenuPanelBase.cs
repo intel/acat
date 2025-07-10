@@ -183,7 +183,7 @@ namespace ACAT.Core.PanelManagement
 
             if (!scannerCommon.Initialize(startupArg))
             {
-                Log.Debug("Could not initialize form " + Name);
+                Log.Error($"Could not initialize form {Name}");
                 return false;
             }
 

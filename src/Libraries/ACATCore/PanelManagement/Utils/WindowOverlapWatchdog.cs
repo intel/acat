@@ -257,7 +257,7 @@ namespace ACAT.Core.PanelManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("exception occured!  ex=" + ex + "for " + (_window != null ? _window.Name : "null"));
+                Log.Exception("Exception occured!  ex=" + ex + "for " + (_window != null ? _window.Name : "null"));
             }
         }
 

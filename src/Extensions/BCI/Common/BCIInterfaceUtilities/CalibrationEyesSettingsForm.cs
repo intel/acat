@@ -188,7 +188,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 _TempInterval = 5000;
                 textBoxInterval.Text = _TempInterval.ToString();
             }
@@ -211,7 +211,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 _TempMaxRepetitions = 10;
                 textBoxReps.Text = _TempMaxRepetitions.ToString();
             }
@@ -257,7 +257,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in EyesSettingsForm: " + ex.Message);
+                Log.Exception("Error in EyesSettingsForm: " + ex.Message);
             }
             if (_bciActuator != null)
             {
@@ -301,7 +301,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
             return inputReplace;
         }

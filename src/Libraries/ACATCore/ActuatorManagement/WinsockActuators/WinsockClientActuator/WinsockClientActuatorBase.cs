@@ -150,7 +150,7 @@ namespace ACAT.Core.InputActuators
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     _quitConnect = true;
                     _evtConnectRetry.Set();
@@ -336,7 +336,7 @@ namespace ACAT.Core.InputActuators
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug("Error connecting to server " + ex);
+                    Log.Exception("Error connecting to server " + ex);
                 }
             }
 

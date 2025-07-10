@@ -231,7 +231,7 @@ namespace ACAT.Extension
 
             if (!_scannerCommon.Initialize(startupArg))
             {
-                Log.Debug("Could not initialize form " + _form.Name);
+                Log.Error($"Could not initialize form {_form.Name}");
                 return false;
             }
 
@@ -260,7 +260,7 @@ namespace ACAT.Extension
         /// </summary>
         public void OnClosing(object sender, FormClosingEventArgs e)
         {
-            Log.Debug();
+            Log.Verbose();
 
             KeyStateTracker.EvtKeyStateChanged -= KeyStateTracker_EvtKeyStateChanged;
 
@@ -333,7 +333,7 @@ namespace ACAT.Extension
         /// </summary>
         public void OnPause()
         {
-            Log.Debug();
+            Log.Verbose();
 
             _scannerCommon.OnPause();
         }
@@ -344,7 +344,7 @@ namespace ACAT.Extension
         /// </summary>
         public void OnResume()
         {
-            Log.Debug();
+            Log.Verbose();
 
             _scannerCommon.OnResume();
 
@@ -490,7 +490,7 @@ namespace ACAT.Extension
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -512,7 +512,7 @@ namespace ACAT.Extension
         /// <param name="e">event args</param>
         private void AppAgent_EvtTextChanged(object sender, EventArgs e)
         {
-            Log.Debug();
+            Log.Verbose();
             try
             {
                 if (_form.Visible)
@@ -522,7 +522,7 @@ namespace ACAT.Extension
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
             Log.Debug("returning");
@@ -684,7 +684,7 @@ namespace ACAT.Extension
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 

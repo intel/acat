@@ -104,41 +104,39 @@ namespace ACAT.Core.WidgetManagement
 
             var xmlDoc = new XmlDocument();
 
-            Log.Debug("configFile=" + configFile);
+            Log.Debug($"Loading config file {configFile}.");
 
-            if (File.Exists(configFile))
+            try
             {
-                try
+                xmlDoc.Load(configFile);
+
+                XmlNodeList widgetAttributeNodes = xmlDoc.SelectNodes("/ACAT/WidgetAttributes/WidgetAttribute");
+                if (_widgetAttributes == null)
                 {
-                    xmlDoc.Load(configFile);
-
-                    XmlNodeList widgetAttributeNodes = xmlDoc.SelectNodes("/ACAT/WidgetAttributes/WidgetAttribute");
-                    if (_widgetAttributes == null)
-                    {
-                        return false;
-                    }
-
-                    // load all the elements
-                    foreach (XmlNode node in widgetAttributeNodes)
-                    {
-                        var widgetAttribute = WidgetAttribute.CreateWidgetAttribute(node);
-                        if (!_widgetAttributes.ContainsKey(widgetAttribute.Name))
-                        {
-                            _widgetAttributes.Add(widgetAttribute.Name, widgetAttribute);
-                        }
-
-                        widgetAttribute.Dispose();
-                    }
+                    Log.Error("widgetAttributes == null.");
+                    return false;
                 }
-                catch (Exception ex)
+
+                // load all the elements
+                foreach (XmlNode node in widgetAttributeNodes)
                 {
-                    Log.Debug("Error loading config file " + configFile + ", " + ex.ToString());
-                    retVal = false;
+                    var widgetAttribute = WidgetAttribute.CreateWidgetAttribute(node);
+                    if (!_widgetAttributes.ContainsKey(widgetAttribute.Name))
+                    {
+                        _widgetAttributes.Add(widgetAttribute.Name, widgetAttribute);
+                    }
+
+                    widgetAttribute.Dispose();
                 }
             }
-            else
+            catch (FileNotFoundException e)
             {
-                Log.Debug("Could not load WidgetAttributes. File does not exist " + configFile);
+                Log.Exception($"Could not load config file. File does not exist - {configFile}");
+                retVal = false;            
+            }   
+            catch (Exception ex)
+            {
+                Log.Exception($"Error loading config file {configFile} -  {ex.ToString()}");
                 retVal = false;
             }
 
@@ -154,7 +152,7 @@ namespace ACAT.Core.WidgetManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {

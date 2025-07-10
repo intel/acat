@@ -112,7 +112,7 @@ namespace ACAT.Core.UserManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 

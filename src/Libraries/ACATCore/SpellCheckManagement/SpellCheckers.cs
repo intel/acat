@@ -252,12 +252,12 @@ namespace ACAT.Core.SpellCheckManagement
                 ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(type);
                 if (descriptor != null && Equals(guid, descriptor.Id))
                 {
-                    Log.Debug("Found spellchecker of type " + type);
+                    Log.Debug($"Found spellchecker of type {type}");
                     return type;
                 }
             }
 
-            Log.Debug("Could not find spellchecker for id " + guid);
+            Log.Error($"Could not find spellchecker for id {guid}");
             return null;
         }
 
@@ -314,7 +314,7 @@ namespace ACAT.Core.SpellCheckManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -392,7 +392,7 @@ namespace ACAT.Core.SpellCheckManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Could get types from assembly " + dllName + ". Exception : " + ex);
+                Log.Exception("Could get types from assembly " + dllName + ". Exception : " + ex);
             }
         }
     }

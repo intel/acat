@@ -436,7 +436,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                         }
                         catch (Exception e)
                         {
-                            Log.Debug(e.Message);
+                            Log.Exception(e.Message);
                         }
 
                         /* Display plots with class distributions and AUC
@@ -472,7 +472,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
                 meanAUC = -1;
 
                 // Save Error in file

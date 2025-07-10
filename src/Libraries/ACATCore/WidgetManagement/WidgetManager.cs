@@ -121,7 +121,7 @@ namespace ACAT.Core.WidgetManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Could not find widgettype " + widgetTypeName + ", exception: " + ex);
+                Log.Exception("Could not find widgettype " + widgetTypeName + ", exception: " + ex);
             }
 
             return retVal;
@@ -199,7 +199,7 @@ namespace ACAT.Core.WidgetManagement
             }
             else
             {
-                Log.Debug("Could not load WidgetAttributes from configFile [" + configPath + "]");
+                Log.Error($"Could not load WidgetAttributes from configFile [{configPath}]");
             }
 
             return retVal;
@@ -214,7 +214,7 @@ namespace ACAT.Core.WidgetManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -268,7 +268,7 @@ namespace ACAT.Core.WidgetManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 
@@ -336,7 +336,7 @@ namespace ACAT.Core.WidgetManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Could get types from assembly " + dllName + ". Exception : " + ex);
+                Log.Exception("Could get types from assembly " + dllName + ". Exception : " + ex);
                 if (ex is ReflectionTypeLoadException)
                 {
                     var typeLoadException = (ReflectionTypeLoadException)ex;

@@ -112,7 +112,7 @@ namespace ACAT.Extensions.Actuators.SampleActuator
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     if (disposing)
                     {

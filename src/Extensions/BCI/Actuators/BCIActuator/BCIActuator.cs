@@ -258,7 +258,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
             }
         }
 
@@ -282,7 +282,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
             catch (Exception e)
             {
-                Log.Debug("Exception: " + e.Message);
+                Log.Exception("Exception: " + e.Message);
             }
             return equalChannels;
         }
@@ -351,7 +351,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
             }
             return availableClassifiers;
         }
@@ -380,7 +380,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
             }
         }
 
@@ -443,7 +443,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
                 return false;
             }
             return !missingClassifier;
@@ -767,7 +767,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     if (disposing)
                     {
@@ -922,7 +922,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             catch (Exception e)
             {
                 error = new BCIError(BCIErrorCodes.CalibrationError_LoadingClassifiers, StringResources.ClassifiersNotLoadedError);
-                Log.Debug("Error " + BCIErrorCodes.CalibrationError_LoadingClassifiers.ToString() + " " + "Excepction: " + e.Message);
+                Log.Exception("Error " + BCIErrorCodes.CalibrationError_LoadingClassifiers.ToString() + " " + "Excepction: " + e.Message);
             }
 
             // Set oKToGoToTyping status
@@ -1011,7 +1011,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             catch (Exception e)
             {
                 error = new BCIError(BCIErrorCodes.CalibrationError_LoadingClassifiers, StringResources.ClassifiersNotLoadedError);
-                Log.Debug("Error " + BCIErrorCodes.CalibrationError_LoadingClassifiers.ToString() + " " + "Excepction: " + e.Message);
+                Log.Exception("Error " + BCIErrorCodes.CalibrationError_LoadingClassifiers.ToString() + " " + "Excepction: " + e.Message);
             }
 
             // Send response to ACAT
@@ -1075,7 +1075,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
             }
         }
 
@@ -1191,7 +1191,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             //    }
             //    catch (Exception e)
             //    {
-            //        Log.Debug(e.Message);
+            //        Log.Exception(e.Message);
             //    }
             //}
         }
@@ -1222,7 +1222,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             //    }
             //    catch (Exception e)
             //    {
-            //        Log.Debug(e.Message);
+            //        Log.Exception(e.Message);
             //    }
             //}
         }
@@ -1290,7 +1290,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                 catch (Exception e)
                 {
                     auc = -1;
-                    Log.Debug(e.Message);
+                    Log.Exception(e.Message);
                     error = new BCIError(BCIErrorCodes.CalibrationError_OnAnalyzingData_UnknownException, StringResources.CalibrationError_CalibrationFailed);
                 }
             }
@@ -1393,7 +1393,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                     catch (Exception e)
                     {
                         sensorError = new BCIError(BCIErrorCodes.CalibrationError_UnknwonException, StringResources.CalibrationError_CalibrationFailed);
-                        Log.Debug(e.Message);
+                        Log.Exception(e.Message);
                     }
                 }
             }
@@ -1722,7 +1722,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
             }
         }
 
@@ -1776,7 +1776,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
             }
             return auc;
         }
@@ -1979,12 +1979,12 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                 catch (Exception e)
                 {
                     error = new BCIError(BCIErrorCodes.TypingError_OnRepetitionEnd_UnknownException, StringResources.TypingError);// Error when processing data
-                    Log.Debug("Error: " + error.ErrorCode + " Message" + error.ErrorMessage + " Excepcion: " + e.Message);
+                    Log.Exception("Error: " + error.ErrorCode + " Message" + error.ErrorMessage + " Excepcion: " + e.Message);
                 }
 
                 // Display error on logs
                 if (error.ErrorCode != BCIErrorCodes.Status_Ok)
-                    Log.Debug("Error: " + error.ErrorCode + " Message" + error.ErrorMessage);
+                    Log.Exception("Error: " + error.ErrorCode + " Message" + error.ErrorMessage);
             }
             else
             {

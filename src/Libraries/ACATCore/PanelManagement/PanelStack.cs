@@ -233,7 +233,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         public void CloseCurrentPanel()
         {
-            Log.Debug();
+            Log.Verbose();
             bool isCurrentForm = false;
 
             if (_currentPanel != null)
@@ -341,25 +341,24 @@ namespace ACAT.Core.PanelManagement
                         IntPtr winHandle,
                         AutomationElement focusedElement)
         {
-            Log.Debug("panelClass: " + panelClass);
+            Log.Debug($"Searching for panel of type {panelClass}");
 
             var panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(panelClass);
             if (panelConfigMapEntry == null)
             {
-                Log.Debug("Could not find panel for " + panelClass + ". Using default ");
+                Log.Warning($"Could not find panel for {panelClass} - Using default.");
 
                 panelClass = PanelClasses.Alphabet;
                 panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(PanelClasses.Alphabet);
 
                 if (panelConfigMapEntry == null)
                 {
+                    Log.Error($"Unable to find an appropriate panel class.");
                     return null;
                 }
-
-                Log.Debug("Could not find panel for " + panelClass + ". Using default " + panelConfigMapEntry.FormType.Name);
             }
 
-            Log.Debug("panel: " + panelConfigMapEntry.FormType.Name);
+            Log.Debug($"Found panel class {panelConfigMapEntry.PanelClass} with. name {panelConfigMapEntry.FormType.Name}");
 
             return createPanel(panelClass, panelTitle, panelConfigMapEntry.FormType, winHandle, focusedElement);
         }
@@ -642,7 +641,7 @@ namespace ACAT.Core.PanelManagement
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug($"Constructor failed with args ({string.Join(", ", args.Select(a => a?.ToString() ?? "null"))}): {ex}");
+                    Log.Exception($"Constructor failed with args ({string.Join(", ", args.Select(a => a?.ToString() ?? "null"))}): {ex}");
                 }
             }
 
@@ -711,7 +710,7 @@ namespace ACAT.Core.PanelManagement
         //    }
         //    catch (Exception ex)
         //    {
-        //        Log.Debug(ex.ToString());
+        //        Log.Exception(ex.ToString());
         //        retVal = null;
         //    }
 
@@ -948,7 +947,7 @@ namespace ACAT.Core.PanelManagement
         /// <param name="eventArg">Info about which scanner to display</param>
         private void switchCurrentPanel(PanelRequestEventArgs eventArg)
         {
-            Log.Debug();
+            Log.Verbose();
 
             Log.Debug(eventArg.ToString());
 

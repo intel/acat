@@ -60,7 +60,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     if (disposing)
                     {

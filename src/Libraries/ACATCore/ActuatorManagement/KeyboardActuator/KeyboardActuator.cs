@@ -194,7 +194,7 @@ namespace ACAT.Core.InputActuators
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     if (disposing)
                     {
@@ -238,7 +238,7 @@ namespace ACAT.Core.InputActuators
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
             return null;
@@ -317,7 +317,7 @@ namespace ACAT.Core.InputActuators
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 

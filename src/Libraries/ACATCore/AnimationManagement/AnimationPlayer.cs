@@ -556,7 +556,7 @@ namespace ACAT.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
             Log.Debug("Returning");
@@ -702,7 +702,7 @@ namespace ACAT.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
             Log.Debug("Returning");
@@ -717,7 +717,7 @@ namespace ACAT.Core.AnimationManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -744,7 +744,7 @@ namespace ACAT.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 return 0;
             }
         }
@@ -823,7 +823,7 @@ namespace ACAT.Core.AnimationManagement
         /// <returns>index of the first animation widget</returns>
         private int getFirstAnimatedWidget()
         {
-            Log.Debug();
+            Log.Verbose();
             for (int ii = 0; ii < _currentAnimation.AnimationWidgetList.Count; ii++)
             {
                 if (_currentAnimation.AnimationWidgetList[ii].UIWidget.CanAddForAnimation())
@@ -864,7 +864,7 @@ namespace ACAT.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("ex=" + ex.Message);
+                Log.Exception("ex=" + ex.Message);
                 return -1;
             }
         }
@@ -1148,7 +1148,7 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         private void highlightNeighborAbove()
         {
-            Log.Debug();
+            Log.Verbose();
 
             if (_highlightedWidget == null)
             {
@@ -1205,7 +1205,7 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         private void highlightNeighborBelow()
         {
-            Log.Debug();
+            Log.Verbose();
 
             if (_highlightedWidget == null)
             {
@@ -1262,7 +1262,7 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         private void highlightNeighborLeft()
         {
-            Log.Debug();
+            Log.Verbose();
 
             if (_highlightedWidget == null)
             {
@@ -1413,7 +1413,7 @@ namespace ACAT.Core.AnimationManagement
         /// <param name="playerState">new state</param>
         private void setPlayerState(PlayerState playerState)
         {
-            Log.Debug();
+            Log.Verbose();
 
             PlayerState oldState = _playerState;
             if (oldState != playerState)
@@ -1663,7 +1663,7 @@ namespace ACAT.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("AnimationPlayerexception " + ex);
+                Log.Exception("AnimationPlayerexception " + ex);
             }
             finally
             {
@@ -1796,7 +1796,7 @@ namespace ACAT.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("AnimationPlayerexception " + ex);
+                Log.Exception("AnimationPlayerexception " + ex);
             }
             finally
             {

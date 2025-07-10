@@ -50,7 +50,7 @@ namespace ACAT.Core.AgentManagement
         /// </summary>
         public PreferredAgents()
         {
-            Log.Debug();
+            Log.Verbose();
             _preferredAgents = new Hashtable();
         }
 
@@ -192,7 +192,7 @@ namespace ACAT.Core.AgentManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
     }

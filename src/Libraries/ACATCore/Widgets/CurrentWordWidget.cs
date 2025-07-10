@@ -81,7 +81,7 @@ namespace ACAT.Core.Widgets
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     if (disposing)
                     {

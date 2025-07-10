@@ -111,7 +111,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex) 
             {
-                Log.Debug("Error ButtonStartTriggerTest_Click: " + ex.Message);
+                Log.Exception("Error ButtonStartTriggerTest_Click: " + ex.Message);
                 OptionResult = new Tuple<BCIMenuOptions.Options, BCISimpleParameters>(BCIMenuOptions.Options.TriggerTest, GetTriggerTestParameters());
                 Close();
             }
@@ -201,7 +201,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("Error ButtonOpc_Click: " + ex.Message);
+                Log.Exception("Error ButtonOpc_Click: " + ex.Message);
             }
         }
 

@@ -82,7 +82,7 @@ namespace ACAT.Core.InputActuators
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     if (disposing)
                     {

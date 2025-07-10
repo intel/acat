@@ -152,7 +152,7 @@ namespace ACAT.Core.ActuatorManagement
                 }
             }
 
-            Log.Debug("Could not find actuator by name " + name);
+            Log.Warning("Could not find actuator by name " + name);
             return null;
         }
 
@@ -172,7 +172,7 @@ namespace ACAT.Core.ActuatorManagement
                 }
             }
 
-            Log.Debug("Could not find actuator of type " + actuatorType.Name);
+            Log.Warning("Could not find actuator of type " + actuatorType.Name);
             return null;
         }
 
@@ -371,7 +371,7 @@ namespace ACAT.Core.ActuatorManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -501,7 +501,7 @@ namespace ACAT.Core.ActuatorManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Could not get types from assembly " + dllName + ". Exception : " + ex.ToString());
+                Log.Exception("Could not get types from assembly " + dllName + ". Exception : " + ex.ToString());
             }
         }
     }

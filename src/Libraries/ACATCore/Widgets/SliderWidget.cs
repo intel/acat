@@ -428,7 +428,7 @@ namespace ACAT.Core.Widgets
             }
             catch (Exception ex)
             {
-                Log.Debug("Error parsing decimal " + inputString + ", ex: " + ex.ToString());
+                Log.Exception("Error parsing decimal " + inputString + ", ex: " + ex.ToString());
                 retVal = false;
             }
 

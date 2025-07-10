@@ -118,34 +118,29 @@ namespace ACAT.Core.Utility
 
         public static Assembly AssemblyResolve(Assembly executingAssembly, ResolveEventArgs args)
         {
-            if (args.RequestingAssembly == null || String.IsNullOrEmpty(args.RequestingAssembly.Location))
+            if (args.RequestingAssembly == null ||
+                String.IsNullOrEmpty(args.RequestingAssembly.Location) ||
+                string.IsNullOrEmpty(args.Name))
             {
+                Log.Error("Invalid argument parameters.");
                 return null;
             }
 
-            Log.Debug("RequestingAssembly: [" + args.RequestingAssembly.Location + "], Name:[" + args.Name + "]");
+            Log.Debug($"RequestingAssembly: [{args.RequestingAssembly.Location}], Name:[{args.Name}]");
 
             var requestingAssemblyDir = Path.GetDirectoryName(args.RequestingAssembly.Location);
 
-            Log.Debug("RequestingAssembly directory is " + requestingAssemblyDir);
+            Log.Debug($"RequestingAssembly directory is {requestingAssemblyDir}");
 
             var assemblyName = new AssemblyName(args.Name).Name;
-            var assemblyPath = requestingAssemblyDir + "\\" + assemblyName + ".dll";
+            var assemblyPath = $"{requestingAssemblyDir}\\{assemblyName}.dll";
 
-            Log.Debug("Resolved assembly location: " + assemblyPath);
+            Log.Debug($"Resolved assembly location: {assemblyPath}");
 
             Assembly retVal = null;
             try
             {
-                if (!String.IsNullOrEmpty(assemblyPath))
-                {
-                    Log.Debug("LoadFrom " + assemblyPath);
-                    retVal = Assembly.LoadFrom(assemblyPath);
-                }
-                else
-                {
-                    Log.Debug("Could not find assembly " + args.RequestingAssembly.Location);
-                }
+                retVal = Assembly.LoadFrom(assemblyPath);
             }
             catch (FileNotFoundException fnf)
             {
@@ -160,10 +155,8 @@ namespace ACAT.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug("Could not load assembly.. Exception: " + ex);
+                Log.Exception($"Could not load assembly. Exception: {ex}");
             }
-
-            Log.IsNull("retVal: ", retVal);
             return retVal;
         }
 
@@ -247,7 +240,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 
@@ -759,7 +752,7 @@ namespace ACAT.Core.Utility
 
             if (!dir.Exists)
             {
-                Log.Debug("No such directory: " + srcDir);
+                Log.Error("No such directory: " + srcDir);
                 return;
             }
 
@@ -789,7 +782,7 @@ namespace ACAT.Core.Utility
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug("Error copying file " + file.FullName + " to " + targetFile + ", exception: " + ex);
+                    Log.Exception("Error copying file " + file.FullName + " to " + targetFile + ", exception: " + ex);
                 }
             }
 

@@ -63,7 +63,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     if (disposing)
                     {

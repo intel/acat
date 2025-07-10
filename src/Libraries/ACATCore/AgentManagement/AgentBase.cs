@@ -446,7 +446,7 @@ namespace ACAT.Core.AgentManagement
         {
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {

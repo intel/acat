@@ -170,7 +170,7 @@ namespace ACAT.Core.Widgets
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 

@@ -144,7 +144,7 @@ namespace ACAT.Core.TTSManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Error processing pronunciation file " + filePath + ". Exception: " + ex);
+                Log.Exception("Error processing pronunciation file " + filePath + ". Exception: " + ex);
                 retVal = false;
             }
 
@@ -301,7 +301,7 @@ namespace ACAT.Core.TTSManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -333,7 +333,7 @@ namespace ACAT.Core.TTSManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
@@ -356,7 +356,7 @@ namespace ACAT.Core.TTSManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 xmlTextWriter = null;
             }
 

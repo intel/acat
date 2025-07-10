@@ -127,7 +127,7 @@ namespace ACAT.Core.AnimationManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {

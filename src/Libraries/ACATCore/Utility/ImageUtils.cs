@@ -176,7 +176,7 @@ namespace ACAT.Core.Utility
             }
             else
             {
-                Log.Debug("Could not find bitmap file " + bitmapFile);
+                Log.Error("Could not find bitmap file " + bitmapFile);
             }
 
             return retVal;

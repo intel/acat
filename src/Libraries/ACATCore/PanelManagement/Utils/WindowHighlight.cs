@@ -58,7 +58,7 @@ namespace ACAT.Core.PanelManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 _automationElement = null;
             }
         }
@@ -84,12 +84,12 @@ namespace ACAT.Core.PanelManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
                     // dispose all managed resources.
-                    Log.Debug();
+                    Log.Verbose();
 
                     stopTimer();
 
@@ -103,7 +103,7 @@ namespace ACAT.Core.PanelManagement
                         }
                         catch (Exception ex)
                         {
-                            Log.Debug(ex.ToString());
+                            Log.Exception(ex.ToString());
                         }
                     }
 
@@ -130,7 +130,7 @@ namespace ACAT.Core.PanelManagement
 
         private void highlightWindow(AutomationElement focusedElement)
         {
-            Log.Debug();
+            Log.Verbose();
             try
             {
                 lock (_sync)
@@ -149,14 +149,14 @@ namespace ACAT.Core.PanelManagement
                         }
                         catch (Exception exp)
                         {
-                            Log.Debug(exp.ToString());
+                            Log.Exception(exp.ToString());
                         }
                     }));
                 }
             }
             catch (Exception e)
             {
-                Log.Debug(e.ToString());
+                Log.Exception(e.ToString());
             }
         }
 

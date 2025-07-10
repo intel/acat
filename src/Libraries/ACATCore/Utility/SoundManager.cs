@@ -101,7 +101,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug("Error playing Sound: " + ex);
+                Log.Exception("Error playing Sound: " + ex);
             }
         }
 

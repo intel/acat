@@ -124,7 +124,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="enableConfigure">should the config button be enabled</param>
         public void OnEndCalibration(String errorMessage = "", bool enableConfigure = true)
         {
-            Log.Debug();
+            Log.Verbose();
 
             if (!String.IsNullOrEmpty((errorMessage)))
             {
@@ -318,7 +318,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="e">event args</param>
         private void bgWorker_RunCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Log.Debug();
+            Log.Verbose();
             _bgTaskDoneEvent.Set();
         }
 

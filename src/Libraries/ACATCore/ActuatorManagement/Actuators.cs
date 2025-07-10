@@ -439,17 +439,8 @@ namespace ACAT.Core.ActuatorManagement
         {
             var walker = new DirectoryWalker(dir, "ACAT.*.dll");
 
-            walker.Walk(new OnDirectoryFoundDelegate(onDirFound), new OnFileFoundDelegate(onFileFound));
-        }
-
-        private void onDirFound(String dirName)
-        {
-            Log.Debug("Found directory " + dirName);
-            String[] skipdirs = { "external", "ConvAssistApp", "de", "en", "es", "Assets", "Install" };
-            foreach (var _ in skipdirs.Where(skipdir => dirName.ToLower().Contains(skipdir)).Select(skipdir => new { }))
-            {
-                return;
-            }
+            // Recursively look for Actuators in /Extensions
+            walker.Walk(new OnFileFoundDelegate(onFileFound), resursive);
         }
 
         /// <summary>

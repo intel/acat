@@ -362,7 +362,7 @@ namespace ACAT.Core.TTSManagement
         {
             DirectoryWalker walker = new DirectoryWalker(dir, "*.dll");
             _dirWalkCurrentCulture = culture;
-            walker.Walk(new OnFileFoundDelegate(onFileFound));
+            walker.Walk(new OnFileFoundDelegate(onFileFound), recursive);
         }
 
         /// <summary>

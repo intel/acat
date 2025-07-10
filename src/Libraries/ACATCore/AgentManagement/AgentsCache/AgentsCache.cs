@@ -323,6 +323,7 @@ namespace ACAT.Core.AgentManagement
         /// <param name="path">Directory path</param>
         private void loadAgentsFromDir(String path)
         {
+            // Recursively look for ACAT Agents in Extensions/Agents direrctory
             var walker = new DirectoryWalker(path, "ACAT.Extensions.AppAgents.*.dll");
             walker.Walk(new OnFileFoundDelegate(onAgentDllFound));
         }

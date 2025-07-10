@@ -23,98 +23,74 @@ namespace ACAT.Core.Utility
     /// This class can be used to discover DLL's, font files, image files
     /// etc.
     /// </summary>
-    public class DirectoryWalker
+    /// <remarks>
+    /// Initialzes an instance of the class. Finds all files that
+    /// match the wildcard
+    /// </remarks>
+    /// <param name="rootDir">directory to walk</param>
+    /// <param name="fileWildCard">files to find</param>
+    public class DirectoryWalker(String rootDir, String fileWildCard)
     {
         /// <summary>
         /// Invoked when a directory is found
         /// </summary>
-        private OnDirectoryFoundDelegate _dirFoundDelegate;
+        private OnDirectoryFoundDelegate _dirFoundDelegate = null;
 
         /// <summary>
         /// Invoked when a matching file is found
         /// </summary>
-        private OnFileFoundDelegate _fileFoundDelegate;
+        private OnFileFoundDelegate _fileFoundDelegate = null;
 
         /// <summary>
         /// The directory to walk
         /// </summary>
-        private readonly String _rootDir = String.Empty;
+        private readonly String _rootDir = rootDir;
 
         /// <summary>
         /// Files to look for
         /// </summary>
-        private String _wildCard = String.Empty;
+        private String _wildCard = fileWildCard;
 
         /// <summary>
         /// Initialzies an instance of the class.  Finds all
         /// files in the specified directory
         /// </summary>
         /// <param name="rootDir">Directory to walk</param>
-        public DirectoryWalker(String rootDir)
+        public DirectoryWalker(String rootDir) : this(rootDir, string.Empty)
         {
-            _rootDir = rootDir;
-            _wildCard = String.Empty;
-            _fileFoundDelegate = null;
-            _dirFoundDelegate = null;
         }
-
-        /// <summary>
-        /// Initialzes an instance of the class. Finds all files that
-        /// match the wildcard
-        /// </summary>
-        /// <param name="rootDir">directory to walk</param>
-        /// <param name="fileWildCard">files to find</param>
-        public DirectoryWalker(String rootDir, String fileWildCard)
-        {
-            _rootDir = rootDir;
-            _wildCard = fileWildCard;
-            _fileFoundDelegate = null;
-            _dirFoundDelegate = null;
-        }
-
-        /// <summary>
-        /// Walks the directory.  If reecursive is true, goes
-        /// into all the subfolders as well. Finds all the sub
-        /// folders in the directory
-        /// </summary>
-        /// <param name="dirFoundDelegate">invoked when a subfolder is found</param>
-        /// <param name="recursive">set to true for recursive</param>
-        public void Walk(OnDirectoryFoundDelegate dirFoundDelegate, bool recursive = true)
-        {
-            Walk(dirFoundDelegate, null);
-        }
-
-        private bool isSkippableDirectory(String dirPath)
+        
+        private bool IsSkippableDirectory(String dirPath)
         {
             String[] skipdirs = { "external", "ConvAssistApp", "Install" };
 
             string dirName = Path.GetFileName(dirPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
 
-             return skipdirs.Any(skip =>
-                dirName.IndexOf(skip, StringComparison.OrdinalIgnoreCase) >= 0);
+            return skipdirs.Any(skip =>
+               dirName.IndexOf(skip, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
-        /// <summary>
-        /// Walks the directory.  If reecursive is true, goes
-        /// into all the subfolders as well. Finds all the matching
-        /// files in the directory
-        /// </summary>
-        /// <param name="fileFoundDelegate">invoked when a file is found</param>
-        /// <param name="recursive">set to true for recursive</param>
-        public void Walk(OnFileFoundDelegate fileFoundDelegate, bool recursive = true)
+        public void Walk(OnDirectoryFoundDelegate dirFoundDelegate, bool recursive = false )
         {
-            Walk(null, fileFoundDelegate, recursive);
+            
         }
 
+        public void Walk(OnFileFoundDelegate fileFoundDelegate, bool recursive = false )
+        {
+
+        }
+        
         /// <summary>
         /// Walks the directory.  If reecursive is true, goes
         /// into all the subfolders as well. Finds all the sub
         /// folders and matching files in the directory
         /// </summary>
-        /// <param name="dirFoundDelegate">invoked when a subfolder is found</param>
-        /// <param name="fileFoundDelegate">invoked when a file is found</param>
-        /// <param name="recursive">set to true for recursive</param>
-        public void Walk(OnDirectoryFoundDelegate dirFoundDelegate, OnFileFoundDelegate fileFoundDelegate, bool recursive = true)
+        /// <param name="dirFoundDelegate">Invoked when a subfolder is found</param>
+        /// <param name="fileFoundDelegate">Invoked when a file is found</param>
+        /// <param name="recursive">Set to true for recursive. Default false</param>
+        public void Walk(OnDirectoryFoundDelegate dirFoundDelegate = null,
+                        OnFileFoundDelegate fileFoundDelegate = null,
+                        bool recursive = false)
         {
             if (Directory.Exists(_rootDir) && (dirFoundDelegate != null || fileFoundDelegate != null))
             {
@@ -129,8 +105,8 @@ namespace ACAT.Core.Utility
                 {
                     listFiles(_rootDir);
                 }
-                
-                if (recursive) 
+
+                if (recursive)
                 {
                     listDirs(_rootDir, recursive);
                 }
@@ -143,7 +119,7 @@ namespace ACAT.Core.Utility
         /// </summary>
         /// <param name="dirPath">root folder</param>
         /// <param name="recursive">set to true for recursive</param>
-        private void listDirs(string dirPath, bool recursive)
+        private void ListDirs(string dirPath, bool recursive)
         {
             try
             {
@@ -171,11 +147,15 @@ namespace ACAT.Core.Utility
             }
             catch (UnauthorizedAccessException uaex)
             {
-                Console.WriteLine(uaex.Message);
+                Log.Exception(uaex.Message);
             }
             catch (PathTooLongException pathex)
             {
-                Console.WriteLine(pathex.Message);
+                Log.Exception(pathex.Message);
+            }
+            catch (Exception ex)
+            {
+                Log.Exception(ex.message);
             }
         }
 
@@ -184,7 +164,7 @@ namespace ACAT.Core.Utility
         /// invokes the callback when matching files are found
         /// </summary>
         /// <param name="dirPath">the folder</param>
-        private void listFiles(string dirPath)
+        private void ListFiles(string dirPath)
         {
             if (isSkippableDirectory(dirPath))
             {
@@ -196,7 +176,7 @@ namespace ACAT.Core.Utility
             {
                 foreach (string str in filePaths)
                 {
-                    _fileFoundDelegate(str);
+                    _fileFoundDelegate?.Invoke(str);
                 }
             }
         }

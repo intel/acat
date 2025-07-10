@@ -336,7 +336,7 @@ namespace ACAT.Core.WordPredictionManagement
         {
             DirectoryWalker walker = new DirectoryWalker(dir, "ACAT.Extensions.WordPredictors.*.dll");
             _dirWalkCurrentCulture = culture;
-            walker.Walk(new OnFileFoundDelegate(onFileFound));
+            walker.Walk(new OnFileFoundDelegate(onFileFound), recursive);
         }
 
         /// <summary>

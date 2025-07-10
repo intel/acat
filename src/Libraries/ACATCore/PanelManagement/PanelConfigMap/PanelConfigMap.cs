@@ -677,7 +677,7 @@ namespace ACAT.Core.PanelManagement
             {
                 var walker = new DirectoryWalker(dir, wildcard);
                 Log.Debug("Walking dir " + dir);
-                walker.Walk(new OnFileFoundDelegate(onFileFound));
+                walker.Walk(new OnFileFoundDelegate(onFileFound), recursive);
             }
         }
 

@@ -59,7 +59,7 @@ namespace ACAT.Core.PreferencesManagement
 
             if (preferences == null)
             {
-                Log.Warning($"Could not load preferences from {preferencesFile} - creating a new one.");
+                Log.Warn($"Could not load preferences from {preferencesFile} - creating a new one.");
                 if (loadDefaultsOnFail == true)
                 {
                     preferences = new T();

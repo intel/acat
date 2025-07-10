@@ -346,7 +346,7 @@ namespace ACAT.Core.PanelManagement
             var panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(panelClass);
             if (panelConfigMapEntry == null)
             {
-                Log.Warning($"Could not find panel for {panelClass} - Using default.");
+                Log.Warn($"Could not find panel for {panelClass} - Using default.");
 
                 panelClass = PanelClasses.Alphabet;
                 panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(PanelClasses.Alphabet);

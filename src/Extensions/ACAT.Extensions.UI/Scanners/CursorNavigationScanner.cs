@@ -175,7 +175,7 @@ namespace ACAT.Extensions.UI.Scanners
 
             if (!_scannerCommon.Initialize(startupArg))
             {
-                Log.Warning("Could not initialize form " + Name);
+                Log.Warn("Could not initialize form " + Name);
                 return false;
             }
 

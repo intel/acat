@@ -485,8 +485,8 @@ namespace ACAT.Core.UserControlManagement
         /// to look for files
         /// </summary>
         /// <param name="dir">Directory to walk</param>
-        /// <param name="resursive">Recursively search?</param>
-        private static void load(String dir, bool resursive = true)
+        /// <param name="recursive">Recursively search?</param>
+        private static void load(String dir, bool recursive = true)
         {
             if (Directory.Exists(dir) && !_DLLError)
             {

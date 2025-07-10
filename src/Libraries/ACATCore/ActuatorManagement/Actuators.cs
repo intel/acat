@@ -152,7 +152,7 @@ namespace ACAT.Core.ActuatorManagement
                 }
             }
 
-            Log.Warning("Could not find actuator by name " + name);
+            Log.Warn("Could not find actuator by name " + name);
             return null;
         }
 
@@ -172,7 +172,7 @@ namespace ACAT.Core.ActuatorManagement
                 }
             }
 
-            Log.Warning("Could not find actuator of type " + actuatorType.Name);
+            Log.Warn("Could not find actuator of type " + actuatorType.Name);
             return null;
         }
 
@@ -434,13 +434,13 @@ namespace ACAT.Core.ActuatorManagement
         /// actuator types in each of the actuator DLLs
         /// </summary>
         /// <param name="dir">Directory to descend into/param>
-        /// <param name="resursive">Descend recursively</param>
-        private void loadActuatorTypesIntoCache(String dir, bool resursive = true)
+        /// <param name="recursive">Descend recursively</param>
+        private void loadActuatorTypesIntoCache(String dir, bool recursive = true)
         {
             var walker = new DirectoryWalker(dir, "ACAT.*.dll");
 
             // Recursively look for Actuators in /Extensions
-            walker.Walk(new OnFileFoundDelegate(onFileFound), resursive);
+            walker.Walk(new OnFileFoundDelegate(onFileFound), recursive);
         }
 
         /// <summary>

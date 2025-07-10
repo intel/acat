@@ -181,9 +181,20 @@ namespace ACAT.Core.Utility
 #endif
         }
 
+        public static void Exception(String msg)
+        {
+            string output = "*** EXCEPTION: ****" + msg + ". StackTrace:" + new StackTrace().ToString();
+            System.Diagnostics.Trace.WriteLine(output);
+        }
         public static void Exception(Exception exc)
         {
             string output = "*** EXCEPTION: ****" + exc.ToString() + ". StackTrace:" + exc.StackTrace;
+            System.Diagnostics.Trace.WriteLine(output);
+        }
+
+        public static void Exception(String msg, Exception exc)
+        {
+            string output = "*** EXCEPTION: ****" + msg + ". " + exc.ToString() + ". StackTrace:" + exc.StackTrace;
             System.Diagnostics.Trace.WriteLine(output);
         }
 

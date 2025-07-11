@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -209,24 +210,7 @@ namespace ACATConfigNext
                 var generalSettings = new GeneralSettingsCategory();
 
                 var label = new Label { Text = "General Settings", Dock = DockStyle.Top, Height = 40 };
-                /*var detailButton = new Button 
-                { 
-                    Text = "Display Settings", 
-                    Top = 50, 
-                    Width = 150, 
-                    BackColor = Color.AntiqueWhite,
-                    ForeColor = Color.DarkGray,
-                };
-
-                detailButton.Click += (s, e) =>
-                {
-                    showPanel(new DisplaySettingsPanel(), "Display");
-                };
-
-                Controls.Add(detailButton);
-                Controls.Add(label);
-
-                */
+              
             }
         }
 
@@ -401,30 +385,43 @@ namespace ACATConfigNext
                     if (_tableLayoutPanel == null)
                     {
                         _tableLayoutPanel = CustomControls.CreateCategoryTableLayoutPanel();
-                        // tableLayoutPanel1.Controls.Add(_tableLayoutPanel);
                     }
-
-                    //_tableLayoutPanel.Controls.Clear(); // clear old category rows
-               
-
-                    var headerLabel = CustomControls.CreateLabel(this.AccessibilityObject.Name);
-                    _tableLayoutPanel.Controls.Add(headerLabel);
-
-                    // Ensure actuators are loaded before accessing them  
                     if (!Context.AppActuatorManager.LoadExtensions(Context.ExtensionDirs, true))
                     {
                         // Handle error - actuators couldn't be loaded  
                         return;
                     }
 
-                    ActuatorConfig.ActuatorSettingsFileName = UserManager.GetFullPath("ActuatorSettings.xml");
-                    var actuatorConfig = ActuatorConfig.Load();
+                    _actuators = new Actuators();
+                    //ActuatorConfig.ActuatorSettingsFileName = UserManager.GetFullPath("ActuatorSettings.xml");
+                    //var actuatorConfig = ActuatorConfig.Load();
 
-                    foreach (var actuatorSetting in actuatorConfig.ActuatorSettings)
+                    var extensionDirNames = CoreGlobals.AppPreferences.Extensions.Split(',');
+                    var extensionDirs = new List<string>();
+
+                    foreach (var dirName in extensionDirNames)
                     {
-                        Console.WriteLine($"Actuator: {actuatorSetting.Name}, Enabled: {actuatorSetting.Enabled}");
+                        var fullPath = Path.Combine(SmartPath.ApplicationPath, dirName.Trim());
+                        extensionDirs.Add(fullPath);
+                    }
 
+                    _actuators.Load(extensionDirs, UserManager.GetFullPath("ActuatorSettings.xml"), true);
 
+                    var list = new List<PreferencesCategory>();
+
+                   // var keyboardActuator = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
+
+                    foreach (var actuator in _actuators.ActuatorList)
+                    {
+                        list.Add(new PreferencesCategory(actuator, true, actuator.Enabled));
+                    }
+
+                    IEnumerable<PreferencesCategory> PreferencesCategories = list;
+
+                    foreach (var category in PreferencesCategories)
+                    {
+                        if (!IsValidExtensionActuator(category, out var desc))
+                            continue;
                         var categoryItem = new TableLayoutPanel
                         {
                             BackColor = Color.Transparent,
@@ -436,51 +433,33 @@ namespace ACATConfigNext
                             GrowStyle = TableLayoutPanelGrowStyle.AddRows
                         };
 
-                        categoryItem.Controls.Add(CustomControls.CreateLabel(actuatorSetting.Name), 0, 0);  // title
-                        categoryItem.Controls.Add(CustomControls.CreateDescriptionLabel(actuatorSetting.Enabled.ToString()), 0, 2);  // description
+                        categoryItem.Controls.Add(CustomControls.CreateLabel(desc.Name), 0, 0);  // title
+                        categoryItem.Controls.Add(CustomControls.CreateDescriptionLabel(desc.Description), 0, 2);  // description
+
+                        var checkBox = CustomControls.CreateCheckBox(">");
+                        checkBox.Tag = category;
+                      //  checkBox.CheckedChanged += CustomControls.CheckBox_CheckedChanged;
+                        categoryItem.Controls.Add(checkBox, 1, 1);
+                        categoryItem.SetRowSpan(checkBox, 2);
+
+                    //    var setupButton = CustomControls.CreateSetupButton(category);
+                    //    categoryItem.Controls.Add(setupButton, 2, 0);
+                    //    categoryItem.SetRowSpan(setupButton, 3);
 
                         _tableLayoutPanel.Controls.Add(categoryItem);
                         Controls.Add(_tableLayoutPanel);
                     }
 
-
-                    /*  var actuators = Context.AppActuatorManager.Actuators;
-                      foreach (var actuator in actuators)
-                      {
-                          if (!IsValidExtensionActuator(actuator, out var desc))
-                              continue;
-                          var categoryItem = new TableLayoutPanel
-                          {
-                              BackColor = Color.Transparent,
-                              AutoSize = false,
-                              AutoScroll = false,
-                              Dock = DockStyle.Fill,
-                              ColumnCount = 1,
-                              RowCount = 0,
-                              GrowStyle = TableLayoutPanelGrowStyle.AddRows
-                          };
-
-                          categoryItem.Controls.Add(CustomControls.CreateLabel(actuator.Name), 0, 0);  // title
-                          categoryItem.Controls.Add(CustomControls.CreateDescriptionLabel(actuator.Descriptor.ToString()), 0, 2);  // description
-
-                          _tableLayoutPanel.Controls.Add(categoryItem);
-                          Controls.Add(_tableLayoutPanel);
-                      }
-
-                      */
-
                     #endregion
                 }
-
-
-
             }
 
-            private bool IsValidExtensionActuator(IActuator actuator, out IDescriptor descriptor)
+            private bool IsValidExtensionActuator(PreferencesCategory category, out IDescriptor descriptor)
             {
                 descriptor = null;
 
-                var extension = actuator as IExtension;
+
+                var extension = category.PreferenceObj as IExtension;
                 if (extension == null)
                     return false;
 

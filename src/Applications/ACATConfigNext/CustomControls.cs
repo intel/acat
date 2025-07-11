@@ -10,15 +10,16 @@ namespace ACATConfigNext
 {
     public static class CustomControls
     {
-        public static Label CreateLabel(string text, int fontSize = 24, FontStyle style = FontStyle.Bold)
+        public static Label CreateLabel(string text, FontStyle style = FontStyle.Bold)
         {
             return new Label
             {
                 Text = text,
-                AutoSize = true,
-                Font = new Font("Montserrat", fontSize, style),
+                Dock = DockStyle.Bottom,
+                //AutoSize = true,
+                Font = new Font("Montserrat", 10, style),
                 ForeColor = Color.White,
-                Margin = new Padding(0, 0, 0, 5)
+              //  Margin = new Padding(0, 0, 0, 5)
             };
         }
 
@@ -27,10 +28,11 @@ namespace ACATConfigNext
             return new Label
             {
                 Text = InsertLineBreaks(description, 60),
+                Dock = DockStyle.Bottom,
                 AutoSize = true,
-                Font = new Font("Segoe UI", 20, FontStyle.Italic),
+                Font = new Font("Segoe UI", 8, FontStyle.Italic),
                 ForeColor = Color.White,
-                Margin = new Padding(0, 0, 0, 5)
+              //  Margin = new Padding(0, 0, 0, 5)
             };
         }
 
@@ -66,7 +68,7 @@ namespace ACATConfigNext
             {
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowOnly,
-                Margin = new Padding(10),
+              //  Margin = new Padding(10),
                 Padding = new Padding(10),
                 BackColor = Color.FromArgb(48, 49, 64),
                 Dock = DockStyle.Top,

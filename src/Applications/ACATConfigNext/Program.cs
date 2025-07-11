@@ -6,9 +6,16 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using ACAT.Applications;
+using ACAT.Lib.Core.ActuatorManagement;
+using ACAT.Lib.Core.Extensions;
+using ACAT.Lib.Core.InputActuators;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.Utility;
+using ACATResources;
+using static ACAT.Lib.Core.Interpreter.Interpret;
 
 namespace ACATConfigNext
 {
@@ -36,9 +43,9 @@ namespace ACATConfigNext
                 BackColor = Color.FromArgb(31, 31, 56);
                 ForeColor = Color.White;
 
-                navPanel = CustomControls.CreatePanel(DockStyle.Left, 200);
                 contentPanel = CustomControls.CreatePanel(DockStyle.Fill,0);
                 breadcrumbPanel = CustomControls.CreateFlowPanel(DockStyle.Top,height: 40, text: "Settings", padding: new Padding(10, 5, 0, 0));
+                navPanel = CustomControls.CreatePanel(DockStyle.Left, 200);
 
                 Controls.Add(contentPanel);
                 Controls.Add(breadcrumbPanel);
@@ -202,7 +209,7 @@ namespace ACATConfigNext
                 var generalSettings = new GeneralSettingsCategory();
 
                 var label = new Label { Text = "General Settings", Dock = DockStyle.Top, Height = 40 };
-                var detailButton = new Button 
+                /*var detailButton = new Button 
                 { 
                     Text = "Display Settings", 
                     Top = 50, 
@@ -218,6 +225,8 @@ namespace ACATConfigNext
 
                 Controls.Add(detailButton);
                 Controls.Add(label);
+
+                */
             }
         }
 
@@ -246,32 +255,248 @@ namespace ACATConfigNext
 
         public class ActuatorSettingsPanel : UserControl
         {
-            public IEnumerable<PreferencesCategory> PreferencesCategories;         //List of preference categories to display
-
-            //Delegate for the event triggered when the user saves new preferences
+            //public IEnumerable<PreferencesCategory> PreferencesCategories = Context.AppActuatorManager.GetPreferencesSelectionForm;        
             public delegate void NotifySavePreferencesCategories(object sender, IEnumerable<PreferencesCategory> preferencesCategories);
-            //Event raised when preferences cateogry selected - show custom Preferences dialog or default Preferences edit form
             public delegate void PreferencesCategorySelected(object sender, ISupportsPreferences preferencesCategory);
-            //Delegate for the event triggered when the user makes a change to a preference setting 
+            private TableLayoutPanel _tableLayoutPanel;
+            private Actuators _actuators;
+
+            public IEnumerable<IActuator> GetActuatorList()
+            {
+                return Context.AppActuatorManager.Actuators;
+            }
+
+            public IEnumerable<IActuator> GetActuatorListFromActuators(Actuators actuators)
+            {
+                return actuators.ActuatorList;
+            }
+
+            public List<IActuator> GetActuatorList(bool enabledOnly = false, Type specificType = null)
+            {
+                var actuators = Context.AppActuatorManager.Actuators;
+                var result = new List<IActuator>();
+
+                foreach (var actuator in actuators)
+                {
+                    // Filter by enabled status if requested  
+                    if (enabledOnly && !actuator.Enabled)
+                        continue;
+
+                    // Filter by specific type if requested  
+                    if (specificType != null && actuator.GetType() != specificType)
+                        continue;
+
+                    result.Add(actuator);
+                }
+
+                return result;
+            }
+
+            public bool AllowMultiEnable { get; set; }
 
             public ActuatorSettingsPanel(Action<UserControl, string> showPanel)
             {
                 Controls.Add(new Label { Text = "Actuator Settings", Dock = DockStyle.Top, Height = 40 });
-              // newPreferencesSelectForm = Context.AppActuatorManager.GetPreferencesSelectionForm(parentControlHandle);
+                AllowMultiEnable = true;
+
+           
+
+                // newPreferencesSelectForm = Context.AppActuatorManager.GetPreferencesSelectionForm(parentControlHandle);
+                refreshPanel();
 
 
 
 
+            }
 
+            private void updateDataFromUI()
+            {
+                if (_tableLayoutPanel == null) return;
+
+                foreach (Control categoryPanel in _tableLayoutPanel.Controls)
+                {
+                    if (categoryPanel is TableLayoutPanel tablePanel)
+                    {
+                        foreach (Control ctrl in tablePanel.Controls)
+                        {
+                            if (ctrl is CheckBox cb && cb.Tag is PreferencesCategory category)
+                            {
+                                category.Enable = cb.Checked;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            public bool validateAndSave()
+            {
+                // Form not validated / filled correctly - immediately return false
+                if (!validate())
+                {
+                    return false; // return false - keep form open
+                }
+
+                // Form validated / filled correctly
+                updateDataFromUI();
+               // DialogResult = DialogResult.OK;
+
+                // Send event notification that preferences are to be saved
+               // EvtSavePreferences?.Invoke(this, this.PreferencesCategories);
+
+                return true;
+            }
+            private bool validate()
+            {
+                if (AllowMultiEnable)
+                {
+                    return true;
+                }
+
+                foreach (Control control in _tableLayoutPanel.Controls)
+                {
+                    if (control is TableLayoutPanel categoryPanel)
+                    {
+                        foreach (Control innerControl in categoryPanel.Controls)
+                        {
+                            if (innerControl is CheckBox checkBox &&
+                                checkBox.Tag is PreferencesCategory category &&
+                                checkBox.Checked)
+                            {
+                                return true; // At least one is enabled
+                            }
+                        }
+                    }
+                }
+
+                /*
+                for (int ii = 0; ii < dataGridView2.Rows.Count; ii++)
+                {
+                    if ((Boolean)dataGridView2[EnableColumn.Name, ii].Value)
+                    {
+                        return true;
+                    }
+                }
+
+                */
+              //  ConfirmBoxOneOption.ShowDialog("You must enable at least one as default.", "", StringResources.OK, this, true);
+
+                return false;
+            }
+            private void refreshPanel()
+            {
+                if (CoreGlobals.AppPreferences == null)
+                {
+                    if (!AppCommon.LoadUserPreferences())
+                    {
+                        // Handle error - preferences couldn't be loaded  
+                        return;
+                    }
+                }
+
+                // Now safe to access Extensions  
+                if (CoreGlobals.AppPreferences?.Extensions != null)
+                {
+
+                    #region C-MONDOS-TUFF
+                    if (_tableLayoutPanel == null)
+                    {
+                        _tableLayoutPanel = CustomControls.CreateCategoryTableLayoutPanel();
+                        // tableLayoutPanel1.Controls.Add(_tableLayoutPanel);
+                    }
+
+                    //_tableLayoutPanel.Controls.Clear(); // clear old category rows
+               
+
+                    var headerLabel = CustomControls.CreateLabel(this.AccessibilityObject.Name);
+                    _tableLayoutPanel.Controls.Add(headerLabel);
+
+                    // Ensure actuators are loaded before accessing them  
+                    if (!Context.AppActuatorManager.LoadExtensions(Context.ExtensionDirs, true))
+                    {
+                        // Handle error - actuators couldn't be loaded  
+                        return;
+                    }
+
+                    ActuatorConfig.ActuatorSettingsFileName = UserManager.GetFullPath("ActuatorSettings.xml");
+                    var actuatorConfig = ActuatorConfig.Load();
+
+                    foreach (var actuatorSetting in actuatorConfig.ActuatorSettings)
+                    {
+                        Console.WriteLine($"Actuator: {actuatorSetting.Name}, Enabled: {actuatorSetting.Enabled}");
+
+
+                        var categoryItem = new TableLayoutPanel
+                        {
+                            BackColor = Color.Transparent,
+                            AutoSize = false,
+                            AutoScroll = false,
+                            Dock = DockStyle.Fill,
+                            ColumnCount = 1,
+                            RowCount = 0,
+                            GrowStyle = TableLayoutPanelGrowStyle.AddRows
+                        };
+
+                        categoryItem.Controls.Add(CustomControls.CreateLabel(actuatorSetting.Name), 0, 0);  // title
+                        categoryItem.Controls.Add(CustomControls.CreateDescriptionLabel(actuatorSetting.Enabled.ToString()), 0, 2);  // description
+
+                        _tableLayoutPanel.Controls.Add(categoryItem);
+                        Controls.Add(_tableLayoutPanel);
+                    }
+
+
+                    /*  var actuators = Context.AppActuatorManager.Actuators;
+                      foreach (var actuator in actuators)
+                      {
+                          if (!IsValidExtensionActuator(actuator, out var desc))
+                              continue;
+                          var categoryItem = new TableLayoutPanel
+                          {
+                              BackColor = Color.Transparent,
+                              AutoSize = false,
+                              AutoScroll = false,
+                              Dock = DockStyle.Fill,
+                              ColumnCount = 1,
+                              RowCount = 0,
+                              GrowStyle = TableLayoutPanelGrowStyle.AddRows
+                          };
+
+                          categoryItem.Controls.Add(CustomControls.CreateLabel(actuator.Name), 0, 0);  // title
+                          categoryItem.Controls.Add(CustomControls.CreateDescriptionLabel(actuator.Descriptor.ToString()), 0, 2);  // description
+
+                          _tableLayoutPanel.Controls.Add(categoryItem);
+                          Controls.Add(_tableLayoutPanel);
+                      }
+
+                      */
+
+                    #endregion
+                }
+
+
+
+            }
+
+            private bool IsValidExtensionActuator(IActuator actuator, out IDescriptor descriptor)
+            {
+                descriptor = null;
+
+                var extension = actuator as IExtension;
+                if (extension == null)
+                    return false;
+
+                descriptor = extension.Descriptor;
+                return descriptor != null && descriptor.HasSettings;
             }
         }
 
         public class WordPredictorsPanel : UserControl
         {
+
             public WordPredictorsPanel(Action<UserControl, string> showPanel)
             {
-                Controls.Add(new Label { Text = "Word Predictors", Dock = DockStyle.Top, Height = 40 });
+                Controls.Add(new Label { Text = "Word Predictors - Settings", Dock = DockStyle.Top, Height = 40 });
             }
+
         }
 
         public class TTSPanel : UserControl

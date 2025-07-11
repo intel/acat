@@ -100,6 +100,10 @@
       <Project>{17feda57-1f08-4e19-9dc3-a2c00ec792a3}</Project>
       <Name>Extension</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AppCommon\AppCommon.csproj">
+      <Project>{9A6FF395-2444-439A-990D-1BAB13BF56FD}</Project>
+      <Name>AppCommon</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

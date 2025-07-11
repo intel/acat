@@ -2,9 +2,11 @@
 //using ACAT.Core.Widgets;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Windows.Forms;
 using ACAT.Applications;
@@ -15,6 +17,7 @@ using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.PreferencesManagement;
 using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.Utility;
+using ACAT.Lib.Core.WordPredictionManagement;
 using ACATResources;
 using static ACAT.Lib.Core.Interpreter.Interpret;
 
@@ -242,12 +245,12 @@ namespace ACATConfigNext
             //public IEnumerable<PreferencesCategory> PreferencesCategories = Context.AppActuatorManager.GetPreferencesSelectionForm;        
             public delegate void NotifySavePreferencesCategories(object sender, IEnumerable<PreferencesCategory> preferencesCategories);
             public delegate void PreferencesCategorySelected(object sender, ISupportsPreferences preferencesCategory);
-            private TableLayoutPanel _tableLayoutPanel;
-            private Actuators _actuators;
+            private TableLayoutPanel _tableLayoutPanel = CustomControls.CreateCategoryTableLayoutPanel();
+            private Actuators _context = new Actuators();
 
             public IEnumerable<IActuator> GetActuatorList()
             {
-                return Context.AppActuatorManager.Actuators;
+                return ACAT.Lib.Core.PanelManagement.Context.AppActuatorManager.Actuators;
             }
 
             public IEnumerable<IActuator> GetActuatorListFromActuators(Actuators actuators)
@@ -257,7 +260,7 @@ namespace ACATConfigNext
 
             public List<IActuator> GetActuatorList(bool enabledOnly = false, Type specificType = null)
             {
-                var actuators = Context.AppActuatorManager.Actuators;
+                var actuators = ACAT.Lib.Core.PanelManagement.Context.AppActuatorManager.Actuators;
                 var result = new List<IActuator>();
 
                 foreach (var actuator in actuators)
@@ -281,92 +284,10 @@ namespace ACATConfigNext
             public ActuatorSettingsPanel(Action<UserControl, string> showPanel)
             {
                 Controls.Add(new Label { Text = "Actuator Settings", Dock = DockStyle.Top, Height = 40 });
-                AllowMultiEnable = true;
-
-           
-
-                // newPreferencesSelectForm = Context.AppActuatorManager.GetPreferencesSelectionForm(parentControlHandle);
-                refreshPanel();
-
-
-
-
+                refreshPanel("ActuatorSettings.xml");
             }
 
-            private void updateDataFromUI()
-            {
-                if (_tableLayoutPanel == null) return;
-
-                foreach (Control categoryPanel in _tableLayoutPanel.Controls)
-                {
-                    if (categoryPanel is TableLayoutPanel tablePanel)
-                    {
-                        foreach (Control ctrl in tablePanel.Controls)
-                        {
-                            if (ctrl is CheckBox cb && cb.Tag is PreferencesCategory category)
-                            {
-                                category.Enable = cb.Checked;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            public bool validateAndSave()
-            {
-                // Form not validated / filled correctly - immediately return false
-                if (!validate())
-                {
-                    return false; // return false - keep form open
-                }
-
-                // Form validated / filled correctly
-                updateDataFromUI();
-               // DialogResult = DialogResult.OK;
-
-                // Send event notification that preferences are to be saved
-               // EvtSavePreferences?.Invoke(this, this.PreferencesCategories);
-
-                return true;
-            }
-            private bool validate()
-            {
-                if (AllowMultiEnable)
-                {
-                    return true;
-                }
-
-                foreach (Control control in _tableLayoutPanel.Controls)
-                {
-                    if (control is TableLayoutPanel categoryPanel)
-                    {
-                        foreach (Control innerControl in categoryPanel.Controls)
-                        {
-                            if (innerControl is CheckBox checkBox &&
-                                checkBox.Tag is PreferencesCategory category &&
-                                checkBox.Checked)
-                            {
-                                return true; // At least one is enabled
-                            }
-                        }
-                    }
-                }
-
-                /*
-                for (int ii = 0; ii < dataGridView2.Rows.Count; ii++)
-                {
-                    if ((Boolean)dataGridView2[EnableColumn.Name, ii].Value)
-                    {
-                        return true;
-                    }
-                }
-
-                */
-              //  ConfirmBoxOneOption.ShowDialog("You must enable at least one as default.", "", StringResources.OK, this, true);
-
-                return false;
-            }
-            private void refreshPanel()
+            private void refreshPanel(string xmlpath)
             {
                 if (CoreGlobals.AppPreferences == null)
                 {
@@ -377,74 +298,40 @@ namespace ACATConfigNext
                     }
                 }
 
-                // Now safe to access Extensions  
                 if (CoreGlobals.AppPreferences?.Extensions != null)
                 {
 
                     #region C-MONDOS-TUFF
-                    if (_tableLayoutPanel == null)
+                    if (!ACAT.Lib.Core.PanelManagement.Context.AppActuatorManager.LoadExtensions(ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs, true))
                     {
-                        _tableLayoutPanel = CustomControls.CreateCategoryTableLayoutPanel();
-                    }
-                    if (!Context.AppActuatorManager.LoadExtensions(Context.ExtensionDirs, true))
-                    {
-                        // Handle error - actuators couldn't be loaded  
                         return;
                     }
 
-                    _actuators = new Actuators();
-                    //ActuatorConfig.ActuatorSettingsFileName = UserManager.GetFullPath("ActuatorSettings.xml");
-                    //var actuatorConfig = ActuatorConfig.Load();
-
-                    var extensionDirNames = CoreGlobals.AppPreferences.Extensions.Split(',');
-                    var extensionDirs = new List<string>();
-
-                    foreach (var dirName in extensionDirNames)
-                    {
-                        var fullPath = Path.Combine(SmartPath.ApplicationPath, dirName.Trim());
-                        extensionDirs.Add(fullPath);
-                    }
-
-                    _actuators.Load(extensionDirs, UserManager.GetFullPath("ActuatorSettings.xml"), true);
+                    _context.Load(ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs, UserManager.GetFullPath(xmlpath), true);
 
                     var list = new List<PreferencesCategory>();
 
-                   // var keyboardActuator = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
-
-                    foreach (var actuator in _actuators.ActuatorList)
+                    foreach (var preference in _context.ActuatorList)
                     {
-                        list.Add(new PreferencesCategory(actuator, true, actuator.Enabled));
+                        list.Add(new PreferencesCategory(preference, true, preference.Enabled));
                     }
 
                     IEnumerable<PreferencesCategory> PreferencesCategories = list;
 
                     foreach (var category in PreferencesCategories)
                     {
-                        if (!IsValidExtensionActuator(category, out var desc))
+                        if (!IsValidExtension(category, out var desc))
                             continue;
-                        var categoryItem = new TableLayoutPanel
-                        {
-                            BackColor = Color.Transparent,
-                            AutoSize = false,
-                            AutoScroll = false,
-                            Dock = DockStyle.Fill,
-                            ColumnCount = 1,
-                            RowCount = 0,
-                            GrowStyle = TableLayoutPanelGrowStyle.AddRows
-                        };
+
+                        var categoryItem = CustomControls.CreateCategoryTableLayoutPanel();
 
                         categoryItem.Controls.Add(CustomControls.CreateLabel(desc.Name), 0, 0);  // title
                         categoryItem.Controls.Add(CustomControls.CreateDescriptionLabel(desc.Description), 0, 2);  // description
 
                         var checkBox = CustomControls.CreateCheckBox(">");
                         checkBox.Tag = category;
-                      //  checkBox.CheckedChanged += CustomControls.CheckBox_CheckedChanged;
                         categoryItem.Controls.Add(checkBox, 1, 1);
                         categoryItem.SetRowSpan(checkBox, 2);
-
-                    //    var setupButton = CustomControls.CreateSetupButton(category);
-                    //    categoryItem.Controls.Add(setupButton, 2, 0);
-                    //    categoryItem.SetRowSpan(setupButton, 3);
 
                         _tableLayoutPanel.Controls.Add(categoryItem);
                         Controls.Add(_tableLayoutPanel);
@@ -454,7 +341,7 @@ namespace ACATConfigNext
                 }
             }
 
-            private bool IsValidExtensionActuator(PreferencesCategory category, out IDescriptor descriptor)
+            private bool IsValidExtension(PreferencesCategory category, out IDescriptor descriptor)
             {
                 descriptor = null;
 
@@ -470,10 +357,83 @@ namespace ACATConfigNext
 
         public class WordPredictorsPanel : UserControl
         {
+            private TableLayoutPanel _tableLayoutPanel;
+            private WordPredictors _context = new WordPredictors();
+
 
             public WordPredictorsPanel(Action<UserControl, string> showPanel)
             {
                 Controls.Add(new Label { Text = "Word Predictors - Settings", Dock = DockStyle.Top, Height = 40 });
+                refreshPanel();
+            }
+
+            private void refreshPanel()
+            {
+                if (CoreGlobals.AppPreferences == null)
+                {
+                    if (!AppCommon.LoadUserPreferences())
+                    {
+                        // Handle error - preferences couldn't be loaded  
+                        return;
+                    }
+                }
+
+                if (CoreGlobals.AppPreferences?.Extensions != null)
+                {
+
+                    #region C-MONDOS-TUFF
+                    if (!ACAT.Lib.Core.PanelManagement.Context.AppWordPredictionManager.LoadExtensions(ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs))
+                    {
+                        return;
+                    }
+
+                    _context.Load(ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs, true);
+
+                    var list = new List<PreferencesCategory>();
+
+                    foreach (var preference in _context.Collection)
+                    {
+                        list.Add(new PreferencesCategory(preference, true,true));
+                    }
+
+                    IEnumerable<PreferencesCategory> PreferencesCategories = list;
+
+                    foreach (var category in PreferencesCategories)
+                    {
+                        if (!IsValidExtension(category, out var desc))
+                            continue;
+
+                        var categoryItem = CustomControls.CreateCategoryTableLayoutPanel();
+
+                        categoryItem.Controls.Add(CustomControls.CreateLabel(desc.Name), 0, 0);  // title
+                        categoryItem.Controls.Add(CustomControls.CreateDescriptionLabel(desc.Description), 0, 2);  // description
+
+                        var checkBox = CustomControls.CreateCheckBox(">");
+                        checkBox.Tag = category;
+                        categoryItem.Controls.Add(checkBox, 1, 1);
+                        categoryItem.SetRowSpan(checkBox, 2);
+
+                        _tableLayoutPanel.Controls.Add(categoryItem);
+                        Controls.Add(_tableLayoutPanel);
+                    }
+
+                    #endregion
+                }
+
+
+            }
+
+            private bool IsValidExtension(PreferencesCategory category, out IDescriptor descriptor)
+            {
+                descriptor = null;
+
+
+                var extension = category.PreferenceObj as IExtension;
+                if (extension == null)
+                    return false;
+
+                descriptor = extension.Descriptor;
+                return descriptor != null && descriptor.HasSettings;
             }
 
         }

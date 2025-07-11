@@ -4,9 +4,9 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 //
-// DAQ_OpenBCI.cs
+// DAQ_gTecBCI.cs
 //
-// Interfaces with the OpenBCI sensor
+// Interfaces with the GTEC Unicorn sensor
 //
 ////////////////////////////////////////////////////////////////////////////
 
@@ -17,9 +17,7 @@ using brainflow;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using Gtec.Unicorn;
 using ACAT.Extensions.BCI.Common.BCIControl;
 
@@ -33,7 +31,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         public String SettingsFileName = "BCIActuatorSettings.xml";
 
         // ********** Params set here (not read from settings)
-        // private readonly int[] otherChannelsPinsIdxList = {12, 13, 14, 15, 16, 17, 18}; this is returnet when DeviceObj.get_other_channels();
         private readonly string boardLogFileName = "boardLog";
 
         private readonly bool boardLoggerEnabled = false;
@@ -195,13 +192,13 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             SignalControl_WindowDurationForVrmsMeaseurment = BCIActuatorSettings.Settings.SignalControl_WindowDurationForVrmsMeaseurment;
             SignalControl_MinDutyCycleToPassTriggerTest = BCIActuatorSettings.Settings.TriggerTest_MinDutyCycleToPassTriggerTest;
             Log.Debug("DAQ settings loaded. Min duty cycle to pass trigger test" + SignalControl_MinDutyCycleToPassTriggerTest + " Window duration for uVrmsMeasurement: " + SignalControl_WindowDurationForVrmsMeaseurment);
-            
+
             // Gtec Does not have hardware trigger so we will keep both same for ML that support openbci
+            BCIActuatorSettings.Settings.DAQ_NumEEGChannels = 8;
+            BCIActuatorSettings.Settings.DataParser_UseSoftwareTrigers = true;
+
             BCISettingsFixed.DataParser_IdxTriggerSignal_Sw = 19;
             BCISettingsFixed.DimReduct_DownsampleRate = 2;
-
-            // Gtec use software triggers
-            BCIActuatorSettings.Settings.DataParser_UseSoftwareTrigers = true;
 
             // Gtec does not use 9 to 16 it is only 8 channels
             BCIActuatorSettings.Settings.Classifier_EnableChannel9 = false;
@@ -214,6 +211,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             BCIActuatorSettings.Settings.Classifier_EnableChannel16 = false;
 
             BCIActuatorSettings.Save();
+
             Log.Debug("Sensor set to " + BCIActuatorSettings.Settings.DAQ_NumEEGChannels + " channels. SensorID: " + BCISettingsFixed.DAQ_SensorId + " , Downsample rate: " + BCISettingsFixed.DimReduct_DownsampleRate +
                       " , Idx hw trigger signal: " + BCISettingsFixed.DataParser_IdxTriggerSignal_Hw + " , Idx sw trigger signal: " + BCISettingsFixed.DataParser_IdxTriggerSignal_Sw);
 
@@ -318,14 +316,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 
                         DeviceObj = new BoardShim(boardID, input_params);
                         DeviceObj.prepare_session();
-
-                        // TODO: Celal check if we can do anything with GTEC
-                        //string stringBoardMode = "/" + boardMode;
-                        // Config board to digital mode (mode 3) for photo sensor
-                        //Log.Debug("DAQ_OpenBCI - InitDevice | Sending board mode commands");
-                        //DeviceObj.config_board("/3");
-                        //DeviceObj.config_board("/2");
-                        //DeviceObj.config_board("/3");
 
                         indEegChannels = BoardShim.get_eeg_channels(boardID);
                         int[] accel = BoardShim.get_accel_channels(boardID);
@@ -499,22 +489,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 {
                     // Get data
                     rawData = DeviceObj.get_board_data();
-
-                    // raw data is in 2d array Apply scaling factor so I can show in uV
-                    //  TODO: Celal Added scaling factor to convert to uV
-                    //const double ScalingFactorToMicrovolts = 0.001;
-                    //if (rawData != null)
-                    //{
-                    //    int rows = rawData.GetLength(0);
-                    //    int cols = rawData.GetLength(1);
-                    //    for (int i = 0; i < indEegChannels.Length; i++)
-                    //    {
-                    //        for (int j = 0; j < cols; j++)
-                    //        {
-                    //            rawData[i, j] *= ScalingFactorToMicrovolts;
-                    //        }
-                    //    }
-                    //}
 
                     if (rawData != null && rawData.Length > 0)
                     {

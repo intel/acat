@@ -202,6 +202,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATApp", "Applications\ACA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACAT.Extensions.UI", "Extensions\ACAT.Extensions.UI\ACAT.Extensions.UI.csproj", "{34C19086-7AB0-4806-A296-1F71DF839095}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACAT.Extensions.Onboarding", "ACAT.Extensions.Onboarding\ACAT.Extensions.Onboarding.csproj", "{E576AEB6-BCE5-4827-B38E-140E4950E099}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -442,6 +444,14 @@ Global
 		{34C19086-7AB0-4806-A296-1F71DF839095}.Release|x64.Build.0 = Release|x64
 		{34C19086-7AB0-4806-A296-1F71DF839095}.Release|x86.ActiveCfg = Release|x86
 		{34C19086-7AB0-4806-A296-1F71DF839095}.Release|x86.Build.0 = Release|x86
+		{E576AEB6-BCE5-4827-B38E-140E4950E099}.Debug|x64.ActiveCfg = Debug|x64
+		{E576AEB6-BCE5-4827-B38E-140E4950E099}.Debug|x64.Build.0 = Debug|x64
+		{E576AEB6-BCE5-4827-B38E-140E4950E099}.Debug|x86.ActiveCfg = Debug|x86
+		{E576AEB6-BCE5-4827-B38E-140E4950E099}.Debug|x86.Build.0 = Debug|x86
+		{E576AEB6-BCE5-4827-B38E-140E4950E099}.Release|x64.ActiveCfg = Release|x64
+		{E576AEB6-BCE5-4827-B38E-140E4950E099}.Release|x64.Build.0 = Release|x64
+		{E576AEB6-BCE5-4827-B38E-140E4950E099}.Release|x86.ActiveCfg = Release|x86
+		{E576AEB6-BCE5-4827-B38E-140E4950E099}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -489,9 +499,10 @@ Global
 		{380FC7B3-D784-422A-8D85-510A9E8698C6} = {C91C405B-E0B3-4308-9D3A-B3C8ABA4A36A}
 		{06DE8A17-5D58-4858-BF18-86F7DB74E539} = {17F81CBF-F114-42F9-9103-8E92E1B7650D}
 		{34C19086-7AB0-4806-A296-1F71DF839095} = {A1CD68C8-CE85-4A15-BF82-6154CB6E4A77}
+		{E576AEB6-BCE5-4827-B38E-140E4950E099} = {A1CD68C8-CE85-4A15-BF82-6154CB6E4A77}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_AutoCreateNewLanguageFiles = True
 		SolutionGuid = {6C18E44C-06E3-46DB-9C9C-5B18BC658072}
+		RESX_AutoCreateNewLanguageFiles = True
 	EndGlobalSection
 EndGlobal

@@ -12,11 +12,11 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Extensions;
-using ACAT.Core.Onboarding;
 using ACAT.Core.PreferencesManagement;
 using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
+using ACAT.Core.Onboarding;
 
 namespace ACAT.Core.ActuatorManagement
 {

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using ACAT.Core.PanelManagement;
+using ACAT.Core.PreferencesManagement;
 using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
@@ -179,8 +180,15 @@ namespace ACAT.Core.ActuatorManagement
         /// <returns>true on success</returns>
         public bool Load(IEnumerable<String> extensionDirs, String configFile, bool loadAll = false)
         {
-            _actuatorTypeLoader.AddAssemblytoCache(typeof(InputActuators.KeyboardActuator).GUID, typeof(InputActuators.KeyboardActuator));
-            _actuatorTypeLoader.AddAssemblytoCache(typeof(InputActuators.SwitchInterfaceActuator).GUID, typeof(InputActuators.SwitchInterfaceActuator));
+            var keyboard = (ClassDescriptorAttribute?)typeof(InputActuators.KeyboardActuator)
+                .GetCustomAttributes(typeof(ClassDescriptorAttribute), inherit: false)
+                .FirstOrDefault();
+            var switchInterface = (ClassDescriptorAttribute?)typeof(InputActuators.SwitchInterfaceActuator)
+                .GetCustomAttributes(typeof(ClassDescriptorAttribute), inherit: false)
+                .FirstOrDefault();
+
+            _actuatorTypeLoader.AddAssemblytoCache(keyboard.Id, typeof(InputActuators.KeyboardActuator));
+            _actuatorTypeLoader.AddAssemblytoCache(switchInterface.Id, typeof(InputActuators.SwitchInterfaceActuator));
 
             foreach (string dir in extensionDirs)
             {

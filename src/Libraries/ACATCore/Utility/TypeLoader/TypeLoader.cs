@@ -112,7 +112,8 @@ namespace ACAT.Core.Utility
                 if (matchingType != null)
                 {
                     var attr = ClassDescriptorAttribute.GetDescriptor(matchingType);
-                    _typeCache[attr.Id] = matchingType;
+                    //_typeCache[attr.Id] = matchingType;
+                    AddAssemblytoCache(attr.Id, matchingType);
                 }
             }
             catch (Exception ex)

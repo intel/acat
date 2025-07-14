@@ -110,10 +110,10 @@ namespace ACAT.Core.InputActuators
             return new KeyboardSwitch();
         }
 
-        public override IOnboardingExtension GetOnboardingExtension()
-        {
-            return new OnboardingHardwareSwitchSetup(OnboardingHardwareSwitchSetup.SwitchType.Keyboard);
-        }
+        //public override IOnboardingExtension GetOnboardingExtension()
+        //{
+        //    return new OnboardingHardwareSwitchSetup(OnboardingHardwareSwitchSetup.SwitchType.Keyboard);
+        //}
 
         public override IEnumerable<String> GetSupportedKeyboardConfigs()
         {

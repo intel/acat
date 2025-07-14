@@ -78,41 +78,6 @@
     <Compile Include="CommandHandlers\CommandDescriptors.cs" />
     <Compile Include="CommandHandlers\GoBackHandler.cs" />
     <Compile Include="CommandHandlers\MiscCommandHandler.cs" />
-    <Compile Include="Onboarding\OnboardingFinish.cs" />
-    <Compile Include="Onboarding\OnboardingKeyboardConfigSelect.cs" />
-    <Compile Include="Onboarding\OnboardingLanguageSelect.cs" />
-    <Compile Include="Onboarding\OnboardingSwitchSelect.cs" />
-    <Compile Include="Onboarding\OnboardingWelcome.cs" />
-    <Compile Include="Onboarding\UserControlFinish.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Onboarding\UserControlFinish.Designer.cs">
-      <DependentUpon>UserControlFinish.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Onboarding\UserControlKeyboardConfigSelect.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Onboarding\UserControlKeyboardConfigSelect.Designer.cs">
-      <DependentUpon>UserControlKeyboardConfigSelect.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Onboarding\UserControlLanguageSelect.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Onboarding\UserControlLanguageSelect.Designer.cs">
-      <DependentUpon>UserControlLanguageSelect.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Onboarding\UserControlSwitchSelect.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Onboarding\UserControlSwitchSelect.Designer.cs">
-      <DependentUpon>UserControlSwitchSelect.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Onboarding\UserControlWelcome.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Onboarding\UserControlWelcome.Designer.cs">
-      <DependentUpon>UserControlWelcome.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -233,21 +198,6 @@
     <Compile Include="UI\UserControlWordPredictionCommon.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Onboarding\UserControlFinish.resx">
-      <DependentUpon>UserControlFinish.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Onboarding\UserControlKeyboardConfigSelect.resx">
-      <DependentUpon>UserControlKeyboardConfigSelect.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Onboarding\UserControlLanguageSelect.resx">
-      <DependentUpon>UserControlLanguageSelect.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Onboarding\UserControlSwitchSelect.resx">
-      <DependentUpon>UserControlSwitchSelect.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Onboarding\UserControlWelcome.resx">
-      <DependentUpon>UserControlWelcome.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

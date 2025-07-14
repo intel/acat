@@ -1,122 +1,40 @@
-﻿using ACAT.Core.WidgetManagement;
+﻿using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using ACAT.UserControls;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
-using ACAT.Core.Utility;
 
 namespace ACAT.Extensions.UI.UserControls
 {
     [ClassDescriptor("4E1A5ED3-ED21-449B-B462-A8AE9F7BDC1F",
         Name = "ToolbarUserControl",
         Description = "User control for the toolbar in the ACAT Dashboard")]
-    public class ToolbarUserControl : GenericUserControl
+    public class ToolbarUserControl : KeyboardUserControl
     {
-        private Font acatFont1Font = new Font("ACAT Font 1", 28);
-        private Font defaultFont = new Font("Montserrat", 28);
+        private TableLayoutPanel ButtonBoxRow;
+
+        private System.ComponentModel.IContainer container = null;
+
+        private TableLayoutPanel ToolbarBox;
+
         public ToolbarUserControl()
         {
             InitializeComponent();
         }
 
-        public TableLayoutPanel tableLayout { get; private set; }
-
-        protected override bool HandleInitialize()
+        protected virtual void CreateToolbarButtons()
         {
-            return true;
-        }
-
-
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            // 
-            // ToolbarUserControl
-            // 
-            this.Name = "ToolbarUserControl";
-            this.AccessibleName = "ToolbarUserControl";
-            this.Size = new System.Drawing.Size(800, 120);
-            this.AutoSize = true;
-            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            this.Padding = new Padding(10);
-
-            Label appName = new Label
-            {
-                Name = "ACAT",
-                Text = "ACAT Dashboard",
-                Font = defaultFont,
-                AutoSize = true,
-                Padding = new Padding(10),
-                TextAlign = ContentAlignment.MiddleCenter,
-                Anchor = AnchorStyles.Top | AnchorStyles.Left,
-                ForeColor = Color.White
-            };
-
-            List<Control> ToolbarButtons = CreateToolbarButtons();
-
-            tableLayout = new TableLayoutPanel
-            {
-                Name = "ToolbarTableLayoutPanel",
-                AccessibleName = "ToolbarTableLayoutPanel",
-                Dock = DockStyle.Top,
-                ColumnCount = 2,
-                RowCount = 1,
-                Padding = new Padding(2),
-                AutoSize = true,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink
-            };
-            tableLayout.SuspendLayout();
-            tableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-            tableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-
-            var buttonPanel = new TableLayoutPanel
-            {
-                Name = "ButtonPanel",
-                AccessibleName = "ButtonPanel",
-                Size = new Size(800, 60),
-                //AutoSize = true,
-                Dock = DockStyle.Fill,
-                Anchor = AnchorStyles.Top | AnchorStyles.Right,
-                ColumnCount = 0, // Start with no columns, will add dynamically
-                RowCount = 1,
-                GrowStyle = TableLayoutPanelGrowStyle.AddColumns
-            };
-        
-            buttonPanel.SuspendLayout();
-            buttonPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            var buttons = CreateToolbarButtons();
-            foreach (var button in buttons)
-            {
-                buttonPanel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-                buttonPanel.Controls.Add(button);
-            }
-
-            tableLayout.Controls.Add(appName, 0, 0);
-            tableLayout.Controls.Add(buttonPanel, 1, 0);
-
-            this.Controls.Add(tableLayout);
-
-            buttonPanel.ResumeLayout();
-            tableLayout.ResumeLayout();
-            this.ResumeLayout();
-        }
-
-        private List<Control> CreateToolbarButtons()
-        {
-            // Correcting the array initialization issue by using a List of tuples instead of an invalid array initializer
-            var buttons = new List<(string Name, string Text)>
+            var controlbuttons = new List<(string Name, string Text)>
             {
                 ("Settings", "i"),
                 ("Help", "F"),
                 ("About", "!"),
                 ("Home", "C")
             };
-
-            var ToolbarButtons = new List<Control>();
-
             // Create buttons with specific properties
-            foreach (var button in buttons)
+            foreach (var (button, index) in controlbuttons.Select((p, i) => (p, i)))
             {
                 var scannerButton = new ScannerRoundedButtonControl
                 {
@@ -126,20 +44,104 @@ namespace ACAT.Extensions.UI.UserControls
                     BorderRadiusTopLeft = 12,
                     BorderRadiusTopRight = 12,
                     BorderWidth = 3F,
-                    Dock = System.Windows.Forms.DockStyle.Fill,
-                    FlatStyle = System.Windows.Forms.FlatStyle.Flat,
-                    ForeColor = System.Drawing.Color.White,
+                    Dock = DockStyle.Fill,
+                    FlatStyle = FlatStyle.Flat,
+                    ForeColor = Color.White,
                     Name = button.Name,
-                    Size = new System.Drawing.Size(60, 60),
-                    TabIndex = 0,
+                    Margin = new Padding(10),
+                    TabIndex = index,
                     Text = button.Text,
                     UseMnemonic = false,
-                    UseVisualStyleBackColor = true,
+                    //UseVisualStyleBackColor = true,
+                    Anchor = AnchorStyles.Top,
+                    Size = new Size(100, 100),
+                    AutoSize = false,
+                    TextAlign = ContentAlignment.MiddleCenter,
                 };
-                ToolbarButtons.Add(scannerButton);
-            }
 
-            return ToolbarButtons;
+
+                ButtonBoxRow.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+                ButtonBoxRow.Controls.Add(scannerButton, index + 1, 0);
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (container != null))
+            {
+                container.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // ToolbarUserControl
+            // 
+            this.Name = "ToolbarUserControl";
+            this.AccessibleName = "ToolbarUserControl";
+            this.AutoSize = true;
+            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.Padding = new Padding(10);
+            this.Dock = DockStyle.Top;
+
+            Label appName = new Label
+            {
+                Name = "ACAT",
+                Text = "ACAT Dashboard",
+                AutoSize = true,
+                Padding = new Padding(10),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Anchor = AnchorStyles.Top | AnchorStyles.Left,
+                ForeColor = Color.White,
+                Font = new Font("Montserrat", 28, FontStyle.Regular, GraphicsUnit.Point, 0)
+            };
+
+            ToolbarBox = new TableLayoutPanel
+            {
+                Name = "ToolbarBox",
+                AccessibleName = "ToolbarBox",
+                Dock = DockStyle.Top,
+                ColumnCount = 2,
+                RowCount = 1,
+                Padding = new Padding(2),
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                CellBorderStyle = TableLayoutPanelCellBorderStyle.InsetDouble,
+            };
+            ToolbarBox.SuspendLayout();
+            ToolbarBox.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            ToolbarBox.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            ToolbarBox.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+
+            ButtonBoxRow = new TableLayoutPanel
+            {
+                Name = "ButtonBoxRow",
+                AccessibleName = "ButtonBoxRow",
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                Dock = DockStyle.Top | DockStyle.Right,
+                ColumnCount = 1, // Start with no columns, will add dynamically
+                RowCount = 1,
+                GrowStyle = TableLayoutPanelGrowStyle.AddColumns,
+                CellBorderStyle = TableLayoutPanelCellBorderStyle.InsetDouble
+            };
+
+            ButtonBoxRow.SuspendLayout();
+            ButtonBoxRow.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            ButtonBoxRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            CreateToolbarButtons();
+
+            ToolbarBox.Controls.Add(appName, 0, 0);
+            ToolbarBox.Controls.Add(ButtonBoxRow, 1, 0);
+
+            this.Controls.Add(ToolbarBox);
+
+            ButtonBoxRow.ResumeLayout();
+            ToolbarBox.ResumeLayout();
+            this.ResumeLayout();
         }
     }
 }

@@ -156,6 +156,7 @@ namespace ACAT.Core.ActuatorManagement
         /// Gets or sets the current state of the actuator
         /// </summary>
         protected State actuatorState { get; set; }
+        public Guid Id => Descriptor.Id;
 
         /// <summary>
         /// Class factory to create a switch.  Override this in the

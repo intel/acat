@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Intel Corporation")]
-[assembly: AssemblyProduct("ACAt.Extensions.UI")]
+[assembly: AssemblyProduct("ACAT.Extensions.UI")]
 [assembly: AssemblyCopyright("Copyright © Intel Corporation 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

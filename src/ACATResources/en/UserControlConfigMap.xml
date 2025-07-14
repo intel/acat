@@ -28,7 +28,7 @@
        <UserControlConfigMapEntry name="KeyboardNumberUserControl" configName="KeyboardNumberUserControlConfig" configId="EDA046C3-49F4-4C7B-BF75-ADBFC79C8ACC" userControlId="F8E111D9-796A-4FE0-AC1E-7CD24839FD78" configFile="KeyboardNumbersUserControl.xml" />
 
         <UserControlConfigMapEntry name="PointerScannerUserControl" configName="PointerScannerUserControl" configId="47FE4BC2-060B-4983-B677-531B4EAE9A42" userControlId="802B03F0-1294-4D06-A601-2CEBFBFA5D9C" configFile="PointerScannerUserControl.xml" />
-        <UserControlConfigMapEntry name="ToolbarUserControl" configName="ToolbarUserControl" configId="{BC0ABB77-FA46-4D92-A9C1-7BF32B2FF1A0}" userControlId="{4E1A5ED3-ED21-449B-B462-A8AE9F7BDC1F}" configFile="ToolbarUserControl.xml" />
-        <UserControlConfigMapEntry name="DashboardUserControl" configName="DashboardUserControl" configId="" userControlId="" configFile="DashboardUserControl.xml" />
+        <UserControlConfigMapEntry name="ToolbarUserControl" configName="ToolbarUserControl" configId="BC0ABB77-FA46-4D92-A9C1-7BF32B2FF1A0" userControlId="4E1A5ED3-ED21-449B-B462-A8AE9F7BDC1F" configFile="ToolbarUserControl.xml" />
+        <UserControlConfigMapEntry name="DashboardUserControl" configName="DashboardUserControl" configId="A80DB445-334A-4FBB-AFCA-D25228D89B0D" userControlId="3933BEAF-FAB3-4C6B-AB16-D0B07B0F2C6D" configFile="DashboardUserControl.xml" />
     </UserControlConfigMapEntries>
 </ACAT>

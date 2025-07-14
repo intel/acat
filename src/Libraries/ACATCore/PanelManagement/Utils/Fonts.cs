@@ -9,6 +9,7 @@ using ACAT.Core.Utility;
 using System;
 using System.Drawing;
 using System.Drawing.Text;
+using System.IO;
 using System.Linq;
 
 namespace ACAT.Core.PanelManagement
@@ -62,6 +63,11 @@ namespace ACAT.Core.PanelManagement
 
         public static void LoadFontsFromDir(String directory)
         {
+            if (!Directory.Exists(directory))
+            {
+                Log.Error("Directory " + directory + " does not exist. Cannot load fonts from it.");
+                return;
+            }
             loadFontsFromDir(directory, "*.ttf");
             loadFontsFromDir(directory, "*.otf");
         }

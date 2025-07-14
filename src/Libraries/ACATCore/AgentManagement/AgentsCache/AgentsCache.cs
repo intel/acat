@@ -37,6 +37,8 @@ namespace ACAT.Core.AgentManagement
         /// </summary>
         private readonly List<IApplicationAgent> _agentCache;
 
+        private readonly TypeLoader<IApplicationAgent> _agentTypeLoader = new();
+
         /// <summary>
         /// Used to look up agents by agent id
         /// </summary>
@@ -318,17 +320,6 @@ namespace ACAT.Core.AgentManagement
         }
 
         /// <summary>
-        /// Walks the specified directory tree
-        /// </summary>
-        /// <param name="path">Directory path</param>
-        private void loadAgentsFromDir(String path)
-        {
-            // Recursively look for ACAT Agents in Extensions/Agents direrctory
-            var walker = new DirectoryWalker(path, "ACAT.Extensions.AppAgents.*.dll");
-            walker.Walk(new OnFileFoundDelegate(onAgentDllFound));
-        }
-
-        /// <summary>
         /// Walks the specified directories, looks for DLL's that
         /// have IApplicationAgent classes
         /// </summary>
@@ -348,31 +339,37 @@ namespace ACAT.Core.AgentManagement
         }
 
         /// <summary>
+        /// Walks the specified directory tree
+        /// </summary>
+        /// <param name="path">Directory path</param>
+        private void loadAgentsFromDir(String path)
+        {
+            // Recursively look for ACAT Agents in Extensions/Agents direrctory
+            var walker = new DirectoryWalker(path, "ACAT.Extensions.AppAgents.*.dll");
+            walker.Walk(new OnFileFoundDelegate(onAgentFound));
+
+            foreach (var agent in _agentTypeLoader.LoadedTypes)
+            {
+                addAgent(agent.Value);
+            }
+        }
+
+        /// <summary>
         /// Callback function for the directory walker.  Called
         /// when a dll is found
         /// </summary>
         /// <param name="dllFileName"></param>
-        private void onAgentDllFound(String dllFileName)
+        private void onAgentFound(String agentName)
         {
             try
             {
-                var agentsAssembly = Assembly.LoadFile(dllFileName);
-
-                // look only for IApplicationAgent classes
-                foreach (var type in agentsAssembly.GetTypes())
-                {
-                    Log.Debug(type.FullName);
-                    if (typeof(IApplicationAgent).IsAssignableFrom(type))
-                    {
-                        Log.Debug("Yes!! This is an agent. " + type.FullName);
-                        addAgent(type);
-                    }
-                }
+                _agentTypeLoader.LoadFromAssembly(agentName);
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                Log.Exception($"Error loading agent from {agentName}: {ex.Message}");
             }
+
         }
 
         /// <summary>

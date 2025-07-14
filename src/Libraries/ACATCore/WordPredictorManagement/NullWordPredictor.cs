@@ -64,6 +64,8 @@ namespace ACAT.Core.WordPredictionManagement
             get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
+        public Guid Id => Descriptor.Id;
+
         /// <summary>
         /// Gets or sets whether to filter punctuations
         /// </summary>

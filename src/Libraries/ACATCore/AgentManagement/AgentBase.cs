@@ -132,6 +132,8 @@ namespace ACAT.Core.AgentManagement
             get { return _textInterface ?? _nullTextInterface; }
         }
 
+        public Guid Id => Descriptor.Id;
+
         /// <summary>
         /// Invoked to check if a command  should be enabled or not.  This depends
         /// on the context and the agent can decide whether the command should

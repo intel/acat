@@ -143,6 +143,8 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// </summary>
         protected Settings convAssistSettings { get; set; }
 
+        public Guid Id => ClassDescriptorAttribute.GetDescriptor(GetType()).Id;
+
         /// <summary>
         /// Disposer for this class
         /// </summary>

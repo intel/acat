@@ -158,6 +158,8 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
             get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
+        public Guid Id => Descriptor.Id;
+
         /// <summary>
         /// Returns the current status of the speech engine, whether
         /// it is currently speaking or paused or something else

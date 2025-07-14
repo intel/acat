@@ -151,11 +151,11 @@ namespace ACAT.Core.ThemeManagement
             if (Directory.Exists(userThemesDir))
             {
                 walker = new DirectoryWalker(userThemesDir);
-                walker.Walk(new OnDirectoryFoundDelegate(onDirFound));
+                walker.Walk(new OnDirectoryFoundDelegate(onDirFound), true);
             }
 
             walker = new DirectoryWalker(FileUtils.GetThemesDir());
-            walker.Walk(new OnDirectoryFoundDelegate(onDirFound));
+            walker.Walk(new OnDirectoryFoundDelegate(onDirFound), true);
             return true;
         }
 

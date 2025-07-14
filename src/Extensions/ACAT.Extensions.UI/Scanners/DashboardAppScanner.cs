@@ -4,6 +4,7 @@ using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.ThemeManagement;
 using ACAT.Core.Utility;
 using ACAT.Extension.CommandHandlers;
+using ACAT.Extensions.UI.UserControls;
 using ACAT.Scanners;
 using System;
 using System.Drawing;
@@ -17,8 +18,8 @@ namespace ACAT.Extensions.UI.Scanners
     public partial class DashboardAppScanner : GenericScannerForm
     {
         private TableLayoutPanel ScannerBorder;
-        private Panel panelTopToolbar;
-        private Panel panelDashboardControls;
+        private TableLayoutPanel panelTopToolbar;
+        private TableLayoutPanel panelDashboardControls;
 
         public override DefaultCommandDispatcher _dispatcher => throw new NotImplementedException();
 
@@ -26,11 +27,21 @@ namespace ACAT.Extensions.UI.Scanners
 
         public override ITextController TextController => ScannerCommon.TextController;
 
+        public DashboardAppScanner() : base()
+        {
+            Resize += DashboardAppScanner_Resize;
+        }
+
+        private void DashboardAppScanner_Resize(object sender, EventArgs e)
+        {
+            Log.Debug("DashboardAppScanner_Resize called");
+        }
+
         protected override void InitializeComponent()
         {
             this.ScannerBorder = new TableLayoutPanel();
-            this.panelTopToolbar = new Panel();
-            this.panelDashboardControls = new Panel();
+            this.panelTopToolbar = new TableLayoutPanel();
+            this.panelDashboardControls = new TableLayoutPanel();
 
             this.panelTopToolbar.SuspendLayout();
             this.panelDashboardControls.SuspendLayout();
@@ -39,7 +50,7 @@ namespace ACAT.Extensions.UI.Scanners
             InitializeTopToolbar();
             InitializeDashboard();
 
-            this.ScannerBorder.Size = new Size(800, 800);
+            //this.ScannerBorder.Size = new Size(800, 800);
             this.ScannerBorder.BackColor = Color.Transparent;
             this.ScannerBorder.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             this.ScannerBorder.Name = "DashboardScannerBorder";
@@ -53,12 +64,13 @@ namespace ACAT.Extensions.UI.Scanners
             this.ScannerBorder.Controls.Add(this.panelTopToolbar, 0, 0);
             this.ScannerBorder.Controls.Add(this.panelDashboardControls, 0, 1);
             this.ScannerBorder.Dock = DockStyle.Fill;
-            this.ScannerBorder.AutoSize = false;
+            this.ScannerBorder.AutoSize = true;
+            this.ScannerBorder.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 
             this.Text = "ACAT Dashboard";
             this.Name = "DashboardAppScanner";
-            this.Size = new Size(1600, 800);
-            this.MinimumSize = new Size(1600, 800);
+            //this.Size = new Size(1600, 800);
+            //this.MinimumSize = new Size(1600, 800);
             this.BackColor = Color.FromArgb(35, 36, 51);
             this.ForeColor = Color.White;
             this.Controls.Add(ScannerBorder);
@@ -75,10 +87,8 @@ namespace ACAT.Extensions.UI.Scanners
 
         private void InitializeDashboard()
         {
-            this.panelDashboardControls.Size = new Size(1600, 600);
             this.panelDashboardControls.Name = "Dashboard";
             this.panelDashboardControls.AccessibleName = "Dashboard";
-            this.panelDashboardControls.BackColor = Color.Lavender;
             this.panelDashboardControls.Dock = DockStyle.Top;
             this.panelDashboardControls.AutoSize = true;
             this.panelDashboardControls.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -86,10 +96,8 @@ namespace ACAT.Extensions.UI.Scanners
 
         private void InitializeTopToolbar()
         {
-            this.panelTopToolbar.Size = new Size(1600, 200);
             this.panelTopToolbar.Name = "Toolbar";
             this.panelTopToolbar.AccessibleName = "Toolbar";
-            this.panelTopToolbar.BackColor = Color.MediumPurple;
             this.panelTopToolbar.Dock = DockStyle.Top;
             this.panelTopToolbar.AutoSize = true;
             this.panelTopToolbar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -99,7 +107,7 @@ namespace ACAT.Extensions.UI.Scanners
         {
             //bool success = true;
             bool success = ScannerCommon.UserControlManager.AddUserControlByKeyOrName(panelTopToolbar, "toolbar", "ToolbarUserControl");
-            //success = success && ScannerCommon.UserControlManager.AddUserControlByKeyOrName(panelDashboardControls, "dashboard", "DashboardUserControl");
+            success = success && ScannerCommon.UserControlManager.AddUserControlByKeyOrName(panelDashboardControls, "dashboard", "DashboardUserControl");
 
             return success;
         }

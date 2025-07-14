@@ -133,7 +133,7 @@
       <Name>ACATResources</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\Extensions\ACAt.Extensions.UI\ACAT.Extensions.UI.csproj">
+    <ProjectReference Include="..\..\Extensions\ACAT.Extensions.UI\ACAT.Extensions.UI.csproj">
       <Project>{34c19086-7ab0-4806-a296-1f71df839095}</Project>
       <Name>ACAT.Extensions.UI</Name>
     </ProjectReference>

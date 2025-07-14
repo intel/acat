@@ -334,23 +334,23 @@ namespace ACAT.Extensions.UI.Menus
             base.OnFormClosing(e);
         }
 
-        /// <summary>
-        /// Window proc
-        /// </summary>
-        /// <param name="m"></param>
-        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
-        protected override void WndProc(ref Message m)
-        {
-            if (scannerCommon != null)
-            {
-                if (scannerCommon.HandleWndProc(m))
-                {
-                    return;
-                }
-            }
+        ///// <summary>
+        ///// Window proc
+        ///// </summary>
+        ///// <param name="m"></param>
+        //[EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
+        //protected override void WndProc(ref Message m)
+        //{
+        //    if (scannerCommon != null)
+        //    {
+        //        if (scannerCommon.HandleWndProc(m))
+        //        {
+        //            return;
+        //        }
+        //    }
 
-            base.WndProc(ref m);
-        }
+        //    base.WndProc(ref m);
+        //}
 
         /// <summary>
         /// Gets the text for "Yes" and "No" from the buttons

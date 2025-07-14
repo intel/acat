@@ -424,6 +424,7 @@
     <Compile Include="UserControlManagement\UserControlManager.cs" />
     <Compile Include="UserManagement\ProfileManager.cs" />
     <Compile Include="UserManagement\UserManager.cs" />
+    <Compile Include="Utility\TypeLoader\ITypeLoader.cs" />
     <Compile Include="Utility\Disclaimers.cs" />
     <Compile Include="Utility\Attributions.cs" />
     <Compile Include="Utility\AudioController.cs" />
@@ -461,6 +462,8 @@
     <Compile Include="Utility\ResourceUtils.cs" />
     <Compile Include="Utility\ScannerFocus.cs" />
     <Compile Include="Utility\SoundManager.cs" />
+    <Compile Include="Utility\TypeLoader\IPluginExtension.cs" />
+    <Compile Include="Utility\TypeLoader\TypeLoader.cs" />
     <Compile Include="Utility\VerifyDigitalSignature.cs" />
     <Compile Include="Utility\XmlUtils.cs" />
     <Compile Include="Utility\ClassDescriptorAttribute.cs" />
@@ -718,6 +721,11 @@
     <PackageReference Include="System.Text.Json">
       <Version>9.0.6</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="de\**\*.resources.dll" />
+    <Content Remove="de\**\*.resources.dll" />
+    <None Remove="de\**\*.resources.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ACATResources\ACATResources.csproj">

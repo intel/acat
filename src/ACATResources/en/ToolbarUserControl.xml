@@ -7,10 +7,10 @@
 
 <ACAT>
   <WidgetAttributes>
-        <WidgetAttribute name="Settings" value="@CmdGoBack" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />
-        <WidgetAttribute name="Help" value="@CmdTypingModeSentence" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />
-        <WidgetAttribute name="About" value="@CmdTypingModePhrase" fontname="&functionButtonAltFontName;" fontsize="&functionButtonFontSize;" bold="false" />
-        <WidgetAttribute name="Home" value="@CmdTypingModeShortHand" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="Settings" value="@CmdShowSettings" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="Help" value="@CmdShowHelp" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="About" value="@CmdShowAbout" fontname="&functionButtonAltFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="Home" value="@CmdGoHome" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />
   </WidgetAttributes>
 
   <Layout>
@@ -28,7 +28,7 @@
     <Animation name="TopLevelRotation"
                 start="true"
                 iterations="1">
-        <Widget name="ToolbarBox" onSelect="transition(ButtonRotation)" />
+        <Widget name="ButtonBoxRow" onSelect="transition(ButtonRotation)" />
     </Animation>
     <Animation name="ButtonRotation"
           iterations="@RowScanIterations"

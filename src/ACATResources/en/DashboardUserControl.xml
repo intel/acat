@@ -8,12 +8,12 @@
 
 <ACAT>
   <WidgetAttributes>
-        <WidgetAttribute name="ACATTalk" value="@CmdGoBack" fontname="&functionButtonAltFontName;" fontsize="&functionButtonFontSize;" bold="false" />
-        <WidgetAttribute name="QuickTalk" value="@CmdTypingModeSentence" fontname="&functionButtonAltFontName;" fontsize="&functionButtonFontSize;" bold="false" />
-        <WidgetAttribute name="PointerControl" value="@CmdTypingModePhrase" fontname="&functionButtonAltFontName;" fontsize="&functionButtonFontSize;" bold="false" />
-        <WidgetAttribute name="Keyboard" value="@CmdTypingModeShortHand" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />
-        <WidgetAttribute name="System" value="@CmdTypingModeShortHand" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />
-        <WidgetAttribute name="Location" value="@CmdTypingModeShortHand" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="ACATTalk" value="@CmdShowACATTalk" fontname="&functionButtonAltFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="QuickTalk" value="@CmdShowQuickTalk" fontname="&functionButtonAltFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="PointerControl" value="@CmdShowPointerControl" fontname="&functionButtonAltFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="Keyboard" value="@CmdShowKeyboard" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="System" value="@CmdShowSystem" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="Location" value="@CmdMoveWindow" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />
   </WidgetAttributes>
 
   <Layout>

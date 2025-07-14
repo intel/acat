@@ -99,7 +99,6 @@ namespace ACAT.Extensions.UI.UserControls
                 Padding = new Padding(2),
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                CellBorderStyle = TableLayoutPanelCellBorderStyle.InsetDouble,
             };
             ToolbarBox.SuspendLayout();
             ToolbarBox.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
@@ -115,7 +114,6 @@ namespace ACAT.Extensions.UI.UserControls
                 ColumnCount = 1, // Start with no columns, will add dynamically
                 RowCount = 1,
                 GrowStyle = TableLayoutPanelGrowStyle.AddColumns,
-                CellBorderStyle = TableLayoutPanelCellBorderStyle.InsetDouble
             };
 
             ButtonBoxRow.SuspendLayout();

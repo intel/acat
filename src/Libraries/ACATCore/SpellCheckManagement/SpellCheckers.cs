@@ -205,12 +205,12 @@ namespace ACAT.Core.SpellCheckManagement
         /// <param spellCheckerName="extensionDirs">list of extension directories</param>
         /// <param spellCheckerName="recursive">should it look deep?</param>
         /// <returns></returns>
-        public bool Load(IEnumerable<String> extensionDirs, bool recursive = true)
+        public bool Load(IEnumerable<String> extensionDirs)
         {
             foreach (var dir in extensionDirs)
             {
                 var extensionDir = dir + "\\" + SpellCheckManager.SpellCheckersRootName;
-                loadSpellCheckerTypesIntoCache(extensionDir, null, recursive);
+                loadSpellCheckerTypesIntoCache(extensionDir, null);
             }
             if (_DLLError)
                 return false;
@@ -228,7 +228,7 @@ namespace ACAT.Core.SpellCheckManagement
                     var extensionRoot = Path.Combine(extensionDir, root);
                     extensionRoot = Path.Combine(extensionRoot, SpellCheckManager.SpellCheckersRootName);
 
-                    loadSpellCheckerTypesIntoCache(extensionRoot, language, recursive);
+                    loadSpellCheckerTypesIntoCache(extensionRoot, language);
                 }
             }
             return true;
@@ -336,11 +336,11 @@ namespace ACAT.Core.SpellCheckManagement
         /// <param name="dir">dir to descend into</param>
         /// <param name="culture">culture (optional) of the word predictor</param>
         /// <param name="recursive">true if deep-descend</param>
-        private void loadSpellCheckerTypesIntoCache(String dir, String culture, bool recursive = true)
+        private void loadSpellCheckerTypesIntoCache(String dir, String culture)
         {
             DirectoryWalker walker = new DirectoryWalker(dir, "ACAT*.dll");
             _dirWalkCurrentCulture = culture;
-            walker.Walk(new OnFileFoundDelegate(onFileFound), recursive);
+            walker.Walk(new OnFileFoundDelegate(onFileFound));
         }
 
         /// <summary>

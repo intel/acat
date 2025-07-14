@@ -46,7 +46,7 @@ namespace ACAT.Scanners
 
             InitializeComponent();
 
-            subscribeToEvents();
+            SubscribeToEvents();
 
             _dimScanner = true;
         }
@@ -160,9 +160,18 @@ namespace ACAT.Scanners
         {
         }
 
-        protected abstract void HandlePause();
-        protected abstract void HandleResume();
-        protected abstract void InitializeComponent();
+        protected virtual void HandlePause()
+        {
+            Log.Warn($"No pause handler defined for {GetType().Name}. Defaulting to do nothing.");
+        }
+        protected virtual void HandleResume()
+        {
+            Log.Warn($"No resume handler defined for {GetType().Name}. Defaulting to do nothing.");
+        }
+        protected virtual void InitializeComponent()
+        {
+            Log.Warn($"No InitializeComponent() defined for {GetType().Name}. Defaulting to do nothing.");
+        }
 
         protected override void OnClientSizeChanged(EventArgs e)
         {
@@ -188,16 +197,23 @@ namespace ACAT.Scanners
 
         protected abstract void ScannerShown(object sender, EventArgs e);
 
-        protected void setColorScheme()
+        protected virtual void SetColorScheme()
         {
             var colorScheme = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(ColorSchemes.TalkWindowSchemeName);
 
             updateControlsFromTheme(colorScheme);
         }
 
-        protected abstract void subscribeToEvents();
+        protected virtual void SubscribeToEvents()
+        {
+            //Default to subscribe to nothing.
+            Log.Warn($"No event handlers defined for {GetType().Name}");
+        }
 
-        protected abstract void updateControlsFromTheme(ColorScheme colorScheme);
+        protected virtual void updateControlsFromTheme(ColorScheme colorScheme)
+        {
+            Log.Warn($"Not updating theme for {GetType().Name}");
+        }
 
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         protected override void WndProc(ref Message m)

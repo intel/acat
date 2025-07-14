@@ -1,11 +1,16 @@
-﻿using ACAT.Core.AgentManagement;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.Audit;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.ThemeManagement;
+using ACAT.Core.TTSManagement;
 using ACAT.Core.Utility;
+using ACAT.Core.WordPredictionManagement;
+using ACAT.Extension;
 using ACAT.Extension.CommandHandlers;
 using ACAT.Extensions.UI.UserControls;
 using ACAT.Scanners;
+using ACATResources;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -15,27 +20,56 @@ namespace ACAT.Extensions.UI.Scanners
     [ClassDescriptor("D3F4A1B2-3C4D-5E6F-7A8B-9A0B1C2D3E4F",
                 Name = "DashboardAppScanner",
                 Description = "Scanner for Dashboard Applications")]
-    public partial class DashboardAppScanner : GenericScannerForm
+    public partial class DashboardAppScanner : GenericScannerForm, ISupportsStatusBar
     {
-        private TableLayoutPanel ScannerBorder;
-        private TableLayoutPanel panelTopToolbar;
         private TableLayoutPanel panelDashboardControls;
-
-        public override DefaultCommandDispatcher _dispatcher => throw new NotImplementedException();
-
-        public override RunCommandDispatcher CommandDispatcher => _dispatcher;
-
-        public override ITextController TextController => ScannerCommon.TextController;
-
+        private TableLayoutPanel panelTopToolbar;
+        private TableLayoutPanel ScannerBorder;
         public DashboardAppScanner() : base()
         {
-            Resize += DashboardAppScanner_Resize;
+            _dispatcher = new DashboardAppDispatcher(this);
         }
 
-        private void DashboardAppScanner_Resize(object sender, EventArgs e)
+        public override DefaultCommandDispatcher _dispatcher { get; }
+        public override RunCommandDispatcher CommandDispatcher => _dispatcher;
+        public ScannerStatusBar ScannerStatusBar
         {
-            Log.Debug("DashboardAppScanner_Resize called");
+            get { return ScannerCommon.StatusBar; }
         }
+
+
+        public override ITextController TextController => ScannerCommon.TextController;
+        public override bool CheckCommandEnabled(CommandEnabledArg arg)
+        {
+            switch (arg.Command)
+            {
+                case "CmdACATTalk":
+                case "CmdQuick":
+                case "CmdPointer":
+                case "CmdKeyboard":
+                case "CmdSystem":
+                case "CmdLocation":
+                    arg.Handled = true;
+                    arg.Enabled = true;
+                    break;
+
+                default:
+                    _scannerHelper.CheckCommandEnabled(arg);
+                    break;
+            }
+
+            return true;
+        }
+
+        public override bool HandleInitialize(StartupArg startup)
+        {
+            _scannerCommon.UserControlManager.GridScanIterations = Common.AppPreferences.GridScanIterations;
+            bool success = ScannerCommon.UserControlManager.AddUserControlByKeyOrName(panelTopToolbar, "toolbar", "ToolbarUserControl");
+            success = success && ScannerCommon.UserControlManager.AddUserControlByKeyOrName(panelDashboardControls, "dashboard", "DashboardUserControl");
+
+            return success;
+        }
+
 
         protected override void InitializeComponent()
         {
@@ -52,7 +86,6 @@ namespace ACAT.Extensions.UI.Scanners
 
             //this.ScannerBorder.Size = new Size(800, 800);
             this.ScannerBorder.BackColor = Color.Transparent;
-            this.ScannerBorder.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             this.ScannerBorder.Name = "DashboardScannerBorder";
             this.ScannerBorder.AccessibleName = "DashboardScannerBorder";
             this.ScannerBorder.Margin = new Padding(10);
@@ -69,20 +102,48 @@ namespace ACAT.Extensions.UI.Scanners
 
             this.Text = "ACAT Dashboard";
             this.Name = "DashboardAppScanner";
-            //this.Size = new Size(1600, 800);
-            //this.MinimumSize = new Size(1600, 800);
             this.BackColor = Color.FromArgb(35, 36, 51);
             this.ForeColor = Color.White;
             this.Controls.Add(ScannerBorder);
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.ShowInTaskbar = true;
             this.AutoSize = true;
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.MinimumSize = new Size(1500, 254);
 
             this.panelTopToolbar.ResumeLayout();
             this.panelDashboardControls.ResumeLayout();
             this.ScannerBorder.ResumeLayout();
             this.ResumeLayout();
+        }
+
+        protected override void ScannerFormLoaded(object sender, EventArgs e)
+        {
+            var icon = ImageUtils.GetEntryAssemblyIcon();
+            if (icon != null)
+            {
+                Icon = icon;
+            }
+
+            panelTopToolbar.Focus();
+            _scannerCommon.OnLoad();
+
+            SetColorScheme();
+
+            _scannerCommon.ResizeToFitDesktop(this);
+
+            _windowActiveWatchdog = new WindowActiveWatchdog(this);
+        }
+
+        protected override void ScannerShown(object sender, EventArgs e)
+        {
+            ScannerFocus.SetFocus(this);
+        }
+
+        protected override void SubscribeToEvents()
+        {
+            Load += ScannerFormLoaded;
+            Shown += ScannerShown;
+            FormClosing += ScannerFormClosing;
         }
 
         private void InitializeDashboard()
@@ -102,68 +163,55 @@ namespace ACAT.Extensions.UI.Scanners
             this.panelTopToolbar.AutoSize = true;
             this.panelTopToolbar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
         }
-
-        public override bool HandleInitialize(StartupArg startup)
-        {
-            //bool success = true;
-            bool success = ScannerCommon.UserControlManager.AddUserControlByKeyOrName(panelTopToolbar, "toolbar", "ToolbarUserControl");
-            success = success && ScannerCommon.UserControlManager.AddUserControlByKeyOrName(panelDashboardControls, "dashboard", "DashboardUserControl");
-
-            return success;
-        }
-
-        public override bool CheckCommandEnabled(CommandEnabledArg arg)
-        {
-            return false;
-            //throw new NotImplementedException();
-        }
-
-        protected override void HandlePause()
-        {
-            //throw new NotImplementedException();
-        }
-
-        protected override void HandleResume()
-        {
-            //throw new NotImplementedException();
-        }
-
-        protected override void ScannerFormLoaded(object sender, EventArgs e)
-        {
-            panelTopToolbar.Focus();
-            _scannerCommon.OnLoad();
-
-            setColorScheme();
-
-            _windowActiveWatchdog = new WindowActiveWatchdog(this);
-
-        }
-
-        protected override void ScannerShown(object sender, EventArgs e)
-        {
-            ScannerFocus.SetFocus(this);
-        }
-        protected override void subscribeToEvents()
-        {
-            Load += ScannerFormLoaded;
-            Shown += ScannerShown;
-            FormClosing += ScannerFormClosing;
-        }
-
-        protected override void updateControlsFromTheme(ColorScheme colorScheme)
-        {
-            //throw new NotImplementedException();
-        }
-
         private class CommandHandler : RunCommandHandler
         {
-            public CommandHandler(string cmd) : base(cmd) { }
+            public CommandHandler(String cmd) : base(cmd) { }
 
+public override bool Execute(ref bool handled)
+            {
+                handled = true;
+
+                var form = Dispatcher.Scanner.Form as DashboardAppScanner;
+
+                switch (Command)
+                {
+                    case "CmdACATTalk":
+                    case "CmdQuick":
+                    case "CmdPointer":
+                    case "CmdKeyboard":
+                    case "CmdSystem":
+                    case "CmdLocation":
+                        MessageBox.Show("This command is not implemented yet.", "Not Implemented", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        break;
+
+
+                    default:
+                        handled = false;
+                        break;
+                }
+
+                return true;
+            }
+
+            public override bool Execute(ref bool handled, object source = null)
+            {
+
+                var form = Dispatcher.Scanner.Form as DashboardAppScanner;
+
+                switch (Command)
+                {
+                    default:
+                    handled = false;
+                        break;
+                }
+
+                return true;
+            }
         }
 
         private class DashboardAppDispatcher : DefaultCommandDispatcher
         {
-            public DashboardAppDispatcher(IScannerPanel scanner) : base(scanner)
+            public DashboardAppDispatcher(IScannerPanel panel) : base(panel)
             {
                 //TODO: Add Command Handlers.
             }

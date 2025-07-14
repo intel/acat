@@ -95,6 +95,8 @@ namespace ACAT.Core.TTSManagement
             get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
+        public Guid Id => Descriptor.Id;
+
         /// <summary>
         /// Returns the current status of the speech engine
         /// </summary>

@@ -49,7 +49,7 @@ namespace ACAT.Core.Utility
         /// <summary>
         /// Files to look for
         /// </summary>
-        private String _wildCard;
+        private String _wildCard = "*.*";
 
         /// <summary>
         /// Initialzies an instance of the class.  Finds all
@@ -62,10 +62,6 @@ namespace ACAT.Core.Utility
         
         public DirectoryWalker(String rootDir, String fileWildCard)
         {
-            if (String.IsNullOrEmpty(rootDir) || !Directory.Exists(rootDir))
-            {
-                throw new DirectoryNotFoundException($"Directory not found: {rootDir}");
-            }
             _rootDir = rootDir;
             _wildCard = fileWildCard;
         }
@@ -80,115 +76,31 @@ namespace ACAT.Core.Utility
                dirName.IndexOf(skip, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
-        public void Walk(OnDirectoryFoundDelegate dirFoundDelegate, bool recursive = false )
-        {
-            Walk(dirFoundDelegate, null, recursive);   
-        }
-
-        public void Walk(OnFileFoundDelegate fileFoundDelegate, bool recursive = false )
-        {
-            Walk(null, fileFoundDelegate, recursive);
-        }
-        
-        /// <summary>
-        /// Walks the directory.  If reecursive is true, goes
-        /// into all the subfolders as well. Finds all the sub
-        /// folders and matching files in the directory
-        /// </summary>
-        /// <param name="dirFoundDelegate">Invoked when a subfolder is found</param>
-        /// <param name="fileFoundDelegate">Invoked when a file is found</param>
-        /// <param name="recursive">Set to true for recursive. Default false</param>
-        public void Walk(OnDirectoryFoundDelegate dirFoundDelegate,
-                        OnFileFoundDelegate fileFoundDelegate,
-                        bool recursive = false)
-        {
-            if (Directory.Exists(_rootDir) && (dirFoundDelegate != null || fileFoundDelegate != null))
-            {
-                _dirFoundDelegate = dirFoundDelegate;
-                _fileFoundDelegate = fileFoundDelegate;
-                if (_fileFoundDelegate != null && String.IsNullOrEmpty(_wildCard))
-                {
-                    _wildCard = "*.*";
-                }
-
-                if (fileFoundDelegate != null)
-                {
-                    ListFiles(_rootDir);
-                }
-
-                if (recursive)
-                {
-                    ListDirs(_rootDir, recursive);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Lists all the subfolders in the specified root folder. Invokes
-        /// callback if directory is found
-        /// </summary>
-        /// <param name="dirPath">root folder</param>
-        /// <param name="recursive">set to true for recursive</param>
-        private void ListDirs(string dirPath, bool recursive)
+        public void Walk(OnFileFoundDelegate fileFoundDelegate)
         {
             try
             {
-                var dirs = new List<string>(Directory.EnumerateDirectories(dirPath));
+                var dllFiles = Directory.EnumerateFiles(_rootDir, _wildCard, SearchOption.AllDirectories);
 
-                foreach (var dir in dirs)
+                foreach (var file in dllFiles)
                 {
-                    if (IsSkippableDirectory(dir))
-                    {
-                        continue;
-                    }
-
-                    _dirFoundDelegate?.Invoke(dir);
-
-                    if (_fileFoundDelegate != null)
-                    {
-                        ListFiles(dir);
-                    }
-
-                    if (recursive)
-                    {
-                        ListDirs(dir, recursive);
-                    }
+                    Log.Debug("Found file: " + file);
+                    fileFoundDelegate?.Invoke(file);
                 }
             }
-            catch (UnauthorizedAccessException uaex)
+            catch (UnauthorizedAccessException ex)
             {
-                Log.Exception(uaex.Message);
+                Log.Exception("Access denied: " + ex.Message);
             }
-            catch (PathTooLongException pathex)
+            catch (IOException ex)
             {
-                Log.Exception(pathex.Message);
+                Log.Exception("IO error: " + ex.Message);
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.Message);
+                Log.Exception("Error: " + ex.Message);
             }
         }
 
-        /// <summary>
-        /// Lists all the files for the specified folder and
-        /// invokes the callback when matching files are found
-        /// </summary>
-        /// <param name="dirPath">the folder</param>
-        private void ListFiles(string dirPath)
-        {
-            if (IsSkippableDirectory(dirPath))
-            {
-                return;
-            }
-
-            string[] filePaths = Directory.GetFiles(dirPath, _wildCard);
-            if (filePaths.Length > 0)
-            {
-                foreach (string str in filePaths)
-                {
-                    _fileFoundDelegate?.Invoke(str);
-                }
-            }
-        }
     }
 }

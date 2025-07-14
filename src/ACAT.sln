@@ -200,7 +200,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostBuildSolution", "PostBu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATApp", "Applications\ACATApp\ACATApp.csproj", "{06DE8A17-5D58-4858-BF18-86F7DB74E539}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACAT.Extensions.UI", "Extensions\ACAt.Extensions.UI\ACAT.Extensions.UI.csproj", "{34C19086-7AB0-4806-A296-1F71DF839095}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACAT.Extensions.UI", "Extensions\ACAT.Extensions.UI\ACAT.Extensions.UI.csproj", "{34C19086-7AB0-4806-A296-1F71DF839095}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

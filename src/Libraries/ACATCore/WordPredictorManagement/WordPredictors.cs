@@ -45,6 +45,7 @@ namespace ACAT.Core.WordPredictionManagement
         /// Top level language-specific folder (eg en, fr etc)
         /// </summary>
         private String _dirWalkCurrentCulture;
+        private readonly TypeLoader<IWordPredictor> _WordPredictorsTypeLoader = new();
 
         /// <summary>
         /// Has this object been disposed
@@ -334,9 +335,19 @@ namespace ACAT.Core.WordPredictionManagement
         /// <param name="recursive">true if deep-descend</param>
         private void loadWordPredictorsTypesIntoCache(String dir, String culture, bool recursive = true)
         {
+            if (!Directory.Exists(dir))
+            {
+                Log.Warn($"Directory {dir} doesn't exist.");
+                return;
+            }
             DirectoryWalker walker = new DirectoryWalker(dir, "ACAT.Extensions.WordPredictors.*.dll");
             _dirWalkCurrentCulture = culture;
-            walker.Walk(new OnFileFoundDelegate(onFileFound), recursive);
+            walker.Walk(new OnFileFoundDelegate(onFileFound));
+
+            foreach (var predictor in _WordPredictorsTypeLoader?.LoadedTypes)
+            {
+                Add(predictor.Key, _dirWalkCurrentCulture, predictor.Value);
+            }
         }
 
         /// <summary>
@@ -348,82 +359,13 @@ namespace ACAT.Core.WordPredictionManagement
         {
             try
             {
-                var retVal = VerifyDigitalSignature.ValidateCertificate(dllName);
-                if (retVal && !_DLLError)
-                {
-                    try
-                    {
-                        VerifyDigitalSignature.Verify(dllName);
-                    }
-                    catch (Exception ex)
-                    {
-                        ConfirmBoxOneOption ConfirmBoxOneOption = new ConfirmBoxOneOption
-                        {
-                            Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n WordPredictors",
-                            DecisionPrompt = "ok",
-                            LabelFont = 10
-                        };
-                        ConfirmBoxOneOption.BringToFront();
-                        ConfirmBoxOneOption.TopMost = true;
-                        ConfirmBoxOneOption.ShowDialog();
-                        ConfirmBoxOneOption.Dispose();
-                        _DLLError = true;
-                    }
-                }
-                if (!_DLLError)
-                {
-                    try
-                    {
-                        var assembly = Assembly.LoadFile(dllName);
+                _WordPredictorsTypeLoader.LoadFromAssembly(dllName);
 
-                        Type[] types;
-                        try
-                        {
-                            // Handle type loading issues gracefully
-                            types = assembly.GetTypes();
-                        }
-                        catch (ReflectionTypeLoadException ex)
-                        {
-                            // Some types couldn't load, fall back to what we can access
-                            types = ex.Types.Where(t => t != null).ToArray();
-                        }
-
-                        var matchingType = types
-                            .Where(type =>
-                                type.IsClass && !type.IsAbstract &&
-                                typeof(IWordPredictor).IsAssignableFrom(type))
-                            .FirstOrDefault(type =>
-                            {
-                                var attr = ClassDescriptorAttribute.GetDescriptor(type);
-                                return attr != null && attr.Id != Guid.Empty;
-                            });
-
-                        if (matchingType != null)
-                        {
-                            var attr = ClassDescriptorAttribute.GetDescriptor(matchingType);
-                            Add(attr.Id, _dirWalkCurrentCulture, matchingType);
-                        }
-                    }
-                    catch (FileNotFoundException ex)
-                    {
-                        // Log or handle file not found
-                        Log.Error($"Assembly file not found: {dllName} - {ex.Message}");
-                    }
-                    catch (BadImageFormatException ex)
-                    {
-                        // Log or handle non-.NET assembly
-                        Log.Error($"Invalid assembly format: {dllName} - {ex.Message}");
-                    }
-                    catch (Exception ex)
-                    {
-                        // Catch-all for unexpected errors
-                        Log.Error($"Failed to process assembly: {dllName} - {ex}");
-                    }
-                }
             }
             catch (Exception ex)
             {
-                Log.Exception("Could get types from assembly " + dllName + ". Exception : " + ex.ToString());
+                Log.Exception($"Error loading actuator from {dllName}: {ex.Message}");
+                _DLLError = true;
             }
         }
     }

@@ -27,7 +27,7 @@ namespace ACAT.Core.AgentManagement
     /// All application agents must derive from this interface.  Application agents
     /// handle all interactions with an application, such as notepad, ms word, ie etc.
     /// </summary>
-    public interface IApplicationAgent : IDisposable, IExtension, ISupportsPreferences
+    public interface IApplicationAgent : IDisposable, IExtension, ISupportsPreferences, IPluginExtension
     {
         /// <summary>
         /// Raised when an application agent is deactivated

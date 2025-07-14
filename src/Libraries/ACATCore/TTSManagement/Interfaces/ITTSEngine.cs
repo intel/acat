@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Extensions;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -76,7 +77,7 @@ namespace ACAT.Core.TTSManagement
     /// Interface for the TTS Engine.  All TTS Engines must implement
     /// this interface.
     /// </summary>
-    public interface ITTSEngine : IDisposable, IExtension
+    public interface ITTSEngine : IDisposable, IExtension, IPluginExtension
     {
         /// <summary>
         /// Raised when bookmark reached after async text to speech

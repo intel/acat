@@ -1,27 +1,79 @@
-﻿using ACAT.Core.WidgetManagement;
+﻿using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using ACAT.UserControls;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
-using ACAT.Core.Utility;
 
 namespace ACAT.Extensions.UI.UserControls
 {
     [ClassDescriptor("3933BEAF-FAB3-4C6B-AB16-D0B07B0F2C6D",
         Name = "DashboardUserControl",
         Description = "User control for the ACAT Dashboard")]
-    public class DashboardUserControl : GenericUserControl
+    public class DashboardUserControl : KeyboardUserControl
     {
+        private TableLayoutPanel ButtonBoxRow;
+
+        private System.ComponentModel.IContainer container = null;
+
+        private TableLayoutPanel ToolbarBox;
+
         public DashboardUserControl()
         {
             InitializeComponent();
         }
 
-        public TableLayoutPanel tableLayout { get; private set; }
-
-        protected override bool HandleInitialize()
+        private void CreateToolbarButtons()
         {
-            return true;
+            var controlbuttons = new List<(string Name, string Text)>
+            {
+                ("ACATTalk", "H"),
+                ("QuickTalk", "I"),
+                ("PointerControl", "Q"),
+                ("Keyboard", "e"),
+                ("System", "H"),
+                ("Location", "G")
+            };
+
+            foreach (var (button, index) in controlbuttons.Select((p, i) => (p, i)))
+            {
+                var scannerButton = new ScannerRoundedButtonControl
+                {
+                    BorderColor = System.Drawing.Color.DimGray,
+                    BorderRadiusBottomLeft = 12,
+                    BorderRadiusBottomRight = 12,
+                    BorderRadiusTopLeft = 12,
+                    BorderRadiusTopRight = 12,
+                    BorderWidth = 3F,
+                    Dock = DockStyle.Fill,
+                    FlatStyle = FlatStyle.Flat,
+                    ForeColor = Color.White,
+                    Name = button.Name,
+                    Margin = new Padding(10),
+                    TabIndex = index,
+                    Text = button.Text,
+                    UseMnemonic = false,
+                    //UseVisualStyleBackColor = true,
+                    Anchor = AnchorStyles.Top,
+                    Size = new Size(220, 220),
+                    AutoSize = false,
+                    TextAlign = ContentAlignment.MiddleCenter,
+                };
+
+
+                ButtonBoxRow.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+                ButtonBoxRow.Controls.Add(scannerButton, index + 1, 0);
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (container != null))
+            {
+                container.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
         private void InitializeComponent()
@@ -35,74 +87,49 @@ namespace ACAT.Extensions.UI.UserControls
             this.AutoSize = true;
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             this.Padding = new Padding(10);
+            this.Dock = DockStyle.Top;
 
-
-            List<ScannerButtonControl> controls = CreateMenuItems();
-
-            tableLayout = new TableLayoutPanel
+            ToolbarBox = new TableLayoutPanel
             {
-                Name = "ToolbarTableLayoutPanel",
-                AccessibleName = "ToolbarTableLayoutPanel",
+                Name = "ToolbarBox",
+                AccessibleName = "ToolbarBox",
                 Dock = DockStyle.Top,
                 ColumnCount = 1,
                 RowCount = 1,
                 Padding = new Padding(2),
                 AutoSize = true,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink
-            }; 
-            tableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            tableLayout.SuspendLayout();
-
-            var buttonPanel = new FlowLayoutPanel
-            {
-                Name = "ButtonPanel",
-                AccessibleName = "ButtonPanel",
-                FlowDirection = FlowDirection.LeftToRight,
-                AutoSize = true,
-                Dock = DockStyle.Fill,
-                Anchor = AnchorStyles.Top,
-                WrapContents = false
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                CellBorderStyle = TableLayoutPanelCellBorderStyle.InsetDouble,
             };
-            buttonPanel.SuspendLayout();
+            ToolbarBox.SuspendLayout();
+            ToolbarBox.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            ToolbarBox.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
-            foreach (ScannerButtonControl button in controls)
+            ButtonBoxRow = new TableLayoutPanel
             {
-                buttonPanel.Controls.Add(button);
-            }
+                Name = "ButtonBoxRow",
+                AccessibleName = "ButtonBoxRow",
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                Dock = DockStyle.Top,
+                ColumnCount = 1, // Start with no columns, will add dynamically
+                RowCount = 1,
+                GrowStyle = TableLayoutPanelGrowStyle.AddColumns,
+                CellBorderStyle = TableLayoutPanelCellBorderStyle.InsetDouble
+            };
 
-            tableLayout.Controls.Add(buttonPanel, 0, 0);
-            this.Controls.Add(tableLayout);
+            ButtonBoxRow.SuspendLayout();
+            ButtonBoxRow.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            ButtonBoxRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 0F));
+            CreateToolbarButtons();
 
-            buttonPanel.ResumeLayout();
-            tableLayout.ResumeLayout();
+            ToolbarBox.Controls.Add(ButtonBoxRow, 0, 0);
+
+            Controls.Add(ToolbarBox);
+
+            ButtonBoxRow.ResumeLayout();
+            ToolbarBox.ResumeLayout();
             this.ResumeLayout();
-        }
-
-        private List<ScannerButtonControl> CreateMenuItems()
-        {
-            var iconFont = new Font("ACAT Icon", 44);
-            var font1Font = new Font("ACAT FONT 1", 44);
-
-            var MainMenuButtons = new List<ScannerButtonControl>
-                    {
-                        new ScannerButtonControl { Name = "ACATTalk", Text = "H", Font = iconFont},
-                        new ScannerButtonControl { Name = "QuickTalk",Text = "I", Font = iconFont },
-                        new ScannerButtonControl { Name = "PointerControl", Text = "Q", Font = iconFont },
-                        new ScannerButtonControl { Name = "Keyboard", Text = "e", Font = font1Font},
-                        new ScannerButtonControl { Name = "System", Text = "H", Font = font1Font },
-                        new ScannerButtonControl { Name = "Location", Text = "G", Font = font1Font },
-                    };
-
-            foreach (var button in MainMenuButtons)
-            {
-                button.BackColor = Color.FromArgb(36, 36, 51);
-                button.ForeColor = Color.FromArgb(255, 170, 0);
-                button.Size = new Size(200, 200);
-                button.Padding = new Padding(4);
-            }
-
-            return MainMenuButtons;
         }
     }
 }

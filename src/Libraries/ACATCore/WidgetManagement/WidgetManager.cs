@@ -189,11 +189,11 @@ namespace ACAT.Core.WidgetManagement
             if (retVal)
             {
                 Log.Debug("configPath: " + configPath);
-                Log.IsNull("Layout for root widget ", Layout.RootWidget);
 
                 retVal = Layout.Load(configPath, _rootWidget);
                 if (retVal)
                 {
+                    Log.Debug($"Layout for root widget {Layout.RootWidget}");
                     retrieveAndSetWidgetAttribute(Layout.RootWidget);
                 }
             }
@@ -281,23 +281,33 @@ namespace ACAT.Core.WidgetManagement
         /// </summary>
         private static void loadWidgetTypeCollection(IEnumerable<String> extensionDirs)
         {
-            foreach (var dllPath in Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll", SearchOption.AllDirectories))
+            foreach (String extensionDir in extensionDirs)
             {
-                var isLoaded = AppDomain.CurrentDomain.GetAssemblies()
-                    .Where(a => !a.IsDynamic && !string.IsNullOrEmpty(a.Location))
-                    .Any(a => string.Equals(Path.GetFullPath(a.Location), Path.GetFullPath(dllPath), StringComparison.OrdinalIgnoreCase));
-
-                if (!isLoaded)
+                if (Directory.Exists(extensionDir))
                 {
-                    try
+                    foreach (var dllPath in Directory.GetFiles(extensionDir, "ACAT.Extensions.*.dll", SearchOption.AllDirectories))
                     {
-                        Assembly.LoadFrom(dllPath);
+                        var isLoaded = AppDomain.CurrentDomain.GetAssemblies()
+                            .Where(a => !a.IsDynamic && !string.IsNullOrEmpty(a.Location))
+                            .Any(a => string.Equals(Path.GetFullPath(a.Location), Path.GetFullPath(dllPath), StringComparison.OrdinalIgnoreCase));
+
+                        if (!isLoaded)
+                        {
+                            try
+                            {
+                                Assembly.LoadFrom(dllPath);
+                            }
+                            catch (Exception ex)
+                            {
+                                // Log or handle if the assembly fails to load
+                                Console.WriteLine($"Failed to load {dllPath}: {ex.Message}");
+                            }
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        // Log or handle if the assembly fails to load
-                        Console.WriteLine($"Failed to load {dllPath}: {ex.Message}");
-                    }
+                }
+                else
+                {
+                    Log.Error("Extension directory does not exist: " + extensionDir);
                 }
             }
 

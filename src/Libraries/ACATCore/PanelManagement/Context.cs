@@ -661,7 +661,7 @@ namespace ACAT.Core.PanelManagement
             // TODO: Add support for multiple extension directories
             //var dirs = CoreGlobals.AppPreferences.Extensions.Split(',');
 
-            _extensionDirs.Add(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            _extensionDirs.Add(FileUtils.GetExtensionDir());
         }
 
         /// <summary>
@@ -697,7 +697,7 @@ namespace ACAT.Core.PanelManagement
         /// <param name="fatal">is the error fatal?</param>
         private static void setCompletionStatus(String status, bool fatal = true)
         {
-            _completionStatus = (fatal) ? "Fatal error. " + status : status;
+            _completionStatus = status;
             _isFatal = fatal;
         }
 

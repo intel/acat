@@ -72,7 +72,7 @@ namespace ACAT.Core.WordPredictionManagement
     /// more accurate predictions based on the user.
     /// All WordPredictors should implement this interface.
     /// </summary>
-    public interface IWordPredictor : IDisposable
+    public interface IWordPredictor : IPluginExtension, IDisposable
     {
         /// <summary>
         /// Event to indicate mode has changed

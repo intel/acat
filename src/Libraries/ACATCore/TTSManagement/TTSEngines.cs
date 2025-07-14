@@ -42,6 +42,8 @@ namespace ACAT.Core.TTSManagement
         /// </summary>
         private readonly Dictionary<Guid, Tuple<String, Type>> _ttsEnginesTypeCache;
 
+        private readonly TypeLoader<ITTSEngine> _ttsEngineTypeLoader = new();
+
         /// <summary>
         /// Top level language-specific folder (eg en, fr etc)
         /// </summary>
@@ -360,9 +362,14 @@ namespace ACAT.Core.TTSManagement
         /// <param name="recursive">true if deep-descend</param>
         private void loadTTSEngineTypesIntoCache(String dir, String culture, bool recursive = true)
         {
-            DirectoryWalker walker = new DirectoryWalker(dir, "*.dll");
+            DirectoryWalker walker = new DirectoryWalker(dir, "ACAT*.dll");
             _dirWalkCurrentCulture = culture;
-            walker.Walk(new OnFileFoundDelegate(onFileFound), recursive);
+            walker.Walk(new OnFileFoundDelegate(onFileFound));
+
+            foreach (var ttsEngine in _ttsEngineTypeLoader.LoadedTypes)
+            {
+                Add(ttsEngine.Key, _dirWalkCurrentCulture, ttsEngine.Value);
+            }
         }
 
         /// <summary>
@@ -374,48 +381,62 @@ namespace ACAT.Core.TTSManagement
         {
             try
             {
-                var retVal = VerifyDigitalSignature.ValidateCertificate(dllName);
-                if (retVal && !_DLLError)
-                {
-                    try
-                    {
-                        VerifyDigitalSignature.Verify(dllName);
-                    }
-                    catch (Exception ex)
-                    {
-                        ConfirmBoxOneOption ConfirmBoxOneOption = new ConfirmBoxOneOption
-                        {
-                            Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n Status Error: ERTTS",
-                            DecisionPrompt = "ok",
-                            LabelFont = 10
-                        };
-                        ConfirmBoxOneOption.BringToFront();
-                        ConfirmBoxOneOption.TopMost = true;
-                        ConfirmBoxOneOption.ShowDialog();
-                        ConfirmBoxOneOption.Dispose();
-                        _DLLError = true;
-                    }
-                }
-                if (!_DLLError)
-                {
-                    Assembly ttsEngineAssembly = Assembly.LoadFile(dllName);
-                    foreach (Type type in ttsEngineAssembly.GetTypes())
-                    {
-                        if (typeof(ITTSEngine).IsAssignableFrom(type))
-                        {
-                            ClassDescriptorAttribute attr = ClassDescriptorAttribute.GetDescriptor(type);
-                            if (attr != null && attr.Id != Guid.Empty)
-                            {
-                                Add(attr.Id, _dirWalkCurrentCulture, type);
-                            }
-                        }
-                    }
-                }
+                _ttsEngineTypeLoader.LoadFromAssembly(dllName);
             }
             catch (Exception ex)
             {
-                Log.Exception("Could get types from assembly " + dllName + ". Exception : " + ex.ToString());
+                Log.Exception("Could not load assembly " + dllName + ". Exception: " + ex.ToString());
+                _DLLError = true;                return; // skip further processing if there was a DLL error
             }
+
+            //if (_DLLError)
+            //{
+            //    return; // skip further processing if there was a DLL error
+            //}
+            //try
+            //{
+            //    var retVal = VerifyDigitalSignature.ValidateCertificate(dllName);
+            //    if (retVal && !_DLLError)
+            //    {
+            //        try
+            //        {
+            //            VerifyDigitalSignature.Verify(dllName);
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            ConfirmBoxOneOption ConfirmBoxOneOption = new ConfirmBoxOneOption
+            //            {
+            //                Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n Status Error: ERTTS",
+            //                DecisionPrompt = "ok",
+            //                LabelFont = 10
+            //            };
+            //            ConfirmBoxOneOption.BringToFront();
+            //            ConfirmBoxOneOption.TopMost = true;
+            //            ConfirmBoxOneOption.ShowDialog();
+            //            ConfirmBoxOneOption.Dispose();
+            //            _DLLError = true;
+            //        }
+            //    }
+            //    if (!_DLLError)
+            //    {
+            //        Assembly ttsEngineAssembly = Assembly.LoadFile(dllName);
+            //        foreach (Type type in ttsEngineAssembly.GetTypes())
+            //        {
+            //            if (typeof(ITTSEngine).IsAssignableFrom(type))
+            //            {
+            //                ClassDescriptorAttribute attr = ClassDescriptorAttribute.GetDescriptor(type);
+            //                if (attr != null && attr.Id != Guid.Empty)
+            //                {
+            //                    Add(attr.Id, _dirWalkCurrentCulture, type);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Log.Exception("Could get types from assembly " + dllName + ". Exception : " + ex.ToString());
+            //}
         }
     }
 }

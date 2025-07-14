@@ -17,24 +17,28 @@
   </WidgetAttributes>
 
   <Layout>
-    <Widget class="BoxWidget"  name="ToolbarTableLayoutPanel">
-      <Widget class="RowWidget" name ="ButtonPanel" >
-		    <Widget class="ScannerButton" name="ACATTalk" />
-		    <Widget class="ScannerButton" name="QuickTalk" />
-		    <Widget class="ScannerButton" name="PointerControl" />
-		    <Widget class="ScannerButton" name="Keyboard" />
-		    <Widget class="ScannerButton" name="System" />
-		    <Widget class="ScannerButton" name="Location" />
+    <Widget class="BoxWidget"  name="ToolbarBox">
+      <Widget class="RowWidget"  name="ButtonBoxRow">
+        <Widget class="ScannerButton" name="ACATTalk" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="QuickTalk" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="PointerControl" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="Keyboard" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="System" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="Location" colorScheme="ScannerButton"/>
       </Widget>
     </Widget>
   </Layout>
 
   <Animations>
-    <Animation name="ToolbarListRotation"
-                   iterations="@WordPredictionScanIterations"
-                   firstPauseTime="@WordPredictionFirstPauseTime"
-                   onSelect="actuate(@SelectedWidget); transition(ToolbarListRotation)"
-                   onEnd="transition(TopLevelRotationToolbar)">
+    <Animation name="TopLevelRotation"
+                start="true"
+                iterations="1">
+        <Widget name="ToolbarBox" onSelect="transition(ButtonRotation)" />
+    </Animation>
+    <Animation name="ButtonRotation"
+          iterations="@RowScanIterations"
+          firstPauseTime="@FirstPauseTime"
+          onSelect="actuate(@SelectedWidget); transition(ButtonPressed)">
       <Widget name="ACATTalk" />
       <Widget name="QuickTalk" />
       <Widget name="PointerControl" />
@@ -42,5 +46,13 @@
       <Widget name="System" />
       <Widget name="Location" />
     </Animation>
+    <Animation name="ButtonPressed"
+           onEnter=""
+           iterations="1"
+           onEnd="transition(TopLevelRotation)">
+            <Widget name="@SelectedWidget" 
+                firstPauseTime="@FirstRepeatTime" 
+                onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+        </Animation>
   </Animations>
- </ACAT>
+</ACAT>

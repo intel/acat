@@ -33,7 +33,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
     [ClassDescriptor("7DA7F870-80DC-47B4-994C-5F46A4DFE538",
                             "Camera Actuator",
                             "Actuator which uses a webcam to detect facial gestures and trigger ACAT")]
-    internal class CameraActuator : ActuatorBase, ISupportsPreferences
+    internal class CameraActuator : ActuatorBase, ISupportsPreferences, IPluginExtension
     {
         /// <summary>
         /// The settings object for this actuator

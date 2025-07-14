@@ -492,7 +492,7 @@ namespace ACAT.Core.UserControlManagement
             {
                 var walker = new DirectoryWalker(dir, "*.*");
                 Log.Debug("Walking dir " + dir);
-                walker.Walk(new OnFileFoundDelegate(onFileFound), recursive);
+                walker.Walk(new OnFileFoundDelegate(onFileFound));
             }
         }
 

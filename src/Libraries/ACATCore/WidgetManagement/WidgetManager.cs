@@ -239,7 +239,7 @@ namespace ACAT.Core.WidgetManagement
         {
             var walker = new DirectoryWalker(dir, "*.dll");
             Log.Debug("Walking dir " + dir);
-            walker.Walk(new OnFileFoundDelegate(onFileFound), recursive);
+            walker.Walk(new OnFileFoundDelegate(onFileFound));
         }
 
         /// <summary>

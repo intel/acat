@@ -150,12 +150,12 @@ namespace ACAT.Core.ThemeManagement
             DirectoryWalker walker;
             if (Directory.Exists(userThemesDir))
             {
-                walker = new DirectoryWalker(userThemesDir);
-                walker.Walk(new OnDirectoryFoundDelegate(onDirFound), true);
+                walker = new DirectoryWalker(userThemesDir, "Theme.xml");
+                walker.Walk(new OnFileFoundDelegate(onFileFound));
             }
 
-            walker = new DirectoryWalker(FileUtils.GetThemesDir());
-            walker.Walk(new OnDirectoryFoundDelegate(onDirFound), true);
+            walker = new DirectoryWalker(FileUtils.GetThemesDir(), "Theme.xml");
+            walker.Walk(new OnFileFoundDelegate(onFileFound));
             return true;
         }
 
@@ -237,22 +237,14 @@ namespace ACAT.Core.ThemeManagement
         /// the directory name to the mapping table.  Name of the directory
         /// is also the name of the theme
         /// </summary>
-        /// <param name="dirName">directory to explore</param>
-        private void onDirFound(String dirName)
+        /// <param name="fileName">directory to explore</param>
+        private void onFileFound(String filePath)
         {
-            if (!File.Exists(Path.Combine(dirName, ThemeConfigFileName)))
+            var file = new FileInfo(filePath);
+            if (!ThemesLookupTable.ContainsKey(file.Directory.Name))
             {
-                return;
-            }
-
-            Log.Debug("Found Theme in  " + dirName);
-
-            var components = dirName.Split('\\');
-            var themeName = components[components.Length - 1];
-            if (!ThemesLookupTable.ContainsKey(themeName))
-            {
-                Log.Debug("Adding Theme: " + themeName + ", themeDir: " + dirName);
-                ThemesLookupTable.Add(themeName, dirName);
+                Log.Debug("Adding Theme: " + file.Directory.Name + ", themeDir: " + file.Directory.FullName);
+                ThemesLookupTable.Add(file.Directory.Name, file.Directory.FullName);
             }
         }
     }

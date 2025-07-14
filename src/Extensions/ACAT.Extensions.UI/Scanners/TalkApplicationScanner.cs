@@ -1,14 +1,3 @@
-﻿// Copyright 2013-2019; 2023 Intel Corporation
-// SPDX-License-Identifier: Apache-2.0
-//
-// TalkApplicationScanner.cs
-//
-// The main form for the ACAT Talk application. This is a container for
-// user controls for word prediction, sentence prediction, talk text box
-// and the keyboard.
-// It also handles commands associated with keys such as Undo, Backspace,
-// text navigation etc.
-
 using ACAT.Core.AgentManagement;
 using ACAT.Core.Audit;
 using ACAT.Core.PanelManagement;
@@ -31,32 +20,23 @@ namespace ACAT.Extensions.UI.Scanners
                         "Talk application main window")]
     public partial class TalkApplicationScanner : GenericScannerForm, ISupportsStatusBar
     {
-        public override DefaultCommandDispatcher _dispatcher { get; }
-        public override RunCommandDispatcher CommandDispatcher => _dispatcher;
-
-
         private TalkWindowTextBoxPhraseModeUserControl _textBoxPhraseModeUserControl;
-
         private TextBox _textBoxTalkWindow;
-
         private TalkWindowTextBoxUserControl _textBoxUserControl;
-
         public TalkApplicationScanner() : base()
         {
             _dispatcher = new TalkAppDispatcher(this);
         }
 
+        public override DefaultCommandDispatcher _dispatcher { get; }
+        public override RunCommandDispatcher CommandDispatcher => _dispatcher;
         public ScannerStatusBar ScannerStatusBar
         {
             get { return ScannerCommon.StatusBar; }
         }
 
 
-        public override ITextController TextController
-        {
-            get { return _scannerCommon.TextController; }
-        }
-
+        public override ITextController TextController => ScannerCommon.TextController;
         public override bool CheckCommandEnabled(CommandEnabledArg arg)
         {
             switch (arg.Command)
@@ -98,7 +78,6 @@ namespace ACAT.Extensions.UI.Scanners
 
         public override bool HandleInitialize(StartupArg startupArg)
         {
-
             _scannerCommon.UserControlManager.GridScanIterations = Common.AppPreferences.GridScanIterations;
             _scannerCommon.UserControlManager.AddUserControlByKeyOrName(panelWordPrediction, "wordPrediction", "WordPredictionUserControl");
             _scannerCommon.UserControlManager.AddUserControlByKeyOrName(panelSentencePrediction, "sentencePrediction", "SentencePredictionUserControl");
@@ -145,7 +124,7 @@ namespace ACAT.Extensions.UI.Scanners
 
             _scannerCommon.OnLoad();
 
-            setColorScheme();
+            SetColorScheme();
 
             _scannerCommon.ResizeToFitDesktop(this);
 
@@ -159,18 +138,11 @@ namespace ACAT.Extensions.UI.Scanners
             ScannerFocus.SetFocus(this);
         }
 
-        protected override void subscribeToEvents()
+        protected override void SubscribeToEvents()
         {
             Load += ScannerFormLoaded;
             Shown += ScannerShown;
             FormClosing += ScannerFormClosing;
-        }
-
-        protected override void updateControlsFromTheme(ColorScheme colorScheme)
-        {
-            _textBoxTalkWindow.BackColor = colorScheme.Background;
-            _textBoxTalkWindow.ForeColor = colorScheme.Foreground;
-            panelTextBox.BackColor = colorScheme.Background;
         }
 
         private void ActiveWordPredictor_EvtModeChanged(WordPredictionModes newMode)
@@ -216,7 +188,7 @@ namespace ACAT.Extensions.UI.Scanners
                 _textBoxTalkWindow = (userControl as ITalkWindowTextBox).TextBoxControl;
                 if (_textBoxTalkWindow != null)
                 {
-                    setColorScheme();
+                    SetColorScheme();
 
                     //_textBoxTalkWindow.TabIndex = 0;
                     _textBoxTalkWindow.KeyPress += TextBoxTalkWindowOnKeyPress;
@@ -411,10 +383,7 @@ namespace ACAT.Extensions.UI.Scanners
 
         private class CommandHandler : RunCommandHandler
         {
-            public CommandHandler(String cmd)
-                : base(cmd)
-            {
-            }
+            public CommandHandler(String cmd) : base(cmd) { }
 
             public override bool Execute(ref bool handled)
             {
@@ -532,8 +501,7 @@ namespace ACAT.Extensions.UI.Scanners
 
         private class TalkAppDispatcher : DefaultCommandDispatcher
         {
-                            public TalkAppDispatcher(IScannerPanel panel)
-                : base(panel)
+            public TalkAppDispatcher(IScannerPanel panel) : base(panel)
             {
                 Commands.Add(new CommandHandler("CmdTalkWindowClear"));
                 Commands.Add(new CommandHandler("CmdNumberScanner"));

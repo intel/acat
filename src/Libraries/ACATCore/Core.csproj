@@ -66,20 +66,7 @@
     <Compile Include="ActuatorManagement\ActuatorManager.cs" />
     <Compile Include="ActuatorManagement\Actuators.cs" />
     <Compile Include="ActuatorManagement\CalibrationNotifyEventArgs.cs" />
-    <Compile Include="ActuatorManagement\KeyboardActuator\OnboardingHardwareSwitchSetup.cs" />
     <Compile Include="ActuatorManagement\KeyboardActuator\SwitchInterfaceActuator.cs" />
-    <Compile Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchSetup.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchSetup.Designer.cs">
-      <DependentUpon>UserControlHardwareSwitchSetup.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchTest.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchTest.Designer.cs">
-      <DependentUpon>UserControlHardwareSwitchTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="ActuatorManagement\Settings\ActuatorSetting.cs" />
     <Compile Include="ActuatorManagement\Settings\ActuatorConfig.cs" />
     <Compile Include="ActuatorManagement\ActuatorSwitchBase.cs" />
@@ -205,19 +192,9 @@
     <Compile Include="CommandManagement\CmdScopeMapEntry.cs" />
     <Compile Include="CommandManagement\CmdScopeTable.cs" />
     <Compile Include="CommandManagement\CommandManager.cs" />
-    <Compile Include="Onboarding\IOnboardingExtension.cs" />
-    <Compile Include="Onboarding\IOnboardingUserControl.cs" />
-    <Compile Include="Onboarding\IOnboardingWizard.cs" />
-    <Compile Include="Onboarding\OnboardingExtensionBase.cs" />
-    <Compile Include="Onboarding\OnboardingForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Onboarding\OnboardingForm.Designer.cs">
-      <DependentUpon>OnboardingForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Onboarding\OnboardingSequence.cs" />
-    <Compile Include="Onboarding\OnboardingSequenceItem.cs" />
-    <Compile Include="Onboarding\OnboardingWizard.cs" />
+    <Compile Include="CoreInterfaces\IOnboardingExtension.cs" />
+    <Compile Include="CoreInterfaces\IOnboardingUserControl.cs" />
+    <Compile Include="CoreInterfaces\IOnboardingWizard.cs" />
     <Compile Include="PanelManagement\PanelConfigMap\AppPanelClassConfig.cs" />
     <Compile Include="PanelManagement\PanelConfigMap\PanelClassConfig.cs" />
     <Compile Include="PanelManagement\PanelConfigMap\PanelClassConfigMap.cs" />
@@ -584,17 +561,6 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchSetup.resx">
-      <DependentUpon>UserControlHardwareSwitchSetup.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchTest.es.resx">
-      <DependentUpon>UserControlHardwareSwitchTest.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ActuatorManagement\KeyboardActuator\UserControlHardwareSwitchTest.resx">
-      <DependentUpon>UserControlHardwareSwitchTest.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="ActuatorManagement\UI\ActuatorErrorForm.resx">
       <DependentUpon>ActuatorErrorForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -619,9 +585,6 @@
     <EmbeddedResource Include="ActuatorManagement\UI\SwitchCommandMapForm.resx">
       <Generator>ResXFileCodeGeneratorEx</Generator>
       <DependentUpon>SwitchCommandMapForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Onboarding\OnboardingForm.resx">
-      <DependentUpon>OnboardingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PanelManagement\UI\ConfirmBoxLargeSingleOption.resx">
       <DependentUpon>ConfirmBoxLargeSingleOption.cs</DependentUpon>

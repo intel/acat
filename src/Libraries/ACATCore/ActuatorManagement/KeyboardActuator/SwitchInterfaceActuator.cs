@@ -10,7 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.Onboarding;
+//using ACAT.Core.Onboarding;
 using ACAT.Core.Utility;
 using System;
 
@@ -56,10 +56,12 @@ namespace ACAT.Core.InputActuators
             }
         }
 
-        public override IOnboardingExtension GetOnboardingExtension()
-        {
-            return new OnboardingHardwareSwitchSetup(OnboardingHardwareSwitchSetup.SwitchType.SwitchInterface);
-        }
+        //public override IOnboardingExtension GetOnboardingExtension()
+        //{
+        //    return new OnboardingHardwareSwitchSetup(OnboardingHardwareSwitchSetup.SwitchType.SwitchInterface);
+        //}
+
+
 
         public override bool ShowScanTimingsConfigureDialog()
         {

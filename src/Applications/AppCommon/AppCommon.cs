@@ -33,7 +33,7 @@ using System.Windows.Forms;
 
 namespace ACAT.Applications
 {
-    public class AppCommon
+    public partial class AppCommon
     {
         /// <summary>
         /// Form to display the exit message

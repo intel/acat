@@ -13,7 +13,6 @@
 
 using ACAT.Core.AgentManagement;
 using ACAT.Core.Audit;
-using ACAT.Core.Onboarding;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
@@ -116,7 +115,7 @@ namespace ACAT.Applications.ACATApp
 
             Common.AppPreferences.PreferredPanelConfigNames = String.Empty;
 
-            if (!doOnboarding())
+            if (!AppCommon.DoOnboarding())
             {
                 return;
             }
@@ -262,33 +261,6 @@ namespace ACAT.Applications.ACATApp
             {
                 Context.AppPanelManager.ShowDialog(form as IPanel);
             }
-        }
-
-        private static bool doOnboarding()
-        {
-            var onboardingSequence = new OnboardingSequence();
-
-            onboardingSequence.OnboardingSequenceItems.Add(new OnboardingSequenceItem(welcome));
-            onboardingSequence.OnboardingSequenceItems.Add(new OnboardingSequenceItem(languageSelect));
-            onboardingSequence.OnboardingSequenceItems.Add(new OnboardingSequenceItem(switchSelect));
-            onboardingSequence.OnboardingSequenceItems.Add(new OnboardingSequenceItem(keyboardConfig));
-            onboardingSequence.OnboardingSequenceItems.Add(new OnboardingSequenceItem(finish));
-
-            var onboardingForm = new OnboardingForm
-            {
-                Sequence = onboardingSequence
-            };
-
-            Application.Run(onboardingForm);
-
-            Context.AppActuatorManager.Dispose();
-
-            if (onboardingForm.QuitOnboarding)
-            {
-                return false;
-            }
-
-            return true;
         }
 
         private static bool validateACATCoreLibraryCertificates()

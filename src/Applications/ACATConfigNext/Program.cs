@@ -81,6 +81,13 @@ namespace ACATConfigNext
             {
                 if (sender is Button clickedButton)
                 {
+                    // Check if the clicked button is already selected  
+                    if (selectedCategoryButton == clickedButton)
+                    {
+                        return; // Exit early if clicking on the current category  
+                    }
+
+
                     if (selectedCategoryButton != null)
                     {
                         selectedCategoryButton.BackColor = Color.Transparent; // Reset previous button color
@@ -185,6 +192,39 @@ namespace ACATConfigNext
 
                 UpdateBreadcrumbTrail();
             }
+            public static TableLayoutPanel RefreshGeneralSettingsPanel(Action<Control> onControlCreated = null)
+            {
+                var tableLayoutPanel = CustomControls.CreateCategoryTableLayoutPanel();
+
+                if (CoreGlobals.AppPreferences == null)
+                {
+                    if (!AppCommon.LoadUserPreferences())
+                    {
+                        return tableLayoutPanel; // Return empty panel on error  
+                    }
+                }
+
+                if (CoreGlobals.AppPreferences != null)
+                {
+                    var descriptor = CoreGlobals.AppPreferences.GetType().GetCustomAttribute<DescriptorAttribute>();
+
+                    tableLayoutPanel.Controls.Add(CustomControls.CreateLabel(descriptor?.Category ?? "UNKNOWN CATEGORY"));
+                    tableLayoutPanel.Controls.Add(CustomControls.CreateLabel(descriptor?.Description ?? "UNKNOWN DESCRIPTION"));
+
+                    var props = CoreGlobals.AppPreferences.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+                    foreach (var prop in props)
+                    {
+                        var propPanel = CustomControls.CreateLabeledPanel(prop, CoreGlobals.AppPreferences);
+                        var host = CustomControls.ElementHost(propPanel);
+                        tableLayoutPanel.Controls.Add(host);
+
+                        onControlCreated?.Invoke(host);
+                    }
+                }
+
+                return tableLayoutPanel;
+            }
 
             public static TableLayoutPanel RefreshExtensionPanel<TManager, TCollection>(Func<bool> loadManagerExtensions,Func<IEnumerable<string>> getExtensionDirs,TCollection context,Func<TCollection, IEnumerable<Type>> getTypeCollection, string panelTitle, EventHandler<PreferencesCategory> onClick = null) where TCollection : class
             {
@@ -269,6 +309,7 @@ namespace ACATConfigNext
 
                 return new TableLayoutPanel();
             }
+        
             public static bool IsValidExtension(PreferencesCategory category, out IDescriptor descriptor)
             {
                 descriptor = null;
@@ -281,6 +322,8 @@ namespace ACATConfigNext
                 descriptor = extension.Descriptor;
                 return descriptor != null && descriptor.HasSettings;
             }
+
+           
         }
 
         /// <summary>
@@ -296,50 +339,10 @@ namespace ACATConfigNext
 
         public class GeneralSettingsPanel : UserControl
         {
-            private TableLayoutPanel _tableLayoutPanel = CustomControls.CreateCategoryTableLayoutPanel();
-
-
             public GeneralSettingsPanel(Action<UserControl, string> showPanel)
             {
-              //  var label = new Label { Text = "General Settings", Dock = DockStyle.Top, Height = 40 };
-                refreshPanel();
-            }
-
-            private void refreshPanel()
-            {
-                if (CoreGlobals.AppPreferences == null)
-                {
-                    if (!AppCommon.LoadUserPreferences())
-                    {
-                        // Handle error - preferences couldn't be loaded    
-                        return;
-                    }
-                }
-
-                if (CoreGlobals.AppPreferences != null)
-                {
-                    if (_tableLayoutPanel == null)
-                    {
-                        _tableLayoutPanel = CustomControls.CreateCategoryTableLayoutPanel();
-                    }
-
-                    var descriptor = CoreGlobals.AppPreferences.GetType().GetCustomAttribute<DescriptorAttribute>();
-
-                    _tableLayoutPanel.Controls.Add(CustomControls.CreateLabel(descriptor?.Category ?? "UNKNOWN CATEGORY"));
-                    _tableLayoutPanel.Controls.Add(CustomControls.CreateLabel(descriptor?.Description ?? "UNKNOWN DESCRIPTION"));
-
-                    var props = CoreGlobals.AppPreferences.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
-                    foreach (var prop in props)
-                    {
-                        var propPanel = CustomControls.CreateLabeledPanel(prop, CoreGlobals.AppPreferences);
-                        var host = CustomControls.ElementHost(propPanel);
-                        _tableLayoutPanel.Controls.Add(host);
-                    }
-
-                    Controls.Add(_tableLayoutPanel);
-                    
-                }
+                //  var label = new Label { Text = "General Settings", Dock = DockStyle.Top, Height = 40 };
+                Controls.Add(SettingsForm.RefreshGeneralSettingsPanel());
             }
 
             private class GeneralSettingsDescriptor : IDescriptor

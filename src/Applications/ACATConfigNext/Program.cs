@@ -1,26 +1,17 @@
-﻿//using ACAT.Core.WidgetManagement;
-//using ACAT.Core.Widgets;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
-using System.Text;
+using System.Reflection;
 using System.Windows.Forms;
 using ACAT.Applications;
 using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.InputActuators;
-using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.PreferencesManagement;
 using ACAT.Lib.Core.TTSManagement;
 using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WordPredictionManagement;
-using ACATResources;
-using static ACAT.Lib.Core.Interpreter.Interpret;
 
 namespace ACATConfigNext
 {
@@ -31,7 +22,7 @@ namespace ACATConfigNext
             private readonly Panel navPanel;
             private readonly Panel contentPanel;
             private readonly FlowLayoutPanel breadcrumbPanel;
-            private static TableLayoutPanel _tableLayoutPanel = CustomControls.CreateCategoryTableLayoutPanel();
+            public static TableLayoutPanel _tableLayoutPanel = CustomControls.CreateCategoryTableLayoutPanel();
 
             private Button selectedCategoryButton;
 
@@ -195,7 +186,7 @@ namespace ACATConfigNext
                 UpdateBreadcrumbTrail();
             }
 
-            public static TableLayoutPanel RefreshExtensionPanel<TManager, TCollection>(Func<bool> loadManagerExtensions,Func<IEnumerable<string>> getExtensionDirs,TCollection context,Func<TCollection, IEnumerable<Type>> getTypeCollection, string panelTitle) where TCollection : class
+            public static TableLayoutPanel RefreshExtensionPanel<TManager, TCollection>(Func<bool> loadManagerExtensions,Func<IEnumerable<string>> getExtensionDirs,TCollection context,Func<TCollection, IEnumerable<Type>> getTypeCollection, string panelTitle, EventHandler<PreferencesCategory> onClick = null) where TCollection : class
             {
                 if (CoreGlobals.AppPreferences == null)
                 {
@@ -207,6 +198,8 @@ namespace ACATConfigNext
 
                 if (CoreGlobals.AppPreferences?.Extensions != null)
                 {
+                    _tableLayoutPanel.Controls.Clear();
+
                     if (!loadManagerExtensions())
                     {
                         return new TableLayoutPanel();
@@ -257,10 +250,16 @@ namespace ACATConfigNext
                         categoryItem.Controls.Add(CustomControls.CreateLabel(desc.Name), 0, 0);
                         categoryItem.Controls.Add(CustomControls.CreateDescriptionLabel(desc.Description), 0, 2);
 
-                        var checkBox = CustomControls.CreateCheckBox(">");
+
+                        var checkBox = CustomControls.CreateCheckBox("Enabled");
                         checkBox.Tag = category;
                         categoryItem.Controls.Add(checkBox, 1, 1);
                         categoryItem.SetRowSpan(checkBox, 2);
+
+                        var setupButton = CustomControls.CreateSetupButton(">", onClick: onClick != null ? (sender, e) => onClick(sender, category) : null, tag: category);
+                        categoryItem.Controls.Add(setupButton, 2, 0);
+                        categoryItem.SetRowSpan(setupButton, 3);
+
 
                         _tableLayoutPanel.Controls.Add(categoryItem);
                     }
@@ -302,11 +301,8 @@ namespace ACATConfigNext
 
             public GeneralSettingsPanel(Action<UserControl, string> showPanel)
             {
-                var generalSettings = new GeneralSettingsCategory();
-
-                var label = new Label { Text = "General Settings", Dock = DockStyle.Top, Height = 40 };
+              //  var label = new Label { Text = "General Settings", Dock = DockStyle.Top, Height = 40 };
                 refreshPanel();
-
             }
 
             private void refreshPanel()
@@ -322,49 +318,28 @@ namespace ACATConfigNext
 
                 if (CoreGlobals.AppPreferences != null)
                 {
-                    #region GENERAL-SETTINGS-STUFF  
                     if (_tableLayoutPanel == null)
                     {
                         _tableLayoutPanel = CustomControls.CreateCategoryTableLayoutPanel();
                     }
 
-                    var list = new List<PreferencesCategory>();
- 
-                    var generalSettingsCategory = new GeneralSettingsCategory();
-                    list.Add(new PreferencesCategory(generalSettingsCategory, true, true));
+                    var descriptor = CoreGlobals.AppPreferences.GetType().GetCustomAttribute<DescriptorAttribute>();
 
-                    IEnumerable<PreferencesCategory> PreferencesCategories = list;
+                    _tableLayoutPanel.Controls.Add(CustomControls.CreateLabel(descriptor?.Category ?? "UNKNOWN CATEGORY"));
+                    _tableLayoutPanel.Controls.Add(CustomControls.CreateLabel(descriptor?.Description ?? "UNKNOWN DESCRIPTION"));
 
-                    foreach (var category in PreferencesCategories)
+                    var props = CoreGlobals.AppPreferences.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+                    foreach (var prop in props)
                     {
-                        if (!IsValidExtension(category, out var desc))
-                            continue;
-
-                        var categoryItem = CustomControls.CreateCategoryTableLayoutPanel();
-
-                        categoryItem.Controls.Add(CustomControls.CreateLabel("General Settings"), 0, 0);  // title  
-                        categoryItem.Controls.Add(CustomControls.CreateDescriptionLabel("Configure general ACAT application settings"), 0, 2);  // description  
-
-                        var checkBox = CustomControls.CreateCheckBox(">");
-                        checkBox.Tag = category;
-                        categoryItem.Controls.Add(checkBox, 1, 1);
-                        categoryItem.SetRowSpan(checkBox, 2);
-
-                        _tableLayoutPanel.Controls.Add(categoryItem);
-                        Controls.Add(_tableLayoutPanel);
+                        var propPanel = CustomControls.CreateLabeledPanel(prop, CoreGlobals.AppPreferences);
+                        var host = CustomControls.ElementHost(propPanel);
+                        _tableLayoutPanel.Controls.Add(host);
                     }
-                    #endregion
-                }
-            }
-            private bool IsValidExtension(PreferencesCategory category, out IDescriptor descriptor)
-            {
-                descriptor = null;
-                var supportsPrefs = category.PreferenceObj as ISupportsPreferences;
-                if (supportsPrefs == null)
-                    return false;
 
-                descriptor = new GeneralSettingsDescriptor();
-                return true;
+                    Controls.Add(_tableLayoutPanel);
+                    
+                }
             }
 
             private class GeneralSettingsDescriptor : IDescriptor
@@ -404,16 +379,25 @@ namespace ACATConfigNext
 
         public class ActuatorSettingsPanel : UserControl
         {       
-            private TableLayoutPanel _tableLayoutPanel = CustomControls.CreateCategoryTableLayoutPanel();
-            private Actuators _context = new Actuators();
+            private readonly Actuators _context = new Actuators();
 
             public ActuatorSettingsPanel(Action<UserControl, string> showPanel)
             {
-                Controls.Add(new Label { Text = "Actuator Settings", Dock = DockStyle.Top, Height = 40 });
-                refreshPanel("ActuatorSettings.xml");
+                Controls.Add(
+                    
+                    SettingsForm.RefreshExtensionPanel<ActuatorManager, Actuators>(
+                        () => ACAT.Lib.Core.PanelManagement.Context.AppActuatorManager.LoadExtensions(ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs, true),
+                        () => ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs,
+                        _context as Actuators,
+                        context => null,  
+                        "Actuator Settings",
+                        OnSetupClicked
+                        ));
+
+                Controls.Add(new Label { Text = "      Actuator Settings", Dock = DockStyle.Top, Height = 40 });
             }
 
-            private void refreshPanel(string xmlpath)
+        /*    private void refreshPanel(string xmlpath)
             {
                 if (CoreGlobals.AppPreferences == null)
                 {
@@ -478,101 +462,43 @@ namespace ACATConfigNext
 
                 descriptor = extension.Descriptor;
                 return descriptor != null && descriptor.HasSettings;
-            }
+            }*/
         }
 
         public class WordPredictorsPanel : UserControl
         {
-            private WordPredictors _context = new WordPredictors();
+            private readonly WordPredictors _context = new ();
 
             public WordPredictorsPanel(Action<UserControl, string> showPanel)
             {
-                Controls.Add(new Label { Text = "Word Predictors - Settings", Dock = DockStyle.Top, Height = 40 });
                 Controls.Add( SettingsForm.RefreshExtensionPanel<WordPredictionManager, WordPredictors>(
                     () => ACAT.Lib.Core.PanelManagement.Context.AppWordPredictionManager.LoadExtensions(ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs),
                     () => ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs,
                     _context as WordPredictors,
                     context => (context as WordPredictors).Collection,
-                    "Word Predictor Settings"
+                    "Word Predictor Settings",
+                    OnSetupClicked
                     ));
 
+                Controls.Add(new Label { Text = "      Word Predictors - Settings", Dock = DockStyle.Top, Height = 40 });
             }
         }
 
         public class TTSPanel : UserControl
         {
-            private TableLayoutPanel _tableLayoutPanel = CustomControls.CreateCategoryTableLayoutPanel();
-            private TTSEngines _context = new TTSEngines();
+            private readonly TTSEngines _context = new TTSEngines();
 
             public TTSPanel(Action<UserControl, string> showPanel)
             {
-                Controls.Add(new Label { Text = "Privacy Settings", Dock = DockStyle.Top, Height = 40 });
-                refreshPanel();
-            }
+                Controls.Add(SettingsForm.RefreshExtensionPanel<TTSManager, TTSEngines>(
+                  () => ACAT.Lib.Core.PanelManagement.Context.AppWordPredictionManager.LoadExtensions(ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs),
+                  () => ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs,
+                      _context as TTSEngines,
+                   context => (context as TTSEngines).Collection,
+                  "Text to Speech Settings", OnSetupClicked
+                  ));
 
-            private void refreshPanel()
-            {
-                if (CoreGlobals.AppPreferences == null)
-                {
-                    if (!AppCommon.LoadUserPreferences())
-                    {
-                        // Handle error - preferences couldn't be loaded    
-                        return;
-                    }
-                }
-
-                if (CoreGlobals.AppPreferences?.Extensions != null)
-                {
-                    #region TTS-STUFF  
-                    if (!ACAT.Lib.Core.PanelManagement.Context.AppTTSManager.LoadExtensions(ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs))
-                    {
-                        return;
-                    }
-
-                    _context.Load(ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs);
-
-                    var list = new List<PreferencesCategory>();
-
-                    foreach (var ttsEngineType in _context.Collection)
-                    {
-                        var instance = Activator.CreateInstance(ttsEngineType);
-                        list.Add(new PreferencesCategory(instance, true, true));
-                    }
-
-                    IEnumerable<PreferencesCategory> PreferencesCategories = list;
-
-                    foreach (var category in PreferencesCategories)
-                    {
-                        if (!IsValidExtension(category, out var desc))
-                            continue;
-
-                        var categoryItem = CustomControls.CreateCategoryTableLayoutPanel();
-
-                        categoryItem.Controls.Add(CustomControls.CreateLabel(desc.Name), 0, 0);  // title  
-                        categoryItem.Controls.Add(CustomControls.CreateDescriptionLabel(desc.Description), 0, 2);  // description  
-
-                        var checkBox = CustomControls.CreateCheckBox(">");
-                        checkBox.Tag = category;
-                        categoryItem.Controls.Add(checkBox, 1, 1);
-                        categoryItem.SetRowSpan(checkBox, 2);
-
-                        _tableLayoutPanel.Controls.Add(categoryItem);
-                        Controls.Add(_tableLayoutPanel);
-                    }
-                    #endregion
-                }
-            }
-
-            private bool IsValidExtension(PreferencesCategory category, out IDescriptor descriptor)
-            {
-                descriptor = null;
-
-                var extension = category.PreferenceObj as IExtension;
-                if (extension == null)
-                    return false;
-
-                descriptor = extension.Descriptor;
-                return descriptor != null && descriptor.HasSettings;
+                Controls.Add(new Label { Text = "      Text to Speech Settings", Dock = DockStyle.Top, Height = 40 });
             }
         }
 
@@ -580,11 +506,26 @@ namespace ACATConfigNext
         {
             public DisplaySettingsPanel()
             {
-                Controls.Add(new Label { Text = "Display Settings Details", Dock = DockStyle.Top, Height = 40 });
+                Controls.Add(new Label { Text = "      Display Settings Details", Dock = DockStyle.Top, Height = 40 });
+            }
+        }
+
+        private static void OnSetupClicked(object sender, PreferencesCategory category)
+        {
+            var SetupButton = sender as Button;
+            var extension = category.PreferenceObj as IExtension;
+
+            if (extension != null)
+            {
+                if (category.PreferenceObj is ISupportsPreferences supportsPrefs)
+                {
+                    SettingsForm._tableLayoutPanel.Controls.Clear();
+                    MessageBox.Show($"Clicked on {extension.Descriptor.Name}");
+                    supportsPrefs.ShowPreferencesDialog();
+                }
             }
         }
 
 
-        
     }
 }

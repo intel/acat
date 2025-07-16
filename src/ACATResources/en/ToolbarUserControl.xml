@@ -26,26 +26,15 @@
 
   <Animations>
     <Animation name="TopLevelRotation"
-                start="true"
-                iterations="1">
-        <Widget name="ButtonBoxRow" onSelect="transition(ButtonRotation)" />
+               start="true"
+               onEnter=""
+               scanTime="@MenuDialogScanTime"
+               iterations="1"
+               onSelect="actuate(@SelectedWidget);stop();">
+      <Widget name="Settings" />
+      <Widget name="Help" />
+      <Widget name="About" />
+      <Widget name="Home" />
     </Animation>
-    <Animation name="ButtonRotation"
-          iterations="@RowScanIterations"
-          firstPauseTime="@FirstPauseTime"
-          onSelect="actuate(@SelectedWidget); transition(ButtonPressed)">
-        <Widget name="Settings" />
-        <Widget name="Help" />
-        <Widget name="About" />
-        <Widget name="Home" />
-    </Animation>
-    <Animation name="ButtonPressed"
-           onEnter=""
-           iterations="1"
-           onEnd="transition(TopLevelRotation)">
-            <Widget name="@SelectedWidget" 
-                firstPauseTime="@FirstRepeatTime" 
-                onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
-        </Animation>
   </Animations>
 </ACAT>

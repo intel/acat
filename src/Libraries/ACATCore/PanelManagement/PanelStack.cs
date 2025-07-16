@@ -649,74 +649,6 @@ namespace ACAT.Core.PanelManagement
             return null;
         }
 
-        //private Form createPanel(
-        //                String panelClass,
-        //                String panelTitle,
-        //                Type type,
-        //                IntPtr winHandle,
-        //                AutomationElement focusedElement)
-        //{
-        //    Form retVal = null;
-        //    Log.Debug("***  panelClass: [" + panelClass + "], panel: [" + type.FullName + "]" +
-        //                " title: [" + (panelTitle ?? "null") + "]");
-        //    try
-        //    {
-        //        Type[] types = { typeof(String) };
-        //        ConstructorInfo info = type.GetConstructor(types);
-        //        Object obj;
-
-        //        if (info != null)
-        //        {
-        //            obj = Activator.CreateInstance(type, panelClass);
-        //        }
-        //        else
-        //        {
-        //            types = new[] { typeof(String), typeof(IntPtr) };
-        //            info = type.GetConstructor(types);
-
-        //            if (info != null)
-        //            {
-        //                obj = Activator.CreateInstance(type, panelClass, winHandle);
-        //            }
-        //            else
-        //            {
-        //                types = new[] { typeof(String), typeof(String) };
-        //                info = type.GetConstructor(types);
-        //                if (info != null)
-        //                {
-        //                    obj = Activator.CreateInstance(type, panelClass, panelTitle);
-        //                }
-        //                else
-        //                {
-        //                    types = new[] { typeof(String), typeof(IntPtr), typeof(AutomationElement) };
-        //                    info = type.GetConstructor(types);
-        //                    if (info != null)
-        //                    {
-        //                        obj = Activator.CreateInstance(type, panelClass, winHandle, focusedElement);
-        //                    }
-        //                    else
-        //                    {
-        //                        Log.Debug("Creating " + type + " with default constructor");
-        //                        obj = Activator.CreateInstance(type);
-        //                    }
-        //                }
-        //            }
-        //        }
-
-        //        if (obj is Form)
-        //        {
-        //            retVal = obj as Form;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Log.Exception(ex.ToString());
-        //        retVal = null;
-        //    }
-
-        //    return retVal;
-        //}
-
         /// <summary>
         /// Initialzies the specified scanner panel
         /// </summary>
@@ -982,6 +914,11 @@ namespace ACAT.Core.PanelManagement
                     Show(null, (IPanel)form);
                 }
             }
+        }
+
+        internal Form CreatePanelFromConfig(PanelConfigMapEntry panelConfig, string title)
+        {
+            return CreatePanel(panelConfig.PanelClass, title, new StartupArg(panelConfig.PanelClass, panelConfig.ConfigName));
         }
     }
 }

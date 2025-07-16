@@ -120,7 +120,7 @@ namespace ACAT.Extensions.AppAgents.TalkApplicationScannerAgent
                 }
                 else
                 {
-                    Log.Debug("DID NOT find automationelement for the text box");
+                    Log.Error("DID NOT find automationelement for the text box");
                     textBoxControl = null;
                 }
             }

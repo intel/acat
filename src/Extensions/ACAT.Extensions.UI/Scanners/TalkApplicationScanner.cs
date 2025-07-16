@@ -11,6 +11,7 @@ using ACAT.Extension.CommandHandlers;
 using ACAT.Scanners;
 using ACATResources;
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace ACAT.Extensions.UI.Scanners
@@ -381,12 +382,23 @@ namespace ACAT.Extensions.UI.Scanners
             }
         }
 
-        private class CommandHandler : RunCommandHandler
+        private class TalkApplicationCommandHandler : RunCommandHandler
         {
-            public CommandHandler(String cmd) : base(cmd) { }
+            public TalkApplicationCommandHandler(String cmd) : base(cmd) { }
 
             public override bool Execute(ref bool handled)
             {
+                Log.Info("Inside Talk Application Scanner TalkApplicationCommandHandler for command: " + Command);
+
+                var trace = new StackTrace();
+                for (int i = 0; i < trace.FrameCount; i++)
+                {
+                    var frame = trace.GetFrame(i);
+                    var method = frame.GetMethod();
+                    Log.Info($"Frame {i}: {method.DeclaringType}.{method.Name}");
+                }
+
+
                 handled = true;
 
                 var form = Dispatcher.Scanner.Form as TalkApplicationScanner;
@@ -479,6 +491,16 @@ namespace ACAT.Extensions.UI.Scanners
 
             public override bool Execute(ref bool handled, object source = null)
             {
+                Console.WriteLine("Inside Talk Application Scanner TalkApplicationCommandHandler for command: " + Command);
+
+                var trace = new StackTrace();
+                for (int i = 0; i < trace.FrameCount; i++)
+                {
+                    var frame = trace.GetFrame(i);
+                    var method = frame.GetMethod();
+                    Console.WriteLine($"Frame {i}: {method.DeclaringType}.{method.Name}");
+                }
+
                 handled = true;
 
                 var form = Dispatcher.Scanner.Form as TalkApplicationScanner;
@@ -503,19 +525,19 @@ namespace ACAT.Extensions.UI.Scanners
         {
             public TalkAppDispatcher(IScannerPanel panel) : base(panel)
             {
-                Commands.Add(new CommandHandler("CmdTalkWindowClear"));
-                Commands.Add(new CommandHandler("CmdNumberScanner"));
-                Commands.Add(new CommandHandler("CmdEditScanner"));
-                Commands.Add(new CommandHandler("ExitApp"));
-                Commands.Add(new CommandHandler("CmdPhraseSpeak"));
-                Commands.Add(new CommandHandler("CmdAutocompleteWithFirstWord"));
-                Commands.Add(new CommandHandler("CmdMainKeyboard"));
-                Commands.Add(new CommandHandler("CmdGoBack"));
-                Commands.Add(new CommandHandler("CmdMainMenu"));
-                Commands.Add(new CommandHandler("CmdSpeak"));
-                Commands.Add(new CommandHandler("CmdEntryModeSelect"));
-                Commands.Add(new CommandHandler("CmdSaveToCanned"));
-                Commands.Add(new CommandHandler("CmdYesNoResponse"));
+                Commands.Add(new TalkApplicationCommandHandler("CmdTalkWindowClear"));
+                Commands.Add(new TalkApplicationCommandHandler("CmdNumberScanner"));
+                Commands.Add(new TalkApplicationCommandHandler("CmdEditScanner"));
+                Commands.Add(new TalkApplicationCommandHandler("ExitApp"));
+                Commands.Add(new TalkApplicationCommandHandler("CmdPhraseSpeak"));
+                Commands.Add(new TalkApplicationCommandHandler("CmdAutocompleteWithFirstWord"));
+                Commands.Add(new TalkApplicationCommandHandler("CmdMainKeyboard"));
+                Commands.Add(new TalkApplicationCommandHandler("CmdGoBack"));
+                Commands.Add(new TalkApplicationCommandHandler("CmdMainMenu"));
+                Commands.Add(new TalkApplicationCommandHandler("CmdSpeak"));
+                Commands.Add(new TalkApplicationCommandHandler("CmdEntryModeSelect"));
+                Commands.Add(new TalkApplicationCommandHandler("CmdSaveToCanned"));
+                Commands.Add(new TalkApplicationCommandHandler("CmdYesNoResponse"));
             }
         }
     }

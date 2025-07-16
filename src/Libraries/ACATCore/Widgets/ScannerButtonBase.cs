@@ -39,12 +39,18 @@ namespace ACAT.Core.Widgets
         /// <summary>
         /// The font family
         /// </summary>
-        private FontFamily _fontFamily;
+        private FontFamily _fontFamily 
+        { 
+            get => fontFamily; 
+            set => fontFamily = value; 
+        }
+
 
         /// <summary>
         /// Size of the font before the widget was scaled
         /// </summary>
         private float _originalFontSize;
+        private FontFamily fontFamily;
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -64,8 +70,11 @@ namespace ACAT.Core.Widgets
         {
             base.SetScaleFactor(newScaleFactor);
 
-            _font = new Font(_fontFamily, _originalFontSize * newScaleFactor, _font.Style);
-            UIControl.Font = _font;
+            if (_fontFamily != null)
+            {
+                _font = new Font(_fontFamily, _originalFontSize * newScaleFactor, _font.Style);
+                UIControl.Font = _font;
+            }
         }
 
         /// <summary>

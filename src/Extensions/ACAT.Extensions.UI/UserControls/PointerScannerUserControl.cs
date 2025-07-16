@@ -71,13 +71,13 @@ namespace ACAT.Extensions.UI.Scanners.UserControls
         {
             InitializeComponent();
 
-            //commandDispatcher.Commands.Add(new CommandHandler("ScanDown"));
-            //commandDispatcher.Commands.Add(new CommandHandler("ScanUp"));
-            //commandDispatcher.Commands.Add(new CommandHandler("CmdLeftClick"));
-            //commandDispatcher.Commands.Add(new CommandHandler("CmdLeftDoubleClick"));
-            //commandDispatcher.Commands.Add(new CommandHandler("CmdLeftClickAndHold"));
-            //commandDispatcher.Commands.Add(new CommandHandler("CmdRightClick"));
-            //commandDispatcher.Commands.Add(new CommandHandler("CmdGoBack"));
+            //commandDispatcher.Commands.Add(new TalkApplicationCommandHandler("ScanDown"));
+            //commandDispatcher.Commands.Add(new TalkApplicationCommandHandler("ScanUp"));
+            //commandDispatcher.Commands.Add(new TalkApplicationCommandHandler("CmdLeftClick"));
+            //commandDispatcher.Commands.Add(new TalkApplicationCommandHandler("CmdLeftDoubleClick"));
+            //commandDispatcher.Commands.Add(new TalkApplicationCommandHandler("CmdLeftClickAndHold"));
+            //commandDispatcher.Commands.Add(new TalkApplicationCommandHandler("CmdRightClick"));
+            //commandDispatcher.Commands.Add(new TalkApplicationCommandHandler("CmdGoBack"));
         }
 
         public ClassDescriptorAttribute Descriptor => ClassDescriptorAttribute.GetDescriptor(GetType());

@@ -272,7 +272,7 @@ namespace ACAT.Core.InputActuators
             }
             catch (System.Net.Sockets.SocketException se)
             {
-                //Log.Error(se.StackTrace);
+                //Log.Error(se.IncludeStackTrace);
                 Log.Error(se.StackTrace);
                 // se.ErrorCode == 10048, this condition means that more than one process is attempting to bind to same port, disallowed.
                 //                Log.Write(String.Format("SocketException: NativeError:{0} ErrorCode:{1}, Msg:{2}", se.NativeErrorCode, se.ErrorCode, se.Message));

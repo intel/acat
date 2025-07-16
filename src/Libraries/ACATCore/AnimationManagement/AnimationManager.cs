@@ -379,7 +379,7 @@ namespace ACAT.Core.AnimationManagement
         {
             if (_player != null)
             {
-                Log.Debug("Before animation player stop");
+                Log.Verbose("Before animation player stop");
                 try
                 {
                     _player.Stop();
@@ -388,7 +388,7 @@ namespace ACAT.Core.AnimationManagement
                 {
                     Log.Exception(ex.ToString());
                 }
-                Log.Debug("After animation player stop");
+                Log.Verbose("After animation player stop");
             }
         }
 
@@ -405,7 +405,7 @@ namespace ACAT.Core.AnimationManagement
                 {
                     if (animation != null)
                     {
-                        Log.Debug("Transition( " + animation.Name + "). _currentPanel: " + _currentPanel.Name);
+                        Log.Verbose("Transition( " + animation.Name + "). _currentPanel: " + _currentPanel.Name);
                         _player.Transition(animation);
                     }
                     else
@@ -481,7 +481,7 @@ namespace ACAT.Core.AnimationManagement
                 var widget = _player.HighlightedAnimationWidget;
                 if (widget != null)
                 {
-                    Log.Debug("Highlighted widget: " + widget.UIWidget.Name);
+                    Log.Verbose("Highlighted widget: " + widget.UIWidget.Name);
                     _switchDownHighlightedWidget = widget;
                 }
                 else
@@ -621,7 +621,7 @@ namespace ACAT.Core.AnimationManagement
 
             String widgetName = resolvedArgs[0];
 
-            Log.Debug("_currentPanel " + _currentPanel.Name + " widgetname: " + widgetName);
+            Log.Verbose("_currentPanel " + _currentPanel.Name + " widgetname: " + widgetName);
             var widget = _currentPanel.Finder.FindChild(widgetName);
             if (widget != null)
             {
@@ -676,7 +676,7 @@ namespace ACAT.Core.AnimationManagement
             if (resolvedArgs.Count > 0)
             {
                 String targetAnimation = resolvedArgs[0];
-                Log.Debug(targetAnimation);
+                Log.Verbose(targetAnimation);
                 //Transition(GetAnimation(targetAnimation));
                 TransitionFromName(targetAnimation);
             }

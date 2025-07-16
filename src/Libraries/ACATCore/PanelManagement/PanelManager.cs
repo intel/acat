@@ -9,6 +9,8 @@ using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Security.Permissions;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
@@ -289,6 +291,11 @@ namespace ACAT.Core.PanelManagement
             return getTopOfStack().CreatePanel(panelClass);
         }
 
+        public Form CreatePanelFromConfig(PanelConfigMapEntry panelConfig, string title)
+        {
+            return getTopOfStack().CreatePanelFromConfig(panelConfig, title);
+        }
+
         /// <summary>
         /// Creates the panel with the specified panel class
         /// </summary>
@@ -324,22 +331,10 @@ namespace ACAT.Core.PanelManagement
             return getTopOfStack().CreatePanel(panelClass, panelTitle, startupArg);
         }
 
-        /// <summary>
-        /// Creates the panel with the specified panel class
-        /// </summary>
-        /// <param name="panelClass">the panel class</param>
-        /// <param name="panelTitle">panel title</param>
-        /// <param name="winHandle">target window handle</param>
-        /// <param name="focusedElement">currently focused element</param>
-        /// <returns>the form for the panel</returns>
-        public Form CreatePanel(
-            ref String panelClass,
-            String panelTitle,
-            IntPtr winHandle,
-            AutomationElement focusedElement)
-        {
-            return getTopOfStack().CreatePanel(ref panelClass, panelTitle, winHandle, focusedElement);
-        }
+        //public Form CreatePanel(String panelClass, String panelConfig, String panelTitle, StartupArg startupArg)
+        //{
+        //    return getTopOfStack().CreatePanel(panelClass, panelConfig, panelTitle, startupArg);
+        //}
 
         /// <summary>
         /// Disposes resources
@@ -680,6 +675,7 @@ namespace ACAT.Core.PanelManagement
         /// Returns the top of stack in the stack of panels
         /// </summary>
         /// <returns>PanelStack object</returns>
+        [DebuggerStepThrough]
         private PanelStack getTopOfStack()
         {
             PanelStack panelStack;

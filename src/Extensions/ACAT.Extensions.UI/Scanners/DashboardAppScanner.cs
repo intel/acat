@@ -144,11 +144,35 @@ namespace ACAT.Extensions.UI.Scanners
         protected override void SubscribeToEvents()
         {
             Load += ScannerFormLoaded;
-            Shown += ScannerShown;
+            //Shown += ScannerShown;
             FormClosing += ScannerFormClosing;
         }
 
-        private void mainMenuHandler()
+        private void ACATTalkHandler()
+        {
+           var startupArg = new StartupArg("TalkApplicationScanner")
+           {
+               QuitAppOnFormClose = false
+           };
+
+           var form = PanelManager.Instance.CreatePanel("TalkApplicationScanner", startupArg);
+           if (form != null)
+           {
+                // Add ad-hoc agent that will handle the form
+                IApplicationAgent agent = Context.AppAgentMgr.GetAgentByName("Talk Application Agent");
+
+                Context.AppAgentMgr.AddAgent(form.Handle, agent);
+
+                _scannerCommon.AnimationManager.Pause();
+
+                Context.AppPanelManager.ShowDialog(form as IPanel);
+
+                // After the dialog is closed, we can show the dashboard again
+                _scannerCommon.AnimationManager.Resume();
+           }
+        }
+
+        private void MainMenuHandler()
         {
             Guid panelId = PanelConfigMap.GetConfigIdForConfigName("DashboardMenu");
             var panelConfig = PanelConfigMap.GetPanelConfigMapEntryForConfigId(panelId);
@@ -203,10 +227,12 @@ namespace ACAT.Extensions.UI.Scanners
                 {
                     case "CmdACATMenu":
                         // Show the ACAT menu
-                        form.mainMenuHandler();
+                        form.MainMenuHandler();
                         break;
 
                     case "CmdShowACATTalk":
+                        form.ACATTalkHandler();
+                        break;
                     case "CmdShowQuickTalk":
                     case "CmdShowPointer":
                     case "CmdShowKeyboard":

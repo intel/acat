@@ -202,6 +202,11 @@ namespace ACAT.Core.PanelManagement
             return _masterPanelConfigMapTable.Values.FirstOrDefault(panelConfigMapEntry => Equals(panelConfigMapEntry.ConfigId, configId));
         }
 
+        public static PanelConfigMapEntry GetPanelConfigMapEntryForConfig(String configName)
+        {
+            return _masterPanelConfigMapTable.Values.FirstOrDefault(PanelConfigMapEntry => Equals(PanelConfigMapEntry.ConfigName, configName));
+        }
+
         /// <summary>
         /// Walks the directories specified in extensionDir,
         /// looks for DLL's, loads all the types and looks for

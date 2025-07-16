@@ -129,12 +129,13 @@ namespace ACAT.Applications.ACATApp
             Context.AppAgentMgr.EnableAppAgentContextSwitch = false;
 
             if (!Context.Init(Context.StartupFlags.Minimal |
-                                Context.StartupFlags.TextToSpeech |
-                                Context.StartupFlags.WordPrediction |
+                                //Context.StartupFlags.TextToSpeech |
+                                //Context.StartupFlags.WordPrediction |
                                 Context.StartupFlags.AgentManager |
-                                Context.StartupFlags.SpellChecker |
-                                Context.StartupFlags.WindowsActivityMonitor |
-                                Context.StartupFlags.Abbreviations))
+                                //Context.StartupFlags.SpellChecker |
+                                Context.StartupFlags.WindowsActivityMonitor
+                                //Context.StartupFlags.Abbreviations
+                                ))
             {
                 //splash.Close();
                 //splash = null;

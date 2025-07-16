@@ -43,6 +43,8 @@ namespace ACAT.Extensions.UI.Scanners
         {
             switch (arg.Command)
             {
+                case "CmdACATMenu":
+                    break;
                 case "CmdACATTalk":
                 case "CmdQuick":
                 case "CmdPointer":
@@ -146,6 +148,30 @@ namespace ACAT.Extensions.UI.Scanners
             FormClosing += ScannerFormClosing;
         }
 
+        private void mainMenuHandler()
+        {
+            Guid panelId = PanelConfigMap.GetConfigIdForConfigName("DashboardMenu");
+            var panelConfig = PanelConfigMap.GetPanelConfigMapEntryForConfigId(panelId);
+
+            if (Context.AppPanelManager.IsCurrentPanelClass(panelConfig.PanelClass))
+            {
+                return;
+            }
+
+            Form form = _dispatcher.Scanner.Form;
+
+            if (Windows.GetVisible(form))
+            {
+                form.Invoke(new MethodInvoker(delegate
+                {
+                    IPanel mainMenu = Context.AppPanelManager.CreatePanelFromConfig(panelConfig, "Dashboard Menu") as IPanel;
+                    if (mainMenu != null)
+                    {
+                        Context.AppPanelManager.ShowDialog(form as IPanel, mainMenu);
+                    }
+                }));
+            }
+        }
         private void InitializeDashboard()
         {
             this.panelDashboardControls.Name = "Dashboard";
@@ -163,11 +189,11 @@ namespace ACAT.Extensions.UI.Scanners
             this.panelTopToolbar.AutoSize = true;
             this.panelTopToolbar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
         }
-        private class CommandHandler : RunCommandHandler
+        private class DashboardAppCommandHandler : RunCommandHandler
         {
-            public CommandHandler(String cmd) : base(cmd) { }
+            public DashboardAppCommandHandler(String cmd) : base(cmd) { }
 
-public override bool Execute(ref bool handled)
+            public override bool Execute(ref bool handled)
             {
                 handled = true;
 
@@ -175,13 +201,18 @@ public override bool Execute(ref bool handled)
 
                 switch (Command)
                 {
-                    case "CmdACATTalk":
-                    case "CmdQuick":
-                    case "CmdPointer":
-                    case "CmdKeyboard":
-                    case "CmdSystem":
-                    case "CmdLocation":
-                        MessageBox.Show("This command is not implemented yet.", "Not Implemented", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    case "CmdACATMenu":
+                        // Show the ACAT menu
+                        form.mainMenuHandler();
+                        break;
+
+                    case "CmdShowACATTalk":
+                    case "CmdShowQuickTalk":
+                    case "CmdShowPointer":
+                    case "CmdShowKeyboard":
+                    case "CmdShowSystem":
+                    case "CmdShowLocation":
+                        ConfirmBoxOneOption.ShowDialog("ACAT Dashboard", "All your base are belong to us.", "OK", form, true);
                         break;
 
 
@@ -201,7 +232,8 @@ public override bool Execute(ref bool handled)
                 switch (Command)
                 {
                     default:
-                    handled = false;
+                        ConfirmBoxOneOption.ShowDialog("Command not implemented", $"The command '{Command}' is not implemented in the DashboardAppScanner.", "OK");
+                        handled = false;
                         break;
                 }
 
@@ -213,7 +245,13 @@ public override bool Execute(ref bool handled)
         {
             public DashboardAppDispatcher(IScannerPanel panel) : base(panel)
             {
-                //TODO: Add Command Handlers.
+                Commands.Add(new DashboardAppCommandHandler("CmdACATMenu"));
+                Commands.Add(new DashboardAppCommandHandler("CmdShowACATTalk"));
+                Commands.Add(new DashboardAppCommandHandler("CmdShowQuickTalk"));
+                Commands.Add(new DashboardAppCommandHandler("CmdShowPointer"));
+                Commands.Add(new DashboardAppCommandHandler("CmdShowKeyboard"));
+                Commands.Add(new DashboardAppCommandHandler("CmdShowSystem"));
+                Commands.Add(new DashboardAppCommandHandler("CmdShowLocation"));
             }
         }
     }

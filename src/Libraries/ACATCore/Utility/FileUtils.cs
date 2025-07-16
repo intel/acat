@@ -120,7 +120,7 @@ namespace ACAT.Core.Utility
         {
             if (args.RequestingAssembly == null ||
                 String.IsNullOrEmpty(args.RequestingAssembly.Location) ||
-                string.IsNullOrEmpty(args.Name))
+                String.IsNullOrEmpty(args.Name))
             {
                 Log.Error("Invalid argument parameters.");
                 return null;

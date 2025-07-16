@@ -470,7 +470,17 @@ namespace ACAT.Core.PanelManagement
 
             _dialogMode = startupArg.DialogMode;
 
-            var panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(startupArg.PanelClass);
+            PanelConfigMapEntry panelConfigMapEntry = null;
+
+            if (startupArg.PanelConfig != null)
+            {
+                panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntryForConfig(startupArg.PanelConfig);
+            }
+            else
+            {
+                panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(startupArg.PanelClass);
+            }
+
             if (panelConfigMapEntry == null) // did not find the panel
             {
                 return false;

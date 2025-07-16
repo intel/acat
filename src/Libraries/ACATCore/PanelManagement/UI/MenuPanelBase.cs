@@ -338,7 +338,7 @@ namespace ACAT.Core.PanelManagement
         /// <param name="e">event argument</param>
         private void ContextMenu_Load(object sender, EventArgs e)
         {
-            setFormHeight();
+            SetFormHeight();
 
             scannerCommon.OnLoad();
 
@@ -388,12 +388,12 @@ namespace ACAT.Core.PanelManagement
         }
 
         /// <summary>
-        /// Sets the height of the scanner.  The scanner form contains a
+        /// Sets the height of the scanner.The scanner form contains a
         /// table that can hold a certain maximum number of rows.  Depending
         /// on how many menu items are actually in the animation file,
         /// delete the unused rows and then set the height of the scanner
         /// </summary>
-        private void setFormHeight()
+        private void SetFormHeight()
         {
             var children = new List<Widget>();
             rootWidget.Finder.FindAllChildren(typeof(IRowWidget), children);
@@ -412,5 +412,50 @@ namespace ACAT.Core.PanelManagement
                 Height -= rowsRemoved * rowHeight;
             }
         }
+
+        private List<Control> GetControlsMatchingWidgets(Control parentControl, List<Widget> rowWidgets)
+        {
+            // Create a HashSet of widget names for fast lookup
+            var widgetNames = new HashSet<string>(rowWidgets.Select(w => w.Name));
+
+            // Filter controls in the parent by those names
+            var matchedControls = parentControl.Controls
+                .Cast<Control>()
+                .Where(c => widgetNames.Contains(c.Name))
+                .ToList();
+
+            return matchedControls;
+        }
+
+        //private void SetFormHeight()
+        //{
+        //    List<Widget> rowWidgets = new();
+        //    rootWidget.Finder.FindAllChildren(typeof(IRowWidget), rowWidgets);
+
+        //    List<Control>matchedControls = GetControlsMatchingWidgets(tableLayoutPanel1, rowWidgets);
+
+        //    // Clear existing controls and rows
+        //    tableLayoutPanel1.SuspendLayout();
+        //    tableLayoutPanel1.Controls.Clear();
+        //    tableLayoutPanel1.RowStyles.Clear();
+        //    tableLayoutPanel1.RowCount = 0;
+
+        //    int rowHeight = Row1.Height; // Or calculate per-widget if needed
+        //    int rowIndex = 0;
+
+        //    tableLayoutPanel1.RowCount = rowWidgets.Count;
+        //    foreach (var widget in rowWidgets)
+        //    {
+        //        tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, rowHeight));
+        //        rowIndex++;
+        //    }
+
+        //    tableLayoutPanel1.Controls.AddRange(matchedControls.ToArray());
+
+        //    // Adjust form height
+        //    Height = (rowWidgets.Count * rowHeight);
+
+        //    tableLayoutPanel1.ResumeLayout();
+        //}
     }
 }

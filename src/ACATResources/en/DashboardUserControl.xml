@@ -8,7 +8,7 @@
 
 <ACAT>
   <WidgetAttributes>
-        <WidgetAttribute name="ACATTalk" value="@CmdACATMenu" fontname="&functionButtonAltFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="ACATTalk" value="@CmdShowACATTalk" fontname="&functionButtonAltFontName;" fontsize="&functionButtonFontSize;" bold="false" />
         <WidgetAttribute name="QuickTalk" value="@CmdMainMenu" fontname="&functionButtonAltFontName;" fontsize="&functionButtonFontSize;" bold="false" />
         <WidgetAttribute name="PointerControl" value="@CmdShowPointerControl" fontname="&functionButtonAltFontName;" fontsize="&functionButtonFontSize;" bold="false" />
         <WidgetAttribute name="Keyboard" value="@CmdShowKeyboard" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />

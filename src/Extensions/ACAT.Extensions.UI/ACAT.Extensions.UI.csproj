@@ -56,7 +56,9 @@
     <Compile Include="Menus\MainMenu.Designer.cs">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </Compile>
-    <Compile Include="Scanners\DashboardAppScanner.cs" />
+    <Compile Include="Scanners\DashboardAppScanner.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Scanners\TalkApplicationScanner.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,8 +83,12 @@
     <Compile Include="Scanners\YesNoScanner.Designer.cs">
       <DependentUpon>YesNoScanner.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\DashboardUserControl.cs" />
-    <Compile Include="UserControls\ACATAppToolbar.cs" />
+    <Compile Include="UserControls\DashboardUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\ACATAppToolbar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UserControls\KeyboardAbcUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -113,14 +119,18 @@
     <Compile Include="UserControls\KeyboardQwertyUserControl.Designer.cs">
       <DependentUpon>KeyboardQwertyUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\PointerScannerUserControl.cs" />
+    <Compile Include="UserControls\PointerScannerUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UserControls\SentencePredictionUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UserControls\SentencePredictionUserControl.Designer.cs">
       <DependentUpon>SentencePredictionUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ToolbarUserControl.cs" />
+    <Compile Include="UserControls\ToolbarUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UserControls\WordPredictionUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

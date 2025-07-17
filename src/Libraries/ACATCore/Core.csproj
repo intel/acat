@@ -517,7 +517,9 @@
     <Compile Include="WidgetManagement\WidgetEventArg.cs" />
     <Compile Include="WidgetManagement\WidgetFinder.cs" />
     <Compile Include="WidgetManagement\WidgetManager.cs" />
-    <Compile Include="Widgets\ACATFlowLayoutPanel.cs" />
+    <Compile Include="Widgets\ACATFlowLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Widgets\BoxWidget.cs" />
     <Compile Include="Widgets\ButtonControlWidget.cs" />
     <Compile Include="Widgets\ButtonWidgetBase.cs" />
@@ -533,7 +535,9 @@
     <Compile Include="Widgets\ScannerButton.cs" />
     <Compile Include="Widgets\ScannerButtonBase.cs" />
     <Compile Include="Widgets\SliderWidget.cs" />
-    <Compile Include="Widgets\ACATTableLayoutPanel.cs" />
+    <Compile Include="Widgets\ACATTableLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Widgets\TabStopScannerButton.cs" />
     <Compile Include="Widgets\TextBoxWidget.cs" />
     <Compile Include="Widgets\CheckBoxWidget.cs" />

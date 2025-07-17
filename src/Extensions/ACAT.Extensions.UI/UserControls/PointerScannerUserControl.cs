@@ -5,6 +5,7 @@ using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extension;
+using ACAT.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -16,7 +17,7 @@ namespace ACAT.Extensions.UI.Scanners.UserControls
     [ClassDescriptor("802B03F0-1294-4D06-A601-2CEBFBFA5D9C",
                     "PointerScanner",
                     "User Control for Pointer Scanner")]
-    public partial class PointerScannerUserControl : UserControl, IUserControl
+    public partial class PointerScannerUserControl : GenericUserControl, IUserControl
     {
         //private Widget _rootWidget;
         //private ScannerCommon _scannerCommon;
@@ -198,6 +199,11 @@ namespace ACAT.Extensions.UI.Scanners.UserControls
         public void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
         {
             handled = false;
+        }
+
+        protected override bool HandleInitialize()
+        {
+            throw new NotImplementedException();
         }
 
         private class CommandHandler : RunCommandHandler

@@ -24,19 +24,21 @@ namespace ACAT.Extensions.UI.UserControls
             InitializeComponent();
         }
 
+        private Dictionary<string, string> _buttonNames = new Dictionary<string, string>
+        {
+            { "ACATTalk", BootstrapFontUtility.GetBootstrapFontCharacter("chat-fill") },
+            { "QuickTalk", BootstrapFontUtility.GetBootstrapFontCharacter("chat") },
+            { "PointerControl", BootstrapFontUtility.GetBootstrapFontCharacter("mouse2") },
+            { "Keyboard", BootstrapFontUtility.GetBootstrapFontCharacter("keyboard") },
+            { "Windows", BootstrapFontUtility.GetBootstrapFontCharacter("windows") },
+            { "Location", BootstrapFontUtility.GetBootstrapFontCharacter("three-dots") },
+            { "MainMenu", BootstrapFontUtility.GetBootstrapFontCharacter("house-door") }
+        };
+
+
         private void CreateToolbarButtons()
         {
-            var controlbuttons = new List<(string Name, string Text)>
-            {
-                ("ACATTalk", "H"),
-                ("QuickTalk", "I"),
-                ("PointerControl", "Q"),
-                ("Keyboard", "e"),
-                ("System", "H"),
-                ("Location", "G")
-            };
-
-            foreach (var (button, index) in controlbuttons.Select((p, i) => (p, i)))
+            foreach (var (button, index) in _buttonNames.Select((p, i) => (p, i)))
             {
                 var scannerButton = new ScannerRoundedButtonControl
                 {
@@ -49,12 +51,12 @@ namespace ACAT.Extensions.UI.UserControls
                     Dock = DockStyle.Fill,
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Name = button.Name,
+                    Name = button.Key,
                     Margin = new Padding(10),
                     TabIndex = index,
-                    Text = button.Text,
+                    Text = button.Value,
                     UseMnemonic = false,
-                    //UseVisualStyleBackColor = true,
+                    Font = new Font("bootstrap-icons", 44, FontStyle.Regular, GraphicsUnit.Point, 0),
                     Anchor = AnchorStyles.Top,
                     Size = new Size(220, 220),
                     AutoSize = false,

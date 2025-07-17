@@ -12,6 +12,7 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using ACAT.UserControls;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -24,7 +25,7 @@ namespace ACAT.Extension
     [ClassDescriptor("4D767749-D9C6-450E-A1D6-169074F2F66A",
                     "UserControlScreenLock",
                     "User Control to lock the screen")]
-    public partial class UserControlScreenLock : UserControl, IUserControl
+    public partial class UserControlScreenLock : GenericUserControl, IUserControl
     {
         private int _index = 0;
         private KeyboardActuator _keyboardActuator;

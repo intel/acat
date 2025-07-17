@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FontUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scanners\CursorNavigationScanner.cs">
       <SubType>Form</SubType>

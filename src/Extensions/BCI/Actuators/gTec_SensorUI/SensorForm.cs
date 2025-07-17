@@ -439,7 +439,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             if (_gTecBCI.deviceInitialized)
             {
                 // Obtain sensor data stored in buffers and pass to signal check user control
-                double[,] data = _gTecBCI.GetData();
+                double[,] data = _gTecBCI.GetData(false);
 
                 if (data != null && data.Length > 0 && data.GetLength(1) > 0)
                 {

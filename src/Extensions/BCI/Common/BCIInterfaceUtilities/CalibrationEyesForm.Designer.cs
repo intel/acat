@@ -1,4 +1,5 @@
-﻿using ACATResources;
+﻿using ACAT.Core.WidgetManagement;
+using ACATResources;
 
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
@@ -39,16 +40,16 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonExit = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.ButtonCancel = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.ButtonStart = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonExit = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonCancel = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonStart = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.panelPictures = new System.Windows.Forms.Panel();
             this.labelCountdown = new System.Windows.Forms.Label();
             this.pictureBoxEyesOpen = new System.Windows.Forms.PictureBox();
             this.pictureBoxEyesClosed = new System.Windows.Forms.PictureBox();
             this.labelInstruction = new System.Windows.Forms.Label();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonClose = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonClose = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -384,15 +385,15 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonStart;
+        private ScannerRoundedButtonControl ButtonStart;
         private System.Windows.Forms.Panel panelPictures;
         private System.Windows.Forms.PictureBox pictureBoxEyesOpen;
         private System.Windows.Forms.PictureBox pictureBoxEyesClosed;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonClose;
+        private ScannerRoundedButtonControl ButtonClose;
         private System.Windows.Forms.Label labelInstruction;
         private System.Windows.Forms.Label labelCountdown;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonCancel;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonExit;
+        private ScannerRoundedButtonControl ButtonCancel;
+        private ScannerRoundedButtonControl ButtonExit;
     }
 }

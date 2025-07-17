@@ -5,13 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Utility;
 using ACATResources;
-using ACAT.Lib.Core.Utility;
 using System;
 using System.IO;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     /// <summary>
     /// A form to display text from license.txt which contains a list

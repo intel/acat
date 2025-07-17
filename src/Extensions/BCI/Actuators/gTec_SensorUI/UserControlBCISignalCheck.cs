@@ -14,14 +14,16 @@
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using Accord.Math;
+using Accord.Statistics;
 using brainflow;
 using gTecSensorUI;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -68,9 +70,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <summary>
         /// Buffer length in seconds for EEG data to calculate railing
         /// </summary>
-        private const int PROCESSING_BUFFER_SIZE_SEC = 5;
+        private const int PROCESSING_BUFFER_SIZE_SEC = 4;
 
-        // Constants found in OpenBCI_GUI application (OpenBCI_GUI.pde, InterfaceSerial.pde, etc.) to calculate impedance
+        // The "Sensitivity" of ±750 mV means that the device is designed to accurately measure signals within that range.
+        // BrainFlow, when communicating with the Unicorn, likely receives data that has already been scaled to
+        // a representation where a gain of 1.0 (or a similar factor) correctly reflects the actual voltage
         private const int GAIN = 1;
 
         // Lists holding UI elements for all channels
@@ -126,8 +130,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public enum BCISignalCheckMode
         {
             TEST_RAILING,
-            //TEST_IMPEDANCE,
-            //TEST_QUALITY
         }
 
         /// <summary>
@@ -174,13 +176,12 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             while (chnIdx < 8)
             {
                 _requiredListTextsRailingResultsRailingTest.Add(_requiredListChartsSignalDataRailingTest[chnIdx].Titles[0]);
-                //_optionalListTextsRailingResultsRailingTest.Add(_optionalListChartsSignalDataRailingTest[chnIdx].Titles[0]);
                 chnIdx += 1;
             }
 
 
             // Load images for signal quality gradient / heatmap
-            _signalQualityGradientImages = new Image[9];
+            _signalQualityGradientImages = new Image[8];
             _signalQualityGradientImages[0] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel; // for heatmap - 0 is the same as 1 accepted channel
             _signalQualityGradientImages[1] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel;
             _signalQualityGradientImages[2] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_2AcceptableChannels;
@@ -189,7 +190,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _signalQualityGradientImages[5] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_5AcceptableChannels;
             _signalQualityGradientImages[6] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_6AcceptableChannels;
             _signalQualityGradientImages[7] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_7AcceptableChannels;
-            _signalQualityGradientImages[8] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_8AcceptableChannels;
+            //_signalQualityGradientImages[8] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_8AcceptableChannels;
 
             // Initialize colors so don't have to constantly create them
             COLOR_ACAT_DEFAULT_ORANGE = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
@@ -233,7 +234,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 update_UI = true;
                 last_timestamp_update_ui = currentTimestamp;
             }
-            bool scale_plots = false;
+            bool scale_plots = true;
 
             // Iterate through each channel's data and calculate std dev, railing, and update plots
             int numSignalQualityCheckChannelsUpdated = 0;
@@ -249,17 +250,21 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 //////// BCI Default Filter - Notch and FrontEnd ////////
                 double[] filteredChanelData = _filteredChannelData.GetRow(chIdx);
 
+
                 // If we're currently on the railing testing page
                 if (_currentBCISignalCheckMode == BCISignalCheckMode.TEST_RAILING)
                 {
                     // Compute railing on latest buffer of UNFILTERED data
-                    double railingResPercentage = DataFilter.get_railed_percentage(filteredChanelData, GAIN);
+                    double railingResPercentage = DataFilter.get_railed_percentage(unfilteredChannelData, GAIN);
+
+                    // print in console
+                    Console.WriteLine($"Channel {chIdx}: Railing Percentage Value = {railingResPercentage}");
 
                     // Update latest railing result - save value, get signal status, and update UI
                     updateRailingTestResult(chIdx, (int)railingResPercentage, update_UI);
 
                     // Update signal data chart in railing testing page
-                    updateSignalChart(chIdx, latestFilteredData.GetRow(chIdx), scale_plots); // Plot data filtered using Bruna's method
+                    updateSignalChart(chIdx, latestFilteredData.GetRow(chIdx), scale_plots);
                 }
 
 
@@ -445,7 +450,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         }
 
 
-
+       
         /// <summary>
         /// For a single channel / electrode, based on the railing result percentage, update the signal quality status and UI elements (railing text, color of charts + electrodes)
         /// </summary>
@@ -555,16 +560,24 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                         sampleIdx += 1;
                     }
 
+                   
+
                     if (scale_plots)
                     {
-                        //Log.Debug("updateSignalChart | scale_plots == true | channelIndex: " + channelIndex.ToString());
+                        // Dynamically adjust the Y-axis range to ensure the signal is visible
+                        double minValue = _eegChannels[channelIndex].chartSignalDataRailingTest.Series[0].Points.Min(point => point.YValues[0]);
+                        double maxValue = _eegChannels[channelIndex].chartSignalDataRailingTest.Series[0].Points.Max(point => point.YValues[0]);
+
+                        // Print min and max to console  
+                        //Console.WriteLine($"Channel {channelIndex}: Min Value = {minValue}, Max Value = {maxValue}");
+
+                        // Add a small margin to the min and max values for better visibility
+                        double margin = Math.Max(Math.Abs(maxValue - minValue) * 0.25, 10); // 10 is the minimum margin
+                        _eegChannels[channelIndex].chartSignalDataRailingTest.ChartAreas[0].AxisY.Minimum = minValue - margin;
+                        _eegChannels[channelIndex].chartSignalDataRailingTest.ChartAreas[0].AxisY.Maximum = maxValue + margin;
 
                         // Autoscale
-                        _eegChannels[channelIndex].chartSignalDataRailingTest.ChartAreas[0].RecalculateAxesScale();
-
-                        // Use _Ymin, _Ymax
-                        //_eegChannels[channelIndex].chartSignalDataRailingTest.ChartAreas[0].AxisY.Minimum = _Ymin;
-                        //_eegChannels[channelIndex].chartSignalDataRailingTest.ChartAreas[0].AxisY.Maximum = _Ymax;
+                        //_eegChannels[channelIndex].chartSignalDataRailingTest.ChartAreas[0].RecalculateAxesScale();
                     }
                 }));
             }
@@ -630,7 +643,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
             }
             return result;
         }
@@ -702,7 +715,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
             }
 
             yLimMax = scale;
@@ -781,7 +794,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.Message);
+                Log.Exception(ex.Message);
             }
         }
     }

@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.IO;
 using System.Xml;
 
-namespace ACAT.Lib.Core.ThemeManagement
+namespace ACAT.Core.ThemeManagement
 {
     /// <summary>
     /// Contains all the attribtues for a Theme. This includes
@@ -93,7 +93,7 @@ namespace ACAT.Lib.Core.ThemeManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
             return theme;
@@ -120,7 +120,7 @@ namespace ACAT.Lib.Core.ThemeManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {

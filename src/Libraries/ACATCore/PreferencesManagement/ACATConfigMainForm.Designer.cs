@@ -10,7 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-namespace ACAT.Lib.Core.PreferencesManagement
+namespace ACAT.Core.PreferencesManagement
 {
     /// <summary>
     /// Main form for ACAT Config application
@@ -60,7 +60,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             this.buttonExitBottomLeft = new System.Windows.Forms.Button();
             this.buttonResetToDefault = new System.Windows.Forms.Button();
             this.tableLayoutPanelSpacerBottom = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonSave = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonSave = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanelMain.SuspendLayout();
             this.tableLayoutPanelHeader.SuspendLayout();
             this.tableLayoutPanelConfigMain.SuspendLayout();
@@ -449,7 +449,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelConfigMain;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelConfigSettings;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelNavigationButtons;
-        private ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonSave;
+        private ACAT.Core.WidgetManagement.ScannerRoundedButtonControl buttonSave;
         private System.Windows.Forms.Button buttonResetToDefault;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelSpacerBottom;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelSpacerTop;

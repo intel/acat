@@ -6,14 +6,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Collections;
 using System.Diagnostics;
 using System.IO;
 using System.Xml;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// Represents a list of preferred IApplicationAgent to use
@@ -50,7 +50,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// </summary>
         public PreferredAgents()
         {
-            Log.Debug();
+            Log.Verbose();
             _preferredAgents = new Hashtable();
         }
 
@@ -192,7 +192,7 @@ namespace ACAT.Lib.Core.AgentManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
     }

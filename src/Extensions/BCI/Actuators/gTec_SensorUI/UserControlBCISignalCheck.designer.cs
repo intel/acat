@@ -15,6 +15,7 @@
 // Copyright (c) 2018 OpenBCI
 // https://github.com/OpenBCI/OpenBCI_GUI/blob/master/LICENSE
 ////////////////////////////////////////////////////////////////////////////
+using ACAT.Core.WidgetManagement;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
@@ -85,7 +86,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             System.Windows.Forms.DataVisualization.Charting.Title title16 = new System.Windows.Forms.DataVisualization.Charting.Title();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.buttonBack = new System.Windows.Forms.Button();
-            this.buttonNext_userControlBCISignalCheck = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonNext_userControlBCISignalCheck = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.buttonExit_userControlBCISignalCheck = new System.Windows.Forms.Button();
             this.panelSignalQualitySlider = new System.Windows.Forms.Panel();
             this.labelBCISignalCheckDescription = new System.Windows.Forms.Label();
@@ -96,18 +97,18 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.labelRailingTestInfo2 = new System.Windows.Forms.Label();
             this.labelRailingTestInfo1 = new System.Windows.Forms.Label();
             this.labelRailingTest = new System.Windows.Forms.Label();
-            this.btnElectrodeRailingTestR1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.btnElectrodeRailingTestR1 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.chartRailingTestR1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.labelElectrodeRailingRailingTest = new System.Windows.Forms.Label();
             this.labelRequiredRailingTest = new System.Windows.Forms.Label();
             this.label66 = new System.Windows.Forms.Label();
-            this.btnElectrodeRailingTestR2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.btnElectrodeRailingTestR3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.btnElectrodeRailingTestR4 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.btnElectrodeRailingTestR5 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.btnElectrodeRailingTestR6 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.btnElectrodeRailingTestR7 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.btnElectrodeRailingTestR8 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.btnElectrodeRailingTestR2 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.btnElectrodeRailingTestR3 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.btnElectrodeRailingTestR4 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.btnElectrodeRailingTestR5 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.btnElectrodeRailingTestR6 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.btnElectrodeRailingTestR7 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.btnElectrodeRailingTestR8 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.label73 = new System.Windows.Forms.Label();
             this.label72 = new System.Windows.Forms.Label();
             this.label71 = new System.Windows.Forms.Label();
@@ -124,18 +125,18 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.chartRailingTestR3 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.labelBCISignalCheck = new System.Windows.Forms.Label();
             this.panelSignalQuality = new System.Windows.Forms.Panel();
-            this.btnElectrodeCapC3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.btnElectrodeCapC4 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.btnElectrodeCapPz = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.btnElectrodeCapT5 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.btnElectrodeCapP3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.btnElectrodeCapCz = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.btnElectrodeCapP4 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.btnElectrodeCapFz = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.btnElectrodeCapC3 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.btnElectrodeCapC4 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.btnElectrodeCapPz = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.btnElectrodeCapT5 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.btnElectrodeCapP3 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.btnElectrodeCapCz = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.btnElectrodeCapP4 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.btnElectrodeCapFz = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.webBrowser = new System.Windows.Forms.WebBrowser();
             this.label53 = new System.Windows.Forms.Label();
             this.label59 = new System.Windows.Forms.Label();
-            this.btnElectrodeCapOp2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.btnElectrodeCapOp2 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanelMain.SuspendLayout();
             this.tabControlSignalQuality.SuspendLayout();
             this.tabPageRailing.SuspendLayout();
@@ -301,7 +302,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.panelSignalQualitySlider.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelSignalQualitySlider.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelSignalQualitySlider.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.panelSignalQualitySlider.BackgroundImage = global::gTecSensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel;
+            this.panelSignalQualitySlider.BackgroundImage = gTecSensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel;
             this.panelSignalQualitySlider.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.tableLayoutPanelMain.SetColumnSpan(this.panelSignalQualitySlider, 6);
             this.panelSignalQualitySlider.Location = new System.Drawing.Point(210, 595);
@@ -1324,7 +1325,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // 
             this.panelSignalQuality.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelSignalQuality.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.panelSignalQuality.BackgroundImage = global::gTecSensorUI.Properties.Resources.cap_new_no_electrode_positions1;
+            this.panelSignalQuality.BackgroundImage = gTecSensorUI.Properties.Resources.cap_new_no_electrode_positions1;
             this.panelSignalQuality.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.tableLayoutPanelMain.SetColumnSpan(this.panelSignalQuality, 6);
             this.panelSignalQuality.Controls.Add(this.btnElectrodeCapC3);
@@ -1632,7 +1633,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private System.Windows.Forms.Label label59;
         private System.Windows.Forms.Label labelBCISignalCheck;
         public System.Windows.Forms.Button buttonBack;
-        public Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonNext_userControlBCISignalCheck;
+        public ScannerRoundedButtonControl buttonNext_userControlBCISignalCheck;
         public System.Windows.Forms.Button buttonExit_userControlBCISignalCheck;
         private System.Windows.Forms.Label labelBCISignalCheckDescription;
 
@@ -1653,16 +1654,16 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public System.Windows.Forms.DataVisualization.Charting.Title railingResRailingTestOp6;
         public System.Windows.Forms.DataVisualization.Charting.Title railingResRailingTestOp7;
         public System.Windows.Forms.DataVisualization.Charting.Title railingResRailingTestOp8;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl btnElectrodeCapOp2;
+        private ScannerRoundedButtonControl btnElectrodeCapOp2;
         private System.Windows.Forms.Panel panelSignalQuality;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl btnElectrodeCapC3;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl btnElectrodeCapC4;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl btnElectrodeCapPz;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl btnElectrodeCapT5;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl btnElectrodeCapP3;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl btnElectrodeCapCz;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl btnElectrodeCapP4;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl btnElectrodeCapFz;
+        private ScannerRoundedButtonControl btnElectrodeCapC3;
+        private ScannerRoundedButtonControl btnElectrodeCapC4;
+        private ScannerRoundedButtonControl btnElectrodeCapPz;
+        private ScannerRoundedButtonControl btnElectrodeCapT5;
+        private ScannerRoundedButtonControl btnElectrodeCapP3;
+        private ScannerRoundedButtonControl btnElectrodeCapCz;
+        private ScannerRoundedButtonControl btnElectrodeCapP4;
+        private ScannerRoundedButtonControl btnElectrodeCapFz;
         private System.Windows.Forms.WebBrowser webBrowser;
         public System.Windows.Forms.TabControl tabControlSignalQuality;
         public System.Windows.Forms.TabPage tabPageRailing;
@@ -1671,21 +1672,21 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private System.Windows.Forms.Label labelRailingTestInfo2;
         private System.Windows.Forms.Label labelRailingTestInfo1;
         private System.Windows.Forms.Label labelRailingTest;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl btnElectrodeRailingTestR8;
+        private ScannerRoundedButtonControl btnElectrodeRailingTestR8;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartRailingTestR8;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartRailingTestR7;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl btnElectrodeRailingTestR6;
+        private ScannerRoundedButtonControl btnElectrodeRailingTestR6;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartRailingTestR6;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl btnElectrodeRailingTestR5;
+        private ScannerRoundedButtonControl btnElectrodeRailingTestR5;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartRailingTestR5;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl btnElectrodeRailingTestR1;
+        private ScannerRoundedButtonControl btnElectrodeRailingTestR1;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartRailingTestR1;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl btnElectrodeRailingTestR2;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl btnElectrodeRailingTestR3;
+        private ScannerRoundedButtonControl btnElectrodeRailingTestR2;
+        private ScannerRoundedButtonControl btnElectrodeRailingTestR3;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartRailingTestR3;
         private System.Windows.Forms.Label labelElectrodeRailingRailingTest;
         private System.Windows.Forms.Label labelRequiredRailingTest;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl btnElectrodeRailingTestR4;
+        private ScannerRoundedButtonControl btnElectrodeRailingTestR4;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartRailingTestR4;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartRailingTestR2;
         private System.Windows.Forms.Label label66;
@@ -1696,7 +1697,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private System.Windows.Forms.Label label71;
         private System.Windows.Forms.Label label72;
         private System.Windows.Forms.Label label73;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl btnElectrodeRailingTestR7;
+        private ScannerRoundedButtonControl btnElectrodeRailingTestR7;
         // public UCCapLEDStatus2 ucCapLEDStatus21;
     }
 }

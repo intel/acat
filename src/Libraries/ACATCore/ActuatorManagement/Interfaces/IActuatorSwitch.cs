@@ -15,7 +15,7 @@ using System;
 using System.Diagnostics;
 using System.Media;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// Delegate for the event raised when the accept time for the switch elapses

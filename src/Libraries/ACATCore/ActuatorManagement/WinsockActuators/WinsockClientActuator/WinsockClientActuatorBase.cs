@@ -16,13 +16,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Text;
 using System.Threading;
 
-namespace ACAT.Lib.Core.InputActuators
+namespace ACAT.Core.InputActuators
 {
     /// <summary>
     /// Represents the base class for an actuator that receives
@@ -150,7 +150,7 @@ namespace ACAT.Lib.Core.InputActuators
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     _quitConnect = true;
                     _evtConnectRetry.Set();
@@ -313,10 +313,7 @@ namespace ACAT.Lib.Core.InputActuators
                 try
                 {
                     Log.Debug("Trying to connecting to tcp/ip server");
-                    if (socketClient == null)
-                    {
-                        socketClient = createSocketClient();
-                    }
+                    socketClient ??= createSocketClient();
 
                     if (socketClient != null)
                     {
@@ -339,7 +336,7 @@ namespace ACAT.Lib.Core.InputActuators
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug("Error connecting to server " + ex);
+                    Log.Exception("Error connecting to server " + ex);
                 }
             }
 

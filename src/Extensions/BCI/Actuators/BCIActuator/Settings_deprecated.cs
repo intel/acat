@@ -18,11 +18,11 @@
 // </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
 using System;
 using System.Xml.Serialization;
 
-namespace ACAT.Extensions.Default.Actuators.BCIActuator
+namespace ACAT.Extensions.Actuators.BCIActuator
 {
     /// <summary>
     /// Settings for the Sample Actuator

@@ -8,7 +8,7 @@
 using System;
 using System.Diagnostics;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Stores global variables of the ACAT Core library

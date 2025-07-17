@@ -9,7 +9,7 @@ using System;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Useful text functions.  This class contains functions to get the current sentence,
@@ -147,7 +147,7 @@ namespace ACAT.Lib.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 insertOrReplaceOffset = 0;
                 wordToReplace = String.Empty;
                 return true;
@@ -235,7 +235,7 @@ namespace ACAT.Lib.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 paragraphAtCaret = String.Empty;
                 return 0;
             }
@@ -400,7 +400,7 @@ namespace ACAT.Lib.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 paragraphAtCaret = String.Empty;
                 return 0;
             }
@@ -424,7 +424,7 @@ namespace ACAT.Lib.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 word = String.Empty;
                 return 0;
             }
@@ -494,7 +494,7 @@ namespace ACAT.Lib.Core.Utility
                 prefix = String.Empty;
                 wordAtCaret = String.Empty;
 
-                Log.Debug();
+                Log.Verbose();
 
                 //Log.Debug("inputstring: [" + inputString + "]");
 
@@ -556,7 +556,7 @@ namespace ACAT.Lib.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 prefix = String.Empty;
                 wordAtCaret = String.Empty;
                 return 0;
@@ -620,7 +620,7 @@ namespace ACAT.Lib.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 word = String.Empty;
                 return 0;
             }
@@ -735,7 +735,7 @@ namespace ACAT.Lib.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 offset = 0;
                 count = 0;
                 return false;
@@ -852,7 +852,7 @@ namespace ACAT.Lib.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 offset = 0;
                 count = 0;
                 return false;
@@ -874,7 +874,7 @@ namespace ACAT.Lib.Core.Utility
             {
                 sentenceAtCaret = String.Empty;
 
-                Log.Debug();
+                Log.Verbose();
                 if (String.IsNullOrEmpty(inputString.Trim()))
                 {
                     Log.Debug("returning -1");
@@ -918,7 +918,7 @@ namespace ACAT.Lib.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 sentenceAtCaret = String.Empty;
                 return 0;
             }
@@ -1121,7 +1121,7 @@ namespace ACAT.Lib.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 wordAtCaret = String.Empty;
                 return 0;
             }

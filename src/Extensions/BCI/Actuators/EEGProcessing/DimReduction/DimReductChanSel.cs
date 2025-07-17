@@ -10,7 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using Accord.Math;
 using System;
 using System.Collections.Generic;
@@ -57,7 +57,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 {
                     // If channelSubset > numChannels (Eg: receiving data from OpenBCI 8ch and susbset is for 16ch), disable extra channels
                     int maxChannels = inputData[0].GetLength(1);
-                    List<int> newChannelSubset = new List<int>();
+                    List<int> newChannelSubset = new();
                     for (int channelIdx = 0; channelIdx < channelSubset.Length; channelIdx++)
                     {
                         if (channelSubset[channelIdx] <= maxChannels)
@@ -85,7 +85,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
             }
             return true;
         }

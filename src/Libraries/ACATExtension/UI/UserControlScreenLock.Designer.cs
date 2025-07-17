@@ -1,7 +1,8 @@
 ﻿
 using ACATResources;
+using ACAT.Core.WidgetManagement;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 
 {
     partial class UserControlScreenLock
@@ -36,12 +37,12 @@ namespace ACAT.Lib.Extension
             this.label1 = new System.Windows.Forms.Label();
             this.labelScanSpeedSelect3 = new System.Windows.Forms.Label();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
-            this.B4 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.buttonUnlock = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B5 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B4 = new ScannerRoundedButtonControl();
+            this.B3 = new ScannerRoundedButtonControl();
+            this.B2 = new ScannerRoundedButtonControl();
+            this.B1 = new ScannerRoundedButtonControl();
+            this.buttonUnlock = new ScannerRoundedButtonControl();
+            this.B5 = new ScannerRoundedButtonControl();
             this.tableLayoutPanelMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -291,13 +292,13 @@ namespace ACAT.Lib.Extension
 
         private System.Windows.Forms.RichTextBox richTextBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelMain;
-        private Core.WidgetManagement.ScannerRoundedButtonControl B4;
-        private Core.WidgetManagement.ScannerRoundedButtonControl B3;
-        private Core.WidgetManagement.ScannerRoundedButtonControl B2;
+        private ScannerRoundedButtonControl B4;
+        private ScannerRoundedButtonControl B3;
+        private ScannerRoundedButtonControl B2;
         private System.Windows.Forms.Label labelScanSpeedSelect3;
         private System.Windows.Forms.Label label1;
-        private Core.WidgetManagement.ScannerRoundedButtonControl B1;
-        private Core.WidgetManagement.ScannerRoundedButtonControl buttonUnlock;
-        private Core.WidgetManagement.ScannerRoundedButtonControl B5;
+        private ScannerRoundedButtonControl B1;
+        private ScannerRoundedButtonControl buttonUnlock;
+        private ScannerRoundedButtonControl B5;
     }
 }

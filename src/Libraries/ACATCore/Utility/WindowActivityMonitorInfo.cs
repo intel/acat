@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.Security.Permissions;
 using System.Windows.Automation;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Encapsulates information about the currently active

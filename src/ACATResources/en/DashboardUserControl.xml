@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+  <!ENTITY functionButtonFontName "ACAT FONT 1">
+  <!ENTITY functionButtonAltFontName "ACAT Icon">
+  <!ENTITY functionButtonFontSize "44">
+
+]>
+
+<ACAT>
+  <WidgetAttributes>
+        <WidgetAttribute name="ACATTalk" value="@CmdACATMenu" fontname="&functionButtonAltFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="QuickTalk" value="@CmdMainMenu" fontname="&functionButtonAltFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="PointerControl" value="@CmdShowPointerControl" fontname="&functionButtonAltFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="Keyboard" value="@CmdShowKeyboard" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="System" value="@CmdShowSystem" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="Location" value="@CmdMoveWindow" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="BoxWidget"  name="ToolbarBox">
+      <Widget class="RowWidget"  name="ButtonBoxRow">
+        <Widget class="ScannerButton" name="ACATTalk" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="QuickTalk" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="PointerControl" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="Keyboard" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="System" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="Location" colorScheme="ScannerButton"/>
+      </Widget>
+    </Widget>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopLevelRotation"
+               start="true"
+               onEnter=""
+               scanTime="@MenuDialogScanTime"
+               iterations="1"
+               onSelect="actuate(@SelectedWidget);stop();">
+      <Widget name="ACATTalk" />
+      <Widget name="QuickTalk" />
+      <Widget name="PointerControl" />
+      <Widget name="Keyboard" />
+      <Widget name="System" />
+      <Widget name="Location" />
+    </Animation>
+  </Animations>
+</ACAT>

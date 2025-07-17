@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.Interpreter;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.UserControlManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.Audit;
+using ACAT.Core.Interpreter;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.UserControlManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,7 @@ using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.AnimationManagement
+namespace ACAT.Core.AnimationManagement
 {
     /// <summary>
     /// Current state of the animation player
@@ -168,7 +168,7 @@ namespace ACAT.Lib.Core.AnimationManagement
         /// <param name="variables">variables and their values</param>
         public AnimationPlayer(Widget rootWidget, Interpret interpreter, Variables variables)
         {
-            Log.Debug("CTOR(" + rootWidget.Name + ")");
+            Log.Verbose("CTOR(" + rootWidget.Name + ")");
             if (rootWidget.UIControl is IPanel)
             {
                 _syncObj = ((IPanel)rootWidget.UIControl).SyncObj;
@@ -326,12 +326,12 @@ namespace ACAT.Lib.Core.AnimationManagement
         /// </summary>
         public void Interrupt()
         {
-            Log.Debug("Interrupt(" + _rootWidget.Name + ")");
+            Log.Verbose("Interrupt(" + _rootWidget.Name + ")");
             if (_timer != null &&
                 (_playerState == PlayerState.Running ||
                 _playerState == PlayerState.Timeout))
             {
-                Log.Debug("Interrupt timer for panel " + _rootWidget.Name);
+                Log.Verbose("Interrupt timer for panel " + _rootWidget.Name);
 
                 _timer.Stop();
                 setPlayerState(PlayerState.Interrupted);
@@ -374,14 +374,14 @@ namespace ACAT.Lib.Core.AnimationManagement
         /// </summary>
         public void Pause()
         {
-            Log.Debug("Pause(" + _rootWidget.Name + ")");
+            Log.Verbose("Pause(" + _rootWidget.Name + ")");
 
             if (_timer != null &&
                 (_playerState == PlayerState.Running ||
                 _playerState == PlayerState.Timeout ||
                 _playerState == PlayerState.Interrupted))
             {
-                Log.Debug("AP1: Stop timer for panel " + _rootWidget.Name);
+                Log.Verbose("AP1: Stop timer for panel " + _rootWidget.Name);
 
                 _timer.Stop();
 
@@ -397,21 +397,21 @@ namespace ACAT.Lib.Core.AnimationManagement
         /// <param name="animation">transition to this animation</param>
         public void Resume(Animation animation = null)
         {
-            Log.Debug("Resume(" + _rootWidget.Name + ") +, state: " + _playerState);
+            Log.Verbose("Resume(" + _rootWidget.Name + ") +, state: " + _playerState);
 
             if ((_playerState == PlayerState.Paused ||
                     _playerState == PlayerState.Timeout ||
                     _playerState == PlayerState.Interrupted) &&
                     _timer != null)
             {
-                Log.Debug("Resume(" + _rootWidget.Name + ") Setting player state to running");
+                Log.Verbose("Resume(" + _rootWidget.Name + ") Setting player state to running");
                 setPlayerState(PlayerState.Running);
 
                 if (!CoreGlobals.AppPreferences.EnableManualScan)
                 {
                     if (animation != null)
                     {
-                        Log.Debug("In Resume Calling Transition");
+                        Log.Verbose("In Resume Calling Transition");
                         Transition(animation);
                     }
                 }
@@ -429,25 +429,25 @@ namespace ACAT.Lib.Core.AnimationManagement
         {
             if (_timer == null)
             {
-                Log.Debug("_timer is null");
+                Log.Verbose("_timer is null");
                 return;
             }
 
             _timer.Elapsed -= timer_Elapsed;
 
-            Log.Debug("Inside stopthread. before enter " + _rootWidget.UIControl.Name);
+            Log.Verbose("Inside stopthread. before enter " + _rootWidget.UIControl.Name);
 
             tryEnterUntilSuccess(_transitionSync);
 
-            Log.Debug("Inside stopthread. after enter " + _rootWidget.UIControl.Name);
+            Log.Verbose("Inside stopthread. after enter " + _rootWidget.UIControl.Name);
 
             _timer.Stop();
 
-            Log.Debug("Inside stopthread. before exit" + _rootWidget.UIControl.Name);
+            Log.Verbose("Inside stopthread. before exit" + _rootWidget.UIControl.Name);
             Monitor.Exit(_transitionSync);
-            Log.Debug("Inside stopthread. after exit" + _rootWidget.UIControl.Name);
+            Log.Verbose("Inside stopthread. after exit" + _rootWidget.UIControl.Name);
 
-            Log.Debug("Stop" + _rootWidget.UIControl.Name + ", syncobj.status " + _syncObj.Status + ", intimer: " + _inTimer);
+            Log.Verbose("Stop" + _rootWidget.UIControl.Name + ", syncobj.status " + _syncObj.Status + ", intimer: " + _inTimer);
             setPlayerState(PlayerState.Stopped);
 
             _timer.Dispose();
@@ -463,7 +463,7 @@ namespace ACAT.Lib.Core.AnimationManagement
         {
             if (_syncObj == null)
             {
-                Log.Debug("_syncObj is null. returning");
+                Log.Verbose("_syncObj is null. returning");
                 return;
             }
 
@@ -477,18 +477,18 @@ namespace ACAT.Lib.Core.AnimationManagement
 
                 if (animation != null)
                 {
-                    Log.Debug("Transition to " + animation.Name);
+                    Log.Verbose("Transition to " + animation.Name);
                 }
 
                 setPlayerState(PlayerState.Stopped);
 
-                Log.Debug("Transition : Before Enter " + _rootWidget.UIControl.Name + ", threadid: " + Kernel32Interop.GetCurrentThreadId());
+                Log.Verbose("Transition : Before Enter " + _rootWidget.UIControl.Name + ", threadid: " + Kernel32Interop.GetCurrentThreadId());
                 tryEnterUntilSuccess(_transitionSync);
-                Log.Debug("Transition : After Enter " + _rootWidget.UIControl.Name + ", status:  " + _syncObj.Status);
+                Log.Verbose("Transition : After Enter " + _rootWidget.UIControl.Name + ", status:  " + _syncObj.Status);
 
                 if (_syncObj.IsClosing())
                 {
-                    Log.Debug("FORM IS CLOSING. releasing _transitionSync and returning" + _rootWidget.UIControl.Name);
+                    Log.Verbose("FORM IS CLOSING. releasing _transitionSync and returning" + _rootWidget.UIControl.Name);
                     release(_transitionSync);
                     return;
                 }
@@ -513,11 +513,11 @@ namespace ACAT.Lib.Core.AnimationManagement
                 _currentWidgetIndex = getFirstAnimatedWidget();
                 _highlightedAnimationWidget = null;
 
-                Log.Debug("Transition : Before Release " + _rootWidget.UIControl.Name);
+                Log.Verbose("Transition : Before Release " + _rootWidget.UIControl.Name);
                 release(_transitionSync);
-                Log.Debug("Transition : After Release " + _rootWidget.UIControl.Name);
+                Log.Verbose("Transition : After Release " + _rootWidget.UIControl.Name);
 
-                Log.Debug("Start new animation " + animation.Name);
+                Log.Verbose("Start new animation " + animation.Name);
 
                 if (!animation.AutoStart && animation.OnStart)
                 {
@@ -536,17 +536,17 @@ namespace ACAT.Lib.Core.AnimationManagement
                     }
                     */
                     _timer.Interval = _currentAnimation.SteppingTime;
-                    Log.Debug(_rootWidget.UIControl.Name + ", syncobj.status " + _syncObj.Status);
+                    Log.Verbose(_rootWidget.UIControl.Name + ", syncobj.status " + _syncObj.Status);
 
                     if (_syncObj.Status == SyncLock.StatusValues.None)
                     {
                         timer_Elapsed(null, null);
-                        Log.Debug("Starting timer " + _rootWidget.UIControl.Name);
+                        Log.Verbose("Starting timer " + _rootWidget.UIControl.Name);
                         _timer.Start();
                     }
                     else
                     {
-                        Log.Debug("******** WILL NOT START TIMER!!!" +
+                        Log.Verbose("******** WILL NOT START TIMER!!!" +
                                     _rootWidget.UIControl.Name +
                                     ", syncobj.status " + _syncObj.Status);
                     }
@@ -556,10 +556,10 @@ namespace ACAT.Lib.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
-            Log.Debug("Returning");
+            Log.Verbose("Returning");
         }
 
         /// <summary>
@@ -570,7 +570,7 @@ namespace ACAT.Lib.Core.AnimationManagement
         {
             if (_syncObj == null)
             {
-                Log.Debug("_syncObj is null. returning");
+                Log.Verbose("_syncObj is null. returning");
                 return;
             }
 
@@ -601,9 +601,9 @@ namespace ACAT.Lib.Core.AnimationManagement
                 _delayedSelect = false;
                 _delayedSelect2 = false;
 
-                Log.Debug("manualScanMode is " + manualScanMode);
+                Log.Verbose("manualScanMode is " + manualScanMode);
 
-                Log.Debug(_playerState + ", " + _manualScanMode);
+                Log.Verbose(_playerState + ", " + _manualScanMode);
                 if (_playerState == PlayerState.Running)
                 {
                     if (checkStopManualAutoScan(manualScanMode))
@@ -624,20 +624,20 @@ namespace ACAT.Lib.Core.AnimationManagement
 
                 setPlayerState(PlayerState.Stopped);
 
-                Log.Debug("Transition : Before Enter " + _rootWidget.UIControl.Name + ", threadid: " + Kernel32Interop.GetCurrentThreadId());
+                Log.Verbose("Transition : Before Enter " + _rootWidget.UIControl.Name + ", threadid: " + Kernel32Interop.GetCurrentThreadId());
                 tryEnterUntilSuccess(_transitionSync);
-                Log.Debug("Transition : After Enter " + _rootWidget.UIControl.Name + ", status:  " + _syncObj.Status);
+                Log.Verbose("Transition : After Enter " + _rootWidget.UIControl.Name + ", status:  " + _syncObj.Status);
 
                 if (_syncObj.IsClosing())
                 {
-                    Log.Debug("FORM IS CLOSING. releasing _transitionSync and returning" + _rootWidget.UIControl.Name);
+                    Log.Verbose("FORM IS CLOSING. releasing _transitionSync and returning" + _rootWidget.UIControl.Name);
                     release(_transitionSync);
                     return;
                 }
 
                 if (_highlightedWidget == null)
                 {
-                    Log.Debug("_highlightedWidget is null");
+                    Log.Verbose("_highlightedWidget is null");
 
                     HighlightDefaultHome();
                 }
@@ -670,10 +670,10 @@ namespace ACAT.Lib.Core.AnimationManagement
 
                 bool handled = handleSingleMove();
 
-                Log.Debug("Transition : Before Release " + _rootWidget.UIControl.Name);
+                Log.Verbose("Transition : Before Release " + _rootWidget.UIControl.Name);
 
                 release(_transitionSync);
-                Log.Debug("Transition : After Release " + _rootWidget.UIControl.Name);
+                Log.Verbose("Transition : After Release " + _rootWidget.UIControl.Name);
 
                 if (handled)
                 {
@@ -684,17 +684,17 @@ namespace ACAT.Lib.Core.AnimationManagement
                 if (_timer != null)
                 {
                     _timer.Interval = CoreGlobals.AppPreferences.ScanTime;
-                    Log.Debug(_rootWidget.UIControl.Name + ", syncobj.status " + _syncObj.Status);
+                    Log.Verbose(_rootWidget.UIControl.Name + ", syncobj.status " + _syncObj.Status);
 
                     if (_syncObj.Status == SyncLock.StatusValues.None)
                     {
                         timer_Elapsed(null, null);
-                        Log.Debug("Starting timer " + _rootWidget.UIControl.Name);
+                        Log.Verbose("Starting timer " + _rootWidget.UIControl.Name);
                         _timer.Start();
                     }
                     else
                     {
-                        Log.Debug("******** WILL NOT START TIMER!!!" + _rootWidget.UIControl.Name + ", syncobj.status " + _syncObj.Status);
+                        Log.Verbose("******** WILL NOT START TIMER!!!" + _rootWidget.UIControl.Name + ", syncobj.status " + _syncObj.Status);
                     }
 
                     setPlayerState(PlayerState.Running);
@@ -702,10 +702,10 @@ namespace ACAT.Lib.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
-            Log.Debug("Returning");
+            Log.Verbose("Returning");
         }
 
         /// <summary>
@@ -717,7 +717,7 @@ namespace ACAT.Lib.Core.AnimationManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -744,7 +744,7 @@ namespace ACAT.Lib.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 return 0;
             }
         }
@@ -757,7 +757,7 @@ namespace ACAT.Lib.Core.AnimationManagement
         {
             if (_syncObj != null && _syncObj.IsClosing())
             {
-                Log.Debug("Scanner closed" + _rootWidget.UIControl.Name);
+                Log.Verbose("Scanner closed" + _rootWidget.UIControl.Name);
                 throw new Exception();
             }
         }
@@ -797,22 +797,22 @@ namespace ACAT.Lib.Core.AnimationManagement
         /// <param name="tag">Tag</param>
         private void dumpManualPath(String tag)
         {
-            Log.Debug(tag + " ---------------------");
+            Log.Verbose(tag + " ---------------------");
             if (_manualScanPath != null)
             {
                 if (_manualScanPath.Count == 0)
                 {
-                    Log.Debug("None found");
+                    Log.Verbose("None found");
                 }
                 else
                 {
                     foreach (var h in _manualScanPath)
                     {
-                        Log.Debug(h.Name);
+                        Log.Verbose(h.Name);
                     }
                 }
             }
-            Log.Debug("---------------------");
+            Log.Verbose("---------------------");
         }
 
         /// <summary>
@@ -823,7 +823,7 @@ namespace ACAT.Lib.Core.AnimationManagement
         /// <returns>index of the first animation widget</returns>
         private int getFirstAnimatedWidget()
         {
-            Log.Debug();
+            Log.Verbose();
             for (int ii = 0; ii < _currentAnimation.AnimationWidgetList.Count; ii++)
             {
                 if (_currentAnimation.AnimationWidgetList[ii].UIWidget.CanAddForAnimation())
@@ -864,7 +864,7 @@ namespace ACAT.Lib.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("ex=" + ex.Message);
+                Log.Exception("ex=" + ex.Message);
                 return -1;
             }
         }
@@ -1148,11 +1148,11 @@ namespace ACAT.Lib.Core.AnimationManagement
         /// </summary>
         private void highlightNeighborAbove()
         {
-            Log.Debug();
+            Log.Verbose();
 
             if (_highlightedWidget == null)
             {
-                Log.Debug("_widgethighlighted is null");
+                Log.Verbose("_widgethighlighted is null");
                 return;
             }
 
@@ -1170,12 +1170,9 @@ namespace ACAT.Lib.Core.AnimationManagement
                     }
                 }
 
-                if (above == null)
-                {
-                    above = _highlightedWidget.Above[0];
-                }
+                above ??= _highlightedWidget.Above[0];
 
-                Log.Debug("above: " + above.Name);
+                Log.Verbose("above: " + above.Name);
                 above.HighlightOn();
                 if (!_manualScanPath.Contains(above))
                 {
@@ -1186,11 +1183,11 @@ namespace ACAT.Lib.Core.AnimationManagement
             }
             else
             {
-                Log.Debug("above is null. Will get wraparound");
+                Log.Verbose("above is null. Will get wraparound");
                 var bottomMost = getWraparoundWidgetBottom();
                 if (bottomMost != null)
                 {
-                    Log.Debug("bottomMost is " + bottomMost.Name);
+                    Log.Verbose("bottomMost is " + bottomMost.Name);
 
                     bottomMost.HighlightOn();
                     if (!_manualScanPath.Contains(bottomMost))
@@ -1208,11 +1205,11 @@ namespace ACAT.Lib.Core.AnimationManagement
         /// </summary>
         private void highlightNeighborBelow()
         {
-            Log.Debug();
+            Log.Verbose();
 
             if (_highlightedWidget == null)
             {
-                Log.Debug("_widgethighlighted is null");
+                Log.Verbose("_widgethighlighted is null");
                 return;
             }
 
@@ -1230,12 +1227,9 @@ namespace ACAT.Lib.Core.AnimationManagement
                     }
                 }
 
-                if (below == null)
-                {
-                    below = _highlightedWidget.Below[0];
-                }
+                below ??= _highlightedWidget.Below[0];
 
-                Log.Debug("below: " + below.Name);
+                Log.Verbose("below: " + below.Name);
                 below.HighlightOn();
                 if (!_manualScanPath.Contains(below))
                 {
@@ -1245,11 +1239,11 @@ namespace ACAT.Lib.Core.AnimationManagement
             }
             else
             {
-                Log.Debug("Below is null. Will get wraparound");
+                Log.Verbose("Below is null. Will get wraparound");
                 var topMost = getWraparoundWidgetTop();
                 if (topMost != null)
                 {
-                    Log.Debug("topMost is " + topMost.Name);
+                    Log.Verbose("topMost is " + topMost.Name);
 
                     topMost.HighlightOn();
                     if (!_manualScanPath.Contains(topMost))
@@ -1268,7 +1262,7 @@ namespace ACAT.Lib.Core.AnimationManagement
         /// </summary>
         private void highlightNeighborLeft()
         {
-            Log.Debug();
+            Log.Verbose();
 
             if (_highlightedWidget == null)
             {
@@ -1289,12 +1283,9 @@ namespace ACAT.Lib.Core.AnimationManagement
                     }
                 }
 
-                if (left == null)
-                {
-                    left = _highlightedWidget.Left[0];
-                }
+                left ??= _highlightedWidget.Left[0];
 
-                Log.Debug("Left: " + left.Name);
+                Log.Verbose("Left: " + left.Name);
                 left.HighlightOn();
                 if (!_manualScanPath.Contains(left))
                 {
@@ -1306,11 +1297,11 @@ namespace ACAT.Lib.Core.AnimationManagement
             {
                 // reached the left edge of the form. Wrap around
                 // to start scanning at the right edge
-                Log.Debug("Left is null. Will get wraparound");
+                Log.Verbose("Left is null. Will get wraparound");
                 var rightmost = getWraparoundWidgetRight();
                 if (rightmost != null)
                 {
-                    Log.Debug("Leftmost is " + rightmost.Name);
+                    Log.Verbose("Leftmost is " + rightmost.Name);
 
                     rightmost.HighlightOn();
                     if (!_manualScanPath.Contains(rightmost))
@@ -1348,12 +1339,9 @@ namespace ACAT.Lib.Core.AnimationManagement
                     }
                 }
 
-                if (right == null)
-                {
-                    right = _highlightedWidget.Right[0];
-                }
+                right ??= _highlightedWidget.Right[0];
 
-                Log.Debug("Right: " + right.Name);
+                Log.Verbose("Right: " + right.Name);
                 right.HighlightOn();
                 if (!_manualScanPath.Contains(right))
                 {
@@ -1408,9 +1396,9 @@ namespace ACAT.Lib.Core.AnimationManagement
         {
             try
             {
-                //Log.Debug("Before EXIT for " + _rootWidget.UIControl.Name);
+                //Log.Verbose("Before EXIT for " + _rootWidget.UIControl.Name);
                 Monitor.Exit(syncObj);
-                //Log.Debug("After EXIT for " + _rootWidget.UIControl.Name);
+                //Log.Verbose("After EXIT for " + _rootWidget.UIControl.Name);
             }
             catch (Exception ex)
             {
@@ -1425,16 +1413,16 @@ namespace ACAT.Lib.Core.AnimationManagement
         /// <param name="playerState">new state</param>
         private void setPlayerState(PlayerState playerState)
         {
-            Log.Debug();
+            Log.Verbose();
 
             PlayerState oldState = _playerState;
             if (oldState != playerState)
             {
-                Log.Debug(_rootWidget.Name + ":Set player state to " + playerState);
+                Log.Verbose(_rootWidget.Name + ":Set player state to " + playerState);
                 _playerState = playerState;
                 if (EvtPlayerStateChanged != null)
                 {
-                    Log.Debug("Calling evtPlayerStateChanged");
+                    Log.Verbose("Calling evtPlayerStateChanged");
                     EvtPlayerStateChanged.BeginInvoke(this, new PlayerStateChangedEventArgs(oldState, _playerState), null, null);
                 }
             }
@@ -1474,13 +1462,13 @@ namespace ACAT.Lib.Core.AnimationManagement
         {
             if (_syncObj.IsClosing())
             {
-                Log.Debug("Form is closing. Returning" + _rootWidget.UIControl.Name);
+                Log.Verbose("Form is closing. Returning" + _rootWidget.UIControl.Name);
                 return;
             }
 
             if (_inTimer)
             {
-                Log.Debug("Timer is busy. returning");
+                Log.Verbose("Timer is busy. returning");
                 return;
             }
 
@@ -1488,24 +1476,24 @@ namespace ACAT.Lib.Core.AnimationManagement
 
             try
             {
-                Log.Debug("Before tryEnter " + _rootWidget.UIControl.Name + ", threadid: " + Kernel32Interop.GetCurrentThreadId());
+                Log.Verbose("Before tryEnter " + _rootWidget.UIControl.Name + ", threadid: " + Kernel32Interop.GetCurrentThreadId());
 
                 if (!tryEnter(_transitionSync))
                 {
-                    Log.Debug("_transition sync will block returning");
+                    Log.Verbose("_transition sync will block returning");
                     return;
                 }
 
-                Log.Debug("After tryEnter" + _rootWidget.UIControl.Name + ", status: " + _syncObj.Status);
+                Log.Verbose("After tryEnter" + _rootWidget.UIControl.Name + ", status: " + _syncObj.Status);
                 if (_syncObj.IsClosing())
                 {
-                    Log.Debug("Form is closing. Returning" + _rootWidget.UIControl.Name);
+                    Log.Verbose("Form is closing. Returning" + _rootWidget.UIControl.Name);
                     return;
                 }
 
                 check();
 
-                Log.Debug("CurrentAnimation: " + _currentAnimation.Name +
+                Log.Verbose("CurrentAnimation: " + _currentAnimation.Name +
                             ". Count: " + _currentAnimation.AnimationWidgetList.Count +
                             ". currentWidgetIndex: " + _currentWidgetIndex);
 
@@ -1513,14 +1501,14 @@ namespace ACAT.Lib.Core.AnimationManagement
 
                 var animationWidget = _currentAnimation.AnimationWidgetList[_currentWidgetIndex];
 
-                Log.Debug(_rootWidget.UIControl.Name + ", status: " + _syncObj.Status);
+                Log.Verbose(_rootWidget.UIControl.Name + ", status: " + _syncObj.Status);
 
                 // if any switch is currently engaged, keep the current widget
                 // highlighted until the user releases the switch
                 //if (ActuatorManager.Instance.IsSwitchActive())
                 if (IsSwitchActive)
                 {
-                    Log.Debug("Some switch is active. Will try again");
+                    Log.Verbose("Some switch is active. Will try again");
                     return;
                 }
 
@@ -1533,7 +1521,7 @@ namespace ACAT.Lib.Core.AnimationManagement
 
                 check();
 
-                Log.Debug(_rootWidget.UIControl.Name + ", status: " + _syncObj.Status);
+                Log.Verbose(_rootWidget.UIControl.Name + ", status: " + _syncObj.Status);
 
                 if (!_currentAnimation.IsFirst && animatedWidgetCount() == 0)
                 {
@@ -1567,7 +1555,7 @@ namespace ACAT.Lib.Core.AnimationManagement
                     }
                     else
                     {
-                        Log.Debug("Timer is null. returning");
+                        Log.Verbose("Timer is null. returning");
                         return;
                     }
 
@@ -1589,7 +1577,7 @@ namespace ACAT.Lib.Core.AnimationManagement
 
                 if (_highlightedAnimationWidget != null && _highlightedAnimationWidget != animationWidget)
                 {
-                    Log.Debug(string.Format("Animation: {0}. Turning off . name = {1}. Count: {2}",
+                    Log.Verbose(string.Format("Animation: {0}. Turning off . name = {1}. Count: {2}",
                                 _currentAnimation.Name,
                                 _highlightedAnimationWidget.UIWidget.Name,
                                 _currentAnimation.AnimationWidgetList.Count));
@@ -1611,7 +1599,7 @@ namespace ACAT.Lib.Core.AnimationManagement
                 // now turn the highlight on on the next widget in the  sequence
                 animationWidget = _currentAnimation.AnimationWidgetList[_currentWidgetIndex];
 
-                Log.Debug("Animation: " + _currentAnimation.Name +
+                Log.Verbose("Animation: " + _currentAnimation.Name +
                             ". Turning on " + _currentWidgetIndex +
                             ". name = " + animationWidget.UIWidget.Name);
 
@@ -1640,7 +1628,7 @@ namespace ACAT.Lib.Core.AnimationManagement
                 }
                 else
                 {
-                    Log.Debug("timer is null. returning");
+                    Log.Verbose("timer is null. returning");
                     return;
                 }
 
@@ -1675,18 +1663,18 @@ namespace ACAT.Lib.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("AnimationPlayerexception " + ex);
+                Log.Exception("AnimationPlayerexception " + ex);
             }
             finally
             {
-                Log.Debug("Before release " + _rootWidget.UIControl.Name);
+                Log.Verbose("Before release " + _rootWidget.UIControl.Name);
                 release(_transitionSync);
-                Log.Debug("After release " + _rootWidget.UIControl.Name);
+                Log.Verbose("After release " + _rootWidget.UIControl.Name);
 
-                Log.Debug("Setting intimer to false " + _rootWidget.UIControl.Name);
+                Log.Verbose("Setting intimer to false " + _rootWidget.UIControl.Name);
                 _inTimer = false;
 
-                Log.Debug("Exiting timer " + _rootWidget.UIControl.Name);
+                Log.Verbose("Exiting timer " + _rootWidget.UIControl.Name);
             }
         }
 
@@ -1699,17 +1687,17 @@ namespace ACAT.Lib.Core.AnimationManagement
         {
             bool actuate = false;
 
-            Log.Debug("------------->>> ENTER ");
+            Log.Verbose("------------->>> ENTER ");
 
             if (_syncObj.IsClosing())
             {
-                Log.Debug("Form is closing. Returning" + _rootWidget.UIControl.Name);
+                Log.Verbose("Form is closing. Returning" + _rootWidget.UIControl.Name);
                 return;
             }
 
             if (_inTimer)
             {
-                Log.Debug("Timer is busy. returning");
+                Log.Verbose("Timer is busy. returning");
                 return;
             }
 
@@ -1722,31 +1710,31 @@ namespace ACAT.Lib.Core.AnimationManagement
 
             try
             {
-                Log.Debug("Before tryEnter " + _rootWidget.UIControl.Name + ", threadid: " + Kernel32Interop.GetCurrentThreadId());
+                Log.Verbose("Before tryEnter " + _rootWidget.UIControl.Name + ", threadid: " + Kernel32Interop.GetCurrentThreadId());
 
                 if (!tryEnter(_transitionSync))
                 {
-                    Log.Debug("_transition sync will block returning");
+                    Log.Verbose("_transition sync will block returning");
                     return;
                 }
 
-                Log.Debug("After tryEnter" + _rootWidget.UIControl.Name + ", status: " + _syncObj.Status);
+                Log.Verbose("After tryEnter" + _rootWidget.UIControl.Name + ", status: " + _syncObj.Status);
                 if (_syncObj.IsClosing())
                 {
-                    Log.Debug("Form is closing. Returning" + _rootWidget.UIControl.Name);
+                    Log.Verbose("Form is closing. Returning" + _rootWidget.UIControl.Name);
                     return;
                 }
 
                 check();
 
-                Log.Debug(_rootWidget.UIControl.Name + ", status: " + _syncObj.Status);
+                Log.Verbose(_rootWidget.UIControl.Name + ", status: " + _syncObj.Status);
 
                 // if any switch is currently engaged, keep the current widget
                 // highlighted until the user releases the switch
                 //if (ActuatorManager.Instance.IsSwitchActive())
                 if (IsSwitchActive)
                 {
-                    Log.Debug("Some switch is active. Will try again");
+                    Log.Verbose("Some switch is active. Will try again");
                     return;
                 }
 
@@ -1776,7 +1764,7 @@ namespace ACAT.Lib.Core.AnimationManagement
                     }
                 }
 
-                Log.Debug("_manualScanMode is " + _manualScanMode);
+                Log.Verbose("_manualScanMode is " + _manualScanMode);
 
                 var prevWidgetHighlighted = _highlightedWidget;
 
@@ -1801,29 +1789,29 @@ namespace ACAT.Lib.Core.AnimationManagement
 
                 if (prevWidgetHighlighted == _highlightedWidget)
                 {
-                    Log.Debug("Same widget. Stopping timer");
+                    Log.Verbose("Same widget. Stopping timer");
                     _timer?.Stop();
                 }
                 check();
             }
             catch (Exception ex)
             {
-                Log.Debug("AnimationPlayerexception " + ex);
+                Log.Exception("AnimationPlayerexception " + ex);
             }
             finally
             {
-                Log.Debug("Before release " + _rootWidget.UIControl.Name);
+                Log.Verbose("Before release " + _rootWidget.UIControl.Name);
                 release(_transitionSync);
-                Log.Debug("After release " + _rootWidget.UIControl.Name);
+                Log.Verbose("After release " + _rootWidget.UIControl.Name);
 
-                Log.Debug("Setting intimer to false " + _rootWidget.UIControl.Name);
+                Log.Verbose("Setting intimer to false " + _rootWidget.UIControl.Name);
                 _inTimer = false;
 
                 if (actuate)
                 {
                     ManualScanActuateWidget(_highlightedWidget);
                 }
-                Log.Debug("-----------  <<<< Exiting timer " + _rootWidget.UIControl.Name);
+                Log.Verbose("-----------  <<<< Exiting timer " + _rootWidget.UIControl.Name);
             }
         }
 
@@ -1843,7 +1831,7 @@ namespace ACAT.Lib.Core.AnimationManagement
         {
             while (!tryEnter(syncObj))
             {
-                Log.Debug("CALLING DOEVENTS");
+                Log.Verbose("CALLING DOEVENTS");
                 if (Application.MessageLoop)
                 {
                     Application.DoEvents();

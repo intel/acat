@@ -14,8 +14,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.Utility.NamedPipe;
+using ACAT.Core.Utility;
+using ACAT.Core.Utility.NamedPipe;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -1313,7 +1313,6 @@ namespace ACAT.Applications.ACATWatch
             IntPtr fg = User32Interop.GetForegroundWindow();
             Log.Debug("Fg window handle: " + fg.ToInt32());
 
-
             User32Interop.GetWindowThreadProcessId(User32Interop.GetForegroundWindow(), out uint h);
 
             Log.Debug("Process id of fgwindow: " + h);
@@ -1449,7 +1448,7 @@ namespace ACAT.Applications.ACATWatch
             }
             catch (Exception ex)
             {
-                Log.Debug("Failed to start pipe server " + ex.ToString());
+                Log.Exception("Failed to start pipe server " + ex.ToString());
             }
         }
 
@@ -1491,7 +1490,7 @@ namespace ACAT.Applications.ACATWatch
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.Message);
+                Log.Exception(ex.Message);
             }
         }
     }

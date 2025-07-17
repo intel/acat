@@ -1,5 +1,5 @@
 ﻿
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     partial class ConfirmBoxLargeSingleOption
     {
@@ -31,7 +31,7 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             this.labelPrompt = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonDecision = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonDecision = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.checkBoxDontShowThisMessage = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();

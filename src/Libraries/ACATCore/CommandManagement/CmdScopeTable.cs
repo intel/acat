@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace ACAT.Lib.Core.CommandManagement
+namespace ACAT.Core.CommandManagement
 {
     /// <summary>
     /// Represents a presistent collection of commands

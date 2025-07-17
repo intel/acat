@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.CommandManagement
+namespace ACAT.Core.CommandManagement
 {
     /// <summary>
     /// Defines the scope of a command, i.e. where is the

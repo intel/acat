@@ -296,6 +296,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Board Error.
+        /// </summary>
+        public static string BoardError {
+            get {
+                return ResourceManager.GetString("BoardError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Box.
         /// </summary>
         public static string Box {
@@ -859,6 +868,15 @@ namespace ACATResources {
         public static string DeleteFile {
             get {
                 return ResourceManager.GetString("DeleteFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Device Selection.
+        /// </summary>
+        public static string DeviceSelection {
+            get {
+                return ResourceManager.GetString("DeviceSelection", resourceCulture);
             }
         }
         
@@ -1812,6 +1830,15 @@ namespace ACATResources {
         public static string InitializeComponent_WelcomeTo {
             get {
                 return ResourceManager.GetString("InitializeComponent_WelcomeTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initializing.
+        /// </summary>
+        public static string Initializing {
+            get {
+                return ResourceManager.GetString("Initializing", resourceCulture);
             }
         }
         
@@ -3034,6 +3061,24 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please refer to the user guide for help.
+        /// </summary>
+        public static string Pleaserefertotheuserguideforhelp {
+            get {
+                return ResourceManager.GetString("Pleaserefertotheuserguideforhelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please Select BCI Headset.
+        /// </summary>
+        public static string PleaseSelectBCIHeadset {
+            get {
+                return ResourceManager.GetString("PleaseSelectBCIHeadset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select your language.
         /// </summary>
         public static string PleaseSelectYourLanguage {
@@ -3263,6 +3308,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Retry.
+        /// </summary>
+        public static string Retry {
+            get {
+                return ResourceManager.GetString("Retry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rewind.
         /// </summary>
         public static string Rewind {
@@ -3286,6 +3340,15 @@ namespace ACATResources {
         public static string RightClick {
             get {
                 return ResourceManager.GetString("RightClick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Row for error visualization.
+        /// </summary>
+        public static string Rowforerrorvisualization {
+            get {
+                return ResourceManager.GetString("Rowforerrorvisualization", resourceCulture);
             }
         }
         
@@ -3700,6 +3763,15 @@ namespace ACATResources {
         public static string SignalCheck {
             get {
                 return ResourceManager.GetString("SignalCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Signal Quality Checks Failed or Incomplete.
+        /// </summary>
+        public static string SignalQualityChecksFailed {
+            get {
+                return ResourceManager.GetString("SignalQualityChecksFailed", resourceCulture);
             }
         }
         
@@ -4132,6 +4204,15 @@ namespace ACATResources {
         public static string Thisisapromptforthemessagebox {
             get {
                 return ResourceManager.GetString("Thisisapromptforthemessagebox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This may take a few minutes..
+        /// </summary>
+        public static string Thismaytakeafewminutes {
+            get {
+                return ResourceManager.GetString("Thismaytakeafewminutes", resourceCulture);
             }
         }
         
@@ -4699,6 +4780,15 @@ namespace ACATResources {
         public static string YouAreChangingExistingAbbr {
             get {
                 return ResourceManager.GetString("YouAreChangingExistingAbbr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You need to complete both “Railing” and.
+        /// </summary>
+        public static string Youneedtocompleteboth {
+            get {
+                return ResourceManager.GetString("Youneedtocompleteboth", resourceCulture);
             }
         }
         

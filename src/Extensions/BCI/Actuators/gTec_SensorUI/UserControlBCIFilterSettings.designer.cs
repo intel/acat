@@ -9,6 +9,7 @@
 // User control which prompts the user for input to select the best filter setting
 //
 ////////////////////////////////////////////////////////////////////////////
+using ACAT.Core.WidgetManagement;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
@@ -96,7 +97,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.label20 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.tableLayoutPanelSpacerBottom = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonNext_userControlPromptBCIFIlterSettings = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonNext_userControlPromptBCIFIlterSettings = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.checkBoxDontShowStartup = new System.Windows.Forms.CheckBox();
             this.label22 = new System.Windows.Forms.Label();
             this.tableLayoutPanelMain.SuspendLayout();
@@ -141,10 +142,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4.031852F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.690615F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4.031852F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1022, 766);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1024, 768);
             this.tableLayoutPanelMain.TabIndex = 9;
             // 
-            // buttonExit_userControlBCIErrorgTecBoard
+            // buttonExit_userControlPromptBCIFIlterSettings
             // 
             this.buttonExit_userControlPromptBCIFIlterSettings.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.buttonExit_userControlPromptBCIFIlterSettings.AutoSize = true;
@@ -155,10 +156,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.buttonExit_userControlPromptBCIFIlterSettings.Font = new System.Drawing.Font("Montserrat Thin", 36F, System.Drawing.FontStyle.Underline);
             this.buttonExit_userControlPromptBCIFIlterSettings.ForeColor = System.Drawing.Color.Silver;
             this.buttonExit_userControlPromptBCIFIlterSettings.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.buttonExit_userControlPromptBCIFIlterSettings.Location = new System.Drawing.Point(140, 670);
+            this.buttonExit_userControlPromptBCIFIlterSettings.Location = new System.Drawing.Point(141, 670);
             this.buttonExit_userControlPromptBCIFIlterSettings.Margin = new System.Windows.Forms.Padding(0);
-            this.buttonExit_userControlPromptBCIFIlterSettings.Name = "buttonExit_userControlBCIErrorgTecBoard";
-            this.buttonExit_userControlPromptBCIFIlterSettings.Size = new System.Drawing.Size(155, 58);
+            this.buttonExit_userControlPromptBCIFIlterSettings.Name = "buttonExit_userControlPromptBCIFIlterSettings";
+            this.buttonExit_userControlPromptBCIFIlterSettings.Size = new System.Drawing.Size(155, 59);
             this.buttonExit_userControlPromptBCIFIlterSettings.TabIndex = 84;
             this.buttonExit_userControlPromptBCIFIlterSettings.Text = "Exit";
             this.buttonExit_userControlPromptBCIFIlterSettings.UseCompatibleTextRendering = true;
@@ -170,7 +171,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelSpacerTop.ColumnCount = 1;
             this.tableLayoutPanelMain.SetColumnSpan(this.tableLayoutPanelSpacerTop, 3);
             this.tableLayoutPanelSpacerTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelSpacerTop.Location = new System.Drawing.Point(140, 0);
+            this.tableLayoutPanelSpacerTop.Location = new System.Drawing.Point(141, 0);
             this.tableLayoutPanelSpacerTop.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanelSpacerTop.Name = "tableLayoutPanelSpacerTop";
             this.tableLayoutPanelSpacerTop.RowCount = 1;
@@ -186,7 +187,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelMain.SetColumnSpan(this.labelTitle, 3);
             this.labelTitle.Font = new System.Drawing.Font("Montserrat", 44F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTitle.ForeColor = System.Drawing.Color.White;
-            this.labelTitle.Location = new System.Drawing.Point(312, 30);
+            this.labelTitle.Location = new System.Drawing.Point(314, 30);
             this.labelTitle.Margin = new System.Windows.Forms.Padding(0);
             this.labelTitle.Name = "labelTitle";
             this.labelTitle.Size = new System.Drawing.Size(394, 65);
@@ -206,7 +207,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.checkBoxConfirm60HzCountry.FlatAppearance.BorderSize = 0;
             this.checkBoxConfirm60HzCountry.Font = new System.Drawing.Font("Montserrat", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxConfirm60HzCountry.ForeColor = System.Drawing.Color.White;
-            this.checkBoxConfirm60HzCountry.Location = new System.Drawing.Point(229, 219);
+            this.checkBoxConfirm60HzCountry.Location = new System.Drawing.Point(231, 219);
             this.checkBoxConfirm60HzCountry.Margin = new System.Windows.Forms.Padding(0);
             this.checkBoxConfirm60HzCountry.Name = "checkBoxConfirm60HzCountry";
             this.checkBoxConfirm60HzCountry.Size = new System.Drawing.Size(560, 30);
@@ -275,7 +276,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanel60HzCountries.Font = new System.Drawing.Font("Montserrat Medium", 19F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tableLayoutPanel60HzCountries.ForeColor = System.Drawing.Color.White;
             this.tableLayoutPanel60HzCountries.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.AddColumns;
-            this.tableLayoutPanel60HzCountries.Location = new System.Drawing.Point(140, 282);
+            this.tableLayoutPanel60HzCountries.Location = new System.Drawing.Point(141, 282);
             this.tableLayoutPanel60HzCountries.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel60HzCountries.Name = "tableLayoutPanel60HzCountries";
             this.tableLayoutPanel60HzCountries.RowCount = 16;
@@ -765,12 +766,12 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelMain.SetColumnSpan(this.tableLayoutPanelSpacerBottom, 3);
             this.tableLayoutPanelSpacerBottom.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelSpacerBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanelSpacerBottom.Location = new System.Drawing.Point(140, 729);
+            this.tableLayoutPanelSpacerBottom.Location = new System.Drawing.Point(141, 731);
             this.tableLayoutPanelSpacerBottom.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanelSpacerBottom.Name = "tableLayoutPanelSpacerBottom";
             this.tableLayoutPanelSpacerBottom.RowCount = 1;
             this.tableLayoutPanelSpacerBottom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelSpacerBottom.Size = new System.Drawing.Size(739, 37);
+            this.tableLayoutPanelSpacerBottom.Size = new System.Drawing.Size(740, 37);
             this.tableLayoutPanelSpacerBottom.TabIndex = 74;
             // 
             // buttonNext_userControlPromptBCIFIlterSettings
@@ -786,7 +787,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.buttonNext_userControlPromptBCIFIlterSettings.BorderWidth = 2F;
             this.buttonNext_userControlPromptBCIFIlterSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonNext_userControlPromptBCIFIlterSettings.Font = new System.Drawing.Font("Montserrat Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonNext_userControlPromptBCIFIlterSettings.Location = new System.Drawing.Point(761, 670);
+            this.buttonNext_userControlPromptBCIFIlterSettings.Location = new System.Drawing.Point(763, 670);
             this.buttonNext_userControlPromptBCIFIlterSettings.Margin = new System.Windows.Forms.Padding(0);
             this.buttonNext_userControlPromptBCIFIlterSettings.Name = "buttonNext_userControlPromptBCIFIlterSettings";
             this.buttonNext_userControlPromptBCIFIlterSettings.Size = new System.Drawing.Size(118, 55);
@@ -807,10 +808,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.checkBoxDontShowStartup.Font = new System.Drawing.Font("Montserrat", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxDontShowStartup.ForeColor = System.Drawing.Color.White;
             this.checkBoxDontShowStartup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.checkBoxDontShowStartup.Location = new System.Drawing.Point(429, 670);
+            this.checkBoxDontShowStartup.Location = new System.Drawing.Point(430, 670);
             this.checkBoxDontShowStartup.Margin = new System.Windows.Forms.Padding(0);
             this.checkBoxDontShowStartup.Name = "checkBoxDontShowStartup";
-            this.checkBoxDontShowStartup.Size = new System.Drawing.Size(224, 58);
+            this.checkBoxDontShowStartup.Size = new System.Drawing.Size(224, 59);
             this.checkBoxDontShowStartup.TabIndex = 85;
             this.checkBoxDontShowStartup.Text = "Don\'t show this on startup";
             this.checkBoxDontShowStartup.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
@@ -825,10 +826,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.label22.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label22.Font = new System.Drawing.Font("Montserrat Medium", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label22.ForeColor = System.Drawing.Color.White;
-            this.label22.Location = new System.Drawing.Point(143, 95);
+            this.label22.Location = new System.Drawing.Point(144, 95);
             this.label22.Name = "label22";
             this.tableLayoutPanelMain.SetRowSpan(this.label22, 4);
-            this.label22.Size = new System.Drawing.Size(733, 124);
+            this.label22.Size = new System.Drawing.Size(734, 124);
             this.label22.TabIndex = 87;
             this.label22.Text = "Powerlines produce electromagnetic interference at 50Hz or 60Hz.\r\nWe need to opti" +
     "mize for your region\'s powerline settings";
@@ -838,11 +839,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.tableLayoutPanelMain);
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "UserControlBCIFilterSettings";
-            this.Size = new System.Drawing.Size(1022, 766);
+            this.Size = new System.Drawing.Size(1024, 768);
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.tableLayoutPanelMain.PerformLayout();
             this.tableLayoutPanel60HzCountries.ResumeLayout(false);
@@ -862,7 +862,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public System.Windows.Forms.CheckBox checkBoxConfirm60HzCountry;
         public System.Windows.Forms.Button buttonExit_userControlPromptBCIFIlterSettings;
         public System.Windows.Forms.CheckBox checkBoxDontShowStartup;
-        public Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonNext_userControlPromptBCIFIlterSettings;
+        public ScannerRoundedButtonControl buttonNext_userControlPromptBCIFIlterSettings;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;

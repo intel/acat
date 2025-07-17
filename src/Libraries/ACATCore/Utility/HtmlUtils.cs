@@ -13,7 +13,7 @@ using System.IO;
 using System.Text;
 using System.Web;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     public class HtmlUtils
     {
@@ -115,10 +115,8 @@ namespace ACAT.Lib.Core.Utility
                 string tempFilePathLogs = Path.Combine(FileUtils.GetLogsDir(), "TempFile.html");
                 try
                 {
-                    using (StreamWriter writer = new StreamWriter(tempFilePathLogs))
-                    {
-                        writer.Write(htmlContent);
-                    }
+                    using StreamWriter writer = new StreamWriter(tempFilePathLogs);
+                    writer.Write(htmlContent);
                 }
                 catch (Exception exp)
                 {
@@ -168,7 +166,7 @@ namespace ACAT.Lib.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug("Error loading HTML script: " + ex.Message);
+                Log.Exception("Error loading HTML script: " + ex.Message);
             }
         }
 
@@ -208,7 +206,6 @@ namespace ACAT.Lib.Core.Utility
 
         public static object DecodeHtml(string desc)
         {
-            //throw new NotImplementedException();
             return HttpUtility.HtmlDecode(desc);
         }
     }

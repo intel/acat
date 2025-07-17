@@ -8,7 +8,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -16,7 +16,7 @@ using System.Windows.Forms;
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
 
-    [Descriptor("3BC92A59-0B89-475D-8E2E-636CA9482740",
+    [ClassDescriptor("3BC92A59-0B89-475D-8E2E-636CA9482740",
             "CustomToolTip",
             "Application window used to display a Custom Tooltip")]
     public partial class CustomToolTip : Form

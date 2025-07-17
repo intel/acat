@@ -10,7 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Audit;
+using ACAT.Core.Audit;
 using System;
 
 namespace ACAT.Extensions.BCI.Common.BCIControl

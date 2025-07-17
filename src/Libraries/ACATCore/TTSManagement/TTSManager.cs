@@ -5,17 +5,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.TTSManagement
+namespace ACAT.Core.TTSManagement
 {
     /// <summary>
     /// Manages text to speech (TTS) engines.  There are a variety
@@ -36,7 +36,7 @@ namespace ACAT.Lib.Core.TTSManagement
         /// <summary>
         /// The root directory where all the TTS engines are located.
         /// </summary>
-        public static String TTSRootDir = "TTSEngines";
+        public static String TTSRootDir = "";
 
         /// <summary>
         /// Upper bound for the volume
@@ -282,10 +282,7 @@ namespace ACAT.Lib.Core.TTSManagement
         /// <returns>true on success</returns>
         public bool SetActiveEngine(CultureInfo ci = null)
         {
-            if (ci == null)
-            {
-                ci = CultureInfo.DefaultThreadCurrentUICulture;
-            }
+            ci ??= CultureInfo.DefaultThreadCurrentUICulture;
 
             Guid guid = _ttsEngines.GetPreferredOrDefaultByCulture(ci);
             Guid cultureNeutralGuid = _ttsEngines.GetPreferredOrDefaultByCulture(null);
@@ -378,7 +375,7 @@ namespace ACAT.Lib.Core.TTSManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -427,7 +424,7 @@ namespace ACAT.Lib.Core.TTSManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Unable to load TTS Engine" + type + ", assembly: " + type.Assembly.FullName + ". Exception: " + ex);
+                Log.Exception("Unable to load TTS Engine" + type + ", assembly: " + type.Assembly.FullName + ". Exception: " + ex);
                 retVal = false;
             }
 

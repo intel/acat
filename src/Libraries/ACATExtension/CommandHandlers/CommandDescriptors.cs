@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.CommandManagement;
+using ACAT.Core.CommandManagement;
 
 namespace ACATExtension.CommandHandlers
 {

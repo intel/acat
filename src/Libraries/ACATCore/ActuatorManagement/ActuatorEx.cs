@@ -16,13 +16,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// This is a wrapper class for the Actuator.  It has helper functions
@@ -124,7 +124,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="enableConfigure">should the config button be enabled</param>
         public void OnEndCalibration(String errorMessage = "", bool enableConfigure = true)
         {
-            Log.Debug();
+            Log.Verbose();
 
             if (!String.IsNullOrEmpty((errorMessage)))
             {
@@ -318,7 +318,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="e">event args</param>
         private void bgWorker_RunCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Log.Debug();
+            Log.Verbose();
             _bgTaskDoneEvent.Set();
         }
 

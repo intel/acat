@@ -13,7 +13,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// Interop methods into Windows HID and USB functions
@@ -89,7 +89,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         public IntPtr DuplicateHandle(IntPtr sourceHandle)
         {
-
             IntPtr currentProcess = DllImports.GetCurrentProcess();
             bool result = DllImports.DuplicateHandle(
                                     currentProcess,

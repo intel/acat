@@ -5,13 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Manages dual monitor configurations
@@ -38,7 +37,7 @@ namespace ACAT.Lib.Core.Utility
                     };
                     User32Interop.EnumDisplaySettings(screen.DeviceName, -1, ref dm);
 
-                    var dpiScaling = (uint) Math.Round(DpiScaling.ScaleFactor(null, new Point(0, 0)), 0);
+                    var dpiScaling = (uint)Math.Round(DpiScaling.ScaleFactor(null, new Point(0, 0)), 0);
                     return new Tuple<int, uint>(dm.dmPelsWidth, dpiScaling);
                 }
             }

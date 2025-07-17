@@ -11,8 +11,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -178,6 +178,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             FormClosing += Handle_FormCLosing;
 
+            updateOnboardingStatus(OnboardingUserState.Testing_BCIConnections, null);
+
         }
 
         /// <summary>
@@ -337,7 +339,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         /// <returns></returns>
         /// Run only once per new set of state changes receieved
-        public async Task TaskStartStopDataProcessing(OnboardingUserState state)
+        public void TaskStartStopDataProcessing(OnboardingUserState state)
         {
             // Start task which processes data for signal status checks
             if (state == OnboardingUserState.BCISignalCheck)
@@ -394,7 +396,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("startStopProcessDataTimer | Exception: " + e.ToString());
+                    Log.Exception("startStopProcessDataTimer | Exception: " + e.ToString());
                 }
             }
             else
@@ -411,7 +413,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("startStopProcessDataTimer | Exception: " + e.ToString());
+                    Log.Exception("startStopProcessDataTimer | Exception: " + e.ToString());
                 }
             }
 
@@ -437,7 +439,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             if (_gTecBCI.deviceInitialized)
             {
                 // Obtain sensor data stored in buffers and pass to signal check user control
-                double[,] data = _gTecBCI.GetData();
+                double[,] data = _gTecBCI.GetData(false);
 
                 if (data != null && data.Length > 0 && data.GetLength(1) > 0)
                 {

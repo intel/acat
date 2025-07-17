@@ -18,68 +18,63 @@
         <WidgetAttribute name="B6" label="v" value="@CmdNextPage" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
 
         <WidgetAttribute name="B7" label="q" value="@CmdPrevWord" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
-        <WidgetAttribute name="B8" label="r" value="@CmdNextWord" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;"  />
+        <WidgetAttribute name="B8" label="r" value="@CmdNextWord" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
         <WidgetAttribute name="B9" label="t" value="@CmdPrevSentence" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
         <WidgetAttribute name="B10" label="s" value="@CmdNextSentence" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
         <WidgetAttribute name="B11" label="p" value="@CmdPrevPara" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
         <WidgetAttribute name="B12" label="o" value="@CmdNextPara" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
-        
+
         <WidgetAttribute name="B13" label="w" value="@Back" virtualkey="true" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
         <WidgetAttribute name="B14" label="x" value="@CmdDeleteNextChar" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
-        <WidgetAttribute name="B15" label="y" value="@CmdDelPrevWord" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;"  />
-        <WidgetAttribute name="B16" label="z" value="@CmdDelNextWord" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;"/>
+        <WidgetAttribute name="B15" label="y" value="@CmdDelPrevWord" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
+        <WidgetAttribute name="B16" label="z" value="@CmdDelNextWord" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
         <WidgetAttribute name="B17" label="A" value="@CmdDelPrevSentence" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
         <WidgetAttribute name="B18" label="B" value="@CmdDelNextSentence" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
-        
-        <WidgetAttribute name="B19" label="Home" value="@CmdHome" fontname="&characterButtonBlackFontName;" italic="true" fontsize="&characterButtonFontSize;"  bold="false"  />
-        <WidgetAttribute name="B20" label="End" value="@CmdEnd" fontname="&characterButtonBlackFontName;" italic="true" fontsize="&characterButtonFontSize;"  bold="false"  />
-        <WidgetAttribute name="B21" label="k" value="@CmdUndoLastEditChange" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="&usebold;"  />
+
+        <WidgetAttribute name="B19" label="Home" value="@CmdHome" fontname="&characterButtonBlackFontName;" italic="true" fontsize="&characterButtonFontSize;"  bold="false" />
+        <WidgetAttribute name="B20" label="End" value="@CmdEnd" fontname="&characterButtonBlackFontName;" italic="true" fontsize="&characterButtonFontSize;"  bold="false" />
+        <WidgetAttribute name="B21" label="k" value="@CmdUndoLastEditChange" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="&usebold;" />
         <WidgetAttribute name="B22" label="E" value="@CmdTopOfDoc" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
         <WidgetAttribute name="B23" label="D" value="@CmdEndOfDoc" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
-		<WidgetAttribute name="B24" label="Back" value="@CmdGoBack" fontname="&characterButtonBlackFontName;" italic="true" fontsize="&characterButtonFontSize;"  bold="false"  />
-		
-		
-
+		<WidgetAttribute name="B24" label="Back" value="@CmdGoBack" fontname="&characterButtonBlackFontName;" italic="true" fontsize="&characterButtonFontSize;"  bold="false" />
     </WidgetAttributes>
 
     <Layout>
         <Widget class="BoxWidget"  name="Keyboard">
             <Widget class="RowWidget" name="Row1">
-                <Widget class="ScannerButton" name="B1" colorScheme="ScannerButton"/>
-                <Widget class="ScannerButton" name="B2" colorScheme="ScannerButton"/>
-                <Widget class="ScannerButton" name="B3" colorScheme="ScannerButton"/>
-                <Widget class="ScannerButton" name="B4" colorScheme="ScannerButton"/>
-                <Widget class="ScannerButton" name="B5" colorScheme="ScannerButton"/>
-                <Widget class="ScannerButton" name="B6" colorScheme="ScannerButton"/>
+                <Widget class="ScannerButton" name="B1" colorScheme="ScannerButton" />
+                <Widget class="ScannerButton" name="B2" colorScheme="ScannerButton" />
+                <Widget class="ScannerButton" name="B3" colorScheme="ScannerButton" />
+                <Widget class="ScannerButton" name="B4" colorScheme="ScannerButton" />
+                <Widget class="ScannerButton" name="B5" colorScheme="ScannerButton" />
+                <Widget class="ScannerButton" name="B6" colorScheme="ScannerButton" />
             </Widget>
 
             <Widget class="RowWidget" name="Row2">
-                <Widget class="ScannerButton" name="B7" colorScheme="ScannerButton"/>
-                <Widget class="ScannerButton" name="B8" colorScheme="ScannerButton"/>
-                <Widget class="ScannerButton" name="B9" colorScheme="ScannerButton"/>
-                <Widget class="ScannerButton" name="B10" colorScheme="ScannerButton"/>
-                <Widget class="ScannerButton" name="B11"/>
-                <Widget class="ScannerButton" name="B12" colorScheme="ScannerButton"/>
-
+                <Widget class="ScannerButton" name="B7" colorScheme="ScannerButton" />
+                <Widget class="ScannerButton" name="B8" colorScheme="ScannerButton" />
+                <Widget class="ScannerButton" name="B9" colorScheme="ScannerButton" />
+                <Widget class="ScannerButton" name="B10" colorScheme="ScannerButton" />
+                <Widget class="ScannerButton" name="B11" />
+                <Widget class="ScannerButton" name="B12" colorScheme="ScannerButton" />
             </Widget>
 
             <Widget class="RowWidget" name="Row3">
-                <Widget class="ScannerButton" name="B13" colorScheme="ScannerButton"/>
-                <Widget class="ScannerButton" name="B14" colorScheme="ScannerButton"/>
-                <Widget class="ScannerButton" name="B15" colorScheme="ScannerButton"/>
-                <Widget class="ScannerButton" name="B16" colorScheme="ScannerButton"  enabled="contextual" defaultEnabled="true"/>
-                <Widget class="ScannerButton" name="B17" colorScheme="ScannerButton"  enabled="contextual" defaultEnabled="true"/>
-                <Widget class="ScannerButton" name="B18" colorScheme="ScannerButton"  enabled="contextual" defaultEnabled="true"/>
-
+                <Widget class="ScannerButton" name="B13" colorScheme="ScannerButton" />
+                <Widget class="ScannerButton" name="B14" colorScheme="ScannerButton" />
+                <Widget class="ScannerButton" name="B15" colorScheme="ScannerButton" />
+                <Widget class="ScannerButton" name="B16" colorScheme="ScannerButton"  enabled="contextual" defaultEnabled="true" />
+                <Widget class="ScannerButton" name="B17" colorScheme="ScannerButton"  enabled="contextual" defaultEnabled="true" />
+                <Widget class="ScannerButton" name="B18" colorScheme="ScannerButton"  enabled="contextual" defaultEnabled="true" />
             </Widget>
 
             <Widget class="RowWidget" name="Row4">
-                <Widget class="ScannerButton" name="B19" colorScheme="ScannerButton"/>
-                <Widget class="ScannerButton" name="B20" colorScheme="ScannerButton"/>
-                <Widget class="ScannerButton" name="B21" colorScheme="ScannerButton" enabled="contextual" defaultEnabled="true"/>
-                <Widget class="ScannerButton" name="B22" colorScheme="ScannerButton"/>
-                <Widget class="ScannerButton" name="B23" colorScheme="ScannerButton"/>
-                <Widget class="ScannerButton" name="B24" colorScheme="ScannerButton"/>
+                <Widget class="ScannerButton" name="B19" colorScheme="ScannerButton" />
+                <Widget class="ScannerButton" name="B20" colorScheme="ScannerButton" />
+                <Widget class="ScannerButton" name="B21" colorScheme="ScannerButton" enabled="contextual" defaultEnabled="true" />
+                <Widget class="ScannerButton" name="B22" colorScheme="ScannerButton" />
+                <Widget class="ScannerButton" name="B23" colorScheme="ScannerButton" />
+                <Widget class="ScannerButton" name="B24" colorScheme="ScannerButton" />
             </Widget>
         </Widget>
     </Layout>
@@ -88,17 +83,17 @@
         <Animation name="TopLevelRotation"
                  start="true"
                  iterations="1">
-            <Widget name="Keyboard" onSelect="transition(RowRotation)"/>
+            <Widget name="Keyboard" onSelect="transition(RowRotation)" />
         </Animation>
 
         <Animation name="RowRotation"
                    iterations="@RowScanIterations"
                    firstPauseTime="@FirstPauseTime"
                    onEnd="transition(TopLevelRotation)">
-            <Widget name="Row1" onSelect="transition(ButtonRotationRow1)"/>
-            <Widget name="Row2" onSelect="transition(ButtonRotationRow2)"/>
-            <Widget name="Row3" onSelect="transition(ButtonRotationRow3)"/>
-            <Widget name="Row4" onSelect="transition(ButtonRotationRow4)"/>
+            <Widget name="Row1" onSelect="transition(ButtonRotationRow1)" />
+            <Widget name="Row2" onSelect="transition(ButtonRotationRow2)" />
+            <Widget name="Row3" onSelect="transition(ButtonRotationRow3)" />
+            <Widget name="Row4" onSelect="transition(ButtonRotationRow4)" />
         </Animation>
 
         <Animation name="ButtonRotationRow1"
@@ -106,26 +101,25 @@
                           onEnd="transition(TopLevelRotation)"
                           firstPauseTime="@FirstPauseTime"
                           onSelect="actuate(@SelectedWidget); transition(ButtonPressed)">
-            <Widget name="B1"/>
-            <Widget name="B2"/>
-            <Widget name="B3"/>
-            <Widget name="B4"/>
-            <Widget name="B5"/>
-            <Widget name="B6"/>
+            <Widget name="B1" />
+            <Widget name="B2" />
+            <Widget name="B3" />
+            <Widget name="B4" />
+            <Widget name="B5" />
+            <Widget name="B6" />
         </Animation>
-        
+
         <Animation name="ButtonRotationRow2"
                       iterations="@ColumnScanIterations"
                       onEnd="transition(TopLevelRotation)"
                       firstPauseTime="@FirstPauseTime"
                       onSelect="actuate(@SelectedWidget); transition(ButtonPressed)">
-            <Widget name="B7"/>
-            <Widget name="B8"/>
-            <Widget name="B9"/>
-            <Widget name="B10"/>
-            <Widget name="B11"/>
-            <Widget name="B12"/>
-
+            <Widget name="B7" />
+            <Widget name="B8" />
+            <Widget name="B9" />
+            <Widget name="B10" />
+            <Widget name="B11" />
+            <Widget name="B12" />
         </Animation>
 
         <Animation name="ButtonRotationRow3"
@@ -133,13 +127,12 @@
                       onEnd="transition(TopLevelRotation)"
                       firstPauseTime="@FirstPauseTime"
                       onSelect="actuate(@SelectedWidget); transition(ButtonPressed)">
-            <Widget name="B13"/>
-            <Widget name="B14"/>
-            <Widget name="B15"/>
-            <Widget name="B16"/>
-            <Widget name="B17" onSelect="actuate(@SelectedWidget); transition(TopLevelRotation)"/>
-            <Widget name="B18" onSelect="actuate(@SelectedWidget); transition(TopLevelRotation)"/>
-
+            <Widget name="B13" />
+            <Widget name="B14" />
+            <Widget name="B15" />
+            <Widget name="B16" />
+            <Widget name="B17" onSelect="actuate(@SelectedWidget); transition(TopLevelRotation)" />
+            <Widget name="B18" onSelect="actuate(@SelectedWidget); transition(TopLevelRotation)" />
         </Animation>
 
         <Animation name="ButtonRotationRow4"
@@ -147,12 +140,12 @@
                       onEnd="transition(TopLevelRotation)"
                       firstPauseTime="@FirstPauseTime"
                       onSelect="actuate(@SelectedWidget); transition(TopLevelRotation)">
-            <Widget name="B19"/>
-            <Widget name="B20"/>
-            <Widget name="B21"/>
-            <Widget name="B22"/>
-            <Widget name="B23"/>
-            <Widget name="B24"/>
+            <Widget name="B19" />
+            <Widget name="B20" />
+            <Widget name="B21" />
+            <Widget name="B22" />
+            <Widget name="B23" />
+            <Widget name="B24" />
         </Animation>
 
         <Animation name="ButtonPressed"
@@ -163,4 +156,3 @@
         </Animation>
     </Animations>
 </ACAT>
-

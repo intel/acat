@@ -1,4 +1,5 @@
 ﻿
+using ACAT.Core.WidgetManagement;
 namespace ACAT.Extensions.BCI.UI.UserControls
 {
     partial class MenuUserControlBCI
@@ -30,26 +31,26 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuUserControlBCI));
-            this.scannerTableLayout1 = new ACAT.Lib.Core.WidgetManagement.ScannerTableLayout();
-            this.scannerTableLayout5 = new ACAT.Lib.Core.WidgetManagement.ScannerTableLayout();
-            this.scannerTableLayout4 = new ACAT.Lib.Core.WidgetManagement.ScannerTableLayout();
-            this.scannerTableLayout3 = new ACAT.Lib.Core.WidgetManagement.ScannerTableLayout();
-            this.B1 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.B2 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.B3 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.B4 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.B5 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.PB1 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.PB2 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.PB3 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.PB4 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.PB5 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.B19 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.B20 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.scannerTableLayout2 = new ACAT.Lib.Core.WidgetManagement.ScannerTableLayout();
-            this.scannerTableLayout6 = new ACAT.Lib.Core.WidgetManagement.ScannerTableLayout();
-            this.PBMain1 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.B21 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
+            this.scannerTableLayout1 = new ACAT.Core.WidgetManagement.ScannerTableLayout();
+            this.scannerTableLayout5 = new ACAT.Core.WidgetManagement.ScannerTableLayout();
+            this.scannerTableLayout4 = new ACAT.Core.WidgetManagement.ScannerTableLayout();
+            this.scannerTableLayout3 = new ACAT.Core.WidgetManagement.ScannerTableLayout();
+            this.B1 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.B2 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.B3 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.B4 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.B5 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.PB1 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.PB2 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.PB3 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.PB4 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.PB5 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.B19 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.B20 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.scannerTableLayout2 = new ACAT.Core.WidgetManagement.ScannerTableLayout();
+            this.scannerTableLayout6 = new ACAT.Core.WidgetManagement.ScannerTableLayout();
+            this.PBMain1 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.B21 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
             this.scannerTableLayout1.SuspendLayout();
             this.scannerTableLayout3.SuspendLayout();
             this.scannerTableLayout6.SuspendLayout();
@@ -371,25 +372,25 @@ namespace ACAT.Extensions.BCI.UI.UserControls
 
         #endregion
 
-        private ACAT.Lib.Core.WidgetManagement.ScannerTableLayout scannerTableLayout1;
-        private ACAT.Lib.Core.WidgetManagement.ScannerTableLayout scannerTableLayout2;
-        private ACAT.Lib.Core.WidgetManagement.ScannerTableLayout scannerTableLayout5;
-        private ACAT.Lib.Core.WidgetManagement.ScannerTableLayout scannerTableLayout4;
-        private ACAT.Lib.Core.WidgetManagement.ScannerTableLayout scannerTableLayout3;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl B1;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl B2;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl B3;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl B4;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl B5;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl PB1;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl PB2;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl PB3;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl PB4;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl PB5;
-        private ACAT.Lib.Core.WidgetManagement.ScannerTableLayout scannerTableLayout6;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl PBMain1;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl B19;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl B20;
-        private Lib.Core.WidgetManagement.ScannerButtonControl B21;
+        private ACAT.Core.WidgetManagement.ScannerTableLayout scannerTableLayout1;
+        private ACAT.Core.WidgetManagement.ScannerTableLayout scannerTableLayout2;
+        private ACAT.Core.WidgetManagement.ScannerTableLayout scannerTableLayout5;
+        private ACAT.Core.WidgetManagement.ScannerTableLayout scannerTableLayout4;
+        private ACAT.Core.WidgetManagement.ScannerTableLayout scannerTableLayout3;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl B1;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl B2;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl B3;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl B4;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl B5;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl PB1;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl PB2;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl PB3;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl PB4;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl PB5;
+        private ACAT.Core.WidgetManagement.ScannerTableLayout scannerTableLayout6;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl PBMain1;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl B19;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl B20;
+        private ScannerButtonControl B21;
     }
 }

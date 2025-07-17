@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace ACAT.Lib.Core.WordPredictorManagement
+namespace ACAT.Core.WordPredictorManagement
 {
     /// <summary>
     /// Maintains a list of preferred word predictors

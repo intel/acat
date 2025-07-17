@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+
+<ACAT>
+  <WidgetAttributes />
+
+  <Layout>
+    <Widget class="WinControlWidget"  name="panelTopToolbar" />
+    <Widget class="WinControlWidget"  name="panelDashboardControls" />
+  </Layout>
+
+  <Animations />
+</ACAT>

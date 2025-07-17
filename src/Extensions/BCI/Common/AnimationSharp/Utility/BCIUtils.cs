@@ -6,7 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +36,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <param name="targetdecision">is target or decision</param>
         public string GetEntryLogStr(BCIModes bCIModes, BCIScanSections bCIScanSections, bool highlight, bool triggerbox, List<int> idButtons, int idRowColumn, bool targetdecision)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             string highlightstr = "ON,";
             string triggerboxstr = "ON,";
             try
@@ -94,7 +94,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception es)
             {
-                Log.Debug("Error no highlight log saved: " + es);
+                Log.Exception("Error no highlight log saved: " + es);
             }
             return sb.ToString();
         }
@@ -134,7 +134,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 {
                     _IDs = Enumerable.Range(0, _OriginalLengthOfArray).ToArray();
                 }
-                Random rand = new Random();
+                Random rand = new();
                 int randomIndex = rand.Next(0, _IDs.Length);
                 int randomValue = _IDs[randomIndex];
 

@@ -29,18 +29,18 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         /// </summary>
         private void InitializeComponent()
         {
-            this.SentencePredictionBox = new ACAT.Lib.Core.WidgetManagement.ScannerTableLayout();
-            this.SPLItem1 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.PB1 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.SPLItem2 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.PB2 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.SPLItem3 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.PB3 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.SPLItem4 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.PB4 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.SPLItem5 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.PB5 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
-            this.PBMain1 = new ACAT.Lib.Core.WidgetManagement.ScannerButtonControl();
+            this.SentencePredictionBox = new ACAT.Core.WidgetManagement.ScannerTableLayout();
+            this.SPLItem1 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.PB1 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.SPLItem2 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.PB2 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.SPLItem3 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.PB3 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.SPLItem4 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.PB4 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.SPLItem5 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.PB5 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
+            this.PBMain1 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
             this.SentencePredictionBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -214,17 +214,17 @@ namespace ACAT.Extensions.BCI.UI.UserControls
 
         #endregion
 
-        private ACAT.Lib.Core.WidgetManagement.ScannerTableLayout SentencePredictionBox;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl SPLItem1;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl PB1;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl SPLItem2;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl SPLItem3;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl SPLItem4;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl PB4;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl SPLItem5;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl PB5;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl PB2;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl PB3;
-        private ACAT.Lib.Core.WidgetManagement.ScannerButtonControl PBMain1;
+        private ACAT.Core.WidgetManagement.ScannerTableLayout SentencePredictionBox;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl SPLItem1;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl PB1;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl SPLItem2;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl SPLItem3;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl SPLItem4;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl PB4;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl SPLItem5;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl PB5;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl PB2;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl PB3;
+        private ACAT.Core.WidgetManagement.ScannerButtonControl PBMain1;
     }
 }

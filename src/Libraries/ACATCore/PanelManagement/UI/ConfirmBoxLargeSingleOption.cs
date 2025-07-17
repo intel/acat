@@ -5,14 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Properties;
+using ACATResources;
 using System;
 using System.Drawing;
-using System.Globalization;
 using System.Windows.Forms;
-using ACATResources;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// A single button message box with an optional checkbox for
@@ -25,6 +23,7 @@ namespace ACAT.Lib.Core.PanelManagement
             InitializeComponent();
             Load += ConfirmBox_Load;
         }
+
         public int LabelFont { get; set; }
         public bool CheckBoxChecked { get; set; }
 

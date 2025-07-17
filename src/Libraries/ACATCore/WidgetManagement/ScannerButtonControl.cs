@@ -8,7 +8,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
     /// <summary>
     /// Usercontrol that represents a button widget.
@@ -25,6 +25,11 @@ namespace ACAT.Lib.Core.WidgetManagement
             UseMnemonic = false;
 
             this.EnabledChanged += ScannerButtonControl_EnabledChanged;
+        }
+
+        public ScannerButtonControl(string name) : this()
+        {
+            Name = name;
         }
 
         private void ScannerButtonControl_EnabledChanged(object sender, System.EventArgs e)

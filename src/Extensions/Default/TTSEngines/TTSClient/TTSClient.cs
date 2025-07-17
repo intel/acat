@@ -11,25 +11,25 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.TTSManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.TTSManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace ACAT.Extensions.Default.TTSEngines.TTSClient
+namespace ACAT.Extensions.TTSEngines.TTSClient
 {
     /// <summary>
     /// Converts text to speech by sending the text string to a TTS server using
     /// the supported protocols
     /// </summary>
     ///
-    [Descriptor("33A07974-72A5-4147-A8EA-7B001520C175",
+    [ClassDescriptor("33A07974-72A5-4147-A8EA-7B001520C175",
                         "TTS Client",
                         "Text to Speech client that sends the text to be converted to a server using the supported protocols")]
     public class TTSClient : ExtensionInvoker, ITTSEngine, ISupportsPreferences
@@ -153,10 +153,12 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
+
+        public Guid Id => Descriptor.Id;
 
         /// <summary>
         /// Returns the current status of the speech engine, whether
@@ -420,7 +422,7 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
             }
             catch (Exception ex)
             {
-                Log.Debug("exception caught! ex=" + ex.Message);
+                Log.Exception("Exception caught! ex=" + ex.Message);
             }
 
             return true;
@@ -448,7 +450,7 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 
@@ -481,7 +483,7 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
             }
             catch (Exception ex)
             {
-                Log.Debug("exception caught! ex=" + ex.Message);
+                Log.Exception("Exception caught! ex=" + ex.Message);
             }
 
             return true;
@@ -515,7 +517,7 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 
@@ -567,7 +569,7 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -621,7 +623,7 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
             }
             catch (Exception ex)
             {
-                Log.Debug("Could not create temp directory for TTSClient. " + ex);
+                Log.Exception("Could not create temp directory for TTSClient. " + ex);
                 path = ".\\";
             }
 
@@ -806,7 +808,7 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
             }
             catch (Exception ex)
             {
-                Log.Debug("Error writing to temp file " + fileName + ". Exception: " + ex);
+                Log.Exception("Error writing to temp file " + fileName + ". Exception: " + ex);
                 return false;
             }
 

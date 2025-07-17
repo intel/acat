@@ -13,7 +13,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.AbbreviationsManagement
+namespace ACAT.Core.AbbreviationsManagement
 {
     public class AbbreviationTTSEventArgs : EventArgs
     {

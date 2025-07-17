@@ -12,7 +12,7 @@
 
 using ACAT.Extensions.BCI.Common.AnimationSharp;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -20,7 +20,7 @@ using System.Windows.Forms;
 namespace ACAT.Extensions.BCI.UI.UserControls
 {
 
-    [Descriptor("UC7A983F-7FDE-4811-AFED-8B8D18617E02",
+    [ClassDescriptorAttribute("UC7A983F-7FDE-4811-AFED-8B8D18617E02",
                     "TalkApplicationScannerLayout",
                     "Talk application window with, added features")]
 

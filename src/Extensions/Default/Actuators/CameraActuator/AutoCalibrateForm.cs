@@ -11,19 +11,20 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.Actuators.CameraActuator
+namespace ACAT.Extensions.Actuators.CameraActuator
 {
     internal partial class AutoCalibrateForm : Form
     {
         private VideoWindowFinder _videoWindowFinder;
-        readonly CameraActuator _visionActuator;
+        private readonly CameraActuator _visionActuator;
         private WindowActiveWatchdog _windowActiveWatchdog;
         private WindowOverlapWatchdog _windowOverlapWatchdog;
+
         public AutoCalibrateForm(CameraActuator visionActuator)
         {
             InitializeComponent();
@@ -40,11 +41,9 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
                 _windowOverlapWatchdog = new WindowOverlapWatchdog(handle.ToInt32());
 
                 _videoWindowFinder.DockVideoWindow(this);
-
             }
             catch
             {
-
             }
         }
 
@@ -102,6 +101,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         {
             CameraSensor.visionCommand("action=RECALIBRATE", 0);
         }
+
         private void EndCalibration()
         {
             _visionActuator.EvtCalibrationEnd -= VisionActuator_EvtCalibrationEnd;

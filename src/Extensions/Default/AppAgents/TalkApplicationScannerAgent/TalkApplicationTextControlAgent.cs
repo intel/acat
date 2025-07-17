@@ -10,15 +10,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.AgentManagement.TextInterface;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.AgentManagement.TextInterface;
+using ACAT.Core.Utility;
 using System;
 using System.Text;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.AppAgents.TalkApplicationScannerAgent
+namespace ACAT.Extensions.AppAgents.TalkApplicationScannerAgent
 {
     internal class TalkApplicationTextControlAgent : EditTextControlAgent
     {

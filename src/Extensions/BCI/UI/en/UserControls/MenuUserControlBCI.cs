@@ -10,17 +10,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AnimationManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.UserControlManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.AnimationManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.UserControlManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System;
 using System.Windows.Forms;
 
 namespace ACAT.Extensions.BCI.UI.UserControls
 {
-    [Descriptor("4F0E7278-1495-4AF6-B609-E91A2421FCB0",
+    [ClassDescriptorAttribute("4F0E7278-1495-4AF6-B609-E91A2421FCB0",
         "KeyboardControl",
         "User Control keyboard Modes BCI")]
 
@@ -40,9 +40,9 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>

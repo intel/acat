@@ -12,12 +12,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
+using ACAT.Core.PanelManagement;
 using ACATResources;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// Displays a list of switches for an acutator to enable configure
@@ -125,8 +125,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="e">event args</param>
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-
-            if (!_isDirty || ConfirmBoxTwoOption.ShowDialog("Changes not saved. Quit anyway?", "",StringResources.Yes, StringResources.No))
+            if (!_isDirty || ConfirmBoxTwoOption.ShowDialog("Changes not saved. Quit anyway?", "", StringResources.Yes, StringResources.No))
             {
                 // MessageBox.Show("Changes not saved. Quit anyway?", Text);
                 // DialogResult = DialogResult.Cancel;

@@ -1,4 +1,4 @@
-﻿namespace ACAT.Lib.Core.PanelManagement
+﻿namespace ACAT.Core.PanelManagement
 {
     partial class HorizontalStripScannerBase
     {
@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.B1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B4 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B5 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B6 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B7 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B8 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B1 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B2 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B3 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B4 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B5 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B6 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B7 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B8 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 

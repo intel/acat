@@ -5,10 +5,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -16,7 +16,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.SpellCheckManagement
+namespace ACAT.Core.SpellCheckManagement
 {
     /// <summary>
     /// Manages SpellChecker engines.  The engines are essentially DLLs
@@ -32,7 +32,7 @@ namespace ACAT.Lib.Core.SpellCheckManagement
         /// <summary>
         /// Name of the folder under which the Word predictor DLLs are located
         /// </summary>
-        public static String SpellCheckersRootName = "SpellCheckers";
+        public static String SpellCheckersRootName = "";
 
         /// <summary>
         /// Word prediction manager instance
@@ -164,10 +164,7 @@ namespace ACAT.Lib.Core.SpellCheckManagement
         /// <returns>true on success</returns>
         public bool SetActiveSpellChecker(CultureInfo ci = null)
         {
-            if (ci == null)
-            {
-                ci = CultureInfo.DefaultThreadCurrentUICulture;
-            }
+            ci ??= CultureInfo.DefaultThreadCurrentUICulture;
 
             Guid guid = _spellCheckers.GetPreferredOrDefaultByCulture(ci);
             Guid cultureNeutralGuid = _spellCheckers.GetPreferredOrDefaultByCulture(null);
@@ -317,7 +314,7 @@ namespace ACAT.Lib.Core.SpellCheckManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -368,7 +365,7 @@ namespace ACAT.Lib.Core.SpellCheckManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Unable to load spellchecker " + type + ", assembly: " + type.Assembly.FullName + ". Exception: " + ex);
+                Log.Exception("Unable to load spellchecker " + type + ", assembly: " + type.Assembly.FullName + ". Exception: " + ex);
                 retVal = false;
             }
 

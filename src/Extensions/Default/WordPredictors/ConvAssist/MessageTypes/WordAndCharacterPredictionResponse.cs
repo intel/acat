@@ -12,7 +12,7 @@
 
 using System;
 
-namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
     [Serializable]
     internal class WordAndCharacterPredictionResponse
@@ -48,13 +48,14 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         public ConvAssistPredictionTypes PredictionType { get; set; }
 
         // Parameterless constructor for deserialization
-        public WordAndCharacterPredictionResponse() { }
+        public WordAndCharacterPredictionResponse()
+        { }
 
-        public WordAndCharacterPredictionResponse(ConvAssistMessageTypes msgType, 
-                                                    ConvAssistPredictionTypes predType, 
-                                                    String words, 
-                                                    String characters, 
-                                                    String charactersSentence, 
+        public WordAndCharacterPredictionResponse(ConvAssistMessageTypes msgType,
+                                                    ConvAssistPredictionTypes predType,
+                                                    String words,
+                                                    String characters,
+                                                    String charactersSentence,
                                                     String sentences)
         {
             MessageType = msgType;

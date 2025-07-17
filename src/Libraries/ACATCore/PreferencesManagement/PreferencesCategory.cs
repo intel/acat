@@ -7,17 +7,17 @@
 // PreferencesCategory.cs
 //
 // Represents a ACAT category for which preferences need
-// to be configured.  
+// to be configured.
 //
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
 
-namespace ACAT.Lib.Core.PreferencesManagement
+namespace ACAT.Core.PreferencesManagement
 {
     /// <summary>
     /// Represents a ACAT category for which preferences need
-    /// to be configured.  
+    /// to be configured.
     /// </summary>
     public class PreferencesCategory
     {
@@ -58,7 +58,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <summary>
         /// The object which needs to be configured.
         /// Example:  An application agent object,
-        /// 
+        ///
         /// </summary>
         public Object PreferenceObj { get; set; }
     }

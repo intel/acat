@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.SpellCheckManagement
+namespace ACAT.Core.SpellCheckManagement
 {
     /// <summary>
     /// Stores the mapping between a language

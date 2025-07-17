@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.UserManagement
+namespace ACAT.Core.UserManagement
 {
     /// <summary>
     /// Manages users.  The purpose for having "users" is to support apps
@@ -136,7 +136,7 @@ namespace ACAT.Lib.Core.UserManagement
             {
                 MessageBox.Show("Error creating dir. ex: " + ex);
 
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 

@@ -8,7 +8,7 @@
 using System;
 using System.Drawing;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Checks if the specified font or the Montserrat font has been installed
@@ -17,13 +17,11 @@ namespace ACAT.Lib.Core.Utility
     {
         public static bool IsFontInstalled(string fontName)
         {
-            using (var testFont = new Font(fontName, 8))
-            {
-                return 0 == string.Compare(
-                  fontName,
-                  testFont.Name,
-                  StringComparison.InvariantCultureIgnoreCase);
-            }
+            using var testFont = new Font(fontName, 8);
+            return 0 == string.Compare(
+              fontName,
+              testFont.Name,
+              StringComparison.InvariantCultureIgnoreCase);
         }
 
         public static bool IsMontserratFontInstalled()

@@ -21,19 +21,19 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// Colors and objects used by the UI
         /// </summary>
         /// 
-        public SharpDX.Mathematics.Interop.RawColor4 ColorActuateDecision = new SharpDX.Mathematics.Interop.RawColor4(0.5f, 0.5f, 1.0f, 1.0f);
+        public SharpDX.Mathematics.Interop.RawColor4 ColorActuateDecision = new(0.5f, 0.5f, 1.0f, 1.0f);
 
         public SharpDX.Mathematics.Interop.RawColor4 ColorBackground;
 
-        public SharpDX.Mathematics.Interop.RawColor4 ColorCorrectDecision = new SharpDX.Mathematics.Interop.RawColor4(0.0f, 1.0f, 0.0f, 1.0f);
+        public SharpDX.Mathematics.Interop.RawColor4 ColorCorrectDecision = new(0.0f, 1.0f, 0.0f, 1.0f);
 
-        public SharpDX.Mathematics.Interop.RawColor4 ColorDisabledButton = new SharpDX.Mathematics.Interop.RawColor4(0.35f, 0.35f, 0.35f, 1.0f);
+        public SharpDX.Mathematics.Interop.RawColor4 ColorDisabledButton = new(0.35f, 0.35f, 0.35f, 1.0f);
 
-        public SharpDX.Mathematics.Interop.RawColor4 ColorIncorrectDecision = new SharpDX.Mathematics.Interop.RawColor4(1.0f, 0.0f, 0.0f, 1.0f);
+        public SharpDX.Mathematics.Interop.RawColor4 ColorIncorrectDecision = new(1.0f, 0.0f, 0.0f, 1.0f);
 
-        public SharpDX.Mathematics.Interop.RawColor4 ColorTarget = new SharpDX.Mathematics.Interop.RawColor4(0.0f, 1.0f, 0.0f, 1.0f);
+        public SharpDX.Mathematics.Interop.RawColor4 ColorTarget = new(0.0f, 1.0f, 0.0f, 1.0f);
 
-        public SharpDX.Mathematics.Interop.RawColor4 ColorWhite = new SharpDX.Mathematics.Interop.RawColor4(1.0f, 1.0f, 1.0f, 1.0f);
+        public SharpDX.Mathematics.Interop.RawColor4 ColorWhite = new(1.0f, 1.0f, 1.0f, 1.0f);
 
         public SolidColorBrush SolidColorBrushButtonTextOff;
 

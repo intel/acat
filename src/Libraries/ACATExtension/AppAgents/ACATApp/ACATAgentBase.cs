@@ -5,13 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace ACAT.Lib.Extension.AppAgents.ACATApp
+namespace ACAT.Extension.AppAgents.ACATApp
 {
     /// <summary>
     /// The Application agent for the executing assembly.
@@ -54,7 +54,7 @@ namespace ACAT.Lib.Extension.AppAgents.ACATApp
         /// <param name="handled">set to true if handled</param>
         public override void OnFocusChanged(WindowActivityMonitorInfo monitorInfo, ref bool handled)
         {
-            Log.Debug();
+            Log.Verbose();
 
             handled = true;
         }

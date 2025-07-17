@@ -1,7 +1,7 @@
 ﻿
 using ACATResources;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     partial class DisclaimerDialog
     {
@@ -32,7 +32,7 @@ namespace ACAT.Lib.Extension
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonOK = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonOK = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.checkBoxDontShowThisMessage = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.richTextBoxDisclaimer = new System.Windows.Forms.RichTextBox();

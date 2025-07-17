@@ -5,9 +5,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,7 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace ACAT.Lib.Core.TTSManagement
+namespace ACAT.Core.TTSManagement
 {
     /// <summary>
     /// Maintains a list of TTS engines that were discovered.  The
@@ -42,6 +42,8 @@ namespace ACAT.Lib.Core.TTSManagement
         /// </summary>
         private readonly Dictionary<Guid, Tuple<String, Type>> _ttsEnginesTypeCache;
 
+        private readonly TypeLoader<ITTSEngine> _ttsEngineTypeLoader = new();
+
         /// <summary>
         /// Top level language-specific folder (eg en, fr etc)
         /// </summary>
@@ -51,10 +53,12 @@ namespace ACAT.Lib.Core.TTSManagement
         /// Has this object been disposed
         /// </summary>
         private bool _disposed;
+
         /// <summary>
         /// If one of the dll found has an error with the certificate
         /// </summary>
         private static volatile bool _DLLError = false;
+
         /// <summary>
         /// The object that holds the preferred TTS Engines
         /// </summary>
@@ -110,15 +114,15 @@ namespace ACAT.Lib.Core.TTSManagement
             {
                 foreach (var type in Collection)
                 {
-                    IDescriptor descriptor = DescriptorAttribute.GetDescriptor(type);
+                    ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(type);
                     if (descriptor != null && Guid.Equals(guid, descriptor.Id))
                     {
-                        Log.Debug("Found TTS engine of type " + type);
+                        Log.Debug($"Found TTS engine of type {type}");
                         return type;
                     }
                 }
 
-                Log.Debug("Could not find TTS engine for id " + guid.ToString());
+                Log.Error($"Could not find TTS engine for id {guid.ToString()}");
                 return null;
             }
         }
@@ -183,7 +187,7 @@ namespace ACAT.Lib.Core.TTSManagement
 
             if (foundTuple != null)
             {
-                IDescriptor descriptor = DescriptorAttribute.GetDescriptor(foundTuple.Item2);
+                ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(foundTuple.Item2);
                 if (descriptor != null)
                 {
                     Log.Debug("Found TTS Engine for culture " + (ci != null ? ci.TwoLetterISOLanguageName : "Neutral") + "[" + descriptor.Name + "]");
@@ -254,7 +258,7 @@ namespace ACAT.Lib.Core.TTSManagement
                     var extensionRoot = Path.Combine(extensionDir, root);
                     extensionRoot = Path.Combine(extensionRoot, TTSManager.TTSRootDir);
 
-                    loadTTSEngineTypesIntoCache(extensionRoot, language, recursive); 
+                    loadTTSEngineTypesIntoCache(extensionRoot, language, recursive);
                     if (_DLLError)
                         return false;
                 }
@@ -277,15 +281,15 @@ namespace ACAT.Lib.Core.TTSManagement
 
             foreach (Type type in Collection)
             {
-                IDescriptor descriptor = DescriptorAttribute.GetDescriptor(type);
+                ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(type);
                 if (descriptor != null && Equals(guid, descriptor.Id))
                 {
-                    Log.Debug("Found TTS Engine of type " + type);
+                    Log.Debug($"Found TTS Engine of type {type}");
                     return type;
                 }
             }
 
-            Log.Debug("Could not find TTS Engine for id " + guid);
+            Log.Error($"Could not find TTS Engine for id {guid}");
             return null;
         }
 
@@ -333,7 +337,7 @@ namespace ACAT.Lib.Core.TTSManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -355,12 +359,17 @@ namespace ACAT.Lib.Core.TTSManagement
         /// </summary>
         /// <param name="dir">dir to descend into</param>
         /// <param name="culture">culture (optional) of the TTS Engine</param>
-        /// <param name="resursive">true if deep-descend</param>
-        private void loadTTSEngineTypesIntoCache(String dir, String culture, bool resursive = true)
+        /// <param name="recursive">true if deep-descend</param>
+        private void loadTTSEngineTypesIntoCache(String dir, String culture, bool recursive = true)
         {
-            DirectoryWalker walker = new DirectoryWalker(dir, "*.dll");
+            DirectoryWalker walker = new DirectoryWalker(dir, "ACAT*.dll");
             _dirWalkCurrentCulture = culture;
             walker.Walk(new OnFileFoundDelegate(onFileFound));
+
+            foreach (var ttsEngine in _ttsEngineTypeLoader.LoadedTypes)
+            {
+                Add(ttsEngine.Key, _dirWalkCurrentCulture, ttsEngine.Value);
+            }
         }
 
         /// <summary>
@@ -372,49 +381,62 @@ namespace ACAT.Lib.Core.TTSManagement
         {
             try
             {
-                var retVal = VerifyDigitalSignature.ValidateCertificate(dllName);
-                if (retVal && !_DLLError)
-                {
-                    try
-                    {
-                        VerifyDigitalSignature.Verify(dllName);
-                    }
-                    catch (Exception ex)
-                    {
-                        ConfirmBoxOneOption ConfirmBoxOneOption = new ConfirmBoxOneOption
-                        {
-                            Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n Status Error: ERTTS",
-                            DecisionPrompt = "ok",
-                            LabelFont = 10
-                        };
-                        ConfirmBoxOneOption.BringToFront();
-                        ConfirmBoxOneOption.TopMost = true;
-                        ConfirmBoxOneOption.ShowDialog();
-                        ConfirmBoxOneOption.Dispose();
-                        _DLLError = true;
-                    }
-                }
-                if (!_DLLError)
-                {
-                    Assembly ttsEngineAssembly = Assembly.LoadFile(dllName);
-                    foreach (Type type in ttsEngineAssembly.GetTypes())
-                    {
-                        if (typeof(ITTSEngine).IsAssignableFrom(type))
-                        {
-                            DescriptorAttribute attr = DescriptorAttribute.GetDescriptor(type);
-                            if (attr != null && attr.Id != Guid.Empty)
-                            {
-                                Add(attr.Id, _dirWalkCurrentCulture, type);
-                            }
-                        }
-                    }
-                }
-
+                _ttsEngineTypeLoader.LoadFromAssembly(dllName);
             }
             catch (Exception ex)
             {
-                Log.Debug("Could get types from assembly " + dllName + ". Exception : " + ex.ToString());
+                Log.Exception("Could not load assembly " + dllName + ". Exception: " + ex.ToString());
+                _DLLError = true;                return; // skip further processing if there was a DLL error
             }
+
+            //if (_DLLError)
+            //{
+            //    return; // skip further processing if there was a DLL error
+            //}
+            //try
+            //{
+            //    var retVal = VerifyDigitalSignature.ValidateCertificate(dllName);
+            //    if (retVal && !_DLLError)
+            //    {
+            //        try
+            //        {
+            //            VerifyDigitalSignature.Verify(dllName);
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            ConfirmBoxOneOption ConfirmBoxOneOption = new ConfirmBoxOneOption
+            //            {
+            //                Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n Status Error: ERTTS",
+            //                DecisionPrompt = "ok",
+            //                LabelFont = 10
+            //            };
+            //            ConfirmBoxOneOption.BringToFront();
+            //            ConfirmBoxOneOption.TopMost = true;
+            //            ConfirmBoxOneOption.ShowDialog();
+            //            ConfirmBoxOneOption.Dispose();
+            //            _DLLError = true;
+            //        }
+            //    }
+            //    if (!_DLLError)
+            //    {
+            //        Assembly ttsEngineAssembly = Assembly.LoadFile(dllName);
+            //        foreach (Type type in ttsEngineAssembly.GetTypes())
+            //        {
+            //            if (typeof(ITTSEngine).IsAssignableFrom(type))
+            //            {
+            //                ClassDescriptorAttribute attr = ClassDescriptorAttribute.GetDescriptor(type);
+            //                if (attr != null && attr.Id != Guid.Empty)
+            //                {
+            //                    Add(attr.Id, _dirWalkCurrentCulture, type);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Log.Exception("Could get types from assembly " + dllName + ". Exception : " + ex.ToString());
+            //}
         }
     }
 }

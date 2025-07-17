@@ -7,8 +7,8 @@
 
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACATResources;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System.Drawing;
 using System.Windows.Forms;
 using System;
@@ -20,7 +20,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
     /// </summary>
     ///
 
-    [Descriptor("AEC69561-1525-4C71-8388-651277AFABC3",
+    [ClassDescriptor("AEC69561-1525-4C71-8388-651277AFABC3",
         "OtherTestForm",
         "Application window used to display other test for BCI")]
     public partial class OtherTestForm : Form
@@ -28,7 +28,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <summary>
         /// Custom Tooltip object
         /// </summary>
-        private CustomToolTip customToolTip = new CustomToolTip();
+        private CustomToolTip customToolTip = new();
 
         private BCIMenuOptions.Options Options;
 
@@ -131,7 +131,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error ButtonCalibrate_Click: " + ex.Message);
+                Log.Exception("BCI LOG | Error ButtonCalibrate_Click: " + ex.Message);
                 Close();
             }
         }

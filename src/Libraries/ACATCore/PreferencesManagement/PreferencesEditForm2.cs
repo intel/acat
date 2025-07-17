@@ -16,7 +16,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
+using ACAT.Core.PanelManagement;
 using ACATResources;
 using System;
 using System.ComponentModel;
@@ -25,7 +25,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PreferencesManagement
+namespace ACAT.Core.PreferencesManagement
 {
     /// <summary>
     /// A generic preferences editor for a class that
@@ -332,7 +332,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
             wrapText(_wrapText);
         }
 
-
         /// <summary>
         /// Gets a yes/no response
         /// </summary>
@@ -353,7 +352,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
             // clearStatus();
         }
 
-
         /// <summary>
         /// Displays a error status message
         /// </summary>
@@ -366,7 +364,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
             // ConfirmBoxOneOption.ShowDialog(this);
 
             ConfirmBoxOneOption.ShowDialog("Error\n" + settingName + "\n" + status, "", StringResources.OK, this);
-
         }
 
         /// <summary>
@@ -401,7 +398,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     // Property is integer type
                     if (isInt(property))
                     {
-
                         // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
                         if (Int32.TryParse(value, out int intValue))
                         {
@@ -448,11 +444,9 @@ namespace ACAT.Lib.Core.PreferencesManagement
                         }
                     }
 
-
                     // Property is float type
                     else if (isFloat(property))
                     {
-
                         // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
                         try
                         {
@@ -493,7 +487,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                                 newVal = defaultVal;
                             }
                         }
-
                     }
                 }
 
@@ -508,7 +501,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     // Field is integer type
                     if (isInt(fieldInfo))
                     {
-
                         // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
                         if (Int32.TryParse(value, out int intValue))
                         {
@@ -558,7 +550,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     // Field is float type
                     else if (isFloat(fieldInfo))
                     {
-
                         // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
                         try
                         {
@@ -603,7 +594,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 }
             }
 
-
             if (!String.IsNullOrEmpty(name))
             {
                 // Log.Debug("\ndataGridView_CellValidating | Cell Property / Field Name: " + name + " | e.Cancel: " + e.Cancel.ToString() + " | prevVal: " + prevVal + " | defaultVal: " + defaultVal+ " | newVal: "+ newVal);
@@ -622,12 +612,9 @@ namespace ACAT.Lib.Core.PreferencesManagement
                         ((DataGridViewTextBoxCell)cell).Value = newVal;
                         ((DataGridView)sender).RefreshEdit();
                     }
-
                 }
             }
-
         }
-
 
         /// <summary>
         /// Something changed. Set dirty flag

@@ -10,6 +10,8 @@
 // to the BCI gTec board
 //
 ////////////////////////////////////////////////////////////////////////////
+using ACAT.Core.WidgetManagement;
+using ACATResources;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
@@ -44,12 +46,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControlBCIErrorGTecBoard));
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.buttonExit_userControlBCIErrorgTecBoard = new System.Windows.Forms.Button();
             this.labelTitle = new System.Windows.Forms.Label();
             this.tableLayoutPanelBCIError = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonRetry_userControlBCIErrorgTecBoard = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonRetry_userControlBCIErrorgTecBoard = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanelSpacerBottom = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelSpacerTop = new System.Windows.Forms.TableLayoutPanel();
             this.webBrowserTop = new System.Windows.Forms.WebBrowser();
@@ -96,7 +97,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.654111F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.140636F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1022, 766);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1024, 768);
             this.tableLayoutPanelMain.TabIndex = 9;
             // 
             // buttonExit_userControlBCIErrorgTecBoard
@@ -115,7 +116,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.buttonExit_userControlBCIErrorgTecBoard.Name = "buttonExit_userControlBCIErrorgTecBoard";
             this.buttonExit_userControlBCIErrorgTecBoard.Size = new System.Drawing.Size(128, 58);
             this.buttonExit_userControlBCIErrorgTecBoard.TabIndex = 76;
-            this.buttonExit_userControlBCIErrorgTecBoard.Text = "Exit";
+            this.buttonExit_userControlBCIErrorgTecBoard.Text = StringResources.Exit;
             this.buttonExit_userControlBCIErrorgTecBoard.UseCompatibleTextRendering = true;
             this.buttonExit_userControlBCIErrorgTecBoard.UseVisualStyleBackColor = false;
             // 
@@ -130,9 +131,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.labelTitle.Location = new System.Drawing.Point(112, 47);
             this.labelTitle.Margin = new System.Windows.Forms.Padding(0);
             this.labelTitle.Name = "labelTitle";
-            this.labelTitle.Size = new System.Drawing.Size(795, 86);
+            this.labelTitle.Size = new System.Drawing.Size(798, 86);
             this.labelTitle.TabIndex = 6;
-            this.labelTitle.Text = "BCI gTec Board Error";
+            this.labelTitle.Text = "BCI gTec "+StringResources.BoardError;
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.labelTitle.UseCompatibleTextRendering = true;
             // 
@@ -155,7 +156,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelBCIError.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelBCIError.Size = new System.Drawing.Size(795, 200);
             this.tableLayoutPanelBCIError.TabIndex = 70;
-            this.tableLayoutPanelBCIError.Text = "Row for error visualization";
+            this.tableLayoutPanelBCIError.Text = StringResources.Rowforerrorvisualization;
             // 
             // buttonRetry_userControlBCIErrorgTecBoard
             // 
@@ -174,14 +175,13 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.buttonRetry_userControlBCIErrorgTecBoard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonRetry_userControlBCIErrorgTecBoard.Font = new System.Drawing.Font("Montserrat", 28F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonRetry_userControlBCIErrorgTecBoard.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.buttonRetry_userControlBCIErrorgTecBoard.Image = ((System.Drawing.Image)(resources.GetObject("buttonRetry_userControlBCIErrorgTecBoard.Image")));
             this.buttonRetry_userControlBCIErrorgTecBoard.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonRetry_userControlBCIErrorgTecBoard.Location = new System.Drawing.Point(555, 69);
             this.buttonRetry_userControlBCIErrorgTecBoard.Margin = new System.Windows.Forms.Padding(25, 0, 0, 0);
             this.buttonRetry_userControlBCIErrorgTecBoard.Name = "buttonRetry_userControlBCIErrorgTecBoard";
             this.buttonRetry_userControlBCIErrorgTecBoard.Size = new System.Drawing.Size(199, 61);
             this.buttonRetry_userControlBCIErrorgTecBoard.TabIndex = 85;
-            this.buttonRetry_userControlBCIErrorgTecBoard.Text = "Retry";
+            this.buttonRetry_userControlBCIErrorgTecBoard.Text = StringResources.Retry;
             this.buttonRetry_userControlBCIErrorgTecBoard.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.buttonRetry_userControlBCIErrorgTecBoard.UseCompatibleTextRendering = true;
             this.buttonRetry_userControlBCIErrorgTecBoard.UseMnemonic = false;
@@ -194,12 +194,12 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelMain.SetColumnSpan(this.tableLayoutPanelSpacerBottom, 3);
             this.tableLayoutPanelSpacerBottom.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelSpacerBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanelSpacerBottom.Location = new System.Drawing.Point(112, 715);
+            this.tableLayoutPanelSpacerBottom.Location = new System.Drawing.Point(112, 717);
             this.tableLayoutPanelSpacerBottom.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanelSpacerBottom.Name = "tableLayoutPanelSpacerBottom";
             this.tableLayoutPanelSpacerBottom.RowCount = 1;
             this.tableLayoutPanelSpacerBottom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelSpacerBottom.Size = new System.Drawing.Size(795, 51);
+            this.tableLayoutPanelSpacerBottom.Size = new System.Drawing.Size(798, 51);
             this.tableLayoutPanelSpacerBottom.TabIndex = 74;
             // 
             // tableLayoutPanelSpacerTop
@@ -214,7 +214,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelSpacerTop.Name = "tableLayoutPanelSpacerTop";
             this.tableLayoutPanelSpacerTop.RowCount = 1;
             this.tableLayoutPanelSpacerTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelSpacerTop.Size = new System.Drawing.Size(795, 47);
+            this.tableLayoutPanelSpacerTop.Size = new System.Drawing.Size(798, 47);
             this.tableLayoutPanelSpacerTop.TabIndex = 73;
             // 
             // webBrowserTop
@@ -226,7 +226,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.webBrowserTop.Name = "webBrowserTop";
             this.tableLayoutPanelMain.SetRowSpan(this.webBrowserTop, 3);
             this.webBrowserTop.ScrollBarsEnabled = false;
-            this.webBrowserTop.Size = new System.Drawing.Size(789, 109);
+            this.webBrowserTop.Size = new System.Drawing.Size(792, 109);
             this.webBrowserTop.TabIndex = 81;
             // 
             // webBrowserBottom
@@ -238,18 +238,17 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.webBrowserBottom.Name = "webBrowserBottom";
             this.tableLayoutPanelMain.SetRowSpan(this.webBrowserBottom, 3);
             this.webBrowserBottom.ScrollBarsEnabled = false;
-            this.webBrowserBottom.Size = new System.Drawing.Size(789, 109);
+            this.webBrowserBottom.Size = new System.Drawing.Size(792, 109);
             this.webBrowserBottom.TabIndex = 82;
             // 
             // UserControlBCIErrorGTecBoard
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.tableLayoutPanelMain);
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "UserControlBCIErrorGTecBoard";
-            this.Size = new System.Drawing.Size(1022, 766);
+            this.Size = new System.Drawing.Size(1024, 768);
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.tableLayoutPanelMain.PerformLayout();
             this.tableLayoutPanelBCIError.ResumeLayout(false);
@@ -268,7 +267,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelBCIError;
         public System.Windows.Forms.Button buttonExit_userControlBCIErrorgTecBoard;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelSpacerBottom;
-        public Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonRetry_userControlBCIErrorgTecBoard;
+        public ScannerRoundedButtonControl buttonRetry_userControlBCIErrorgTecBoard;
         private System.Windows.Forms.WebBrowser webBrowserTop;
         private System.Windows.Forms.WebBrowser webBrowserBottom;
     }

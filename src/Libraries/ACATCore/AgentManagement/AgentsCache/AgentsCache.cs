@@ -6,15 +6,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Reflection;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// Maintains a cache of application agent objects.  The cache is
@@ -38,6 +37,8 @@ namespace ACAT.Lib.Core.AgentManagement
         /// </summary>
         private readonly List<IApplicationAgent> _agentCache;
 
+        private readonly TypeLoader<IApplicationAgent> _agentTypeLoader = new();
+
         /// <summary>
         /// Used to look up agents by agent id
         /// </summary>
@@ -59,7 +60,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// </summary>
         public AgentsCache()
         {
-            Log.Debug();
+            Log.Verbose();
 
             _agentCache = new List<IApplicationAgent>();
             _agentLookupTableByProcessName = new Hashtable();
@@ -261,7 +262,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <returns>true on success</returns>
         public bool Init(IEnumerable<String> extensionDirs)
         {
-            Log.Debug();
+            Log.Verbose();
 
             loadCache(extensionDirs);
 
@@ -314,18 +315,8 @@ namespace ACAT.Lib.Core.AgentManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Could not load agent " + agentType + ", exception: " + ex);
+                Log.Exception("Could not load agent " + agentType + ", exception: " + ex);
             }
-        }
-
-        /// <summary>
-        /// Walks the specified directory tree
-        /// </summary>
-        /// <param name="path">Directory path</param>
-        private void loadAgentsFromDir(String path)
-        {
-            var walker = new DirectoryWalker(path, "*.dll");
-            walker.Walk(new OnFileFoundDelegate(onAgentDllFound));
         }
 
         /// <summary>
@@ -335,13 +326,31 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <param name="extensionDirs"></param>
         private void loadCache(IEnumerable<String> extensionDirs)
         {
+            //TODO: Fix this hack
             foreach (String dir in extensionDirs)
             {
-                var path = Path.Combine(dir, AgentManager.AppAgentsRootDir);
-                loadAgentsFromDir(path);
+                loadAgentsFromDir(dir);
+                //    var path = Path.Combine(dir, AgentManager.AppAgentsRootDir);
+                //    loadAgentsFromDir(path);
 
-                path = Path.Combine(dir, AgentManager.FunctionalAgentsRootDir);
-                loadAgentsFromDir(path);
+                //    path = Path.Combine(dir, AgentManager.FunctionalAgentsRootDir);
+                //    loadAgentsFromDir(path);
+            }
+        }
+
+        /// <summary>
+        /// Walks the specified directory tree
+        /// </summary>
+        /// <param name="path">Directory path</param>
+        private void loadAgentsFromDir(String path)
+        {
+            // Recursively look for ACAT Agents in Extensions/Agents direrctory
+            var walker = new DirectoryWalker(path, "ACAT.Extensions.AppAgents.*.dll");
+            walker.Walk(new OnFileFoundDelegate(onAgentFound));
+
+            foreach (var agent in _agentTypeLoader.LoadedTypes)
+            {
+                addAgent(agent.Value);
             }
         }
 
@@ -350,27 +359,17 @@ namespace ACAT.Lib.Core.AgentManagement
         /// when a dll is found
         /// </summary>
         /// <param name="dllFileName"></param>
-        private void onAgentDllFound(String dllFileName)
+        private void onAgentFound(String agentName)
         {
             try
             {
-                var agentsAssembly = Assembly.LoadFile(dllFileName);
-
-                // look only for IApplicationAgent classes
-                foreach (var type in agentsAssembly.GetTypes())
-                {
-                    Log.Debug(type.FullName);
-                    if (typeof(IApplicationAgent).IsAssignableFrom(type))
-                    {
-                        Log.Debug("Yes!! This is an agent. " + type.FullName);
-                        addAgent(type);
-                    }
-                }
+                _agentTypeLoader.LoadFromAssembly(agentName);
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception($"Error loading agent from {agentName}: {ex.Message}");
             }
+
         }
 
         /// <summary>

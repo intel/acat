@@ -16,17 +16,22 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACATResources;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Windows.Forms.Integration;
+using System.Windows.Threading;
+using ACAT.Lib.Core.PreferencesManagement.UI;
 
-namespace ACAT.Lib.Core.PreferencesManagement
+namespace ACAT.Core.PreferencesManagement
 {
     /// <summary>
     /// A generic preferences editor for a class that
@@ -60,7 +65,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         private float _designTimeAspectRatio = 0.0f;
 
         /// <summary>
-        /// Has first call to OnClientSizeChanged been made?                                   
+        /// Has first call to OnClientSizeChanged been made?
         /// </summary>
         private bool _firstClientChangedCall = true;
 
@@ -70,14 +75,14 @@ namespace ACAT.Lib.Core.PreferencesManagement
         public bool _wrapText = true;
 
         /// <summary>
-        /// Delegate for the event triggered when the user makes a change to a preference setting 
+        /// Delegate for the event triggered when the user makes a change to a preference setting
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="arg">event args</param>
         public delegate void NotifyPreferencesChangeMade();
 
         /// <summary>
-        /// Event raised when the user makes a change to a preference setting 
+        /// Event raised when the user makes a change to a preference setting
         /// </summary>
         public event NotifyPreferencesChangeMade EvtPreferencesChangeMade;
 
@@ -287,8 +292,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
             dataGridView.Rows[rowNum].Tag = property;
         }
 
-
-
         /// <summary>
         /// Check if form filled correctly, if not, return false
         /// If validated, check if changes have been made to form and if so prompt user asking if they want to save
@@ -296,7 +299,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <returns></returns>
         public bool validateAndSave()
         {
-
             // Update preferences based on latest values then save
             updatePreferences();
 
@@ -304,9 +306,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
             Preferences.Save();
 
             return true;
-
         }
-
 
         /// <summary>
         /// User clicked wrap text checkbox
@@ -320,7 +320,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 _wrapText = ((CheckBox)sender).Checked;
                 wrapText(_wrapText);
             }
-
         }
 
         /// <summary>
@@ -330,7 +329,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <param name="e">event args</param>
         public void buttonDefaults_Click(object sender, EventArgs e)
         {
-            if (ConfirmBoxTwoOption.ShowDialog("Restore default settings?", 
+            if (ConfirmBoxTwoOption.ShowDialog("Restore default settings?",
                 "This cannot be undone.", StringResources.Yes, StringResources.No, this, true))
             {
                 _isDirty = true;
@@ -357,7 +356,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <param name="e">event args</param>
         private void dataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            
         }
 
         /// <summary>
@@ -392,7 +390,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     // Property is integer type
                     if (isInt(property))
                     {
-
                         // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
                         if (Int32.TryParse(value, out int intValue))
                         {
@@ -439,11 +436,9 @@ namespace ACAT.Lib.Core.PreferencesManagement
                         }
                     }
 
-
                     // Property is float type
                     else if (isFloat(property))
                     {
-
                         // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
                         try
                         {
@@ -484,7 +479,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                                 newVal = defaultVal;
                             }
                         }
-
                     }
                 }
 
@@ -499,7 +493,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     // Field is integer type
                     if (isInt(fieldInfo))
                     {
-
                         // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
                         if (Int32.TryParse(value, out int intValue))
                         {
@@ -549,7 +542,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     // Field is float type
                     else if (isFloat(fieldInfo))
                     {
-
                         // Based on new value set by user, show error status if needed and set value which cell will be automatically set to
                         try
                         {
@@ -594,7 +586,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 }
             }
 
-
             if (e.Cancel)
             {
                 if (!String.IsNullOrEmpty(name) && !String.IsNullOrEmpty(newVal))
@@ -602,11 +593,8 @@ namespace ACAT.Lib.Core.PreferencesManagement
                     ((DataGridViewTextBoxCell)cell).Value = newVal;
                     ((DataGridView)sender).RefreshEdit();
                 }
-
             }
-
         }
-
 
         /// <summary>
         /// Something changed. Set dirty flag
@@ -629,7 +617,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
             _isDirty = true;
             EvtPreferencesChangeMade();
         }
-
 
         /// <summary>
         /// Returns the custom attribute for a boolean field
@@ -859,7 +846,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
             DefaultColumn.Width = dataGridView.Width / 5;
             RangeColumn.Width = dataGridView.Width / 5;
 
-
             dataGridView.Sort(SettingColumn, ListSortDirection.Ascending);
             SettingColumn.HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending;
 
@@ -965,6 +951,24 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <param name="e">eent args</param>
         private void PreferencesEditForm_Load(object sender, EventArgs e)
         {
+            // For WPF Controls
+            if (System.Windows.Application.Current == null)
+            {
+         
+
+
+                // Initialize WPF Dispatcher safely
+                Dispatcher dispatcher = Dispatcher.CurrentDispatcher;
+
+                // Schedule optional startup logic on the WPF Dispatcher
+                dispatcher.BeginInvoke(DispatcherPriority.Send, new Action(() =>
+                {
+                    Console.WriteLine("WPF Dispatcher is ready");
+                }));
+
+                new System.Windows.Application();
+            }
+
             float currentAspectRatio = (float)ClientSize.Height / ClientSize.Width;
 
             if (_designTimeAspectRatio != 0.0f && currentAspectRatio != _designTimeAspectRatio)
@@ -1003,6 +1007,63 @@ namespace ACAT.Lib.Core.PreferencesManagement
             };
         }
 
+        Control CreatedLabeledPanel(PropertyInfo prop)
+        {
+            Control control;
+            Font font = new Font("Montserrat", 18);
+
+            var controlFactory = new Dictionary<Type, Func<PropertyInfo, Control>>
+                {
+                    { typeof(bool), member => new CheckBox() },
+                    { typeof(int), member => new TrackBar {Minimum = 0, Maximum = 100 } },
+                    { typeof(float), member => new TrackBar {Minimum = 0, Maximum=100 } },
+                    { typeof(string), member => new TextBox() }
+                };
+
+            var type = prop.PropertyType;
+            if (controlFactory.TryGetValue(type, out var controlBuilder))
+            {
+                control = controlBuilder(prop);
+                control.Tag = prop;
+                control.ForeColor = Color.White;                
+            }
+            else
+            {
+                control = new Label { Text = $"Unsupported Type: {prop.Name} ({prop.PropertyType.Name})" };
+            }
+
+            var panel = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.LeftToRight,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                Dock = DockStyle.Fill,
+                WrapContents = true,
+                BackColor = Color.Transparent,
+                Margin = new Padding(15)
+            };
+
+            var descriptionAttr = prop.GetCustomAttribute<ClassDescriptorAttribute>();
+            var labelText = descriptionAttr?.Description ?? "MISSING DESCRIPTION";
+
+            var label = new Label
+            {
+                Text = labelText,
+                AutoSize = true,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Margin = new Padding(0, 6, 5, 0),
+                ForeColor = Color.White,
+                Font = font
+            };
+
+            control.Margin = new Padding(0, 3, 0, 0);
+
+            panel.Controls.Add(label);
+            panel.Controls.Add(control);
+
+            return panel;
+
+        }
 
         /// <summary>
         /// Populates the grid view with preferences data
@@ -1010,128 +1071,76 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <param name="prefs">preferences</param>
         private void refreshGridView(IPreferences prefs)
         {
-            // Do Clear of datagrid rows in try/catch block - sometimes throws exception
-            bool clearSuccessful = true;
-            try
-            {
-                dataGridView.Rows.Clear();
-            }
-            catch
-            {
-                Log.Debug("PreferencesEditForm | refreshGridView | clearSuccessful == false");
-                clearSuccessful = false;
-            }
-            if (!clearSuccessful)
-                return;
+            //// Do Clear of datagrid rows in try/catch block - sometimes throws exception
+            //bool clearSuccessful = true;
+            //try
+            //{
+            //    dataGridView.Rows.Clear();
+            //}
+            //catch
+            //{
+            //    Log.Debug("PreferencesEditForm | refreshGridView | clearSuccessful == false");
+            //    clearSuccessful = false;
+            //}
+            //if (!clearSuccessful)
+            //    return;
 
+            // HACK until we fix the Form...
+            var flowPanel = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.TopDown,
+                BackColor = Color.Transparent,
+                AutoSize = false,
+                AutoScroll = false,
+                Dock = DockStyle.Fill,
+
+            };
+            flowPanel.HorizontalScroll.Visible = false;
+            flowPanel.HorizontalScroll.Maximum = 0;
+
+            var parent = dataGridView.Parent;                
+            parent.Controls.Remove(dataGridView);
+            parent.Controls.Add(flowPanel);
 
             wrapText(_wrapText);
 
-            var members = prefs.GetType().GetMembers();
-            foreach (var memberInfo in members)
+            var descriptor = prefs.GetType().GetCustomAttribute<ClassDescriptorAttribute>();
+            Label category = new Label
             {
-                var name = memberInfo.Name;
-                MemberInfo[] member = prefs.GetType().GetMember(name);
-                if (member.Length == 0)
+                AutoSize = true,
+                Dock = DockStyle.Fill,
+                Text = descriptor?.Category ?? "UNKNOWN CATEGORY",
+                Font = new Font("Montserrat", 24, FontStyle.Bold),
+                ForeColor = Color.White
+            };
+            flowPanel.Controls.Add(category);
+
+
+            Label description = new Label {
+                AutoSize = true,
+                Dock = DockStyle.Fill,
+                Text = descriptor?.Description ?? "UNKNOWN DESCRIPTION",
+                Font = new Font("Montserrat", 20, FontStyle.Regular),
+                ForeColor = Color.White
+            };
+            flowPanel.Controls.Add(description);
+
+            var props = prefs.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var panelBuilder = new SettingsPanelBuilder();
+            foreach (var prop in props)
+            {
+                //var proppanel = CreatedLabeledPanel(prop);
+                //flowPanel.Controls.Add(proppanel);
+                var panel = panelBuilder.CreateLabeledPanel(prop, prefs);
+
+                var host = new ElementHost
                 {
-                    continue;
-                }
-
-                switch (member[0].MemberType)
-                {
-                    case MemberTypes.Field:
-                        FieldInfo fieldInfo = prefs.GetType().GetField(name);
-                        if (isInt(fieldInfo))
-                        {
-                            var intDescriptor = getIntAttribute(fieldInfo);
-                            if (intDescriptor != null)
-                            {
-                                addIntegerRow(prefs, fieldInfo, intDescriptor);
-                            }
-                        }
-                        else if (isBool(fieldInfo))
-                        {
-                            var boolDescriptor = getBoolAttribute(fieldInfo);
-                            if (boolDescriptor != null)
-                            {
-                                addCheckBoxRow(prefs, fieldInfo, boolDescriptor);
-                            }
-                        }
-                        else if (isString(fieldInfo))
-                        {
-                            var stringDescriptor = getStringAttribute(fieldInfo);
-                            if (stringDescriptor != null)
-                            {
-                                addStringRow(prefs, fieldInfo, stringDescriptor);
-                            }
-                        }
-                        else if (isFloat(fieldInfo))
-                        {
-                            var floatDescriptor = getFloatAttribute(fieldInfo);
-                            if (floatDescriptor != null)
-                            {
-                                addFloatRow(prefs, fieldInfo, floatDescriptor);
-                            }
-                        }
-                        break;
-
-                    case MemberTypes.Property:
-                        var property = prefs.GetType().GetProperty(name);
-                        if (isInt(property))
-                        {
-                            var intDescriptor = getIntAttribute(property);
-                            if (intDescriptor != null)
-                            {
-                                addIntegerRow(prefs, property, intDescriptor);
-                            }
-                        }
-                        else if (isBool(property))
-                        {
-                            var boolDescriptor = getBoolAttribute(property);
-                            if (boolDescriptor != null)
-                            {
-                                addCheckBoxRow(prefs, property, boolDescriptor);
-                            }
-                        }
-                        else if (isString(property))
-                        {
-                            var stringDescriptor = getStringAttribute(property);
-                            if (stringDescriptor != null)
-                            {
-                                addStringRow(prefs, property, stringDescriptor);
-                            }
-
-                        }
-                        else if (isFloat(property))
-                        {
-                            var floatDescriptor = getFloatAttribute(property);
-                            if (floatDescriptor != null)
-                            {
-                                addFloatRow(prefs, property, floatDescriptor);
-                            }
-                        }
-
-                        break;
-                }
-
-            }
-
-            if (dataGridView.Rows.Count == 0)
-            {
-                MessageBox.Show("No configurable settings found", Text);
-                Close();
-            }
-
-            dataGridView.AutoResizeRows();
-
-            // Sort first column ascending everytime grid is refreshed
-            dataGridView.Sort(SettingColumn, ListSortDirection.Ascending);
-            SettingColumn.HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending;
-
-            if (dataGridView.Rows.Count > 0)
-            {
-                dataGridView.CurrentCell = dataGridView.Rows[0].Cells[0];
-                dataGridView.Rows[0].Selected = true;
+                    Child = panel,
+                    AutoSize = true,
+                    Margin = new Padding(10),
+                    Dock = DockStyle.Top
+                };   
+                flowPanel.Controls.Add(host);
             }
         }
 
@@ -1235,7 +1244,5 @@ namespace ACAT.Lib.Core.PreferencesManagement
             DescriptionColumn.DefaultCellStyle.WrapMode = (onOff) ? DataGridViewTriState.True : DataGridViewTriState.False;
             dataGridView.AutoResizeRows();
         }
-
-
     }
 }

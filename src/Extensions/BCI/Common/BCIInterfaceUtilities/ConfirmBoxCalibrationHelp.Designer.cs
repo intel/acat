@@ -1,4 +1,5 @@
 ﻿
+using ACAT.Core.WidgetManagement;
 using ACATResources;
 
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
@@ -37,7 +38,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.webBrowserCalibrationHelp = new System.Windows.Forms.WebBrowser();
             this.checkBoxDontShowAgain = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonOk = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonOk = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.panelMain = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -130,7 +131,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         private System.Windows.Forms.WebBrowser webBrowserCalibrationHelp;
         private System.Windows.Forms.CheckBox checkBoxDontShowAgain;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonOk;
+        private ScannerRoundedButtonControl buttonOk;
         private System.Windows.Forms.Panel panelMain;
     }
 }

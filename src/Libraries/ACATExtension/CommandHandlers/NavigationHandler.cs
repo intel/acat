@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.AgentManagement.TextInterface;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.AgentManagement.TextInterface;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.Utility;
 using System;
 
-namespace ACAT.Lib.Extension.CommandHandlers
+namespace ACAT.Extension.CommandHandlers
 {
     /// <summary>
     /// Handles document navigation functions to move the
@@ -42,94 +42,92 @@ namespace ACAT.Lib.Extension.CommandHandlers
 
             try
             {
-                using (AgentContext context = Context.AppAgentMgr.ActiveContext())
+                using AgentContext context = Context.AppAgentMgr.ActiveContext();
+                switch (Command)
                 {
-                    switch (Command)
-                    {
-                        case "CmdPrevChar":
-                            turnOnSelectModeIfStickyShiftEnabled();
-                            context.TextAgent().Goto(GoToItem.PreviousCharacter);
-                            break;
+                    case "CmdPrevChar":
+                        turnOnSelectModeIfStickyShiftEnabled();
+                        context.TextAgent().Goto(GoToItem.PreviousCharacter);
+                        break;
 
-                        case "CmdNextChar":
-                            turnOnSelectModeIfStickyShiftEnabled();
-                            context.TextAgent().Goto(GoToItem.NextCharacter);
-                            break;
+                    case "CmdNextChar":
+                        turnOnSelectModeIfStickyShiftEnabled();
+                        context.TextAgent().Goto(GoToItem.NextCharacter);
+                        break;
 
-                        case "CmdPrevLine":
-                            turnOnSelectModeIfStickyShiftEnabled();
-                            context.TextAgent().Goto(GoToItem.PreviousLine);
-                            break;
+                    case "CmdPrevLine":
+                        turnOnSelectModeIfStickyShiftEnabled();
+                        context.TextAgent().Goto(GoToItem.PreviousLine);
+                        break;
 
-                        case "CmdNextLine":
-                            turnOnSelectModeIfStickyShiftEnabled();
-                            context.TextAgent().Goto(GoToItem.NextLine);
-                            break;
+                    case "CmdNextLine":
+                        turnOnSelectModeIfStickyShiftEnabled();
+                        context.TextAgent().Goto(GoToItem.NextLine);
+                        break;
 
-                        case "CmdPrevWord":
-                            turnOnSelectModeIfStickyShiftEnabled();
-                            context.TextAgent().Goto(GoToItem.PreviousWord);
-                            break;
+                    case "CmdPrevWord":
+                        turnOnSelectModeIfStickyShiftEnabled();
+                        context.TextAgent().Goto(GoToItem.PreviousWord);
+                        break;
 
-                        case "CmdNextWord":
-                            turnOnSelectModeIfStickyShiftEnabled();
-                            context.TextAgent().Goto(GoToItem.NextWord);
-                            break;
+                    case "CmdNextWord":
+                        turnOnSelectModeIfStickyShiftEnabled();
+                        context.TextAgent().Goto(GoToItem.NextWord);
+                        break;
 
-                        case "CmdPrevPara":
-                            turnOnSelectModeIfStickyShiftEnabled();
-                            context.TextAgent().Goto(GoToItem.PreviousParagaph);
-                            break;
+                    case "CmdPrevPara":
+                        turnOnSelectModeIfStickyShiftEnabled();
+                        context.TextAgent().Goto(GoToItem.PreviousParagaph);
+                        break;
 
-                        case "CmdNextPara":
-                            turnOnSelectModeIfStickyShiftEnabled();
-                            context.TextAgent().Goto(GoToItem.NextParagraph);
-                            break;
+                    case "CmdNextPara":
+                        turnOnSelectModeIfStickyShiftEnabled();
+                        context.TextAgent().Goto(GoToItem.NextParagraph);
+                        break;
 
-                        case "CmdPrevSentence":
-                            turnOnSelectModeIfStickyShiftEnabled();
-                            context.TextAgent().Goto(GoToItem.PreviousSentence);
-                            break;
+                    case "CmdPrevSentence":
+                        turnOnSelectModeIfStickyShiftEnabled();
+                        context.TextAgent().Goto(GoToItem.PreviousSentence);
+                        break;
 
-                        case "CmdNextSentence":
-                            turnOnSelectModeIfStickyShiftEnabled();
-                            context.TextAgent().Goto(GoToItem.NextSentence);
-                            break;
+                    case "CmdNextSentence":
+                        turnOnSelectModeIfStickyShiftEnabled();
+                        context.TextAgent().Goto(GoToItem.NextSentence);
+                        break;
 
-                        case "CmdPrevPage":
-                            turnOnSelectModeIfStickyShiftEnabled();
-                            context.TextAgent().Goto(GoToItem.PreviousPage);
-                            break;
+                    case "CmdPrevPage":
+                        turnOnSelectModeIfStickyShiftEnabled();
+                        context.TextAgent().Goto(GoToItem.PreviousPage);
+                        break;
 
-                        case "CmdNextPage":
-                            turnOnSelectModeIfStickyShiftEnabled();
-                            context.TextAgent().Goto(GoToItem.NextPage);
-                            break;
+                    case "CmdNextPage":
+                        turnOnSelectModeIfStickyShiftEnabled();
+                        context.TextAgent().Goto(GoToItem.NextPage);
+                        break;
 
-                        case "CmdHome":
-                            turnOnSelectModeIfStickyShiftEnabled();
-                            context.TextAgent().Goto(GoToItem.Home);
-                            break;
+                    case "CmdHome":
+                        turnOnSelectModeIfStickyShiftEnabled();
+                        context.TextAgent().Goto(GoToItem.Home);
+                        break;
 
-                        case "CmdEnd":
-                            turnOnSelectModeIfStickyShiftEnabled();
-                            context.TextAgent().Goto(GoToItem.End);
-                            break;
+                    case "CmdEnd":
+                        turnOnSelectModeIfStickyShiftEnabled();
+                        context.TextAgent().Goto(GoToItem.End);
+                        break;
 
-                        case "CmdTopOfDoc":
-                            turnOnSelectModeIfStickyShiftEnabled();
-                            context.TextAgent().Goto(GoToItem.TopOfDocument);
-                            break;
+                    case "CmdTopOfDoc":
+                        turnOnSelectModeIfStickyShiftEnabled();
+                        context.TextAgent().Goto(GoToItem.TopOfDocument);
+                        break;
 
-                        case "CmdEndOfDoc":
-                            turnOnSelectModeIfStickyShiftEnabled();
-                            context.TextAgent().Goto(GoToItem.EndOfDocument);
-                            break;
+                    case "CmdEndOfDoc":
+                        turnOnSelectModeIfStickyShiftEnabled();
+                        context.TextAgent().Goto(GoToItem.EndOfDocument);
+                        break;
 
-                        default:
-                            handled = false;
-                            break;
-                    }
+                    default:
+                        handled = false;
+                        break;
                 }
             }
             catch (Exception ex)
@@ -152,10 +150,8 @@ namespace ACAT.Lib.Extension.CommandHandlers
             {
                 if (KeyStateTracker.IsStickyShiftOn())
                 {
-                    using (AgentContext context = Context.AppAgentMgr.ActiveContext())
-                    {
-                        context.TextAgent().SetSelectMode(true);
-                    }
+                    using AgentContext context = Context.AppAgentMgr.ActiveContext();
+                    context.TextAgent().SetSelectMode(true);
                 }
             }
             catch (Exception ex)

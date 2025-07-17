@@ -5,23 +5,23 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AnimationManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.UserControlManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.AnimationManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.UserControlManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     /// <summary>
     /// The tryout app that allows the user to practice switch scanning and
     /// also set a suitable scanning speed
     /// </summary>
-    [Descriptor("61E8A29A-5076-4047-A9F5-89E7E4903407",
+    [ClassDescriptor("61E8A29A-5076-4047-A9F5-89E7E4903407",
                         "UserControlDefaultTryout",
                     "User Control to adjust the scan timing")]
     public partial class UserControlDefaultTryout : UserControl, IUserControl
@@ -53,9 +53,9 @@ namespace ACAT.Lib.Extension
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>
@@ -164,7 +164,6 @@ namespace ACAT.Lib.Extension
         {
             if (CoreGlobals.AppPreferences.ScanTime != _prevScanTime)
             {
-                
                 if (!DialogUtils.ConfirmScanner(null, "Save scan speed?"))
                 {
                     CoreGlobals.AppPreferences.ScanTime = _prevScanTime;

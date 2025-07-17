@@ -11,7 +11,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
     /// <summary>
     /// A button with rounded corners whose radius can be configured
@@ -36,6 +36,19 @@ namespace ACAT.Lib.Core.WidgetManagement
             this.FlatStyle = FlatStyle.Flat;
             //this.Dock = DockStyle.Fill;
             this.EnabledChanged += ScannerButtonControl_EnabledChanged;
+        }
+
+        public ScannerRoundedButtonControl(
+            string name,
+            string label,
+            string command,
+            string fontname,
+            int fontsize,
+            bool bold) : this()
+        {
+            this.Name = name;
+            this.Text = label;
+            this.Font = new Font(fontname, fontsize, bold ? FontStyle.Bold : FontStyle.Regular);
         }
 
         /// <summary>
@@ -160,17 +173,13 @@ namespace ACAT.Lib.Core.WidgetManagement
             e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
             base.OnPaint(e);
             RectangleF Rect = new RectangleF(0, 0, this.Width, this.Height);
-            using (GraphicsPath GraphPath = GetRoundPath(Rect, BorderRadiusTopLeft, BorderRadiusBottomLeft, BorderRadiusTopRight, BorderRadiusBottomRight, BorderWidth))
-            {
-                //GraphicsPath GraphInnerPath = GetRoundPath(Rect, BorderRadiusLeft, BorderRadiusRight, BorderWidth);
-                //Pen pen = new Pen(BorderColor, BorderWidth);
-                this.Region = new Region(GraphPath);
-                using (Pen pen = new Pen(BorderColor, BorderWidth))
-                {
-                    pen.Alignment = PenAlignment.Inset;
-                    e.Graphics.DrawPath(pen, GraphPath);
-                }
-            }
+            using GraphicsPath GraphPath = GetRoundPath(Rect, BorderRadiusTopLeft, BorderRadiusBottomLeft, BorderRadiusTopRight, BorderRadiusBottomRight, BorderWidth);
+            //GraphicsPath GraphInnerPath = GetRoundPath(Rect, BorderRadiusLeft, BorderRadiusRight, BorderWidth);
+            //Pen pen = new Pen(BorderColor, BorderWidth);
+            this.Region = new Region(GraphPath);
+            using Pen pen = new Pen(BorderColor, BorderWidth);
+            pen.Alignment = PenAlignment.Inset;
+            e.Graphics.DrawPath(pen, GraphPath);
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
 ﻿using ACATResources;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     partial class AboutBoxForm
     {
@@ -39,7 +39,7 @@ namespace ACAT.Lib.Extension
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonDisclaimer = new System.Windows.Forms.Button();
             this.buttonLicenses = new System.Windows.Forms.Button();
-            this.buttonOK = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonOK = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();

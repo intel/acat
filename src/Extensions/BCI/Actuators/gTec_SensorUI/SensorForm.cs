@@ -11,8 +11,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -125,30 +125,36 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // user controls actually added to form
             _userControlTestBCIConnections = new UserControlTestBCIConnections();
             _userControlTestBCIConnections.buttonExit_userControlTestBCIConnections.Click += new EventHandler(this.buttonExit_Click);
-
+            _userControlTestBCIConnections.Dock = DockStyle.Fill;
             _userControlBCIErrorgTecBoard = new UserControlBCIErrorGTecBoard();
             _userControlBCIErrorgTecBoard.buttonExit_userControlBCIErrorgTecBoard.Click += new EventHandler(this.buttonExit_Click);
             _userControlBCIErrorgTecBoard.buttonRetry_userControlBCIErrorgTecBoard.Click += new EventHandler(this.buttonRetest_Click);
+            _userControlBCIErrorgTecBoard.Dock = DockStyle.Fill;
 
             _userControlErrorBluetoothDisconnected = new UserControlErrorBluetoothDisconnected();
             _userControlErrorBluetoothDisconnected.buttonExit_userControlErrorBluetoothDisconnected.Click += new EventHandler(this.buttonExit_Click);
             _userControlErrorBluetoothDisconnected.buttonNext_userControlErrorBluetoothDisconnected.Click += new EventHandler(this.buttonNext_Click);
+            _userControlErrorBluetoothDisconnected.Dock = DockStyle.Fill;
 
             _userControlBCISignalCheckStartRequired = new UserControlBCISignalCheckStartRequired();
             _userControlBCISignalCheckStartRequired.buttonExit_userControlBCISignalCheckStartRequired.Click += new EventHandler(this.buttonExit_Click);
             _userControlBCISignalCheckStartRequired.buttonNext_userControlBCISignalCheckStartRequired.Click += new EventHandler(this.buttonNext_Click);
+            _userControlBCISignalCheckStartRequired.Dock = DockStyle.Fill;
 
             _userControlBCISignalCheckStartPrompt = new UserControlBCISignalCheckStartPrompt();
             _userControlBCISignalCheckStartPrompt.buttonExit_userControlBCISignalCheckStartPrompt.Click += new EventHandler(this.buttonExit_Click);
             _userControlBCISignalCheckStartPrompt.buttonNext_userControlBCISignalCheckStartPrompt.Click += new EventHandler(this.buttonNext_Click);
+            _userControlBCISignalCheckStartPrompt.Dock = DockStyle.Fill;
 
             _userControlPromptBCIFIlterSettings = new UserControlBCIFilterSettings();
             _userControlPromptBCIFIlterSettings.buttonExit_userControlPromptBCIFIlterSettings.Click += new EventHandler(this.buttonExit_Click);
             _userControlPromptBCIFIlterSettings.buttonNext_userControlPromptBCIFIlterSettings.Click += new EventHandler(this.buttonNext_Click);
+            _userControlPromptBCIFIlterSettings.Dock = DockStyle.Fill;
 
             _userControlBCISignalCheck = new UserControlBCISignalCheck();
             _userControlBCISignalCheck.buttonExit_userControlBCISignalCheck.Click += new EventHandler(this.buttonExit_Click);
             _userControlBCISignalCheck.buttonNext_userControlBCISignalCheck.Click += new EventHandler(this.buttonNext_Click);
+            _userControlBCISignalCheck.Dock = DockStyle.Fill;
 
             _gTecBCI = gTecBCI;
 
@@ -160,11 +166,19 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             {
                 // Set Exit button on each user control screen to [Developer Mode] which iterates through all available screens on button press
                 modifyUserControlsForDebugMode();
+
+                // tableLayoutPanelContainer.Controls.Clear();
+                // tableLayoutPanelContainer.Controls.Add(_userControlTestBCIConnections, 0, 0);
+                // tableLayoutPanelContainer.Refresh();
+
+                // _currentUserControlShown = _userControlTestBCIConnections;
             }
 
             Paint += (s, args) => { };
 
             FormClosing += Handle_FormCLosing;
+
+            updateOnboardingStatus(OnboardingUserState.Testing_BCIConnections, null);
 
         }
 
@@ -325,7 +339,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         /// <returns></returns>
         /// Run only once per new set of state changes receieved
-        public async Task TaskStartStopDataProcessing(OnboardingUserState state)
+        public void TaskStartStopDataProcessing(OnboardingUserState state)
         {
             // Start task which processes data for signal status checks
             if (state == OnboardingUserState.BCISignalCheck)
@@ -382,7 +396,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("startStopProcessDataTimer | Exception: " + e.ToString());
+                    Log.Exception("startStopProcessDataTimer | Exception: " + e.ToString());
                 }
             }
             else
@@ -399,7 +413,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("startStopProcessDataTimer | Exception: " + e.ToString());
+                    Log.Exception("startStopProcessDataTimer | Exception: " + e.ToString());
                 }
             }
 

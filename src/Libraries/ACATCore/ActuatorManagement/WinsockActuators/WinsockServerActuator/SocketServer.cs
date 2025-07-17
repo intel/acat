@@ -12,14 +12,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Specialized;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace ACAT.Lib.Core.InputActuators
+namespace ACAT.Core.InputActuators
 {
     /// <summary>
     /// Represents the TCP socket listener to wait for incoming
@@ -211,11 +211,11 @@ namespace ACAT.Lib.Core.InputActuators
             }
             catch (SocketException se)
             {
-                Log.Debug(se.ToString());
+                Log.Exception(se.ToString());
             }
             catch (Exception e)
             {
-                Log.Debug(e.ToString());
+                Log.Exception(e.ToString());
             }
             if (listenThread != null)
             {
@@ -272,7 +272,7 @@ namespace ACAT.Lib.Core.InputActuators
             }
             catch (System.Net.Sockets.SocketException se)
             {
-                //Log.Error(se.StackTrace);
+                //Log.Error(se.IncludeStackTrace);
                 Log.Error(se.StackTrace);
                 // se.ErrorCode == 10048, this condition means that more than one process is attempting to bind to same port, disallowed.
                 //                Log.Write(String.Format("SocketException: NativeError:{0} ErrorCode:{1}, Msg:{2}", se.NativeErrorCode, se.ErrorCode, se.Message));

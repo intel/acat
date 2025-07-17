@@ -5,19 +5,19 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace ACAT.Lib.Core.TTSManagement
+namespace ACAT.Core.TTSManagement
 {
     /// <summary>
     /// Represents a 'no-op' text-to-speech engine.  Has no TTS
     /// functionality. Useful if there is no active TTS engine.
     /// </summary>
-    [Descriptor("A98DA439-A6A9-48EF-AC8D-3D3588363341",
+    [ClassDescriptor("A98DA439-A6A9-48EF-AC8D-3D3588363341",
                         "Null Text-to-speech Engine",
                         "Text-to-speech disabled")]
     public class NullTTSEngine : ExtensionInvoker, ITTSEngine
@@ -90,10 +90,12 @@ namespace ACAT.Lib.Core.TTSManagement
         /// <summary>
         /// Gets the ACAT descriptor for this engine
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
+
+        public Guid Id => Descriptor.Id;
 
         /// <summary>
         /// Returns the current status of the speech engine
@@ -349,7 +351,7 @@ namespace ACAT.Lib.Core.TTSManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {

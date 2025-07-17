@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace ACAT.Lib.Core.Interpreter
+namespace ACAT.Core.Interpreter
 {
     /// <summary>
     /// Interprets the PCode.  Uses a function table that maps
@@ -30,6 +30,7 @@ namespace ACAT.Lib.Core.Interpreter
     public class Interpret
     {
 #pragma warning disable IDE0051
+
         /// <summary>
         /// The XML file has a Scripts section where script
         /// functions can be defined and resused elsewhere
@@ -227,7 +228,7 @@ namespace ACAT.Lib.Core.Interpreter
             }
             catch (Exception e)
             {
-                Log.Debug("Error executing verb " + actionVerb.Action + ". Exception: " + e.ToString());
+                Log.Exception("Error executing verb " + actionVerb.Action + ". Exception: " + e.ToString());
                 retVal = false;
             }
 
@@ -432,6 +433,7 @@ namespace ACAT.Lib.Core.Interpreter
 
             return true;
         }
+
 #pragma warning restore IDE0051
     }
 }

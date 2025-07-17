@@ -10,7 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-namespace ACAT.Lib.Core.ActuatorManagement.UI
+namespace ACAT.Core.ActuatorManagement.UI
 {
     partial class EditKeyboardActuatorSwitchForm
     {

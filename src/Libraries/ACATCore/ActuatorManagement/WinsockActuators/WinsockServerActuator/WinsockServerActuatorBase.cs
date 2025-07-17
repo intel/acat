@@ -13,12 +13,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Text;
 
-namespace ACAT.Lib.Core.InputActuators
+namespace ACAT.Core.InputActuators
 {
     /// <summary>
     /// Represents the base class for an actuator receives switch triggers from the a
@@ -110,7 +110,7 @@ namespace ACAT.Lib.Core.InputActuators
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     if (disposing)
                     {

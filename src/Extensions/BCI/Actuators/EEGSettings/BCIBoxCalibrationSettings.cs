@@ -11,7 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
 using System;
 using System.Xml.Serialization;
 

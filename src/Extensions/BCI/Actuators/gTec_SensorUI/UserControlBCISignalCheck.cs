@@ -26,6 +26,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using ACAT.Extensions.BCI.Actuators;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
@@ -182,14 +183,14 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             // Load images for signal quality gradient / heatmap
             _signalQualityGradientImages = new Image[8];
-            _signalQualityGradientImages[0] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel; // for heatmap - 0 is the same as 1 accepted channel
-            _signalQualityGradientImages[1] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel;
-            _signalQualityGradientImages[2] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_2AcceptableChannels;
-            _signalQualityGradientImages[3] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_3AcceptableChannels;
-            _signalQualityGradientImages[4] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_4AcceptableChannels;
-            _signalQualityGradientImages[5] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_5AcceptableChannels;
-            _signalQualityGradientImages[6] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_6AcceptableChannels;
-            _signalQualityGradientImages[7] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_7AcceptableChannels;
+            _signalQualityGradientImages[0] = global::ACAT.Extensions.BCI.Actuators.gTecSensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel; // for heatmap - 0 is the same as 1 accepted channel
+            _signalQualityGradientImages[1] = global::ACAT.Extensions.BCI.Actuators.gTecSensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel;
+            _signalQualityGradientImages[2] = global::ACAT.Extensions.BCI.Actuators.gTecSensorUI.Properties.Resources.signalQualityGradient_2AcceptableChannels;
+            _signalQualityGradientImages[3] = global::ACAT.Extensions.BCI.Actuators.gTecSensorUI.Properties.Resources.signalQualityGradient_3AcceptableChannels;
+            _signalQualityGradientImages[4] = global::ACAT.Extensions.BCI.Actuators.gTecSensorUI.Properties.Resources.signalQualityGradient_4AcceptableChannels;
+            _signalQualityGradientImages[5] = global::ACAT.Extensions.BCI.Actuators.gTecSensorUI.Properties.Resources.signalQualityGradient_5AcceptableChannels;
+            _signalQualityGradientImages[6] = global::ACAT.Extensions.BCI.Actuators.gTecSensorUI.Properties.Resources.signalQualityGradient_6AcceptableChannels;
+            _signalQualityGradientImages[7] = global::ACAT.Extensions.BCI.Actuators.gTecSensorUI.Properties.Resources.signalQualityGradient_7AcceptableChannels;
             //_signalQualityGradientImages[8] = global::gTecSensorUI.Properties.Resources.signalQualityGradient_8AcceptableChannels;
 
             // Initialize colors so don't have to constantly create them
@@ -245,7 +246,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             for (int chIdx = 0; chIdx < _numChannels; chIdx++)
             {
                 //////// GetData() function already filters data ////////
-                _ = _unfilteredChannelData.GetRow(chIdx);
+                double[] unfilteredChannelData = _unfilteredChannelData.GetRow(chIdx);
 
                 //////// BCI Default Filter - Notch and FrontEnd ////////
                 double[] filteredChanelData = _filteredChannelData.GetRow(chIdx);

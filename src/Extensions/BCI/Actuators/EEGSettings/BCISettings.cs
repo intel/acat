@@ -620,7 +620,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             CrossValidation_NumFolds = 10;
             CrossaValidation_SortMethod = "sequential";
 
-            DataParser_UseSoftwareTrigers = false;
+            DataParser_UseSoftwareTrigers = true;
 
             // Required Channels
             Classifier_EnableChannel1 = true;
@@ -737,8 +737,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
 
             //// Default ranges for parameters with Cap attached
 
-            SignalQuality_RailingGoodMaxThreshold​ = 10;
-            SignalQuality_RailingOkMaxThreshold​ = 20;
+            SignalQuality_RailingGoodMaxThreshold​ = 7;
+            SignalQuality_RailingOkMaxThreshold​ = 10;
             SignalQuality_ImpedanceGoodMaxThreshold​ = 100;
             SignalQuality_ImpedanceOkMaxThreshold​ = 200;
 

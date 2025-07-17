@@ -151,7 +151,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // Get test flag saying whether we are actually using the sensor or not
             try
             {
-                _Testing_useSensor = BCIGtecActuatorSettings.Settings.Testing_UseSensor;
+                _Testing_useSensor = BCIActuatorSettings.Settings.Testing_UseSensor;
             }
             catch (Exception ex)
             {
@@ -255,7 +255,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     {
                         var thread = new Thread(delegate ()
                         {
-                            gTecBCI.Start(BCIGtecActuatorSettings.Settings.GTecDeviceName);
+                            gTecBCI.Start(BCIActuatorSettings.Settings.GTecDeviceName);
                         });
                         thread.Start();
                         thread.Join();
@@ -393,8 +393,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                         // User already did signal check within acceptable time frame and the result was good
 
                         // Save SignalQuality_RecheckNeeded
-                        BCIGtecActuatorSettings.Settings.SignalControl_RecheckNeeded = false;
-                        BCIGtecActuatorSettings.Save();
+                        BCIActuatorSettings.Settings.SignalControl_RecheckNeeded = false;
+                        BCIActuatorSettings.Save();
 
                         // We are exiting - Call Exit function with lost connection flag set to false
                         Exit(false);
@@ -402,8 +402,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     else
                     {
                         // Save SignalQuality_RecheckNeeded
-                        BCIGtecActuatorSettings.Settings.SignalControl_RecheckNeeded = true;
-                        BCIGtecActuatorSettings.Save();
+                        BCIActuatorSettings.Settings.SignalControl_RecheckNeeded = true;
+                        BCIActuatorSettings.Save();
 
                         // Go to screen prompting user for correct filter setting (start of signal check process)
                         _currentOnboardingUserState = OnboardingUserState.PromptUser_FilterSettings;
@@ -420,23 +420,23 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     {
                         // DAQ_NotchFilterIdx = 1; //50Hz
                         // DAQ_NotchFilterIdx = 2; //60Hz
-                        BCIGtecActuatorSettings.Settings.DAQ_NotchFilterIdx = 2;
+                        BCIActuatorSettings.Settings.DAQ_NotchFilterIdx = 2;
                     }
                     else
                     {
-                        BCIGtecActuatorSettings.Settings.DAQ_NotchFilterIdx = 1;
+                        BCIActuatorSettings.Settings.DAQ_NotchFilterIdx = 1;
                     }
 
                     if (_mainForm._userControlPromptBCIFIlterSettings.checkBoxDontShowStartup.Checked)
                     {
-                        BCIGtecActuatorSettings.Settings.DAQ_ShowFilterSettings = false;
+                        BCIActuatorSettings.Settings.DAQ_ShowFilterSettings = false;
                     }
                     else
                     {
-                        BCIGtecActuatorSettings.Settings.DAQ_ShowFilterSettings = true;
+                        BCIActuatorSettings.Settings.DAQ_ShowFilterSettings = true;
                     }
 
-                    BCIGtecActuatorSettings.Save();
+                    BCIActuatorSettings.Save();
 
                     // Go to signal check screen
                     _currentOnboardingUserState = OnboardingUserState.BCISignalCheck;
@@ -454,7 +454,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
                     // Get current signal quality check status (user currently passes or fails the checks)
                     // Is updated every INTERVAL_UPDATE_OVERALL_SIGNAL_QUALITY_STATUS_MS while user is in signal check
-                    bool userPassedLastSignalQualityCheck = BCIGtecActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck;
+                    bool userPassedLastSignalQualityCheck = BCIActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck;
                     if (userPassedLastSignalQualityCheck)
                     {
                         Log.Debug("User passed most recent signal quality check");
@@ -462,7 +462,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     }
 
                     // Check if testing parameter set to ignore signal quality check result
-                    if (BCIGtecActuatorSettings.Settings.Testing_IgnoreSignalTestResultDuringOnboarding)
+                    if (BCIActuatorSettings.Settings.Testing_IgnoreSignalTestResultDuringOnboarding)
                     {
                         Log.Debug("BCIGtecActuatorSettings.Testing_IgnoreSignalTestResultDuringOnboarding = true");
                         exitBCIOnboarding = true;
@@ -480,10 +480,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     bool[] enabledChannels = new bool[16];
                     int[] railingValues = new int[16];
                     int chnIdx = 0;
-                    while (chnIdx < BCIGtecActuatorSettings.Settings.DAQ_NumEEGChannels)
+                    while (chnIdx < BCIActuatorSettings.Settings.DAQ_NumEEGChannels)
                     {
                         channelNames[chnIdx] = UserControlBCISignalCheck._eegChannels[chnIdx]._electrodeName;
-                        enabledChannels[chnIdx] = BCIGtecActuatorSettings.Settings.GetClassifier_EnableChannel(chnIdx);
+                        enabledChannels[chnIdx] = BCIActuatorSettings.Settings.GetClassifier_EnableChannel(chnIdx);
                         railingValues[chnIdx] = (int)UserControlBCISignalCheck._eegChannels[chnIdx].lastRailingResult;
                         chnIdx += 1;
                     }
@@ -501,7 +501,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     {
                         // Do not modify Classifier_EnableChannel1-16, that's up to the user
                         // Just save settings, set appropriate flags, and exit
-                        BCIGtecActuatorSettings.Save(); // Save settings
+                        BCIActuatorSettings.Save(); // Save settings
 
                         ExitOnboardingEarly = false; // Set global flag denoting onboarding was not exited early
 
@@ -536,11 +536,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
 
             // Always check time last impedance test was run (all electrodes tested) and update UI accordingly
-            long timestampPrevImpedanceTest = BCIGtecActuatorSettings.Settings.SignalQuality_TimeOfLastImpedanceCheck;
+            long timestampPrevImpedanceTest = BCIActuatorSettings.Settings.SignalQuality_TimeOfLastImpedanceCheck;
             long timestampNow = DateTimeOffset.Now.ToUnixTimeSeconds();
             long secDiff = timestampNow - timestampPrevImpedanceTest;
             double minElapsedPrevSignalQualityCheck = ((double)secDiff) / 60;
-            double maxTimeMins = (double)BCIGtecActuatorSettings.Settings.SignalQuality_MaxTimeMinsElapsedSinceLastImpedanceCheck​;
+            double maxTimeMins = (double)BCIActuatorSettings.Settings.SignalQuality_MaxTimeMinsElapsedSinceLastImpedanceCheck​;
             bool maxTimeHasElapsed = false;
             if (minElapsedPrevSignalQualityCheck >= maxTimeMins)
                 maxTimeHasElapsed = true;
@@ -550,7 +550,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // Always check if user passed the last overall signal quality check that was executed
             // If max time has not passed, but user did not pass their most recent overall signal quality check,
             // user must do tests and calibration (SignalControl_RecheckNeeded = true)
-            bool userPassedLastSignalQualityCheck = BCIGtecActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck;
+            bool userPassedLastSignalQualityCheck = BCIActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck;
 
 
             // Initialize parameters and set processing variables / UI elements in main signal check screen accordingly

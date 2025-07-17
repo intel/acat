@@ -85,28 +85,36 @@ namespace ACAT.Core.Widgets
         {
             base.SetWidgetAttribute(attribute);
 
-            if (widgetAttribute.FontName != null)
+            if (UIControl.Font == null)
             {
-                _fontFamily = Fonts.Instance.GetFontFamily(new[]
-                                                        {   widgetAttribute.FontName,
-                                                            CoreGlobals.AppPreferences.FontName });
-                if (_fontFamily != null)
+                if (widgetAttribute.FontName != null)
                 {
-                    FontStyle fontStyle = FontStyle.Regular;
-                    if (widgetAttribute.FontBold)
+                    _fontFamily = Fonts.Instance.GetFontFamily(new[]
+                                                            {   widgetAttribute.FontName,
+                                                                CoreGlobals.AppPreferences.FontName });
+                    if (_fontFamily != null)
                     {
-                        fontStyle |= FontStyle.Bold;
+                        FontStyle fontStyle = FontStyle.Regular;
+                        if (widgetAttribute.FontBold)
+                        {
+                            fontStyle |= FontStyle.Bold;
+                        }
+                        if (widgetAttribute.FontItalic)
+                        {
+                            fontStyle |= FontStyle.Italic;
+                        }
+                        _font = new Font(_fontFamily, widgetAttribute.FontSize, fontStyle);
+                        UIControl.Font = _font;
+                        _originalFontSize = _font.Size;
                     }
-                    if (widgetAttribute.FontItalic)
-                    {
-                        fontStyle |= FontStyle.Italic;
-                    }
-                    _font = new Font(_fontFamily, widgetAttribute.FontSize, fontStyle);
-                    UIControl.Font = _font;
                 }
-
             }
-            _originalFontSize = _font.Size;
+            else
+            {
+                _fontFamily = UIControl.Font.FontFamily;
+                _originalFontSize = UIControl.Font.Size;
+                _font = UIControl.Font;
+            }
 
             if (!string.IsNullOrEmpty(widgetAttribute.Label))
             {

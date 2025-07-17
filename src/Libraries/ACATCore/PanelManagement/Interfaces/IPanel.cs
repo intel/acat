@@ -5,9 +5,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// ALL panels in ACAT - Scanners, Dialogs, Menus
@@ -19,7 +19,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// Gets the Descriptor for the panel. Descriptor
         /// contains name and ID of the panel
         /// </summary>
-        IDescriptor Descriptor { get; }
+        ClassDescriptorAttribute Descriptor { get; }
 
         /// <summary>
         /// Gets the PanelCommon interface that contains properties

@@ -5,15 +5,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.Utility;
 using ACATResources;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.Utility;
 using System;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension.CommandHandlers
+namespace ACAT.Extension.CommandHandlers
 {
     /// <summary>
     /// Shows the various settings dialogs such as General,
@@ -122,7 +122,7 @@ namespace ACAT.Lib.Extension.CommandHandlers
             }
             catch (Exception e)
             {
-                Log.Debug("Error creating dialog of type " + name + ". Exception: " + e);
+                Log.Exception("Error creating dialog of type " + name + ". Exception: " + e);
             }
         }
     }

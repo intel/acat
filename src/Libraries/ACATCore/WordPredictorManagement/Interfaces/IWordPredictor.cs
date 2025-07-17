@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace ACAT.Lib.Core.WordPredictionManagement
+namespace ACAT.Core.WordPredictionManagement
 {
     /// <summary>
     /// Word prediction mode changed
@@ -72,7 +72,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
     /// more accurate predictions based on the user.
     /// All WordPredictors should implement this interface.
     /// </summary>
-    public interface IWordPredictor : IDisposable
+    public interface IWordPredictor : IPluginExtension, IDisposable
     {
         /// <summary>
         /// Event to indicate mode has changed
@@ -98,7 +98,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// Returns a descriptor which contains a user readable name, a
         /// short textual description and a unique GUID.
         /// </summary>
-        IDescriptor Descriptor { get; }
+        ClassDescriptorAttribute Descriptor { get; }
 
         /// <summary>
         /// Whether puncutations should be a part of the prediction. For

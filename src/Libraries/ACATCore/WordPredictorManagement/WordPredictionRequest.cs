@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.WordPredictionManagement
+namespace ACAT.Core.WordPredictionManagement
 {
     public enum PredictionTypes
     {
@@ -16,7 +16,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
     }
 
     /// <summary>
-    /// Represents a request for async word prediction 
+    /// Represents a request for async word prediction
     /// </summary>
     public class WordPredictionRequest
     {

@@ -22,10 +22,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.Utility;
 
-namespace ACAT.Extensions.Default.Actuators.SampleActuator
+namespace ACAT.Extensions.Actuators.SampleActuator
 {
     public class SampleActuatorSwitch : ActuatorSwitchBase
     {
@@ -61,7 +61,7 @@ namespace ACAT.Extensions.Default.Actuators.SampleActuator
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     if (disposing)
                     {

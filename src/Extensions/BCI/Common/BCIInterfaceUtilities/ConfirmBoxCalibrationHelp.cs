@@ -6,7 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using ACATResources;
 using System;
 using System.Drawing;
@@ -18,7 +18,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
     /// A message box with three button options
     /// </summary>
 
-    [Descriptor("E4B7E06F-B1F3-48EC-AF5A-557AB2A809C8",
+    [ClassDescriptor("E4B7E06F-B1F3-48EC-AF5A-557AB2A809C8",
                 "ConfirmBoxCalibrationHelp",
                 "Application window used to display a help for calibration")]
     public partial class ConfirmBoxCalibrationHelp : Form

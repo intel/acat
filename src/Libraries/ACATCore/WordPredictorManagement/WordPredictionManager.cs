@@ -5,10 +5,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -16,7 +16,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.WordPredictionManagement
+namespace ACAT.Core.WordPredictionManagement
 {
     /// <summary>
     /// Manages word prediction engines.  The engines are  DLLs
@@ -31,7 +31,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// <summary>
         /// Name of the folder under which the Word predictor DLLs are located
         /// </summary>
-        public static String WordPredictorsRootName = "WordPredictors";
+        public static String WordPredictorsRootName = "";
 
         /// <summary>
         /// Word prediction manager instance
@@ -301,10 +301,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// <returns>true on success</returns>
         public bool SetActiveWordPredictor(CultureInfo ci = null)
         {
-            if (ci == null)
-            {
-                ci = CultureInfo.DefaultThreadCurrentUICulture;
-            }
+            ci ??= CultureInfo.DefaultThreadCurrentUICulture;
 
             Guid guid = _wordPredictors.GetPreferredOrDefaultByCulture(ci);
             Guid cultureNeutralGuid = _wordPredictors.GetPreferredOrDefaultByCulture(null);
@@ -383,7 +380,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 Context.EvtCultureChanged -= Context_EvtCultureChanged;
 
@@ -434,7 +431,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Unable to load WordPredictor " + type + ", assembly: " + type.Assembly.FullName + ". Exception: " + ex);
+                Log.Exception("Unable to load WordPredictor " + type + ", assembly: " + type.Assembly.FullName + ". Exception: " + ex);
                 retVal = false;
             }
 

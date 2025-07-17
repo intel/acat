@@ -12,11 +12,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.Utility.NamedPipe;
-using ACAT.Lib.Core.WordPredictionManagement;
-using ACAT.Lib.Extension;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.Utility.NamedPipe;
+using ACAT.Core.WordPredictionManagement;
+using ACAT.Extension;
 using System;
 using System.Globalization;
 using System.IO;
@@ -25,7 +25,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
     /// <summary>
     /// Type os the events being tracked
@@ -135,7 +135,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("ConvAssist ClosePipe Error:" + ex.Message);
+                Log.Exception("ConvAssist ClosePipe Error:" + ex.Message);
                 return false;
             }
             clientConected = false;
@@ -156,7 +156,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("Exception in createPipeServer: " + ex);
+                Log.Exception("Exception in createPipeServer: " + ex);
             }
 
             return success;
@@ -197,11 +197,10 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("ConvAssist AppEvent: " + ex.Message);
+                Log.Exception("ConvAssist AppEvent: " + ex.Message);
             }
             return true;
         }
-
 
         public async Task SendParams()
         {
@@ -216,7 +215,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in param enable log: " + ex);
+                Log.Exception("Error in param enable log: " + ex);
             }
 
             try
@@ -229,7 +228,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in param Log path: " + ex);
+                Log.Exception("Error in param Log path: " + ex);
             }
 
             try
@@ -243,7 +242,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in paramSuggestions: " + ex);
+                Log.Exception("Error in paramSuggestions: " + ex);
             }
 
             try
@@ -257,7 +256,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in paramTestPred: " + ex);
+                Log.Exception("Error in paramTestPred: " + ex);
             }
 
             try
@@ -271,7 +270,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in paramRetrieveACC: " + ex);
+                Log.Exception("Error in paramRetrieveACC: " + ex);
             }
 
             try
@@ -286,7 +285,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in paramPathStatic: " + ex);
+                Log.Exception("Error in paramPathStatic: " + ex);
             }
 
             try
@@ -301,7 +300,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in paramPathPersonalized: " + ex);
+                Log.Exception("Error in paramPathPersonalized: " + ex);
             }
 
             try
@@ -318,7 +317,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in paramPath: " + ex);
+                Log.Exception("Error in paramPath: " + ex);
             }
 
             // ConvAssist needs some time to get ready.  Send a message to check if it is ready
@@ -328,7 +327,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             bool clientready = false;
             var tcs = new TaskCompletionSource<bool>();
 
-            Task.Run(async () =>
+            await Task.Run(async () =>
             {
                 while (!clientready)
                 {
@@ -343,9 +342,8 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                     await Task.Delay(1000);
                 }
             });
-                
+
             bool timeout = await ConvAssistUtils.WithTimeout(tcs.Task, TimeSpan.FromSeconds(30));
-            
         }
 
         /// <summary>
@@ -370,14 +368,14 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                         tcs.SetException(ex);
                     }
                 }, new PipeServerStateConvAssist(NamedPipeServer, token));
-                
+
                 try
                 {
                     success = await ConvAssistUtils.WithTimeout(tcs.Task, TimeSpan.FromSeconds(timeout_sec));
                 }
                 catch (TimeoutException)
                 {
-                    Log.Debug("ConvAssist StartNamedPipeServer Timeout");
+                    Log.Exception("ConvAssist StartNamedPipeServer Timeout");
                 }
 
                 if (success && send_params)
@@ -402,10 +400,8 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 PipeServer_EvtClientConnected();
             }
 
-
             return success;
         }
-        
 
         /// <summary>
         /// Stops the pipe server.
@@ -473,7 +469,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch
             {
-
             }
             finally
             {
@@ -536,7 +531,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("ConvAssist WriteSync " + ex);
+                Log.Exception("ConvAssist WriteSync " + ex);
             }
             Log.Debug("ConvAssist WriteSync Lock off");
             return message;
@@ -662,7 +657,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("ConvAssist Error in writeCallback: " + ex.Message);
+                Log.Exception("ConvAssist Error in writeCallback: " + ex.Message);
             }
         }
     }

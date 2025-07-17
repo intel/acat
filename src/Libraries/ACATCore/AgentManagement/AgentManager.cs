@@ -5,13 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.AgentManagement.TextInterface;
-using ACAT.Lib.Core.InputActuators;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.AgentManagement.TextInterface;
+using ACAT.Core.InputActuators;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// For the event raised when an agent exits
@@ -105,12 +105,12 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <summary>
         /// Root directory from which application agents will be loaded
         /// </summary>
-        public static string AppAgentsRootDir = "AppAgents";
+        public static string AppAgentsRootDir = "";
 
         /// <summary>
         /// Root directory from which functional agents will be loaded
         /// </summary>
-        public static String FunctionalAgentsRootDir = "FunctionalAgents";
+        public static String FunctionalAgentsRootDir = "";
 
         /// <summary>
         /// Agent to handle Dialogs
@@ -661,7 +661,7 @@ namespace ACAT.Lib.Core.AgentManagement
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public void OnPanelClosed(String panelClass)
         {
-            Log.Debug();
+            Log.Verbose();
             Log.Debug("panelClass : " + panelClass);
             Log.Debug(" currentAgent: " + _currentAgent);
             if (_currentAgent != null)
@@ -1051,10 +1051,7 @@ namespace ACAT.Lib.Core.AgentManagement
                     // contextual menu, do so
                     if (getContextMenu)
                     {
-                        if (agent == null)
-                        {
-                            agent = _genericAppAgent;
-                        }
+                        agent ??= _genericAppAgent;
 
                         Log.Debug("agent : " + agent.Name);
                         agent.OnContextMenuRequest(monitorInfo);
@@ -1103,7 +1100,7 @@ namespace ACAT.Lib.Core.AgentManagement
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug(ex.ToString());
+                    Log.Exception(ex.ToString());
                 }
                 finally
                 {
@@ -1180,15 +1177,9 @@ namespace ACAT.Lib.Core.AgentManagement
                 }
             }
 
-            if (agent == null)
-            {
-                agent = DefaultAgentForContextSwitchDisable;
-            }
+            agent ??= DefaultAgentForContextSwitchDisable;
 
-            if (agent == null)
-            {
-                agent = _genericAppAgent;
-            }
+            agent ??= _genericAppAgent;
 
             Log.Debug("agent : " + agent.Name);
 
@@ -1218,7 +1209,7 @@ namespace ACAT.Lib.Core.AgentManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -1422,7 +1413,7 @@ namespace ACAT.Lib.Core.AgentManagement
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug(ex.ToString());
+                    Log.Exception(ex.ToString());
                 }
 
                 _notifyTextChangedLock = false;
@@ -1431,7 +1422,7 @@ namespace ACAT.Lib.Core.AgentManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
             finally
             {

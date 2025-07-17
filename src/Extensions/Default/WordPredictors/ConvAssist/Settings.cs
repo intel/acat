@@ -10,11 +10,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
 
-namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
     /// <summary>
     /// Preference settings for the ConvAssist word predictor (English)
@@ -22,7 +24,8 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
     [Serializable]
     public class Settings : PreferencesBase
     {
-        [StringDescriptor("A string of characters that should be filtered out from the predicted words, eg, punctuations")]
+        [Descriptor("A string of characters that should be filtered out from the predicted words, eg, punctuations")]
+        [UIHint("TextBox")]
         public String FilterChars = String.Empty;
 
         /// <summary>
@@ -34,23 +37,30 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <summary>
         /// Set this to true if the language uses diacritics
         /// </summary>
-        [BoolDescriptor("Set this to true if the ConvAssist database for this language requires encoding translation", true)]
+        [Descriptor("Set this to true if the ConvAssist database for this language requires encoding translation")]
+        [UIHint("ToggleSwitch")]
         public bool UseDefaultEncoding = true;
 
-        [BoolDescriptor("Display disclaimer on application startup", true)]
+        [Descriptor("Display disclaimer on application startup")]
+        [UIHint("ToggleSwitch")]
         public bool ShowDisclaimerOnStartup = true;
 
-        [IntDescriptor("Wait time (in seconds) for the ConvAssist executable to load", 60, 500)]
+        [Descriptor("Wait time (in seconds) for the ConvAssist executable to load")]
+        [Range(60, 500)]
+        [UIHint("Slider")]
         public int ConvAssistExeLoadWaitTime = 100;
 
-        [IntDescriptor("Wait time (in secs) for the ConvAssist modules to load", 30, 200)]
+        [Descriptor("Wait time (in secs) for the ConvAssist modules to load")]
+        [Range(30, 200)]
+        [UIHint("Slider")]
         public int ConvAssistModuleLoadWaitTime = 80;
 
-        [BoolDescriptor("Enable small model sentence prediction ")]
+        [Descriptor("Enable small model sentence prediction ")]
+        [UIHint("ToggleSwitch")]
         public bool EnableSmallVocabularySentencePrediction = false;
 
-
-        [BoolDescriptor("Enable sentence prediction")]
+        [Descriptor("Enable sentence prediction")]
+        [UIHint("ToggleSwitch")]
         public bool Test_GeneralSentencePrediction = false;
 
         /// <summary>

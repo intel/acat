@@ -5,10 +5,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WordPredictorManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WordPredictorManagement;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -16,7 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace ACAT.Lib.Core.WordPredictionManagement
+namespace ACAT.Core.WordPredictionManagement
 {
     /// <summary>
     /// Maintains a list of discovered word predictors in an internal cache.
@@ -45,15 +45,18 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// Top level language-specific folder (eg en, fr etc)
         /// </summary>
         private String _dirWalkCurrentCulture;
+        private readonly TypeLoader<IWordPredictor> _WordPredictorsTypeLoader = new();
 
         /// <summary>
         /// Has this object been disposed
         /// </summary>
         private bool _disposed = false;
+
         /// <summary>
         /// If one of the dll found has an error with the certificate
         /// </summary>
         private static volatile bool _DLLError = false;
+
         /// <summary>
         /// The object that holds the preferred word predictors
         /// </summary>
@@ -158,7 +161,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
 
             if (foundTuple != null)
             {
-                IDescriptor descriptor = DescriptorAttribute.GetDescriptor(foundTuple.Item2);
+                ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(foundTuple.Item2);
                 if (descriptor != null)
                 {
                     Log.Debug("Found word predictor for culture " + (ci != null ? ci.TwoLetterISOLanguageName : "Neutral") + "[" + descriptor.Name + "]");
@@ -250,7 +253,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
 
             foreach (Type type in Collection)
             {
-                IDescriptor descriptor = DescriptorAttribute.GetDescriptor(type);
+                ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(type);
                 if (descriptor != null && Equals(guid, descriptor.Id))
                 {
                     Log.Debug("Found word predictor of type " + type);
@@ -258,7 +261,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
                 }
             }
 
-            Log.Debug("Could not find word predictor for id " + guid.ToString());
+            Log.Error($"Could not find word predictor for id {guid.ToString()}");
             return null;
         }
 
@@ -308,7 +311,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 _nullWordPredictor?.Dispose();
 
@@ -329,12 +332,22 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// </summary>
         /// <param name="dir">dir to descend into</param>
         /// <param name="culture">culture (optional) of the word predictor</param>
-        /// <param name="resursive">true if deep-descend</param>
-        private void loadWordPredictorsTypesIntoCache(String dir, String culture, bool resursive = true)
+        /// <param name="recursive">true if deep-descend</param>
+        private void loadWordPredictorsTypesIntoCache(String dir, String culture, bool recursive = true)
         {
-            DirectoryWalker walker = new DirectoryWalker(dir, "*.dll");
+            if (!Directory.Exists(dir))
+            {
+                Log.Warn($"Directory {dir} doesn't exist.");
+                return;
+            }
+            DirectoryWalker walker = new DirectoryWalker(dir, "ACAT.Extensions.WordPredictors.*.dll");
             _dirWalkCurrentCulture = culture;
             walker.Walk(new OnFileFoundDelegate(onFileFound));
+
+            foreach (var predictor in _WordPredictorsTypeLoader?.LoadedTypes)
+            {
+                Add(predictor.Key, _dirWalkCurrentCulture, predictor.Value);
+            }
         }
 
         /// <summary>
@@ -346,49 +359,13 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         {
             try
             {
-
-                var retVal = VerifyDigitalSignature.ValidateCertificate(dllName);
-                if (retVal && !_DLLError)
-                {
-                    try
-                    {
-                        VerifyDigitalSignature.Verify(dllName);
-                    }
-                    catch (Exception ex)
-                    {
-                        ConfirmBoxOneOption ConfirmBoxOneOption = new ConfirmBoxOneOption
-                        {
-                            Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n WordPredictors",
-                            DecisionPrompt = "ok",
-                            LabelFont = 10
-                        };
-                        ConfirmBoxOneOption.BringToFront();
-                        ConfirmBoxOneOption.TopMost = true;
-                        ConfirmBoxOneOption.ShowDialog();
-                        ConfirmBoxOneOption.Dispose();
-                        _DLLError = true;
-                    }
-                }
-                if (!_DLLError)
-                {
-                    foreach (Type type in Assembly.LoadFile(dllName).GetTypes())
-                    {
-                        if (typeof(IWordPredictor).IsAssignableFrom(type))
-                        {
-                            DescriptorAttribute attr = DescriptorAttribute.GetDescriptor(type);
-                            if (attr != null && attr.Id != Guid.Empty)
-                            {
-                                Add(attr.Id, _dirWalkCurrentCulture, type);
-                                break;
-                            }
-                        }
-                    }
-                }
+                _WordPredictorsTypeLoader.LoadFromAssembly(dllName);
 
             }
             catch (Exception ex)
             {
-                Log.Debug("Could get types from assembly " + dllName + ". Exception : " + ex.ToString());
+                Log.Exception($"Error loading actuator from {dllName}: {ex.Message}");
+                _DLLError = true;
             }
         }
     }

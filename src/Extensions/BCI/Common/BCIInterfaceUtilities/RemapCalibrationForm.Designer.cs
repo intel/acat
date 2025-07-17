@@ -1,4 +1,5 @@
 ﻿
+using ACAT.Core.WidgetManagement;
 using ACATResources;
 
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
@@ -46,31 +47,31 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.label3 = new System.Windows.Forms.Label();
             this.tableLayoutWord = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonOpcWord = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonOpcWord = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutKeybaordRight = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonOpcKeyboardR = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonOpcKeyboardR = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutKeyboardLeft = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonOpcKeyboardL = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonOpcKeyboardL = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutSentence = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonOpcSentence = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonOpcSentence = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutBox = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonOpcBox = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonOpcBox = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonRestoreDefaults = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonRestoreDefaults = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
             this.comboBoxBox = new System.Windows.Forms.ComboBox();
             this.webBrowser = new System.Windows.Forms.WebBrowser();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.scannerRoundedButtonControl3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.scannerRoundedButtonControl3 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonDone = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonDone = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonCancel = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonCancel = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutParameters.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -880,32 +881,32 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 
         #endregion
         private System.Windows.Forms.TableLayoutPanel tableLayoutParameters;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl scannerRoundedButtonControl3;
+        private ScannerRoundedButtonControl scannerRoundedButtonControl3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonDone;
+        private ScannerRoundedButtonControl ButtonDone;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonCancel;
+        private ScannerRoundedButtonControl ButtonCancel;
         private System.Windows.Forms.Label labelTitle;
         private System.Windows.Forms.TableLayoutPanel tableLayoutBox;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonOpcBox;
+        private ScannerRoundedButtonControl ButtonOpcBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
         private System.Windows.Forms.TableLayoutPanel tableLayoutSentence;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonOpcSentence;
+        private ScannerRoundedButtonControl ButtonOpcSentence;
         private System.Windows.Forms.TableLayoutPanel tableLayoutKeyboardLeft;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonOpcKeyboardL;
+        private ScannerRoundedButtonControl ButtonOpcKeyboardL;
         private System.Windows.Forms.TableLayoutPanel tableLayoutWord;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonOpcWord;
+        private ScannerRoundedButtonControl ButtonOpcWord;
         private System.Windows.Forms.TableLayoutPanel tableLayoutKeybaordRight;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonOpcKeyboardR;
+        private ScannerRoundedButtonControl ButtonOpcKeyboardR;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonRestoreDefaults;
+        private ScannerRoundedButtonControl ButtonRestoreDefaults;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label label4;

@@ -5,15 +5,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AbbreviationsManagement;
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.AnimationManagement;
-using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.Interpreter;
-using ACAT.Lib.Core.ThemeManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
-using ACAT.Lib.Core.Widgets;
+using ACAT.Core.AbbreviationsManagement;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.AnimationManagement;
+using ACAT.Core.Audit;
+using ACAT.Core.Interpreter;
+using ACAT.Core.ThemeManagement;
+using ACAT.Core.UserControlManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Core.Widgets;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -21,7 +22,7 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// This is a helper class for all scanners.  It contains functions
@@ -59,7 +60,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// The animation manager object.  Manages all animations
         /// </summary>
-        private AnimationManager _animationManager;
+        private PanelAnimationManager _animationManager;
 
         /// <summary>
         /// Aspect ratio of the form at design time
@@ -109,9 +110,16 @@ namespace ACAT.Lib.Core.PanelManagement
         private Widget _rootWidget;
 
         /// <summary>
+        /// Is the scanner opacity != 1.0?
+        /// </summary>
+        private bool _scannerFaded;
+
+        /// <summary>
         /// The status bar object for the scanner
         /// </summary>
         private ScannerStatusBar _scannerStatusBar;
+
+        private readonly UserControlManager _userControlManager;
 
         /// <summary>
         /// The widget manager object.  Maintains a list of all
@@ -140,6 +148,8 @@ namespace ACAT.Lib.Core.PanelManagement
             TextController = new TextController();
             HideScannerOnIdle = CoreGlobals.AppPreferences.HideScannerOnIdle;
             _syncLock = new SyncLock();
+
+            _userControlManager = new UserControlManager(iScannerPanel, TextController);
         }
 
         /// <summary>
@@ -182,7 +192,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// Gets the Animation Manager object
         /// </summary>
-        public AnimationManager AnimationManager
+        public PanelAnimationManager AnimationManager
         { get { return _animationManager; } }
 
         /// <summary>
@@ -224,7 +234,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public ScannerPositionSizeController PositionSizeController { get; private set; }
 
-        public ScannerPositionSizeController2 PositionSizeController2 { get; private set; }
+        //public ScannerPositionSizeController2 PositionSizeController2 { get; private set; }
 
         /// <summary>
         /// Gets or sets the preview mode of the scanner.  This mode
@@ -314,6 +324,14 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public TextController TextController { get; private set; }
 
+        public UserControlManager UserControlManager
+        {
+            get
+            {
+                return _userControlManager;
+            }
+        }
+
         /// <summary>
         /// Gets the WidgetManager objet
         /// </summary>
@@ -368,9 +386,10 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public void FadeScanner()
         {
-            _windowOverlapWatchdog.Pause();
+            _windowOverlapWatchdog?.Pause();
+
             //Windows.SetOpacity(ScannerForm, 0.7f);
-            //_scannerFaded = true;
+            _scannerFaded = true;
         }
 
         /// <summary>
@@ -398,7 +417,7 @@ namespace ACAT.Lib.Core.PanelManagement
                 var control = Control.FromHandle(m.HWnd);
                 if (control != null && (control == ScannerForm || ScannerForm.Contains(control)))
                 {
-                    _animationManager.Interrupt();
+                    _userControlManager.StopTopLevelAnimation();
                 }
             }
 
@@ -451,7 +470,17 @@ namespace ACAT.Lib.Core.PanelManagement
 
             _dialogMode = startupArg.DialogMode;
 
-            var panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(startupArg.PanelClass);
+            PanelConfigMapEntry panelConfigMapEntry = null;
+
+            if (startupArg.PanelConfig != null)
+            {
+                panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntryForConfig(startupArg.PanelConfig);
+            }
+            else
+            {
+                panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(startupArg.PanelClass);
+            }
+
             if (panelConfigMapEntry == null) // did not find the panel
             {
                 return false;
@@ -480,6 +509,8 @@ namespace ACAT.Lib.Core.PanelManagement
                 _windowOverlapWatchdog = new WindowOverlapWatchdog(ScannerForm);
 
                 WindowActivityMonitor.EvtWindowMonitorHeartbeat += WindowActivityMonitor_EvtWindowMonitorHeartbeat;
+
+                _userControlManager.Initialize();
             }
 
             Context.AppPanelManager.EvtCalibrationStartNotify += AppPanelManager_EvtCalibrationStartNotify;
@@ -564,6 +595,8 @@ namespace ACAT.Lib.Core.PanelManagement
                 _animationManager.EvtPlayerStateChanged -= animationManager_EvtPlayerStateChanged;
             }
 
+            _userControlManager.OnClosing();
+
             Context.AppPanelManager.EvtPanelPreShow -= AppPanelManager_EvtPanelPreShow;
 
             CoreGlobals.AppPreferences.EvtPreferencesChanged -= AppPreferences_EvtPreferencesChanged;
@@ -608,6 +641,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// Call this function in the OnLoad event handler for the form.
         /// Initializates the controllers, sets scanner position
         /// </summary>
+        /// <param name="resetTalkWindowPosition"></param>
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public void OnLoad()
         {
@@ -628,6 +662,8 @@ namespace ACAT.Lib.Core.PanelManagement
             setWidgetEnabledStates(WindowActivityMonitor.GetForegroundWindowInfo());
 
             Context.AppPanelManager.EvtDisplaySettingsChanged += AppPanelManager_EvtDisplaySettingsChanged;
+
+            _userControlManager.StartTopLevelAnimation();
         }
 
         /// <summary>
@@ -635,6 +671,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public void OnPause(PauseDisplayMode mode = PauseDisplayMode.Default)
         {
+            Log.Debug("CALIBTEST_isPaused: " + _isPaused);
             if (_isPaused)
             {
                 return;
@@ -646,16 +683,18 @@ namespace ACAT.Lib.Core.PanelManagement
             {
                 if (DialogMode)
                 {
+                    Log.Debug("CALIBTEST Dialog mode is true. Returning");
                     return;
                 }
 
+                Log.Debug("CALIBTEST Pausing animation manager");
                 AnimationManager.Pause();
-
+                Log.Debug("CALIBTEST calling setDisplayStateOnpause");
                 setDisplayStateOnPause(mode);
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
@@ -664,6 +703,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public void OnResume()
         {
+            Log.Debug("CALIBTEST Scannercommon2 OnResume. is_paused: " + _isPaused);
             if (!_isPaused)
             {
                 return;
@@ -675,8 +715,10 @@ namespace ACAT.Lib.Core.PanelManagement
             {
                 PositionSizeController.ScaleForm();
 
+                Log.Debug("CALIBTEST Scannercommon2 Showing scanner");
                 ShowScanner();
 
+                Log.Debug("CALIBTEST Calling Animationmanager resume");
                 AnimationManager.Resume();
 
                 updateStatusBar();
@@ -688,13 +730,31 @@ namespace ACAT.Lib.Core.PanelManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
         public void PauseOverlapWatchdog()
         {
             _windowOverlapWatchdog?.Pause();
+        }
+
+        /// <summary>
+        /// Resizes form to fit the height of the desktop if it
+        /// exceeds the size
+        /// </summary>
+        /// <param name="form">the form</param>
+        public void ResizeToFitDesktop(Form form)
+        {
+            int desktopHeight = Screen.PrimaryScreen.WorkingArea.Height;
+            if (form.Height > desktopHeight)
+            {
+                float ratio = ((float)desktopHeight / form.Height);
+
+                form.Top = 0;
+                form.Height = desktopHeight;
+                form.Width = (int)((float)form.Width * ratio);
+            }
         }
 
         public void ResumeOverlapWatchdog()
@@ -749,7 +809,12 @@ namespace ACAT.Lib.Core.PanelManagement
                 Windows.SetVisible(ScannerForm, true);
                 Windows.SetTopMost(ScannerForm);
 
-                ResumeOverlapWatchdog();
+                if (_scannerFaded)
+                {
+                    Windows.SetOpacity(ScannerForm, 1.0f);
+                    _windowOverlapWatchdog?.Resume();
+                    _scannerFaded = false;
+                }
             }
         }
 
@@ -762,7 +827,7 @@ namespace ACAT.Lib.Core.PanelManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -923,7 +988,7 @@ namespace ACAT.Lib.Core.PanelManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
@@ -966,28 +1031,26 @@ namespace ACAT.Lib.Core.PanelManagement
                 {
                     bool abbreviationDetected = false;
 
-                    using (AgentContext context = Context.AppAgentMgr.ActiveContext())
+                    using AgentContext context = Context.AppAgentMgr.ActiveContext();
+                    if (!DialogMode)
                     {
-                        if (!DialogMode)
+                        if (context.TextAgent().ExpandAbbreviations())
                         {
-                            if (context.TextAgent().ExpandAbbreviations())
-                            {
-                                abbreviationDetected = checkAndExpandAbbreviation();
-                            }
+                            abbreviationDetected = checkAndExpandAbbreviation();
                         }
+                    }
 
-                        if (!abbreviationDetected && !context.TextAgent().SupportsSpellCheck())
-                        {
-                            Log.Debug("Calling spellccheck " + Kernel32Interop.GetCurrentThreadId());
-                            TextController.SpellCheck();
-                            Log.Debug("Returned from spellccheck " + Kernel32Interop.GetCurrentThreadId());
-                        }
+                    if (!abbreviationDetected && !context.TextAgent().SupportsSpellCheck())
+                    {
+                        Log.Debug("Calling spellccheck " + Kernel32Interop.GetCurrentThreadId());
+                        TextController.SpellCheck();
+                        Log.Debug("Returned from spellccheck " + Kernel32Interop.GetCurrentThreadId());
                     }
                 }
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
             Log.Debug("Leave " + Kernel32Interop.GetCurrentThreadId());
@@ -1000,14 +1063,15 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="e">event args</param>
         private void AppPanelManager_EvtCalibrationEndNotify(object sender, EventArgs e)
         {
+            Log.Debug("CALIBTEST Calibration end notify for " + ScannerForm.Name);
+
             if ((Context.AppPanelManager.GetCurrentForm() as Form) != ScannerForm)
             {
+                Log.Debug("CALIBTESTForm is not the current form. returning " + ScannerForm.Name + " CurrentForm is " + (Context.AppPanelManager.GetCurrentForm() as Form).Name);
                 return;
             }
 
-            Log.Debug("CALIBTEST ScannerCommon Calibration end notify for " + ScannerForm.Name);
-
-            _windowOverlapWatchdog.Resume();
+            _windowOverlapWatchdog?.Resume();
 
             if (_hideScannerOnCalibration)
             {
@@ -1016,7 +1080,7 @@ namespace ACAT.Lib.Core.PanelManagement
             }
             else
             {
-                Log.Debug("CALIBTEST ScannerCommon calling Onresume for " + ScannerForm.Name);
+                Log.Debug("CALIBTESTCalling OnResume for scanner");
                 (ScannerForm as IScannerPanel).OnResume();
             }
         }
@@ -1027,17 +1091,17 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="args">event args</param>
         private void AppPanelManager_EvtCalibrationStartNotify(ActuatorManagement.CalibrationNotifyEventArgs args)
         {
-            Log.Debug("ScannerCommon: Calibration start notify for " + ScannerForm.Name);
+            Log.Debug("CALIBTEST ScannerCommon2: Calibration start notify for " + ScannerForm.Name);
 
             if ((Context.AppPanelManager.GetCurrentForm() as Form) != ScannerForm)
             {
-                Log.Debug("Form is not the current form. returning " + ScannerForm.Name + " CurrentForm is " + (Context.AppPanelManager.GetCurrentForm() as Form).Name);
+                Log.Debug("CALIBTEST Form is not the current form. returning " + ScannerForm.Name + " CurrentForm is " + (Context.AppPanelManager.GetCurrentForm() as Form).Name);
                 return;
             }
 
             if (ScannerForm != null && Windows.GetVisible(ScannerForm))
             {
-                _windowOverlapWatchdog.Pause();
+                _windowOverlapWatchdog?.Pause();
                 if (args.HideScanner)
                 {
                     Windows.SetVisible(ScannerForm, false);
@@ -1045,7 +1109,7 @@ namespace ACAT.Lib.Core.PanelManagement
                 }
                 else
                 {
-                    Log.Debug("Calling onPause for " + ScannerForm.Name);
+                    Log.Debug("CALIBTEST Calling onPause for " + ScannerForm.Name);
 
                     (ScannerForm as IScannerPanel).OnPause();
                 }
@@ -1087,7 +1151,6 @@ namespace ACAT.Lib.Core.PanelManagement
             HideScannerOnIdle = CoreGlobals.AppPreferences.HideScannerOnIdle;
         }
 
-        /// <summary>
         /// Checks if the word at the caret represents an abbreviation
         /// and if it requires expansion, does so
         /// </summary>
@@ -1192,8 +1255,8 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             bool retVal = true;
 
-            _animationManager = new AnimationManager();
-            if (_animationManager.Init(panelConfigMapEntry))
+            _animationManager = new PanelAnimationManager();
+            if (_animationManager.Init(panelConfigMapEntry, _rootWidget))
             {
                 _animationManager.EvtPlayerStateChanged += animationManager_EvtPlayerStateChanged;
             }
@@ -1414,8 +1477,10 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="mode">what to do?</param>
         private void setDisplayStateOnPause(PauseDisplayMode mode)
         {
+            Log.Debug("CALIBTEST scannerocmmon2. setDisplayStateOnPause. mode: " + mode);
             if (mode == PauseDisplayMode.None)
             {
+                Log.Debug("CALIBTEST scannerocmmon2. it is none. Returning");
                 return;
             }
 
@@ -1425,8 +1490,19 @@ namespace ACAT.Lib.Core.PanelManagement
                     HideScanner();
                     break;
 
-                default:
-                    PauseOverlapWatchdog();
+                case PauseDisplayMode.FadeScanner:
+                    FadeScanner();
+                    break;
+
+                case PauseDisplayMode.Default:
+                    if (Context.AppPanelManager.PreShowPanelDisplayMode == DisplayModeTypes.Popup)
+                    {
+                        FadeScanner();
+                    }
+                    else
+                    {
+                        HideScanner();
+                    }
                     break;
             }
         }

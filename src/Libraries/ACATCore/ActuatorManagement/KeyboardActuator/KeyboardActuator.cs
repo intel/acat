@@ -12,16 +12,16 @@
 // switch object.
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.Onboarding;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.Onboarding;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.InputActuators
+namespace ACAT.Core.InputActuators
 {
-    [Descriptor("D91A1877-C92B-4D7E-9AB6-F01F30B12DF9",
+    [ClassDescriptor("D91A1877-C92B-4D7E-9AB6-F01F30B12DF9",
                         "Keyboard Actuator",
                         "Handles Keyboard and Mouse input")]
     public class KeyboardActuator : ActuatorBase
@@ -110,10 +110,10 @@ namespace ACAT.Lib.Core.InputActuators
             return new KeyboardSwitch();
         }
 
-        public override IOnboardingExtension GetOnboardingExtension()
-        {
-            return new OnboardingHardwareSwitchSetup(OnboardingHardwareSwitchSetup.SwitchType.Keyboard);
-        }
+        //public override IOnboardingExtension GetOnboardingExtension()
+        //{
+        //    return new OnboardingHardwareSwitchSetup(OnboardingHardwareSwitchSetup.SwitchType.Keyboard);
+        //}
 
         public override IEnumerable<String> GetSupportedKeyboardConfigs()
         {
@@ -194,7 +194,7 @@ namespace ACAT.Lib.Core.InputActuators
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     if (disposing)
                     {
@@ -238,7 +238,7 @@ namespace ACAT.Lib.Core.InputActuators
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
             return null;
@@ -258,7 +258,6 @@ namespace ACAT.Lib.Core.InputActuators
                 return;
             }
 
-            
             Log.Debug("Keydown: " + e.KeyCode.ToString());
 
             // check if this is one of the keys we recognize.  If so, trigger
@@ -318,7 +317,7 @@ namespace ACAT.Lib.Core.InputActuators
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 

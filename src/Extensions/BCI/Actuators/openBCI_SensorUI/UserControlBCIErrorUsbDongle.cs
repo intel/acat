@@ -13,7 +13,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACATResources;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Windows.Forms;
 

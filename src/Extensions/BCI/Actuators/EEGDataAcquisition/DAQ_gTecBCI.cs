@@ -11,15 +11,16 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
-using ACAT.Lib.Core.Utility;
+using ACAT.Extensions.BCI.Common.BCIControl;
+using ACAT.Core.Utility;
 using Accord.Math;
 using brainflow;
+using Gtec.Unicorn;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Gtec.Unicorn;
-using ACAT.Extensions.BCI.Common.BCIControl;
 
 namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 {
@@ -106,15 +107,15 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// </summary>
         private double[,] _bufferSignalStatus;
 
-        /// <summary>
-        /// Buffer for triggertest
-        /// </summary>
-        private readonly List<double> _bufferTriggerTest;
+        ///// <summary>
+        ///// Buffer for triggertest
+        ///// </summary>
+        //private readonly List<double> _bufferTriggerTest;
 
         /// <summary>
         /// Flag, true when trigger test is in progress
         /// </summary>
-        private bool triggerTestInProgressFlag;
+        //private bool triggerTestInProgressFlag;
 
         /// <summary>
         /// Index of the EEG channels in data returned from sensor
@@ -140,9 +141,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             BOARD_ACQUIRINGDATA,
         };
 
-        public ExitCodes sensorStatus;
+        public ExitCode sensorStatus;
 
-        public enum ExitCodes
+        public enum ExitCode
         {
             STATUS_OK,
             PORT_ALREADY_OPEN_ERROR,
@@ -246,6 +247,19 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 return false;
         }
 
+        static public bool IsDeviceAvailable()
+        {
+            // check if drivers are installed
+            bool result = Unicorn.IsDeviceLibraryLoadable();
+
+
+            // and if the device is available
+            IList<string> devices = Unicorn.GetAvailableDevices(true);
+
+
+            return result && devices.Count > 0;
+        }
+
         /// <summary>
         /// Initializes sensor
         /// </summary>
@@ -297,7 +311,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     //    Log.Debug("Port " + serial_number + " tested. Result: " + sensorConnected);
                     //}
 
-                    BrainFlowInputParams input_params = new BrainFlowInputParams();
+                    BrainFlowInputParams input_params = new();
 
                     if (sensorConnected)
                     {
@@ -336,7 +350,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 
                         deviceInitialized = true;
                         
-                        AddWarning(ExitCodes.IDLE, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  STATUS                 MESSAGE: Device initialized at serial port: " + serial_number);
+                        AddWarning(ExitCode.IDLE, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  STATUS                 MESSAGE: Device initialized at serial port: " + serial_number);
                         Log.Debug("Board initialized. Status: " + status.ToString());
                         
                         return true;
@@ -347,8 +361,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
-                sensorStatus = getErrorCode(e.Message, ExitCodes.BOARD_NOT_READY_ERROR);
+                Log.Exception(e.Message);
+                sensorStatus = getErrorCode(e.Message, ExitCode.BOARD_NOT_READY_ERROR);
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING             MESSAGE: Error Code: " + sensorStatus);
                 return false;
             }
@@ -381,7 +395,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     Log.Debug("Stream started");
 
                     status = BoardStatus.BOARD_ACQUIRINGDATA;
-                    triggerTestInProgressFlag = false;
+                    //triggerTestInProgressFlag = false;
 
                     if (saveDataToFile)
                     {
@@ -397,9 +411,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e) //needs to handle error better
             {
-                sensorStatus = getErrorCode(e.Message, ExitCodes.BOARD_NOT_CREATED_ERROR);
+                sensorStatus = getErrorCode(e.Message, ExitCode.BOARD_NOT_CREATED_ERROR);
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING             MESSAGE: Error Code: " + sensorStatus);
-                Log.Debug("Exception:" + e.Message + " Error code:" + sensorStatus);
+                Log.Exception("Exception:" + e.Message + " Error code:" + sensorStatus);
                 success = false;
             }
             Log.Debug("Device started: " + success);
@@ -436,9 +450,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                sensorStatus = getErrorCode(e.Message, ExitCodes.SYNC_TIMEOUT_ERROR);
+                sensorStatus = getErrorCode(e.Message, ExitCode.SYNC_TIMEOUT_ERROR);
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING               MESSAGE: Error Code: " + sensorStatus);
-                Log.Debug("Exception:" + e.Message + " Error code: " + sensorStatus);
+                Log.Exception("Exception:" + e.Message + " Error code: " + sensorStatus);
                 return false;
             }
         }
@@ -467,9 +481,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                sensorStatus = getErrorCode(e.Message, ExitCodes.UNABLE_TO_CLOSE);
+                sensorStatus = getErrorCode(e.Message, ExitCode.UNABLE_TO_CLOSE);
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING             MESSAGE: Error Code: " + sensorStatus);
-                Log.Debug("Exception:" + e.Message + " Error code: " + sensorStatus);
+                Log.Exception("Exception:" + e.Message + " Error code: " + sensorStatus);
                 return false;
             }
         }
@@ -512,7 +526,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                Log.Debug("Exception: " + e.Message);
+                Log.Exception("Exception: " + e.Message);
             }
 
             if (returnFilteredData)
@@ -546,8 +560,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         {
             if (saveDataToFile)
             {
-                if (FileWriterObj == null)
-                    FileWriterObj = new FileWriter();
+                FileWriterObj ??= new FileWriter();
 
                 FileWriterObj.WriteMarkerValueToFile(markerValues);
             }
@@ -573,7 +586,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 // Keep only last N samples in buffer (N samples are used to calculate status)
                 int numSamplesCurrBuffer = inBuffer.GetLength(1);
                 int numSamplesToKeep = (numSamplesInBuffer * sampleRate) / 1000;
-                List<int> idxToKeep = new List<int>();
+                List<int> idxToKeep = new();
                 for (int i = numSamplesCurrBuffer - numSamplesToKeep; i < numSamplesCurrBuffer; i++)
                 {
                     if (i >= 0)
@@ -585,7 +598,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
             }
             return result;
         }
@@ -603,7 +616,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             try
             {
                 Log.Debug("Testing port " + serial_number);
-                BrainFlowInputParams input_params = new BrainFlowInputParams();
+                BrainFlowInputParams input_params = new();
                 //input_params.serial_number = serial_number;
 
                 DeviceObj = new BoardShim(boardID, input_params);
@@ -614,11 +627,11 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                sensorStatus = getErrorCode(e.Message, ExitCodes.SET_PORT_ERROR);
-                if (sensorStatus == ExitCodes.ANOTHER_BOARD_IS_CREATED_ERROR)
+                sensorStatus = getErrorCode(e.Message, ExitCode.SET_PORT_ERROR);
+                if (sensorStatus == ExitCode.ANOTHER_BOARD_IS_CREATED_ERROR)
                     portAlreadyOpen = true;
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING             MESSAGE: Error Code: " + sensorStatus);
-                Log.Debug("Exception: " + e.Message);
+                Log.Exception("Exception: " + e.Message);
                 return false;
             }
         }
@@ -629,9 +642,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// <param name="message"></param>
         /// <param name="defaultErrorCode"></param>
         /// <returns></returns>
-        private ExitCodes getErrorCode(string message, ExitCodes defaultErrorCode)
+        private ExitCode getErrorCode(string message, ExitCode defaultErrorCode)
         {
-            foreach (ExitCodes code in Enum.GetValues(typeof(ExitCodes)))
+            foreach (ExitCode code in Enum.GetValues(typeof(ExitCode)))
             {
                 if (message.Contains(code.ToString()))
                     return code;
@@ -698,7 +711,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                Log.Debug("Exception " + e.Message);
+                Log.Exception("Exception " + e.Message);
             }
             return result;
         }
@@ -719,7 +732,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 }
                 if (status == BoardStatus.BOARD_ACQUIRINGDATA)
                 {
-                    triggerTestInProgressFlag = false;
+                    //triggerTestInProgressFlag = false;
                     GetData(); // Empty buffer
                 }
                 Log.Debug("Session closed");
@@ -727,22 +740,22 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                Log.Debug("Exception " + e.Message);
+                Log.Exception("Exception " + e.Message);
             }
 
             return result;
         }
 
-        private readonly Queue<Dictionary<ExitCodes, string>> warnings = new Queue<Dictionary<ExitCodes, string>>();
+        private readonly Queue<Dictionary<ExitCode, string>> warnings = new();
         private readonly int limit = 10;
 
         /// <summary>
         /// Add a warning to the queue
         /// </summary>
         /// <param name="info">string warnings</param>
-        public void AddWarning(ExitCodes code, String info)
+        public void AddWarning(ExitCode code, String info)
         {
-            var data = new Dictionary<ExitCodes, string>
+            var data = new Dictionary<ExitCode, string>
             {
                 { code, info }
             };
@@ -761,9 +774,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Gets the available warnings in the queue
         /// </summary>
         /// <returns>Warnings</returns>
-        public Dictionary<ExitCodes, string> getWarning()
+        public Dictionary<ExitCode, string> getWarning()
         {
-            Dictionary<ExitCodes, string> info = null;
+            Dictionary<ExitCode, string> info = null;
             try
             {
                 if (warnings.Count() > 0)
@@ -771,7 +784,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
                 return info;
             }
             return info;
@@ -826,7 +839,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// </summary>
         /// <param name="paired">Whether to get paired Unicorn devices (false = get unpaired devices)</param>
         /// <returns></returns>
-        public async Task<IList<string>> scanDevicesAsync(bool paired = true)
+        public async Task<IList<string>> ScanDevicesAsync(bool paired = true)
         {
             return await Task.Run(() =>
             {
@@ -835,7 +848,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 {
                     devices = Unicorn.GetAvailableDevices(paired);
                     
-                    Dictionary<String, object> eventParams = new Dictionary<String, object>
+                    Dictionary<String, object> eventParams = new()
                     {
                         ["paired"] = paired,
                         ["devices"] = devices
@@ -844,7 +857,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 }
                 catch (Gtec.Unicorn.DeviceException ex)
                 {
-                    Log.Debug($"Error: {ex.Message}");
+                    Log.Exception($"Error: {ex.Message}");
                 }
                 return devices;
             });
@@ -861,7 +874,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             // Check if there is a device name saved in settings
             if (string.IsNullOrEmpty(BCIActuatorSettings.Settings.GTecDeviceName))
             {
-                Dictionary<String, object> eventParams = new Dictionary<String, object>
+                Dictionary<String, object> eventParams = new()
                 {
                     ["error"] = "String GTecDeviceName is null or empty"
                 };
@@ -886,8 +899,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     }
                     catch (Gtec.Unicorn.DeviceException ex)
                     {
-                        Log.Debug($"Error: {ex.Message}");
-                        Dictionary<String, object> eventParams = new Dictionary<String, object>
+                        Log.Exception($"Error: {ex.Message}");
+                        Dictionary<String, object> eventParams = new()
                         {
                             ["error"] = ex.Message
                         };
@@ -896,8 +909,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     }
                     catch (Exception ex)
                     {
-                        Log.Debug($"Unexpected error: {ex.Message}");
-                        Dictionary<String, object> eventParams = new Dictionary<String, object>
+                        Log.Exception($"Unexpected error: {ex.Message}");
+                        Dictionary<String, object> eventParams = new()
                         {
                             ["error"] = ex.Message
                         };
@@ -920,7 +933,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             switch (bluetoothEvent)
             {
                 case DAQ_gTecBCI.BluetoothEvent.SCAN_DEVICES_REQUEST:
-                    scanDevicesAsync((bool)eventParams["paired"]);
+                    _ = ScanDevicesAsync((bool)eventParams["paired"]);
                     break;
 
                 default:
@@ -956,7 +969,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("Exception: " + e.Message);
+                    Log.Exception("Exception: " + e.Message);
                 }
             }
             return statusAllSignals;

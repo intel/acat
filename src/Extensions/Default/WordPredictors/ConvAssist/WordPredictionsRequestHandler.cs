@@ -10,15 +10,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WordPredictionManagement;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WordPredictionManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
     internal class WordPredictionsRequestHandler
     {
@@ -136,7 +136,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("ConvAssist Predict Exception " + ex);
+                Log.Exception("ConvAssist Predict Exception " + ex);
                 response = new WordPredictionResponse(request, new List<String>(), false);
             }
             finally
@@ -226,7 +226,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception words)
             {
-                Log.Debug("ConvAssist Predict Words " + words);
+                Log.Exception("ConvAssist Predict Words " + words);
             }
             // Keyword to split between predictions
             retVal.Add("&LETTERS");
@@ -254,7 +254,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception letters)
             {
-                Log.Debug("ConvAssist Predict letters " + letters);
+                Log.Exception("ConvAssist Predict letters " + letters);
             }
             return retVal;
         }

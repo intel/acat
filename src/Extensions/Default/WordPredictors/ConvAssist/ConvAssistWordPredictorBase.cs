@@ -11,18 +11,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WordPredictionManagement;
-using ACAT.Lib.Extension;
+using ACAT.Core.Extensions;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WordPredictionManagement;
+using ACAT.Extension;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 
-namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
     /// <summary>
     /// Base class for all word prediction extensions that use
@@ -61,9 +61,9 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <summary>
         /// Returns the ACAT descriptor for this class
         /// </summary>
-        public virtual IDescriptor Descriptor
+        public virtual ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>
@@ -142,6 +142,8 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// Gets or sets the word prediction settings object
         /// </summary>
         protected Settings convAssistSettings { get; set; }
+
+        public Guid Id => ClassDescriptorAttribute.GetDescriptor(GetType()).Id;
 
         /// <summary>
         /// Disposer for this class

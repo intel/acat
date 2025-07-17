@@ -5,9 +5,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Interpreter;
-using ACAT.Lib.Core.ThemeManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Interpreter;
+using ACAT.Core.ThemeManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
     /// <summary>
     /// For the event to indicate that the widget highlight turned off
@@ -940,7 +940,7 @@ namespace ACAT.Lib.Core.WidgetManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
             return true;
@@ -1169,7 +1169,7 @@ namespace ACAT.Lib.Core.WidgetManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -1455,23 +1455,12 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// <returns></returns>
         private EnabledStates parseEnabledValue(String value)
         {
-            EnabledStates retVal;
-
-            switch (value.ToLower())
+            var retVal = value.ToLower() switch
             {
-                case "false":
-                    retVal = EnabledStates.Disabled;
-                    break;
-
-                case "contextual":
-                    retVal = EnabledStates.Contextual;
-                    break;
-
-                default:
-                    retVal = EnabledStates.Enabled;
-                    break;
-            }
-
+                "false" => EnabledStates.Disabled,
+                "contextual" => EnabledStates.Contextual,
+                _ => EnabledStates.Enabled,
+            };
             return retVal;
         }
 

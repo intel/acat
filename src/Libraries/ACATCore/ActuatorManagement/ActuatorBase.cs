@@ -15,15 +15,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.Onboarding;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
+using ACAT.Core.Onboarding;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// Base class for all the actuators.  Actuators are input mechanisms
@@ -86,9 +86,9 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <summary>
         /// Gets the descriptor for the actuator class
         /// </summary>
-        public virtual IDescriptor Descriptor
+        public virtual ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>
@@ -156,6 +156,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// Gets or sets the current state of the actuator
         /// </summary>
         protected State actuatorState { get; set; }
+        public Guid Id => Descriptor.Id;
 
         /// <summary>
         /// Class factory to create a switch.  Override this in the
@@ -288,7 +289,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
                     }
                     else
                     {
-                        Log.Error("Warning.  Switch " + actuatorSwitch.Name + " defined more than once");
+                        Log.Warn("Warning.  Switch " + actuatorSwitch.Name + " defined more than once");
                     }
                 }
             }
@@ -418,7 +419,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {

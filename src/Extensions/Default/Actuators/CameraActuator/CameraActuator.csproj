@@ -8,8 +8,8 @@
     <ProjectGuid>{206B241A-C6B7-4EA1-B557-21F7F29EDFB2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CameraActuator</RootNamespace>
-    <AssemblyName>CameraActuator</AssemblyName>
+    <RootNamespace>ACAT.Extensions.Actuators.CameraActuator</RootNamespace>
+    <AssemblyName>ACAT.Extensions.Actuators.CameraActuator</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -30,14 +30,14 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>9.0</LangVersion>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
     <Optimize>true</Optimize>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>9.0</LangVersion>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -45,14 +45,14 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>9.0</LangVersion>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
     <Optimize>true</Optimize>
     <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>9.0</LangVersion>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
@@ -72,6 +72,7 @@
       <Private>False</Private>
     </ProjectReference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -146,105 +147,55 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="External\acat_gestures.exe" />
-    <Content Include="External\acat_gestures_dll.dll">
-    </Content>
-    <Content Include="External\acat_gestures_dll_d.dll">
-    </Content>
-    <Content Include="External\libinfra.dll">
-    </Content>
-    <Content Include="External\libinfra_d.dll">
-    </Content>
-    <Content Include="External\libivcp.dll">
-    </Content>
-    <Content Include="External\libivcp_d.dll">
-    </Content>
-    <Content Include="External\libpipeline.dll">
-    </Content>
-    <Content Include="External\libpipeline_d.dll">
-    </Content>
-    <Content Include="External\msvcp110.dll">
-    </Content>
-    <Content Include="External\msvcr110.dll">
-    </Content>
-    <Content Include="External\opencv_calib3d2413.dll">
-    </Content>
-    <Content Include="External\opencv_calib3d2413d.dll">
-    </Content>
-    <Content Include="External\opencv_contrib2413.dll">
-    </Content>
-    <Content Include="External\opencv_contrib2413d.dll">
-    </Content>
-    <Content Include="External\opencv_core2413.dll">
-    </Content>
-    <Content Include="External\opencv_core2413d.dll">
-    </Content>
-    <Content Include="External\opencv_features2d2413.dll">
-    </Content>
-    <Content Include="External\opencv_features2d2413d.dll">
-    </Content>
-    <Content Include="External\opencv_ffmpeg2413.dll">
-    </Content>
-    <Content Include="External\opencv_flann2413.dll">
-    </Content>
-    <Content Include="External\opencv_flann2413d.dll">
-    </Content>
-    <Content Include="External\opencv_gpu2413.dll">
-    </Content>
-    <Content Include="External\opencv_gpu2413d.dll">
-    </Content>
-    <Content Include="External\opencv_highgui2413.dll">
-    </Content>
-    <Content Include="External\opencv_highgui2413d.dll">
-    </Content>
-    <Content Include="External\opencv_imgproc2413.dll">
-    </Content>
-    <Content Include="External\opencv_imgproc2413d.dll">
-    </Content>
-    <Content Include="External\opencv_legacy2413.dll">
-    </Content>
-    <Content Include="External\opencv_legacy2413d.dll">
-    </Content>
-    <Content Include="External\opencv_ml2413.dll">
-    </Content>
-    <Content Include="External\opencv_ml2413d.dll">
-    </Content>
-    <Content Include="External\opencv_nonfree2413.dll">
-    </Content>
-    <Content Include="External\opencv_nonfree2413d.dll">
-    </Content>
-    <Content Include="External\opencv_objdetect2413.dll">
-    </Content>
-    <Content Include="External\opencv_objdetect2413d.dll">
-    </Content>
-    <Content Include="External\opencv_ocl2413.dll">
-    </Content>
-    <Content Include="External\opencv_ocl2413d.dll">
-    </Content>
-    <Content Include="External\opencv_photo2413.dll">
-    </Content>
-    <Content Include="External\opencv_photo2413d.dll">
-    </Content>
-    <Content Include="External\opencv_stitching2413.dll">
-    </Content>
-    <Content Include="External\opencv_stitching2413d.dll">
-    </Content>
-    <Content Include="External\opencv_superres2413.dll">
-    </Content>
-    <Content Include="External\opencv_superres2413d.dll">
-    </Content>
-    <Content Include="External\opencv_video2413.dll">
-    </Content>
-    <Content Include="External\opencv_video2413d.dll">
-    </Content>
-    <Content Include="External\opencv_videostab2413.dll">
-    </Content>
-    <Content Include="External\opencv_videostab2413d.dll">
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="External\shape_predictor_68_face_landmarks.dat">
-    </None>
+    <Content Include="External\${PLATFORM}\acat_gestures.exe" />
+    <Content Include="External\${PLATFORM}\acat_gestures_dll.dll" />
+    <Content Include="External\${PLATFORM}\acat_gestures_dll_d.dll" />
+    <Content Include="External\${PLATFORM}\libinfra.dll" />
+    <Content Include="External\${PLATFORM}\libinfra_d.dll" />
+    <Content Include="External\${PLATFORM}\libivcp.dll" />
+    <Content Include="External\${PLATFORM}\libivcp_d.dll" />
+    <Content Include="External\${PLATFORM}\libpipeline.dll" />
+    <Content Include="External\${PLATFORM}\libpipeline_d.dll" />
+    <Content Include="External\${PLATFORM}\msvcp110.dll" />
+    <Content Include="External\${PLATFORM}\msvcr110.dll" />
+    <Content Include="External\${PLATFORM}\opencv_calib3d2413.dll" />
+    <Content Include="External\${PLATFORM}\opencv_calib3d2413d.dll" />
+    <Content Include="External\${PLATFORM}\opencv_contrib2413.dll" />
+    <Content Include="External\${PLATFORM}\opencv_contrib2413d.dll" />
+    <Content Include="External\${PLATFORM}\opencv_core2413.dll" />
+    <Content Include="External\${PLATFORM}\opencv_core2413d.dll" />
+    <Content Include="External\${PLATFORM}\opencv_features2d2413.dll" />
+    <Content Include="External\${PLATFORM}\opencv_features2d2413d.dll" />
+    <Content Include="External\${PLATFORM}\opencv_ffmpeg2413.dll" />
+    <Content Include="External\${PLATFORM}\opencv_flann2413.dll" />
+    <Content Include="External\${PLATFORM}\opencv_flann2413d.dll" />
+    <Content Include="External\${PLATFORM}\opencv_gpu2413.dll" />
+    <Content Include="External\${PLATFORM}\opencv_gpu2413d.dll" />
+    <Content Include="External\${PLATFORM}\opencv_highgui2413.dll" />
+    <Content Include="External\${PLATFORM}\opencv_highgui2413d.dll" />
+    <Content Include="External\${PLATFORM}\opencv_imgproc2413.dll" />
+    <Content Include="External\${PLATFORM}\opencv_imgproc2413d.dll" />
+    <Content Include="External\${PLATFORM}\opencv_legacy2413.dll" />
+    <Content Include="External\${PLATFORM}\opencv_legacy2413d.dll" />
+    <Content Include="External\${PLATFORM}\opencv_ml2413.dll" />
+    <Content Include="External\${PLATFORM}\opencv_ml2413d.dll" />
+    <Content Include="External\${PLATFORM}\opencv_nonfree2413.dll" />
+    <Content Include="External\${PLATFORM}\opencv_nonfree2413d.dll" />
+    <Content Include="External\${PLATFORM}\opencv_objdetect2413.dll" />
+    <Content Include="External\${PLATFORM}\opencv_objdetect2413d.dll" />
+    <Content Include="External\${PLATFORM}\opencv_ocl2413.dll" />
+    <Content Include="External\${PLATFORM}\opencv_ocl2413d.dll" />
+    <Content Include="External\${PLATFORM}\opencv_photo2413.dll" />
+    <Content Include="External\${PLATFORM}\opencv_photo2413d.dll" />
+    <Content Include="External\${PLATFORM}\opencv_stitching2413.dll" />
+    <Content Include="External\${PLATFORM}\opencv_stitching2413d.dll" />
+    <Content Include="External\${PLATFORM}\opencv_superres2413.dll" />
+    <Content Include="External\${PLATFORM}\opencv_superres2413d.dll" />
+    <Content Include="External\${PLATFORM}\opencv_video2413.dll" />
+    <Content Include="External\${PLATFORM}\opencv_video2413d.dll" />
+    <Content Include="External\${PLATFORM}\opencv_videostab2413.dll" />
+    <Content Include="External\${PLATFORM}\opencv_videostab2413d.dll" />
+    <None Include="External\${PLATFORM}\shape_predictor_68_face_landmarks.dat" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

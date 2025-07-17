@@ -5,15 +5,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace ACAT.Lib.Core.Widgets
+namespace ACAT.Core.Widgets
 {
     /// <summary>
     /// A widget that uses a Label as the Control.  Can be used
@@ -113,8 +113,7 @@ namespace ACAT.Lib.Core.Widgets
             base.SetWidgetAttribute(attribute);
             _fontFamily = Fonts.Instance.GetFontFamily(new[]
                                                             { widgetAttribute.FontName,
-                                                              CoreGlobals.AppPreferences.FontName,
-                                                              "Arial" });
+                                                              CoreGlobals.AppPreferences.FontName });
 
             if (_fontFamily != null)
             {
@@ -146,7 +145,7 @@ namespace ACAT.Lib.Core.Widgets
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     if (disposing)
                     {
@@ -198,7 +197,7 @@ namespace ACAT.Lib.Core.Widgets
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 

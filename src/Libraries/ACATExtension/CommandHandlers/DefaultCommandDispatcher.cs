@@ -5,11 +5,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
 using System;
 
-namespace ACAT.Lib.Extension.CommandHandlers
+namespace ACAT.Extension.CommandHandlers
 {
     /// <summary>
     /// This class takes care of most of the commands in ACAT.  Any
@@ -29,7 +29,7 @@ namespace ACAT.Lib.Extension.CommandHandlers
             init();
         }
 
-        public bool DefaultDispatch(String command, ref bool handled)
+        public bool DispatchCommand(String command, ref bool handled)
         {
             IRunCommandHandler runCommand = DefaultRunCommands.Get(command);
 

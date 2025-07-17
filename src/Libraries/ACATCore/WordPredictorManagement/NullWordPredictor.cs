@@ -5,20 +5,20 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace ACAT.Lib.Core.WordPredictionManagement
+namespace ACAT.Core.WordPredictionManagement
 {
     /// <summary>
     /// The null word predictor basically does nothing.  It is used
     /// where no word predictor is currently valid.
     /// </summary>
-    [Descriptor("3EF5A318-6357-467D-BF45-9C925CF72FF4",
+    [ClassDescriptor("3EF5A318-6357-467D-BF45-9C925CF72FF4",
                             "Null Word Predictor",
                             "Disable word prediction")]
     public class NullWordPredictor : IWordPredictor, ISupportsPreferences, IExtension
@@ -59,10 +59,12 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
+
+        public Guid Id => Descriptor.Id;
 
         /// <summary>
         /// Gets or sets whether to filter punctuations
@@ -159,7 +161,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         }
 
         /// <summary>
-        /// Post Init 
+        /// Post Init
         /// </summary>
         /// <returns>true</returns>
         public bool PostInit()
@@ -273,7 +275,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {

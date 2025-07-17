@@ -5,12 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
+using ACAT.Core.Extensions;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace ACAT.Lib.Core.TTSManagement
+namespace ACAT.Core.TTSManagement
 {
     /// <summary>
     /// Indicates a bookmark has been reached in the text-to-speech
@@ -76,7 +77,7 @@ namespace ACAT.Lib.Core.TTSManagement
     /// Interface for the TTS Engine.  All TTS Engines must implement
     /// this interface.
     /// </summary>
-    public interface ITTSEngine : IDisposable, IExtension
+    public interface ITTSEngine : IDisposable, IExtension, IPluginExtension
     {
         /// <summary>
         /// Raised when bookmark reached after async text to speech

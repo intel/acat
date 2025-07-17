@@ -247,7 +247,7 @@
     <value>buttonOk</value>
   </data>
   <data name="&gt;&gt;buttonOk.Type" xml:space="preserve">
-    <value>ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ACAT.Core.WidgetManagement.ScannerRoundedButtonControl, ACATCore, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;buttonOk.Parent" xml:space="preserve">
     <value>tableLayoutPanel2</value>

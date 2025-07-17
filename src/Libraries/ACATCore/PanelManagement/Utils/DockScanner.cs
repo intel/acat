@@ -1,9 +1,9 @@
-﻿using ACAT.Lib.Core.Utility;
+﻿using ACAT.Core.Utility;
 using System;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// Docks a scanner to a specified parent window at a specified
@@ -85,7 +85,7 @@ namespace ACAT.Lib.Core.PanelManagement
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug(ex.ToString());
+                    Log.Exception(ex.ToString());
                     _automationElementDockTo = null;
                 }
             }
@@ -124,7 +124,7 @@ namespace ACAT.Lib.Core.PanelManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {

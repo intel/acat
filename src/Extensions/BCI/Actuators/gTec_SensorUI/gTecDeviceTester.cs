@@ -14,9 +14,9 @@
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Audit;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACATResources;
 using System;
 using System.Collections.Generic;
@@ -40,7 +40,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public enum OnboardingUserState
         {
             Testing_BCIConnections, // Screen that displays "connecting..." status
-            // ErrorUsbDeviceDisconnected, // Screen shown to the user if the usb device could not be detected
             ErrorBluetoothDisconnected, // Screen shown to the user if bluetooth connection could not be established with device
             
             SignalCheckRequired_MaxTimeElapsed, // Screen telling user that signal check required because maximum time between signal checks has elapsed
@@ -50,9 +49,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             PromptUser_FilterSettings, // Screen prompting user to set BCI filter settings (50Hz / 60Hz)
 
             BCISignalCheck, // Main signal check screen
-
-            // LostConnectionError, // Occurs when device has lost its connection
-            // SignalQualityError, // Occurs when it has been determined that signal quality o=is poor
 
             ExitBCITesting, // Exit BCI testing process completely
 
@@ -72,7 +68,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <summary>
         /// Used to signal BCI form is fully loaded
         /// </summary>
-        public bool _FormFullySHown = false;
+        public bool _FormFullyShown = false;
 
         /// <summary>
         /// Maximum amount of time after not receiving data (after initially receiving good data) to throw error
@@ -108,6 +104,20 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public static bool _Testing_useSensor = true;
         public static int _Testing_useSensor_TestIndex = 0;
         private OnboardingUserState[] _DebugStates;
+
+        public static bool GtecDeviceAvailable {
+            get
+            {
+                if (!_Testing_useSensor)
+                {
+                    return true; // If not using sensor, then always available
+                }
+                else
+                {
+                    return DAQ_gTecBCI.IsDeviceAvailable();
+                }
+            }
+        }
 
         /// <summary>
         /// Tests BCI devices - connections to the hw and data quality
@@ -196,7 +206,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _mainForm.FormClosed += _mainForm_EvtFormClosed;
 
             // Wait until control fully drawn to set flag which begins connecting to BCI devices
-            _mainForm.Paint += (s, args) => { _FormFullySHown = true; handleMainFormShown(this, null); };
+            _mainForm.Paint += (s, args) => { _FormFullyShown = true; handleMainFormShown(this, null); };
 
             // Show main form
             _mainForm.ShowDialog();
@@ -225,7 +235,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     }
                     catch (Exception ex)
                     {
-                        Log.Debug("gTecDeviceTester | bluetoothResultHandler | Exception: " + ex.Message);
+                        Log.Exception("gTecDeviceTester | bluetoothResultHandler | Exception: " + ex.Message);
                     }
 
                     // We were seeing if device could be connected to from the start of the testing process
@@ -290,7 +300,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // Test gTec bluetooth device connection based on device name in settings (result of test are handled as events)
             if (_Testing_useSensor == true)
             {
-                gTecBCI.connectionTestAsync();
+                await gTecBCI.connectionTestAsync();
             }
         }
 
@@ -305,16 +315,15 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             _mainForm.BringToFront();
 
+            // Go to screen that displays "connecting..." status
+            _currentOnboardingUserState = OnboardingUserState.Testing_BCIConnections;
+            updateOnboardingStatus(_currentOnboardingUserState, null);
+
             if (_Testing_useSensor)
             {
-                // Go to screen that displays "connecting..." status
-                _currentOnboardingUserState = OnboardingUserState.Testing_BCIConnections;
-                updateOnboardingStatus(_currentOnboardingUserState, null);
-
                 // Non-zero value is needed for startBCIDeviceTesting so "connecting..." screen has time to show to the user
-                Thread t = new Thread(() => startBCIDeviceTesting(3));
+                Thread t = new Thread(start: () => startBCIDeviceTesting(3));
                 t.Start();
-
             }
         }
 
@@ -504,9 +513,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     {
                         // Display message to user prompting them to improve signal quality before moving on
                         Log.Debug("Not exiting | Did not pass signal quality criteria");
-                        bool confirmed = ConfirmBoxOneOption.ShowDialog("Signal Quality Checks Failed or Incomplete" +
-                        "\nYou need to complete both “Railing” and\n“Impedance” tests and get good signals to\nproceed" +
-                        "\nPlease refer to the user guide for help", "", StringResources.OK, _mainForm, false);
+                        bool confirmed = ConfirmBoxOneOption.ShowDialog(StringResources.SignalQualityChecksFailed +
+                        "\n"+StringResources.Youneedtocompleteboth +"\n“ +Impedance” tests and get good signals to"+"\n"+"proceed" +
+                        "\n"+StringResources.Pleaserefertotheuserguideforhelp, "", StringResources.OK, _mainForm, false);
                     }
 
                     break;
@@ -687,7 +696,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception e)
             {
-                Log.Debug("_mainForm_EvtButtonExitClicked_DEBUG exception: " + e.ToString());
+                Log.Exception("_mainForm_EvtButtonExitClicked_DEBUG exception: " + e.ToString());
             }
         }
     }

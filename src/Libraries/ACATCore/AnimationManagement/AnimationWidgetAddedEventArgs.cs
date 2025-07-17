@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.AnimationManagement
+namespace ACAT.Core.AnimationManagement
 {
     /// <summary>
     /// Event args for the event that is raised when an animation

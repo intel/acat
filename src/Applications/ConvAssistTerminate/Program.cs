@@ -9,19 +9,18 @@
 // Console application to send a request to ConvAssist to terminate gracefully
 //
 ////////////////////////////////////////////////////////////////////////////
-using ACAT.Lib.Core.Utility.NamedPipe;
-using ACAT.Lib.Core.WordPredictionManagement;
-using System.Text.Json;
+using ACAT.Core.Utility.NamedPipe;
+using ACAT.Core.WordPredictionManagement;
 using System;
 using System.Diagnostics;
 using System.IO.Pipes;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ACAT.Applications.ConvAssistTerminate
 {
-
-    class Program
+    internal class Program
     {
         /// <summary>
         /// Name of ConvAssist Named Pipe
@@ -42,16 +41,17 @@ namespace ACAT.Applications.ConvAssistTerminate
         private static bool _FinishTask = false;
 
         /// <summary>
-        /// The maximun time the program will wait for ConvAssist to close 
+        /// The maximun time the program will wait for ConvAssist to close
         /// </summary>
         private static readonly int _MaxWaitTimeToCloseProgram = 20;
 
-        private const String namedPipeName = "ACATConvAssistPipe"; 
+        private const String namedPipeName = "ACATConvAssistPipe";
 
         /// <summary>
         /// Main object of the Named Pipe server
         /// </summary>
         private static readonly PipeServer _pipeServer = new PipeServer(namedPipeName, PipeDirection.InOut, true);
+
         /// <summary>
         /// Type of Exit codes when the app closses
         /// 0 - It closed ConvAssist
@@ -64,6 +64,7 @@ namespace ACAT.Applications.ConvAssistTerminate
             ConvAssistNotFound = 1,
             Error = 2
         }
+
         /// <summary>
         /// Type of messages send to ConvAssist
         /// </summary>
@@ -71,6 +72,7 @@ namespace ACAT.Applications.ConvAssistTerminate
         {
             ForceQuitApp = 10
         }
+
         /// <summary>
         /// Task to validate when the request to close ConvAssist the Processes are all done
         /// </summary>
@@ -101,7 +103,7 @@ namespace ACAT.Applications.ConvAssistTerminate
             _FinishTask = true;
         }
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             try
             {
@@ -137,6 +139,7 @@ namespace ACAT.Applications.ConvAssistTerminate
                 Console.WriteLine("Closing App...");
             }
         }
+
         /// <summary>
         /// Task to Display in the console the status of the connection with ConvAssist
         /// </summary>
@@ -171,9 +174,10 @@ namespace ACAT.Applications.ConvAssistTerminate
                 await Task.Delay(1000);
             }
             Console.WriteLine("Exiting Task: NamePipeStatus");
-            if(sendMessage)
+            if (sendMessage)
                 SendMessage();
         }
+
         /// <summary>
         /// Sends a message to ConvAssist with the format that hold the request to quit the App
         /// </summary>
@@ -192,6 +196,7 @@ namespace ACAT.Applications.ConvAssistTerminate
             }
             _ = CheckConvAssistProcesses();
         }
+
         [Serializable]
         internal class ConvAssistMessage
         {
@@ -213,15 +218,5 @@ namespace ACAT.Applications.ConvAssistTerminate
                 Data = message;
             }
         }
-
-
-
-
-
-
     }
-
-
-
-
 }

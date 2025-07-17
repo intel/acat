@@ -4,12 +4,12 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using Accord.Math;
 using EEGUtils;
 
-namespace ACAT.Extensions.Default.Actuators.EEG.EEGDataAcquisition
+namespace ACAT.Extensions.Actuators.EEG.EEGDataAcquisition
 {
     public partial class SignalMonitorForm : Form
     {

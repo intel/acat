@@ -5,16 +5,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Interpreter;
+using ACAT.Core.Utility;
 using ACATResources;
-using ACAT.Lib.Core.Interpreter;
-using ACAT.Lib.Core.Utility;
 using System;
 using System.Collections;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
     /// <summary>
     /// Holds attributes to a button widget such as the font to use,
@@ -152,7 +152,7 @@ namespace ACAT.Lib.Core.WidgetManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -172,7 +172,6 @@ namespace ACAT.Lib.Core.WidgetManagement
         private void load(XmlNode node)
         {
             Name = XmlUtils.GetXMLAttrString(node, "name");
-
 
             Value = XmlUtils.GetXMLAttrString(node, "value");
             FontSize = XmlUtils.GetXMLAttrInt(node, "fontsize", FontSize);

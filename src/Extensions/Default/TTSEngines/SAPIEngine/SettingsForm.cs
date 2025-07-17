@@ -10,18 +10,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.UserManagement;
 using ACATResources;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Speech.Synthesis;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
+namespace ACAT.Extensions.TTSEngines.SAPIEngine
 {
     /// <summary>
     /// Displays the settings for the SAPI Text to speech engine
@@ -314,7 +313,6 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// <returns>enum value</returns>
         private VoiceGender stringToVoiceGender(string gender)
         {
-
             if (Enum.TryParse(gender, out VoiceGender voiceGender))
             {
                 return voiceGender;

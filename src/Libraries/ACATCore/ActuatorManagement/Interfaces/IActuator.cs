@@ -11,13 +11,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.Onboarding;
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.Extensions;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
+using ACAT.Core.Onboarding;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// Delegate for the event raised when an actuator wants to send custom data
@@ -74,7 +75,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
     /// Actutators must implement this interface.  An actuator contains one or
     /// more switches and raises events when the switches are actuated.
     /// </summary>
-    public interface IActuator : ISupportsPreferences, IExtension, IDisposable
+    public interface IActuator : IPluginExtension, ISupportsPreferences, IExtension, IDisposable
     {
         /// <summary>
         /// Raised when the actuator wants to send custom data to the application

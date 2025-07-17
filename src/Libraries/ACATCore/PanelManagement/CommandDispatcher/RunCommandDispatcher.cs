@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.PanelManagement.CommandDispatcher
+namespace ACAT.Core.PanelManagement.CommandDispatcher
 {
     /// <summary>
     /// Dispatches (executes) the command
@@ -70,11 +70,11 @@ namespace ACAT.Lib.Core.PanelManagement.CommandDispatcher
             return retVal;
         }
 
-        public virtual bool Dispatch2(Object source, String command, ref bool handled)
+        public virtual bool Dispatch(Object source, String command, ref bool handled)
         {
             IRunCommandHandler runCommand = Commands.Get(command);
 
-            bool retVal = runCommand != null && runCommand.Execute2(source, ref handled);
+            bool retVal = runCommand != null && runCommand.Execute(ref handled, source);
 
             return retVal;
         }

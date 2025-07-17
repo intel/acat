@@ -9,7 +9,7 @@ using System;
 using System.Collections;
 using System.Text;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Maintains a keyvalue pair table where the value can be a bool,
@@ -118,10 +118,7 @@ namespace ACAT.Lib.Core.Utility
 
         public void Parse(String dataString)
         {
-            if (hash == null)
-            {
-                hash = new Hashtable();
-            }
+            hash ??= new Hashtable();
 
             String[] array = dataString.Split(';');
             if (array.Length > 0)

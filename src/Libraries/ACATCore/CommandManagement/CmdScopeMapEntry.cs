@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ACAT.Lib.Core.CommandManagement
+namespace ACAT.Core.CommandManagement
 {
     /// <summary>
     /// Represents a mapping between a Command and the scopes

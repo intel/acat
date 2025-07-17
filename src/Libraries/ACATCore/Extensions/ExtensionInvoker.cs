@@ -5,11 +5,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Reflection;
 
-namespace ACAT.Lib.Core.Extensions
+namespace ACAT.Core.Extensions
 {
     /// <summary>
     /// Delegate for an event raised by the invoker
@@ -74,7 +74,7 @@ namespace ACAT.Lib.Core.Extensions
         /// <summary>
         /// Returns the descriptor object (always null for this class)
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
             get { return null; }
         }
@@ -233,7 +233,7 @@ namespace ACAT.Lib.Core.Extensions
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
             return result;
@@ -287,7 +287,7 @@ namespace ACAT.Lib.Core.Extensions
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 

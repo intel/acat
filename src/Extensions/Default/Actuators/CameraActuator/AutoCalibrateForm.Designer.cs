@@ -1,5 +1,5 @@
 ﻿
-namespace ACAT.Extensions.Default.Actuators.CameraActuator
+namespace ACAT.Extensions.Actuators.CameraActuator
 {
     partial class AutoCalibrateForm
     {

@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+  <!ENTITY functionButtonFontName "ACAT FONT 1">
+  <!ENTITY functionButtonAltFontName "Montserrat Regular">
+  <!ENTITY functionButtonFontSize "28">
+]>
+
+<ACAT>
+  <WidgetAttributes>
+        <WidgetAttribute name="Settings" value="@CmdShowSettings" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="Help" value="@CmdShowHelp" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="About" value="@CmdShowAbout" fontname="&functionButtonAltFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+        <WidgetAttribute name="Home" value="@CmdGoHome" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="false" />
+  </WidgetAttributes>
+
+  <Layout>
+	  <Widget class="BoxWidget"  name="ToolbarBox">
+      <Widget class="RowWidget" name ="ButtonBoxRow" >
+      <Widget class="ScannerButton" name="Settings" colorScheme="ScannerButton" />
+      <Widget class="ScannerButton" name="Help" colorScheme="ScannerButton" />
+      <Widget class="ScannerButton" name="About" colorScheme="ScannerButton" />
+      <Widget class="ScannerButton" name="Home" colorScheme="ScannerButton" />
+  	  </Widget>
+    </Widget>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopLevelRotation"
+               start="true"
+               onEnter=""
+               scanTime="@MenuDialogScanTime"
+               iterations="1"
+               onSelect="actuate(@SelectedWidget);stop();">
+      <Widget name="Settings" />
+      <Widget name="Help" />
+      <Widget name="About" />
+      <Widget name="Home" />
+    </Animation>
+  </Animations>
+</ACAT>

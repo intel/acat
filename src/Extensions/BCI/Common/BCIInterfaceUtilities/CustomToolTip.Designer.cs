@@ -1,4 +1,5 @@
-﻿using ACATResources;
+﻿using ACAT.Core.WidgetManagement;
+using ACATResources;
 
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
@@ -32,7 +33,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.labelTooltip = new System.Windows.Forms.Label();
-            this.scannerRoundedButtonControl1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.scannerRoundedButtonControl1 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -110,6 +111,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label labelTooltip;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl scannerRoundedButtonControl1;
+        private ScannerRoundedButtonControl scannerRoundedButtonControl1;
     }
 }

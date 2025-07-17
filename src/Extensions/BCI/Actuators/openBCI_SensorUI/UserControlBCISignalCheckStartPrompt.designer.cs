@@ -10,6 +10,7 @@
 // quality check should be executed (first step in the signal check process)
 //
 ////////////////////////////////////////////////////////////////////////////
+using ACAT.Core.WidgetManagement;
 
 namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 {
@@ -49,11 +50,11 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.btnUserRequestSignalQualityRecheck = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.btnUserRequestSignalQualityRecheck = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.buttonNext = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonNext = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.labelBCISignalCheckDescription = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonExit = new System.Windows.Forms.Button();
@@ -410,7 +411,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelMain;
         private System.Windows.Forms.Label label53;
         private System.Windows.Forms.Label label59;
-        public Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonNext;
+        public ScannerRoundedButtonControl buttonNext;
         private System.Windows.Forms.Label labelBCISignalCheckDescription;
 
 
@@ -433,7 +434,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        public Lib.Core.WidgetManagement.ScannerRoundedButtonControl btnUserRequestSignalQualityRecheck;
+        public ScannerRoundedButtonControl btnUserRequestSignalQualityRecheck;
         private System.Windows.Forms.Label label1;
         public System.Windows.Forms.Button buttonExit;
         private System.Windows.Forms.Label label6;

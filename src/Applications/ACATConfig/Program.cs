@@ -11,18 +11,13 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Applications;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Extension;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
+using ACAT.Extension;
 using ACATExtension.CommandHandlers;
 using System;
-using System.ComponentModel;
-using System.IO;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.Pkcs;
 using System.Windows.Forms;
 
 namespace ACATConfig
@@ -40,7 +35,7 @@ namespace ACATConfig
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="arg">event args</param>
-        private static void form_EvtLanguageChanged(object sender, ACATConfigMainForm.PreferencesLanguageChanged arg)
+     /*   private static void form_EvtLanguageChanged(object sender, ACATConfigMainForm.PreferencesLanguageChanged arg)
         {
             Common.AppPreferences.Language = arg.CI.TwoLetterISOLanguageName;
             ResourceUtils.SetCulture(Common.AppPreferences.Language);
@@ -48,7 +43,7 @@ namespace ACATConfig
             {
                 Common.AppPreferences.Save();
             }
-        }
+        }*/
 
         /// <summary>
         /// The main entry point for the application.
@@ -82,8 +77,6 @@ namespace ACATConfig
             FileUtils.LogAssemblyInfo();
 
             AppCommon.LoadGlobalSettings();
-
-
 
             AppCommon.SetUserName();
             AppCommon.SetProfileName();
@@ -122,7 +115,7 @@ namespace ACATConfig
             splash.Close();
 
             var form = new ACATConfigMainForm();
-            form.EvtLanguageChanged += form_EvtLanguageChanged;
+            //form.EvtLanguageChanged += form_EvtLanguageChanged;
             Application.Run(form);
         }
 
@@ -142,7 +135,6 @@ namespace ACATConfig
                 Context.AppPanelManager.GetCurrentForm().OnPause();
                 var form = Context.AppPanelManager.GetCurrentForm().PanelCommon.RootWidget.UIControl as Form;
                 ConfirmBoxLargeSingleOption.ShowDialog(reason, "OK", form);
-
             }
             else
             {

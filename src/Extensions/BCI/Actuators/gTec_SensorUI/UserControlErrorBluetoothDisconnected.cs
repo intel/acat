@@ -10,7 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -100,7 +100,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("startStopUpdateBluetoothListTimer | Exception: " + e.ToString());
+                    Log.Exception("startStopUpdateBluetoothListTimer | Exception: " + e.ToString());
                 }
             }
             else
@@ -118,7 +118,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("startStopUpdateBluetoothListTimer | Exception: " + e.ToString());
+                    Log.Exception("startStopUpdateBluetoothListTimer | Exception: " + e.ToString());
                 }
             }
 
@@ -181,7 +181,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                         }
                         catch (Exception ex)
                         {
-                            Log.Debug("UserControlErrorBluetoothDisconnected | bluetoothResultHandler | Exception: " + ex.Message);
+                            Log.Exception("UserControlErrorBluetoothDisconnected | bluetoothResultHandler | Exception: " + ex.Message);
                         }
                     }));
 

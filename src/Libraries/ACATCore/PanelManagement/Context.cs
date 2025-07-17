@@ -5,23 +5,24 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AbbreviationsManagement;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.CommandManagement;
-using ACAT.Lib.Core.SpellCheckManagement;
-using ACAT.Lib.Core.ThemeManagement;
-using ACAT.Lib.Core.TTSManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
-using ACAT.Lib.Core.WordPredictionManagement;
+using ACAT.Core.AbbreviationsManagement;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.CommandManagement;
+using ACAT.Core.SpellCheckManagement;
+using ACAT.Core.ThemeManagement;
+using ACAT.Core.TTSManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Core.WordPredictionManagement;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// Encapsulates system wide global shared objects. Creates
@@ -111,6 +112,7 @@ namespace ACAT.Lib.Core.PanelManagement
             PerfMon = 128,
             NoUI = 256,
             NoActuator = 512,
+            MouseScanner = 1024,
             All = 0xffff
         }
 
@@ -656,32 +658,10 @@ namespace ACAT.Lib.Core.PanelManagement
         private static void getExtensionDirs()
         {
             _extensionDirs.Clear();
-            var dirs = CoreGlobals.AppPreferences.Extensions.Split(',');
-            var extensionDirRootPath = FileUtils.GetExtensionDir();
-            if (Directory.Exists(extensionDirRootPath))
-            {
-                foreach (var str in dirs)
-                {
-                    var dir = str.Trim();
-                    if (Path.IsPathRooted(dir))
-                    {
-                        _extensionDirs.Add(dir);
-                    }
-                    else
-                    {
-                        var fullPath = FileUtils.GetExtensionDir(dir);
-                        if (Directory.Exists(fullPath))
-                        {
-                            var attr = File.GetAttributes(fullPath);
-                            if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
-                            {
-                                Log.Debug("Adding Extensiondir " + fullPath);
-                                _extensionDirs.Add(fullPath);
-                            }
-                        }
-                    }
-                }
-            }
+            // TODO: Add support for multiple extension directories
+            //var dirs = CoreGlobals.AppPreferences.Extensions.Split(',');
+
+            _extensionDirs.Add(FileUtils.GetExtensionDir());
         }
 
         /// <summary>
@@ -717,7 +697,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="fatal">is the error fatal?</param>
         private static void setCompletionStatus(String status, bool fatal = true)
         {
-            _completionStatus = (fatal) ? "Fatal error. " + status : status;
+            _completionStatus = status;
             _isFatal = fatal;
         }
 

@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Media;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Class that use the C:\Windows\Media Sounds
@@ -22,14 +22,17 @@ namespace ACAT.Lib.Core.Utility
         /// Are the sounds initialized
         /// </summary>
         private static bool _isSoundsInitialized;
+
         /// <summary>
         /// Main object used to play custom Media sounds
         /// </summary>
         private static SoundPlayer _soundPlayer = new SoundPlayer();
+
         /// <summary>
         /// Possible initialized sounds
         /// </summary>
         private static Dictionary<SoundType, SoundPlayer> _soundsPlayer;
+
         /// <summary>
         /// Enum of the different types of sounds
         /// </summary>
@@ -61,10 +64,7 @@ namespace ACAT.Lib.Core.Utility
                     switch (soundType)
                     {
                         case SoundType.Custom:
-                            if (_soundPlayer == null)
-                            {
-                                _soundPlayer = new SoundPlayer();
-                            }
+                            _soundPlayer ??= new SoundPlayer();
                             if (customPath != null)
                                 SetSoundFile(_soundPlayer, customPath);
                             break;
@@ -101,7 +101,7 @@ namespace ACAT.Lib.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug("Error playing Sound: " + ex);
+                Log.Exception("Error playing Sound: " + ex);
             }
         }
 

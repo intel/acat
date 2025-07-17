@@ -11,7 +11,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Helper functions to parse an xml file, extracts attributes, serialize
@@ -145,10 +145,8 @@ namespace ACAT.Lib.Core.Utility
 
                 lock (_lock)
                 {
-                    using (TextReader reader = new StringReader(objectData))
-                    {
-                        obj = (T)serializer.Deserialize(reader);
-                    }
+                    using TextReader reader = new StringReader(objectData);
+                    obj = (T)serializer.Deserialize(reader);
                 }
             }
             catch (Exception e)
@@ -173,7 +171,7 @@ namespace ACAT.Lib.Core.Utility
 
             try
             {
-                lock(_lock)
+                lock (_lock)
                 {
                     if (!FileUtils.VerifyNotJunctionOrSymlink(filename))
                     {
@@ -181,14 +179,10 @@ namespace ACAT.Lib.Core.Utility
                         return default;
                     }
 
-                    using (FileStream fileStream = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Read, FileShare.None))
-                    {
-                        using (TextReader outputStream = new StreamReader(fileStream))
-                        {
-                            var xml = new XmlSerializer(typeof(T));
-                            retVal = (T)xml.Deserialize(outputStream);
-                        }
-                    }
+                    using FileStream fileStream = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Read, FileShare.None);
+                    using TextReader outputStream = new StreamReader(fileStream);
+                    var xml = new XmlSerializer(typeof(T));
+                    retVal = (T)xml.Deserialize(outputStream);
                 }
             }
             catch (Exception e)
@@ -231,11 +225,9 @@ namespace ACAT.Lib.Core.Utility
                         writer.Write(xmlobject);
                     }
 
-                    using (StreamReader inputStream = new StreamReader(filename))
-                    {
-                        var xmlContent = inputStream.ReadToEnd();
-                        retVal = XmlUtils.XmlDeserializeFromString<T>(xmlContent, out var _);
-                    }
+                    using StreamReader inputStream = new StreamReader(filename);
+                    var xmlContent = inputStream.ReadToEnd();
+                    retVal = XmlUtils.XmlDeserializeFromString<T>(xmlContent, out var _);
                 }
                 catch (Exception e)
                 {
@@ -258,12 +250,10 @@ namespace ACAT.Lib.Core.Utility
             var serializer = new XmlSerializer(typeof(T));
             var sb = new StringBuilder();
 
-            lock(_lock)
+            lock (_lock)
             {
-                using (TextWriter writer = new StringWriter(sb))
-                {
-                    serializer.Serialize(writer, obj);
-                }
+                using TextWriter writer = new StringWriter(sb);
+                serializer.Serialize(writer, obj);
             }
 
             return sb.ToString();

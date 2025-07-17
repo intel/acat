@@ -70,7 +70,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
 
                     int[] indicesChannels = Vector.Range(0, numChannels);
 
-                    List<int> indicesSamples = new List<int>();
+                    List<int> indicesSamples = new();
                     for (int i = 0; i < numSamples; i += downsampleRate)
                         indicesSamples.Add(i);
 

@@ -7,10 +7,10 @@
 
 using ACATResources;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -23,7 +23,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
     /// Form that handles different calibraitons options to configure and initialize calibration sesion
     /// </summary>
     ///
-    [Descriptor("4C48F7B3-FB3F-4857-9C36-E4148BA8FE5D",
+    [ClassDescriptor("4C48F7B3-FB3F-4857-9C36-E4148BA8FE5D",
                         "ConfirmBoxCalibrationModes",
                         "Application window used as a calibration UI for different modes")]
     public partial class ConfirmBoxCalibrationModes : Form
@@ -42,7 +42,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <summary>
         /// Buttons states
         /// </summary>
-        private readonly Dictionary<ScannerRoundedButtonControl, CalibrationModeControls> _ButtonsState = new Dictionary<ScannerRoundedButtonControl, CalibrationModeControls>();
+        private readonly Dictionary<ScannerRoundedButtonControl, CalibrationModeControls> _ButtonsState = new();
 
         /// <summary>
         /// Mode selected when paramaters show
@@ -57,7 +57,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <summary>
         /// Custom Tooltip object
         /// </summary>
-        private CustomToolTip customToolTip = new CustomToolTip();
+        private CustomToolTip customToolTip = new();
 
         /// <summary>
         /// IF typing is enalbed
@@ -208,7 +208,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error ButtonCalibrate_Click " + ex.Message);
+                Log.Exception("BCI LOG | Error ButtonCalibrate_Click " + ex.Message);
             }
         }
 
@@ -361,7 +361,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error ButtonOpc_Click " + ex.Message);
+                Log.Exception("BCI LOG | Error ButtonOpc_Click " + ex.Message);
             }
         }
 
@@ -523,7 +523,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Exception DisplayCalibrationHelp " + ex.Message);
+                Log.Exception("BCI LOG | Exception DisplayCalibrationHelp " + ex.Message);
             }
         }
 
@@ -542,7 +542,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <returns></returns>
         private BCISimpleParameters GetCalibrationParametersDefault(BCIScanSections bCIScanSections)
         {
-            BCISimpleParameters bciSimpleParameters = new BCISimpleParameters();
+            BCISimpleParameters bciSimpleParameters = new();
             try
             {
                 bciSimpleParameters = new BCISimpleParameters
@@ -555,7 +555,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error GetCalibrationParametersDefault | " + ex.Message.ToString());
+                Log.Exception("BCI LOG | Error GetCalibrationParametersDefault | " + ex.Message.ToString());
             }
             return bciSimpleParameters;
         }
@@ -686,7 +686,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error ProcessCalibrationStatusResult | " + ex.Message.ToString());
+                Log.Exception("BCI LOG | Error ProcessCalibrationStatusResult | " + ex.Message.ToString());
             }
         }
 
@@ -900,7 +900,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 }
             }
 
-            List<String> list = new List<String>();
+            List<String> list = new();
 
             if (param2.ToLower().EndsWith(".mp4"))
             {

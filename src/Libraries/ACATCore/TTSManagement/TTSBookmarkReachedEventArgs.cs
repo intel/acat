@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.TTSManagement
+namespace ACAT.Core.TTSManagement
 {
     /// <summary>
     /// Argument for the event raised when the TTS engine reaches

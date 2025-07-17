@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// Categories of panels in ACAT

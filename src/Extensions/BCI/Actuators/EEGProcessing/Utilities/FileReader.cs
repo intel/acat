@@ -11,8 +11,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -71,14 +71,14 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// <returns></returns>
         public List<int> ReadMarkersFromFile(String filePathMarkers = "", String initDirectory = "")
         {
-            List<int> markerValues = new List<int>();
+            List<int> markerValues = new();
 
             if (filePathMarkers == "") // If not path provided, show popup window to select it
             {
                 // Popup window to select file
 
                 // Displays an OpenFileDialog so the user can select a Cursor.
-                OpenFileDialog openFileDialog1 = new OpenFileDialog();
+                OpenFileDialog openFileDialog1 = new();
                 if (initDirectory != "")
                     openFileDialog1.InitialDirectory = initDirectory;
                 openFileDialog1.Filter = "markers file|*.txt";
@@ -97,13 +97,11 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             // Read marker values from file and place them in a list
             if (filePathMarkers != "" && File.Exists(filePathMarkers))
             {
-                using (StreamReader sr = new StreamReader(filePathMarkers))
+                using StreamReader sr = new(filePathMarkers);
+                while (sr.Peek() >= 0)
                 {
-                    while (sr.Peek() >= 0)
-                    {
-                        int markerValue = int.Parse(sr.ReadLine());
-                        markerValues.Add(markerValue);
-                    }
+                    int markerValue = int.Parse(sr.ReadLine());
+                    markerValues.Add(markerValue);
                 }
             }
             else
@@ -127,7 +125,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             if (filePath == "")
             {
                 // Popup window
-                OpenFileDialog openFileDialog1 = new OpenFileDialog();
+                OpenFileDialog openFileDialog1 = new();
                 if (initDirectory == "")
                     openFileDialog1.InitialDirectory = UserManager.CurrentUserDir;
                 else
@@ -151,58 +149,56 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             {
                 if (filePath != "" && File.Exists(filePath))
                 {
-                    using (StreamReader sr = new StreamReader(filePath))
+                    using StreamReader sr = new(filePath);
+                    int lineIdx = 0;
+                    List<int> triggerSignalList = new();
+                    List<double[]> rawDataList = new();
+                    int triggervalueNextSample = 0;
+
+                    while (sr.Peek() >= 0)
                     {
-                        int lineIdx = 0;
-                        List<int> triggerSignalList = new List<int>();
-                        List<double[]> rawDataList = new List<double[]>();
-                        int triggervalueNextSample = 0;
-
-                        while (sr.Peek() >= 0)
+                        string line = sr.ReadLine();
+                        lineIdx++;
+                        if (lineIdx > BCISettingsFixed.DataParser_HeaderLinesToSkip)
                         {
-                            string line = sr.ReadLine();
-                            lineIdx++;
-                            if (lineIdx > BCISettingsFixed.DataParser_HeaderLinesToSkip)
+                            String[] values = line.Split(',');
+
+                            // triggerValues are flipped (with the new sensor) 1=0, 0=1
+                            if (BCIActuatorSettings.Settings.DataParser_UseSoftwareTrigers)
                             {
-                                String[] values = line.Split(',');
-
-                                // triggerValues are flipped (with the new sensor) 1=0, 0=1
-                                if (BCIActuatorSettings.Settings.DataParser_UseSoftwareTrigers)
+                                int tmpTriggerSample = Convert.ToInt32(values[BCISettingsFixed.DataParser_IdxTriggerSignal_Sw - 1]); // sw trigger is stored in last channel
+                                                                                                                                     //Generate signal of 0 and 1 pulses (sw trigger is 1=on, 2=off, 0=no marker sent)
+                                switch (tmpTriggerSample)
                                 {
-                                    int tmpTriggerSample = Convert.ToInt32(values[BCISettingsFixed.DataParser_IdxTriggerSignal_Sw - 1]); // sw trigger is stored in last channel
-                                                                                                                                         //Generate signal of 0 and 1 pulses (sw trigger is 1=on, 2=off, 0=no marker sent)
-                                    switch (tmpTriggerSample)
-                                    {
-                                        case 1: triggervalueNextSample = 0; break;
-                                        case 2: triggervalueNextSample = 1; break;
-                                    }
-                                    triggerSignalList.Add(triggervalueNextSample);
+                                    case 1: triggervalueNextSample = 0; break;
+                                    case 2: triggervalueNextSample = 1; break;
                                 }
-                                else
-                                {
-                                    double t = Convert.ToDouble(values[BCISettingsFixed.DataParser_IdxTriggerSignal_Hw - 1]);//Indexed from 0, value given from 1
-                                    if (t == 0)
-                                        triggerSignalList.Add(1);
-                                    else
-                                        triggerSignalList.Add(0);
-                                }
-
-                                double[] chData = new double[BCIActuatorSettings.Settings.DAQ_NumEEGChannels];
-                                for (int ch = 0; ch < BCIActuatorSettings.Settings.DAQ_NumEEGChannels; ch++)
-                                    chData[ch] = Convert.ToDouble(values[BCISettingsFixed.DataParser_IdxStartEEGData - 1 + ch]); //Indexed from 0, value given from 1
-                                rawDataList.Add(chData);
+                                triggerSignalList.Add(triggervalueNextSample);
                             }
+                            else
+                            {
+                                double t = Convert.ToDouble(values[BCISettingsFixed.DataParser_IdxTriggerSignal_Hw - 1]);//Indexed from 0, value given from 1
+                                if (t == 0)
+                                    triggerSignalList.Add(1);
+                                else
+                                    triggerSignalList.Add(0);
+                            }
+
+                            double[] chData = new double[BCIActuatorSettings.Settings.DAQ_NumEEGChannels];
+                            for (int ch = 0; ch < BCIActuatorSettings.Settings.DAQ_NumEEGChannels; ch++)
+                                chData[ch] = Convert.ToDouble(values[BCISettingsFixed.DataParser_IdxStartEEGData - 1 + ch]); //Indexed from 0, value given from 1
+                            rawDataList.Add(chData);
                         }
-                        int numSamples = rawDataList.Count;
-                        int numChannels = BCIActuatorSettings.Settings.DAQ_NumEEGChannels;
-
-                        rawData = new double[numChannels, numSamples];
-                        for (int chIdx = 0; chIdx < numChannels; chIdx++)
-                            for (int sampleIdx = 0; sampleIdx < numSamples; sampleIdx++)
-                                rawData[chIdx, sampleIdx] = rawDataList[sampleIdx][chIdx];
-
-                        triggerSignal = triggerSignalList.ToArray();
                     }
+                    int numSamples = rawDataList.Count;
+                    int numChannels = BCIActuatorSettings.Settings.DAQ_NumEEGChannels;
+
+                    rawData = new double[numChannels, numSamples];
+                    for (int chIdx = 0; chIdx < numChannels; chIdx++)
+                        for (int sampleIdx = 0; sampleIdx < numSamples; sampleIdx++)
+                            rawData[chIdx, sampleIdx] = rawDataList[sampleIdx][chIdx];
+
+                    triggerSignal = triggerSignalList.ToArray();
                 }
                 else
                 {
@@ -211,7 +207,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             }
             catch (Exception e)
             {
-                Log.Debug(e.ToString());
+                Log.Exception(e.ToString());
             }
         }
     }

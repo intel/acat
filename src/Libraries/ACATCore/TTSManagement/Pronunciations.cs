@@ -5,8 +5,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -14,7 +14,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-namespace ACAT.Lib.Core.TTSManagement
+namespace ACAT.Core.TTSManagement
 {
     /// <summary>
     /// Holds a sorted list of pronunciation objects.  Raises events when
@@ -144,7 +144,7 @@ namespace ACAT.Lib.Core.TTSManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Error processing pronunciation file " + filePath + ". Exception: " + ex);
+                Log.Exception("Error processing pronunciation file " + filePath + ". Exception: " + ex);
                 retVal = false;
             }
 
@@ -301,7 +301,7 @@ namespace ACAT.Lib.Core.TTSManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -333,7 +333,7 @@ namespace ACAT.Lib.Core.TTSManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
@@ -356,7 +356,7 @@ namespace ACAT.Lib.Core.TTSManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 xmlTextWriter = null;
             }
 

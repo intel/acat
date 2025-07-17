@@ -10,15 +10,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WordPredictionManagement;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WordPredictionManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
     internal class SentencePredictionsRequestHandler
     {
@@ -134,7 +134,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("ConvAssist Predict Exception " + ex);
+                Log.Exception("ConvAssist Predict Exception " + ex);
 
                 _prevSentencePredictionResults = new List<string>();
                 response = new WordPredictionResponse(request, new List<String>(), false);
@@ -203,7 +203,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception sentencesLetters)
             {
-                Log.Debug("ConvAssist Predict sentencesLetters " + sentencesLetters);
+                Log.Exception("ConvAssist Predict sentencesLetters " + sentencesLetters);
             }
             return retVal;
         }

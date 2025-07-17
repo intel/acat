@@ -12,7 +12,7 @@ using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// This is a wrapper class for the .NET UI Automation API.
@@ -91,7 +91,7 @@ namespace ACAT.Lib.Core.Utility
                                         AutomationElement element,
                                         AutomationEventHandler eventHandler)
         {
-            Log.Debug();
+            Log.Verbose();
 
             var windowElement = (WindowElement)WindowTable[hWnd];
             if (windowElement == null)
@@ -234,7 +234,7 @@ namespace ACAT.Lib.Core.Utility
                                                                 AutomationElement element,
                                                                 AutomationPropertyChangedEventHandler eventHandler)
         {
-            Log.Debug();
+            Log.Verbose();
 
             if (hWnd == IntPtr.Zero)
             {
@@ -346,7 +346,7 @@ namespace ACAT.Lib.Core.Utility
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 try
                 {
@@ -374,7 +374,6 @@ namespace ACAT.Lib.Core.Utility
                 }
                 catch
                 {
-
                 }
 
                 // Release unmanaged resources.
@@ -570,7 +569,7 @@ namespace ACAT.Lib.Core.Utility
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug(ex.ToString());
+                    Log.Exception(ex.ToString());
                 }
             }
 
@@ -593,7 +592,7 @@ namespace ACAT.Lib.Core.Utility
             /// <param name="eventHandler">the event handler</param>
             public void AddAutomationEventHandler(AutomationElement element, AutomationEvent autoEvent, AutomationEventHandler eventHandler)
             {
-                Log.Debug();
+                Log.Verbose();
                 try
                 {
                     var events = (Hashtable)_controlElements[element];
@@ -624,7 +623,7 @@ namespace ACAT.Lib.Core.Utility
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("exception occured!  e=" + e.ToString());
+                    Log.Exception("Exception occured!  e=" + e.ToString());
                 }
             }
 
@@ -638,7 +637,7 @@ namespace ACAT.Lib.Core.Utility
                                                                 AutomationProperty property,
                                                                 AutomationPropertyChangedEventHandler eventHandler)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 try
                 {
@@ -691,7 +690,7 @@ namespace ACAT.Lib.Core.Utility
             /// </summary>
             public void RemoveAllEvents()
             {
-                Log.Debug();
+                Log.Verbose();
 
                 try
                 {
@@ -733,7 +732,7 @@ namespace ACAT.Lib.Core.Utility
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("exception occured!  e=" + e.ToString());
+                    Log.Exception("Exception occured!  e=" + e.ToString());
                 }
             }
 
@@ -744,7 +743,7 @@ namespace ACAT.Lib.Core.Utility
             /// <param name="autoEvent">the event</param>
             public void RemoveAutomationEventHandler(AutomationElement element, AutomationEvent autoEvent)
             {
-                Log.Debug();
+                Log.Verbose();
                 try
                 {
                     var events = (Hashtable)_controlElements[element];
@@ -779,7 +778,7 @@ namespace ACAT.Lib.Core.Utility
                                                                     AutomationProperty property,
                                                                     AutomationPropertyChangedEventHandler eventHandler)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 try
                 {
@@ -802,17 +801,17 @@ namespace ACAT.Lib.Core.Utility
                         }
                         else
                         {
-                            Log.Debug("Could not remove event.  Did not find event handler in the eventhandlers list");
+                            Log.Error("Could not remove event.  Did not find event handler in the eventhandlers list");
                         }
                     }
                     else
                     {
-                        Log.Debug("Could not remove event.  Did not find property in the events list");
+                        Log.Error("Could not remove event.  Did not find property in the events list");
                     }
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("exception occured!  e=" + e.ToString());
+                    Log.Exception("Exception occured!  e=" + e.ToString());
                 }
             }
 

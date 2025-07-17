@@ -11,7 +11,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
+using ACAT.Core.PanelManagement;
 using Accord.Math;
 using Accord.Statistics;
 using System;
@@ -40,7 +40,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// <param name="sampleRate"></param>
         public static void plotSignal(double[,] data, int channelIdx, int sampleRate = 250)
         {
-            GraphDisplayerForm2x1 graphFormSignal = new GraphDisplayerForm2x1();
+            GraphDisplayerForm2x1 graphFormSignal = new();
             _ = graphFormSignal.graphControlBottom.GraphPane;
             GraphPane graphPaneTop = graphFormSignal.graphControlTop.GraphPane;
 
@@ -66,7 +66,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// <param name="triggerSignal"></param>
         public static void plotTriggerSignal(int[] triggerSignal)
         {
-            GraphDisplayerForm2x1 graphFormSignal = new GraphDisplayerForm2x1();
+            GraphDisplayerForm2x1 graphFormSignal = new();
             _ = graphFormSignal.graphControlBottom.GraphPane;
             GraphPane graphPaneTop = graphFormSignal.graphControlTop.GraphPane;
 
@@ -102,7 +102,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             List<double[,]> nontargets = Matrix.Get(trialData, indNontargets);
 
             // Create Form
-            GraphDisplayerForm2x1 graphFormERPs = new GraphDisplayerForm2x1();
+            GraphDisplayerForm2x1 graphFormERPs = new();
             GraphPane graphPaneBottom = graphFormERPs.graphControlBottom.GraphPane;
             GraphPane graphPaneTop = graphFormERPs.graphControlTop.GraphPane;
 
@@ -161,11 +161,11 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             double[] xVector = Vector.Range(xMin, xMax, stepSize);
 
             // Construct KDEs for target and non-target
-            NormalKDE KDENonTarget = new NormalKDE();
+            NormalKDE KDENonTarget = new();
             KDENonTarget.BuildKDE(nonTargetScores.ToArray());
             double[] nonTargetPDF = KDENonTarget.CalculateProbabilities(xVector);
 
-            NormalKDE KDETarget = new NormalKDE();
+            NormalKDE KDETarget = new();
             KDETarget.BuildKDE(targetScores.ToArray());
             double[] targetPDF = KDETarget.CalculateProbabilities(xVector);
 
@@ -225,8 +225,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// <param name="sampleRate"></param>
         private static void diplaySignalInGraph(List<double[,]> data, int[] channels, GraphPane graphPaneObj, string title, int sampleRate)
         {
-            List<PointPairList> channelPoints = new List<PointPairList>();
-            List<double[]> channelAverages = new List<double[]>();
+            List<PointPairList> channelPoints = new();
+            List<double[]> channelAverages = new();
 
             int numTrials = data.Count;
             int numChannels = data[0].GetLength(1);
@@ -244,7 +244,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             float maxTime = 0;
             for (int channelIdx = 0; channelIdx < numChannels; channelIdx++)
             {
-                PointPairList graphPoints = new PointPairList();
+                PointPairList graphPoints = new();
                 double[] averages = new double[numSamples];
 
                 for (int sampleIdx = 0; sampleIdx < numSamples; sampleIdx++)

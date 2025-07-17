@@ -5,11 +5,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement.TextInterface;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.AgentManagement.TextInterface;
+using ACAT.Core.Utility;
 using System.Collections.Generic;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// This is a no-op agent.  This only serves one purpose.  Instead
@@ -17,7 +17,7 @@ namespace ACAT.Lib.Core.AgentManagement
     /// to support the foreground app, it returns an instance of the null agent
     /// instead of returning NULL. Saves headaches for the caller
     /// </summary>
-    [Descriptor("92D2C512-DCAA-4773-8773-73E5D8C849FA",
+    [ClassDescriptor("92D2C512-DCAA-4773-8773-73E5D8C849FA",
                         "Null Agent",
                         "No-op agent")]
     public class NullAgent : AgentBase
@@ -47,7 +47,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <param name="handled">set to true if handled</param>
         public override void OnFocusChanged(WindowActivityMonitorInfo monitorInfo, ref bool handled)
         {
-            Log.Debug();
+            Log.Verbose();
 
             setTextInterface(_textInterface);
 

@@ -6,14 +6,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement.TextInterface;
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.AgentManagement.TextInterface;
+using ACAT.Core.Extensions;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// Delegate for the event that is raised when the text changes in
@@ -27,7 +27,7 @@ namespace ACAT.Lib.Core.AgentManagement
     /// All application agents must derive from this interface.  Application agents
     /// handle all interactions with an application, such as notepad, ms word, ie etc.
     /// </summary>
-    public interface IApplicationAgent : IDisposable, IExtension, ISupportsPreferences
+    public interface IApplicationAgent : IDisposable, IExtension, ISupportsPreferences, IPluginExtension
     {
         /// <summary>
         /// Raised when an application agent is deactivated

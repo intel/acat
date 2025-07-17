@@ -13,7 +13,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 
-namespace ACAT.Lib.Core.Utility.NamedPipe
+namespace ACAT.Core.Utility.NamedPipe
 {
     public sealed class PipeServer : IDisposable
     {
@@ -50,7 +50,7 @@ namespace ACAT.Lib.Core.Utility.NamedPipe
             {
                 PipeSecurity pipeSecurity = new PipeSecurity();
                 var id = new SecurityIdentifier(WellKnownSidType.AuthenticatedUserSid, null);
-                //Allow Everyone read and write access to the pipe. 
+                //Allow Everyone read and write access to the pipe.
                 pipeSecurity.SetAccessRule(new PipeAccessRule(id, PipeAccessRights.ReadWrite, AccessControlType.Allow));
 
                 ServerStream = new NamedPipeServerStream(
@@ -201,11 +201,23 @@ namespace ACAT.Lib.Core.Utility.NamedPipe
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Log.Debug("Error in ReadCallback: " + ex.Message);
-            }
+                Log.Exception("Error in ReadCallback: " + ex.Message);
 
+                // Check to make sure the Pipe is still around
+                try
+                {
+                    var checkPipe = (PipeServerState)ar.AsyncState;
+                    checkPipe.PipeServer.Write(checkPipe.Buffer, 0, checkPipe.Buffer.Length);
+                }
+                catch (Exception e)
+                {
+                   // Something happened to the pipe. Just send an Exit message to the client
+                    Log.Debug("Pipe is not connected. Sending exit message to client. " + e.Message);
+                    OnMessageReceived(new MessageReceivedEventArgs("quit"));
+                }
+            }
         }
 
         /// <summary>

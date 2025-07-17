@@ -1,13 +1,11 @@
 <?xml version="1.0" ?>
 
 <ACAT>
-  <WidgetAttributes/>
-    
+  <WidgetAttributes />
+
   <Layout>
-    <Widget class="WinControlWidget"  name="panelContainer"/>
+    <Widget class="WinControlWidget"  name="panelContainer" />
   </Layout>
 
-  <Animations/>
-   
+  <Animations />
 </ACAT>
-

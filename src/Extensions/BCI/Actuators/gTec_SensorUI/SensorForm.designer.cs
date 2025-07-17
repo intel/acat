@@ -127,7 +127,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.ClientSize = new System.Drawing.Size(1918, 1078);
             this.ControlBox = false;
             this.Controls.Add(this.tableLayoutPanelMain);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MinimumSize = new System.Drawing.Size(1024, 768);
             this.Name = "SensorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

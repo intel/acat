@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// Event argument for the event that is raised when an

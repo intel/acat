@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 ////////////////////////////////////////////////////////////////////////////
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Handles mouse scanning across the display. Methods in
@@ -81,10 +81,7 @@ namespace ACAT.Lib.Core.Utility
         /// </summary>
         public void Actuate()
         {
-            if (_window != null)
-            {
-                _window.Actuate();
-            }
+            _window?.Actuate();
         }
 
         /// <summary>
@@ -95,7 +92,6 @@ namespace ACAT.Lib.Core.Utility
         {
             _window = new MouseGridScanWindow
             {
-                EnableVerticalGridRectangle = EnableVerticalGridRectangle,
                 GridLineCycles = GridLineCycles,
                 GridLineSpeed = GridLineSpeed,
                 GridLineThickness = GridLineThickness,

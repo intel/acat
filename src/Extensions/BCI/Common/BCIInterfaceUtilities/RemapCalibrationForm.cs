@@ -6,9 +6,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System;
@@ -20,7 +20,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
     /// Form that handles different calibraitons options to configure and initialize calibration sesion
     /// </summary>
 
-    [Descriptor("5A13AD81-2943-4A11-885F-37D4C2F19918",
+    [ClassDescriptor("5A13AD81-2943-4A11-885F-37D4C2F19918",
         "RemapCalibrationForm",
         "Application window used to display the remap of calibrations")]
     public partial class RemapCalibrationForm : Form
@@ -109,7 +109,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("Error AddItemsToComboBox: " + ex.Message);
+                Log.Exception("Error AddItemsToComboBox: " + ex.Message);
             }
         }
 
@@ -197,7 +197,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// </summary>
         private BCICalibrationUpdatedMappings GetMappingsValues()
         {
-            BCICalibrationUpdatedMappings bCICalibrationUpdatedMappings = new BCICalibrationUpdatedMappings();
+            BCICalibrationUpdatedMappings bCICalibrationUpdatedMappings = new();
             try
             {
                 bCICalibrationUpdatedMappings.DictUpdatedMappings.Add(BCIScanSections.Box, GetScanningSection(comboBoxBox.SelectedItem.ToString()));
@@ -208,7 +208,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("Error SaveMappingsValues: " + ex.Message);
+                Log.Exception("Error SaveMappingsValues: " + ex.Message);
             }
             return bCICalibrationUpdatedMappings;
         }
@@ -286,7 +286,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error ProcessMapOptionsAnswer: " + ex.Message);
+                Log.Exception("BCI LOG | Error ProcessMapOptionsAnswer: " + ex.Message);
             }
         }
 
@@ -340,7 +340,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error SetDefaultItemInComboBox: " + ex.Message);
+                Log.Exception("BCI LOG | Error SetDefaultItemInComboBox: " + ex.Message);
             }
         }
 
@@ -385,7 +385,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 }
             }
 
-            List<String> list = new List<String>();
+            List<String> list = new();
 
             if (param2.ToLower().EndsWith(".mp4"))
             {

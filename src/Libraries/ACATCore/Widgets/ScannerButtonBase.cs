@@ -5,13 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Widgets
+namespace ACAT.Core.Widgets
 {
     /// <summary>
     /// The base class for all widgets that use ScannerButton as
@@ -39,12 +39,18 @@ namespace ACAT.Lib.Core.Widgets
         /// <summary>
         /// The font family
         /// </summary>
-        private FontFamily _fontFamily;
+        private FontFamily _fontFamily 
+        { 
+            get => fontFamily; 
+            set => fontFamily = value; 
+        }
+
 
         /// <summary>
         /// Size of the font before the widget was scaled
         /// </summary>
         private float _originalFontSize;
+        private FontFamily fontFamily;
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -64,8 +70,11 @@ namespace ACAT.Lib.Core.Widgets
         {
             base.SetScaleFactor(newScaleFactor);
 
-            _font = new Font(_fontFamily, _originalFontSize * newScaleFactor, _font.Style);
-            UIControl.Font = _font;
+            if (_fontFamily != null)
+            {
+                _font = new Font(_fontFamily, _originalFontSize * newScaleFactor, _font.Style);
+                UIControl.Font = _font;
+            }
         }
 
         /// <summary>
@@ -76,28 +85,33 @@ namespace ACAT.Lib.Core.Widgets
         {
             base.SetWidgetAttribute(attribute);
 
-            _fontFamily = Fonts.Instance.GetFontFamily(new[]
-                                                    {   widgetAttribute.FontName,
-                                                        CoreGlobals.AppPreferences.FontName,
-                                                        "Arial" });
-            if (_fontFamily != null)
+            if (widgetAttribute.FontName != null)
             {
-                FontStyle fontStyle = FontStyle.Regular;
-                if (widgetAttribute.FontBold)
+                _fontFamily = Fonts.Instance.GetFontFamily(new[]
+                                                        {   widgetAttribute.FontName,
+                                                            CoreGlobals.AppPreferences.FontName });
+                if (_fontFamily != null)
                 {
-                    fontStyle |= FontStyle.Bold;
+                    FontStyle fontStyle = FontStyle.Regular;
+                    if (widgetAttribute.FontBold)
+                    {
+                        fontStyle |= FontStyle.Bold;
+                    }
+                    if (widgetAttribute.FontItalic)
+                    {
+                        fontStyle |= FontStyle.Italic;
+                    }
+                    _font = new Font(_fontFamily, widgetAttribute.FontSize, fontStyle);
+                    UIControl.Font = _font;
                 }
-                if (widgetAttribute.FontItalic)
-                {
-                    fontStyle |= FontStyle.Italic;
-                }
-                _font = new Font(_fontFamily, widgetAttribute.FontSize, fontStyle);
-                UIControl.Font = _font;
-            }
 
+            }
             _originalFontSize = _font.Size;
 
-            SetText(widgetAttribute.Label);
+            if (!string.IsNullOrEmpty(widgetAttribute.Label))
+            {
+                SetText(widgetAttribute.Label);
+            }
 
             if (attribute.Alignment != null)
             {
@@ -119,7 +133,7 @@ namespace ACAT.Lib.Core.Widgets
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     if (disposing)
                     {

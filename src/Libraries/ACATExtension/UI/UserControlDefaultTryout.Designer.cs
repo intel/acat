@@ -1,6 +1,7 @@
 ﻿using ACATResources;
+using ACAT.Core.WidgetManagement;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 
 {
     partial class UserControlDefaultTryout
@@ -37,13 +38,13 @@ namespace ACAT.Lib.Extension
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.customSlider2PositiveLabel = new System.Windows.Forms.Button();
             this.customSliderScanningSpeed = new ColorSlider.ColorSlider();
-            this.B4 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B4 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B3 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B2 = new ScannerRoundedButtonControl();
+            this.B1 = new ScannerRoundedButtonControl();
             this.labelCustomSliderValue = new System.Windows.Forms.Label();
             this.customSliderNegativeLabel = new System.Windows.Forms.Button();
-            this.scannerRoundedButtonControl1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.scannerRoundedButtonControl1 = new ScannerRoundedButtonControl();
             this.checkBoxDontShowThisOnStartup = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanelMain.SuspendLayout();
             this.SuspendLayout();
@@ -402,12 +403,12 @@ namespace ACAT.Lib.Extension
 
         private System.Windows.Forms.RichTextBox richTextBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelMain;
-        private Core.WidgetManagement.ScannerRoundedButtonControl B4;
-        private Core.WidgetManagement.ScannerRoundedButtonControl B3;
-        private Core.WidgetManagement.ScannerRoundedButtonControl B2;
+        private ScannerRoundedButtonControl B4;
+        private ScannerRoundedButtonControl B3;
+        private ScannerRoundedButtonControl B2;
         private System.Windows.Forms.Label labelScanSpeedSelect3;
         private System.Windows.Forms.Label label1;
-        private Core.WidgetManagement.ScannerRoundedButtonControl B1;
+        private ScannerRoundedButtonControl B1;
         private ColorSlider.ColorSlider customSliderScanningSpeed;
         private System.Windows.Forms.Label labelCustomSliderValue;
         private System.Windows.Forms.Button customSliderNegativeLabel;

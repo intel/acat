@@ -12,7 +12,7 @@
 
 using System;
 
-namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
     [Serializable]
     internal class ConvAssistSetParam
@@ -21,7 +21,8 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         public string Value { get; set; }
 
         // Parameterless constructor for deserialization
-        public ConvAssistSetParam() { }
+        public ConvAssistSetParam()
+        { }
 
         public ConvAssistSetParam(ConvAssistParameterType param, string value)
         {
@@ -64,5 +65,4 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             EnableLog,
         }
     }
-
 }

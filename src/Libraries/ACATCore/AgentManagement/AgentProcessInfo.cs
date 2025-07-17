@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// Represents process information used to identify which processes

@@ -5,15 +5,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.Extensions;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     /// <summary>
     /// Contains useful utility cover functions such as
@@ -188,7 +188,7 @@ namespace ACAT.Lib.Extension
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
@@ -217,7 +217,7 @@ namespace ACAT.Lib.Extension
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
@@ -250,7 +250,7 @@ namespace ACAT.Lib.Extension
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
@@ -279,7 +279,7 @@ namespace ACAT.Lib.Extension
             }
             catch (Exception e)
             {
-                Log.Debug("Error creating task switcher dialog. Exception: " + e);
+                Log.Exception("Error creating task switcher dialog. Exception: " + e);
             }
         }
 

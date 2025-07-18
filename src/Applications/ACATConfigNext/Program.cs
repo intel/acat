@@ -29,7 +29,7 @@ namespace ACATConfigNext
             private List<(UserControl Panel, string Label)> breadcrumbStack = new();
             private string currentPageLabel;
 
-        
+
 
             public SettingsForm()
             {
@@ -42,8 +42,8 @@ namespace ACATConfigNext
                 BackColor = Color.FromArgb(31, 31, 56);
                 ForeColor = Color.White;
 
-                contentPanel = CustomControls.CreatePanel(DockStyle.Fill,0);
-                breadcrumbPanel = CustomControls.CreateFlowPanel(DockStyle.Top,height: 40, text: "Settings", padding: new Padding(10, 5, 0, 0));
+                contentPanel = CustomControls.CreatePanel(DockStyle.Fill, 0);
+                breadcrumbPanel = CustomControls.CreateFlowPanel(DockStyle.Top, height: 40, text: "Settings", padding: new Padding(10, 5, 0, 0));
                 navPanel = CustomControls.CreatePanel(DockStyle.Left, 200);
 
                 Controls.Add(contentPanel);
@@ -60,7 +60,7 @@ namespace ACATConfigNext
 
                 foreach (var category in categories)
                 {
-                    var btn = CustomControls.CreateFlatButton(text: category, tag: category, width: navPanel.Width - 20, top: y, left: 10,height:40);
+                    var btn = CustomControls.CreateFlatButton(text: category, tag: category, width: navPanel.Width - 20, top: y, left: 10, height: 40);
                     btn.Click += Category_Click;
                     navPanel.Controls.Add(btn);
                     y += 50;
@@ -229,7 +229,7 @@ namespace ACATConfigNext
                 return tableLayoutPanel;
             }
 
-            public static TableLayoutPanel RefreshExtensionPanel<TManager, TCollection>(Func<bool> loadManagerExtensions,Func<IEnumerable<string>> getExtensionDirs,TCollection context,Func<TCollection, IEnumerable<Type>> getTypeCollection, string panelTitle, EventHandler<PreferencesCategory> onClick = null) where TCollection : class
+            public static TableLayoutPanel RefreshExtensionPanel<TManager, TCollection>(Func<bool> loadManagerExtensions, Func<IEnumerable<string>> getExtensionDirs, TCollection context, Func<TCollection, IEnumerable<Type>> getTypeCollection, string panelTitle, EventHandler<PreferencesCategory> onClick = null) where TCollection : class
             {
                 if (CoreGlobals.AppPreferences == null)
                 {
@@ -299,8 +299,8 @@ namespace ACATConfigNext
                         categoryItem.Controls.Add(checkBox, 1, 1);
                         categoryItem.SetRowSpan(checkBox, 2);
 
-                   //   var setupButton = CustomControls.CreateSetupButton(">", onClick: onClick != null ? (sender, e) => onClick(sender, category) : null, tag: category);
-                        var setupButton = CustomControls.CreateSetupButton(">",onClick: (sender, e) => OnSetupClicked(sender, category),tag: category);
+                        //   var setupButton = CustomControls.CreateSetupButton(">", onClick: onClick != null ? (sender, e) => onClick(sender, category) : null, tag: category);
+                        var setupButton = CustomControls.CreateSetupButton(">", onClick: (sender, e) => OnSetupClicked(sender, category), tag: category);
                         categoryItem.Controls.Add(setupButton, 2, 0);
                         categoryItem.SetRowSpan(setupButton, 3);
 
@@ -313,7 +313,7 @@ namespace ACATConfigNext
 
                 return new TableLayoutPanel();
             }
-        
+
             public static bool IsValidExtension(PreferencesCategory category, out IDescriptor descriptor)
             {
                 descriptor = null;
@@ -325,7 +325,7 @@ namespace ACATConfigNext
 
                 descriptor = extension.Descriptor;
                 return descriptor != null && descriptor.HasSettings;
-            }  
+            }
         }
 
         /// <summary>
@@ -381,18 +381,18 @@ namespace ACATConfigNext
         }
 
         public class ActuatorSettingsPanel : UserControl
-        {       
+        {
             private readonly Actuators _context = new Actuators();
 
             public ActuatorSettingsPanel(Action<UserControl, string> showPanel)
             {
                 Controls.Add(
-                    
+
                     SettingsForm.RefreshExtensionPanel<ActuatorManager, Actuators>(
                         () => ACAT.Lib.Core.PanelManagement.Context.AppActuatorManager.LoadExtensions(ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs, true),
                         () => ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs,
                         _context as Actuators,
-                        context => null,  
+                        context => null,
                         "Actuator Settings",
                         OnSetupClicked
                         ));
@@ -403,11 +403,11 @@ namespace ACATConfigNext
 
         public class WordPredictorsPanel : UserControl
         {
-            private readonly WordPredictors _context = new ();
+            private readonly WordPredictors _context = new();
 
             public WordPredictorsPanel(Action<UserControl, string> showPanel)
             {
-                Controls.Add( SettingsForm.RefreshExtensionPanel<WordPredictionManager, WordPredictors>(
+                Controls.Add(SettingsForm.RefreshExtensionPanel<WordPredictionManager, WordPredictors>(
                     () => ACAT.Lib.Core.PanelManagement.Context.AppWordPredictionManager.LoadExtensions(ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs),
                     () => ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs,
                     _context as WordPredictors,
@@ -524,7 +524,7 @@ namespace ACATConfigNext
             var preferences = supportsPrefs.GetPreferences();
             if (preferences != null)
             {
-                //TODO Create specialized TTS controls  CreateTTSSpecificControls(tableLayout, preferences);
+                CreateTTSSpecificControls(tableLayout, preferences);
             }
 
             return tableLayout;
@@ -570,5 +570,42 @@ namespace ACATConfigNext
             return tableLayout;
         }
 
+        private static void CreateTTSSpecificControls(TableLayoutPanel tableLayout, IPreferences preferences)
+        {
+            var props = preferences.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (var prop in props)
+            {
+                switch (prop.Name.ToLower())
+                {
+                    case "voice":
+                        var voicePanel = CustomControls.CreateVoiceSelectionControl(prop, preferences);
+                        tableLayout.Controls.Add(voicePanel);
+                        break;
+
+                    case "rate":
+                        var ratePanel = CustomControls.CreateRateControl(prop, preferences);
+                        tableLayout.Controls.Add(ratePanel);
+                        break;
+
+                    case "volume":
+                        var volumePanel = CustomControls.CreateVolumeControl(prop, preferences);
+                        tableLayout.Controls.Add(volumePanel);
+                        break;
+
+                    case "pitch":
+                        var pitchPanel = CustomControls.CreatePitchControl(prop, preferences);
+                        tableLayout.Controls.Add(pitchPanel);
+                        break;
+
+                    default:
+                        var propPanel = CustomControls.CreateLabeledPanel(prop, preferences);
+                        var host = CustomControls.ElementHost(propPanel);
+                        tableLayout.Controls.Add(host);
+                        break;
+                }
+            }
+
+        }
     }
 }

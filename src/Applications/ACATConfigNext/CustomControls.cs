@@ -21,6 +21,7 @@ using ACAT.Lib.Core.Extensions;
 using ACAT.Lib.Core.PreferencesManagement;
 using static ACATConfigNext.Program;
 using ACAT.Lib.Core.ActuatorManagement;
+using System.Speech.Synthesis;
 
 
 namespace ACATConfigNext
@@ -349,7 +350,292 @@ namespace ACATConfigNext
             return button;
         }
 
+        public static System.Windows.Forms.Control CreateVoiceSelectionControl(PropertyInfo prop, IPreferences preferences)
+        {
+            var panel = new TableLayoutPanel
+            {
+                ColumnCount = 2,
+                RowCount = 1,
+                AutoSize = true,
+                Dock = DockStyle.Fill
+            };
   
+            var label = new System.Windows.Forms.Label
+            {
+                Text = "Voice:",
+                AutoSize = true,
+                Anchor = AnchorStyles.Left
+            };
+            panel.Controls.Add(label, 0, 0);
+
+            var comboBox = new System.Windows.Forms.ComboBox
+            {
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Dock = DockStyle.Fill
+            };
+
+            PopulateVoices(comboBox, preferences);
+
+            panel.Controls.Add(comboBox, 1, 0);
+
+            return panel;
+        }
+
+        public static System.Windows.Forms.Control CreateRateControl(PropertyInfo prop, IPreferences preferences)
+        {
+            var panel = new TableLayoutPanel
+            {
+                ColumnCount = 3,
+                RowCount = 1,
+                AutoSize = true,
+                Dock = DockStyle.Fill
+            };
+
+            var label = new System.Windows.Forms.Label
+            {
+                Text = "Speaking Rate:",
+                AutoSize = true,
+                Anchor = AnchorStyles.Left
+            };
+            panel.Controls.Add(label, 0, 0);
+
+            var currentRate = (int)prop.GetValue(preferences);
+            var rateRange = GetRateRange(preferences);
+
+            var numericUpDown = new System.Windows.Forms.NumericUpDown
+            {
+                Minimum = rateRange.Min,
+                Maximum = rateRange.Max,
+                Value = currentRate,
+                Increment = 1,
+                Dock = DockStyle.Fill
+            };
+
+            numericUpDown.ValueChanged += (sender, e) =>
+            {
+                prop.SetValue(preferences, (int)numericUpDown.Value);
+            };
+
+            panel.Controls.Add(numericUpDown, 1, 0);
+
+            var rangeLabel = new System.Windows.Forms.Label
+            {
+                Text = $"({rateRange.Min} to {rateRange.Max})",
+                AutoSize = true,
+                Anchor = AnchorStyles.Left,
+                ForeColor = Color.Gray
+            };
+            panel.Controls.Add(rangeLabel, 2, 0);
+
+            return panel;
+        }
+
+        public static System.Windows.Forms.Control CreateVolumeControl(PropertyInfo prop, IPreferences preferences)
+        {
+            var panel = new TableLayoutPanel
+            {
+                ColumnCount = 3,
+                RowCount = 1,
+                AutoSize = true,
+                Dock = DockStyle.Fill
+            };
+
+            // Add label  
+            var label = new System.Windows.Forms.Label
+            {
+                Text = "Volume:",
+                AutoSize = true,
+                Anchor = AnchorStyles.Left
+            };
+            panel.Controls.Add(label, 0, 0);
+
+            // Get current volume value and range  
+            var currentVolume = (int)prop.GetValue(preferences);
+            var volumeRange = GetVolumeRange(preferences);
+
+            // Create numeric up/down control for volume  
+            var numericUpDown = new System.Windows.Forms.NumericUpDown
+            {
+                Minimum = volumeRange.Min,
+                Maximum = volumeRange.Max,
+                Value = currentVolume,
+                Increment = 5, // Volume increments by 5  
+                Dock = DockStyle.Fill
+            };
+
+            // Update preferences when value changes  
+            numericUpDown.ValueChanged += (sender, e) =>
+            {
+                prop.SetValue(preferences, (int)numericUpDown.Value);
+            };
+
+            panel.Controls.Add(numericUpDown, 1, 0);
+
+            // Add range label  
+            var rangeLabel = new System.Windows.Forms.Label
+            {
+                Text = $"({volumeRange.Min} to {volumeRange.Max})",
+                AutoSize = true,
+                Anchor = AnchorStyles.Left,
+                ForeColor = Color.Gray
+            };
+            panel.Controls.Add(rangeLabel, 2, 0);
+
+            return panel;
+        }
+
+        public static System.Windows.Forms.Control CreatePitchControl(PropertyInfo prop, IPreferences preferences)
+        {
+            var panel = new TableLayoutPanel
+            {
+                ColumnCount = 3,
+                RowCount = 1,
+                AutoSize = true,
+                Dock = DockStyle.Fill
+            };
+
+            var label = new System.Windows.Forms.Label
+            {
+                Text = "Pitch:",
+                AutoSize = true,
+                Anchor = AnchorStyles.Left
+            };
+            panel.Controls.Add(label, 0, 0);
+
+            var currentPitch = (int)prop.GetValue(preferences);
+            var pitchRange = GetPitchRange(preferences);
+
+            var numericUpDown = new System.Windows.Forms.NumericUpDown
+            {
+                Minimum = pitchRange.Min,
+                Maximum = pitchRange.Max,
+                Value = currentPitch,
+                Increment = 1,
+                Dock = DockStyle.Fill
+            };
+
+            numericUpDown.ValueChanged += (sender, e) =>
+            {
+                prop.SetValue(preferences, (int)numericUpDown.Value);
+            };
+
+            panel.Controls.Add(numericUpDown, 1, 0);
+
+            var rangeLabel = new System.Windows.Forms.Label
+            {
+                Text = $"({pitchRange.Min} to {pitchRange.Max})",
+                AutoSize = true,
+                Anchor = AnchorStyles.Left,
+                ForeColor = Color.Gray
+            };
+            panel.Controls.Add(rangeLabel, 2, 0);
+
+            return panel;
+        }
+
+        private static (int Min, int Max) GetVolumeRange(IPreferences preferences)
+        {
+            var engineType = DetermineEngineType(preferences);
+
+            return engineType switch
+            {
+                "SAPI" => (0, 100),       
+                "TTSClient" => (0, 100),   
+                _ => (0, 100)           
+            };
+        }
+
+        private static (int Min, int Max) GetRateRange(IPreferences preferences)
+        {
+            var engineType = DetermineEngineType(preferences);
+
+            return engineType switch
+            {
+                "SAPI" => (-10, 10),      
+                "TTSClient" => (-10, 10),    
+                _ => (-10, 10)         
+            };
+        }
+
+        private static (int Min, int Max) GetPitchRange(IPreferences preferences)
+        {
+            var engineType = DetermineEngineType(preferences);
+
+            return engineType switch
+            {
+                "SAPI" => (int.MinValue, int.MaxValue),      // SAPI pitch range (not supported)  
+                "TTSClient" => (int.MinValue, int.MaxValue), 
+                _ => (-10, 10)                               
+            };
+        }
+
+        private static void PopulateVoices(System.Windows.Forms.ComboBox comboBox, IPreferences preferences)
+        {
+            comboBox.Items.Clear();
+
+            var engineType = DetermineEngineType(preferences);
+
+            switch (engineType)
+                {
+                    case "SAPI":
+                        try
+                        {
+                            using (var synthesizer = new SpeechSynthesizer())
+                            {
+                                var voices = synthesizer.GetInstalledVoices();
+                                foreach (InstalledVoice voice in voices)
+                                {
+                                    comboBox.Items.Add(voice.VoiceInfo.Name);
+                                }
+                            }
+                        }
+                        catch
+                        {
+                            comboBox.Items.Add("Default SAPI Voice");
+                        }
+                        break;
+
+                    case "TTSClient":
+                        comboBox.Items.Add("Server Default");   // TTS Client doesn't support voice selection
+                        comboBox.Enabled = false;               // Disable since no voice selection available 
+                        break;
+
+                    case "NullTTS":
+                        comboBox.Items.Add("No Voice (Null Engine)");
+                        comboBox.Enabled = false;
+                        break;
+
+                    default:
+                        comboBox.Items.Add("Default Voice");
+                        comboBox.Items.Add("System Default");
+                        break;
+                }
+        }
+
+        private static string DetermineEngineType(IPreferences preferences)
+        {
+            var descriptor = preferences.GetType().GetCustomAttribute<DescriptorAttribute>();
+
+            if (descriptor != null)
+            {
+                switch (descriptor.Name)
+                {
+                    case "SAPI Engine":
+                        return "SAPI";
+
+                    case "TTS Client":
+                        return "TTSClient";
+
+                    case "Null TTS Engine":
+                        return "NullTTS";
+
+                    default:
+                        return "Generic";
+                }
+            }
+
+            return "Generic";
+        }
 
     }
 }

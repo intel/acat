@@ -29,6 +29,8 @@ namespace ACATConfigNext
             private List<(UserControl Panel, string Label)> breadcrumbStack = new();
             private string currentPageLabel;
 
+        
+
             public SettingsForm()
             {
                 Text = "ACAT Settings";
@@ -115,7 +117,7 @@ namespace ACATConfigNext
                 }
             }
 
-            private void ShowPanel(UserControl panel, string label)
+            public void ShowPanel(UserControl panel, string label)
             {
                 if (contentPanel.Controls.Count > 0)
                 {
@@ -192,6 +194,7 @@ namespace ACATConfigNext
 
                 UpdateBreadcrumbTrail();
             }
+
             public static TableLayoutPanel RefreshGeneralSettingsPanel(Action<Control> onControlCreated = null)
             {
                 var tableLayoutPanel = CustomControls.CreateCategoryTableLayoutPanel();
@@ -296,7 +299,8 @@ namespace ACATConfigNext
                         categoryItem.Controls.Add(checkBox, 1, 1);
                         categoryItem.SetRowSpan(checkBox, 2);
 
-                        var setupButton = CustomControls.CreateSetupButton(">", onClick: onClick != null ? (sender, e) => onClick(sender, category) : null, tag: category);
+                   //   var setupButton = CustomControls.CreateSetupButton(">", onClick: onClick != null ? (sender, e) => onClick(sender, category) : null, tag: category);
+                        var setupButton = CustomControls.CreateSetupButton(">",onClick: (sender, e) => OnSetupClicked(sender, category),tag: category);
                         categoryItem.Controls.Add(setupButton, 2, 0);
                         categoryItem.SetRowSpan(setupButton, 3);
 
@@ -321,9 +325,7 @@ namespace ACATConfigNext
 
                 descriptor = extension.Descriptor;
                 return descriptor != null && descriptor.HasSettings;
-            }
-
-           
+            }  
         }
 
         /// <summary>
@@ -353,8 +355,6 @@ namespace ACATConfigNext
                 public Guid Id => Guid.Empty;
                 public bool HasSettings => true;
             }
-
-
         }
 
         private class GeneralSettingsCategory : ISupportsPreferences
@@ -399,73 +399,6 @@ namespace ACATConfigNext
 
                 Controls.Add(new Label { Text = "      Actuator Settings", Dock = DockStyle.Top, Height = 40 });
             }
-
-        /*    private void refreshPanel(string xmlpath)
-            {
-                if (CoreGlobals.AppPreferences == null)
-                {
-                    if (!AppCommon.LoadUserPreferences())
-                    {
-                        // Handle error - preferences couldn't be loaded  
-                        return;
-                    }
-                }
-
-                if (CoreGlobals.AppPreferences?.Extensions != null)
-                {
-
-                    #region C-MONDOS-TUFF
-                    if (!ACAT.Lib.Core.PanelManagement.Context.AppActuatorManager.LoadExtensions(ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs, true))
-                    {
-                        return;
-                    }
-
-                    _context.Load(ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs, UserManager.GetFullPath(xmlpath), true);
-
-                    var list = new List<PreferencesCategory>();
-
-                    foreach (var preference in _context.ActuatorList)
-                    {
-                        list.Add(new PreferencesCategory(preference, true, preference.Enabled));
-                    }
-
-                    IEnumerable<PreferencesCategory> PreferencesCategories = list;
-
-                    foreach (var category in PreferencesCategories)
-                    {
-                        if (!IsValidExtension(category, out var desc))
-                            continue;
-
-                        var categoryItem = CustomControls.CreateCategoryTableLayoutPanel();
-
-                        categoryItem.Controls.Add(CustomControls.CreateLabel(desc.Name), 0, 0);  // title
-                        categoryItem.Controls.Add(CustomControls.CreateDescriptionLabel(desc.Description), 0, 2);  // description
-
-                        var checkBox = CustomControls.CreateCheckBox(">");
-                        checkBox.Tag = category;
-                        categoryItem.Controls.Add(checkBox, 1, 1);
-                        categoryItem.SetRowSpan(checkBox, 2);
-
-                        _tableLayoutPanel.Controls.Add(categoryItem);
-                        Controls.Add(_tableLayoutPanel);
-                    }
-
-                    #endregion
-                }
-            }
-
-            private bool IsValidExtension(PreferencesCategory category, out IDescriptor descriptor)
-            {
-                descriptor = null;
-
-
-                var extension = category.PreferenceObj as IExtension;
-                if (extension == null)
-                    return false;
-
-                descriptor = extension.Descriptor;
-                return descriptor != null && descriptor.HasSettings;
-            }*/
         }
 
         public class WordPredictorsPanel : UserControl
@@ -520,15 +453,122 @@ namespace ACATConfigNext
 
             if (extension != null)
             {
-                if (category.PreferenceObj is ISupportsPreferences supportsPrefs)
+                if (extension != null && category.PreferenceObj is ISupportsPreferences supportsPrefs)
                 {
                     SettingsForm._tableLayoutPanel.Controls.Clear();
-                    MessageBox.Show($"Clicked on {extension.Descriptor.Name}");
-                    supportsPrefs.ShowPreferencesDialog();
+
+                    TableLayoutPanel preferencesPanel = CreatePreferencesTableLayoutForExtension(extension, supportsPrefs);
+
+                    if (preferencesPanel != null)
+                    {
+                        SettingsForm._tableLayoutPanel.Controls.Add(preferencesPanel);
+                    }
                 }
             }
         }
+        /// <summary>
+        ///  Handle different extension types separately  
+        /// </summary>
+        /// <param name="extension"></param>
+        /// <param name="supportsPrefs"></param>
+        /// <returns></returns>
+        private static TableLayoutPanel CreatePreferencesTableLayoutForExtension(IExtension extension, ISupportsPreferences supportsPrefs)
+        {
+            switch (extension)
+            {
+                case IActuator actuator:
+                    return CreateActuatorPreferencesPanel(actuator, supportsPrefs);
 
+                case ITTSEngine ttsEngine:
+                    return CreateTTSEnginePreferencesPanel(ttsEngine, supportsPrefs);
+
+                case IWordPredictor wordPredictor:
+                    return CreateWordPredictorPreferencesPanel(wordPredictor, supportsPrefs);
+
+                default:
+                    return CreateGenericExtensionPreferencesPanel(extension, supportsPrefs);
+            }
+        }
+
+        private static TableLayoutPanel CreateActuatorPreferencesPanel(IActuator actuator, ISupportsPreferences supportsPrefs)
+        {
+            var tableLayout = CustomControls.CreateCategoryTableLayoutPanel();
+
+            var descriptor = actuator.Descriptor;
+            tableLayout.Controls.Add(CustomControls.CreateLabel($"Actuator: {descriptor.Name}"));
+            tableLayout.Controls.Add(CustomControls.CreateDescriptionLabel(descriptor.Description));
+
+            var preferences = supportsPrefs.GetPreferences();
+            if (preferences != null)
+            {
+                var props = preferences.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                foreach (var prop in props)
+                {
+                    var propPanel = CustomControls.CreateLabeledPanel(prop, preferences);
+                    var host = CustomControls.ElementHost(propPanel);
+                    tableLayout.Controls.Add(host);
+                }
+            }
+
+            return tableLayout;
+        }
+
+        private static TableLayoutPanel CreateTTSEnginePreferencesPanel(ITTSEngine ttsEngine, ISupportsPreferences supportsPrefs)
+        {
+            var tableLayout = CustomControls.CreateCategoryTableLayoutPanel();
+
+            var descriptor = ttsEngine.Descriptor;
+            tableLayout.Controls.Add(CustomControls.CreateLabel($"TTS Engine: {descriptor.Name}"));
+            tableLayout.Controls.Add(CustomControls.CreateDescriptionLabel(descriptor.Description));
+
+            var preferences = supportsPrefs.GetPreferences();
+            if (preferences != null)
+            {
+                //TODO Create specialized TTS controls  CreateTTSSpecificControls(tableLayout, preferences);
+            }
+
+            return tableLayout;
+        }
+
+        private static TableLayoutPanel CreateWordPredictorPreferencesPanel(IWordPredictor wordPredictor, ISupportsPreferences supportsPrefs)
+        {
+            var tableLayout = CustomControls.CreateCategoryTableLayoutPanel();
+            var descriptor = wordPredictor.Descriptor;
+            tableLayout.Controls.Add(CustomControls.CreateLabel($"Word Predictor: {descriptor.Name}"));
+            tableLayout.Controls.Add(CustomControls.CreateDescriptionLabel(descriptor.Description));
+
+            var preferences = supportsPrefs.GetPreferences();
+            if (preferences != null)
+            {
+                // TODO CreateWordPredictorSpecificControls(tableLayout, preferences);
+            }
+
+            return tableLayout;
+        }
+
+
+        private static TableLayoutPanel CreateGenericExtensionPreferencesPanel(IExtension extension, ISupportsPreferences supportsPrefs)
+        {
+            var tableLayout = CustomControls.CreateCategoryTableLayoutPanel();
+
+            var descriptor = extension.Descriptor;
+            tableLayout.Controls.Add(CustomControls.CreateLabel($"Extension: {descriptor.Name}"));
+            tableLayout.Controls.Add(CustomControls.CreateDescriptionLabel(descriptor.Description));
+
+            var preferences = supportsPrefs.GetPreferences();
+            if (preferences != null)
+            {
+                var props = preferences.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                foreach (var prop in props)
+                {
+                    var propPanel = CustomControls.CreateLabeledPanel(prop, preferences);
+                    var host = CustomControls.ElementHost(propPanel);
+                    tableLayout.Controls.Add(host);
+                }
+            }
+
+            return tableLayout;
+        }
 
     }
 }

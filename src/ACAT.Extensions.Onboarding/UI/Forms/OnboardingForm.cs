@@ -336,8 +336,8 @@ namespace ACAT.Extensions.Onboarding
 
                 if (confirm)
                 {
-                    if (!ConfirmBoxTwoOption.ShowDialog("ACAT configuration incomplete.",
-                        "Quit anyway?", StringResources.QuitApplication, StringResources.Cancel))
+                    if (!ConfirmBoxTwoOption.ShowDialog(StringResources.IncompleteConfiguration,
+                        StringResources.QuitApplication, StringResources.Quit, StringResources.Cancel))
                     {
                         return;
                     }

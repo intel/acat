@@ -65,15 +65,14 @@ namespace ACAT.Core.PanelManagement
                 parent.TopMost = false;
                 confirmBox.TopMost = true;
             }
-            confirmBox.ShowDialog(parent);
+            var result = confirmBox.ShowDialog(parent);
             if (parent != null && setTopMost)
             {
                 parent.TopMost = true;
                 confirmBox.TopMost = false;
             }
             confirmBox.Dispose();
-            //TODO:  FIXME !!!
-            return false;
+            return result == DialogResult.Yes;
         }
 
         private void buttonOp1_Click(object sender, EventArgs e)

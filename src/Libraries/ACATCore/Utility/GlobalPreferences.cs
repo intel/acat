@@ -18,14 +18,13 @@ namespace ACAT.Core.Utility
     [Serializable]
     public class GlobalPreferences
     {
-        [NonSerialized, XmlIgnore]
         public static String DefaultPreferencesFilePath = String.Empty;
 
-        [NonSerialized, XmlIgnore]
         public static String LogFileName = String.Empty;
 
-        [NonSerialized, XmlIgnore]
         public static String PreferencesFilePath = String.Empty;
+
+        public String DefaultLogLevel = "Verbose";
 
         /// <summary>
         /// Default profile for the user
@@ -36,6 +35,8 @@ namespace ACAT.Core.Utility
         /// Default user name
         /// </summary>
         public String CurrentUser = "DefaultUser";
+
+
 
         /// <summary>
         /// Read preferences from the specified file.  If the file

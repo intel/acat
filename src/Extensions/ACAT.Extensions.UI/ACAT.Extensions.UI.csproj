@@ -82,6 +82,7 @@
     <Compile Include="Scanners\YesNoScanner.Designer.cs">
       <DependentUpon>YesNoScanner.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\PointerControlUserControl.cs" />
     <Compile Include="UserControls\DashboardUserControl.cs" />
     <Compile Include="UserControls\ACATAppToolbar.cs" />
     <Compile Include="UserControls\KeyboardAbcUserControl.cs">
@@ -114,7 +115,6 @@
     <Compile Include="UserControls\KeyboardQwertyUserControl.Designer.cs">
       <DependentUpon>KeyboardQwertyUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\PointerScannerUserControl.cs" />
     <Compile Include="UserControls\SentencePredictionUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

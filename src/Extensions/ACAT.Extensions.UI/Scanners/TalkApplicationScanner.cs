@@ -12,6 +12,7 @@ using ACAT.Scanners;
 using ACATResources;
 using System;
 using System.Diagnostics;
+using System.Security.Permissions;
 using System.Windows.Forms;
 
 namespace ACAT.Extensions.UI.Scanners
@@ -38,6 +39,7 @@ namespace ACAT.Extensions.UI.Scanners
 
 
         public override ITextController TextController => ScannerCommon.TextController;
+
         public override bool CheckCommandEnabled(CommandEnabledArg arg)
         {
             switch (arg.Command)
@@ -184,13 +186,14 @@ namespace ACAT.Extensions.UI.Scanners
             userControl.Dock = DockStyle.Fill;
             userControl.TabStop = true;
             userControl.TabIndex = 0;
+
             if (userControl is ITalkWindowTextBox)
             {
                 _textBoxTalkWindow = (userControl as ITalkWindowTextBox).TextBoxControl;
                 if (_textBoxTalkWindow != null)
                 {
                     SetColorScheme();
-
+                    _textBoxTalkWindow.TextAlign  = HorizontalAlignment.Center;
                     //_textBoxTalkWindow.TabIndex = 0;
                     _textBoxTalkWindow.KeyPress += TextBoxTalkWindowOnKeyPress;
                     //_textBoxTalkWindow.Focus();
@@ -382,6 +385,29 @@ namespace ACAT.Extensions.UI.Scanners
             }
         }
 
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == ACAT.Win32.Win32Constants.WM_NCLBUTTONDOWN) //cancels the drag this is IMP
+            {
+                if (m.WParam.ToInt32() == ACAT.Win32.Win32Constants.HTCAPTION) return;
+            }
+            else if (m.Msg == ACAT.Win32.Win32Constants.WM_SYSCOMMAND)
+            {
+                int command = m.WParam.ToInt32() & 0xfff0;
+                if (command == ACAT.Win32.Win32Constants.SC_MOVE)
+                {
+                    base.WndProc(ref m);
+                    return;
+                }
+            }
+
+            if (!_scannerCommon.HandleWndProc(m))
+            {
+                base.WndProc(ref m);
+            }
+        }
+
         private class TalkApplicationCommandHandler : RunCommandHandler
         {
             public TalkApplicationCommandHandler(String cmd) : base(cmd) { }
@@ -389,15 +415,6 @@ namespace ACAT.Extensions.UI.Scanners
             public override bool Execute(ref bool handled)
             {
                 Log.Info("Inside Talk Application Scanner TalkApplicationCommandHandler for command: " + Command);
-
-                var trace = new StackTrace();
-                for (int i = 0; i < trace.FrameCount; i++)
-                {
-                    var frame = trace.GetFrame(i);
-                    var method = frame.GetMethod();
-                    Log.Info($"Frame {i}: {method.DeclaringType}.{method.Name}");
-                }
-
 
                 handled = true;
 
@@ -417,7 +434,6 @@ namespace ACAT.Extensions.UI.Scanners
                         break;
 
                     case "CmdNumberScanner":
-                        //form._scannerCommon.UserControlManager.AddUserControlByKeyOrName(form.panelKeyboard, "numeric", "KeyboardNumberUserControl");
                         form._scannerCommon.UserControlManager.PushUserControlByKeyOrName(form.panelKeyboard, "numeric", "KeyboardNumberUserControl");
                         form._scannerCommon.UserControlManager.StartTopLevelAnimation();
                         break;
@@ -492,14 +508,6 @@ namespace ACAT.Extensions.UI.Scanners
             public override bool Execute(ref bool handled, object source = null)
             {
                 Console.WriteLine("Inside Talk Application Scanner TalkApplicationCommandHandler for command: " + Command);
-
-                var trace = new StackTrace();
-                for (int i = 0; i < trace.FrameCount; i++)
-                {
-                    var frame = trace.GetFrame(i);
-                    var method = frame.GetMethod();
-                    Console.WriteLine($"Frame {i}: {method.DeclaringType}.{method.Name}");
-                }
 
                 handled = true;
 

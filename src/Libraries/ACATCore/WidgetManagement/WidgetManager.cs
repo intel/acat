@@ -193,7 +193,7 @@ namespace ACAT.Core.WidgetManagement
                 retVal = Layout.Load(configPath, _rootWidget);
                 if (retVal)
                 {
-                    Log.Debug($"Layout for root widget {Layout.RootWidget}");
+                    Log.Debug($"Layout for root widget {Layout.RootWidget.Name}");
                     retrieveAndSetWidgetAttribute(Layout.RootWidget);
                 }
             }

@@ -85,28 +85,25 @@ namespace ACAT.Core.Widgets
         {
             base.SetWidgetAttribute(attribute);
 
-            if (UIControl.Font == null)
+            if (widgetAttribute.FontName != null)
             {
-                if (widgetAttribute.FontName != null)
+                _fontFamily = Fonts.Instance.GetFontFamily(new[]
+                                                        {   widgetAttribute.FontName,
+                                                            CoreGlobals.AppPreferences.FontName });
+                if (_fontFamily != null)
                 {
-                    _fontFamily = Fonts.Instance.GetFontFamily(new[]
-                                                            {   widgetAttribute.FontName,
-                                                                CoreGlobals.AppPreferences.FontName });
-                    if (_fontFamily != null)
+                    FontStyle fontStyle = FontStyle.Regular;
+                    if (widgetAttribute.FontBold)
                     {
-                        FontStyle fontStyle = FontStyle.Regular;
-                        if (widgetAttribute.FontBold)
-                        {
-                            fontStyle |= FontStyle.Bold;
-                        }
-                        if (widgetAttribute.FontItalic)
-                        {
-                            fontStyle |= FontStyle.Italic;
-                        }
-                        _font = new Font(_fontFamily, widgetAttribute.FontSize, fontStyle);
-                        UIControl.Font = _font;
-                        _originalFontSize = _font.Size;
+                        fontStyle |= FontStyle.Bold;
                     }
+                    if (widgetAttribute.FontItalic)
+                    {
+                        fontStyle |= FontStyle.Italic;
+                    }
+                    _font = new Font(_fontFamily, widgetAttribute.FontSize, fontStyle);
+                    UIControl.Font = _font;
+                    _originalFontSize = _font.Size;
                 }
             }
             else

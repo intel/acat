@@ -171,7 +171,12 @@
     <Compile Include="UI\TalkWindowTextBoxUserControl.Designer.cs">
       <DependentUpon>TalkWindowTextBoxUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\UserControlContainerForm.cs" />
+    <Compile Include="UI\UserControlContainerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\UserControlContainerForm.Designer.cs">
+      <DependentUpon>UserControlContainerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\ScannerHelper.cs" />
     <Compile Include="UI\DialogUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -249,6 +254,10 @@
     <EmbeddedResource Include="UI\UserControlDefaultTryout.resx">
       <DependentUpon>UserControlDefaultTryout.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControlContainerForm.resx">
+      <DependentUpon>UserControlContainerForm.cs</DependentUpon>
+    </EmbeddedResource>
+
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

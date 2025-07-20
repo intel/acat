@@ -108,7 +108,7 @@ namespace ACAT.Applications.ACATApp
                                 Context.StartupFlags.Abbreviations
                 ))
             {
-                splash.Close();
+                splash?.Close();
                 splash = null;
 
                 ConfirmBoxOneOption.ShowDialog("ACAT Fatal Error", Context.GetInitCompletionStatus(), StringResources.OK);
@@ -134,9 +134,9 @@ namespace ACAT.Applications.ACATApp
 
                 Common.Init();
 
-                //Context.AppWindowPosition = Windows.WindowPosition.CenterScreen;
+                Context.AppWindowPosition = Windows.WindowPosition.CenterScreen;
 
-                //AuditLog.Audit(new AuditEvent("Application", "Initialiation complete"));
+                AuditLog.Audit(new AuditEvent("Application", "Initialiation complete"));
 
                 try
                 {

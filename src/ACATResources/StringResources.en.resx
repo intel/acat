@@ -1788,4 +1788,10 @@ ACAT uses two metrics - “railing” and “impedance” - to check signal qual
   <data name="Retry" xml:space="preserve">
     <value>Retry</value>
   </data>
+  <data name="IncompleteConfiguration" xml:space="preserve">
+    <value>Configuration is not complete.</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>Quit</value>
+  </data>
 </root>

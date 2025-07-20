@@ -65,7 +65,7 @@ namespace ACAT.Core.PanelManagement
         {
             if (!Directory.Exists(directory))
             {
-                Log.Error("Directory " + directory + " does not exist. Cannot load fonts from it.");
+                Log.Info("No user fonts installed.");
                 return;
             }
             loadFontsFromDir(directory, "*.ttf");
@@ -133,7 +133,7 @@ namespace ACAT.Core.PanelManagement
         private static void loadFontsFromDir(String directory, String wildCard)
         {
             var walker = new DirectoryWalker(directory, wildCard);
-            Log.Debug("Walking dir " + directory);
+            Log.Verbose("Walking dir " + directory);
             walker.Walk(new OnFileFoundDelegate(onFileFound));
         }
 
@@ -143,7 +143,7 @@ namespace ACAT.Core.PanelManagement
         /// <param name="file"></param>
         private static void onFileFound(String file)
         {
-            Log.Debug("Found font file " + file);
+            Log.Verbose("Found font file " + file);
             Instance.AddFontFile(file);
         }
 

@@ -84,7 +84,7 @@ namespace ACAT.Core.Utility
 
                 foreach (var file in dllFiles)
                 {
-                    Log.Debug("Found file: " + file);
+                    Log.Verbose("Found file: " + file);
                     fileFoundDelegate?.Invoke(file);
                 }
             }

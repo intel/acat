@@ -10,7 +10,7 @@
     <RootNamespace>ACAT.Extensions.Onboarding</RootNamespace>
     <AssemblyName>ACAT.Extensions.Onboarding</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
-    <LangVersion>9.0</LangVersion>
+    
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>

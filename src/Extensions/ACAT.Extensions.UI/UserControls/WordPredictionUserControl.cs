@@ -17,6 +17,7 @@ using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.WordPredictionManagement;
 using ACAT.Extension;
+using ACAT.UserControls;
 using System.Windows.Forms;
 
 namespace ACAT.Extensions.UI.UserControls
@@ -24,7 +25,7 @@ namespace ACAT.Extensions.UI.UserControls
     [ClassDescriptor("531C7B62-A09F-4772-8C7E-915E2C0AD014",
                     "WordPredictionUserControl",
                     "User Control for Word Prediction")]
-    public partial class WordPredictionUserControl : UserControl, IUserControl
+    public partial class WordPredictionUserControl : GenericUserControl, IUserControl
     {
         private UserControlKeyboardCommon _keyboardCommon;
         private UserControlWordPredictionCommon _userControlWordPredictionCommon;
@@ -105,6 +106,11 @@ namespace ACAT.Extensions.UI.UserControls
         private void AnimationManager_EvtPlayerStateChanged(object sender, PlayerStateChangedEventArgs e)
         {
             EvtPlayerStateChanged?.Invoke(this, e);
+        }
+
+        protected override bool HandleInitialize()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -33,7 +33,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>9.0</LangVersion>
+    
     <ErrorReport>prompt</ErrorReport>
     <UseWinFormsOutOfProcDesigner>True</UseWinFormsOutOfProcDesigner>
   </PropertyGroup>
@@ -41,7 +41,7 @@
     <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
     <Optimize>true</Optimize>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>9.0</LangVersion>
+    
     <ErrorReport>prompt</ErrorReport>
     <UseWinFormsOutOfProcDesigner>True</UseWinFormsOutOfProcDesigner>
   </PropertyGroup>
@@ -50,7 +50,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>9.0</LangVersion>
+    
     <ErrorReport>prompt</ErrorReport>
     <UseWinFormsOutOfProcDesigner>True</UseWinFormsOutOfProcDesigner>
   </PropertyGroup>
@@ -58,7 +58,7 @@
     <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
     <Optimize>true</Optimize>
     <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>9.0</LangVersion>
+    
     <ErrorReport>prompt</ErrorReport>
     <UseWinFormsOutOfProcDesigner>True</UseWinFormsOutOfProcDesigner>
   </PropertyGroup>
@@ -176,6 +176,9 @@
     <Compile Include="UI\UserControlContainerForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\UserControlContainerForm.Designer.cs">
+      <DependentUpon>UserControlContainerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\ScannerHelper.cs" />
     <Compile Include="UI\DialogUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -257,6 +260,10 @@
     <EmbeddedResource Include="UI\UserControlDefaultTryout.resx">
       <DependentUpon>UserControlDefaultTryout.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControlContainerForm.resx">
+      <DependentUpon>UserControlContainerForm.cs</DependentUpon>
+    </EmbeddedResource>
+
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

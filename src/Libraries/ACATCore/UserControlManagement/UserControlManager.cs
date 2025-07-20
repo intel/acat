@@ -196,8 +196,6 @@ namespace ACAT.Core.UserControlManagement
 
                     list.RemoveAt(list.Count - 1);
 
-                    Log.Debug("MLEAK: Removed last entry. list.Count is " + list.Count);
-
                     removeUserControl(parent, userControl);
                 }
                 else
@@ -237,8 +235,6 @@ namespace ACAT.Core.UserControlManagement
                 {
                     list.Add(guid);
                 }
-
-                Log.Debug("MLEAK: Added guid " + guid + ", List cocunt is " + list.Count);
 
                 removeUserControl(parent, userControl);
             }

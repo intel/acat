@@ -82,7 +82,7 @@ namespace ACAT.Extensions.Onboarding
             this.tableLayoutPanel1.Controls.Add(this.panelContainer, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(6);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1381F));
@@ -104,7 +104,7 @@ namespace ACAT.Extensions.Onboarding
             this.tableLayoutPanelNavigationButtons.Controls.Add(this.buttonNext, 4, 0);
             this.tableLayoutPanelNavigationButtons.Controls.Add(this.buttonBack, 3, 0);
             this.tableLayoutPanelNavigationButtons.Controls.Add(this.buttonCancel, 1, 0);
-            this.tableLayoutPanelNavigationButtons.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanelNavigationButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tableLayoutPanelNavigationButtons.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.AddColumns;
             this.tableLayoutPanelNavigationButtons.Location = new System.Drawing.Point(0, 1400);
             this.tableLayoutPanelNavigationButtons.Margin = new System.Windows.Forms.Padding(0, 19, 0, 19);
@@ -188,7 +188,7 @@ namespace ACAT.Extensions.Onboarding
             this.ControlBox = false;
             this.Controls.Add(this.tableLayoutPanelMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.MinimumSize = new System.Drawing.Size(2046, 1475);
             this.Name = "OnboardingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

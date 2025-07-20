@@ -21,6 +21,7 @@ using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.WordPredictionManagement;
 using ACAT.Extension;
+using ACAT.UserControls;
 using System;
 using System.Windows.Forms;
 
@@ -29,7 +30,7 @@ namespace ACAT.Extensions.UI.UserControls
     [ClassDescriptor("07E0D588-1E80-4A07-BC26-FA4C8BCF5589",
                     "SentencePredictionUserControl",
                     "User Control for Sentence Prediction")]
-    public partial class SentencePredictionUserControl : UserControl, IUserControl
+    public partial class SentencePredictionUserControl : GenericUserControl, IUserControl
     {
         private UserControlKeyboardCommon _keyboardCommon;
         private UserControlWordPredictionCommon _userControlWordPredictionCommon;

@@ -360,3 +360,11 @@ src/Setup/*.nsi
 src/Applications/ACATConfigurator/*
 
 .vscode/
+src/WindowsFormsApp1/App.config
+src/WindowsFormsApp1/Program.cs
+src/WindowsFormsApp1/WindowsFormsApp1.csproj
+src/WindowsFormsApp1/Properties/AssemblyInfo.cs
+src/WindowsFormsApp1/Properties/Resources.Designer.cs
+src/WindowsFormsApp1/Properties/Resources.resx
+src/WindowsFormsApp1/Properties/Settings.Designer.cs
+src/WindowsFormsApp1/Properties/Settings.settings

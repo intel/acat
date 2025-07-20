@@ -149,7 +149,7 @@ namespace ACAT.Scanners
             Log.Debug("CALIBTEST TalkScanner OnResume. calling scannercommon2 resume");
             _scannerCommon.OnResume();
 
-            _scannerCommon.ResizeToFitDesktop(this);
+            //_scannerCommon.ResizeToFitDesktop(this);
         }
 
         public virtual void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
@@ -218,25 +218,12 @@ namespace ACAT.Scanners
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == ACAT.Win32.Win32Constants.WM_NCLBUTTONDOWN) //cancels the drag this is IMP
-            {
-                if (m.WParam.ToInt32() == ACAT.Win32.Win32Constants.HTCAPTION) return;
-            }
-            else if (m.Msg == ACAT.Win32.Win32Constants.WM_SYSCOMMAND)
-            {
-                int command = m.WParam.ToInt32() & 0xfff0;
-                if (command == ACAT.Win32.Win32Constants.SC_MOVE)
-                {
-                    base.WndProc(ref m);
-                    return;
-                }
-            }
-
-            if (!_scannerCommon.HandleWndProc(m))
-            {
-                base.WndProc(ref m);
-            }
+            // By Default, do nothing and just all base WndProc.
+            // If you want to handle any messages, override this method and
+            // call base.WndProc only if you do not handle the message.
+            base.WndProc(ref m);
         }
+
         private void removeWatchdogs()
         {
             if (_windowActiveWatchdog != null)

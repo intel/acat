@@ -103,10 +103,15 @@ namespace ACAT.Core.Widgets
                     }
                     _font = new Font(_fontFamily, widgetAttribute.FontSize, fontStyle);
                     UIControl.Font = _font;
+                    _originalFontSize = _font.Size;
                 }
-
             }
-            _originalFontSize = _font.Size;
+            else
+            {
+                _fontFamily = UIControl.Font.FontFamily;
+                _originalFontSize = UIControl.Font.Size;
+                _font = UIControl.Font;
+            }
 
             if (!string.IsNullOrEmpty(widgetAttribute.Label))
             {

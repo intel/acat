@@ -10,6 +10,7 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using ACAT.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -24,7 +25,7 @@ namespace ACAT.Extension
     [ClassDescriptor("61E8A29A-5076-4047-A9F5-89E7E4903407",
                         "UserControlDefaultTryout",
                     "User Control to adjust the scan timing")]
-    public partial class UserControlDefaultTryout : UserControl, IUserControl
+    public partial class UserControlDefaultTryout : GenericUserControl, IUserControl
     {
         private int _currentWordIndex = 0;
         private int _index = 0;
@@ -34,7 +35,7 @@ namespace ACAT.Extension
 
         private readonly List<String> _words = new List<string>();
 
-        public UserControlDefaultTryout()
+        public UserControlDefaultTryout() : base()
         {
             InitializeComponent();
 
@@ -44,8 +45,6 @@ namespace ACAT.Extension
             _words.Add("ate");
             _words.Add("bet");
             _words.Add("bat");
-
-            // beta
         }
 
         public event AnimationPlayerStateChanged EvtPlayerStateChanged;

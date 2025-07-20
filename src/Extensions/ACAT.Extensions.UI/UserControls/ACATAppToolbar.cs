@@ -88,7 +88,7 @@ namespace ACATApp.UI
         private void InitializeComponents()
         { 
             this.AutoSize = true;
-            this.AutoSizeMode = AutoSizeMode.GrowOnly;
+            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 
             Label appName = new Label
             {

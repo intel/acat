@@ -50,7 +50,7 @@ namespace ACAT.Core.PanelManagement
             this.tableLayoutPanel1.SetRowSpan(this.labelPrompt, 2);
             this.labelPrompt.Size = new System.Drawing.Size(1490, 216);
             this.labelPrompt.TabIndex = 0;
-            this.labelPrompt.Text = "This is a prompt for the message box that will appear when needed"; //don't localize
+            this.labelPrompt.Text = "This is a prompt for the message box that will appear when needed";
             this.labelPrompt.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel1
@@ -93,7 +93,7 @@ namespace ACAT.Core.PanelManagement
             this.labelTitle.Name = "labelTitle";
             this.labelTitle.Size = new System.Drawing.Size(1490, 109);
             this.labelTitle.TabIndex = 4;
-            this.labelTitle.Text = "This is a prompt for title"; //don't localize
+            this.labelTitle.Text = "This is a prompt for title";
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // buttonOp3
@@ -105,12 +105,13 @@ namespace ACAT.Core.PanelManagement
             this.buttonOp3.BorderRadiusTopLeft = 0;
             this.buttonOp3.BorderRadiusTopRight = 0;
             this.buttonOp3.BorderWidth = 0F;
+            this.buttonOp3.DialogResult = System.Windows.Forms.DialogResult.No;
             this.buttonOp3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonOp3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonOp3.Font = new System.Drawing.Font("Montserrat", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonOp3.ForeColor = System.Drawing.Color.Black;
             this.buttonOp3.Location = new System.Drawing.Point(1118, 415);
-            this.buttonOp3.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.buttonOp3.Margin = new System.Windows.Forms.Padding(6);
             this.buttonOp3.Name = "buttonOp3";
             this.buttonOp3.Size = new System.Drawing.Size(438, 114);
             this.buttonOp3.TabIndex = 3;
@@ -128,12 +129,13 @@ namespace ACAT.Core.PanelManagement
             this.buttonOp1.BorderRadiusTopLeft = 0;
             this.buttonOp1.BorderRadiusTopRight = 0;
             this.buttonOp1.BorderWidth = 0F;
+            this.buttonOp1.DialogResult = System.Windows.Forms.DialogResult.Yes;
             this.buttonOp1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonOp1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonOp1.Font = new System.Drawing.Font("Montserrat Medium", 17F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonOp1.Font = new System.Drawing.Font("Montserrat Medium", 17F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonOp1.ForeColor = System.Drawing.Color.Silver;
             this.buttonOp1.Location = new System.Drawing.Point(66, 415);
-            this.buttonOp1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.buttonOp1.Margin = new System.Windows.Forms.Padding(6);
             this.buttonOp1.Name = "buttonOp1";
             this.buttonOp1.Size = new System.Drawing.Size(438, 114);
             this.buttonOp1.TabIndex = 1;
@@ -151,7 +153,7 @@ namespace ACAT.Core.PanelManagement
             this.ControlBox = false;
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "ConfirmBoxTwoOption";
             this.Text = "ACAT";
             this.tableLayoutPanel1.ResumeLayout(false);

@@ -10,6 +10,7 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using ACAT.UserControls;
 using System;
 using System.Windows.Forms;
 
@@ -21,7 +22,7 @@ namespace ACAT.Extension
     [ClassDescriptor("30D1EF21-E8F5-4E78-8D98-C8E93B992A81",
                         "UserControlDefaultTalkInterface",
                     "User Control show description of keboard")]
-    public partial class UserControlLayoutInterface : UserControl, IUserControl
+    public partial class UserControlLayoutInterface : GenericUserControl, IUserControl
     {
         private UserControlKeyboardCommon _keyboardCommon;
 

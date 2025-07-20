@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FontUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scanners\CursorNavigationScanner.cs">
       <SubType>Form</SubType>
@@ -118,9 +119,6 @@
     </Compile>
     <Compile Include="UserControls\KeyboardQwertyUserControl.Designer.cs">
       <DependentUpon>KeyboardQwertyUserControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\PointerScannerUserControl.cs">
-      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UserControls\SentencePredictionUserControl.cs">
       <SubType>UserControl</SubType>

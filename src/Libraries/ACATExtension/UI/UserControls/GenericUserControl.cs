@@ -10,11 +10,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.AgentManagement;
 using ACAT.Core.AnimationManagement;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using System;
 using System.Windows.Forms;
 
 namespace ACAT.UserControls
@@ -70,7 +72,12 @@ namespace ACAT.UserControls
             handled = false;
         }
 
-        protected abstract bool HandleInitialize();
+        protected virtual bool HandleInitialize()
+        {
+            //Override this method in derived classes to perform additional initialization
+            return true;
+        }
+
         protected void AnimationManager_EvtPlayerStateChanged(object sender, PlayerStateChangedEventArgs e)
         {
             EvtPlayerStateChanged?.Invoke(this, e);

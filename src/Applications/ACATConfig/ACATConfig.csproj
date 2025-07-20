@@ -48,7 +48,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>9.0</LangVersion>
+    
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
@@ -56,7 +56,7 @@
     <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
     <Optimize>true</Optimize>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>9.0</LangVersion>
+    
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
@@ -65,7 +65,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>9.0</LangVersion>
+    
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
@@ -73,7 +73,7 @@
     <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
     <Optimize>true</Optimize>
     <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>9.0</LangVersion>
+    
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>

@@ -1,16 +1,20 @@
-﻿// Copyright 2013-2019; 2023 Intel Corporation
+﻿////////////////////////////////////////////////////////////////////////////
+//
+// Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
+//
+////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.AgentManagement;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PreferencesManagement;
 using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extension.CommandHandlers;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
@@ -19,12 +23,12 @@ namespace ACAT.Extension
     /// <summary>
     /// A generic scanner form that acts a a container for a user control
     /// </summary>
-    [ClassDescriptor("6889D5CA-2D64-4123-AB0E-179D3C41560C",
+    [ClassDescriptorAttribute("6889D5CA-2D64-4123-AB0E-179D3C41560C",
                     "UserControlContainerForm",
                     "Generic container form for a usercontrol")]
     public partial class UserControlContainerForm : Form, IScannerPanel
     {
-        private readonly DefaultCommandDispatcher _dispatcher;
+        private readonly Dispatcher _dispatcher;
 
         /// <summary>
         /// The AlphabetScannerCommon object. Has a number of
@@ -44,23 +48,11 @@ namespace ACAT.Extension
 
             subscribeToEvents();
 
-
-            _dispatcher = new DefaultCommandDispatcher(this);
-
             Load += UserControlContainerForm_Load;
-            FormClosing += UserControlContainerForm_FormClosing;
-        }
 
-        protected virtual void InitializeComponent() 
-        {
-            mainPanel = new Panel
-            {
-                Dock = DockStyle.Fill,
-                Name = "mainPanel",
-                AccessibleName = "mainPanel",
-                Size = new Size(800, 600),
-                BackColor = Color.Blue
-            };
+            _dispatcher = new Dispatcher(this);
+
+            FormClosing += UserControlContainerForm_FormClosing;
         }
 
         /// <summary>
@@ -106,12 +98,9 @@ namespace ACAT.Extension
         public IPanelCommon PanelCommon
         { get { return _scannerCommon; } }
 
-        /// <summary>
-        /// Gets the scanner common object
-        /// </summary>
         public ScannerCommon ScannerCommon
         {
-            get { return _scannerCommon; }
+            get { return null; }
         }
 
         /// <summary>
@@ -130,16 +119,14 @@ namespace ACAT.Extension
             get { return _scannerCommon.TextController; }
         }
 
-        public Panel mainPanel { get; private set; }
-
         /// <summary>
         /// Invoked to check if a scanner button should be enabled.  Uses context
         /// to determine the 'enabled' state.
         /// </summary>
         /// <param name="arg">info about the scanner button</param>
-        public virtual bool CheckCommandEnabled(CommandEnabledArg arg)
+        public bool CheckCommandEnabled(CommandEnabledArg arg)
         {
-            return false;
+            return true;
         }
 
         /// <summary>
@@ -147,7 +134,7 @@ namespace ACAT.Extension
         /// </summary>
         /// <param name="startupArg">startup params</param>
         /// <returns>true on cussess</returns>
-        public virtual bool Initialize(StartupArg startupArg)
+        public bool Initialize(StartupArg startupArg)
         {
             _panelClass = startupArg.PanelClass;
 
@@ -157,7 +144,7 @@ namespace ACAT.Extension
 
             _scannerCommon.UserControlManager.GridScanIterations = Common.AppPreferences.GridScanIterations;
 
-            _scannerCommon.UserControlManager.AddUserControlByKeyOrName(mainPanel, "embedUserControl", EmbeddedUserControlName);
+            _scannerCommon.UserControlManager.AddUserControlByKeyOrName(panelContainer, "embedUserControl", EmbeddedUserControlName);
 
             List<IUserControl> list = new List<IUserControl>();
 
@@ -222,9 +209,9 @@ namespace ACAT.Extension
         /// </summary>
         /// <param name="widget">widget actuated</param>
         /// <param name="handled">was this handled?</param>
-        public virtual void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
+        public void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
         {
-            handled = false;
+            //_alphabetScannerCommon.OnWidgetActuated(e, ref handled);
         }
 
         /// <summary>
@@ -260,7 +247,7 @@ namespace ACAT.Extension
         /// Window procedure
         /// </summary>
         /// <param name="m">windows message</param>
-        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
         protected override void WndProc(ref Message m)
         {
             const int WM_SYSCOMMAND = 0x0112;
@@ -282,30 +269,32 @@ namespace ACAT.Extension
             }
         }
 
-        //private void buttonCancel_Click(object sender, EventArgs e)
-        //{
-        //    FormClosing -= UserControlContainerForm_FormClosing;
-        //    removeUserControl();
-        //    Close();
-        //}
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            FormClosing -= UserControlContainerForm_FormClosing;
+            removeUserControl();
+            Close();
+        }
 
         /// <summary>
         /// Makes sure the scanner stays focused
         /// </summary>
         private void enableWatchdogs()
         {
-#if DEBUG
-            return;
-#else
-            _windowActiveWatchdog ??= new WindowActiveWatchdog(this);
+            //return;
+
+            if (_windowActiveWatchdog == null)
+            {
+                _windowActiveWatchdog = new WindowActiveWatchdog(this);
+            }
+
             _pauseWatchdog = false;
-#endif
         }
 
-        //private virtual void removeUserControl()
-        //{
-        //    this.panelContainer.Controls.Clear();
-        //}
+        private void removeUserControl()
+        {
+            this.panelContainer.Controls.Clear();
+        }
 
         private void removeWatchdogs()
         {
@@ -326,12 +315,12 @@ namespace ACAT.Extension
             FormClosing += UserControlContainerForm_FormClosing; ;
         }
 
-        protected virtual void UserControlContainerForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void UserControlContainerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             _scannerCommon.OnClosing();
         }
 
-        protected virtual void UserControlContainerForm_Load(object sender, EventArgs e)
+        private void UserControlContainerForm_Load(object sender, EventArgs e)
         {
             _scannerCommon.OnLoad();
 
@@ -343,21 +332,21 @@ namespace ACAT.Extension
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
-        protected virtual void UserControlContainerForm_Shown(object sender, EventArgs e)
+        private void UserControlContainerForm_Shown(object sender, EventArgs e)
         {
             ScannerFocus.SetFocus(this);
         }
 
-        //private class Dispatcher : DefaultCommandDispatcher
-        //{
-        //    /// <summary>
-        //    /// Initializes a new instance of the class.
-        //    /// </summary>
-        //    /// <param name="panel">the scanner object</param>
-        //    public Dispatcher(IScannerPanel panel)
-        //        : base(panel)
-        //    {
-        //    }
-        //}
+        private class Dispatcher : DefaultCommandDispatcher
+        {
+            /// <summary>
+            /// Initializes a new instance of the class.
+            /// </summary>
+            /// <param name="panel">the scanner object</param>
+            public Dispatcher(IScannerPanel panel)
+                : base(panel)
+            {
+            }
+        }
     }
 }

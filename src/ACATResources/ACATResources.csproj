@@ -59,7 +59,7 @@
     <Content Include="en\DashboardApplicationScanner.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="en\DashboardMenu.xml">
+    <Content Include="en\PointerControlUserControl.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="en\DashboardUserControl.xml">
@@ -117,9 +117,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="en\PhrasesUserControlBCI.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="en\PointerScannerUserControl.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="en\ScanTimeAdjustForm.xml">

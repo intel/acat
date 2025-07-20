@@ -37,9 +37,13 @@ namespace ACAT.Core.WidgetManagement
         /// </summary>
         public WidgetAttribute()
         {
-            FontName = CoreGlobals.AppPreferences.FontName;
-            FontSize = CoreGlobals.AppPreferences.FontSize;
-            FontBold = true;
+            //FontName = CoreGlobals.AppPreferences.FontName;
+            //FontSize = CoreGlobals.AppPreferences.FontSize;
+            //FontBold = true;
+            //FontItalic = false;
+            FontName = null;
+            FontSize = 0;
+            FontBold = false;
             FontItalic = false;
             Name = String.Empty;
             Label = String.Empty;
@@ -179,7 +183,7 @@ namespace ACAT.Core.WidgetManagement
 
             string label = XmlUtils.GetXMLAttrString(node, "label", "").Trim();
 
-            if (!FontName.Contains("ACAT") && label != null && label.Length > 1)
+            if (FontName != null && !FontName.Contains("ACAT") && label != null && label.Length > 1)
             {
                 Label = StringResources.ResourceManager.GetString(label) ?? label;
             }

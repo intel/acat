@@ -12,7 +12,9 @@ using ACAT.Extensions.UI.UserControls;
 using ACAT.Scanners;
 using ACATResources;
 using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace ACAT.Extensions.UI.Scanners
@@ -39,6 +41,7 @@ namespace ACAT.Extensions.UI.Scanners
 
 
         public override ITextController TextController => ScannerCommon.TextController;
+        
         public override bool CheckCommandEnabled(CommandEnabledArg arg)
         {
             switch (arg.Command)
@@ -72,6 +75,7 @@ namespace ACAT.Extensions.UI.Scanners
             return success;
         }
 
+        private bool _transparencyIncreasing = false;
 
         protected override void InitializeComponent()
         {
@@ -86,7 +90,6 @@ namespace ACAT.Extensions.UI.Scanners
             InitializeTopToolbar();
             InitializeDashboard();
 
-            //this.ScannerBorder.Size = new Size(800, 800);
             this.ScannerBorder.BackColor = Color.Transparent;
             this.ScannerBorder.Name = "DashboardScannerBorder";
             this.ScannerBorder.AccessibleName = "DashboardScannerBorder";
@@ -96,11 +99,11 @@ namespace ACAT.Extensions.UI.Scanners
             this.ScannerBorder.RowCount = 2;
             this.ScannerBorder.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             this.ScannerBorder.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            this.ScannerBorder.Controls.Add(this.panelTopToolbar, 0, 0);
-            this.ScannerBorder.Controls.Add(this.panelDashboardControls, 0, 1);
             this.ScannerBorder.Dock = DockStyle.Fill;
             this.ScannerBorder.AutoSize = true;
             this.ScannerBorder.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.ScannerBorder.Controls.Add(this.panelTopToolbar, 0, 0);
+            this.ScannerBorder.Controls.Add(this.panelDashboardControls, 0, 1);
 
             this.Text = "ACAT Dashboard";
             this.Name = "DashboardAppScanner";
@@ -110,12 +113,12 @@ namespace ACAT.Extensions.UI.Scanners
             this.ShowInTaskbar = true;
             this.AutoSize = true;
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            this.MinimumSize = new Size(1500, 254);
+            this.StartPosition = FormStartPosition.CenterScreen;
 
-            this.panelTopToolbar.ResumeLayout();
-            this.panelDashboardControls.ResumeLayout();
-            this.ScannerBorder.ResumeLayout();
-            this.ResumeLayout();
+            this.panelTopToolbar.ResumeLayout(true);
+            this.panelDashboardControls.ResumeLayout(true);
+            this.ScannerBorder.ResumeLayout(true);
+            this.ResumeLayout(true);
         }
 
         protected override void ScannerFormLoaded(object sender, EventArgs e)
@@ -130,8 +133,6 @@ namespace ACAT.Extensions.UI.Scanners
             _scannerCommon.OnLoad();
 
             SetColorScheme();
-
-            _scannerCommon.ResizeToFitDesktop(this);
 
             _windowActiveWatchdog = new WindowActiveWatchdog(this);
         }
@@ -148,54 +149,12 @@ namespace ACAT.Extensions.UI.Scanners
             FormClosing += ScannerFormClosing;
         }
 
-        private void ACATTalkHandler()
+        public bool HandleCmdPointerControl()
         {
-           var startupArg = new StartupArg("TalkApplicationScanner")
-           {
-               QuitAppOnFormClose = false
-           };
-
-           var form = PanelManager.Instance.CreatePanel("TalkApplicationScanner", startupArg);
-           if (form != null)
-           {
-                // Add ad-hoc agent that will handle the form
-                IApplicationAgent agent = Context.AppAgentMgr.GetAgentByName("Talk Application Agent");
-
-                Context.AppAgentMgr.AddAgent(form.Handle, agent);
-
-                _scannerCommon.AnimationManager.Pause();
-
-                Context.AppPanelManager.ShowDialog(form as IPanel);
-
-                // After the dialog is closed, we can show the dashboard again
-                _scannerCommon.AnimationManager.Resume();
-           }
+            _scannerCommon.UserControlManager.PushUserControlByKeyOrName(panelDashboardControls, "pointercontroller", "PointerControlUserControl");
+            return true;
         }
 
-        private void MainMenuHandler()
-        {
-            Guid panelId = PanelConfigMap.GetConfigIdForConfigName("DashboardMenu");
-            var panelConfig = PanelConfigMap.GetPanelConfigMapEntryForConfigId(panelId);
-
-            if (Context.AppPanelManager.IsCurrentPanelClass(panelConfig.PanelClass))
-            {
-                return;
-            }
-
-            Form form = _dispatcher.Scanner.Form;
-
-            if (Windows.GetVisible(form))
-            {
-                form.Invoke(new MethodInvoker(delegate
-                {
-                    IPanel mainMenu = Context.AppPanelManager.CreatePanelFromConfig(panelConfig, "Dashboard Menu") as IPanel;
-                    if (mainMenu != null)
-                    {
-                        Context.AppPanelManager.ShowDialog(form as IPanel, mainMenu);
-                    }
-                }));
-            }
-        }
         private void InitializeDashboard()
         {
             this.panelDashboardControls.Name = "Dashboard";
@@ -219,52 +178,53 @@ namespace ACAT.Extensions.UI.Scanners
 
             public override bool Execute(ref bool handled)
             {
-                handled = true;
-
                 var form = Dispatcher.Scanner.Form as DashboardAppScanner;
 
-                switch (Command)
+                handled = Command switch
                 {
-                    case "CmdACATMenu":
-                        // Show the ACAT menu
-                        form.MainMenuHandler();
-                        break;
-
-                    case "CmdShowACATTalk":
-                        form.ACATTalkHandler();
-                        break;
-                    case "CmdShowQuickTalk":
-                    case "CmdShowPointer":
-                    case "CmdShowKeyboard":
-                    case "CmdShowSystem":
-                    case "CmdShowLocation":
-                        ConfirmBoxOneOption.ShowDialog("ACAT Dashboard", "All your base are belong to us.", "OK", form, true);
-                        break;
-
-
-                    default:
-                        handled = false;
-                        break;
-                }
+                    "CmdShowKeyboard" => form.HandleCmdShowKeyboard(),
+                    "CmdGoBack" => form.HandleCmdGoBack(),
+                    "CmdShowPointerControl" => form.HandleCmdPointerControl(),
+                    _ => false,
+                };
 
                 return true;
             }
 
             public override bool Execute(ref bool handled, object source = null)
             {
+                handled = false;
 
-                var form = Dispatcher.Scanner.Form as DashboardAppScanner;
+                //var form = Dispatcher.Scanner.Form as DashboardAppScanner;
 
-                switch (Command)
-                {
-                    default:
-                        ConfirmBoxOneOption.ShowDialog("Command not implemented", $"The command '{Command}' is not implemented in the DashboardAppScanner.", "OK");
-                        handled = false;
-                        break;
-                }
+                //switch (Command)
+                //{
+                //    case "CmdGoBack":
+                //        if (source is UserControl)
+                //        {
+                //            //var userControl = source as UserControl;
+                //            form._scannerCommon.UserControlManager.PopUserControl(userControl.Parent);//form.panelKeyboard);
+                //            form._scannerCommon.UserControlManager.StartTopLevelAnimation();
+                //        }
+                //        break;
+                //}
 
                 return true;
             }
+        }
+
+        private bool HandleCmdShowKeyboard()
+        {
+            _scannerCommon.UserControlManager.PushUserControlByKeyOrName(panelDashboardControls, "keyboard", "KeyboardUserControl");
+            _scannerCommon.UserControlManager.StartTopLevelAnimation();
+            return true;
+        }
+
+        private bool HandleCmdGoBack()
+        {
+            _scannerCommon.UserControlManager.PopUserControl(panelDashboardControls);
+            _scannerCommon.UserControlManager.StartTopLevelAnimation();
+            return true;
         }
 
         private class DashboardAppDispatcher : DefaultCommandDispatcher
@@ -274,10 +234,19 @@ namespace ACAT.Extensions.UI.Scanners
                 Commands.Add(new DashboardAppCommandHandler("CmdACATMenu"));
                 Commands.Add(new DashboardAppCommandHandler("CmdShowACATTalk"));
                 Commands.Add(new DashboardAppCommandHandler("CmdShowQuickTalk"));
-                Commands.Add(new DashboardAppCommandHandler("CmdShowPointer"));
+                Commands.Add(new DashboardAppCommandHandler("CmdShowPointerControl"));
                 Commands.Add(new DashboardAppCommandHandler("CmdShowKeyboard"));
                 Commands.Add(new DashboardAppCommandHandler("CmdShowSystem"));
                 Commands.Add(new DashboardAppCommandHandler("CmdShowLocation"));
+                Commands.Add(new DashboardAppCommandHandler("CmdShowSettings"));
+                Commands.Add(new DashboardAppCommandHandler("CmdShowHelp"));
+                Commands.Add(new DashboardAppCommandHandler("CmdShowAbout"));
+                Commands.Add(new DashboardAppCommandHandler("CmdPanelSettings"));
+                Commands.Add(new DashboardAppCommandHandler("CmdGoBack"));
+                Commands.Add(new DashboardAppCommandHandler("CmdShrink"));
+                Commands.Add(new DashboardAppCommandHandler("CmdGrow"));
+                Commands.Add(new DashboardAppCommandHandler("CmdFade"));
+                Commands.Add(new DashboardAppCommandHandler("CmdUnfade"));
             }
         }
     }

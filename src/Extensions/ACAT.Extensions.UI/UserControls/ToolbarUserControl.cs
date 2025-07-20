@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System;
 
 namespace ACAT.Extensions.UI.UserControls
 {
@@ -16,37 +17,19 @@ namespace ACAT.Extensions.UI.UserControls
         Description = "User control for the toolbar in the ACAT Dashboard")]
     public class ToolbarUserControl : KeyboardUserControl
     {
-        private const string defaultButtonsName = "DefaultButtons";
-        protected Dictionary<string, string> _defaultButtons = new Dictionary<string, string>
-        {
-            { "Settings", BootstrapFontUtility.GetBootstrapFontCharacter("gear-wide-connected") },
-            { "Help", BootstrapFontUtility.GetBootstrapFontCharacter("life-preserver") },
-            { "About", BootstrapFontUtility.GetBootstrapFontCharacter("question-circle") },
-            { "PanelSettings", BootstrapFontUtility.GetBootstrapFontCharacter("three-dots") },
-            { "Home", BootstrapFontUtility.GetBootstrapFontCharacter("house-door") }
-        };
-
-        private const string _panelSettingsButtonsName = "panelSettingsButtons";
-        protected Dictionary<string, string> _panelSettingsButtons = new Dictionary<string, string>
-        {
-            { "Shrink", BootstrapFontUtility.GetBootstrapFontCharacter("arrows-angle-contract") },
-            { "Grow", BootstrapFontUtility.GetBootstrapFontCharacter("arrows-angle-expand") },
-            { "Fade", BootstrapFontUtility.GetBootstrapFontCharacter("circle") },
-            { "Unfade", BootstrapFontUtility.GetBootstrapFontCharacter("circle-half") },
-            { "Home", BootstrapFontUtility.GetBootstrapFontCharacter("house-door") }
-        };
-
         private TableLayoutPanel ToolbarBox = new TableLayoutPanel
-            {
-                Name = "ToolbarBox",
-                AccessibleName = "ToolbarBox",
-                Dock = DockStyle.Top,
-                ColumnCount = 2,
-                RowCount = 1,
-                Padding = new Padding(2),
-                AutoSize = true,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink,
-            };
+        {
+            Name = "ToolbarBox",
+            Dock = DockStyle.Fill,
+            AutoSize = true,
+            AutoSizeMode = AutoSizeMode.GrowAndShrink,
+            BackColor = Color.Transparent,
+            Padding = new Padding(10),
+            Margin = new Padding(10),
+            ColumnCount = 2,
+            RowCount = 1,
+            GrowStyle = TableLayoutPanelGrowStyle.AddColumns,
+        };
 
         private TableLayoutPanel DefaultButtonsBox = new TableLayoutPanel
         {
@@ -54,23 +37,27 @@ namespace ACAT.Extensions.UI.UserControls
             AccessibleName = "DefaultButtonsBox",
             AutoSize = true,
             AutoSizeMode = AutoSizeMode.GrowAndShrink,
-            Dock = DockStyle.Top | DockStyle.Right,
-            ColumnCount = 1, // Start with no columns, will add dynamically
-            RowCount = 1,
+            Margin = new Padding(10),
+            Padding = new Padding(20),
+            BackColor = Color.Transparent,
+            Dock = DockStyle.Top,
+            Anchor = AnchorStyles.Right | AnchorStyles.Top,
             GrowStyle = TableLayoutPanelGrowStyle.AddColumns,
+            ColumnCount = 5,
+            RowCount = 1,
+            Visible = true,
         };
         
-        private TableLayoutPanel PanelSettingsBox = new TableLayoutPanel
-        {
-            Name = "PanelSettingsBox",
-            AccessibleName = "PanelSettingsBox",
-            AutoSize = true,
-            AutoSizeMode = AutoSizeMode.GrowAndShrink,
-            Dock = DockStyle.Top | DockStyle.Right,
-            ColumnCount = 1, // Start with no columns, will add dynamically
-            RowCount = 1,
-            GrowStyle = TableLayoutPanelGrowStyle.AddColumns,
-        };
+        // private TableLayoutPanel PanelSettingsBox = new TableLayoutPanel
+        // {
+        //     Name = "PanelSettingsBox",
+        //     AccessibleName = "PanelSettingsBox",
+        //     AutoSize = true,
+        //     AutoSizeMode = AutoSizeMode.GrowAndShrink,
+        //     Dock = DockStyle.Top | DockStyle.Right,
+        //     GrowStyle = TableLayoutPanelGrowStyle.AddColumns,
+        //     CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
+        // };
 
         Label appName = new Label
         {
@@ -80,26 +67,54 @@ namespace ACAT.Extensions.UI.UserControls
             Padding = new Padding(10),
             TextAlign = ContentAlignment.MiddleCenter,
             Anchor = AnchorStyles.Top | AnchorStyles.Left,
+            Dock = DockStyle.Left,
             ForeColor = Color.White,
             Font = new Font("Montserrat", 28, FontStyle.Regular, GraphicsUnit.Point, 0)
         };
 
         private System.ComponentModel.IContainer container = null;
 
+        protected Dictionary<string, string> DefaultButtons { get; private set; }
+        //protected Dictionary<string, string> PanelSettingsButtons { get; private set; }
 
         public ToolbarUserControl()
         {
+            InitializeButtonsList();
             InitializeComponent();
+        }
+
+        protected virtual void InitializeButtonsList()
+        {
+            DefaultButtons = new Dictionary<string, string>()
+            {
+                { "Settings", BootstrapFontUtility.GetBootstrapFontCharacter("gear-wide-connected") },
+                { "Help", BootstrapFontUtility.GetBootstrapFontCharacter("life-preserver") },
+                { "About", BootstrapFontUtility.GetBootstrapFontCharacter("question-circle") },
+                { "Home", BootstrapFontUtility.GetBootstrapFontCharacter("house-door") },
+                //{ "PanelSettings", BootstrapFontUtility.GetBootstrapFontCharacter("three-dots") },
+                { "Exit", BootstrapFontUtility.GetBootstrapFontCharacter("door-closed") }
+            };
+        //PanelSettingsButtons = new Dictionary<string, string>
+        // {
+        //     { "Shrink", BootstrapFontUtility.GetBootstrapFontCharacter("arrows-angle-contract") },
+        //     { "Grow", BootstrapFontUtility.GetBootstrapFontCharacter("arrows-angle-expand") },
+        //     { "Fade", BootstrapFontUtility.GetBootstrapFontCharacter("circle") },
+        //     { "Unfade", BootstrapFontUtility.GetBootstrapFontCharacter("circle-half") },
+        //     { "Home2", BootstrapFontUtility.GetBootstrapFontCharacter("house-door") }
+        // };
         }
 
         protected virtual void CreateToolbarButtons(TableLayoutPanel parent, Dictionary<string, string> buttons)
         {
+            var defaultSize = new Size(100, 100);
+            var padding = new Padding(10);
+
             // Create buttons with specific properties
             foreach (var (button, index) in buttons.Select((p, i) => (p, i)))
             {
                 var scannerButton = new ScannerRoundedButtonControl
                 {
-                    BorderColor = System.Drawing.Color.DimGray,
+                    BorderColor = Color.DimGray,
                     BorderRadiusBottomLeft = 12,
                     BorderRadiusBottomRight = 12,
                     BorderRadiusTopLeft = 12,
@@ -109,21 +124,19 @@ namespace ACAT.Extensions.UI.UserControls
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
                     Font = new Font("bootstrap-icons", 24, FontStyle.Regular, GraphicsUnit.Point, 0),
-                    Name = button.Key,
                     Margin = new Padding(10),
                     TabIndex = index,
+                    Name = button.Key,
                     Text = button.Value,
                     UseMnemonic = false,
-                    //UseVisualStyleBackColor = true,
-                    Anchor = AnchorStyles.Top,
-                    Size = new Size(100, 100),
+                    Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                    Size = defaultSize,
                     AutoSize = false,
                     TextAlign = ContentAlignment.MiddleCenter,
                 };
 
-
                 parent.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-                parent.Controls.Add(scannerButton, index + 1, 0);
+                parent.Controls.Add(scannerButton, index, 1);
             }
         }
 
@@ -139,9 +152,6 @@ namespace ACAT.Extensions.UI.UserControls
         protected void InitializeComponent()
         {
             this.SuspendLayout();
-            // 
-            // ToolbarUserControl
-            // 
             this.Name = "ToolbarUserControl";
             this.AccessibleName = "ToolbarUserControl";
             this.AutoSize = true;
@@ -150,28 +160,92 @@ namespace ACAT.Extensions.UI.UserControls
             this.Dock = DockStyle.Top;
 
             ToolbarBox.SuspendLayout();
-            ToolbarBox.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-            ToolbarBox.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-            ToolbarBox.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
-            DefaultButtonsBox.SuspendLayout();
-            PanelSettingsBox.SuspendLayout();
-            CreateToolbarButtons(DefaultButtonsBox, _defaultButtons);
-            CreateToolbarButtons(PanelSettingsBox, _panelSettingsButtons);
-
-            PanelSettingsBox.Visible = false;
-            DefaultButtonsBox.Visible = true;
+            CreateToolbarButtons(DefaultButtonsBox, DefaultButtons);
 
             ToolbarBox.Controls.Add(appName, 0, 0);
-            ToolbarBox.Controls.Add(PanelSettingsBox, 1, 0);
             ToolbarBox.Controls.Add(DefaultButtonsBox, 1, 0);
 
             this.Controls.Add(ToolbarBox);
 
-            DefaultButtonsBox.ResumeLayout();
-            PanelSettingsBox.ResumeLayout();
-            ToolbarBox.ResumeLayout();
-            this.ResumeLayout();
+            DefaultButtonsBox.ResumeLayout(true);
+            ToolbarBox.ResumeLayout(true);
+            this.ResumeLayout(true);
         }
+
+        // public void HandlePanelSettingsClicked()
+        // {
+        //     DefaultButtonsBox.Visible = false;
+        //     PanelSettingsBox.Visible = true;
+        // }
+
+        // internal void HandleCommand(string cmd)
+        // {
+        //     switch (cmd)
+        //     {
+        //         case "Shrink":
+        //             Shrink();
+        //             break;
+        //         case "Grow":
+        //             Grow();
+        //             break;
+        //         case "Fade":
+        //             Fade();
+        //             break;
+        //         case "Unfade":
+        //             UnFade();
+        //             break;
+        //         case "Home2":
+        //             HandlePanelSettingsClicked();
+        //             break;
+        //         default:
+        //             // Handle other commands or do nothing
+        //             break;
+        //     }
+        // }
+
+        // private bool _transparencyIncreasing = false;
+
+        // private void ToggleTransparency()
+        // {
+        //     const double MinOpacity = 0.5;
+        //     const double MaxOpacity = 1.0;
+        //     const double Step = 0.1;
+
+        //     using var parent = this.TopLevelControl as Form;
+
+        //     if (_transparencyIncreasing)
+        //     {
+        //         parent.Opacity = Math.Min(MaxOpacity, parent.Opacity + Step);
+        //         if (parent.Opacity >= MaxOpacity)
+        //             _transparencyIncreasing = false;
+        //     }
+        //     else
+        //     {
+        //         parent.Opacity = Math.Max(MinOpacity, parent.Opacity - Step);
+        //         if (parent.Opacity <= MinOpacity)
+        //             _transparencyIncreasing = true;
+        //     }
+        // }
+
+        // private void Fade()
+        // {
+        //     ToggleTransparency();
+        // }
+
+        // private void UnFade()
+        // {
+        //     ToggleTransparency();
+        // }
+
+        // private void Grow()
+        // {
+
+        // }
+
+        // private void Shrink()
+        // {
+
+        // }
     }
 }

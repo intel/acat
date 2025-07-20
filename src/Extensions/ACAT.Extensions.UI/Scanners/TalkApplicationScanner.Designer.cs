@@ -1,5 +1,6 @@
 ﻿using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Extension.CommandHandlers;
+using System.Drawing;
 
 namespace ACAT.Extensions.UI.Scanners
 {
@@ -10,7 +11,7 @@ namespace ACAT.Extensions.UI.Scanners
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        private System.Windows.Forms.Label labelCurrentTypingMode;
+        //private System.Windows.Forms.Label labelCurrentTypingMode;
 
         private System.Windows.Forms.Panel panelKeyboard;
 
@@ -60,7 +61,7 @@ namespace ACAT.Extensions.UI.Scanners
             this.panelWordPrediction = new System.Windows.Forms.Panel();
             this.panelSentencePrediction = new System.Windows.Forms.Panel();
             this.panelTextBox = new System.Windows.Forms.Panel();
-            this.labelCurrentTypingMode = new System.Windows.Forms.Label();
+            //this.labelCurrentTypingMode = new System.Windows.Forms.Label();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -73,6 +74,7 @@ namespace ACAT.Extensions.UI.Scanners
             // ScannerBorder
             // 
             this.ScannerBorder.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ScannerBorder.BackColor = Color.Transparent;
             this.ScannerBorder.ColumnCount = 1;
             this.ScannerBorder.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.ScannerBorder.Controls.Add(this.panelKeyboard, 0, 1);
@@ -99,14 +101,14 @@ namespace ACAT.Extensions.UI.Scanners
             // 
             // tableLayoutTop
             // 
-            this.tableLayoutTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.tableLayoutTop.BackColor = Color.Transparent; //System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.tableLayoutTop.ColumnCount = 2;
             this.tableLayoutTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutTop.Controls.Add(this.panelWordPrediction, 0, 2);
-            this.tableLayoutTop.Controls.Add(this.panelSentencePrediction, 1, 0);
-            this.tableLayoutTop.Controls.Add(this.panelTextBox, 1, 5);
-            this.tableLayoutTop.Controls.Add(this.labelCurrentTypingMode, 0, 0);
+            this.tableLayoutTop.Controls.Add(this.panelSentencePrediction, 1, 2);
+            this.tableLayoutTop.Controls.Add(this.panelTextBox, 0, 0);
+            //this.tableLayoutTop.Controls.Add(this.labelCurrentTypingMode, 0, 0);
             this.tableLayoutTop.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutTop.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutTop.Margin = new System.Windows.Forms.Padding(0);
@@ -124,7 +126,7 @@ namespace ACAT.Extensions.UI.Scanners
             // 
             // panelWordPrediction
             // 
-            this.panelWordPrediction.BackColor = System.Drawing.Color.Black;
+            this.panelWordPrediction.BackColor = Color.Transparent;
             this.panelWordPrediction.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelWordPrediction.Location = new System.Drawing.Point(0, 184);
             this.panelWordPrediction.Margin = new System.Windows.Forms.Padding(0);
@@ -135,6 +137,7 @@ namespace ACAT.Extensions.UI.Scanners
             // 
             // panelSentencePrediction
             // 
+            this.panelSentencePrediction.BackColor = Color.Transparent;
             this.panelSentencePrediction.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelSentencePrediction.Location = new System.Drawing.Point(592, 0);
             this.panelSentencePrediction.Margin = new System.Windows.Forms.Padding(0);
@@ -145,28 +148,29 @@ namespace ACAT.Extensions.UI.Scanners
             // 
             // panelTextBox
             // 
-            this.panelTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.panelTextBox.BackColor = Color.Transparent;
             this.panelTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelTextBox.Location = new System.Drawing.Point(619, 472);
             this.panelTextBox.Margin = new System.Windows.Forms.Padding(27, 12, 10, 6);
             this.panelTextBox.Name = "panelTextBox";
             this.tableLayoutTop.SetRowSpan(this.panelTextBox, 2);
+            this.tableLayoutTop.SetColumnSpan(this.panelTextBox, 2);
             this.panelTextBox.Size = new System.Drawing.Size(555, 167);
             this.panelTextBox.TabIndex = 3;
             // 
             // labelCurrentTypingMode
             // 
-            this.labelCurrentTypingMode.AutoSize = true;
-            this.labelCurrentTypingMode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelCurrentTypingMode.Font = new System.Drawing.Font("Montserrat Black", 24F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelCurrentTypingMode.ForeColor = System.Drawing.Color.Gainsboro;
-            this.labelCurrentTypingMode.Location = new System.Drawing.Point(4, 0);
-            this.labelCurrentTypingMode.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelCurrentTypingMode.Name = "labelCurrentTypingMode";
-            this.tableLayoutTop.SetRowSpan(this.labelCurrentTypingMode, 2);
-            this.labelCurrentTypingMode.Size = new System.Drawing.Size(584, 184);
-            this.labelCurrentTypingMode.TabIndex = 4;
-            this.labelCurrentTypingMode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            //this.labelCurrentTypingMode.AutoSize = true;
+            //this.labelCurrentTypingMode.Dock = System.Windows.Forms.DockStyle.Fill;
+            //this.labelCurrentTypingMode.Font = new System.Drawing.Font("Montserrat Black", 24F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            //this.labelCurrentTypingMode.ForeColor = System.Drawing.Color.Gainsboro;
+            //this.labelCurrentTypingMode.Location = new System.Drawing.Point(4, 0);
+            //this.labelCurrentTypingMode.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            //this.labelCurrentTypingMode.Name = "labelCurrentTypingMode";
+            //this.tableLayoutTop.SetRowSpan(this.labelCurrentTypingMode, 2);
+            //this.labelCurrentTypingMode.Size = new System.Drawing.Size(584, 184);
+            //this.labelCurrentTypingMode.TabIndex = 4;
+            //this.labelCurrentTypingMode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // statusStrip
             // 
@@ -213,7 +217,7 @@ namespace ACAT.Extensions.UI.Scanners
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Black;
+            this.BackColor = System.Drawing.Color.FromArgb(34,35, 51);
             this.ClientSize = new System.Drawing.Size(1184, 1018);
             this.Controls.Add(this.ScannerBorder);
             this.Controls.Add(this.statusStrip);
@@ -222,6 +226,7 @@ namespace ACAT.Extensions.UI.Scanners
             this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.ShowInTaskbar = true;
             this.Name = "TalkApplicationScannerQwerty";
             this.Text = "Talk App";
             this.TopMost = true;

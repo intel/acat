@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Windows.Forms;
-using ACAT.Applications;
+﻿using ACAT.Applications;
 using ACAT.Lib.Core.ActuatorManagement;
 using ACAT.Lib.Core.Extensions;
 using ACAT.Lib.Core.PreferencesManagement;
@@ -12,8 +6,15 @@ using ACAT.Lib.Core.TTSManagement;
 using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.Utility.WpfUserControlUtilities;
+using ACAT.Lib.Core.WidgetManagement;
 using ACAT.Lib.Core.WordPredictionManagement;
-using ACAT.Lib.Extension;
+using ACATConfigNext.UserControls;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Reflection;
+using System.Windows.Forms;
 
 namespace ACATConfigNext
 {
@@ -21,8 +22,8 @@ namespace ACATConfigNext
     {
         public class SettingsForm : Form
         {
-            private readonly Panel navPanel;
-            private readonly Panel contentPanel;
+            private readonly TableLayoutPanel navPanel;
+            private readonly TableLayoutPanel contentPanel;
             private readonly FlowLayoutPanel breadcrumbPanel;
             public static TableLayoutPanel _tableLayoutPanel = CustomControls.CreateCategoryTableLayoutPanel();
             public static string _currentPanelType;
@@ -42,17 +43,52 @@ namespace ACATConfigNext
             public SettingsForm()
             {
                 Text = "ACAT Settings";
-                Size = new System.Drawing.Size(2000, 1400);
+                Size = new Size(2000, 1400);
                 StartPosition = FormStartPosition.CenterScreen;
                 FormBorderStyle = FormBorderStyle.FixedDialog;
                 MaximizeBox = false;
                 MinimizeBox = false;
                 BackColor = Color.FromArgb(31, 31, 56);
                 ForeColor = Color.White;
+                //Font = new Font("Montserrat", 24, FontStyle.Regular);
+                //AutoSize = true;
+                //AutoSizeMode = AutoSizeMode.GrowAndShrink;
 
-                contentPanel = CustomControls.CreatePanel(DockStyle.Fill, 0);
-                breadcrumbPanel = CustomControls.CreateFlowPanel(DockStyle.Top, height: 40, text: "Settings", padding: new Padding(10, 5, 0, 0));
-                navPanel = CustomControls.CreatePanel(DockStyle.Left, 200);
+                navPanel = new TableLayoutPanel
+                {
+                    Dock = DockStyle.Left,
+                    BackColor = Color.Transparent,
+                    AutoSize = true,
+                    AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                    ColumnCount = 1,
+                    RowCount = 4,
+                    GrowStyle = TableLayoutPanelGrowStyle.AddRows
+                };
+
+                breadcrumbPanel = new FlowLayoutPanel
+                {
+                    Dock = DockStyle.Top,
+                    Name = "Settings",
+                    Padding = new Padding(5),
+                    AutoScroll = false,
+                    BackColor = Color.Transparent,
+                    Font = new Font("Montserrat", 14, FontStyle.Italic),
+                    AutoSize = true,
+                    AutoSizeMode = AutoSizeMode.GrowAndShrink
+                };
+
+                contentPanel = new TableLayoutPanel
+                {
+                    Dock = DockStyle.Fill,
+                    BackColor = Color.Transparent,
+                    Padding = new Padding(10),
+                    Margin = new Padding(10),
+                    RowCount = 1,
+                    ColumnCount = 1,
+                    GrowStyle = TableLayoutPanelGrowStyle.AddRows,
+                    AutoSize = true,
+                    AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                };
 
                 Controls.Add(contentPanel);
                 Controls.Add(breadcrumbPanel);
@@ -64,14 +100,23 @@ namespace ACATConfigNext
             private void LoadNavigation()
             {
                 string[] categories = { "General", "Actuators", "Word Predictors", "Text to Speech" };
-                int y = 10;
 
                 foreach (var category in categories)
                 {
-                    var btn = CustomControls.CreateFlatButton(text: category, tag: category, width: navPanel.Width - 20, top: y, left: 10, height: 40);
+                    var btn = new ScannerRoundedButtonControl()
+                    {
+                        Text = category,
+                        Font = new Font("Montserrat", 18, FontStyle.Italic),
+                        AutoSize = true,
+                        AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                        ForeColor = Color.White,
+                        Dock = DockStyle.Top,
+                        Tag = category
+                    };
+
                     btn.Click += Category_Click;
+                    navPanel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
                     navPanel.Controls.Add(btn);
-                    y += 50;
                 }
 
                 if (navPanel.Controls.Count > 0)
@@ -113,12 +158,14 @@ namespace ACATConfigNext
                     contentPanel.Controls.Clear();
                     currentPageLabel = category;
 
+                    //UserControl panel = new SettingsPanel(ShowPanel, category, category, $"{category} settings for ACAT", true );
+
                     UserControl panel = category switch
                     {
-                        "General" => new GeneralSettingsPanel(ShowPanel),
-                        "Actuators" => new ActuatorSettingsPanel(ShowPanel),
-                        "Word Predictors" => new WordPredictorsPanel(ShowPanel),
-                        "Text to Speech" => new TTSPanel(ShowPanel),
+                        "General" => new SettingsPanel(ShowPanel, CoreGlobals.AppPreferences),
+                        //"Actuators" => new GroupedSettingsPanel(ShowPanel,),
+                        //"Word Predictors" => new SettingsPanel(ShowPanel, ),
+                        //"Text to Speech" => new SettingsPanel(ShowPanel, ),
                         _ => throw new ArgumentException("Invalid category"),
                     };
 
@@ -183,7 +230,7 @@ namespace ACATConfigNext
                 {
                     Text = currentPageLabel,
                     AutoSize = true,
-                    Font = new Font(DefaultFont, FontStyle.Bold)
+                    //Font = new Font(DefaultFont, FontStyle.Bold)
                 });
             }
 
@@ -735,6 +782,8 @@ namespace ACATConfigNext
             Application.SetCompatibleTextRenderingDefault(false);
             WpfInitializationHelper.EnsureApplicationResources();
 
+            AppCommon.LoadUserPreferences();
+
             Application.Run(new SettingsForm());
         }
 
@@ -796,7 +845,7 @@ namespace ACATConfigNext
                         OnSetupClicked
                         ));
 
-                Controls.Add(new Label { Text = "      Actuator Settings", Dock = DockStyle.Top, Height = 40 });
+                //Controls.Add(new Label { Text = "      Actuator Settings", Dock = DockStyle.Top, Height = 40 });
             }
         }
 
@@ -847,6 +896,7 @@ namespace ACATConfigNext
 
         private static void OnSetupClicked(object sender, PreferencesCategory category)
         {
+            
             var SetupButton = sender as Button;
             var extension = category.PreferenceObj as IExtension;
 
@@ -854,14 +904,8 @@ namespace ACATConfigNext
             {
                 if (extension != null && category.PreferenceObj is ISupportsPreferences supportsPrefs)
                 {
-                    SettingsForm._tableLayoutPanel.Controls.Clear();
-
                     TableLayoutPanel preferencesPanel = CreatePreferencesTableLayoutForExtension(extension, supportsPrefs);
-
-                    if (preferencesPanel != null)
-                    {
-                        SettingsForm._tableLayoutPanel.Controls.Add(preferencesPanel);
-                    }
+                    //SettingsForm.ShowPanel(preferencesPanel, category.PreferenceObj.);
                 }
             }
         }

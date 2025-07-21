@@ -48,20 +48,20 @@ namespace ACAT.Extensions
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 62F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 119F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(571, 181);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1142, 348);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.TextBoxTalkWindow);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 59);
+            this.panel1.Location = new System.Drawing.Point(0, 114);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Padding = new System.Windows.Forms.Padding(0, 0, 0, 21);
-            this.panel1.Size = new System.Drawing.Size(571, 62);
+            this.panel1.Padding = new System.Windows.Forms.Padding(0, 0, 0, 40);
+            this.panel1.Size = new System.Drawing.Size(1142, 119);
             this.panel1.TabIndex = 2;
             // 
             // TextBoxTalkWindow
@@ -72,18 +72,18 @@ namespace ACAT.Extensions
             this.TextBoxTalkWindow.Margin = new System.Windows.Forms.Padding(0);
             this.TextBoxTalkWindow.Name = "TextBoxTalkWindow";
             this.TextBoxTalkWindow.Prompt = null;
-            this.TextBoxTalkWindow.Size = new System.Drawing.Size(571, 52);
+            this.TextBoxTalkWindow.Size = new System.Drawing.Size(1142, 78);
             this.TextBoxTalkWindow.TabIndex = 0;
             // 
             // TalkWindowTextBoxPhraseModeUserControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Margin = new System.Windows.Forms.Padding(8, 8, 8, 8);
             this.Name = "TalkWindowTextBoxPhraseModeUserControl";
-            this.Size = new System.Drawing.Size(571, 181);
+            this.Size = new System.Drawing.Size(1142, 348);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

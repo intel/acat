@@ -20,7 +20,11 @@ namespace ACAT.Extensions.UI.Scanners
     [ClassDescriptor("D9A5B53F-7119-445B-BDEA-F76EC53077F1",
                         "TalkApplicationScanner",
                         "Talk application main window")]
+    /*
+    public partial class TalkApplicationScanner : Form
+    /*/
     public partial class TalkApplicationScanner : GenericScannerForm, ISupportsStatusBar
+    //*/
     {
         private TalkWindowTextBoxPhraseModeUserControl _textBoxPhraseModeUserControl;
         private TextBox _textBoxTalkWindow;
@@ -36,7 +40,6 @@ namespace ACAT.Extensions.UI.Scanners
         {
             get { return ScannerCommon.StatusBar; }
         }
-
 
         public override ITextController TextController => ScannerCommon.TextController;
 

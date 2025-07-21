@@ -48,7 +48,7 @@ namespace ACAT.Extensions.UI.UserControls
             this.SentencePredictionBox.Controls.Add(this.SPLItem4, 0, 3);
             this.SentencePredictionBox.Controls.Add(this.SPLItem5, 0, 4);
             this.SentencePredictionBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SentencePredictionBox.Location = new System.Drawing.Point(0, 0);
+            this.SentencePredictionBox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.SentencePredictionBox.Name = "SentencePredictionBox";
             this.SentencePredictionBox.RowCount = 5;
             this.SentencePredictionBox.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
@@ -56,8 +56,8 @@ namespace ACAT.Extensions.UI.UserControls
             this.SentencePredictionBox.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.SentencePredictionBox.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.SentencePredictionBox.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.SentencePredictionBox.Size = new System.Drawing.Size(749, 320);
             this.SentencePredictionBox.TabIndex = 0;
+            this.SentencePredictionBox.AccessibleName = "SentencePredictionBox";
             // 
             // SPLItem1
             // 
@@ -71,15 +71,14 @@ namespace ACAT.Extensions.UI.UserControls
             this.SPLItem1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SPLItem1.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SPLItem1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.SPLItem1.Location = new System.Drawing.Point(3, 3);
+            this.SPLItem1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.SPLItem1.Name = "SPLItem1";
-            this.SPLItem1.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.SPLItem1.Size = new System.Drawing.Size(743, 58);
+            this.SPLItem1.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
             this.SPLItem1.TabIndex = 0;
             this.SPLItem1.Text = ".";
             this.SPLItem1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.SPLItem1.UseMnemonic = false;
-            this.SPLItem1.UseVisualStyleBackColor = true;
+            this.SPLItem1.UseVisualStyleBackColor = false;
             // 
             // SPLItem2
             // 
@@ -93,15 +92,14 @@ namespace ACAT.Extensions.UI.UserControls
             this.SPLItem2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SPLItem2.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SPLItem2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.SPLItem2.Location = new System.Drawing.Point(3, 67);
+            this.SPLItem2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.SPLItem2.Name = "SPLItem2";
-            this.SPLItem2.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.SPLItem2.Size = new System.Drawing.Size(743, 58);
+            this.SPLItem2.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
             this.SPLItem2.TabIndex = 1;
             this.SPLItem2.Text = ".";
             this.SPLItem2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.SPLItem2.UseMnemonic = false;
-            this.SPLItem2.UseVisualStyleBackColor = true;
+            this.SPLItem2.UseVisualStyleBackColor = false;
             // 
             // SPLItem3
             // 
@@ -115,15 +113,14 @@ namespace ACAT.Extensions.UI.UserControls
             this.SPLItem3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SPLItem3.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SPLItem3.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.SPLItem3.Location = new System.Drawing.Point(3, 131);
+            this.SPLItem3.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.SPLItem3.Name = "SPLItem3";
-            this.SPLItem3.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.SPLItem3.Size = new System.Drawing.Size(743, 58);
+            this.SPLItem3.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
             this.SPLItem3.TabIndex = 2;
             this.SPLItem3.Text = ".";
             this.SPLItem3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.SPLItem3.UseMnemonic = false;
-            this.SPLItem3.UseVisualStyleBackColor = true;
+            this.SPLItem3.UseVisualStyleBackColor = false;
             // 
             // SPLItem4
             // 
@@ -137,15 +134,14 @@ namespace ACAT.Extensions.UI.UserControls
             this.SPLItem4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SPLItem4.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SPLItem4.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.SPLItem4.Location = new System.Drawing.Point(3, 195);
+            this.SPLItem4.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.SPLItem4.Name = "SPLItem4";
-            this.SPLItem4.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.SPLItem4.Size = new System.Drawing.Size(743, 58);
+            this.SPLItem4.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
             this.SPLItem4.TabIndex = 3;
             this.SPLItem4.Text = ".";
             this.SPLItem4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.SPLItem4.UseMnemonic = false;
-            this.SPLItem4.UseVisualStyleBackColor = true;
+            this.SPLItem4.UseVisualStyleBackColor = false;
             // 
             // SPLItem5
             // 
@@ -159,24 +155,24 @@ namespace ACAT.Extensions.UI.UserControls
             this.SPLItem5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SPLItem5.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SPLItem5.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.SPLItem5.Location = new System.Drawing.Point(3, 259);
+            this.SPLItem5.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.SPLItem5.Name = "SPLItem5";
-            this.SPLItem5.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.SPLItem5.Size = new System.Drawing.Size(743, 58);
+            this.SPLItem5.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
             this.SPLItem5.TabIndex = 4;
             this.SPLItem5.Text = ".";
             this.SPLItem5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.SPLItem5.UseMnemonic = false;
-            this.SPLItem5.UseVisualStyleBackColor = true;
+            this.SPLItem5.UseVisualStyleBackColor = false;
             // 
             // SentencePredictionUserControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Black;
             this.Controls.Add(this.SentencePredictionBox);
+            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.Name = "SentencePredictionUserControl";
-            this.Size = new System.Drawing.Size(749, 320);
+            this.AccessibleName = "SentencePredictionUserControl";
+
             this.SentencePredictionBox.ResumeLayout(false);
             this.ResumeLayout(false);
 

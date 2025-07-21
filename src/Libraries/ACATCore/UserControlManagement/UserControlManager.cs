@@ -396,11 +396,12 @@ namespace ACAT.Core.UserControlManagement
                 userControl.Tag = tag;
             }
 
-            // Only change the DockStyle if it's not already set.
-            if (userControl.Dock == DockStyle.None)
-            {
-                userControl.Dock = DockStyle.Top;
-            }
+            //// Only change the DockStyle if it's not already set.
+            //if (userControl.Dock == DockStyle.None)
+            //{
+            //    userControl.Dock = DockStyle.Top;
+            //}
+            userControl.Dock = DockStyle.Fill;
 
             parent.Controls.Add(userControl);
 

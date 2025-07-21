@@ -30,7 +30,14 @@ namespace ACAT.Extensions.UI.UserControls
     [ClassDescriptor("07E0D588-1E80-4A07-BC26-FA4C8BCF5589",
                     "SentencePredictionUserControl",
                     "User Control for Sentence Prediction")]
+    /* NOTE: Put a slash at the start of this line to enable the designer view in Visual Studio. 
+       // Remove the slash to run the code in the ACAT application. 
+       // This allows you to edit the control in Visual Studio without having to run ACAT.
+       // The designer view will not work when subclassing the GenericUserControl.
+    public partial class SentencePredictionUserControl : Form, IUserControl //GenericUserControl, IUserControl
+    /*/
     public partial class SentencePredictionUserControl : GenericUserControl, IUserControl
+    //*/
     {
         private UserControlKeyboardCommon _keyboardCommon;
         private UserControlWordPredictionCommon _userControlWordPredictionCommon;

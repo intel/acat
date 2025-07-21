@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE ACAT [
     <!ENTITY characterButtonFontName "Montserrat SemiBold">
-    <!ENTITY characterButtonFontSize "22">
+    <!ENTITY characterButtonFontSize "24">
     <!ENTITY usebold "false">
 ]>
 

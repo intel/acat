@@ -454,6 +454,7 @@
     <Compile Include="Utility\ScannerFocus.cs" />
     <Compile Include="Utility\SoundManager.cs" />
     <Compile Include="Utility\VerifyDigitalSignature.cs" />
+    <Compile Include="Utility\WpfUserControlUtilities.cs" />
     <Compile Include="Utility\XmlUtils.cs" />
     <Compile Include="Utility\DescriptorAttribute.cs" />
     <Compile Include="Utility\DirectoryWalker.cs">

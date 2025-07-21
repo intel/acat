@@ -11,6 +11,7 @@ using ACAT.Lib.Core.PreferencesManagement;
 using ACAT.Lib.Core.TTSManagement;
 using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.Utility;
+using ACAT.Lib.Core.Utility.WpfUserControlUtilities;
 using ACAT.Lib.Core.WordPredictionManagement;
 using ACAT.Lib.Extension;
 
@@ -41,7 +42,7 @@ namespace ACATConfigNext
             public SettingsForm()
             {
                 Text = "ACAT Settings";
-                Size = new System.Drawing.Size(1000, 700);
+                Size = new System.Drawing.Size(2000, 1400);
                 StartPosition = FormStartPosition.CenterScreen;
                 FormBorderStyle = FormBorderStyle.FixedDialog;
                 MaximizeBox = false;
@@ -732,6 +733,8 @@ namespace ACATConfigNext
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            WpfInitializationHelper.EnsureApplicationResources();
+
             Application.Run(new SettingsForm());
         }
 

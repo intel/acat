@@ -117,33 +117,22 @@ namespace ACATConfigNext
             };
         }
 
-        public static System.Windows.Forms.Button CreateFlatButton(string text, object tag = null, int? width = null, int? top = null, int? left = null, int? height = null)
+        public static System.Windows.Forms.Button CreateFlatButton(string text, object tag = null)
         {
             var button = new System.Windows.Forms.Button
             {
                 Text = text,
                 FlatStyle = FlatStyle.Flat,
                 FlatAppearance = { BorderSize = 0 },
-                // Font = new Font("Montserrat", 11),
-                //ForeColor = Color.White,
+                Font = new Font("Montserrat", 16, FontStyle.Regular),
+                ForeColor = Color.White,
                 //BackColor = Color.FromArgb(60, 63, 80),
-                //Margin = new Padding(5),
-                //Padding = new Padding(6),
-                //AutoSize = width == null,
+                Margin = new Padding(5),
+                Padding = new Padding(6),
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 Tag = tag
             };
-
-            if (width.HasValue)
-                button.Width = width.Value;
-
-            if (top.HasValue)
-                button.Top = top.Value;
-
-            if (left.HasValue)
-                button.Left = left.Value;
-
-            if (height.HasValue)
-                button.Height = height.Value;
 
             return button;
         }

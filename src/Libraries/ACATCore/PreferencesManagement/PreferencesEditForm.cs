@@ -34,6 +34,7 @@ using System.Windows.Threading;
 using System.Security.Cryptography;
 using static System.Net.Mime.MediaTypeNames;
 using System.Speech.Synthesis;
+using ACAT.Lib.Core.Utility.WpfUserControlUtilities;
 
 namespace ACAT.Lib.Core.PreferencesManagement
 {
@@ -152,24 +153,25 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
         private static bool _initialized;
 
-        public static void EnsureInitialized()
-        {
-            var existingApp = System.Windows.Application.Current;
+        //public static void EnsureInitialized()
+        //{
+        //    var existingApp = System.Windows.Application.Current;
 
-            if (!_initialized && existingApp == null)
-            {
-                new System.Windows.Application(); // Don't call Run()
-                _initialized = true;
-            }
-            else
-            {
-               // existingApp.Shutdown();
-            }
-        }
+        //    if (!_initialized && existingApp == null)
+        //    {
+        //        new System.Windows.Application(); // Don't call Run()
+        //        _initialized = true;
+        //    }
+        //    else
+        //    {
+        //       // existingApp.Shutdown();
+        //    }
+        //}
 
         //Initializes an instance of the class
         public PreferencesEditForm()
         {
+            WpfInitializationHelper.EnsureApplicationResources(); // Ensure WPF is initialized
             InitializeComponent();
 
             CenterToScreen();

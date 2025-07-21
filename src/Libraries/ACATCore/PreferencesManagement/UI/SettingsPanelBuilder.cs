@@ -12,32 +12,10 @@ namespace ACAT.Lib.Core.PreferencesManagement.UI
  
     public class SettingsPanelBuilder
     {
-        public SettingsPanelBuilder()
-        {
-            if (Application.Current != null && Application.Current.Resources.MergedDictionaries.Count == 0)
-            {
-                var resources = new ResourceDictionary
-                {
-                    Source = new Uri("pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml", UriKind.Absolute)
-                };
-                Application.Current.Resources.MergedDictionaries.Add(resources);
-                Application.Current.Resources.MergedDictionaries.Add(
-                    new ResourceDictionary { Source = new Uri("pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml") });
-                Application.Current.Resources.MergedDictionaries.Add(
-                    new ResourceDictionary { Source = new Uri("pack://application:,,,/MahApps.Metro;component/Styles/Themes/Dark.Amber.xaml") });
-            }
-        }
 
         public FrameworkElement CreateLabeledPanel(PropertyInfo prop, object settingsInstance)
         {
             var value = prop.GetValue(settingsInstance);
-
-            //// Horizontal layout for label + input
-            //var panel = new StackPanel
-            //{
-            //    Orientation = Orientation.Horizontal,
-            //    Margin = new Thickness(4)
-            //};
 
             var grid = new Grid 
             { 
@@ -68,11 +46,6 @@ namespace ACAT.Lib.Core.PreferencesManagement.UI
 
             if (prop.PropertyType == typeof(bool))
             {
-                //inputControl = new CheckBox
-                //{
-                //    IsChecked = value is bool b && b,
-                //    VerticalAlignment = VerticalAlignment.Center
-                //};
                 inputControl = new ToggleSwitch
                 {
                     IsOn = value is bool b && b,

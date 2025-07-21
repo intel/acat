@@ -29,6 +29,11 @@ namespace ACATConfigNext
             private List<(UserControl Panel, string Label)> breadcrumbStack = new();
             private string currentPageLabel;
 
+            private static HashSet<IPreferences> _modifiedPreferences = new HashSet<IPreferences>();
+            private static List<PreferencesCategory> _currentWordPredictorCategories = new List<PreferencesCategory>();
+            private static List<PreferencesCategory> _currentTTSCategories = new List<PreferencesCategory>();
+            private static List<PreferencesCategory> _currentActuatorCategories = new List<PreferencesCategory>();
+
 
 
             public SettingsForm()
@@ -271,6 +276,7 @@ namespace ACATConfigNext
                         {
                             list.Add(new PreferencesCategory(actuator, true, actuator.Enabled));
                         }
+                        _currentActuatorCategories = list;
                     }
                     else
                     {
@@ -278,6 +284,15 @@ namespace ACATConfigNext
                         {
                             var instance = Activator.CreateInstance(type);
                             list.Add(new PreferencesCategory(instance, true, true));
+                        }
+
+                        if (context is WordPredictors)
+                        {
+                            _currentWordPredictorCategories = list;
+                        }
+                        else if (context is TTSEngines)
+                        {
+                            _currentTTSCategories = list;
                         }
                     }
 
@@ -299,7 +314,6 @@ namespace ACATConfigNext
                         categoryItem.Controls.Add(checkBox, 1, 1);
                         categoryItem.SetRowSpan(checkBox, 2);
 
-                        //   var setupButton = CustomControls.CreateSetupButton(">", onClick: onClick != null ? (sender, e) => onClick(sender, category) : null, tag: category);
                         var setupButton = CustomControls.CreateSetupButton(">", onClick: (sender, e) => OnSetupClicked(sender, category), tag: category);
                         categoryItem.Controls.Add(setupButton, 2, 0);
                         categoryItem.SetRowSpan(setupButton, 3);
@@ -326,6 +340,126 @@ namespace ACATConfigNext
                 descriptor = extension.Descriptor;
                 return descriptor != null && descriptor.HasSettings;
             }
+
+            private void SaveButton_Click(object sender, EventArgs e)
+            {
+                try
+                {
+                    bool success = SaveAllPreferences();
+
+                    if (success)
+                    {
+                        MessageBox.Show("Settings saved successfully.", "Save Complete",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        _modifiedPreferences.Clear();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Some settings could not be saved. Please check the logs.",
+                            "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Exception(ex);
+                    MessageBox.Show("An error occurred while saving settings.", "Save Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            public static bool SaveAllPreferences()
+            {
+                bool success = true;
+
+                try
+                {
+                    if (CoreGlobals.AppPreferences != null)
+                    {
+                        success &= CoreGlobals.AppPreferences.Save();
+                    }
+
+                    success &= SaveActuatorPreferences();
+
+                    success &= SaveWordPredictorPreferences();
+
+                    success &= SaveTTSPreferences();
+
+                    return success;
+                }
+                catch (Exception ex)
+                {
+                    Log.Exception(ex);
+                    return false;
+                }
+            }
+
+            private static bool SaveActuatorPreferences()
+            {
+                try
+                {
+                    var actuatorConfig = ActuatorManager.Instance.GetActuatorConfig();
+                    return actuatorConfig.Save();
+                }
+                catch (Exception ex)
+                {
+                    Log.Exception(ex);
+                    return false;
+                }
+            }
+
+            private static bool SaveWordPredictorPreferences()
+            {
+                try
+                {
+                    foreach (var category in _currentWordPredictorCategories)
+                    {
+                        if (category.PreferenceObj is ISupportsPreferences supportsPrefs)
+                        {
+                            var preferences = supportsPrefs.GetPreferences();
+                            if (preferences != null)
+                            {
+                                preferences.Save();
+                            }
+                        }
+                    }
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Log.Exception(ex);
+                    return false;
+                }
+            }
+
+            private static bool SaveTTSPreferences()
+            {
+                try
+                {
+                    foreach (var category in _currentTTSCategories)
+                    {
+                        if (category.PreferenceObj is ISupportsPreferences supportsPrefs)
+                        {
+                            var preferences = supportsPrefs.GetPreferences();
+                            if (preferences != null)
+                            {
+                                preferences.Save();
+                            }
+                        }
+
+                        if (category.PreferenceObj is ITTSEngine ttsEngine)
+                        {
+                            ttsEngine.Save();
+                        }
+                    }
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Log.Exception(ex);
+                    return false;
+                }
+            }
+
         }
 
         /// <summary>
@@ -466,6 +600,9 @@ namespace ACATConfigNext
                 }
             }
         }
+
+
+
         /// <summary>
         ///  Handle different extension types separately  
         /// </summary>
@@ -540,12 +677,11 @@ namespace ACATConfigNext
             var preferences = supportsPrefs.GetPreferences();
             if (preferences != null)
             {
-                // TODO CreateWordPredictorSpecificControls(tableLayout, preferences);
+                CreateWordPredictorSpecificControls(tableLayout, preferences);
             }
 
             return tableLayout;
         }
-
 
         private static TableLayoutPanel CreateGenericExtensionPreferencesPanel(IExtension extension, ISupportsPreferences supportsPrefs)
         {
@@ -568,6 +704,58 @@ namespace ACATConfigNext
             }
 
             return tableLayout;
+        }
+
+        private static void CreateWordPredictorSpecificControls(TableLayoutPanel tableLayout, IPreferences preferences)
+        {
+            var props = preferences.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (var prop in props)
+            {
+                switch (prop.Name.ToLower())
+                {
+                    case "predictionwordcount":
+                        var wordCountPanel = CustomControls.CreateWordCountControl(prop, preferences);
+                        tableLayout.Controls.Add(wordCountPanel);
+                        break;
+
+                    case "ngram":
+                        var ngramPanel = CustomControls.CreateNGramControl(prop, preferences);
+                        tableLayout.Controls.Add(ngramPanel);
+                        break;
+
+                    case "filterpunctuationsenable":
+                        var punctuationPanel = CustomControls.CreatePunctuationFilterControl(prop, preferences);
+                        tableLayout.Controls.Add(punctuationPanel);
+                        break;
+
+                    case "supportslearning":
+                        var learningPanel = CustomControls.CreateLearningControl(prop, preferences);
+                        tableLayout.Controls.Add(learningPanel);
+                        break;
+
+                    case "filterchars":
+                        var filterCharsPanel = CustomControls.CreateFilterCharsControl(prop, preferences);
+                        tableLayout.Controls.Add(filterCharsPanel);
+                        break;
+
+                    case "usedefaultencoding":
+                        var encodingPanel = CustomControls.CreateEncodingControl(prop, preferences);
+                        tableLayout.Controls.Add(encodingPanel);
+                        break;
+
+                    case "showdisclaimeronStartup":
+                        var disclaimerPanel = CustomControls.CreateDisclaimerControl(prop, preferences);
+                        tableLayout.Controls.Add(disclaimerPanel);
+                        break;
+
+                    default:
+                        var propPanel = CustomControls.CreateLabeledPanel(prop, preferences);
+                        var host = CustomControls.ElementHost(propPanel);
+                        tableLayout.Controls.Add(host);
+                        break;
+                }
+            }
         }
 
         private static void CreateTTSSpecificControls(TableLayoutPanel tableLayout, IPreferences preferences)

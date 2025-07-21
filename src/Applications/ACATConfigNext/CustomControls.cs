@@ -22,6 +22,7 @@ using ACAT.Lib.Core.PreferencesManagement;
 using static ACATConfigNext.Program;
 using ACAT.Lib.Core.ActuatorManagement;
 using System.Speech.Synthesis;
+using System.Web.UI.WebControls;
 
 
 namespace ACATConfigNext
@@ -635,6 +636,279 @@ namespace ACATConfigNext
             }
 
             return "Generic";
+        }
+
+        public static System.Windows.Forms.Control CreateWordCountControl(PropertyInfo prop, IPreferences preferences)
+        {
+            var panel = new TableLayoutPanel
+            {
+                ColumnCount = 3,
+                RowCount = 1,
+                AutoSize = true,
+                Dock = DockStyle.Fill
+            };
+
+            var label = new System.Windows.Forms.Label
+            {
+                Text = "Word Count:",
+                AutoSize = true,
+                Anchor = AnchorStyles.Left
+            };
+            panel.Controls.Add(label, 0, 0);
+
+            var currentValue = (int)prop.GetValue(preferences);
+            var numericUpDown = new System.Windows.Forms.NumericUpDown
+            {
+                Minimum = 1,
+                Maximum = 20,
+                Value = currentValue,
+                Increment = 1,
+                Dock = DockStyle.Fill
+            };
+
+            numericUpDown.ValueChanged += (sender, e) =>
+            {
+                prop.SetValue(preferences, (int)numericUpDown.Value);
+            };
+
+            panel.Controls.Add(numericUpDown, 1, 0);
+
+            var rangeLabel = new System.Windows.Forms.Label
+            {
+                Text = "(1 to 20)",
+                AutoSize = true,
+                Anchor = AnchorStyles.Left,
+                ForeColor = Color.Gray
+            };
+            panel.Controls.Add(rangeLabel, 2, 0);
+
+            return panel;
+        }
+
+        public static System.Windows.Forms.Control CreatePunctuationFilterControl(PropertyInfo prop, IPreferences preferences)
+        {
+            var panel = new TableLayoutPanel
+            {
+                ColumnCount = 2,
+                RowCount = 1,
+                AutoSize = true,
+                Dock = DockStyle.Fill
+            };
+
+            var checkBox = new System.Windows.Forms.CheckBox
+            {
+                Text = "Filter Punctuations",
+                Checked = (bool)prop.GetValue(preferences),
+                AutoSize = true
+            };
+
+            checkBox.CheckedChanged += (sender, e) =>
+            {
+                prop.SetValue(preferences, checkBox.Checked);
+            };
+
+            panel.Controls.Add(checkBox, 0, 0);
+
+            return panel;
+        }
+
+        public static System.Windows.Forms.Control CreateNGramControl(PropertyInfo prop, IPreferences preferences)
+        {
+            var panel = new TableLayoutPanel
+            {
+                ColumnCount = 3,
+                RowCount = 1,
+                AutoSize = true,
+                Dock = DockStyle.Fill
+            };
+
+            var label = new System.Windows.Forms.Label
+            {
+                Text = "N-Gram Size:",
+                AutoSize = true,
+                Anchor = AnchorStyles.Left
+            };
+            panel.Controls.Add(label, 0, 0);
+
+            var currentValue = (int)prop.GetValue(preferences);
+            var numericUpDown = new System.Windows.Forms.NumericUpDown
+            {
+                Minimum = 1,
+                Maximum = 5,
+                Value = currentValue,
+                Increment = 1,
+                Dock = DockStyle.Fill
+            };
+
+            numericUpDown.ValueChanged += (sender, e) =>
+            {
+                prop.SetValue(preferences, (int)numericUpDown.Value);
+            };
+
+            panel.Controls.Add(numericUpDown, 1, 0);
+
+            var rangeLabel = new System.Windows.Forms.Label
+            {
+                Text = "(1 to 5)",
+                AutoSize = true,
+                Anchor = AnchorStyles.Left,
+                ForeColor = Color.Gray
+            };
+            panel.Controls.Add(rangeLabel, 2, 0);
+
+            return panel;
+        }
+
+        public static System.Windows.Forms.Control CreateLearningControl(PropertyInfo prop, IPreferences preferences)
+        {
+            var panel = new TableLayoutPanel
+            {
+                ColumnCount = 2,
+                RowCount = 1,
+                AutoSize = true,
+                Dock = DockStyle.Fill
+            };
+
+            var checkBox = new System.Windows.Forms.CheckBox
+            {
+                Text = "Enable Learning",
+                Checked = (bool)prop.GetValue(preferences),
+                AutoSize = true
+            };
+
+            checkBox.CheckedChanged += (sender, e) =>
+            {
+                prop.SetValue(preferences, checkBox.Checked);
+            };
+
+            panel.Controls.Add(checkBox, 0, 0);
+
+            var descriptionLabel = new System.Windows.Forms.Label
+            {
+                Text = "Allow the word predictor to learn from user input",
+                AutoSize = true,
+                ForeColor = Color.Gray,
+                Font = new Font("Montserrat", 10, FontStyle.Italic),
+            };
+            panel.Controls.Add(descriptionLabel, 1, 0);
+
+            return panel;
+        }
+        public static System.Windows.Forms.Control CreateFilterCharsControl(PropertyInfo prop, IPreferences preferences)
+        {
+            var panel = new TableLayoutPanel
+            {
+                ColumnCount = 2,
+                RowCount = 2,
+                AutoSize = true,
+                Dock = DockStyle.Fill
+            };
+
+            var label = new System.Windows.Forms.Label
+            {
+                Text = "Filter Characters:",
+                AutoSize = true,
+                Anchor = AnchorStyles.Left
+            };
+            panel.Controls.Add(label, 0, 0);
+
+            var textBox = new System.Windows.Forms.TextBox
+            {
+                Text = (string)prop.GetValue(preferences) ?? string.Empty,
+                Dock = DockStyle.Fill,
+                Multiline = false
+            };
+
+            textBox.TextChanged += (sender, e) =>
+            {
+                prop.SetValue(preferences, textBox.Text);
+            };
+
+            panel.Controls.Add(textBox, 1, 0);
+
+            var descriptionLabel = new System.Windows.Forms.Label
+            {
+                Text = "Characters to filter out from predicted words (e.g., punctuations)",
+                AutoSize = true,
+                ForeColor = Color.Gray,
+                Font = new Font("Montserrat", 10, FontStyle.Italic),
+            };
+            panel.Controls.Add(descriptionLabel, 0, 1);
+            panel.SetColumnSpan(descriptionLabel, 2);
+
+            return panel;
+        }
+
+        public static System.Windows.Forms.Control CreateEncodingControl(PropertyInfo prop, IPreferences preferences)
+        {
+            var panel = new TableLayoutPanel
+            {
+                ColumnCount = 1,
+                RowCount = 2,
+                AutoSize = true,
+                Dock = DockStyle.Fill
+            };
+
+            var checkBox = new System.Windows.Forms.CheckBox
+            {
+                Text = "Use Default Encoding",
+                Checked = (bool)prop.GetValue(preferences),
+                AutoSize = true
+            };
+
+            checkBox.CheckedChanged += (sender, e) =>
+            {
+                prop.SetValue(preferences, checkBox.Checked);
+            };
+
+            panel.Controls.Add(checkBox, 0, 0);
+
+            var descriptionLabel = new System.Windows.Forms.Label
+            {
+                Text = "Enable if the ConvAssist database requires encoding translation",
+                AutoSize = true,
+                ForeColor = Color.Gray,
+                Font = new Font("Montserrat", 10, FontStyle.Italic),
+            };
+            panel.Controls.Add(descriptionLabel, 0, 1);
+
+            return panel;
+        }
+
+        public static System.Windows.Forms.Control CreateDisclaimerControl(PropertyInfo prop, IPreferences preferences)
+        {
+            var panel = new TableLayoutPanel
+            {
+                ColumnCount = 1,
+                RowCount = 2,
+                AutoSize = true,
+                Dock = DockStyle.Fill
+            };
+
+            var checkBox = new System.Windows.Forms.CheckBox
+            {
+                Text = "Show Disclaimer on Startup",
+                Checked = (bool)prop.GetValue(preferences),
+                AutoSize = true
+            };
+
+            checkBox.CheckedChanged += (sender, e) =>
+            {
+                prop.SetValue(preferences, checkBox.Checked);
+            };
+
+            panel.Controls.Add(checkBox, 0, 0);
+
+            var descriptionLabel = new System.Windows.Forms.Label
+            {
+                Text = "Display disclaimer dialog when the application starts",
+                AutoSize = true,
+                ForeColor = Color.Gray,
+                Font = new Font("Montserrat", 10, FontStyle.Italic),
+            };
+            panel.Controls.Add(descriptionLabel, 0, 1);
+
+            return panel;
         }
 
     }

@@ -88,6 +88,8 @@ namespace ACAT.Lib.Core.PreferencesManagement.UI
             return panel;
         }
 
+    
+
         public FrameworkElement CreateLabeledPanel(PropertyInfo prop, object settingsInstance)
         {
             var value = prop.GetValue(settingsInstance);

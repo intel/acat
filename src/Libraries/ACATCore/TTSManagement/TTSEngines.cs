@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Lib.Core.Extensions;
 using ACAT.Lib.Core.PanelManagement;
 using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.Utility;
@@ -97,6 +98,13 @@ namespace ACAT.Lib.Core.TTSManagement
             {
                 return _ttsEnginesTypeCache.Values.Select(value => value.Item2).ToList();
             }
+        }
+
+        private readonly List<ITTSEngine> _ttsEngines;
+
+        public IEnumerable<IExtension> TTSEnginesList 
+        {
+            get { return _ttsEngines; } 
         }
 
         /// <summary>
@@ -405,6 +413,7 @@ namespace ACAT.Lib.Core.TTSManagement
                             if (attr != null && attr.Id != Guid.Empty)
                             {
                                 Add(attr.Id, _dirWalkCurrentCulture, type);
+                                _ttsEngines.Add((ITTSEngine)Activator.CreateInstance(type, _dirWalkCurrentCulture));
                             }
                         }
                     }

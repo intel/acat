@@ -1,4 +1,5 @@
-﻿using ACAT.Lib.Core.PreferencesManagement;
+﻿using ACAT.Lib.Core.Extensions;
+using ACAT.Lib.Core.PreferencesManagement;
 using ACATConfigNext.Properties;
 using System;
 using System.Collections.Generic;
@@ -10,17 +11,22 @@ using System.Windows.Forms;
 
 namespace ACATConfigNext.UserControls
 {
-    internal class GroupedSettingsPanel : SettingsPanel
+    internal class GroupedSettingsPanel : UserControl
     {
-        public GroupedSettingsPanel(Action<UserControl, string> showPanel, IPreferences prefs) : 
-            base(showPanel, prefs)
+        private TableLayoutPanel basePanel;
+        public GroupedSettingsPanel(Action<UserControl, string> showPanel, IEnumerable<IExtension> settings)
         {
-            List<String> settings = new List<String>()
+            basePanel = new TableLayoutPanel()
             {
-                "Camera Actuator",
-                "Keyboard Actuator",
-                "Custom Actuator",
-                "BCI Actuator"
+                BackColor = Color.Purple,
+                Dock = DockStyle.Fill,
+                AutoScroll = true,
+                Margin = new Padding(10),
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                GrowStyle = TableLayoutPanelGrowStyle.AddRows,
+                RowCount = settings.Count(),
+                ColumnCount = 1
             };
 
             SuspendLayout();
@@ -28,38 +34,36 @@ namespace ACATConfigNext.UserControls
 
             foreach (var setting in settings)
             {
-
                 var panel = new TableLayoutPanel
                 {
                     BackColor = Color.DarkGray,
-                    Name = setting,
+                    Name = setting.Descriptor.Name,
                     Dock = DockStyle.Top,
                     Padding = new Padding(10),
                     Margin = new Padding(10),
                     AutoSize = true,
                     AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                    RowCount = settings.Count,
+                    RowCount = 1,
                     ColumnCount = 1,
                     GrowStyle = TableLayoutPanelGrowStyle.AddRows
                 };
 
-                AddPanelClickEvent(panel, showPanel, prefs, setting);
+                //AddPanelClickEvent(panel, showPanel, prefs, setting);
 
                 var label = new Label
                 {
-                    Text = setting,
+                    Text = setting.Descriptor.Name,
                     AutoSize = true,
                     Font = new Font("Montserrat", 18),
                     ForeColor = Color.White,
                 };
-                AddPanelClickEvent(label, showPanel, prefs, setting);
+                //AddPanelClickEvent(label, showPanel, prefs, setting);
 
                 panel.Controls.Add(label);
-                //basePanel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                basePanel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
                 basePanel.Controls.Add(panel);
             }
-
-            //basePanel.Controls.Add(groupedItems);
+            Controls.Add(basePanel);
             basePanel.ResumeLayout();
             ResumeLayout(true);
         }

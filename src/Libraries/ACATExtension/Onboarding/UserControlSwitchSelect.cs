@@ -67,7 +67,7 @@ namespace ACAT.Lib.Extension.Onboarding
         {
             bool retVal = true;
 
-            var actuators = Context.AppActuatorManager.Actuators;
+            var actuators = Context.AppActuatorManager.ActuatorsList;
 
             _actuatorConfig = ActuatorConfig.Load();
 
@@ -125,7 +125,7 @@ namespace ACAT.Lib.Extension.Onboarding
         private IActuator getActuator(int index)
         {
             var actuatorSetting = _actuatorSettings[index];
-            foreach (var actuator in Context.AppActuatorManager.Actuators)
+            foreach (var actuator in Context.AppActuatorManager.ActuatorsList)
             {
                 if (actuatorSetting.Id.Equals(actuator.Descriptor.Id))
                 {

@@ -658,7 +658,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             var keyboardActuator = Context.AppActuatorManager.GetKeyboardActuator();
 
-            foreach (var actuator in Context.AppActuatorManager.Actuators)
+            foreach (var actuator in Context.AppActuatorManager.ActuatorsList)
             {
                 if (keyboardActuator != null && actuator != keyboardActuator)
                 {
@@ -685,7 +685,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
             bool dialogShown = false;
 
-            foreach (var actuator in Context.AppActuatorManager.Actuators)
+            foreach (var actuator in Context.AppActuatorManager.ActuatorsList)
             {
                 if (keyboardActuator != null && actuator != keyboardActuator)
                 {
@@ -706,7 +706,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
                 }
             }
 
-            if (!dialogShown && Context.AppActuatorManager.Actuators.Count() == 1 && keyboardActuator != null &&
+            if (!dialogShown && Context.AppActuatorManager.ActuatorsList.Count() == 1 && keyboardActuator != null &&
                 keyboardActuator.SupportsTryout &&
                (!startup || keyboardActuator.ShowTryoutOnStartup))
             {
@@ -720,7 +720,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
             bool dialogShown = false;
 
-            foreach (var actuator in Context.AppActuatorManager.Actuators)
+            foreach (var actuator in Context.AppActuatorManager.ActuatorsList)
             {
                 if (keyboardActuator != null && actuator != keyboardActuator)
                 {
@@ -736,7 +736,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
                 }
             }
 
-            if (!dialogShown && Context.AppActuatorManager.Actuators.Count() == 1 && keyboardActuator != null &&
+            if (!dialogShown && Context.AppActuatorManager.ActuatorsList.Count() == 1 && keyboardActuator != null &&
                 keyboardActuator.SupportsScanTimingsConfigureDialog)
                
             {

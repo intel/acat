@@ -45,9 +45,6 @@ namespace ACATConfigNext.UserControls
                 Margin = new Padding(10)
             };
 
-            //basePanel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            //basePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-
             var builder = new SettingsPanelBuilder();
 
             var scrollViewer = builder.CreateScrollViewer(prefs);
@@ -58,22 +55,6 @@ namespace ACATConfigNext.UserControls
                 Child = scrollViewer,
             };
 
-            //foreach (var prop in props)
-            //{
-            //    var propPanel = builder.CreateLabeledPanel(prop, prefs);
-
-            //    var host = new ElementHost
-            //    {
-            //        BackColor = Color.Blue,
-            //        Child = propPanel,
-            //        AutoSize = true,
-            //        Margin = new Padding(10),
-            //        Padding = new Padding(10),
-            //        Dock = DockStyle.Top,
-            //    };
-
-            //    basePanel.Controls.Add(host);
-            //}
             basePanel.Controls.Add(host);
             Controls.Add(basePanel);
         }

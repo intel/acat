@@ -123,7 +123,7 @@ namespace ACAT.Lib.Extension.Onboarding
                             actuatorSetting.Enabled = actuatorSelected.Descriptor.Id.Equals(actuatorSetting.Id);
                         }
 
-                        foreach (var actuator in Context.AppActuatorManager.Actuators)
+                        foreach (var actuator in Context.AppActuatorManager.ActuatorsList)
                         {
                             if (actuator.Descriptor.Id.Equals(actuatorSetting.Id))
                             {

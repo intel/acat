@@ -1,4 +1,5 @@
-﻿using ACAT.Core.Utility;
+﻿using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using MahApps.Metro.Controls;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;

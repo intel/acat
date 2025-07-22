@@ -5,19 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.PanelManagement;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 
 namespace ACAT.Core.TTSManagement
 {

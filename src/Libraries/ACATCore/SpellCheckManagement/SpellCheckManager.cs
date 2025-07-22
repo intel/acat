@@ -216,78 +216,78 @@ namespace ACAT.Core.SpellCheckManagement
         /// discovered for that culture. The user can select the
         /// preferred spellchecker, change settings etc.
         /// </summary>
-        public void ShowPreferences()
-        {
-            if (!ResourceUtils.IsInstalledCulture(CultureInfo.DefaultThreadCurrentUICulture))
-            {
-                return;
-            }
+        //public void ShowPreferences()
+        //{
+        //    if (!ResourceUtils.IsInstalledCulture(CultureInfo.DefaultThreadCurrentUICulture))
+        //    {
+        //        return;
+        //    }
 
-            var ci = CultureInfo.DefaultThreadCurrentUICulture;
+        //    var ci = CultureInfo.DefaultThreadCurrentUICulture;
 
-            var spellCheckTypeList = new List<Type>();
+        //    var spellCheckTypeList = new List<Type>();
 
-            // add all the spellcheckers for the selected language
-            spellCheckTypeList.AddRange(_spellCheckers.Get(ci.Name).ToList());
+        //    // add all the spellcheckers for the selected language
+        //    spellCheckTypeList.AddRange(_spellCheckers.Get(ci.Name).ToList());
 
-            if (String.Compare(ci.Name, ci.TwoLetterISOLanguageName, true) != 0)
-            {
-                spellCheckTypeList.AddRange(_spellCheckers.Get(ci.TwoLetterISOLanguageName).ToList());
-            }
+        //    if (String.Compare(ci.Name, ci.TwoLetterISOLanguageName, true) != 0)
+        //    {
+        //        spellCheckTypeList.AddRange(_spellCheckers.Get(ci.TwoLetterISOLanguageName).ToList());
+        //    }
 
-            spellCheckTypeList.AddRange(_spellCheckers.Get(null).ToList());
-            spellCheckTypeList.Add(typeof(NullSpellChecker));
+        //    spellCheckTypeList.AddRange(_spellCheckers.Get(null).ToList());
+        //    spellCheckTypeList.Add(typeof(NullSpellChecker));
 
-            //Now create a list of all the spellchecker objects
-            List<object> objList = spellCheckTypeList.Select(type => Activator.CreateInstance(type)).ToList();
+        //    //Now create a list of all the spellchecker objects
+        //    List<object> objList = spellCheckTypeList.Select(type => Activator.CreateInstance(type)).ToList();
 
-            var categories = objList.Select(spellChecker => new PreferencesCategory(spellChecker)).ToList();
+        //    var categories = objList.Select(spellChecker => new PreferencesCategory(spellChecker)).ToList();
 
-            var preferredGuid = _spellCheckers.GetPreferredOrDefaultByCulture(ci);
-            if (Equals(preferredGuid, Guid.Empty))
-            {
-                preferredGuid = _spellCheckers.GetPreferredOrDefaultByCulture(null);
-            }
+        //    var preferredGuid = _spellCheckers.GetPreferredOrDefaultByCulture(ci);
+        //    if (Equals(preferredGuid, Guid.Empty))
+        //    {
+        //        preferredGuid = _spellCheckers.GetPreferredOrDefaultByCulture(null);
+        //    }
 
-            foreach (var category in categories)
-            {
-                category.Enable = false;
-            }
+        //    foreach (var category in categories)
+        //    {
+        //        category.Enable = false;
+        //    }
 
-            foreach (var category in categories)
-            {
-                var iExtension = category.PreferenceObj as IExtension;
-                category.Enable = (iExtension != null && iExtension.Descriptor.Id == preferredGuid);
-                if (category.Enable)
-                {
-                    break;
-                }
-            }
+        //    foreach (var category in categories)
+        //    {
+        //        var iExtension = category.PreferenceObj as IExtension;
+        //        category.Enable = (iExtension != null && iExtension.Descriptor.Id == preferredGuid);
+        //        if (category.Enable)
+        //        {
+        //            break;
+        //        }
+        //    }
 
-            // display the form for the user to select default spellchecker,
-            // change settings etc
-            var form1 = new PreferencesCategorySelectForm
-            {
-                PreferencesCategories = categories,
-                EnableColumnHeaderText = "Default",
-                CategoryColumnHeaderText = "SpellChecker",
-                Title = "Spell Checkers - " + ci.DisplayName,
-                AllowMultiEnable = false
-            };
+        //    // display the form for the user to select default spellchecker,
+        //    // change settings etc
+        //    var form1 = new PreferencesCategorySelectForm
+        //    {
+        //        PreferencesCategories = categories,
+        //        EnableColumnHeaderText = "Default",
+        //        CategoryColumnHeaderText = "SpellChecker",
+        //        Title = "Spell Checkers - " + ci.DisplayName,
+        //        AllowMultiEnable = false
+        //    };
 
-            if (form1.ShowDialog() == DialogResult.OK)
-            {
-                foreach (var category in form1.PreferencesCategories)
-                {
-                    if (category.Enable && category.PreferenceObj is IExtension)
-                    {
-                        _spellCheckers.SetPreferred(ci.TwoLetterISOLanguageName, ((IExtension)category.PreferenceObj).Descriptor.Id);
-                    }
-                }
-            }
+        //    if (form1.ShowDialog() == DialogResult.OK)
+        //    {
+        //        foreach (var category in form1.PreferencesCategories)
+        //        {
+        //            if (category.Enable && category.PreferenceObj is IExtension)
+        //            {
+        //                _spellCheckers.SetPreferred(ci.TwoLetterISOLanguageName, ((IExtension)category.PreferenceObj).Descriptor.Id);
+        //            }
+        //        }
+        //    }
 
-            form1.Dispose();
-        }
+        //    form1.Dispose();
+        //}
 
         /// <summary>
         /// Switch language to the specified one.

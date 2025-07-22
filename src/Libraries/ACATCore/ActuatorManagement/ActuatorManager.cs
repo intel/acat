@@ -522,37 +522,37 @@ namespace ACAT.Core.ActuatorManagement
             return ActuatorConfig.Load();
         }
 
-        /// <summary>
-        /// Returns form that displays preferences selection form for actuators and allows configuration.
-        /// User can enable/disable actuators and also configure settings for each actuator.
-        /// </summary>
-        public Form GetPreferencesSelectionForm(IntPtr parentControlHandle)
-        {
-            if (_actuators == null)
-            {
-                return null;
-            }
+        ///// <summary>
+        ///// Returns form that displays preferences selection form for actuators and allows configuration.
+        ///// User can enable/disable actuators and also configure settings for each actuator.
+        ///// </summary>
+        //public Form GetPreferencesSelectionForm(IntPtr parentControlHandle)
+        //{
+        //    if (_actuators == null)
+        //    {
+        //        return null;
+        //    }
 
-            var list = new List<PreferencesCategory>();
-            _ = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
+        //    var list = new List<PreferencesCategory>();
+        //    _ = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
 
-            foreach (var actuator in _actuators.ActuatorList)
-            {
-                list.Add(new PreferencesCategory(actuator, true, actuator.Enabled));
-            }
+        //    foreach (var actuator in _actuators.ActuatorList)
+        //    {
+        //        list.Add(new PreferencesCategory(actuator, true, actuator.Enabled));
+        //    }
 
-            // Create and return the form for the user to select which actuators are enabled, change settings etc.
-            var form = new PreferencesCategorySelectForm
-            {
-                PreferencesCategories = list,
-                CategoryColumnHeaderText = "Actuator",
-                Title = "Actuators",
-                ParentControlHandle = parentControlHandle,
-                DisallowEnable = true
-            };
+        //    // Create and return the form for the user to select which actuators are enabled, change settings etc.
+        //    var form = new PreferencesCategorySelectForm
+        //    {
+        //        PreferencesCategories = list,
+        //        CategoryColumnHeaderText = "Actuator",
+        //        Title = "Actuators",
+        //        ParentControlHandle = parentControlHandle,
+        //        DisallowEnable = true
+        //    };
 
-            return form;
-        }
+        //    return form;
+        //}
 
         /// <summary>
         /// Saves preferences in actuator settings

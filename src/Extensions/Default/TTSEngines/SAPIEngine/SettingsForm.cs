@@ -155,20 +155,20 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// <param name="e">event args</param>
         private void buttonSettings_Click(object sender, EventArgs e)
         {
-            this.TopMost = false;
-            Hide();
+            //this.TopMost = false;
+            //Hide();
 
-            PreferencesEditForm2 form = new PreferencesEditForm2
-            {
-                Title = Text,
-                SupportsPreferencesObj = new SAPIEngine(),
-                TopMost = true
-            };
-            form.ShowDialog();
+            //PreferencesEditForm2 form = new PreferencesEditForm2
+            //{
+            //    Title = Text,
+            //    SupportsPreferencesObj = new SAPIEngine(),
+            //    TopMost = true
+            //};
+            //form.ShowDialog();
 
-            Show();
+            //Show();
 
-            this.TopMost = true;
+            //this.TopMost = true;
 
             _settings = SAPISettings.Load();
         }

@@ -30,14 +30,12 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
-    
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
     <Optimize>true</Optimize>
     <PlatformTarget>x64</PlatformTarget>
-    
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -45,14 +43,12 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
     <Optimize>true</Optimize>
     <PlatformTarget>x86</PlatformTarget>
-    
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
@@ -256,21 +252,9 @@
     <Compile Include="PanelManagement\UI\WebBrowserForm.Designer.cs">
       <DependentUpon>WebBrowserForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PreferencesManagement\ACATConfigMainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PreferencesManagement\ACATConfigMainForm.Designer.cs">
-      <DependentUpon>ACATConfigMainForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="PreferencesManagement\Attributes\BoolDescriptorAttribute.cs" />
     <Compile Include="PreferencesManagement\Attributes\DescriptorAttribute.cs" />
     <Compile Include="PreferencesManagement\Attributes\FloatDescriptorAttribute.cs" />
-    <Compile Include="PreferencesManagement\PreferencesEditForm2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PreferencesManagement\PreferencesEditForm2.Designer.cs">
-      <DependentUpon>PreferencesEditForm2.cs</DependentUpon>
-    </Compile>
     <Compile Include="PreferencesManagement\LanguageSelectForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -278,20 +262,8 @@
       <DependentUpon>LanguageSelectForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PreferencesManagement\PreferencesCategory.cs" />
-    <Compile Include="PreferencesManagement\PreferencesCategorySelectForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PreferencesManagement\PreferencesCategorySelectForm.Designer.cs">
-      <DependentUpon>PreferencesCategorySelectForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="PreferencesManagement\Attributes\IntDescriptorAttribute.cs" />
     <Compile Include="PreferencesManagement\Attributes\LongDescriptorAttribute.cs" />
-    <Compile Include="PreferencesManagement\PreferencesEditForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PreferencesManagement\PreferencesEditForm.Designer.cs">
-      <DependentUpon>PreferencesEditForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="PreferencesManagement\Attributes\StringDescriptorAttribute.cs" />
     <Compile Include="PanelManagement\CommandDispatcher\IRunCommandDispatcher.cs" />
     <Compile Include="PanelManagement\CommandDispatcher\IRunCommandHandler.cs" />
@@ -630,24 +602,9 @@
     <EmbeddedResource Include="PanelManagement\UI\WebBrowserForm.resx">
       <DependentUpon>WebBrowserForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PreferencesManagement\ACATConfigMainForm.resx">
-      <DependentUpon>ACATConfigMainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PreferencesManagement\PreferencesEditForm2.resx">
-      <DependentUpon>PreferencesEditForm2.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="PreferencesManagement\LanguageSelectForm.resx">
       <Generator>ResXFileCodeGeneratorEx</Generator>
       <DependentUpon>LanguageSelectForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PreferencesManagement\PreferencesCategorySelectForm.resx">
-      <Generator>ResXFileCodeGeneratorEx</Generator>
-      <DependentUpon>PreferencesCategorySelectForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PreferencesManagement\PreferencesEditForm.resx">
-      <Generator>ResXFileCodeGeneratorEx</Generator>
-      <DependentUpon>PreferencesEditForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

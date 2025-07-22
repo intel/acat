@@ -15,12 +15,12 @@ using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Core.Utility;
 using Accord.Math;
 using brainflow;
-//using Gtec.Unicorn; 
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Gtec.Unicorn;
 
 namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 {

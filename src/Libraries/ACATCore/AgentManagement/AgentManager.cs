@@ -778,76 +778,76 @@ namespace ACAT.Core.AgentManagement
         /// Displays the preferences dialog for the Agent manager.
         /// Displays a list of agents it has discovered
         /// </summary>
-        public void ShowPreferencesAppAgents()
-        {
-            var agents = GetExtensions();
+        //public void ShowPreferencesAppAgents()
+        //{
+        //    var agents = GetExtensions();
 
-            var list = new List<object>();
-            foreach (var agent in agents)
-            {
-                if (!(agent is IFunctionalAgent))
-                {
-                    var prefs = agent as ISupportsPreferences;
+        //    var list = new List<object>();
+        //    foreach (var agent in agents)
+        //    {
+        //        if (!(agent is IFunctionalAgent))
+        //        {
+        //            var prefs = agent as ISupportsPreferences;
 
-                    if (prefs.GetPreferences() != null || prefs.SupportsPreferencesDialog)
-                    {
-                        list.Add(agent);
-                    }
-                }
-            }
+        //            if (prefs.GetPreferences() != null || prefs.SupportsPreferencesDialog)
+        //            {
+        //                list.Add(agent);
+        //            }
+        //        }
+        //    }
 
-            var categories = list.Select(agent => new PreferencesCategory(agent)).ToList();
+        //    var categories = list.Select(agent => new PreferencesCategory(agent)).ToList();
 
-            var form = new PreferencesCategorySelectForm
-            {
-                DisallowEnable = true,
-                ShowEnable = false,
-                PreferencesCategories = categories,
-                Title = "Applications"
-            };
+        //    var form = new PreferencesCategorySelectForm
+        //    {
+        //        DisallowEnable = true,
+        //        ShowEnable = false,
+        //        PreferencesCategories = categories,
+        //        Title = "Applications"
+        //    };
 
-            form.ShowDialog();
+        //    form.ShowDialog();
 
-            form.Dispose();
-        }
+        //    form.Dispose();
+        //}
 
         /// <summary>
         /// Displays the preferences dialog for the Agent manager.
         /// Displays a list of functional agents it has discovered,
         /// only if they have custom dialog or settings to be changed
         /// </summary>
-        public void ShowPreferencesFunctionalAgents()
-        {
-            var agents = GetExtensions();
+        //public void ShowPreferencesFunctionalAgents()
+        //{
+        //    var agents = GetExtensions();
 
-            var list = new List<object>();
-            foreach (var agent in agents)
-            {
-                if (agent is IFunctionalAgent)
-                {
-                    var prefs = agent as ISupportsPreferences;
+        //    var list = new List<object>();
+        //    foreach (var agent in agents)
+        //    {
+        //        if (agent is IFunctionalAgent)
+        //        {
+        //            var prefs = agent as ISupportsPreferences;
 
-                    if (prefs.GetPreferences() != null || prefs.SupportsPreferencesDialog)
-                    {
-                        list.Add(agent);
-                    }
-                }
-            }
+        //            if (prefs.GetPreferences() != null || prefs.SupportsPreferencesDialog)
+        //            {
+        //                list.Add(agent);
+        //            }
+        //        }
+        //    }
 
-            var categories = list.Select(agent => new PreferencesCategory(agent)).ToList();
+        //    var categories = list.Select(agent => new PreferencesCategory(agent)).ToList();
 
-            var form = new PreferencesCategorySelectForm
-            {
-                DisallowEnable = true,
-                ShowEnable = false,
-                PreferencesCategories = categories,
-                Title = "Tools"
-            };
+        //    var form = new PreferencesCategorySelectForm
+        //    {
+        //        DisallowEnable = true,
+        //        ShowEnable = false,
+        //        PreferencesCategories = categories,
+        //        Title = "Tools"
+        //    };
 
-            form.ShowDialog();
+        //    form.ShowDialog();
 
-            form.Dispose();
-        }
+        //    form.Dispose();
+        //}
 
         [DllImport("kernel32.dll")]
         private static extern uint GetCurrentThreadId();

@@ -174,27 +174,6 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         }
 
         /// <summary>
-        /// Voice checkbox toggled. Set ui state
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void checkBoxSelectVoice_CheckedChanged(object sender, EventArgs e)
-        {
-            _dirty = true;
-            setComboBoxStates();
-        }
-
-        /// <summary>
-        /// User selected something in the gender combo box
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void ComboBoxGender_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            _dirty = true;
-        }
-
-        /// <summary>
         /// User selected something in the voice combo box
         /// </summary>
         /// <param name="sender">event sender</param>
@@ -245,13 +224,6 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
                 voiceName += gender;
                 comboBoxSelectVoice.Items.Add(voiceName);
             }
-        }
-
-        /// <summary>
-        /// Update the enabled states of the combo boxes
-        /// </summary>
-        private void setComboBoxStates()
-        {
         }
 
         /// <summary>
@@ -346,8 +318,6 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
             {
                 comboBoxSelectVoice.SelectedIndex = (selectedIndex >= 0) ? selectedIndex : 0;
             }
-
-            setComboBoxStates();
         }
     }
 }

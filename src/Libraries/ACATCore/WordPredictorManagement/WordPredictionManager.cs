@@ -87,6 +87,11 @@ namespace ACAT.Core.WordPredictionManagement
             get { return _instance; }
         }
 
+        public IEnumerable<IWordPredictor> WordPredictorsList
+        {
+            get { return _wordPredictors.WordPredictorsList; }
+        }
+
         /// <summary>
         /// Gets the currently active word predictor
         /// </summary>

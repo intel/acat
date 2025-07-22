@@ -98,6 +98,10 @@ namespace ACAT.Core.TTSManagement
         /// Gets the currently active TTS engine
         /// </summary>
         public ITTSEngine ActiveEngine { get; private set; }
+        public IEnumerable<IExtension> TTSEnginesList 
+        {
+            get { return _ttsEngines.TTSEnginesList; }
+        }
 
         /// <summary>
         /// Disposes resources

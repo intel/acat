@@ -27,55 +27,55 @@ namespace ACAT.Extension
         [NonSerialized, XmlIgnore]
         public static String PreferencesFilePath = String.Empty;
 
-        [BoolDescriptor("Clear talk window when the typing mode is changed")]
+       // [BoolDescriptor("Clear talk window when the typing mode is changed")]
         [Descriptor("Clear talk window when the typing mode is changed")]
         public bool ClearTalkWindowOnTypeModeChange { get; set; } = true;
 
-        [IntDescriptor("Pin to unlock the screen. Use digits 1 through 5 only", 111, 55555)]
+      //  [IntDescriptor("Pin to unlock the screen. Use digits 1 through 5 only", 111, 55555)]
         [Descriptor("Pin to unlock the screen. Use digits 1 through 5 only")]
         public String ScreenLockPin { get; set; } = "5143";
 
-        [BoolDescriptor("Convert text to speech on ENTER key press")]
+       // [BoolDescriptor("Convert text to speech on ENTER key press")]
         [Descriptor("Convert text to speech on ENTER key press")]
         public bool SpeakOnEnterKey { get; set; } = true;
 
-        [IntDescriptor("Number of times the buttons in the strip scanner are scanned. Strip scanners are typically used for accented letters in non-English languages", 1, 10)]
+     //   [IntDescriptor("Number of times the buttons in the strip scanner are scanned. Strip scanners are typically used for accented letters in non-English languages", 1, 10)]
         [Descriptor("Number of times the buttons in the strip scanner are scanned. Strip scanners are typically used for accented letters in non-English languages")]
         public int StripScannerColumnIterations { get; set; } = 2;
 
-        [BoolDescriptor("Enable suggestions for sentence completion")]
+      //  [BoolDescriptor("Enable suggestions for sentence completion")]
         [Descriptor("Enable suggestions for sentence completion")]
         public bool UseSentencePrediction { get; set; } = true;
 
-        [IntDescriptor("How many words to display in the word prediction list", 3, 10)]
+   //     [IntDescriptor("How many words to display in the word prediction list", 3, 10)]
         [Descriptor("How many words to display in the word prediction list")]
         public int WordPredictionCount { get; set; } = 10;
 
-        [BoolDescriptor("Enable learning for word prediction")]
+      //  [BoolDescriptor("Enable learning for word prediction")]
         [Descriptor("Enable learning for word prediction")]
         public bool WordPredictionEnableLearn { get; set; } = true;
 
-        [BoolDescriptor("Display words in the prediction list that match the prefix of the word entered so far")]
+     //   [BoolDescriptor("Display words in the prediction list that match the prefix of the word entered so far")]
         [Descriptor("Display words in the prediction list that match the prefix of the word entered so far")]
         public bool WordPredictionFilterMatchPrefix { get; set; } = false;
 
-        [IntDescriptor("Length of the prefix to match when filtering words (valid only if WordPredictionFilterMatchPrefix is true)", 1, 10)]
+//        [IntDescriptor("Length of the prefix to match when filtering words (valid only if WordPredictionFilterMatchPrefix is true)", 1, 10)]
         [Descriptor("Length of the prefix to match when filtering words (valid only if WordPredictionFilterMatchPrefix is true)")]
         public int WordPredictionFilterMatchPrefixLengthAdjust { get; set; } = 1;
 
-        [BoolDescriptor("Filter punctuations in word prediction results")]
+   //     [BoolDescriptor("Filter punctuations in word prediction results")]
         [Descriptor("Filter punctuations in word prediction results")]
         public bool WordPredictionFilterPunctuations { get; set; } = true;
 
-        [IntDescriptor("Extra time to pause on the first word in the word prediction list (in msecs)", 0, 3000)]
+  //      [IntDescriptor("Extra time to pause on the first word in the word prediction list (in msecs)", 0, 3000)]
         [Descriptor("Extra time to pause on the first word in the word prediction list (in msecs)")]
         public int WordPredictionFirstPauseTime { get; set; } = 600;
 
-        [IntDescriptor("Number of times the words in the word prediction list are scanned", 1, 10)]
+    //    [IntDescriptor("Number of times the words in the word prediction list are scanned", 1, 10)]
         [Descriptor("Number of times the words in the word prediction list are scanned")]
         public int WordPredictionScanIterations { get; set; } = 1;
 
-        [IntDescriptor("Number of words suggestions to compute probabilities", 5, 20)]
+     //   [IntDescriptor("Number of words suggestions to compute probabilities", 5, 20)]
         [Descriptor("Number of words suggestions to compute probabilities")]
         public int WordsSuggestions { get; set; } = 10;
 

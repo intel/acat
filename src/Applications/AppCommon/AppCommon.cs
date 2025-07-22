@@ -156,7 +156,7 @@ namespace ACAT.Applications
 
             CoreGlobals.AppDefaultPreferences = ACATPreferences.LoadDefaultSettings();
 
-            ACATPreferences.SaveDefaults<ACATPreferences>(ACATPreferences.DefaultPreferencesFilePath);
+         //   ACATPreferences.SaveDefaults<ACATPreferences>(ACATPreferences.DefaultPreferencesFilePath);
 
             Common.AppPreferences.DebugAssertOnError = false;
 

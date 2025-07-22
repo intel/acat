@@ -9,6 +9,7 @@ using ACAT.Core.PreferencesManagement;
 using ACAT.Core.Utility;
 using System.ComponentModel.DataAnnotations;
 using System;
+using System.ComponentModel;
 
 namespace ACAT.Core.AgentManagement
 {
@@ -33,6 +34,7 @@ namespace ACAT.Core.AgentManagement
         /// </summary>
         [Descriptor("Auto-display contextual menu when the app window gets focus")]
         [UIHint("ToggleSwitch")]
-        public bool AutoSwitchScannerEnable { get; set; } = true;
+        [DefaultValue(true)]
+        public bool AutoSwitchScannerEnable { get; set; } =  true;
     }
 }

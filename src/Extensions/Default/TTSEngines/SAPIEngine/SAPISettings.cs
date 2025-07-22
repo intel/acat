@@ -18,6 +18,7 @@ using System;
 using System.IO;
 using System.Speech.Synthesis;
 using System.Xml.Serialization;
+using System.ComponentModel;
 
 namespace ACAT.Extensions.TTSEngines.SAPIEngine
 {
@@ -80,7 +81,8 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// </summary>
         [Descriptor("Use alternate pronunciations?")]
         [UIHint("ToggleSwitch")]
-        public bool UseAlternatePronunciations { get; set; } = false;
+        [DefaultValue(false)]
+        public bool UseAlternatePronunciations { get; set; } =  false;
 
         /// <summary>
         /// Gets or sets the voice for TTS

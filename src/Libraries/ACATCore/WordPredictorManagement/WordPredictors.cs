@@ -36,6 +36,8 @@ namespace ACAT.Core.WordPredictionManagement
         /// </summary>
         private static IWordPredictor _nullWordPredictor = null;
 
+        private readonly List<IWordPredictor> _wordPredictors;
+
         /// <summary>
         /// Table mapping the GUID and culture to the word predictor Type
         /// </summary>
@@ -67,6 +69,7 @@ namespace ACAT.Core.WordPredictionManagement
         /// </summary>
         public WordPredictors()
         {
+            _wordPredictors = new List<IWordPredictor>();
             _wordPredictorsTypeCache = new Dictionary<Guid, Tuple<String, Type>>();
 
             PreferredWordPredictors.FilePath = UserManager.GetFullPath(PreferredConfigFile);
@@ -99,6 +102,11 @@ namespace ACAT.Core.WordPredictionManagement
             {
                 return _wordPredictorsTypeCache.Values.Select(value => value.Item2).ToList();
             }
+        }
+
+        public IEnumerable<IWordPredictor> WordPredictorsList 
+        {
+            get { return _wordPredictors; } 
         }
 
         /// <summary>

@@ -195,7 +195,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <summary>
         /// Gets the object that contains a list of actuators
         /// </summary>
-        public IEnumerable<IActuator> Actuators
+        public IEnumerable<IActuator> ActuatorsList
         {
             get { return _actuators.ActuatorList; }
         }
@@ -654,7 +654,7 @@ namespace ACAT.Core.ActuatorManagement
         {
             var keyboardActuator = Context.AppActuatorManager.GetKeyboardActuator();
 
-            foreach (var actuator in Context.AppActuatorManager.Actuators)
+            foreach (var actuator in Context.AppActuatorManager.ActuatorsList)
             {
                 if (keyboardActuator != null && actuator != keyboardActuator)
                 {
@@ -680,7 +680,7 @@ namespace ACAT.Core.ActuatorManagement
 
             bool dialogShown = false;
 
-            foreach (var actuator in Context.AppActuatorManager.Actuators)
+            foreach (var actuator in Context.AppActuatorManager.ActuatorsList)
             {
                 if (keyboardActuator != null && actuator != keyboardActuator)
                 {
@@ -701,7 +701,7 @@ namespace ACAT.Core.ActuatorManagement
                 }
             }
 
-            if (!dialogShown && Context.AppActuatorManager.Actuators.Count() == 1 && keyboardActuator != null &&
+            if (!dialogShown && Context.AppActuatorManager.ActuatorsList.Count() == 1 && keyboardActuator != null &&
                 keyboardActuator.SupportsTryout &&
                (!startup || keyboardActuator.ShowTryoutOnStartup))
             {
@@ -715,7 +715,7 @@ namespace ACAT.Core.ActuatorManagement
 
             bool dialogShown = false;
 
-            foreach (var actuator in Context.AppActuatorManager.Actuators)
+            foreach (var actuator in Context.AppActuatorManager.ActuatorsList)
             {
                 if (keyboardActuator != null && actuator != keyboardActuator)
                 {
@@ -731,7 +731,7 @@ namespace ACAT.Core.ActuatorManagement
                 }
             }
 
-            if (!dialogShown && Context.AppActuatorManager.Actuators.Count() == 1 && keyboardActuator != null &&
+            if (!dialogShown && Context.AppActuatorManager.ActuatorsList.Count() == 1 && keyboardActuator != null &&
                 keyboardActuator.SupportsScanTimingsConfigureDialog)
 
             {

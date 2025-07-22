@@ -196,7 +196,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <summary>
         /// Gets the object that contains a list of actuators
         /// </summary>
-        public IEnumerable<IActuator> Actuators
+        public IEnumerable<IActuator> ActuatorsList
         {
             get { return _actuators.ActuatorList; }
         }

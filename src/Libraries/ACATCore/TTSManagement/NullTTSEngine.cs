@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Lib.Core.Extensions;
+using ACAT.Lib.Core.PreferencesManagement;
 using ACAT.Lib.Core.Utility;
 using System;
 using System.Collections.Generic;
@@ -119,6 +120,8 @@ namespace ACAT.Lib.Core.TTSManagement
 
             set { }
         }
+
+        public bool SupportsPreferencesDialog => throw new NotImplementedException();
 
         /// <summary>
         /// Disposes resources
@@ -373,6 +376,21 @@ namespace ACAT.Lib.Core.TTSManagement
             {
                 EvtPropertyChanged(this, new EventArgs());
             }
+        }
+
+        public IPreferences GetDefaultPreferences()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPreferences GetPreferences()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ShowPreferencesDialog()
+        {
+            throw new NotImplementedException();
         }
     }
 }

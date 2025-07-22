@@ -5,6 +5,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Lib.Core.Extensions;
+using ACAT.Lib.Core.PreferencesManagement;
 using ACAT.Lib.Core.Utility;
 using System;
 using System.Collections.Generic;
@@ -72,7 +74,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
     /// more accurate predictions based on the user.
     /// All WordPredictors should implement this interface.
     /// </summary>
-    public interface IWordPredictor : IDisposable
+    public interface IWordPredictor : ISupportsPreferences, IExtension, IDisposable
     {
         /// <summary>
         /// Event to indicate mode has changed

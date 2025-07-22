@@ -10,9 +10,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -152,7 +152,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// <param name="data"></param>
         private void WriteDataToFile(StreamWriter sw, double[,] data)
         {
-           
             StringBuilder stringBuilder = new();
             try
             {

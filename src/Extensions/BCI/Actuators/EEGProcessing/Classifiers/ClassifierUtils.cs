@@ -13,7 +13,6 @@
 using Accord.Math;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 
 namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing

@@ -11,13 +11,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Core.Utility;
-using ACAT.Core.WidgetManagement;
 using Accord.Math;
-using Accord.Statistics;
 using brainflow;
 using gTecSensorUI;
 using System;
@@ -26,12 +25,11 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-using ACAT.Extensions.BCI.Actuators;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
     /// <summary>
-    /// Makes sure the BCI signals are good before continuing onto calibration. 
+    /// Makes sure the BCI signals are good before continuing onto calibration.
     /// Displays signals from electrodes and does railing and impedance tests
     /// </summary>
     public partial class UserControlBCISignalCheck : UserControl
@@ -57,7 +55,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             STOP_IN_PROGRESS_TAB_SWITCH_ATTEMPTED
         }
 
-
         /// <summary>
         /// Interval im ms at which to update UI elements
         /// </summary>
@@ -80,6 +77,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
         // Lists holding UI elements for all channels
         private List<String> _channelNamesRequired;
+
         private readonly List<ScannerRoundedButtonControl> _requiredListElectrodesRailingTest;
         private readonly List<Chart> _requiredListChartsSignalDataRailingTest;
         private readonly List<Title> _requiredListTextsRailingResultsRailingTest;
@@ -87,6 +85,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
         // Variables related to BCI board configuration
         private int _scaleIdx;
+
         private int _Ymin = -400;
         private int _Ymax = 400;
         private int _bufSize;
@@ -98,9 +97,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// Holds Gtec Connection
         /// </summary>
         public DAQ_gTecBCI gTecBCI = null;
-        
+
         /// <summary>
-        /// Holds data / information for each channel 
+        /// Holds data / information for each channel
         /// </summary>
         public static EEGChannel[] _eegChannels;
 
@@ -121,6 +120,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
         // Colors for different UI elements which are changed based on signal quality or impedance testing status
         private readonly Color COLOR_ACAT_DEFAULT_ORANGE = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
+
         private readonly Color COLOR_STATUS_OK; // Green
         private readonly Color COLOR_STATUS_ACCEPTABLE; // Yellow
         private readonly Color COLOR_STATUS_KO; // Red
@@ -139,11 +139,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public static BCISignalCheckMode _currentBCISignalCheckMode;
 
         /// <summary>
-        /// Makes sure the BCI signals are good before continuing onto calibration. 
+        /// Makes sure the BCI signals are good before continuing onto calibration.
         /// Displays signals from electrodes and does railing and impedance tests
         /// </summary>
         /// <param name="stepId"></param>
-        /// 
+        ///
         public UserControlBCISignalCheck()
         {
             InitializeComponent();
@@ -163,7 +163,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 ["T5"] = btnElectrodeCapFz,
                 ["Fz"] = btnElectrodeCapT5
             };
-            
 
             // Get UI elements to modify based on signal data, and railing / impedance tests
 
@@ -179,7 +178,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 _requiredListTextsRailingResultsRailingTest.Add(_requiredListChartsSignalDataRailingTest[chnIdx].Titles[0]);
                 chnIdx += 1;
             }
-
 
             // Load images for signal quality gradient / heatmap
             _signalQualityGradientImages = new Image[8];
@@ -251,7 +249,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 //////// BCI Default Filter - Notch and FrontEnd ////////
                 double[] filteredChanelData = _filteredChannelData.GetRow(chIdx);
 
-
                 // If we're currently on the railing testing page
                 if (_currentBCISignalCheckMode == BCISignalCheckMode.TEST_RAILING)
                 {
@@ -268,10 +265,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     updateSignalChart(chIdx, latestFilteredData.GetRow(chIdx), scale_plots);
                 }
 
-
                 // Count signal quality status of channel if it was updated this session and has valid signal status
                 EEGChannel eegChannel = _eegChannels[chIdx];
-                
+
                 if (eegChannel.signalQualityUpdatedCurrentSession == 1 && eegChannel.signalStatus != SignalStatus.SIGNAL_ERROR)
                 {
                     numSignalQualityCheckChannelsUpdated += 1;
@@ -291,9 +287,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 }
             }
 
-
             // Check if number of good/ok/bad channels allows user to pass overall signal quality check
-            if (numGoodChannels >= BCIActuatorSettings.Settings.SignalQuality_MinOverallGoodChannels && 
+            if (numGoodChannels >= BCIActuatorSettings.Settings.SignalQuality_MinOverallGoodChannels &&
                 numOkChannels <= BCIActuatorSettings.Settings.SignalQuality_MaxOverallOKChannels​ &&
                 numBadChannels <= BCIActuatorSettings.Settings.SignalQuality_MaxOverallBadChannels​)
             {
@@ -305,15 +300,12 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 BCIActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck = false;
             }
 
-
             // Update overall signal quality slider
             if (update_UI)
             {
                 updateSignalQualityGradient(numSignalQualityCheckChannelsUpdated, numGoodChannels, numOkChannels, numBadChannels);
             }
-
         }
-
 
         /// <summary>
         /// Load relevant settings and set processing variables / UI elements accordingly
@@ -414,10 +406,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     _eegChannels[chIdx].chartSignalDataRailingTest.Series[0].BorderWidth = 1;
                 }
             }
-
         }
 
-        
         /// <summary>
         /// Function called for timer that processes data for BCI signal check
         /// </summary>
@@ -450,8 +440,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
         }
 
-
-       
         /// <summary>
         /// For a single channel / electrode, based on the railing result percentage, update the signal quality status and UI elements (railing text, color of charts + electrodes)
         /// </summary>
@@ -473,8 +461,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     if (railingResultPercentage <= BCIActuatorSettings.Settings.SignalQuality_RailingGoodMaxThreshold)
                         signalQualityStatus = SignalStatus.SIGNAL_OK;
                     //else if (railingResultPercentage <= BCIGtecActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold)
-                        //signalQualityStatus = SignalStatus.SIGNAL_ACCEPTABLE;
-                    else if (railingResultPercentage > BCIActuatorSettings.Settings.SignalQuality_RailingGoodMaxThreshold && 
+                    //signalQualityStatus = SignalStatus.SIGNAL_ACCEPTABLE;
+                    else if (railingResultPercentage > BCIActuatorSettings.Settings.SignalQuality_RailingGoodMaxThreshold &&
                         railingResultPercentage <= BCIActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold​)
                         signalQualityStatus = SignalStatus.SIGNAL_ACCEPTABLE;
                     else if (railingResultPercentage > BCIActuatorSettings.Settings.SignalQuality_RailingOkMaxThreshold)
@@ -484,7 +472,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     _eegChannels[chIdx].timeLastUpdatedMin = (int)(_eegChannels[chIdx].timeLastUpdatedSec / 60);
                     _eegChannels[chIdx].signalQualityUpdatedCurrentSession = 1;
                     _eegChannels[chIdx].signalStatus = signalQualityStatus;
-
 
                     if (update_UI)
                     {
@@ -504,16 +491,13 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                             _eegChannels[chIdx].textRailingResultRailingTest.ForeColor = railingResultColor;
                         }));
                     }
-
                 }
-                
             }
             catch (Exception ex)
             {
                 Log.Exception(ex);
             }
         }
-
 
         /// <summary>
         /// Handler for when BCISignalCheckMode changed programatically - switch to the correspond tab
@@ -533,7 +517,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 Log.Exception(ex);
             }
         }
-
 
         /// <summary>
         /// Update railing chart displaying signal data
@@ -561,15 +544,13 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                         sampleIdx += 1;
                     }
 
-                   
-
                     if (scale_plots)
                     {
                         // Dynamically adjust the Y-axis range to ensure the signal is visible
                         double minValue = _eegChannels[channelIndex].chartSignalDataRailingTest.Series[0].Points.Min(point => point.YValues[0]);
                         double maxValue = _eegChannels[channelIndex].chartSignalDataRailingTest.Series[0].Points.Max(point => point.YValues[0]);
 
-                        // Print min and max to console  
+                        // Print min and max to console
                         //Console.WriteLine($"Channel {channelIndex}: Min Value = {minValue}, Max Value = {maxValue}");
 
                         // Add a small margin to the min and max values for better visibility
@@ -587,7 +568,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 Log.Exception(ex);
             }
         }
-
 
         /// <summary>
         /// Update overall signal quality heat map / slider based on aggregated signal quality status
@@ -610,7 +590,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 panelSignalQualitySlider.BackgroundImage = newGradientImage;
             }));
         }
-
 
         /// <summary>
         /// For internal use, adds filtered data to a buffer to assess signal status
@@ -656,13 +635,12 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="e"></param>
         private void tabControlElectrodeQuality_SelectedIndexChanged(object sender, EventArgs e)
         {
-        
             if (tabControlSignalQuality.SelectedIndex == 0)
             {
                 _currentBCISignalCheckMode = BCISignalCheckMode.TEST_RAILING;
                 highlightSelectedTab(0);
             }
-            
+
             Log.Debug("tabControlElectrodeQuality_SelectedIndexChanged" + " | _currentBCISignalCheckMode: " + _currentBCISignalCheckMode.ToString());
         }
 
@@ -791,7 +769,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 }
 
                 tabControlSignalQuality.Font = new Font("Montserrat Medium", 11.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-
             }
             catch (Exception ex)
             {

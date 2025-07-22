@@ -11,7 +11,6 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PanelManagement;
-using ACAT.Core.PreferencesManagement;
 using ACAT.Core.UserManagement;
 using ACATResources;
 using System;

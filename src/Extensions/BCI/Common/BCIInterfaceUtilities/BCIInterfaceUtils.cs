@@ -9,8 +9,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Core.PanelManagement;
+using ACAT.Extensions.BCI.Common.BCIControl;
 using ACATResources;
 using System;
 using System.Windows.Forms;
@@ -178,7 +178,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             var result = BCIMenuOptions.MainMenuOptions.ExitApplication;
             _ = ConfirmBoxThreeOption.ShowDialog(CALIBRATIONSTATUS, CALIBRATIONEXPIRED + (auc * 100), EXITAPPLICATION, CALIBRATEAGAIN, CALIBRATE, form);
             return result;
-
         }
 
         /// <summary>

@@ -11,17 +11,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
-using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
-using ACAT.Extensions.BCI.Actuators.EEG.EEGUtils;
-using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Core.Audit;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGUtils;
+using ACAT.Extensions.BCI.Common.BCIControl;
 using ACATResources;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
@@ -362,7 +361,6 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
         }
 
-
         /// <summary>
         /// Handler to complete all necessary actions before transition to a new signal quality testing state
         /// </summary>
@@ -457,7 +455,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
         }
 
-        //// 
+        ////
 
         /// <summary>
         /// Handler to complete all necessary actions during transition out of / completion of signal quality testing state
@@ -1124,6 +1122,5 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 return false;
             }
         }
-
     }
 }

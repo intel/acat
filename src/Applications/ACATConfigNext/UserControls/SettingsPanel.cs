@@ -1,36 +1,12 @@
-﻿using ACAT.Lib.Core.PreferencesManagement;
+﻿using ACAT.Core.PreferencesManagement;
 using ACAT.Lib.Core.PreferencesManagement.UI;
-using ACAT.Lib.Core.Utility;
 using System;
 using System.Drawing;
-using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 
 namespace ACATConfigNext.UserControls
 {
-    public class SettingsPanelDescriptor : Attribute, IDescriptor
-    {
-        public string Category { get; set; }
-
-        public string Description { get; set; }
-
-        public string Name { get; set; }
-
-        public Guid Id { get; set; }
-
-        public bool HasSettings { get; set; }
-
-        public SettingsPanelDescriptor(string category, string description, string name, bool hasSettings)
-        {
-            Category = category;
-            Description = description;
-            Name = name;
-            Id = Guid.Empty;
-            HasSettings = hasSettings;
-        }
-    }
-
     public class SettingsPanel : UserControl
     {
         protected Panel basePanel;

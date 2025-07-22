@@ -180,12 +180,12 @@ namespace ACAT.Core.ActuatorManagement
         /// <returns>true on success</returns>
         public bool Load(IEnumerable<String> extensionDirs, String configFile, bool loadAll = false)
         {
-            var keyboard = (ClassDescriptorAttribute?)typeof(InputActuators.KeyboardActuator)
+            ClassDescriptorAttribute keyboard = typeof(InputActuators.KeyboardActuator)
                 .GetCustomAttributes(typeof(ClassDescriptorAttribute), inherit: false)
-                .FirstOrDefault();
-            var switchInterface = (ClassDescriptorAttribute?)typeof(InputActuators.SwitchInterfaceActuator)
+                .FirstOrDefault() as ClassDescriptorAttribute;
+            ClassDescriptorAttribute switchInterface = typeof(InputActuators.SwitchInterfaceActuator)
                 .GetCustomAttributes(typeof(ClassDescriptorAttribute), inherit: false)
-                .FirstOrDefault();
+                .FirstOrDefault() as ClassDescriptorAttribute;
 
             _actuatorTypeLoader.AddAssemblytoCache(keyboard.Id, typeof(InputActuators.KeyboardActuator));
             _actuatorTypeLoader.AddAssemblytoCache(switchInterface.Id, typeof(InputActuators.SwitchInterfaceActuator));
@@ -248,7 +248,7 @@ namespace ACAT.Core.ActuatorManagement
             bool isDirty = false;
             foreach (var actuatorType in _actuatorTypeLoader.LoadedTypes.Values)
             {
-                var attr = ClassDescriptorAttribute.GetDescriptor(actuatorType);
+                ClassDescriptorAttribute attr = ClassDescriptorAttribute.GetDescriptor(actuatorType);
                 if (attr != null && attr.Id != Guid.Empty)
                 {
                     var actuatorSetting = Config.Find(attr.Id);

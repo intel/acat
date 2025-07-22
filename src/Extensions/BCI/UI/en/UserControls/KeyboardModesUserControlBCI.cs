@@ -6,7 +6,7 @@
 //
 // KeyboardModesUserControlBCI.cs
 //
-// User control for the selection of the different modes. 
+// User control for the selection of the different modes.
 //
 ////////////////////////////////////////////////////////////////////////////
 
@@ -23,13 +23,12 @@ namespace ACAT.Extensions.BCI.UI.UserControls
     [ClassDescriptorAttribute("D8A1D029-C512-46E0-9D87-A2D156B5BCA8",
         "KeyboardControl",
         "User Control keyboard Modes BCI")]
-
     public partial class KeyboardModesUserControlBCI : UserControl, IUserControl
     {
         private static String _formConfigFilePath = "";
         private static UserControlConfigMapEntry _mapEntry;
         private UserControlKeyboardCommon _keyboardCommon;
-        IScannerPanel _scanner;
+        private IScannerPanel _scanner;
 
         public KeyboardModesUserControlBCI()
         {
@@ -37,6 +36,7 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         }
 
         public event AnimationPlayerStateChanged EvtPlayerStateChanged;
+
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
@@ -67,11 +67,9 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             {
                 if (_mapEntry != null)
                     _formConfigFilePath = _mapEntry.ConfigFileName;
-
             }
             catch (Exception)
             {
-
             }
             return _formConfigFilePath;
         }
@@ -82,12 +80,9 @@ namespace ACAT.Extensions.BCI.UI.UserControls
 
             _keyboardCommon = new UserControlKeyboardCommon(this, mapEntry, textController, scanner);
 
-
             _scanner = scanner;
 
             bool retVal = _keyboardCommon.Initialize();
-
-           
 
             _keyboardCommon.AnimationManager.EvtPlayerStateChanged += AnimationManager_EvtPlayerStateChanged;
             //_keyboardCommon.RootWidget.Finder.FindAllChildren(typeof(WinControlWidget), _listButtonsWidgets);//TO BE UPDATED WHEN KEYBOARD CHANGE
@@ -98,23 +93,20 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         {
             _keyboardCommon.OnLoad();
 
-
             _keyboardCommon.AnimationManager.OnLoad(_keyboardCommon.RootWidget);
         }
 
         public void OnPause()
         {
-
         }
 
         public void OnResume()
         {
-
         }
+
         public void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
         {
             //_wordPredictionCommon.OnWidgetActuated(e, ref handled);
-
         }
 
         private void AnimationManager_EvtPlayerStateChanged(object sender, PlayerStateChangedEventArgs e)

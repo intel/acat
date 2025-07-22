@@ -11,11 +11,11 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
-using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
@@ -44,7 +44,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // Add handlers for selecting items in the lists
             listViewPairedDevices.SelectedIndexChanged += ListViewPairedDevices_SelectedIndexChanged;
             listViewUnPairedDevices.SelectedIndexChanged += ListViewPairedDevices_SelectedIndexChanged;
-
         }
 
         /// <summary>
@@ -79,7 +78,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
         }
 
-
         /// <summary>
         /// Function to start / top timer to update the list of paired / unpaired bluetooth devices
         /// </summary>
@@ -88,7 +86,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             if (start)
             {
-                // Start timer 
+                // Start timer
                 try
                 {
                     _updateTimer = new Timer
@@ -121,7 +119,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     Log.Exception("startStopUpdateBluetoothListTimer | Exception: " + e.ToString());
                 }
             }
-
         }
 
         /// <summary>

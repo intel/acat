@@ -10,7 +10,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using System;
 using System.Windows.Forms;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
@@ -20,11 +19,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     /// </summary>
     public partial class UserControlTestBCIConnections : UserControl
     {
-
         public UserControlTestBCIConnections()
         {
             InitializeComponent();
-
         }
     }
 }

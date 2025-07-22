@@ -1,5 +1,5 @@
-﻿using ACATResources;
-using ACAT.Core.Utility;
+﻿using ACAT.Core.Utility;
+using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;

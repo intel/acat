@@ -10,32 +10,31 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACATResources;
-using ACAT.Extensions.BCI.Common.AnimationSharp;
-using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Extensions.BCI.Common.BCIInterfaceUtilities;
-using ACAT.Extensions.BCI.UI.UserControls;
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.Audit;
-using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.ThemeManagement;
 using ACAT.Core.TTSManagement;
 using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.WordPredictionManagement;
-using ACAT.Extension.CommandHandlers;
 using ACAT.Extension;
+using ACAT.Extension.CommandHandlers;
+using ACAT.Extensions.BCI.Common.AnimationSharp;
+using ACAT.Extensions.BCI.Common.BCIControl;
+using ACAT.Extensions.BCI.Common.BCIInterfaceUtilities;
+using ACAT.Extensions.BCI.UI.UserControls;
+using ACATResources;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System;
 
 namespace ACAT.Extensions.BCI.UI.Scanners
 {
@@ -99,7 +98,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         private String _panelClass;
 
         /// <summary>
-        /// Last caret position 
+        /// Last caret position
         /// </summary>
         private int _prevCaretPosition = 0;
 
@@ -128,7 +127,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// <summary>
         /// Text box user control (Lock screeb)
         /// </summary>
-        ScreenLockTextBoxUserControl _screenLockTextBoxUserControl;
+        private ScreenLockTextBoxUserControl _screenLockTextBoxUserControl;
 
         /// <summary>
         /// Flag used to show the main 3 options (Exit, calibrate, typing)
@@ -138,17 +137,17 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// <summary>
         /// Text box user control (Canned Mode)
         /// </summary>
-        TalkWindowTextBoxPhraseModeUserControl _textBoxPhraseModeUserControl;
+        private TalkWindowTextBoxPhraseModeUserControl _textBoxPhraseModeUserControl;
 
         /// <summary>
         /// Text box user control (Prompt)
         /// </summary>
-        TalkWindowTextBoxPromptUserControl _textBoxPromptUserControl;
+        private TalkWindowTextBoxPromptUserControl _textBoxPromptUserControl;
 
         /// <summary>
         /// Text box user control (Prompt)
         /// </summary>
-        TalkWindowTextBoxPromptUserControlLabel _textBoxPromptUserControlLabel;
+        private TalkWindowTextBoxPromptUserControlLabel _textBoxPromptUserControlLabel;
 
         /// <summary>
         /// Oobject of the Text box from the main form
@@ -158,7 +157,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// <summary>
         /// Text box user control (Normal)
         /// </summary>
-        TalkWindowTextBoxUserControl _textBoxUserControl;
+        private TalkWindowTextBoxUserControl _textBoxUserControl;
 
         /// <summary>
         /// Text used to save in Lear request
@@ -174,10 +173,12 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// If the actuator initialized correctly
         /// </summary>
         private bool isSignalMonitorCalledFromMenu = false;
+
         /// <summary>
-        /// Option selected when changing User conntrol 
+        /// Option selected when changing User conntrol
         /// </summary>
         private int selectedOption;
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -194,6 +195,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             LogAssemblyVersion();
             AnimationManagerUtils.Init();
         }
+
         /// <summary>
         /// Event for the states for BCI initialization
         /// </summary>
@@ -215,6 +217,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             BCIStartSession,
             BCIInitDone,
         }
+
         /// <summary>
         /// Gets the command dispatcher object
         /// </summary>
@@ -250,7 +253,8 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// <summary>
         /// Gets the PanelCommon object
         /// </summary>
-        public IPanelCommon PanelCommon { get { return _scannerCommon; } }
+        public IPanelCommon PanelCommon
+        { get { return _scannerCommon; } }
 
         /// <summary>
         /// Gets the scanner common object
@@ -259,6 +263,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         {
             get { return _scannerCommon; }
         }
+
         /// <summary>
         /// Gets the status bar control for this scanner
         /// </summary>
@@ -320,6 +325,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                 case true:
                     animationSharpManager.CalibrationRequest(_ScanningSection);
                     break;
+
                 case false:
                     if (Context.AppWordPredictionManager.ActiveWordPredictor.GetMode() != WordPredictionModes.CannedPhrases)//So if the textbox panel has a Prompt texbox UC can return to the typing texbox user control
                         AddTextBoxUserControl(_textBoxUserControl);
@@ -331,6 +337,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                     _getCaretPosition = true;
                     animationSharpManager.TypingRequest();
                     break;
+
                 default:
             }
             await Task.Delay(25);
@@ -388,6 +395,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                     arg.Handled = true;
                     arg.Enabled = Context.AppWordPredictionManager.ActiveWordPredictor.GetMode() != WordPredictionModes.CannedPhrases;
                     break;
+
                 default:
                     _scannerHelper.CheckCommandEnabled(arg);
                     break;
@@ -407,7 +415,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                 await Task.Delay(100);//Since SharpDx transparency Mode did not worked to show the TextBox the UI had to be force to be shaped and assemble to match the UI from The final design version
                 if (_formShown)
                 {
-                    //This way is to have the UI fully load and the controls are fit into full screen so we can get the latest values and modify them 
+                    //This way is to have the UI fully load and the controls are fit into full screen so we can get the latest values and modify them
                     int height = this.Height - mainPanel.Height - statusStrip.Height - 25;
                     int unit = height / 11;
                     scannerTableLayoutKeyboard.Height = unit * 4;
@@ -480,8 +488,9 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             _scannerCommon.UserControlManager.GridScanIterations = ACAT.Extension.Common.AppPreferences.GridScanIterations;
             return retVal;
         }
+
         /// <summary>
-        /// Task to Initialize objects used by BCI 
+        /// Task to Initialize objects used by BCI
         /// </summary>
         /// <returns></returns>
         public async Task InitializeBCI()
@@ -492,18 +501,17 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             _scannerCommon.UserControlManager.AddUserControlByKeyOrName(scannerPanelKeyboard, "keyboard", "KeyboardABCUserControlBCI");
             Windows.SetText(_textBoxTalkWindow, BCIInterfaceUtils.INITIALIZING);
 
-       
             animationSharpManager.Init(this);
             animationSharpManager.CRGText = GetCRGText();
-            
+
             var widgets = SaveUserControlWidgets();
-            SetUserControlData(widgets, WordPredictionUserControlBCI.getpathConfigFile(), PhrasesUserControlBCI.getpathConfigFile(), KeyboardABCUserControlBCI.getpathConfigFile(),true);
+            SetUserControlData(widgets, WordPredictionUserControlBCI.getpathConfigFile(), PhrasesUserControlBCI.getpathConfigFile(), KeyboardABCUserControlBCI.getpathConfigFile(), true);
             await Task.Delay(700);
 
             animationSharpManager.DrawMainLayout();
             Windows.SetText(_textBoxTalkWindow, string.Empty);
             await Task.Delay(25);
-            
+
             EvtBCIInitState?.Invoke(BCIState.ReqCalibrationStatus);
         }
 
@@ -533,6 +541,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                 tb.OnPause();
             }
         }
+
         /// <summary>
         /// Not used
         /// </summary>
@@ -577,6 +586,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         public void SetTargetControl(Form parent, Widget widget)
         {
         }
+
         /// <summary>
         /// Size of the client changed
         /// </summary>
@@ -643,6 +653,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                 Windows.SetText(_textBoxTalkWindow, String.Empty);
             }
         }
+
         /// <summary>
         /// Adds the Text box user control to the panel
         /// </summary>
@@ -701,6 +712,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                         _bciActuator?.IoctlRequest((int)OpCodes.CalibrationWindowShow, String.Empty);
                     }
                     break;
+
                 case (int)OpCodes.CalibrationWindowClose:
                     if (_bciActuator != null)
                     {
@@ -714,6 +726,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                     }
                     OnResume();
                     break;
+
                 case (int)OpCodes.SendParameters:
                     //STEP - 6
                     if (_BCIState == BCIState.StartBCIReqParams)
@@ -730,6 +743,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                         }
                     }
                     break;
+
                 case (int)OpCodes.StartSessionResult:
                     if (_BCIState == BCIState.BCIStartSession)
                     {
@@ -737,11 +751,12 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                         Log.Debug("BCI LOG | BCI Init state: " + BCIState.BCIInitDone);
                     }
                     break;
+
                 case (int)OpCodes.SendCalibrationStatus:
                     //STEP - 1
                     var bciCalibrationStatus = JsonSerializer.Deserialize<BCICalibrationStatus>(response);
                     Log.Debug("BCI LOG | bciCalibrationStatus.OkToGoToTyping: " + bciCalibrationStatus.OkToGoToTyping);
-                    if (_ShowMainOptions)//This window should only display once 
+                    if (_ShowMainOptions)//This window should only display once
                     {
                         _ShowMainOptions = false;
                         var resultmenu = BCIShowMainOptionsWindow(bciCalibrationStatus);
@@ -754,10 +769,12 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                                 else
                                     EvtBCIInitState?.Invoke(BCIState.ReqCalibrationStatus);
                                 break;
+
                             case BCIMenuOptions.MainMenuOptions.CalibrateOrShowCalibrationModes:
                                 var result = BCIShowCalibrationModesWindow(bciCalibrationStatus);
                                 BCIProcessCalibrationFormResult(result);
                                 break;
+
                             case BCIMenuOptions.MainMenuOptions.TypingOrRecalibrate:
                                 BCIProcessCalibrationFormResult(new Tuple<BCIMenuOptions.Options, BCISimpleParameters>(BCIMenuOptions.Options.Typing, new BCISimpleParameters()));
                                 break;
@@ -771,6 +788,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                     break;
             }
         }
+
         /// <summary>
         /// Event triggered when is necessary to resume Watchdog from the AnimationSharpmanager
         /// </summary>
@@ -799,36 +817,43 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                     else
                         EvtBCIInitState?.Invoke(BCIState.ReqCalibrationStatus);
                     break;
+
                 case BCIMenuOptions.Options.Box:
                     _RequestCalibration = true;
                     _ScanningSection = BCIScanSections.Box;
                     EvtBCIInitState?.Invoke(BCIState.StartBCIReqParams);
                     break;
+
                 case BCIMenuOptions.Options.Sentence:
                     _RequestCalibration = true;
                     _ScanningSection = BCIScanSections.Sentence;
                     EvtBCIInitState?.Invoke(BCIState.StartBCIReqParams);
                     break;
+
                 case BCIMenuOptions.Options.KeyboardL:
                     _RequestCalibration = true;
                     _ScanningSection = BCIScanSections.KeyboardL;
                     EvtBCIInitState?.Invoke(BCIState.StartBCIReqParams);
                     break;
+
                 case BCIMenuOptions.Options.Word:
                     _RequestCalibration = true;
                     _ScanningSection = BCIScanSections.Word;
                     EvtBCIInitState?.Invoke(BCIState.StartBCIReqParams);
                     break;
+
                 case BCIMenuOptions.Options.KeyboardR:
                     _RequestCalibration = true;
                     _ScanningSection = BCIScanSections.KeyboardR;
                     EvtBCIInitState?.Invoke(BCIState.StartBCIReqParams);
                     break;
+
                 case BCIMenuOptions.Options.Typing:
                     _ScanningSection = BCIScanSections.Box;
                     _RequestCalibration = false;
                     EvtBCIInitState?.Invoke(BCIState.StartBCIReqParams);
                     break;
+
                 case BCIMenuOptions.Options.EyesCalibration:
                     OnPause();
                     animationSharpManager.CalibrationEyesCloseRequest();
@@ -836,6 +861,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                     OnResume();
                     EvtBCIInitState?.Invoke(BCIState.ReqCalibrationStatus);
                     break;
+
                 case BCIMenuOptions.Options.TriggerTest:
                     OnPause();
                     var triggertestParams2 = BCIInterfaceUtils.ShowTriggerTestSettingsForm(this);
@@ -846,16 +872,19 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                             BCIInterfaceUtils.ShowTimedMessageBox(this);
                             animationSharpManager.TriggerTestRequest();
                             break;
+
                         case BCIMenuOptions.Options.Exit:
                             EvtBCIInitState?.Invoke(BCIState.ReqCalibrationStatus);
                             break;
                     }
                     OnPause();
                     break;
+
                 case BCIMenuOptions.Options.SignalCheck:
                     if (_bciActuator != null)
                         animationSharpManager.RequestSignalMonitor(false);
                     break;
+
                 case BCIMenuOptions.Options.RemapCalibrations:
                     EvtBCIInitState?.Invoke(BCIState.ReqCalibrationStatus);
                     break;
@@ -904,9 +933,11 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                 case BCIClassifierStatus.Ok:
                     result = BCIInterfaceUtils.ShowMainOptionsWindow(this, BCIInterfaceUtils.RECALIBRATEIF, BCIInterfaceUtils.IMPROVECALIBRATION, bciCalibrationStatus.OkToGoToTyping);
                     break;
+
                 case BCIClassifierStatus.Expired:
                     result = BCIInterfaceUtils.ShowMainOptionsWindow(this, BCIInterfaceUtils.CALIBRATIONNEEDED, BCIInterfaceUtils.CALIBRATIONEXPIRED, bciCalibrationStatus.OkToGoToTyping);
                     break;
+
                 case BCIClassifierStatus.NotFound:
                     result = BCIInterfaceUtils.ShowMainOptionsWindow(this, BCIInterfaceUtils.CALIBRATIONNEEDED, BCIInterfaceUtils.CALIBRATIONNOTFOUND, bciCalibrationStatus.OkToGoToTyping);
                     break;
@@ -936,9 +967,11 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                         else
                             BCIShowRecalibrationWindowMessage();
                         break;
+
                     case BCIMenuOptions.MainMenuOptions.CalibrateOrShowCalibrationModes://Show Calibration modes
                         EvtBCIInitState?.Invoke(BCIState.ReqCalibrationStatus);
                         break;
+
                     case BCIMenuOptions.MainMenuOptions.TypingOrRecalibrate://Re-calibrate
                         BCIInterfaceUtils.ShowTimedMessageBox(this);
                         animationSharpManager.CalibrationRequest(_ScanningSection);
@@ -963,27 +996,32 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                 {
                     case BCIState.None:
                         break;
+
                     case BCIState.UIRefresh://1 Init state
                         Log.Debug("BCI LOG | BCI Init state: " + BCIState.UIRefresh);
                         _BCIState = BCIState.UIRefresh;
                         _ = ControlsUIAdjustment().ConfigureAwait(false);
                         break;
+
                     case BCIState.Initializing://2 Init state
                         Log.Debug("BCI LOG | BCI Init state: " + BCIState.Initializing);
                         _BCIState = BCIState.Initializing;
                         _ = InitializeBCI().ConfigureAwait(false);
                         break;
+
                     case BCIState.ReqCalibrationStatus://3 Init state
                         _BCIState = BCIState.ReqCalibrationStatus;
                         Log.Debug("BCI LOG | BCI Init state: " + BCIState.ReqCalibrationStatus);
                         _ = BCIRequestCalibrationStatus().ConfigureAwait(false);
                         break;
+
                     case BCIState.StartBCIReqParams://4 Init state
                         //STEP - 4
                         Log.Debug("BCI LOG | BCI Init state: " + BCIState.StartBCIReqParams);
                         _BCIState = BCIState.StartBCIReqParams;
                         _ = BCIStartBCIReqParams().ConfigureAwait(false);
                         break;
+
                     case BCIState.BCIStartSession://5 Init state
                         Log.Debug("BCI LOG | BCI Init state: " + BCIState.BCIStartSession);
                         _BCIState = BCIState.BCIStartSession;
@@ -1100,12 +1138,15 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                 case WordPredictionModes.None:
                     crgText = " ";
                     break;
+
                 case WordPredictionModes.Sentence:
                     crgText = "Mode: Sentence";
                     break;
+
                 case WordPredictionModes.Shorthand:
                     crgText = "Mode: Shorthand";
                     break;
+
                 case WordPredictionModes.CannedPhrases:
                     crgText = "Mode: Canned Phrases";
                     break;
@@ -1206,7 +1247,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         }
 
         /// <summary>
-        /// Pause animations and requests for BCI 
+        /// Pause animations and requests for BCI
         /// </summary>
         private void PauseAnimations()
         {
@@ -1275,7 +1316,6 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             List<IUserControl> listKeyboard = new();
             UserControlManager.FindAllUserControls(scannerPanelKeyboard, listKeyboard);
 
-
             allWidgets[0] = UserControlManager.findAllWidgets(listWords);
             allWidgets[1] = UserControlManager.findAllWidgets(listSentences);
             allWidgets[2] = UserControlManager.findAllWidgets(listKeyboard);
@@ -1302,7 +1342,6 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// <param name="currentCaretPosition">Curretn caret position</param>
         private void SetCaretPositionForTextBoxUC(UserControl userControl, Control panelControl, int currentCaretPosition)
         {
-
             try
             {
                 if (Context.AppWordPredictionManager.ActiveWordPredictor.GetMode() != WordPredictionModes.CannedPhrases)
@@ -1328,15 +1367,14 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Debug("BCI LOG | Error | SetCaretPositionForTextBoxUC: " + ex.Message);
             }
-
         }
 
         /// <summary>
-        /// Sets the objects used by SharpDX 
+        /// Sets the objects used by SharpDX
         /// </summary>
         /// <param name="panel1Path">User Control Config file Path</param>
         /// <param name="panel2Path">User Control Config file Path</param>
@@ -1389,8 +1427,9 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             BCIInterfaceUtils.ShowTimedMessageBox(this);
             EvtBCIInitState?.Invoke(BCIState.BCIStartSession);
         }
+
         /// <summary>
-        /// Use Text to spech 
+        /// Use Text to spech
         /// </summary>
         private void Speak()
         {
@@ -1451,7 +1490,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             animationSharpManager.EvtBCIStartCalibration += BCIShowRecalibrationWindowMessage;
             animationSharpManager.EvtBCICalibrationComplete += BCIShowCalibrationResult;
             animationSharpManager.EvtBCIUpdateTexttBox += UpdatetextBoxEvt;
-            LEDStatusUserControl userControlLED = new() {  Dock = DockStyle.Fill  };
+            LEDStatusUserControl userControlLED = new() { Dock = DockStyle.Fill };
             panelLEDStatus.Controls.Add(userControlLED);
         }
 
@@ -1544,9 +1583,11 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                             WordPredictionManager.Instance.ActiveWordPredictor.Learn(text, WordPredictorMessageTypes.LearnWords);
                             WordPredictionManager.Instance.ActiveWordPredictor.Learn(text, WordPredictorMessageTypes.LearnSentence);
                             break;
+
                         case WordPredictionModes.Shorthand:
                             WordPredictionManager.Instance.ActiveWordPredictor.Learn(text, WordPredictorMessageTypes.LearnShorthand);
                             break;
+
                         case WordPredictionModes.CannedPhrases:
                             WordPredictionManager.Instance.ActiveWordPredictor.Learn(text, WordPredictorMessageTypes.LearnCanned);
                             break;
@@ -1554,6 +1595,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                 }
             }
         }
+
         /// <summary>
         /// Unsubscribe from all events
         /// </summary>
@@ -1576,6 +1618,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             _textBoxTalkWindow.KeyPress -= TextBoxTalkWindowOnKeyPress;
             Paint -= (s, args) => { _formShown = true; };
         }
+
         private void UpdateTextBox(string message)
         {
             if (_getCaretPosition)
@@ -1595,6 +1638,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         {
             UpdateTextBox(message);
         }
+
         /// <summary>
         /// Handles yes/no command, sets the choice and then
         /// closes the scanner
@@ -1630,27 +1674,32 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                             widgets = form.SaveUserControlWidgets();
                             form.SetUserControlData(widgets, WordPredictionUserControlBCI.getpathConfigFile(), PhrasesUserControlBCI.getpathConfigFile(), KeyboardEditUserControlBCI.getpathConfigFile());
                             break;
+
                         case "CmdKeyboardScannerNum":
                             form._scannerCommon.UserControlManager.PushUserControlByKeyOrName(form.scannerPanelKeyboard, null, "NumericUserControlBCI", true);
                             widgets = form.SaveUserControlWidgets();
                             form.SetUserControlData(widgets, WordPredictionUserControlBCI.getpathConfigFile(), PhrasesUserControlBCI.getpathConfigFile(), NumericUserControlBCI.getpathConfigFile());
                             break;
+
                         case "CmdModesScanner":
                             form._scannerCommon.UserControlManager.PushUserControlByKeyOrName(form.scannerPanelKeyboard, null, "KeyboardModesUserControlBCI", true);
                             form.animationSharpManager.LockAnimation(true);
                             widgets = form.SaveUserControlWidgets();
                             form.SetUserControlData(widgets, WordPredictionUserControlBCI.getpathConfigFile(), PhrasesUserControlBCI.getpathConfigFile(), KeyboardModesUserControlBCI.getpathConfigFile());
                             break;
+
                         case "CmdMenuScanner":
                             form._scannerCommon.UserControlManager.PushUserControlByKeyOrName(form.scannerPanelKeyboard, null, "MenuUserControlBCI", true);
                             form.animationSharpManager.LockAnimation(true);
                             widgets = form.SaveUserControlWidgets();
                             form.SetUserControlData(widgets, WordPredictionUserControlBCI.getpathConfigFile(), PhrasesUserControlBCI.getpathConfigFile(), MenuUserControlBCI.getpathConfigFile());
                             break;
+
                         case "CmdKeyboardMain":
                             form.animationSharpManager.LockAnimation(false);
                             form.ChangeToMainKeyboard();
                             break;
+
                         case "CmdYes":
                             form.AddTextBoxUserControl(form._textBoxUserControl);
                             switch (form.selectedOption)
@@ -1658,43 +1707,51 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                                 case BCIInterfaceUtils.EXIT_APP:
                                     Windows.CloseForm(form);
                                     break;
+
                                 case BCIInterfaceUtils.CLEAR:
                                     form.animationSharpManager.LockAnimation(false);
                                     form.ChangeToMainKeyboard();
                                     Windows.SetText(form._textBoxTalkWindow, string.Empty);
                                     break;
+
                                 case BCIInterfaceUtils.SAVE_TO_CANNED:
                                     form.LearnCannedPhrases(form._TextToLearnCanned);
                                     form._TextToLearnCanned = string.Empty;
                                     form.animationSharpManager.LockAnimation(false);
                                     form.ChangeToMainKeyboard();
                                     break;
+
                                 case BCIInterfaceUtils.MODE_SENTENCE:
                                     Context.AppWordPredictionManager.ActiveWordPredictor.SetMode(WordPredictionModes.Sentence);
                                     form.animationSharpManager.CRGText = form.GetCRGText();
                                     form.animationSharpManager.LockAnimation(false);
                                     form.ChangeToMainKeyboard();
                                     break;
+
                                 case BCIInterfaceUtils.MODE_SHORTHAND:
                                     form.animationSharpManager.LockAnimation(false);
                                     form.ChangeToMainKeyboard();
                                     Context.AppWordPredictionManager.ActiveWordPredictor.SetMode(WordPredictionModes.Shorthand);
                                     form.animationSharpManager.CRGText = form.GetCRGText();
                                     break;
+
                                 case BCIInterfaceUtils.MODE_CANNED:
                                     form.animationSharpManager.LockAnimation(false);
                                     form.ChangeToMainKeyboard();
                                     Context.AppWordPredictionManager.ActiveWordPredictor.SetMode(WordPredictionModes.CannedPhrases);
                                     form.animationSharpManager.CRGText = form.GetCRGText();
                                     break;
+
                                 default:
                                     break;
                             }
                             break;
+
                         case "CmdNo":
                             form.animationSharpManager.LockAnimation(false);
                             form.ChangeToMainKeyboard();
                             break;
+
                         case "CmdExitApp":
                             form.selectedOption = BCIInterfaceUtils.EXIT_APP;
                             form.AddTextBoxUserControl(form._textBoxPromptUserControlLabel);
@@ -1702,6 +1759,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                             form.animationSharpManager.LockAnimation(true);
                             form.ChnageToYesNoKeyboard();
                             break;
+
                         case "CmdTalkWindowClear":
                             form.selectedOption = BCIInterfaceUtils.CLEAR;
                             form.AddTextBoxUserControl(form._textBoxPromptUserControlLabel);
@@ -1709,11 +1767,13 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                             form.animationSharpManager.LockAnimation(true);
                             form.ChnageToYesNoKeyboard();
                             break;
+
                         case "CmdActuatorToggleCalibrationWindow":
                             form.isSignalMonitorCalledFromMenu = true;
                             if (form._bciActuator != null)
                                 form.animationSharpManager.RequestSignalMonitor(false);
                             break;
+
                         case "CmdEntryModeTyping":
                             if (Context.AppWordPredictionManager.ActiveWordPredictor.GetMode() != WordPredictionModes.Sentence)
                             {
@@ -1724,6 +1784,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                                 form.ChnageToYesNoKeyboard();
                             }
                             break;
+
                         case "CmdEntryModeShortHand":
                             if (Context.AppWordPredictionManager.ActiveWordPredictor.GetMode() != WordPredictionModes.Shorthand)
                             {
@@ -1734,6 +1795,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                                 form.ChnageToYesNoKeyboard();
                             }
                             break;
+
                         case "CmdEntryModePhrase":
                             if (Context.AppWordPredictionManager.ActiveWordPredictor.GetMode() != WordPredictionModes.CannedPhrases)
                             {
@@ -1744,6 +1806,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                                 form.ChnageToYesNoKeyboard();
                             }
                             break;
+
                         case "CmdSaveToCanned":
                             form._TextToLearnCanned = form.GetTextCannedPhrases();
                             StringBuilder stringBuilder = new();
@@ -1757,6 +1820,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                             form.animationSharpManager.LockAnimation(true);
                             form.ChnageToYesNoKeyboard();
                             break;
+
                         case "CmdTTSYesNoScanner":
                             form.AddTextBoxUserControl(form._textBoxPromptUserControl);
                             Windows.SetText(form._textBoxTalkWindow, string.Empty);
@@ -1765,12 +1829,15 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                             widgets = form.SaveUserControlWidgets();
                             form.SetUserControlData(widgets, WordPredictionUserControlBCI.getpathConfigFile(), PhrasesUserControlBCI.getpathConfigFile(), TTSYesNoUserControlBCI2.getpathConfigFile());
                             break;
+
                         case "CmdTTSYes":
                             Windows.SetText(form._textBoxTalkWindow, "Yes");
                             break;
+
                         case "CmdTTSNo":
                             Windows.SetText(form._textBoxTalkWindow, "No");
                             break;
+
                         case "CmdLockScanner":
                             form._prevText = Windows.GetText(form._textBoxTalkWindow);
                             form._prevCaretPosition = Windows.GetCaretPosition(form._textBoxTalkWindow);
@@ -1785,6 +1852,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                             widgets = form.SaveUserControlWidgets();
                             form.SetUserControlData(widgets, WordPredictionUserControlBCI.getpathConfigFile(), PhrasesUserControlBCI.getpathConfigFile(), KeyboardLockUserControlBCI.getpathConfigFile());
                             break;
+
                         case "CmdShowAboutBox":
                             if (form._bciActuator != null)
                             {
@@ -1793,23 +1861,27 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                                 form.ResumeAnimations();
                             }
                             break;
+
                         case "CmdSpeak":
                             form.Speak();
                             break;
+
                         case "CmdRecalibrate":
                             while (!form.animationSharpManager.RequestRecalibration()) { }
                             form.ChangeToMainKeyboard();
                             form.EvtBCIInitState?.Invoke(BCIState.ReqCalibrationStatus);
                             break;
+
                         default:
                             break;
                     }
-
-                }else
+                }
+                else
                     Log.Debug("BCI LOG | Command | selected | Pressed in calibration | No action | " + Command.ToString());
                 return true;
             }
         }
+
         /// <summary>
         /// Command dispatcher
         /// </summary>

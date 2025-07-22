@@ -52,10 +52,10 @@ namespace ACAT.Extension
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public ClassDescriptorAttribute Descriptor
-        {
-            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
-        }
+        //public ClassDescriptorAttribute Descriptor
+        //{
+        //    get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
+        //}
 
         /// <summary>
         /// Gets the snchronization object

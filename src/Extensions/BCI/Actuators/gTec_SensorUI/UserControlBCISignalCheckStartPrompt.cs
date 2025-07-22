@@ -18,7 +18,7 @@ using System.Windows.Forms;
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
     /// <summary>
-    /// User control which prompts the user for input to determine whether signal quality check 
+    /// User control which prompts the user for input to determine whether signal quality check
     /// should be executed (first step in the signal check process)
     /// </summary>
     public partial class UserControlBCISignalCheckStartPrompt : UserControl
@@ -51,7 +51,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         }
 
         /// <summary>
-        /// Set the checkbox and corresponding variable to unchecked 
+        /// Set the checkbox and corresponding variable to unchecked
         /// </summary>
         public void resetCheckbox()
         {

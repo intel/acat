@@ -1,9 +1,8 @@
 ﻿using ACAT.Applications;
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.Utility.WpfUserControlUtilities;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Core.Utility.WpfUserControlUtilities;
 using ACATConfigNext.UserControls;
 using MahApps.Metro.Controls;
 using System;
@@ -15,6 +14,7 @@ using System.Windows.Forms.Integration;
 using MahAppsControls = MahApps.Metro.Controls;
 using Windows = System.Windows;
 using WPFControls = System.Windows.Controls;
+using ACAT.Core.Extensions;
 
 namespace ACATConfigNext
 {

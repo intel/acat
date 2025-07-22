@@ -4,19 +4,19 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 ////////////////////////////////////////////////////////////////////////////
-using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Core.ThemeManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using ACAT.Extensions.BCI.Common.BCIControl;
 using SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
 using SharpDX.Mathematics.Interop;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
-using System;
 
 namespace ACAT.Extensions.BCI.Common.AnimationSharp
 {
@@ -32,6 +32,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             var colorScheme = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(colorCodeRegion);
             return ConvertToRawColor4(colorScheme);
         }
+
         /// <summary>
         /// Gets a rectangle used as focal area for box calibration
         /// </summary>
@@ -49,7 +50,6 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             {
                 return new RoundedRectangle();
             }
-
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         }
 
         /// <summary>
-        /// Gets te Type of weight font 
+        /// Gets te Type of weight font
         /// </summary>
         /// <param name="useBold"></param>
         /// <returns></returns>
@@ -104,6 +104,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             return buttonTextFormatList;
         }
+
         /// <summary>
         /// Gets the location and shape for each control in the form, returns list with rectangles
         /// </summary>
@@ -180,7 +181,6 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                             }
                         }
                         index += 1;
-
                     }
                     name = null;
                 }
@@ -289,6 +289,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         {
             return GetRectangleFromName(controls, "BtnCRG");
         }
+
         /// <summary>
         /// Gets the list of all the rectangles of each button for each box within the user control
         /// </summary>
@@ -431,6 +432,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         {
             return GetRectangleFromName(controls, "BTrigger");
         }
+
         /// <summary>
         /// Get a rectangle with round edges
         /// </summary>
@@ -649,15 +651,19 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 case BCIFocalAreaRegion.TopLeft:
                     CalculateTopLeftFocalPoint(rawRectangleF, distanceFromEdge, out xPoint, out yPoint);
                     break;
+
                 case BCIFocalAreaRegion.TopRight:
                     CalculateTopRightFocalPoint(rawRectangleF, width, distanceFromEdge, out xPoint, out yPoint);
                     break;
+
                 case BCIFocalAreaRegion.Center:
                     CalculateCenterFocalPoint(rawRectangleF, maxWidth, width, maxHeight, height, distanceFromEdge, out xPoint, out yPoint);
                     break;
+
                 case BCIFocalAreaRegion.BottomLeft:
                     CalculateBottomLeftFocalPoint(rawRectangleF, height, distanceFromEdge, out xPoint, out yPoint);
                     break;
+
                 case BCIFocalAreaRegion.BottomRight:
                     CalculateBottomRightFocalPoint(rawRectangleF, width, height, distanceFromEdge, out xPoint, out yPoint);
                     break;
@@ -677,6 +683,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             doc.Load(configFilePath);
             return doc.SelectNodes(nodeSection);
         }
+
         /// <summary>
         /// Get the rectangle based on the position of the button in the Form
         /// </summary>

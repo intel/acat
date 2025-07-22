@@ -13,10 +13,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
-using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
+using ACAT.Extensions.BCI.Common.BCIControl;
 using Accord.Math;
 using System;
 using System.Collections.Generic;

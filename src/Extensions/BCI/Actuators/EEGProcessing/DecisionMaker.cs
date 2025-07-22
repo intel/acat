@@ -12,9 +12,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -279,7 +279,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                     }
                     else
                     {
-                        if(trialScores!=null)
+                        if (trialScores != null)
                             Log.Debug("Incomplete trial scores. Expected: " + flashingSequence.Count + " Calculated: " + trialScores.Count + " Waiting for new repetition");
                         else
                             Log.Debug("Incomplete trial scores. Expected: " + flashingSequence.Count + " Calculated: 0  Waiting for new repetition");

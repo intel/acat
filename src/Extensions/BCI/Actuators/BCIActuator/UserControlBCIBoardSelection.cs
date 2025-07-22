@@ -11,14 +11,13 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         public delegate void BCIDeviceSelected();
 
         public event BCIDeviceSelected EvtgtecUnicornSelected;
-        public event BCIDeviceSelected EvtOpenBCISelected;
 
+        public event BCIDeviceSelected EvtOpenBCISelected;
 
         public UserControlBCIDeviceSelection()
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
-
         }
 
         private void buttonGtecUnicorn_Click(object sender, EventArgs e)

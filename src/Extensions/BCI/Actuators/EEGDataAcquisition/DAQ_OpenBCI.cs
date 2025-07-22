@@ -10,10 +10,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGUtils;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Core.Utility;
 using Accord.Math;
 using brainflow;
 using Microsoft.Win32;
@@ -1545,7 +1545,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     int max_tries = 3;
                     while (!receivedResponse && max_tries > 0)
                     {
-
                         ////Log.Debug("Sending command C then waiting a bit until reading response");
                         serialPort.WriteLine("C");
                         Thread.Sleep(1000);
@@ -1581,7 +1580,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     Log.Debug("cytonIsDaisyAttached | End read line / check loop. Sending reset board command");
                     serialPort.WriteLine("d");
                     Thread.Sleep(3500);
-
                 }
 
                 // Save result to config file and _daisyBoardStatus if got response
@@ -1597,7 +1595,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         BCIActuatorSettings.Settings.DAQ_NumEEGChannels = 8;
                         _daisyBoardStatus = DaisyBoardStatus.NOT_CONNECTED;
                     }
-                    Log.Debug("cytonIsDaisyAttached | Received a valid response from cyton board | DAQ_NumEEGChannels: "+
+                    Log.Debug("cytonIsDaisyAttached | Received a valid response from cyton board | DAQ_NumEEGChannels: " +
                         BCIActuatorSettings.Settings.DAQ_NumEEGChannels.ToString());
 
                     BCIActuatorSettings.Save();
@@ -1619,8 +1617,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 Log.Debug("cytonIsDaisyAttached | serialPort closed from finally");
             }
 
-
-
             if (serialPort != null && serialPort.IsOpen)
             {
                 Log.Debug("cytonIsDaisyAttached | serialPort not yet closed. calling close() again");
@@ -1632,9 +1628,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 "daisyBoardAttached: {1}, " +
                 "BCIActuatorSettings.Settings.DAQ_NumEEGChannels: {2}",
                 receivedResponse.ToString(),
-                daisyBoardAttached.ToString(), 
+                daisyBoardAttached.ToString(),
                 BCIActuatorSettings.Settings.DAQ_NumEEGChannels.ToString()));
-            
+
             return daisyBoardAttached;
         }
     }

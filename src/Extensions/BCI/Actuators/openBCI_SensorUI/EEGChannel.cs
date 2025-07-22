@@ -1,5 +1,5 @@
-﻿using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Core.WidgetManagement;
+﻿using ACAT.Core.WidgetManagement;
+using ACAT.Extensions.BCI.Common.BCIControl;
 using System;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -40,7 +40,7 @@ namespace openBCISensorUI
         public int _channelRawDataIndex;
 
         /// <summary>
-        /// Whether channel is enabled / disabled with config parameter Classifier_EnableChannelX 
+        /// Whether channel is enabled / disabled with config parameter Classifier_EnableChannelX
         /// </summary>
         public bool _channelEnabled;
 
@@ -70,12 +70,12 @@ namespace openBCISensorUI
         public int signalQualityUpdatedCurrentSession = 0;
 
         /// <summary>
-        /// Commands to enable impedance testing for this specific electrode 
+        /// Commands to enable impedance testing for this specific electrode
         /// </summary>
         public String ImpedanceTestingEnableCmd;
 
         /// <summary>
-        /// Command to disable impedance testing for this specific electrode 
+        /// Command to disable impedance testing for this specific electrode
         /// </summary>
         public String ImpedanceTestingDisableCmd;
 
@@ -91,6 +91,7 @@ namespace openBCISensorUI
 
         // UI elements associated with each channel
         public ScannerRoundedButtonControl electrodeCap;
+
         public ScannerRoundedButtonControl electrodeRailingTest;
         public Chart chartSignalDataRailingTest;
         public Title textRailingResultRailingTest;

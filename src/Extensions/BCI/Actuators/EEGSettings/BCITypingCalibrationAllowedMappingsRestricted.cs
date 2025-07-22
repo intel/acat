@@ -10,8 +10,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Core.PreferencesManagement;
+using ACAT.Extensions.BCI.Common.BCIControl;
 using System;
 using System.Collections.Generic;
 

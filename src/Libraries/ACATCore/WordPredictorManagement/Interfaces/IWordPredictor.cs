@@ -8,7 +8,6 @@
 using ACAT.Core.Utility;
 using ACAT.Core.Extensions;
 using ACAT.Core.PreferencesManagement;
-using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -101,7 +100,7 @@ namespace ACAT.Core.WordPredictionManagement
         /// Returns a descriptor which contains a user readable name, a
         /// short textual description and a unique GUID.
         /// </summary>
-        ClassDescriptorAttribute Descriptor { get; }
+        //ClassDescriptorAttribute Descriptor { get; }
 
         /// <summary>
         /// Whether puncutations should be a part of the prediction. For

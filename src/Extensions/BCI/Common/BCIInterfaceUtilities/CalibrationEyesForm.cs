@@ -1,5 +1,4 @@
-﻿
-////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -11,17 +10,19 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
-//using ACAT.Core;
-using static ACAT.Extensions.BCI.Common.BCIControl.BCICalibrationEyesClosedIterationEnd;
-//using System.Drawing;
-using System.Windows.Forms;
+using ACAT.Extensions.BCI.Common.BCIControl;
+using ACATResources;
 using System;
 using System.Drawing;
-using ACATResources;
+
+//using System.Drawing;
+using System.Windows.Forms;
+
+//using ACAT.Core;
+using static ACAT.Extensions.BCI.Common.BCIControl.BCICalibrationEyesClosedIterationEnd;
 
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
@@ -37,6 +38,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
     public partial class CalibrationEyesForm : Form
     {
         #region Properties
+
         /// <summary>
         /// Main object of the actuator
         /// </summary>
@@ -45,7 +47,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <summary>
         /// Counter for the user to know when the data collection will start (seconds)
         /// </summary>
-        int _CountdownCounter = 3;
+        private int _CountdownCounter = 3;
 
         /// <summary>
         /// Main Timer for data collection
@@ -75,14 +77,14 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <summary>
         /// Current mode for BCI
         /// </summary>
-        readonly BCIMode bCIMode = new();
+        private readonly BCIMode bCIMode = new();
 
         /// <summary>
-        /// Flag to set UI 
+        /// Flag to set UI
         /// </summary>
         private bool eyeOpen = false;
 
-        #endregion
+        #endregion Properties
 
         public CalibrationEyesForm()
         {
@@ -107,6 +109,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             StartCalibrationEyesSession();
         }
+
         private void ButtonCancel_Click_1(object sender, EventArgs e)
         {
             _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedEnd, string.Empty);
@@ -122,10 +125,12 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             OnFormClosing();
         }
+
         private void ButtonExit_Click(object sender, EventArgs e)
         {
             OnFormClosing();
         }
+
         /// <summary>
         /// Event when the main form closes
         /// </summary>
@@ -160,7 +165,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         }
 
         /// <summary>
-        /// Main timer 
+        /// Main timer
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -192,8 +197,8 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 SoundManager.playSound(SoundManager.SoundType.OpenEyesCalibration);
                 _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedEnd, string.Empty);
             }
-
         }
+
         /// <summary>
         /// Countdown Timer
         /// </summary>
@@ -207,7 +212,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             _CountdownCounter -= 1;
         }
 
-        #endregion
+        #endregion Control Events
 
         #region Methods
 
@@ -263,6 +268,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedEnd, string.Empty);
             this.Close();
         }
+
         /// <summary>
         /// Resets the values to start a new eyes calibration session
         /// </summary>
@@ -285,7 +291,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         }
 
         /// <summary>
-        /// Enable or disable the start Button if parameters are received 
+        /// Enable or disable the start Button if parameters are received
         /// </summary>
         /// <param name="enable"></param>
         private void SetEnableStateButtons(bool enable)
@@ -313,8 +319,9 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             CreateTimers();
             SetEnableStateButtons(true);
         }
+
         /// <summary>
-        /// Initialize Timers 
+        /// Initialize Timers
         /// </summary>
         private void CreateTimers()
         {
@@ -340,6 +347,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             else
                 _Countertimer.Interval = 10;
         }
-        #endregion
+
+        #endregion Methods
     }
 }

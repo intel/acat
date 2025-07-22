@@ -19,6 +19,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
     {
         public static BCISettings Settings;
         public const String SettingsFileName = "BCIActuatorSettings.xml";
+
         public static void Load()
         {
             BCISettings.SettingsFilePath = UserManager.GetFullPath(SettingsFileName);

@@ -5,13 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Extensions.BCI.Common.BCIControl;
-using ACATResources;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using ACAT.Extensions.BCI.Common.BCIControl;
+using ACATResources;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
-using System;
 
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {

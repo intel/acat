@@ -40,5 +40,14 @@ namespace ACAT.Applications
             return true;
         }
 
+        public static bool ResetAllPreferences()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool SaveAllPreferences()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

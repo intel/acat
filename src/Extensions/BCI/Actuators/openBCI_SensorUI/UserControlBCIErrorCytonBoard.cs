@@ -11,8 +11,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACATResources;
 using ACAT.Core.Utility;
+using ACATResources;
 using System;
 using System.IO;
 using System.Windows.Forms;

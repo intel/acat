@@ -50,7 +50,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             LogFileFullPath = Path.Combine(logFileFolder, Path.GetFileNameWithoutExtension(LogFileName) + CoreGlobals.LogFileSuffix + Path.GetExtension(LogFileName));
             if (!String.IsNullOrEmpty(baseDirPath) && Directory.Exists(baseDirPath))
             {
-                LogFileFullPathEEG = Path.Combine(baseDirPath, Path.GetFileNameWithoutExtension(LogFileName) + CoreGlobals.LogFileSuffix + Path.GetExtension(LogFileName));  
+                LogFileFullPathEEG = Path.Combine(baseDirPath, Path.GetFileNameWithoutExtension(LogFileName) + CoreGlobals.LogFileSuffix + Path.GetExtension(LogFileName));
             }
         }
 
@@ -107,6 +107,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 streamWriter?.Dispose();
             }
         }
+
         private String getTimeStamp()
         {
             DateTime now = DateTime.UtcNow;

@@ -1,13 +1,5 @@
-﻿using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.TTSManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility.WpfUserControlUtilities;
-using ACAT.Lib.Core.WordPredictionManagement;
-using System;
-using System.Reflection;
+﻿using System;
 using System.Windows.Forms;
-using System.Collections;
 
 namespace ACATConfigNext
 {

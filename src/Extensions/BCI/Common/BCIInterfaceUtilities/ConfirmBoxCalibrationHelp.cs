@@ -5,7 +5,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Core.Utility;
 using ACATResources;
 using System;
@@ -34,7 +33,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// </summary>
         public ConfirmBoxCalibrationHelp()
         {
-            InitializeComponent(); 
+            InitializeComponent();
             Load += ConfirmBox_Load;
         }
 
@@ -46,7 +45,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 parent.TopMost = false;
                 confirmBox.TopMost = true;
             }
-            if(parent != null)
+            if (parent != null)
             {
                 confirmBox.StartPosition = FormStartPosition.Manual;
                 // Calculate the position relative to the main form
@@ -54,7 +53,8 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 int y = parent.Bottom - confirmBox.Height - 50; // Align to the bottom of the main form
                 // Set the location of the smaller form
                 confirmBox.Location = new Point(x, y);
-            }else
+            }
+            else
                 confirmBox.CenterToScreen();
             confirmBox.BringToFront();
             confirmBox.ShowDialog(parent);
@@ -71,14 +71,16 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         private void buttonOp3_Click(object sender, EventArgs e)
         {
             Result = checkBoxDontShowAgain.Checked;
-            try { webBrowserCalibrationHelp.Dispose();} catch (Exception) { }
-            
+            try { webBrowserCalibrationHelp.Dispose(); } catch (Exception) { }
+
             Close();
         }
+
         private void ConfirmBox_Load(object sender, EventArgs e)
         {
             WebBrowserControlInit();
         }
+
         /// <summary>
         /// Initialize the UI elements
         /// </summary>
@@ -86,23 +88,23 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             string htmlContent = "<!DOCTYPE html><html><head></head><body style=\"background-color:#232433;\">" +
                 "<ol style=\"font-family:'Montserrat Medium'; font-size:18px; color:white; text-align: left;\">" +
-                "<li>"+
-                StringResources.Startbyselectinga+
-                " <span style=\"font-family: 'Montserrat Black'; font-size:25px\">mode</span>.</li><li>"+
-                StringResources.ClickOn+
-                "<span style=\"font-family: 'Montserrat Black'; font-size:25px\">calibrate</span>"+
-                StringResources.thatcorrespondstothe+
-                "<span style=\"font-family: 'Montserrat Black'; font-size:25px\">mode</span>"+
-                StringResources.thatyouhaveselected+
-                " <span style=\"font-family: 'Montserrat Black'; font-size:25px\">score</span> "+
-                StringResources.thatyouarehappywith+
-                "</li><li>"+
-                StringResources.Optionallyyoucanadjustthe+
+                "<li>" +
+                StringResources.Startbyselectinga +
+                " <span style=\"font-family: 'Montserrat Black'; font-size:25px\">mode</span>.</li><li>" +
+                StringResources.ClickOn +
+                "<span style=\"font-family: 'Montserrat Black'; font-size:25px\">calibrate</span>" +
+                StringResources.thatcorrespondstothe +
+                "<span style=\"font-family: 'Montserrat Black'; font-size:25px\">mode</span>" +
+                StringResources.thatyouhaveselected +
+                " <span style=\"font-family: 'Montserrat Black'; font-size:25px\">score</span> " +
+                StringResources.thatyouarehappywith +
+                "</li><li>" +
+                StringResources.Optionallyyoucanadjustthe +
                 " <span style=\"font-family: 'Montserrat Black'; font-size:25px\">parameters</span> " +
-                StringResources.tohelpyouincreaseyourscore+
-                "</li><li>"+
+                StringResources.tohelpyouincreaseyourscore +
+                "</li><li>" +
                 StringResources.Completeatleastthreemodes
-                +"</li></ol></body></html>";
+                + "</li></ol></body></html>";
             webBrowserCalibrationHelp.DocumentText = htmlContent;
         }
     }

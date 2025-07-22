@@ -10,14 +10,12 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Common.BCIControl;
-using System;
 using System.Collections.Generic;
 
 namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
 {
     public class EEGProcessingGlobals
     {
-       
         /// <summary>
         /// Decision maker object
         /// </summary>

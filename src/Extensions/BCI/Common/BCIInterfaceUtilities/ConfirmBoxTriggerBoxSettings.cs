@@ -5,22 +5,22 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.PanelManagement;
-using ACAT.Core.WidgetManagement;
-using System.Drawing;
-using ACATResources;
-using System.Windows.Forms;
-using System;
 using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Extensions.BCI.Common.BCIControl;
+using ACATResources;
+using System;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
     /// <summary>
     /// Form that handles different calibrations options to configure and initialize calibration session
     /// </summary>
-    /// 
+    ///
     [ClassDescriptor("0E41996F-85E7-4809-9F6F-599119853651",
                         "ConfirmBoxTriggerBoxSettings",
                         "Application window used as a configuration UI for trigger test")]
@@ -30,6 +30,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// Main object of the actuator
         /// </summary>
         private IActuator _bciActuator = null;
+
         /// <summary>
         /// Interval of the timer
         /// </summary>
@@ -39,6 +40,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// Maximum amount of repetitions for the data collection
         /// </summary>
         private int _NumberRepetitions = 10;
+
         /// <summary>
         /// Return value when the Form is closed
         /// </summary>
@@ -50,6 +52,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         private CustomToolTip customToolTip = new();
 
         private readonly Screen primaryScreen = Screen.PrimaryScreen;
+
         /// <summary>
         /// Confirm Box with multiple results
         /// </summary>
@@ -59,7 +62,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             label1.Text = StringResources.CalibrationIsEssential;
             Load += ConfirmBox_Load;
         }
-        
+
         public static Tuple<BCIMenuOptions.Options, BCISimpleParameters> ShowDialogForm(Form parent = null, bool setTopMost = false)
         {
             var confirmBox = new ConfirmBoxTriggerBoxSettings();
@@ -81,6 +84,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             confirmBox.Dispose();
             return retVal;
         }
+
         /// <summary>
         /// Sets the values of the sliders based on the calibration mode parameters
         /// </summary>
@@ -109,13 +113,12 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 }
                 Close();
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Log.Exception("Error ButtonStartTriggerTest_Click: " + ex.Message);
                 OptionResult = new Tuple<BCIMenuOptions.Options, BCISimpleParameters>(BCIMenuOptions.Options.TriggerTest, GetTriggerTestParameters());
                 Close();
             }
-
         }
 
         /// <summary>
@@ -140,6 +143,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                         labelScanningTime.Text = customSliderScanningTime.Value.ToString();
                     }
                     break;
+
                 case var _ when scannerRoundedButtonControl.Name.Contains("NumberTargets"):
                     var newvalueNumberTargets = customSliderNumberTargets.Value - 1;
                     if (newvalueNumberTargets >= customSliderNumberTargets.Minimum)
@@ -170,7 +174,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 
         private void ButtonInfoModes_MouseLeave(object sender, EventArgs e)
         {
-            try{ customToolTip?.HideToolTip(); } catch (Exception ex) { Log.Debug("Error ButtonInfoModes_MouseLeave: " + ex.Message); }
+            try { customToolTip?.HideToolTip(); } catch (Exception ex) { Log.Debug("Error ButtonInfoModes_MouseLeave: " + ex.Message); }
         }
 
         private void ButtonInfoParameters_MouseEnter(object sender, EventArgs e)
@@ -181,6 +185,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 case var _ when scannerRoundedButtonControl.Name.Contains("ScanningTime"):
                     customToolTip?.ShowToolTip("Scanning time hint", (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
+
                 case var _ when scannerRoundedButtonControl.Name.Contains("NumberTargets"):
                     customToolTip?.ShowToolTip("Number of targets hint", (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
@@ -223,6 +228,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                         labelScanningTime.Text = customSliderScanningTime.Value.ToString();
                     }
                     break;
+
                 case var _ when scannerRoundedButtonControl.Name.Contains("NumberTargets"):
                     var newvalueNumberTargets = customSliderNumberTargets.Value + 1;
                     if (newvalueNumberTargets <= customSliderNumberTargets.Maximum)
@@ -245,6 +251,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             _bciActuator?.IoctlRequest((int)OpCodes.TriggerTestRequestParameters, string.Empty);
         }
+
         /// <summary>
         /// Handler for the actuator response from BCI
         /// </summary>
@@ -263,6 +270,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                     break;
             }
         }
+
         private void ConfirmBoxCalibrationModes_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (_bciActuator != null)
@@ -310,7 +318,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 Console.WriteLine(ex.ToString());
             }
         }
-
 
         /// <summary>
         /// Triggers the button being pressed

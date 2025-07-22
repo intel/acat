@@ -20,7 +20,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <summary>
         /// Colors and objects used by the UI
         /// </summary>
-        /// 
+        ///
         public SharpDX.Mathematics.Interop.RawColor4 ColorActuateDecision = new(0.5f, 0.5f, 1.0f, 1.0f);
 
         public SharpDX.Mathematics.Interop.RawColor4 ColorBackground;
@@ -64,11 +64,13 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         public SolidColorBrush SolidColorWhite;
 
         private readonly RenderTarget SharpDX_d2dRenderTarget;
-        public SharpDXColors(RenderTarget sharpDX_d2dRenderTarget) 
+
+        public SharpDXColors(RenderTarget sharpDX_d2dRenderTarget)
         {
             SharpDX_d2dRenderTarget = sharpDX_d2dRenderTarget;
             InitializeColors();
         }
+
         /// <summary>
         /// Gets the color codes from given Color
         /// </summary>

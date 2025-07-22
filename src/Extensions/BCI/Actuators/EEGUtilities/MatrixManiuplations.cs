@@ -17,7 +17,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGUtils
 {
     public class MatrixManipulations
     {
-
         /// <summary>
         /// Concatenate data (data is formated in classes or groups)
         /// </summary>

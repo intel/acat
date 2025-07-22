@@ -15,7 +15,6 @@ using System.Windows.Forms;
 
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
-
     [ClassDescriptor("3BC92A59-0B89-475D-8E2E-636CA9482740",
             "CustomToolTip",
             "Application window used to display a Custom Tooltip")]
@@ -29,6 +28,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             StartPosition = FormStartPosition.Manual;
             //Closing += OnClosing;
         }
+
         public void CloseToolTip()
         {
             Close();
@@ -47,9 +47,10 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             int x = screenLocation.X + horizontalDistance;
             int y = screenLocation.Y + control.Height + verticalDistance;
             Location = new Point(x, y);
-            BringToFront(); 
+            BringToFront();
             Show();
         }
+
         private void OnClosing(object sender, CancelEventArgs cancelEventArgs)
         {
             Close();

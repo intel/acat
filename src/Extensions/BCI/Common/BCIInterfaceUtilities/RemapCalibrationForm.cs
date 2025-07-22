@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
+using ACAT.Extensions.BCI.Common.BCIControl;
+using ACATResources;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using System;
-using ACATResources;
 
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
@@ -51,7 +51,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                             "To change where a calibration is  applied. Use the interface below.<br/>" +
                             "For more information watch this <a href=\"$ASSETS_VIDEOS_DIR#ACATOverviewBCI.mp4\">video</a> or review the <a href=$ACAT_USER_GUIDE#BCICalibrationRemap>set up guide</a>" +
                             "</p>\r\n</body>\r\n</html>";
-
 
         /// <summary>
         /// Confirm Box with multiple results
@@ -309,7 +308,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             try
             {
-                if(comboBox.Items.Count > 0)
+                if (comboBox.Items.Count > 0)
                 {
                     BCIScanSections localbCIScanSection = BCIScanSections.None;
                     if (_bCIMapOptions.CurrentMappingsDict.ContainsKey(bCIScanSection))
@@ -336,7 +335,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                     if (comboBox.Items.Count > 0)
                         comboBox.SelectedIndex = 0;
                 }
-                
             }
             catch (Exception ex)
             {
@@ -411,11 +409,9 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch
             {
-
             }
             finally
             {
-
             }
         }
     }

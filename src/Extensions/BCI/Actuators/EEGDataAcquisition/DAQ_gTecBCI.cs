@@ -10,17 +10,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Core.Utility;
 using Accord.Math;
 using brainflow;
+using Gtec.Unicorn;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Gtec.Unicorn;
 
 namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 {
@@ -59,7 +58,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// </summary>
         private int frontendFilterIdx;
 
-        
         /// <summary>
         /// Duration used to calculate VRMS and detect signal status (red/yellow/green)
         /// </summary>
@@ -123,7 +121,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// </summary>
         public int[] indEegChannels;
 
-
         public enum DeviceStatus
         {
             DEVICE_STANDBY,
@@ -182,8 +179,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         };
 
         public delegate void DelegateBluetoothUpdate(BluetoothEvent bluetoothEvent, Dictionary<String, object> eventParams);
+
         public event DelegateBluetoothUpdate EvtBluetoothResult;
-        
 
         /// <summary>
         ///  Default contstructor
@@ -234,7 +231,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             else
                 return null;
         }
-       
+
         /// <summary>
         /// Checks if device is acquiring data
         /// </summary>
@@ -247,15 +244,13 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 return false;
         }
 
-        static public bool IsDeviceAvailable()
+        public static bool IsDeviceAvailable()
         {
             // check if drivers are installed
             bool result = Unicorn.IsDeviceLibraryLoadable();
 
-
             // and if the device is available
             IList<string> devices = Unicorn.GetAvailableDevices(true);
-
 
             return result && devices.Count > 0;
             //*/
@@ -323,7 +318,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         BCIActuatorSettings.Save();
                         Log.Debug("Port: " + serial_number + " saved to settings");
 
-                        
                         // DAQ_NumEEGChannels may have changed - run LoadSettings() at this point
                         LoadSettings();
 
@@ -335,7 +329,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         indEegChannels = BoardShim.get_eeg_channels(boardID);
                         int[] accel = BoardShim.get_accel_channels(boardID);
                         int[] gyro = BoardShim.get_gyro_channels(boardID);
-                        int timestamp = BoardShim.get_timestamp_channel(boardID);    
+                        int timestamp = BoardShim.get_timestamp_channel(boardID);
                         int battery = BoardShim.get_battery_channel(boardID);
                         int[] indOtherChannels = BoardShim.get_other_channels(boardID); //indOtherChannels = 12...18
                         sampleRate = BoardShim.get_sampling_rate(boardID);
@@ -350,10 +344,10 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         status = BoardStatus.BOARD_OPEN;
 
                         deviceInitialized = true;
-                        
+
                         AddWarning(ExitCode.IDLE, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  STATUS                 MESSAGE: Device initialized at serial port: " + serial_number);
                         Log.Debug("Board initialized. Status: " + status.ToString());
-                        
+
                         return true;
                     }
                     else
@@ -851,7 +845,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 try
                 {
                     devices = Unicorn.GetAvailableDevices(paired);
-                    
+
                     Dictionary<String, object> eventParams = new()
                     {
                         ["paired"] = paired,
@@ -867,7 +861,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 */
             });
         }
-
 
         /// <summary>
         /// Asynchronous task to test bluetooth connection status of device name stored in settings
@@ -893,40 +886,40 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 {
                     return false;
 
-                /* Disabled until we can build 64 bit
-                    try
-                    {
-                        Log.Debug($"Selected device: {BCIActuatorSettings.Settings.GTecDeviceName}, trying to connect...");
-                        using (Unicorn device = new Unicorn(BCIActuatorSettings.Settings.GTecDeviceName))
+                    /* Disabled until we can build 64 bit
+                        try
                         {
-                            device.Dispose();
-                            Log.Debug($"Device: {device} is connected...");
-                            EvtBluetoothResult(BluetoothEvent.SUCCESSFUL_CONNECTION, null);
-                            return true;
+                            Log.Debug($"Selected device: {BCIActuatorSettings.Settings.GTecDeviceName}, trying to connect...");
+                            using (Unicorn device = new Unicorn(BCIActuatorSettings.Settings.GTecDeviceName))
+                            {
+                                device.Dispose();
+                                Log.Debug($"Device: {device} is connected...");
+                                EvtBluetoothResult(BluetoothEvent.SUCCESSFUL_CONNECTION, null);
+                                return true;
+                            }
                         }
-                    }
-                    catch (Gtec.Unicorn.DeviceException ex)
-                    {
-                        Log.Exception($"Error: {ex.Message}");
-                        Dictionary<String, object> eventParams = new()
+                        catch (Gtec.Unicorn.DeviceException ex)
                         {
-                            ["error"] = ex.Message
-                        };
-                        EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, eventParams);
-                        return false;
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Exception($"Unexpected error: {ex.Message}");
-                        Dictionary<String, object> eventParams = new()
+                            Log.Exception($"Error: {ex.Message}");
+                            Dictionary<String, object> eventParams = new()
+                            {
+                                ["error"] = ex.Message
+                            };
+                            EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, eventParams);
+                            return false;
+                        }
+                        catch (Exception ex)
                         {
-                            ["error"] = ex.Message
-                        };
-                        EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, eventParams);
-                        return false;
-                    }
-                //*/
-            });
+                            Log.Exception($"Unexpected error: {ex.Message}");
+                            Dictionary<String, object> eventParams = new()
+                            {
+                                ["error"] = ex.Message
+                            };
+                            EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, eventParams);
+                            return false;
+                        }
+                    //*/
+                });
             }
         }
 
@@ -984,8 +977,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             return statusAllSignals;
         }
     }
+
     #endregion Utils
-
-
-
 }

@@ -16,12 +16,11 @@
 // https://github.com/OpenBCI/OpenBCI_GUI/blob/master/LICENSE
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Core.Utility;
-using ACAT.Core.WidgetManagement;
-using ACATResources;
 using Accord.Math;
 using brainflow;
 using openBCISensorUI;
@@ -35,7 +34,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 {
     /// <summary>
-    /// Makes sure the BCI signals are good before continuing onto calibration. 
+    /// Makes sure the BCI signals are good before continuing onto calibration.
     /// Displays signals from electrodes and does railing and impedance tests
     /// </summary>
     public partial class UserControlBCISignalCheck : UserControl
@@ -89,6 +88,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 
         // Impedance testing enable / disable commands for default 8 channels
         private const string BCI_CMD_Impedance_CH1_ENABLE = "x1000100Xz101Z";
+
         private const string BCI_CMD_Impedance_CH1_DISABLE = "x1060110Xz100Z";
         private const string BCI_CMD_Impedance_CH2_ENABLE = "x2000100Xz201Z";
         private const string BCI_CMD_Impedance_CH2_DISABLE = "x2060110Xz200Z";
@@ -107,6 +107,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 
         // Impedance testing enable / disable commands for extended daisy board channels (total 16)
         private const string BCI_CMD_Impedance_CH9_ENABLE = "xQ000100XzQ01Z";
+
         private const string BCI_CMD_Impedance_CH9_DISABLE = "xQ060110XzQ00Z";
         private const string BCI_CMD_Impedance_CH10_ENABLE = "xW000100XzW01Z";
         private const string BCI_CMD_Impedance_CH10_DISABLE = "xW060110XzW00Z";
@@ -127,14 +128,17 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             new()
             { BCI_CMD_Impedance_CH1_ENABLE, BCI_CMD_Impedance_CH2_ENABLE, BCI_CMD_Impedance_CH3_ENABLE, BCI_CMD_Impedance_CH4_ENABLE,
                 BCI_CMD_Impedance_CH5_ENABLE, BCI_CMD_Impedance_CH6_ENABLE, BCI_CMD_Impedance_CH7_ENABLE, BCI_CMD_Impedance_CH8_ENABLE };
+
         private readonly List<String> BCI_CMDS_IMPEDANCE_DISABLE_REQUIRED8CHANNELS =
             new()
             { BCI_CMD_Impedance_CH1_DISABLE, BCI_CMD_Impedance_CH2_DISABLE, BCI_CMD_Impedance_CH3_DISABLE, BCI_CMD_Impedance_CH4_DISABLE,
                 BCI_CMD_Impedance_CH5_DISABLE, BCI_CMD_Impedance_CH6_DISABLE, BCI_CMD_Impedance_CH7_DISABLE, BCI_CMD_Impedance_CH8_DISABLE };
+
         private readonly List<String> BCI_CMDS_IMPEDANCE_ENABLE_OPTIONAL8CHANNELS =
             new()
             { BCI_CMD_Impedance_CH9_ENABLE, BCI_CMD_Impedance_CH10_ENABLE, BCI_CMD_Impedance_CH11_ENABLE, BCI_CMD_Impedance_CH12_ENABLE,
                 BCI_CMD_Impedance_CH13_ENABLE, BCI_CMD_Impedance_CH14_ENABLE, BCI_CMD_Impedance_CH15_ENABLE, BCI_CMD_Impedance_CH16_ENABLE };
+
         private readonly List<String> BCI_CMDS_IMPEDANCE_DISABLE_OPTIONAL8CHANNELS =
             new()
             { BCI_CMD_Impedance_CH9_DISABLE, BCI_CMD_Impedance_CH10_DISABLE, BCI_CMD_Impedance_CH11_DISABLE, BCI_CMD_Impedance_CH12_DISABLE,
@@ -167,11 +171,13 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 
         // Constants found in OpenBCI_GUI application (OpenBCI_GUI.pde, InterfaceSerial.pde, etc.) to calculate impedance
         private const int GAIN = 24;
+
         private const double LEADOFFDRIVE_AMPS = 6.0e-9;  //6 nA, set by its Arduino code
         private const double OPENBCI_SERIES_RESISTOR_OHMS = 2200;
 
         // Lists holding UI elements for all channels
         private List<String> _channelNamesRequired;
+
         private List<String> _channelNamesOptional;
         private readonly List<ScannerRoundedButtonControl> _requiredListElectrodesRailingTest;
         private readonly List<ScannerRoundedButtonControl> _optionalListElectrodesRailingTest;
@@ -193,6 +199,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 
         // Variables related to BCI board configuration
         private int _scaleIdx;
+
         private int _YMin = -200;
         private int _YMax = 200;
         private int _bufSize;
@@ -214,9 +221,9 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// The index of the current electrode being tested for impedance
         /// </summary>
         public static int _currentImpedanceTestElectrodeIndex;
-        
+
         /// <summary>
-        /// Holds data / information for each channel 
+        /// Holds data / information for each channel
         /// </summary>
         public static EEGChannel[] _eegChannels;
 
@@ -237,6 +244,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 
         // Colors for different UI elements which are changed based on signal quality or impedance testing status
         private readonly Color COLOR_ACAT_DEFAULT_ORANGE = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
+
         private readonly Color COLOR_STATUS_OK; // Green
         private readonly Color COLOR_STATUS_ACCEPTABLE; // Yellow
         private readonly Color COLOR_STATUS_KO; // Red
@@ -257,11 +265,11 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         public static BCISignalCheckMode _currentBCISignalCheckMode;
 
         /// <summary>
-        /// Makes sure the BCI signals are good before continuing onto calibration. 
+        /// Makes sure the BCI signals are good before continuing onto calibration.
         /// Displays signals from electrodes and does railing and impedance tests
         /// </summary>
         /// <param name="stepId"></param>
-        /// 
+        ///
         public UserControlBCISignalCheck(String stepId)
         {
             InitializeComponent();
@@ -270,7 +278,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             buttonNext.Enabled = true;
             buttonNext.Visible = true;
 
-            //TODO solving conflicts of resources 
+            //TODO solving conflicts of resources
             //labelBCISignalCheckDescription.Text = Resources.labelBCISignalCheckDescription;
 
             // Create electrode name / id -> cap electrode mapping
@@ -480,7 +488,6 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 }
             }
         }
-
 
         /// <summary>
         /// Based on current signal quality results - return struct that has aggregate info
@@ -1151,7 +1158,6 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
         }
 
-
         /// <summary>
         /// From latest impedance and railing values - get overall electrode signal quality status
         /// </summary>
@@ -1625,7 +1631,6 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 }
 
                 tabControlSignalQuality.Font = new Font("Montserrat Medium", 11.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-
             }
             catch (Exception ex)
             {

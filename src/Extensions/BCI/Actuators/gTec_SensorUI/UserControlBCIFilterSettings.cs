@@ -11,7 +11,6 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
-using System;
 using System.Windows.Forms;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI

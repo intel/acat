@@ -11,7 +11,6 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PreferencesManagement;
-using ACAT.Core.Utility;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -37,31 +36,31 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         [Range(0, 1000)]
         [UIHint("Slider")]
         [DefaultValue(0)]
-        public int CheekTwitchHoldTime { get; set; }  =  0;
+        public int CheekTwitchHoldTime { get; set; } = 0;
 
         [Descriptor("Try higher values if the system is triggering with involuntary cheek movement. Try lower values  if you want the system to trigger with less cheek movement​​")]
         [Range(5, 50)]
         [UIHint("Slider")]
         [DefaultValue(20)]
-        public int CheekTwitchSensitivity { get; set; }  =  20;
+        public int CheekTwitchSensitivity { get; set; } = 20;
 
         [Descriptor("Value is in milliseconds. If you observe two movement detections, once when you raise your eyebrows and the second when you return to normal position, adjust the value to the approximate time you hold the eyebrow in the raised position")]
         [Range(0, 2000)]
         [UIHint("Slider")]
         [DefaultValue(0)]
-        public int EyebrowRaiseHoldTime { get; set; }  =  0;
+        public int EyebrowRaiseHoldTime { get; set; } = 0;
 
         [Descriptor("Try higher values if the system is triggering with involuntary eyebrow movement. Try lower values  if you want to the system to trigger with less eyebrow movement")]
         [Range(5, 50)]
         [UIHint("Slider")]
         [DefaultValue(10)]
-        public int EyebrowRaiseSensitivity { get; set; }  =  10;
+        public int EyebrowRaiseSensitivity { get; set; } = 10;
 
         [Descriptor("Try higher values if the system is trying to recalibrate too often with involuntary head movements​. Try lower values if the system is too slow in adjusting the facial regions with head repositioning​")]
         [Range(20, 100)]
         [UIHint("Slider")]
         [DefaultValue(40)]
-        public int HeadMovementSensitivity { get; set; }  =  40;
+        public int HeadMovementSensitivity { get; set; } = 40;
 
         /// <summary>
         /// Preferred camera to use

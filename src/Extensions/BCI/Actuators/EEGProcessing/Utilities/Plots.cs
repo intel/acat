@@ -14,7 +14,6 @@
 using ACAT.Core.PanelManagement;
 using Accord.Math;
 using Accord.Statistics;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;

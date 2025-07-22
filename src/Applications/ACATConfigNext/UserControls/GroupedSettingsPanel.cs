@@ -1,15 +1,12 @@
-﻿using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
-using ACATConfigNext.Properties;
+﻿using ACAT.Core.Utility;
+using ACAT.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using ACAT.Core.PreferencesManagement;
 
 namespace ACATConfigNext.UserControls
 {

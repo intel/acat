@@ -11,11 +11,10 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PreferencesManagement;
-using ACAT.Core.Utility;
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
-using System.ComponentModel;
 
 namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
@@ -28,7 +27,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         [Descriptor("A string of characters that should be filtered out from the predicted words, eg, punctuations")]
         [UIHint("TextBox")]
         [DefaultValue("")]
-        public String FilterChars { get; set; }  =  "";
+        public String FilterChars { get; set; } = "";
 
         /// <summary>
         /// Path to the file where preferences are stored
@@ -42,34 +41,34 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         [Descriptor("Set this to true if the ConvAssist database for this language requires encoding translation")]
         [UIHint("ToggleSwitch")]
         [DefaultValue(true)]
-        public bool UseDefaultEncoding { get; set; }  =  true;
+        public bool UseDefaultEncoding { get; set; } = true;
 
         [Descriptor("Display disclaimer on application startup")]
         [UIHint("ToggleSwitch")]
         [DefaultValue(true)]
-        public bool ShowDisclaimerOnStartup { get; set; }  =  true;
+        public bool ShowDisclaimerOnStartup { get; set; } = true;
 
         [Descriptor("Wait time (in seconds) for the ConvAssist executable to load")]
         [Range(60, 500)]
         [UIHint("Slider")]
         [DefaultValue(100)]
-        public int ConvAssistExeLoadWaitTime { get; set; }  =  100;
+        public int ConvAssistExeLoadWaitTime { get; set; } = 100;
 
         [Descriptor("Wait time (in secs) for the ConvAssist modules to load")]
         [Range(30, 200)]
         [UIHint("Slider")]
         [DefaultValue(80)]
-        public int ConvAssistModuleLoadWaitTime { get; set; }  =  80;
+        public int ConvAssistModuleLoadWaitTime { get; set; } = 80;
 
         [Descriptor("Enable small model sentence prediction ")]
         [UIHint("ToggleSwitch")]
         [DefaultValue(false)]
-        public bool EnableSmallVocabularySentencePrediction { get; set; }  =  false;
+        public bool EnableSmallVocabularySentencePrediction { get; set; } = false;
 
         [Descriptor("Enable sentence prediction")]
         [UIHint("ToggleSwitch")]
         [DefaultValue(false)]
-        public bool Test_GeneralSentencePrediction { get; set; }  =  false;
+        public bool Test_GeneralSentencePrediction { get; set; } = false;
 
         /// <summary>
         /// Loads the settings from the settings file

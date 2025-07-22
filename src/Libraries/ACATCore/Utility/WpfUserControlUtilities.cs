@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace ACAT.Lib.Core.Utility.WpfUserControlUtilities
+namespace ACAT.Core.Utility.WpfUserControlUtilities
 {
     public static class WpfInitializationHelper
     {

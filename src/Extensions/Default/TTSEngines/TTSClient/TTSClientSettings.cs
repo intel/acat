@@ -11,12 +11,11 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PreferencesManagement;
-using ACAT.Core.Utility;
-using System.ComponentModel.DataAnnotations;
 using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Xml.Serialization;
-using System.ComponentModel;
 
 namespace ACAT.Extensions.TTSEngines.TTSClient
 {
@@ -61,7 +60,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         [Descriptor("Auto append sentence terminator?")]
         [UIHint("ToggleSwitch")]
         [DefaultValue(false)]
-        public bool AutoAppendPunctuation { get; set; }  =  false;
+        public bool AutoAppendPunctuation { get; set; } = false;
 
         public HttpSettings HttpSettings { get; set; }
 
@@ -86,7 +85,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         [Descriptor("Use alternate pronunciations?")]
         [UIHint("ToggleSwitch")]
         [DefaultValue(false)]
-        public bool UseAlternatePronunciations { get; set; }  =  false;
+        public bool UseAlternatePronunciations { get; set; } = false;
 
         /// <summary>
         /// Gets or sets the voice for TTS

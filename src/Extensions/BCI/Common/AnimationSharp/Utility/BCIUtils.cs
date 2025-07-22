@@ -5,8 +5,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Core.Utility;
+using ACAT.Extensions.BCI.Common.BCIControl;
 using System;
 using System.Collections.Generic;
 using System.Linq;

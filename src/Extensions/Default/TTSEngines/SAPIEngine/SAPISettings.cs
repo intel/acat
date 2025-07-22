@@ -11,14 +11,12 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PreferencesManagement;
-using ACAT.Core.Utility;
-using System.ComponentModel.DataAnnotations;
-
 using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Speech.Synthesis;
 using System.Xml.Serialization;
-using System.ComponentModel;
 
 namespace ACAT.Extensions.TTSEngines.SAPIEngine
 {
@@ -56,7 +54,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// </summary>
         [Descriptor("Auto append sentence terminator?")]
         [UIHint("ToggleSwitch")]
-        public bool AutoAppendPunctuation { get; set; }=false;
+        public bool AutoAppendPunctuation { get; set; } = false;
 
         /// <summary>
         /// Preferred Gender of the voice
@@ -82,7 +80,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         [Descriptor("Use alternate pronunciations?")]
         [UIHint("ToggleSwitch")]
         [DefaultValue(false)]
-        public bool UseAlternatePronunciations { get; set; } =  false;
+        public bool UseAlternatePronunciations { get; set; } = false;
 
         /// <summary>
         /// Gets or sets the voice for TTS

@@ -12,6 +12,7 @@ using ACAT.Lib.Core.TTSManagement;
 using ACAT.Lib.Core.UserManagement;
 using ACAT.Lib.Core.Utility;
 using ACAT.Lib.Core.WordPredictionManagement;
+using ACAT.Lib.Extension;
 
 namespace ACATConfigNext
 {
@@ -23,6 +24,7 @@ namespace ACATConfigNext
             private readonly Panel contentPanel;
             private readonly FlowLayoutPanel breadcrumbPanel;
             public static TableLayoutPanel _tableLayoutPanel = CustomControls.CreateCategoryTableLayoutPanel();
+            public static string _currentPanelType;
 
             private Button selectedCategoryButton;
 
@@ -104,6 +106,7 @@ namespace ACATConfigNext
                     selectedCategoryButton.BackColor = Color.FromArgb(255, 170, 0); // Highlight selected button
 
                     string category = (string)((Button)sender).Tag;
+                    _currentPanelType = category; // Track the current panel type  
 
                     breadcrumbStack.Clear();
                     contentPanel.Controls.Clear();
@@ -341,6 +344,8 @@ namespace ACATConfigNext
                 return descriptor != null && descriptor.HasSettings;
             }
 
+            #region Save
+
             private void SaveButton_Click(object sender, EventArgs e)
             {
                 try
@@ -460,6 +465,263 @@ namespace ACATConfigNext
                 }
             }
 
+            public static void TrackPreferenceModification(IPreferences preferences)
+            {
+                _modifiedPreferences.Add(preferences);
+            }
+
+            #endregion
+
+
+            #region Reset to Default
+
+            public static bool ResetAllPreferencesToDefaults()
+            {
+                bool success = true;
+
+                try
+                {
+                    // Reset general preferences  
+                    if (CoreGlobals.AppPreferences != null)
+                    {
+                        var defaultPrefs = ACATPreferences.LoadDefaultSettings();
+                        if (defaultPrefs != null)
+                        {
+                            // Copy default values to current preferences  
+                            CopyPreferencesValues(defaultPrefs, CoreGlobals.AppPreferences);
+                            success &= CoreGlobals.AppPreferences.Save();
+                        }
+                    }
+
+                    // Reset extension preferences  
+                    success &= ResetActuatorPreferences();
+                    success &= ResetWordPredictorPreferences();
+                    success &= ResetTTSPreferences();
+
+                    // Clear modified preferences tracking  
+                    _modifiedPreferences.Clear();
+
+                    return success;
+                }
+                catch (Exception ex)
+                {
+                    Log.Exception(ex);
+                    return false;
+                }
+            }
+
+            private static bool ResetActuatorPreferences()
+            {
+                try
+                {
+                    foreach (var category in _currentActuatorCategories)
+                    {
+                        if (category.PreferenceObj is ISupportsPreferences supportsPrefs)
+                        {
+                            var defaultPrefs = supportsPrefs.GetDefaultPreferences();
+                            var currentPrefs = supportsPrefs.GetPreferences();
+
+                            if (defaultPrefs != null && currentPrefs != null)
+                            {
+                                CopyPreferencesValues(defaultPrefs, currentPrefs);
+                                currentPrefs.Save();
+                            }
+                        }
+                    }
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Log.Exception(ex);
+                    return false;
+                }
+            }
+
+            private static bool ResetWordPredictorPreferences()
+            {
+                try
+                {
+                    foreach (var category in _currentWordPredictorCategories)
+                    {
+                        if (category.PreferenceObj is ISupportsPreferences supportsPrefs)
+                        {
+                            var defaultPrefs = supportsPrefs.GetDefaultPreferences();
+                            var currentPrefs = supportsPrefs.GetPreferences();
+
+                            if (defaultPrefs != null && currentPrefs != null)
+                            {
+                                CopyPreferencesValues(defaultPrefs, currentPrefs);
+                                currentPrefs.Save();
+                            }
+                        }
+                    }
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Log.Exception(ex);
+                    return false;
+                }
+            }
+
+            private static bool ResetTTSPreferences()
+            {
+                try
+                {
+                    foreach (var category in _currentTTSCategories)
+                    {
+                        if (category.PreferenceObj is ISupportsPreferences supportsPrefs)
+                        {
+                            var defaultPrefs = supportsPrefs.GetDefaultPreferences();
+                            var currentPrefs = supportsPrefs.GetPreferences();
+
+                            if (defaultPrefs != null && currentPrefs != null)
+                            {
+                                CopyPreferencesValues(defaultPrefs, currentPrefs);
+                                currentPrefs.Save();
+                            }
+                        }
+                    }
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Log.Exception(ex);
+                    return false;
+                }
+            }
+
+            private static void CopyPreferencesValues(IPreferences source, IPreferences target)
+            {
+                var sourceType = source.GetType();
+                var targetType = target.GetType();
+
+                var properties = sourceType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+                foreach (var prop in properties)
+                {
+                    if (prop.CanRead && prop.CanWrite)
+                    {
+                        try
+                        {
+                            var value = prop.GetValue(source);
+                            var targetProp = targetType.GetProperty(prop.Name);
+
+                            if (targetProp != null && targetProp.CanWrite)
+                            {
+                                targetProp.SetValue(target, value);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Debug($"Could not copy property {prop.Name}: {ex.Message}");
+                        }
+                    }
+                }
+            }
+
+            private void ResetToDefaultButton_Click(object sender, EventArgs e)
+            {
+                try
+                {
+                    var result = MessageBox.Show(
+                        "Are you sure you want to reset all settings to their default values? This action cannot be undone.",
+                        "Reset to Defaults",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        bool success = ResetAllPreferencesToDefaults();
+
+                        if (success)
+                        {
+                            MessageBox.Show("Settings have been reset to default values.", "Reset Complete",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            RefreshCurrentPanel();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Some settings could not be reset. Please check the logs.",
+                                "Reset Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Exception(ex);
+                    MessageBox.Show("An error occurred while resetting settings.", "Reset Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            private void RefreshCurrentPanel()
+            {
+                string currentPanelType = GetCurrentPanelType();
+
+                if (SettingsForm._tableLayoutPanel != null)
+                {
+                    SettingsForm._tableLayoutPanel.Controls.Clear();
+                }
+
+                switch (currentPanelType)
+                {
+                    case "General":
+                        var generalPanel = RefreshGeneralSettingsPanel();
+                        SettingsForm._tableLayoutPanel.Controls.Add(generalPanel);
+                        break;
+
+                    case "Actuators":
+                        var actuatorPanel = RefreshExtensionPanel<ActuatorManager, Actuators>(
+                            () => ACAT.Lib.Core.PanelManagement.Context.AppActuatorManager.LoadExtensions(ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs, true),
+                            () => ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs,
+                            new Actuators(),
+                            context => null,
+                            "Actuator Settings",
+                            OnSetupClicked
+                        );
+                        SettingsForm._tableLayoutPanel.Controls.Add(actuatorPanel);
+                        break;
+
+                    case "Word Predictors":
+                        var wordPredictorPanel = RefreshExtensionPanel<WordPredictionManager, WordPredictors>(
+                            () => ACAT.Lib.Core.PanelManagement.Context.AppWordPredictionManager.LoadExtensions(ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs),
+                            () => ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs,
+                            new WordPredictors(),
+                            context => context.Collection,
+                            "Word Predictor Settings",
+                            OnSetupClicked
+                        );
+                        SettingsForm._tableLayoutPanel.Controls.Add(wordPredictorPanel);
+                        break;
+
+                    case "Text to Speech":
+                        var ttsPanel = RefreshExtensionPanel<TTSManager, TTSEngines>(
+                            () => ACAT.Lib.Core.PanelManagement.Context.AppTTSManager.LoadExtensions(ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs),
+                            () => ACAT.Lib.Core.PanelManagement.Context.ExtensionDirs,
+                            new TTSEngines(),
+                            context => context.Collection,
+                            "TTS Settings",
+                            OnSetupClicked
+                        );
+                        SettingsForm._tableLayoutPanel.Controls.Add(ttsPanel);
+                        break;
+
+                    default:
+                        var defaultPanel = RefreshGeneralSettingsPanel();
+                        SettingsForm._tableLayoutPanel.Controls.Add(defaultPanel);
+                        break;
+                }
+            }
+
+            private string GetCurrentPanelType()
+            {
+                return _currentPanelType ?? "General";
+            }
+
+
+            #endregion
         }
 
         /// <summary>
@@ -772,7 +1034,7 @@ namespace ACATConfigNext
                         break;
 
                     case "rate":
-                        var ratePanel = CustomControls.CreateRateControl(prop, preferences);
+                        var ratePanel = CustomControls.CreateRateControl(prop, preferences, SettingsForm.TrackPreferenceModification);// TODO repeat on each numericUpDown
                         tableLayout.Controls.Add(ratePanel);
                         break;
 
@@ -795,5 +1057,7 @@ namespace ACATConfigNext
             }
 
         }
+
+
     }
 }

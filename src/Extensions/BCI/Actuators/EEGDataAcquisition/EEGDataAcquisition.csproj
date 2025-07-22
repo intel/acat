@@ -45,10 +45,14 @@
     
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
+<!-- DISABLED UNTIL WE CAN BUILD 64-BIT
   <ItemGroup>
     <PackageReference Include="UnicornDotNet">
       <Version>1.24.0</Version>
     </PackageReference>
+  </ItemGroup>
+-->
+  <ItemGroup>
     <ProjectReference Include="$(SolutionDir)Libraries\ACATCore\Core.csproj">
       <Project>{827ad764-63dd-4b12-974d-2b70cc877051}</Project>
       <Name>Core</Name>

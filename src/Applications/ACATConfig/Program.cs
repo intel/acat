@@ -58,6 +58,7 @@ namespace ACATConfig
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            PreferencesEditForm.EnsureInitialized();
 
             if (!validateACATCoreLibraryCertificates())
             {

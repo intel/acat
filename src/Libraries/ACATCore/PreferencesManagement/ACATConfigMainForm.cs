@@ -21,20 +21,12 @@ using System.Windows.Forms;
 
 namespace ACAT.Core.PreferencesManagement
 {
-    /// <summary>
-    /// Main form for ACAT Config application
-    /// </summary>
     public partial class ACATConfigMainForm : Form
     {
-        /// <summary>
-        /// Holds information on high level preferenes category in list of checkboxes on left side of the screen
-        /// </summary>
-        public List<Tuple<String, CheckBox>> _configCategoryList;
+     
+        public List<Tuple<String, CheckBox>> _configCategoryList;    // Holds information on high level preferenes category in list of checkboxes on left side of the screen
 
-        /// <summary>
-        /// Keeps track of which preferences forms are currently displayed
-        /// </summary>
-        private static Stack<Form> _shownPreferenceForms;
+        private static Stack<Form> _shownPreferenceForms;           // Keeps track of which preferences forms are currently displayed
 
         /// <summary>
         /// Aspect ratio of form at design time
@@ -58,9 +50,10 @@ namespace ACAT.Core.PreferencesManagement
         /// </summary>
         public ACATConfigMainForm()
         {
+
             InitializeComponent();
             Load += ACATConfigMainForm_Load;
-            Shown += ACATConfigMainForm_Shown;
+          //  Shown += ACATConfigMainForm_Shown;
             _configCategoryList = new List<Tuple<String, CheckBox>>
             {
                 new Tuple<String, CheckBox>(checkBoxCategoryGeneral.Text.ToString(), checkBoxCategoryGeneral),
@@ -196,56 +189,44 @@ namespace ACAT.Core.PreferencesManagement
             // Create new PreferencesCategorySelectForm or PreferencesEditForm depending on which high level category selected
             Form newPreferencesSelectForm = null;
             IntPtr formHandle = this.Handle;
+            var existingApp = System.Windows.Application.Current;
 
             // Handle category-specific initialization
             switch (newConfigCategory)
             {
                 case "General":
-                    var generalSettings = new GeneralSettingsCategory();
-                    var generalForm = new PreferencesEditForm
-                    {
-                        SupportsPreferencesObj = generalSettings,
-                        Title = "General Settings"
-                    };
-
-                    NotifyWrapTextCheckBoxClicked wrapTextHandler = generalForm.checkBoxWrapText_CheckedChanged;
-                    NotifyResetToDefaultButtonClicked resetHandler = generalForm.buttonDefaults_Click;
-                    bool wrapTextDefault = generalForm._wrapText;
-
-                    buttonResetToDefault.Visible = true;
-                    SetNewFormButtonHandlers(resetHandler, wrapTextHandler, wrapTextDefault);
-
-                    newPreferencesSelectForm = generalForm;
+                    //PreferencesEditForm.EnsureInitialized();
+                    newPreferencesSelectForm = CreateGeneralPreferencesForm();
                     break;
 
                 case "Actuators":
+                    //PreferencesEditForm.EnsureInitialized();
                     if (!Context.AppActuatorManager.LoadExtensions(Context.ExtensionDirs, true))
                     {
                         ShowError("Actuator");
                         return;
                     }
-
                     newPreferencesSelectForm = Context.AppActuatorManager.GetPreferencesSelectionForm(parentControlHandle);
                     break;
 
                 case "Word Prediction":
+                    //PreferencesEditForm.EnsureInitialized();
                     if (!Context.AppWordPredictionManager.LoadExtensions(Context.ExtensionDirs))
                     {
                         ShowError("Word Prediction");
                         return;
                     }
-
                     newPreferencesSelectForm = Context.AppWordPredictionManager.GetPreferencesSelectionForm(parentControlHandle);
                     break;
 
                 case "Text to Speech":
+                    //PreferencesEditForm.EnsureInitialized();
                     if (!Context.AppTTSManager.LoadExtensions(Context.ExtensionDirs))
                     {
                         ShowError("Text-to-Speech");
                         return;
                     }
-
-                    newPreferencesSelectForm = Context.AppTTSManager.GetPreferencesSelectionForm(parentControlHandle);
+                   newPreferencesSelectForm = Context.AppTTSManager.GetPreferencesSelectionForm(parentControlHandle);
                     break;
             }
 
@@ -307,6 +288,7 @@ namespace ACAT.Core.PreferencesManagement
                 categoryForm.EvtPreferencesCategorySelected += handlePreferencesCategorySelected;
             }
 
+
             // Push new preferences select form to stack
             _shownPreferenceForms.Push(newPreferencesSelectForm);
 
@@ -314,22 +296,35 @@ namespace ACAT.Core.PreferencesManagement
             newPreferencesSelectForm.Show();
         }
 
+        private PreferencesEditForm CreateGeneralPreferencesForm()
+        {
+            var generalSettings = new GeneralSettingsCategory();
+
+            var generalForm = new PreferencesEditForm
+            {
+                SupportsPreferencesObj = generalSettings,
+                Title = "General Settings"
+            };
+
+            // Hook up handlers and defaults
+            NotifyWrapTextCheckBoxClicked wrapTextHandler = generalForm.checkBoxWrapText_CheckedChanged;
+            NotifyResetToDefaultButtonClicked resetHandler = generalForm.buttonDefaults_Click;
+            bool wrapTextDefault = generalForm._wrapText;
+
+         //   buttonResetToDefault.Visible = true;
+            SetNewFormButtonHandlers(resetHandler, wrapTextHandler, wrapTextDefault);
+
+            return generalForm;
+        }
+
+
         private void ShowError(string category)
         {
             MessageBox.Show($"Error loading {category} extensions", "ACAT Config", MessageBoxButtons.OK);
         }
 
-        /*private void handlePreferenceChangeMade()
-        {
-            buttonSave.Visible = true;
-        }*/
-
-        /// <summary>
-        /// Handler for when preferences category is selected ("Setup" button in "Configure" column)
-        /// Load custom preferences dialog called by ShowPreferencesDialog, or load default PreferencesEditForm2
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="supportsPreferences"></param>
+        //Handler for when preferences category is selected ("Setup" button in "Configure" column)
+        //Load custom preferences dialog called by ShowPreferencesDialog, or load default PreferencesEditForm2
         private void handlePreferencesCategorySelected(object sender, ISupportsPreferences supportsPreferences)
         {
             try
@@ -344,9 +339,68 @@ namespace ACAT.Core.PreferencesManagement
                 // Show custom preferences dialog if available
                 if (supportsPreferences.SupportsPreferencesDialog)
                 {
-                    senderForm.Hide();
-                    supportsPreferences.ShowPreferencesDialog();
-                    senderForm.Show();
+                    #region MessUp
+                    var prefs = supportsPreferences.GetPreferences();
+
+                    if (prefs != null)
+                    {
+                        PreferencesEditForm newPreferencesEditForm = new PreferencesEditForm
+                        {
+                            Title = "Select Voice"
+                        };
+
+                        // Get handle of control you will make parent of new form
+                        IntPtr parentControlHandle = tableLayoutPanelConfigSettings.Handle;
+
+                        newPreferencesEditForm.Dock = DockStyle.Fill;
+
+                        //// Change window style according to SetParent documentation
+                        //// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setparent
+                        IntPtr handle = newPreferencesEditForm.Handle;
+                        IntPtr style = (IntPtr)User32Interop.GetWindowLong(handle, -16);
+                        uint currentStyle = (uint)style.ToInt32();
+                        currentStyle &= ~User32Interop.WS_POPUP;
+                        currentStyle |= User32Interop.WS_CHILD;
+                        IntPtr newStyle = new IntPtr((int)currentStyle);
+                        User32Interop.SetWindowLong(handle, -16, newStyle);
+
+
+                        // Use lower level User32Interop function to set parent of PreferencesEditForm to target control
+                        User32Interop.SetParent(newPreferencesEditForm.Handle, parentControlHandle);
+
+                        // Set handlers for button press events of main form
+                        NotifyWrapTextCheckBoxClicked HandlerWrapTextButtonClicked = ((PreferencesEditForm)newPreferencesEditForm).checkBoxWrapText_CheckedChanged;
+                        bool wrapTextBoxChecked = ((PreferencesEditForm)newPreferencesEditForm)._wrapText;
+
+                        // Get whether preferences supports reset to default function
+                        NotifyResetToDefaultButtonClicked HandlerResetToDefaultsButtonClicked = null;
+                        IPreferences DefaultPreferences = supportsPreferences.GetDefaultPreferences();
+
+                        SetNewFormButtonHandlers(HandlerResetToDefaultsButtonClicked, HandlerWrapTextButtonClicked, wrapTextBoxChecked);
+
+                        //Set handler for when preferences setting change made
+                        newPreferencesEditForm.EvtPreferencesChangeMade += () => buttonSave.Visible = true;
+
+
+                        newPreferencesEditForm.FormClosing += (_, e) =>
+                        {
+                            if (_shownPreferenceForms?.Count > 0)
+                            {
+                                _shownPreferenceForms.Pop();
+                                _shownPreferenceForms.Peek()?.Show();
+                            }
+                        };
+                        //Push new preferences edit form to stack
+                        _shownPreferenceForms.Push(newPreferencesEditForm);
+                        newPreferencesEditForm.Show();
+                    }
+
+
+                    //   senderForm.Hide();
+                    // supportsPreferences.ShowPreferencesDialog();
+                    //   senderForm.Show();
+
+                    #endregion
                 }
 
                 // Otherwise show generic PreferencesEditForm
@@ -407,11 +461,8 @@ namespace ACAT.Core.PreferencesManagement
 
                         SetNewFormButtonHandlers(HandlerResetToDefaultsButtonClicked, HandlerWrapTextButtonClicked, wrapTextBoxChecked);
 
-                        // newPreferencesEditForm.EvtPreferencesChangeMade += handlePreferenceChangeMade;
-
+                        //Set handler for when preferences setting change made
                         newPreferencesEditForm.EvtPreferencesChangeMade += () => buttonSave.Visible = true;
-
-                        //newPreferencesEditForm.FormClosing += handlePreferencesEditFormClosing;
 
                         newPreferencesEditForm.FormClosing += (_, e) =>
                         {
@@ -422,7 +473,7 @@ namespace ACAT.Core.PreferencesManagement
                             }
                         };
 
-                        // Push new preferences edit form to stack
+                        //Push new preferences edit form to stack
                         _shownPreferenceForms.Push(newPreferencesEditForm);
                         newPreferencesEditForm.Show();
                     }
@@ -475,84 +526,6 @@ namespace ACAT.Core.PreferencesManagement
                 if (!saveButtonPressed)
                     ((Form)shownForm).Close();
             }
-
-
-            /*   bool shownFormDirty = false;
-                bool userSaveConfirmation = false;
-
-                if (_shownPreferenceForms != null && _shownPreferenceForms.Count >= 1)
-                {
-                    int numFormsOpen = _shownPreferenceForms.Count;
-                    if (saveButtonPressed)
-                    {
-                        numFormsOpen = 1;
-                    }
-
-                    for (int i = 0; i < numFormsOpen; i++)
-                    {
-                        if (_shownPreferenceForms.Count == 0)
-                        {
-                            break;
-                        }
-
-                        var shownForm = _shownPreferenceForms.Peek();
-
-                        if (shownForm.GetType() == typeof(PreferencesEditForm))
-                        {
-                            _ = ((PreferencesEditForm)shownForm).Validate();
-                        }
-
-                        if (!saveButtonPressed)
-                        {
-                            _shownPreferenceForms.Pop();
-                        }
-
-                        if (shownForm.GetType() == typeof(PreferencesCategorySelectForm))
-                        {
-                            if (((PreferencesCategorySelectForm)shownForm)._isDirty)
-                            {
-                                shownFormDirty = true;
-                            }
-                        }
-                        else if (shownForm.GetType() == typeof(PreferencesEditForm))
-                        {
-                            if (((PreferencesEditForm)shownForm)._isDirty)
-                            {
-                                shownFormDirty = true;
-                            }
-                        }
-
-                        if (shownFormDirty == true && userSaveConfirmation == false)
-                        {
-                            userSaveConfirmation = ConfirmBoxTwoOption.ShowDialog("Save changes?", "", StringResources.Yes, StringResources.No, this, true);
-                        }
-
-                        if (shownForm.GetType() == typeof(PreferencesCategorySelectForm))
-                        {
-                            if (userSaveConfirmation == true)
-                            {
-                                ((PreferencesCategorySelectForm)shownForm).validateAndSave();
-                            }
-                            ((PreferencesCategorySelectForm)shownForm)._isDirty = false;
-                        }
-                        else if (shownForm.GetType() == typeof(PreferencesEditForm))
-                        {
-                            if (userSaveConfirmation == true)
-                            {
-                                ((PreferencesEditForm)shownForm).validateAndSave();
-                            }
-                            ((PreferencesEditForm)shownForm)._isDirty = false;
-                        }
-
-                        if (!saveButtonPressed)
-                        {
-                            ((Form)shownForm).Close();
-                        }
-                    }
-                }
-
-
-                */
         }
 
         /* public class PreferencesLanguageChanged

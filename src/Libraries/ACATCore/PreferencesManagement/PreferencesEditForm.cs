@@ -33,46 +33,29 @@ using ACAT.Lib.Core.PreferencesManagement.UI;
 
 namespace ACAT.Core.PreferencesManagement
 {
-    /// <summary>
-    /// A generic preferences editor for a class that
-    /// has fields and properties which are intergers,
-    /// strings, bool or floats. Picks those fields and
-    /// properties which are qualified by custom attributes
-    /// (BoolDescritpor, IntDescriptor etc). Displays the
-    /// settings as a gridview. Does validation of data
-    /// to make sure it is within range etc.
-    /// </summary>
     public partial class PreferencesEditForm : Form
     {
-        /// <summary>
-        /// Default values for the preferences
-        /// </summary>
-        public IPreferences DefaultPreferences;
+        #region Properties
 
-        /// <summary>
-        /// The preferences object
-        /// </summary>
-        public IPreferences Preferences;
+        public IPreferences DefaultPreferences;                                 //Default values for the preferences
 
-        /// <summary>
-        /// Did the user change anything in the form
-        /// </summary>
-        public bool _isDirty = false;
+        public IPreferences Preferences;                                        //The preferences object
+        public ISupportsPreferences SupportsPreferencesObj { get; set; }        //Gets or sets the preferences object
 
-        /// <summary>
-        /// Aspect ratio of form at design time
-        /// </summary>
-        private float _designTimeAspectRatio = 0.0f;
+        public interface IPreferenceEditor
+        {
+            string PropertyName { get; }
+            object GetValue();
+        }
 
         /// <summary>
         /// Has first call to OnClientSizeChanged been made?
         /// </summary>
         private bool _firstClientChangedCall = true;
 
-        /// <summary>
-        /// Whether the text should be wrapped or not
-        /// </summary>
-        public bool _wrapText = true;
+        private float _designTimeAspectRatio = 0.0f;                            //Aspect ratio of form at design time
+                                  
+        private bool _firstClientChangedCall = true;                            //Has first call to OnClientSizeChanged been made? 
 
         /// <summary>
         /// Delegate for the event triggered when the user makes a change to a preference setting
@@ -86,30 +69,761 @@ namespace ACAT.Core.PreferencesManagement
         /// </summary>
         public event NotifyPreferencesChangeMade EvtPreferencesChangeMade;
 
-        /// <summary>
-        /// Initializes an instance of the class
-        /// </summary>
+        #endregion
+
+        #region Controls
+
+        private Label CreateDescriptionLabel(string description)
+        {
+            return new Label
+            {
+                Text = description,
+                AutoSize = true,
+                Font = new Font("Segoe UI", 20, FontStyle.Italic),
+                ForeColor = Color.White,
+                Margin = new Padding(0, 0, 0, 5)
+            };
+        }
+
+        private FlowLayoutPanel CreateFlowPanel()
+        {
+            var panel = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.TopDown,
+                BackColor = Color.Transparent,
+                AutoSize = false,
+                AutoScroll = false,
+                Dock = DockStyle.Fill
+            };
+
+            panel.HorizontalScroll.Visible = false;
+            panel.HorizontalScroll.Maximum = 0;
+
+            return panel;
+        }
+
+        private FlowLayoutPanel _flowPanel;
+
+        private TableLayoutPanel CreateCategoryPanel()
+        {
+            var panel = new TableLayoutPanel
+            {
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowOnly,
+                Margin = new Padding(10),
+                Padding = new Padding(10),
+               // BackColor = Color.FromArgb(48, 49, 64),
+                Dock = DockStyle.Top,
+            };
+
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F)); // Label + description
+            //panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F)); // Setup button
+
+            panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));    // Row 0: Title
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F)); // Spacer row for centering
+            panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));    // Row 2: Description
+
+
+            return panel;
+        }
+
+
+        private Label CreateLabel(string text, int fontSize, FontStyle fontStyle)
+        {
+            var label = new Label
+            {
+                AutoSize = true,
+                Dock = DockStyle.Fill,
+                Text = text,
+                Font = new Font("Montserrat", fontSize, fontStyle),
+                ForeColor = Color.White,
+                Margin = new Padding(0, 0, 0, 5),
+            };
+
+            return label;
+        }
+
+
+        #endregion
+
+        private static bool _initialized;
+
+        //public static void EnsureInitialized()
+        //{
+        //    var existingApp = System.Windows.Application.Current;
+
+        //    if (!_initialized && existingApp == null)
+        //    {
+        //        new System.Windows.Application(); // Don't call Run()
+        //        _initialized = true;
+        //    }
+        //    else
+        //    {
+        //       // existingApp.Shutdown();
+        //    }
+        //}
+
+        //Initializes an instance of the class
         public PreferencesEditForm()
         {
+            WpfInitializationHelper.EnsureApplicationResources(); // Ensure WPF is initialized
             InitializeComponent();
+
+            CenterToScreen();
+         
             Text = "Settings";
             Load += PreferencesEditForm_Load;
         }
 
-        /// <summary>
-        /// Gets or sets the preferences object
-        /// </summary>
-        public ISupportsPreferences SupportsPreferencesObj { get; set; }
+        //Form loader.  Initialize the grid and populate it
+        private void PreferencesEditForm_Load(object sender, EventArgs e)
+        {
+            float currentAspectRatio = (float)ClientSize.Height / ClientSize.Width;
 
-        /// <summary>
-        /// Gets or sets the title / text for header of settings column of the form
-        /// </summary>
-        public String Title { get; set; }
+            if (_designTimeAspectRatio != 0.0f && currentAspectRatio != _designTimeAspectRatio)
+            {
+                ClientSize = new System.Drawing.Size(ClientSize.Width, (int)(_designTimeAspectRatio * ClientSize.Width));
+            }
 
-        /// <summary>
-        /// Client size changed
-        /// </summary>
-        /// <param name="e">event args</param>
+            Activate();
+
+            CenterToScreen();
+
+            if (Title != "Select Voice")
+            {
+
+                Preferences = SupportsPreferencesObj.GetPreferences();
+                DefaultPreferences = SupportsPreferencesObj.GetDefaultPreferences();
+            }
+
+            _isDirty = false;
+
+            if (Title == "Select Voice")
+            {
+                if (_flowPanel == null)
+                {
+                    _flowPanel = CreateFlowPanel();
+                }
+
+                tableLayoutPanel1.Controls.Add(_flowPanel);
+
+                wrapText(_wrapText);
+                
+                var comboBox = new ComboBox
+                {
+                    DropDownStyle = ComboBoxStyle.DropDownList,
+                    Font = new Font("Montserrat", 12, FontStyle.Regular),
+                    ForeColor = Color.White,
+                    BackColor = Color.FromArgb(48, 49, 64),
+                    //   Dock = DockStyle.Top,
+                    FlatStyle = FlatStyle.Flat,
+                    Width = 350,
+                    Margin = new Padding(10),
+                    DrawMode = DrawMode.OwnerDrawFixed,
+                    Cursor = Cursors.Hand
+
+                };
+                // Fix dropdown list background/foreground (optional)
+                comboBox.FlatStyle = FlatStyle.Popup;
+
+                
+
+
+                comboBox.DrawItem += delegate (object s, DrawItemEventArgs args)
+                {
+                    args.DrawBackground();
+
+                    if (args.Index >= 0)
+                    {
+                        string text = comboBox.Items[args.Index].ToString();
+
+                        Brush textBrush = new SolidBrush(Color.White);
+
+                       args.Graphics.DrawString(text, comboBox.Font, textBrush, args.Bounds);
+                       textBrush.Dispose();
+                    }
+
+                    args.DrawFocusRectangle();
+                };
+
+                _speechSynthesizer = new SpeechSynthesizer();
+
+                IEnumerable<InstalledVoice> ins = true
+                ? _speechSynthesizer.GetInstalledVoices(CultureInfo.DefaultThreadCurrentUICulture)
+                : _speechSynthesizer.GetInstalledVoices();
+
+                string[] options = { "DAVID(Male)", "ZIRA(Female)" };
+                //string selectedOption = "DAVID(Male)";
+        
+
+
+                foreach (InstalledVoice installedvoice in ins)
+                {
+                    String voiceName = installedvoice.VoiceInfo.Name.ToString();
+                    String gender = " ";
+                    if (voiceName.ToUpper().Contains("DAVID"))
+                    {
+                        gender += "(Male)";
+                    }
+                    else if (voiceName.ToUpper().Contains("ZIRA"))
+                    {
+                        gender += "(Female)";
+                    }
+                    voiceName += gender;
+                    comboBox.Items.Add(voiceName);
+                }
+
+                //comboBox.Items.AddRange(options);
+                //comboBox.SelectedItem = selectedOption;
+                var categoryItem = CreateCategoryPanel();
+                categoryItem.Controls.Add(comboBox);
+
+                _flowPanel.Controls.Add(CreateLabel("Text to Speech", 24, FontStyle.Bold));
+                _flowPanel.Controls.Add(CreateLabel(Title, 20, FontStyle.Regular));
+                _flowPanel.Controls.Add(categoryItem);
+            }
+
+
+
+            Paint += (s, args) =>
+            {
+                if (Title != "Select Voice")
+                {
+                    refreshPanel(Preferences);
+
+                    AttachInputEvents(_flowPanel);
+                }
+            };
+
+            /*
+            // Refresh grid view and set handlers which change _dirty flag after form has been fully painted / shown
+            Paint += (s, args) =>
+            {
+                refreshPanel(Preferences);
+
+                if (dataGridView != null)
+                {
+                    dataGridView.CellValueChanged += DataGridView_CellValueChanged;
+                    dataGridView.CurrentCellDirtyStateChanged += DataGridView_CurrentCellDirtyStateChanged;
+                }
+            };
+
+            */
+        }
+
+        //Populates the grid view with preferences data
+        private void refreshPanel(IPreferences prefs)
+        {
+            if (_flowPanel == null)
+            {
+                _flowPanel = CreateFlowPanel();
+            }
+
+
+
+
+            //tableLayoutPanel1.Controls.Remove(dataGridView);
+            tableLayoutPanel1.Controls.Add(_flowPanel);
+
+            wrapText(_wrapText);
+
+            
+
+            var descriptor = prefs.GetType().GetCustomAttribute<DescriptorAttribute>();
+
+            _flowPanel.Controls.Add(CreateLabel(descriptor?.Category ?? "UNKNOWN CATEGORY", 24, FontStyle.Bold));
+            _flowPanel.Controls.Add(CreateLabel(descriptor?.Description ?? "UNKNOWN DESCRIPTION", 20, FontStyle.Regular));
+
+            var props = prefs.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var builder = new SettingsPanelBuilder();
+
+            foreach (var prop in props)
+            {
+                var propPanel = builder.CreateLabeledPanel(prop, prefs);
+
+                var host = new ElementHost
+                {
+                    Child = propPanel,
+                    AutoSize = true,
+                    Margin = new Padding(10),
+                    Dock = DockStyle.Top
+                };
+
+                _flowPanel.Controls.Add(host);
+            }
+        }
+
+        //Check if form filled correctly, if not, return false If validated, check if changes have been made to form and if so prompt user asking if they want to save
+        public bool validateAndSave()
+        {
+            updatePreferences();            //Update preferences based on latest values then save
+            Preferences.Save();             //Save preferences
+
+            return true;
+        }
+
+        private void AttachInputEvents(Control container)
+        {
+            foreach (Control ctrl in container.Controls)
+            {
+                var panel = ctrl as TableLayoutPanel;
+                if (panel == null)
+                    continue;
+
+                foreach (Control input in panel.Controls)
+                {
+                    if (input is CheckBox cb)
+                    {
+                        cb.CheckedChanged += OnValueChanged;
+                    }
+                    else if (input is TextBox tb)
+                    {
+                        tb.TextChanged += OnValueChanged;
+                    }
+                }
+            }
+        }
+
+        private void OnValueChanged(object sender, EventArgs e)
+        {
+            _isDirty = true;
+            EvtPreferencesChangeMade();
+        }
+
+        // User clicked wrap text checkbox
+        public void checkBoxWrapText_CheckedChanged(object sender, EventArgs e)
+        {
+            if (sender.GetType() == typeof(CheckBox))
+            {
+                _wrapText = ((CheckBox)sender).Checked;
+                wrapText(_wrapText);
+            }
+        }
+
+        // User clicked Defaults button
+        public void buttonDefaults_Click(object sender, EventArgs e)
+        {
+            if (ConfirmBoxTwoOption.ShowDialog("Restore default settings?", 
+                "This cannot be undone.", StringResources.Yes, StringResources.No, this, true))
+            {
+                _isDirty = true;
+                refreshPanel(DefaultPreferences);
+                EvtPreferencesChangeMade();
+            }
+        }
+
+        //Gets a yes/no response
+        private bool confirm(String prompt)
+        {
+            return ConfirmBoxTwoOption.ShowDialog(prompt.ToString(), "",
+                StringResources.Yes, StringResources.No, this, true);
+        }
+
+        // replace dataGridView_CellValidating
+        private void InputTextBox_Validating(object sender, CancelEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            string inputValue = textBox.Text?.Trim();
+            object tag = textBox.Tag;
+
+            if (tag == null)
+                return;
+
+            string name = null;
+            Type memberType = null;
+            object currentValue = null;
+            string defaultVal = null;
+
+            FieldInfo field = tag as FieldInfo;
+            PropertyInfo property = tag as PropertyInfo;
+
+            if (field != null)
+            {
+                name = field.Name;
+                memberType = field.FieldType;
+                currentValue = field.GetValue(Preferences);
+                defaultVal = getDefaultValue(name);
+            }
+            else if (property != null)
+            {
+                name = property.Name;
+                memberType = property.PropertyType;
+                currentValue = property.GetValue(Preferences);
+                defaultVal = getDefaultValue(name);
+            }
+            else
+            {
+                return;
+            }
+
+            string prevVal = currentValue?.ToString();
+            string newVal = null;
+
+            try
+            {
+                if (memberType == typeof(int))
+                {
+                    if (int.TryParse(inputValue, out int intVal))
+                    {
+                        var descriptor = field != null ? getIntAttribute(field) : getIntAttribute(property);
+                        if (descriptor != null && (intVal < descriptor.MinValue || intVal > descriptor.MaxValue))
+                        {
+                            showErrorStatus(name, "Out of range");
+                            newVal = defaultVal;
+                            e.Cancel = true;
+                        }
+                    }
+                    else
+                    {
+                        showErrorStatus(name, "Must be numeric");
+                        newVal = defaultVal;
+                        e.Cancel = true;
+                    }
+                }
+                else if (memberType == typeof(float))
+                {
+                    if (float.TryParse(inputValue, NumberStyles.Float, CultureInfo.InvariantCulture, out float floatVal))
+                    {
+                        var descriptor = field != null ? getFloatAttribute(field) : getFloatAttribute(property);
+                        if (descriptor != null && (floatVal < descriptor.MinValue || floatVal > descriptor.MaxValue))
+                        {
+                            showErrorStatus(name, "Out of range");
+                            newVal = defaultVal;
+                            e.Cancel = true;
+                        }
+                    }
+                    else
+                    {
+                        showErrorStatus(name, "Must be numeric");
+                        newVal = defaultVal;
+                        e.Cancel = true;
+                    }
+                }
+            }
+            catch
+            {
+                newVal = defaultVal;
+                e.Cancel = true;
+            }
+
+            if (e.Cancel && !string.IsNullOrEmpty(newVal))
+            {
+                textBox.Text = newVal;
+            }
+        }
+
+        //Displays a error status mesage
+        private void showErrorStatus(String settingName, String status)
+        {
+            using (var confirmBox = new ConfirmBoxOneOption
+            {
+                Prompt = $"Error\n{settingName}\n{status}",DecisionPrompt = "OK"
+            })
+            {
+                confirmBox.ShowDialog(this);
+            }
+        }
+
+        private void SavePreferencesFromPanel(FlowLayoutPanel panel, IPreferences prefs)
+        {
+            var props = prefs.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (var prop in props)
+            {
+                foreach (Control control in panel.Controls)
+                {
+                    var host = control as ElementHost;
+                    if (host?.Child == null)
+                        continue;
+
+                    var editor = host.Child as IPreferenceEditor;
+                    if (editor == null)
+                        continue;
+
+                    if (editor.PropertyName == prop.Name)
+                    {
+                        object value = editor.GetValue();
+
+                        try
+                        {
+                            prop.SetValue(prefs, value);
+                        }
+                        catch
+                        {
+                        }
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        //Updates preferneces using the data in the grid view
+        private void updatePreferences()
+        {
+            foreach (Control settingPanel in _flowPanel.Controls)
+            {
+                var rowPanel = settingPanel as TableLayoutPanel;
+                if (rowPanel == null)
+                    continue;
+
+                Label nameLabel = rowPanel.GetControlFromPosition(0, 0) as Label;
+                Control inputControl = rowPanel.GetControlFromPosition(1, 0); // Assumes control at (1, 0)
+
+                if (nameLabel == null || inputControl == null)
+                    continue;
+
+                string name = nameLabel.Text;
+                FieldInfo field = getField(Preferences, name);
+                PropertyInfo property = field == null ? getProperty(Preferences, name) : null;
+
+                if (field == null && property == null)
+                    continue;
+
+                Type memberType = field?.FieldType ?? property.PropertyType;
+                object parsedValue = null;
+
+                try
+                {
+                    if (memberType == typeof(int) && inputControl is TextBox tb1)
+                    {
+                        if (int.TryParse(tb1.Text, out int intVal))
+                            parsedValue = intVal;
+                    }
+                    else if (memberType == typeof(float) && inputControl is TextBox tb2)
+                    {
+                        if (float.TryParse(tb2.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float floatVal))
+                            parsedValue = floatVal;
+                    }
+                    else if (memberType == typeof(string) && inputControl is TextBox tb3)
+                    {
+                        parsedValue = tb3.Text;
+                    }
+                    else if (memberType == typeof(bool) && inputControl is CheckBox cb)
+                    {
+                        parsedValue = cb.Checked;
+                    }
+
+                    if (parsedValue != null)
+                    {
+                        if (field != null)
+                            field.SetValue(Preferences, parsedValue);
+                        else
+                            property.SetValue(Preferences, parsedValue);
+                    }
+                }
+                catch
+                {
+                }
+            }
+
+
+            /*
+            // Iterate over each row in the DataGridView
+            foreach (DataGridViewRow row in dataGridView.Rows)
+            {
+
+                string name = row.Cells[SettingColumn.Name].Value as string;                // Get the setting name from the "Setting" column
+                var valueCell = row.Cells[ValueColumn.Name];                                // Get the value cell from the "Value" column
+                object editedValue = valueCell.EditedFormattedValue;                       // Get the edited value entered by the user
+                FieldInfo field = getField(Preferences, name);                            // Try to get a field from the Preferences object that matches the setting name
+                PropertyInfo property = null;
+
+                // If no field is found, try getting a property instead
+                if (field == null)
+                {
+                    property = getProperty(Preferences, name);
+                }
+
+                // If neither a field nor a property is found, skip this row
+                if (field == null && property == null)
+                {
+                    continue;
+                }
+                Type memberType = null;                                               // Determine the type of the target member (field or property)
+                if (field != null)
+                {
+                    memberType = field.FieldType;
+                }
+                else
+                {
+                    memberType = property.PropertyType;
+                }
+
+                object parsedValue = null;                                        // Will store the parsed and converted value (if successful)
+
+                try
+                {
+                    // Handle integer values from text box cells
+                    if (memberType == typeof(int) && valueCell is DataGridViewTextBoxCell)
+                    {
+                        int intValue;
+                        if (int.TryParse(editedValue as string, out intValue))
+                        {
+                            parsedValue = intValue;
+                        }
+                    }
+                    // Handle boolean values from checkbox cells
+                    else if (memberType == typeof(bool) && valueCell is DataGridViewCheckBoxCell)
+                    {
+                        parsedValue = editedValue;
+                    }
+                    // Handle string values from text box cells
+                    else if (memberType == typeof(string) && valueCell is DataGridViewTextBoxCell)
+                    {
+                        parsedValue = editedValue as string;
+                    }
+                    // Handle float values from text box cells
+                    else if (memberType == typeof(float) && valueCell is DataGridViewTextBoxCell)
+                    {
+                        float floatValue;
+                        if (float.TryParse(editedValue as string, NumberStyles.Float, CultureInfo.InvariantCulture, out floatValue))
+                        {
+                            parsedValue = floatValue;
+                        }
+                    }
+
+                    // If a valid value was parsed, apply it to the Preferences object
+                    if (parsedValue != null)
+                    {
+                        if (field != null)
+                        {
+                            field.SetValue(Preferences, parsedValue);
+                        }
+                        else
+                        {
+                            property.SetValue(Preferences, parsedValue);
+                        }
+                    }
+                }
+                catch
+                {
+                  
+                }
+            }
+
+
+            */
+
+            /*
+            foreach (DataGridViewRow row in dataGridView.Rows)
+            {
+                String name = row.Cells[SettingColumn.Name].Value as String;
+                var valueCell = row.Cells[ValueColumn.Name];
+
+                FieldInfo field = getField(Preferences, name);
+                if (field != null)
+                {
+                    if (isInt(field) && valueCell is DataGridViewTextBoxCell)
+                    {
+                        if (Int32.TryParse(valueCell.EditedFormattedValue as String, out int intValue))
+                        {
+                            field.SetValue(Preferences, intValue);
+                        }
+                    }
+                    else if (isBool(field) && valueCell is DataGridViewCheckBoxCell)
+                    {
+                        field.SetValue(Preferences, (valueCell as DataGridViewCheckBoxCell).EditedFormattedValue);
+                    }
+                    else if (isString(field) && valueCell is DataGridViewTextBoxCell)
+                    {
+                        field.SetValue(Preferences, valueCell.EditedFormattedValue);
+                    }
+                    else if (isFloat(field) && valueCell is DataGridViewTextBoxCell)
+                    {
+                        try
+                        {
+                            var floatValue = float.Parse(valueCell.EditedFormattedValue as String, CultureInfo.InvariantCulture.NumberFormat);
+                            field.SetValue(Preferences, floatValue);
+                        }
+                        catch
+                        {
+                        }
+                    }
+                }
+                else
+                {
+                    PropertyInfo property = getProperty(Preferences, name);
+                    if (property != null)
+                    {
+                        if (isInt(property) && valueCell is DataGridViewTextBoxCell)
+                        {
+                            if (Int32.TryParse(valueCell.EditedFormattedValue as String, out int intValue))
+                            {
+                                property.SetValue(Preferences, intValue);
+                            }
+                        }
+                        else if (isBool(property) && valueCell is DataGridViewCheckBoxCell)
+                        {
+                            property.SetValue(Preferences, (valueCell as DataGridViewCheckBoxCell).EditedFormattedValue);
+                        }
+                        else if (isString(property) && valueCell is DataGridViewTextBoxCell)
+                        {
+                            property.SetValue(Preferences, valueCell.EditedFormattedValue);
+                        }
+                        else if (isFloat(property) && valueCell is DataGridViewTextBoxCell)
+                        {
+                            try
+                            {
+                                var floatValue = float.Parse(valueCell.EditedFormattedValue as String, CultureInfo.InvariantCulture.NumberFormat);
+                                property.SetValue(Preferences, floatValue);
+                            }
+                            catch
+                            {
+                            }
+                        }
+                    }
+                }
+            }
+
+            */
+        }
+
+        //Wraps/unwraps text
+        private void wrapText(bool onOff)
+        {
+            // Loop through each row (TableLayoutPanel) in the FlowPanel
+            foreach (Control control in _flowPanel.Controls)
+            {
+                if (control is TableLayoutPanel rowPanel)
+                {
+                    foreach (Control inner in rowPanel.Controls)
+                    {
+                        if (inner is Label label)
+                        {
+                            label.AutoSize = false;
+                            label.MaximumSize = onOff ? new Size(rowPanel.Width - 10, 0) : Size.Empty;
+                        }
+                    }
+                }
+            }
+
+            _flowPanel.PerformLayout();
+            /*
+            DescriptionColumn.DefaultCellStyle.WrapMode = (onOff) ? DataGridViewTriState.True : DataGridViewTriState.False;
+            dataGridView.AutoResizeRows();
+            */
+        }
+
+
+        #region CuelloButNoYet
+
+        /*
+        //Something changed. Set dirty flag
+        private void DataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            _isDirty = true;
+            EvtPreferencesChangeMade();
+        }
+
+        //Something changed. Set dirty flag
+        private void DataGridView_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            _isDirty = true;
+            EvtPreferencesChangeMade();
+        }
+
+        //Client size changed
         protected override void OnClientSizeChanged(EventArgs e)
         {
             base.OnClientSizeChanged(e);
@@ -118,8 +832,8 @@ namespace ACAT.Core.PreferencesManagement
                 _designTimeAspectRatio = (float)ClientSize.Height / ClientSize.Width;
                 _firstClientChangedCall = false;
             }
-        }
-
+        }*/
+        /*
         /// <summary>
         /// Adds a row for a boolean property
         /// </summary>
@@ -293,11 +1007,11 @@ namespace ACAT.Core.PreferencesManagement
         }
 
         /// <summary>
-        /// Check if form filled correctly, if not, return false
-        /// If validated, check if changes have been made to form and if so prompt user asking if they want to save
+        /// Returns the custom attribute for a boolean field
         /// </summary>
-        /// <returns></returns>
-        public bool validateAndSave()
+        /// <param name="field">the field</param>
+        /// <returns>attribute, null if not found</returns>
+        private BoolDescriptorAttribute getBoolAttribute(FieldInfo field)
         {
             // Update preferences based on latest values then save
             updatePreferences();
@@ -317,56 +1031,217 @@ namespace ACAT.Core.PreferencesManagement
         {
             if (sender.GetType() == typeof(CheckBox))
             {
-                _wrapText = ((CheckBox)sender).Checked;
-                wrapText(_wrapText);
+                if (attribute.GetType() == typeof(BoolDescriptorAttribute))
+                {
+                    return (BoolDescriptorAttribute)attribute;
+                }
             }
         }
 
         /// <summary>
-        /// User clicked Defaults button
+        /// Returns the custom attribute for a boolean property
         /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        public void buttonDefaults_Click(object sender, EventArgs e)
+        /// <param name="property">the property</param>
+        /// <returns>attribute, null if not found</returns>
+        private BoolDescriptorAttribute getBoolAttribute(PropertyInfo property)
         {
             if (ConfirmBoxTwoOption.ShowDialog("Restore default settings?",
                 "This cannot be undone.", StringResources.Yes, StringResources.No, this, true))
             {
-                _isDirty = true;
-                refreshGridView(DefaultPreferences);
-                EvtPreferencesChangeMade();
+                if (attribute.GetType() == typeof(BoolDescriptorAttribute))
+                {
+                    return (BoolDescriptorAttribute)attribute;
+                }
             }
+
+            return null;
         }
 
         /// <summary>
-        /// Gets a yes/no response
+        /// Returns the custom attribute for a string field
         /// </summary>
-        /// <param name="prompt">prompt to display</param>
-        /// <returns>Yes or no</returns>
-        private bool confirm(String prompt)
+        /// <param name="field">the field</param>
+        /// <returns>attribute, null if not found</returns>
+        private StringDescriptorAttribute getStringAttribute(FieldInfo field)
         {
-            return ConfirmBoxTwoOption.ShowDialog(prompt.ToString(), "",
-                StringResources.Yes, StringResources.No, this, true);
+            var attributes = field.GetCustomAttributes(false);
+            foreach (var attribute in attributes)
+            {
+                if (attribute.GetType() == typeof(StringDescriptorAttribute))
+                {
+                    return (StringDescriptorAttribute)attribute;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
-        /// Occurs when edit mode stopped for the current selected cell
+        /// Returns the custom attribute for a String property
         /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void dataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        /// <param name="property">the property</param>
+        /// <returns>attribute, null if not found</returns>
+        private StringDescriptorAttribute getStringAttribute(PropertyInfo property)
         {
         }
 
         /// <summary>
-        /// Here's where checking is done on the validity of the data
-        /// If it is an integer for eg, make sure that all the text
-        /// in the cell are digits and that the integer is within range.
+        /// Returns true if the property is a bool
         /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
+        /// <param name="property">property</param>
+        /// <returns>true if it is</returns>
+        private bool isBool(PropertyInfo property)
+        {
+            return property.PropertyType == typeof(Boolean) ||
+                    property.PropertyType == typeof(bool);
+        }
+
+        /// Returns true if the field is a bool
+        private bool isBool(FieldInfo field)
+        {
+            return field.FieldType == typeof(Boolean) ||
+                    field.FieldType == typeof(bool);
+        }
+
+        */
+        //Returns the default value for the specified field
+        private String getDefaultValue(String fieldName)
+        {
+            var members = DefaultPreferences.GetType().GetMembers();
+            foreach (var memberInfo in members)
+            {
+                var name = memberInfo.Name;
+                if (String.Compare(name, fieldName) != 0)
+                {
+                    continue;
+                }
+
+                MemberInfo[] member = DefaultPreferences.GetType().GetMember(name);
+                if (member.Length == 0)
+                {
+                    continue;
+                }
+
+                switch (member[0].MemberType)
+                {
+                    case MemberTypes.Field:
+                        FieldInfo fieldInfo = DefaultPreferences.GetType().GetField(name);
+                        return fieldInfo.GetValue(DefaultPreferences).ToString();
+
+                    case MemberTypes.Property:
+                        var property = DefaultPreferences.GetType().GetProperty(name);
+                        return property.GetValue(DefaultPreferences, null).ToString();
+                }
+            }
+
+            return String.Empty;
+        }
+
+        //Returns the field info for the specified field name
+        private FieldInfo getField(object obj, String name)
+        {
+            return obj.GetType().GetFields().FirstOrDefault(field => String.Compare(field.Name, name) == 0);
+        }
+
+        //Returns the custom attribute for a float field
+        private FloatDescriptorAttribute getFloatAttribute(FieldInfo field)
+        {
+            var attributes = field.GetCustomAttributes(false);
+            foreach (var attribute in attributes)
+            {
+                if (attribute.GetType() == typeof(FloatDescriptorAttribute))
+                {
+                    return (FloatDescriptorAttribute)attribute;
+                }
+            }
+
+            return null;
+        }
+
+        //Returns the custom attribute for a float property
+        private FloatDescriptorAttribute getFloatAttribute(PropertyInfo property)
+        {
+            var attributes = property.GetCustomAttributes(false);
+
+            foreach (var attribute in attributes)
+            {
+                if (attribute.GetType() == typeof(FloatDescriptorAttribute))
+                {
+                    return (FloatDescriptorAttribute)attribute;
+                }
+            }
+
+            return null;
+        }
+
+        /// Returns the custom attribute for an integer field
+        private IntDescriptorAttribute getIntAttribute(FieldInfo field)
+        {
+            var attributes = field.GetCustomAttributes(false);
+            foreach (var attribute in attributes)
+            {
+                if (attribute.GetType() == typeof(IntDescriptorAttribute))
+                {
+                    return (IntDescriptorAttribute)attribute;
+                }
+            }
+
+            return null;
+        }
+
+        //Returns the custom attribute for a integer property
+        private IntDescriptorAttribute getIntAttribute(PropertyInfo property)
+        {
+            var attributes = property.GetCustomAttributes(false);
+
+            foreach (var attribute in attributes)
+            {
+                if (attribute.GetType() == typeof(IntDescriptorAttribute))
+                {
+                    return (IntDescriptorAttribute)attribute;
+                }
+            }
+
+            return null;
+        }
+
+        //Returns the property info for the specified property
+        private PropertyInfo getProperty(object obj, String name)
+        {
+            return obj.GetType().GetProperties().FirstOrDefault(property => String.Compare(property.Name, name) == 0);
+        }
+
+        /*
+        //Formats the datagridview>
+        private void initializeGridView()
+        {
+            dataGridView.RowHeadersVisible = false;
+            dataGridView.ScrollBars = ScrollBars.Vertical;
+
+            SettingColumn.Width = (dataGridView.Width) / 5;
+            DescriptionColumn.Width = dataGridView.Width / 5;
+            ValueColumn.Width = dataGridView.Width / 5;
+            DefaultColumn.Width = dataGridView.Width / 5;
+            RangeColumn.Width = dataGridView.Width / 5;
+
+
+            dataGridView.Sort(SettingColumn, ListSortDirection.Ascending);
+            SettingColumn.HeaderCell.SortGlyphDirection = System.Windows.Forms.SortOrder.Ascending;
+
+            DescriptionColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
+            ValueColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
+            DefaultColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
+            RangeColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
+
+          //  dataGridView.CellValidating += dataGridView_CellValidating;
+        }
+
+        */
+
+        //Here's where checking is done on the validity of the data If it is an integer for eg, make sure that all the text in the cell are digits and that the integer is within range.
         private void dataGridView_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
+            /*
             var senderGrid = (DataGridView)sender;
             e.Cancel = false;
             String name = null;

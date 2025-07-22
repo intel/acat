@@ -1,6 +1,5 @@
 ﻿using ACAT.Core.Utility;
 using MahApps.Metro.Controls;
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Windows;
@@ -12,50 +11,104 @@ namespace ACAT.Lib.Core.PreferencesManagement.UI
  
     public class SettingsPanelBuilder
     {
-        public SettingsPanelBuilder()
+        public FrameworkElement CreateScrollViewer(IPreferences prefs)
         {
-            if (Application.Current != null && Application.Current.Resources.MergedDictionaries.Count == 0)
+
+            var stackPanel = new StackPanel
             {
-                var resources = new ResourceDictionary
-                {
-                    Source = new Uri("pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml", UriKind.Absolute)
-                };
-                Application.Current.Resources.MergedDictionaries.Add(resources);
-                Application.Current.Resources.MergedDictionaries.Add(
-                    new ResourceDictionary { Source = new Uri("pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml") });
-                Application.Current.Resources.MergedDictionaries.Add(
-                    new ResourceDictionary { Source = new Uri("pack://application:,,,/MahApps.Metro;component/Styles/Themes/Dark.Amber.xaml") });
+                Orientation = Orientation.Vertical
+            };
+
+            var props = prefs.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            foreach (var prop in props)
+            {
+                var labeledPanel = CreateLabeledPanel(prop, prefs);
+                labeledPanel.Margin = new Thickness(10);
+                stackPanel.Children.Add(labeledPanel);
             }
+
+            var scrollViewer = new ScrollViewer
+            {
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled,
+                Content = stackPanel,
+            };
+            return scrollViewer;
         }
+
+        private static StackPanel CreateLabeledSlider(double min, double max, double initialValue = 0, double tickFrequency = 0)
+        {
+            var panel = new StackPanel
+            {
+                Orientation = Orientation.Vertical
+            };
+
+            // Create the Slider
+            var slider = new Slider
+            {
+                Width = 300,
+                Minimum = min,
+                Maximum = max,
+                Value = initialValue,
+                TickFrequency = tickFrequency > 0 ? tickFrequency : (max - min) / 10,
+                IsSnapToTickEnabled = true,
+                TickPlacement = System.Windows.Controls.Primitives.TickPlacement.BottomRight,
+                Margin = new Thickness(0, 0, 0, 4),
+                ToolTip = $"Value: {initialValue}",
+            };
+
+            // Add the Slider to the panel
+            panel.Children.Add(slider);
+
+            // Create a label row below the slider
+            var labelPanel = new DockPanel();
+
+            var minLabel = new TextBlock
+            {
+                Text = min.ToString(),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Foreground = System.Windows.Media.Brushes.White
+            };
+            DockPanel.SetDock(minLabel, Dock.Left);
+
+            var maxLabel = new TextBlock
+            {
+                Text = max.ToString(),
+                HorizontalAlignment = HorizontalAlignment.Right,
+                Foreground = System.Windows.Media.Brushes.White
+            };
+            DockPanel.SetDock(maxLabel, Dock.Right);
+
+            labelPanel.Children.Add(minLabel);
+            labelPanel.Children.Add(maxLabel);
+
+            // Add label panel to main container
+            panel.Children.Add(labelPanel);
+
+            return panel;
+        }
+
+    
 
         public FrameworkElement CreateLabeledPanel(PropertyInfo prop, object settingsInstance)
         {
             var value = prop.GetValue(settingsInstance);
 
-            //// Horizontal layout for label + input
-            //var panel = new StackPanel
-            //{
-            //    Orientation = Orientation.Horizontal,
-            //    Margin = new Thickness(4)
-            //};
+            var grid = new Grid();
 
-            var grid = new Grid 
-            { 
-                Margin = new Thickness(4)
-            };
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto});
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(7, GridUnitType.Star) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(3, GridUnitType.Star) });
+            //grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
 
             var descriptionAttr = prop.GetCustomAttribute<ClassDescriptorAttribute>();
             var labelText = descriptionAttr?.Description ?? "MISSING DESCRIPTION";
 
             var label = new TextBlock
             {
-                Text = labelText,
-                VerticalAlignment = VerticalAlignment.Center,
-                Width = 500,
+                Text = labelText.TrimEnd(),
+                HorizontalAlignment = HorizontalAlignment.Stretch,
                 FontFamily = new System.Windows.Media.FontFamily("Montserrat"),
-                FontSize = 24,
+                FontSize = 14,
                 FontStyle = FontStyles.Normal,
                 FontWeight = FontWeights.Regular,
                 Foreground = System.Windows.Media.Brushes.White,
@@ -68,48 +121,26 @@ namespace ACAT.Lib.Core.PreferencesManagement.UI
 
             if (prop.PropertyType == typeof(bool))
             {
-                //inputControl = new CheckBox
-                //{
-                //    IsChecked = value is bool b && b,
-                //    VerticalAlignment = VerticalAlignment.Center
-                //};
                 inputControl = new ToggleSwitch
                 {
                     IsOn = value is bool b && b,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    Width = 100,
                     OnContent = "Yes",
                     OffContent = "No"
                 };
             }
             else if (prop.PropertyType == typeof(int))
             {
-                var slider = new Slider
-                {
-                    Minimum = 0,
-                    Maximum = 100,
-                    Width = 150,
-                    Value = value is int i ? i : 0,
-                    VerticalAlignment = VerticalAlignment.Center
-                };
+                RangeAttribute range = prop.GetCustomAttribute<RangeAttribute>()
+                    ?? new RangeAttribute(0, 100);
 
-                // Optional: apply [Range] attribute
-                var rangeAttr = prop.GetCustomAttribute<RangeAttribute>();
-                if (rangeAttr != null)
-                {
-                    slider.Minimum = (int)rangeAttr.Minimum;
-                    slider.Maximum = (int)rangeAttr.Maximum;
-                }
-
-                inputControl = slider;
+                var sliderStack = CreateLabeledSlider((int)range.Minimum, (int)range.Maximum, value is int i ? i : 0, 1);
+                inputControl = sliderStack;
             }
             else if (prop.PropertyType == typeof(string))
             {
                 inputControl = new TextBox
                 {
                     Text = value?.ToString() ?? "",
-                    Width = 100,
-                    VerticalAlignment = VerticalAlignment.Center
                 };
             }
             else
@@ -122,6 +153,8 @@ namespace ACAT.Lib.Core.PreferencesManagement.UI
                     VerticalAlignment = VerticalAlignment.Center
                 };
             }
+            inputControl.VerticalAlignment = VerticalAlignment.Center;
+            inputControl.HorizontalAlignment = HorizontalAlignment.Right;
 
             inputControl.Tag = prop;
             Grid.SetColumn(inputControl, 1);

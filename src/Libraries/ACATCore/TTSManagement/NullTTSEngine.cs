@@ -7,6 +7,8 @@
 
 using ACAT.Core.Extensions;
 using ACAT.Core.Utility;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -19,7 +21,8 @@ namespace ACAT.Core.TTSManagement
     /// </summary>
     [ClassDescriptor("A98DA439-A6A9-48EF-AC8D-3D3588363341",
                         "Null Text-to-speech Engine",
-                        "Text-to-speech disabled")]
+                        "Text-to-speech disabled",
+                         HasSettings = false)]
     public class NullTTSEngine : ExtensionInvoker, ITTSEngine
     {
         private static int _nextBookmark = 1;
@@ -120,6 +123,8 @@ namespace ACAT.Core.TTSManagement
 
             set { }
         }
+
+        public bool SupportsPreferencesDialog => throw new NotImplementedException();
 
         /// <summary>
         /// Disposes resources
@@ -374,6 +379,21 @@ namespace ACAT.Core.TTSManagement
             {
                 EvtPropertyChanged(this, new EventArgs());
             }
+        }
+
+        public IPreferences GetDefaultPreferences()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPreferences GetPreferences()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ShowPreferencesDialog()
+        {
+            throw new NotImplementedException();
         }
     }
 }

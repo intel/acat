@@ -72,7 +72,7 @@ namespace ACAT.Extensions.Onboarding
             var keyboardActuatorConfigs = keyboardActuator.GetSupportedKeyboardConfigs();
             List<String> keyboardConfigs = new List<string>();
 
-            var actuators = Context.AppActuatorManager.Actuators;
+            var actuators = Context.AppActuatorManager.ActuatorsList;
             foreach (var actuator in actuators)
             {
                 if (!actuator.Enabled)

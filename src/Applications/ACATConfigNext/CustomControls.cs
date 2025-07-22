@@ -382,7 +382,7 @@ namespace ACATConfigNext
             return panel;
         }
 
-        public static System.Windows.Forms.Control CreateRateControl(PropertyInfo prop, IPreferences preferences)
+        public static System.Windows.Forms.Control CreateRateControl(PropertyInfo prop, IPreferences preferences, Action<IPreferences> onPreferenceModified = null)
         {
             var panel = new TableLayoutPanel
             {
@@ -415,6 +415,7 @@ namespace ACATConfigNext
             numericUpDown.ValueChanged += (sender, e) =>
             {
                 prop.SetValue(preferences, (int)numericUpDown.Value);
+                onPreferenceModified?.Invoke(preferences);// TODO repeat on each numericUpDown
             };
 
             panel.Controls.Add(numericUpDown, 1, 0);

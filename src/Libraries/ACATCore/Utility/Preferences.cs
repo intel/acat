@@ -176,7 +176,7 @@ namespace ACAT.Core.Utility
 
         public bool FirstTimeUser = true;
 
-        public String Extensions = "Default,BCI";
+        public String Extensions = "";
 
         [XmlElement(IsNullable = true)]
         public String Language = String.Empty;

@@ -840,8 +840,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             {
                 IList<string> devices = new List<string>();
 
-                return devices;
-                /* Disabled until we can build 64 bit
                 try
                 {
                     devices = Unicorn.GetAvailableDevices(paired);
@@ -858,7 +856,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     Log.Exception($"Error: {ex.Message}");
                 }
                 return devices;
-                */
             });
         }
 
@@ -883,42 +880,38 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             {
                 // Use Unicorn API to try to initialize device (throws exception if device can't be initialized
                 return await Task.Run(() =>
-                {
-                    return false;
-
-                    /* Disabled until we can build 64 bit
-                        try
+                {   
+                    try
+                    {
+                        Log.Debug($"Selected device: {BCIActuatorSettings.Settings.GTecDeviceName}, trying to connect...");
+                        using (Unicorn device = new Unicorn(BCIActuatorSettings.Settings.GTecDeviceName))
                         {
-                            Log.Debug($"Selected device: {BCIActuatorSettings.Settings.GTecDeviceName}, trying to connect...");
-                            using (Unicorn device = new Unicorn(BCIActuatorSettings.Settings.GTecDeviceName))
-                            {
-                                device.Dispose();
-                                Log.Debug($"Device: {device} is connected...");
-                                EvtBluetoothResult(BluetoothEvent.SUCCESSFUL_CONNECTION, null);
-                                return true;
-                            }
+                            device.Dispose();
+                            Log.Debug($"Device: {device} is connected...");
+                            EvtBluetoothResult(BluetoothEvent.SUCCESSFUL_CONNECTION, null);
+                            return true;
                         }
-                        catch (Gtec.Unicorn.DeviceException ex)
+                    }
+                    catch (Gtec.Unicorn.DeviceException ex)
+                    {
+                        Log.Exception($"Error: {ex.Message}");
+                        Dictionary<String, object> eventParams = new()
                         {
-                            Log.Exception($"Error: {ex.Message}");
-                            Dictionary<String, object> eventParams = new()
-                            {
-                                ["error"] = ex.Message
-                            };
-                            EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, eventParams);
-                            return false;
-                        }
-                        catch (Exception ex)
+                            ["error"] = ex.Message
+                        };
+                        EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, eventParams);
+                        return false;
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Exception($"Unexpected error: {ex.Message}");
+                        Dictionary<String, object> eventParams = new()
                         {
-                            Log.Exception($"Unexpected error: {ex.Message}");
-                            Dictionary<String, object> eventParams = new()
-                            {
-                                ["error"] = ex.Message
-                            };
-                            EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, eventParams);
-                            return false;
-                        }
-                    //*/
+                            ["error"] = ex.Message
+                        };
+                        EvtBluetoothResult(BluetoothEvent.DEVICE_DISCONNECTED, eventParams);
+                        return false;
+                    }
                 });
             }
         }

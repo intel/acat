@@ -5,15 +5,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using ACATResources;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
 using System;
 using System.Globalization;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace ACAT.Lib.Core.Widgets
+namespace ACAT.Core.Widgets
 {
     /// <summary>
     /// Extension class for slider widget.  This consists of a
@@ -428,7 +428,7 @@ namespace ACAT.Lib.Core.Widgets
             }
             catch (Exception ex)
             {
-                Log.Debug("Error parsing decimal " + inputString + ", ex: " + ex.ToString());
+                Log.Exception("Error parsing decimal " + inputString + ", ex: " + ex.ToString());
                 retVal = false;
             }
 

@@ -5,23 +5,23 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PanelManagement;
+using ACAT.Core.ThemeManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.ThemeManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
 using SharpDX.Direct2D1;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
-using System;
 using static ACAT.Extensions.BCI.Common.AnimationSharp.AnimationSharpManagerV2;
 
 namespace ACAT.Extensions.BCI.Common.AnimationSharp
 {
     /// <summary>
-    /// Helper functions to get objects and variables used by BCI 
+    /// Helper functions to get objects and variables used by BCI
     /// </summary>
     public class AnimationManagerUtils
     {
@@ -31,34 +31,37 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         public const string MessageRecalibration = " Calibration request, wait while the process starts";
 
         public const string StatusMessageAnalyzingCalibrationData = "     Analyzing calibration data. Please wait ";
-        /// <summary>
-        /// List of the current letter probabilities 
-        /// </summary>
-        private static List<KeyValuePair<string, double>> _lettersProbs = new List<KeyValuePair<string, double>>();
 
         /// <summary>
-        /// List of the previous letter probabilities 
+        /// List of the current letter probabilities
         /// </summary>
-        private static List<KeyValuePair<string, double>> _prevLettersProbs = new List<KeyValuePair<string, double>>();
+        private static List<KeyValuePair<string, double>> _lettersProbs = new();
 
         /// <summary>
-        /// List of the previous letter probabilities 
+        /// List of the previous letter probabilities
         /// </summary>
-        private static List<KeyValuePair<string, double>> _prevWordsProbs = new List<KeyValuePair<string, double>>();
+        private static List<KeyValuePair<string, double>> _prevLettersProbs = new();
 
         /// <summary>
-        /// List of the current letter probabilities 
+        /// List of the previous letter probabilities
         /// </summary>
-        private static readonly Dictionary<string, double> _sentenceProbs = new Dictionary<string, double>();
+        private static List<KeyValuePair<string, double>> _prevWordsProbs = new();
+
+        /// <summary>
+        /// List of the current letter probabilities
+        /// </summary>
+        private static readonly Dictionary<string, double> _sentenceProbs = new();
 
         /// <summary>
         /// Parameters used by BCI
         /// </summary>
-        private static readonly Dictionary<string, int> _UIBCIparameters = new Dictionary<string, int>();
+        private static readonly Dictionary<string, int> _UIBCIparameters = new();
+
         /// <summary>
-        /// List of the current letter probabilities 
+        /// List of the current letter probabilities
         /// </summary>
-        private static List<KeyValuePair<string, double>> _wordsProbs = new List<KeyValuePair<string, double>>();
+        private static List<KeyValuePair<string, double>> _wordsProbs = new();
+
         /// <summary>
         /// Signal status
         /// </summary>
@@ -118,6 +121,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             configNodes = null;
             return amountBoxes;
         }
+
         /// <summary>
         /// Gets the widgets for each box
         /// </summary>
@@ -157,6 +161,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             configNodes = null;
             return widgetsBox;
         }
+
         /// <summary>
         /// Gets the list of all the widgets of each box for each user control
         /// </summary>
@@ -179,11 +184,12 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetBoxWidgetsList: " + ex.Message);
+                Log.Exception("Error in GetBoxWidgetsList: " + ex.Message);
                 return new List<Widget>[totalAmountOfBoxes];
             }
             return widgets;
         }
+
         /// <summary>
         /// Gets the list of all the data of each button for each box within the user control
         /// </summary>
@@ -206,7 +212,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetButtonDataList: " + ex.Message);
+                Log.Exception("Error in GetButtonDataList: " + ex.Message);
                 return new List<ButtonsData>[totalAmountOfBoxes];
             }
             return buttonDataList;
@@ -224,7 +230,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             int indexkeyboard = 0;
             int indexarray = 0;
             int tempindex = 0;
-            List<int> seq = new List<int>();
+            List<int> seq = new();
             List<int[]>[] flashingSeqAll = Enumerable.Range(0, amountBoxes).Select(_ => new List<int[]>()).ToArray();
             if (indexkeyboard < amountBoxes)
             {
@@ -257,6 +263,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             return flashingSeqAll;
         }
+
         /// <summary>
         /// Gets the list of all the offsets of each button for each user control
         /// </summary>
@@ -279,7 +286,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetButtonsOffsetList: " + ex.Message);
+                Log.Exception("Error in GetButtonsOffsetList: " + ex.Message);
                 return new List<int>[totalAmountOfBoxes];
             }
             return offsetStrings;
@@ -311,14 +318,14 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetButtonsStringsList: " + ex.Message);
+                Log.Exception("Error in GetButtonsStringsList: " + ex.Message);
                 return new List<string>[totalAmountOfBoxes];
             }
             return buttonsStringsList;
         }
 
         /// <summary>
-        /// Get the desired button control 
+        /// Get the desired button control
         /// </summary>
         /// <param name="controls">List with all the controls</param>
         /// <param name="name">Name of the button to look for</param>
@@ -334,7 +341,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         }
 
         /// <summary>
-        /// Get the desired button control 
+        /// Get the desired button control
         /// </summary>
         /// <param name="controls">List with all the controls</param>
         /// <param name="name">Name of the button to look for</param>
@@ -343,7 +350,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <returns>ScannerButtonControl</returns>
         public static ScannerButtonControl GetControl2(List<Widget> controls, string name, int tag, bool tagValidation = true)
         {
-            if(tagValidation)
+            if (tagValidation)
                 return (ScannerButtonControl)controls.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals(name) && w.UIControl.Tag != null && Int32.Parse(w.UIControl.Tag.ToString()) == tag).UIControl;
             else
                 return (ScannerButtonControl)controls.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals(name)).UIControl;
@@ -368,6 +375,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             return tempButton;
         }
+
         /// <summary>
         /// Gets the list of all the data of each button for each box within the user control
         /// </summary>
@@ -397,7 +405,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetControlsBtns: " + ex.Message);
+                Log.Exception("Error in GetControlsBtns: " + ex.Message);
                 flashingSequenceIDList = new List<int[]>[totalAmountOfBoxes];
                 flashingSequenceList = new List<int[]>[totalAmountOfBoxes];
                 return new List<ScannerButtonControl>[totalAmountOfBoxes];
@@ -445,6 +453,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             configNodes = null;
             return ctrlBtnsAll;
         }
+
         /// <summary>
         /// Gets the list of all the sequences of each button
         /// </summary>
@@ -476,7 +485,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetFlashingSequenceIDBoxList: " + ex.Message);
+                Log.Exception("Error in GetFlashingSequenceIDBoxList: " + ex.Message);
                 return new List<int>[totalAmountOfBoxes];
             }
             return flashingSequenceIDBoxList;
@@ -490,7 +499,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <returns></returns>
         public static Dictionary<int, double> GetLettersProbs(List<ScannerButtonControl> controls, bool get = false)
         {
-            Dictionary<int, double> nextProbs = new Dictionary<int, double>();
+            Dictionary<int, double> nextProbs = new();
             try
             {
                 if (!_prevLettersProbs.Equals(_lettersProbs) || get == true)
@@ -514,7 +523,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception es)
             {
-                Log.Debug("Exception geting values probs " + es);
+                Log.Exception("Exception geting values probs " + es);
             }
             return nextProbs;
         }
@@ -527,7 +536,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <returns></returns>
         public static Dictionary<int, double> GetLettersProbs(List<Widget> controls, bool get = false)
         {
-            Dictionary<int, double> nextProbs = new Dictionary<int, double>();
+            Dictionary<int, double> nextProbs = new();
             try
             {
                 if (!_prevLettersProbs.Equals(_lettersProbs) || get == true)
@@ -535,7 +544,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     _prevLettersProbs = _lettersProbs;
                     foreach (Widget widget in controls)
                     {
-                        if(widget.GetText().Length == 1)
+                        if (widget.GetText().Length == 1)
                         {
                             if (!widget.Name.Contains("PWLItem") && ((widget.GetText()[0] >= 'a' && widget.GetText()[0] <= 'z') || widget.GetText()[0] == ' ') || ((widget.GetText()[0] >= 'A' && widget.GetText()[0] <= 'Z') || widget.GetText()[0] == ' '))
                             {
@@ -569,7 +578,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Exception in getLettersProbs: " + ex.Message.ToString());
+                Log.Exception("Exception in getLettersProbs: " + ex.Message.ToString());
                 return _ = new Dictionary<int, double>();
             }
             return nextProbs;
@@ -601,7 +610,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             string xmlSection = XmlSectionName.KeyboardBoxMapping.ToLower();
             int index = 0;
             List<ButtonsData>[] matrixButtonList = Enumerable.Range(0, amountBoxes).Select(_ => new List<ButtonsData>()).ToArray();
-            ButtonsData currMatrixButton = new ButtonsData();
+            ButtonsData currMatrixButton = new();
             try
             {
                 foreach (XmlNode node in configNodes)
@@ -689,11 +698,12 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         public static int GetOffsetCRG(List<Widget> widgets)
         {
             int offset = 0;
-                var btnWidget = widgets.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals("BtnCRG"));
-                if(btnWidget != null)
-                    offset = GetOffset(btnWidget);
+            var btnWidget = widgets.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals("BtnCRG"));
+            if (btnWidget != null)
+                offset = GetOffset(btnWidget);
             return offset;
         }
+
         /// <summary>
         /// Gets a specific parameter
         /// </summary>
@@ -726,7 +736,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             int index = 0;
             var configNodes = GetNodesList(configFilePath, XmlSectionName.ACATAnimationsAnimation);
             string xmlSection = XmlSectionName.KeyboardSequences.ToLower();
-            List<int> seq = new List<int>();
+            List<int> seq = new();
             List<int[]>[] flashingSeqAll = Enumerable.Range(0, amountBoxes).Select(_ => new List<int[]>()).ToArray();
             try
             {
@@ -764,6 +774,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             configNodes = null;
             return flashingSeqAll;
         }
+
         /// <summary>
         /// Gets type of keyboard from a especific box
         /// </summary>
@@ -794,14 +805,14 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         }
 
         /// <summary>
-        /// Obtain the next words probabilities 
+        /// Obtain the next words probabilities
         /// </summary>
         /// <param name="controls">Controls from the form</param>
         /// <param name="get">Obtain whether if the same probabilities or not</param>
         /// <returns></returns>
         public static Dictionary<int, double> GetWordsProbs(List<ScannerButtonControl> controls, bool get = false)
         {
-            Dictionary<int, double> nextProbs = new Dictionary<int, double>();
+            Dictionary<int, double> nextProbs = new();
             try
             {
                 if (!_prevWordsProbs.Equals(_wordsProbs) || get == true)
@@ -826,7 +837,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception es)
             {
-                Log.Debug("Exception geting values probs " + es);
+                Log.Exception("Exception geting values probs " + es);
             }
             return nextProbs;
         }
@@ -900,6 +911,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             doc.Load(configFilePath);
             return doc.SelectNodes(nodeSection);
         }
+
         /// <summary>
         /// Get the offset value from the button
         /// </summary>
@@ -912,6 +924,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             // Set a dynamic offset of the letters if the buttons change size due to the resolution of the screen The value "1.333" is an aproximation of the value from Font units to Pixels units (6pt aprox 8px)
             return (((widget.Height) - ((int)(fontData.FontSize * 1.333))) / 2);
         }
+
         private static class XmlSectionName
         {
             public const string ACATAnimationsAnimation = "/ACAT/Animations/Animation";

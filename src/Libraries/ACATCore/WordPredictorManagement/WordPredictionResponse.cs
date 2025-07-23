@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ACAT.Lib.Core.WordPredictionManagement
+namespace ACAT.Core.WordPredictionManagement
 {
     /// <summary>
     /// Represents a response for a word prediction request.

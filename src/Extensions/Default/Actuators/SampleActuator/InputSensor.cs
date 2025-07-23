@@ -45,7 +45,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-namespace ACAT.Extensions.Default.Actuators.SampleActuator
+namespace ACAT.Extensions.Actuators.SampleActuator
 {
     internal delegate void ActuatorSwitchEvent(object sender, InputSensorSwitchEventArgs e);
 

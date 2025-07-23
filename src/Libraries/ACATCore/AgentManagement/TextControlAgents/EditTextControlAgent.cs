@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.AgentManagement.TextInterface
+namespace ACAT.Core.AgentManagement.TextInterface
 {
     /// <summary>
     /// Text control for a Windows control that supports
@@ -224,7 +224,7 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
         {
             bool retVal = true;
 
-            Log.Debug();
+            Log.Verbose();
 
             try
             {
@@ -262,7 +262,7 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
                 // exception can be thrown by AddAutomationEventHandler to the effect that
                 // WindowClosed event can only be attached to top level windows.
                 // For instance, the "Start" menu would throw this exception.
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 

@@ -5,13 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Drawing;
 using System.IO;
 using System.Xml;
 
-namespace ACAT.Lib.Core.ThemeManagement
+namespace ACAT.Core.ThemeManagement
 {
     /// <summary>
     /// Represents a color scheme.  Includes properties
@@ -523,7 +523,7 @@ namespace ACAT.Lib.Core.ThemeManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -573,7 +573,7 @@ namespace ACAT.Lib.Core.ThemeManagement
             }
             else
             {
-                Log.Debug("Could not find bitmap file " + bitmapFile);
+                Log.Error($"Could not find bitmap file {bitmapFile}");
             }
 
             return retVal;

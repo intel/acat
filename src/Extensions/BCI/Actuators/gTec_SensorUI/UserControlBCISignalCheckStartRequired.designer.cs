@@ -9,6 +9,7 @@
 // User control which is displayed when the user is required to do a signal quality check
 //
 ////////////////////////////////////////////////////////////////////////////
+using ACAT.Core.WidgetManagement;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
@@ -46,7 +47,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             System.Windows.Forms.Label labelBCISignalCheck;
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.labelMinsElapsedSignalCheckStartRequired = new System.Windows.Forms.Label();
-            this.buttonNext_userControlBCISignalCheckStartRequired = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonNext_userControlBCISignalCheckStartRequired = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.labelBCISignalCheckDescription = new System.Windows.Forms.Label();
             this.buttonExit_userControlBCISignalCheckStartRequired = new System.Windows.Forms.Button();
             this.labelInfo2SignalCheckStartRequired = new System.Windows.Forms.Label();
@@ -436,7 +437,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelMain;
         private System.Windows.Forms.Label label53;
         private System.Windows.Forms.Label label59;
-        public Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonNext_userControlBCISignalCheckStartRequired;
+        public ScannerRoundedButtonControl buttonNext_userControlBCISignalCheckStartRequired;
         private System.Windows.Forms.Label labelBCISignalCheckDescription;
 
 

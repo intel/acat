@@ -12,15 +12,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement.UI;
+using ACAT.Core.PanelManagement;
 using ACATResources;
-using ACAT.Lib.Core.ActuatorManagement.UI;
-using ACAT.Lib.Core.PanelManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// Displays a list of switches for an acutator to enable configure
@@ -403,7 +403,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             var shortcut = dataGridView2.Rows[e.RowIndex].Cells[ShortcutColumn.Name].Value as String;
 
-            bool result = ConfirmBoxTwoOption.ShowDialog("Delete shortcut " + shortcut.ToString() + " ?", "", "No","Yes");
+            bool result = ConfirmBoxTwoOption.ShowDialog("Delete shortcut " + shortcut.ToString() + " ?", "", "No", "Yes");
 
             if (!result)
             {

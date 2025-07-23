@@ -5,24 +5,25 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.UserControlManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
-using ACAT.Lib.Extension.CommandHandlers;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.UserControlManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Extension.CommandHandlers;
 using System;
 using System.Collections.Generic;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     /// <summary>
     /// A generic scanner form that acts a a container for a user control
     /// </summary>
-    [Descriptor("6889D5CA-2D64-4123-AB0E-179D3C41560C",
+    [ClassDescriptorAttribute("6889D5CA-2D64-4123-AB0E-179D3C41560C",
                     "UserControlContainerForm",
                     "Generic container form for a usercontrol")]
     public partial class UserControlContainerForm : Form, IScannerPanel
@@ -33,7 +34,7 @@ namespace ACAT.Lib.Extension
         /// The AlphabetScannerCommon object. Has a number of
         /// helper functions
         /// </summary>
-        private readonly ScannerCommon2 _scannerCommon;
+        private readonly ScannerCommon _scannerCommon;
 
         private String _panelClass;
         private bool _pauseWatchdog;
@@ -41,7 +42,7 @@ namespace ACAT.Lib.Extension
 
         public UserControlContainerForm()
         {
-            _scannerCommon = new ScannerCommon2(this);
+            _scannerCommon = new ScannerCommon(this);
 
             InitializeComponent();
 
@@ -65,9 +66,9 @@ namespace ACAT.Lib.Extension
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         public String EmbeddedUserControlName
@@ -100,14 +101,6 @@ namespace ACAT.Lib.Extension
         public ScannerCommon ScannerCommon
         {
             get { return null; }
-        }
-
-        /// <summary>
-        /// Gets the scanner common object
-        /// </summary>
-        public ScannerCommon2 ScannerCommon2
-        {
-            get { return _scannerCommon; }
         }
 
         /// <summary>
@@ -183,8 +176,8 @@ namespace ACAT.Lib.Extension
             _scannerCommon.UserControlManager.OnPause();
 
             _scannerCommon.OnPause(true ?
-                                ScannerCommon2.PauseDisplayMode.FadeScanner :
-                                ScannerCommon2.PauseDisplayMode.None);
+                                ScannerCommon.PauseDisplayMode.FadeScanner :
+                                ScannerCommon.PauseDisplayMode.None);
         }
 
         /// <summary>
@@ -254,7 +247,7 @@ namespace ACAT.Lib.Extension
         /// Window procedure
         /// </summary>
         /// <param name="m">windows message</param>
-        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
         protected override void WndProc(ref Message m)
         {
             const int WM_SYSCOMMAND = 0x0112;

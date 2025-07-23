@@ -63,7 +63,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             // Split in folds
             int[] indicesFolds = SplitInFolds(labels);
 
-            List<double> output = new List<double>();
+            List<double> output = new();
             output.InsertRange(0, Vector.Zeros(nTrials));
 
             // Train & Test in parallel
@@ -73,7 +73,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                     int[] indTrain = Matrix.Find(indicesFolds, element => element != i);
                     int[] indTest = Matrix.Find(indicesFolds, element => element == i);
 
-                    DimReductRDA DimReductObj = new DimReductRDA(DimReductObj4Params.shrinkParam, DimReductObj4Params.regularizeParam);
+                    DimReductRDA DimReductObj = new(DimReductObj4Params.shrinkParam, DimReductObj4Params.regularizeParam);
 
                     //Train in K-1 folds (defined by indTrain)
                     DimReductObj.Learn(data.Get(indTrain), labels.Get(indTrain).ToList());
@@ -104,7 +104,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             int nTrials = labels.Count;
 
             // 1. Create partitions
-            List<int> indicesFolds = new List<int>();
+            List<int> indicesFolds = new();
             switch (partitioningMethod)
             {
                 case "sequential":

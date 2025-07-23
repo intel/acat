@@ -13,11 +13,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Text;
 
-namespace ACAT.Lib.Core.PreferencesManagement
+namespace ACAT.Core.PreferencesManagement
 {
     /// <summary>
     /// Use this as the base class for any derived class that
@@ -59,7 +59,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
             if (preferences == null)
             {
-                Log.Debug("Could not load preferences from " + preferencesFile + ". Creating a new one");
+                Log.Warn($"Could not load preferences from {preferencesFile} - creating a new one.");
                 if (loadDefaultsOnFail == true)
                 {
                     preferences = new T();

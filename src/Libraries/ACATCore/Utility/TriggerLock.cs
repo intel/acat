@@ -7,7 +7,7 @@
 
 using System.Threading;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Thread-safe semphore-like behavior to gate

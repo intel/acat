@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility.NamedPipe;
+using ACAT.Core.Utility.NamedPipe;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -13,12 +13,12 @@ using System.IO.Pipes;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
-    /// Communicates with ACATWatcher which is a separate process, to 
+    /// Communicates with ACATWatcher which is a separate process, to
     /// set focus to a specified window. Setting focus is tricky. Doesn't
-    /// always work if ACAT sets focus to one of its own windows. works 
+    /// always work if ACAT sets focus to one of its own windows. works
     /// better if a different process does it, hence ACATWatcher
     /// </summary>
     public static class ScannerFocus
@@ -52,7 +52,7 @@ namespace ACAT.Lib.Core.Utility
                 catch (Exception ex)
                 {
                     disposePipeClient();
-                    Log.Debug("Could not communicate with ACATWatcher. Will retry" + ex.ToString());
+                    Log.Exception("Could not communicate with ACATWatcher. Will retry" + ex.ToString());
                 }
             }
         }
@@ -78,7 +78,7 @@ namespace ACAT.Lib.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug("Could not communicate with ACATWatch. " + ex.ToString());
+                Log.Exception("Could not communicate with ACATWatch. " + ex.ToString());
                 try
                 {
                     disposePipeClient();
@@ -95,7 +95,7 @@ namespace ACAT.Lib.Core.Utility
                 }
                 catch (Exception ex1)
                 {
-                    Log.Debug(ex1.ToString());
+                    Log.Exception(ex1.ToString());
                 }
             }
 
@@ -142,7 +142,7 @@ namespace ACAT.Lib.Core.Utility
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug("Could not send quit message to ACATWatcher. " + ex.ToString());
+                    Log.Exception("Could not send quit message to ACATWatcher. " + ex.ToString());
                 }
             }
         }

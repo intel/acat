@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+]>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="ACATTalk" value="@CmdShowACATTalk"  />
+    <WidgetAttribute name="QuickTalk" value="@CmdQuickTalk"  />
+    <WidgetAttribute name="PointerControl" value="@CmdShowPointerControl"  />
+    <WidgetAttribute name="Keyboard" value="@CmdShowKeyboard"  />
+    <WidgetAttribute name="Windows" value="@CmdWindowsMenu"  />
+    <WidgetAttribute name="Location" value="@CmdLocationMenu"  />
+    <WidgetAttribute name="MainMenu" value="@CmdMainMenu" />
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="BoxWidget"  name="ToolbarBox">
+      <Widget class="RowWidget" name="DefaultButtonsBox">
+        <Widget class="ScannerButton" name="ACATTalk" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="QuickTalk" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="PointerControl" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="Keyboard" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="Windows" colorScheme="ScannerButton" />
+        <Widget class="ScannerButton" name="Location" colorScheme="ScannerButton" />
+        <Widget class="ScannerButton" name="MainMenu" colorScheme="ScannerButton" />
+      </Widget>
+    </Widget>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopButtonRotation"
+               start="true"
+               onEnter=""
+               scanTime="@MenuDialogScanTime"
+               iterations="1"
+               onSelect="actuate(@SelectedWidget);stop();">
+      <Widget name="ACATTalk" />
+      <Widget name="QuickTalk" />
+      <Widget name="PointerControl" />
+      <Widget name="Keyboard" />
+      <Widget name="Windows" />
+      <Widget name="Location" />
+    </Animation>
+  </Animations>
+</ACAT>

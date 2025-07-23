@@ -4,19 +4,19 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 ////////////////////////////////////////////////////////////////////////////
+using ACAT.Core.ThemeManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.ThemeManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
 using SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
 using SharpDX.Mathematics.Interop;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
-using System;
 
 namespace ACAT.Extensions.BCI.Common.AnimationSharp
 {
@@ -32,6 +32,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             var colorScheme = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(colorCodeRegion);
             return ConvertToRawColor4(colorScheme);
         }
+
         /// <summary>
         /// Gets a rectangle used as focal area for box calibration
         /// </summary>
@@ -49,7 +50,6 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             {
                 return new RoundedRectangle();
             }
-
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         }
 
         /// <summary>
-        /// Gets te Type of weight font 
+        /// Gets te Type of weight font
         /// </summary>
         /// <param name="useBold"></param>
         /// <returns></returns>
@@ -99,11 +99,12 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetListButtonTextFormat: " + ex.Message);
+                Log.Exception("Error in GetListButtonTextFormat: " + ex.Message);
                 return new List<TextFormat>[totalAmountOfBoxes];
             }
             return buttonTextFormatList;
         }
+
         /// <summary>
         /// Gets the location and shape for each control in the form, returns list with rectangles
         /// </summary>
@@ -180,7 +181,6 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                             }
                         }
                         index += 1;
-
                     }
                     name = null;
                 }
@@ -203,7 +203,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         {
             var configNodes = GetNodesList(configFilePath, "/ACAT/Layout/Layouts");
             string xmlSection = "ProgressBarsBoxMapping".ToLower();
-            Dictionary<int, RawRectangleF> probBars = new Dictionary<int, RawRectangleF>();
+            Dictionary<int, RawRectangleF> probBars = new();
             try
             {
                 foreach (XmlNode node in configNodes)
@@ -289,6 +289,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         {
             return GetRectangleFromName(controls, "BtnCRG");
         }
+
         /// <summary>
         /// Gets the list of all the rectangles of each button for each box within the user control
         /// </summary>
@@ -310,7 +311,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetRectanglesButtonsList: " + ex.Message);
+                Log.Exception("Error in GetRectanglesButtonsList: " + ex.Message);
                 return new List<RawRectangleF>[totalAmountOfBoxes];
             }
             return rectanglesButtonsList;
@@ -338,7 +339,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetRectanglesButtonsRoundList: " + ex.Message);
+                Log.Exception("Error in GetRectanglesButtonsRoundList: " + ex.Message);
                 return new List<RoundedRectangle>[totalAmountOfBoxes];
             }
             return rectanglesButtonsRoundList;
@@ -355,7 +356,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <returns></returns>
         public static RawRectangleF GetRectanglesCRG(Dictionary<List<Control>, string> boxesData, List<Widget>[] widgetsData, SharpDX.DirectWrite.Factory directWriteFactory, out int offsetCRG, out TextFormat buttonTextFormatCRG)
         {
-            RawRectangleF rectangleExtraButtonCRG = new RawRectangleF();
+            RawRectangleF rectangleExtraButtonCRG = new();
             _ = GetDefaultButtonTextFormat(directWriteFactory, TextAlignment.Center);
             offsetCRG = 1;
             buttonTextFormatCRG = GetDefaultButtonTextFormat(directWriteFactory, TextAlignment.Center);
@@ -384,7 +385,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetRectanglesCRG: " + ex.Message);
+                Log.Exception("Error in GetRectanglesCRG: " + ex.Message);
                 return rectangleExtraButtonCRG;
             }
             return rectangleExtraButtonCRG;
@@ -397,7 +398,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <returns></returns>
         public static RawRectangleF GetRectanglesTriggerBox(Dictionary<List<Control>, string> boxesData)
         {
-            RawRectangleF rectangleExtraButton = new RawRectangleF();
+            RawRectangleF rectangleExtraButton = new();
             int amountBoxesPerUserControl;
             int indexBox = 0;
             try
@@ -416,7 +417,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetRectanglesTriggerBox: " + ex.Message);
+                Log.Exception("Error in GetRectanglesTriggerBox: " + ex.Message);
                 return rectangleExtraButton;
             }
             return rectangleExtraButton;
@@ -431,6 +432,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         {
             return GetRectangleFromName(controls, "BTrigger");
         }
+
         /// <summary>
         /// Get a rectangle with round edges
         /// </summary>
@@ -566,10 +568,10 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <returns></returns>
         private static List<RawRectangleF> ConvertToRawRectangles(List<RoundedRectangle> roundedRectangles)
         {
-            List<RawRectangleF> rawRectangles = new List<RawRectangleF>();
+            List<RawRectangleF> rawRectangles = new();
             foreach (RoundedRectangle roundedRect in roundedRectangles)
             {
-                RawRectangleF rawRect = new RawRectangleF(roundedRect.Rect.Left, roundedRect.Rect.Top, roundedRect.Rect.Right, roundedRect.Rect.Bottom);
+                RawRectangleF rawRect = new(roundedRect.Rect.Left, roundedRect.Rect.Top, roundedRect.Rect.Right, roundedRect.Rect.Bottom);
                 rawRectangles.Add(rawRect);
             }
             return rawRectangles;
@@ -620,7 +622,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <returns></returns>
         private static TextFormat GetDefaultButtonTextFormat(SharpDX.DirectWrite.Factory directWriteFactory, TextAlignment textAlignment)
         {
-            TextFormat buttonTextFormat = new TextFormat(directWriteFactory,
+            TextFormat buttonTextFormat = new(directWriteFactory,
                                             "montserrat",
                                             FontWeight.Normal,
                                             SharpDX.DirectWrite.FontStyle.Normal,
@@ -649,15 +651,19 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 case BCIFocalAreaRegion.TopLeft:
                     CalculateTopLeftFocalPoint(rawRectangleF, distanceFromEdge, out xPoint, out yPoint);
                     break;
+
                 case BCIFocalAreaRegion.TopRight:
                     CalculateTopRightFocalPoint(rawRectangleF, width, distanceFromEdge, out xPoint, out yPoint);
                     break;
+
                 case BCIFocalAreaRegion.Center:
                     CalculateCenterFocalPoint(rawRectangleF, maxWidth, width, maxHeight, height, distanceFromEdge, out xPoint, out yPoint);
                     break;
+
                 case BCIFocalAreaRegion.BottomLeft:
                     CalculateBottomLeftFocalPoint(rawRectangleF, height, distanceFromEdge, out xPoint, out yPoint);
                     break;
+
                 case BCIFocalAreaRegion.BottomRight:
                     CalculateBottomRightFocalPoint(rawRectangleF, width, height, distanceFromEdge, out xPoint, out yPoint);
                     break;
@@ -677,6 +683,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             doc.Load(configFilePath);
             return doc.SelectNodes(nodeSection);
         }
+
         /// <summary>
         /// Get the rectangle based on the position of the button in the Form
         /// </summary>
@@ -684,7 +691,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <returns></returns>
         private static RawRectangleF GetRectangleFromLocationOnForm(ScannerButtonControl scannerButton)
         {
-            Point locationOnForm = new Point();
+            Point locationOnForm = new();
             if (scannerButton.InvokeRequired)
                 scannerButton.Invoke(new Action(() => { locationOnForm = scannerButton.FindForm().PointToClient(scannerButton.Parent.PointToScreen(scannerButton.Location)); }));
             else
@@ -704,7 +711,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <returns></returns>
         private static RawRectangleF GetRectangleFromName(List<Control> controls, string name)
         {
-            RawRectangleF rectExtraButton = new RawRectangleF();
+            RawRectangleF rectExtraButton = new();
             var btn = AnimationManagerUtils.GetControl(controls, name, 1, false);
             if (btn != null)
                 rectExtraButton = GetRectangleFromLocationOnForm(btn);

@@ -40,8 +40,7 @@
     <!-- Set this globally unless overridden for specific platforms -->
     <RuntimeIdentifier Condition="'$(Platform)' == 'x86'">win-x86</RuntimeIdentifier>
     <RuntimeIdentifier Condition="'$(Platform)' == 'x64'">win-x64</RuntimeIdentifier>
-  </PropertyGroup>
-  <PropertyGroup>
     <NeutralLanguage>en</NeutralLanguage>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 </Project>

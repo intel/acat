@@ -5,13 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Drawing;
 using System.Drawing.Text;
+using System.IO;
 using System.Linq;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// Collection of fonts used by ACAT. ACAT uses its own font
@@ -62,6 +63,11 @@ namespace ACAT.Lib.Core.PanelManagement
 
         public static void LoadFontsFromDir(String directory)
         {
+            if (!Directory.Exists(directory))
+            {
+                Log.Info("No user fonts installed.");
+                return;
+            }
             loadFontsFromDir(directory, "*.ttf");
             loadFontsFromDir(directory, "*.otf");
         }
@@ -81,7 +87,7 @@ namespace ACAT.Lib.Core.PanelManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Could not add font file " + fontFileName + ", exception: " + ex);
+                Log.Exception("Could not add font file " + fontFileName + ", exception: " + ex);
                 retVal = false;
             }
             return retVal;
@@ -127,7 +133,7 @@ namespace ACAT.Lib.Core.PanelManagement
         private static void loadFontsFromDir(String directory, String wildCard)
         {
             var walker = new DirectoryWalker(directory, wildCard);
-            Log.Debug("Walking dir " + directory);
+            Log.Verbose("Walking dir " + directory);
             walker.Walk(new OnFileFoundDelegate(onFileFound));
         }
 
@@ -137,7 +143,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="file"></param>
         private static void onFileFound(String file)
         {
-            Log.Debug("Found font file " + file);
+            Log.Verbose("Found font file " + file);
             Instance.AddFontFile(file);
         }
 

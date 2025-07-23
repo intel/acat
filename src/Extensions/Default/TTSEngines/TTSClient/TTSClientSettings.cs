@@ -10,12 +10,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
 using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace ACAT.Extensions.Default.TTSEngines.TTSClient
+namespace ACAT.Extensions.TTSEngines.TTSClient
 {
     public enum TransportProtocol
     {
@@ -55,8 +57,10 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
         /// Gets or sets whether a puncutation should be appended if it
         /// is not already there.
         /// </summary>
-        [BoolDescriptor("Auto append sentence terminator?", false)]
-        public bool AutoAppendPunctuation { get; set; }
+        [Descriptor("Auto append sentence terminator?")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(false)]
+        public bool AutoAppendPunctuation { get; set; } = false;
 
         public HttpSettings HttpSettings { get; set; }
 
@@ -70,14 +74,18 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
         /// <summary>
         /// Gets or sets the rate of speech
         /// </summary>
-        [IntDescriptor("Speaking rate", -10, 10)]
+        [Descriptor("Speaking rate")]
+        [Range(-10, 10)]
+        [UIHint("Slider")]
         public int Rate { get; set; }
 
         /// <summary>
         /// Gets or sets whether to use alternate pronunciations
         /// </summary>
-        [BoolDescriptor("Use alternate pronunciations?", false)]
-        public bool UseAlternatePronunciations { get; set; }
+        [Descriptor("Use alternate pronunciations?")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(false)]
+        public bool UseAlternatePronunciations { get; set; } = false;
 
         /// <summary>
         /// Gets or sets the voice for TTS
@@ -87,7 +95,9 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
         /// <summary>
         /// Gets or sets the volume
         /// </summary>
-        [IntDescriptor("Volume setting", 0, 100)]
+        [Descriptor("Volume setting")]
+        [Range(0, 100)]
+        [UIHint("Slider")]
         public int Volume { get; set; }
 
         /// <summary>

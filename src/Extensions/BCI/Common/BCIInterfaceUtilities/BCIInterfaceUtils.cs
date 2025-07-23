@@ -9,8 +9,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PanelManagement;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.PanelManagement;
 using ACATResources;
 using System;
 using System.Windows.Forms;
@@ -94,7 +94,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <param name="form"></param>
         public static void ShowCalibrationEyesForm(Form form)
         {
-            CalibrationEyesForm calibrationEyesForm = new CalibrationEyesForm();
+            CalibrationEyesForm calibrationEyesForm = new();
             calibrationEyesForm.ShowDialog(form);
             calibrationEyesForm.Dispose();
         }
@@ -178,7 +178,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             var result = BCIMenuOptions.MainMenuOptions.ExitApplication;
             _ = ConfirmBoxThreeOption.ShowDialog(CALIBRATIONSTATUS, CALIBRATIONEXPIRED + (auc * 100), EXITAPPLICATION, CALIBRATEAGAIN, CALIBRATE, form);
             return result;
-
         }
 
         /// <summary>
@@ -196,7 +195,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <param name="form"></param>
         public static void ShowTimedMessageBox(Form form)
         {
-            ConfirmBoxTimer confirmBoxTimer2 = new ConfirmBoxTimer
+            ConfirmBoxTimer confirmBoxTimer2 = new()
             {
                 Prompt = STARTINGIN,
                 SecondsCounter = 3

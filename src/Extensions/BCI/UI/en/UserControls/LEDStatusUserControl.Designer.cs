@@ -1,4 +1,5 @@
 ﻿
+using ACAT.Core.WidgetManagement;
 namespace ACAT.Extensions.BCI.UI.UserControls
 {
     partial class LEDStatusUserControl
@@ -30,7 +31,7 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.BT1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.BT1 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -90,6 +91,6 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl BT1;
+        private ScannerRoundedButtonControl BT1;
     }
 }

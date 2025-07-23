@@ -10,31 +10,23 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PreferencesManagement
+namespace ACAT.Core.PreferencesManagement
 {
-    /// <summary>
-    /// Main form for ACAT Config application
-    /// </summary>
     public partial class ACATConfigMainForm : Form
     {
-        /// <summary>
-        /// Holds information on high level preferenes category in list of checkboxes on left side of the screen
-        /// </summary>
-        public List<Tuple<String, CheckBox>> _configCategoryList;
+     
+        public List<Tuple<String, CheckBox>> _configCategoryList;    // Holds information on high level preferenes category in list of checkboxes on left side of the screen
 
-        /// <summary>
-        /// Keeps track of which preferences forms are currently displayed
-        /// </summary>
-        private static Stack<Form> _shownPreferenceForms;
+        private static Stack<Form> _shownPreferenceForms;           // Keeps track of which preferences forms are currently displayed
 
         /// <summary>
         /// Aspect ratio of form at design time
@@ -58,87 +50,43 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// </summary>
         public ACATConfigMainForm()
         {
+
             InitializeComponent();
             Load += ACATConfigMainForm_Load;
-            Shown += ACATConfigMainForm_Shown;
+          //  Shown += ACATConfigMainForm_Shown;
             _configCategoryList = new List<Tuple<String, CheckBox>>
             {
                 new Tuple<String, CheckBox>(checkBoxCategoryGeneral.Text.ToString(), checkBoxCategoryGeneral),
                 new Tuple<String, CheckBox>(checkBoxCategoryActuators.Text.ToString(), checkBoxCategoryActuators),
                 new Tuple<String, CheckBox>(checkBoxCategoryTextToSpeech.Text.ToString(), checkBoxCategoryTextToSpeech),
-                new Tuple<String, CheckBox>(checkBoxCategoryWordPrediction.Text.ToString(), checkBoxCategoryWordPrediction)
+                new Tuple<String, CheckBox>(checkBoxCategoryWordPrediction.Text.ToString(), checkBoxCategoryWordPrediction),
             };
 
             SetNewFormButtonHandlers(); // Reset buttons to default states and clear all event handlers
 
             _shownPreferenceForms = new Stack<Form>();
 
-            Paint += (s, args) =>
-            {
-                // On first start, have first category (General) selected
-                handleConfigCategorySelected(checkBoxCategoryGeneral, null);
-            };
+            Paint += (s, args) => { handleConfigCategorySelected(checkBoxCategoryGeneral, null); };
         }
 
-        /// <summary>
-        /// Delegate for the event triggered when the user changes
-        /// the default language
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="arg">event args</param>
-        public delegate void NotifyPreferencesLanguageChanged(object sender, PreferencesLanguageChanged arg);
+        // public delegate void NotifyPreferencesLanguageChanged(object sender, PreferencesLanguageChanged arg);
 
-        /// <summary>
-        /// Delegate for the event triggered when the user clicks Defaults button
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="arg">event args</param>
         public delegate void NotifyResetToDefaultButtonClicked(object sender, EventArgs e);
 
-        /// Delegate for the event triggered when the user changes
-        /// the default theme
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="arg">event args</param>
         public delegate void NotifyThemeChanged(object sender, String selectedTheme);
 
-        /// <summary>
-        /// Delegate for the event triggered when the user clicks Wrap Text check box button
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="arg">event args</param>
         public delegate void NotifyWrapTextCheckBoxClicked(object sender, EventArgs e);
 
-        /// <summary>
-        /// Event raised when the default language changes
-        /// </summary>
-        public event NotifyPreferencesLanguageChanged EvtLanguageChanged;
+        //  public event NotifyPreferencesLanguageChanged EvtLanguageChanged;
 
-        /// <summary>
-        /// Event raised when the default theme is changed
-        /// </summary>
         public event NotifyThemeChanged EvtThemeChanged;
-        /// <summary>
-        /// Event raised when the user clicks Defaults button
-        /// </summary>
-        private event NotifyResetToDefaultButtonClicked EvtResetToDefaultButtonClicked;
-        /// <summary>
-        /// Event raised when the user clicks Wrap Text check box button
-        /// </summary>
-        private event NotifyWrapTextCheckBoxClicked EvtWrapTextCheckBoxClicked;
-        /// <summary>
-        /// Sets handlers for button press events on this form (Done, Defaults, Wrap Text)
-        /// </summary>
-        /// <param name="handlerDoneButtonClicked"></param>
-        /// <param name="handlerResetToDefaultButtonClicked"></param>
-        /// <param name="handlerWrapTextBoxClicked"></param>
-        /// <param name="wrapTextDefault"></param>
-        public void SetNewFormButtonHandlers(NotifyResetToDefaultButtonClicked handlerResetToDefaultButtonClicked = null,
-            NotifyWrapTextCheckBoxClicked handlerWrapTextBoxClicked = null, bool wrapTextDefault = false)
-        {
-            // Log.Debug("SetNewFormButtonHandlers");
 
-            // Clear all existing event handlers
+        private event NotifyResetToDefaultButtonClicked EvtResetToDefaultButtonClicked;
+
+        private event NotifyWrapTextCheckBoxClicked EvtWrapTextCheckBoxClicked;
+
+        public void SetNewFormButtonHandlers(NotifyResetToDefaultButtonClicked handlerResetToDefaultButtonClicked = null, NotifyWrapTextCheckBoxClicked handlerWrapTextBoxClicked = null, bool wrapTextDefault = false)
+        {
             EvtResetToDefaultButtonClicked = null;
             EvtWrapTextCheckBoxClicked = null;
 
@@ -171,25 +119,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
             }
         }
 
-        /// <summary>
-        /// Client size changed
-        /// </summary>
-        /// <param name="e">event args</param>
-        protected override void OnClientSizeChanged(EventArgs e)
-        {
-            base.OnClientSizeChanged(e);
-            if (_firstClientChangedCall)
-            {
-                _designTimeAspectRatio = (float)ClientSize.Height / ClientSize.Width;
-                _firstClientChangedCall = false;
-            }
-        }
-
-        /// <summary>
-        /// Form load handler
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
         private void ACATConfigMainForm_Load(object sender, EventArgs e)
         {
             float currentAspectRatio = (float)ClientSize.Height / ClientSize.Width;
@@ -214,78 +143,41 @@ namespace ACAT.Lib.Core.PreferencesManagement
             ConfirmBoxOneOption.ShowDialog("Please exercise caution when changing ACAT settings.",
                 "Refer to the ACAT User Guide for help", StringResources.OK, this);
         }
-        /// <summary>
-        /// Handle Exit button press - save any changes if made, Close form
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
         private void buttonExit_Click(object sender, EventArgs e)
         {
-            // Prompt user if they want to save preferences changes made and close all forms up until this point
             savePrefCloseAllShownForms();
-
-            // Exit ACATConfig
             Close();
         }
 
-        /// <summary>
-        /// Handle Reset to Defaults button press - call corresponding event
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void buttonResetToDefault_Click(object sender, EventArgs e)
         {
             EvtResetToDefaultButtonClicked?.Invoke(sender, e);
         }
 
-        /// <summary>
-        /// Handle Save button press - prompt user to save edits if any made
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            // Prompt user if they want to save preferences changes made
-            // Do NOT close any forms if Save button pressed
             savePrefCloseAllShownForms(true);
-
-            // Make Save button invisible again
             buttonSave.Visible = false;
         }
 
-        /// <summary>
-        /// Handle Wrap Text button press - call corresponding event
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void checkBoxWrapText_Click(object sender, EventArgs e)
         {
             EvtWrapTextCheckBoxClicked?.Invoke(sender, e);
         }
 
-        /// <summary>
-        /// User selected new config category (high level choices in left most list of check boxes - Ex: General, Actuators, Word Prediction. etc.)
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void handleConfigCategorySelected(object sender, EventArgs e)
         {
             String newConfigCategory = ((CheckBox)sender).Text.ToString();
             Log.Debug("handleConfigCategorySelected | Selected high level category: " + newConfigCategory);
 
-            // Unselect all other checkboxes
-            foreach (Tuple<String, CheckBox> tupleObj in _configCategoryList)
+            foreach (var (category, checkBox) in _configCategoryList)
             {
-                if (tupleObj.Item1.ToString() != newConfigCategory)
-                {
-                    tupleObj.Item2.Checked = false;
-                    tupleObj.Item2.ForeColor = System.Drawing.Color.White;
-                }
-                else
-                {
-                    tupleObj.Item2.Checked = true;
-                    tupleObj.Item2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-                }
+                bool isSelected = category == newConfigCategory;
+                checkBox.Checked = isSelected;
+                checkBox.ForeColor = isSelected
+                    ? System.Drawing.Color.FromArgb(35, 36, 51)
+                    : System.Drawing.Color.White;
             }
 
             // Prompt user if they want to save preferences changes made and close all forms up until this point
@@ -297,75 +189,66 @@ namespace ACAT.Lib.Core.PreferencesManagement
             // Create new PreferencesCategorySelectForm or PreferencesEditForm depending on which high level category selected
             Form newPreferencesSelectForm = null;
             IntPtr formHandle = this.Handle;
+            var existingApp = System.Windows.Application.Current;
 
-            // Create PreferencesEditForm to show General settings and add it as child of table layout panel in this form
-            if (newConfigCategory == "General")
+            // Handle category-specific initialization
+            switch (newConfigCategory)
             {
-                var generalSettingsCategory = new GeneralSettingsCategory();
-                newPreferencesSelectForm = new PreferencesEditForm { SupportsPreferencesObj = generalSettingsCategory, Title = "General Settings" };
-                formHandle = ((PreferencesEditForm)newPreferencesSelectForm).Handle;
+                case "General":
+                    //PreferencesEditForm.EnsureInitialized();
+                    newPreferencesSelectForm = CreateGeneralPreferencesForm();
+                    break;
 
-                NotifyWrapTextCheckBoxClicked HandlerWrapTextButtonClicked = ((PreferencesEditForm)newPreferencesSelectForm).checkBoxWrapText_CheckedChanged;
-                bool wrapTextBoxChecked = ((PreferencesEditForm)newPreferencesSelectForm)._wrapText;
+                case "Actuators":
+                    //PreferencesEditForm.EnsureInitialized();
+                    if (!Context.AppActuatorManager.LoadExtensions(Context.ExtensionDirs, true))
+                    {
+                        ShowError("Actuator");
+                        return;
+                    }
+                    newPreferencesSelectForm = Context.AppActuatorManager.GetPreferencesSelectionForm(parentControlHandle);
+                    break;
 
-                // Set button config / handlers for General settings - Enable and set handlers for "Wrap Text", "Set Defaults" buttons
-                NotifyResetToDefaultButtonClicked HandlerResetToDefaultsButtonClicked = ((PreferencesEditForm)newPreferencesSelectForm).buttonDefaults_Click; // General Settings category has Reset to Defaults functionality
-                buttonResetToDefault.Visible = true;
-                SetNewFormButtonHandlers(HandlerResetToDefaultsButtonClicked, HandlerWrapTextButtonClicked, wrapTextBoxChecked); // Set handlers / enable "Wrap Text", "Set Defaults" buttons
-                ((PreferencesEditForm)newPreferencesSelectForm).EvtPreferencesChangeMade += handlePreferenceChangeMade; // Set handler for when preferences change mande
+                case "Word Prediction":
+                    //PreferencesEditForm.EnsureInitialized();
+                    if (!Context.AppWordPredictionManager.LoadExtensions(Context.ExtensionDirs))
+                    {
+                        ShowError("Word Prediction");
+                        return;
+                    }
+                    newPreferencesSelectForm = Context.AppWordPredictionManager.GetPreferencesSelectionForm(parentControlHandle);
+                    break;
+
+                case "Text to Speech":
+                    //PreferencesEditForm.EnsureInitialized();
+                    if (!Context.AppTTSManager.LoadExtensions(Context.ExtensionDirs))
+                    {
+                        ShowError("Text-to-Speech");
+                        return;
+                    }
+                   newPreferencesSelectForm = Context.AppTTSManager.GetPreferencesSelectionForm(parentControlHandle);
+                    break;
             }
 
-            // Get PreferencesCategorySelectForm from ActuatorManager, or WordPredictionManager, or TTSManager and add it as child of table layout panel in this form
-            else if (newConfigCategory == "Actuators")
-            {
-                if (Context.AppActuatorManager.LoadExtensions(Context.ExtensionDirs, true))
-                {
-                    newPreferencesSelectForm = (PreferencesCategorySelectForm)Context.AppActuatorManager.GetPreferencesSelectionForm(parentControlHandle);
-                    formHandle = ((PreferencesCategorySelectForm)newPreferencesSelectForm).Handle;
-                    SetNewFormButtonHandlers(); // Reset buttons to default states and clear all event handlers
-                    ((PreferencesCategorySelectForm)newPreferencesSelectForm).EvtPreferencesChangeMade += handlePreferenceChangeMade; // Set handler for when preferences change mande
-                }
-                else
-                {
-                    showMessage("Error loading Actuator extensions");
-                    return;
-                }
-            }
-            else if (newConfigCategory == "Word Prediction")
-            {
-                if (Context.AppWordPredictionManager.LoadExtensions(Context.ExtensionDirs))
-                {
-                    newPreferencesSelectForm = (PreferencesCategorySelectForm)Context.AppWordPredictionManager.GetPreferencesSelectionForm(parentControlHandle);
-                    formHandle = ((PreferencesCategorySelectForm)newPreferencesSelectForm).Handle;
-                    SetNewFormButtonHandlers(); // Reset buttons to default states and clear all event handlers
-                    ((PreferencesCategorySelectForm)newPreferencesSelectForm).EvtPreferencesChangeMade += handlePreferenceChangeMade; // Set handler for when preferences change mande
-                }
-                else
-                {
-                    showMessage("Error loading Word Prediction extensions");
-                    return;
-                }
-            }
-            else if (newConfigCategory == "Text to Speech")
-            {
-                if (Context.AppTTSManager.LoadExtensions(Context.ExtensionDirs))
-                {
-                    newPreferencesSelectForm = (PreferencesCategorySelectForm)Context.AppTTSManager.GetPreferencesSelectionForm(parentControlHandle);
-                    formHandle = ((PreferencesCategorySelectForm)newPreferencesSelectForm).Handle;
-                    SetNewFormButtonHandlers(); // Reset buttons to default states and clear all event handlers
-                    ((PreferencesCategorySelectForm)newPreferencesSelectForm).EvtPreferencesChangeMade += handlePreferenceChangeMade; // Set handler for when preferences change mande
-                }
-                else
-                {
-                    showMessage("Error loading Text-to-speech extensions");
-                    return;
-                }
-            }
-
+            // Finalize form setup if a form was created
             if (newPreferencesSelectForm == null)
             {
-                showMessage("Error creating form for preferences cofiguration");
+                MessageBox.Show("Error creating form for preferences configuration", "ACAT Config", MessageBoxButtons.OK);
                 return;
+            }
+
+            formHandle = newPreferencesSelectForm.Handle;
+
+            // For all non-General categories, just reset handlers and hide buttons
+            if (newConfigCategory != "General")
+            {
+                SetNewFormButtonHandlers();
+            }
+
+            // Hook up save button visibility on preference change
+            if (newPreferencesSelectForm is PreferencesEditForm editForm)
+            {
+                editForm.EvtPreferencesChangeMade += () => buttonSave.Visible = true;
             }
 
             newPreferencesSelectForm.Dock = DockStyle.Fill;
@@ -397,13 +280,14 @@ namespace ACAT.Lib.Core.PreferencesManagement
             }
 
             // Set handler for when new form is completed / exited
-            newPreferencesSelectForm.FormClosed += handleDoneSettingPreferences;
+            newPreferencesSelectForm.FormClosed += (s, args) => SetNewFormButtonHandlers();
 
             // Set handler for when "Setup" button pressed for preferences category
-            if (newPreferencesSelectForm.GetType() == typeof(PreferencesCategorySelectForm))
+            if (newPreferencesSelectForm is PreferencesCategorySelectForm categoryForm)
             {
-                ((PreferencesCategorySelectForm)newPreferencesSelectForm).EvtPreferencesCategorySelected += handlePreferencesCategorySelected;
+                categoryForm.EvtPreferencesCategorySelected += handlePreferencesCategorySelected;
             }
+
 
             // Push new preferences select form to stack
             _shownPreferenceForms.Push(newPreferencesSelectForm);
@@ -412,39 +296,39 @@ namespace ACAT.Lib.Core.PreferencesManagement
             newPreferencesSelectForm.Show();
         }
 
-        /// <summary>
-        /// Handler for when completed setting preferences for a category (form closed)
-        ///  Reset to default state - no buttons highlighted, no handlers attached, etc.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void handleDoneSettingPreferences(object sender, FormClosedEventArgs e)
+        private PreferencesEditForm CreateGeneralPreferencesForm()
         {
-            SetNewFormButtonHandlers(); // Reset buttons and clear all event handlers
+            var generalSettings = new GeneralSettingsCategory();
+
+            var generalForm = new PreferencesEditForm
+            {
+                SupportsPreferencesObj = generalSettings,
+                Title = "General Settings"
+            };
+
+            // Hook up handlers and defaults
+            NotifyWrapTextCheckBoxClicked wrapTextHandler = generalForm.checkBoxWrapText_CheckedChanged;
+            NotifyResetToDefaultButtonClicked resetHandler = generalForm.buttonDefaults_Click;
+            bool wrapTextDefault = generalForm._wrapText;
+
+         //   buttonResetToDefault.Visible = true;
+            SetNewFormButtonHandlers(resetHandler, wrapTextHandler, wrapTextDefault);
+
+            return generalForm;
         }
 
-        /// <summary>
-        /// Handler for when preferences change made - show Save button
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void handlePreferenceChangeMade()
+
+        private void ShowError(string category)
         {
-            buttonSave.Visible = true;
+            MessageBox.Show($"Error loading {category} extensions", "ACAT Config", MessageBoxButtons.OK);
         }
 
-        /// <summary>
-        /// Handler for when preferences category is selected ("Setup" button in "Configure" column)
-        /// Load custom preferences dialog called by ShowPreferencesDialog, or load default PreferencesEditForm2
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="supportsPreferences"></param>
+        //Handler for when preferences category is selected ("Setup" button in "Configure" column)
+        //Load custom preferences dialog called by ShowPreferencesDialog, or load default PreferencesEditForm2
         private void handlePreferencesCategorySelected(object sender, ISupportsPreferences supportsPreferences)
         {
             try
             {
-                // Log.Debug("\n\nhandlePreferencesCategorySelected | sender: " + sender.ToString()+ " | supportsPreferences.SupportsPreferencesDialog: " + supportsPreferences.SupportsPreferencesDialog.ToString());
-
                 if (sender == null || ((Form)sender).IsDisposed)
                 {
                     return;
@@ -455,9 +339,68 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 // Show custom preferences dialog if available
                 if (supportsPreferences.SupportsPreferencesDialog)
                 {
-                    senderForm.Hide();
-                    supportsPreferences.ShowPreferencesDialog();
-                    senderForm.Show();
+                    #region MessUp
+                    var prefs = supportsPreferences.GetPreferences();
+
+                    if (prefs != null)
+                    {
+                        PreferencesEditForm newPreferencesEditForm = new PreferencesEditForm
+                        {
+                            Title = "Select Voice"
+                        };
+
+                        // Get handle of control you will make parent of new form
+                        IntPtr parentControlHandle = tableLayoutPanelConfigSettings.Handle;
+
+                        newPreferencesEditForm.Dock = DockStyle.Fill;
+
+                        //// Change window style according to SetParent documentation
+                        //// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setparent
+                        IntPtr handle = newPreferencesEditForm.Handle;
+                        IntPtr style = (IntPtr)User32Interop.GetWindowLong(handle, -16);
+                        uint currentStyle = (uint)style.ToInt32();
+                        currentStyle &= ~User32Interop.WS_POPUP;
+                        currentStyle |= User32Interop.WS_CHILD;
+                        IntPtr newStyle = new IntPtr((int)currentStyle);
+                        User32Interop.SetWindowLong(handle, -16, newStyle);
+
+
+                        // Use lower level User32Interop function to set parent of PreferencesEditForm to target control
+                        User32Interop.SetParent(newPreferencesEditForm.Handle, parentControlHandle);
+
+                        // Set handlers for button press events of main form
+                        NotifyWrapTextCheckBoxClicked HandlerWrapTextButtonClicked = ((PreferencesEditForm)newPreferencesEditForm).checkBoxWrapText_CheckedChanged;
+                        bool wrapTextBoxChecked = ((PreferencesEditForm)newPreferencesEditForm)._wrapText;
+
+                        // Get whether preferences supports reset to default function
+                        NotifyResetToDefaultButtonClicked HandlerResetToDefaultsButtonClicked = null;
+                        IPreferences DefaultPreferences = supportsPreferences.GetDefaultPreferences();
+
+                        SetNewFormButtonHandlers(HandlerResetToDefaultsButtonClicked, HandlerWrapTextButtonClicked, wrapTextBoxChecked);
+
+                        //Set handler for when preferences setting change made
+                        newPreferencesEditForm.EvtPreferencesChangeMade += () => buttonSave.Visible = true;
+
+
+                        newPreferencesEditForm.FormClosing += (_, e) =>
+                        {
+                            if (_shownPreferenceForms?.Count > 0)
+                            {
+                                _shownPreferenceForms.Pop();
+                                _shownPreferenceForms.Peek()?.Show();
+                            }
+                        };
+                        //Push new preferences edit form to stack
+                        _shownPreferenceForms.Push(newPreferencesEditForm);
+                        newPreferencesEditForm.Show();
+                    }
+
+
+                    //   senderForm.Hide();
+                    // supportsPreferences.ShowPreferencesDialog();
+                    //   senderForm.Show();
+
+                    #endregion
                 }
 
                 // Otherwise show generic PreferencesEditForm
@@ -518,16 +461,20 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
                         SetNewFormButtonHandlers(HandlerResetToDefaultsButtonClicked, HandlerWrapTextButtonClicked, wrapTextBoxChecked);
 
-                        // Set handler for when preferences setting change made
-                        newPreferencesEditForm.EvtPreferencesChangeMade += handlePreferenceChangeMade;
+                        //Set handler for when preferences setting change made
+                        newPreferencesEditForm.EvtPreferencesChangeMade += () => buttonSave.Visible = true;
 
-                        // Set handler for when child form is closing
-                        newPreferencesEditForm.FormClosing += handlePreferencesEditFormClosing;
+                        newPreferencesEditForm.FormClosing += (_, e) =>
+                        {
+                            if (_shownPreferenceForms?.Count > 0)
+                            {
+                                _shownPreferenceForms.Pop();
+                                _shownPreferenceForms.Peek()?.Show();
+                            }
+                        };
 
-                        // Push new preferences edit form to stack
+                        //Push new preferences edit form to stack
                         _shownPreferenceForms.Push(newPreferencesEditForm);
-
-                        // Show new form
                         newPreferencesEditForm.Show();
                     }
                 }
@@ -538,125 +485,50 @@ namespace ACAT.Lib.Core.PreferencesManagement
             }
         }
 
-        /// <summary>
-        /// Handler for when preferences edit form is is closing
-        /// Pops latest form from stack and shows the new form on top of the stack
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void handlePreferencesEditFormClosing(object sender, FormClosingEventArgs e)
-        {
-            // Log.Debug("handlePreferencesEditFormClosing | _shownPreferenceForms: " + _shownPreferenceForms.ToString());
-            if (_shownPreferenceForms != null && _shownPreferenceForms.Count > 0)
-            {
-                _ = _shownPreferenceForms.Pop();
-                // Log.Debug("formPopped: " + formPopped.ToString());
-                if (_shownPreferenceForms.Count > 0)
-                {
-                    Form formNewTop = _shownPreferenceForms.Peek();
-                    // Log.Debug("formNewTop: " + formNewTop.ToString());
-                    formNewTop.Show();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Prompt user asking if they want to save any changes made
-        /// If yes - save preferences for all forms saved in the stack struct
-        /// Close all open preference category or preference edit forms
-        /// </summary>
-        /// <param name="saveButtonPressed">If this function called from Save button</param>
         private void savePrefCloseAllShownForms(bool saveButtonPressed = false)
         {
-            bool shownFormDirty = false;
-            //bool shownFormValidated = true;
-            bool userSaveConfirmation = false;
+            if (_shownPreferenceForms == null || _shownPreferenceForms.Count == 0)
+                return;
 
-            if (_shownPreferenceForms != null && _shownPreferenceForms.Count >= 1)
+            int formsToProcess = saveButtonPressed ? 1 : _shownPreferenceForms.Count;
+            bool userConfirmedSave = false;
+
+            for (int i = 0; i < formsToProcess; i++)
             {
-                int numFormsOpen = _shownPreferenceForms.Count;
-                if (saveButtonPressed)
+                if (_shownPreferenceForms.Count == 0)
+                    break;
+
+                var shownForm = _shownPreferenceForms.Peek();
+
+                if (shownForm is PreferencesEditForm editForm)
+                    _ = editForm.Validate();
+
+                if (!saveButtonPressed)
+                    _shownPreferenceForms.Pop();
+
+                bool isDirty = shownForm is PreferencesCategorySelectForm categoryForm ? categoryForm._isDirty : (shownForm is PreferencesEditForm editForm2 ? editForm2._isDirty : false);
+
+                userConfirmedSave = (isDirty && !userConfirmedSave) ? ConfirmBoxTwoOption.ShowDialog("Save changes?", "", StringResources.Yes, StringResources.No, this, true) : userConfirmedSave;
+
+                if (shownForm is PreferencesCategorySelectForm categoryForm3)
                 {
-                    numFormsOpen = 1;
+                    if (userConfirmedSave)
+                        categoryForm3.validateAndSave();
+                    categoryForm3._isDirty = false;
+                }
+                else if (shownForm is PreferencesEditForm editForm3)
+                {
+                    if (userConfirmedSave)
+                        editForm3.validateAndSave();
+                    editForm3._isDirty = false;
                 }
 
-                for (int i = 0; i < numFormsOpen; i++)
-                {
-                    if (_shownPreferenceForms.Count == 0)
-                    {
-                        break;
-                    }
-
-                    var shownForm = _shownPreferenceForms.Peek();
-
-                    if (shownForm.GetType() == typeof(PreferencesEditForm))
-                    {
-                        _ = ((PreferencesEditForm)shownForm).Validate();
-                    }
-
-                    if (!saveButtonPressed)
-                    {
-                        _shownPreferenceForms.Pop();
-                    }
-
-                    if (shownForm.GetType() == typeof(PreferencesCategorySelectForm))
-                    {
-                        if (((PreferencesCategorySelectForm)shownForm)._isDirty)
-                        {
-                            shownFormDirty = true;
-                        }
-                    }
-                    else if (shownForm.GetType() == typeof(PreferencesEditForm))
-                    {
-                        if (((PreferencesEditForm)shownForm)._isDirty)
-                        {
-                            shownFormDirty = true;
-                        }
-                    }
-
-                    if (shownFormDirty == true && userSaveConfirmation == false)
-                    {
-                        userSaveConfirmation = ConfirmBoxTwoOption.ShowDialog("Save changes?", "", StringResources.Yes, StringResources.No, this, true);
-                    }
-
-                    if (shownForm.GetType() == typeof(PreferencesCategorySelectForm))
-                    {
-                        if (userSaveConfirmation == true)
-                        {
-                            ((PreferencesCategorySelectForm)shownForm).validateAndSave();
-                        }
-                        ((PreferencesCategorySelectForm)shownForm)._isDirty = false;
-                    }
-                    else if (shownForm.GetType() == typeof(PreferencesEditForm))
-                    {
-                        if (userSaveConfirmation == true)
-                        {
-                            ((PreferencesEditForm)shownForm).validateAndSave();
-                        }
-                        ((PreferencesEditForm)shownForm)._isDirty = false;
-                    }
-
-                    if (!saveButtonPressed)
-                    {
-                        ((Form)shownForm).Close();
-                    }
-                }
+                if (!saveButtonPressed)
+                    ((Form)shownForm).Close();
             }
         }
-        /// <summary>
-        /// Displays the message in a MessageBox
-        /// </summary>
-        /// <param name="message">message to display</param>
-        private void showMessage(String message)
-        {
-            MessageBox.Show(message, _title, MessageBoxButtons.OK);
-        }
 
-        /// <summary>
-        /// Event args for the event raised to indicate that
-        /// the language changed
-        /// </summary>
-        public class PreferencesLanguageChanged
+        /* public class PreferencesLanguageChanged
         {
             public CultureInfo CI;
             public bool IsDefault;
@@ -666,43 +538,25 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 CI = ci;
                 IsDefault = isDefault;
             }
-        }
+        } */
 
-        /// <summary>
-        /// Class to handle General settings of ACAT
-        /// </summary>
         private class GeneralSettingsCategory : ISupportsPreferences
         {
-            /// <summary>
-            /// Gets whether this supports a custom settings dialog
-            /// </summary>
             public bool SupportsPreferencesDialog
             {
                 get { return false; }
             }
 
-            /// <summary>
-            /// Returns the default preferences (factory settings)
-            /// </summary>
-            /// <returns></returns>
             public IPreferences GetDefaultPreferences()
             {
                 return CoreGlobals.AppDefaultPreferences;
             }
 
-            /// <summary>
-            /// Returns the current values of general preferences
-            /// </summary>
-            /// <returns></returns>
             public IPreferences GetPreferences()
             {
                 return CoreGlobals.AppPreferences;
             }
 
-            /// <summary>
-            /// Shows the preferences dialog
-            /// </summary>
-            /// <returns>true on success</returns>
             public bool ShowPreferencesDialog()
             {
                 return true;

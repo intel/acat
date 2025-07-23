@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+]>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="MainMenu" value="@CmdMainMenu" />
+    <WidgetAttribute name="MoveAndClick" value="@CmdMoveAndClick"  />
+    <WidgetAttribute name="Move" value="@CmdMove"  />
+    <WidgetAttribute name="LeftClick" value="@CmdLeftClick"  />
+    <WidgetAttribute name="RightClick" value="@CmdRightClick"  />
+    <WidgetAttribute name="ClickHold" value="@CmdClickHold"  />
+    <WidgetAttribute name="ScrollUp" value="@CmdScrollUp"  />
+    <WidgetAttribute name="ScrollDown" value="@CmdScrollDown" />
+
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="BoxWidget"  name="ToolbarBox">
+      <Widget class="RowWidget" name="PointerControlBox">
+        <Widget class="ScannerButton" name="MoveAndClick" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="Move" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="LeftClick" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="RightClick" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="ClickHold" colorScheme="ScannerButton" enabled="false"/>
+        <Widget class="ScannerButton" name="ScrollUp" colorScheme="ScannerButton" enabled="false"/>
+        <Widget class="ScannerButton" name="ScrollDown" colorScheme="ScannerButton" enabled="false"/>
+      </Widget>
+    </Widget>
+  </Layout>
+
+
+  <Animations>
+    <Animation name="TopButtonRotation"
+               start="true"
+               onEnter=""
+               scanTime="@MenuDialogScanTime"
+               iterations="1"
+               onSelect="actuate(@SelectedWidget);stop();">
+      <Widget name="MoveAndClick" />
+      <Widget name="Move" />
+      <Widget name="LeftClick" />
+      <Widget name="RightClick" />
+      <Widget name="ClickHold" />
+      <Widget name="ScrollUp" />
+      <Widget name="ScrollDown" />
+    </Animation>
+  </Animations>
+</ACAT>

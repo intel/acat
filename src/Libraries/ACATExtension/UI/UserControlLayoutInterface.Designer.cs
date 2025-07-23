@@ -1,6 +1,7 @@
 ﻿using ACATResources;
+using ACAT.Core.WidgetManagement;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 
 {
     partial class UserControlLayoutInterface
@@ -35,7 +36,7 @@ namespace ACAT.Lib.Extension
             this.label1 = new System.Windows.Forms.Label();
             this.labelScanSpeedSelect3 = new System.Windows.Forms.Label();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
-            this.scannerRoundedButtonControl1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.scannerRoundedButtonControl1 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.checkBoxDontShowThisOnStartup = new System.Windows.Forms.CheckBox();
             this.pictureBoxInterface = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanelMain.SuspendLayout();
@@ -182,7 +183,7 @@ namespace ACAT.Lib.Extension
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelMain;
         private System.Windows.Forms.Label labelScanSpeedSelect3;
         private System.Windows.Forms.Label label1;
-        private Core.WidgetManagement.ScannerRoundedButtonControl scannerRoundedButtonControl1;
+        private ScannerRoundedButtonControl scannerRoundedButtonControl1;
         private System.Windows.Forms.CheckBox checkBoxDontShowThisOnStartup;
         private System.Windows.Forms.PictureBox pictureBoxInterface;
     }

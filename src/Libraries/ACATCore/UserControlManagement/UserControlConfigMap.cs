@@ -5,8 +5,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,12 +16,12 @@ using System.Linq;
 using System.Reflection;
 using System.Xml;
 
-namespace ACAT.Lib.Core.UserControlManagement
+namespace ACAT.Core.UserControlManagement
 {
     /// <summary>
     /// UserControlConfigMap is an xml file that contains a mapping between the
     /// user control and the name of the xml file that
-    /// contains animation and other info for the user control. 
+    /// contains animation and other info for the user control.
     /// </summary>
     public class UserControlConfigMap
     {
@@ -47,10 +47,12 @@ namespace ACAT.Lib.Core.UserControlManagement
         private static List<Guid> _loadUserControlConfigMapTable;
 
         private static Dictionary<Guid, UserControlConfigMapEntry> _masterUserControlConfigMapTable;
+
         /// <summary>
         /// If one of the dll found has an error with the certificate
         /// </summary>
         private static volatile bool _DLLError = false;
+
         /// <summary>
         /// Caches the class Type of user controls
         /// </summary>
@@ -169,7 +171,7 @@ namespace ACAT.Lib.Core.UserControlManagement
         /// <returns>The descirptor guid</returns>
         public static Guid GetUserControlId(Type type)
         {
-            var descAttribute = DescriptorAttribute.GetDescriptor(type);
+            var descAttribute = ClassDescriptorAttribute.GetDescriptor(type);
             Guid retVal = Guid.Empty;
             if (descAttribute != null)
             {
@@ -213,7 +215,7 @@ namespace ACAT.Lib.Core.UserControlManagement
                 //load(extensionDir);
 
                 String extensionDir = dir + "\\" + PanelManager.UiRootDir;
-                load(extensionDir); 
+                load(extensionDir);
                 if (_DLLError)
                     return false;
             }
@@ -278,10 +280,7 @@ namespace ACAT.Lib.Core.UserControlManagement
         /// <returns>true on success</returns>
         public static bool Load(Assembly assembly)
         {
-            if (_userControlsCache == null)
-            {
-                _userControlsCache = new Hashtable();
-            }
+            _userControlsCache ??= new Hashtable();
 
             return loadTypesFromAssembly(assembly);
         }
@@ -486,8 +485,8 @@ namespace ACAT.Lib.Core.UserControlManagement
         /// to look for files
         /// </summary>
         /// <param name="dir">Directory to walk</param>
-        /// <param name="resursive">Recursively search?</param>
-        private static void load(String dir, bool resursive = true)
+        /// <param name="recursive">Recursively search?</param>
+        private static void load(String dir, bool recursive = true)
         {
             if (Directory.Exists(dir) && !_DLLError)
             {
@@ -520,7 +519,7 @@ namespace ACAT.Lib.Core.UserControlManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 
@@ -568,11 +567,10 @@ namespace ACAT.Lib.Core.UserControlManagement
                     }
                     loadTypesFromAssembly(Assembly.LoadFile(dllName));
                 }
-                
             }
             catch (Exception ex)
             {
-                Log.Debug("Could get types from assembly " + dllName + ". Exception : " + ex);
+                Log.Exception("Could get types from assembly " + dllName + ". Exception : " + ex);
                 if (ex is ReflectionTypeLoadException)
                 {
                     var typeLoadException = (ReflectionTypeLoadException)ex;
@@ -652,7 +650,7 @@ namespace ACAT.Lib.Core.UserControlManagement
         /// Found an XML file. Store the complete path to the file
         /// to the location map table
         /// </summary>
-        /// <param name="xmlFileName">name of theo xml file</param>
+        /// <param name="xmlFileName">name of the xml file</param>
         private static void onXmlFileFound(String xmlFileName)
         {
             String fileName = Path.GetFileName(xmlFileName).ToLower();

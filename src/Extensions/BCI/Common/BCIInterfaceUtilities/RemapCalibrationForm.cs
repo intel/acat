@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACATResources;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using System;
-using ACATResources;
 
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
@@ -20,7 +20,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
     /// Form that handles different calibraitons options to configure and initialize calibration sesion
     /// </summary>
 
-    [Descriptor("5A13AD81-2943-4A11-885F-37D4C2F19918",
+    [ClassDescriptor("5A13AD81-2943-4A11-885F-37D4C2F19918",
         "RemapCalibrationForm",
         "Application window used to display the remap of calibrations")]
     public partial class RemapCalibrationForm : Form
@@ -51,7 +51,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                             "To change where a calibration is  applied. Use the interface below.<br/>" +
                             "For more information watch this <a href=\"$ASSETS_VIDEOS_DIR#ACATOverviewBCI.mp4\">video</a> or review the <a href=$ACAT_USER_GUIDE#BCICalibrationRemap>set up guide</a>" +
                             "</p>\r\n</body>\r\n</html>";
-
 
         /// <summary>
         /// Confirm Box with multiple results
@@ -109,7 +108,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("Error AddItemsToComboBox: " + ex.Message);
+                Log.Exception("Error AddItemsToComboBox: " + ex.Message);
             }
         }
 
@@ -197,7 +196,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// </summary>
         private BCICalibrationUpdatedMappings GetMappingsValues()
         {
-            BCICalibrationUpdatedMappings bCICalibrationUpdatedMappings = new BCICalibrationUpdatedMappings();
+            BCICalibrationUpdatedMappings bCICalibrationUpdatedMappings = new();
             try
             {
                 bCICalibrationUpdatedMappings.DictUpdatedMappings.Add(BCIScanSections.Box, GetScanningSection(comboBoxBox.SelectedItem.ToString()));
@@ -208,7 +207,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("Error SaveMappingsValues: " + ex.Message);
+                Log.Exception("Error SaveMappingsValues: " + ex.Message);
             }
             return bCICalibrationUpdatedMappings;
         }
@@ -286,7 +285,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error ProcessMapOptionsAnswer: " + ex.Message);
+                Log.Exception("BCI LOG | Error ProcessMapOptionsAnswer: " + ex.Message);
             }
         }
 
@@ -309,7 +308,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             try
             {
-                if(comboBox.Items.Count > 0)
+                if (comboBox.Items.Count > 0)
                 {
                     BCIScanSections localbCIScanSection = BCIScanSections.None;
                     if (_bCIMapOptions.CurrentMappingsDict.ContainsKey(bCIScanSection))
@@ -336,11 +335,10 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                     if (comboBox.Items.Count > 0)
                         comboBox.SelectedIndex = 0;
                 }
-                
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error SetDefaultItemInComboBox: " + ex.Message);
+                Log.Exception("BCI LOG | Error SetDefaultItemInComboBox: " + ex.Message);
             }
         }
 
@@ -385,7 +383,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 }
             }
 
-            List<String> list = new List<String>();
+            List<String> list = new();
 
             if (param2.ToLower().EndsWith(".mp4"))
             {
@@ -411,11 +409,9 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch
             {
-
             }
             finally
             {
-
             }
         }
     }

@@ -5,8 +5,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ThemeManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ThemeManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
     /// <summary>
     /// Reads panel layout information from the config file of the scanner.
@@ -270,9 +270,9 @@ namespace ACAT.Lib.Core.WidgetManagement
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Log.Debug("Error creating widget " + widgetName, e);
+                Log.Exception(ex);
                 widget = null;
             }
 

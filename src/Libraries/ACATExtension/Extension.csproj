@@ -33,7 +33,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    
     <ErrorReport>prompt</ErrorReport>
     <UseWinFormsOutOfProcDesigner>True</UseWinFormsOutOfProcDesigner>
   </PropertyGroup>
@@ -41,7 +41,7 @@
     <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
     <Optimize>true</Optimize>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    
     <ErrorReport>prompt</ErrorReport>
     <UseWinFormsOutOfProcDesigner>True</UseWinFormsOutOfProcDesigner>
   </PropertyGroup>
@@ -50,7 +50,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    
     <ErrorReport>prompt</ErrorReport>
     <UseWinFormsOutOfProcDesigner>True</UseWinFormsOutOfProcDesigner>
   </PropertyGroup>
@@ -58,7 +58,7 @@
     <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
     <Optimize>true</Optimize>
     <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    
     <ErrorReport>prompt</ErrorReport>
     <UseWinFormsOutOfProcDesigner>True</UseWinFormsOutOfProcDesigner>
   </PropertyGroup>
@@ -78,41 +78,6 @@
     <Compile Include="CommandHandlers\CommandDescriptors.cs" />
     <Compile Include="CommandHandlers\GoBackHandler.cs" />
     <Compile Include="CommandHandlers\MiscCommandHandler.cs" />
-    <Compile Include="Onboarding\OnboardingFinish.cs" />
-    <Compile Include="Onboarding\OnboardingKeyboardConfigSelect.cs" />
-    <Compile Include="Onboarding\OnboardingLanguageSelect.cs" />
-    <Compile Include="Onboarding\OnboardingSwitchSelect.cs" />
-    <Compile Include="Onboarding\OnboardingWelcome.cs" />
-    <Compile Include="Onboarding\UserControlFinish.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Onboarding\UserControlFinish.Designer.cs">
-      <DependentUpon>UserControlFinish.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Onboarding\UserControlKeyboardConfigSelect.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Onboarding\UserControlKeyboardConfigSelect.Designer.cs">
-      <DependentUpon>UserControlKeyboardConfigSelect.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Onboarding\UserControlLanguageSelect.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Onboarding\UserControlLanguageSelect.Designer.cs">
-      <DependentUpon>UserControlLanguageSelect.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Onboarding\UserControlSwitchSelect.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Onboarding\UserControlSwitchSelect.Designer.cs">
-      <DependentUpon>UserControlSwitchSelect.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Onboarding\UserControlWelcome.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Onboarding\UserControlWelcome.Designer.cs">
-      <DependentUpon>UserControlWelcome.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -139,12 +104,6 @@
     <Compile Include="UI\DisclaimerDialog.Designer.cs">
       <DependentUpon>DisclaimerDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\HorizontalStripScanner2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\HorizontalStripScanner2.Designer.cs">
-      <DependentUpon>HorizontalStripScanner2.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\HorizontalStripScanner.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -152,6 +111,9 @@
       <DependentUpon>HorizontalStripScanner.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\ITalkWindowTextBox.cs" />
+    <Compile Include="UI\ScannerForms\GenericScannerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UI\ScanTimeAdjustForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -238,24 +200,15 @@
     <Compile Include="UI\UserControlDefaultTryout.Designer.cs">
       <DependentUpon>UserControlDefaultTryout.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\UserControls\GenericUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControls\KeyboardUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UI\UserControlWordPredictionCommon.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Onboarding\UserControlFinish.resx">
-      <DependentUpon>UserControlFinish.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Onboarding\UserControlKeyboardConfigSelect.resx">
-      <DependentUpon>UserControlKeyboardConfigSelect.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Onboarding\UserControlLanguageSelect.resx">
-      <DependentUpon>UserControlLanguageSelect.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Onboarding\UserControlSwitchSelect.resx">
-      <DependentUpon>UserControlSwitchSelect.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Onboarding\UserControlWelcome.resx">
-      <DependentUpon>UserControlWelcome.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -269,8 +222,11 @@
     <EmbeddedResource Include="UI\DisclaimerDialog.resx">
       <DependentUpon>DisclaimerDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\HorizontalStripScanner2.resx">
-      <DependentUpon>HorizontalStripScanner2.cs</DependentUpon>
+    <EmbeddedResource Include="UI\HorizontalStripScanner.resx">
+      <DependentUpon>HorizontalStripScanner.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MenuPanel.resx">
+      <DependentUpon>MenuPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ScanTimeAdjustForm.resx">
       <DependentUpon>ScanTimeAdjustForm.cs</DependentUpon>
@@ -295,9 +251,6 @@
     <EmbeddedResource Include="UI\TalkWindowTextBoxUserControl.resx">
       <DependentUpon>TalkWindowTextBoxUserControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\UserControlContainerForm.resx">
-      <DependentUpon>UserControlContainerForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\UserControlLayoutInterface.resx">
       <DependentUpon>UserControlLayoutInterface.cs</DependentUpon>
     </EmbeddedResource>
@@ -307,6 +260,10 @@
     <EmbeddedResource Include="UI\UserControlDefaultTryout.resx">
       <DependentUpon>UserControlDefaultTryout.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControlContainerForm.resx">
+      <DependentUpon>UserControlContainerForm.cs</DependentUpon>
+    </EmbeddedResource>
+
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

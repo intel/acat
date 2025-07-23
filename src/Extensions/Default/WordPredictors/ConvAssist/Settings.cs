@@ -10,11 +10,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
 using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
 
-namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
     /// <summary>
     /// Preference settings for the ConvAssist word predictor (English)
@@ -22,8 +24,10 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
     [Serializable]
     public class Settings : PreferencesBase
     {
-        [StringDescriptor("A string of characters that should be filtered out from the predicted words, eg, punctuations")]
-        public String FilterChars = String.Empty;
+        [Descriptor("A string of characters that should be filtered out from the predicted words, eg, punctuations")]
+        [UIHint("TextBox")]
+        [DefaultValue("")]
+        public String FilterChars { get; set; } = "";
 
         /// <summary>
         /// Path to the file where preferences are stored
@@ -34,24 +38,37 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <summary>
         /// Set this to true if the language uses diacritics
         /// </summary>
-        [BoolDescriptor("Set this to true if the ConvAssist database for this language requires encoding translation", true)]
-        public bool UseDefaultEncoding = true;
+        [Descriptor("Set this to true if the ConvAssist database for this language requires encoding translation")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        public bool UseDefaultEncoding { get; set; } = true;
 
-        [BoolDescriptor("Display disclaimer on application startup", true)]
-        public bool ShowDisclaimerOnStartup = true;
+        [Descriptor("Display disclaimer on application startup")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        public bool ShowDisclaimerOnStartup { get; set; } = true;
 
-        [IntDescriptor("Wait time (in seconds) for the ConvAssist executable to load", 60, 500)]
-        public int ConvAssistExeLoadWaitTime = 100;
+        [Descriptor("Wait time (in seconds) for the ConvAssist executable to load")]
+        [Range(60, 500)]
+        [UIHint("Slider")]
+        [DefaultValue(100)]
+        public int ConvAssistExeLoadWaitTime { get; set; } = 100;
 
-        [IntDescriptor("Wait time (in secs) for the ConvAssist modules to load", 30, 200)]
-        public int ConvAssistModuleLoadWaitTime = 80;
+        [Descriptor("Wait time (in secs) for the ConvAssist modules to load")]
+        [Range(30, 200)]
+        [UIHint("Slider")]
+        [DefaultValue(80)]
+        public int ConvAssistModuleLoadWaitTime { get; set; } = 80;
 
-        [BoolDescriptor("Enable small model sentence prediction ")]
-        public bool EnableSmallVocabularySentencePrediction = false;
+        [Descriptor("Enable small model sentence prediction ")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(false)]
+        public bool EnableSmallVocabularySentencePrediction { get; set; } = false;
 
-
-        [BoolDescriptor("Enable sentence prediction")]
-        public bool Test_GeneralSentencePrediction = false;
+        [Descriptor("Enable sentence prediction")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(false)]
+        public bool Test_GeneralSentencePrediction { get; set; } = false;
 
         /// <summary>
         /// Loads the settings from the settings file

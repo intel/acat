@@ -1,4 +1,5 @@
-﻿namespace ACAT.Extensions.BCI.UI.Scanners
+﻿using ACAT.Core.WidgetManagement;
+namespace ACAT.Extensions.BCI.UI.Scanners
 {
     partial class TalkApplicationBCIScanner
     {
@@ -37,12 +38,12 @@
             this.labelDateTime = new System.Windows.Forms.Label();
             this.panelLEDStatus = new System.Windows.Forms.Panel();
             this.panelTextbox = new System.Windows.Forms.Panel();
-            this.scannerTableLayoutSentences = new ACAT.Lib.Core.WidgetManagement.ScannerTableLayout();
-            this.scannerPanelSentences = new ACAT.Lib.Core.WidgetManagement.ScannerPanel();
-            this.scannerTableLayoutWordPredictions = new ACAT.Lib.Core.WidgetManagement.ScannerTableLayout();
-            this.scannerPanelWordPredictions = new ACAT.Lib.Core.WidgetManagement.ScannerPanel();
-            this.scannerTableLayoutKeyboard = new ACAT.Lib.Core.WidgetManagement.ScannerTableLayout();
-            this.scannerPanelKeyboard = new ACAT.Lib.Core.WidgetManagement.ScannerPanel();
+            this.scannerTableLayoutSentences = new ACAT.Core.WidgetManagement.ScannerTableLayout();
+            this.scannerPanelSentences = new ACAT.Core.WidgetManagement.ScannerPanel();
+            this.scannerTableLayoutWordPredictions = new ACAT.Core.WidgetManagement.ScannerTableLayout();
+            this.scannerPanelWordPredictions = new ACAT.Core.WidgetManagement.ScannerPanel();
+            this.scannerTableLayoutKeyboard = new ACAT.Core.WidgetManagement.ScannerTableLayout();
+            this.scannerPanelKeyboard = new ACAT.Core.WidgetManagement.ScannerPanel();
             this.statusStrip.SuspendLayout();
             this.mainPanel.SuspendLayout();
             this.scannerTableLayoutSentences.SuspendLayout();
@@ -265,11 +266,11 @@
         private System.Windows.Forms.Label labelDateTime;
         private System.Windows.Forms.Panel panelTextbox;
         private System.Windows.Forms.Panel panelLEDStatus;
-        private Lib.Core.WidgetManagement.ScannerTableLayout scannerTableLayoutKeyboard;
-        private Lib.Core.WidgetManagement.ScannerTableLayout scannerTableLayoutWordPredictions;
-        private Lib.Core.WidgetManagement.ScannerTableLayout scannerTableLayoutSentences;
-        private Lib.Core.WidgetManagement.ScannerPanel scannerPanelSentences;
-        private Lib.Core.WidgetManagement.ScannerPanel scannerPanelWordPredictions;
-        private Lib.Core.WidgetManagement.ScannerPanel scannerPanelKeyboard;
+        private ScannerTableLayout scannerTableLayoutKeyboard;
+        private ScannerTableLayout scannerTableLayoutWordPredictions;
+        private ScannerTableLayout scannerTableLayoutSentences;
+        private ScannerPanel scannerPanelSentences;
+        private ScannerPanel scannerPanelWordPredictions;
+        private ScannerPanel scannerPanelKeyboard;
     }
 }

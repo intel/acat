@@ -5,18 +5,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// A message box with three button options
     /// </summary>
 
-    [Descriptor("592656B9-0534-480A-A27E-4BFF4D0C6742",
+    [ClassDescriptor("592656B9-0534-480A-A27E-4BFF4D0C6742",
                 "ConfirmBoxTwoOption",
                 "Application window used to display a three options")]
     public partial class ConfirmBoxTwoOption : Form
@@ -42,6 +42,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// If not then the regular Yes/no window will Show
         /// </summary>
         public int Op1LabelFont { get; set; }
+
         public String Op1Prompt { get; set; }
         public int Op3LabelFont { get; set; }
         public String Op3Prompt { get; set; }
@@ -64,15 +65,14 @@ namespace ACAT.Lib.Core.PanelManagement
                 parent.TopMost = false;
                 confirmBox.TopMost = true;
             }
-            confirmBox.ShowDialog(parent);
+            var result = confirmBox.ShowDialog(parent);
             if (parent != null && setTopMost)
             {
                 parent.TopMost = true;
                 confirmBox.TopMost = false;
             }
             confirmBox.Dispose();
-            //TODO:  FIXME !!!
-            return false;
+            return result == DialogResult.Yes;
         }
 
         private void buttonOp1_Click(object sender, EventArgs e)
@@ -84,6 +84,7 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             Close();
         }
+
         private void ConfirmBox_Load(object sender, EventArgs e)
         {
             CenterToScreen();

@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 // ReSharper disable SuspiciousTypeConversion.Global
 // ReSharper disable InconsistentNaming
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     internal enum EDataFlow
     {

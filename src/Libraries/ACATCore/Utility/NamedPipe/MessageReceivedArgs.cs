@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.Utility.NamedPipe
+namespace ACAT.Core.Utility.NamedPipe
 {
     /// <summary>
     /// Message received event arguments.

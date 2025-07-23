@@ -11,7 +11,6 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
-using System;
 using System.Windows.Forms;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
@@ -21,10 +20,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     /// </summary>
     public partial class UserControlBCIFilterSettings : UserControl
     {
-        /// <summary>
-        /// Unique ID for this step
-        /// </summary>
-        private readonly String _stepId;
+        ///// <summary>
+        ///// Unique ID for this step
+        ///// </summary>
+        //private readonly String _stepId;
 
         /// <summary>
         /// User control allowing selection of filter settings
@@ -36,7 +35,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             //_stepId = stepId;
 
-            int DAQ_NotchFilterIdx = BCIGtecActuatorSettings.Settings.DAQ_NotchFilterIdx;
+            int DAQ_NotchFilterIdx = BCIActuatorSettings.Settings.DAQ_NotchFilterIdx;
             if (DAQ_NotchFilterIdx == 2)
             {
                 // DAQ_NotchFilterIdx = 1; //50Hz

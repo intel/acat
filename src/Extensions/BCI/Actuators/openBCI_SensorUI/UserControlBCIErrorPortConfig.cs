@@ -11,9 +11,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACATResources;
+using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
-using ACAT.Lib.Core.Utility;
+using ACATResources;
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -21,7 +21,7 @@ using System.Windows.Forms;
 namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 {
     /// <summary>
-    /// User control which displays information on errors related to configuration 
+    /// User control which displays information on errors related to configuration
     /// of the COM port for the BCI board
     /// </summary>
     public partial class UserControlBCIErrorPortConfig : UserControl

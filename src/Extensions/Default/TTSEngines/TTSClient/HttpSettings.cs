@@ -12,7 +12,7 @@
 
 using System;
 
-namespace ACAT.Extensions.Default.TTSEngines.TTSClient
+namespace ACAT.Extensions.TTSEngines.TTSClient
 {
     public class HttpSettings
     {

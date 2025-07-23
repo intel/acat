@@ -5,17 +5,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// Base class for all contextual menu scanners that display
@@ -90,9 +90,9 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace ACAT.Lib.Core.PanelManagement
 
             if (!scannerCommon.Initialize(startupArg))
             {
-                Log.Debug("Could not initialize form " + Name);
+                Log.Error($"Could not initialize form {Name}");
                 return false;
             }
 
@@ -338,7 +338,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="e">event argument</param>
         private void ContextMenu_Load(object sender, EventArgs e)
         {
-            setFormHeight();
+            SetFormHeight();
 
             scannerCommon.OnLoad();
 
@@ -388,12 +388,12 @@ namespace ACAT.Lib.Core.PanelManagement
         }
 
         /// <summary>
-        /// Sets the height of the scanner.  The scanner form contains a
+        /// Sets the height of the scanner.The scanner form contains a
         /// table that can hold a certain maximum number of rows.  Depending
         /// on how many menu items are actually in the animation file,
         /// delete the unused rows and then set the height of the scanner
         /// </summary>
-        private void setFormHeight()
+        private void SetFormHeight()
         {
             var children = new List<Widget>();
             rootWidget.Finder.FindAllChildren(typeof(IRowWidget), children);

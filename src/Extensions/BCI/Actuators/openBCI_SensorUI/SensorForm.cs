@@ -10,9 +10,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
 using ACATResources;
 using System;
 using System.Drawing;
@@ -106,7 +106,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// Event called when Exit button selected
         /// </summary>
         public event ButtonClickedDelegate EvtButtonCancelClicked;
-        
+
         /// <summary>
         /// Flag controlling exectution of timers related to data acquisition / plotting
         /// </summary>
@@ -360,7 +360,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("startStopPlotDataTimer | Exception: " + e.ToString());
+                    Log.Exception("startStopPlotDataTimer | Exception: " + e.ToString());
                 }
             }
             else
@@ -377,7 +377,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("startStopPlotDataTimer | Exception: " + e.ToString());
+                    Log.Exception("startStopPlotDataTimer | Exception: " + e.ToString());
                 }
             }
         }
@@ -420,7 +420,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("startStopProcessDataTimer | Exception: " + e.ToString());
+                    Log.Exception("startStopProcessDataTimer | Exception: " + e.ToString());
                 }
             }
             else
@@ -437,7 +437,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("startStopProcessDataTimer | Exception: " + e.ToString());
+                    Log.Exception("startStopProcessDataTimer | Exception: " + e.ToString());
                 }
             }
         }
@@ -696,5 +696,4 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             _userControlBCISignalCheck.buttonExit.Text = "[Developer Mode]";
         }
     }
-
 }

@@ -1,4 +1,5 @@
 ﻿
+using ACAT.Core.WidgetManagement;
 using ACATResources;
 
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
@@ -36,25 +37,25 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutWord = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonInfoEyesOpenClose = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.ButtonOpcEyesOpenClose = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonInfoEyesOpenClose = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonOpcEyesOpenClose = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutKeyboardLeft = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonInfoSignalCheck = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.ButtonOpcSignalCheck = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonInfoSignalCheck = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonOpcSignalCheck = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutSentence = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonInfoTriggerCheck = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.ButtonOpcTriggerCheck = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonInfoTriggerCheck = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonOpcTriggerCheck = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutBox = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonOpcReMapCalibrations = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonOpcReMapCalibrations = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonInfoReMapCalibrations = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonInfoReMapCalibrations = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.scannerRoundedButtonControl3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.scannerRoundedButtonControl3 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonCancel = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonCancel = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutParameters.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutWord.SuspendLayout();
@@ -586,25 +587,25 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonCancel;
+        private ScannerRoundedButtonControl ButtonCancel;
         private System.Windows.Forms.Label labelTitle;
         private System.Windows.Forms.TableLayoutPanel tableLayoutBox;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonOpcReMapCalibrations;
+        private ScannerRoundedButtonControl ButtonOpcReMapCalibrations;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonInfoReMapCalibrations;
+        private ScannerRoundedButtonControl ButtonInfoReMapCalibrations;
         private System.Windows.Forms.TableLayoutPanel tableLayoutSentence;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonInfoTriggerCheck;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonOpcTriggerCheck;
+        private ScannerRoundedButtonControl ButtonInfoTriggerCheck;
+        private ScannerRoundedButtonControl ButtonOpcTriggerCheck;
         private System.Windows.Forms.TableLayoutPanel tableLayoutKeyboardLeft;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonInfoSignalCheck;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonOpcSignalCheck;
+        private ScannerRoundedButtonControl ButtonInfoSignalCheck;
+        private ScannerRoundedButtonControl ButtonOpcSignalCheck;
         private System.Windows.Forms.TableLayoutPanel tableLayoutWord;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonInfoEyesOpenClose;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonOpcEyesOpenClose;
+        private ScannerRoundedButtonControl ButtonInfoEyesOpenClose;
+        private ScannerRoundedButtonControl ButtonOpcEyesOpenClose;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl scannerRoundedButtonControl3;
+        private ScannerRoundedButtonControl scannerRoundedButtonControl3;
     }
 }

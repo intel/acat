@@ -11,7 +11,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Utility functions to manipulate images
@@ -27,14 +27,10 @@ namespace ACAT.Lib.Core.Utility
         {
             if (icon != null)
             {
-                using (var memoryStream = new MemoryStream())
-                {
-                    icon.Save(memoryStream);
-                    using (var bitmap = (Bitmap)Image.FromStream(memoryStream))
-                    {
-                        return new Bitmap(bitmap);
-                    }
-                }
+                using var memoryStream = new MemoryStream();
+                icon.Save(memoryStream);
+                using var bitmap = (Bitmap)Image.FromStream(memoryStream);
+                return new Bitmap(bitmap);
             }
 
             return null;
@@ -180,7 +176,7 @@ namespace ACAT.Lib.Core.Utility
             }
             else
             {
-                Log.Debug("Could not find bitmap file " + bitmapFile);
+                Log.Error("Could not find bitmap file " + bitmapFile);
             }
 
             return retVal;

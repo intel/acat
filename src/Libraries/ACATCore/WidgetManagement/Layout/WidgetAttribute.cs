@@ -5,16 +5,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Interpreter;
+using ACAT.Core.Utility;
 using ACATResources;
-using ACAT.Lib.Core.Interpreter;
-using ACAT.Lib.Core.Utility;
 using System;
 using System.Collections;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
     /// <summary>
     /// Holds attributes to a button widget such as the font to use,
@@ -37,9 +37,13 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// </summary>
         public WidgetAttribute()
         {
-            FontName = CoreGlobals.AppPreferences.FontName;
-            FontSize = CoreGlobals.AppPreferences.FontSize;
-            FontBold = true;
+            //FontName = CoreGlobals.AppPreferences.FontName;
+            //FontSize = CoreGlobals.AppPreferences.FontSize;
+            //FontBold = true;
+            //FontItalic = false;
+            FontName = null;
+            FontSize = 0;
+            FontBold = false;
             FontItalic = false;
             Name = String.Empty;
             Label = String.Empty;
@@ -152,7 +156,7 @@ namespace ACAT.Lib.Core.WidgetManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -173,14 +177,13 @@ namespace ACAT.Lib.Core.WidgetManagement
         {
             Name = XmlUtils.GetXMLAttrString(node, "name");
 
-
             Value = XmlUtils.GetXMLAttrString(node, "value");
             FontSize = XmlUtils.GetXMLAttrInt(node, "fontsize", FontSize);
             FontName = XmlUtils.GetXMLAttrString(node, "fontname", FontName);
 
             string label = XmlUtils.GetXMLAttrString(node, "label", "").Trim();
 
-            if (!FontName.Contains("ACAT") && label != null && label.Length > 1)
+            if (FontName != null && !FontName.Contains("ACAT") && label != null && label.Length > 1)
             {
                 Label = StringResources.ResourceManager.GetString(label) ?? label;
             }

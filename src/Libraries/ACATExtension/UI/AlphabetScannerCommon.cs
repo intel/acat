@@ -5,22 +5,22 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.AgentManagement;
+using ACAT.Core.Audit;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Core.Widgets;
+using ACAT.Extension.CommandHandlers;
 using ACATResources;
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
-using ACAT.Lib.Core.Widgets;
-using ACAT.Lib.Extension.CommandHandlers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     /// <summary>
     /// This is a helper class exclusively for Alphabet scanners.
@@ -231,7 +231,7 @@ namespace ACAT.Lib.Extension
 
             if (!_scannerCommon.Initialize(startupArg))
             {
-                Log.Debug("Could not initialize form " + _form.Name);
+                Log.Error($"Could not initialize form {_form.Name}");
                 return false;
             }
 
@@ -260,7 +260,7 @@ namespace ACAT.Lib.Extension
         /// </summary>
         public void OnClosing(object sender, FormClosingEventArgs e)
         {
-            Log.Debug();
+            Log.Verbose();
 
             KeyStateTracker.EvtKeyStateChanged -= KeyStateTracker_EvtKeyStateChanged;
 
@@ -333,7 +333,7 @@ namespace ACAT.Lib.Extension
         /// </summary>
         public void OnPause()
         {
-            Log.Debug();
+            Log.Verbose();
 
             _scannerCommon.OnPause();
         }
@@ -344,7 +344,7 @@ namespace ACAT.Lib.Extension
         /// </summary>
         public void OnResume()
         {
-            Log.Debug();
+            Log.Verbose();
 
             _scannerCommon.OnResume();
 
@@ -490,7 +490,7 @@ namespace ACAT.Lib.Extension
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -512,7 +512,7 @@ namespace ACAT.Lib.Extension
         /// <param name="e">event args</param>
         private void AppAgent_EvtTextChanged(object sender, EventArgs e)
         {
-            Log.Debug();
+            Log.Verbose();
             try
             {
                 if (_form.Visible)
@@ -522,7 +522,7 @@ namespace ACAT.Lib.Extension
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
             Log.Debug("returning");
@@ -570,10 +570,8 @@ namespace ACAT.Lib.Extension
                 // text in the target window
                 if (!KeyStateTracker.IsShiftOn())
                 {
-                    using (AgentContext context = Context.AppAgentMgr.ActiveContext())
-                    {
-                        context.TextAgent().SetSelectMode(false);
-                    }
+                    using AgentContext context = Context.AppAgentMgr.ActiveContext();
+                    context.TextAgent().SetSelectMode(false);
                 }
             }
             catch (Exception ex)
@@ -686,7 +684,7 @@ namespace ACAT.Lib.Extension
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 

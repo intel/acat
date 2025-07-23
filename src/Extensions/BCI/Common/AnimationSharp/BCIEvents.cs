@@ -12,7 +12,7 @@
 
 namespace ACAT.Extensions.BCI.Common.AnimationSharp
 {
-    public  class BCIEvents
+    public class BCIEvents
     {
         /// <summary>
         /// Event triggerd when calibration finishes
@@ -32,7 +32,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <summary>
         /// Event triggerd when is requested to resume Watchdog
         /// </summary>
-        /// 
+        ///
         public delegate void BCIResumeWatchdog();
 
         /// <summary>
@@ -44,6 +44,5 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// Event triggerd when is required to update the text in the TextBox Control
         /// </summary>
         public delegate void BCIUpdateTextBox(string stringMessage);
-
     }
 }

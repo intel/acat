@@ -1762,7 +1762,7 @@ ACAT uses two metrics - “railing” and “impedance” - to check signal qual
     <value>Initializing</value>
   </data>
   <data name="Thismaytakeafewminutes" xml:space="preserve">
-    <value>This may take a few minutes</value>
+    <value>This may take a few minutes.</value>
   </data>
   <data name="PleaseSelectBCIHeadset" xml:space="preserve">
     <value>Please Select BCI Headset</value>
@@ -1777,7 +1777,7 @@ ACAT uses two metrics - “railing” and “impedance” - to check signal qual
     <value>You need to complete both “Railing” and</value>
   </data>
   <data name="Pleaserefertotheuserguideforhelp" xml:space="preserve">
-    <value />
+    <value>Please refer to the user guide for help</value>
   </data>
   <data name="BoardError" xml:space="preserve">
     <value>Board Error</value>
@@ -1787,5 +1787,11 @@ ACAT uses two metrics - “railing” and “impedance” - to check signal qual
   </data>
   <data name="Retry" xml:space="preserve">
     <value>Retry</value>
+  </data>
+  <data name="IncompleteConfiguration" xml:space="preserve">
+    <value>Configuration is not complete.</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>Quit</value>
   </data>
 </root>

@@ -11,31 +11,38 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.Actuators.CameraActuator
+namespace ACAT.Extensions.Actuators.CameraActuator
 {
     public partial class ConfigureActuatorForm : Form
     {
         public bool IsClosing;
+
         // TODO - Localize Me
         private const String _calibrating = "Calibrating...\nPlease be still";
+
         // TODO - Localize Me
         private const String _initializing = "Initializing\nPlease wait...";
+
         // TODO - Localize Me
         private const String _switchingCamera = "Switching camera\nPlease wait...";
+
         // TODO - Localize Me
         private const String textCalibratingNeutralFace = "In Calibration - System is calibrating for NEUTRAL face\n\nDO NOT do any head moverments or facial gestures\n\nStay still";
+
         // TODO - Localize Me
         private const String textSelectCamera = "Practice the selected gestures a few times.\n\nACAT will indicate below if it detects a successful gesture.\n\nClick on Settings to adjust gesture sensitivity and hold times";
+
         // TODO - Localize Me
         private const String textSetParameters = "1. Adjust settings.\n2. Click on Apply Changes\n3. Test your gestures until you’re comfortable with the settings.\n\nACAT will indicate below if it detects a successful gesture";
+
         private readonly Color _buttonBackColor;
         private bool _gestureDetectedAtleastOnce = false;
         private readonly CameraActuator _cameraActuator;
@@ -110,7 +117,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 
         private void _videoWindowFinder_EvtVideoWindowDisplayed(IntPtr handle)
         {
-            Log.Debug();
+            Log.Verbose();
 
             try
             {
@@ -193,7 +200,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
                     return;
                 }
             }
-            else if (_cameraActuator.CameraActuatorInitInProgress && !_gestureDetectedAtleastOnce )
+            else if (_cameraActuator.CameraActuatorInitInProgress && !_gestureDetectedAtleastOnce)
             {
                 if (!showDoneActionConfirm("You have not tested your facial gestures to check if ACAT can detect them. Exit Webcam Calibration?"))
                 {
@@ -312,7 +319,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
@@ -426,6 +433,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         {
             _windowActiveWatchdog.Resume();
         }
+
         private void saveActuatorConfig()
         {
             var actuatorConfig = Context.AppActuatorManager.GetActuatorConfig();
@@ -508,6 +516,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
                     break;
             }
         }
+
         private void setNotificationText(String text = "")
         {
             try

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ACAT.Extensions.Default.Actuators.EEG.EEGDataAcquisition
+namespace ACAT.Extensions.Actuators.EEG.EEGDataAcquisition
 {
     partial class SignalMonitorForm
     {

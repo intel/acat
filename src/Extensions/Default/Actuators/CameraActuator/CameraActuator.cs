@@ -13,11 +13,11 @@
 
 //#define ACAT_ACTUATE
 
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using ACATResources;
 using System;
 using System.Linq;
@@ -25,15 +25,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.Actuators.CameraActuator
+namespace ACAT.Extensions.Actuators.CameraActuator
 {
     /// <summary>
     /// Uses a camera to detect facial gestures and trigger ACAT.
     /// </summary>
-    [Descriptor("7DA7F870-80DC-47B4-994C-5F46A4DFE538",
+    [ClassDescriptor("7DA7F870-80DC-47B4-994C-5F46A4DFE538",
                             "Camera Actuator",
                             "Actuator which uses a webcam to detect facial gestures and trigger ACAT")]
-    internal class CameraActuator : ActuatorBase, ISupportsPreferences
+    internal class CameraActuator : ActuatorBase, ISupportsPreferences, IPluginExtension
     {
         /// <summary>
         /// The settings object for this actuator
@@ -42,7 +42,6 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 
         public String PreferredCamera;
 
-        
         /// <summary>
         /// Name of the file that stores the settings for
         /// this actuator
@@ -350,7 +349,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
@@ -474,7 +473,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     if (disposing)
                     {
@@ -601,7 +600,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug("Exception " + ex);
+                    Log.Exception("Exception " + ex);
                 }
             }
             else if (gesture == "CALIB_END") // end camera calibration
@@ -777,7 +776,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
             }
             catch (Exception ex)
             {
-                Log.Debug("acatVision threw an exception:   " + ex.ToString());
+                Log.Exception("acatVision threw an exception:   " + ex.ToString());
                 Log.Exception(ex);
             }
 

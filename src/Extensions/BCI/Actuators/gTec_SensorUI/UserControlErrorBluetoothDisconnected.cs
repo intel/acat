@@ -10,12 +10,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
-using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
@@ -44,7 +44,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // Add handlers for selecting items in the lists
             listViewPairedDevices.SelectedIndexChanged += ListViewPairedDevices_SelectedIndexChanged;
             listViewUnPairedDevices.SelectedIndexChanged += ListViewPairedDevices_SelectedIndexChanged;
-
         }
 
         /// <summary>
@@ -73,12 +72,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // Save selected device in settings
             if (!string.IsNullOrEmpty(selectedDevice))
             {
-                BCIGtecActuatorSettings.Settings.GTecDeviceName = selectedDevice;
-                BCIGtecActuatorSettings.Save();
-                Log.Debug("Saved BCIGtecActuatorSettings.Settings.GTecDeviceName to ACAT settings: " + BCIGtecActuatorSettings.Settings.GTecDeviceName);
+                BCIActuatorSettings.Settings.GTecDeviceName = selectedDevice;
+                BCIActuatorSettings.Save();
+                Log.Debug("Saved BCIGtecActuatorSettings.Settings.GTecDeviceName to ACAT settings: " + BCIActuatorSettings.Settings.GTecDeviceName);
             }
         }
-
 
         /// <summary>
         /// Function to start / top timer to update the list of paired / unpaired bluetooth devices
@@ -88,7 +86,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             if (start)
             {
-                // Start timer 
+                // Start timer
                 try
                 {
                     _updateTimer = new Timer
@@ -100,7 +98,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("startStopUpdateBluetoothListTimer | Exception: " + e.ToString());
+                    Log.Exception("startStopUpdateBluetoothListTimer | Exception: " + e.ToString());
                 }
             }
             else
@@ -118,10 +116,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("startStopUpdateBluetoothListTimer | Exception: " + e.ToString());
+                    Log.Exception("startStopUpdateBluetoothListTimer | Exception: " + e.ToString());
                 }
             }
-
         }
 
         /// <summary>
@@ -181,7 +178,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                         }
                         catch (Exception ex)
                         {
-                            Log.Debug("UserControlErrorBluetoothDisconnected | bluetoothResultHandler | Exception: " + ex.Message);
+                            Log.Exception("UserControlErrorBluetoothDisconnected | bluetoothResultHandler | Exception: " + ex.Message);
                         }
                     }));
 

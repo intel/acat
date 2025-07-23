@@ -11,17 +11,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Audit;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGUtils;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
 using ACATResources;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
@@ -333,7 +332,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 // Resources already released - last thing that happens is main form closed handler
 
                 // Start in separate thread so you can do any waits without freezing main thread
-                Thread t = new Thread(() =>
+                Thread t = new(() =>
                 {
                     // Wait a bit until starting initialization again
                     Thread.Sleep(250);
@@ -361,7 +360,6 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 EvtBCIDeviceTestingCompleted?.Invoke();
             }
         }
-
 
         /// <summary>
         /// Handler to complete all necessary actions before transition to a new signal quality testing state
@@ -457,7 +455,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
         }
 
-        //// 
+        ////
 
         /// <summary>
         /// Handler to complete all necessary actions during transition out of / completion of signal quality testing state
@@ -646,7 +644,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 changeDeviceTestingState(DeviceTestingState.Testing_BCIConnections); // display "connecting" screen
 
                 // Start startBCIDeviceTesting() function from separate non-UI thread
-                Thread t = new Thread(() => startBCIDeviceTesting(0));
+                Thread t = new(() => startBCIDeviceTesting(0));
                 t.Start();
 
                 return; // Do not run anything after - device retesting process already started
@@ -710,7 +708,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception e)
             {
-                Log.Debug("_mainForm_EvtButtonExitClicked_DEBUG exception: " + e.ToString());
+                Log.Exception("_mainForm_EvtButtonExitClicked_DEBUG exception: " + e.ToString());
             }
         }
 
@@ -779,7 +777,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             {
                 // Automatically start device testing when main form is shown
                 // Start startBCIDeviceTesting() function from separate non-UI thread
-                Thread t = new Thread(() => startBCIDeviceTesting(0));
+                Thread t = new(() => startBCIDeviceTesting(0));
                 t.Start();
             }
         }
@@ -1120,10 +1118,9 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception ex)
             {
-                Log.Debug("OPTSEN: OpenBCIDeviceTester | Failed to open optical sensor COM port. " + ex.Message);
+                Log.Exception("OPTSEN: OpenBCIDeviceTester | Failed to open optical sensor COM port. " + ex.Message);
                 return false;
             }
         }
-
     }
 }

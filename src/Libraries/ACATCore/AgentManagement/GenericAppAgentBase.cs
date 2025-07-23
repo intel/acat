@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement.TextInterface;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.AgentManagement.TextInterface;
+using ACAT.Core.Utility;
 using System;
 using System.Windows.Automation;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// Base class for application agents.  Does most of the heavy lifting in
@@ -46,7 +46,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <param name="handled">was this handled?</param>
         public override void OnFocusChanged(WindowActivityMonitorInfo monitorInfo, ref bool handled)
         {
-            Log.Debug();
+            Log.Verbose();
 
             disposeAndCreateTextInterface(monitorInfo);
             triggerTextChanged(appTextInterface);
@@ -77,7 +77,7 @@ namespace ACAT.Lib.Core.AgentManagement
                         AutomationElement focusedElement,
                         ref bool handled)
         {
-            Log.Debug();
+            Log.Verbose();
             return new EditTextControlAgent(handleMain, focusedElement, ref handled);
         }
 
@@ -114,7 +114,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <param name="e">event arg</param>
         private void _textInterface_EvtTextChanged(object sender, TextChangedEventArgs e)
         {
-            Log.Debug();
+            Log.Verbose();
             if (e.TextInterface != null)
             {
                 Log.Debug("Calling triggertextchanged");

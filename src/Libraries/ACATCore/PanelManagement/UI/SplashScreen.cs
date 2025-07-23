@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// Form for the splash screen.  Can be customized with
@@ -23,7 +23,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// Make sure nothing overlaps this form
         /// </summary>
-        private readonly WindowOverlapWatchdog _watchDog;
+        //private readonly WindowOverlapWatchdog _watchDog;
 
         private int _count = 0;
 
@@ -43,15 +43,18 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             InitializeComponent();
 
-            Windows.SetWindowPosition(this, Windows.WindowPosition.CenterScreen);
+            //Windows.SetWindowPosition(this, Windows.WindowPosition.CenterScreen);
 
             FormClosing += Form1_FormClosing;
 
             ShowInTaskbar = false;
+            TopMost = false;
+            StartPosition = FormStartPosition.CenterScreen;
+            FormBorderStyle = FormBorderStyle.None;
 
-            TopMost = true;
+            //TopMost = true;
 
-            _watchDog = new WindowOverlapWatchdog(this);
+            //_watchDog = new WindowOverlapWatchdog(this);
 
             Load += SplashScreen_Load;
             Shown += SplashScreen_Shown;
@@ -98,7 +101,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="e">event args</param>
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _watchDog?.Dispose();
+            //_watchDog?.Dispose();
 
             _timer.Dispose();
         }

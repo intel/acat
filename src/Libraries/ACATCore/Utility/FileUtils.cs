@@ -145,10 +145,10 @@ namespace ACAT.Core.Utility
             }
             catch (FileNotFoundException fnf)
             {
-                Log.Exception(fnf);
 
-                if (!assemblyPath.ToLower().Contains(".resources"))
+                if (!assemblyPath.ToLower().Contains(".resources") || !assemblyPath.ToLower().Contains(".XmlSerializers"))
                 {
+                    Log.Exception(fnf);
                     throw;
                 }
 

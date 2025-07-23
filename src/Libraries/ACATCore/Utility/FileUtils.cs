@@ -118,18 +118,16 @@ namespace ACAT.Core.Utility
 
         public static Assembly AssemblyResolve(Assembly executingAssembly, ResolveEventArgs args)
         {
-            if (String.IsNullOrEmpty(args.Name))
+            if (args.RequestingAssembly == null ||
+                String.IsNullOrEmpty(args.RequestingAssembly.Location) ||
+                String.IsNullOrEmpty(args.Name))
             {
-                Log.Error("Invalid argument parameters.");
                 return null;
             }
 
-            var assembly = args.RequestingAssembly == null ? executingAssembly : args.RequestingAssembly;
+            Log.Debug($"RequestingAssembly: [{args.RequestingAssembly.Location}], Name:[{args.Name}]");
 
-
-            Log.Debug($"RequestingAssembly: [{assembly.Location}], Name:[{args.Name}]");
-
-            var requestingAssemblyDir = Path.GetDirectoryName(assembly.Location);
+            var requestingAssemblyDir = Path.GetDirectoryName(args.RequestingAssembly.Location);
 
             Log.Debug($"RequestingAssembly directory is {requestingAssemblyDir}");
 

@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,7 +28,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// </summary>
         private readonly String LogFileFullPathEEG;
 
-        private readonly List<String> logEntries = new List<string>();
+        private readonly List<String> logEntries = new();
 
         /// <summary>
         /// Name of the audit log file
@@ -50,7 +50,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             LogFileFullPath = Path.Combine(logFileFolder, Path.GetFileNameWithoutExtension(LogFileName) + CoreGlobals.LogFileSuffix + Path.GetExtension(LogFileName));
             if (!String.IsNullOrEmpty(baseDirPath) && Directory.Exists(baseDirPath))
             {
-                LogFileFullPathEEG = Path.Combine(baseDirPath, Path.GetFileNameWithoutExtension(LogFileName) + CoreGlobals.LogFileSuffix + Path.GetExtension(LogFileName));  
+                LogFileFullPathEEG = Path.Combine(baseDirPath, Path.GetFileNameWithoutExtension(LogFileName) + CoreGlobals.LogFileSuffix + Path.GetExtension(LogFileName));
             }
         }
 
@@ -98,7 +98,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
             finally
             {
@@ -107,6 +107,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 streamWriter?.Dispose();
             }
         }
+
         private String getTimeStamp()
         {
             DateTime now = DateTime.UtcNow;

@@ -13,13 +13,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// Holds the settings for all the actuators discovered. Settings

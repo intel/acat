@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.Security.Permissions;
 using System.Text;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Performs a google or a wiki search on a search
@@ -131,7 +131,7 @@ namespace ACAT.Lib.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug("Could not launch URL using preferred browser.  Trying Internet Explorer. " + ex);
+                Log.Exception("Could not launch URL using preferred browser.  Trying Internet Explorer. " + ex);
 
                 try
                 {
@@ -139,7 +139,7 @@ namespace ACAT.Lib.Core.Utility
                 }
                 catch (Exception ex1)
                 {
-                    Log.Debug("Could not launch URL using IE. " + ex1);
+                    Log.Exception("Could not launch URL using IE. " + ex1);
                 }
             }
 

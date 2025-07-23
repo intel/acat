@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE ACAT [
     <!ENTITY characterButtonFontName "Montserrat SemiBold">
-    <!ENTITY characterButtonFontSize "22">
+    <!ENTITY characterButtonFontSize "24">
     <!ENTITY usebold "false">
 ]>
 
@@ -28,7 +28,7 @@
         <Animation name="TopLevelRotation"
                  start="true"
                  iterations="1">
-            <Widget name="SentencePredictionBox" onSelect="transition(RowRotationSentencePrediction)"/>
+            <Widget name="SentencePredictionBox" onSelect="transition(RowRotationSentencePrediction)" />
         </Animation>
 
         <Animation name="RowRotationSentencePrediction"
@@ -44,4 +44,3 @@
         </Animation>
     </Animations>
 </ACAT>
-

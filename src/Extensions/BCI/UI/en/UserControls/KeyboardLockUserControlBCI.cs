@@ -10,26 +10,25 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AnimationManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.UserControlManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.AnimationManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.UserControlManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System;
 using System.Windows.Forms;
 
 namespace ACAT.Extensions.BCI.UI.UserControls
 {
-    [Descriptor("897132FF-F395-4B46-B4FC-AEEF6EF34B70",
+    [ClassDescriptorAttribute("897132FF-F395-4B46-B4FC-AEEF6EF34B70",
         "KeyboardControl",
         "User Control keyboard BCI")]
-
     public partial class KeyboardLockUserControlBCI : UserControl, IUserControl
     {
         private static String _formConfigFilePath = "";
         private static UserControlConfigMapEntry _mapEntry;
         private UserControlKeyboardCommon _keyboardCommon;
-        IScannerPanel _scanner;
+        private IScannerPanel _scanner;
 
         public KeyboardLockUserControlBCI()
         {
@@ -37,12 +36,13 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         }
 
         public event AnimationPlayerStateChanged EvtPlayerStateChanged;
+
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>
@@ -67,11 +67,9 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             {
                 if (_mapEntry != null)
                     _formConfigFilePath = _mapEntry.ConfigFileName;
-
             }
             catch (Exception)
             {
-
             }
             return _formConfigFilePath;
         }
@@ -81,7 +79,6 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             _mapEntry = mapEntry;
 
             _keyboardCommon = new UserControlKeyboardCommon(this, mapEntry, textController, scanner);
-
 
             _scanner = scanner;
 
@@ -96,23 +93,22 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         {
             _keyboardCommon.OnLoad();
 
-
             _keyboardCommon.AnimationManager.OnLoad(_keyboardCommon.RootWidget);
         }
 
         public void OnPause()
         {
-
         }
 
         public void OnResume()
         {
-
         }
+
         public void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
         {
             //_wordPredictionCommon.OnWidgetActuated(e, ref handled);
         }
+
         private void AnimationManager_EvtPlayerStateChanged(object sender, PlayerStateChangedEventArgs e)
         {
             EvtPlayerStateChanged?.Invoke(this, e);

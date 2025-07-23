@@ -13,10 +13,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
 using Accord.Math;
 using System;
 using System.Collections.Generic;
@@ -181,14 +181,14 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                     _symbolsInGroups = new Dictionary<int, int[]>();
                     for (int seqIdx = 0; seqIdx < numRows; seqIdx++)
                     {
-                        List<int> seq = new List<int>();
+                        List<int> seq = new();
                         for (int c = 1; c <= numCols; c++)
                             seq.Add(seqIdx * numCols + c);
                         _symbolsInGroups.Add(seqIdx + 1, seq.ToArray());
                     }
                     for (int seqIdx = 0; seqIdx < numCols; seqIdx++)
                     {
-                        List<int> seq = new List<int>();
+                        List<int> seq = new();
                         for (int r = 0; r < numRows; r++)
                             seq.Add(r * numCols + seqIdx + 1);
 
@@ -209,7 +209,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
 
             // 3. Build objects
             // Channel selection
-            List<int> tmpChannelSubset = new List<int>();
+            List<int> tmpChannelSubset = new();
             bool[] channelSubsetEnabled = new bool[]
                                             { BCIActuatorSettings.Settings.Classifier_EnableChannel1,
                                                 BCIActuatorSettings.Settings.Classifier_EnableChannel2,
@@ -281,7 +281,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// <param name="availableChannels"></param>
         public void UpdateChannelSubset(bool[] availableChannels)
         {
-            List<int> tmpChannelSubset = new List<int>();
+            List<int> tmpChannelSubset = new();
             for (int chIdx = 0; chIdx < availableChannels.Length; chIdx++)
             {
                 if (availableChannels[chIdx])
@@ -354,7 +354,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
 
                 string txtLog = "Read data " + sessionID;
                 Log.Debug(txtLog);
-                FileReader fileReaderObj = new FileReader();
+                FileReader fileReaderObj = new();
                 fileReaderObj.ReadDataAndMarkersFromFiles(sessionID, out rawData, out triggerSignal, out markerValues, out sessionDirectory);
                 //fileReaderObj.ReadDataAndMarkersFromTestFiles(out rawData, out triggerSignal, out markerValues, out sessionDirectory,
                 //    trainedClassifiersFilePath, filePathMarkers, filePathEEG);
@@ -436,7 +436,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                         }
                         catch (Exception e)
                         {
-                            Log.Debug(e.Message);
+                            Log.Exception(e.Message);
                         }
 
                         /* Display plots with class distributions and AUC
@@ -457,7 +457,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                     // ===================== 6. Save results ==========================
                     // Save AUC
                     String filePath = Path.Combine(sessionDirectory, "CalibrationResults.txt");
-                    using (StreamWriter sw = new StreamWriter(filePath))
+                    using (StreamWriter sw = new(filePath))
                         sw.WriteLine("AUC = " + meanAUC);
 
                     // Save classifier in session directory (this will be saved regardless of the AUC)
@@ -472,15 +472,15 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
                 meanAUC = -1;
 
                 // Save Error in file
                 if (sessionDirectory != null)
                 {
                     String filePath = Path.Combine(sessionDirectory, "CalibrationResults.txt");
-                    using (StreamWriter sw = new StreamWriter(filePath))
-                        sw.WriteLine("AUC = " + "ERROR");
+                    using StreamWriter sw = new(filePath);
+                    sw.WriteLine("AUC = " + "ERROR");
                 }
             }
             return meanAUC;

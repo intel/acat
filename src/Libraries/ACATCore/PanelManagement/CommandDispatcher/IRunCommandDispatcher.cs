@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-namespace ACAT.Lib.Core.PanelManagement.CommandDispatcher
+namespace ACAT.Core.PanelManagement.CommandDispatcher
 {
     /// <summary>
     /// Interface for command dispatchers

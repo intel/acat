@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension.CommandHandlers
+namespace ACAT.Extension.CommandHandlers
 {
     /// <summary>
     /// Shows the contextual menu by invoking the currently

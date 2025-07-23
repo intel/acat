@@ -1,20 +1,19 @@
-﻿
-////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
-using System;
-using System.Threading;
 using ACATResources;
+using System;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
@@ -24,18 +23,20 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
     /// word prediction) and have the text converted to speech.  The keyboard
     /// layout is ABC.
     /// </summary>
-    [Descriptor("36F021B7-615F-48FD-BA88-01679D9B4B61",
+    [ClassDescriptor("36F021B7-615F-48FD-BA88-01679D9B4B61",
                         "CalibrationEyesSettingsForm",
                         "Application window used as a calibration UI for eyes open or closed settings")]
     public partial class CalibrationEyesSettingsForm : Form
     {
         #region Properties
-        public ResultParams ResultParameters = new ResultParams();
+
+        public ResultParams ResultParameters = new();
 
         /// <summary>
         /// Main object of the actuator
         /// </summary>
         private readonly IActuator _bciActuator = null;
+
         /// <summary>
         /// Interval of the timer
         /// </summary>
@@ -56,7 +57,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// </summary>
         private int _TempMaxRepetitions = 10;
 
-        #endregion
+        #endregion Properties
 
         public CalibrationEyesSettingsForm()
         {
@@ -83,7 +84,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             confirmBox.Dispose();
             return retVal;
         }
-
 
         #region Control Events
 
@@ -135,7 +135,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             _Interval = _TempInterval;
             _MaxRepetitions = _TempMaxRepetitions;
-            BCICalibrationEyesClosedParameters bCICalibrationEyesClosedParameters = new BCICalibrationEyesClosedParameters(_MaxRepetitions, _Interval);
+            BCICalibrationEyesClosedParameters bCICalibrationEyesClosedParameters = new(_MaxRepetitions, _Interval);
             var str = JsonSerializer.Serialize(bCICalibrationEyesClosedParameters);
             _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedSaveParameters, str);
             ValidateParameters();
@@ -143,7 +143,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 
         private void CalibrationEyesForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -171,7 +170,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                     break;
             }
         }
-  
+
         private void textBoxInterval_TextChanged(object sender, EventArgs e)
         {
             bool inputReplace;
@@ -188,7 +187,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 _TempInterval = 5000;
                 textBoxInterval.Text = _TempInterval.ToString();
             }
@@ -211,14 +210,14 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 _TempMaxRepetitions = 10;
                 textBoxReps.Text = _TempMaxRepetitions.ToString();
             }
             ValidateParameters();
         }
 
-        #endregion
+        #endregion Control Events
 
         #region Methods
 
@@ -242,7 +241,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 bool quitApp = true;
                 if (_TempInterval != _Interval || _TempMaxRepetitions != _MaxRepetitions)
                 {
-                    ConfirmBoxTwoOption confirmBox = new ConfirmBoxTwoOption
+                    ConfirmBoxTwoOption confirmBox = new()
                     {
                         Prompt = StringResources.exitwithoutsaving,
                         Op1Prompt = StringResources.OK,
@@ -257,7 +256,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in EyesSettingsForm: " + ex.Message);
+                Log.Exception("Error in EyesSettingsForm: " + ex.Message);
             }
             if (_bciActuator != null)
             {
@@ -266,6 +265,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             ResultParameters = new ResultParams { Interval = _Interval, MaxRepetitions = _MaxRepetitions };
             this.Close();
         }
+
         /// <summary>
         /// Call to request parameters
         /// </summary>
@@ -275,7 +275,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             {
                 _bciActuator.EvtIoctlResponse += BciActuator_EvtIoctlResponse;
             }
-            BCIMode bCIMode = new BCIMode { BciMode = BCIModes.CALIBRATION_EYESOPENCLOSE, BciCalibrationMode = BCIScanSections.None, };
+            BCIMode bCIMode = new() { BciMode = BCIModes.CALIBRATION_EYESOPENCLOSE, BciCalibrationMode = BCIScanSections.None, };
             _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedRequestParameters, string.Empty);
         }
 
@@ -301,11 +301,10 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
             return inputReplace;
         }
-
 
         private void EnableSaveButton(bool enable)
         {
@@ -330,6 +329,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             public int MaxRepetitions;
         }
 
-        #endregion
+        #endregion Methods
     }
 }

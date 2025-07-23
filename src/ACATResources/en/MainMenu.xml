@@ -11,7 +11,7 @@
 <ACAT>
   <WidgetAttributes>
     <WidgetAttribute name="MenuTitleIcon" label="H" value="" fontsize="&functionButtonFontSize;" fontname="&functionButtonFontName;"  bold="&usebold;" />
-    <WidgetAttribute name="MenuTitle" label="" value="" fontsize="22" fontname="&characterButtonBoldFontName;"  bold="&usebold;"/>
+    <WidgetAttribute name="MenuTitle" label="" value="" fontsize="22" fontname="&characterButtonBoldFontName;"  bold="&usebold;" />
 
     <WidgetAttribute name="ItemIcon1" label="j" value="@CmdGoBack" fontsize="&functionButtonFontSize;" fontname="&functionButtonFontName;"  bold="&usebold;" />
     <WidgetAttribute name="ItemText1" label="Back" value="@CmdGoBack" fontsize="&characterButtonFontSize;" fontname="&characterButtonFontName;"  bold="&usebold;" />
@@ -30,44 +30,42 @@
 
     <WidgetAttribute name="ItemIcon6" label="F" value="@CmdShowAboutBox" fontsize="&functionButtonFontSize;" fontname="&functionButtonFontName;" bold="&usebold;" />
     <WidgetAttribute name="ItemText6" label="About" value="@CmdShowAboutBox" fontsize="&characterButtonFontSize;" fontname="&characterButtonFontName;"  bold="&usebold;" />
-
-    
   </WidgetAttributes>
 
   <Layout colorScheme="Dialog">
     <Widget class="RowWidget" name="TitleRow">
-      <Widget class="ScannerButton" name="MenuTitleIcon" colorScheme="MenuTitle"/>
-      <Widget class="ScannerButton" name="MenuTitle" colorScheme="MenuTitle"/>
+      <Widget class="ScannerButton" name="MenuTitleIcon" colorScheme="MenuTitle" />
+      <Widget class="ScannerButton" name="MenuTitle" colorScheme="MenuTitle" />
     </Widget>
 
       <Widget class="RowWidget" name="Row1">
-          <Widget class="ScannerButton" name="ItemIcon1" colorScheme="Menu"/>
-          <Widget class="ScannerButton" name="ItemText1" colorScheme="Menu"/>
+          <Widget class="ScannerButton" name="ItemIcon1" colorScheme="Menu" />
+          <Widget class="ScannerButton" name="ItemText1" colorScheme="Menu" />
       </Widget>
 
     <Widget class="RowWidget" name="Row2">
-        <Widget class="ScannerButton" name="ItemIcon2" colorScheme="Menu"/>
-        <Widget class="ScannerButton" name="ItemText2" colorScheme="Menu"/>
+        <Widget class="ScannerButton" name="ItemIcon2" colorScheme="Menu" />
+        <Widget class="ScannerButton" name="ItemText2" colorScheme="Menu" />
     </Widget>
-      
+
     <Widget class="RowWidget" name="Row3">
-      <Widget class="ScannerButton" name="ItemIcon3" colorScheme="Menu"  enabled="contextual" defaultEnabled="true"/>
-      <Widget class="ScannerButton" name="ItemText3" colorScheme="Menu"  enabled="contextual" defaultEnabled="true"/>
+      <Widget class="ScannerButton" name="ItemIcon3" colorScheme="Menu"  enabled="contextual" defaultEnabled="true" />
+      <Widget class="ScannerButton" name="ItemText3" colorScheme="Menu"  enabled="contextual" defaultEnabled="true" />
     </Widget>
 
     <Widget class="RowWidget" name="Row4">
-        <Widget class="ScannerButton" name="ItemIcon4" colorScheme="Menu"/>
-        <Widget class="ScannerButton" name="ItemText4" colorScheme="Menu"/>
+        <Widget class="ScannerButton" name="ItemIcon4" colorScheme="Menu" />
+        <Widget class="ScannerButton" name="ItemText4" colorScheme="Menu" />
     </Widget>
-      
+
     <Widget class="RowWidget" name="Row5">
-        <Widget class="ScannerButton" name="ItemIcon5" colorScheme="Menu"  enabled="contextual" defaultEnabled="true"/>
-        <Widget class="ScannerButton" name="ItemText5" colorScheme="Menu"  enabled="contextual" defaultEnabled="true"/>
+        <Widget class="ScannerButton" name="ItemIcon5" colorScheme="Menu"  enabled="contextual" defaultEnabled="true" />
+        <Widget class="ScannerButton" name="ItemText5" colorScheme="Menu"  enabled="contextual" defaultEnabled="true" />
     </Widget>
 
     <Widget class="RowWidget" name="Row6">
-      <Widget class="ScannerButton" name="ItemIcon6" colorScheme="Menu"/>
-      <Widget class="ScannerButton" name="ItemText6" colorScheme="Menu"/>
+      <Widget class="ScannerButton" name="ItemIcon6" colorScheme="Menu" />
+      <Widget class="ScannerButton" name="ItemText6" colorScheme="Menu" />
     </Widget>
   </Layout>
 
@@ -79,10 +77,10 @@
                onEnter="@RowScanIterations"
                scanTime="@MenuDialogScanTime"
                iterations="@GridScanIterations">
-      <Widget name="Row1" onSelect="actuate(ItemText1);transition(TopLevelRotation)"/>
-      <Widget name="Row2" onSelect="actuate(ItemText2);transition(TopLevelRotation)"/>
-      <Widget name="Row3" onSelect="actuate(ItemText3);transition(TopLevelRotation)"/>
-      <Widget name="Row4" onSelect="actuate(ItemText4);transition(TopLevelRotation)"/>
+      <Widget name="Row1" onSelect="actuate(ItemText1);transition(TopLevelRotation)" />
+      <Widget name="Row2" onSelect="actuate(ItemText2);transition(TopLevelRotation)" />
+      <Widget name="Row3" onSelect="actuate(ItemText3);transition(TopLevelRotation)" />
+      <Widget name="Row4" onSelect="actuate(ItemText4);transition(TopLevelRotation)" />
     </Animation>
   </Animations>
 </ACAT>

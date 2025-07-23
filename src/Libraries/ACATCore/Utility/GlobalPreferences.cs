@@ -8,7 +8,7 @@
 using System;
 using System.Xml.Serialization;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Contains global settings for ACAT. These are
@@ -18,14 +18,14 @@ namespace ACAT.Lib.Core.Utility
     [Serializable]
     public class GlobalPreferences
     {
-        [NonSerialized, XmlIgnore]
         public static String DefaultPreferencesFilePath = String.Empty;
 
-        [NonSerialized, XmlIgnore]
         public static String LogFileName = String.Empty;
 
-        [NonSerialized, XmlIgnore]
         public static String PreferencesFilePath = String.Empty;
+
+        public String DefaultLogLevel = "Verbose";
+
         /// <summary>
         /// Default profile for the user
         /// </summary>
@@ -35,6 +35,8 @@ namespace ACAT.Lib.Core.Utility
         /// Default user name
         /// </summary>
         public String CurrentUser = "DefaultUser";
+
+
 
         /// <summary>
         /// Read preferences from the specified file.  If the file
@@ -46,13 +48,13 @@ namespace ACAT.Lib.Core.Utility
         /// <returns>Preferences read or null</returns>
         public static GlobalPreferences Load(String prefFile, bool loadDefaultsOnFail = true)
         {
-            //saveFactoryDefaultSettings();
+            saveFactoryDefaultSettings();
 
             var retVal = XmlUtils.XmlFileLoad<GlobalPreferences>(prefFile);
 
             if (retVal == null)
             {
-                Log.Debug("Could not load global preferences from " + prefFile + ". Creating a new one");
+                Log.Error($"Could not load global preferences from {prefFile}. Creating a new one.");
                 if (loadDefaultsOnFail)
                 {
                     retVal = new GlobalPreferences();

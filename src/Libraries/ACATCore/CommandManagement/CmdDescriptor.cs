@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.CommandManagement
+namespace ACAT.Core.CommandManagement
 {
     /// <summary>
     /// Holds a command and its user-friendly description

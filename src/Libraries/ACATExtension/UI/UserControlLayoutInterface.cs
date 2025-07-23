@@ -5,23 +5,24 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AnimationManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.UserControlManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.AnimationManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.UserControlManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.UserControls;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     /// <summary>
     /// The ACAT talk interface description of the main keyboard layout
     /// </summary>
-    [Descriptor("30D1EF21-E8F5-4E78-8D98-C8E93B992A81",
+    [ClassDescriptor("30D1EF21-E8F5-4E78-8D98-C8E93B992A81",
                         "UserControlDefaultTalkInterface",
                     "User Control show description of keboard")]
-    public partial class UserControlLayoutInterface : UserControl, IUserControl
+    public partial class UserControlLayoutInterface : GenericUserControl, IUserControl
     {
         private UserControlKeyboardCommon _keyboardCommon;
 
@@ -35,9 +36,9 @@ namespace ACAT.Lib.Extension
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>

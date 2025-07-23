@@ -5,11 +5,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.AgentManagement.TextInterface
+namespace ACAT.Core.AgentManagement.TextInterface
 {
     /// <summary>
     /// Uses key logging to manipulate text in the target text control. Use
@@ -83,7 +83,7 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
         /// <returns>caret position</returns>
         public override int GetCaretPos()
         {
-            Log.Debug();
+            Log.Verbose();
             if (isValid(_textBox))
             {
                 return Windows.GetCaretPosition(_textBox);
@@ -313,7 +313,7 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
         /// <param name="e">arg</param>
         private void _textBox_TextChanged(object sender, EventArgs e)
         {
-            Log.Debug();
+            Log.Verbose();
             onTextChanged();
         }
 
@@ -340,7 +340,7 @@ namespace ACAT.Lib.Core.AgentManagement.TextInterface
         /// </summary>
         private void disposeTextInterface()
         {
-            Log.Debug();
+            Log.Verbose();
             if (isValid(_textBox))
             {
                 _textBox.TextChanged -= _textBox_TextChanged;

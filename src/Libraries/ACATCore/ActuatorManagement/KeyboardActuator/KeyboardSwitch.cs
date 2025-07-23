@@ -13,11 +13,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.Utility;
 using System;
 
-namespace ACAT.Lib.Core.InputActuators
+namespace ACAT.Core.InputActuators
 {
     /// <summary>
     /// Represents a keyboard switch object. The user can drive the
@@ -82,7 +82,7 @@ namespace ACAT.Lib.Core.InputActuators
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     if (disposing)
                     {

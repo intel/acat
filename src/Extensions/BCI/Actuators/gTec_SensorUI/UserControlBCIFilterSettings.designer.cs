@@ -9,6 +9,7 @@
 // User control which prompts the user for input to select the best filter setting
 //
 ////////////////////////////////////////////////////////////////////////////
+using ACAT.Core.WidgetManagement;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
@@ -96,7 +97,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.label20 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.tableLayoutPanelSpacerBottom = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonNext_userControlPromptBCIFIlterSettings = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonNext_userControlPromptBCIFIlterSettings = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.checkBoxDontShowStartup = new System.Windows.Forms.CheckBox();
             this.label22 = new System.Windows.Forms.Label();
             this.tableLayoutPanelMain.SuspendLayout();
@@ -861,7 +862,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public System.Windows.Forms.CheckBox checkBoxConfirm60HzCountry;
         public System.Windows.Forms.Button buttonExit_userControlPromptBCIFIlterSettings;
         public System.Windows.Forms.CheckBox checkBoxDontShowStartup;
-        public Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonNext_userControlPromptBCIFIlterSettings;
+        public ScannerRoundedButtonControl buttonNext_userControlPromptBCIFIlterSettings;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;

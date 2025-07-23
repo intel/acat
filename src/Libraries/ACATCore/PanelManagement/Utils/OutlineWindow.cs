@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// Draws an outline (a red border) around a window to
@@ -124,7 +124,6 @@ namespace ACAT.Lib.Core.PanelManagement
             }
             catch
             {
-
             }
             finally
             {
@@ -142,7 +141,7 @@ namespace ACAT.Lib.Core.PanelManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {

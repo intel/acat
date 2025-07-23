@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// All scanners must implement the IScannerPanel interface.  Examples

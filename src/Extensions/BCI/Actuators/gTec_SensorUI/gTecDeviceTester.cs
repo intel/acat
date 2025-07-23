@@ -7,16 +7,16 @@
 // gTecDeviceTester.cs
 //
 // Tests BCI device - connections to the gTec board, displays errors accordingly, and begins signal quality check
-// 
+//
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Audit;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
 using ACATResources;
 using System;
 using System.Collections.Generic;
@@ -33,7 +33,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     {
         public DAQ_gTecBCI gTecBCI = null;
 
-
         /// <summary>
         /// Enums representing the different onboarding user states (screens shown to the user)
         /// </summary>
@@ -41,7 +40,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             Testing_BCIConnections, // Screen that displays "connecting..." status
             ErrorBluetoothDisconnected, // Screen shown to the user if bluetooth connection could not be established with device
-            
+
             SignalCheckRequired_MaxTimeElapsed, // Screen telling user that signal check required because maximum time between signal checks has elapsed
             SignalCheckRequired_FailedRecentSignalCheck,  // Screen telling user that signal check required because they failed their most recent one
 
@@ -51,7 +50,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             BCISignalCheck, // Main signal check screen
 
             ExitBCITesting, // Exit BCI testing process completely
-
         }
 
         /// <summary>
@@ -79,12 +77,14 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// Event sent when it's time to change the screen displaying testing information to the user
         /// </summary>
         public delegate void DelegateUpdateTestingStatus(OnboardingUserState state, Dictionary<String, object> resultParams);
+
         public event DelegateUpdateTestingStatus EvtUpdateOnboardingStatus;
 
         /// <summary>
         /// Event sent when exiting out of device testing completely
         /// </summary>
         public delegate void DelegateBCIDeviceTestingCompleted();
+
         public event DelegateBCIDeviceTestingCompleted EvtBCIDeviceTestingCompleted;
 
         /// <summary>
@@ -102,10 +102,12 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// Read from BCIGtecActuatorSettings (Testing_useSensor). Setting to false enables debugging with dummy sensor
         /// </summary>
         public static bool _Testing_useSensor = true;
+
         public static int _Testing_useSensor_TestIndex = 0;
         private OnboardingUserState[] _DebugStates;
 
-        public static bool GtecDeviceAvailable {
+        public static bool GtecDeviceAvailable
+        {
             get
             {
                 if (!_Testing_useSensor)
@@ -139,7 +141,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             Log.Debug("gTecDeviceTester | initialize");
 
             gTecBCI = new DAQ_gTecBCI();
-            
+
             // Close main form if for some reason it's opened at this point
             if (_mainForm != null && _mainForm.IsDisposed == false)
             {
@@ -151,7 +153,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // Get test flag saying whether we are actually using the sensor or not
             try
             {
-                _Testing_useSensor = BCIGtecActuatorSettings.Settings.Testing_UseSensor;
+                _Testing_useSensor = BCIActuatorSettings.Settings.Testing_UseSensor;
             }
             catch (Exception ex)
             {
@@ -169,10 +171,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // Unset flags that will end async tasks and timers
             _endSignalCheckTimer = false;
 
-
             // Create main form
             _mainForm = new SensorForm(gTecBCI);
-
 
             // Set handlers for main events
             if (_Testing_useSensor)
@@ -212,7 +212,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _mainForm.ShowDialog();
         }
 
-
         /// <summary>
         /// Handler for processing the results of bluetooth requests
         /// </summary>
@@ -220,7 +219,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="eventParams">Any extra params sent with bluetooth event request</param>
         public void bluetoothResultHandler(DAQ_gTecBCI.BluetoothEvent bluetoothEvent, Dictionary<String, object> eventParams)
         {
-            Log.Debug("gTecDeviceTester | bluetoothResultHandler | bluetoothEvent: " + bluetoothEvent.ToString()+ " | _currentOnboardingUserState: "+ _currentOnboardingUserState.ToString());
+            Log.Debug("gTecDeviceTester | bluetoothResultHandler | bluetoothEvent: " + bluetoothEvent.ToString() + " | _currentOnboardingUserState: " + _currentOnboardingUserState.ToString());
 
             switch (bluetoothEvent)
             {
@@ -231,11 +230,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     try
                     {
                         if (eventParams != null)
-                            error = (string) eventParams["error"];
+                            error = (string)eventParams["error"];
                     }
                     catch (Exception ex)
                     {
-                        Log.Debug("gTecDeviceTester | bluetoothResultHandler | Exception: " + ex.Message);
+                        Log.Exception("gTecDeviceTester | bluetoothResultHandler | Exception: " + ex.Message);
                     }
 
                     // We were seeing if device could be connected to from the start of the testing process
@@ -255,7 +254,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     {
                         var thread = new Thread(delegate ()
                         {
-                            gTecBCI.Start(BCIGtecActuatorSettings.Settings.GTecDeviceName);
+                            gTecBCI.Start(BCIActuatorSettings.Settings.GTecDeviceName);
                         });
                         thread.Start();
                         thread.Join();
@@ -271,11 +270,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
                 default:
                     break;
-
             }
-
         }
-
 
         // <summary>
         // Asynchronous task that initializes BCI device testing
@@ -300,7 +296,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // Test gTec bluetooth device connection based on device name in settings (result of test are handled as events)
             if (_Testing_useSensor == true)
             {
-                gTecBCI.connectionTestAsync();
+                await gTecBCI.connectionTestAsync();
             }
         }
 
@@ -322,7 +318,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             if (_Testing_useSensor)
             {
                 // Non-zero value is needed for startBCIDeviceTesting so "connecting..." screen has time to show to the user
-                Thread t = new Thread(() => startBCIDeviceTesting(3));
+                Thread t = new Thread(start: () => startBCIDeviceTesting(3));
                 t.Start();
             }
         }
@@ -346,8 +342,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
         }
 
-
-
         /// <summary>
         /// Handler for Next button click
         /// </summary>
@@ -356,12 +350,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             Log.Debug("gTecDeviceTester | buttonNextHandler | buttonNextName: " + buttonNextName);
             switch (buttonNextName)
             {
-
                 // Next button clicked from UserControlBluetoothDisconnected
                 case "buttonNext_userControlErrorBluetoothDisconnected":
 
                     // Run connection test again if user selects Next from the UserControlBluetoothDisconnected screen
-                    
+
                     // Go to screen that displays "connecting..." status
                     _currentOnboardingUserState = OnboardingUserState.Testing_BCIConnections;
                     updateOnboardingStatus(_currentOnboardingUserState, null);
@@ -372,7 +365,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
                     break;
 
-
                 // Next button clicked from UserControlBCISignalCheckStartRequired
                 case "buttonNext_userControlBCISignalCheckStartRequired":
 
@@ -381,10 +373,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     updateOnboardingStatus(_currentOnboardingUserState, null);
                     break;
 
-
                 // Next button clicked from UserControlBCISignalCheckStartPrompt
-                case "buttonNext_userControlBCISignalCheckStartPrompt": 
-                    
+                case "buttonNext_userControlBCISignalCheckStartPrompt":
+
                     // Get recheck request from button status
                     bool userRequestedRecheck = _mainForm._userControlBCISignalCheckStartPrompt.UserRequestedRecheck;
                     if (!userRequestedRecheck)
@@ -393,8 +384,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                         // User already did signal check within acceptable time frame and the result was good
 
                         // Save SignalQuality_RecheckNeeded
-                        BCIGtecActuatorSettings.Settings.SignalControl_RecheckNeeded = false;
-                        BCIGtecActuatorSettings.Save();
+                        BCIActuatorSettings.Settings.SignalControl_RecheckNeeded = false;
+                        BCIActuatorSettings.Save();
 
                         // We are exiting - Call Exit function with lost connection flag set to false
                         Exit(false);
@@ -402,15 +393,14 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     else
                     {
                         // Save SignalQuality_RecheckNeeded
-                        BCIGtecActuatorSettings.Settings.SignalControl_RecheckNeeded = true;
-                        BCIGtecActuatorSettings.Save();
+                        BCIActuatorSettings.Settings.SignalControl_RecheckNeeded = true;
+                        BCIActuatorSettings.Save();
 
                         // Go to screen prompting user for correct filter setting (start of signal check process)
                         _currentOnboardingUserState = OnboardingUserState.PromptUser_FilterSettings;
                         updateOnboardingStatus(_currentOnboardingUserState, null);
                     }
                     break;
-
 
                 // Next button clicked from UserControlBCIFilterSettings
                 case "buttonNext_userControlPromptBCIFIlterSettings":
@@ -420,31 +410,29 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     {
                         // DAQ_NotchFilterIdx = 1; //50Hz
                         // DAQ_NotchFilterIdx = 2; //60Hz
-                        BCIGtecActuatorSettings.Settings.DAQ_NotchFilterIdx = 2;
+                        BCIActuatorSettings.Settings.DAQ_NotchFilterIdx = 2;
                     }
                     else
                     {
-                        BCIGtecActuatorSettings.Settings.DAQ_NotchFilterIdx = 1;
+                        BCIActuatorSettings.Settings.DAQ_NotchFilterIdx = 1;
                     }
 
                     if (_mainForm._userControlPromptBCIFIlterSettings.checkBoxDontShowStartup.Checked)
                     {
-                        BCIGtecActuatorSettings.Settings.DAQ_ShowFilterSettings = false;
+                        BCIActuatorSettings.Settings.DAQ_ShowFilterSettings = false;
                     }
                     else
                     {
-                        BCIGtecActuatorSettings.Settings.DAQ_ShowFilterSettings = true;
+                        BCIActuatorSettings.Settings.DAQ_ShowFilterSettings = true;
                     }
 
-                    BCIGtecActuatorSettings.Save();
+                    BCIActuatorSettings.Save();
 
                     // Go to signal check screen
                     _currentOnboardingUserState = OnboardingUserState.BCISignalCheck;
                     updateOnboardingStatus(_currentOnboardingUserState, null);
 
                     break;
-
-
 
                 // Next button clicked from UserControlBCISignalCheck
                 case "buttonNext_userControlBCISignalCheck":
@@ -454,7 +442,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
                     // Get current signal quality check status (user currently passes or fails the checks)
                     // Is updated every INTERVAL_UPDATE_OVERALL_SIGNAL_QUALITY_STATUS_MS while user is in signal check
-                    bool userPassedLastSignalQualityCheck = BCIGtecActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck;
+                    bool userPassedLastSignalQualityCheck = BCIActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck;
                     if (userPassedLastSignalQualityCheck)
                     {
                         Log.Debug("User passed most recent signal quality check");
@@ -462,7 +450,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     }
 
                     // Check if testing parameter set to ignore signal quality check result
-                    if (BCIGtecActuatorSettings.Settings.Testing_IgnoreSignalTestResultDuringOnboarding)
+                    if (BCIActuatorSettings.Settings.Testing_IgnoreSignalTestResultDuringOnboarding)
                     {
                         Log.Debug("BCIGtecActuatorSettings.Testing_IgnoreSignalTestResultDuringOnboarding = true");
                         exitBCIOnboarding = true;
@@ -480,10 +468,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     bool[] enabledChannels = new bool[16];
                     int[] railingValues = new int[16];
                     int chnIdx = 0;
-                    while (chnIdx < BCIGtecActuatorSettings.Settings.DAQ_NumEEGChannels)
+                    while (chnIdx < BCIActuatorSettings.Settings.DAQ_NumEEGChannels)
                     {
                         channelNames[chnIdx] = UserControlBCISignalCheck._eegChannels[chnIdx]._electrodeName;
-                        enabledChannels[chnIdx] = BCIGtecActuatorSettings.Settings.GetClassifier_EnableChannel(chnIdx);
+                        enabledChannels[chnIdx] = BCIActuatorSettings.Settings.GetClassifier_EnableChannel(chnIdx);
                         railingValues[chnIdx] = (int)UserControlBCISignalCheck._eegChannels[chnIdx].lastRailingResult;
                         chnIdx += 1;
                     }
@@ -501,7 +489,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     {
                         // Do not modify Classifier_EnableChannel1-16, that's up to the user
                         // Just save settings, set appropriate flags, and exit
-                        BCIGtecActuatorSettings.Save(); // Save settings
+                        BCIActuatorSettings.Save(); // Save settings
 
                         ExitOnboardingEarly = false; // Set global flag denoting onboarding was not exited early
 
@@ -514,8 +502,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                         // Display message to user prompting them to improve signal quality before moving on
                         Log.Debug("Not exiting | Did not pass signal quality criteria");
                         bool confirmed = ConfirmBoxOneOption.ShowDialog(StringResources.SignalQualityChecksFailed +
-                        "\n"+StringResources.Youneedtocompleteboth +"\n“ +Impedance” tests and get good signals to"+"\n"+"proceed" +
-                        "\n"+StringResources.Pleaserefertotheuserguideforhelp, "", StringResources.OK, _mainForm, false);
+                        "\n" + StringResources.Youneedtocompleteboth + "\n“ +Impedance” tests and get good signals to" + "\n" + "proceed" +
+                        "\n" + StringResources.Pleaserefertotheuserguideforhelp, "", StringResources.OK, _mainForm, false);
                     }
 
                     break;
@@ -525,8 +513,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
         }
 
-
-
         /// <summary>
         /// Determines if signal check is required or asks user if they want to do one. Navigates to the corresponding screen
         /// </summary>
@@ -534,13 +520,12 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             Log.Debug("gTecDeviceTester | runSignalCheckIfRequired");
 
-
             // Always check time last impedance test was run (all electrodes tested) and update UI accordingly
-            long timestampPrevImpedanceTest = BCIGtecActuatorSettings.Settings.SignalQuality_TimeOfLastImpedanceCheck;
+            long timestampPrevImpedanceTest = BCIActuatorSettings.Settings.SignalQuality_TimeOfLastImpedanceCheck;
             long timestampNow = DateTimeOffset.Now.ToUnixTimeSeconds();
             long secDiff = timestampNow - timestampPrevImpedanceTest;
             double minElapsedPrevSignalQualityCheck = ((double)secDiff) / 60;
-            double maxTimeMins = (double)BCIGtecActuatorSettings.Settings.SignalQuality_MaxTimeMinsElapsedSinceLastImpedanceCheck​;
+            double maxTimeMins = (double)BCIActuatorSettings.Settings.SignalQuality_MaxTimeMinsElapsedSinceLastImpedanceCheck​;
             bool maxTimeHasElapsed = false;
             if (minElapsedPrevSignalQualityCheck >= maxTimeMins)
                 maxTimeHasElapsed = true;
@@ -550,12 +535,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // Always check if user passed the last overall signal quality check that was executed
             // If max time has not passed, but user did not pass their most recent overall signal quality check,
             // user must do tests and calibration (SignalControl_RecheckNeeded = true)
-            bool userPassedLastSignalQualityCheck = BCIGtecActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck;
-
+            bool userPassedLastSignalQualityCheck = BCIActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck;
 
             // Initialize parameters and set processing variables / UI elements in main signal check screen accordingly
             _mainForm._userControlBCISignalCheck.initializeBCISignalCheck(gTecBCI, maxTimeHasElapsed, maxTimeMins, minElapsedPrevSignalQualityCheck, userPassedLastSignalQualityCheck);
-
 
             // Go to screen telling user that signal check required because maximum time between signal checks has elapsed
             if (maxTimeHasElapsed)
@@ -584,7 +567,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
         }
 
-
         /// <summary>
         /// Handler for Retest button click
         /// </summary>
@@ -598,10 +580,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             updateOnboardingStatus(_currentOnboardingUserState, null);
 
             // Non-zero value is needed for startBCIDeviceTesting so "connecting..." screen has time to show to the user
-            Thread t = new Thread(() => startBCIDeviceTesting(3)); 
+            Thread t = new Thread(() => startBCIDeviceTesting(3));
             t.Start();
         }
-
 
         /// <summary>
         /// Handler for Exit button click - dispayed on all device testing screens and does the same thing,
@@ -653,7 +634,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             Log.Debug("gTecDeviceTester | _mainForm_EvtFormClosed");
         }
 
-
         /// <summary>
         /// Display confirmation to quit BCI onboarding
         /// </summary>
@@ -664,7 +644,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             return ConfirmBoxTwoOption.ShowDialog("Onboarding incomplete.",
                 "Quit anyway?", StringResources.Yes, StringResources.No, parent, true);
         }
-
 
         /// <summary>
         /// Initializes debug states to step through all the onboarding screens
@@ -683,7 +662,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             _DebugStates[7] = OnboardingUserState.ExitBCITesting;
         }
 
-
         /// <summary>
         /// Handler for button click in debug mode - iterate through all available screens / user controls
         /// </summary>
@@ -696,7 +674,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception e)
             {
-                Log.Debug("_mainForm_EvtButtonExitClicked_DEBUG exception: " + e.ToString());
+                Log.Exception("_mainForm_EvtButtonExitClicked_DEBUG exception: " + e.ToString());
             }
         }
     }

@@ -5,17 +5,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.AnimationManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
-using ACAT.Lib.Core.Widgets;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.AnimationManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Core.Widgets;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.UserControlManagement
+namespace ACAT.Core.UserControlManagement
 {
     /// <summary>
     /// Used by scanners to manage the usercontrols they host.
@@ -88,7 +88,7 @@ namespace ACAT.Lib.Core.UserControlManagement
             }
             catch (Exception es)
             {
-                Log.Debug("Error geting widgets: " + es.ToString());
+                Log.Exception("Error geting widgets: " + es.ToString());
             }
             return Widgets;
         }
@@ -196,14 +196,11 @@ namespace ACAT.Lib.Core.UserControlManagement
 
                     list.RemoveAt(list.Count - 1);
 
-                    Log.Debug("MLEAK: Removed last entry. list.Count is " + list.Count);
-
                     removeUserControl(parent, userControl);
                 }
                 else
                 {
                     Log.Debug("MLEAK: list.Count is already zero");
-
                 }
             }
 
@@ -238,8 +235,6 @@ namespace ACAT.Lib.Core.UserControlManagement
                 {
                     list.Add(guid);
                 }
-
-                Log.Debug("MLEAK: Added guid " + guid + ", List cocunt is " + list.Count);
 
                 removeUserControl(parent, userControl);
             }
@@ -299,7 +294,7 @@ namespace ACAT.Lib.Core.UserControlManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Unable to load userControl " + userControlName + ", exception: " + ex.ToString());
+                Log.Exception("Unable to load userControl " + userControlName + ", exception: " + ex.ToString());
                 retVal = false;
             }
 
@@ -315,7 +310,7 @@ namespace ACAT.Lib.Core.UserControlManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Unable to load userControl " + userControlName + ", exception: " + ex.ToString());
+                Log.Exception("Unable to load userControl " + userControlName + ", exception: " + ex.ToString());
                 retVal = false;
             }
 
@@ -328,13 +323,13 @@ namespace ACAT.Lib.Core.UserControlManagement
 
             if (!isTopLevel)
             {
-                Log.Debug("AP1: SETTING _PlayterTransitioned to TRUE");
+                Log.Debug("AP1: SETTING _PlayerTransitioned to TRUE");
                 _playerTransitioned = true;
                 _iterationCount = 0;
             }
             else
             {
-                Log.Debug("AP1: SETTING _PlayterTransitioned to FALSE");
+                Log.Debug("AP1: SETTING _PlayerTransitioned to FALSE");
                 _playerTransitioned = false;
             }
         }
@@ -401,6 +396,11 @@ namespace ACAT.Lib.Core.UserControlManagement
                 userControl.Tag = tag;
             }
 
+            //// Only change the DockStyle if it's not already set.
+            //if (userControl.Dock == DockStyle.None)
+            //{
+            //    userControl.Dock = DockStyle.Top;
+            //}
             userControl.Dock = DockStyle.Fill;
 
             parent.Controls.Add(userControl);

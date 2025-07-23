@@ -10,18 +10,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PanelManagement;
+using ACAT.Core.UserManagement;
 using ACATResources;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Speech.Synthesis;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
+namespace ACAT.Extensions.TTSEngines.SAPIEngine
 {
     /// <summary>
     /// Displays the settings for the SAPI Text to speech engine
@@ -156,43 +154,22 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// <param name="e">event args</param>
         private void buttonSettings_Click(object sender, EventArgs e)
         {
-            this.TopMost = false;
-            Hide();
+            //this.TopMost = false;
+            //Hide();
 
-            PreferencesEditForm2 form = new PreferencesEditForm2
-            {
-                Title = Text,
-                SupportsPreferencesObj = new SAPIEngine(),
-                TopMost = true
-            };
-            form.ShowDialog();
+            //PreferencesEditForm2 form = new PreferencesEditForm2
+            //{
+            //    Title = Text,
+            //    SupportsPreferencesObj = new SAPIEngine(),
+            //    TopMost = true
+            //};
+            //form.ShowDialog();
 
-            Show();
+            //Show();
 
-            this.TopMost = true;
+            //this.TopMost = true;
 
             _settings = SAPISettings.Load();
-        }
-
-        /// <summary>
-        /// Voice checkbox toggled. Set ui state
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void checkBoxSelectVoice_CheckedChanged(object sender, EventArgs e)
-        {
-            _dirty = true;
-            setComboBoxStates();
-        }
-
-        /// <summary>
-        /// User selected something in the gender combo box
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void ComboBoxGender_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            _dirty = true;
         }
 
         /// <summary>
@@ -246,13 +223,6 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
                 voiceName += gender;
                 comboBoxSelectVoice.Items.Add(voiceName);
             }
-        }
-
-        /// <summary>
-        /// Update the enabled states of the combo boxes
-        /// </summary>
-        private void setComboBoxStates()
-        {
         }
 
         /// <summary>
@@ -314,7 +284,6 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// <returns>enum value</returns>
         private VoiceGender stringToVoiceGender(string gender)
         {
-
             if (Enum.TryParse(gender, out VoiceGender voiceGender))
             {
                 return voiceGender;
@@ -348,8 +317,6 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
             {
                 comboBoxSelectVoice.SelectedIndex = (selectedIndex >= 0) ? selectedIndex : 0;
             }
-
-            setComboBoxStates();
         }
     }
 }

@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.Utility;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension.CommandHandlers
+namespace ACAT.Extension.CommandHandlers
 {
     /// <summary>
     /// Takes care of document editing operations such as
@@ -43,89 +43,87 @@ namespace ACAT.Lib.Extension.CommandHandlers
 
             try
             {
-                using (AgentContext context = Context.AppAgentMgr.ActiveContext())
+                using AgentContext context = Context.AppAgentMgr.ActiveContext();
+                switch (Command)
                 {
-                    switch (Command)
-                    {
-                        case "CmdUndo":
-                            context.TextAgent().Undo();
-                            break;
+                    case "CmdUndo":
+                        context.TextAgent().Undo();
+                        break;
 
-                        case "CmdRedo":
-                            context.TextAgent().Redo();
-                            break;
+                    case "CmdRedo":
+                        context.TextAgent().Redo();
+                        break;
 
-                        case "CmdSelectModeToggle":
-                            context.TextAgent().SetSelectMode(!context.TextAgent().GetSelectMode());
-                            break;
+                    case "CmdSelectModeToggle":
+                        context.TextAgent().SetSelectMode(!context.TextAgent().GetSelectMode());
+                        break;
 
-                        case "CmdFind":
-                            Context.AppAgentMgr.RunCommand("CmdFind", ref handled);
-                            break;
+                    case "CmdFind":
+                        Context.AppAgentMgr.RunCommand("CmdFind", ref handled);
+                        break;
 
-                        case "CmdSelectAll":
-                            context.TextAgent().SelectAll();
-                            break;
+                    case "CmdSelectAll":
+                        context.TextAgent().SelectAll();
+                        break;
 
-                        case "CmdDeletePrevChar":
-                            Context.AppAgentMgr.Keyboard.Send(Keys.Back);
-                            break;
+                    case "CmdDeletePrevChar":
+                        Context.AppAgentMgr.Keyboard.Send(Keys.Back);
+                        break;
 
-                        case "CmdDeleteNextChar":
-                            Context.AppAgentMgr.Keyboard.Send(Keys.Delete);
-                            break;
+                    case "CmdDeleteNextChar":
+                        Context.AppAgentMgr.Keyboard.Send(Keys.Delete);
+                        break;
 
-                        case "CmdSmartDeletePrevWord":
-                            Dispatcher.Scanner.TextController.SmartDeletePrevWord();
-                            break;
+                    case "CmdSmartDeletePrevWord":
+                        Dispatcher.Scanner.TextController.SmartDeletePrevWord();
+                        break;
 
-                        case "CmdCut":
-                            context.TextAgent().Cut();
-                            turnOffSelectMode();  // TODO move to cursor scanner
-                            break;
+                    case "CmdCut":
+                        context.TextAgent().Cut();
+                        turnOffSelectMode();  // TODO move to cursor scanner
+                        break;
 
-                        case "CmdCopy":
-                            context.TextAgent().Copy();
-                            turnOffSelectMode();
-                            break;
+                    case "CmdCopy":
+                        context.TextAgent().Copy();
+                        turnOffSelectMode();
+                        break;
 
-                        case "CmdPaste":
-                            context.TextAgent().Paste();
-                            turnOffSelectMode();
-                            break;
+                    case "CmdPaste":
+                        context.TextAgent().Paste();
+                        turnOffSelectMode();
+                        break;
 
-                        case "CmdUndoLastEditChange":
-                            Dispatcher.Scanner.TextController.UndoLastEditChange();
-                            break;
+                    case "CmdUndoLastEditChange":
+                        Dispatcher.Scanner.TextController.UndoLastEditChange();
+                        break;
 
-                        case "CmdDelPrevWord":
-                            turnOffSelectMode();
-                            context.TextAgent().DelPrevWord();
-                            break;
+                    case "CmdDelPrevWord":
+                        turnOffSelectMode();
+                        context.TextAgent().DelPrevWord();
+                        break;
 
-                        case "CmdDelNextWord":
-                            turnOffSelectMode();
-                            context.TextAgent().DelNextWord();
-                            break;
+                    case "CmdDelNextWord":
+                        turnOffSelectMode();
+                        context.TextAgent().DelNextWord();
+                        break;
 
-                        case "CmdDelPrevSentence":
-                            turnOffSelectMode();
-                            context.TextAgent().DelPrevSentence();
-                            break;
+                    case "CmdDelPrevSentence":
+                        turnOffSelectMode();
+                        context.TextAgent().DelPrevSentence();
+                        break;
 
-                        case "CmdDelNextSentence":
-                            turnOffSelectMode();
-                            context.TextAgent().DelNextSentence();
-                            break;
+                    case "CmdDelNextSentence":
+                        turnOffSelectMode();
+                        context.TextAgent().DelNextSentence();
+                        break;
 
-                        case "CmdBackSpace":
-                            context.TextAgent().Keyboard.Send(Keys.Back);
-                            break;
+                    case "CmdBackSpace":
+                        context.TextAgent().Keyboard.Send(Keys.Back);
+                        break;
 
-                        default:
-                            handled = false;
-                            break;
-                    }
+                    default:
+                        handled = false;
+                        break;
                 }
             }
             catch (Exception ex)
@@ -146,10 +144,8 @@ namespace ACAT.Lib.Extension.CommandHandlers
 
             try
             {
-                using (AgentContext context = Context.AppAgentMgr.ActiveContext())
-                {
-                    context.TextAgent().SetSelectMode(false);
-                }
+                using AgentContext context = Context.AppAgentMgr.ActiveContext();
+                context.TextAgent().SetSelectMode(false);
             }
             catch (Exception ex)
             {

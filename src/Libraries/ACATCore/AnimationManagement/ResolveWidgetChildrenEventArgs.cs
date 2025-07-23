@@ -5,11 +5,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.WidgetManagement;
 using System;
 using System.Xml;
 
-namespace ACAT.Lib.Core.AnimationManagement
+namespace ACAT.Core.AnimationManagement
 {
     /// <summary>
     /// Event argument for the event raised to resolve

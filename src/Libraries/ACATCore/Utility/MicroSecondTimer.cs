@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// MicroStopwatch class which tracks timers more accurately than the

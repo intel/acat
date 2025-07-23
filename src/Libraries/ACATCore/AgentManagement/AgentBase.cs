@@ -5,18 +5,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement.TextInterface;
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.AgentManagement.TextInterface;
+using ACAT.Core.Extensions;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// Base class for all application agents.  Implements some of the
@@ -81,9 +81,9 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <summary>
         /// Gets the descriptor object for this agent
         /// </summary>
-        public virtual IDescriptor Descriptor
+        public virtual ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>
@@ -131,6 +131,8 @@ namespace ACAT.Lib.Core.AgentManagement
         {
             get { return _textInterface ?? _nullTextInterface; }
         }
+
+        public Guid Id => Descriptor.Id;
 
         /// <summary>
         /// Invoked to check if a command  should be enabled or not.  This depends
@@ -446,7 +448,7 @@ namespace ACAT.Lib.Core.AgentManagement
         {
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {

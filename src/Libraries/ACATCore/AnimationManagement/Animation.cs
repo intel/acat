@@ -5,16 +5,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Interpreter;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.Interpreter;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
 
-namespace ACAT.Lib.Core.AnimationManagement
+namespace ACAT.Core.AnimationManagement
 {
     /// <summary>
     /// Represents a single animation sequence.
@@ -259,7 +259,7 @@ namespace ACAT.Lib.Core.AnimationManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {

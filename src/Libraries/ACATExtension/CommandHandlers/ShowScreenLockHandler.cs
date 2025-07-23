@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.Utility;
 using ACATResources;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.Utility;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension.CommandHandlers
+namespace ACAT.Extension.CommandHandlers
 {
     /// <summary>
     /// Displays the ACAT Screen Lock dialog.  This locks the display

@@ -10,8 +10,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Extension;
+using ACAT.Core.Utility;
+using ACAT.Extension;
 using System;
 using System.Reflection;
 using System.Windows.Forms;

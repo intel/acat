@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// Represents a mapping between a panel class and its
@@ -66,7 +66,6 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="configId">String rep of the config id guid</param>
         public PanelClassConfigMapEntry(String panelClass, String configId)
         {
-
             if (Guid.TryParse(configId, out Guid guid))
             {
                 PanelClass = panelClass;

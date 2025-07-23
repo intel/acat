@@ -12,7 +12,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// Represents the settings for a single switch of an

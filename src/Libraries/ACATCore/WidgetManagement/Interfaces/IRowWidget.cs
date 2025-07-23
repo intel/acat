@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
     /// <summary>
     /// Represents a row of controls.

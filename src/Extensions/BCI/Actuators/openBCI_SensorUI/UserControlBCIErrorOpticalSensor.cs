@@ -10,9 +10,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACATResources;
+using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
-using ACAT.Lib.Core.Utility;
+using ACATResources;
 using System;
 using System.IO;
 using System.Linq;

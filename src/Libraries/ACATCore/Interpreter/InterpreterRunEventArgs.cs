@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.Interpreter
+namespace ACAT.Core.Interpreter
 {
     /// <summary>
     /// Arguments for event raised to "Run" a command

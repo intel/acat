@@ -12,15 +12,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
 
-namespace ACAT.Lib.Core.AbbreviationsManagement
+namespace ACAT.Core.AbbreviationsManagement
 {
     public class Abbreviations : IDisposable
     {
@@ -168,7 +168,7 @@ namespace ACAT.Lib.Core.AbbreviationsManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Error processing abbreviations file " + abbreviationsFile + ". Exception: " + ex);
+                Log.Exception("Error processing abbreviations file " + abbreviationsFile + ". Exception: " + ex);
                 retVal = false;
             }
 
@@ -289,7 +289,7 @@ namespace ACAT.Lib.Core.AbbreviationsManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -321,7 +321,7 @@ namespace ACAT.Lib.Core.AbbreviationsManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
@@ -344,7 +344,7 @@ namespace ACAT.Lib.Core.AbbreviationsManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 xmlTextWriter = null;
             }
 

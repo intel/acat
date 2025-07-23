@@ -5,11 +5,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Xml;
 
-namespace ACAT.Lib.Core.UserControlManagement
+namespace ACAT.Core.UserControlManagement
 {
     /// <summary>
     /// Holds config information about a usercontrol - its type,

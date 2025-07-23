@@ -5,26 +5,27 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AnimationManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.UserControlManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.AnimationManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.UserControlManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     /// <summary>
     /// The tryout app that allows the user to practice switch scanning and
     /// also set a suitable scanning speed
     /// </summary>
-    [Descriptor("61E8A29A-5076-4047-A9F5-89E7E4903407",
+    [ClassDescriptor("61E8A29A-5076-4047-A9F5-89E7E4903407",
                         "UserControlDefaultTryout",
                     "User Control to adjust the scan timing")]
-    public partial class UserControlDefaultTryout : UserControl, IUserControl
+    public partial class UserControlDefaultTryout : GenericUserControl, IUserControl
     {
         private int _currentWordIndex = 0;
         private int _index = 0;
@@ -34,7 +35,7 @@ namespace ACAT.Lib.Extension
 
         private readonly List<String> _words = new List<string>();
 
-        public UserControlDefaultTryout()
+        public UserControlDefaultTryout() : base()
         {
             InitializeComponent();
 
@@ -44,8 +45,6 @@ namespace ACAT.Lib.Extension
             _words.Add("ate");
             _words.Add("bet");
             _words.Add("bat");
-
-            // beta
         }
 
         public event AnimationPlayerStateChanged EvtPlayerStateChanged;
@@ -53,10 +52,10 @@ namespace ACAT.Lib.Extension
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
-        {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
-        }
+        //public ClassDescriptorAttribute Descriptor
+        //{
+        //    get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
+        //}
 
         /// <summary>
         /// Gets the snchronization object
@@ -164,7 +163,6 @@ namespace ACAT.Lib.Extension
         {
             if (CoreGlobals.AppPreferences.ScanTime != _prevScanTime)
             {
-                
                 if (!DialogUtils.ConfirmScanner(null, "Save scan speed?"))
                 {
                     CoreGlobals.AppPreferences.ScanTime = _prevScanTime;

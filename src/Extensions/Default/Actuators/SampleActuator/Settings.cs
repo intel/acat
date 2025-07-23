@@ -10,11 +10,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
 using System;
 using System.Xml.Serialization;
 
-namespace ACAT.Extensions.Default.Actuators.SampleActuator
+namespace ACAT.Extensions.Actuators.SampleActuator
 {
     [Serializable]
     public class Settings : PreferencesBase

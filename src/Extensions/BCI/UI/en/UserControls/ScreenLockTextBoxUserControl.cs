@@ -10,9 +10,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.InputActuators;
-using ACAT.Lib.Core.ThemeManagement;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.InputActuators;
+using ACAT.Core.ThemeManagement;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -74,7 +74,7 @@ namespace ACAT.Extensions.BCI.UI.UserControls
 
             _index = 0;
 
-            _pin = Lib.Extension.Common.AppPreferences.ScreenLockPin;
+            _pin = Extension.Common.AppPreferences.ScreenLockPin;
 
             if (!validatePin(_pin))
             {

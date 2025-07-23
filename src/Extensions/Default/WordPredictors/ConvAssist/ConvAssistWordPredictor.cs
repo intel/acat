@@ -11,29 +11,27 @@
 ////////////////////////////////////////////////////////////////////////////
 //#define DEBUG_CONVASSIST
 
-
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WordPredictionManagement;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WordPredictionManagement;
 using ACATResources;
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.IO.Pipes;
 using System.Threading;
 using System.Threading.Tasks;
 
-
-namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
     /// <summary>
     /// English language word prediction extension.
     /// Uses the ConvAssist word predictor for next word prediction.
     /// </summary>
-    [Descriptor("1505D4A3-26AD-451F-9FD3-44EC92271AF3",
+    [ClassDescriptor("1505D4A3-26AD-451F-9FD3-44EC92271AF3",
                             "ConvAssist Word Predictor (English)",
                             "The ConvAssist predictive text engine with enhanced language modeling capabilities fine-tuned for AAC uses")]
     public class ConvAssistWordPredictor : ConvAssistWordPredictorBase
@@ -44,12 +42,12 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         public String PipeName = "ACATConvAssistPipe";
 
         /// <summary>
-        /// Name of the ConvAssist exe 
+        /// Name of the ConvAssist exe
         /// </summary>
         private const String ConvAssistAppName = ConvAssistName + ".exe";
 
         /// <summary>
-        /// Name of ConvAssist App 
+        /// Name of ConvAssist App
         /// </summary>
         private const String ConvAssistName = "ConvAssist";
 
@@ -64,6 +62,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// Used the synchronization for multiple calls
         /// </summary>
         private readonly object _syncObj = new object();
+
         private readonly object _writeSyncObj = new object();
 
         private readonly CancellationTokenSource cts = new CancellationTokenSource();
@@ -147,7 +146,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// </summary>
         /// <param name="ci">language for word prediction</param>
         /// <returns>true on success</returns>
-        /// 
+        ///
 
         public override bool Init(CultureInfo ci)
         {
@@ -197,7 +196,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
 
             namedPipe = new NamedPipeServerConvAssist(PipeName, PipeDirection.InOut, convAssistSettings);
             pipeCreated = namedPipe.CreatePipeServer(send_params);
-            
+
             if (pipeCreated)
             {
                 wordPredictionTask = Task.Factory.StartNew(WordPredictionTaskProcess, TaskCreationOptions.LongRunning);
@@ -205,7 +204,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
 
             return pipeCreated;
         }
-       
 
         /// <summary>
         /// Display disclaimer dialog
@@ -300,7 +298,6 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 {
                     result = true;
                 }
-                
             }
             catch (Exception ex)
             {
@@ -357,7 +354,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("ConvAssist Exception " + ex);
+                Log.Exception("ConvAssist Exception " + ex);
                 response = new WordPredictionResponse(request, new List<String>(), false);
             }
 

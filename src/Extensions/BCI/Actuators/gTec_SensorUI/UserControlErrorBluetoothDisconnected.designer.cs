@@ -11,6 +11,7 @@
 // through bluetooth
 //
 ////////////////////////////////////////////////////////////////////////////
+using ACAT.Core.WidgetManagement;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
@@ -61,7 +62,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.listViewUnPairedDevices = new System.Windows.Forms.ListView();
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.buttonNext_userControlErrorBluetoothDisconnected = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonNext_userControlErrorBluetoothDisconnected = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanelMain.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -329,6 +330,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private System.Windows.Forms.Label label4;
         public System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
-        public Lib.Core.WidgetManagement.ScannerRoundedButtonControl buttonNext_userControlErrorBluetoothDisconnected;
+        public ScannerRoundedButtonControl buttonNext_userControlErrorBluetoothDisconnected;
     }
 }

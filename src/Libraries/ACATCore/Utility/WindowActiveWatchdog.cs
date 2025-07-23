@@ -8,7 +8,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Checks if the specified form has lost focus, and if so,
@@ -29,7 +29,7 @@ namespace ACAT.Lib.Core.Utility
         /// <summary>
         /// Pause the watchdog?
         /// </summary>
-        private bool _paused;
+        private readonly bool _paused;
 
         /// <summary>
         /// Constructor.  Allocates resources, event handlers
@@ -38,14 +38,13 @@ namespace ACAT.Lib.Core.Utility
         public WindowActiveWatchdog(Form form)
         {
             _form = form;
+#if DEBUG
             _form.TopMost = false;
             _form.TopMost = true;
-
 
             _form.Deactivate += _form_Deactivate;
             _form.VisibleChanged += _form_VisibleChanged;
 
-#if DEBUG
             // in debug mode disable the watchdog to allow for debugging
             _paused = true;
 #endif
@@ -99,7 +98,7 @@ namespace ACAT.Lib.Core.Utility
             {
                 if (disposing)
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     try
                     {
@@ -108,7 +107,7 @@ namespace ACAT.Lib.Core.Utility
                     }
                     catch (Exception e)
                     {
-                        Log.Debug(e.ToString());
+                        Log.Exception(e.ToString());
                     }
 
                     _form = null;
@@ -154,16 +153,17 @@ namespace ACAT.Lib.Core.Utility
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug(ex.ToString());
+                    Log.Exception(ex.ToString());
                 }
             }
         }
+
         /// <summary>
         /// Sets focus to the form
         /// </summary>
         private void focusThisForm()
         {
-            Log.Debug();
+            Log.Verbose();
 
             try
             {
@@ -195,7 +195,7 @@ namespace ACAT.Lib.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
             Log.Debug("Returning");

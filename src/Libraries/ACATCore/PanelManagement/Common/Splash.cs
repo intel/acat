@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Diagnostics;
 using System.Threading;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// Displays a splash screen.  The splash screen has a
@@ -67,7 +67,7 @@ namespace ACAT.Lib.Core.PanelManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 

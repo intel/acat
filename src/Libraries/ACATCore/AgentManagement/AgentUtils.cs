@@ -5,13 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// Contains useful utility functions
@@ -165,7 +164,7 @@ namespace ACAT.Lib.Core.AgentManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 

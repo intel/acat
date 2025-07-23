@@ -107,7 +107,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             this.pictureBoxTestBCIConnections.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pictureBoxTestBCIConnections.Cursor = System.Windows.Forms.Cursors.WaitCursor;
             this.pictureBoxTestBCIConnections.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBoxTestBCIConnections.Image = global::openBCISensorUI.Resources.GIFConnectingToBCIBoard_SpedUp2x;
+            this.pictureBoxTestBCIConnections.Image = Resources.GIFConnectingToBCIBoard_SpedUp2x;
             this.pictureBoxTestBCIConnections.Location = new System.Drawing.Point(260, 231);
             this.pictureBoxTestBCIConnections.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBoxTestBCIConnections.Name = "pictureBoxTestBCIConnections";

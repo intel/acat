@@ -10,7 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
+namespace ACAT.Extensions.TTSEngines.SAPIEngine
 {
     partial class SettingsForm
     {

@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
     /// <summary>
     /// Triggered when a widget is actuated

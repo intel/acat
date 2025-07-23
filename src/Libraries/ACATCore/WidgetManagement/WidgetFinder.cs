@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
     /// <summary>
     /// Helper class to find widgets within a parent widget. Supports

@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.ThemeManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.ThemeManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Widgets
+namespace ACAT.Core.Widgets
 {
     /// <summary>
     /// A widget that uses a Button as the UI control.  Can be used
@@ -48,6 +48,21 @@ namespace ACAT.Lib.Core.Widgets
             }
         }
 
+        public ButtonControlWidget(
+        Control uiControl,
+        string name,
+        string label,
+        string command,
+        string fontname,
+        int fontsize,
+        bool bold) : this(uiControl)
+        {
+            uiControl.Name = name;
+            uiControl.Text = label;
+            uiControl.Font = new Font(fontname, fontsize, bold ? FontStyle.Bold : FontStyle.Regular);
+            //uiControl.Click += (sender, e) => WidgetManager.Instance.ExecuteCommand(command);
+        }
+
         /// <summary>
         /// Set the font specified in the attribute object and also set
         /// the text for the Button
@@ -59,8 +74,7 @@ namespace ACAT.Lib.Core.Widgets
 
             var fontFamily = Fonts.Instance.GetFontFamily(new[]
                                             {   widgetAttribute.FontName,
-                                                CoreGlobals.AppPreferences.FontName,
-                                                "Arial" });
+                                                CoreGlobals.AppPreferences.FontName });
 
             if (fontFamily != null)
             {
@@ -93,7 +107,7 @@ namespace ACAT.Lib.Core.Widgets
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     if (disposing)
                     {

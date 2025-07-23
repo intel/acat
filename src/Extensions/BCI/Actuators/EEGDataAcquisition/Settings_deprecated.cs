@@ -1,11 +1,11 @@
-﻿using ACAT.Lib.Core;
-using ACAT.Lib.Core.PreferencesManagement;
+﻿using ACAT.Core;
+using ACAT.Core.PreferencesManagement;
 using System;
 using System.Xml.Serialization;
 
 
 
-namespace ACAT.Extensions.Default.Actuators.EEG.EEGDataAcquisition
+namespace ACAT.Extensions.Actuators.EEG.EEGDataAcquisition
 {
     /// <summary>
     /// Settings for the EEG acquisition part of the EEG actuator

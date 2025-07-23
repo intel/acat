@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Widgets
+namespace ACAT.Core.Widgets
 {
     /// <summary>
     /// Base class for all button widgets that use a PictureBox
@@ -134,7 +134,7 @@ namespace ACAT.Lib.Core.Widgets
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     if (disposing)
                     {
@@ -176,7 +176,6 @@ namespace ACAT.Lib.Core.Widgets
         /// <returns>true</returns>
         protected override bool highlightOn()
         {
-
             notifyEvtHighlightOn(out bool handled);
             IsHighlightOn = true;
             if (!handled)

@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// Interface to send keystrokes to the active application by

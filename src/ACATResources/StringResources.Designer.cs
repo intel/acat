@@ -1735,6 +1735,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configuration is not complete..
+        /// </summary>
+        public static string IncompleteConfiguration {
+            get {
+                return ResourceManager.GetString("IncompleteConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Initialization Error.
         /// </summary>
         public static string InitializationError {
@@ -3151,6 +3160,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quit.
+        /// </summary>
+        public static string Quit {
+            get {
+                return ResourceManager.GetString("Quit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quit Application?.
         /// </summary>
         public static string QuitApplication {
@@ -4208,7 +4226,7 @@ namespace ACATResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This may take a few minutes.
+        ///   Looks up a localized string similar to This may take a few minutes..
         /// </summary>
         public static string Thismaytakeafewminutes {
             get {

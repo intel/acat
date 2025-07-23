@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.AnimationManagement;
-using ACAT.Lib.Core.Interpreter;
-using ACAT.Lib.Core.ThemeManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.AnimationManagement;
+using ACAT.Core.Interpreter;
+using ACAT.Core.ThemeManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -18,7 +18,7 @@ using System.Security.Permissions;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// Helper class that contains helper function for all the dialog
@@ -30,7 +30,7 @@ namespace ACAT.Lib.Core.PanelManagement
     /// call the methods in this class whereever they are needed. Refer
     /// to the documentation for the methods in this class for info on when these
     /// methods need to be invoked.
-    /// This class creates the WidgetManager and AnimationManager objects
+    /// This class creates the WidgetManager and PanelAnimationManager objects
     /// required by the form and has getters for the various fields.
     /// </summary>
     public class DialogCommon : IDisposable, IPanelCommon
@@ -53,7 +53,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// The animation manager for this form
         /// </summary>
-        private AnimationManager _animationManager;
+        private PanelAnimationManager _animationManager;
 
         /// <summary>
         /// Has this object been disposed off?
@@ -108,7 +108,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// Gets the Animation Manager object
         /// </summary>
-        public AnimationManager AnimationManager
+        public PanelAnimationManager AnimationManager
         { get { return _animationManager; } }
 
         /// <summary>
@@ -133,10 +133,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// Gets the object that manages the size and position
         /// of the panel
         /// </summary>
-        public ScannerPositionSizeController PositionSizeController
-        { get { return null; } }
-
-        public ScannerPositionSizeController2 PositionSizeController2 { get; }
+        public ScannerPositionSizeController PositionSizeController2 { get; }
 
         /// <summary>
         /// Gets the widget that reprensents the form
@@ -157,6 +154,8 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public WidgetManager WidgetManager
         { get { return _widgetManager; } }
+
+        public ScannerPositionSizeController PositionSizeController => throw new NotImplementedException();
 
         /// <summary>
         /// Sets the style of the form.  No sys menu
@@ -344,14 +343,14 @@ namespace ACAT.Lib.Core.PanelManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
                     PanelManager.Instance.EvtScannerShow -= Instance_EvtScannerShow;
 
                     // dispose all managed resources.
-                    Log.Debug();
+                    Log.Verbose();
 
                     _animationManager?.Dispose();
 
@@ -429,7 +428,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         private bool initAnimationManager(PanelConfigMapEntry panelConfigMapEntry)
         {
-            _animationManager = new AnimationManager();
+            _animationManager = new PanelAnimationManager();
 
             bool retVal = _animationManager.Init(panelConfigMapEntry);
             if (!retVal)

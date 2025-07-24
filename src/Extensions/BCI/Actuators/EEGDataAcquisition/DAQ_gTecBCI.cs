@@ -246,14 +246,24 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 
         public static bool IsDeviceAvailable()
         {
-            // check if drivers are installed
-            bool result = Unicorn.IsDeviceLibraryLoadable();
+            bool success = false;
+            try
+            {
+                // check if drivers are installed
+                success = Unicorn.IsDeviceLibraryLoadable();
 
-            // and if the device is available
-            IList<string> devices = Unicorn.GetAvailableDevices(true);
+                // and if the device is available
+                IList<string> devices = Unicorn.GetAvailableDevices(true);
 
-            return result && devices.Count > 0;
-            //*/
+                success = success && devices.Count > 0;
+                //*/
+            }
+            catch (Exception ex)
+            {
+                Log.Exception(ex);
+            }
+
+            return success;
         }
 
         /// <summary>

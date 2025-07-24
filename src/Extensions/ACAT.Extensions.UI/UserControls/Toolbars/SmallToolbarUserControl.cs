@@ -15,7 +15,7 @@ namespace ACAT.Extensions.UI.UserControls
     [ClassDescriptor("4E1A5ED3-ED21-449B-B462-A8AE9F7BDC1F",
         Name = "ToolbarUserControl",
         Description = "User control for the toolbar in the ACAT Dashboard")]
-    public class ToolbarUserControl : KeyboardUserControl
+    public class SmallToolbarUserControl : KeyboardUserControl
     {
         private TableLayoutPanel ToolbarBox = new TableLayoutPanel
         {
@@ -77,7 +77,7 @@ namespace ACAT.Extensions.UI.UserControls
         protected Dictionary<string, string> DefaultButtons { get; private set; }
         //protected Dictionary<string, string> PanelSettingsButtons { get; private set; }
 
-        public ToolbarUserControl()
+        public SmallToolbarUserControl()
         {
             InitializeButtonsList();
             InitializeComponent();

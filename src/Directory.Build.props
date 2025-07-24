@@ -27,7 +27,6 @@
     <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
     <FileVersion>$(VersionPrefix)</FileVersion>
     <InformationalVersion>$(VersionPrefix)</InformationalVersion>
-    <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
 
     <!-- Base output locations -->
     <BaseOutputPath>$(SolutionDir)artifacts\</BaseOutputPath>

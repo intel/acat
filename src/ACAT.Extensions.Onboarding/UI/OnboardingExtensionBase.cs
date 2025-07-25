@@ -4,8 +4,10 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 ////////////////////////////////////////////////////////////////////////////
+using ACAT.Core.Extensions;
 using ACAT.Core.Onboarding;
 using ACAT.Core.Utility;
+using System;
 
 namespace ACAT.Extensions.Onboarding
 {
@@ -16,6 +18,8 @@ namespace ACAT.Extensions.Onboarding
     {
         public abstract ClassDescriptorAttribute Descriptor { get; }
         public virtual bool StartOverOnBackwardNavigation => false;
+
+        public Guid Id => Descriptor.Id;
 
         public virtual IOnboardingUserControl GetFirstStep()
         {

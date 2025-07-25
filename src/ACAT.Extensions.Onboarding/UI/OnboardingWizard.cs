@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement;
 using ACAT.Core.Onboarding;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
@@ -33,6 +34,8 @@ namespace ACAT.Extensions.Onboarding
         public OnboardingWizard()
         {
         }
+        private readonly TypeLoader<IOnboardingExtension> _TypeLoader = new();
+
 
         public delegate void AddCustomButtonDelegate(Control control, OnboardingButtonTypes buttonType);
 
@@ -294,67 +297,31 @@ namespace ACAT.Extensions.Onboarding
             _extensionsTypeCache.AddRange(onboardingTypes);
 
             // Look for any additional onboarding extensions in the current directory
-            loadOnboardingExtensionsIntoCache(".");
+            loadOnboardingExtensionsIntoCache("Extensions");
         }
 
-        private void loadOnboardingExtensionsIntoCache(String dir, bool recursive = true)
+        private void loadOnboardingExtensionsIntoCache(String dir)
         {
-            Log.Warn("FIXME: TOTAL HACK TO BYPASS TRYING TO LOAD EVERY DLL FOR ONBOARDING.");
-            onFileFound(".\\ACATCore.dll");
-            onFileFound(".\\ACATExtension.dll");
+            var walker = new DirectoryWalker(dir, "ACAT.*.dll");
+
+            // Recursively look for Actuators in /Extensions
+            walker.Walk(new OnFileFoundDelegate(onFileFound));
         }
 
-        /// <summary>
-        /// Callback function for the directory walker. called whenever
-        /// it finds a DLL
-        /// </summary>
-        /// <param name="dllName"></param>
         private void onFileFound(String dllName)
         {
             try
             {
-                String extension = Path.GetExtension(dllName);
-                if (String.Compare(extension, ".dll", true) == 0 && !_DLLError)
-                {
-                    var retVal = VerifyDigitalSignature.ValidateCertificate(dllName);
-                    if (retVal)
-                    {
-                        try
-                        {
-                            VerifyDigitalSignature.Verify(dllName);
-                        }
-                        catch (Exception ex)
-                        {
-                            ConfirmBoxOneOption ConfirmBoxOneOption = new ConfirmBoxOneOption
-                            {
-                                Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n Status Error: ERO",
-                                DecisionPrompt = "ok",
-                                LabelFont = 10
-                            };
-                            ConfirmBoxOneOption.BringToFront();
-                            ConfirmBoxOneOption.TopMost = true;
-                            ConfirmBoxOneOption.ShowDialog();
-                            ConfirmBoxOneOption.Dispose();
-                            _DLLError = true;
-                        }
-                    }
-                }
-                if (!_DLLError)
-                {
-                    var inputActuatorsAssembly = Assembly.LoadFrom(dllName);
-                    foreach (Type type in inputActuatorsAssembly.GetTypes())
-                    {
-                        if (typeof(IOnboardingExtension).IsAssignableFrom(type))
-                        {
-                            _extensionsTypeCache.Add(type);
-                        }
-                    }
-                }
+                _TypeLoader.LoadFromAssembly(dllName);
             }
-            catch
+            catch (Exception ex)
             {
+                Log.Exception($"Error loading actuator from {dllName}: {ex.Message}");
+                _DLLError = true;
             }
         }
+
+
 
         public class OnboardingHistoryEntry
         {

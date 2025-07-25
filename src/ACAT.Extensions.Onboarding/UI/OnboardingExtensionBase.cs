@@ -26,6 +26,11 @@ namespace ACAT.Extensions.Onboarding
             return null;
         }
 
+        public ExtensionInvoker GetInvoker()
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual IOnboardingExtension GetNextOnboardingExtension()
         {
             return null;

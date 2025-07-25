@@ -649,11 +649,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Remove="de\**\*.resources.dll" />
-    <Content Remove="de\**\*.resources.dll" />
-    <None Remove="de\**\*.resources.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\ACATResources\ACATResources.csproj">
       <Project>{a0990d4e-f25b-430c-bda3-40a72560b877}</Project>
       <Name>ACATResources</Name>
@@ -677,4 +672,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="RemoveUnwantedLanguages" AfterTargets="Build">
+  <ItemGroup>
+    <UnwantedLangDirs Include="$(OutputPath)de\;$(OutputPath)fr\;$(OutputPath)ru\" />
+  </ItemGroup>
+  <RemoveDir Directories="@(UnwantedLangDirs)" />
+  </Target>
 </Project>

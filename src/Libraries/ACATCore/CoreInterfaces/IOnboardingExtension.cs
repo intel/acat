@@ -5,6 +5,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Extensions;
+using ACAT.Core.PreferencesManagement;
 using ACAT.Core.Utility;
 using System;
 
@@ -28,9 +30,9 @@ namespace ACAT.Core.Onboarding
     /// the onboarding process and can have multiple steps during
     /// onboarding.
     /// </summary>
-    public interface IOnboardingExtension
+    public interface IOnboardingExtension : IPluginExtension, IExtension
     {
-        ClassDescriptorAttribute Descriptor { get; }
+        //ClassDescriptorAttribute Descriptor { get; }
 
         bool StartOverOnBackwardNavigation { get; }
 

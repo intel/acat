@@ -89,7 +89,23 @@ namespace ACATConfigNext.UserControls
                         MethodInfo method = extension.GetType().GetMethod("GetPreferences");
 
                         var prefs = method?.Invoke(extension, null) as IPreferences;
-                        showPanel?.Invoke(new SettingsPanel(showPanel, prefs), extension.Descriptor.Name);
+                        if (prefs != null)
+                        {
+                            showPanel?.Invoke(new SettingsPanel(showPanel, prefs), extension.Descriptor.Name);
+                        }
+                        else
+                        {
+                            method = extension.GetType().GetMethod("ShowPreferencesDialog");
+                            if (method != null)
+                            {
+                                Log.Debug("Showing preferences dialog for: " + extension.Descriptor.Name);
+                                method.Invoke(extension, null);
+                            }
+                            else
+                            {
+                                Log.Error("No preferences method found for extension: " + extension.Descriptor.Name);
+                            }
+                        }
                     }
                 }
             };

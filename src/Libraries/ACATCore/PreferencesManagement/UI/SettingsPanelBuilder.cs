@@ -101,7 +101,7 @@ namespace ACAT.Lib.Core.PreferencesManagement.UI
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(3, GridUnitType.Star) });
             //grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
 
-            var descriptionAttr = prop.GetCustomAttribute<ClassDescriptorAttribute>();
+            var descriptionAttr = prop.GetCustomAttribute<DescriptorAttribute>();
             var labelText = descriptionAttr?.Description ?? "MISSING DESCRIPTION";
 
             var label = new TextBlock

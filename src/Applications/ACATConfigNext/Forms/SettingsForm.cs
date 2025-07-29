@@ -220,8 +220,8 @@ namespace ACATConfigNext
                         MessageBox.Show("Settings saved successfully.", "Save Complete",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
                         _isDirty = false;
-                        saveButton.Enabled = false;
-                        resetButton.Enabled = false;
+                        saveButton.Enabled = _isDirty;
+                        saveButton.Enabled = _isDirty;
                     }
                     else
                     {
@@ -257,8 +257,8 @@ namespace ACATConfigNext
                         MessageBox.Show("Settings saved successfully.", "Save Complete",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
                         _isDirty = false;
-                        saveButton.Enabled = false;
-                        resetButton.Enabled = false;
+                        saveButton.Enabled = _isDirty;
+                        saveButton.Enabled = _isDirty;
                     }
                     else
                     {
@@ -301,21 +301,35 @@ namespace ACATConfigNext
                     if (Context.AppActuatorManager.LoadExtensions(Context.ExtensionDirs, true))
                     {
                         //MessageBox.Show("Missing Actuator");
-                        return Context.AppActuatorManager.ActuatorsList;
+                       return Context.AppActuatorManager.ActuatorsList;
+                      //  return Context.AppActuatorManager.ActuatorsList.Cast<IExtension>();
+
                     }
                     break;
 
                 case "Word Predictors":
                     if (Context.AppWordPredictionManager.LoadExtensions(Context.ExtensionDirs))
                     {
-                        return Context.AppWordPredictionManager.WordPredictorsList;
+                        //  return Context.AppWordPredictionManager.WordPredictorsList;
+                        var wordPredictorTypes = Context.AppWordPredictionManager.WordPredictorExtensions;
+                        var wordPredictorExtensions = wordPredictorTypes
+                            .Select(type => Activator.CreateInstance(type) as IExtension)
+                            .Where(instance => instance != null);
+                        return wordPredictorExtensions;
+
                     }
                     break;
 
                 case "Text to Speech":
                     if (Context.AppTTSManager.LoadExtensions(Context.ExtensionDirs))
                     {
-                        return Context.AppTTSManager.TTSEnginesList;
+                       // return Context.AppTTSManager.TTSEnginesList;
+
+                        var ttsEngineTypes = Context.AppTTSManager.GetExtensions();
+                        var ttsExtensions = ttsEngineTypes
+                            .Select(type => Activator.CreateInstance(type) as IExtension)
+                            .Where(instance => instance != null);
+                        return ttsExtensions;
                     }
                     break;
             }
@@ -380,9 +394,17 @@ namespace ACATConfigNext
                 var (Category, Settings) = ((string Category, IEnumerable<IExtension> Settings))clickedButton.Tag;
                 string category = Category;
 
+                if (Settings == null)
+                {
+                    Settings = Enumerable.Empty<IExtension>();
+                }
+
                 breadcrumbStack.Clear();
                 contentPanel.Controls.Clear();
                 currentPageLabel = category;
+
+           
+
 
                 UserControl panel = category switch
                 {
@@ -434,6 +456,8 @@ namespace ACATConfigNext
         private void OnValueChanged(object sender, EventArgs e)
         {
             _isDirty = true;
+            saveButton.Enabled = _isDirty;  
+            resetButton.Enabled = _isDirty;
             EvtPreferencesChangeMade();
         }
 

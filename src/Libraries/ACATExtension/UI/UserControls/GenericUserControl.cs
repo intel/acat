@@ -45,7 +45,6 @@ namespace ACAT.UserControls
             bool retVal = _userControlCommon.Initialize();
 
             _userControlCommon.AnimationManager.EvtPlayerStateChanged += AnimationManager_EvtPlayerStateChanged;
-
             retVal = HandleInitialize();
 
             return retVal;

@@ -3,8 +3,8 @@
 
   <PropertyGroup>
     <!-- Compute ExtensionPath as path relative to the solution directory -->
-    <!-- <ExtensionPath>\Extensions\</ExtensionPath> -->
-    <ExtensionPath>$([System.String]::Copy('$(MSBuildProjectDirectory)').Replace('$(SolutionDir)', ''))</ExtensionPath>
+    <ExtensionPath>\Extensions\</ExtensionPath>
+    <!-- <ExtensionPath>$([System.String]::Copy('$(MSBuildProjectDirectory)').Replace('$(SolutionDir)', ''))</ExtensionPath> -->
 
     <!-- Final paths for this project -->
     <OutputPath>$(BuildPath)$(ExtensionPath)\</OutputPath>

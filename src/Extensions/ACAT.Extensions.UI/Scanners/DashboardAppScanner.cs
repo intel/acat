@@ -27,6 +27,9 @@ namespace ACAT.Extensions.UI.Scanners
         private TableLayoutPanel panelDashboardControls;
         private TableLayoutPanel panelTopToolbar;
         private TableLayoutPanel ScannerBorder;
+
+        private UserControl currentPanel = null;
+
         public DashboardAppScanner() : base()
         {
             _dispatcher = new DashboardAppDispatcher(this);
@@ -119,6 +122,17 @@ namespace ACAT.Extensions.UI.Scanners
             this.panelDashboardControls.ResumeLayout(true);
             this.ScannerBorder.ResumeLayout(true);
             this.ResumeLayout(true);
+
+            // Subscribe to the change event on the panelDashboardControls to
+            // handle setting what the current panel is.
+            this.panelDashboardControls.ControlAdded += (s, e) =>
+            {
+                if (e.Control is UserControl userControl)
+                {
+                    currentPanel = userControl;
+                    Log.Debug($"Current panel set to: {currentPanel.GetType().Name}");
+                }
+            };
         }
 
         protected override void ScannerFormLoaded(object sender, EventArgs e)
@@ -151,8 +165,9 @@ namespace ACAT.Extensions.UI.Scanners
 
         public bool HandleCmdPointerControl()
         {
-            _scannerCommon.UserControlManager.PushUserControlByKeyOrName(panelDashboardControls, "pointercontroller", "PointerControlUserControl");
-            return true;
+            bool success = _scannerCommon.UserControlManager.PushUserControlByKeyOrName(panelDashboardControls, "cursorcontroller", "CursorControlUserControl");
+            _scannerCommon.UserControlManager.StartTopLevelAnimation();
+            return success;
         }
 
         private void InitializeDashboard()
@@ -231,13 +246,16 @@ namespace ACAT.Extensions.UI.Scanners
         {
             public DashboardAppDispatcher(IScannerPanel panel) : base(panel)
             {
-                Commands.Add(new DashboardAppCommandHandler("CmdACATMenu"));
+                /* Main Menu Commands */
                 Commands.Add(new DashboardAppCommandHandler("CmdShowACATTalk"));
                 Commands.Add(new DashboardAppCommandHandler("CmdShowQuickTalk"));
                 Commands.Add(new DashboardAppCommandHandler("CmdShowPointerControl"));
                 Commands.Add(new DashboardAppCommandHandler("CmdShowKeyboard"));
                 Commands.Add(new DashboardAppCommandHandler("CmdShowSystem"));
                 Commands.Add(new DashboardAppCommandHandler("CmdShowLocation"));
+                
+                /* Top Toolbar Commands */
+                Commands.Add(new DashboardAppCommandHandler("CmdACATMenu"));
                 Commands.Add(new DashboardAppCommandHandler("CmdShowSettings"));
                 Commands.Add(new DashboardAppCommandHandler("CmdShowHelp"));
                 Commands.Add(new DashboardAppCommandHandler("CmdShowAbout"));

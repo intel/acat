@@ -7,7 +7,6 @@
     <WidgetAttribute name="Settings" value="@CmdShowSettings" />
     <WidgetAttribute name="Help" value="@CmdShowHelp" />
     <WidgetAttribute name="About" value="@CmdShowAbout" />
-<!--    <WidgetAttribute name="PanelSettings" value="@CmdPanelSettings" /> -->
     <WidgetAttribute name="Home" value="@CmdGoBack" />
     <WidgetAttribute name="Exit" value="@CmdExit" />
     <WidgetAttribute name="Shrink" value="@CmdShrink" />
@@ -22,8 +21,7 @@
         <Widget class="ScannerButton" name="Settings" colorScheme="ScannerButton" />
         <Widget class="ScannerButton" name="Help" colorScheme="ScannerButton" />
         <Widget class="ScannerButton" name="About" colorScheme="ScannerButton" />
-        <!--<Widget class="ScannerButton" name="PanelSettings" colorScheme="ScannerButton" />-->
-        <Widget class="ScannerButton" name="Home" colorScheme="ScannerButton" enabled="false" />
+        <Widget class="ScannerButton" name="Home" colorScheme="ScannerButton" />
         <Widget class="ScannerButton" name="Exit" colorScheme="ScannerButton" />
       </Widget>
     </Widget>

@@ -1,14 +1,10 @@
-﻿using ACAT.Core.AgentManagement;
-using ACAT.Core.UserControlManagement;
-using ACAT.Core.PanelManagement;
-using ACAT.Core.Utility;
+﻿using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.UserControls;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using System;
 
 namespace ACAT.Extensions.UI.UserControls
 {
@@ -91,7 +87,6 @@ namespace ACAT.Extensions.UI.UserControls
                 { "Help", BootstrapFontUtility.GetBootstrapFontCharacter("life-preserver") },
                 { "About", BootstrapFontUtility.GetBootstrapFontCharacter("question-circle") },
                 { "Home", BootstrapFontUtility.GetBootstrapFontCharacter("house-door") },
-                //{ "PanelSettings", BootstrapFontUtility.GetBootstrapFontCharacter("three-dots") },
                 { "Exit", BootstrapFontUtility.GetBootstrapFontCharacter("door-closed") }
             };
         //PanelSettingsButtons = new Dictionary<string, string>

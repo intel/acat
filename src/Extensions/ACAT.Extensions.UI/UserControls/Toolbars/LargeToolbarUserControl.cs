@@ -1,6 +1,7 @@
 ﻿using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.UserControls;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -135,5 +136,10 @@ namespace ACAT.Extensions.UI.UserControls
             ToolbarBox.ResumeLayout(true);
             this.ResumeLayout(true);
         }
+
+        // This method should be overridden in derived classes to handle button clicks
+        // For example, it can be used to trigger specific actions based on the button clicked
+        // Example: if (buttonSpec.Name == "MoveAndClick") { /* Handle MoveAndClick action */ }
+        public abstract void OnButtonClicked(object s, EventArgs e);
     }
 }

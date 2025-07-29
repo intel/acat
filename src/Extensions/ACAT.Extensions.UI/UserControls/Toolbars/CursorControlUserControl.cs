@@ -9,7 +9,39 @@ namespace ACAT.Extensions.UI.UserControls
         Description = "User control for the ACAT Dashboard")]
     public class CursorControlUserControl : LargeToolbarUserControl
     {
+        public GridMouseMover MouseMover = new GridMouseMover();
+
         public CursorControlUserControl() : base("CursorControlUserControl") { }
+
+        public override void OnButtonClicked(object s, EventArgs e)
+        {
+            string buttonName = e.ToString();
+            switch (buttonName)
+            {
+                case "MoveAndClick":
+                    MouseMover.Start();
+                    MouseUtils.ClickLeftMouseButton(MouseMover.CursorX, MouseMover.CursorY);
+                    break;
+                case "Move":
+                    MouseMover.Start();
+                    break;
+                case "LeftClick":
+                    MouseUtils.ClickLeftMouseButton(MouseMover.CursorX, MouseMover.CursorY);
+                    break;
+                //case ButtonSpec button when button.Name == "RightClick":
+                //    MouseUtils.ClickRightMouseButton(MouseMover.CursorX, MouseMover.CursorY);
+                //    break;
+                //case ButtonSpec button when button.Name == "ClickHold":
+                //    MouseUtils.ClickHoldMouseButton(MouseMover.CursorX, MouseMover.CursorY);
+                //    break;
+                //case ButtonSpec button when button.Name == "ScrollUp":
+                //    MouseUtils.ScrollUp(MouseMover.CursorX, MouseMover.CursorY);
+                //    break;
+                //case ButtonSpec button when button.Name == "ScrollDown":
+                //    MouseUtils.ScrollDown(MouseMover.CursorX, MouseMover.CursorY);
+                //    break;
+            }
+        }
 
         protected override void InitializeButtonsList()
         {
@@ -23,14 +55,6 @@ namespace ACAT.Extensions.UI.UserControls
                 new() { Name = "ScrollUp", Icon = BootstrapFontUtility.GetBootstrapFontCharacter("arrow-up-square"), Visible = true },
                 new() { Name = "ScrollDown", Icon = BootstrapFontUtility.GetBootstrapFontCharacter("arrow-down-square"), Visible = true },
             };
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            // create the cursor controller
-
         }
     }
 }

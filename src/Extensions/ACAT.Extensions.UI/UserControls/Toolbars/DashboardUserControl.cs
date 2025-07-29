@@ -1,4 +1,5 @@
 ﻿using ACAT.Core.Utility;
+using System;
 using System.Collections.Generic;
 
 namespace ACAT.Extensions.UI.UserControls
@@ -9,6 +10,11 @@ namespace ACAT.Extensions.UI.UserControls
     public class DashboardUserControl : LargeToolbarUserControl
     {
         public DashboardUserControl() : base("DashboardUserControl") { }
+
+        public override void OnButtonClicked(object s, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
 
         protected override void InitializeButtonsList()
         {

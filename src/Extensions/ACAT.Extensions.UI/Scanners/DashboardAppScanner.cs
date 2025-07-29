@@ -189,10 +189,25 @@ namespace ACAT.Extensions.UI.Scanners
         }
         private class DashboardAppCommandHandler : RunCommandHandler
         {
+            private class CommandHandlerArgs :EventArgs
+            {
+                public CommandHandlerArgs(String command)
+                {
+                    Command = command;
+                }
+                public String Command { get; }
+
+                public override string ToString()
+                {
+                    return Command;
+                }
+            }
+
             public DashboardAppCommandHandler(String cmd) : base(cmd) { }
 
             public override bool Execute(ref bool handled)
             {
+                Log.Info($"Executing command: {Command}");
                 var form = Dispatcher.Scanner.Form as DashboardAppScanner;
 
                 handled = Command switch
@@ -208,22 +223,19 @@ namespace ACAT.Extensions.UI.Scanners
 
             public override bool Execute(ref bool handled, object source = null)
             {
-                handled = false;
+                var form = Dispatcher.Scanner.Form as DashboardAppScanner;
 
-                //var form = Dispatcher.Scanner.Form as DashboardAppScanner;
+                form._scannerCommon.UserControlManager.StopTopLevelAnimation();
+                form.Visible = false;
 
-                //switch (Command)
-                //{
-                //    case "CmdGoBack":
-                //        if (source is UserControl)
-                //        {
-                //            //var userControl = source as UserControl;
-                //            form._scannerCommon.UserControlManager.PopUserControl(userControl.Parent);//form.panelKeyboard);
-                //            form._scannerCommon.UserControlManager.StartTopLevelAnimation();
-                //        }
-                //        break;
-                //}
+                Log.Info($"Executing command: {Command} from source: {source?.GetType().Name}");
 
+                LargeToolbarUserControl largeToolbarUserControl = source as LargeToolbarUserControl;                
+                largeToolbarUserControl?.OnButtonClicked(source, new CommandHandlerArgs(Command));
+                handled = true;
+
+                form.Visible = true;
+                form._scannerCommon.UserControlManager.StartTopLevelAnimation();
                 return true;
             }
         }
@@ -265,6 +277,15 @@ namespace ACAT.Extensions.UI.Scanners
                 Commands.Add(new DashboardAppCommandHandler("CmdGrow"));
                 Commands.Add(new DashboardAppCommandHandler("CmdFade"));
                 Commands.Add(new DashboardAppCommandHandler("CmdUnfade"));
+
+                /* Cursor Control Commands */
+                Commands.Add(new DashboardAppCommandHandler("MoveAndClick"));
+                Commands.Add(new DashboardAppCommandHandler("Move"));
+                Commands.Add(new DashboardAppCommandHandler("LeftClick"));
+                Commands.Add(new DashboardAppCommandHandler("RightClick"));
+                Commands.Add(new DashboardAppCommandHandler("ClickHold"));
+                Commands.Add(new DashboardAppCommandHandler("ScrollUp"));
+                Commands.Add(new DashboardAppCommandHandler("ScrollDown"));
             }
         }
     }

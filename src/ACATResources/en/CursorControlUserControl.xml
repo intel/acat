@@ -4,7 +4,6 @@
 
 <ACAT>
   <WidgetAttributes>
-    <WidgetAttribute name="MainMenu" value="@CmdMainMenu" />
     <WidgetAttribute name="MoveAndClick" value="@CmdMoveAndClick"  />
     <WidgetAttribute name="Move" value="@CmdMove"  />
     <WidgetAttribute name="LeftClick" value="@CmdLeftClick"  />
@@ -17,7 +16,7 @@
 
   <Layout>
     <Widget class="BoxWidget"  name="ToolbarBox">
-      <Widget class="RowWidget" name="PointerControlBox">
+      <Widget class="RowWidget" name="DefaultButtonsBox">
         <Widget class="ScannerButton" name="MoveAndClick" colorScheme="ScannerButton"/>
         <Widget class="ScannerButton" name="Move" colorScheme="ScannerButton"/>
         <Widget class="ScannerButton" name="LeftClick" colorScheme="ScannerButton"/>

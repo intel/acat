@@ -1,6 +1,13 @@
-﻿using ACAT.Core.PanelManagement;
+﻿using ACAT.Core.ActuatorManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.TTSManagement;
+using ACAT.Core.Utility;
+using ACAT.Extension;
 using ACAT.Extensions.Onboarding;
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace ACAT.Applications
@@ -40,14 +47,101 @@ namespace ACAT.Applications
             return true;
         }
 
-        public static bool ResetAllPreferences()
+        public static bool ResetAllPreferences(List<PreferencesCategory> currentCategory)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // Reset general preferences  
+                if (CoreGlobals.AppPreferences != null)
+                {
+                    var defaultPrefs = ACATPreferences.LoadDefaultSettings();
+                    if (defaultPrefs != null)
+                    {
+                        // Copy default values to current preferences  
+                        CopyPreferencesValues(defaultPrefs, CoreGlobals.AppPreferences);
+                        CoreGlobals.AppPreferences.Save();
+                    }
+                }
+
+                foreach (var category in currentCategory)
+                {
+                    if (category.PreferenceObj is ISupportsPreferences supportsPrefs)
+                    {
+                        var defaultPrefs = supportsPrefs.GetDefaultPreferences();
+                        var currentPrefs = supportsPrefs.GetPreferences();
+
+                        if (defaultPrefs != null && currentPrefs != null)
+                        {
+                            CopyPreferencesValues(defaultPrefs, currentPrefs);
+                            currentPrefs.Save();
+                        }
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Log.Exception(ex);
+                return false;
+            }
         }
+
+        private static void CopyPreferencesValues(IPreferences source, IPreferences target)
+        {
+            var sourceType = source.GetType();
+            var targetType = target.GetType();
+
+            var properties = sourceType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (var prop in properties)
+            {
+                if (prop.CanRead && prop.CanWrite)
+                {
+                    try
+                    {
+                        var value = prop.GetValue(source);
+                        var targetProp = targetType.GetProperty(prop.Name);
+
+                        if (targetProp != null && targetProp.CanWrite)
+                        {
+                            targetProp.SetValue(target, value);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Debug($"Could not copy property {prop.Name}: {ex.Message}");
+                    }
+                }
+            }
+        }
+
+
+
 
         public static bool SaveAllPreferences()
         {
-            throw new NotImplementedException();
+            bool success = true;
+            try
+            {
+                if (CoreGlobals.AppPreferences != null)
+                {
+                    success &= CoreGlobals.AppPreferences.Save();
+                }
+
+              //  success &= SaveActuatorPreferences();
+
+                //success &= SaveWordPredictorPreferences();
+
+        //        success &= SaveTTSPreferences();
+
+                return success;
+            }
+            catch (Exception ex)
+            {
+                Log.Exception(ex);
+                return false;
+            }
         }
     }
 }

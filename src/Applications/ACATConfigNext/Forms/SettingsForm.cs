@@ -15,6 +15,7 @@ using MahAppsControls = MahApps.Metro.Controls;
 using Windows = System.Windows;
 using WPFControls = System.Windows.Controls;
 using ACAT.Core.Extensions;
+using ACAT.Core.PreferencesManagement;
 
 namespace ACATConfigNext
 {
@@ -31,7 +32,7 @@ namespace ACATConfigNext
         private Button selectedCategoryButton;
         private Button saveButton;
         private Button resetButton;
-
+      
         private List<(UserControl Panel, string Label)> breadcrumbStack = new();
         private string currentPageLabel;
 
@@ -217,6 +218,10 @@ namespace ACATConfigNext
                     bool success = AppCommon.SaveAllPreferences();
                     if (success)
                     {
+                        if (CoreGlobals.AppPreferences != null)
+                        {
+                            success &= CoreGlobals.AppPreferences.Save();
+                        }
                         MessageBox.Show("Settings saved successfully.", "Save Complete",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
                         _isDirty = false;
@@ -251,19 +256,13 @@ namespace ACATConfigNext
             {
                 try
                 {
-                    bool success = AppCommon.ResetAllPreferences();
+                    var list = new List<PreferencesCategory>();
+                    bool success = AppCommon.ResetAllPreferences(list);
                     if (success)
                     {
-                        MessageBox.Show("Settings saved successfully.", "Save Complete",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
                         _isDirty = false;
                         saveButton.Enabled = _isDirty;
-                        saveButton.Enabled = _isDirty;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Some settings could not be saved. Please check the logs.",
-                            "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        resetButton.Enabled = _isDirty;
                     }
                 }
                 catch (Exception ex)

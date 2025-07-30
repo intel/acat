@@ -399,7 +399,7 @@ namespace ACAT.Core.PanelManagement
             if (!retVal)
                 return false;
 
-            PanelConfigMap.Load(Preferences.ApplicationAssembly);
+            PanelConfigMap.Load(SystemPreferences.ApplicationAssembly);
 
             EvtStartupAddForms?.Invoke(this, new EventArgs());
 

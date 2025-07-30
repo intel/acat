@@ -40,7 +40,7 @@ namespace ACAT.Core.Utility
         /// <summary>
         /// Default factory settings for the preferences
         /// </summary>
-        public static Preferences AppDefaultPreferences { get; set; }
+        public static SystemPreferences AppDefaultPreferences { get; set; }
 
         /// <summary>
         /// The global preferences that spans applications (eg username,
@@ -51,6 +51,6 @@ namespace ACAT.Core.Utility
         /// <summary>
         /// Application sepecific preferences
         /// </summary>
-        public static Preferences AppPreferences { get; set; }
+        public static SystemPreferences AppPreferences { get; set; }
     }
 }

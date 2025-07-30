@@ -45,7 +45,7 @@ namespace ACAT.Core.Utility
         /// </summary>
         /// <param name="prefFile">Name of the preferences file</param>
         /// <param name="loadDefaultsOnFail">true: If the file doesn't exist, use defaults, false: return null</param>
-        /// <returns>Preferences read or null</returns>
+        /// <returns>SystemPreferences read or null</returns>
         public static GlobalPreferences Load(String prefFile, bool loadDefaultsOnFail = true)
         {
             saveFactoryDefaultSettings();

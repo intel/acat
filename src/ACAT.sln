@@ -197,9 +197,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATApp", "Applications\ACA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACAT.Extensions.UI", "Extensions\ACAT.Extensions.UI\ACAT.Extensions.UI.csproj", "{34C19086-7AB0-4806-A296-1F71DF839095}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACAT.Extensions.Onboarding", "ACAT.Extensions.Onboarding\ACAT.Extensions.Onboarding.csproj", "{E576AEB6-BCE5-4827-B38E-140E4950E099}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACAT.Extensions.Onboarding", "Extensions\ACAT.Extensions.Onboarding\ACAT.Extensions.Onboarding.csproj", "{E576AEB6-BCE5-4827-B38E-140E4950E099}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATConfigNext", "Applications\ACATConfigNext\ACATConfigNext.csproj", "{588E27A3-11FB-474A-AC35-BCA7BAB2B4E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutlookAgent", "Extensions\Default\AppAgents\OutlookAgent\OutlookAgent.csproj", "{B0FA249F-28B6-49F6-80EE-75F57E92B563}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -449,6 +451,14 @@ Global
 		{588E27A3-11FB-474A-AC35-BCA7BAB2B4E0}.Release|x64.Build.0 = Release|x64
 		{588E27A3-11FB-474A-AC35-BCA7BAB2B4E0}.Release|x86.ActiveCfg = Release|x86
 		{588E27A3-11FB-474A-AC35-BCA7BAB2B4E0}.Release|x86.Build.0 = Release|x86
+		{B0FA249F-28B6-49F6-80EE-75F57E92B563}.Debug|x64.ActiveCfg = Debug|x64
+		{B0FA249F-28B6-49F6-80EE-75F57E92B563}.Debug|x64.Build.0 = Debug|x64
+		{B0FA249F-28B6-49F6-80EE-75F57E92B563}.Debug|x86.ActiveCfg = Debug|x86
+		{B0FA249F-28B6-49F6-80EE-75F57E92B563}.Debug|x86.Build.0 = Debug|x86
+		{B0FA249F-28B6-49F6-80EE-75F57E92B563}.Release|x64.ActiveCfg = Release|x64
+		{B0FA249F-28B6-49F6-80EE-75F57E92B563}.Release|x64.Build.0 = Release|x64
+		{B0FA249F-28B6-49F6-80EE-75F57E92B563}.Release|x86.ActiveCfg = Release|x86
+		{B0FA249F-28B6-49F6-80EE-75F57E92B563}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -497,9 +507,10 @@ Global
 		{34C19086-7AB0-4806-A296-1F71DF839095} = {A1CD68C8-CE85-4A15-BF82-6154CB6E4A77}
 		{E576AEB6-BCE5-4827-B38E-140E4950E099} = {A1CD68C8-CE85-4A15-BF82-6154CB6E4A77}
 		{588E27A3-11FB-474A-AC35-BCA7BAB2B4E0} = {17F81CBF-F114-42F9-9103-8E92E1B7650D}
+		{B0FA249F-28B6-49F6-80EE-75F57E92B563} = {7E0D614D-B425-44A5-BD39-277AC72EBA0B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_AutoCreateNewLanguageFiles = True
 		SolutionGuid = {6C18E44C-06E3-46DB-9C9C-5B18BC658072}
+		RESX_AutoCreateNewLanguageFiles = True
 	EndGlobalSection
 EndGlobal

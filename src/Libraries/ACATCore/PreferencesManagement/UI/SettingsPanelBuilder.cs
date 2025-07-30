@@ -3,9 +3,11 @@ using ACAT.Core.Utility;
 using MahApps.Metro.Controls;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 
 namespace ACAT.Core.PreferencesManagement.UI
@@ -15,11 +17,18 @@ namespace ACAT.Core.PreferencesManagement.UI
     {
         public FrameworkElement CreateScrollViewer(IPreferences prefs)
         {
-
             var stackPanel = new StackPanel
             {
                 Orientation = Orientation.Vertical
             };
+
+            var scrollViewer = new ScrollViewer
+            {
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled
+            };
+
+            scrollViewer.DataContext = prefs; // Set the DataContext to the preferences object for binding
 
             var props = prefs.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
             foreach (var prop in props)
@@ -29,12 +38,8 @@ namespace ACAT.Core.PreferencesManagement.UI
                 stackPanel.Children.Add(labeledPanel);
             }
 
-            var scrollViewer = new ScrollViewer
-            {
-                VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled,
-                Content = stackPanel,
-            };
+            scrollViewer.Content = stackPanel;
+
             return scrollViewer;
         }
 
@@ -141,23 +146,18 @@ namespace ACAT.Core.PreferencesManagement.UI
 
             FrameworkElement inputControl;
 
+            var binding = new Binding(prop.Name)
+            {
+                Source = settingsInstance,
+                Mode = BindingMode.TwoWay
+            };
+
             if (prop.PropertyType == typeof(string) && prop.GetCustomAttribute<UIHintAttribute>()?.UIHint == "PinEntry")
             {
                 inputControl = new PasswordBox
                 {
                     Password = value?.ToString() ?? "",
                     MaxLength = 5, // Assuming PIN is 5 digits
-                    VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Right
-                };
-            }
-            else if (prop.PropertyType == typeof(int) && prop.GetCustomAttribute<UIHintAttribute>()?.UIHint == "NumericUpDown")
-            {
-                inputControl = new NumericUpDown
-                {
-                    Value = value is int i ? i : 0,
-                    Minimum = 0,
-                    Maximum = 100, // Default range, can be customized
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Right
                 };
@@ -170,13 +170,16 @@ namespace ACAT.Core.PreferencesManagement.UI
                     OnContent = "Yes",
                     OffContent = "No"
                 };
+                inputControl.SetBinding(ToggleSwitch.IsOnProperty, binding);
             }
             else if (prop.PropertyType == typeof(int))
             {
                 RangeAttribute range = prop.GetCustomAttribute<RangeAttribute>()
                     ?? new RangeAttribute(0, 25);
 
-                var sliderStack = CreateLabeledSlider((int)range.Minimum, (int)range.Maximum, value is int i ? i : 0, 1);
+                StackPanel sliderStack = CreateLabeledSlider((int)range.Minimum, (int)range.Maximum, value is int i ? i : 0, 1);
+                // Bind the slider value to the property
+                sliderStack?.Children?.OfType<Slider>().FirstOrDefault()?.SetBinding(Slider.ValueProperty, binding);
                 inputControl = sliderStack;
             }
             else if (prop.PropertyType == typeof(string))
@@ -185,6 +188,7 @@ namespace ACAT.Core.PreferencesManagement.UI
                 {
                     Text = value?.ToString() ?? "",
                 };
+                inputControl.SetBinding(TextBox.TextProperty, binding);
             }
             else
             {

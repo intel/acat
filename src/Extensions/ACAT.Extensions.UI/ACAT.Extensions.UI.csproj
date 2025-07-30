@@ -67,21 +67,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Scanners\CursorNavigationScanner.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Scanners\CursorNavigationScanner.designer.cs">
-      <DependentUpon>CursorNavigationScanner.cs</DependentUpon>
-    </Compile>
     <Compile Include="Menus\MainMenu.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Menus\MainMenu.Designer.cs">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </Compile>
-    <Compile Include="Scanners\DashboardAppScanner.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Scanners\DashboardAppScanner.cs" />
     <Compile Include="Scanners\TalkApplicationScanner.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -106,12 +98,10 @@
     <Compile Include="Scanners\YesNoScanner.Designer.cs">
       <DependentUpon>YesNoScanner.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\DashboardUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\ACATAppToolbar.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UserControls\Toolbars\CursorControlUserControl.cs" />
+    <Compile Include="UserControls\Toolbars\LargeToolbarUserControl.cs" />
+    <Compile Include="UserControls\Toolbars\DashboardUserControl.cs" />
+    <Compile Include="UserControls\Toolbars\ToolbarUserControl.cs" />
     <Compile Include="UserControls\KeyboardAbcUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -148,9 +138,6 @@
     <Compile Include="UserControls\SentencePredictionUserControl.Designer.cs">
       <DependentUpon>SentencePredictionUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ToolbarUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="UserControls\WordPredictionUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -162,9 +149,6 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Scanners\CursorNavigationScanner.resx">
-      <DependentUpon>CursorNavigationScanner.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Menus\MainMenu.resx">
       <DependentUpon>MainMenu.cs</DependentUpon>

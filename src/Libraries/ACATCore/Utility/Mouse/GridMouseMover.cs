@@ -4,6 +4,9 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 ////////////////////////////////////////////////////////////////////////////
+using System.Drawing;
+using System.Windows.Forms;
+
 namespace ACAT.Core.Utility
 {
     /// <summary>
@@ -75,6 +78,11 @@ namespace ACAT.Core.Utility
         /// Gets/sets speed of scanning of rectangle (1 to 500)
         /// </summary>
         public double GridRectangleSpeed { get; set; }
+        public int CursorX { get { return Cursor.Position.X;} }
+
+        public int CursorY { get { return Cursor.Position.Y; } }
+
+        public Point CursorPos { get { return Cursor.Position; } }
 
         /// <summary>
         /// Call this when the user activates the switch trigger

@@ -91,8 +91,8 @@ namespace ACAT.Applications.ACATApp
             //    return;
             //}
 
-            splash = new Splash(2000);
-            splash.Show();
+            //splash = new Splash(2000);
+            //splash.Show();
 
             Context.PreInit();
             Common.PreInit();

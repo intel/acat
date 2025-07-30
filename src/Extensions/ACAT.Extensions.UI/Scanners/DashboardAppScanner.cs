@@ -27,6 +27,9 @@ namespace ACAT.Extensions.UI.Scanners
         private TableLayoutPanel panelDashboardControls;
         private TableLayoutPanel panelTopToolbar;
         private TableLayoutPanel ScannerBorder;
+
+        private UserControl currentPanel = null;
+
         public DashboardAppScanner() : base()
         {
             _dispatcher = new DashboardAppDispatcher(this);
@@ -119,6 +122,17 @@ namespace ACAT.Extensions.UI.Scanners
             this.panelDashboardControls.ResumeLayout(true);
             this.ScannerBorder.ResumeLayout(true);
             this.ResumeLayout(true);
+
+            // Subscribe to the change event on the panelDashboardControls to
+            // handle setting what the current panel is.
+            this.panelDashboardControls.ControlAdded += (s, e) =>
+            {
+                if (e.Control is UserControl userControl)
+                {
+                    currentPanel = userControl;
+                    Log.Debug($"Current panel set to: {currentPanel.GetType().Name}");
+                }
+            };
         }
 
         protected override void ScannerFormLoaded(object sender, EventArgs e)
@@ -151,8 +165,9 @@ namespace ACAT.Extensions.UI.Scanners
 
         public bool HandleCmdPointerControl()
         {
-            _scannerCommon.UserControlManager.PushUserControlByKeyOrName(panelDashboardControls, "pointercontroller", "PointerControlUserControl");
-            return true;
+            bool success = _scannerCommon.UserControlManager.PushUserControlByKeyOrName(panelDashboardControls, "cursorcontroller", "CursorControlUserControl");
+            _scannerCommon.UserControlManager.StartTopLevelAnimation();
+            return success;
         }
 
         private void InitializeDashboard()
@@ -174,10 +189,25 @@ namespace ACAT.Extensions.UI.Scanners
         }
         private class DashboardAppCommandHandler : RunCommandHandler
         {
+            private class CommandHandlerArgs :EventArgs
+            {
+                public CommandHandlerArgs(String command)
+                {
+                    Command = command;
+                }
+                public String Command { get; }
+
+                public override string ToString()
+                {
+                    return Command;
+                }
+            }
+
             public DashboardAppCommandHandler(String cmd) : base(cmd) { }
 
             public override bool Execute(ref bool handled)
             {
+                Log.Info($"Executing command: {Command}");
                 var form = Dispatcher.Scanner.Form as DashboardAppScanner;
 
                 handled = Command switch
@@ -193,22 +223,19 @@ namespace ACAT.Extensions.UI.Scanners
 
             public override bool Execute(ref bool handled, object source = null)
             {
-                handled = false;
+                var form = Dispatcher.Scanner.Form as DashboardAppScanner;
 
-                //var form = Dispatcher.Scanner.Form as DashboardAppScanner;
+                form._scannerCommon.UserControlManager.StopTopLevelAnimation();
+                form.Visible = false;
 
-                //switch (Command)
-                //{
-                //    case "CmdGoBack":
-                //        if (source is UserControl)
-                //        {
-                //            //var userControl = source as UserControl;
-                //            form._scannerCommon.UserControlManager.PopUserControl(userControl.Parent);//form.panelKeyboard);
-                //            form._scannerCommon.UserControlManager.StartTopLevelAnimation();
-                //        }
-                //        break;
-                //}
+                Log.Info($"Executing command: {Command} from source: {source?.GetType().Name}");
 
+                LargeToolbarUserControl largeToolbarUserControl = source as LargeToolbarUserControl;                
+                largeToolbarUserControl?.OnButtonClicked(source, new CommandHandlerArgs(Command));
+                handled = true;
+
+                form.Visible = true;
+                form._scannerCommon.UserControlManager.StartTopLevelAnimation();
                 return true;
             }
         }
@@ -231,13 +258,16 @@ namespace ACAT.Extensions.UI.Scanners
         {
             public DashboardAppDispatcher(IScannerPanel panel) : base(panel)
             {
-                Commands.Add(new DashboardAppCommandHandler("CmdACATMenu"));
+                /* Main Menu Commands */
                 Commands.Add(new DashboardAppCommandHandler("CmdShowACATTalk"));
                 Commands.Add(new DashboardAppCommandHandler("CmdShowQuickTalk"));
                 Commands.Add(new DashboardAppCommandHandler("CmdShowPointerControl"));
                 Commands.Add(new DashboardAppCommandHandler("CmdShowKeyboard"));
                 Commands.Add(new DashboardAppCommandHandler("CmdShowSystem"));
                 Commands.Add(new DashboardAppCommandHandler("CmdShowLocation"));
+                
+                /* Top Toolbar Commands */
+                Commands.Add(new DashboardAppCommandHandler("CmdACATMenu"));
                 Commands.Add(new DashboardAppCommandHandler("CmdShowSettings"));
                 Commands.Add(new DashboardAppCommandHandler("CmdShowHelp"));
                 Commands.Add(new DashboardAppCommandHandler("CmdShowAbout"));
@@ -247,6 +277,15 @@ namespace ACAT.Extensions.UI.Scanners
                 Commands.Add(new DashboardAppCommandHandler("CmdGrow"));
                 Commands.Add(new DashboardAppCommandHandler("CmdFade"));
                 Commands.Add(new DashboardAppCommandHandler("CmdUnfade"));
+
+                /* Cursor Control Commands */
+                Commands.Add(new DashboardAppCommandHandler("MoveAndClick"));
+                Commands.Add(new DashboardAppCommandHandler("Move"));
+                Commands.Add(new DashboardAppCommandHandler("LeftClick"));
+                Commands.Add(new DashboardAppCommandHandler("RightClick"));
+                Commands.Add(new DashboardAppCommandHandler("ClickHold"));
+                Commands.Add(new DashboardAppCommandHandler("ScrollUp"));
+                Commands.Add(new DashboardAppCommandHandler("ScrollDown"));
             }
         }
     }

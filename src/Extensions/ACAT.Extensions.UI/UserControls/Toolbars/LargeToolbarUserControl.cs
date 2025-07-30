@@ -1,6 +1,7 @@
 ﻿using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.UserControls;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -8,21 +9,19 @@ using System.Windows.Forms;
 
 namespace ACAT.Extensions.UI.UserControls
 {
-    [ClassDescriptor("3933BEAF-FAB3-4C6B-AB16-D0B07B0F2C6D",
-        Name = "DashboardUserControl",
-        Description = "User control for the ACAT Dashboard")]
-    public class DashboardUserControl : KeyboardUserControl
+    public abstract class LargeToolbarUserControl : KeyboardUserControl
     {
         private TableLayoutPanel ToolbarBox = new TableLayoutPanel
         {
             Name = "ToolbarBox",
+            AccessibleName = "ToolbarBox",
             Dock = DockStyle.Fill,
-            CellBorderStyle = TableLayoutPanelCellBorderStyle.Single,
+            //CellBorderStyle = TableLayoutPanelCellBorderStyle.Single,
             AutoSize = true,
             AutoSizeMode = AutoSizeMode.GrowAndShrink,
             BackColor = Color.Transparent,
-            Padding = new Padding(10),
-            Margin = new Padding(10),
+            Padding = new Padding(2),
+            //Margin = new Padding(10),
             ColumnCount = 1,
             RowCount = 1,
             GrowStyle = TableLayoutPanelGrowStyle.AddColumns,
@@ -34,8 +33,8 @@ namespace ACAT.Extensions.UI.UserControls
             AccessibleName = "DefaultButtonsBox",
             AutoSize = true,
             AutoSizeMode = AutoSizeMode.GrowAndShrink,
-            Margin = new Padding(10),
-            Padding = new Padding(20),
+            Margin = new Padding(2),
+            //Padding = new Padding(20),
             BackColor = Color.Transparent,
             Dock = DockStyle.Top,
             Anchor = AnchorStyles.Right | AnchorStyles.Top,
@@ -45,7 +44,10 @@ namespace ACAT.Extensions.UI.UserControls
             Visible = true
         };
 
-        private System.ComponentModel.IContainer container = null;
+        private readonly System.ComponentModel.IContainer container = null;
+
+        protected List<ButtonSpec> Buttons { get; set; }
+
 
         protected class ButtonSpec
         {
@@ -56,33 +58,22 @@ namespace ACAT.Extensions.UI.UserControls
 
         protected virtual List<ButtonSpec> DefaultButtons { get; set; }
 
-        public DashboardUserControl()
+        public LargeToolbarUserControl(string name)
         {
+            Name = name;
             InitializeButtonsList();
             InitializeComponent();
         }
 
-        protected virtual void InitializeButtonsList()
-        {
-            DefaultButtons = new List<ButtonSpec>
-             {
-                new() { Name = "ACATTalk", Icon = BootstrapFontUtility.GetBootstrapFontCharacter("chat-fill"), Visible = true },
-                new() { Name = "QuickTalk", Icon = BootstrapFontUtility.GetBootstrapFontCharacter("chat"), Visible = true },
-                new() { Name = "PointerControl", Icon = BootstrapFontUtility.GetBootstrapFontCharacter("mouse2"), Visible = true },
-                new() { Name = "Keyboard", Icon = BootstrapFontUtility.GetBootstrapFontCharacter("keyboard"), Visible = true },
-                new() { Name = "Windows", Icon = BootstrapFontUtility.GetBootstrapFontCharacter("windows"), Visible = true },
-                new() { Name = "Location", Icon = BootstrapFontUtility.GetBootstrapFontCharacter("three-dots"), Visible = true },
-                new() { Name = "MainMenu", Icon = BootstrapFontUtility.GetBootstrapFontCharacter("arrows-move"), Visible = true },
-             };
-        }
+        protected abstract void InitializeButtonsList();
 
-        protected virtual void CreateToolbarButtons(TableLayoutPanel parent, List<ButtonSpec> buttons)
+        protected virtual void CreateToolbarButtons(TableLayoutPanel parent)
         {
             var defaultSize = new Size(200, 200);
-            var padding = new Padding(10);
+            var padding = new Padding(2);
 
             // Create buttons with specific properties
-            foreach (var (button, index) in buttons.Select((p, i) => (p, i)))
+            foreach (var (button, index) in Buttons.Select((p, i) => (p, i)))
             {
                 var scannerButton = new ScannerRoundedButtonControl
                 {
@@ -122,11 +113,12 @@ namespace ACAT.Extensions.UI.UserControls
             base.Dispose(disposing);
         }
 
+        //protected abstract void InitializeComponent();
+
         protected virtual void InitializeComponent()
         {
             this.SuspendLayout();
-            this.Name = "DashboardUserControl";
-            this.AccessibleName = "DashboardUserControl";
+            this.AccessibleName = this.Name;
             this.AutoSize = true;
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             this.Padding = new Padding(10);
@@ -134,7 +126,7 @@ namespace ACAT.Extensions.UI.UserControls
 
             ToolbarBox.SuspendLayout();
 
-            CreateToolbarButtons(DefaultButtonsBox, DefaultButtons);
+            CreateToolbarButtons(DefaultButtonsBox);
 
             ToolbarBox.Controls.Add(DefaultButtonsBox, 0, 0);
 
@@ -144,5 +136,10 @@ namespace ACAT.Extensions.UI.UserControls
             ToolbarBox.ResumeLayout(true);
             this.ResumeLayout(true);
         }
+
+        // This method should be overridden in derived classes to handle button clicks
+        // For example, it can be used to trigger specific actions based on the button clicked
+        // Example: if (buttonSpec.Name == "MoveAndClick") { /* Handle MoveAndClick action */ }
+        public abstract void OnButtonClicked(object s, EventArgs e);
     }
 }

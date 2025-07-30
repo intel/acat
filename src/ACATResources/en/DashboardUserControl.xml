@@ -10,7 +10,7 @@
     <WidgetAttribute name="Keyboard" value="@CmdShowKeyboard"  />
     <WidgetAttribute name="Windows" value="@CmdWindowsMenu"  />
     <WidgetAttribute name="Location" value="@CmdLocationMenu"  />
-    <WidgetAttribute name="MainMenu" value="@CmdMainMenu" />
+    <!--<WidgetAttribute name="MainMenu" value="@CmdMainMenu" /> -->
   </WidgetAttributes>
 
   <Layout>
@@ -22,7 +22,7 @@
         <Widget class="ScannerButton" name="Keyboard" colorScheme="ScannerButton"/>
         <Widget class="ScannerButton" name="Windows" colorScheme="ScannerButton" />
         <Widget class="ScannerButton" name="Location" colorScheme="ScannerButton" />
-        <Widget class="ScannerButton" name="MainMenu" colorScheme="ScannerButton" />
+        <!--<Widget class="ScannerButton" name="MainMenu" colorScheme="ScannerButton" />-->
       </Widget>
     </Widget>
   </Layout>
@@ -40,6 +40,7 @@
       <Widget name="Keyboard" />
       <Widget name="Windows" />
       <Widget name="Location" />
+      <!--<Widget name="MainMenu" />-->
     </Animation>
   </Animations>
 </ACAT>

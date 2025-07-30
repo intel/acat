@@ -19,7 +19,7 @@ using System.Xml.Serialization;
 namespace ACAT.Extensions.Actuators.CameraActuator
 {
     [Serializable]
-    public class Settings : PreferencesBase
+    public partial class Settings : PreferencesBase
     {
         /// <summary>
         /// Name of the settings file
@@ -88,7 +88,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         public static Settings Load()
         {
             Settings retVal = PreferencesBase.Load<Settings>(SettingsFilePath);
-            Save(retVal, SettingsFilePath);
+            //Save(retVal, SettingsFilePath);
             return retVal;
         }
 

@@ -50,7 +50,7 @@ namespace ACATConfigNext
 
             InitializeComponent();
 
-            EvtPreferencesChangeMade += SettingsChanged;
+            //EvtPreferencesChangeMade += SettingsChanged;
         }
 
         private void InitializeComponent()
@@ -216,24 +216,29 @@ namespace ACATConfigNext
             {
                 try
                 {
-                    bool success = AppCommon.SaveAllPreferences();
-                    if (success)
-                    {
-                        if (CoreGlobals.AppPreferences != null)
-                        {
-                            success &= CoreGlobals.AppPreferences.Save();
-                        }
-                        MessageBox.Show("Settings saved successfully.", "Save Complete",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        _isDirty = false;
-                        saveButton.Enabled = _isDirty;
-                        saveButton.Enabled = _isDirty;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Some settings could not be saved. Please check the logs.",
-                            "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
+                    var control = contentPanel.Controls.OfType<UserControl>().FirstOrDefault();
+                    var foo = control?.Tag;
+
+                    // Save the current settings
+                    foo?.GetType().GetMethod("Save")?.Invoke(foo, null);
+                    //bool success = AppCommon.SaveAllPreferences();
+                    //if (success)
+                    //{
+                    //    if (CoreGlobals.AppPreferences != null)
+                    //    {
+                    //        success &= CoreGlobals.AppPreferences.Save();
+                    //    }
+                    //    MessageBox.Show("Settings saved successfully.", "Save Complete",
+                    //        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //    _isDirty = false;
+                    //    saveButton.Enabled = _isDirty;
+                    //    saveButton.Enabled = _isDirty;
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show("Some settings could not be saved. Please check the logs.",
+                    //        "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    //}
                 }
                 catch (Exception ex)
                 {
@@ -300,10 +305,7 @@ namespace ACATConfigNext
                 case "Actuators":
                     if (Context.AppActuatorManager.LoadExtensions(Context.ExtensionDirs, true))
                     {
-                        //MessageBox.Show("Missing Actuator");
                        return Context.AppActuatorManager.ActuatorsList;
-                      //  return Context.AppActuatorManager.ActuatorsList.Cast<IExtension>();
-
                     }
                     break;
 
@@ -403,9 +405,6 @@ namespace ACATConfigNext
                 contentPanel.Controls.Clear();
                 currentPageLabel = category;
 
-           
-
-
                 UserControl panel = category switch
                 {
                     "General" => new SettingsPanel(ShowPanel, CoreGlobals.AppPreferences),
@@ -415,60 +414,61 @@ namespace ACATConfigNext
                     _ => throw new ArgumentException("Invalid category"),
                 };
 
-                AttachInputEvents(panel);
+                //AttachInputEvents(panel);
 
                 ShowPanel(panel, category);
             }
         }
-        private void AttachInputEvents(Control container)
-        {
-            // Attach event handlers to input controls within the container
-            foreach (object child in container.Controls)
-            {
-                if (child is Panel childControl)
-                {
-                    AttachInputEvents(childControl); // Recursively attach events to child controls
-                }
-                else if (child is ElementHost host)
-                {
-                    var panel = host.Child as Windows.UIElement;
 
-                    var controls = panel.FindChildren<Windows.Controls.Control>().ToList();
-                    foreach (var control in controls)
-                    {
-                        if (control is WPFControls.Slider cb)
-                        {
-                            cb.ValueChanged += OnValueChanged;
-                        }
-                        else if (control is MahAppsControls.ToggleSwitch ts)
-                        {
-                            ts.Toggled += OnValueChanged;
-                        }
-                        else if (control is WPFControls.TextBox tb)
-                        {
-                            tb.TextChanged += OnValueChanged;
-                        }
-                    }
-                }
-            }
-        }
+        //private void AttachInputEvents(Control container)
+        //{
+        //    // Attach event handlers to input controls within the container
+        //    foreach (object child in container.Controls)
+        //    {
+        //        if (child is Panel childControl)
+        //        {
+        //            AttachInputEvents(childControl); // Recursively attach events to child controls
+        //        }
+        //        else if (child is ElementHost host)
+        //        {
+        //            var panel = host.Child as Windows.UIElement;
 
-        private void OnValueChanged(object sender, EventArgs e)
-        {
-            _isDirty = true;
-            saveButton.Enabled = _isDirty;  
-            resetButton.Enabled = _isDirty;
-            EvtPreferencesChangeMade();
-        }
+        //            var controls = panel.FindChildren<Windows.Controls.Control>().ToList();
+        //            foreach (var control in controls)
+        //            {
+        //                if (control is WPFControls.Slider cb)
+        //                {
+        //                    cb.ValueChanged += OnValueChanged;
+        //                }
+        //                else if (control is MahAppsControls.ToggleSwitch ts)
+        //                {
+        //                    ts.Toggled += OnValueChanged;
+        //                }
+        //                else if (control is WPFControls.TextBox tb)
+        //                {
+        //                    tb.TextChanged += OnValueChanged;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
-        public void SettingsChanged()
-        {
-            // Enable save button if any settings have changed
-            saveButton.Enabled = true;
-            resetButton.Enabled = true;
-            // Optionally, you can also update the UI or perform other actions here
-            // For example, you might want to highlight the changed panel or show a message
-        }
+        //private void OnValueChanged(object sender, EventArgs e)
+        //{
+        //    _isDirty = true;
+        //    saveButton.Enabled = _isDirty;  
+        //    resetButton.Enabled = _isDirty;
+        //    EvtPreferencesChangeMade();
+        //}
+
+        //public void SettingsChanged()
+        //{
+        //    // Enable save button if any settings have changed
+        //    saveButton.Enabled = true;
+        //    resetButton.Enabled = true;
+        //    // Optionally, you can also update the UI or perform other actions here
+        //    // For example, you might want to highlight the changed panel or show a message
+        //}
 
         public void ShowPanel(UserControl panel, string label)
         {
@@ -484,6 +484,8 @@ namespace ACATConfigNext
             currentPageLabel = label;
             panel.Dock = DockStyle.Fill;
             contentPanel.Controls.Add(panel);
+            contentPanel.DataBindings.Clear(); // Clear any existing bindings to avoid conflicts
+            contentPanel.DataBindings.Add("Tag", panel, "Tag", true, DataSourceUpdateMode.OnPropertyChanged);
 
             UpdateBreadcrumbTrail();
         }
@@ -544,266 +546,5 @@ namespace ACATConfigNext
 
             UpdateBreadcrumbTrail();
         }
-
-        //public static TableLayoutPanel RefreshGeneralSettingsPanel(Action<Control> onControlCreated = null)
-        //{
-        //    var tableLayoutPanel = CustomControls.CreateCategoryTableLayoutPanel();
-
-        //    if (CoreGlobals.AppPreferences == null)
-        //    {
-        //        if (!AppCommon.LoadUserPreferences())
-        //        {
-        //            return tableLayoutPanel; // Return empty panel on error  
-        //        }
-        //    }
-
-        //    if (CoreGlobals.AppPreferences != null)
-        //    {
-        //        var descriptor = CoreGlobals.AppPreferences.GetType().GetCustomAttribute<DescriptorAttribute>();
-
-        //        tableLayoutPanel.Controls.Add(CustomControls.CreateLabel(descriptor?.Category ?? "UNKNOWN CATEGORY"));
-        //        tableLayoutPanel.Controls.Add(CustomControls.CreateLabel(descriptor?.Description ?? "UNKNOWN DESCRIPTION"));
-
-        //        var props = CoreGlobals.AppPreferences.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
-        //        foreach (var prop in props)
-        //        {
-        //            var propPanel = CustomControls.CreateLabeledPanel(prop, CoreGlobals.AppPreferences);
-        //            var host = CustomControls.ElementHost(propPanel);
-        //            tableLayoutPanel.Controls.Add(host);
-
-        //            onControlCreated?.Invoke(host);
-        //        }
-        //    }
-
-        //    return tableLayoutPanel;
-        //}
-
-        //public static TableLayoutPanel RefreshExtensionPanel<TManager, TCollection>(Func<bool> loadManagerExtensions, Func<IEnumerable<string>> getExtensionDirs, TCollection context, Func<TCollection, IEnumerable<Type>> getTypeCollection, string panelTitle, EventHandler<PreferencesCategory> onClick = null) where TCollection : class
-        //{
-        //    if (CoreGlobals.AppPreferences == null)
-        //    {
-        //        if (!AppCommon.LoadUserPreferences())
-        //        {
-        //            return new TableLayoutPanel();
-        //        }
-        //    }
-
-        //    if (CoreGlobals.AppPreferences?.Extensions != null)
-        //    {
-        //        _tableLayoutPanel.Controls.Clear();
-
-        //        if (!loadManagerExtensions())
-        //        {
-        //            return new TableLayoutPanel();
-        //        }
-
-        //        var extensionDirs = getExtensionDirs();
-
-        //        if (context is WordPredictors wp)
-        //        {
-        //            wp.Load(extensionDirs);
-        //        }
-        //        else if (context is TTSEngines tts)
-        //        {
-        //            tts.Load(extensionDirs);
-        //        }
-        //        else if (context is Actuators actuators)
-        //        {
-        //            actuators.Load(extensionDirs, UserManager.GetFullPath("ActuatorSettings.xml"), true);
-        //        }
-
-        //        var list = new List<PreferencesCategory>();
-
-        //        if (context is Actuators actuatorContext)
-        //        {
-        //            foreach (var actuator in actuatorContext.ActuatorList)
-        //            {
-        //                list.Add(new PreferencesCategory(actuator, true, actuator.Enabled));
-        //            }
-        //            _currentActuatorCategories = list;
-        //        }
-        //        else
-        //        {
-        //            foreach (var type in getTypeCollection(context))
-        //            {
-        //                var instance = Activator.CreateInstance(type);
-        //                list.Add(new PreferencesCategory(instance, true, true));
-        //            }
-
-        //            if (context is WordPredictors)
-        //            {
-        //                _currentWordPredictorCategories = list;
-        //            }
-        //            else if (context is TTSEngines)
-        //            {
-        //                _currentTTSCategories = list;
-        //            }
-        //        }
-
-        //        IEnumerable<PreferencesCategory> PreferencesCategories = list;
-
-        //        foreach (var category in PreferencesCategories)
-        //        {
-        //            if (!IsValidExtension(category, out var desc))
-        //                continue;
-
-        //            var categoryItem = CustomControls.CreateCategoryTableLayoutPanel();
-
-        //            categoryItem.Controls.Add(CustomControls.CreateLabel(desc.Name), 0, 0);
-        //            categoryItem.Controls.Add(CustomControls.CreateDescriptionLabel(desc.Description), 0, 2);
-
-
-        //            var checkBox = CustomControls.CreateCheckBox("Enabled");
-        //            checkBox.Tag = category;
-        //            categoryItem.Controls.Add(checkBox, 1, 1);
-        //            categoryItem.SetRowSpan(checkBox, 2);
-
-        //            var setupButton = CustomControls.CreateSetupButton(">", onClick: (sender, e) => OnSetupClicked(sender, category), tag: category);
-        //            categoryItem.Controls.Add(setupButton, 2, 0);
-        //            categoryItem.SetRowSpan(setupButton, 3);
-
-
-        //            _tableLayoutPanel.Controls.Add(categoryItem);
-        //        }
-
-        //        return _tableLayoutPanel;
-        //    }
-
-        //    return new TableLayoutPanel();
-        //}
-
-        //public static bool IsValidExtension(PreferencesCategory category, out IDescriptor descriptor)
-        //{
-        //    descriptor = null;
-
-
-        //    var extension = category.PreferenceObj as IExtension;
-        //    if (extension == null)
-        //        return false;
-
-        //    descriptor = extension.Descriptor;
-        //    return descriptor != null && descriptor.HasSettings;
-        //}
-
-        //private void SaveButton_Click(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        bool success = SaveAllPreferences();
-
-        //        if (success)
-        //        {
-        //            MessageBox.Show("Settings saved successfully.", "Save Complete",
-        //                MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //            _modifiedPreferences.Clear();
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("Some settings could not be saved. Please check the logs.",
-        //                "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Log.Exception(ex);
-        //        MessageBox.Show("An error occurred while saving settings.", "Save Error",
-        //            MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //    }
-        //}
-        //public static bool SaveAllPreferences()
-        //{
-        //    bool success = true;
-
-        //    try
-        //    {
-        //        if (CoreGlobals.AppPreferences != null)
-        //        {
-        //            success &= CoreGlobals.AppPreferences.Save();
-        //        }
-
-        //        success &= SaveActuatorPreferences();
-
-        //        success &= SaveWordPredictorPreferences();
-
-        //        success &= SaveTTSPreferences();
-
-        //        return success;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Log.Exception(ex);
-        //        return false;
-        //    }
-        //}
-
-        //private static bool SaveActuatorPreferences()
-        //{
-        //    try
-        //    {
-        //        var actuatorConfig = ActuatorManager.Instance.GetActuatorConfig();
-        //        return actuatorConfig.Save();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Log.Exception(ex);
-        //        return false;
-        //    }
-        //}
-
-        //private static bool SaveWordPredictorPreferences()
-        //{
-        //    try
-        //    {
-        //        foreach (var category in _currentWordPredictorCategories)
-        //        {
-        //            if (category.PreferenceObj is ISupportsPreferences supportsPrefs)
-        //            {
-        //                var preferences = supportsPrefs.GetPreferences();
-        //                if (preferences != null)
-        //                {
-        //                    preferences.Save();
-        //                }
-        //            }
-        //        }
-        //        return true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Log.Exception(ex);
-        //        return false;
-        //    }
-        //}
-
-        //private static bool SaveTTSPreferences()
-        //{
-        //    try
-        //    {
-        //        foreach (var category in _currentTTSCategories)
-        //        {
-        //            if (category.PreferenceObj is ISupportsPreferences supportsPrefs)
-        //            {
-        //                var preferences = supportsPrefs.GetPreferences();
-        //                if (preferences != null)
-        //                {
-        //                    preferences.Save();
-        //                }
-        //            }
-
-        //            if (category.PreferenceObj is ITTSEngine ttsEngine)
-        //            {
-        //                ttsEngine.Save();
-        //            }
-        //        }
-
-        //        return true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Log.Exception(ex);
-        //        return false;
-        //    }
-        //}
-
     }
 }

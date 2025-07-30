@@ -15,7 +15,12 @@
 
 using ACAT.Core.Utility;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
+using CommunityToolkit.Mvvm.ComponentModel;
+
 
 namespace ACAT.Core.PreferencesManagement
 {
@@ -26,7 +31,7 @@ namespace ACAT.Core.PreferencesManagement
     /// a class by deserializing from the xml file.
     /// </summary>
     [Serializable]
-    public abstract class PreferencesBase : IPreferences
+    public partial class PreferencesBase : ObservableObject, IPreferences
     {
         /// <summary>
         /// For the event that notifies that preferences changed
@@ -130,7 +135,9 @@ namespace ACAT.Core.PreferencesManagement
         /// Saves preferences
         /// </summary>
         /// <returns></returns>
-        public abstract bool Save();
+        public virtual bool Save() {
+            return false;
+        }
 
         /// <summary>
         /// Returns a string representation of the settings

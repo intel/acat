@@ -7,6 +7,8 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using ACAT.Core.PreferencesManagement;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ACATConfigNext.UserControls
 {
@@ -44,23 +46,42 @@ namespace ACATConfigNext.UserControls
                     AutoSize = true,
                     AutoSizeMode = AutoSizeMode.GrowAndShrink,
                     RowCount = 1,
-                    ColumnCount = 1,
+                    ColumnCount = 2,
                     GrowStyle = TableLayoutPanelGrowStyle.AddRows,
                     Tag = extension
                    
                 };
+                panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F)); 
+                panel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));     
+
                 AddPanelClickEvent(panel, showPanel);
 
-                var label = new Label
+                var label1 = new Label
                 {
                     Text = extension.Descriptor.Name,
                     AutoSize = true,
                     Font = new Font("Montserrat", 18),
                     ForeColor = Color.White,
+                    Anchor = AnchorStyles.Left,
                 };
-                AddPanelClickEvent(label, showPanel);
 
-                panel.Controls.Add(label);
+                AddPanelClickEvent(label1, showPanel);
+
+                var label2 = new Label
+                {
+                    Text = ">",
+                    FlatStyle = FlatStyle.Flat,
+                    Font = new Font("Montserrat", 11, FontStyle.Bold),
+                    ForeColor = Color.White,
+                    Margin = new Padding(5),
+                    Padding = new Padding(6),
+                    AutoSize = true,
+                    Anchor = AnchorStyles.Right,
+                };
+                AddPanelClickEvent(label2, showPanel);
+
+                panel.Controls.Add(label1, 0, 0); // Column 0
+                panel.Controls.Add(label2, 1, 0); // Column 1
                 basePanel.Controls.Add(panel);
             }
             Controls.Add(basePanel);

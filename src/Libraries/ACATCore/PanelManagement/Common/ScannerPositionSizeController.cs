@@ -235,7 +235,7 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Saves the current scale factor setting
         /// </summary>
-        public void SaveScaleSetting(Preferences prefs)
+        public void SaveScaleSetting(SystemPreferences prefs)
         {
             Log.Debug("saving scale factor. _scaleFactor=" + ScaleFactor);
             prefs.ScannerScaleFactor = CoreGlobals.AppPreferences.ScannerScaleFactor = Convert.ToInt16(ScaleFactor * IntMultiplier);
@@ -247,7 +247,7 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Saves the current position and size to the preferences file
         /// </summary>
-        public void SaveSettings(Preferences prefs)
+        public void SaveSettings(SystemPreferences prefs)
         {
             Log.Debug("saving scale factor. _scaleFactor=" + ScaleFactor);
             prefs.ScannerScaleFactor = CoreGlobals.AppPreferences.ScannerScaleFactor = Convert.ToInt16(ScaleFactor * IntMultiplier);

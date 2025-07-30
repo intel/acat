@@ -21,7 +21,7 @@ namespace ACAT.Extension
     /// </summary>
     [Serializable]
     [Descriptor("General Settings for ACAT", "General")]
-    public class ACATPreferences : Preferences
+    public class ACATPreferences : SystemPreferences
     {
         [NonSerialized, XmlIgnore]
         public static String DefaultPreferencesFilePath = String.Empty;

@@ -22,7 +22,7 @@ namespace ACAT.Core.Utility
     /// are used as the setting names in the saved XML file.
     /// </summary>
     [Serializable]
-    public abstract class Preferences : PreferencesBase
+    public class SystemPreferences : PreferencesBase
     {
         [NonSerialized, XmlIgnore]
         public static Assembly ApplicationAssembly;
@@ -236,7 +236,7 @@ namespace ACAT.Core.Utility
         public override String toString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("Preferences: ");
+            sb.Append("SystemPreferences: ");
             sb.Append(XmlUtils.XmlSerializeToString(this));
             return sb.ToString();
         }

@@ -1,5 +1,5 @@
 ﻿using ACAT.Core.PreferencesManagement;
-using ACAT.Lib.Core.PreferencesManagement.UI;
+using ACAT.Core.PreferencesManagement.UI;
 using System;
 using System.Drawing;
 using System.Windows.Forms;

@@ -56,7 +56,8 @@ namespace ACATConfigNext
         private void InitializeComponent()
         { 
             Text = "ACAT Settings";
-            Size = new Size(2000, 1400);
+            MaximumSize = new Size(2000, 1400);
+            MinimumSize = new Size(2000, 1200);
             StartPosition = FormStartPosition.CenterScreen;
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;

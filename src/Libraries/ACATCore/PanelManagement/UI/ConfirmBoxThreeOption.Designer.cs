@@ -168,7 +168,7 @@ namespace ACAT.Core.PanelManagement
             this.buttonOp2.UseVisualStyleBackColor = false;
             this.buttonOp2.Click += new System.EventHandler(this.buttonOp2_Click);
             // 
-            // ConfirmBoxTwoOption
+            // ConfirmBoxThreeOption
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -180,6 +180,7 @@ namespace ACAT.Core.PanelManagement
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ConfirmBoxTwoOption";
             this.Text = "ACAT";
+            this.TopMost = true;
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 

@@ -673,9 +673,9 @@
   </Target>
   -->
   <Target Name="RemoveUnwantedLanguages" AfterTargets="Build">
-  <ItemGroup>
-    <UnwantedLangDirs Include="$(OutputPath)de\;$(OutputPath)fr\;$(OutputPath)ru\" />
-  </ItemGroup>
-  <RemoveDir Directories="@(UnwantedLangDirs)" />
+    <ItemGroup>
+      <UnwantedLangDirs Include="$(OutputPath)de\;$(OutputPath)fr\;$(OutputPath)ru\" />
+    </ItemGroup>
+    <RemoveDir Directories="@(UnwantedLangDirs)" />
   </Target>
 </Project>

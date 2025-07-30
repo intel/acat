@@ -77,6 +77,7 @@ namespace ACATConfigNext.UserControls
                     Padding = new Padding(6),
                     AutoSize = true,
                     Anchor = AnchorStyles.Right,
+                    BackColor = Color.Transparent
                 };
                 AddPanelClickEvent(label2, showPanel);
 

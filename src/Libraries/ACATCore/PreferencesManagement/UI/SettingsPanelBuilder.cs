@@ -1,13 +1,14 @@
 ﻿using ACAT.Core.PreferencesManagement;
 using ACAT.Core.Utility;
 using MahApps.Metro.Controls;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 
 
-namespace ACAT.Lib.Core.PreferencesManagement.UI
+namespace ACAT.Core.PreferencesManagement.UI
 { 
  
     public class SettingsPanelBuilder
@@ -101,8 +102,14 @@ namespace ACAT.Lib.Core.PreferencesManagement.UI
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(3, GridUnitType.Star) });
             //grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
 
-            var descriptionAttr = prop.GetCustomAttribute<DescriptorAttribute>();
-            var labelText = descriptionAttr?.Description ?? "MISSING DESCRIPTION";
+            var stackPanel = new StackPanel
+            {
+                Orientation = Orientation.Vertical,
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
+
+            var descriptorAttr = prop.GetCustomAttribute<DescriptorAttribute>();
+            var labelText = descriptorAttr?.Description ?? "MISSING DESCRIPTION";
 
             var label = new TextBlock
             {
@@ -111,16 +118,51 @@ namespace ACAT.Lib.Core.PreferencesManagement.UI
                 FontFamily = new System.Windows.Media.FontFamily("Montserrat"),
                 FontSize = 14,
                 FontStyle = FontStyles.Normal,
-                FontWeight = FontWeights.Regular,
+                FontWeight = FontWeights.DemiBold,
                 Foreground = System.Windows.Media.Brushes.White,
                 TextWrapping = TextWrapping.WrapWithOverflow,
             };
+            stackPanel.Children.Add(label);
 
-            Grid.SetColumn(label, 0);
+            if (prop.GetCustomAttribute<DescriptionAttribute>() is { } descriptionAttr)
+            {
+                var description = new TextBlock
+                {
+                    Text = descriptionAttr.Description.TrimEnd(),
+                    FontStyle = FontStyles.Italic,
+                    FontSize = 12,
+                    FontFamily = label.FontFamily,
+                    Foreground = System.Windows.Media.Brushes.White,
+                    TextWrapping = TextWrapping.WrapWithOverflow,
+                };
+                stackPanel.Children.Add(description);
+            }
+            Grid.SetColumn(stackPanel, 0);
 
             FrameworkElement inputControl;
 
-            if (prop.PropertyType == typeof(bool))
+            if (prop.PropertyType == typeof(string) && prop.GetCustomAttribute<UIHintAttribute>()?.UIHint == "PinEntry")
+            {
+                inputControl = new PasswordBox
+                {
+                    Password = value?.ToString() ?? "",
+                    MaxLength = 5, // Assuming PIN is 5 digits
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Right
+                };
+            }
+            else if (prop.PropertyType == typeof(int) && prop.GetCustomAttribute<UIHintAttribute>()?.UIHint == "NumericUpDown")
+            {
+                inputControl = new NumericUpDown
+                {
+                    Value = value is int i ? i : 0,
+                    Minimum = 0,
+                    Maximum = 100, // Default range, can be customized
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Right
+                };
+            }
+            else if (prop.PropertyType == typeof(bool))
             {
                 inputControl = new ToggleSwitch
                 {
@@ -132,7 +174,7 @@ namespace ACAT.Lib.Core.PreferencesManagement.UI
             else if (prop.PropertyType == typeof(int))
             {
                 RangeAttribute range = prop.GetCustomAttribute<RangeAttribute>()
-                    ?? new RangeAttribute(0, 100);
+                    ?? new RangeAttribute(0, 25);
 
                 var sliderStack = CreateLabeledSlider((int)range.Minimum, (int)range.Maximum, value is int i ? i : 0, 1);
                 inputControl = sliderStack;
@@ -160,7 +202,7 @@ namespace ACAT.Lib.Core.PreferencesManagement.UI
             inputControl.Tag = prop;
             Grid.SetColumn(inputControl, 1);
 
-            grid.Children.Add(label);
+            grid.Children.Add(stackPanel);
             grid.Children.Add(inputControl);
             return grid;
         }

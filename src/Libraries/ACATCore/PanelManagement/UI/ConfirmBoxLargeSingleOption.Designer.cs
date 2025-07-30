@@ -70,7 +70,7 @@ namespace ACAT.Core.PanelManagement
             this.tableLayoutPanel1.Controls.Add(this.checkBoxDontShowThisMessage, 2, 21);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(6);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 25;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4F));
@@ -116,7 +116,7 @@ namespace ACAT.Core.PanelManagement
             this.buttonDecision.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonDecision.Font = new System.Drawing.Font("Montserrat", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonDecision.Location = new System.Drawing.Point(570, 708);
-            this.buttonDecision.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.buttonDecision.Margin = new System.Windows.Forms.Padding(6);
             this.buttonDecision.Name = "buttonDecision";
             this.tableLayoutPanel1.SetRowSpan(this.buttonDecision, 3);
             this.buttonDecision.Size = new System.Drawing.Size(411, 105);
@@ -134,10 +134,10 @@ namespace ACAT.Core.PanelManagement
             this.checkBoxDontShowThisMessage.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxDontShowThisMessage.ForeColor = System.Drawing.Color.White;
             this.checkBoxDontShowThisMessage.Location = new System.Drawing.Point(499, 825);
-            this.checkBoxDontShowThisMessage.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.checkBoxDontShowThisMessage.Margin = new System.Windows.Forms.Padding(6);
             this.checkBoxDontShowThisMessage.Name = "checkBoxDontShowThisMessage";
             this.tableLayoutPanel1.SetRowSpan(this.checkBoxDontShowThisMessage, 3);
-            this.checkBoxDontShowThisMessage.Size = new System.Drawing.Size(553, 48);
+            this.checkBoxDontShowThisMessage.Size = new System.Drawing.Size(552, 48);
             this.checkBoxDontShowThisMessage.TabIndex = 85;
             this.checkBoxDontShowThisMessage.Text = "Don\'t show this message again";
             this.checkBoxDontShowThisMessage.UseVisualStyleBackColor = true;
@@ -151,9 +151,10 @@ namespace ACAT.Core.PanelManagement
             this.ControlBox = false;
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "ConfirmBoxLargeSingleOption";
             this.Text = "ACAT";
+            this.TopMost = true;
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);

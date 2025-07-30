@@ -261,6 +261,7 @@
     <Compile Include="PreferencesManagement\LanguageSelectForm.Designer.cs">
       <DependentUpon>LanguageSelectForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="PreferencesManagement\Preferences.cs" />
     <Compile Include="PreferencesManagement\PreferencesCategory.cs" />
     <Compile Include="PreferencesManagement\Attributes\IntDescriptorAttribute.cs" />
     <Compile Include="PreferencesManagement\Attributes\LongDescriptorAttribute.cs" />
@@ -407,7 +408,7 @@
     <Compile Include="Utility\NamedPipe\PipeServer.cs" />
     <Compile Include="Utility\PerfMon.cs" />
     <Compile Include="Utility\PerfMonData.cs" />
-    <Compile Include="Utility\Preferences.cs" />
+    <Compile Include="Utility\SystemPreferences.cs" />
     <Compile Include="Utility\ResourceUtils.cs" />
     <Compile Include="Utility\ScannerFocus.cs" />
     <Compile Include="Utility\SoundManager.cs" />

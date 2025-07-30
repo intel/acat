@@ -26,9 +26,6 @@ namespace ACAT.Core.Utility
         [NonSerialized, XmlIgnore]
         public static Assembly ApplicationAssembly;
 
-        [NonSerialized, XmlIgnore]
-        public String AppName = "ACAT";
-
         /// <summary>
         /// Returns a string representation of the settings
         /// </summary>

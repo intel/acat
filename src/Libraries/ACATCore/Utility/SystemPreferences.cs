@@ -22,11 +22,8 @@ namespace ACAT.Core.Utility
     /// are used as the setting names in the saved XML file.
     /// </summary>
     [Serializable]
-    public class SystemPreferences : PreferencesBase
+    public class SystemPreferences : Preferences
     {
-        [NonSerialized, XmlIgnore]
-        public static Assembly ApplicationAssembly;
-
         [NonSerialized, XmlIgnore]
         public String AppName = "ACAT";
 

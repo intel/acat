@@ -47,33 +47,7 @@ namespace ACAT.Extensions.UI.UserControls
             InitializeComponent();
         }
 
-        public event AnimationPlayerStateChanged EvtPlayerStateChanged;
-
-        /// <summary>
-        /// Gets the descriptor for this class
-        /// </summary>
-        public ClassDescriptorAttribute Descriptor
-        {
-            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
-        }
-
-        /// <summary>
-        /// Gets the snchronization object
-        /// </summary>
-        public SyncLock SyncObj
-        {
-            get { return _keyboardCommon.SyncObj; }
-        }
-
-        public IUserControlCommon UserControlCommon
-        {
-            get
-            {
-                return _keyboardCommon;
-            }
-        }
-
-        public bool Initialize(UserControlConfigMapEntry mapEntry, TextController textController, IScannerPanel scanner)
+        public override bool Initialize(UserControlConfigMapEntry mapEntry, TextController textController, IScannerPanel scanner)
         {
             _keyboardCommon = new UserControlKeyboardCommon(this, mapEntry, textController, scanner);
 
@@ -91,7 +65,7 @@ namespace ACAT.Extensions.UI.UserControls
             return retVal;
         }
 
-        public void OnLoad()
+        public override void OnLoad()
         {
             _keyboardCommon.OnLoad();
 
@@ -100,17 +74,8 @@ namespace ACAT.Extensions.UI.UserControls
             _keyboardCommon.AnimationManager.OnLoad(_keyboardCommon.RootWidget);
         }
 
-        public void OnPause()
-        {
-            _keyboardCommon.OnPause();
-        }
 
-        public void OnResume()
-        {
-            _keyboardCommon.OnResume();
-        }
-
-        public void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
+        public override void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
         {
             if (Context.AppWordPredictionManager.ActiveWordPredictor.GetMode() != WordPredictionModes.CannedPhrases)
             {
@@ -120,11 +85,6 @@ namespace ACAT.Extensions.UI.UserControls
             {
                 ttsAndLearn(e.SourceWidget.Value);
             }
-        }
-
-        private void AnimationManager_EvtPlayerStateChanged(object sender, PlayerStateChangedEventArgs e)
-        {
-            EvtPlayerStateChanged?.Invoke(this, e);
         }
 
         /// <summary>

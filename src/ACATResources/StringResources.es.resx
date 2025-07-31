@@ -1829,7 +1829,7 @@ ACAT utiliza dos métricas - “saturación” e “impedancia” - para verific
     <value>Reintentar</value>
   </data>
   <data name="IncompleteConfiguration" xml:space="preserve">
-    <value />
+    <value>La configuración no está completa.</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Salir</value>

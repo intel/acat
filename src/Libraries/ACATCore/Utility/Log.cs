@@ -41,11 +41,13 @@ namespace ACAT.Core.Utility
         /// </summary>
 #if DEBUG
         private const bool AssertionMode = true;
+        private const bool simpleLog = true;
 #else
         private const bool AssertionMode = false;
+        private const bool simpleLog = false;
 #endif
-        private const bool simpleLog = true;
         private const bool IncludeStackTrace = false;
+
         /// <summary>
         /// Used for synchronization
         /// </summary>
@@ -265,7 +267,9 @@ namespace ACAT.Core.Utility
             {
                 // Get the stack frame of the caller of this method
 
+#pragma warning disable CS0162 // Unreachable code detected
                 StackFrame stackFrame = new StackTrace().GetFrame(2);  // Get the caller of the caller
+#pragma warning restore CS0162 // Unreachable code detected
                 DateTime nowUtc = DateTime.UtcNow;
                 DateTime now = DateTime.Now;
 

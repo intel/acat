@@ -645,7 +645,7 @@
       <Version>2.4.10</Version>
     </PackageReference>
     <PackageReference Include="System.Text.Json">
-      <Version>9.0.6</Version>
+      <Version>9.0.7</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

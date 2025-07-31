@@ -21,6 +21,8 @@ using ACAT.Core.Utility;
 using ACATResources;
 using System;
 using System.Linq;
+using System.Runtime.ExceptionServices;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -764,6 +766,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         /// Thread function that runs the vision module (which is
         /// a blocking call)
         /// </summary>
+        [HandleProcessCorruptedStateExceptions]
         private void visionThread()
         {
             _visionCallback = callbackFromVision;
@@ -773,6 +776,16 @@ namespace ACAT.Extensions.Actuators.CameraActuator
             try
             {
                 CameraSensor.acatVision();
+            }
+            catch (SEHException seh)
+            {
+                Log.Exception("acatVision threw a SEHException:   " + seh.ToString());
+                Log.Exception(seh);
+            }
+            catch (AccessViolationException ave)
+            {
+                Log.Exception("acatVision threw an AccessViolationException:   " + ave.ToString());
+                Log.Exception(ave);
             }
             catch (Exception ex)
             {

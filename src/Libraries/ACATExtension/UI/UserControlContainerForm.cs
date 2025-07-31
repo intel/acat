@@ -13,6 +13,8 @@ using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extension.CommandHandlers;
+using ACAT.Scanners;
+using ACAT.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Security.Permissions;
@@ -26,105 +28,121 @@ namespace ACAT.Extension
     [ClassDescriptorAttribute("6889D5CA-2D64-4123-AB0E-179D3C41560C",
                     "UserControlContainerForm",
                     "Generic container form for a usercontrol")]
-    public partial class UserControlContainerForm : Form, IScannerPanel
+    public partial class UserControlContainerForm : GenericScannerForm //Form, IScannerPanel
     {
-        private readonly Dispatcher _dispatcher;
+        //private readonly Dispatcher _dispatcher;
 
         /// <summary>
         /// The AlphabetScannerCommon object. Has a number of
         /// helper functions
         /// </summary>
-        private readonly ScannerCommon _scannerCommon;
+        //private readonly ScannerCommon _scannerCommon;
 
-        private String _panelClass;
+        //private String _panelClass;
         private bool _pauseWatchdog;
-        private WindowActiveWatchdog _windowActiveWatchdog;
+        //private WindowActiveWatchdog _windowActiveWatchdog;
 
-        public UserControlContainerForm()
-        {
-            _scannerCommon = new ScannerCommon(this);
+        //public UserControlContainerForm()
+        //{
+        //    _scannerCommon = new ScannerCommon(this);
 
-            InitializeComponent();
+        //    InitializeComponent();
 
-            subscribeToEvents();
+        //    subscribeToEvents();
 
-            Load += UserControlContainerForm_Load;
+        //    Load += UserControlContainerForm_Load;
 
-            _dispatcher = new Dispatcher(this);
+        //    _dispatcher = new Dispatcher(this);
 
-            FormClosing += UserControlContainerForm_FormClosing;
-        }
+        //    FormClosing += UserControlContainerForm_FormClosing;
+        //}
 
         /// <summary>
         /// Gets the command dispatcher object
         /// </summary>
-        public RunCommandDispatcher CommandDispatcher
-        {
-            get { return _dispatcher; }
-        }
+        //public RunCommandDispatcher CommandDispatcher
+        //{
+        //    get { return _dispatcher; }
+        //}
 
-        /// <summary>
-        /// Gets the descriptor for this class
-        /// </summary>
-        public ClassDescriptorAttribute Descriptor
-        {
-            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
-        }
+        //public override RunCommandDispatcher CommandDispatcher => throw new NotImplementedException();
+
+        ///// <summary>
+        ///// Gets the descriptor for this class
+        ///// </summary>
+        //public ClassDescriptorAttribute Descriptor
+        //{
+        //    get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
+        //}
 
         public String EmbeddedUserControlName
         {
             get; set;
         }
 
-        /// <summary>
-        /// Gets this form object
-        /// </summary>
-        public Form Form
-        {
-            get { return this; }
-        }
+        ///// <summary>
+        ///// Gets this form object
+        ///// </summary>
+        //public Form Form
+        //{
+        //    get { return this; }
+        //}
 
-        /// <summary>
-        /// Gets the panel class for the scanner
-        /// </summary>
-        public String PanelClass
-        {
-            get { return _panelClass; }
-        }
+        ///// <summary>
+        ///// Gets the panel class for the scanner
+        ///// </summary>
+        //public String PanelClass
+        //{
+        //    get { return _panelClass; }
+        //}
 
-        /// <summary>
-        /// Gets the PanelCommon object
-        /// </summary>
-        public IPanelCommon PanelCommon
-        { get { return _scannerCommon; } }
+        ///// <summary>
+        ///// Gets the PanelCommon object
+        ///// </summary>
+        //public IPanelCommon PanelCommon
+        //{ get { return _scannerCommon; } }
 
-        public ScannerCommon ScannerCommon
-        {
-            get { return null; }
-        }
+        //public ScannerCommon ScannerCommon
+        //{
+        //    get { return null; }
+        //}
 
-        /// <summary>
-        /// Gets the synch object
-        /// </summary>
-        public SyncLock SyncObj
-        {
-            get { return _scannerCommon.SyncObj; }
-        }
+        ///// <summary>
+        ///// Gets the synch object
+        ///// </summary>
+        //public SyncLock SyncObj
+        //{
+        //    get { return _scannerCommon.SyncObj; }
+        //}
 
-        /// <summary>
-        /// Gets the text controller object for this scanner
-        /// </summary>
-        public ITextController TextController
-        {
-            get { return _scannerCommon.TextController; }
-        }
+        ///// <summary>
+        ///// Gets the text controller object for this scanner
+        ///// </summary>
+        //public ITextController TextController
+        //{
+        //    get { return _scannerCommon.TextController; }
+        //}
+
+        //public override ITextController TextController => throw new NotImplementedException();
+
+        public override DefaultCommandDispatcher _dispatcher => throw new NotImplementedException();
+
+        public override RunCommandDispatcher CommandDispatcher => throw new NotImplementedException();
+
+        public override ITextController TextController => throw new NotImplementedException();
 
         /// <summary>
         /// Invoked to check if a scanner button should be enabled.  Uses context
         /// to determine the 'enabled' state.
         /// </summary>
         /// <param name="arg">info about the scanner button</param>
-        public bool CheckCommandEnabled(CommandEnabledArg arg)
+        public override bool CheckCommandEnabled(CommandEnabledArg arg)
+        {
+            return true;
+        }
+
+
+        public override bool HandleInitialize(StartupArg startupArg)
         {
             return true;
         }
@@ -134,39 +152,39 @@ namespace ACAT.Extension
         /// </summary>
         /// <param name="startupArg">startup params</param>
         /// <returns>true on cussess</returns>
-        public bool Initialize(StartupArg startupArg)
-        {
-            _panelClass = startupArg.PanelClass;
+        //public bool Initialize(StartupArg startupArg)
+        //{
+        //    _panelClass = startupArg.PanelClass;
 
-            bool retVal = _scannerCommon.Initialize(startupArg);
+        //    bool retVal = _scannerCommon.Initialize(startupArg);
 
-            ControlBox = true;
+        //    ControlBox = true;
 
-            _scannerCommon.UserControlManager.GridScanIterations = Common.AppPreferences.GridScanIterations;
+        //    _scannerCommon.UserControlManager.GridScanIterations = Common.AppPreferences.GridScanIterations;
 
-            _scannerCommon.UserControlManager.AddUserControlByKeyOrName(panelContainer, "embedUserControl", EmbeddedUserControlName);
+        //    _scannerCommon.UserControlManager.AddUserControlByKeyOrName(panelContainer, "embedUserControl", EmbeddedUserControlName);
 
-            List<IUserControl> list = new List<IUserControl>();
+        //    List<IUserControl> list = new List<IUserControl>();
 
-            UserControlManager.FindAllUserControls(this, list);
+        //    UserControlManager.FindAllUserControls(this, list);
 
-            return retVal;
-        }
+        //    return retVal;
+        //}
 
         /// <summary>
         /// Invoked when the focus changes either in the active window or when the
         /// active window itself changes.
         /// </summary>
         /// <param name="monitorInfo">Info about focused element</param>
-        public void OnFocusChanged(WindowActivityMonitorInfo monitorInfo)
-        {
-            _scannerCommon.OnFocusChanged(monitorInfo);
-        }
+        //public void OnFocusChanged(WindowActivityMonitorInfo monitorInfo)
+        //{
+        //    _scannerCommon.OnFocusChanged(monitorInfo);
+        //}
 
         /// <summary>
         /// Pauses animations
         /// </summary>
-        public void OnPause()
+        public override void OnPause()
         {
             if (_pauseWatchdog)
             {
@@ -185,15 +203,15 @@ namespace ACAT.Extension
         /// </summary>
         /// <param name="eventArg"></param>
         /// <returns></returns>
-        public bool OnQueryPanelChange(PanelRequestEventArgs eventArg)
-        {
-            return true;
-        }
+        //public bool OnQueryPanelChange(PanelRequestEventArgs eventArg)
+        //{
+        //    return true;
+        //}
 
         /// <summary>
         /// Resumes animation
         /// </summary>
-        public void OnResume()
+        public override void OnResume()
         {
             enableWatchdogs();
 
@@ -204,24 +222,24 @@ namespace ACAT.Extension
             _scannerCommon.ResizeToFitDesktop(this);
         }
 
-        /// <summary>
-        /// Triggered when the user actuates a widget
-        /// </summary>
-        /// <param name="widget">widget actuated</param>
-        /// <param name="handled">was this handled?</param>
-        public void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
-        {
-            //_alphabetScannerCommon.OnWidgetActuated(e, ref handled);
-        }
+        ///// <summary>
+        ///// Triggered when the user actuates a widget
+        ///// </summary>
+        ///// <param name="widget">widget actuated</param>
+        ///// <param name="handled">was this handled?</param>
+        //public void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
+        //{
+        //    //_alphabetScannerCommon.OnWidgetActuated(e, ref handled);
+        //}
 
         /// <summary>
         /// Not used
         /// </summary>
         /// <param name="parent"></param>
         /// <param name="widget"></param>
-        public void SetTargetControl(Form parent, Widget widget)
-        {
-        }
+        //public void SetTargetControl(Form parent, Widget widget)
+        //{
+        //}
 
         /// <summary>
         /// Size of the client changed
@@ -243,38 +261,58 @@ namespace ACAT.Extension
             base.OnFormClosing(e);
         }
 
+        protected override void ScannerFormLoaded(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void ScannerShown(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        //protected override void ScannerFormLoaded(object sender, EventArgs e)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //protected override void ScannerShown(object sender, EventArgs e)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
         /// <summary>
         /// Window procedure
         /// </summary>
         /// <param name="m">windows message</param>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
-        protected override void WndProc(ref Message m)
-        {
-            const int WM_SYSCOMMAND = 0x0112;
-            const int SC_MOVE = 0xF010;
+        //[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        //protected override void WndProc(ref Message m)
+        //{
+        //    const int WM_SYSCOMMAND = 0x0112;
+        //    const int SC_MOVE = 0xF010;
 
-            if (m.Msg == WM_SYSCOMMAND)
-            {
-                int command = m.WParam.ToInt32() & 0xfff0;
-                if (command == SC_MOVE)
-                {
-                    base.WndProc(ref m);
-                    return;
-                }
-            }
+        //    if (m.Msg == WM_SYSCOMMAND)
+        //    {
+        //        int command = m.WParam.ToInt32() & 0xfff0;
+        //        if (command == SC_MOVE)
+        //        {
+        //            base.WndProc(ref m);
+        //            return;
+        //        }
+        //    }
 
-            if (!_scannerCommon.HandleWndProc(m))
-            {
-                base.WndProc(ref m);
-            }
-        }
+        //    if (!_scannerCommon.HandleWndProc(m))
+        //    {
+        //        base.WndProc(ref m);
+        //    }
+        //}
 
-        private void buttonCancel_Click(object sender, EventArgs e)
-        {
-            FormClosing -= UserControlContainerForm_FormClosing;
-            removeUserControl();
-            Close();
-        }
+        //private void buttonCancel_Click(object sender, EventArgs e)
+        //{
+        //    FormClosing -= UserControlContainerForm_FormClosing;
+        //    removeUserControl();
+        //    Close();
+        //}
 
         /// <summary>
         /// Makes sure the scanner stays focused

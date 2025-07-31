@@ -18,14 +18,12 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
-    
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
     <Optimize>true</Optimize>
     <PlatformTarget>x64</PlatformTarget>
-    
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -33,14 +31,12 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
     <Optimize>true</Optimize>
     <PlatformTarget>x86</PlatformTarget>
-    
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
@@ -135,55 +131,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="External\${PLATFORM}\acat_gestures.exe" />
-    <Content Include="External\${PLATFORM}\acat_gestures_dll.dll" />
-    <Content Include="External\${PLATFORM}\acat_gestures_dll_d.dll" />
-    <Content Include="External\${PLATFORM}\libinfra.dll" />
-    <Content Include="External\${PLATFORM}\libinfra_d.dll" />
-    <Content Include="External\${PLATFORM}\libivcp.dll" />
-    <Content Include="External\${PLATFORM}\libivcp_d.dll" />
-    <Content Include="External\${PLATFORM}\libpipeline.dll" />
-    <Content Include="External\${PLATFORM}\libpipeline_d.dll" />
-    <Content Include="External\${PLATFORM}\msvcp110.dll" />
-    <Content Include="External\${PLATFORM}\msvcr110.dll" />
-    <Content Include="External\${PLATFORM}\opencv_calib3d2413.dll" />
-    <Content Include="External\${PLATFORM}\opencv_calib3d2413d.dll" />
-    <Content Include="External\${PLATFORM}\opencv_contrib2413.dll" />
-    <Content Include="External\${PLATFORM}\opencv_contrib2413d.dll" />
-    <Content Include="External\${PLATFORM}\opencv_core2413.dll" />
-    <Content Include="External\${PLATFORM}\opencv_core2413d.dll" />
-    <Content Include="External\${PLATFORM}\opencv_features2d2413.dll" />
-    <Content Include="External\${PLATFORM}\opencv_features2d2413d.dll" />
-    <Content Include="External\${PLATFORM}\opencv_ffmpeg2413.dll" />
-    <Content Include="External\${PLATFORM}\opencv_flann2413.dll" />
-    <Content Include="External\${PLATFORM}\opencv_flann2413d.dll" />
-    <Content Include="External\${PLATFORM}\opencv_gpu2413.dll" />
-    <Content Include="External\${PLATFORM}\opencv_gpu2413d.dll" />
-    <Content Include="External\${PLATFORM}\opencv_highgui2413.dll" />
-    <Content Include="External\${PLATFORM}\opencv_highgui2413d.dll" />
-    <Content Include="External\${PLATFORM}\opencv_imgproc2413.dll" />
-    <Content Include="External\${PLATFORM}\opencv_imgproc2413d.dll" />
-    <Content Include="External\${PLATFORM}\opencv_legacy2413.dll" />
-    <Content Include="External\${PLATFORM}\opencv_legacy2413d.dll" />
-    <Content Include="External\${PLATFORM}\opencv_ml2413.dll" />
-    <Content Include="External\${PLATFORM}\opencv_ml2413d.dll" />
-    <Content Include="External\${PLATFORM}\opencv_nonfree2413.dll" />
-    <Content Include="External\${PLATFORM}\opencv_nonfree2413d.dll" />
-    <Content Include="External\${PLATFORM}\opencv_objdetect2413.dll" />
-    <Content Include="External\${PLATFORM}\opencv_objdetect2413d.dll" />
-    <Content Include="External\${PLATFORM}\opencv_ocl2413.dll" />
-    <Content Include="External\${PLATFORM}\opencv_ocl2413d.dll" />
-    <Content Include="External\${PLATFORM}\opencv_photo2413.dll" />
-    <Content Include="External\${PLATFORM}\opencv_photo2413d.dll" />
-    <Content Include="External\${PLATFORM}\opencv_stitching2413.dll" />
-    <Content Include="External\${PLATFORM}\opencv_stitching2413d.dll" />
-    <Content Include="External\${PLATFORM}\opencv_superres2413.dll" />
-    <Content Include="External\${PLATFORM}\opencv_superres2413d.dll" />
-    <Content Include="External\${PLATFORM}\opencv_video2413.dll" />
-    <Content Include="External\${PLATFORM}\opencv_video2413d.dll" />
-    <Content Include="External\${PLATFORM}\opencv_videostab2413.dll" />
-    <Content Include="External\${PLATFORM}\opencv_videostab2413d.dll" />
-    <None Include="External\${PLATFORM}\shape_predictor_68_face_landmarks.dat" />
+    <PackageReference Include="AcatCameraNative">
+      <Version>1.0.8</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="ListOutput" AfterTargets="Build">
+    <Message Text="Files in $(OutputPath): @(Content)" Importance="high" />
+  </Target>
 </Project>

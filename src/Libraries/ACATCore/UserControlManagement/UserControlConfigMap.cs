@@ -215,7 +215,7 @@ namespace ACAT.Core.UserControlManagement
                 //load(extensionDir);
 
                 String extensionDir = dir + "\\" + PanelManager.UiRootDir;
-                load(extensionDir);
+                load(extensionDir, "ACAT*.dll");
                 if (_DLLError)
                     return false;
             }
@@ -223,7 +223,7 @@ namespace ACAT.Core.UserControlManagement
             // load the panels from the default culture (which is English)
             var resourcesDir = FileUtils.GetDefaultResourcesDir();
             Log.Debug("DefaultResourcesDir: " + resourcesDir);
-            load(resourcesDir);
+            load(resourcesDir, "*.xml");
 
             _cultureConfigIdMapTable.Add(_loadCulture, _loadUserControlConfigMapTable);
 
@@ -241,7 +241,7 @@ namespace ACAT.Core.UserControlManagement
                     _loadConfigFileLocationMap = new Dictionary<string, string>();
 
                     Log.Debug("ResourcesDir: " + resourcesDir);
-                    load(resourcesDir);
+                    load(resourcesDir, "*.xml");
 
                     _cultureConfigIdMapTable.Add(_loadCulture, _loadUserControlConfigMapTable);
 
@@ -262,7 +262,7 @@ namespace ACAT.Core.UserControlManagement
                     _loadConfigFileLocationMap = new Dictionary<string, string>();
 
                     Log.Debug("ResourcesDir: " + resourcesDir);
-                    load(resourcesDir);
+                    load(resourcesDir, "*.xml");
 
                     _cultureConfigIdMapTable.Add(_loadCulture, _loadUserControlConfigMapTable);
 
@@ -486,11 +486,11 @@ namespace ACAT.Core.UserControlManagement
         /// </summary>
         /// <param name="dir">Directory to walk</param>
         /// <param name="recursive">Recursively search?</param>
-        private static void load(String dir, bool recursive = true)
+        private static void load(String dir, string wildcard)
         {
             if (Directory.Exists(dir) && !_DLLError)
             {
-                var walker = new DirectoryWalker(dir, "*.*");
+                var walker = new DirectoryWalker(dir, wildcard);
                 Log.Debug("Walking dir " + dir);
                 walker.Walk(new OnFileFoundDelegate(onFileFound));
             }

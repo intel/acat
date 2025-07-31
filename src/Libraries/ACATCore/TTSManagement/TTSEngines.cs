@@ -368,7 +368,7 @@ namespace ACAT.Core.TTSManagement
         /// <param name="recursive">true if deep-descend</param>
         private void loadTTSEngineTypesIntoCache(String dir, String culture, bool recursive = true)
         {
-            DirectoryWalker walker = new DirectoryWalker(dir, "ACAT*.dll");
+            DirectoryWalker walker = new DirectoryWalker(dir, "ACAT.Extensions.TTSEngines.*.dll");
             _dirWalkCurrentCulture = culture;
             walker.Walk(new OnFileFoundDelegate(onFileFound));
 

@@ -16,6 +16,7 @@ using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Windows.Media.Animation;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
@@ -145,6 +146,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public void bluetoothResultHandler(DAQ_gTecBCI.BluetoothEvent bluetoothEvent, Dictionary<String, object> eventParams)
         {
             Log.Debug("UserControlErrorBluetoothDisconnected | bluetoothResultHandler | bluetoothEvent: " + bluetoothEvent.ToString());
+
+             if (!this.IsHandleCreated || this.IsDisposed) { return; }
 
             switch (bluetoothEvent)
             {

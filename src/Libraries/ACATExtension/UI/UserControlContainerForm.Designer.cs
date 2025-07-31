@@ -27,7 +27,7 @@ namespace ACAT.Extension
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        protected override void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControlContainerForm));
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();

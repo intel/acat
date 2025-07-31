@@ -389,7 +389,7 @@ namespace ACAT.Core.ActuatorManagement
 
         private void LoadTypesIntoCache(String dir)
         {
-            var walker = new DirectoryWalker(dir, "*Actuator.dll");
+            var walker = new DirectoryWalker(dir, "ACAT.Extensions.*Actuator.dll");
 
             // Recursively look for Actuators in /Extensions
             walker.Walk(new OnFileFoundDelegate(onFileFound));

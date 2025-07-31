@@ -113,7 +113,7 @@ namespace ACAT.Scanners
             _scannerCommon.OnFocusChanged(monitorInfo);
         }
 
-        public void OnPause()
+        public virtual void OnPause()
         {
             Log.Debug("CALIBTEST TalkScanner OnPause. Pausing watchdog");
             _windowActiveWatchdog?.Pause();
@@ -134,7 +134,7 @@ namespace ACAT.Scanners
             return true;
         }
 
-        public void OnResume()
+        public virtual void OnResume()
         {
             HandleResume();
 

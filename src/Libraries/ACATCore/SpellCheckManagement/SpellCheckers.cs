@@ -338,7 +338,7 @@ namespace ACAT.Core.SpellCheckManagement
         /// <param name="recursive">true if deep-descend</param>
         private void loadSpellCheckerTypesIntoCache(String dir, String culture)
         {
-            DirectoryWalker walker = new DirectoryWalker(dir, "ACAT*.dll");
+            DirectoryWalker walker = new DirectoryWalker(dir, "ACAT.Extensions.*.dll");
             _dirWalkCurrentCulture = culture;
             walker.Walk(new OnFileFoundDelegate(onFileFound));
         }

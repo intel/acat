@@ -35,7 +35,8 @@
 
     <!-- Defaults if not overridden later -->
     <OutputPath>$(BuildPath)</OutputPath>
-    <IntermediateOutputPath>$(IntermediatePath)</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>$(IntermediatePath)\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(IntermediatePath)\$(MSBuildProjectName)\</IntermediateOutputPath>
 
     <!-- Set this globally unless overridden for specific platforms -->
     <RuntimeIdentifier Condition="'$(Platform)' == 'x86'">win-x86</RuntimeIdentifier>

@@ -261,7 +261,6 @@
     <Compile Include="PreferencesManagement\LanguageSelectForm.Designer.cs">
       <DependentUpon>LanguageSelectForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PreferencesManagement\Preferences.cs" />
     <Compile Include="PreferencesManagement\PreferencesCategory.cs" />
     <Compile Include="PreferencesManagement\Attributes\IntDescriptorAttribute.cs" />
     <Compile Include="PreferencesManagement\Attributes\LongDescriptorAttribute.cs" />

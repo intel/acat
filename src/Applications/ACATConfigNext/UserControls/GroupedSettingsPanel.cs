@@ -9,13 +9,14 @@ using System.Windows.Forms;
 using ACAT.Core.PreferencesManagement;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.ComponentModel;
 
 namespace ACATConfigNext.UserControls
 {
     internal class GroupedSettingsPanel : UserControl
     {
         private TableLayoutPanel basePanel;
-        public GroupedSettingsPanel(Action<UserControl, string> showPanel, IEnumerable<IExtension> acat_extensions)
+        public GroupedSettingsPanel(Action<UserControl, string> showPanel, IEnumerable<IExtension> acat_extensions, PropertyChangedEventHandler settingsChangedHandler)
         {
             basePanel = new TableLayoutPanel()
             {
@@ -54,7 +55,7 @@ namespace ACATConfigNext.UserControls
                 panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F)); 
                 panel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));     
 
-                AddPanelClickEvent(panel, showPanel);
+                AddPanelClickEvent(panel, showPanel, settingsChangedHandler);
 
                 var label1 = new Label
                 {
@@ -65,7 +66,7 @@ namespace ACATConfigNext.UserControls
                     Anchor = AnchorStyles.Left,
                 };
 
-                AddPanelClickEvent(label1, showPanel);
+                AddPanelClickEvent(label1, showPanel, settingsChangedHandler);
 
                 var label2 = new Label
                 {
@@ -79,7 +80,7 @@ namespace ACATConfigNext.UserControls
                     Anchor = AnchorStyles.Right,
                     BackColor = Color.Transparent
                 };
-                AddPanelClickEvent(label2, showPanel);
+                AddPanelClickEvent(label2, showPanel, settingsChangedHandler);
 
                 panel.Controls.Add(label1, 0, 0); // Column 0
                 panel.Controls.Add(label2, 1, 0); // Column 1
@@ -90,7 +91,7 @@ namespace ACATConfigNext.UserControls
             ResumeLayout(true);
         }
 
-        private static void AddPanelClickEvent(Control control, Action<UserControl, string> showPanel)
+        private static void AddPanelClickEvent(Control control, Action<UserControl, string> showPanel, PropertyChangedEventHandler settingsChangedHandler)
         {
             control.Click += (s, e) =>
             {
@@ -110,10 +111,10 @@ namespace ACATConfigNext.UserControls
                         Log.Debug("Showing acat_extensions for: " + extension.Descriptor.Name);
                         MethodInfo method = extension.GetType().GetMethod("GetPreferences");
 
-                        var prefs = method?.Invoke(extension, null) as IPreferences;
+                        var prefs = method?.Invoke(extension, null) as Preferences;
                         if (prefs != null)
                         {
-                            showPanel?.Invoke(new SettingsPanel(showPanel, prefs), extension.Descriptor.Name);
+                            showPanel?.Invoke(new SettingsPanel(showPanel, prefs, settingsChangedHandler), extension.Descriptor.Name);
                         }
                         else
                         {

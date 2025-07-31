@@ -150,7 +150,7 @@ namespace ACAT.Applications
                 return false;
             }
 
-            Common.AppPreferences.Save();
+            //Common.AppPreferences.Save();
 
             CoreGlobals.AppPreferences = Common.AppPreferences;
 

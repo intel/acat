@@ -7,6 +7,7 @@
 
 using ACAT.Core.PreferencesManagement;
 using ACAT.Core.Utility;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -21,7 +22,7 @@ namespace ACAT.Extension
     /// </summary>
     [Serializable]
     [Descriptor("General Settings for ACAT", "General")]
-    public class ACATPreferences : SystemPreferences
+    public partial class ACATPreferences : SystemPreferences
     {
         [NonSerialized, XmlIgnore]
         public static String DefaultPreferencesFilePath = String.Empty;
@@ -33,73 +34,86 @@ namespace ACAT.Extension
         [Descriptor("Clear talk window when the typing mode is changed")]
         [Category("Test")]
         [UIHint("ToggleSwitch")]
-        public bool ClearTalkWindowOnTypeModeChange { get; set; } = true;
+        [ObservableProperty]
+        private bool clearTalkWindowOnTypeModeChange = true;
 
       //  [IntDescriptor("Pin to unlock the screen. Use digits 1 through 5 only", 111, 55555)]
         [Descriptor("Pin to unlock the screen. Use digits 1 through 5 only")]
         [UIHint("PinEntry")]
-        public String ScreenLockPin { get; set; } = "5143";
+        [ObservableProperty]
+        private String screenLockPin = "5143";
 
        // [BoolDescriptor("Convert text to speech on ENTER key press")]
         [Descriptor("Convert text to speech on ENTER key press")]
         [UIHint("ToggleSwitch")]
-        public bool SpeakOnEnterKey { get; set; } = true;
+        [ObservableProperty]
+        private bool speakOnEnterKey = true;
 
      //   [IntDescriptor("Number of times the buttons in the strip scanner are scanned. Strip scanners are typically used for accented letters in non-English languages", 1, 10)]
         [Descriptor("Number of times the buttons in the strip scanner are scanned. Strip scanners are typically used for accented letters in non-English languages")]
         [UIHint("NumericUpDown")]
-        public int StripScannerColumnIterations { get; set; } = 2;
+        [ObservableProperty]
+        private int stripScannerColumnIterations = 2;
 
       //  [BoolDescriptor("Enable suggestions for sentence completion")]
         [Descriptor("Enable suggestions for sentence completion")]
         [UIHint("ToggleSwitch")]
-        public bool UseSentencePrediction { get; set; } = true;
+        [ObservableProperty]
+        private bool useSentencePrediction = true;
 
    //     [IntDescriptor("How many words to display in the word prediction list", 3, 10)]
         [Descriptor("How many words to display in the word prediction list")]
         [UIHint("NumericUpDown")]
         [Range(3, 20, ErrorMessage = "Word prediction count must be between 3 and 20.")]
-        public int WordPredictionCount { get; set; } = 10;
+        [ObservableProperty]
+        private int wordPredictionCount = 10;
 
       //  [BoolDescriptor("Enable learning for word prediction")]
         [Descriptor("Enable learning for word prediction")]
         [UIHint("ToggleSwitch")]
-        public bool WordPredictionEnableLearn { get; set; } = true;
+        [ObservableProperty]
+        private bool wordPredictionEnableLearn = true;
 
      //   [BoolDescriptor("Display words in the prediction list that match the prefix of the word entered so far")]
         [Descriptor("Display words in the prediction list that match the prefix of the word entered so far")]
         [UIHint("ToggleSwitch")]
-        public bool WordPredictionFilterMatchPrefix { get; set; } = false;
+        [ObservableProperty]
+        private bool wordPredictionFilterMatchPrefix = false;
 
 //        [IntDescriptor("Length of the prefix to match when filtering words (valid only if WordPredictionFilterMatchPrefix is true)", 1, 10)]
         [Descriptor("Length of the prefix to match when filtering words (valid only if WordPredictionFilterMatchPrefix is true)")]
         [UIHint("NumericUpDown")]
         [Range(1, 10, ErrorMessage = "Prefix length must be between 1 and 10.")]
-        public int WordPredictionFilterMatchPrefixLengthAdjust { get; set; } = 1;
+        [ObservableProperty]
+        private int wordPredictionFilterMatchPrefixLengthAdjust = 1;
 
    //     [BoolDescriptor("Filter punctuations in word prediction results")]
         [Descriptor("Filter punctuations in word prediction results")]
         [UIHint("ToggleSwitch")]
-        public bool WordPredictionFilterPunctuations { get; set; } = true;
+        [ObservableProperty]
+        private bool wordPredictionFilterPunctuations = true;
 
   //      [IntDescriptor("Extra time to pause on the first word in the word prediction list (in msecs)", 0, 3000)]
         [Descriptor("Extra time to pause on the first word in the word prediction list (in msecs)")]
         [UIHint("NumericUpDown")]
         [Range(0, 3000, ErrorMessage = "Pause time must be between 0 and 3000 milliseconds.")]
-        public int WordPredictionFirstPauseTime { get; set; } = 600;
+        [ObservableProperty]
+        private int wordPredictionFirstPauseTime = 600;
 
     //    [IntDescriptor("Number of times the words in the word prediction list are scanned", 1, 10)]
         [Descriptor("Number of times the words in the word prediction list are scanned")]
         [UIHint("NumericUpDown")]
         [Range(1, 10, ErrorMessage = "Word prediction scan iterations must be between 1 and 10.")]
-        public int WordPredictionScanIterations { get; set; } = 1;
+        [ObservableProperty]
+        private int wordPredictionScanIterations = 1;
 
      //   [IntDescriptor("Number of words suggestions to compute probabilities", 5, 20)]
 
         [Descriptor("Number of words suggestions to compute probabilities")]
         [UIHint("NumericUpDown")]
         [Range(5, 20, ErrorMessage = "Words suggestions must be between 5 and 20.")]
-        public int WordsSuggestions { get; set; } = 10;
+        [ObservableProperty]
+        private int wordsSuggestions = 10;
 
         /// <summary>
         /// Loads the settings from the preferences path
@@ -138,7 +152,7 @@ namespace ACAT.Extension
         /// <param name="variableName">name of the variable</param>
         /// <param name="defaultValue">default value of the variable</param>
         /// <returns>value of the variable from the settings</returns>
-        protected override int resolveVariableInt(String variableName, int defaultValue)
+        public override int resolveVariableInt(String variableName, int defaultValue)
         {
             var retVal = variableName switch
             {

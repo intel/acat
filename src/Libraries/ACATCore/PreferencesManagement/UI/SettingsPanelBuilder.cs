@@ -1,6 +1,9 @@
 ﻿using ACAT.Core.PreferencesManagement;
 using ACAT.Core.Utility;
+using CommunityToolkit.Mvvm.ComponentModel;
 using MahApps.Metro.Controls;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,7 +18,46 @@ namespace ACAT.Core.PreferencesManagement.UI
  
     public class SettingsPanelBuilder
     {
-        public FrameworkElement CreateScrollViewer(IPreferences prefs)
+        protected class ObservablePropertyInfo
+        {
+            public PropertyInfo Property { get; set; }
+            public FieldInfo BackingField { get; set; }
+            public string Name => Property.Name;
+
+#nullable enable
+            public T? GetAttribute<T>() where T : Attribute
+            {
+                return BackingField.GetCustomAttribute<T>();
+            }
+#nullable disable
+        }
+
+        protected static List<ObservablePropertyInfo> GetObservableProperties(Type type)
+        {
+            var fields = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
+//                .Where(f => f.GetCustomAttribute(typeof(ObservablePropertyAttribute)) != null);
+
+            var list = new List<ObservablePropertyInfo>();
+
+            foreach (var field in fields)
+            {
+                var propertyName = Char.ToUpper(field.Name[0]) + field.Name.Substring(1);
+                var prop = type.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public);
+
+                if (prop != null)
+                {
+                    list.Add(new ObservablePropertyInfo
+                    {
+                        Property = prop,
+                        BackingField = field
+                    });
+                }
+            }
+
+            return list;
+        }
+
+        public FrameworkElement CreateScrollViewer(PreferencesBase prefs)
         {
             var stackPanel = new StackPanel
             {
@@ -28,15 +70,16 @@ namespace ACAT.Core.PreferencesManagement.UI
                 HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled
             };
 
-            scrollViewer.DataContext = prefs; // Set the DataContext to the preferences object for binding
 
-            var props = prefs.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var props = GetObservableProperties(prefs.GetType());
+
             foreach (var prop in props)
             {
                 var labeledPanel = CreateLabeledPanel(prop, prefs);
                 labeledPanel.Margin = new Thickness(10);
                 stackPanel.Children.Add(labeledPanel);
             }
+            scrollViewer.DataContext = prefs; // Set the DataContext to the preferences object for binding
 
             scrollViewer.Content = stackPanel;
 
@@ -97,15 +140,14 @@ namespace ACAT.Core.PreferencesManagement.UI
 
     
 
-        public FrameworkElement CreateLabeledPanel(PropertyInfo prop, object settingsInstance)
+        protected FrameworkElement CreateLabeledPanel(ObservablePropertyInfo prop, object settingsInstance)
         {
-            var value = prop.GetValue(settingsInstance);
+            var value = prop.Property.GetValue(settingsInstance);
 
             var grid = new Grid();
 
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(7, GridUnitType.Star) });
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(3, GridUnitType.Star) });
-            //grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
 
             var stackPanel = new StackPanel
             {
@@ -113,7 +155,7 @@ namespace ACAT.Core.PreferencesManagement.UI
                 HorizontalAlignment = HorizontalAlignment.Left
             };
 
-            var descriptorAttr = prop.GetCustomAttribute<DescriptorAttribute>();
+            var descriptorAttr = prop.GetAttribute<DescriptorAttribute>();
             var labelText = descriptorAttr?.Description ?? "MISSING DESCRIPTION";
 
             var label = new TextBlock
@@ -129,7 +171,7 @@ namespace ACAT.Core.PreferencesManagement.UI
             };
             stackPanel.Children.Add(label);
 
-            if (prop.GetCustomAttribute<DescriptionAttribute>() is { } descriptionAttr)
+            if (prop.GetAttribute<DescriptionAttribute>() is { } descriptionAttr)
             {
                 var description = new TextBlock
                 {
@@ -152,29 +194,29 @@ namespace ACAT.Core.PreferencesManagement.UI
                 Mode = BindingMode.TwoWay
             };
 
-            if (prop.PropertyType == typeof(string) && prop.GetCustomAttribute<UIHintAttribute>()?.UIHint == "PinEntry")
+            if (prop.Property.PropertyType == typeof(string) && prop.GetAttribute<UIHintAttribute>()?.UIHint == "PinEntry")
             {
                 inputControl = new PasswordBox
                 {
-                    Password = value?.ToString() ?? "",
+                    //Password = value?.ToString() ?? "",
                     MaxLength = 5, // Assuming PIN is 5 digits
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Right
                 };
             }
-            else if (prop.PropertyType == typeof(bool))
+            else if (prop.Property.PropertyType == typeof(bool))
             {
                 inputControl = new ToggleSwitch
                 {
-                    IsOn = value is bool b && b,
+                    //IsOn = value is bool b && b,
                     OnContent = "Yes",
                     OffContent = "No"
                 };
                 inputControl.SetBinding(ToggleSwitch.IsOnProperty, binding);
             }
-            else if (prop.PropertyType == typeof(int))
+            else if (prop.Property.PropertyType == typeof(int))
             {
-                RangeAttribute range = prop.GetCustomAttribute<RangeAttribute>()
+                RangeAttribute range = prop.GetAttribute<RangeAttribute>()
                     ?? new RangeAttribute(0, 25);
 
                 StackPanel sliderStack = CreateLabeledSlider((int)range.Minimum, (int)range.Maximum, value is int i ? i : 0, 1);
@@ -182,11 +224,11 @@ namespace ACAT.Core.PreferencesManagement.UI
                 sliderStack?.Children?.OfType<Slider>().FirstOrDefault()?.SetBinding(Slider.ValueProperty, binding);
                 inputControl = sliderStack;
             }
-            else if (prop.PropertyType == typeof(string))
+            else if (prop.Property.PropertyType == typeof(string))
             {
                 inputControl = new TextBox
                 {
-                    Text = value?.ToString() ?? "",
+                    //Text = value?.ToString() ?? "",
                 };
                 inputControl.SetBinding(TextBox.TextProperty, binding);
             }
@@ -195,7 +237,7 @@ namespace ACAT.Core.PreferencesManagement.UI
                 // fallback label for unsupported types
                 inputControl = new TextBlock
                 {
-                    Text = $"Unsupported: {prop.PropertyType.Name}",
+                    Text = $"Unsupported: {prop.Property.PropertyType.Name}",
                     Foreground = System.Windows.Media.Brushes.Gray,
                     VerticalAlignment = VerticalAlignment.Center
                 };

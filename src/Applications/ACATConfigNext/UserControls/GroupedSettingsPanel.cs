@@ -111,7 +111,7 @@ namespace ACATConfigNext.UserControls
                         Log.Debug("Showing acat_extensions for: " + extension.Descriptor.Name);
                         MethodInfo method = extension.GetType().GetMethod("GetPreferences");
 
-                        var prefs = method?.Invoke(extension, null) as Preferences;
+                        var prefs = method?.Invoke(extension, null) as PreferencesBase;
                         if (prefs != null)
                         {
                             showPanel?.Invoke(new SettingsPanel(showPanel, prefs, settingsChangedHandler), extension.Descriptor.Name);

@@ -14,12 +14,12 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Text;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System;
+using System.ComponentModel;
+using System.Reflection;
+using System.Text;
+using System.Xml.Serialization;
 
 
 namespace ACAT.Core.PreferencesManagement
@@ -31,12 +31,32 @@ namespace ACAT.Core.PreferencesManagement
     /// a class by deserializing from the xml file.
     /// </summary>
     [Serializable]
-    public partial class PreferencesBase : ObservableObject, IPreferences
+    public partial class PreferencesBase : ObservableValidator, IPreferences
     {
+        [NonSerialized, XmlIgnore]
+        public static Assembly ApplicationAssembly;
+
+        /// <summary>
+        /// Returns a string representation of the settings
+        /// </summary>
+        public String toString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Preferences: ");
+            sb.Append(XmlUtils.XmlSerializeToString(this));
+            return sb.ToString();
+        }
+
         /// <summary>
         /// For the event that notifies that preferences changed
         /// </summary>
         public delegate void PreferencesChangedDelegate();
+
+        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+            ValidateProperty(GetType().GetProperty(e.PropertyName)?.GetValue(this), e.PropertyName);
+        }
 
         /// <summary>
         /// Event that is raised when any of the preferences change.
@@ -137,17 +157,6 @@ namespace ACAT.Core.PreferencesManagement
         /// <returns></returns>
         public virtual bool Save() {
             return false;
-        }
-
-        /// <summary>
-        /// Returns a string representation of the settings
-        /// </summary>*.
-        public virtual String toString()
-        {
-            var sb = new StringBuilder();
-            sb.Append("Preferences: ");
-            sb.Append(XmlUtils.XmlSerializeToString(this));
-            return sb.ToString();
         }
     }
 }

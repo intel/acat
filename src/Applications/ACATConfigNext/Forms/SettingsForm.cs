@@ -16,6 +16,8 @@ using Windows = System.Windows;
 using WPFControls = System.Windows.Controls;
 using ACAT.Core.Extensions;
 using ACAT.Core.PreferencesManagement;
+using ACAT.Extension;
+using System.ComponentModel;
 
 namespace ACATConfigNext
 {
@@ -50,7 +52,6 @@ namespace ACATConfigNext
 
             InitializeComponent();
 
-            //EvtPreferencesChangeMade += SettingsChanged;
         }
 
         private void InitializeComponent()
@@ -216,29 +217,24 @@ namespace ACATConfigNext
             {
                 try
                 {
-                    var control = contentPanel.Controls.OfType<UserControl>().FirstOrDefault();
-                    var foo = control?.Tag;
-
-                    // Save the current settings
-                    foo?.GetType().GetMethod("Save")?.Invoke(foo, null);
-                    //bool success = AppCommon.SaveAllPreferences();
-                    //if (success)
-                    //{
-                    //    if (CoreGlobals.AppPreferences != null)
-                    //    {
-                    //        success &= CoreGlobals.AppPreferences.Save();
-                    //    }
-                    //    MessageBox.Show("Settings saved successfully.", "Save Complete",
-                    //        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    //    _isDirty = false;
-                    //    saveButton.Enabled = _isDirty;
-                    //    saveButton.Enabled = _isDirty;
-                    //}
-                    //else
-                    //{
-                    //    MessageBox.Show("Some settings could not be saved. Please check the logs.",
-                    //        "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    //}
+                    bool success = AppCommon.SaveAllPreferences();
+                    if (success)
+                    {
+                        if (CoreGlobals.AppPreferences != null)
+                        {
+                            success &= CoreGlobals.AppPreferences.Save();
+                        }
+                        MessageBox.Show("Settings saved successfully.", "Save Complete",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        _isDirty = false;
+                        saveButton.Enabled = _isDirty;
+                        saveButton.Enabled = _isDirty;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Some settings could not be saved. Please check the logs.",
+                            "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -407,10 +403,10 @@ namespace ACATConfigNext
 
                 UserControl panel = category switch
                 {
-                    "General" => new SettingsPanel(ShowPanel, CoreGlobals.AppPreferences),
-                    "Actuators" => new GroupedSettingsPanel(ShowPanel, Settings),
-                    "Word Predictors" => new GroupedSettingsPanel(ShowPanel, Settings),
-                    "Text to Speech" => new GroupedSettingsPanel(ShowPanel, Settings),
+                    "General" => new SettingsPanel(ShowPanel, CoreGlobals.AppPreferences, SettingsChanged),
+                    "Actuators" => new GroupedSettingsPanel(ShowPanel, Settings, SettingsChanged),
+                    "Word Predictors" => new GroupedSettingsPanel(ShowPanel, Settings, SettingsChanged),
+                    "Text to Speech" => new GroupedSettingsPanel(ShowPanel, Settings, SettingsChanged),
                     _ => throw new ArgumentException("Invalid category"),
                 };
 
@@ -420,55 +416,14 @@ namespace ACATConfigNext
             }
         }
 
-        //private void AttachInputEvents(Control container)
-        //{
-        //    // Attach event handlers to input controls within the container
-        //    foreach (object child in container.Controls)
-        //    {
-        //        if (child is Panel childControl)
-        //        {
-        //            AttachInputEvents(childControl); // Recursively attach events to child controls
-        //        }
-        //        else if (child is ElementHost host)
-        //        {
-        //            var panel = host.Child as Windows.UIElement;
+        private void SettingsChanged(object sender, PropertyChangedEventArgs e)
+        {
+            _isDirty = true;
+            saveButton.Enabled = _isDirty;
+            resetButton.Enabled = _isDirty;
+            //EvtPreferencesChangeMade();
+        }
 
-        //            var controls = panel.FindChildren<Windows.Controls.Control>().ToList();
-        //            foreach (var control in controls)
-        //            {
-        //                if (control is WPFControls.Slider cb)
-        //                {
-        //                    cb.ValueChanged += OnValueChanged;
-        //                }
-        //                else if (control is MahAppsControls.ToggleSwitch ts)
-        //                {
-        //                    ts.Toggled += OnValueChanged;
-        //                }
-        //                else if (control is WPFControls.TextBox tb)
-        //                {
-        //                    tb.TextChanged += OnValueChanged;
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
-        //private void OnValueChanged(object sender, EventArgs e)
-        //{
-        //    _isDirty = true;
-        //    saveButton.Enabled = _isDirty;  
-        //    resetButton.Enabled = _isDirty;
-        //    EvtPreferencesChangeMade();
-        //}
-
-        //public void SettingsChanged()
-        //{
-        //    // Enable save button if any settings have changed
-        //    saveButton.Enabled = true;
-        //    resetButton.Enabled = true;
-        //    // Optionally, you can also update the UI or perform other actions here
-        //    // For example, you might want to highlight the changed panel or show a message
-        //}
 
         public void ShowPanel(UserControl panel, string label)
         {

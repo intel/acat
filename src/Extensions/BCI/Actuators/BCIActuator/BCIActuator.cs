@@ -26,6 +26,7 @@ using ACAT.Extensions.BCI.Actuators.gTecSensorUI;
 using ACAT.Extensions.BCI.Actuators.openBCISensorUI;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACATResources;
+using ControlzEx.Standard;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -435,8 +436,18 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
                                 Log.Debug(typingMapping.Key.ToString() + " typing section -  Using " + typingMapping.Value.ToString() + " classifier. Status: loaded");
 
-                                var bciLogEntry = new BCILogEntryClassifierLoaded(typingMapping.Key.ToString(), typingMapping.Value.ToString(), tmpDecisionMaker.TrainedClassifiersObj.trainedClassifiersSessionID, tmpDecisionMaker.TrainedClassifiersObj.meanAUC,
-                                  DictCalibrationParameters[typingMapping.Key].ScanTime, DictCalibrationParameters[typingMapping.Key].TargetCount, DictCalibrationParameters[typingMapping.Key].IterationsPerTarget, DictCalibrationParameters[typingMapping.Key].MinimumScoreRequired, !missingClassifier);
+                                var bciLogEntry = new BCILogEntryClassifierLoaded()
+                                {
+                                    TypingSection = typingMapping.Key.ToString(),
+                                    Classifier = typingMapping.Value.ToString(),
+                                    ClassifierID = tmpDecisionMaker.TrainedClassifiersObj.trainedClassifiersSessionID,
+                                    ClassifierAUC = tmpDecisionMaker.TrainedClassifiersObj.meanAUC,
+                                    ScanTime = DictCalibrationParameters[typingMapping.Key].ScanTime,
+                                    NumberOfTargets = DictCalibrationParameters[typingMapping.Key].TargetCount,
+                                    IterationsPerTarget = DictCalibrationParameters[typingMapping.Key].IterationsPerTarget,
+                                    MinimumScoreRequired = DictCalibrationParameters[typingMapping.Key].MinimumScoreRequired,
+                                    IsClassifierLoaded = !missingClassifier
+                                };
                                 var jsonString = JsonSerializer.Serialize(bciLogEntry);
                                 AuditLog.Audit(new AuditEvent("BCIClassifierLoaded", jsonString));
                             }
@@ -444,13 +455,13 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                         else
                         {
                             missingClassifier = true;
-                            Log.Debug(typingMapping.Key.ToString() + " typing section -  Using " + typingMapping.Value.ToString() + " classifier. Status: missing!!");
+                            Log.Warn(typingMapping.Key.ToString() + " typing section -  Using " + typingMapping.Value.ToString() + " classifier. Status: missing!!");
                         }
                     }
                     else
                     {
                         missingClassifier = true;
-                        Log.Debug(typingMapping.Key.ToString() + " typing section. Classifier file not found. -  Using " + typingMapping.Value.ToString() + " classifier. Status: missing!!");
+                        Log.Warn(typingMapping.Key.ToString() + " typing section. Classifier file not found. -  Using " + typingMapping.Value.ToString() + " classifier. Status: missing!!");
                     }
                 }
             }
@@ -853,7 +864,11 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             Log.Debug("TriggerTest parameters requested");
 
             // Send parameters to ACAT
-            var bciTriggerTestParameters = new BCITriggerTestParameters(BCIActuatorSettings.Settings.TriggerTest_NumRepetitions, BCIActuatorSettings.Settings.TriggerTest_ScanTime);
+            var bciTriggerTestParameters = new BCITriggerTestParameters()
+            {
+                NumRepetitions = BCIActuatorSettings.Settings.TriggerTest_NumRepetitions,
+                ScanTime = BCIActuatorSettings.Settings.TriggerTest_ScanTime,
+            };
             var str = JsonSerializer.Serialize(bciTriggerTestParameters);
             Log.Debug(" Sending parameters. Scan time: " + bciTriggerTestParameters.ScanTime + " | Num repetitions: " + bciTriggerTestParameters.NumRepetitions);
             SendIoctlResponse((int)OpCodes.TriggerTestSendParameters, str);
@@ -903,7 +918,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
                     // Add classifier to dictionary
                     DictClassifierInfo.Add(calibrationSection, classifierInfo);
-                    Log.Debug("Calibration:" + calibrationSection + " isRequired:" + classifierInfo.IsRequired + " Status:" + classifierInfo.ClassifierStatus.ToString() + " Auc:" + classifierInfo.Auc);
+                    Log.Warn("Calibration:" + calibrationSection + " isRequired:" + classifierInfo.IsRequired + " Status:" + classifierInfo.ClassifierStatus.ToString() + " Auc:" + classifierInfo.Auc);
 
                     // Set overall status
                     if (classifierInfo.IsRequired && classifierInfo.ClassifierStatus != BCIClassifierStatus.Ok)
@@ -941,7 +956,16 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             bool okToGoToTyping = overallStatus == BCIClassifierStatus.Ok;
 
             // Send parameters to ACAT
-            var bciCalibrationStatus = new BCICalibrationStatus(showOnlyDefaults, areMoreClassifiersThanMapping, okToGoToTyping, overallStatus, DictClassifierInfo, error);
+            var bciCalibrationStatus = new BCICalibrationStatus()
+            {
+                ShowOnlyDefaults = showOnlyDefaults, 
+                AreMoreClassifiersThanMapping = areMoreClassifiersThanMapping, 
+                OkToGoToTyping = okToGoToTyping, 
+                OverallStatus = overallStatus, 
+                DictClassifierInfo = DictClassifierInfo,
+                Error = error
+            };
+
             var str = JsonSerializer.Serialize(bciCalibrationStatus);
             Log.Debug("Sending Calibration Status. ShowOnlyDefaults:" + showOnlyDefaults + " | areMoreClassifiersThanMappings:" + areMoreClassifiersThanMapping + " | okToGoToTyping:" + okToGoToTyping + " | OverallStatus:" + overallStatus.ToString());
             SendIoctlResponse((int)OpCodes.SendCalibrationStatus, str);
@@ -1027,7 +1051,13 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
 
             // Send response to ACAT
-            var bciMapOptions = new BCIMapOptions(BCIActuatorSettings.Settings.Calibration_UseAdvanceModeForTypingMappings, DictClassifierInfoForAvailableMappings, DictTypingCalibrationMappings, error);
+            var bciMapOptions = new BCIMapOptions()
+            {
+                IsAdvanced = BCIActuatorSettings.Settings.Calibration_UseAdvanceModeForTypingMappings,
+                AllowedMappingsDict = DictClassifierInfoForAvailableMappings,
+                CurrentMappingsDict = DictTypingCalibrationMappings,
+                Error = error
+            };
             var str = JsonSerializer.Serialize(bciMapOptions);
             Log.Debug("Sending map options. Is advanced: " + bciMapOptions.IsAdvanced + " | error: " + (BCIErrorCodes)error.ErrorCode);
             SendIoctlResponse((int)OpCodes.SendMapOptions, str);
@@ -1137,7 +1167,13 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                 triggerTestSuccesful = true;
 
             // Send parameters to ACAT
-            var bciTriggerTest = new BCITriggerTestResult(triggerTestSuccesful, dutyCycleList, dutyCycleAvg);
+            var bciTriggerTest = new BCITriggerTestResult()
+            {
+                TriggerTestSuccess = triggerTestSuccesful,
+                DutyCycleList = dutyCycleList,
+                DutyCycleAvg = dutyCycleAvg
+            };
+
             var str = JsonSerializer.Serialize(bciTriggerTest);
             Log.Debug("Sending trigger test results. TriggerTestSuccesful: " + triggerTestSuccesful + " | dutyCycleAvg: " + dutyCycleAvg + " | dutyCycle for individual pulses: " + dutyCycleList.ToArray().ToString());
             SendIoctlResponse((int)OpCodes.TriggerTestResult, str);
@@ -1152,7 +1188,11 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         {
             Log.Debug("Requesting calibration for eyes close parameters");
             // Send parameters to ACAT
-            var bciCalibrationEyesClosedParameters = new BCICalibrationEyesClosedParameters(BCIActuatorSettings.Settings.EyesClosedCalibration_NumRepetitions, BCIActuatorSettings.Settings.EyesClosedCalibration_IntervalDuration);
+            var bciCalibrationEyesClosedParameters = new BCICalibrationEyesClosedParameters()
+            {
+                NumRepetitions = BCIActuatorSettings.Settings.EyesClosedCalibration_NumRepetitions,
+                IntervalDuration = BCIActuatorSettings.Settings.EyesClosedCalibration_IntervalDuration
+            };
             var str = JsonSerializer.Serialize(bciCalibrationEyesClosedParameters);
             Log.Debug("Sending eyes close parameters. Num repetitions: " + bciCalibrationEyesClosedParameters.NumRepetitions + " | Interval duration: " + bciCalibrationEyesClosedParameters.IntervalDuration);
             SendIoctlResponse((int)OpCodes.CalibrationEyesClosedSendParameters, str);
@@ -1320,7 +1360,12 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             _isSessionInProgress = false;
 
             // Send auc to ACAT
-            var bciCalibrationResult = new BCICalibrationResult(auc, calibrationSuccesful, error);
+            var bciCalibrationResult = new BCICalibrationResult()
+            {
+                AUC = auc,
+                Error = error,
+                CalibrationSuccessful = calibrationSuccesful
+            };
             var str = JsonSerializer.Serialize(bciCalibrationResult);
             Log.Debug("Sending response. Calibration succesful: " + calibrationSuccesful + " | AUC: " + auc);
             SendIoctlResponse((int)OpCodes.CalibrationResult, str);
@@ -1389,7 +1434,15 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                                 avgAlphaValues.Add(avgAlpha);
 
                                 // Log results
-                                var bciLogEntry = new BCILogEntryEyesClosed(BCIActuatorSettings.Settings.EyesClosed_EnableDetection, 0, eyesClosedDetected, alphaValues, betaValues, avgAlpha, avgBeta);
+                                var bciLogEntry = new BCILogEntryEyesClosed()
+                                {
+                                    EyesClosedDetected = eyesClosedDetected,
+                                    EyesClosedEnabled = BCIActuatorSettings.Settings.EyesClosed_EnableDetection,
+                                    AlphaValues = alphaValues,
+                                    BetaValues = betaValues,
+                                    AvgAlphaValue = avgAlpha,
+                                    AvgBetaValue = avgBeta
+                                };
                                 var jsonString = JsonSerializer.Serialize(bciLogEntry);
                                 AuditLog.Audit(new AuditEvent("BCIEyesClosed", jsonString));
                                 Log.Debug("Line added to audit file: " + jsonString);
@@ -1416,7 +1469,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
 
             // Send result
-            var bciCalibrationResult = new BCISensorStatus(sensorError, statusSignal);
+            var bciCalibrationResult = new BCISensorStatus() { Error = sensorError, StatusSignal = statusSignal };
             var str = JsonSerializer.Serialize(bciCalibrationResult);
             Log.Debug("Sending response. SensorError:" + (BCIErrorCodes)bciCalibrationResult.Error.ErrorCode);
             SendIoctlResponse((int)OpCodes.CalibrationEndRepetitionResult, str);
@@ -1496,7 +1549,12 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
 
             // Add LMprobabilities to log file
-            var bciLogEntry = new BCILogEntryLanguageModelProbabilitiesReceived(languageModelProbabilityType, bciLanguageModelProbabilities.LanguageModelProbabilities, enableLanguageModelprobabilities);
+            var bciLogEntry = new BCILogEntryLanguageModelProbabilitiesReceived()
+            {
+                LanguageModelProbabilities = bciLanguageModelProbabilities.LanguageModelProbabilities,
+                LanguageModelProbabilityType = languageModelProbabilityType,
+                LanguageModelProbabilitiesEnabled = enableLanguageModelprobabilities
+            };
             var jsonString = JsonSerializer.Serialize(bciLogEntry);
             AuditLog.Audit(new AuditEvent("BCILanguageModelProbabilitiesReceived", jsonString));
             Log.Debug("Line added to audit file: " + jsonString);
@@ -1613,7 +1671,22 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
 
             // Send parameters to ACAT
-            var bciParameters = new BCIParameters(DictCalibrationParameters, recalibrationRequired, lastCalibrationAUC, BCIActuatorSettings.Settings.Scanning_PauseTime, BCIActuatorSettings.Settings.Scanning_ShortPauseTime, BCIActuatorSettings.Settings.Scanning_ShowDecisionTime, BCIActuatorSettings.Settings.Scanning_DelayAfterDecision, BCIActuatorSettings.Settings.Scanning_DelayToGetReady, BCIActuatorSettings.Settings.Testing_MinimumProbabiltyToDisplayBarOnTyping, BCIActuatorSettings.Settings.Scanning_FocalCircleColor, BCIActuatorSettings.Settings.Scanning_IsFocalCircleFilled, error);
+            var bciParameters = new BCIParameters
+            {
+                CalibrationParameters = DictCalibrationParameters, 
+                CalibrationRequiredFlag = recalibrationRequired, 
+                LastCalibrationAUC = lastCalibrationAUC, 
+                Scanning_PauseTime = BCIActuatorSettings.Settings.Scanning_PauseTime, 
+                Scanning_ShortPauseTime = BCIActuatorSettings.Settings.Scanning_ShortPauseTime, 
+                Scanning_ShowDecisionTime = BCIActuatorSettings.Settings.Scanning_ShowDecisionTime, 
+                Scanning_DelayAfterDecision = BCIActuatorSettings.Settings.Scanning_DelayAfterDecision, 
+                Scanning_DelayToGetReady = BCIActuatorSettings.Settings.Scanning_DelayToGetReady, 
+                MinProbablityToDisplayBarOnTyping = BCIActuatorSettings.Settings.Testing_MinimumProbabiltyToDisplayBarOnTyping, 
+                Scanning_FocalCircleColor = BCIActuatorSettings.Settings.Scanning_FocalCircleColor, 
+                Scanning_IsFocalCircleFilled = BCIActuatorSettings.Settings.Scanning_IsFocalCircleFilled, 
+                Error = error
+            };
+
             var str = JsonSerializer.Serialize(bciParameters);
             Log.Debug("Sending parameters. Error:" + (BCIErrorCodes)bciParameters.Error.ErrorCode + " RecalibrationRequired:" + bciParameters.CalibrationRequiredFlag + " | Pause time:" + bciParameters.Scanning_PauseTime + ", Short pause time:" + bciParameters.Scanning_ShortPauseTime + ", Show decision time: " + bciParameters.Scanning_ShowDecisionTime + ", Delay after decision:" + bciParameters.Scanning_DelayAfterDecision + ", Minimum probability to display bars on typing:" + bciParameters.MinProbablityToDisplayBarOnTyping);
             SendIoctlResponse((int)OpCodes.SendParameters, str);
@@ -1728,7 +1801,13 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                 }
 
                 // Send start session results to ACAT
-                var bciStartSessionResults = new BCIStartSessionResult(sensorReady, sessionDirectory, sessionID, error);
+                var bciStartSessionResults = new BCIStartSessionResult()
+                {
+                    SensorReady = sensorReady, 
+                    SessionDirectory = sessionDirectory,
+                    SessionId = sessionID, 
+                    Error = error
+                };
                 var str = JsonSerializer.Serialize(bciStartSessionResults);
                 Log.Debug("Sending response. Error: " + (BCIErrorCodes)error.ErrorCode + " Sensor ready: " + bciStartSessionResults.SensorReady + " | session ID: " + sessionID + " | directory: " + sessionDirectory);
                 SendIoctlResponse((int)OpCodes.StartSessionResult, str);
@@ -1920,7 +1999,15 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                                 eyesClosedDetected = DAQ_OpenBCI.DetectEyesClosed(out double[] alphaValues, out double avgAlpha, out double[] betaValues, out double avgBeta);
 
                                 // Log values for eyes open /closed
-                                var bciLogEntry2 = new BCILogEntryEyesClosed(BCIActuatorSettings.Settings.EyesClosed_EnableDetection, DAQ_OpenBCI.GetEyesClosedThreshold(), eyesClosedDetected, alphaValues, betaValues, avgAlpha, avgBeta);
+                                var bciLogEntry2 = new BCILogEntryEyesClosed() 
+                                { 
+                                    EyesClosedDetected = eyesClosedDetected, 
+                                    EyesClosedEnabled = BCIActuatorSettings.Settings.EyesClosed_EnableDetection, 
+                                    AlphaValues = alphaValues, 
+                                    BetaValues = betaValues, 
+                                    AvgAlphaValue = avgAlpha, 
+                                    AvgBetaValue = avgBeta 
+                                };
                                 var jsonString2 = JsonSerializer.Serialize(bciLogEntry2);
                                 AuditLog.Audit(new AuditEvent("BCIEyesClosed", jsonString2));
 
@@ -2067,14 +2154,30 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             if (repetition == 1)
             {
                 // Add log entry (only for the first repetition) for new scanning section
-                var bciScanningSectionStarted = new BCILogEntrNewScanningSectionStarted(bciTypingRepetitionEnd.ScanningSection.ToString(), bciTypingRepetitionEnd.ButtonTextValues, (EEGProcessingGlobals.DecisionMakerDict[currentScanSection].enableLanguageModelProbabilities && nextCharProbs != null));
+                var bciScanningSectionStarted = new BCILogEntrNewScanningSectionStarted()
+                {
+                    ButtonIDValuesLookupTable = bciTypingRepetitionEnd.ButtonTextValues,
+                    ScanningSection = bciTypingRepetitionEnd.ScanningSection.ToString(),
+                    UseLanguageModelProbabilities = (EEGProcessingGlobals.DecisionMakerDict[currentScanSection].enableLanguageModelProbabilities && nextCharProbs != null)
+                };
                 var jsonString2 = JsonSerializer.Serialize(bciScanningSectionStarted);
                 AuditLog.Audit(new AuditEvent("BCIScanningSectionStarted", jsonString2));
             }
 
             // Log results
-            var bciLogEntry = new BCILogEntryTypingEnd(decidedButtonLabel, decidedButtonID, decidedFlag, repetition, bciTypingRepetitionEnd.ScanningSection.ToString(),
-                bciTypingRepetitionEnd.RowColumnIDs, bciTypingRepetitionEnd.FlashingSequence, nextCharProbs, eegProbs, posteriorProbsDict);
+            var bciLogEntry = new BCILogEntryTypingEnd()
+            {
+                DecidedFlag = decidedFlag,
+                SelectedButtonLabel = decidedButtonLabel,
+                SelectedButtonID = decidedButtonID,
+                RepetitionIdx = repetition,
+                ScanningSection = bciTypingRepetitionEnd.ScanningSection.ToString(),
+                RowColumnIDs = bciTypingRepetitionEnd.RowColumnIDs,
+                FlashingSequence = bciTypingRepetitionEnd.FlashingSequence,
+                NextCharacterProbabilities = nextCharProbs ?? new Dictionary<int, double>(),
+                EegProbabilities = eegProbs ?? new Dictionary<int, double>(),
+                PosteriorProbabilities = posteriorProbsDict ?? new Dictionary<int, double>(),
+            };
             var jsonString = JsonSerializer.Serialize(bciLogEntry);
             AuditLog.Audit(new AuditEvent("BCIRepetitionEnd", jsonString));
             Log.Debug("Results: " + jsonString);

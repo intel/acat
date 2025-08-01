@@ -102,16 +102,19 @@ namespace ACAT.Core.Utility
                 {
                     var lastIndex = dir.LastIndexOf("\\");
                     var resourcesDir = dir.Substring(lastIndex + 1);
-                    var cultureInfo = new CultureInfo(resourcesDir);
 
-                    // the above statement will throw an exception if
-                    // the folder is not a language name or a two-letter
-                    // iso name
-                    list.Add(dir);
+                    if (resourcesDir.Length == 2 && (resourcesDir.CompareTo("en") != -1 || resourcesDir.CompareTo("es") != -1)) 
+                    {
+                        var cultureInfo = new CultureInfo(resourcesDir);
+                        // the above statement will throw an exception if
+                        // the folder is not a language name or a two-letter
+                        // iso name
+                        list.Add(dir);
+                    }
                 }
                 catch (Exception ex)
                 {
-                    Log.Exception("Language detect: Skipping folder " + dir + ". " + ex.Message);
+                    Log.Verbose("Language detect: Skipping folder " + dir + ". " + ex.Message);
                 }
             }
 

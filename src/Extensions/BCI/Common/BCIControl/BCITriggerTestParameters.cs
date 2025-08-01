@@ -27,10 +27,5 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         /// </summary>
         public int ScanTime;
 
-        public BCITriggerTestParameters(int numRepetitions, int scanTime)
-        {
-            NumRepetitions = numRepetitions;
-            ScanTime = scanTime;
-        }
     }
 }

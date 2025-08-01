@@ -12,6 +12,7 @@
 using ACAT.Core.PanelManagement;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACATResources;
+using ControlzEx.Standard;
 using System;
 using System.Windows.Forms;
 
@@ -154,6 +155,32 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             var result = BCIMenuOptions.MainMenuOptions.ExitApplication;
             _ = ConfirmBoxThreeOption.ShowDialog(title, Label, EXITAPPLICATION, CALIBRATE, STARTYPING, null, false);
+
+            var confirmDialog = new ConfirmBoxThreeOption
+            {
+                PromptTitle = title,
+                Prompt = Label,
+                Op1Prompt = EXITAPPLICATION,
+                Op2Prompt = CALIBRATE,
+                Op3Prompt = STARTYPING,
+                Op1LabelFont = 12,
+                Op2LabelFont = 12,
+                Op3LabelFont = 12
+            };
+            confirmDialog.ShowDialog();
+
+            switch (confirmDialog.OptionsResult as String)
+            {
+                case EXITAPPLICATION:
+                    result = BCIMenuOptions.MainMenuOptions.ExitApplication;
+                    break;
+                case CALIBRATE:
+                    result = BCIMenuOptions.MainMenuOptions.CalibrateOrShowCalibrationModes;
+                    break;
+                case STARTYPING:
+                    result = BCIMenuOptions.MainMenuOptions.TypingOrRecalibrate;
+                    break;
+            }
             return result;
         }
 
@@ -176,7 +203,31 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         public static BCIMenuOptions.MainMenuOptions ShowRecalibrationWindow(Form form, float auc)
         {
             var result = BCIMenuOptions.MainMenuOptions.ExitApplication;
-            _ = ConfirmBoxThreeOption.ShowDialog(CALIBRATIONSTATUS, CALIBRATIONEXPIRED + (auc * 100), EXITAPPLICATION, CALIBRATEAGAIN, CALIBRATE, form);
+            var confirmDialog = new ConfirmBoxThreeOption
+            {
+                PromptTitle = CALIBRATIONSTATUS,
+                Prompt = CALIBRATIONEXPIRED + (auc * 100),
+                Op1Prompt = EXITAPPLICATION,
+                Op2Prompt = CALIBRATEAGAIN,
+                Op3Prompt = CALIBRATE,
+                Op1LabelFont = 12,
+                Op2LabelFont = 12,
+                Op3LabelFont = 12
+            };
+            confirmDialog.ShowDialog();
+
+            switch (confirmDialog.OptionsResult as String)
+            {
+                case EXITAPPLICATION:
+                    result = BCIMenuOptions.MainMenuOptions.ExitApplication;
+                    break;
+                case CALIBRATEAGAIN:
+                    result = BCIMenuOptions.MainMenuOptions.CalibrateOrShowCalibrationModes;
+                    break;
+                case CALIBRATE:
+                    result = BCIMenuOptions.MainMenuOptions.TypingOrRecalibrate;
+                    break;
+            }
             return result;
         }
 

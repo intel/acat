@@ -36,10 +36,5 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
             BciCalibrationMode = BCIScanSections.None;
         }
 
-        public BCIMode(BCIModes bciMode, BCIScanSections bciCalibrationMode)
-        {
-            BciMode = bciMode;
-            BciCalibrationMode = bciCalibrationMode;
-        }
     }
 }

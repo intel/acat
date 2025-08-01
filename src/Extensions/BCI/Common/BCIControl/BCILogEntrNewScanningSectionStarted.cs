@@ -26,13 +26,6 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
             UseLanguageModelProbabilities = false;
         }
 
-        public BCILogEntrNewScanningSectionStarted(string scanningSection, Dictionary<int, string> buttonIDValuesLookupTable, bool useLanguageModelProbabilities)
-        {
-            ButtonIDValuesLookupTable = buttonIDValuesLookupTable;
-            ScanningSection = scanningSection;
-            UseLanguageModelProbabilities = useLanguageModelProbabilities;
-        }
-
         /// <summary>
         /// Corresponding scanning section
         /// Options: "Boxes" "Words" "Sentences" "Keyboard" "Menus"

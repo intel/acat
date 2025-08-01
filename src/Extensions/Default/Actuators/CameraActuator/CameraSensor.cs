@@ -17,11 +17,11 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 {
     public class CameraSensor
     {
-//#if DEBUG
-        //private const string DllFilePath = "acat_gestures_dll_d.dll";
-//#else
+#if DEBUG
+        private const string DllFilePath = "acat_gestures_dll_d.dll";
+#else
         private const string DllFilePath = "acat_gestures_dll.dll";
-//#endif
+#endif
 
         public delegate void CameraEventCallback(string text);
 

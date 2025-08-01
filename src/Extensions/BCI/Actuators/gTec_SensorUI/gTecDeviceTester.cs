@@ -479,7 +479,14 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
                     // NOTE: Impedance values are not currently being used in the gTecSensorUI
                     int[] impedanceValues = new int[16];
-                    var bciLogEntry = new BCILogEntrySignalQuality(channelNames, enabledChannels, railingValues, impedanceValues, exitBCIOnboarding); // 5th param
+                    var bciLogEntry = new BCILogEntrySignalQuality()
+                    {
+                        ChannelNames = channelNames,
+                        EnabledChannels = enabledChannels,
+                        RailingValues = railingValues,
+                        ImpedanceValues = impedanceValues,
+                        PassedSignalCheck = exitBCIOnboarding
+                    }; 
 
                     var jsonString = JsonSerializer.Serialize(bciLogEntry);
                     AuditLog.Audit(new AuditEvent("BCISignalQuality", jsonString));

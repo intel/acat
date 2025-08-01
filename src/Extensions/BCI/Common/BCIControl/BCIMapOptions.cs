@@ -43,12 +43,5 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         /// </summary>
         public bool OkToGoToTyping;
 
-        public BCIMapOptions(bool isAdvanced, Dictionary<BCIScanSections, List<BCIClassifierInfo>> allowedMappingsDict, Dictionary<BCIScanSections, BCIScanSections> currentMappingsDict, BCIError error)
-        {
-            Error = error;
-            IsAdvanced = isAdvanced;
-            AllowedMappingsDict = allowedMappingsDict;
-            CurrentMappingsDict = currentMappingsDict;
-        }
     }
 }

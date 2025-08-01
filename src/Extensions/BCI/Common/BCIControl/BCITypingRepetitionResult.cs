@@ -31,16 +31,6 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
     [Serializable]
     public class BCITypingRepetitionResult
     {
-        public BCITypingRepetitionResult()
-        {
-            PosteriorProbs = new SortedDictionary<int, double>();
-            DecidedFlag = false;
-            DecidedId = 0;
-            Error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
-            ReturnToBoxScanningFlag = false;
-            StatusSignal = SignalStatus.SIGNAL_OK;
-        }
-
         /// <summary>
         /// Boolean, true if a decision has been made
         /// </summary>

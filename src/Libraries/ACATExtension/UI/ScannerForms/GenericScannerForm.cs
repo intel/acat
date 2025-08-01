@@ -218,7 +218,7 @@ namespace ACAT.Scanners
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         protected override void WndProc(ref Message m)
         {
-            // By Default, do nothing and just all base WndProc.
+            // By default, do nothing and just call base WndProc.
             // If you want to handle any messages, override this method and
             // call base.WndProc only if you do not handle the message.
             base.WndProc(ref m);

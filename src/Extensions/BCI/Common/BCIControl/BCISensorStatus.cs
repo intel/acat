@@ -23,12 +23,6 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
             StatusSignal = SignalStatus.SIGNAL_KO;
         }
 
-        public BCISensorStatus(BCIError error, SignalStatus statusSignal)
-        {
-            Error = error;
-            StatusSignal = statusSignal;
-        }
-
         /// <summary>
         /// Sensor error
         /// </summary>

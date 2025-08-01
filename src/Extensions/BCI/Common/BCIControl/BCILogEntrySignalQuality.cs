@@ -19,15 +19,6 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
     public class BCILogEntrySignalQuality
 
     {
-        public BCILogEntrySignalQuality(string[] channelNames, bool[] enabledChannels, int[] railingValues, int[] impedanceValues, bool passedSignalCheck)
-        {
-            ChannelNames = channelNames;
-            EnabledChannels = enabledChannels;
-            ImpedanceValues = impedanceValues;
-            RailingValues = railingValues;
-            PassedSignalCheck = passedSignalCheck;
-        }
-
         /// <summary>
         /// Names of the channels
         /// </summary>

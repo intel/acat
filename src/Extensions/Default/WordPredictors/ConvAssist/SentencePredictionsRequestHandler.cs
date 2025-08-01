@@ -195,10 +195,10 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 List<KeyValuePair<string, double>> SentenceChList = new List<KeyValuePair<string, double>>();
                 SentenceChList = ConvAssistUtils.ToList(predictLettersSentence);
                 sentenceChPred = new string[SentenceChList.Count];
-                foreach (var element in SentenceChList)
+
+                foreach (var (item, index) in SentenceChList.Select((item, index) => (item, index)))
                 {
-                    sentenceChPred[i] = ConvAssistUtils.RemoveApostrophes(ConvAssistUtils.RemoveSpecialCharacters(element.Key));
-                    i += 1;
+                    sentenceChPred[index] = ConvAssistUtils.RemoveApostrophes(ConvAssistUtils.RemoveSpecialCharacters(item.Key));
                 }
             }
             catch (Exception sentencesLetters)

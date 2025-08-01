@@ -34,11 +34,5 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
             FlashingSequence = new Dictionary<int, int[]>();
             DiscardCalibrationData = false;
         }
-
-        public BCICalibrationEnd(Dictionary<int, int[]> flashingSequence, bool discardCalibrationData)
-        {
-            FlashingSequence = flashingSequence;
-            DiscardCalibrationData = discardCalibrationData;
-        }
     }
 }

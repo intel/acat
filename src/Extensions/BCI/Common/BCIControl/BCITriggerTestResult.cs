@@ -37,12 +37,5 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         {
             DutyCycleList = new List<double>();
         }
-
-        public BCITriggerTestResult(bool triggerTestSuccess, List<double> dutyCycleList, double dutyCycleAvg)
-        {
-            DutyCycleAvg = dutyCycleAvg;
-            DutyCycleList = dutyCycleList;
-            TriggerTestSuccess = triggerTestSuccess;
-        }
     }
 }

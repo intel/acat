@@ -23,11 +23,6 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
             RowColumnIDs = new List<int>();
         }
 
-        public BCICalibrationInput(IEnumerable<int> rowColumnIDs)
-        {
-            RowColumnIDs = new List<int>(rowColumnIDs);
-        }
-
         /// <summary>
         /// List of IDs of row/columns highlighted
         /// </summary>

@@ -38,6 +38,8 @@ namespace ACATConfigNext
         private List<(UserControl Panel, string Label)> breadcrumbStack = new();
         private string currentPageLabel;
 
+        private UserControl currentSettingsPanel;
+
         private bool _isDirty = false;
 
         //Delegate for the event triggered when the user makes a change to a preference setting 
@@ -217,24 +219,26 @@ namespace ACATConfigNext
             {
                 try
                 {
-                    bool success = AppCommon.SaveAllPreferences();
-                    if (success)
-                    {
-                        if (CoreGlobals.AppPreferences != null)
-                        {
-                            success &= CoreGlobals.AppPreferences.Save();
-                        }
-                        MessageBox.Show("Settings saved successfully.", "Save Complete",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        _isDirty = false;
-                        saveButton.Enabled = _isDirty;
-                        saveButton.Enabled = _isDirty;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Some settings could not be saved. Please check the logs.",
-                            "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
+                    var prefsPanel = currentSettingsPanel as SettingsPanel;
+                    prefsPanel?.Save();
+                    _isDirty = false;
+                    saveButton.Enabled = _isDirty;
+
+                    //bool success = AppCommon.SaveAllPreferences();
+                    //if (success)
+                    //{
+                    //    if (CoreGlobals.AppPreferences != null)
+                    //    {
+                    //        success &= CoreGlobals.AppPreferences.Save();
+                    //    }
+                    //    MessageBox.Show("Settings saved successfully.", "Save Complete",
+                    //        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show("Some settings could not be saved. Please check the logs.",
+                    //        "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    //}
                 }
                 catch (Exception ex)
                 {
@@ -437,6 +441,8 @@ namespace ACATConfigNext
             }
 
             currentPageLabel = label;
+            currentSettingsPanel = panel;
+
             panel.Dock = DockStyle.Fill;
             contentPanel.Controls.Add(panel);
             contentPanel.DataBindings.Clear(); // Clear any existing bindings to avoid conflicts

@@ -14,7 +14,12 @@ namespace ACATConfigNext.UserControls
     {
         protected Panel basePanel;
 
-        PreferencesBase _prefs;
+        protected PreferencesBase _prefs;
+
+        public bool Save()
+        {
+            return _prefs.Save();
+        }
 
         public SettingsPanel(Action<UserControl, string> showPanel, PreferencesBase prefs, PropertyChangedEventHandler settingsChangedHandler)
         {

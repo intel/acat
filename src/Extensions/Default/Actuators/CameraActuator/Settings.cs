@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PreferencesManagement;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -35,37 +36,37 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         [Descriptor("Cheek Twitch Hold Time")]
         [Description("Value is in milliseconds. If you observe two movement detections, once when you move your cheek up and the second when you return to normal position, adjust the value to the approximate time you hold the cheek in the up position​​")]
         [Range(0, 1000)]
-        //[UIHint("NumericUpDown")]
         [DefaultValue(0)]
-        public int CheekTwitchHoldTime { get; set; } = 0;
+        [ObservableProperty]
+        private int cheekTwitchHoldTime = 0;
 
         [Descriptor("Cheek Twitch Sensitivity")]
         [Description("Try higher values if the system is triggering with involuntary cheek movement. Try lower values  if you want the system to trigger with less cheek movement​​")]
         [Range(5, 50)]
-        //[UIHint("NumericUpDown")]
         [DefaultValue(20)]
-        public int CheekTwitchSensitivity { get; set; } = 20;
+        [ObservableProperty]
+        private int cheekTwitchSensitivity = 20;
 
         [Descriptor("Eyebrow Raise Hold Time")]
         [Description("Value is in milliseconds. If you observe two movement detections, once when you raise your eyebrows and the second when you return to normal position, adjust the value to the approximate time you hold the eyebrow in the raised position")]
         [Range(0, 2000)]
-        //[UIHint("NumericUpDown")]
         [DefaultValue(0)]
-        public int EyebrowRaiseHoldTime { get; set; } = 0;
+        [ObservableProperty]
+        private int eyebrowRaiseHoldTime = 0;
 
         [Descriptor("Eyebrow Raise Sensitivity")]
         [Description("Try higher values if the system is triggering with involuntary eyebrow movement. Try lower values  if you want to the system to trigger with less eyebrow movement")]
         [Range(5, 50)]
-        //[UIHint("NumericUpDown")]
         [DefaultValue(10)]
-        public int EyebrowRaiseSensitivity { get; set; } = 10;
+        [ObservableProperty]
+        private int eyebrowRaiseSensitivity = 10;
 
         [Descriptor("Head Movement Sensitivity")]
         [Description("Try higher values if the system is trying to recalibrate too often with involuntary head movements​. Try lower values if the system is too slow in adjusting the facial regions with head repositioning​")]
         [Range(20, 100)]
-        //[UIHint("NumericUpDown")]
         [DefaultValue(40)]
-        public int HeadMovementSensitivity { get; set; } = 40;
+        [ObservableProperty]
+        private int headMovementSensitivity = 40;
 
         /// <summary>
         /// Preferred camera to use

@@ -153,7 +153,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // Get test flag saying whether we are actually using the sensor or not
             try
             {
-                _Testing_useSensor = BCIActuatorSettings.Settings.Testing_UseSensor;
+                //_Testing_useSensor = BCIActuatorSettings.Settings.Testing_UseSensor;
+                _Testing_useSensor = false;
             }
             catch (Exception ex)
             {

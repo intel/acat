@@ -106,7 +106,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 {
                     case var _ when scannerRoundedButtonControl.Name.Contains("TriggerTest"):
                         OptionResult = new Tuple<BCIMenuOptions.Options, BCISimpleParameters>(BCIMenuOptions.Options.TriggerTest, GetTriggerTestParameters());
-                        BCITriggerTestParameters bciTriggerTestParameters = new((int)customSliderNumberTargets.Value, (int)customSliderScanningTime.Value);
+                        BCITriggerTestParameters bciTriggerTestParameters = new() { NumRepetitions = (int)customSliderNumberTargets.Value, ScanTime = (int)customSliderScanningTime.Value };
                         var str = JsonSerializer.Serialize(bciTriggerTestParameters);
                         _bciActuator?.IoctlRequest((int)OpCodes.TriggerTestSaveParameters, str);
                         break;

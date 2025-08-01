@@ -87,19 +87,19 @@ namespace ACAT.Core.PanelManagement
 
         private void buttonOp1_Click(object sender, EventArgs e)
         {
-            //OptionsResult = BCIMenuOptions.MainMenuOptions.ExitApplication;
+            OptionsResult = Op1Prompt;
             Close();
         }
 
         private void buttonOp2_Click(object sender, EventArgs e)
         {
-            //OptionsResult = BCIMenuOptions.MainMenuOptions.CalibrateOrShowCalibrationModes;
+            OptionsResult = Op2Prompt;
             Close();
         }
 
         private void buttonOp3_Click(object sender, EventArgs e)
         {
-            //OptionsResult = BCIMenuOptions.MainMenuOptions.TypingOrRecalibrate;
+            OptionsResult = Op3Prompt;
             Close();
         }
 

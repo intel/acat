@@ -28,18 +28,6 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
             GroundTruth = "";
         }
 
-        public BCILogEntryEyesClosed(bool eyesClosedEnable, double eyesClosedThreshold, bool eyesClosedDetected, double[] alphaValues, double[] betaValues, double avgAlpha, double avgBeta, string groundTruth = "")
-        {
-            GroundTruth = groundTruth;
-            EyesClosedEnabled = eyesClosedEnable;
-            EyesClosedDetected = eyesClosedDetected;
-            EyesClosedThreshold = eyesClosedThreshold;
-            AlphaValues = alphaValues;
-            BetaValues = betaValues;
-            AvgAlphaValue = avgAlpha;
-            AvgBetaValue = avgBeta;
-        }
-
         // In calibration, ground truth if eyes open/closed
         public String GroundTruth { get; set; }
 

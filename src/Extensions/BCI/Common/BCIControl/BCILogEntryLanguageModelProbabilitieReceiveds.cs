@@ -25,13 +25,6 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
             LanguageModelProbabilities = new Dictionary<int, double>();
         }
 
-        public BCILogEntryLanguageModelProbabilitiesReceived(String languageModelProbabilityType, Dictionary<int, double> languageModelProbabilities, bool languageModelProbabilitiesEnabled)
-        {
-            LanguageModelProbabilityType = languageModelProbabilityType;
-            LanguageModelProbabilitiesEnabled = languageModelProbabilitiesEnabled;
-            LanguageModelProbabilities = languageModelProbabilities;
-        }
-
         /// <summary>
         /// Boolean, true if LM probabilities enabled
         /// </summary>

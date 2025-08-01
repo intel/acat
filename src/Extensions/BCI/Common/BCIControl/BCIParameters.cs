@@ -18,26 +18,7 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
     [Serializable]
     public class BCIParameters
     {
-        public BCIParameters(Dictionary<BCIScanSections, CalibrationParametersForSection> calibrationParameters, bool calibrationRequiredFlag, float lastCalibrationAUC,
-                    int scanning_PauseTime, int scanning_ShortPauseTime, int scanning_showDecisionTime, int scanning_delayAfterDecision, int scanning_delayToGetReady, int minProbablityToDisplayBar,
-                    string focalCircleColor, bool isFocalCircleFilled,
-                    BCIError error)
-        {
-            CalibrationParameters = calibrationParameters;
-            CalibrationRequiredFlag = calibrationRequiredFlag;
-            MinProbablityToDisplayBarOnTyping = minProbablityToDisplayBar;
-            LastCalibrationAUC = lastCalibrationAUC;
-            Scanning_PauseTime = scanning_PauseTime;
-            Scanning_ShortPauseTime = scanning_ShortPauseTime;
-            Scanning_ShowDecisionTime = scanning_showDecisionTime;
-            Scanning_DelayAfterDecision = scanning_delayAfterDecision;
-            Scanning_DelayToGetReady = scanning_delayToGetReady;
-            Scanning_FocalCircleColor = focalCircleColor;
-            Scanning_IsFocalCircleFilled = isFocalCircleFilled;
-            Error = error;
-        }
-
-        public Dictionary<BCIScanSections, CalibrationParametersForSection> CalibrationParameters;
+        public Dictionary<BCIScanSections, CalibrationParametersForSection> CalibrationParameters { get; set; }
 
         /// <summary>
         /// True if calibration is required. This is controlled by the actuator

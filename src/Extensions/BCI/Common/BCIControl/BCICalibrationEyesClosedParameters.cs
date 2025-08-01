@@ -26,11 +26,5 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         /// Duration where eyes are open or closed
         /// </summary>
         public int IntervalDuration;
-
-        public BCICalibrationEyesClosedParameters(int numRepetitions, int intervalDuration)
-        {
-            NumRepetitions = numRepetitions;
-            IntervalDuration = intervalDuration;
-        }
     }
 }

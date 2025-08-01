@@ -94,7 +94,7 @@ namespace ACAT.Core.Utility
             }
             catch (IOException ex)
             {
-                Log.Exception("IO error: " + ex.Message);
+                Log.Verbose("IO error: " + ex.Message);
             }
             catch (Exception ex)
             {

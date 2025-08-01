@@ -31,20 +31,6 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
             IsClassifierLoaded = false;
         }
 
-        public BCILogEntryClassifierLoaded(String typingSection, String classifier, String classifierID, float classifierAUC, int scanTime, int numberOfTargets, int iterationsPerTarget, int minimumScoreRerquired, bool isClassifierLoaded)
-        : base("BCIClassifiersLoaded")
-        {
-            TypingSection = typingSection;
-            Classifier = classifier;
-            IsClassifierLoaded = isClassifierLoaded;
-            ClassifierID = classifierID;
-            ClassifierAUC = classifierAUC;
-            ScanTime = scanTime;
-            NumberOfTargets = numberOfTargets;
-            IterationsPerTarget = iterationsPerTarget;
-            MinimumScoreRequired = minimumScoreRerquired;
-        }
-
         /// <summary>
         /// Calibration Mode
         /// Options: "Box" "Words" "Sentences" "KeyboardR" "KeyboardL"

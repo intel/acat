@@ -25,13 +25,6 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
             SessionId = "";
         }
 
-        public BCIStartSessionResult(bool sensorReady, string sessionDirectory, string sessionId, BCIError error)
-        {
-            SensorReady = sensorReady;
-            Error = error;
-            SessionDirectory = sessionDirectory;
-        }
-
         public BCIError Error { get; set; }
 
         /// <summary>

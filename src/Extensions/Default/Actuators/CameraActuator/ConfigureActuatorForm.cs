@@ -111,7 +111,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
                 setLabelPromptDefaultText();
 
                 Log.Debug("Camera sensor is is running. Calling _videoWindowFinder.Start()");
-                //_videoWindowFinder.Start();
+                _videoWindowFinder.Start();
             }
         }
 

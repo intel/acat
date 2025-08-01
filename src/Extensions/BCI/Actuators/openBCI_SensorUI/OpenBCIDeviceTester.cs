@@ -572,7 +572,14 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                     impedanceValues[chnIdx] = (int)UserControlBCISignalCheck._eegChannels[chnIdx].lastImpedanceResult;
                     chnIdx += 1;
                 }
-                var bciLogEntry = new BCILogEntrySignalQuality(channelNames, enabledChannels, railingValues, impedanceValues, exitBCIOnboarding); // 5th param
+                var bciLogEntry = new BCILogEntrySignalQuality()
+                {
+                    ChannelNames = channelNames,
+                    EnabledChannels = enabledChannels,
+                    RailingValues = railingValues,
+                    ImpedanceValues = impedanceValues,
+                    PassedSignalCheck = exitBCIOnboarding
+                }; 
                 var jsonString = JsonSerializer.Serialize(bciLogEntry);
                 AuditLog.Audit(new AuditEvent("BCISignalQuality", jsonString));
 

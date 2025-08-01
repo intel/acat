@@ -135,7 +135,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             _Interval = _TempInterval;
             _MaxRepetitions = _TempMaxRepetitions;
-            BCICalibrationEyesClosedParameters bCICalibrationEyesClosedParameters = new(_MaxRepetitions, _Interval);
+            BCICalibrationEyesClosedParameters bCICalibrationEyesClosedParameters = new() { NumRepetitions = _MaxRepetitions, IntervalDuration=_Interval };
             var str = JsonSerializer.Serialize(bCICalibrationEyesClosedParameters);
             _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedSaveParameters, str);
             ValidateParameters();

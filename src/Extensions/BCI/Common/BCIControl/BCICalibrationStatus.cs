@@ -83,14 +83,5 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         /// </summary>
         public bool OkToGoToTyping;
 
-        public BCICalibrationStatus(bool showOnlyDefaults, bool areMoreClassifiersThanMapping, bool okToGoToTyping, BCIClassifierStatus overallStatus, Dictionary<BCIScanSections, BCIClassifierInfo> dictClassifierInfo, BCIError error)
-        {
-            Error = error;
-            OverallStatus = overallStatus;
-            DictClassifierInfo = dictClassifierInfo;
-            AreMoreClassifiersThanMapping = areMoreClassifiersThanMapping;
-            ShowOnlyDefaults = showOnlyDefaults;
-            OkToGoToTyping = okToGoToTyping;
-        }
     }
 }

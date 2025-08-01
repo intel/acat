@@ -49,8 +49,9 @@ namespace ACAT.Extension
         [ObservableProperty]
         private bool speakOnEnterKey = true;
 
-     //   [IntDescriptor("Number of times the buttons in the strip scanner are scanned. Strip scanners are typically used for accented letters in non-English languages", 1, 10)]
-        [Descriptor("Number of times the buttons in the strip scanner are scanned. Strip scanners are typically used for accented letters in non-English languages")]
+        //   [IntDescriptor("Number of times the buttons in the strip scanner are scanned. Strip scanners are typically used for accented letters in non-English languages", 1, 10)]
+        [Descriptor("Scanner Column Iterations")]
+        [Description("Number of times the buttons in the strip scanner are scanned. Strip scanners are typically used for accented letters in non-English languages")]
         [UIHint("NumericUpDown")]
         [ObservableProperty]
         private int stripScannerColumnIterations = 2;

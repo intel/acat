@@ -1,7 +1,4 @@
-﻿using ACAT.Core.PreferencesManagement;
-using ACAT.Core.Utility;
-using CommunityToolkit.Mvvm.ComponentModel;
-using MahApps.Metro.Controls;
+﻿using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -186,6 +183,7 @@ namespace ACAT.Core.PreferencesManagement.UI
             }
             Grid.SetColumn(stackPanel, 0);
 
+            /// Create the actual user control now and bind it to the preference property.
             FrameworkElement inputControl;
 
             var binding = new Binding(prop.Name)
@@ -221,7 +219,12 @@ namespace ACAT.Core.PreferencesManagement.UI
 
                 StackPanel sliderStack = CreateLabeledSlider((int)range.Minimum, (int)range.Maximum, value is int i ? i : 0, 1);
                 // Bind the slider value to the property
-                sliderStack?.Children?.OfType<Slider>().FirstOrDefault()?.SetBinding(Slider.ValueProperty, binding);
+                binding.StringFormat = "Value {0:f0}";
+                var slider = sliderStack?.Children?.OfType<Slider>().FirstOrDefault();
+
+                slider?.SetBinding(Slider.ValueProperty, binding);
+                slider?.SetBinding(Slider.ToolTipProperty, binding);
+
                 inputControl = sliderStack;
             }
             else if (prop.Property.PropertyType == typeof(string))

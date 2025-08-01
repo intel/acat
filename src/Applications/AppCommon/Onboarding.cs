@@ -115,33 +115,5 @@ namespace ACAT.Applications
                 }
             }
         }
-
-
-
-
-        public static bool SaveAllPreferences()
-        {
-            bool success = true;
-            try
-            {
-                if (CoreGlobals.AppPreferences != null)
-                {
-                    success &= CoreGlobals.AppPreferences.Save();
-                }
-
-              //  success &= SaveActuatorPreferences();
-
-                //success &= SaveWordPredictorPreferences();
-
-        //        success &= SaveTTSPreferences();
-
-                return success;
-            }
-            catch (Exception ex)
-            {
-                Log.Exception(ex);
-                return false;
-            }
-        }
     }
 }

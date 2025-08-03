@@ -566,6 +566,16 @@ namespace ACAT.Core.AgentManagement
             return _agentsCache.GetAgentByName(name);
         }
 
+        public IFunctionalAgent GetFunctionalAgentByName(String name)
+        {
+            var agent = _agentsCache.GetAgentByName(name);
+            if (agent is IFunctionalAgent functionalAgent)
+            {
+                return functionalAgent;
+            }
+            return null;
+        }
+
         /// <summary>
         /// Returns the name of the currently active agent
         /// </summary>

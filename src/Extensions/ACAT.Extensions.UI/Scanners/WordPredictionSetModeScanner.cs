@@ -39,12 +39,12 @@ namespace ACAT.Extension
         /// <summary>
         /// The root widget representing this scanner form
         /// </summary>
-        private Widget _rootWidget;
+        //private Widget _rootWidget;
 
         /// <summary>
         /// ScannerCommon object for all the heavy lifting
         /// </summary>
-        private ScannerCommon _scannerCommon;
+        //private ScannerCommon _scannerCommon;
 
         /// <summary>
         /// Initializes a new instance of the class.

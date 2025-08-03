@@ -8,7 +8,7 @@
     <WidgetAttribute name="QuickTalk" value="@CmdQuickTalk"  />
     <WidgetAttribute name="PointerControl" value="@CmdShowPointerControl"  />
     <WidgetAttribute name="Keyboard" value="@CmdShowKeyboard"  />
-    <WidgetAttribute name="Windows" value="@CmdWindowsMenu"  />
+    <WidgetAttribute name="System" value="@CmdShowSystem"  />
     <WidgetAttribute name="Location" value="@CmdLocationMenu"  />
     <!--<WidgetAttribute name="MainMenu" value="@CmdMainMenu" /> -->
   </WidgetAttributes>
@@ -20,7 +20,7 @@
         <Widget class="ScannerButton" name="QuickTalk" colorScheme="ScannerButton"/>
         <Widget class="ScannerButton" name="PointerControl" colorScheme="ScannerButton"/>
         <Widget class="ScannerButton" name="Keyboard" colorScheme="ScannerButton"/>
-        <Widget class="ScannerButton" name="Windows" colorScheme="ScannerButton" />
+        <Widget class="ScannerButton" name="System" colorScheme="ScannerButton" />
         <Widget class="ScannerButton" name="Location" colorScheme="ScannerButton" />
         <!--<Widget class="ScannerButton" name="MainMenu" colorScheme="ScannerButton" />-->
       </Widget>
@@ -38,7 +38,7 @@
       <Widget name="QuickTalk" />
       <Widget name="PointerControl" />
       <Widget name="Keyboard" />
-      <Widget name="Windows" />
+      <Widget name="System" />
       <Widget name="Location" />
       <!--<Widget name="MainMenu" />-->
     </Animation>

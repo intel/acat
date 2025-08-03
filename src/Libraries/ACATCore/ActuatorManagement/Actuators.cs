@@ -167,7 +167,7 @@ namespace ACAT.Core.ActuatorManagement
         }
 
         /// <summary>
-        /// Loads actuator settigns from the settings file.
+        /// Loads actuator settings from the settings file.
         /// Walks through the extensions dirs, looks for actuators in there
         /// and caches the Types of the actuators.
         /// Configures the actuators with the settings from the settings file.

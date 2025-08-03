@@ -329,12 +329,8 @@ namespace ACAT.Core.AgentManagement
             //TODO: Fix this hack
             foreach (String dir in extensionDirs)
             {
-                loadAgentsFromDir(dir);
-                //    var path = Path.Combine(dir, AgentManager.AppAgentsRootDir);
-                //    loadAgentsFromDir(path);
-
-                //    path = Path.Combine(dir, AgentManager.FunctionalAgentsRootDir);
-                //    loadAgentsFromDir(path);
+                loadAgentsFromDir(dir, "ACAT.Extensions.AppAgents.*.dll");
+                loadAgentsFromDir(dir, "ACAT.Extensions.FunctionalAgents.*.dll");
             }
         }
 
@@ -342,10 +338,10 @@ namespace ACAT.Core.AgentManagement
         /// Walks the specified directory tree
         /// </summary>
         /// <param name="path">Directory path</param>
-        private void loadAgentsFromDir(String path)
+        private void loadAgentsFromDir(String path, string filter)
         {
             // Recursively look for ACAT Agents in Extensions/Agents direrctory
-            var walker = new DirectoryWalker(path, "ACAT.Extensions.AppAgents.*.dll");
+            var walker = new DirectoryWalker(path, filter);
             walker.Walk(new OnFileFoundDelegate(onAgentFound));
 
             foreach (var agent in _agentTypeLoader.LoadedTypes)

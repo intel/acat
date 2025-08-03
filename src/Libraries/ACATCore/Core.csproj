@@ -373,6 +373,7 @@
     <Compile Include="UserControlManagement\UserControlManager.cs" />
     <Compile Include="UserManagement\ProfileManager.cs" />
     <Compile Include="UserManagement\UserManager.cs" />
+    <Compile Include="Utility\AppInfo.cs" />
     <Compile Include="Utility\TypeLoader\ITypeLoader.cs" />
     <Compile Include="Utility\Disclaimers.cs" />
     <Compile Include="Utility\Attributions.cs" />

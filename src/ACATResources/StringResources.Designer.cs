@@ -178,6 +178,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Applications List is Empty.
+        /// </summary>
+        public static string AppsListIsEmpty {
+            get {
+                return ResourceManager.GetString("AppsListIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to App UI Layout.
         /// </summary>
         public static string AppUILayout {

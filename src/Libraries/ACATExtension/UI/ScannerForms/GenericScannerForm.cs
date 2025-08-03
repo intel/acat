@@ -33,7 +33,7 @@ namespace ACAT.Scanners
     [ClassDescriptor("D9A5B53F-7119-445B-BDEA-F76EC53077F1",
                         "TalkApplicationScanner",
                         "Talk application main window")]
-    public abstract class GenericScannerForm : Form, IScannerPanel
+    public partial class GenericScannerForm : Form, IScannerPanel
     {
         protected readonly ScannerCommon _scannerCommon;
         protected bool _dimScanner;
@@ -51,8 +51,8 @@ namespace ACAT.Scanners
             _dimScanner = true;
         }
 
-        public abstract DefaultCommandDispatcher _dispatcher { get; }
-        public abstract RunCommandDispatcher CommandDispatcher { get; }
+        public virtual DefaultCommandDispatcher _dispatcher { get; }
+        public virtual RunCommandDispatcher CommandDispatcher { get; }
         public ClassDescriptorAttribute Descriptor => ClassDescriptorAttribute.GetDescriptor(GetType());
 
         public Form Form => this;
@@ -67,7 +67,7 @@ namespace ACAT.Scanners
         {
             get { return _scannerCommon.SyncObj; }
         }
-        public abstract ITextController TextController { get; }
+        public virtual ITextController TextController { get; }
 
         protected override CreateParams CreateParams
         {
@@ -77,7 +77,10 @@ namespace ACAT.Scanners
                 return base.CreateParams;
             }
         }
-        public abstract bool CheckCommandEnabled(CommandEnabledArg arg);
+        public virtual bool CheckCommandEnabled(CommandEnabledArg arg)
+        {
+            return false;
+        }
 
         public IEnumerable<Control> GetAll(Control control, Type type)
         {
@@ -88,7 +91,10 @@ namespace ACAT.Scanners
                                       .Where(c => c.GetType() == type);
         }
 
-        public abstract bool HandleInitialize(StartupArg startupArg);
+        public virtual bool HandleInitialize(StartupArg startupArg)
+        {
+            return false;
+        }
 
         public bool Initialize(StartupArg startupArg)
         {
@@ -193,9 +199,15 @@ namespace ACAT.Scanners
             _scannerCommon.Dispose();
         }
 
-        protected abstract void ScannerFormLoaded(object sender, EventArgs e);
+        protected virtual void ScannerFormLoaded(object sender, EventArgs e)
+        {
 
-        protected abstract void ScannerShown(object sender, EventArgs e);
+        }
+
+        protected virtual void ScannerShown(object sender, EventArgs e)
+        {
+
+        }
 
         protected virtual void SetColorScheme()
         {

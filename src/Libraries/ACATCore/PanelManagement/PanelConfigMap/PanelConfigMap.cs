@@ -1,9 +1,5 @@
-﻿////////////////////////////////////////////////////////////////////////////
-//
-// Copyright 2013-2019; 2023 Intel Corporation
+﻿// Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
-//
-////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.AgentManagement;
 using ACAT.Core.UserManagement;
@@ -29,8 +25,6 @@ namespace ACAT.Core.PanelManagement
     /// </summary>
     public class PanelConfigMap
     {
-        private static volatile bool _DLLError = false;
-
         /// <summary>
         /// Name of the panel class config file. This file contains a
         /// list of panel configurations to use
@@ -38,7 +32,6 @@ namespace ACAT.Core.PanelManagement
         public static String PanelClassConfigFileName = "panelclassconfig.xml";
 
         private const String DefaultCulture = "en";
-
         /// <summary>
         /// Name of the config file that has the mapping.  This is loaded from
         /// the user directory
@@ -52,10 +45,9 @@ namespace ACAT.Core.PanelManagement
 
         private static Dictionary<String, AppPanelClassConfig> _cultureAppPanelClassConfig;
         private static Dictionary<String, List<Guid>> _cultureConfigIdMapTable;
-
         private static Dictionary<String, PanelClassConfig> _culturePanelClassConfigMapTable;
         private static AppPanelClassConfig _currentAppPanelClassConfig = null;
-
+        private static volatile bool _DLLError = false;
         /// <summary>
         /// Caches the class Type of forms
         /// </summary>
@@ -65,6 +57,42 @@ namespace ACAT.Core.PanelManagement
         private static String _loadCulture;
         private static List<Guid> _loadPanelConfigMapTable;
         private static Dictionary<Guid, PanelConfigMapEntry> _masterPanelConfigMapTable;
+
+        /// <summary>
+        /// Add a new entry to the PanelClassConfig and save the file
+        /// </summary>
+        /// <param name="appId"></param>
+        /// <param name="language"></param>
+        /// <param name="panelClassConfigMap"></param>
+        /// <returns></returns>
+        public static bool AddPanelClassConfigMap(String appId, String language, PanelClassConfigMap panelClassConfigMap)
+        {
+            var panelClassConfigFilePath = Path.Combine(FileUtils.GetDefaultResourcesDir(), PanelClassConfigFileName);
+
+            if (File.Exists(panelClassConfigFilePath))
+            {
+                var appPanelClassConfig = AppPanelClassConfig.Load(panelClassConfigFilePath);
+
+                var panelClassConfig = appPanelClassConfig.Find(CoreGlobals.AppId);
+
+                if (panelClassConfig != null)
+                {
+                    var result = panelClassConfig.PanelClassConfigMaps.Find(mapEntry => String.Compare(mapEntry.Name, panelClassConfigMap.Name, true) == 0);
+
+                    if (result != null)
+                    {
+                        return false;
+                    }
+
+                    panelClassConfig.PanelClassConfigMaps.Add(panelClassConfigMap);
+                    appPanelClassConfig.Save();
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Checks if two scanners are the same
@@ -192,6 +220,11 @@ namespace ACAT.Core.PanelManagement
             return retVal;
         }
 
+        public static PanelConfigMapEntry GetPanelConfigMapEntryForConfig(String configName)
+        {
+            return _masterPanelConfigMapTable.Values.FirstOrDefault(PanelConfigMapEntry => Equals(PanelConfigMapEntry.ConfigName, configName));
+        }
+
         /// <summary>
         /// Returns the config map entry for the specified config id
         /// </summary>
@@ -201,12 +234,6 @@ namespace ACAT.Core.PanelManagement
         {
             return _masterPanelConfigMapTable.Values.FirstOrDefault(panelConfigMapEntry => Equals(panelConfigMapEntry.ConfigId, configId));
         }
-
-        public static PanelConfigMapEntry GetPanelConfigMapEntryForConfig(String configName)
-        {
-            return _masterPanelConfigMapTable.Values.FirstOrDefault(PanelConfigMapEntry => Equals(PanelConfigMapEntry.ConfigName, configName));
-        }
-
         /// <summary>
         /// Walks the directories specified in extensionDir,
         /// looks for DLL's, loads all the types and looks for
@@ -292,7 +319,6 @@ namespace ACAT.Core.PanelManagement
 
         public static void LoadPanelClassConfig()
         {
-            loadPanelClassConfig(CultureInfo.DefaultThreadCurrentUICulture.Name);
             loadPanelClassConfig(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName);
             loadPanelClassConfig(DefaultCulture);
         }
@@ -377,43 +403,6 @@ namespace ACAT.Core.PanelManagement
 
             return retVal;
         }
-
-        /// <summary>
-        /// Add a new entry to the PanelClassConfig and save the file
-        /// </summary>
-        /// <param name="appId"></param>
-        /// <param name="language"></param>
-        /// <param name="panelClassConfigMap"></param>
-        /// <returns></returns>
-        public static bool AddPanelClassConfigMap(String appId, String language, PanelClassConfigMap panelClassConfigMap)
-        {
-            var panelClassConfigFilePath = Path.Combine(FileUtils.GetDefaultResourcesDir(), PanelClassConfigFileName);
-
-            if (File.Exists(panelClassConfigFilePath))
-            {
-                var appPanelClassConfig = AppPanelClassConfig.Load(panelClassConfigFilePath);
-
-                var panelClassConfig = appPanelClassConfig.Find(CoreGlobals.AppId);
-
-                if (panelClassConfig != null)
-                {
-                    var result = panelClassConfig.PanelClassConfigMaps.Find(mapEntry => String.Compare(mapEntry.Name, panelClassConfigMap.Name, true) == 0);
-
-                    if (result != null)
-                    {
-                        return false;
-                    }
-
-                    panelClassConfig.PanelClassConfigMaps.Add(panelClassConfigMap);
-                    appPanelClassConfig.Save();
-
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         /// <summary>
         /// Adds the specified Type to the cache keyed by the Guid.
         /// </summary>
@@ -529,12 +518,6 @@ namespace ACAT.Core.PanelManagement
             {
                 var guid = GetFormId(type);
 
-#if DEBUG
-                if (guid.Equals(new Guid("61E8A29A-5076-4047-A9F5-89E7E4903407")))
-                {
-                    Log.Debug("Breakpoint");
-                }
-#endif
                 if (guid != Guid.Empty)
                 {
                     AddFormToCache(guid, type);
@@ -654,12 +637,6 @@ namespace ACAT.Core.PanelManagement
         //    }
         //}
 
-        private static void LoadTypesFromExtensions(String dir, OnFileFoundDelegate founddelegate, String wildcard)
-        {
-            var walker = new DirectoryWalker(dir, wildcard);
-            walker.Walk(founddelegate);
-        }
-
         /// <summary>
         /// For this application, load the panel configurations to use from
         /// the panelclassconfig.xml file
@@ -685,6 +662,12 @@ namespace ACAT.Core.PanelManagement
                     _culturePanelClassConfigMapTable[language] = panelClassConfig;
                 }
             }
+        }
+
+        private static void LoadResourcesFromDir(string dirName)
+        {
+            DirectoryWalker walker = new DirectoryWalker(dirName, "*.xml");
+            walker.Walk(onXmlFileFound);
         }
 
         /// <summary>
@@ -717,6 +700,11 @@ namespace ACAT.Core.PanelManagement
             return retVal;
         }
 
+        private static void LoadTypesFromExtensions(String dir, OnFileFoundDelegate founddelegate, String wildcard)
+        {
+            var walker = new DirectoryWalker(dir, wildcard);
+            walker.Walk(founddelegate);
+        }
         /// <summary>
         /// Found a DLL.  Load the class Types of all the relevant classes
         /// from the DLL
@@ -768,34 +756,6 @@ namespace ACAT.Core.PanelManagement
             }
         }
 
-        ///// <summary>
-        ///// Callback function for the directory walker that's invoked
-        ///// when a file is found.  Checks the file is a dll or an
-        ///// xml file and handles them appropriately
-        ///// </summary>
-        ///// <param name="file">name of the file found</param>
-        //private static void onFileFound(String file)
-        //{
-        //    String filePath = file.ToLower();
-        //    String fileName = Path.GetFileName(filePath);
-
-        //    if (String.Compare(fileName, PanelConfigMapFileName, true) == 0)
-        //    {
-        //        onPanelConfigMapFileFound(filePath);
-        //    }
-        //    else
-        //    {
-        //        if (String.Compare(Path.GetExtension(filePath), ".dll", true) == 0)
-        //        {
-        //            onDllFound(filePath);
-        //        }
-        //        else if (String.Compare(Path.GetExtension(filePath), ".xml", true) == 0)
-        //        {
-        //            onXmlFileFound(filePath);
-        //        }
-        //    }
-        //}
-
         /// <summary>
         /// Found the panel config file. This is the xml file that contains
         /// a mapping of the name and guid of the scanner and the name of
@@ -828,13 +788,6 @@ namespace ACAT.Core.PanelManagement
             {
                 Log.Exception(ex);
             }
-        }
-
-
-        private static void LoadResourcesFromDir(string dirName)
-        {
-            DirectoryWalker walker = new DirectoryWalker(dirName, "*.xml");
-            walker.Walk(onXmlFileFound);
         }
         /// <summary>
         /// Found an XML file. Store the complete path to the file

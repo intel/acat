@@ -71,7 +71,7 @@ namespace ACAT.Extensions.UI.Scanners
             return success;
         }
 
-        private bool _transparencyIncreasing = false;
+        //private bool _transparencyIncreasing = false;
 
         protected override void InitializeComponent()
         {
@@ -163,6 +163,13 @@ namespace ACAT.Extensions.UI.Scanners
             return success;
         }
 
+        public bool HandleCmdShowSystem()
+        {
+            _scannerCommon.UserControlManager.PushUserControlByKeyOrName(panelDashboardControls, "supportedapps", "LaunchAppUserControl");
+            _scannerCommon.UserControlManager.StartTopLevelAnimation();
+            return true;
+        }
+
         private void InitializeDashboard()
         {
             this.panelDashboardControls.Name = "Dashboard";
@@ -208,6 +215,7 @@ namespace ACAT.Extensions.UI.Scanners
                     "CmdShowKeyboard" => form.HandleCmdShowKeyboard(),
                     "CmdGoBack" => form.HandleCmdGoBack(),
                     "CmdShowPointerControl" => form.HandleCmdPointerControl(),
+                    "CmdShowSystem" => form.HandleCmdShowSystem(),
                     _ => false,
                 };
 
@@ -279,6 +287,9 @@ namespace ACAT.Extensions.UI.Scanners
                 Commands.Add(new DashboardAppCommandHandler("ClickHold"));
                 Commands.Add(new DashboardAppCommandHandler("ScrollUp"));
                 Commands.Add(new DashboardAppCommandHandler("ScrollDown"));
+
+                /* Launch App Commands */
+                Commands.Add(new DashboardAppCommandHandler("Chrome"));
             }
         }
     }

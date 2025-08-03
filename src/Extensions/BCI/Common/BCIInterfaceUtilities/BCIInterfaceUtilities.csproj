@@ -141,7 +141,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\ACATResources\ACATResources.csproj">
+    <ProjectReference Include="$(SolutionDir)ACATResources\ACATResources.csproj">
       <Project>{A0990D4E-F25B-430C-BDA3-40A72560B877}</Project>
       <Name>ACATResources</Name>
       <Private>False</Private>

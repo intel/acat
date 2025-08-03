@@ -153,17 +153,17 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ACATResources\ACATResources.csproj">
+    <ProjectReference Include="$(SolutionDir)ACATResources\ACATResources.csproj">
       <Project>{a0990d4e-f25b-430c-bda3-40a72560b877}</Project>
       <Private>False</Private>
       <Name>ACATResources</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\ACATCore\Core.csproj">
+    <ProjectReference Include="$(SolutionDir)Libraries\ACATCore\Core.csproj">
       <Project>{827ad764-63dd-4b12-974d-2b70cc877051}</Project>
       <Name>Core</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\ACATExtension\Extension.csproj">
+    <ProjectReference Include="$(SolutionDir)Libraries\ACATExtension\Extension.csproj">
       <Project>{17feda57-1f08-4e19-9dc3-a2c00ec792a3}</Project>
       <Name>Extension</Name>
       <Private>False</Private>

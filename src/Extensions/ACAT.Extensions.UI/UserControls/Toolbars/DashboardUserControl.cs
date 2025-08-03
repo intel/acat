@@ -24,7 +24,7 @@ namespace ACAT.Extensions.UI.UserControls
                 new() { Name = "QuickTalk", Icon = BootstrapFontUtility.GetBootstrapFontCharacter("chat"), Visible = true },
                 new() { Name = "PointerControl", Icon = BootstrapFontUtility.GetBootstrapFontCharacter("mouse2"), Visible = true },
                 new() { Name = "Keyboard", Icon = BootstrapFontUtility.GetBootstrapFontCharacter("keyboard"), Visible = true },
-                new() { Name = "Windows", Icon = BootstrapFontUtility.GetBootstrapFontCharacter("windows"), Visible = true },
+                new() { Name = "System", Icon = BootstrapFontUtility.GetBootstrapFontCharacter("windows"), Visible = true },
                 new() { Name = "Location", Icon = BootstrapFontUtility.GetBootstrapFontCharacter("arrows-move"), Visible = true },
                 //new() { Name = "MainMenu", Icon = BootstrapFontUtility.GetBootstrapFontCharacter("arrows-move"), Visible = true },
             };

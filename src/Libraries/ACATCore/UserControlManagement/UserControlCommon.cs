@@ -49,6 +49,8 @@ namespace ACAT.Core.UserControlManagement
         private UserControlConfigMapEntry mapEntry { get; }
         private IScannerPanel ScannerPanel { get; }
 
+        public AgentManager AppAgentMgr => Context.AppAgentMgr;
+
         private SyncLock SyncLock { get; }
 
         private IUserControl UserControl { get; }

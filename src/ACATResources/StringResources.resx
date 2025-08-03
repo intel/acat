@@ -1833,4 +1833,7 @@ ACAT uses two metrics - “railing” and “impedance” - to check signal qual
   <data name="Quit" xml:space="preserve">
     <value>Quit</value>
   </data>
+  <data name="AppsListIsEmpty" xml:space="preserve">
+    <value>Applications List is Empty</value>
+  </data>
 </root>

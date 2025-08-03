@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+]>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="Chrome" value="@Chrome"  />
+    <WidgetAttribute name="Edge" value="@Edge"  />
+    <WidgetAttribute name="Outlook" value="@Outlook"  />
+
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="BoxWidget"  name="ToolbarBox">
+      <Widget class="RowWidget" name="DefaultButtonsBox">
+        <Widget class="ScannerButton" name="Chrome" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="Edge" colorScheme="ScannerButton" enabled="false"/>
+        <Widget class="ScannerButton" name="Outlook" colorScheme="ScannerButton" enabled="false"/>
+      </Widget>
+    </Widget>
+  </Layout>
+
+
+  <Animations>
+    <Animation name="TopButtonRotation"
+               start="true"
+               onEnter=""
+               scanTime="@MenuDialogScanTime"
+               iterations="1"
+               onSelect="actuate(@SelectedWidget);stop();">
+      <Widget name="Chrome" />
+      <Widget name="Edge" />
+      <Widget name="Outlook" />
+    </Animation>
+  </Animations>
+</ACAT>

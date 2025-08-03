@@ -33,7 +33,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
-    
     <ErrorReport>prompt</ErrorReport>
     <UseWinFormsOutOfProcDesigner>True</UseWinFormsOutOfProcDesigner>
   </PropertyGroup>
@@ -41,7 +40,6 @@
     <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
     <Optimize>true</Optimize>
     <PlatformTarget>x64</PlatformTarget>
-    
     <ErrorReport>prompt</ErrorReport>
     <UseWinFormsOutOfProcDesigner>True</UseWinFormsOutOfProcDesigner>
   </PropertyGroup>
@@ -50,7 +48,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    
     <ErrorReport>prompt</ErrorReport>
     <UseWinFormsOutOfProcDesigner>True</UseWinFormsOutOfProcDesigner>
   </PropertyGroup>
@@ -58,7 +55,6 @@
     <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
     <Optimize>true</Optimize>
     <PlatformTarget>x86</PlatformTarget>
-    
     <ErrorReport>prompt</ErrorReport>
     <UseWinFormsOutOfProcDesigner>True</UseWinFormsOutOfProcDesigner>
   </PropertyGroup>
@@ -127,6 +123,12 @@
       <DependentUpon>MenuPanel.cs</DependentUpon>
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="AppAgents\Outlook\DefaultOutlookInspector.cs" />
+    <Compile Include="AppAgents\Outlook\IOutlookInspector.cs" />
+    <Compile Include="AppAgents\Outlook\OutlookAgentBase.cs" />
+    <Compile Include="AppAgents\Outlook\OutlookAgentKeyLoggerTextInterface.cs" />
+    <Compile Include="AppAgents\Outlook\OutlookAgentTextInterface.cs" />
+    <Compile Include="AppAgents\Outlook\OutlookInspector.cs" />
     <Compile Include="CommandHandlers\MouseHandler.cs" />
     <Compile Include="CommandHandlers\SendKeyHandler.cs" />
     <Compile Include="CommandHandlers\CreateAndShowScanner.cs" />
@@ -137,6 +139,8 @@
     <Compile Include="CommandHandlers\FunctionKeyHandler.cs" />
     <Compile Include="CommandHandlers\ShowScreenLockHandler.cs" />
     <Compile Include="CommandHandlers\ShowMenusHandler.cs" />
+    <Compile Include ="AppAgents\ChromeBrowser\ChromeBrowserAgentBase.cs" />
+    <Compile Include ="AppAgents\ChromeBrowser\ChromeBrowserTextControlAgent.cs" />
     <Compile Include="UI\ShowDisclaimersForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -263,7 +267,6 @@
     <EmbeddedResource Include="UI\UserControlContainerForm.resx">
       <DependentUpon>UserControlContainerForm.cs</DependentUpon>
     </EmbeddedResource>
-
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

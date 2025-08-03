@@ -368,5 +368,3 @@ src/WindowsFormsApp1/Properties/Resources.Designer.cs
 src/WindowsFormsApp1/Properties/Resources.resx
 src/WindowsFormsApp1/Properties/Settings.Designer.cs
 src/WindowsFormsApp1/Properties/Settings.settings
-
-src/Extensions/Default/FunctionalAgents/*

@@ -58,16 +58,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ACATResources\ACATResources.csproj">
+    <ProjectReference Include="$(SolutionDir)ACATResources\ACATResources.csproj">
       <Project>{a0990d4e-f25b-430c-bda3-40a72560b877}</Project>
       <Private>False</Private>
       <Name>ACATResources</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Extensions\ACAT.Extensions.Onboarding\ACAT.Extensions.Onboarding.csproj">
+    <ProjectReference Include="$(SolutionDir)Extensions\ACAT.Extensions.Onboarding\ACAT.Extensions.Onboarding.csproj">
       <Project>{e576aeb6-bce5-4827-b38e-140e4950e099}</Project>
       <Name>ACAT.Extensions.Onboarding</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\ACATCore\Core.csproj">
+    <ProjectReference Include="$(SolutionDir)Libraries\ACATCore\Core.csproj">
       <Project>{827ad764-63dd-4b12-974d-2b70cc877051}</Project>
       <Name>Core</Name>
       <Private>False</Private>

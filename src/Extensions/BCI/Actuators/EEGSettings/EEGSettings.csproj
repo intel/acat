@@ -71,7 +71,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Libraries\ACATCore\Core.csproj">
+    <ProjectReference Include="$(SolutionDir)Libraries\ACATCore\Core.csproj">
       <Project>{827ad764-63dd-4b12-974d-2b70cc877051}</Project>
       <Name>Core</Name>
       <Private>False</Private>

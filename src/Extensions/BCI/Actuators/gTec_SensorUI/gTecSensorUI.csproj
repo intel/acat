@@ -298,12 +298,12 @@
     <None Include="Resources\SignalQualityGradients2\signalQualityGradient_3AcceptableChannels.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\ACATResources\ACATResources.csproj">
+    <ProjectReference Include="$(SolutionDir)ACATResources\ACATResources.csproj">
       <Project>{a0990d4e-f25b-430c-bda3-40a72560b877}</Project>
       <Name>ACATResources</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Libraries\ACATCore\Core.csproj">
+    <ProjectReference Include="$(SolutionDir)Libraries\ACATCore\Core.csproj">
       <Project>{827ad764-63dd-4b12-974d-2b70cc877051}</Project>
       <Name>Core</Name>
       <Private>False</Private>

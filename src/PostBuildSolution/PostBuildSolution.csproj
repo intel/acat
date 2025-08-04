@@ -78,11 +78,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="$(SolutionDir)\Applications\Install\ConvAssistApp\ConvAssist\**\*" CopyToOutputDirectory="PreserveNewest">
-      <Link>ConvAssistApp\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="$(SolutionDir)\Assets\**\*" CopyToOutputDirectory="PreserveNewest">
       <Link>Assets\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Content>
@@ -96,11 +91,27 @@
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+  <Target Name="UnzipDependency" BeforeTargets="Build">
+    <!-- Define paths -->
+    <PropertyGroup>
+      <ZipFile>$(SolutionDir)\Applications\Install\ConvAssistApp\ConvAssist.zip</ZipFile>
+      <ExtractedDir>$(IntermediateOutputPath)UnzippedDependency\</ExtractedDir>
+      <UnzipFlagFile>$(ExtractedDir).unzipped</UnzipFlagFile>
+    </PropertyGroup>
+
+    <!-- Only unzip if the flag file doesn't exist -->
+    <Message Text="Unzipping dependency files from $(ZipFile) to $(ExtractedDir)" Condition="!Exists('$(UnzipFlagFile)')" Importance="high" />
+    <Exec Condition="!Exists('$(UnzipFlagFile)')" Command="powershell -Command &quot;Expand-Archive -Path '$(ZipFile)' -DestinationPath '$(ExtractedDir)' -Force&quot;" />
+    <Message Text="Unzipped dependency files to $(ExtractedDir)" Condition="!Exists('$(UnzipFlagFile)')" Importance="high" />
+ 
+    <!-- Create a flag file to avoid re-extraction -->
+    <WriteLinesToFile Condition="!Exists('$(UnzipFlagFile)')" File="$(UnzipFlagFile)" Lines="Unzipped on $(MSBuildThisFileFullPath)" Overwrite="true" />
+
+    <!-- Copy contents to OutputPath -->
+    <ItemGroup>
+      <DependencyFiles Include="$(ExtractedDir)**\*" />
+    </ItemGroup>
+    <Message Text="Copying dependency files to output directory: $(OutDir)" Importance="high" />
+    <Copy SourceFiles="@(DependencyFiles)" DestinationFolder="$(OutDir)%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

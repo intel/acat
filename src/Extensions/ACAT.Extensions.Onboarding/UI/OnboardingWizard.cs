@@ -297,7 +297,8 @@ namespace ACAT.Extensions.Onboarding
             _extensionsTypeCache.AddRange(onboardingTypes);
 
             // Look for any additional onboarding extensions in the current directory
-            loadOnboardingExtensionsIntoCache("Extensions");
+            loadOnboardingExtensionsIntoCache(System.IO.Path.GetDirectoryName(
+                System.Reflection.Assembly.GetExecutingAssembly().Location));
         }
 
         private void loadOnboardingExtensionsIntoCache(String dir)

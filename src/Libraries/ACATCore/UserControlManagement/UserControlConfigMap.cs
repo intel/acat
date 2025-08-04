@@ -137,7 +137,8 @@ namespace ACAT.Core.UserControlManagement
         /// <returns>Panel config map object</returns>
         public static UserControlConfigMapEntry GetUserControlConfigMapEntry(Guid guid)
         {
-            var retVal = (getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.Name, guid) ?? getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, guid)) ?? getCultureConfigMapEntry(DefaultCulture, guid);
+            var retVal = (getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, guid)) ??
+                getCultureConfigMapEntry(DefaultCulture, guid);
             return retVal;
         }
 
@@ -150,7 +151,8 @@ namespace ACAT.Core.UserControlManagement
         /// <returns>Panel config map object</returns>
         public static UserControlConfigMapEntry GetUserControlConfigMapEntry(String name)
         {
-            var retVal = (getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.Name, name) ?? getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, name)) ?? getCultureConfigMapEntry(DefaultCulture, name);
+            var retVal = ( getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, name)) ?? 
+                getCultureConfigMapEntry(DefaultCulture, name);
             return retVal;
         }
 
@@ -228,26 +230,6 @@ namespace ACAT.Core.UserControlManagement
             _cultureConfigIdMapTable.Add(_loadCulture, _loadUserControlConfigMapTable);
 
             _configFileLocationMap.Add(_loadCulture, _loadConfigFileLocationMap);
-
-            if (!_cultureConfigIdMapTable.ContainsKey(CultureInfo.DefaultThreadCurrentUICulture.Name))
-            {
-                resourcesDir = Path.Combine(FileUtils.ACATPath, CultureInfo.DefaultThreadCurrentUICulture.Name);
-                if (Directory.Exists(resourcesDir))
-                {
-                    _loadCulture = CultureInfo.DefaultThreadCurrentUICulture.Name;
-
-                    _loadUserControlConfigMapTable = new List<Guid>();
-
-                    _loadConfigFileLocationMap = new Dictionary<string, string>();
-
-                    Log.Debug("ResourcesDir: " + resourcesDir);
-                    load(resourcesDir, "*.xml");
-
-                    _cultureConfigIdMapTable.Add(_loadCulture, _loadUserControlConfigMapTable);
-
-                    _configFileLocationMap.Add(_loadCulture, _loadConfigFileLocationMap);
-                }
-            }
 
             // load for the current culture
             if (!_cultureConfigIdMapTable.ContainsKey(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName))
@@ -331,11 +313,7 @@ namespace ACAT.Core.UserControlManagement
 
                 Log.IsNull("mapEntry.UsercontrolType", mapEntry.UserControlType);
 
-                var configFilePath = getConfigFilePathFromLocationMap(CultureInfo.DefaultThreadCurrentUICulture.Name, mapEntry.ConfigFileName);
-                if (String.IsNullOrEmpty(configFilePath))
-                {
-                    configFilePath = getConfigFilePathFromLocationMap(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, mapEntry.ConfigFileName);
-                }
+                var configFilePath = getConfigFilePathFromLocationMap(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, mapEntry.ConfigFileName);
 
                 if (String.IsNullOrEmpty(configFilePath))
                 {

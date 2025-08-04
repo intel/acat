@@ -1,9 +1,5 @@
-﻿////////////////////////////////////////////////////////////////////////////
-//
-// Copyright 2013-2019; 2023 Intel Corporation
+﻿// Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
-//
-////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.AnimationManagement;
 using ACAT.Core.PanelManagement;
@@ -11,6 +7,7 @@ using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.UserControls;
+using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -18,18 +15,13 @@ using System.Windows.Forms;
 
 namespace ACAT.Extension
 {
-    /// <summary>
-    /// The tryout app that allows the user to practice switch scanning and
-    /// also set a suitable scanning speed
-    /// </summary>
     [ClassDescriptor("61E8A29A-5076-4047-A9F5-89E7E4903407",
                         "UserControlDefaultTryout",
                     "User Control to adjust the scan timing")]
-    public partial class UserControlDefaultTryout : GenericUserControl, IUserControl
+    public partial class UserControlDefaultTryout : KeyboardUserControl
     {
         private int _currentWordIndex = 0;
         private int _index = 0;
-        private UserControlKeyboardCommon _keyboardCommon;
 
         private readonly int _prevScanTime = CoreGlobals.AppPreferences.ScanTime;
 
@@ -39,22 +31,16 @@ namespace ACAT.Extension
         {
             InitializeComponent();
 
-            _words.Add("tab");
-            _words.Add("eat");
-            _words.Add("tea");
-            _words.Add("ate");
-            _words.Add("bet");
-            _words.Add("bat");
+            _words.Add(StringResources.TryoutWord1);
+            _words.Add(StringResources.TryoutWord2);
+            _words.Add(StringResources.TryoutWord3);
+            _words.Add(StringResources.TryoutWord4);
+            _words.Add(StringResources.TryoutWord5);
+            _words.Add(StringResources.TryoutWord6);
         }
 
-        public override bool Initialize(UserControlConfigMapEntry mapEntry, TextController textController, IScannerPanel scanner)
+        protected override bool HandleInitialize()
         {
-            _keyboardCommon = new UserControlKeyboardCommon(this, mapEntry, textController, scanner);
-
-            bool retVal = _keyboardCommon.Initialize();
-
-            _keyboardCommon.AnimationManager.EvtPlayerStateChanged += AnimationManager_EvtPlayerStateChanged;
-
             richTextBox.AppendText(_words[_currentWordIndex], Color.DimGray);
 
             customSliderScanningSpeed.ValueChanged += CustomSliderScanningSpeed_ValueChanged;
@@ -68,7 +54,7 @@ namespace ACAT.Extension
 
             checkBoxDontShowThisOnStartup.CheckStateChanged += CheckBoxDontShowThisOnStartup_CheckStateChanged;
 
-            return retVal;
+            return true;
         }
 
         public override void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
@@ -86,9 +72,9 @@ namespace ACAT.Extension
 
                         if (_index == wordToType.Length)
                         {
-                            (_keyboardCommon.ScannerForm as IScannerPanel).OnPause();
+                            (_userControlCommon.ScannerForm as IScannerPanel).OnPause();
 
-                            var toastForm = new ToastForm2("GREAT JOB!", "Continue practicing \nor hit \"Next\" to continue");
+                            var toastForm = new ToastForm2(StringResources.TryoutAlert, StringResources.TryoutSuccess);
                             Windows.SetWindowPosition(toastForm, Windows.WindowPosition.CenterScreen);
                             toastForm.ShowDialog(this);
 
@@ -102,7 +88,7 @@ namespace ACAT.Extension
                             _index = 0;
                             richTextBox.Text = String.Empty;
                             richTextBox.AppendText(_words[_currentWordIndex], Color.DimGray);
-                            (_keyboardCommon.ScannerForm as IScannerPanel).OnResume();
+                            (_userControlCommon.ScannerForm as IScannerPanel).OnResume();
                             return;
                         }
                     }));
@@ -126,19 +112,19 @@ namespace ACAT.Extension
             if (checkBoxDontShowThisOnStartup.Checked)
             {
                 ConfirmBoxOneOption.ShowDialog("Refer to the ACAT User Guide on how to re-enable this screen",
-                    "", "OK", _keyboardCommon.ScannerForm);
+                    "", "OK", _userControlCommon.ScannerForm);
             }
 
             CoreGlobals.AppPreferences.Save();
 
-            _keyboardCommon.ScannerForm.Close();
+            _userControlCommon.ScannerForm.Close();
         }
 
         private void changeScanningSpeed()
         {
             Invoke(new MethodInvoker(delegate
             {
-                (_keyboardCommon.ScannerForm as IScannerPanel).OnPause();
+                (_userControlCommon.ScannerForm as IScannerPanel).OnPause();
 
                 decimal sliderVal = customSliderScanningSpeed.Value;
                 int sliderValRounded = (int)(sliderVal * 100);
@@ -147,7 +133,7 @@ namespace ACAT.Extension
 
                 Common.AppPreferences.NotifyPreferencesChanged();
 
-                (_keyboardCommon.ScannerForm as IScannerPanel).OnResume();
+                (_userControlCommon.ScannerForm as IScannerPanel).OnResume();
             }));
         }
 
@@ -167,7 +153,7 @@ namespace ACAT.Extension
 
                 CoreGlobals.AppPreferences.Save();
 
-                _keyboardCommon.ScannerForm.Close();
+                _userControlCommon.ScannerForm.Close();
             }));
         }
 

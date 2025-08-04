@@ -139,8 +139,8 @@
     <Compile Include="CommandHandlers\FunctionKeyHandler.cs" />
     <Compile Include="CommandHandlers\ShowScreenLockHandler.cs" />
     <Compile Include="CommandHandlers\ShowMenusHandler.cs" />
-    <Compile Include ="AppAgents\ChromeBrowser\ChromeBrowserAgentBase.cs" />
-    <Compile Include ="AppAgents\ChromeBrowser\ChromeBrowserTextControlAgent.cs" />
+    <Compile Include="AppAgents\ChromeBrowser\ChromeBrowserAgentBase.cs" />
+    <Compile Include="AppAgents\ChromeBrowser\ChromeBrowserTextControlAgent.cs" />
     <Compile Include="UI\ShowDisclaimersForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -266,6 +266,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\UserControlContainerForm.resx">
       <DependentUpon>UserControlContainerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControls\GenericUserControl.resx">
+      <DependentUpon>GenericUserControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

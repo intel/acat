@@ -28,7 +28,7 @@ namespace ACAT.Core.Utility
         /// <summary>
         /// Folder under which ACAT extensions are stored
         /// </summary>
-        public const String ExtensionsDir = "Extensions";
+        public const String ExtensionsDir = "";
 
         /// <summary>
         /// Folder under which all ACAT assets such as

@@ -1837,4 +1837,10 @@ ACAT utiliza dos métricas - “saturación” e “impedancia” - para verific
   <data name="AppsListIsEmpty" xml:space="preserve">
     <value />
   </data>
+  <data name="TryoutAlert" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TryoutSuccess" xml:space="preserve">
+    <value />
+  </data>
 </root>

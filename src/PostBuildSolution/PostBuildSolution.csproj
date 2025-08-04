@@ -112,6 +112,6 @@
       <DependencyFiles Include="$(ExtractedDir)**\*" />
     </ItemGroup>
     <Message Text="Copying dependency files to output directory: $(OutDir)" Importance="high" />
-    <Copy SourceFiles="@(DependencyFiles)" DestinationFolder="$(OutDir)\ConvAssistApp" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(DependencyFiles)" DestinationFolder="$(OutDir)\ConvAssistApp\%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>
 </Project>

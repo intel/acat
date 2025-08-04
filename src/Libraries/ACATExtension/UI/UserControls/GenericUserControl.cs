@@ -55,7 +55,7 @@ namespace ACAT.UserControls
             _userControlCommon.OnLoad();
             _userControlCommon.AnimationManager.OnLoad(_userControlCommon.RootWidget);
         }
-
+        
         public virtual void OnPause()
         {
             _userControlCommon.OnPause();

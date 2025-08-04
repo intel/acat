@@ -332,6 +332,10 @@ namespace ACAT.Core.AgentManagement
                 loadAgentsFromDir(dir, "ACAT.Extensions.AppAgents.*.dll");
                 loadAgentsFromDir(dir, "ACAT.Extensions.FunctionalAgents.*.dll");
             }
+            foreach (var agent in _agentTypeLoader.LoadedTypes)
+            {
+                addAgent(agent.Value);
+            }
         }
 
         /// <summary>
@@ -343,11 +347,6 @@ namespace ACAT.Core.AgentManagement
             // Recursively look for ACAT Agents in Extensions/Agents direrctory
             var walker = new DirectoryWalker(path, filter);
             walker.Walk(new OnFileFoundDelegate(onAgentFound));
-
-            foreach (var agent in _agentTypeLoader.LoadedTypes)
-            {
-                addAgent(agent.Value);
-            }
         }
 
         /// <summary>

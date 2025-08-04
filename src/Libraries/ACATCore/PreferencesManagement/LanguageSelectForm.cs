@@ -144,15 +144,6 @@ namespace ACAT.Core.PreferencesManagement
             foreach (ListViewItem item in listBoxLanguages.Items)
             {
                 var culture = item.Tag as CultureInfo;
-                if (String.Compare(culture.Name, CultureInfo.DefaultThreadCurrentUICulture.Name, true) == 0)
-                {
-                    return item.Index;
-                }
-            }
-
-            foreach (ListViewItem item in listBoxLanguages.Items)
-            {
-                var culture = item.Tag as CultureInfo;
 
                 if (String.Compare(culture.TwoLetterISOLanguageName,
                         CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, true) == 0)

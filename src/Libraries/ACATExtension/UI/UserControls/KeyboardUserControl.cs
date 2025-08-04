@@ -1,14 +1,5 @@
-﻿////////////////////////////////////////////////////////////////////////////
-//
-// Copyright 2013-2019; 2023 Intel Corporation
+﻿/// Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
-//
-//
-// KeyboardAbcUserControl.cs
-//
-// User control for the keyboard that is alphabetically arranged.
-//
-////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.AnimationManagement;
 using ACAT.Core.PanelManagement;
@@ -21,6 +12,7 @@ namespace ACAT.UserControls
 {
     public class KeyboardUserControl : GenericUserControl
     {
+        public UserControlKeyboardCommon _keybordUserControlCommon => (UserControlKeyboardCommon)_userControlCommon;
 
         public override bool Initialize(UserControlConfigMapEntry mapEntry, TextController textController, IScannerPanel scanner)
         {
@@ -30,14 +22,13 @@ namespace ACAT.UserControls
 
             _userControlCommon.AnimationManager.EvtPlayerStateChanged += AnimationManager_EvtPlayerStateChanged;
             retVal = HandleInitialize();
-
+            
             return retVal;
         }
-
 
         protected override bool HandleInitialize()
         {
             return true;
-        }   
+        }
     }
 }

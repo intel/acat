@@ -278,8 +278,6 @@ namespace ACAT.Core.PanelManagement
             // then walk the resources directories
             var resourceInfos = new List<(string Path, string Culture)>
             {
-                ( FileUtils.GetDefaultResourcesDir(), CultureInfo.DefaultThreadCurrentUICulture.Name ),
-                ( FileUtils.ACATPath, CultureInfo.DefaultThreadCurrentUICulture.Name ),
                 ( FileUtils.ACATPath, CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName)
             };
 
@@ -394,9 +392,10 @@ namespace ACAT.Core.PanelManagement
                 return false;
             }
 
-            if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.Name, out PanelClassConfig panelClassConfig) ||
-                _culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, out panelClassConfig) ||
-                _culturePanelClassConfigMapTable.TryGetValue(DefaultCulture, out panelClassConfig))
+            if (
+                _culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, out PanelClassConfig panelClassConfig) ||
+                _culturePanelClassConfigMapTable.TryGetValue(DefaultCulture, out panelClassConfig)
+                )
             {
                 retVal = panelClassConfig.SetDefaultClassConfigMap(configName);
             }
@@ -441,11 +440,7 @@ namespace ACAT.Core.PanelManagement
 
                 Log.IsNull("mapEntry.FormType ", mapEntry.FormType);
 
-                var configFilePath = getConfigFilePathFromLocationMap(CultureInfo.DefaultThreadCurrentUICulture.Name, mapEntry.ConfigFileName);
-                if (String.IsNullOrEmpty(configFilePath))
-                {
-                    configFilePath = getConfigFilePathFromLocationMap(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, mapEntry.ConfigFileName);
-                }
+                var configFilePath = getConfigFilePathFromLocationMap(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, mapEntry.ConfigFileName);
 
                 if (String.IsNullOrEmpty(configFilePath))
                 {
@@ -604,10 +599,6 @@ namespace ACAT.Core.PanelManagement
         /// <returns>the object, null if not found</returns>
         private static PanelConfigMapEntry getMapEntryFromPanelClassConfigMap(String panelClass)
         {
-            //var panelClassConfigMapEntry = (getClassConfigMapEntryForCulture(CultureInfo.DefaultThreadCurrentUICulture.Name, panelClass) ??
-            //                                getClassConfigMapEntryForCulture(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, panelClass)) ??
-            //                               getClassConfigMapEntryForCulture(DefaultCulture, panelClass);
-
             var entry = getClassConfigMapEntryForCulture(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, panelClass);
 
             if (entry == null)

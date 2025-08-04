@@ -25,12 +25,9 @@ namespace ACAT.Extension
     [ClassDescriptor("4D767749-D9C6-450E-A1D6-169074F2F66A",
                     "UserControlScreenLock",
                     "User Control to lock the screen")]
-    public partial class UserControlScreenLock : GenericUserControl, IUserControl
+    public partial class UserControlScreenLock : KeyboardUserControl
     {
         private int _index = 0;
-        private KeyboardActuator _keyboardActuator;
-        private UserControlKeyboardCommon _keyboardCommon;
-
         private String _pin = Common.AppPreferences.ScreenLockPin;
 
         public UserControlScreenLock()
@@ -38,31 +35,15 @@ namespace ACAT.Extension
             InitializeComponent();
         }
 
-        public override bool Initialize(UserControlConfigMapEntry mapEntry, TextController textController, IScannerPanel scanner)
+        protected override bool HandleInitialize()
         {
-            _keyboardCommon = new UserControlKeyboardCommon(this, mapEntry, textController, scanner);
-
-            bool retVal = _keyboardCommon.Initialize();
-
-            _keyboardCommon.AnimationManager.EvtPlayerStateChanged += AnimationManager_EvtPlayerStateChanged;
-
-            var actuator = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
-            if (actuator is KeyboardActuator)
-            {
-                _keyboardActuator = actuator as KeyboardActuator;
-                _keyboardActuator.EvtKeyPress += _keyboardActuator_EvtKeyPress;
-            }
-
             if (!validatePin(_pin))
             {
                 _pin = randomPin();
             }
 
             richTextBox.AppendText(_pin, Color.DimGray);
-
-            scanner.Form.FormClosing += Form_FormClosing;
-
-            return retVal;
+            return true;
         }
 
         public override void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
@@ -82,17 +63,17 @@ namespace ACAT.Extension
 
         private void buttonDone_Click(object sender, EventArgs e)
         {
-            _keyboardCommon.ScannerForm.Close();
+            _userControlCommon.ScannerForm.Close();
         }
 
-        private void Form_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            _keyboardActuator.EvtKeyPress -= _keyboardActuator_EvtKeyPress;
-            if (_keyboardCommon.AnimationManager != null)
-            {
-                _keyboardCommon.AnimationManager.EvtPlayerStateChanged -= AnimationManager_EvtPlayerStateChanged;
-            }
-        }
+        //private void Form_FormClosing(object sender, FormClosingEventArgs e)
+        //{
+        //    _keyboardActuator.EvtKeyPress -= _keyboardActuator_EvtKeyPress;
+        //    if (_keyboardCommon.AnimationManager != null)
+        //    {
+        //        _keyboardCommon.AnimationManager.EvtPlayerStateChanged -= AnimationManager_EvtPlayerStateChanged;
+        //    }
+        //}
 
         private void handleKeyPress(char key)
         {
@@ -107,7 +88,7 @@ namespace ACAT.Extension
 
                         if (_index == _pin.Length)
                         {
-                            _keyboardCommon.ScannerForm.Close();
+                            _userControlCommon.ScannerForm.Close();
                         }
                     }
                     else

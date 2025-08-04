@@ -4343,6 +4343,24 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Good Work!.
+        /// </summary>
+        public static string TryoutAlert {
+            get {
+                return ResourceManager.GetString("TryoutAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Continue practicing or hit \&quot;Next\&quot; to continue.
+        /// </summary>
+        public static string TryoutSuccess {
+            get {
+                return ResourceManager.GetString("TryoutSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Type this word.
         /// </summary>
         public static string TryoutTypeThis {

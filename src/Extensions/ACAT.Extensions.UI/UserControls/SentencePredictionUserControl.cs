@@ -12,34 +12,23 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.AnimationManagement;
 using ACAT.Core.Audit;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.TTSManagement;
-using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.WordPredictionManagement;
 using ACAT.Extension;
 using ACAT.UserControls;
 using System;
-using System.Windows.Forms;
 
 namespace ACAT.Extensions.UI.UserControls
 {
     [ClassDescriptor("07E0D588-1E80-4A07-BC26-FA4C8BCF5589",
                     "SentencePredictionUserControl",
                     "User Control for Sentence Prediction")]
-    /* NOTE: Put a slash at the start of this line to enable the designer view in Visual Studio. 
-       // Remove the slash to run the code in the ACAT application. 
-       // This allows you to edit the control in Visual Studio without having to run ACAT.
-       // The designer view will not work when subclassing the GenericUserControl.
-    public partial class SentencePredictionUserControl : Form, IUserControl //GenericUserControl, IUserControl
-    /*/
-    public partial class SentencePredictionUserControl : GenericUserControl, IUserControl
-    //*/
+    public partial class SentencePredictionUserControl : KeyboardUserControl
     {
-        private UserControlKeyboardCommon _keyboardCommon;
         private UserControlWordPredictionCommon _userControlWordPredictionCommon;
 
         public SentencePredictionUserControl()
@@ -47,31 +36,19 @@ namespace ACAT.Extensions.UI.UserControls
             InitializeComponent();
         }
 
-        public override bool Initialize(UserControlConfigMapEntry mapEntry, TextController textController, IScannerPanel scanner)
+        protected override bool HandleInitialize()
         {
-            _keyboardCommon = new UserControlKeyboardCommon(this, mapEntry, textController, scanner);
+            _userControlWordPredictionCommon = new UserControlWordPredictionCommon(this, _keybordUserControlCommon.TextController, _keybordUserControlCommon.ScannerPanel, new PredictionTypes[] { PredictionTypes.Sentences });
 
-            _userControlWordPredictionCommon = new UserControlWordPredictionCommon(this, textController, scanner, new PredictionTypes[] { PredictionTypes.Sentences });
-
-            bool retVal = _keyboardCommon.Initialize();
-
-            if (retVal)
-            {
-                retVal = _userControlWordPredictionCommon.Initialize(_keyboardCommon.RootWidget);
-            }
-
-            _keyboardCommon.AnimationManager.EvtPlayerStateChanged += AnimationManager_EvtPlayerStateChanged;
-
+            bool retVal = _userControlWordPredictionCommon.Initialize(_keybordUserControlCommon.RootWidget);
             return retVal;
         }
 
         public override void OnLoad()
         {
-            _keyboardCommon.OnLoad();
+            base.OnLoad();
 
             _userControlWordPredictionCommon.OnLoad();
-
-            _keyboardCommon.AnimationManager.OnLoad(_keyboardCommon.RootWidget);
         }
 
 

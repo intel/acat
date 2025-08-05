@@ -30,16 +30,5 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         public String Sequence { get; set; }
 
         public int MinimumScoreRequired { get; set; }
-
-        public CalibrationParametersForSection(BCIScanSections calibrationMode, int scanTime, int targetCount, int iterationsPerTarget, int minimumScoreRequired, bool useRandomTargetsFlag = true, String sequence = null)
-        {
-            CalibrationMode = calibrationMode;
-            ScanTime = scanTime;
-            TargetCount = targetCount;
-            IterationsPerTarget = iterationsPerTarget;
-            UseRandomTargetsFlag = useRandomTargetsFlag;
-            Sequence = sequence;
-            MinimumScoreRequired = minimumScoreRequired;
-        }
     }
 }

@@ -25,22 +25,22 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
     [Serializable]
     public class BCIClassifierInfo
     {
-        public BCIScanSections ClassifierUsed;
+        public BCIScanSections ClassifierUsed { get; set; }
 
         /// <summary>
         /// Status of the classifier (Ok, Expired, NotFound)
         /// </summary>
-        public BCIClassifierStatus ClassifierStatus;
+        public BCIClassifierStatus ClassifierStatus { get; set; }
 
         /// <summary>
         /// AUC for the classifier
         /// </summary>
-        public float Auc;
+        public float Auc { get; set; }
 
         /// <summary>
         /// Boolean, true if the classifier is required (in the mappings file)
         /// </summary>
-        public bool IsRequired;
+        public bool IsRequired { get; set; }
     }
 
     [Serializable]
@@ -49,32 +49,32 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         /// <summary>
         /// General error (STATUS_OK if no error)
         /// </summary>
-        public BCIError Error;
+        public BCIError Error { get; set; }
 
         /// <summary>
         /// Overall status for the classifiers (Ok, Expired, NotFound)
         /// </summary>
-        public BCIClassifierStatus OverallStatus;
+        public BCIClassifierStatus OverallStatus { get; set; }
 
         /// <summary>
         /// Status for each particular classifier: (Ok/Expired/NotFound, Auc...)
         /// </summary>
-        public Dictionary<BCIScanSections, BCIClassifierInfo> DictClassifierInfo;
+        public Dictionary<BCIScanSections, BCIClassifierInfo> DictClassifierInfo { get; set; }
 
         /// <summary>
         /// Boolean, true if ACAT should only display the default classifiers (Box, Sentences & KeyboardL)
         /// </summary>
-        public bool ShowOnlyDefaults;
+        public bool ShowOnlyDefaults { get; set; }
 
         /// <summary>
         /// Boolean, true if there are more classifiers than required in the mapping file
         /// </summary>
-        public bool AreMoreClassifiersThanMapping;
+        public bool AreMoreClassifiersThanMapping { get; set; }
 
         /// <summary>
         /// Boolean, true if all classifiers are loaded and ACAT can show "Start typing" message
         /// </summary>
-        public bool OkToGoToTyping;
+        public bool OkToGoToTyping { get; set; }
 
     }
 }

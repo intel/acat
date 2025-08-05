@@ -21,27 +21,27 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         /// <summary>
         /// General error (STATUS_OK if no error)
         /// </summary>
-        public BCIError Error;
+        public BCIError Error { get; set; }
 
         /// <summary>
         /// Boolean, true if advance mode. False if restricted mode
         /// </summary>
-        public bool IsAdvanced;
+        public bool IsAdvanced { get; set; }
 
         /// <summary>
         /// Dictionary containing the info for each available classifier
         /// </summary>
-        public Dictionary<BCIScanSections, List<BCIClassifierInfo>> AllowedMappingsDict;
+        public Dictionary<BCIScanSections, List<BCIClassifierInfo>> AllowedMappingsDict { get; set; }
 
         /// <summary>
         /// Dictionary containing the current mappings
         /// </summary>
-        public Dictionary<BCIScanSections, BCIScanSections> CurrentMappingsDict;
+        public Dictionary<BCIScanSections, BCIScanSections> CurrentMappingsDict { get; set; }
 
         /// <summary>
         /// Boolean, true if all classifiers are loaded and ACAT can show "Start typing" message
         /// </summary>
-        public bool OkToGoToTyping;
+        public bool OkToGoToTyping { get; set; }
 
     }
 }

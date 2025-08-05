@@ -20,12 +20,12 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         /// <summary>
         /// number of repetitions. One repeition is considered as eyes open -> eyes closed
         /// </summary>
-        public int NumRepetitions;
+        public int NumRepetitions { get; set; }
 
         /// <summary>
         /// Duration where eyes are open or closed
         /// </summary>
-        public int ScanTime;
+        public int ScanTime { get; set; }
 
     }
 }

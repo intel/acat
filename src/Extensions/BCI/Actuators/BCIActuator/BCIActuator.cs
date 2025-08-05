@@ -230,29 +230,71 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
                 BCIBoxCalibrationSettings.SettingsFilePath = UserManager.GetFullPath(BoxCalibrationSettingsFileName);
                 BoxCalibrationSettings = BCIBoxCalibrationSettings.Load();
-                DictCalibrationParameters.Add(BCIScanSections.Box, new CalibrationParametersForSection(BCIScanSections.Box, BoxCalibrationSettings.ScanTime, BoxCalibrationSettings.NumberOfTargets, BoxCalibrationSettings.NumberOfIterationsPerTarget, BoxCalibrationSettings.MinimumScoreRequired));
+                DictCalibrationParameters.Add(BCIScanSections.Box, new CalibrationParametersForSection
+                {
+                    CalibrationMode = BCIScanSections.Box, 
+                    ScanTime = BoxCalibrationSettings.ScanTime, 
+                    TargetCount = BoxCalibrationSettings.NumberOfTargets, 
+                    IterationsPerTarget = BoxCalibrationSettings.NumberOfIterationsPerTarget, 
+                    MinimumScoreRequired = BoxCalibrationSettings.MinimumScoreRequired
+                });
 
                 BCIWordCalibrationSettings.SettingsFilePath = UserManager.GetFullPath(WordCalibratioSettingsFileName);
                 WordCalibrationSettings = BCIWordCalibrationSettings.Load();
-                DictCalibrationParameters.Add(BCIScanSections.Word, new CalibrationParametersForSection(BCIScanSections.Word, WordCalibrationSettings.ScanTime, WordCalibrationSettings.NumberOfTargets, WordCalibrationSettings.NumberOfIterationsPerTarget, WordCalibrationSettings.MinimumScoreRequired));
+                DictCalibrationParameters.Add(BCIScanSections.Word, new CalibrationParametersForSection
+                {
+                    CalibrationMode = BCIScanSections.Word,
+                    ScanTime = BoxCalibrationSettings.ScanTime,
+                    TargetCount = BoxCalibrationSettings.NumberOfTargets,
+                    IterationsPerTarget = BoxCalibrationSettings.NumberOfIterationsPerTarget,
+                    MinimumScoreRequired = BoxCalibrationSettings.MinimumScoreRequired
+                });
 
                 BCISentenceCalibrationSettings.SettingsFilePath = UserManager.GetFullPath(SentenceCalibratioSettingsFileName);
                 SentenceCalibrationSettings = BCISentenceCalibrationSettings.Load();
-                DictCalibrationParameters.Add(BCIScanSections.Sentence, new CalibrationParametersForSection(BCIScanSections.Sentence, SentenceCalibrationSettings.ScanTime, SentenceCalibrationSettings.NumberOfTargets, SentenceCalibrationSettings.NumberOfIterationsPerTarget, SentenceCalibrationSettings.MinimumScoreRequired));
+                DictCalibrationParameters.Add(BCIScanSections.Sentence, new CalibrationParametersForSection
+                {
+                    CalibrationMode = BCIScanSections.Sentence,
+                    ScanTime = BoxCalibrationSettings.ScanTime,
+                    TargetCount = BoxCalibrationSettings.NumberOfTargets,
+                    IterationsPerTarget = BoxCalibrationSettings.NumberOfIterationsPerTarget,
+                    MinimumScoreRequired = BoxCalibrationSettings.MinimumScoreRequired
+                });
 
                 BCIKeyboardLeftCalibrationSettings.SettingsFilePath = UserManager.GetFullPath(KeyboardLeftCalibratioSettingsFileName);
                 KeyboardLeftCalibrationSettings = BCIKeyboardLeftCalibrationSettings.Load();
-                DictCalibrationParameters.Add(BCIScanSections.KeyboardL, new CalibrationParametersForSection(BCIScanSections.KeyboardL, KeyboardLeftCalibrationSettings.ScanTime, KeyboardLeftCalibrationSettings.NumberOfTargets, KeyboardLeftCalibrationSettings.NumberOfIterationsPerTarget, KeyboardLeftCalibrationSettings.MinimumScoreRequired));
-
+                DictCalibrationParameters.Add(BCIScanSections.KeyboardL, new CalibrationParametersForSection
+                {
+                    CalibrationMode = BCIScanSections.KeyboardL,
+                    ScanTime = BoxCalibrationSettings.ScanTime,
+                    TargetCount = BoxCalibrationSettings.NumberOfTargets,
+                    IterationsPerTarget = BoxCalibrationSettings.NumberOfIterationsPerTarget,
+                    MinimumScoreRequired = BoxCalibrationSettings.MinimumScoreRequired
+                });
                 BCIKeyboardRightCalibrationSettings.SettingsFilePath = UserManager.GetFullPath(KeyboardRightCalibratioSettingsFileName);
                 KeyboardRightCalibrationSettings = BCIKeyboardRightCalibrationSettings.Load();
-                DictCalibrationParameters.Add(BCIScanSections.KeyboardR, new CalibrationParametersForSection(BCIScanSections.KeyboardR, KeyboardRightCalibrationSettings.ScanTime, KeyboardRightCalibrationSettings.NumberOfTargets, KeyboardRightCalibrationSettings.NumberOfIterationsPerTarget, KeyboardRightCalibrationSettings.MinimumScoreRequired, KeyboardRightCalibrationSettings.UseRandomTargetsFlag, KeyboardRightCalibrationSettings.Sequence));
-
+                DictCalibrationParameters.Add(BCIScanSections.KeyboardR, new CalibrationParametersForSection
+                {
+                    CalibrationMode = BCIScanSections.KeyboardR,
+                    ScanTime = BoxCalibrationSettings.ScanTime,
+                    TargetCount = BoxCalibrationSettings.NumberOfTargets,
+                    IterationsPerTarget = BoxCalibrationSettings.NumberOfIterationsPerTarget,
+                    MinimumScoreRequired = BoxCalibrationSettings.MinimumScoreRequired
+                });
                 BCITypingCalibrationMappings.SettingsFilePath = UserManager.GetFullPath(MappingFileName);
                 TypingCalibrationMappings = BCITypingCalibrationMappings.Load();
 
                 // Create list of files to copy to the session folder
-                FilesToCopy = new List<String> { BCIActuatorSettings.SettingsFileName, BoxCalibrationSettingsFileName, WordCalibratioSettingsFileName, SentenceCalibratioSettingsFileName, KeyboardLeftCalibratioSettingsFileName, KeyboardRightCalibratioSettingsFileName, MappingFileName };
+                FilesToCopy = new List<String> 
+                { 
+                    BCIActuatorSettings.SettingsFileName, 
+                    BoxCalibrationSettingsFileName, 
+                    WordCalibratioSettingsFileName, 
+                    SentenceCalibratioSettingsFileName, 
+                    KeyboardLeftCalibratioSettingsFileName, 
+                    KeyboardRightCalibratioSettingsFileName, 
+                    MappingFileName 
+                };
             }
             catch (Exception e)
             {

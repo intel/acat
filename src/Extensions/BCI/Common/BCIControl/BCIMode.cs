@@ -26,9 +26,9 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
 
     public class BCIMode
     {
-        public BCIModes BciMode;
+        public BCIModes BciMode { get; set; }
 
-        public BCIScanSections BciCalibrationMode;
+        public BCIScanSections BciCalibrationMode { get; set; }
 
         public BCIMode()
         {

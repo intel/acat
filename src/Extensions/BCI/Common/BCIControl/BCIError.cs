@@ -50,21 +50,19 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         TypingError_OnRepetitionEnd_ProabilitiesMarkersMissmatch = 409,
     }
 
-    public class BCIMessages
+    public static class BCIMessages
     {
-        public const string Status_Ok = "";
+        public static string Status_Ok { get; set; } = "";
     }
 
     [Serializable]
     public class BCIError
     {
-        public BCIErrorCodes ErrorCode;
-        public String ErrorMessage;
+        public BCIErrorCodes ErrorCode { get; set; } = BCIErrorCodes.Status_Ok;
+        public String ErrorMessage { get; set; } = BCIMessages.Status_Ok;
 
         public BCIError()
         {
-            ErrorCode = BCIErrorCodes.Status_Ok;
-            ErrorMessage = BCIMessages.Status_Ok;
         }
     }
 }

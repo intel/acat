@@ -20,7 +20,7 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         public BCICalibrationResult()
         {
             AUC = 0.0f;
-            Error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
+            Error = new BCIError() { ErrorCode = BCIErrorCodes.Status_Ok, ErrorMessage = BCIMessages.Status_Ok };
             CalibrationSuccessful = false;
         }
 

@@ -66,11 +66,5 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
             ErrorCode = BCIErrorCodes.Status_Ok;
             ErrorMessage = BCIMessages.Status_Ok;
         }
-
-        //public BCIError(BCIErrorCodes errorCode, String errorMessage)
-        //{
-        //    ErrorCode = errorCode;
-        //    ErrorMessage = errorMessage;
-        //}
     }
 }

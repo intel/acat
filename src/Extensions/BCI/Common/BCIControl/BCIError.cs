@@ -14,6 +14,7 @@ using System;
 
 namespace ACAT.Extensions.BCI.Common.BCIControl
 {
+    [Serializable]
     public enum BCIErrorCodes
     {
         Status_Ok = 0,
@@ -54,6 +55,7 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         public const string Status_Ok = "";
     }
 
+    [Serializable]
     public class BCIError
     {
         public BCIErrorCodes ErrorCode;
@@ -65,10 +67,10 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
             ErrorMessage = BCIMessages.Status_Ok;
         }
 
-        public BCIError(BCIErrorCodes errorCode, String errorMessage)
-        {
-            ErrorCode = errorCode;
-            ErrorMessage = errorMessage;
-        }
+        //public BCIError(BCIErrorCodes errorCode, String errorMessage)
+        //{
+        //    ErrorCode = errorCode;
+        //    ErrorMessage = errorMessage;
+        //}
     }
 }

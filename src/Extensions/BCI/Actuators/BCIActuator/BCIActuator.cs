@@ -563,8 +563,8 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             //  If both avaiable, show selection dialog
             // otherwise run corresponding TestDevice call
 
-            // bool gtecAvailable = GTecDeviceTester.GtecDeviceAvailable;
-            bool gtecAvailable = true; //DAQ_gTecBCI.IsDeviceAvailable();
+            bool gtecAvailable = GTecDeviceTester.GtecDeviceAvailable;
+            //bool gtecAvailable = true; //DAQ_gTecBCI.IsDeviceAvailable();
             // bool openBciAvailable = IsOpenBciAvailable();
             bool openBciAvailable = false;
             // bool gtecAvailable = true;

@@ -70,7 +70,9 @@
     <Compile Include="CustomControls.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Forms\SettingsForm.cs" />
+    <Compile Include="Forms\SettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UserControls\GroupedSettingsPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -118,7 +120,7 @@
     <ProjectReference Include="..\AppCommon\AppCommon.csproj">
       <Project>{9A6FF395-2444-439A-990D-1BAB13BF56FD}</Project>
       <Name>AppCommon</Name>
-      <Private>False</Private>  
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

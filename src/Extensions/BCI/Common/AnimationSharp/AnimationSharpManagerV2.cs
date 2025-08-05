@@ -1226,7 +1226,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             catch (Exception ex)
             {
                 Log.Exception("BCI LOG | Exception in ActuatorResponseCalibrationEndRepetitionResult: " + ex.Message);
-                SensorErrorState = new BCIError(BCIErrorCodes.OpticalSensorError_UnknownException, StringResources.SensorError);
+                SensorErrorState = new BCIError() { ErrorCode = BCIErrorCodes.OpticalSensorError_UnknownException, ErrorMessage = StringResources.SensorError };
                 AnimationManagerUtils.StatusSignal = SignalStatus.SIGNAL_KO;
             }
         }

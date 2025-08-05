@@ -15,7 +15,6 @@ using System.Collections.Generic;
 
 namespace ACAT.Extensions.BCI.Common.BCIControl
 {
-    [Serializable]
     public enum BCIClassifierStatus
     {
         Ok,
@@ -42,14 +41,6 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         /// Boolean, true if the classifier is required (in the mappings file)
         /// </summary>
         public bool IsRequired;
-
-        //public BCIClassifierInfo(bool isRequired, BCIScanSections classifierUsed, BCIClassifierStatus classifierStatus, float auc)
-        //{
-        //    Auc = auc;
-        //    ClassifierUsed = classifierUsed;
-        //    ClassifierStatus = classifierStatus;
-        //    IsRequired = isRequired;
-        //}
     }
 
     [Serializable]

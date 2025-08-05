@@ -15,6 +15,7 @@ using System.Collections.Generic;
 
 namespace ACAT.Extensions.BCI.Common.BCIControl
 {
+    [Serializable]
     public enum BCIClassifierStatus
     {
         Ok,
@@ -22,6 +23,7 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         NotFound,
     }
 
+    [Serializable]
     public class BCIClassifierInfo
     {
         public BCIScanSections ClassifierUsed;
@@ -41,13 +43,13 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         /// </summary>
         public bool IsRequired;
 
-        public BCIClassifierInfo(bool isRequired, BCIScanSections classifierUsed, BCIClassifierStatus classifierStatus, float auc)
-        {
-            Auc = auc;
-            ClassifierUsed = classifierUsed;
-            ClassifierStatus = classifierStatus;
-            IsRequired = isRequired;
-        }
+        //public BCIClassifierInfo(bool isRequired, BCIScanSections classifierUsed, BCIClassifierStatus classifierStatus, float auc)
+        //{
+        //    Auc = auc;
+        //    ClassifierUsed = classifierUsed;
+        //    ClassifierStatus = classifierStatus;
+        //    IsRequired = isRequired;
+        //}
     }
 
     [Serializable]

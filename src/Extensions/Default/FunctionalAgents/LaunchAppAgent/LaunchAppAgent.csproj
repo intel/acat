@@ -80,14 +80,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EditAppInfo.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="EditAppInfo.Designer.cs">
       <DependentUpon>EditAppInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="AppInfo.cs" />
     <Compile Include="ConfigureLaunchAppSettings.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ConfigureLaunchAppSettings.Designer.cs">
       <DependentUpon>ConfigureLaunchAppSettings.cs</DependentUpon>

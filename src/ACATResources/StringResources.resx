@@ -1965,4 +1965,28 @@ ACAT uses two metrics - “railing” and “impedance” - to check signal qual
   <data name="EnableinAppsounds" xml:space="preserve">
     <value>Enable in App sounds</value>
   </data>
+  <data name="Astringofcharactersthatshouldbefilteredoutfromthpredicted" xml:space="preserve">
+    <value>A string of characters that should be filtered out from the predicted words, eg, punctuations</value>
+  </data>
+  <data name="SetthistotrueiftheConvAssistdatabaseforthislanguagerequiresencodingtranslation" xml:space="preserve">
+    <value>Set this to true if the ConvAssist database for this language requires encoding translation</value>
+  </data>
+  <data name="Sethistotrueifthelanguageusesdiacritics" xml:space="preserve">
+    <value>Set this to true if the language uses diacritics</value>
+  </data>
+  <data name="Displaydisclaimeronapplicationstartup" xml:space="preserve">
+    <value>Display disclaimer on application startup</value>
+  </data>
+  <data name="WaittimefortheConvAssistexecutabletoload" xml:space="preserve">
+    <value>Wait time (in seconds) for the ConvAssist executable to load</value>
+  </data>
+  <data name="WaittimefortheConvAssistmodulestoload" xml:space="preserve">
+    <value>Wait time (in secs) for the ConvAssist modules to load</value>
+  </data>
+  <data name="Enablesmallmodelsentenceprediction" xml:space="preserve">
+    <value>Enable small model sentence prediction</value>
+  </data>
+  <data name="Enablesentenceprediction" xml:space="preserve">
+    <value>Enable sentence prediction</value>
+  </data>
 </root>

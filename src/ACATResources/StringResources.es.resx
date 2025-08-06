@@ -1964,6 +1964,30 @@ ACAT utiliza dos métricas - “saturación” e “impedancia” - para verific
     <value>Mostrar ayuda de la ventana de calibración</value>
   </data>
   <data name="EnableinAppsounds" xml:space="preserve">
+    <value>Habilitar sonidos en la aplicación</value>
+  </data>
+  <data name="Astringofcharactersthatshouldbefilteredoutfromthpredicted" xml:space="preserve">
+    <value>Una cadena de caracteres que deben filtrarse de las palabras previstas, por ejemplo, signos de puntuación.</value>
+  </data>
+  <data name="SetthistotrueiftheConvAssistdatabaseforthislanguagerequiresencodingtranslation" xml:space="preserve">
+    <value>Establezca esto como verdadero si la base de datos ConvAssist para este idioma requiere traducción de codificación</value>
+  </data>
+  <data name="Sethistotrueifthelanguageusesdiacritics" xml:space="preserve">
+    <value>Establezca esto como verdadero si el idioma utiliza diacríticos</value>
+  </data>
+  <data name="Displaydisclaimeronapplicationstartup" xml:space="preserve">
+    <value>Mostrar descargo de responsabilidad al iniciar la aplicación</value>
+  </data>
+  <data name="WaittimefortheConvAssistexecutabletoload" xml:space="preserve">
+    <value>Tiempo de espera (en segundos) para que se cargue el ejecutable de ConvAssist</value>
+  </data>
+  <data name="WaittimefortheConvAssistmodulestoload" xml:space="preserve">
+    <value>Tiempo de espera (en segundos) para que se carguen los módulos de ConvAssist</value>
+  </data>
+  <data name="Enablesmallmodelsentenceprediction" xml:space="preserve">
+    <value>Habilitar la predicción de oraciones de modelos pequeños</value>
+  </data>
+  <data name="Enablesentenceprediction" xml:space="preserve">
     <value />
   </data>
 </root>

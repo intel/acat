@@ -47,5 +47,8 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         /// </summary>
         public bool OkToGoToTyping { get; set; } = false;
 
+        public BCIMapOptions()
+        {
+        }
     }
 }

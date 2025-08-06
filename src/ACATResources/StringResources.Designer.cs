@@ -629,6 +629,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear talk window when the typing mode is changed.
+        /// </summary>
+        public static string Cleartalkwindowwhenthetypingmodeischanged {
+            get {
+                return ResourceManager.GetString("Cleartalkwindowwhenthetypingmodeischanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Click On.
         /// </summary>
         public static string ClickOn {
@@ -809,6 +818,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Convert text to speech on ENTER key press.
+        /// </summary>
+        public static string ConverttexttospeechonENTERkeypress {
+            get {
+                return ResourceManager.GetString("ConverttexttospeechonENTERkeypress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.  Could not create folder for user {0}..
         /// </summary>
         public static string CouldNotCreateUserError {
@@ -919,6 +937,15 @@ namespace ACATResources {
         public static string DisclaimerConvAssist {
             get {
                 return ResourceManager.GetString("DisclaimerConvAssist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display words in the prediction list that match the prefix of the word entered so far.
+        /// </summary>
+        public static string Displaywordsinthepredictionlistthatmatchtheprefixofthewordenteredsofar {
+            get {
+                return ResourceManager.GetString("Displaywordsinthepredictionlistthatmatchtheprefixofthewordenteredsofar", resourceCulture);
             }
         }
         
@@ -1094,6 +1121,24 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable learning for word prediction.
+        /// </summary>
+        public static string Enablelearningforwordprediction {
+            get {
+                return ResourceManager.GetString("Enablelearningforwordprediction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable suggestions for sentence completion.
+        /// </summary>
+        public static string Enablesuggestionsforsentencecompletion {
+            get {
+                return ResourceManager.GetString("Enablesuggestionsforsentencecompletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable Vertical Rectangle Scan.
         /// </summary>
         public static string EnableVerticalRectangleScan {
@@ -1247,6 +1292,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extra time to pause on the first word in the word prediction list (in msecs).
+        /// </summary>
+        public static string Extratimetopauseonthefirstwordinthewordpredictionlist {
+            get {
+                return ResourceManager.GetString("Extratimetopauseonthefirstwordinthewordpredictionlist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Eyes Closed Calibration.
         /// </summary>
         public static string EyesClosedCalibration {
@@ -1324,6 +1378,15 @@ namespace ACATResources {
         public static string FileOperations {
             get {
                 return ResourceManager.GetString("FileOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter punctuations in word prediction results.
+        /// </summary>
+        public static string Filterpunctuationsinwordpredictionresults {
+            get {
+                return ResourceManager.GetString("Filterpunctuationsinwordpredictionresults", resourceCulture);
             }
         }
         
@@ -1735,6 +1798,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to How many words to display in the word prediction list.
+        /// </summary>
+        public static string Howmanywordstodisplayinthewordpredictionlist {
+            get {
+                return ResourceManager.GetString("Howmanywordstodisplayinthewordpredictionlist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to I.
         /// </summary>
         public static string I {
@@ -2099,6 +2171,15 @@ namespace ACATResources {
         public static string Left {
             get {
                 return ResourceManager.GetString("Left", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Length of the prefix to match when filtering words (valid only if WordPredictionFilterMatchPrefix is true).
+        /// </summary>
+        public static string Lengthoftheprefixtomatchwhenfilteringwords_ {
+            get {
+                return ResourceManager.GetString("Lengthoftheprefixtomatchwhenfilteringwords ", resourceCulture);
             }
         }
         
@@ -2751,6 +2832,33 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Number of times the buttons in the strip scanner are scanned. Strip scanners are typically used for accented letters in non-English languages.
+        /// </summary>
+        public static string Numberoftimesthebuttonsinthestripscannerarecanned {
+            get {
+                return ResourceManager.GetString("Numberoftimesthebuttonsinthestripscannerarecanned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of times the words in the word prediction list are scanned.
+        /// </summary>
+        public static string Numberoftimesthewordsinthewordpredictionlistarescanned {
+            get {
+                return ResourceManager.GetString("Numberoftimesthewordsinthewordpredictionlistarescanned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of words suggestions to compute probabilities.
+        /// </summary>
+        public static string Numberofwordssuggestionstoomputeprobabilities {
+            get {
+                return ResourceManager.GetString("Numberofwordssuggestionstoomputeprobabilities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to O.
         /// </summary>
         public static string O {
@@ -3048,6 +3156,15 @@ namespace ACATResources {
         public static string PinOutsideRange {
             get {
                 return ResourceManager.GetString("PinOutsideRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pin to unlock the screen..
+        /// </summary>
+        public static string Pintounlockthescreen {
+            get {
+                return ResourceManager.GetString("Pintounlockthescreen", resourceCulture);
             }
         }
         

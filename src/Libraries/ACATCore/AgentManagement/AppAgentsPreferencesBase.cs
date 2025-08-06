@@ -10,6 +10,7 @@ using ACAT.Core.Utility;
 using System.ComponentModel.DataAnnotations;
 using System;
 using System.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ACAT.Core.AgentManagement
 {
@@ -17,14 +18,14 @@ namespace ACAT.Core.AgentManagement
     /// Base class for the settings for all the application agents.
     /// </summary>
     [Serializable]
-    public abstract class AppAgentsPreferencesBase : PreferencesBase
+    public partial class AppAgentsPreferencesBase : PreferencesBase
     {
         /// <summary>
         /// Creates an instance of the class
         /// </summary>
         protected AppAgentsPreferencesBase()
         {
-            AutoSwitchScannerEnable = true;
+            autoSwitchScannerEnable = true;
         }
 
         /// <summary>
@@ -35,6 +36,7 @@ namespace ACAT.Core.AgentManagement
         [Descriptor("Auto-display contextual menu when the app window gets focus")]
         [UIHint("ToggleSwitch")]
         [DefaultValue(true)]
-        public bool AutoSwitchScannerEnable { get; set; } =  true;
+        [ObservableProperty]
+        public bool autoSwitchScannerEnable =  true;
     }
 }

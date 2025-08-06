@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PreferencesManagement;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -24,7 +25,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
     /// Microsoft Speech Synth Text to speech settings
     /// </summary>
     [Serializable]
-    public class SAPISettings : PreferencesBase
+    public partial class SAPISettings : PreferencesBase
     {
         /// <summary>
         /// Path to the preferences file
@@ -42,10 +43,10 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// </summary>
         public SAPISettings()
         {
-            Volume = 100;
-            Rate = -2;
+            volume = 100;
+            rate = -2;
             Gender = VoiceGender.Female;
-            UseAlternatePronunciations = true;
+            useAlternatePronunciations = true;
         }
 
         /// <summary>
@@ -54,7 +55,10 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// </summary>
         [Descriptor("Auto append sentence terminator?")]
         [UIHint("ToggleSwitch")]
-        public bool AutoAppendPunctuation { get; set; } = false;
+        [Description("Gets or sets whether a puncutation should be appended if it  is not already there.")]
+        [ObservableProperty]
+
+        private bool autoAppendPunctuation = false;
 
         /// <summary>
         /// Preferred Gender of the voice
@@ -72,7 +76,8 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         [Descriptor("Speaking rate")]
         [Range(-10, 10)]
         [UIHint("Slider")]
-        public int Rate { get; set; }
+        [ObservableProperty]
+        private int rate;
 
         /// <summary>
         /// Gets or sets whether to use alternate pronunciations
@@ -80,7 +85,8 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         [Descriptor("Use alternate pronunciations?")]
         [UIHint("ToggleSwitch")]
         [DefaultValue(false)]
-        public bool UseAlternatePronunciations { get; set; } = false;
+        [ObservableProperty]
+        private bool useAlternatePronunciations = false;
 
         /// <summary>
         /// Gets or sets the voice for TTS
@@ -93,7 +99,8 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         [Descriptor("Volume setting")]
         [Range(0, 100)]
         [UIHint("Slider")]
-        public int Volume { get; set; }
+        [ObservableProperty]
+        private int volume;
 
         /// <summary>
         /// Loads settings from file

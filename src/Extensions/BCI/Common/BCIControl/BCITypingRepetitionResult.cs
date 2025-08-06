@@ -34,34 +34,38 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         /// <summary>
         /// Boolean, true if a decision has been made
         /// </summary>
-        public bool DecidedFlag { get; set; }
+        public bool DecidedFlag { get; set; } = false;
 
         /// <summary>
         /// ID of the selected button label (if a decision has been made)
         /// If no decision has been made, this will be the ID of the button
         /// with maximum probability
         /// </summary>
-        public int DecidedId { get; set; }
+        public int DecidedId { get; set; } = 0;
 
         /// <summary>
         /// Probabilities of each button  / box
         /// Format: [ID, probability]
         /// </summary>
-        public SortedDictionary<int, double> PosteriorProbs { get; set; }
+        public SortedDictionary<int, double> PosteriorProbs { get; set; } = new SortedDictionary<int, double>();
 
         /// <summary>
         /// Boolean, true if eyes closed detected and should return to box scanning
         /// </summary>
-        public bool ReturnToBoxScanningFlag { get; set; }
+        public bool ReturnToBoxScanningFlag { get; set; } = false;
 
         /// <summary>
         /// Error
         /// </summary>
-        public BCIError Error { get; set; }
+        public BCIError Error { get; set; } = new BCIError
+        {
+            ErrorCode = BCIErrorCodes.Status_Ok,
+            ErrorMessage = BCIMessages.Status_Ok
+        };
 
         /// <summary>
         /// Signal status
         /// </summary>
-        public SignalStatus StatusSignal { get; set; }
+        public SignalStatus StatusSignal { get; set; } = SignalStatus.SIGNAL_OK;
     }
 }

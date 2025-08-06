@@ -156,12 +156,8 @@ namespace ACAT.Core.PreferencesManagement.UI
             var displayAttribute = prop.GetAttribute<DisplayAttribute>();
             var label = new TextBlock
             {
-                // Text = labelText.TrimEnd(),
-                Text = displayAttribute?.ResourceType != null && !string.IsNullOrEmpty(displayAttribute.Description)
-    ? (displayAttribute.ResourceType
-        .GetProperty(displayAttribute.Description, BindingFlags.Static | BindingFlags.Public)?
-        .GetValue(null, null) as string ?? displayAttribute.Description)
-    : displayAttribute?.Description ?? "MISSING DESCRIPTION",
+                Text = displayAttribute?.ResourceType != null && !string.IsNullOrEmpty(displayAttribute.Name) ? (displayAttribute.ResourceType.GetProperty(displayAttribute.Name, BindingFlags.Static | BindingFlags.Public)?
+                .GetValue(null, null) as string ?? displayAttribute.Name): displayAttribute?.Name ?? "MISSING DESCRIPTION",
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 FontFamily = new System.Windows.Media.FontFamily("Montserrat"),
                 FontSize = 14,
@@ -172,7 +168,6 @@ namespace ACAT.Core.PreferencesManagement.UI
             };
             stackPanel.Children.Add(label);
 
-          //  if (prop.GetAttribute<DescriptionAttribute>() is { } descriptionAttr)
                 if (!string.IsNullOrEmpty(displayAttribute?.Description))
                 {
                 var description = new TextBlock

@@ -1881,4 +1881,88 @@ ACAT uses two metrics - “railing” and “impedance” - to check signal qual
   <data name="TryoutSuccess" xml:space="preserve">
     <value>Continue practicing or hit \"Next\" to continue</value>
   </data>
+  <data name="Usedigits1throug5only" xml:space="preserve">
+    <value>Use digits 1 through 5 only</value>
+  </data>
+  <data name="ScannerColumnIterations" xml:space="preserve">
+    <value>Scanner Column Iterations</value>
+  </data>
+  <data name="ScannerFirstRepeatTime" xml:space="preserve">
+    <value>Scanner First Repeat Time</value>
+  </data>
+  <data name="Firstrepeattimeforstickybuttons" xml:space="preserve">
+    <value>First repeat time for sticky buttons (in msecs)</value>
+  </data>
+  <data name="Scantimeinmsecs" xml:space="preserve">
+    <value>Scan time (in msecs)</value>
+  </data>
+  <data name="ScannerFirstPauseTime" xml:space="preserve">
+    <value>Scanner First Pause Time</value>
+  </data>
+  <data name="Extratimetopauseonthefirstrowcolumnbuttoninmsecs" xml:space="preserve">
+    <value>Extra time to pause on the first row/column/button (in msecs)</value>
+  </data>
+  <data name="Playabeeponaselection" xml:space="preserve">
+    <value>Play a beep on a selection</value>
+  </data>
+  <data name="Includedisabledbuttonsinthescanningcycle" xml:space="preserve">
+    <value>Include disabled buttons in the scanning cycle</value>
+  </data>
+  <data name="Minimumholdtimefortheactuatorswitchtotrigger" xml:space="preserve">
+    <value>Minimum hold time for the actuator switch to trigger (in msecs)</value>
+  </data>
+  <data name="Expandanabbreviationonlyifaspacecommaoraperiodisinsertedaftertheabbreviation" xml:space="preserve">
+    <value>Expand an abbreviation only if a space, comma or a period is inserted after the abbreviation</value>
+  </data>
+  <data name="Logapplicationmessagestoafilesewithcaution" xml:space="preserve">
+    <value>Log application messages to a file. Use with caution. This will slow down the app and also consume disk space.  Use only for troubleshooting</value>
+  </data>
+  <data name="Enableauditloggingofimportantevents" xml:space="preserve">
+    <value>Enable audit logging of important events</value>
+  </data>
+  <data name="EnableTexttospeech" xml:space="preserve">
+    <value>Enable Text-to-speech</value>
+  </data>
+  <data name="EnablePerformanceMonitortomonitorandlogMemoryandCPUutilizationstatistics" xml:space="preserve">
+    <value>Enable Performance Monitor to monitor and log Memory and CPU utilization statistics</value>
+  </data>
+  <data name="MonitorandlogCPUutilization" xml:space="preserve">
+    <value>Monitor and log CPU utilization</value>
+  </data>
+  <data name="Monitorandlogmemoryutilization" xml:space="preserve">
+    <value>Monitor and log memory utilization</value>
+  </data>
+  <data name="HowoftentomonitorandlogPerformanceMonitorstatistics" xml:space="preserve">
+    <value>How often to monitor and log Performance Monitor statistics (in seconds) </value>
+  </data>
+  <data name="Includeemptygridelementsinthegridlevelscanningsequence" xml:space="preserve">
+    <value>Include empty grid elements in the grid level scanning sequence</value>
+  </data>
+  <data name="Displaytheactuatorswitchdialogonstartup" xml:space="preserve">
+    <value>Display the actuator switch dialog on startup</value>
+  </data>
+  <data name="DisplaytheACATTalkapplicationinterfacedescriptiononstartup" xml:space="preserve">
+    <value>Display the ACAT Talk application interface description on startup</value>
+  </data>
+  <data name="Numberoftimesthegridtoplevelisscanned" xml:space="preserve">
+    <value>Number of times the grid (top level) is scanned</value>
+  </data>
+  <data name="Numberoftimestherowsinagridarescanned" xml:space="preserve">
+    <value>Number of times the rows in a grid are scanned</value>
+  </data>
+  <data name="Preventthesystemfromgoingtosleepandthedisplayfromturningoff" xml:space="preserve">
+    <value>Prevent the system from going to sleep and the display from turning off</value>
+  </data>
+  <data name="Numberoftimesthebuttonsinarowarescanned" xml:space="preserve">
+    <value>Number of times the buttons in a row are scanned</value>
+  </data>
+  <data name="Checkdisplayscalefactorissetto100or125anddisplaywarningifsot" xml:space="preserve">
+    <value>Check display scale factor is set to 100% or 125% and display warning if it is not</value>
+  </data>
+  <data name="Displaycalibrationwindowhelp" xml:space="preserve">
+    <value>Display calibration window help</value>
+  </data>
+  <data name="EnableinAppsounds" xml:space="preserve">
+    <value>Enable in App sounds</value>
+  </data>
 </root>

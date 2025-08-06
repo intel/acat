@@ -329,6 +329,11 @@ namespace ACAT.Core.PanelManagement
 
             bool retVal = AppCommandManager.Init();
 
+            if (retVal)
+            {
+                retVal = createAgentManager();
+            }
+
             if (retVal && !isEnabled(StartupFlags.NoUI))
             {
                 retVal = createThemeManager();
@@ -342,6 +347,11 @@ namespace ACAT.Core.PanelManagement
                 {
                     retVal = initWidgetManager();
                 }
+            }
+
+            if (retVal)
+            {
+                retVal = createActuatorManager();
             }
 
             if (retVal)
@@ -362,16 +372,6 @@ namespace ACAT.Core.PanelManagement
             if (retVal)
             {
                 retVal = createAbbreviationsManager();
-            }
-
-            if (retVal)
-            {
-                retVal = createAgentManager();
-            }
-
-            if (retVal)
-            {
-                retVal = createActuatorManager();
             }
 
             if (retVal)

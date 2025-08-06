@@ -17,18 +17,18 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
     [Serializable]
     public class CalibrationParametersForSection
     {
-        public BCIScanSections CalibrationMode { get; set; }
+        public BCIScanSections CalibrationMode { get; set; } = BCIScanSections.None;
 
-        public int ScanTime { get; set; }
+        public int ScanTime { get; set; } = 0;
 
-        public int TargetCount { get; set; }
+        public int TargetCount { get; set; } = 0;
 
-        public int IterationsPerTarget { get; set; }
+        public int IterationsPerTarget { get; set; } = 0;
 
-        public bool UseRandomTargetsFlag { get; set; }
+        public bool UseRandomTargetsFlag { get; set; } = 0;
 
-        public String Sequence { get; set; }
+        public String Sequence { get; set; } = "";
 
-        public int MinimumScoreRequired { get; set; }
+        public int MinimumScoreRequired { get; set; } = 0;
     }
 }

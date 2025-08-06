@@ -43,5 +43,7 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         /// Whether or not signal check exited at time of log entry
         /// </summary>
         public bool PassedSignalCheck { get; set; } = false;
+
+        public BCILogEntrySignalQuality() { }
     }
 }

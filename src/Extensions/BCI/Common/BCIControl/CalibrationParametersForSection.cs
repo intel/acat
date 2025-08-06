@@ -25,10 +25,12 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
 
         public int IterationsPerTarget { get; set; } = 0;
 
-        public bool UseRandomTargetsFlag { get; set; } = 0;
+        public bool UseRandomTargetsFlag { get; set; } = false;
 
         public String Sequence { get; set; } = "";
 
         public int MinimumScoreRequired { get; set; } = 0;
+
+        public CalibrationParametersForSection() { }
     }
 }

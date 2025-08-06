@@ -31,6 +31,7 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
     [Serializable]
     public class BCITypingRepetitionResult
     {
+        public BCITypingRepetitionResult() { }
         /// <summary>
         /// Boolean, true if a decision has been made
         /// </summary>

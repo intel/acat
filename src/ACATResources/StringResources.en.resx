@@ -1968,4 +1968,22 @@ ACAT uses two metrics - “railing” and “impedance” - to check signal qual
   <data name="Volumesetting" xml:space="preserve">
     <value>Volume setting</value>
   </data>
+  <data name="Autodisplaycontextualmenuwhentheappwindowgetsfocus" xml:space="preserve">
+    <value>Auto-display contextual menu when the app window gets focus</value>
+  </data>
+  <data name="CheekTwitchHoldTime" xml:space="preserve">
+    <value>Cheek Twitch Hold Time</value>
+  </data>
+  <data name="CheekTwitchSensitivity" xml:space="preserve">
+    <value>Cheek Twitch Sensitivity</value>
+  </data>
+  <data name="EyebrowRaiseHoldTime" xml:space="preserve">
+    <value>Eyebrow Raise Hold Time</value>
+  </data>
+  <data name="EyebrowRaiseSensitivity" xml:space="preserve">
+    <value>Eyebrow Raise Sensitivity</value>
+  </data>
+  <data name="HeadMovementSensitivity" xml:space="preserve">
+    <value>Head Movement Sensitivity</value>
+  </data>
 </root>

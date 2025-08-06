@@ -2008,4 +2008,22 @@ ACAT utiliza dos métricas - “saturación” e “impedancia” - para verific
   <data name="Volumesetting" xml:space="preserve">
     <value>Ajuste de volumen</value>
   </data>
+  <data name="Autodisplaycontextualmenuwhentheappwindowgetsfocus" xml:space="preserve">
+    <value>Mostrar automáticamente el menú contextual cuando la ventana de la aplicación recibe el foco</value>
+  </data>
+  <data name="CheekTwitchHoldTime" xml:space="preserve">
+    <value>Tiempo de retención de la contracción de la mejilla</value>
+  </data>
+  <data name="CheekTwitchSensitivity" xml:space="preserve">
+    <value>Sensibilidad a las convulsiones en las mejillas</value>
+  </data>
+  <data name="EyebrowRaiseHoldTime" xml:space="preserve">
+    <value>Tiempo de retención de la elevación de la ceja</value>
+  </data>
+  <data name="EyebrowRaiseSensitivity" xml:space="preserve">
+    <value>Sensibilidad al levantar las cejas</value>
+  </data>
+  <data name="HeadMovementSensitivity" xml:space="preserve">
+    <value />
+  </data>
 </root>

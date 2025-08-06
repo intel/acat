@@ -214,6 +214,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auto-display contextual menu when the app window gets focus.
+        /// </summary>
+        public static string Autodisplaycontextualmenuwhentheappwindowgetsfocus {
+            get {
+                return ResourceManager.GetString("Autodisplaycontextualmenuwhentheappwindowgetsfocus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto-save scanner&apos;s last position.
         /// </summary>
         public static string AutosaveScannersLastPosition {
@@ -625,6 +634,24 @@ namespace ACATResources {
         public static string Checkdisplayscalefactorissetto100or125anddisplaywarningifsot {
             get {
                 return ResourceManager.GetString("Checkdisplayscalefactorissetto100or125anddisplaywarningifsot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cheek Twitch Hold Time.
+        /// </summary>
+        public static string CheekTwitchHoldTime {
+            get {
+                return ResourceManager.GetString("CheekTwitchHoldTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cheek Twitch Sensitivity.
+        /// </summary>
+        public static string CheekTwitchSensitivity {
+            get {
+                return ResourceManager.GetString("CheekTwitchSensitivity", resourceCulture);
             }
         }
         
@@ -1436,6 +1463,24 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Eyebrow Raise Hold Time.
+        /// </summary>
+        public static string EyebrowRaiseHoldTime {
+            get {
+                return ResourceManager.GetString("EyebrowRaiseHoldTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eyebrow Raise Sensitivity.
+        /// </summary>
+        public static string EyebrowRaiseSensitivity {
+            get {
+                return ResourceManager.GetString("EyebrowRaiseSensitivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Eyes Closed Calibration.
         /// </summary>
         public static string EyesClosedCalibration {
@@ -1649,6 +1694,15 @@ namespace ACATResources {
         public static string HardwareSwitchTestLabel1 {
             get {
                 return ResourceManager.GetString("HardwareSwitchTestLabel1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Head Movement Sensitivity.
+        /// </summary>
+        public static string HeadMovementSensitivity {
+            get {
+                return ResourceManager.GetString("HeadMovementSensitivity", resourceCulture);
             }
         }
         

@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PreferencesManagement;
+using ACATResources;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.ComponentModel;
@@ -53,9 +54,8 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// Gets or sets whether a puncutation should be appended if it
         /// is not already there.
         /// </summary>
-        [Descriptor("Auto append sentence terminator?")]
+        [Display(Name = nameof(StringResources.Autoappendsentenceterminator),ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
-        [Description("Gets or sets whether a puncutation should be appended if it  is not already there.")]
         [ObservableProperty]
 
         private bool autoAppendPunctuation = false;
@@ -73,7 +73,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// <summary>
         /// Gets or sets the rate of speech
         /// </summary>
-        [Descriptor("Speaking rate")]
+        [Display(Name = nameof(StringResources.Speakiate),ResourceType = typeof(StringResources))]
         [Range(-10, 10)]
         [UIHint("Slider")]
         [ObservableProperty]
@@ -82,7 +82,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// <summary>
         /// Gets or sets whether to use alternate pronunciations
         /// </summary>
-        [Descriptor("Use alternate pronunciations?")]
+        [Display(Name = nameof(StringResources.Usealternatepronunciations),ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(false)]
         [ObservableProperty]
@@ -96,7 +96,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// <summary>
         /// Gets or sets the volume
         /// </summary>
-        [Descriptor("Volume setting")]
+        [Display(Name = nameof(StringResources.Volumesetting),ResourceType = typeof(StringResources))]
         [Range(0, 100)]
         [UIHint("Slider")]
         [ObservableProperty]

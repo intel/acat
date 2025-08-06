@@ -21,21 +21,16 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         /// <summary>
         /// list of duty cycles, one for each pulse
         /// </summary>
-        public List<double> DutyCycleList { get; set; }
+        public List<double> DutyCycleList { get; set; } = new List<double>();
 
         /// <summary>
         /// avg duty cycles for all pulses
         /// </summary>
-        public double DutyCycleAvg { get; set; }
+        public double DutyCycleAvg { get; set; } = 0;
 
         /// <summary>
         /// Fail/Success of trigertest
         /// </summary>
-        public bool TriggerTestSuccess { get; set; }
-
-        public BCITriggerTestResult()
-        {
-            DutyCycleList = new List<double>();
-        }
+        public bool TriggerTestSuccess { get; set; } = false;
     }
 }

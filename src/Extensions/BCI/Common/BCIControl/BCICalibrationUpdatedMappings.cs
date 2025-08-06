@@ -33,11 +33,5 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
             Error = new BCIError() { ErrorCode = BCIErrorCodes.Status_Ok, ErrorMessage = BCIMessages.Status_Ok };
             DictUpdatedMappings = new Dictionary<BCIScanSections, BCIScanSections>();
         }
-
-        public BCICalibrationUpdatedMappings(Dictionary<BCIScanSections, BCIScanSections> dictUpdatedMappings, BCIError error)
-        {
-            _ = DictUpdatedMappings;
-            Error = error;
-        }
     }
 }

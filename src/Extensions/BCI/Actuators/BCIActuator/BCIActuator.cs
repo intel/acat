@@ -270,7 +270,6 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                     TargetCount = BoxCalibrationSettings.NumberOfTargets,
                     IterationsPerTarget = BoxCalibrationSettings.NumberOfIterationsPerTarget,
                     MinimumScoreRequired = BoxCalibrationSettings.MinimumScoreRequired,
-                    Sequence = KeyboardLeftCalibrationSettings.Sequence
                 });
                 BCIKeyboardRightCalibrationSettings.SettingsFilePath = UserManager.GetFullPath(KeyboardRightCalibratioSettingsFileName);
                 KeyboardRightCalibrationSettings = BCIKeyboardRightCalibrationSettings.Load();

@@ -14,6 +14,8 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
 {
     public class BCIUserInputParameters
     {
+        public BCIUserInputParameters() { }
+
         public BCIModes BciMode { get; set; } = BCIModes.UNKNOWN;
 
         public BCIScanSections BciCalibrationMode { get; set; } = BCIScanSections.None;

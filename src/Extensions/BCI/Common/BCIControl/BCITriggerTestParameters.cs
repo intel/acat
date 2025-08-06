@@ -17,6 +17,8 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
     [Serializable]
     public class BCITriggerTestParameters
     {
+        public BCITriggerTestParameters() { }
+
         /// <summary>
         /// number of repetitions. One repeition is considered as eyes open -> eyes closed
         /// </summary>

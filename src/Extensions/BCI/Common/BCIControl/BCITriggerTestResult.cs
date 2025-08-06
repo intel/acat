@@ -18,6 +18,8 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
     [Serializable]
     public class BCITriggerTestResult
     {
+        public BCITriggerTestResult() { }
+
         /// <summary>
         /// list of duty cycles, one for each pulse
         /// </summary>

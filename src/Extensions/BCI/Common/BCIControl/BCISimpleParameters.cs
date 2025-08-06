@@ -14,6 +14,8 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
 {
     public class BCISimpleParameters
     {
+        public BCISimpleParameters() { }
+
         /// <summary>
         /// Number of iterations per target
         /// </summary>

@@ -205,6 +205,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auto append sentence terminator?.
+        /// </summary>
+        public static string Autoappendsentenceterminator {
+            get {
+                return ResourceManager.GetString("Autoappendsentenceterminator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto-save scanner&apos;s last position.
         /// </summary>
         public static string AutosaveScannersLastPosition {
@@ -1576,6 +1585,24 @@ namespace ACATResources {
         public static string GeneralSettings {
             get {
                 return ResourceManager.GetString("GeneralSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gets or sets the rate of speech..
+        /// </summary>
+        public static string Getsorsetstherateofspeech {
+            get {
+                return ResourceManager.GetString("Getsorsetstherateofspeech", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gets or sets whether a puncutation should be appended if it is not already there..
+        /// </summary>
+        public static string Getsorsetswhetherapuncutationshouldbeappendedifitisnotalreadythere {
+            get {
+                return ResourceManager.GetString("Getsorsetswhetherapuncutationshouldbeappendedifitisnotalreadythere", resourceCulture);
             }
         }
         
@@ -4298,6 +4325,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Speaking rate.
+        /// </summary>
+        public static string Speakiate {
+            get {
+                return ResourceManager.GetString("Speakiate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SPEAKING.
         /// </summary>
         public static string Speaking {
@@ -4901,6 +4937,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use alternate pronunciations?.
+        /// </summary>
+        public static string Usealternatepronunciations {
+            get {
+                return ResourceManager.GetString("Usealternatepronunciations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use Corpus Model.
         /// </summary>
         public static string UseCorpusModel {
@@ -4969,6 +5014,15 @@ namespace ACATResources {
         public static string Volume {
             get {
                 return ResourceManager.GetString("Volume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Volume setting.
+        /// </summary>
+        public static string Volumesetting {
+            get {
+                return ResourceManager.GetString("Volumesetting", resourceCulture);
             }
         }
         

@@ -1988,6 +1988,24 @@ ACAT utiliza dos métricas - “saturación” e “impedancia” - para verific
     <value>Habilitar la predicción de oraciones de modelos pequeños</value>
   </data>
   <data name="Enablesentenceprediction" xml:space="preserve">
-    <value />
+    <value>Habilitar predicción de oraciones</value>
+  </data>
+  <data name="Autoappendsentenceterminator" xml:space="preserve">
+    <value>¿Terminador de oración para agregar automáticamente?</value>
+  </data>
+  <data name="Getsorsetswhetherapuncutationshouldbeappendedifitisnotalreadythere" xml:space="preserve">
+    <value>Obtiene o establece si se debe agregar una puntuación si aún no existe.</value>
+  </data>
+  <data name="Speakiate" xml:space="preserve">
+    <value>Tasa de habla</value>
+  </data>
+  <data name="Getsorsetstherateofspeech" xml:space="preserve">
+    <value>Obtiene o establece la velocidad del habla.</value>
+  </data>
+  <data name="Usealternatepronunciations" xml:space="preserve">
+    <value>¿Utilizar pronunciaciones alternativas?</value>
+  </data>
+  <data name="Volumesetting" xml:space="preserve">
+    <value>Ajuste de volumen</value>
   </data>
 </root>

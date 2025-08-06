@@ -13,6 +13,7 @@ using System.Xml.Serialization;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using ACATResources;
 
 namespace ACAT.Core.Utility
 {
@@ -29,30 +30,34 @@ namespace ACAT.Core.Utility
         public String AppName = "ACAT";
 
         // Scanner settings
-        [Descriptor("Scanner First Repeat Time")]
-        [Description("First repeat time for sticky buttons (in msecs)")]
+        [Display(Name = nameof(StringResources.ScannerFirstRepeatTime),
+           Description = nameof(StringResources.Firstrepeattimeforstickybuttons), 
+           ResourceType = typeof(StringResources))]
         [Range(200, 3000)]
         [UIHint("Slider")]
         [DefaultValue(1000)]
         [ObservableProperty]
         private int firstRepeatTime = 1000;
 
-        [Descriptor("Scan time (in msecs)")]
+        [Display(Name = nameof(StringResources.Scantimeinmsecs),
+            ResourceType = typeof(StringResources))]
         [Range(100, 3000)]
         [UIHint("Slider")]
         [DefaultValue(1000)]
         [ObservableProperty]
         private int scanTime = 1000;
 
-        [Descriptor("Scanner First Pause Time")]
-        [Description("Extra time to pause on the first row/column/button (in msecs)")]
+        [Display(Name = nameof(StringResources.ScannerFirstPauseTime),
+            Description = nameof(StringResources.Extratimetopauseonthefirstrowcolumnbuttoninmsecs),
+            ResourceType = typeof(StringResources))]
         [Range(0, 3000)]
         [UIHint("Slider")]
         [DefaultValue(250)]
         [ObservableProperty]
         private int firstPauseTime = 250;
 
-        [Descriptor("Play a beep on a selection")]
+        [Display(Name = nameof(StringResources.Playabeeponaselection),
+        ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(false)]
         [ObservableProperty]
@@ -65,7 +70,8 @@ namespace ACAT.Core.Utility
 
         public String Theme = "Default";
 
-        [Descriptor("Include disabled buttons in the scanning cycle")]
+        [Display(Name = nameof(StringResources.Includedisabledbuttonsinthescanningcycle),
+        ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(true)]
         [ObservableProperty]
@@ -75,20 +81,23 @@ namespace ACAT.Core.Utility
 
         public String PreferredPanelConfigNames = "AlphabetQwerty";
 
-        [Descriptor("Minimum hold time for the actuator switch to trigger (in msecs)")]
+        [Display(Name = nameof(StringResources.Minimumholdtimefortheactuatorswitchtotrigger),
+        ResourceType = typeof(StringResources))]
         [Range(0, 2000)]
         [UIHint("Slider")]
         [DefaultValue(0)]
         [ObservableProperty]
         private int minActuationHoldTime = 0;
 
-        [Descriptor("Expand an abbreviation only if a space, comma or a period is inserted after the abbreviation")]
+        [Display(Name = nameof(StringResources.Expandanabbreviationonlyifaspacecommaoraperiodisinsertedaftertheabbreviation),
+        ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(false)]
         [ObservableProperty]
         private bool expandAbbreviationsOnSeparator = false;
 
-        [Descriptor("Log application messages to a file. Use with caution. This will slow down the app and also consume disk space.  Use only for troubleshooting")]
+        [Display(Name = nameof(StringResources.Logapplicationmessagestoafilesewithcaution),
+        ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(false)]
         [ObservableProperty]
@@ -99,7 +108,8 @@ namespace ACAT.Core.Utility
 
         public bool DebugAssertOnError = false;
 
-        [Descriptor("Enable audit logging of important events.  Use with caution.  This will slow down the app.  Use only for troubleshooting)")]
+        [Display(Name = nameof(StringResources.Enableauditloggingofimportantevents),
+        ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(false)]
         [ObservableProperty]
@@ -107,89 +117,103 @@ namespace ACAT.Core.Utility
 
         public String AuditLogFilter = "*";
 
-        [Descriptor("Enable Text-to-speech")]
+        [Display(Name = nameof(StringResources.EnableTexttospeech),
+        ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(true)]
         [ObservableProperty]
         private bool enableTextToSpeech = true;
 
-        [Descriptor("Enable Performance Monitor to monitor and log Memory and CPU utilization statistics")]
+       [Display(Name = nameof(StringResources.EnablePerformanceMonitortomonitorandlogMemoryandCPUutilizationstatistics),
+            ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(false)]
         [ObservableProperty]
         private bool perMonEnable = false;
 
-        [Descriptor("Monitor and log CPU utilization")]
+       [Display(Name = nameof(StringResources.MonitorandlogCPUutilization),
+       ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(false)]
         [ObservableProperty]
         private bool perMonCPUEnable = false;
 
-        [Descriptor("Monitor and log memory utilization")]
+       [Display(Name = nameof(StringResources.Monitorandlogmemoryutilization),
+       ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(false)]
         [ObservableProperty]
         private bool perMonMemoryEnable = false;
 
-        [IntDescriptor("How often to monitor and log Performance Monitor statistics (in seconds) ")]
+       [Display(Name = nameof(StringResources.HowoftentomonitorandlogPerformanceMonitorstatistics),
+       ResourceType = typeof(StringResources))]
         [Range(5, 3600)]
         [UIHint("Slider")]
         [DefaultValue(15)]
         [ObservableProperty]
         private int perfMonLogInterval = 15;
 
-        [Descriptor("Include empty grid elements in the grid level scanning sequence")]
+        [Display(Name = nameof(StringResources.Includeemptygridelementsinthegridlevelscanningsequence),
+        ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(true)]
         [ObservableProperty]
         private bool topLevelScanIncludeEmptyGrids = true;
 
-        [Descriptor("Display the actuator switch dialog on startup")]
+       [Display(Name = nameof(StringResources.Displaytheactuatorswitchdialogonstartup),
+       ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(true)]
         [ObservableProperty]
         private bool showSwitchTryoutOnStartup = true;
 
-        [Descriptor("Display the ACAT Talk application interface description on startup")]
+       [Display(Name = nameof(StringResources.DisplaytheACATTalkapplicationinterfacedescriptiononstartup),
+       ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(true)]
         [ObservableProperty]
         private bool showTalkInterfaceDescOnStartup = true;
 
-        [Descriptor("Number of times the grid (top level) is scanned")]
+       [Display(Name = nameof(StringResources.Numberoftimesthegridtoplevelisscanned),
+       ResourceType = typeof(StringResources))]
         [Range(1, 10)]
         [UIHint("Slider")]
         [DefaultValue(4)]
         [ObservableProperty]
         private int gridScanIterations = 4;
 
-        [Descriptor("Number of times the rows in a grid are scanned")]
+       [Display(Name = nameof(StringResources.Numberoftimestherowsinagridarescanned),
+       ResourceType = typeof(StringResources))]
         [Range(1, 10)]
         [UIHint("Slider")]
         [DefaultValue(1)]
         [ObservableProperty]
         private int rowScanIterations = 1;
 
-        [Descriptor("Number of times the buttons in a row are scanned")]
+       [Display(Name = nameof(StringResources.Numberoftimesthebuttonsinarowarescanned),
+       ResourceType = typeof(StringResources))]
         [Range(1, 10)]
         [UIHint("Slider")]
         [DefaultValue(1)]
         [ObservableProperty]
         private int columnScanIterations = 1;
 
-        [Descriptor("Prevent the system from going to sleep and the display from turning off")]
+       [Display(Name = nameof(StringResources.Preventthesystemfromgoingtosleepandthedisplayfromturningoff),
+       ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(false)]
         [ObservableProperty]
         private bool disableSystemSleepMode = false;
 
-        [Descriptor("Check display scale factor is set to 100% or 125% and display warning if it is not")]
+       [Display(Name = nameof(StringResources.Checkdisplayscalefactorissetto100or125anddisplaywarningifsot),
+       ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(true)]
         [ObservableProperty]
         private bool showDisplayScaleMessageOnStartup = true;
 
-        [Descriptor("Display calibration window help")]
+       [Display(Name = nameof(StringResources.Displaycalibrationwindowhelp),
+       ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(true)]
         [ObservableProperty]
@@ -216,7 +240,8 @@ namespace ACAT.Core.Utility
         //[IntDescriptor("Hide the scanner if no actuator switch trigger is detected for this length of time ", 3000, 60000)]
         public int HideOnIdleTimeout = 5000;
 
-        [Descriptor("Enable in App sounds")]
+       [Display(Name = nameof(StringResources.EnableinAppsounds),
+       ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(true)]
         [ObservableProperty]

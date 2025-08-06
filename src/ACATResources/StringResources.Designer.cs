@@ -196,6 +196,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A string of characters that should be filtered out from the predicted words, eg, punctuations.
+        /// </summary>
+        public static string Astringofcharactersthatshouldbefilteredoutfromthpredicted {
+            get {
+                return ResourceManager.GetString("Astringofcharactersthatshouldbefilteredoutfromthpredicted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto-save scanner&apos;s last position.
         /// </summary>
         public static string AutosaveScannersLastPosition {
@@ -602,6 +611,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check display scale factor is set to 100% or 125% and display warning if it is not.
+        /// </summary>
+        public static string Checkdisplayscalefactorissetto100or125anddisplaywarningifsot {
+            get {
+                return ResourceManager.GetString("Checkdisplayscalefactorissetto100or125anddisplaywarningifsot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ClassifiersNotLoadedError.
         /// </summary>
         public static string ClassifiersNotLoadedError {
@@ -941,6 +959,42 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Display calibration window help.
+        /// </summary>
+        public static string Displaycalibrationwindowhelp {
+            get {
+                return ResourceManager.GetString("Displaycalibrationwindowhelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display disclaimer on application startup.
+        /// </summary>
+        public static string Displaydisclaimeronapplicationstartup {
+            get {
+                return ResourceManager.GetString("Displaydisclaimeronapplicationstartup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display the ACAT Talk application interface description on startup.
+        /// </summary>
+        public static string DisplaytheACATTalkapplicationinterfacedescriptiononstartup {
+            get {
+                return ResourceManager.GetString("DisplaytheACATTalkapplicationinterfacedescriptiononstartup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display the actuator switch dialog on startup.
+        /// </summary>
+        public static string Displaytheactuatorswitchdialogonstartup {
+            get {
+                return ResourceManager.GetString("Displaytheactuatorswitchdialogonstartup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Display words in the prediction list that match the prefix of the word entered so far.
         /// </summary>
         public static string Displaywordsinthepredictionlistthatmatchtheprefixofthewordenteredsofar {
@@ -1103,11 +1157,29 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable audit logging of important events.
+        /// </summary>
+        public static string Enableauditloggingofimportantevents {
+            get {
+                return ResourceManager.GetString("Enableauditloggingofimportantevents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable debug trace logging.
         /// </summary>
         public static string EnableDebugTraceLogging {
             get {
                 return ResourceManager.GetString("EnableDebugTraceLogging", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable in App sounds.
+        /// </summary>
+        public static string EnableinAppsounds {
+            get {
+                return ResourceManager.GetString("EnableinAppsounds", resourceCulture);
             }
         }
         
@@ -1130,11 +1202,47 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable Performance Monitor to monitor and log Memory and CPU utilization statistics.
+        /// </summary>
+        public static string EnablePerformanceMonitortomonitorandlogMemoryandCPUutilizationstatistics {
+            get {
+                return ResourceManager.GetString("EnablePerformanceMonitortomonitorandlogMemoryandCPUutilizationstatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable sentence prediction.
+        /// </summary>
+        public static string Enablesentenceprediction {
+            get {
+                return ResourceManager.GetString("Enablesentenceprediction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable small model sentence prediction.
+        /// </summary>
+        public static string Enablesmallmodelsentenceprediction {
+            get {
+                return ResourceManager.GetString("Enablesmallmodelsentenceprediction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable suggestions for sentence completion.
         /// </summary>
         public static string Enablesuggestionsforsentencecompletion {
             get {
                 return ResourceManager.GetString("Enablesuggestionsforsentencecompletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Text-to-speech.
+        /// </summary>
+        public static string EnableTexttospeech {
+            get {
+                return ResourceManager.GetString("EnableTexttospeech", resourceCulture);
             }
         }
         
@@ -1247,6 +1355,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expand an abbreviation only if a space, comma or a period is inserted after the abbreviation.
+        /// </summary>
+        public static string Expandanabbreviationonlyifaspacecommaoraperiodisinsertedaftertheabbreviation {
+            get {
+                return ResourceManager.GetString("Expandanabbreviationonlyifaspacecommaoraperiodisinsertedaftertheabbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Explorer.
         /// </summary>
         public static string Explorer {
@@ -1288,6 +1405,15 @@ namespace ACATResources {
         public static string ExplorerNavigate {
             get {
                 return ResourceManager.GetString("ExplorerNavigate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extra time to pause on the first row/column/button (in msecs).
+        /// </summary>
+        public static string Extratimetopauseonthefirstrowcolumnbuttoninmsecs {
+            get {
+                return ResourceManager.GetString("Extratimetopauseonthefirstrowcolumnbuttoninmsecs", resourceCulture);
             }
         }
         
@@ -1414,6 +1540,15 @@ namespace ACATResources {
         public static string FirstRepeatTime {
             get {
                 return ResourceManager.GetString("FirstRepeatTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First repeat time for sticky buttons (in msecs).
+        /// </summary>
+        public static string Firstrepeattimeforstickybuttons {
+            get {
+                return ResourceManager.GetString("Firstrepeattimeforstickybuttons", resourceCulture);
             }
         }
         
@@ -1807,11 +1942,38 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to How often to monitor and log Performance Monitor statistics (in seconds) .
+        /// </summary>
+        public static string HowoftentomonitorandlogPerformanceMonitorstatistics {
+            get {
+                return ResourceManager.GetString("HowoftentomonitorandlogPerformanceMonitorstatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to I.
         /// </summary>
         public static string I {
             get {
                 return ResourceManager.GetString("I", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Include disabled buttons in the scanning cycle.
+        /// </summary>
+        public static string Includedisabledbuttonsinthescanningcycle {
+            get {
+                return ResourceManager.GetString("Includedisabledbuttonsinthescanningcycle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Include empty grid elements in the grid level scanning sequence.
+        /// </summary>
+        public static string Includeemptygridelementsinthegridlevelscanningsequence {
+            get {
+                return ResourceManager.GetString("Includeemptygridelementsinthegridlevelscanningsequence", resourceCulture);
             }
         }
         
@@ -2328,6 +2490,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Log application messages to a file. Use with caution. This will slow down the app and also consume disk space.  Use only for troubleshooting.
+        /// </summary>
+        public static string Logapplicationmessagestoafilesewithcaution {
+            get {
+                return ResourceManager.GetString("Logapplicationmessagestoafilesewithcaution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to M.
         /// </summary>
         public static string M {
@@ -2427,6 +2598,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Minimum hold time for the actuator switch to trigger (in msecs).
+        /// </summary>
+        public static string Minimumholdtimefortheactuatorswitchtotrigger {
+            get {
+                return ResourceManager.GetString("Minimumholdtimefortheactuatorswitchtotrigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Minimum Score*.
         /// </summary>
         public static string MinimumScore {
@@ -2441,6 +2621,24 @@ namespace ACATResources {
         public static string Mode {
             get {
                 return ResourceManager.GetString("Mode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Monitor and log CPU utilization.
+        /// </summary>
+        public static string MonitorandlogCPUutilization {
+            get {
+                return ResourceManager.GetString("MonitorandlogCPUutilization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Monitor and log memory utilization.
+        /// </summary>
+        public static string Monitorandlogmemoryutilization {
+            get {
+                return ResourceManager.GetString("Monitorandlogmemoryutilization", resourceCulture);
             }
         }
         
@@ -2832,11 +3030,38 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Number of times the buttons in a row are scanned.
+        /// </summary>
+        public static string Numberoftimesthebuttonsinarowarescanned {
+            get {
+                return ResourceManager.GetString("Numberoftimesthebuttonsinarowarescanned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Number of times the buttons in the strip scanner are scanned. Strip scanners are typically used for accented letters in non-English languages.
         /// </summary>
         public static string Numberoftimesthebuttonsinthestripscannerarecanned {
             get {
                 return ResourceManager.GetString("Numberoftimesthebuttonsinthestripscannerarecanned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of times the grid (top level) is scanned.
+        /// </summary>
+        public static string Numberoftimesthegridtoplevelisscanned {
+            get {
+                return ResourceManager.GetString("Numberoftimesthegridtoplevelisscanned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of times the rows in a grid are scanned.
+        /// </summary>
+        public static string Numberoftimestherowsinagridarescanned {
+            get {
+                return ResourceManager.GetString("Numberoftimestherowsinagridarescanned", resourceCulture);
             }
         }
         
@@ -3178,6 +3403,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Play a beep on a selection.
+        /// </summary>
+        public static string Playabeeponaselection {
+            get {
+                return ResourceManager.GetString("Playabeeponaselection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Play/Pause.
         /// </summary>
         public static string PlayPause {
@@ -3237,6 +3471,15 @@ namespace ACATResources {
         public static string PleaseWait {
             get {
                 return ResourceManager.GetString("PleaseWait", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prevent the system from going to sleep and the display from turning off.
+        /// </summary>
+        public static string Preventthesystemfromgoingtosleepandthedisplayfromturningoff {
+            get {
+                return ResourceManager.GetString("Preventthesystemfromgoingtosleepandthedisplayfromturningoff", resourceCulture);
             }
         }
         
@@ -3560,6 +3803,33 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scanner Column Iterations.
+        /// </summary>
+        public static string ScannerColumnIterations {
+            get {
+                return ResourceManager.GetString("ScannerColumnIterations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scanner First Pause Time.
+        /// </summary>
+        public static string ScannerFirstPauseTime {
+            get {
+                return ResourceManager.GetString("ScannerFirstPauseTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scanner First Repeat Time.
+        /// </summary>
+        public static string ScannerFirstRepeatTime {
+            get {
+                return ResourceManager.GetString("ScannerFirstRepeatTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scanning time:.
         /// </summary>
         public static string ScanningTime {
@@ -3592,6 +3862,15 @@ namespace ACATResources {
         public static string ScanTime {
             get {
                 return ResourceManager.GetString("ScanTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scan time (in msecs).
+        /// </summary>
+        public static string Scantimeinmsecs {
+            get {
+                return ResourceManager.GetString("Scantimeinmsecs", resourceCulture);
             }
         }
         
@@ -3731,6 +4010,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set this to true if the language uses diacritics.
+        /// </summary>
+        public static string Sethistotrueifthelanguageusesdiacritics {
+            get {
+                return ResourceManager.GetString("Sethistotrueifthelanguageusesdiacritics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set Paragraph Mode?.
         /// </summary>
         public static string SetParaMode {
@@ -3745,6 +4033,15 @@ namespace ACATResources {
         public static string SetSentenceMode {
             get {
                 return ResourceManager.GetString("SetSentenceMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set this to true if the ConvAssist database for this language requires encoding translation.
+        /// </summary>
+        public static string SetthistotrueiftheConvAssistdatabaseforthislanguagerequiresencodingtranslation {
+            get {
+                return ResourceManager.GetString("SetthistotrueiftheConvAssistdatabaseforthislanguagerequiresencodingtranslation", resourceCulture);
             }
         }
         
@@ -4613,6 +4910,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use digits 1 through 5 only.
+        /// </summary>
+        public static string Usedigits1throug5only {
+            get {
+                return ResourceManager.GetString("Usedigits1throug5only", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ACAT is configured to activate using the hotkey shown in green. Ensure your switch is set up to correspond with ACAT&apos;s hotkey (see the user guide for the switch). Alternatively, you can use the buttons below to adjust ACAT&apos;s hotkey to align with the key combination triggered by the switch..
         /// </summary>
         public static string UserControlHardwareSwitchSetupLabelPrompt_Text {
@@ -4672,6 +4978,24 @@ namespace ACATResources {
         public static string W {
             get {
                 return ResourceManager.GetString("W", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wait time (in seconds) for the ConvAssist executable to load.
+        /// </summary>
+        public static string WaittimefortheConvAssistexecutabletoload {
+            get {
+                return ResourceManager.GetString("WaittimefortheConvAssistexecutabletoload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wait time (in secs) for the ConvAssist modules to load.
+        /// </summary>
+        public static string WaittimefortheConvAssistmodulestoload {
+            get {
+                return ResourceManager.GetString("WaittimefortheConvAssistmodulestoload", resourceCulture);
             }
         }
         

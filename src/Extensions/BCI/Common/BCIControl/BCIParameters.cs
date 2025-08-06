@@ -18,6 +18,8 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
     [Serializable]
     public class BCIParameters
     {
+        public BCIParameters() { }
+
         public Dictionary<BCIScanSections, CalibrationParametersForSection> CalibrationParameters { get; set; } = new Dictionary<BCIScanSections, CalibrationParametersForSection>();
 
         /// <summary>

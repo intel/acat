@@ -22,17 +22,15 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         /// IDs of the highlighted sequences in the format
         /// Format: [ID of row/column, IDs of buttons highlighted in the row/column]
         /// </summary>
-        public Dictionary<int, int[]> FlashingSequence { get; set; }
+        public Dictionary<int, int[]> FlashingSequence { get; set; } = new Dictionary<int, int[]>();
 
         /// <summary>
         /// Boolean, true to discard calibration data
         /// </summary>
-        public bool DiscardCalibrationData { get; set; }
+        public bool DiscardCalibrationData { get; set; } = false;
 
         public BCICalibrationEnd()
         {
-            FlashingSequence = new Dictionary<int, int[]>();
-            DiscardCalibrationData = false;
         }
     }
 }

@@ -196,6 +196,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A string of characters that should be filtered out from the predicted words, eg, punctuations.
+        /// </summary>
+        public static string Astringofcharactersthatshouldbefilteredoutfromthpredicted {
+            get {
+                return ResourceManager.GetString("Astringofcharactersthatshouldbefilteredoutfromthpredicted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto-save scanner&apos;s last position.
         /// </summary>
         public static string AutosaveScannersLastPosition {
@@ -959,6 +968,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Display disclaimer on application startup.
+        /// </summary>
+        public static string Displaydisclaimeronapplicationstartup {
+            get {
+                return ResourceManager.GetString("Displaydisclaimeronapplicationstartup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Display the ACAT Talk application interface description on startup.
         /// </summary>
         public static string DisplaytheACATTalkapplicationinterfacedescriptiononstartup {
@@ -1189,6 +1207,24 @@ namespace ACATResources {
         public static string EnablePerformanceMonitortomonitorandlogMemoryandCPUutilizationstatistics {
             get {
                 return ResourceManager.GetString("EnablePerformanceMonitortomonitorandlogMemoryandCPUutilizationstatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable sentence prediction.
+        /// </summary>
+        public static string Enablesentenceprediction {
+            get {
+                return ResourceManager.GetString("Enablesentenceprediction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable small model sentence prediction.
+        /// </summary>
+        public static string Enablesmallmodelsentenceprediction {
+            get {
+                return ResourceManager.GetString("Enablesmallmodelsentenceprediction", resourceCulture);
             }
         }
         
@@ -3974,6 +4010,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set this to true if the language uses diacritics.
+        /// </summary>
+        public static string Sethistotrueifthelanguageusesdiacritics {
+            get {
+                return ResourceManager.GetString("Sethistotrueifthelanguageusesdiacritics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set Paragraph Mode?.
         /// </summary>
         public static string SetParaMode {
@@ -3988,6 +4033,15 @@ namespace ACATResources {
         public static string SetSentenceMode {
             get {
                 return ResourceManager.GetString("SetSentenceMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set this to true if the ConvAssist database for this language requires encoding translation.
+        /// </summary>
+        public static string SetthistotrueiftheConvAssistdatabaseforthislanguagerequiresencodingtranslation {
+            get {
+                return ResourceManager.GetString("SetthistotrueiftheConvAssistdatabaseforthislanguagerequiresencodingtranslation", resourceCulture);
             }
         }
         
@@ -4924,6 +4978,24 @@ namespace ACATResources {
         public static string W {
             get {
                 return ResourceManager.GetString("W", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wait time (in seconds) for the ConvAssist executable to load.
+        /// </summary>
+        public static string WaittimefortheConvAssistexecutabletoload {
+            get {
+                return ResourceManager.GetString("WaittimefortheConvAssistexecutabletoload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wait time (in secs) for the ConvAssist modules to load.
+        /// </summary>
+        public static string WaittimefortheConvAssistmodulestoload {
+            get {
+                return ResourceManager.GetString("WaittimefortheConvAssistmodulestoload", resourceCulture);
             }
         }
         

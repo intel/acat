@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PreferencesManagement;
+using ACATResources;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.ComponentModel;
@@ -25,7 +26,8 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
     [Serializable]
     public partial class Settings : PreferencesBase
     {
-       [Descriptor("A string of characters that should be filtered out from the predicted words, eg, punctuations")]
+       [Display(Name = nameof(StringResources.Astringofcharactersthatshouldbefilteredoutfromthpredicted),
+        ResourceType = typeof(StringResources))]
        [UIHint("TextBox")]
        [DefaultValue("")]
        [ObservableProperty]
@@ -40,39 +42,46 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <summary>
         /// Set this to true if the language uses diacritics
         /// </summary>
-        [Descriptor("Set this to true if the ConvAssist database for this language requires encoding translation")]
+        [Display(Name = nameof(StringResources.SetthistotrueiftheConvAssistdatabaseforthislanguagerequiresencodingtranslation),
+         Description = nameof(StringResources.Sethistotrueifthelanguageusesdiacritics),
+        ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(true)]
         [ObservableProperty]
         private bool useDefaultEncoding = true;
 
-        [Descriptor("Display disclaimer on application startup")]
+        [Display(Name = nameof(StringResources.Displaydisclaimeronapplicationstartup),
+        ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(true)]
         [ObservableProperty]
         private bool showDisclaimerOnStartup = true;
 
-        [Descriptor("Wait time (in seconds) for the ConvAssist executable to load")]
+        [Display(Name = nameof(StringResources.WaittimefortheConvAssistexecutabletoload),
+        ResourceType = typeof(StringResources))]
         [Range(60, 500)]
         [UIHint("Slider")]
         [DefaultValue(100)]
         [ObservableProperty]
         private int convAssistExeLoadWaitTime  = 100;
 
-        [Descriptor("Wait time (in secs) for the ConvAssist modules to load")]
+        [Display(Name = nameof(StringResources.WaittimefortheConvAssistmodulestoload),
+        ResourceType = typeof(StringResources))]
         [Range(30, 200)]
         [UIHint("Slider")]
         [DefaultValue(80)]
         [ObservableProperty]
         private int convAssistModuleLoadWaitTime  = 80;
 
-        [Descriptor("Enable small model sentence prediction ")]
+        [Display(Name = nameof(StringResources.Enablesmallmodelsentenceprediction),
+        ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(false)]
         [ObservableProperty]
         private bool enableSmallVocabularySentencePrediction = false;
 
-        [Descriptor("Enable sentence prediction")]
+        [Display(Name = nameof(StringResources.Enablesentenceprediction),
+        ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(false)]
         [ObservableProperty]

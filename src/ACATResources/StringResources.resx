@@ -1836,6 +1836,45 @@ ACAT uses two metrics - “railing” and “impedance” - to check signal qual
   <data name="AppsListIsEmpty" xml:space="preserve">
     <value>Applications List is Empty</value>
   </data>
+  <data name="Cleartalkwindowwhenthetypingmodeischanged" xml:space="preserve">
+    <value>Clear talk window when the typing mode is changed</value>
+  </data>
+  <data name="Pintounlockthescreen" xml:space="preserve">
+    <value>Pin to unlock the screen.</value>
+  </data>
+  <data name="ConverttexttospeechonENTERkeypress" xml:space="preserve">
+    <value>Convert text to speech on ENTER key press</value>
+  </data>
+  <data name="Numberoftimesthebuttonsinthestripscannerarecanned" xml:space="preserve">
+    <value>Number of times the buttons in the strip scanner are scanned. Strip scanners are typically used for accented letters in non-English languages</value>
+  </data>
+  <data name="Enablesuggestionsforsentencecompletion" xml:space="preserve">
+    <value>Enable suggestions for sentence completion</value>
+  </data>
+  <data name="Numberofwordssuggestionstoomputeprobabilities" xml:space="preserve">
+    <value>Number of words suggestions to compute probabilities</value>
+  </data>
+  <data name="Howmanywordstodisplayinthewordpredictionlist" xml:space="preserve">
+    <value>How many words to display in the word prediction list</value>
+  </data>
+  <data name="Enablelearningforwordprediction" xml:space="preserve">
+    <value>Enable learning for word prediction</value>
+  </data>
+  <data name="Displaywordsinthepredictionlistthatmatchtheprefixofthewordenteredsofar" xml:space="preserve">
+    <value>Display words in the prediction list that match the prefix of the word entered so far</value>
+  </data>
+  <data name="Lengthoftheprefixtomatchwhenfilteringwords " xml:space="preserve">
+    <value>Length of the prefix to match when filtering words (valid only if WordPredictionFilterMatchPrefix is true)</value>
+  </data>
+  <data name="Filterpunctuationsinwordpredictionresults" xml:space="preserve">
+    <value>Filter punctuations in word prediction results</value>
+  </data>
+  <data name="Extratimetopauseonthefirstwordinthewordpredictionlist" xml:space="preserve">
+    <value>Extra time to pause on the first word in the word prediction list (in msecs)</value>
+  </data>
+  <data name="Numberoftimesthewordsinthewordpredictionlistarescanned" xml:space="preserve">
+    <value>Number of times the words in the word prediction list are scanned</value>
+  </data>
   <data name="TryoutAlert" xml:space="preserve">
     <value>Good Work!</value>
   </data>

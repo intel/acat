@@ -35,6 +35,7 @@ namespace ACATConfigNext.UserControls
             SuspendLayout();
             basePanel.SuspendLayout();
 
+
             foreach (var extension in acat_extensions)
             {
                 var panel = new TableLayoutPanel

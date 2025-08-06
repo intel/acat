@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PreferencesManagement;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -28,7 +29,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
     /// Settings for TTSClient
     /// </summary>
     [Serializable]
-    public class TTSClientSettings : PreferencesBase
+    public partial class TTSClientSettings : PreferencesBase
     {
         /// <summary>
         /// Path to the preferences file
@@ -46,8 +47,8 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         /// </summary>
         public TTSClientSettings()
         {
-            Volume = 100;
-            Rate = 0;
+            volume = 100;
+            rate = 0;
             Pitch = 0;
             Protocol = TransportProtocol.Http;
             HttpSettings = new HttpSettings();
@@ -58,9 +59,11 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         /// is not already there.
         /// </summary>
         [Descriptor("Auto append sentence terminator?")]
+        [Description("Gets or sets whether a puncutation should be appended if it is not already there.")]
         [UIHint("ToggleSwitch")]
         [DefaultValue(false)]
-        public bool AutoAppendPunctuation { get; set; } = false;
+        [ObservableProperty]
+        private bool autoAppendPunctuation = false;
 
         public HttpSettings HttpSettings { get; set; }
 
@@ -75,17 +78,21 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         /// Gets or sets the rate of speech
         /// </summary>
         [Descriptor("Speaking rate")]
+        [Description("Gets or sets the rate of speech.")]
         [Range(-10, 10)]
         [UIHint("Slider")]
-        public int Rate { get; set; }
+        [ObservableProperty]
+        private int rate;
 
         /// <summary>
         /// Gets or sets whether to use alternate pronunciations
         /// </summary>
         [Descriptor("Use alternate pronunciations?")]
+        [Description("Gets or sets whether to use alternate pronunciations.")]
         [UIHint("ToggleSwitch")]
         [DefaultValue(false)]
-        public bool UseAlternatePronunciations { get; set; } = false;
+        [ObservableProperty]
+        private bool useAlternatePronunciations = false;
 
         /// <summary>
         /// Gets or sets the voice for TTS
@@ -96,9 +103,11 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         /// Gets or sets the volume
         /// </summary>
         [Descriptor("Volume setting")]
+        [Description("Gets or sets the volume.")]
         [Range(0, 100)]
         [UIHint("Slider")]
-        public int Volume { get; set; }
+        [ObservableProperty]
+        private int volume;
 
         /// <summary>
         /// Loads settings from file

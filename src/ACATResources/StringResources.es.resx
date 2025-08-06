@@ -1835,7 +1835,46 @@ ACAT utiliza dos métricas - “saturación” e “impedancia” - para verific
     <value>Salir</value>
   </data>
   <data name="AppsListIsEmpty" xml:space="preserve">
-    <value />
+    <value>Lista de Aplicaciones Vacia</value>
+  </data>
+  <data name="Cleartalkwindowwhenthetypingmodeischanged" xml:space="preserve">
+    <value>Limpiar la ventana de conversación cuando se cambia el modo de escritura</value>
+  </data>
+  <data name="Pintounlockthescreen" xml:space="preserve">
+    <value>Pin para desbloquear la pantalla.</value>
+  </data>
+  <data name="ConverttexttospeechonENTERkeypress" xml:space="preserve">
+    <value>Convertir texto a voz al presionar la tecla ENTER</value>
+  </data>
+  <data name="Numberoftimesthebuttonsinthestripscannerarecanned" xml:space="preserve">
+    <value>Número de veces que se escanean los botones del escáner de banda. Los escáneres de banda se utilizan generalmente para letras acentuadas en idiomas distintos del inglés.</value>
+  </data>
+  <data name="Enablesuggestionsforsentencecompletion" xml:space="preserve">
+    <value>Habilitar sugerencias para completar oraciones</value>
+  </data>
+  <data name="Numberofwordssuggestionstoomputeprobabilities" xml:space="preserve">
+    <value>Sugerencias de número de palabras para calcular probabilidades</value>
+  </data>
+  <data name="Howmanywordstodisplayinthewordpredictionlist" xml:space="preserve">
+    <value>¿Cuántas palabras se deben mostrar en la lista de predicciones de palabras?</value>
+  </data>
+  <data name="Enablelearningforwordprediction" xml:space="preserve">
+    <value>Habilitar el aprendizaje para la predicción de palabras</value>
+  </data>
+  <data name="Displaywordsinthepredictionlistthatmatchtheprefixofthewordenteredsofar" xml:space="preserve">
+    <value>Mostrar palabras en la lista de predicciones que coincidan con el prefijo de la palabra ingresada hasta el momento</value>
+  </data>
+  <data name="Lengthoftheprefixtomatchwhenfilteringwords " xml:space="preserve">
+    <value>Longitud del prefijo que debe coincidir al filtrar palabras (válido solo si WordPredictionFilterMatchPrefix es verdadero)</value>
+  </data>
+  <data name="Filterpunctuationsinwordpredictionresults" xml:space="preserve">
+    <value>Filtrar puntuaciones en los resultados de predicción de palabras</value>
+  </data>
+  <data name="Extratimetopauseonthefirstwordinthewordpredictionlist" xml:space="preserve">
+    <value>Tiempo adicional para pausar en la primera palabra de la lista de predicción de palabras (en ms)</value>
+  </data>
+  <data name="Numberoftimesthewordsinthewordpredictionlistarescanned" xml:space="preserve">
+    <value>Número de veces que se escanean las palabras de la lista de predicción de palabras</value>
   </data>
   <data name="TryoutAlert" xml:space="preserve">
     <value />

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+using System.Speech.Recognition;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -152,12 +153,15 @@ namespace ACAT.Core.PreferencesManagement.UI
                 HorizontalAlignment = HorizontalAlignment.Left
             };
 
-            var descriptorAttr = prop.GetAttribute<DescriptorAttribute>();
-            var labelText = descriptorAttr?.Description ?? "MISSING DESCRIPTION";
-
+            var displayAttribute = prop.GetAttribute<DisplayAttribute>();
             var label = new TextBlock
             {
-                Text = labelText.TrimEnd(),
+                // Text = labelText.TrimEnd(),
+                Text = displayAttribute?.ResourceType != null && !string.IsNullOrEmpty(displayAttribute.Description)
+    ? (displayAttribute.ResourceType
+        .GetProperty(displayAttribute.Description, BindingFlags.Static | BindingFlags.Public)?
+        .GetValue(null, null) as string ?? displayAttribute.Description)
+    : displayAttribute?.Description ?? "MISSING DESCRIPTION",
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 FontFamily = new System.Windows.Media.FontFamily("Montserrat"),
                 FontSize = 14,
@@ -168,11 +172,12 @@ namespace ACAT.Core.PreferencesManagement.UI
             };
             stackPanel.Children.Add(label);
 
-            if (prop.GetAttribute<DescriptionAttribute>() is { } descriptionAttr)
-            {
+          //  if (prop.GetAttribute<DescriptionAttribute>() is { } descriptionAttr)
+                if (!string.IsNullOrEmpty(displayAttribute?.Description))
+                {
                 var description = new TextBlock
                 {
-                    Text = descriptionAttr.Description.TrimEnd(),
+                    Text = displayAttribute?.ResourceType?.GetProperty(displayAttribute.Description, BindingFlags.Static | BindingFlags.Public)? .GetValue(null, null) as string ?? displayAttribute?.Description,
                     FontStyle = FontStyles.Italic,
                     FontSize = 12,
                     FontFamily = label.FontFamily,

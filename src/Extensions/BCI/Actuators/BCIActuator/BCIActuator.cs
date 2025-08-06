@@ -236,7 +236,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                     ScanTime = BoxCalibrationSettings.ScanTime, 
                     TargetCount = BoxCalibrationSettings.NumberOfTargets, 
                     IterationsPerTarget = BoxCalibrationSettings.NumberOfIterationsPerTarget, 
-                    MinimumScoreRequired = BoxCalibrationSettings.MinimumScoreRequired
+                    MinimumScoreRequired = BoxCalibrationSettings.MinimumScoreRequired,
                 });
 
                 BCIWordCalibrationSettings.SettingsFilePath = UserManager.GetFullPath(WordCalibratioSettingsFileName);
@@ -269,7 +269,8 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                     ScanTime = BoxCalibrationSettings.ScanTime,
                     TargetCount = BoxCalibrationSettings.NumberOfTargets,
                     IterationsPerTarget = BoxCalibrationSettings.NumberOfIterationsPerTarget,
-                    MinimumScoreRequired = BoxCalibrationSettings.MinimumScoreRequired
+                    MinimumScoreRequired = BoxCalibrationSettings.MinimumScoreRequired,
+                    Sequence = KeyboardLeftCalibrationSettings.Sequence
                 });
                 BCIKeyboardRightCalibrationSettings.SettingsFilePath = UserManager.GetFullPath(KeyboardRightCalibratioSettingsFileName);
                 KeyboardRightCalibrationSettings = BCIKeyboardRightCalibrationSettings.Load();
@@ -279,7 +280,8 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                     ScanTime = BoxCalibrationSettings.ScanTime,
                     TargetCount = BoxCalibrationSettings.NumberOfTargets,
                     IterationsPerTarget = BoxCalibrationSettings.NumberOfIterationsPerTarget,
-                    MinimumScoreRequired = BoxCalibrationSettings.MinimumScoreRequired
+                    MinimumScoreRequired = BoxCalibrationSettings.MinimumScoreRequired,
+                    Sequence = KeyboardRightCalibrationSettings.Sequence
                 });
                 BCITypingCalibrationMappings.SettingsFilePath = UserManager.GetFullPath(MappingFileName);
                 TypingCalibrationMappings = BCITypingCalibrationMappings.Load();

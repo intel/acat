@@ -32,51 +32,44 @@ namespace ACAT.Extension
         public static String PreferencesFilePath = String.Empty;
 
         [Display(Name = nameof(StringResources.Cleartalkwindowwhenthetypingmodeischanged), 
-            Description = nameof(StringResources.Cleartalkwindowwhenthetypingmodeischanged), 
+           // Description = nameof(StringResources.Cleartalkwindowwhenthetypingmodeischanged), 
             ResourceType = typeof(StringResources))]
         [Category("Test")]
         [UIHint("ToggleSwitch")]
         [ObservableProperty]
         private bool clearTalkWindowOnTypeModeChange = true;
 
-       // [Descriptor("Pin to unlock the screen.")]
         [Display(Name = nameof(StringResources.Pintounlockthescreen),
-            Description = nameof(StringResources.Pintounlockthescreen),
+            Description = nameof(StringResources.Usedigits1throug5only),
             ResourceType = typeof(StringResources))]
         [Description("Use digits 1 through 5 only")]
         [UIHint("PinEntry")]
         [ObservableProperty]
         private String screenLockPin = "5143";
 
-        // [Descriptor("Convert text to speech on ENTER key press")]
         [Display(Name = nameof(StringResources.ConverttexttospeechonENTERkeypress),
-          Description = nameof(StringResources.ConverttexttospeechonENTERkeypress),
+         // Description = nameof(StringResources.ConverttexttospeechonENTERkeypress),
           ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [ObservableProperty]
         private bool speakOnEnterKey = true;
 
-        //   [IntDescriptor("Number of times the buttons in the strip scanner are scanned. Strip scanners are typically used for accented letters in non-English languages", 1, 10)]
-        [Descriptor("Scanner Column Iterations")]
         [Display(Name = nameof(StringResources.Numberoftimesthebuttonsinthestripscannerarecanned),
-          Description = nameof(StringResources.Numberoftimesthebuttonsinthestripscannerarecanned),
+          Description = nameof(StringResources.ScannerColumnIterations),
           ResourceType = typeof(StringResources))]
-     //   [Description("Number of times the buttons in the strip scanner are scanned. Strip scanners are typically used for accented letters in non-English languages")]
         [UIHint("NumericUpDown")]
         [ObservableProperty]
         private int stripScannerColumnIterations = 2;
 
         [Display(Name = nameof(StringResources.Enablesuggestionsforsentencecompletion),
-         Description = nameof(StringResources.Enablesuggestionsforsentencecompletion),
+      //   Description = nameof(StringResources.Enablesuggestionsforsentencecompletion),
          ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [ObservableProperty]
         private bool useSentencePrediction = true;
 
-   //     [IntDescriptor("How many words to display in the word prediction list", 3, 10)]
-        [Descriptor("How many words to display in the word prediction list")]
         [Display(Name = nameof(StringResources.Howmanywordstodisplayinthewordpredictionlist),
-         Description = nameof(StringResources.Howmanywordstodisplayinthewordpredictionlist),
+        // Description = nameof(StringResources.Howmanywordstodisplayinthewordpredictionlist),
          ResourceType = typeof(StringResources))]
         [UIHint("NumericUpDown")]
         [Range(3, 20, ErrorMessage = "Word prediction count must be between 3 and 20.")]
@@ -84,7 +77,7 @@ namespace ACAT.Extension
         private int wordPredictionCount = 10;
 
         [Display(Name = nameof(StringResources.Enablelearningforwordprediction),
-         Description = nameof(StringResources.Enablelearningforwordprediction),
+       //  Description = nameof(StringResources.Enablelearningforwordprediction),
          ResourceType = typeof(StringResources))]
         [Descriptor("Enable learning for word prediction")]
         [UIHint("ToggleSwitch")]
@@ -92,55 +85,45 @@ namespace ACAT.Extension
         private bool wordPredictionEnableLearn = true;
 
         [Display(Name = nameof(StringResources.Displaywordsinthepredictionlistthatmatchtheprefixofthewordenteredsofar),
-        Description = nameof(StringResources.Displaywordsinthepredictionlistthatmatchtheprefixofthewordenteredsofar),
+       // Description = nameof(StringResources.Displaywordsinthepredictionlistthatmatchtheprefixofthewordenteredsofar),
         ResourceType = typeof(StringResources))]
-       // [Descriptor("Display words in the prediction list that match the prefix of the word entered so far")]
         [UIHint("ToggleSwitch")]
         [ObservableProperty]
         private bool wordPredictionFilterMatchPrefix = false;
 
-//        [Descriptor("Length of the prefix to match when filtering words (valid only if WordPredictionFilterMatchPrefix is true)")]
         [Display(Name = nameof(StringResources.Lengthoftheprefixtomatchwhenfilteringwords_),
-         Description = nameof(StringResources.Lengthoftheprefixtomatchwhenfilteringwords_),
+       //  Description = nameof(StringResources.Lengthoftheprefixtomatchwhenfilteringwords_),
          ResourceType = typeof(StringResources))]
         [UIHint("NumericUpDown")]
         [Range(1, 10, ErrorMessage = "Prefix length must be between 1 and 10.")]
         [ObservableProperty]
         private int wordPredictionFilterMatchPrefixLengthAdjust = 1;
 
-       // [Descriptor("Filter punctuations in word prediction results")]
         [Display(Name = nameof(StringResources.Filterpunctuationsinwordpredictionresults),
-         Description = nameof(StringResources.Filterpunctuationsinwordpredictionresults),
+        // Description = nameof(StringResources.Filterpunctuationsinwordpredictionresults),
          ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [ObservableProperty]
         private bool wordPredictionFilterPunctuations = true;
 
-  //      [IntDescriptor("Extra time to pause on the first word in the word prediction list (in msecs)", 0, 3000)]
-        [Descriptor("Extra time to pause on the first word in the word prediction list (in msecs)")]
         [Display(Name = nameof(StringResources.Extratimetopauseonthefirstwordinthewordpredictionlist),
-         Description = nameof(StringResources.Extratimetopauseonthefirstwordinthewordpredictionlist),
+        // Description = nameof(StringResources.Extratimetopauseonthefirstwordinthewordpredictionlist),
          ResourceType = typeof(StringResources))]
         [UIHint("NumericUpDown")]
         [Range(0, 3000, ErrorMessage = "Pause time must be between 0 and 3000 milliseconds.")]
         [ObservableProperty]
         private int wordPredictionFirstPauseTime = 600;
 
-    //    [IntDescriptor("Number of times the words in the word prediction list are scanned", 1, 10)]
-        [Descriptor("Number of times the words in the word prediction list are scanned")]
         [Display(Name = nameof(StringResources.Numberoftimesthewordsinthewordpredictionlistarescanned),
-         Description = nameof(StringResources.Numberoftimesthewordsinthewordpredictionlistarescanned),
+      //   Description = nameof(StringResources.Numberoftimesthewordsinthewordpredictionlistarescanned),
          ResourceType = typeof(StringResources))]
         [UIHint("NumericUpDown")]
         [Range(1, 10, ErrorMessage = "Word prediction scan iterations must be between 1 and 10.")]
         [ObservableProperty]
         private int wordPredictionScanIterations = 1;
 
-     //   [IntDescriptor("Number of words suggestions to compute probabilities", 5, 20)]
-
-       // [Descriptor("Number of words suggestions to compute probabilities")]
         [Display(Name = nameof(StringResources.Numberofwordssuggestionstoomputeprobabilities),
-         Description = nameof(StringResources.Numberofwordssuggestionstoomputeprobabilities),
+        // Description = nameof(StringResources.Numberofwordssuggestionstoomputeprobabilities),
          ResourceType = typeof(StringResources))]
         [UIHint("NumericUpDown")]
         [Range(5, 20, ErrorMessage = "Words suggestions must be between 5 and 20.")]

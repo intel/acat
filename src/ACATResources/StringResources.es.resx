@@ -1882,4 +1882,88 @@ ACAT utiliza dos métricas - “saturación” e “impedancia” - para verific
   <data name="TryoutSuccess" xml:space="preserve">
     <value />
   </data>
+  <data name="Usedigits1throug5only" xml:space="preserve">
+    <value>Utilice únicamente los dígitos del 1 al 5</value>
+  </data>
+  <data name="ScannerColumnIterations" xml:space="preserve">
+    <value>Iteraciones de la columna del escáner</value>
+  </data>
+  <data name="ScannerFirstRepeatTime" xml:space="preserve">
+    <value>Tiempo de primera repetición del escáner</value>
+  </data>
+  <data name="Firstrepeattimeforstickybuttons" xml:space="preserve">
+    <value>Tiempo de primera repetición para botones fijos (en ms)</value>
+  </data>
+  <data name="Scantimeinmsecs" xml:space="preserve">
+    <value>Tiempo de escaneo (en mseg)</value>
+  </data>
+  <data name="ScannerFirstPauseTime" xml:space="preserve">
+    <value>Tiempo de primera pausa del escáner</value>
+  </data>
+  <data name="Extratimetopauseonthefirstrowcolumnbuttoninmsecs" xml:space="preserve">
+    <value>Tiempo adicional para pausar en la primera fila/columna/botón (en ms)</value>
+  </data>
+  <data name="Playabeeponaselection" xml:space="preserve">
+    <value>Reproducir un pitido en una selección</value>
+  </data>
+  <data name="Includedisabledbuttonsinthescanningcycle" xml:space="preserve">
+    <value>Incluir botones deshabilitados en el ciclo de escaneo</value>
+  </data>
+  <data name="Minimumholdtimefortheactuatorswitchtotrigger" xml:space="preserve">
+    <value>Tiempo mínimo de retención para que se active el interruptor del actuador (en ms)</value>
+  </data>
+  <data name="Expandanabbreviationonlyifaspacecommaoraperiodisinsertedaftertheabbreviation" xml:space="preserve">
+    <value>Amplíe una abreviatura solo si se inserta un espacio, una coma o un punto después de la abreviatura</value>
+  </data>
+  <data name="Logapplicationmessagestoafilesewithcaution" xml:space="preserve">
+    <value>Registra los mensajes de la aplicación en un archivo. Úselo con precaución. Esto ralentizará la aplicación y consumirá espacio en disco. Úselo solo para solucionar problemas.</value>
+  </data>
+  <data name="Enableauditloggingofimportantevents" xml:space="preserve">
+    <value>Habilite el registro de auditoría de eventos importantes. Úselo con precaución. Esto ralentizará la aplicación. Úselo solo para solucionar problemas.</value>
+  </data>
+  <data name="EnableTexttospeech" xml:space="preserve">
+    <value>Habilitar texto a voz</value>
+  </data>
+  <data name="EnablePerformanceMonitortomonitorandlogMemoryandCPUutilizationstatistics" xml:space="preserve">
+    <value>Habilite el Monitor de rendimiento para supervisar y registrar las estadísticas de utilización de la memoria y la CPU</value>
+  </data>
+  <data name="MonitorandlogCPUutilization" xml:space="preserve">
+    <value>Supervisar y registrar la utilización de la CPU</value>
+  </data>
+  <data name="Monitorandlogmemoryutilization" xml:space="preserve">
+    <value>Monitorear y registrar la utilización de la memoria</value>
+  </data>
+  <data name="HowoftentomonitorandlogPerformanceMonitorstatistics" xml:space="preserve">
+    <value>Con qué frecuencia se deben supervisar y registrar las estadísticas del Monitor de rendimiento (en segundos)</value>
+  </data>
+  <data name="Includeemptygridelementsinthegridlevelscanningsequence" xml:space="preserve">
+    <value>Incluir elementos de cuadrícula vacíos en la secuencia de escaneo a nivel de cuadrícula</value>
+  </data>
+  <data name="Displaytheactuatorswitchdialogonstartup" xml:space="preserve">
+    <value>Mostrar el cuadro de diálogo del interruptor del actuador al iniciar</value>
+  </data>
+  <data name="DisplaytheACATTalkapplicationinterfacedescriptiononstartup" xml:space="preserve">
+    <value>Mostrar la descripción de la interfaz de la aplicación ACAT Talk al iniciar</value>
+  </data>
+  <data name="Numberoftimesthegridtoplevelisscanned" xml:space="preserve">
+    <value>Número de veces que se escanea la cuadrícula (nivel superior)</value>
+  </data>
+  <data name="Numberoftimestherowsinagridarescanned" xml:space="preserve">
+    <value>Número de veces que se escanean las filas de una cuadrícula</value>
+  </data>
+  <data name="Preventthesystemfromgoingtosleepandthedisplayfromturningoff" xml:space="preserve">
+    <value>Evitar que el sistema entre en modo de suspensión y que la pantalla se apague</value>
+  </data>
+  <data name="Numberoftimesthebuttonsinarowarescanned" xml:space="preserve">
+    <value>Number of times the buttons in a row are scanned</value>
+  </data>
+  <data name="Checkdisplayscalefactorissetto100or125anddisplaywarningifsot" xml:space="preserve">
+    <value>Compruebe que el factor de escala de la pantalla esté configurado al 100 % o al 125 % y muestre una advertencia si no es así.</value>
+  </data>
+  <data name="Displaycalibrationwindowhelp" xml:space="preserve">
+    <value>Mostrar ayuda de la ventana de calibración</value>
+  </data>
+  <data name="EnableinAppsounds" xml:space="preserve">
+    <value />
+  </data>
 </root>

@@ -1,6 +1,7 @@
 using ACAT.Core.AgentManagement;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
 using ACAT.Extension;
 using ACAT.Extension.CommandHandlers;
@@ -15,7 +16,7 @@ namespace ACAT.Extensions.UI.Scanners
     [ClassDescriptor("D3F4A1B2-3C4D-5E6F-7A8B-9A0B1C2D3E4F",
                 Name = "DashboardAppScanner",
                 Description = "Scanner for Dashboard Applications")]
-    public partial class DashboardAppScanner : GenericScannerForm, ISupportsStatusBar
+    public partial class DashboardAppScanner : GenericScannerForm
     {
         private TableLayoutPanel panelDashboardControls;
         private TableLayoutPanel panelTopToolbar;
@@ -26,7 +27,14 @@ namespace ACAT.Extensions.UI.Scanners
         public DashboardAppScanner() : base()
         {
             _dispatcher = new DashboardAppDispatcher(this);
+            _launchAppAgent = Context.AppAgentMgr.GetFunctionalAgentByName("LaunchAppAgent") as IFunctionalAgent;
+            if (_launchAppAgent == null)
+            {
+                Log.Error("LaunchAppAgent not found. Ensure it is registered in the ACAT configuration.");
+            }
         }
+
+        private IFunctionalAgent _launchAppAgent { get; set; }
 
         public override DefaultCommandDispatcher _dispatcher { get; }
         public override RunCommandDispatcher CommandDispatcher => _dispatcher;
@@ -166,6 +174,13 @@ namespace ACAT.Extensions.UI.Scanners
         public bool HandleCmdShowSystem()
         {
             _scannerCommon.UserControlManager.PushUserControlByKeyOrName(panelDashboardControls, "supportedapps", "LaunchAppUserControl");
+
+            if (_launchAppAgent != null) 
+            {
+                var uc = panelDashboardControls.Controls.Find("LaunchAppUserControl", true);
+                _launchAppAgent?.Activate(uc.Length > 0 ? uc[0] as IUserControl : null);
+            }
+
             _scannerCommon.UserControlManager.StartTopLevelAnimation();
             return true;
         }
@@ -290,6 +305,7 @@ namespace ACAT.Extensions.UI.Scanners
 
                 /* Launch App Commands */
                 Commands.Add(new DashboardAppCommandHandler("Chrome"));
+                Commands.Add(new DashboardAppCommandHandler("Edge"));
             }
         }
     }

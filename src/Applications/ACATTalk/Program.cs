@@ -116,7 +116,7 @@ namespace ACAT.Applications.ACATTalk
             }
 
             splash = new Splash(2000);
-            splash.Show();
+            splash.Show(StringResources.BeginusingACAT);
 
             Context.PreInit();
             Common.PreInit();
@@ -193,8 +193,8 @@ namespace ACAT.Applications.ACATTalk
                     return;
                 }
 
-                AppCommon.ExitMessageShow();
-
+                splash = new Splash();
+                splash.Show(StringResources.ExitingACAT);
                 AuditLog.Audit(new AuditEvent("Application", "stop"));
 
                 Context.Dispose();
@@ -203,7 +203,8 @@ namespace ACAT.Applications.ACATTalk
 
                 ScannerFocus.Stop();
 
-                AppCommon.ExitMessageClose();
+                splash?.Close();
+                splash = null;
 
                 Log.Debug("ACATTalk Application shutdown");
 

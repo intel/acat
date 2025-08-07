@@ -18,6 +18,7 @@
 // </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Utility;
 using ACAT.UserControls;
 using System;
 using System.Collections.Generic;

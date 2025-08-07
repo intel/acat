@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PanelManagement;
+using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
 using System.Threading;
 
@@ -62,6 +63,15 @@ namespace ACAT.Core.AgentManagement
         /// </summary>
         /// <returns>trye b success</returns>
         public abstract bool Activate();
+        //{
+        //    return false;
+        //}
+
+        public abstract bool Activate(IUserControl usercontrol);
+        //{
+        //    //throw new System.NotImplementedException();
+        //    return false;
+        //}
 
         /// <summary>
         /// Call this function from within the functional agent

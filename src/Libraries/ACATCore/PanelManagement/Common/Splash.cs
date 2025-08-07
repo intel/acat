@@ -7,6 +7,7 @@
 
 using ACAT.Core.Utility;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Threading;
 
@@ -75,9 +76,12 @@ namespace ACAT.Core.PanelManagement
         /// Call this to show the splash screen.  It is display asynchronously
         /// to enable the application to do its initializating tasks
         /// </summary>
-        public void Show()
+        public void Show(string message)
         {
-            _thread = new Thread(showSplash) { IsBackground = true };
+            _thread = new Thread(() =>
+            {
+                showSplash(message);
+            }) { IsBackground = true };
             _thread.SetApartmentState(ApartmentState.STA);
             _stopWatch.Start();
             _thread.Start();
@@ -96,9 +100,9 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Displays the splash screen
         /// </summary>
-        private void showSplash()
+        private void showSplash(string message)
         {
-            _form = new SplashScreen();
+            _form = new SplashScreen(message);
 
             _form.ShowDialog();
         }

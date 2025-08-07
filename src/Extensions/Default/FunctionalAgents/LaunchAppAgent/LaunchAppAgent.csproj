@@ -66,6 +66,10 @@
       <Project>{a0990d4e-f25b-430c-bda3-40a72560b877}</Project>
       <Name>ACATResources</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\ACAT.Extensions.UI\ACAT.Extensions.UI.csproj">
+      <Project>{34c19086-7ab0-4806-a296-1f71df839095}</Project>
+      <Name>ACAT.Extensions.UI</Name>
+    </ProjectReference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -85,7 +89,6 @@
     <Compile Include="EditAppInfo.Designer.cs">
       <DependentUpon>EditAppInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="AppInfo.cs" />
     <Compile Include="ConfigureLaunchAppSettings.cs">
       <SubType>UserControl</SubType>
     </Compile>

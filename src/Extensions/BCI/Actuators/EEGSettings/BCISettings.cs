@@ -14,9 +14,9 @@ using ACATResources;
 using ACAT.Core.PreferencesManagement;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
 {
@@ -92,7 +92,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         [ObservableProperty]
         private bool testing_DuplicateRequiredChannelsAsOptionalChannels = false;
 
-#else // DON'T USE THIS IN RELEASE BUILD, ONLY FOR TESTING PURPOSES
+#else // DON'T DISPLAY THESE SETTINGS IN RELEASE BUILD, ONLY FOR TESTING PURPOSES
         public bool Testing_UseSensor = true;
 
         public bool Testing_ForceRecalibrateFromFile = false;
@@ -111,47 +111,67 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
 #endif
         // ************************** Scanning **************************************//
 
-        [Descriptor("Pause time (ins ms)")]
+        [Display(
+            Name = "Scanning pause time (ms)",
+            Description = "Pause time in milliseconds between scanning iterations. Default: 300ms",
+            GroupName = "Scanning Settings")]
         [Range(100, 5000)]
         [UIHint("Slider")]
         [DefaultValue(300)]
         [ObservableProperty]
         private int scanning_PauseTime = 300;
 
-        [Descriptor("Pause time (ins ms)")]
+        [Display(
+            Name = "Scanning short pause time (ms)",
+            Description = "Pause time in milliseconds between scanning iterations when the user is typing. Default: 300ms",
+            GroupName = "Scanning Settings")]
         [Range(100, 5000)]
         [UIHint("Slider")]
         [DefaultValue(300)]
         [ObservableProperty]
         private int scanning_ShortPauseTime = 300;
 
-        [Descriptor("Time (ins ms) when decision is shown")]
+        [Display(
+            Name = "Scanning decision display time (ms)",
+            Description = "Time in milliseconds to display the decision made by the user. Default: 2000ms",
+            GroupName = "Scanning Settings")]
         [Range(0, 5000)]
         [UIHint("Slider")]
         [DefaultValue(2000)]
         [ObservableProperty]
         private int scanning_ShowDecisionTime = 2000;
 
-        [Descriptor("Delay (in ms) after a decision is made")]
+        [Display(
+            Name = "Scanning delay after decision (ms)",
+            Description = "Delay in milliseconds after a decision is made before the next scanning iteration starts. Default: 5000ms",
+            GroupName = "Scanning Settings")]
         [Range(0, 20000)]
         [UIHint("Slider")]
         [DefaultValue(5000)]
         [ObservableProperty]
         private int scanning_DelayAfterDecision  = 5000;
 
-        [Descriptor("Delay (in ms) to get ready before typing")]
+        [Display(
+            Name = "Scanning delay to get ready (ms)",
+            Description = "Delay in milliseconds to get ready before typing. Default: 3000ms",
+            GroupName = "Scanning Settings")]
         [Range(0, 20000)]
         [UIHint("Slider")]
         [DefaultValue(3000)]
         [ObservableProperty]
         private int scanning_DelayToGetReady = 3000;
 
-        [Descriptor("Is focal circle filled?")]
+        [Display(
+            Name="Fill Focal Circle",
+            Description = "If true, the focal circle will be filled with the color specified in Scanning_FocalCircleColor. Default: false")]
         [UIHint("ToggleSwitch")]
         [ObservableProperty]
         private bool scanning_IsFocalCircleFilled = false;
 
-        [Descriptor("Color of the focal circle. Available options: green, yellow.")]
+        [Display(
+            Name = "Focal Circle Color",
+            Description = "Color of the focal circle. Available options: green, yellow. Default: green",
+            GroupName = "Scanning Settings")]
         [UIHint("TextBox")]
         [ObservableProperty]
         private String scanning_FocalCircleColor = "green";
@@ -161,23 +181,23 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         //[IntDescriptor("Offset added to target in calibration", 0, 10000, 1000)]
         public int Calibration_OffsetTarget;
 
-        [Descriptor("Maximum elapsed time to force calibrating again")]
+        [Display(
+            Name = "Maximum elapsed time to force calibrating again")]
         [Range(30, 600)]
         [UIHint("Slider")]
         [ObservableProperty]
         private int calibration_MaxElapsedTimeToForceRecalibration = 360;
 
-        [Descriptor("Path where the trained classifiers are stored")]
-        [UIHint("TextBox")]
-        [DefaultValue("Actuators\\BCI\\TrainedClassifiers")]
-        [ObservableProperty]
-        private string calibration_TrainedClassifiersFilePath  = "Actuators\\BCI\\TrainedClassifiers";
+        public string Calibration_TrainedClassifiersFilePath  = "Actuators\\BCI\\TrainedClassifiers";
 
-        [Descriptor("Display popup window with signals after calibration")]
+        [Display(
+            Name = "Display popup window with signals after calibration?")]
         [UIHint("ToggleSwitch")]
         [ObservableProperty]
         private bool calibration_DisplaySignalsAfterCalibrationFlag = false;
 
+        [Display(
+            Name = "Use advance mode for typing-calibration mappings?")]
         [BoolDescriptor("Use advance mode for typing-calibration mappins?")]
         [UIHint("ToggleSwitch")]
         [ObservableProperty]
@@ -331,88 +351,22 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         /// </summary>
         public bool SignalControl_RecheckNeeded { get; set; }
 
-        [Descriptor("Short name / id (ex: Pz, C3, etc.) of channel #1 in required group")] // Cz
-        [UIHint("TextBox")]
-        [ObservableProperty]
-        private String signalControl_RequiredChannel_Channel1_Name = "Cz";
-
-        [Descriptor("Short name / id (ex: Pz, C3, etc.) of channel #2 in required group")] // C3
-        [UIHint("TextBox")]
-        [DefaultValue("C3")]
-        [ObservableProperty]
-        private String signalControl_RequiredChannel_Channel2_Name = "C3";
-
-        [Descriptor("Short name / id (ex: Pz, C3, etc.) of channel #3 in required group")] // C4
-        [UIHint("TextBox")]
-        [ObservableProperty]
-        private String signalControl_RequiredChannel_Channel3_Name = "C4";
-
-        [Descriptor("Short name / id (ex: Pz, C3, etc.) of channel #4 in required group")] // Pz
-        [UIHint("TextBox")]
-        [ObservableProperty]
-        private String signalControl_RequiredChannel_Channel4_Name = "Pz";
-
-        [Descriptor("Short name / id (ex: Pz, C3, etc.) of channel #5 in required group")] // P3
-        [UIHint("TextBox")]
-        [ObservableProperty]
-        private String signalControl_RequiredChannel_Channel5_Name = "P3";
-
-        [Descriptor("Short name / id (ex: Pz, C3, etc.) of channel #6 in required group")] // P4
-        [UIHint("TextBox")]
-        [ObservableProperty]
-        private String signalControl_RequiredChannel_Channel6_Name = "P4";
-
-        [Descriptor("Short name / id (ex: Pz, C3, etc.) of channel #7 in required group")] // T5
-        [UIHint("TextBox")]
-        [ObservableProperty]
-        private String signalControl_RequiredChannel_Channel7_Name = "T5";
-
-        [Descriptor("Short name / id (ex: Pz, C3, etc.) of channel #8 in required group")] // Fz
-        [UIHint("TextBox")]
-        [ObservableProperty]
-        private String signalControl_RequiredChannel_Channel8_Name = "Fz";
-
-        [Descriptor("Short name / id (ex: Pz, C3, etc.) of channel #9 in optional group")]
-        [UIHint("TextBox")]
-        [ObservableProperty]
-        private String signalControl_OptionalChannel_Channel9_Name = "T6";
-
-        [Descriptor("Short name / id (ex: Pz, C3, etc.) of channel #10 bin optional group")]
-        [UIHint("TextBox")]
-        [DefaultValue("F3")]
-        [ObservableProperty]
-        private String signalControl_OptionalChannel_Channel10_Name  = "F3";
-
-        [Descriptor("Short name / id (ex: Pz, C3, etc.) of channel #11 in optional group")]
-        [UIHint("TextBox")]
-        [DefaultValue("F4")]
-        [ObservableProperty]
-        private String signalControl_OptionalChannel_Channel11_Name  = "F4";
-
-        [Descriptor("Short name / id (ex: Pz, C3, etc.) of channel #12 in optional group")]
-        [UIHint("TextBox")]
-        [ObservableProperty]
-        private String signalControl_OptionalChannel_Channel12_Name = "F7";
-
-        [Descriptor("Short name / id (ex: Pz, C3, etc.) of channel #13 in optional group")]
-        [UIHint("TextBox")]
-        [ObservableProperty]
-        private String signalControl_OptionalChannel_Channel13_Name = "O1";
-
-        [Descriptor("Short name / id (ex: Pz, C3, etc.) of channel #14 in optional group")]
-        [UIHint("TextBox")]
-        [ObservableProperty]
-        private String signalControl_OptionalChannel_Channel14_Name = "O2";
-
-        [Descriptor("Short name / id (ex: Pz, C3, etc.) of channel #15 in optional group")]
-        [UIHint("TextBox")]
-        [ObservableProperty]
-        private String signalControl_OptionalChannel_Channel15_Name = "Fp1";
-
-        [Descriptor("Short name / id (ex: Pz, C3, etc.) of channel #16 in optional group")]
-        [UIHint("TextBox")]
-        [ObservableProperty]
-        private String signalControl_OptionalChannel_Channel16_Name = "Fp2";
+        public string SignalControl_RequiredChannel_Channel1_Name = "Cz";
+        public string SignalControl_RequiredChannel_Channel2_Name = "C3";
+        public string SignalControl_RequiredChannel_Channel3_Name = "C4";
+        public string SignalControl_RequiredChannel_Channel4_Name = "Pz";
+        public string SignalControl_RequiredChannel_Channel5_Name = "P3";
+        public string SignalControl_RequiredChannel_Channel6_Name = "P4";
+        public string SignalControl_RequiredChannel_Channel7_Name = "T5";
+        public string SignalControl_RequiredChannel_Channel8_Name = "Fz";
+        public string SignalControl_OptionalChannel_Channel9_Name = "T6";
+        public string SignalControl_OptionalChannel_Channel10_Name  = "F3";
+        public string SignalControl_OptionalChannel_Channel11_Name  = "F4";
+        public string SignalControl_OptionalChannel_Channel12_Name = "F7";
+        public string SignalControl_OptionalChannel_Channel13_Name = "O1";
+        public string SignalControl_OptionalChannel_Channel14_Name = "O2";
+        public string SignalControl_OptionalChannel_Channel15_Name = "Fp1";
+        public string SignalControl_OptionalChannel_Channel16_Name = "Fp2";
 
         // ************************** Signal control *********************************** //
 
@@ -485,22 +439,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         [DefaultValue(true)]
         [ObservableProperty]
         private bool signalQuality_StopImpedanceTestAfterOneCycle = true;
-
-        //// Ranges for parameters with NO Cap attached
-        /*
-        [IntDescriptorAttribute("Upper bound (percentage) of the range of railing values considered good (green)", 0, 20, 10)]
-        public int SignalQuality_RailingGoodMaxThreshold​;
-
-        [IntDescriptorAttribute("Upper bound (percentage) of the range of railing values considered ok (yellow)", 0, 25, 25)]
-        public int SignalQuality_RailingOkMaxThreshold​;
-
-        [IntDescriptorAttribute("Upper bound (kilo Ohms) of the range of impedance values considered good (green)", 0, 7000, 5500)]
-        public int SignalQuality_ImpedanceGoodMaxThreshold​;
-
-        [IntDescriptorAttribute("Upper bound (kilo Ohms) of the range of impedance values considered ok (yellow)", 0, 7000, 6500)]
-        public int SignalQuality_ImpedanceOkMaxThreshold​;
-        */
-        //// Ranges for parameters with NO Cap attached
 
         //// Default ranges for parameters with Cap attached
 
@@ -776,7 +714,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             calibration_DisplaySignalsAfterCalibrationFlag = false;
             Calibration_OffsetTarget = 1000;
             calibration_MaxElapsedTimeToForceRecalibration = 360;
-            calibration_TrainedClassifiersFilePath = "Actuators\\BCI\\TrainedClassifiers";
+            Calibration_TrainedClassifiersFilePath = "Actuators\\BCI\\TrainedClassifiers";
             calibration_UseAdvanceModeForTypingMappings = false;
 
             classifier_ConfidenceThreshold = 0.95f;
@@ -856,23 +794,22 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             SignalControl_RecheckNeeded = true; // by default, force user to do signal quality tests and calibration
 
             // Default channel names
-            signalControl_RequiredChannel_Channel1_Name = "Cz";
-            signalControl_RequiredChannel_Channel2_Name = "C3";
-            signalControl_RequiredChannel_Channel3_Name = "C4";
-            signalControl_RequiredChannel_Channel4_Name = "Pz";
-            signalControl_RequiredChannel_Channel5_Name = "P3";
-            signalControl_RequiredChannel_Channel6_Name = "P4";
-            signalControl_RequiredChannel_Channel7_Name = "T5";
-            signalControl_RequiredChannel_Channel8_Name = "Fz";
-
-            signalControl_OptionalChannel_Channel9_Name = "T6";
-            signalControl_OptionalChannel_Channel10_Name = "F3";
-            signalControl_OptionalChannel_Channel11_Name = "F4";
-            signalControl_OptionalChannel_Channel12_Name = "F7";
-            signalControl_OptionalChannel_Channel13_Name = "O1";
-            signalControl_OptionalChannel_Channel14_Name = "O2";
-            signalControl_OptionalChannel_Channel15_Name = "Fp1";
-            signalControl_OptionalChannel_Channel16_Name = "Fp2";
+            SignalControl_RequiredChannel_Channel1_Name = "Cz";
+            SignalControl_RequiredChannel_Channel2_Name = "C3";
+            SignalControl_RequiredChannel_Channel3_Name = "C4";
+            SignalControl_RequiredChannel_Channel4_Name = "Pz";
+            SignalControl_RequiredChannel_Channel5_Name = "P3";
+            SignalControl_RequiredChannel_Channel6_Name = "P4";
+            SignalControl_RequiredChannel_Channel7_Name = "T5";
+            SignalControl_RequiredChannel_Channel8_Name = "Fz";
+            SignalControl_OptionalChannel_Channel9_Name = "T6";
+            SignalControl_OptionalChannel_Channel10_Name = "F3";
+            SignalControl_OptionalChannel_Channel11_Name = "F4";
+            SignalControl_OptionalChannel_Channel12_Name = "F7";
+            SignalControl_OptionalChannel_Channel13_Name = "O1";
+            SignalControl_OptionalChannel_Channel14_Name = "O2";
+            SignalControl_OptionalChannel_Channel15_Name = "Fp1";
+            SignalControl_OptionalChannel_Channel16_Name = "Fp2";
 
             triggerTest_ScanTime = 200; // 200ms
             triggerTest_NumRepetitions = 10; // 10 repetitions

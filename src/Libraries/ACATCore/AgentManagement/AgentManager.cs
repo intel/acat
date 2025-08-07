@@ -504,7 +504,7 @@ namespace ACAT.Core.AgentManagement
         /// <returns></returns>
         public bool CanActivateFunctionalAgent()
         {
-            return !(_currentAgent is IFunctionalAgent);
+            return _currentAgent is not IFunctionalAgent;
         }
 
         /// <summary>
@@ -909,7 +909,7 @@ namespace ACAT.Core.AgentManagement
         /// <returns></returns>
         private async Task activateAgent(IFunctionalAgent agent)
         {
-            if (!(agent is FunctionalAgentBase))
+            if (agent is not FunctionalAgentBase)
             {
                 return;
             }

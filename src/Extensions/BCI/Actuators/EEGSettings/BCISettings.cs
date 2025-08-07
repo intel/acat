@@ -10,6 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACATResources;
 using ACAT.Core.PreferencesManagement;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
@@ -33,33 +34,81 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
 
         // ************************** Testing (internal use)  *********************************** //
 
-        [Descriptor("For internal use, true to use OpenBCI Cyton board, false to use a dummy sensor")]
-        [UIHint("ToggleSwitch")]
+#if DEBUG
+        [Display(
+            Name = "Enable Debug Mode",
+            Description = "Disables directly using BCI sensor.  UI will let you skip through steps.",
+            GroupName = "Developer Settings")]
         [ObservableProperty]
-        private bool testing_UseSensor;
+        private bool testing_UseSensor = true;
 
-        // [BoolDescriptor("For internal use, force recalibration from file in Testing_CalibrationFileId", false)]
-        public bool Testing_ForceRecalibrateFromFile;
+        [Display(
+            Name = "Force Recalibration From File",
+            Description = "For internal use, force recalibration from file in Testing_CalibrationFileId",
+            GroupName = "Developer Settings")]
+        [ObservableProperty]
+        private bool testing_ForceRecalibrateFromFile = false;
 
-        //[StringDescriptor("For internal use, ID of the file to recalibrate from")]
-        public string Testing_CalibrationFileId; // if empty use session
+        [Display(
+            Name = "Calibration File Name",
+            Description = "ID of the file to recalibrate from.",
+            GroupName = "Developer Settings")]
+        [ObservableProperty]
+        private string testing_CalibrationFileId;
 
-        //[IntDescriptor("For internal use, testID for data collection V2 (box / small buttons calibration and testing. Use 5 for ACAT-Talk", 1, 5, 1)]
-        public int Testing_TestID; // For data collection V2
+        [Display(
+            Name = "Test ID Number",
+            Description = "testID for data collection V2 (box / small buttons calibration and testing. Use 5 for ACAT-Talk",
+            GroupName = "Developer Settings")]
+        [ObservableProperty]
+        private int testing_TestID; // For data collection V2
 
-        //[BoolDescriptor("Disables signal quality checks when selecting Next from BCI Onboarding")]
-        public bool Testing_IgnoreSignalTestResultDuringOnboarding;
+        [Display(
+            Name = "Disable Signal Qualty Check",
+            Description = "Disables signal quality checks when selecting Next from BCI Onboarding",
+            GroupName = "Developer Settings")]
+        [ObservableProperty]
+        private bool testing_IgnoreSignalTestResultDuringOnboarding = false;
 
-        //[BoolDescriptor("Skips optical sensor tests in BCI Onboarding")]
-        public bool Testing_BCIOnboardingIgnoreOpticalSensorChecks;
+        [Display(
+            Name = "Disable Optical Sensor Tests",
+            Description = "Skips optical sensor tests in BCI Onboarding",
+            GroupName = "Developer Settings")]
+        [ObservableProperty]
+        private bool testing_BCIOnboardingIgnoreOpticalSensorChecks = false;
 
-        public int Testing_MinimumProbabiltyToDisplayBarOnTyping;
+        [Display(
+            Name = "Min Probability to Display on Typing",
+            Description = "Minimum probablility score to show on the display while typing.",
+            GroupName = "Developer Settings")]
+        [UIHint("TextBox")]
+        [ObservableProperty]
+        private int testing_MinimumProbabiltyToDisplayBarOnTyping;
 
-        [Descriptor("For internal use, automatically duplicate the required channels as optional channels (simulate connection of daisy board)")]
-        [UIHint("ToggleSwitch")]
+        [Display(
+            Name = "Duplicate Required Channels as Optional",
+            Description = "Automatically duplicate the required channels as optional channels (simulate connection of daisy board)",
+            GroupName = "Developer Settings")]
         [ObservableProperty]
         private bool testing_DuplicateRequiredChannelsAsOptionalChannels = false;
 
+#else // DON'T USE THIS IN RELEASE BUILD, ONLY FOR TESTING PURPOSES
+        public bool Testing_UseSensor = true;
+
+        public bool Testing_ForceRecalibrateFromFile = false;
+
+        public string Testing_CalibrationFileId;
+
+        public int Testing_TestID = 5;
+
+        public bool Testing_IgnoreSignalTestResultDuringOnboarding = false;
+
+        public bool Testing_BCIOnboardingIgnoreOpticalSensorChecks = false;
+
+        public int Testing_MinimumProbabiltyToDisplayBarOnTyping = 0;
+
+        public bool Testing_DuplicateRequiredChannelsAsOptionalChannels = false;
+#endif
         // ************************** Scanning **************************************//
 
         [Descriptor("Pause time (ins ms)")]
@@ -862,14 +911,14 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
 
             //// Default ranges for parameters with Cap attached
 
-            testing_UseSensor = true;
+            Testing_UseSensor = true;
             Testing_IgnoreSignalTestResultDuringOnboarding = false;
             Testing_ForceRecalibrateFromFile = false;
             Testing_CalibrationFileId = "_";
             Testing_TestID = 5;
             Testing_MinimumProbabiltyToDisplayBarOnTyping = 100; // no probabiliteis
             Testing_BCIOnboardingIgnoreOpticalSensorChecks = false;
-            testing_DuplicateRequiredChannelsAsOptionalChannels = false;
+            Testing_DuplicateRequiredChannelsAsOptionalChannels = false;
 
             showDisclaimerOnStartup = true;
 

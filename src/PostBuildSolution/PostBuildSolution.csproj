@@ -95,7 +95,7 @@
     <!-- Define paths -->
     <PropertyGroup>
       <ZipFile>$(SolutionDir)\Applications\Install\ConvAssistApp\ConvAssist.zip</ZipFile>
-      <ExtractedDir>$(IntermediateOutputPath)UnzippedDependency\</ExtractedDir>
+      <ExtractedDir>$(BaseOutputPath)\UnzippedDependency\</ExtractedDir>
       <UnzipFlagFile>$(ExtractedDir).unzipped</UnzipFlagFile>
     </PropertyGroup>
 

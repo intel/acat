@@ -1877,10 +1877,10 @@ ACAT utiliza dos métricas - “saturación” e “impedancia” - para verific
     <value>Número de veces que se escanean las palabras de la lista de predicción de palabras</value>
   </data>
   <data name="TryoutAlert" xml:space="preserve">
-    <value />
+    <value>¡Trabajo bueno!</value>
   </data>
   <data name="TryoutSuccess" xml:space="preserve">
-    <value />
+    <value>Continuar practicando o presionando \ "Next \" para continuar</value>
   </data>
   <data name="Usedigits1throug5only" xml:space="preserve">
     <value>Utilice únicamente los dígitos del 1 al 5</value>
@@ -2024,6 +2024,21 @@ ACAT utiliza dos métricas - “saturación” e “impedancia” - para verific
     <value>Sensibilidad al levantar las cejas</value>
   </data>
   <data name="HeadMovementSensitivity" xml:space="preserve">
-    <value />
+    <value>Sensibilidad al movimiento de la cabeza</value>
+  </data>
+  <data name="TryHigherValuesIfTheSystemIsTriggeringWithInvoluntaryCheekMovemen" xml:space="preserve">
+    <value>Pruebe valores más altos si el sistema se activa con el movimiento involuntario de la mejilla. Pruebe valores más bajos si desea que el sistema se active con menos movimiento de mejillas</value>
+  </data>
+  <data name="Valueisinmilliseconds" xml:space="preserve">
+    <value>El valor se expresa en milisegundos. Si detecta dos movimientos, uno al levantar la mejilla y el otro al volver a la posición normal, ajuste el valor al tiempo aproximado que mantiene la mejilla levantada.</value>
+  </data>
+  <data name="valueisinmillisecondsIfyouobservetwomovementdetections" xml:space="preserve">
+    <value>El valor se expresa en milisegundos. Si detecta dos movimientos, uno al levantar la mejilla y el otro al volver a la posición normal, ajuste el valor al tiempo aproximado que mantiene la mejilla levantada.</value>
+  </data>
+  <data name="Tryhighervaluesifthesystemistriggering" xml:space="preserve">
+    <value>Pruebe valores más altos si el sistema se activa con movimientos involuntarios de las cejas. Pruebe valores más bajos si desea que el sistema se active con menos movimientos de las cejas.</value>
+  </data>
+  <data name="Tryhighervalueshead" xml:space="preserve">
+    <value>Pruebe valores más altos si el sistema intenta recalibrarse con demasiada frecuencia con movimientos involuntarios de la cabeza.</value>
   </data>
 </root>

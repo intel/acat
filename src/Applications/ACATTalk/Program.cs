@@ -59,10 +59,10 @@ namespace ACAT.Applications.ACATTalk
                 return;
             }
 
-            if (!AppCommon.CheckFontsInstalled())
-            {
-                return;
-            }
+            //if (!AppCommon.CheckFontsInstalled())
+            //{
+            //    return;
+            //}
 
             CoreGlobals.AppId = "ACATTalk";
             CoreGlobals.ACATUserGuideFileName = "ACAT User Guide.pdf";

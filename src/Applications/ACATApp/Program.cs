@@ -45,10 +45,10 @@ namespace ACAT.Applications.ACATApp
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            if (!AppCommon.CheckFontsInstalled())
-            {
-               return;
-            }
+            //if (!AppCommon.CheckFontsInstalled())
+            //{
+            //   return;
+            //}
             // AppCommon.InstallFontsForCurrentUser();
 
             CoreGlobals.AppId = "ACATDashboard";

@@ -2025,4 +2025,19 @@ ACAT uses two metrics - “railing” and “impedance” - to check signal qual
   <data name="HeadMovementSensitivity" xml:space="preserve">
     <value>Head Movement Sensitivity</value>
   </data>
+  <data name="TryHigherValuesIfTheSystemIsTriggeringWithInvoluntaryCheekMovemen" xml:space="preserve">
+    <value>Try higher values if the system is triggering with involuntary cheek movement. Try lower values  if you want the system to trigger with less cheek movement​​</value>
+  </data>
+  <data name="Valueisinmilliseconds" xml:space="preserve">
+    <value>Value is in milliseconds. If you observe two movement detections, once when you move your cheek up and the second when you return to normal position, adjust the value to the approximate time you hold the cheek in the up position​​</value>
+  </data>
+  <data name="valueisinmillisecondsIfyouobservetwomovementdetections" xml:space="preserve">
+    <value>Value is in milliseconds. If you observe two movement detections, once when you raise your eyebrows and the second when you return to normal position, adjust the value to the approximate time you hold the eyebrow in the raised position</value>
+  </data>
+  <data name="Tryhighervaluesifthesystemistriggering" xml:space="preserve">
+    <value>Try higher values if the system is triggering with involuntary eyebrow movement. Try lower values  if you want to the system to trigger with less eyebrow movement</value>
+  </data>
+  <data name="Tryhighervalueshead" xml:space="preserve">
+    <value>Try higher values if the system is trying to recalibrate too often with involuntary head movements​</value>
+  </data>
 </root>

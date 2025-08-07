@@ -1950,4 +1950,40 @@ ACAT uses two metrics - “railing” and “impedance” - to check signal qual
   <data name="Enablesentenceprediction" xml:space="preserve">
     <value>Enable sentence prediction</value>
   </data>
+  <data name="Autoappendsentenceterminator" xml:space="preserve">
+    <value>Auto append sentence terminator?</value>
+  </data>
+  <data name="Getsorsetswhetherapuncutationshouldbeappendedifitisnotalreadythere" xml:space="preserve">
+    <value>Gets or sets whether a puncutation should be appended if it is not already there.</value>
+  </data>
+  <data name="Speakiate" xml:space="preserve">
+    <value>Speaking rate</value>
+  </data>
+  <data name="Getsorsetstherateofspeech" xml:space="preserve">
+    <value>Gets or sets the rate of speech.</value>
+  </data>
+  <data name="Usealternatepronunciations" xml:space="preserve">
+    <value>Use alternate pronunciations?</value>
+  </data>
+  <data name="Volumesetting" xml:space="preserve">
+    <value>Volume setting</value>
+  </data>
+  <data name="Autodisplaycontextualmenuwhentheappwindowgetsfocus" xml:space="preserve">
+    <value>Auto-display contextual menu when the app window gets focus</value>
+  </data>
+  <data name="CheekTwitchHoldTime" xml:space="preserve">
+    <value>Cheek Twitch Hold Time</value>
+  </data>
+  <data name="CheekTwitchSensitivity" xml:space="preserve">
+    <value>Cheek Twitch Sensitivity</value>
+  </data>
+  <data name="EyebrowRaiseHoldTime" xml:space="preserve">
+    <value>Eyebrow Raise Hold Time</value>
+  </data>
+  <data name="EyebrowRaiseSensitivity" xml:space="preserve">
+    <value>Eyebrow Raise Sensitivity</value>
+  </data>
+  <data name="HeadMovementSensitivity" xml:space="preserve">
+    <value>Head Movement Sensitivity</value>
+  </data>
 </root>

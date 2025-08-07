@@ -205,6 +205,24 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auto append sentence terminator?.
+        /// </summary>
+        public static string Autoappendsentenceterminator {
+            get {
+                return ResourceManager.GetString("Autoappendsentenceterminator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto-display contextual menu when the app window gets focus.
+        /// </summary>
+        public static string Autodisplaycontextualmenuwhentheappwindowgetsfocus {
+            get {
+                return ResourceManager.GetString("Autodisplaycontextualmenuwhentheappwindowgetsfocus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto-save scanner&apos;s last position.
         /// </summary>
         public static string AutosaveScannersLastPosition {
@@ -616,6 +634,24 @@ namespace ACATResources {
         public static string Checkdisplayscalefactorissetto100or125anddisplaywarningifsot {
             get {
                 return ResourceManager.GetString("Checkdisplayscalefactorissetto100or125anddisplaywarningifsot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cheek Twitch Hold Time.
+        /// </summary>
+        public static string CheekTwitchHoldTime {
+            get {
+                return ResourceManager.GetString("CheekTwitchHoldTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cheek Twitch Sensitivity.
+        /// </summary>
+        public static string CheekTwitchSensitivity {
+            get {
+                return ResourceManager.GetString("CheekTwitchSensitivity", resourceCulture);
             }
         }
         
@@ -1427,6 +1463,24 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Eyebrow Raise Hold Time.
+        /// </summary>
+        public static string EyebrowRaiseHoldTime {
+            get {
+                return ResourceManager.GetString("EyebrowRaiseHoldTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eyebrow Raise Sensitivity.
+        /// </summary>
+        public static string EyebrowRaiseSensitivity {
+            get {
+                return ResourceManager.GetString("EyebrowRaiseSensitivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Eyes Closed Calibration.
         /// </summary>
         public static string EyesClosedCalibration {
@@ -1580,6 +1634,24 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gets or sets the rate of speech..
+        /// </summary>
+        public static string Getsorsetstherateofspeech {
+            get {
+                return ResourceManager.GetString("Getsorsetstherateofspeech", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gets or sets whether a puncutation should be appended if it is not already there..
+        /// </summary>
+        public static string Getsorsetswhetherapuncutationshouldbeappendedifitisnotalreadythere {
+            get {
+                return ResourceManager.GetString("Getsorsetswhetherapuncutationshouldbeappendedifitisnotalreadythere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Good.
         /// </summary>
         public static string Good {
@@ -1622,6 +1694,15 @@ namespace ACATResources {
         public static string HardwareSwitchTestLabel1 {
             get {
                 return ResourceManager.GetString("HardwareSwitchTestLabel1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Head Movement Sensitivity.
+        /// </summary>
+        public static string HeadMovementSensitivity {
+            get {
+                return ResourceManager.GetString("HeadMovementSensitivity", resourceCulture);
             }
         }
         
@@ -4298,6 +4379,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Speaking rate.
+        /// </summary>
+        public static string Speakiate {
+            get {
+                return ResourceManager.GetString("Speakiate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SPEAKING.
         /// </summary>
         public static string Speaking {
@@ -4901,6 +4991,15 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use alternate pronunciations?.
+        /// </summary>
+        public static string Usealternatepronunciations {
+            get {
+                return ResourceManager.GetString("Usealternatepronunciations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use Corpus Model.
         /// </summary>
         public static string UseCorpusModel {
@@ -4969,6 +5068,15 @@ namespace ACATResources {
         public static string Volume {
             get {
                 return ResourceManager.GetString("Volume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Volume setting.
+        /// </summary>
+        public static string Volumesetting {
+            get {
+                return ResourceManager.GetString("Volumesetting", resourceCulture);
             }
         }
         

@@ -48,16 +48,12 @@ namespace ACAT.Extensions.UI.UserControls
 
         protected List<ButtonSpec> Buttons { get; set; }
 
-
         protected class ButtonSpec
         {
             public string Name { get; set; }
             public string Icon { get; set; }
             public bool Visible { get; set; }
         }
-
-        protected virtual List<ButtonSpec> DefaultButtons { get; set; }
-
         public LargeToolbarUserControl(string name)
         {
             Name = name;
@@ -112,8 +108,6 @@ namespace ACAT.Extensions.UI.UserControls
             }
             base.Dispose(disposing);
         }
-
-        //protected abstract void InitializeComponent();
 
         protected virtual void InitializeComponent()
         {

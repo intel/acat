@@ -39,9 +39,11 @@ namespace ACAT.Core.PanelManagement
         /// Initializes a new instance of the class..  Parameters
         /// can be used to cutomize the screen
         /// </summary>
-        public SplashScreen()
+        public SplashScreen(string message)
         {
             InitializeComponent();
+
+            this.message.Text = message ?? String.Empty;
 
             //Windows.SetWindowPosition(this, Windows.WindowPosition.CenterScreen);
 

@@ -14,6 +14,7 @@ using ACAT.Core.Widgets;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using static ACAT.Core.ActuatorManagement.DllImports;
 
 namespace ACAT.Core.UserControlManagement
 {
@@ -446,6 +447,11 @@ namespace ACAT.Core.UserControlManagement
             }
 
             return null;
+        }
+
+        public IUserControl getUserControlByGuid(String name)
+        {
+            return _userControls.Find(uc => uc.Descriptor.Name == name);
         }
 
         private void removeUserControl(Control parent, IUserControl userControl)

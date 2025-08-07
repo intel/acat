@@ -25,21 +25,20 @@ using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using ACAT.Extension;
 using ACATResources;
+using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace ACAT.Applications
 {
     public partial class AppCommon
     {
-        /// <summary>
-        /// Form to display the exit message
-        /// </summary>
-        private static ToastForm _exitMessageToastForm;
-
         /// <summary>
         /// Creates the user and profile directories if they
         /// don't exist
@@ -67,43 +66,6 @@ namespace ACAT.Applications
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Closing the exit message form
-        /// </summary>
-        public static void ExitMessageClose()
-        {
-            if (_exitMessageToastForm != null)
-            {
-                try
-                {
-                    _exitMessageToastForm.Close();
-                    _exitMessageToastForm = null;
-                }
-                catch
-                {
-                }
-            }
-        }
-
-        /// <summary>
-        /// Displays message that the app is exiting
-        /// </summary>
-        public static void ExitMessageShow()
-        {
-            if (_exitMessageToastForm == null)
-            {
-                try
-                {
-                    _exitMessageToastForm = new ToastForm(StringResources.ExitingACAT, -1);
-                    Windows.SetWindowPosition(_exitMessageToastForm, Windows.WindowPosition.CenterScreen);
-                    _exitMessageToastForm.Show();
-                }
-                catch
-                {
-                }
-            }
         }
 
         /// <summary>
@@ -324,30 +286,112 @@ namespace ACAT.Applications
             }
         }
 
-        public static bool CheckFontsInstalled()
+        //public static bool CheckFontsInstalled()
+        //{
+        //    string fontPath = SmartPath.ApplicationPath + "\\Assets\\Fonts";
+
+        //    if (!FontCheck.IsMontserratFontInstalled())
+        //    {
+        //        MessageBox.Show("Default fonts are not installed on this system.\nPlease install them and restart ACAT.\nThe fonts can be found here: " + fontPath,
+        //                            "ACAT",
+        //                            MessageBoxButtons.OK,
+        //                            MessageBoxIcon.Error);
+        //        return false;
+        //    }
+
+        //    String fontName = "ACAT Font 1";
+        //    if (!FontCheck.IsFontInstalled(fontName))
+        //    {
+        //        MessageBox.Show("Font \"" + fontName + "\" is not installed on this system.\nPlease install it and restart ACAT.\nThe font can be found here: " + fontPath,
+        //                            "ACAT",
+        //                            MessageBoxButtons.OK,
+        //                            MessageBoxIcon.Error);
+        //        return false;
+        //    }
+
+        //    return true;
+        //}
+
+        [DllImport("gdi32.dll", SetLastError = true)]
+        private static extern int AddFontResourceEx(string lpszFilename, uint fl, IntPtr pdv);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern int SendMessage(int hWnd, int hMsg, int wParam, int lParam);
+
+        private const uint FR_PRIVATE = 0x10;
+        private const uint FR_NOT_ENUM = 0x20;
+        private const int HWND_BROADCAST = 0xffff;
+        private const int WM_FONTCHANGE = 0x001D;
+
+        public static void InstallFontsForCurrentUser()
         {
-            string fontPath = SmartPath.ApplicationPath + "\\Assets\\Fonts";
+            string sourceDir = Path.Combine(SmartPath.ApplicationPath, "Assets", "Fonts");
+            string userFontDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft", "Windows", "Fonts");
+            Directory.CreateDirectory(userFontDir);
 
-            if (!FontCheck.IsMontserratFontInstalled())
+            var fontFiles = Directory.EnumerateFiles(sourceDir, "*.*", SearchOption.AllDirectories)
+                                     .Where(f => f.EndsWith(".ttf", StringComparison.OrdinalIgnoreCase) ||
+                                                 f.EndsWith(".otf", StringComparison.OrdinalIgnoreCase));
+
+            using RegistryKey fontRegKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion\Fonts", writable: true)
+                                               ?? Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows NT\CurrentVersion\Fonts");
+
+            //var existingValues = fontRegKey.GetValueNames()
+            //                               .Select(name => fontRegKey.GetValue(name)?.ToString()?.ToLowerInvariant())
+            //                               .Where(v => !string.IsNullOrEmpty(v))
+            //                               .ToHashSet();
+            var existingValues = fontRegKey.GetValueNames()
+                                            .Select(name => name)
+                                            .ToHashSet();
+ 
+            foreach (var fontFile in fontFiles)
             {
-                MessageBox.Show("Default fonts are not installed on this system.\nPlease install them and restart ACAT.\nThe fonts can be found here: " + fontPath,
-                                    "ACAT",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error);
-                return false;
+                string fileName = Path.GetFileName(fontFile);
+                string displayName = GetFontDisplayName(fontFile) ?? fileName;
+                if (!displayName.EndsWith(" (TrueType)") && fontFile.EndsWith(".ttf", StringComparison.OrdinalIgnoreCase))
+                    displayName += " (TrueType)";
+                else if (!displayName.EndsWith(" (OpenType)") && fontFile.EndsWith(".otf", StringComparison.OrdinalIgnoreCase))
+                    displayName += " (OpenType)";
+
+                if (existingValues.Contains(displayName))
+                {
+                    Console.WriteLine($"Font already installed, skipping: {displayName}");
+                    continue;
+                }
+
+                string destPath = Path.Combine(userFontDir, fileName);
+
+                try
+                {
+                    File.Copy(fontFile, destPath, overwrite: true);
+
+
+                    fontRegKey.SetValue(displayName, destPath);
+
+                    AddFontResourceEx(destPath, FR_PRIVATE | FR_NOT_ENUM, IntPtr.Zero);
+
+                    Console.WriteLine($"Installed font: {fileName}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to install font: {fileName}. Error: {ex.Message}");
+                }
             }
 
-            String fontName = "ACAT Font 1";
-            if (!FontCheck.IsFontInstalled(fontName))
-            {
-                MessageBox.Show("Font \"" + fontName + "\" is not installed on this system.\nPlease install it and restart ACAT.\nThe font can be found here: " + fontPath,
-                                    "ACAT",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error);
-                return false;
-            }
+            SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0);
+        }
 
-            return true;
+        private static string? GetFontDisplayName(string fontPath)
+        {
+            try
+            {
+                using var pfc = new System.Drawing.Text.PrivateFontCollection();
+                pfc.AddFontFile(fontPath);
+                if (pfc.Families.Length > 0)
+                    return pfc.Families[0].Name;
+            }
+            catch { }
+            return null;
         }
 
         /// <summary>

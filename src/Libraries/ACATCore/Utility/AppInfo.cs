@@ -1,6 +1,7 @@
 ﻿using ACAT.Core.PreferencesManagement;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Hosting;
 using System.Xml.Serialization;
 
 namespace ACAT.Core.Utility
@@ -27,6 +28,9 @@ namespace ACAT.Core.Utility
             Name = String.Empty;
             Path = String.Empty;
             CommandLine = String.Empty;
+            Arguments = String.Empty;
+            UseShellExecute = true;
+
         }
 
         ///// <summary>
@@ -56,6 +60,8 @@ namespace ACAT.Core.Utility
         /// Gets or sets the command line argument
         /// </summary>
         public String CommandLine { get; set; }
+        public string Arguments { get; set; }
+        public bool UseShellExecute { get; set; }
 
         /// <summary>
         /// Get or sets the description of the application

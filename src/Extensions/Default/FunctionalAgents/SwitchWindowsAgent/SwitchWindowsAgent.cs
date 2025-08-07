@@ -27,6 +27,7 @@ using ACAT.Extension;
 using System;
 using System.Windows.Automation;
 using System.Windows.Forms;
+using ACAT.Core.UserControlManagement;
 
 namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
 {
@@ -316,6 +317,11 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
                 _switchWindowsScanner.EvtActivateWindow -= _switchWindowsScanner_EvtActivateWindow;
                 _switchWindowsScanner.EvtShowScanner -= switchWindows_EvtShowScanner;
             }
+        }
+
+        public override bool Activate(IUserControl usercontrol)
+        {
+            throw new NotImplementedException();
         }
     }
 }

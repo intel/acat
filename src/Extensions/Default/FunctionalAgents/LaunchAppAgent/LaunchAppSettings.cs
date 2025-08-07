@@ -19,6 +19,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Xml.Serialization;
 

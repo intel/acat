@@ -21,14 +21,17 @@
 using ACAT.Core.AgentManagement;
 using ACAT.Core.AgentManagement.TextInterface;
 using ACAT.Core.PanelManagement;
+using ACAT.Core.UserControlManagement;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using ACAT.Extension;
 using ACAT.Extensions.FunctionalAgents.LaunchAppAgent;
 using ACAT.Extensions.FunctionalAgents.UI;
+using ACAT.Extensions.UI.UserControls;
 using ACATResources;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Automation;
@@ -62,9 +65,9 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         private const string SettingsFileName = "LaunchAppSettings.xml";
 
         /// <summary>
-        /// The scanner that displays the list of applications
+        /// The usercontrol that displays the list of applications
         /// </summary>
-        private static LaunchAppScanner _launchAppScanner;
+        private static LaunchAppUserControl _launchAppUserControl;
 
         /// <summary>
         /// AppInfo of the application selected by the user
@@ -81,32 +84,38 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
             Settings = LaunchAppSettings.Load();
         }
 
-        /// <summary>
-        /// Invoked when the Functional agent is activated.  This is
-        /// the entry point.
-        /// </summary>
-        /// <returns>true on success</returns>
         public override bool Activate()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool Activate(IUserControl usercontrol)
         {
             IsClosing = false;
 
             ExitCode = CompletionCode.ContextSwitch;
             _appToLaunchInfo = null;
-            _launchAppScanner = Context.AppPanelManager.CreatePanel("LaunchAppScanner") as LaunchAppScanner;
 
-            if (_launchAppScanner != null)
+            _launchAppUserControl = usercontrol as LaunchAppUserControl;
+            if (_launchAppUserControl != null)
             {
-                _launchAppScanner.FormClosing += _form_FormClosing;
-                _launchAppScanner.EvtQuit += _launchAppScanner_EvtQuit;
-                _launchAppScanner.EvtLaunchApp += _launchAppScanner_EvtLaunchApp;
-                _launchAppScanner.EvtShowScanner += launchAppScanner_EvtShowScanner;
+                //_launchAppScanner.FormClosing += _form_FormClosing;
+                //_launchAppScanner.EvtQuit += _launchAppScanner_EvtQuit;
+                _launchAppUserControl.EvtLaunchApp += _launchAppUserControl_EvtLaunchApp;
+                //_launchAppScanner.EvtShowScanner += launchAppScanner_EvtShowScanner;
 
                 IsActive = true;
-
-                Context.AppPanelManager.ShowDialog(_launchAppScanner);
+                //Context.AppPanelManager.ShowDialog(_launchAppScanner);
             }
 
             return true;
+        }
+
+        private void _launchAppUserControl_EvtLaunchApp(object sender, AppInfo appInfo)
+        {
+            _appToLaunchInfo = appInfo;
+
+            launchProcess(_appToLaunchInfo);
         }
 
         /// <summary>
@@ -116,25 +125,26 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         /// <param name="arg">info about the scanner button</param>
         public override void CheckCommandEnabled(CommandEnabledArg arg)
         {
-            arg.Handled = true;
-
             switch (arg.Command)
             {
-                case "CmdPunctuationScanner":
-                case "CmdNumberScanner":
-                    arg.Enabled = true;
-                    break;
+                //case "CmdPunctuationScanner":
+                //case "CmdNumberScanner":
+                //    arg.Enabled = true;
+                //    break;
 
                 default:
-                    if (_launchAppScanner != null)
-                    {
-                        _launchAppScanner.CheckCommandEnabled(arg);
-                    }
-                    if (!arg.Handled)
-                    {
-                        arg.Enabled = false;
-                        arg.Handled = true;
-                    }
+                    //if (_launchAppScanner != null)
+                    //{
+                    //    _launchAppScanner.CheckCommandEnabled(arg);
+                    //}
+                    //if (!arg.Handled)
+                    //{
+                    //    arg.Enabled = false;
+                    //    arg.Handled = true;
+                    //}
+                    arg.Enabled = false;
+                    arg.Handled = true;
+
                     break;
             }
         }
@@ -167,6 +177,10 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         /// <returns>true on success</returns>
         public override bool OnRequestClose()
         {
+            if (_launchAppUserControl != null)
+            {
+                _launchAppUserControl.EvtLaunchApp -= _launchAppUserControl_EvtLaunchApp;
+            }
             quit();
             return true;
         }
@@ -181,10 +195,11 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         /// <param name="handled">was this handled?</param>
         public override void OnRunCommand(String command, object commandArg, ref bool handled)
         {
-            if (_launchAppScanner != null)
-            {
-                _launchAppScanner.OnRunCommand(command, ref handled);
-            }
+            //if (_launchAppScanner != null)
+            //{
+            //    _launchAppScanner.OnRunCommand(command, ref handled);
+            //}
+            handled = false;
         }
 
         /// <summary>
@@ -207,23 +222,18 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
-        private void _form_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (_launchAppScanner != null)
-            {
-                _launchAppScanner.FormClosing -= _form_FormClosing;
-                _launchAppScanner.EvtQuit -= _launchAppScanner_EvtQuit;
-                _launchAppScanner.EvtLaunchApp -= _launchAppScanner_EvtLaunchApp;
-                _launchAppScanner.EvtShowScanner -= launchAppScanner_EvtShowScanner;
-            }
+        //private void _form_FormClosing(object sender, FormClosingEventArgs e)
+        //{
+        //    if (_launchAppScanner != null)
+        //    {
+        //        _launchAppScanner.FormClosing -= _form_FormClosing;
+        //        _launchAppScanner.EvtQuit -= _launchAppScanner_EvtQuit;
+        //        _launchAppScanner.EvtLaunchApp -= _launchAppScanner_EvtLaunchApp;
+        //        _launchAppScanner.EvtShowScanner -= launchAppScanner_EvtShowScanner;
+        //    }
 
-            _launchAppScanner = null;
-        }
-
-        private void _launchAppScanner_EvtLaunchApp(object sender, Core.Utility.AppInfo appInfo)
-        {
-            throw new NotImplementedException();
-        }
+        //    _launchAppScanner = null;
+        //}
 
 
         /// <summary>
@@ -231,13 +241,13 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
-        private void _launchAppScanner_EvtQuit(object sender, EventArgs args)
-        {
-            if (confirm(StringResources.Close))
-            {
-                quit();
-            }
-        }
+        //private void _launchAppScanner_EvtQuit(object sender, EventArgs args)
+        //{
+        //    if (confirm(StringResources.Close))
+        //    {
+        //        quit();
+        //    }
+        //}
 
         /// <summary>
         /// Set focus to the specified window
@@ -256,15 +266,15 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         /// <summary>
         /// Close the launchapp scanner
         /// </summary>
-        private void closeScanner()
-        {
-            if (_launchAppScanner != null)
-            {
-                Windows.CloseForm(_launchAppScanner);
+        //private void closeScanner()
+        //{
+        //    if (_launchAppScanner != null)
+        //    {
+        //        Windows.CloseForm(_launchAppScanner);
 
-                _launchAppScanner = null;
-            }
-        }
+        //        _launchAppScanner = null;
+        //    }
+        //}
 
         /// <summary>
         /// Get confirmation from the user
@@ -281,19 +291,19 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="eventArgs">event args</param>
-        private void launchAppScanner_EvtShowScanner(object sender, EventArgs eventArgs)
-        {
-            if (_launchAppScanner != null)
-            {
-                var arg = new PanelRequestEventArgs(PanelClasses.AlphabetMinimal, WindowActivityMonitor.GetForegroundWindowInfo())
-                {
-                    TargetPanel = _launchAppScanner,
-                    RequestArg = _launchAppScanner,
-                    UseCurrentScreenAsParent = true
-                };
-                showPanel(this, arg);
-            }
-        }
+        //private void launchAppScanner_EvtShowScanner(object sender, EventArgs eventArgs)
+        //{
+        //    if (_launchAppScanner != null)
+        //    {
+        //        var arg = new PanelRequestEventArgs(PanelClasses.AlphabetMinimal, WindowActivityMonitor.GetForegroundWindowInfo())
+        //        {
+        //            TargetPanel = _launchAppScanner,
+        //            RequestArg = _launchAppScanner,
+        //            UseCurrentScreenAsParent = true
+        //        };
+        //        showPanel(this, arg);
+        //    }
+        //}
 
         /// <summary>
         /// Launch the specified app
@@ -306,8 +316,12 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
 
             var startInfo = new ProcessStartInfo
             {
-                FileName = info.Path,
-                Arguments = normalizeCommandLine(info.CommandLine)
+                FileName = info.Name,
+                Arguments = info.Arguments,
+                UseShellExecute = info.UseShellExecute,
+                RedirectStandardOutput = false,
+                RedirectStandardError = false,
+                CreateNoWindow = false
             };
 
             try
@@ -324,7 +338,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 
@@ -376,7 +390,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
             IsClosing = true;
             IsActive = false;
             ExitCode = CompletionCode.None;
-            closeScanner();
+            //closeScanner();
             Close();
         }
 
@@ -406,7 +420,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         /// </summary>
         public override bool SupportsPreferencesDialog
         {
-            get { return true; }
+            get { return false; }
         }
 
         /// <summary>

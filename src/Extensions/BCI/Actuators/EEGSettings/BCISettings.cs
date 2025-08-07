@@ -901,22 +901,22 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             int channelName = channelIndx + 1;
             return channelName switch
             {
-                1 => classifier_EnableChannel1,
-                2 => classifier_EnableChannel2,
-                3 => classifier_EnableChannel3,
-                4 => classifier_EnableChannel4,
-                5 => classifier_EnableChannel5,
-                6 => classifier_EnableChannel6,
-                7 => classifier_EnableChannel7,
-                8 => classifier_EnableChannel8,
-                9 => classifier_EnableChannel9,
-                10 => classifier_EnableChannel10,
-                11 => classifier_EnableChannel11,
-                12 => classifier_EnableChannel12,
-                13 => classifier_EnableChannel13,
-                14 => classifier_EnableChannel14,
-                15 => classifier_EnableChannel15,
-                16 => classifier_EnableChannel16,
+                1 => Classifier_EnableChannel1,
+                2 => Classifier_EnableChannel2,
+                3 => Classifier_EnableChannel3,
+                4 => Classifier_EnableChannel4,
+                5 => Classifier_EnableChannel5,
+                6 => Classifier_EnableChannel6,
+                7 => Classifier_EnableChannel7,
+                8 => Classifier_EnableChannel8,
+                9 => Classifier_EnableChannel9,
+                10 => Classifier_EnableChannel10,
+                11 => Classifier_EnableChannel11,
+                12 => Classifier_EnableChannel12,
+                13 => Classifier_EnableChannel13,
+                14 => Classifier_EnableChannel14,
+                15 => Classifier_EnableChannel15,
+                16 => Classifier_EnableChannel16,
                 _ => false,
             };
         }
@@ -927,67 +927,67 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             switch (channelName)
             {
                 case 1:
-                    classifier_EnableChannel1 = newVal;
+                    Classifier_EnableChannel1 = newVal;
                     break;
 
                 case 2:
-                    classifier_EnableChannel2 = newVal;
+                    Classifier_EnableChannel2 = newVal;
                     break;
 
                 case 3:
-                    classifier_EnableChannel3 = newVal;
+                    Classifier_EnableChannel3 = newVal;
                     break;
 
                 case 4:
-                    classifier_EnableChannel4 = newVal;
+                    Classifier_EnableChannel4 = newVal;
                     break;
 
                 case 5:
-                    classifier_EnableChannel5 = newVal;
+                    Classifier_EnableChannel5 = newVal;
                     break;
 
                 case 6:
-                    classifier_EnableChannel6 = newVal;
+                    Classifier_EnableChannel6 = newVal;
                     break;
 
                 case 7:
-                    classifier_EnableChannel7 = newVal;
+                    Classifier_EnableChannel7 = newVal;
                     break;
 
                 case 8:
-                    classifier_EnableChannel8 = newVal;
+                    Classifier_EnableChannel8 = newVal;
                     break;
 
                 case 9:
-                    classifier_EnableChannel9 = newVal;
+                    Classifier_EnableChannel9 = newVal;
                     break;
 
                 case 10:
-                    classifier_EnableChannel10 = newVal;
+                    Classifier_EnableChannel10 = newVal;
                     break;
 
                 case 11:
-                    classifier_EnableChannel11 = newVal;
+                    Classifier_EnableChannel11 = newVal;
                     break;
 
                 case 12:
-                    classifier_EnableChannel12 = newVal;
+                    Classifier_EnableChannel12 = newVal;
                     break;
 
                 case 13:
-                    classifier_EnableChannel13 = newVal;
+                    Classifier_EnableChannel13 = newVal;
                     break;
 
                 case 14:
-                    classifier_EnableChannel14 = newVal;
+                    Classifier_EnableChannel14 = newVal;
                     break;
 
                 case 15:
-                    classifier_EnableChannel15 = newVal;
+                    Classifier_EnableChannel15 = newVal;
                     break;
 
                 case 16:
-                    classifier_EnableChannel16 = newVal;
+                    Classifier_EnableChannel16 = newVal;
                     break;
             }
             return false;

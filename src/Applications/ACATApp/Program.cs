@@ -47,8 +47,9 @@ namespace ACAT.Applications.ACATApp
 
             if (!AppCommon.CheckFontsInstalled())
             {
-                return;
+               return;
             }
+            // AppCommon.InstallFontsForCurrentUser();
 
             CoreGlobals.AppId = "ACATDashboard";
             CoreGlobals.ACATUserGuideFileName = "ACAT User Guide.pdf";
@@ -68,9 +69,9 @@ namespace ACAT.Applications.ACATApp
                 return;
             }
 
-            //User32Interop.SetProcessDPIAware();
+            User32Interop.SetProcessDPIAware();
 
-            //AppCommon.CheckDisplayScalingAndResolution();
+            AppCommon.CheckDisplayScalingAndResolution();
 
             Common.AppPreferences.AppName = "ACAT App";
 
@@ -91,8 +92,8 @@ namespace ACAT.Applications.ACATApp
             //    return;
             //}
 
-            //splash = new Splash(2000);
-            //splash.Show();
+            splash = new Splash(2000);
+            splash.Show(StringResources.StartingACAT);
 
             Context.PreInit();
             Common.PreInit();
@@ -169,7 +170,8 @@ namespace ACAT.Applications.ACATApp
                         return;
                     }
 
-                    AppCommon.ExitMessageShow();
+                    splash = new Splash();
+                    splash.Show("Closing ACAT");
 
                     AuditLog.Audit(new AuditEvent("Application", "stop"));
 
@@ -179,7 +181,8 @@ namespace ACAT.Applications.ACATApp
 
                     ScannerFocus.Stop();
 
-                    AppCommon.ExitMessageClose();
+                    //AppCommon.ExitMessageClose();
+                    splash.Close();
 
                     Log.Debug("ACATTalk Application shutdown");
 

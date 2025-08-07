@@ -7,6 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PanelManagement;
+using ACAT.Core.UserControlManagement;
 
 namespace ACAT.Core.AgentManagement
 {
@@ -45,6 +46,8 @@ namespace ACAT.Core.AgentManagement
         /// </summary>
         /// <returns>true on success</returns>
         bool Activate();
+
+        bool Activate(IUserControl panel);
 
         /// <summary>
         /// Call this function to exit the functional agent

@@ -4847,6 +4847,33 @@ namespace ACATResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Try higher values if the system is trying to recalibrate too often with involuntary head movements​.
+        /// </summary>
+        public static string Tryhighervalueshead {
+            get {
+                return ResourceManager.GetString("Tryhighervalueshead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Try higher values if the system is triggering with involuntary eyebrow movement. Try lower values  if you want to the system to trigger with less eyebrow movement.
+        /// </summary>
+        public static string Tryhighervaluesifthesystemistriggering {
+            get {
+                return ResourceManager.GetString("Tryhighervaluesifthesystemistriggering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Try higher values if the system is triggering with involuntary cheek movement. Try lower values  if you want the system to trigger with less cheek movement​​.
+        /// </summary>
+        public static string TryHigherValuesIfTheSystemIsTriggeringWithInvoluntaryCheekMovemen {
+            get {
+                return ResourceManager.GetString("TryHigherValuesIfTheSystemIsTriggeringWithInvoluntaryCheekMovemen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Good Work!.
         /// </summary>
         public static string TryoutAlert {
@@ -5050,6 +5077,24 @@ namespace ACATResources {
         public static string V {
             get {
                 return ResourceManager.GetString("V", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value is in milliseconds. If you observe two movement detections, once when you move your cheek up and the second when you return to normal position, adjust the value to the approximate time you hold the cheek in the up position​​.
+        /// </summary>
+        public static string Valueisinmilliseconds {
+            get {
+                return ResourceManager.GetString("Valueisinmilliseconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value is in milliseconds. If you observe two movement detections, once when you raise your eyebrows and the second when you return to normal position, adjust the value to the approximate time you hold the eyebrow in the raised position.
+        /// </summary>
+        public static string valueisinmillisecondsIfyouobservetwomovementdetections {
+            get {
+                return ResourceManager.GetString("valueisinmillisecondsIfyouobservetwomovementdetections", resourceCulture);
             }
         }
         

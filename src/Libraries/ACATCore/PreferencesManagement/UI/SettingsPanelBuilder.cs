@@ -212,6 +212,16 @@ namespace ACAT.Core.PreferencesManagement.UI
                 };
                 inputControl.SetBinding(ToggleSwitch.IsOnProperty, binding);
             }
+
+            else if (prop.GetAttribute<UIHintAttribute>()?.UIHint == "TextBox" || prop.Property.PropertyType == typeof(string))
+            {
+                inputControl = new TextBox
+                {
+                    //Text = value?.ToString() ?? "",
+                };
+                inputControl.SetBinding(TextBox.TextProperty, binding);
+            }
+
             else if (prop.Property.PropertyType == typeof(int))
             {
                 RangeAttribute range = prop.GetAttribute<RangeAttribute>()
@@ -226,14 +236,6 @@ namespace ACAT.Core.PreferencesManagement.UI
                 slider?.SetBinding(Slider.ToolTipProperty, binding);
 
                 inputControl = sliderStack;
-            }
-            else if (prop.Property.PropertyType == typeof(string))
-            {
-                inputControl = new TextBox
-                {
-                    //Text = value?.ToString() ?? "",
-                };
-                inputControl.SetBinding(TextBox.TextProperty, binding);
             }
             else
             {

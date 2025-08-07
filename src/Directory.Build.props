@@ -2,7 +2,7 @@
   <PropertyGroup>
     <!-- Safe defaults -->
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
-    <Platform Condition="'$(Platform)' == ''">x86</Platform>
+    <Platform Condition="'$(Platform)' == ''">x64</Platform>
 
     <!-- Default to known valid platforms only -->
     <SupportedPlatforms>x86;x64</SupportedPlatforms>

@@ -74,7 +74,9 @@
     <Compile Include="Menus\MainMenu.Designer.cs">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </Compile>
-    <Compile Include="Scanners\DashboardAppScanner.cs" />
+    <Compile Include="Scanners\DashboardAppScanner.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Scanners\TalkApplicationScanner.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -99,11 +101,21 @@
     <Compile Include="Scanners\YesNoScanner.Designer.cs">
       <DependentUpon>YesNoScanner.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Toolbars\CursorControlUserControl.cs" />
-    <Compile Include="UserControls\Toolbars\LargeToolbarUserControl.cs" />
-    <Compile Include="UserControls\Toolbars\DashboardUserControl.cs" />
-    <Compile Include="UserControls\Toolbars\LaunchAppUserControl.cs" />
-    <Compile Include="UserControls\Toolbars\ToolbarUserControl.cs" />
+    <Compile Include="UserControls\Toolbars\CursorControlUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\Toolbars\LargeToolbarUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\Toolbars\DashboardUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\Toolbars\LaunchAppUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\Toolbars\ToolbarUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UserControls\KeyboardAbcUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

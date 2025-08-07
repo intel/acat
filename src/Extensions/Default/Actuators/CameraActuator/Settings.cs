@@ -35,50 +35,37 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         public String[] CameraList;
 
         [Display(Name = nameof(StringResources.CheekTwitchHoldTime),
-            //Description = nameof(StringResources.),
-  ResourceType = typeof(StringResources))]
-        [Descriptor("Cheek Twitch Hold Time")]
-        [Description("Value is in milliseconds. If you observe two movement detections, once when you move your cheek up and the second when you return to normal position, adjust the value to the approximate time you hold the cheek in the up position​​")]
+         Description = nameof(StringResources.Valueisinmilliseconds),
+            ResourceType = typeof(StringResources))]
         [Range(0, 1000)]
         [DefaultValue(0)]
         [ObservableProperty]
         private int cheekTwitchHoldTime = 0;
 
         [Display(Name = nameof(StringResources.CheekTwitchSensitivity),
-            //Description = nameof(StringResources.),
-  ResourceType = typeof(StringResources))]
-        [Descriptor("Cheek Twitch Sensitivity")]
-        [Description("Try higher values if the system is triggering with involuntary cheek movement. Try lower values  if you want the system to trigger with less cheek movement​​")]
+         Description = nameof(StringResources.TryHigherValuesIfTheSystemIsTriggeringWithInvoluntaryCheekMovemen),
+            ResourceType = typeof(StringResources))]
         [Range(5, 50)]
         [DefaultValue(20)]
         [ObservableProperty]
         private int cheekTwitchSensitivity = 20;
 
         [Display(Name = nameof(StringResources.EyebrowRaiseHoldTime),
-            //Description = nameof(StringResources.),
-  ResourceType = typeof(StringResources))]
-        [Descriptor("Eyebrow Raise Hold Time")]
-        [Description("Value is in milliseconds. If you observe two movement detections, once when you raise your eyebrows and the second when you return to normal position, adjust the value to the approximate time you hold the eyebrow in the raised position")]
+           Description = nameof(StringResources.valueisinmillisecondsIfyouobservetwomovementdetections),ResourceType = typeof(StringResources))]
         [Range(0, 2000)]
         [DefaultValue(0)]
         [ObservableProperty]
         private int eyebrowRaiseHoldTime = 0;
 
         [Display(Name = nameof(StringResources.EyebrowRaiseSensitivity),
-            //Description = nameof(StringResources.),
-  ResourceType = typeof(StringResources))]
-        [Descriptor("Eyebrow Raise Sensitivity")]
-        [Description("Try higher values if the system is triggering with involuntary eyebrow movement. Try lower values  if you want to the system to trigger with less eyebrow movement")]
+         Description = nameof(StringResources.TryHigherValuesIfTheSystemIsTriggeringWithInvoluntaryCheekMovemen), ResourceType = typeof(StringResources))]
         [Range(5, 50)]
         [DefaultValue(10)]
         [ObservableProperty]
         private int eyebrowRaiseSensitivity = 10;
 
         [Display(Name = nameof(StringResources.HeadMovementSensitivity),
-            //Description = nameof(StringResources.),
-  ResourceType = typeof(StringResources))]
-        [Descriptor("Head Movement Sensitivity")]
-        [Description("Try higher values if the system is trying to recalibrate too often with involuntary head movements​. Try lower values if the system is too slow in adjusting the facial regions with head repositioning​")]
+            Description = nameof(StringResources.Tryhighervalueshead), ResourceType = typeof(StringResources))]
         [Range(20, 100)]
         [DefaultValue(40)]
         [ObservableProperty]

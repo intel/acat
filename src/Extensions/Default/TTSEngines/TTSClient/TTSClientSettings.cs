@@ -17,6 +17,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Xml.Serialization;
+using ACATResources;
 
 namespace ACAT.Extensions.TTSEngines.TTSClient
 {
@@ -58,8 +59,9 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         /// Gets or sets whether a puncutation should be appended if it
         /// is not already there.
         /// </summary>
-        [Descriptor("Auto append sentence terminator?")]
-        [Description("Gets or sets whether a puncutation should be appended if it is not already there.")]
+        [Display(Name = nameof(StringResources.Autoappendsentenceterminator),
+            Description = nameof(StringResources.Getsorsetswhetherapuncutationshouldbeappendedifitisnotalreadythere),
+            ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(false)]
         [ObservableProperty]
@@ -77,8 +79,9 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         /// <summary>
         /// Gets or sets the rate of speech
         /// </summary>
-        [Descriptor("Speaking rate")]
-        [Description("Gets or sets the rate of speech.")]
+        [Display(Name = nameof(StringResources.Speakiate),
+         Description = nameof(StringResources.Getsorsetstherateofspeech),
+         ResourceType = typeof(StringResources))]
         [Range(-10, 10)]
         [UIHint("Slider")]
         [ObservableProperty]
@@ -87,8 +90,8 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         /// <summary>
         /// Gets or sets whether to use alternate pronunciations
         /// </summary>
-        [Descriptor("Use alternate pronunciations?")]
-        [Description("Gets or sets whether to use alternate pronunciations.")]
+        [Display(Name = nameof(StringResources.Usealternatepronunciations),
+         ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(false)]
         [ObservableProperty]
@@ -102,8 +105,8 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
         /// <summary>
         /// Gets or sets the volume
         /// </summary>
-        [Descriptor("Volume setting")]
-        [Description("Gets or sets the volume.")]
+        [Display(Name = nameof(StringResources.Volumesetting),
+         ResourceType = typeof(StringResources))]
         [Range(0, 100)]
         [UIHint("Slider")]
         [ObservableProperty]

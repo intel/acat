@@ -11,6 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using System;
 using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using ACATResources;
 
 namespace ACAT.Core.AgentManagement
 {
@@ -33,7 +34,8 @@ namespace ACAT.Core.AgentManagement
         /// window and display the appropriate scanner.  If false,
         /// always displays the Alphabet scanner.
         /// </summary>
-        [Descriptor("Auto-display contextual menu when the app window gets focus")]
+        [Display(Name = nameof(StringResources.Autodisplaycontextualmenuwhentheappwindowgetsfocus),
+     ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
         [DefaultValue(true)]
         [ObservableProperty]

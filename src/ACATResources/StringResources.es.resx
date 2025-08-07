@@ -1988,6 +1988,42 @@ ACAT utiliza dos métricas - “saturación” e “impedancia” - para verific
     <value>Habilitar la predicción de oraciones de modelos pequeños</value>
   </data>
   <data name="Enablesentenceprediction" xml:space="preserve">
+    <value>Habilitar predicción de oraciones</value>
+  </data>
+  <data name="Autoappendsentenceterminator" xml:space="preserve">
+    <value>¿Terminador de oración para agregar automáticamente?</value>
+  </data>
+  <data name="Getsorsetswhetherapuncutationshouldbeappendedifitisnotalreadythere" xml:space="preserve">
+    <value>Obtiene o establece si se debe agregar una puntuación si aún no existe.</value>
+  </data>
+  <data name="Speakiate" xml:space="preserve">
+    <value>Tasa de habla</value>
+  </data>
+  <data name="Getsorsetstherateofspeech" xml:space="preserve">
+    <value>Obtiene o establece la velocidad del habla.</value>
+  </data>
+  <data name="Usealternatepronunciations" xml:space="preserve">
+    <value>¿Utilizar pronunciaciones alternativas?</value>
+  </data>
+  <data name="Volumesetting" xml:space="preserve">
+    <value>Ajuste de volumen</value>
+  </data>
+  <data name="Autodisplaycontextualmenuwhentheappwindowgetsfocus" xml:space="preserve">
+    <value>Mostrar automáticamente el menú contextual cuando la ventana de la aplicación recibe el foco</value>
+  </data>
+  <data name="CheekTwitchHoldTime" xml:space="preserve">
+    <value>Tiempo de retención de la contracción de la mejilla</value>
+  </data>
+  <data name="CheekTwitchSensitivity" xml:space="preserve">
+    <value>Sensibilidad a las convulsiones en las mejillas</value>
+  </data>
+  <data name="EyebrowRaiseHoldTime" xml:space="preserve">
+    <value>Tiempo de retención de la elevación de la ceja</value>
+  </data>
+  <data name="EyebrowRaiseSensitivity" xml:space="preserve">
+    <value>Sensibilidad al levantar las cejas</value>
+  </data>
+  <data name="HeadMovementSensitivity" xml:space="preserve">
     <value />
   </data>
 </root>

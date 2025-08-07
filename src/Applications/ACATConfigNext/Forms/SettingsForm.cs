@@ -18,6 +18,7 @@ using ACAT.Core.Extensions;
 using ACAT.Core.PreferencesManagement;
 using ACAT.Extension;
 using System.ComponentModel;
+using ACATResources;
 
 namespace ACATConfigNext
 {
@@ -29,12 +30,13 @@ namespace ACATConfigNext
         private TableLayoutPanel mainPanel;
         private FlowLayoutPanel breadcrumbPanel;
         private TableLayoutPanel contentPanel;
-        private FlowLayoutPanel bottomPanel;
+        private TableLayoutPanel bottomPanel;
 
         private Button selectedCategoryButton;
         private Button saveButton;
         private Button resetButton;
-      
+        private Button exitButton;
+
         private List<(UserControl Panel, string Label)> breadcrumbStack = new();
         private string currentPageLabel;
 
@@ -188,7 +190,7 @@ namespace ACATConfigNext
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
             };
 
-            bottomPanel = new FlowLayoutPanel
+            bottomPanel = new TableLayoutPanel
             {
                 Dock = DockStyle.Bottom,
                 //*/
@@ -214,6 +216,7 @@ namespace ACATConfigNext
                 ForeColor = Color.White,
                 Dock = DockStyle.Top,
                 Enabled = false
+
             };
             saveButton.Click += (s, e) =>
             {
@@ -279,8 +282,67 @@ namespace ACATConfigNext
                 }
             };
 
+            exitButton = new ScannerRoundedButtonControl()
+            {
+                Text = "Exit",
+                Font = new Font("Montserrat", 18, FontStyle.Italic),
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                ForeColor = Color.White,
+                Enabled = true
+            };
+
+            exitButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+
+            exitButton.Click += (s, e) =>
+            {
+                try
+                {
+                    if (_isDirty)
+                    {
+                        if (!ConfirmBoxTwoOption.ShowDialog("You have unsaved changes.",
+                            "Save changes before exiting?", "Don't Save", "Save"))
+                        {
+                            Close();
+                            return;
+                        }
+                        else
+                        {
+                            var prefsPanel = currentSettingsPanel as SettingsPanel;
+                            prefsPanel?.Save();
+                            Close();
+                        }
+                    }
+                    else
+                    {
+                        Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Exception(ex);
+                    MessageBox.Show("An error occurred while saving settings.", "Save Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            };
+
+
+            bottomPanel.ColumnCount = 4;
+            bottomPanel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize)); 
+            bottomPanel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize)); 
+            bottomPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F)); 
+            bottomPanel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize)); 
+
+
+            bottomPanel.Controls.Add(saveButton, 0, 0);
+            bottomPanel.Controls.Add(resetButton, 1, 0);
+            bottomPanel.Controls.Add(new Panel(), 2, 0);
+            bottomPanel.Controls.Add(exitButton, 3, 0);
+
             bottomPanel.Controls.Add(saveButton);
-            bottomPanel.Controls.Add(resetButton); 
+            bottomPanel.Controls.Add(resetButton);
+            bottomPanel.Controls.Add(exitButton);
+
 
             mainPanel.Controls.Add(breadcrumbPanel, 0, 0);
             mainPanel.Controls.Add(contentPanel, 0, 1);

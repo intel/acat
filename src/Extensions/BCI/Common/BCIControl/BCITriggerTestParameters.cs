@@ -17,17 +17,20 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
     [Serializable]
     public class BCITriggerTestParameters
     {
-        public BCITriggerTestParameters() { }
-
         /// <summary>
         /// number of repetitions. One repeition is considered as eyes open -> eyes closed
         /// </summary>
-        public int NumRepetitions { get; set; } = 0;
+        public int NumRepetitions;
 
         /// <summary>
         /// Duration where eyes are open or closed
         /// </summary>
-        public int ScanTime { get; set; } = 0;
+        public int ScanTime;
 
+        public BCITriggerTestParameters(int numRepetitions, int scanTime)
+        {
+            NumRepetitions = numRepetitions;
+            ScanTime = scanTime;
+        }
     }
 }

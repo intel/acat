@@ -10,7 +10,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ControlzEx.Standard;
 using System;
 
 namespace ACAT.Extensions.BCI.Common.BCIControl
@@ -20,21 +19,31 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
     {
         public BCICalibrationResult()
         {
+            AUC = 0.0f;
+            Error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
+            CalibrationSuccessful = false;
+        }
+
+        public BCICalibrationResult(float auc, bool calibrationSuccesful, BCIError error)
+        {
+            AUC = auc;
+            Error = error;
+            CalibrationSuccessful = calibrationSuccesful;
         }
 
         /// <summary>
         /// auc score
         /// </summary>
-        public float AUC { get; set; } = 0.0f;
+        public float AUC { get; set; }
 
         /// <summary>
         /// Boolean, true if calibration succesful
         /// </summary>
-        public bool CalibrationSuccessful { get; set; } = false;
+        public bool CalibrationSuccessful { get; set; }
 
         /// <summary>
         /// Error, will send status_ok if no error
         /// </summary>
-        public BCIError Error { get; set; } = new BCIError() { ErrorCode = BCIErrorCodes.Status_Ok, ErrorMessage = BCIMessages.Status_Ok };
+        public BCIError Error { get; set; }
     }
 }

@@ -20,9 +20,16 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         public BCIStartSessionResult()
         {
             SensorReady = true;
-            Error = new BCIError() { ErrorCode = BCIErrorCodes.Status_Ok, ErrorMessage = BCIMessages.Status_Ok };
+            Error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
             SessionDirectory = "";
             SessionId = "";
+        }
+
+        public BCIStartSessionResult(bool sensorReady, string sessionDirectory, string sessionId, BCIError error)
+        {
+            SensorReady = sensorReady;
+            Error = error;
+            SessionDirectory = sessionDirectory;
         }
 
         public BCIError Error { get; set; }

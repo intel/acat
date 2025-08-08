@@ -14,26 +14,38 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
 {
     public class BCISimpleParameters
     {
-        public BCISimpleParameters() { }
-
         /// <summary>
         /// Number of iterations per target
         /// </summary>
-        public int IterationsPertarget { get; set; } = 0;
+        public int IterationsPertarget;
 
         /// <summary>
         ///  Minimum score to pass calibration
         /// </summary>
-        public int MinScore { get; set; } = 0;
+        public int MinScore;
 
         /// <summary>
         /// Scanning time
         /// </summary>
-        public int ScannTime { get; set; } = 0;
+        public int ScannTime;
 
         /// <summary>
         /// Number of targets
         /// </summary>
-        public int Targets = 0;
+        public int Targets;
+
+        public BCISimpleParameters()
+        {
+            Targets = 0;
+            ScannTime = 0;
+            IterationsPertarget = 0;
+            MinScore = 0;
+        }
+
+        public BCISimpleParameters(int repetitions, int scannTime)
+        {
+            Targets = repetitions;
+            ScannTime = scannTime;
+        }
     }
 }

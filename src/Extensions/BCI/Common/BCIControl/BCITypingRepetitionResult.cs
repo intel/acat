@@ -31,42 +31,47 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
     [Serializable]
     public class BCITypingRepetitionResult
     {
-        public BCITypingRepetitionResult() { }
+        public BCITypingRepetitionResult()
+        {
+            PosteriorProbs = new SortedDictionary<int, double>();
+            DecidedFlag = false;
+            DecidedId = 0;
+            Error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
+            ReturnToBoxScanningFlag = false;
+            StatusSignal = SignalStatus.SIGNAL_OK;
+        }
+
         /// <summary>
         /// Boolean, true if a decision has been made
         /// </summary>
-        public bool DecidedFlag { get; set; } = false;
+        public bool DecidedFlag { get; set; }
 
         /// <summary>
         /// ID of the selected button label (if a decision has been made)
         /// If no decision has been made, this will be the ID of the button
         /// with maximum probability
         /// </summary>
-        public int DecidedId { get; set; } = 0;
+        public int DecidedId { get; set; }
 
         /// <summary>
         /// Probabilities of each button  / box
         /// Format: [ID, probability]
         /// </summary>
-        public SortedDictionary<int, double> PosteriorProbs { get; set; } = new SortedDictionary<int, double>();
+        public SortedDictionary<int, double> PosteriorProbs { get; set; }
 
         /// <summary>
         /// Boolean, true if eyes closed detected and should return to box scanning
         /// </summary>
-        public bool ReturnToBoxScanningFlag { get; set; } = false;
+        public bool ReturnToBoxScanningFlag { get; set; }
 
         /// <summary>
         /// Error
         /// </summary>
-        public BCIError Error { get; set; } = new BCIError
-        {
-            ErrorCode = BCIErrorCodes.Status_Ok,
-            ErrorMessage = BCIMessages.Status_Ok
-        };
+        public BCIError Error { get; set; }
 
         /// <summary>
         /// Signal status
         /// </summary>
-        public SignalStatus StatusSignal { get; set; } = SignalStatus.SIGNAL_OK;
+        public SignalStatus StatusSignal { get; set; }
     }
 }

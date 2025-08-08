@@ -112,7 +112,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 
         private void ButtonCancel_Click_1(object sender, EventArgs e)
         {
-            _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedEnd, string.Empty);
+            _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedEnd, null);
             ResetValues();
         }
 
@@ -141,7 +141,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             if (_timer != null && _timer.Enabled)
             {
                 _timer.Stop();
-                _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedEnd, string.Empty);
+                _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedEnd, null);
                 _timer = null;
             }
             if (_Countertimer != null && _Countertimer.Enabled)
@@ -189,13 +189,13 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 }));
 
                 BCICalibrationEyesClosedIterationEnd bCICalibrationEyesClosedIterationEnd = new() { BciEyesClosedMode = eyeOpen ? BCIEyesClosedModes.EyesOpened : BCIEyesClosedModes.EyesClosed, };
-                _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedIterationEnd, JsonSerializer.Serialize(bCICalibrationEyesClosedIterationEnd));
+                _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedIterationEnd, bCICalibrationEyesClosedIterationEnd);
             }
             else
             {
                 ResetValues();
                 SoundManager.playSound(SoundManager.SoundType.OpenEyesCalibration);
-                _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedEnd, string.Empty);
+                _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedEnd, null);
             }
         }
 
@@ -226,13 +226,13 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             {
                 _Countertimer.Stop();
                 _timer.Stop();
-                _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedEnd, string.Empty);
+                _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedEnd, null);
             }
             else
                 SetEnableStateButtons(false);
             CreateTimers();
             eyeOpen = false;
-            _bciActuator?.IoctlRequest((int)OpCodes.StartSession, JsonSerializer.Serialize(bCIMode));
+            _bciActuator?.IoctlRequest((int)OpCodes.StartSession, bCIMode);
             _Countertimer.Start();
             _timer.Start();
         }
@@ -265,7 +265,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 _Countertimer.Stop();
                 _Countertimer = null;
             }
-            _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedEnd, string.Empty);
+            _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedEnd, null);
             this.Close();
         }
 

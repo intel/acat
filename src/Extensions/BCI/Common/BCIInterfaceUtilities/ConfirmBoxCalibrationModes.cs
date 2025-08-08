@@ -128,12 +128,12 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         #endregion Properties
 
         #region Control Events
-        private void BciActuator_EvtIoctlResponse(int opcode, string response)
+        private void BciActuator_EvtIoctlResponse(int opcode, object response)
         {
             switch (opcode)
             {
                 case (int)OpCodes.SendParameters:
-                    _bCIParameters = JsonSerializer.Deserialize<BCIParameters>(response);
+                    _bCIParameters = response as BCIParameters;
                     TriggeFirstOptioFromMenu();
                     break;
             }
@@ -470,7 +470,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             {
                 _bciActuator.EvtIoctlResponse += BciActuator_EvtIoctlResponse;
             }
-            var strBciModeParams = JsonSerializer.Serialize(new BCIUserInputParameters());
+            var strBciModeParams = new BCIUserInputParameters();
             _bciActuator?.IoctlRequest((int)OpCodes.RequestParameters, strBciModeParams);
             DisplayCalibrationHelp();
         }

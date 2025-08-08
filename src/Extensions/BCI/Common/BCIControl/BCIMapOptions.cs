@@ -21,34 +21,34 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         /// <summary>
         /// General error (STATUS_OK if no error)
         /// </summary>
-        public BCIError Error { get; set; } = new BCIError
-        {
-            ErrorCode = BCIErrorCodes.Status_Ok,
-            ErrorMessage = BCIMessages.Status_Ok
-        };
+        public BCIError Error;
 
         /// <summary>
         /// Boolean, true if advance mode. False if restricted mode
         /// </summary>
-        public bool IsAdvanced { get; set; } = false;
+        public bool IsAdvanced;
 
         /// <summary>
         /// Dictionary containing the info for each available classifier
         /// </summary>
-        public Dictionary<BCIScanSections, List<BCIClassifierInfo>> AllowedMappingsDict { get; set; } = new Dictionary<BCIScanSections, List<BCIClassifierInfo>>();
+        public Dictionary<BCIScanSections, List<BCIClassifierInfo>> AllowedMappingsDict;
 
         /// <summary>
         /// Dictionary containing the current mappings
         /// </summary>
-        public Dictionary<BCIScanSections, BCIScanSections> CurrentMappingsDict { get; set; } = new Dictionary<BCIScanSections, BCIScanSections>();
+        public Dictionary<BCIScanSections, BCIScanSections> CurrentMappingsDict;
 
         /// <summary>
         /// Boolean, true if all classifiers are loaded and ACAT can show "Start typing" message
         /// </summary>
-        public bool OkToGoToTyping { get; set; } = false;
+        public bool OkToGoToTyping;
 
-        public BCIMapOptions()
+        public BCIMapOptions(bool isAdvanced, Dictionary<BCIScanSections, List<BCIClassifierInfo>> allowedMappingsDict, Dictionary<BCIScanSections, BCIScanSections> currentMappingsDict, BCIError error)
         {
+            Error = error;
+            IsAdvanced = isAdvanced;
+            AllowedMappingsDict = allowedMappingsDict;
+            CurrentMappingsDict = currentMappingsDict;
         }
     }
 }

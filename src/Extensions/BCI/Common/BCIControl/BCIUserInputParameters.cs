@@ -14,18 +14,36 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
 {
     public class BCIUserInputParameters
     {
-        public BCIUserInputParameters() { }
+        public BCIModes BciMode;
 
-        public BCIModes BciMode { get; set; } = BCIModes.UNKNOWN;
+        public BCIScanSections BciCalibrationMode;
 
-        public BCIScanSections BciCalibrationMode { get; set; } = BCIScanSections.None;
+        public int ScanTime;
 
-        public int ScanTime { get; set; } = 0;
+        public int NumTargets;
 
-        public int NumTargets { get; set; } = 0;
+        public int NumIterationsPerTarget;
 
-        public int NumIterationsPerTarget { get; set; } = 0;
+        public int MinScoreRequired;
 
-        public int MinScoreRequired { get; set; } = 0;
+        public BCIUserInputParameters()
+        {
+            BciMode = BCIModes.UNKNOWN;
+            BciCalibrationMode = BCIScanSections.None;
+            NumTargets = 0;
+            NumIterationsPerTarget = 0;
+            MinScoreRequired = 0;
+            ScanTime = 0;
+        }
+
+        public BCIUserInputParameters(BCIModes bciMode, BCIScanSections bciCalibrationMode, int scanTime, int numTargets, int numIterationsPerTarget, int minScoreRequired)
+        {
+            BciMode = bciMode;
+            BciCalibrationMode = bciCalibrationMode;
+            NumTargets = numTargets;
+            NumIterationsPerTarget = numIterationsPerTarget;
+            ScanTime = scanTime;
+            MinScoreRequired = minScoreRequired;
+        }
     }
 }

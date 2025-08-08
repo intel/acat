@@ -177,7 +177,7 @@ namespace ACAT.Core.UserControlManagement
 
             subscribeToEvents();
 
-            setWidgetEnabledStates(WindowActivityMonitor.GetForegroundWindowInfo());
+            setWidgetEnabledStates(WindowActivityMonitor.GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult());
         }
 
         public void OnPause()

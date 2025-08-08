@@ -26,9 +26,9 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
 
     public class BCIMode
     {
-        public BCIModes BciMode { get; set; }
+        public BCIModes BciMode;
 
-        public BCIScanSections BciCalibrationMode { get; set; }
+        public BCIScanSections BciCalibrationMode;
 
         public BCIMode()
         {
@@ -36,5 +36,10 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
             BciCalibrationMode = BCIScanSections.None;
         }
 
+        public BCIMode(BCIModes bciMode, BCIScanSections bciCalibrationMode)
+        {
+            BciMode = bciMode;
+            BciCalibrationMode = bciCalibrationMode;
+        }
     }
 }

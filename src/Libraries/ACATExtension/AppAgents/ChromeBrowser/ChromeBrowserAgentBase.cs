@@ -152,7 +152,7 @@ namespace ACAT.Extension.AppAgents.ChromeBrowser
 
                 case "ChromeZoomMenu":
                     {
-                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfo();
+                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult();
                         var panelArg = new PanelRequestEventArgs("ChromeBrowserZoomMenu", "Chrome", monitorInfo)
                         {
                             UseCurrentScreenAsParent = true
@@ -232,7 +232,7 @@ namespace ACAT.Extension.AppAgents.ChromeBrowser
                 case "ChromeBrowserMenu":
                     showPanel(this, new PanelRequestEventArgs("ChromeBrowserMenu",
                                                                 "Chrome",
-                                                                WindowActivityMonitor.GetForegroundWindowInfo(),
+                                                                WindowActivityMonitor.GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult(),
                                                                 true));
                     break;
 

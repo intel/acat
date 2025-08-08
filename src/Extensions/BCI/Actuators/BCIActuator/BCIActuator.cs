@@ -1160,10 +1160,9 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             Log.Debug("Requesting calibration for eyes close parameters");
             // Send parameters to ACAT
             var bciCalibrationEyesClosedParameters = new BCICalibrationEyesClosedParameters(BCIActuatorSettings.Settings.EyesClosedCalibration_NumRepetitions, BCIActuatorSettings.Settings.EyesClosedCalibration_IntervalDuration);
-            var str = bciCalibrationEyesClosedParameters;
             Log.Debug("Sending eyes close parameters. Num repetitions: " + bciCalibrationEyesClosedParameters.NumRepetitions + " | Interval duration: " + bciCalibrationEyesClosedParameters.IntervalDuration);
-            SendIoctlResponse((int)OpCodes.CalibrationEyesClosedSendParameters, str);
-            Log.Debug("IoctRequest " + OpCodes.CalibrationEyesClosedSendParameters + " sent. Message: " + str);
+            SendIoctlResponse((int)OpCodes.CalibrationEyesClosedSendParameters, bciCalibrationEyesClosedParameters);
+            Log.Debug("IoctRequest " + OpCodes.CalibrationEyesClosedSendParameters + " sent. Message: " + bciCalibrationEyesClosedParameters.ToString());
         }
 
         /// <summary>
@@ -1431,10 +1430,9 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
             // Send result
             var bciCalibrationResult = new BCISensorStatus() { Error = sensorError, StatusSignal = statusSignal };
-            var str = bciCalibrationResult;
             Log.Debug("Sending response. SensorError:" + (BCIErrorCodes)bciCalibrationResult.Error.ErrorCode);
-            SendIoctlResponse((int)OpCodes.CalibrationEndRepetitionResult, str);
-            Log.Debug("IoctRequest " + OpCodes.CalibrationEndRepetitionResult + " sent. Message: " + str);
+            SendIoctlResponse((int)OpCodes.CalibrationEndRepetitionResult, bciCalibrationResult);
+            Log.Debug("IoctRequest " + OpCodes.CalibrationEndRepetitionResult + " sent. Message: " + bciCalibrationResult.ToString());
         }
 
         /// <summary>
@@ -1753,10 +1751,9 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                     SessionId = sessionID, 
                     Error = error
                 };
-                var str = bciStartSessionResults;
                 Log.Debug("Sending response. Error: " + (BCIErrorCodes)error.ErrorCode + " Sensor ready: " + bciStartSessionResults.SensorReady + " | session ID: " + sessionID + " | directory: " + sessionDirectory);
-                SendIoctlResponse((int)OpCodes.StartSessionResult, str);
-                Log.Debug("IoctRequest " + OpCodes.StartSessionResult + " sent. Message: " + str);
+                SendIoctlResponse((int)OpCodes.StartSessionResult, bciStartSessionResults);
+                Log.Debug("IoctRequest " + OpCodes.StartSessionResult + " sent. Message: " + bciStartSessionResults.ToString());
             }
             catch (Exception e)
             {
@@ -2140,10 +2137,9 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             if (posteriorProbs != null)
                 bciTypingRepetitionResult.PosteriorProbs = posteriorProbs;
 
-            var str = bciTypingRepetitionResult;
             Log.Debug("Sending response. Error: " + (BCIErrorCodes)error.ErrorCode + " | Decided:" + decidedFlag + "DecidedID:" + decidedButtonID + " ReturnToBoxScanning:" + returnToBoxScanningFlag + " StatusSignal: " + statusSignal);
-            SendIoctlResponse((int)OpCodes.TypingEndRepetitionResult, str);
-            Log.Debug("IoctRequest " + OpCodes.TypingEndRepetitionResult + " sent. Message: " + str);
+            SendIoctlResponse((int)OpCodes.TypingEndRepetitionResult, bciTypingRepetitionResult);
+            Log.Debug("IoctRequest " + OpCodes.TypingEndRepetitionResult + " sent. Message: " + bciTypingRepetitionResult.ToString());
         }
 
         /// <summary>

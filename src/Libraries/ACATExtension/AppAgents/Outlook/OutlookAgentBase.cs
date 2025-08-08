@@ -332,7 +332,7 @@ namespace ACAT.Extension.AppAgents.Outlook
                 case "EmailSelectField":
                     if (!actuateStandardControl(controlType))
                     {
-                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfo();
+                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult();
                         showPanel(this, new PanelRequestEventArgs("Alphabet", monitorInfo));
                     }
 
@@ -377,7 +377,11 @@ namespace ACAT.Extension.AppAgents.Outlook
                 case "ApptSelectField":
                     if (!actuateStandardControl(controlType))
                     {
-                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfo();
+                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfoAsync()
+                            .ConfigureAwait(false)
+                            .GetAwaiter()
+                            .GetResult();
+
                         showPanel(this, new PanelRequestEventArgs("Alphabet", monitorInfo));
                     }
 
@@ -429,7 +433,11 @@ namespace ACAT.Extension.AppAgents.Outlook
                 case "ContactSelectField":
                     if (!actuateStandardControl(controlType))
                     {
-                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfo();
+                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfoAsync()
+                            .ConfigureAwait(false)
+                            .GetAwaiter()
+                            .GetResult();
+                        
                         showPanel(this, new PanelRequestEventArgs("Alphabet", monitorInfo));
                     }
 
@@ -458,7 +466,11 @@ namespace ACAT.Extension.AppAgents.Outlook
                 case "TaskSelectField":
                     if (!actuateStandardControl(controlType))
                     {
-                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfo();
+                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfoAsync()
+                            .ConfigureAwait(false)
+                            .GetAwaiter()
+                            .GetResult();
+
                         showPanel(this, new PanelRequestEventArgs("Alphabet", monitorInfo));
                     }
 
@@ -491,14 +503,20 @@ namespace ACAT.Extension.AppAgents.Outlook
                 case "SwitchTo":
                     showPanel(this, new PanelRequestEventArgs("OutlookMailBoxesContextMenu",
                                                                 StringResources.SwitchTo,
-                                                                WindowActivityMonitor.GetForegroundWindowInfo(),
+                                                                WindowActivityMonitor.GetForegroundWindowInfoAsync()
+                                                                    .ConfigureAwait(false)
+                                                                    .GetAwaiter()
+                                                                    .GetResult(),
                                                                 true));
                     break;
 
                 case "EmailAction":
                     showPanel(this, new PanelRequestEventArgs("OutlookEmailActionContextMenu",
                                                             PanelTitle,
-                                                            WindowActivityMonitor.GetForegroundWindowInfo(),
+                                                            WindowActivityMonitor.GetForegroundWindowInfoAsync()
+                                                                    .ConfigureAwait(false)
+                                                                    .GetAwaiter()
+                                                                    .GetResult(),
                                                             true));
                     break;
 
@@ -509,7 +527,12 @@ namespace ACAT.Extension.AppAgents.Outlook
                 case "AddressBookSelectField":
                     if (!actuateStandardControl(controlType))
                     {
-                        showPanel(this, new PanelRequestEventArgs("Alphabet", WindowActivityMonitor.GetForegroundWindowInfo()));
+                        showPanel(this, new PanelRequestEventArgs("Alphabet", 
+                            WindowActivityMonitor.GetForegroundWindowInfoAsync()
+                                .ConfigureAwait(false)
+                                .GetAwaiter()
+                                .GetResult()
+                            ));
                     }
 
                     break;
@@ -577,7 +600,11 @@ namespace ACAT.Extension.AppAgents.Outlook
 
             for (int ii = 0; ii < 10; ii++)
             {
-                var info1 = WindowActivityMonitor.GetForegroundWindowInfo();
+                var info1 = WindowActivityMonitor.GetForegroundWindowInfoAsync()                            
+                            .ConfigureAwait(false)
+                            .GetAwaiter()
+                            .GetResult();
+      
                 if (String.Compare(info1.Title, "TODO", true) == 0)
                 {
                     Log.Debug("YES!  Found Attach file window");

@@ -253,7 +253,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="opcode">operation code</param>
         /// <param name="request">data (typically JSON string)</param>
         /// <returns>true on success</returns>
-        public virtual bool IoctlRequest(int opcode, String request)
+        public virtual bool IoctlRequest(int opcode, object request)
         {
             return true;
         }
@@ -639,7 +639,7 @@ namespace ACAT.Core.ActuatorManagement
         /// </summary>
         /// <param name="opcode">operation code</param>
         /// <param name="response">data to be sent</param>
-        protected virtual void SendIoctlResponse(int opcode, String response)
+        protected virtual void SendIoctlResponse(int opcode, object response)
         {
             EvtIoctlResponse?.Invoke(opcode, response);
         }

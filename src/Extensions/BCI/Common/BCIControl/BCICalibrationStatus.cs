@@ -22,25 +22,32 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         NotFound,
     }
 
-    [Serializable]
     public class BCIClassifierInfo
     {
-        public BCIScanSections ClassifierUsed { get; set; } = BCIScanSections.None;
+        public BCIScanSections ClassifierUsed;
 
         /// <summary>
         /// Status of the classifier (Ok, Expired, NotFound)
         /// </summary>
-        public BCIClassifierStatus ClassifierStatus { get; set; } = BCIClassifierStatus.Ok;
+        public BCIClassifierStatus ClassifierStatus;
 
         /// <summary>
         /// AUC for the classifier
         /// </summary>
-        public float Auc { get; set; } = 0.0f;
+        public float Auc;
 
         /// <summary>
         /// Boolean, true if the classifier is required (in the mappings file)
         /// </summary>
-        public bool IsRequired { get; set; } = false;
+        public bool IsRequired;
+
+        public BCIClassifierInfo(bool isRequired, BCIScanSections classifierUsed, BCIClassifierStatus classifierStatus, float auc)
+        {
+            Auc = auc;
+            ClassifierUsed = classifierUsed;
+            ClassifierStatus = classifierStatus;
+            IsRequired = isRequired;
+        }
     }
 
     [Serializable]
@@ -49,39 +56,41 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         /// <summary>
         /// General error (STATUS_OK if no error)
         /// </summary>
-        public BCIError Error { get; set; } = new BCIError
-        {
-            ErrorCode = BCIErrorCodes.Status_Ok,
-            ErrorMessage = BCIMessages.Status_Ok
-        };
+        public BCIError Error;
 
         /// <summary>
         /// Overall status for the classifiers (Ok, Expired, NotFound)
         /// </summary>
-        public BCIClassifierStatus OverallStatus { get; set; } = BCIClassifierStatus.Ok;
+        public BCIClassifierStatus OverallStatus;
 
         /// <summary>
         /// Status for each particular classifier: (Ok/Expired/NotFound, Auc...)
         /// </summary>
-        public Dictionary<BCIScanSections, BCIClassifierInfo> DictClassifierInfo { get; set; } = new Dictionary<BCIScanSections, BCIClassifierInfo>();
+        public Dictionary<BCIScanSections, BCIClassifierInfo> DictClassifierInfo;
 
         /// <summary>
         /// Boolean, true if ACAT should only display the default classifiers (Box, Sentences & KeyboardL)
         /// </summary>
-        public bool ShowOnlyDefaults { get; set; } = false;
+        public bool ShowOnlyDefaults;
 
         /// <summary>
         /// Boolean, true if there are more classifiers than required in the mapping file
         /// </summary>
-        public bool AreMoreClassifiersThanMapping { get; set; } = false;
+        public bool AreMoreClassifiersThanMapping;
 
         /// <summary>
         /// Boolean, true if all classifiers are loaded and ACAT can show "Start typing" message
         /// </summary>
-        public bool OkToGoToTyping { get; set; } = false;
+        public bool OkToGoToTyping;
 
-        public BCICalibrationStatus()
+        public BCICalibrationStatus(bool showOnlyDefaults, bool areMoreClassifiersThanMapping, bool okToGoToTyping, BCIClassifierStatus overallStatus, Dictionary<BCIScanSections, BCIClassifierInfo> dictClassifierInfo, BCIError error)
         {
+            Error = error;
+            OverallStatus = overallStatus;
+            DictClassifierInfo = dictClassifierInfo;
+            AreMoreClassifiersThanMapping = areMoreClassifiersThanMapping;
+            ShowOnlyDefaults = showOnlyDefaults;
+            OkToGoToTyping = okToGoToTyping;
         }
     }
 }

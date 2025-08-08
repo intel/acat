@@ -106,9 +106,8 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 {
                     case var _ when scannerRoundedButtonControl.Name.Contains("TriggerTest"):
                         OptionResult = new Tuple<BCIMenuOptions.Options, BCISimpleParameters>(BCIMenuOptions.Options.TriggerTest, GetTriggerTestParameters());
-                        BCITriggerTestParameters bciTriggerTestParameters = new() { NumRepetitions = (int)customSliderNumberTargets.Value, ScanTime = (int)customSliderScanningTime.Value };
-                        var str = JsonSerializer.Serialize(bciTriggerTestParameters);
-                        _bciActuator?.IoctlRequest((int)OpCodes.TriggerTestSaveParameters, str);
+                        BCITriggerTestParameters bciTriggerTestParameters = new((int)customSliderNumberTargets.Value, (int)customSliderScanningTime.Value);
+                        _bciActuator?.IoctlRequest((int)OpCodes.TriggerTestSaveParameters, bciTriggerTestParameters);
                         break;
                 }
                 Close();
@@ -257,12 +256,12 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// </summary>
         /// <param name="opcode"></param>
         /// <param name="response"></param>
-        private void BciActuator_EvtIoctlResponse(int opcode, string response)
+        private void BciActuator_EvtIoctlResponse(int opcode, object response)
         {
             switch (opcode)
             {
                 case (int)OpCodes.TriggerTestSendParameters:
-                    var triggerTestParams = JsonSerializer.Deserialize<BCITriggerTestParameters>(response);
+                    var triggerTestParams = response as BCITriggerTestParameters;
                     _ScanningTime = triggerTestParams.ScanTime;
                     _NumberRepetitions = triggerTestParams.NumRepetitions;
                     SetValuesSliders(_ScanningTime, _NumberRepetitions);

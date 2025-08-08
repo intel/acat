@@ -125,7 +125,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         private volatile BCIScanSections _ScanningSection = BCIScanSections.None;
 
         /// <summary>
-        /// Text box user control (Lock screeb)
+        /// Text box user control (Lock screen)
         /// </summary>
         private ScreenLockTextBoxUserControl _screenLockTextBoxUserControl;
 
@@ -150,7 +150,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         private TalkWindowTextBoxPromptUserControlLabel _textBoxPromptUserControlLabel;
 
         /// <summary>
-        /// Oobject of the Text box from the main form
+        /// Object of the Text box from the main form
         /// </summary>
         private TextBox _textBoxTalkWindow;
 
@@ -313,7 +313,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         }
 
         /// <summary>
-        /// Task to requesto BCI actuator to start BCI
+        /// Task to request to BCI actuator to start BCI
         /// </summary>
         /// <returns></returns>
         public async Task BCIStartSession()
@@ -557,16 +557,16 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// </summary>
         public void OnResume()
         {
-            if (panelTextbox.Controls.Count > 0 && panelTextbox.Controls[0] is ITalkWindowTextBox)
-            {
-                ITalkWindowTextBox tb = panelTextbox.Controls[0] as ITalkWindowTextBox;
-                tb.OnResume();
-            }
-            _windowActiveWatchdog?.Resume();
-            _dimScanner = true;
-            _scannerCommon.UserControlManager.OnResume();
-            _scannerCommon.OnResume();
-            _scannerCommon.ResizeToFitDesktop(this);
+            //if (panelTextbox.Controls.Count > 0 && panelTextbox.Controls[0] is ITalkWindowTextBox)
+            //{
+            //    ITalkWindowTextBox tb = panelTextbox.Controls[0] as ITalkWindowTextBox;
+            //    tb.OnResume();
+            //}
+            //_windowActiveWatchdog?.Resume();
+            //_dimScanner = true;
+            //_scannerCommon.UserControlManager.OnResume();
+            //_scannerCommon.OnResume();
+            //_scannerCommon.ResizeToFitDesktop(this);
         }
 
         /// <summary>
@@ -700,7 +700,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// </summary>
         /// <param name="opcode"></param>
         /// <param name="response"></param>
-        private void BciActuator_EvtIoctlResponse(int opcode, string response)
+        private void BciActuator_EvtIoctlResponse(int opcode, object response)
         {
             switch (opcode)
             {
@@ -754,7 +754,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
 
                 case (int)OpCodes.SendCalibrationStatus:
                     //STEP - 1
-                    var bciCalibrationStatus = JsonSerializer.Deserialize<BCICalibrationStatus>(response);
+                    var bciCalibrationStatus = response as BCICalibrationStatus;
                     Log.Debug("BCI LOG | bciCalibrationStatus.OkToGoToTyping: " + bciCalibrationStatus.OkToGoToTyping);
                     if (_ShowMainOptions)//This window should only display once
                     {

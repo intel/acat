@@ -11,10 +11,10 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
+using ACATResources;
 
 namespace ACAT.Extensions.BCI.Common.BCIControl
 {
-    [Serializable]
     public enum BCIErrorCodes
     {
         Status_Ok = 0,
@@ -50,19 +50,26 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         TypingError_OnRepetitionEnd_ProabilitiesMarkersMissmatch = 409,
     }
 
-    public static class BCIMessages
+    public class BCIMessages
     {
-        public static string Status_Ok { get; set; } = "";
+        public const string Status_Ok = "";
     }
 
-    [Serializable]
     public class BCIError
     {
-        public BCIErrorCodes ErrorCode { get; set; } = BCIErrorCodes.Status_Ok;
-        public String ErrorMessage { get; set; } = BCIMessages.Status_Ok;
+        public BCIErrorCodes ErrorCode;
+        public String ErrorMessage;
 
         public BCIError()
         {
+            ErrorCode = BCIErrorCodes.Status_Ok;
+            ErrorMessage = BCIMessages.Status_Ok;
+        }
+
+        public BCIError(BCIErrorCodes errorCode, String errorMessage)
+        {
+            ErrorCode = errorCode;
+            ErrorMessage = errorMessage;
         }
     }
 }

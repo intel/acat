@@ -24,10 +24,12 @@
 	<WidgetAttributes>
 	</WidgetAttributes>
 
-	<Layout>
-		<Widget class="WinControlWidget"  name="Keyboard">
-		</Widget>
-	</Layout>
+  <Layout>
+    <Widget class="WinControlWidget" name="Keyboard" />
+    <Widget class="WinControlWidget"  name="scannerPanelWordPredictions" />
+      <Widget class="WinControlWidget"  name="scannerPanelSentences" />
+    <Widget class="WinControlWidget"  name="scannerPanelKeyboard" />
+  </Layout>
 
 	<Animations>
 		<Animation name="TopLevelRotation"

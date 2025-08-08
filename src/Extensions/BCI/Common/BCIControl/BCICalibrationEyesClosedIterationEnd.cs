@@ -24,8 +24,16 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
             Unknown,
         }
 
-        public BCIEyesClosedModes BciEyesClosedMode { get; set; } = BCIEyesClosedModes.Unknown;
+        public BCIEyesClosedModes BciEyesClosedMode;
 
-        public BCICalibrationEyesClosedIterationEnd() { }
+        public BCICalibrationEyesClosedIterationEnd()
+        {
+            BciEyesClosedMode = BCIEyesClosedModes.Unknown;
+        }
+
+        public BCICalibrationEyesClosedIterationEnd(BCIEyesClosedModes bciEyesClosedMode)
+        {
+            BciEyesClosedMode = bciEyesClosedMode;
+        }
     }
 }

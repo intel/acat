@@ -26,18 +26,20 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
     {
         public BCILanguageModelProbabilities()
         {
+            LanguageModelProbabilities = new Dictionary<int, double>();
+            LanguageModelProbabilityType = ProbabilityType.Other;
         }
 
         /// <summary>
         /// Languae model probabilities
         /// Format: [ID of corresponding button, probability]
         /// </summary>
-        public Dictionary<int, double> LanguageModelProbabilities { get; set; } = new Dictionary<int, double>();
+        public Dictionary<int, double> LanguageModelProbabilities { get; set; }
 
         /// <summary>
         /// Type of probability.
         /// Supported types: NextCharacter, NextWord, NextSentence, Other
         /// </summary>
-        public ProbabilityType LanguageModelProbabilityType { get; set; } = ProbabilityType.Other;
+        public ProbabilityType LanguageModelProbabilityType { get; set; }
     }
 }

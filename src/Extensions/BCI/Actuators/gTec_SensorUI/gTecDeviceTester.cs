@@ -476,20 +476,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                         chnIdx += 1;
                     }
 
-                    // NOTE: Impedance values are not currently being used in the gTecSensorUI
-                    int[] impedanceValues = new int[16];
-                    var bciLogEntry = new BCILogEntrySignalQuality()
-                    {
-                        ChannelNames = channelNames,
-                        EnabledChannels = enabledChannels,
-                        RailingValues = railingValues,
-                        ImpedanceValues = impedanceValues,
-                        PassedSignalCheck = exitBCIOnboarding
-                    }; 
-
-                    var jsonString = JsonSerializer.Serialize(bciLogEntry);
-                    AuditLog.Audit(new AuditEvent("BCISignalQuality", jsonString));
-
                     // Based on the status of all electrodes
                     // Either successfully close gTecDeviceTester (continue on to calibration) or display msg to user asking to clean up bad channels
                     if (exitBCIOnboarding)

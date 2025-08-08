@@ -154,7 +154,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         public static BCIMenuOptions.MainMenuOptions ShowMainOptionsWindow(Form form, string title, string Label, bool enableOp3)
         {
             var result = BCIMenuOptions.MainMenuOptions.ExitApplication;
-            _ = ConfirmBoxThreeOption.ShowDialog(title, Label, EXITAPPLICATION, CALIBRATE, STARTYPING, null, false);
 
             var confirmDialog = new ConfirmBoxThreeOption
             {

@@ -147,7 +147,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <summary>
         /// Default target as lock animation box
         /// </summary>
-        private bool _defaultLockBoxanimation = true;
+        private bool _defaultLockBoxAnimation = true;
 
         /// <summary>
         /// Time used to display the decision
@@ -219,7 +219,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <summary>
         /// if box level active
         /// </summary>
-        private bool _isBoxScannig;
+        private bool _isBoxScanning;
 
         /// <summary>
         /// Flag when is required to trigger the button
@@ -264,12 +264,12 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         private List<int>[] _offsetStrings;
 
         /// <summary>
-        /// value used to add pading when drawing text right and left
+        /// value used to add padding when drawing text right and left
         /// </summary>
         private readonly int _PaddingText = 20;
 
         /// <summary>
-        /// value used to add pading when drawing text at the bottom
+        /// value used to add padding when drawing text at the bottom
         /// </summary>
         private readonly int _PaddingTextBottom = 10;
 
@@ -283,11 +283,11 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         private SortedDictionary<int, double> _progressBarsProbs = null;
 
         /// <summary>
-        /// Radious for each corner of each button
+        /// Radius for each corner of each button
         /// </summary>
         private float _RadiusCornersButtons = 5;
 
-        private bool _readStartSesionResult = false;
+        private bool _readStartSessionResult = false;
 
         /// <summary>
         /// Rectangles for the Trigger button BtnCRG
@@ -386,7 +386,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         private int _slotTrialTimerCount = 0;
 
         /// <summary>
-        /// After reseting the timers start the timer?
+        /// After resetting the timers start the timer?
         /// </summary>
         private bool _StartSequences = true;
 
@@ -402,7 +402,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// </summary>
         private Dictionary<List<Control>, string> _TempBoxesData;
 
-        private List<Widget>[] _tempwidgets;
+        private List<Widget>[] _tempWidget;
 
         /// <summary>
         /// Timers for Animations sequences
@@ -450,7 +450,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         private int _TypingTargetCount = 0;
 
         /// <summary>
-        /// Flag to alow updating the strings from buttons
+        /// Flag to allow updating the strings from buttons
         /// </summary>
         private bool _UpdateButtonsStrings = true;
 
@@ -460,7 +460,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         private bool _useRandomSelectionTargetCalibration = true;
 
         /// <summary>
-        /// Widhets for each of the User Control boxes
+        /// Widgets for each of the User Control boxes
         /// </summary>
         private List<Widget>[] _widgets;
 
@@ -515,7 +515,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
 
         public void CalibrationEyesCloseRequest()
         {
-            _readStartSesionResult = false;
+            _readStartSessionResult = false;
         }
 
         /// <summary>
@@ -544,10 +544,10 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     break;
             }
             if (_ScanningSection == BCIScanSections.Box)
-                _isBoxScannig = true;
+                _isBoxScanning = true;
             else
-                _isBoxScannig = false;
-            _readStartSesionResult = true;
+                _isBoxScanning = false;
+            _readStartSessionResult = true;
             _sessionMode = BCIModes.CALIBRATION;
             _currEpochCount = 1;
             _sequenceDone = false;
@@ -560,7 +560,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 BCIUtils.SetTargetValuesForCalibration(_flashingSequenceBoxList.Length);
             else
                 BCIUtils.SetTargetValuesForCalibration(_ButtonDataList[_CalibrationBox].Count);
-            var strBciMode = JsonSerializer.Serialize(bCIMode);
+            var strBciMode = bCIMode;
             _actuator.IoctlRequest((int)OpCodes.StartSession, strBciMode);
         }
 
@@ -579,7 +579,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 _sessionMode = BCIModes.TYPING;
                 ChangeColorButtons(_flashingSequenceBoxList[0].ToList(), false, true, 0);
                 var bciCalibrationEnd = new BCICalibrationEnd { DiscardCalibrationData = true };
-                var strCalEnd = JsonSerializer.Serialize(bciCalibrationEnd);
+                var strCalEnd = bciCalibrationEnd;
                 _actuator.IoctlRequest((int)OpCodes.CalibrationEnd, strCalEnd);
                 _mainForm.Invoke(new MethodInvoker(delegate { EvtBCICalibrationComplete?.Invoke("Calibration cancelled \nSelect calibration mode to start again"); }));
             }
@@ -610,9 +610,9 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             if (_ChangeTimings && _sessionMode == BCIModes.TYPING)//If a change of user control occur and has to fall into a specific box
                 RequestParameters(new BCIMode { BciMode = _sessionMode, BciCalibrationMode = _ScanningSection });
             _TempBoxesData = boxesData;//Save data so after SharpDx is not in used can change the objects used by it
-            _tempwidgets = widgets;
+            _tempWidget = widgets;
             _currEpochCount = 0;
-            _isBoxScannig = true;
+            _isBoxScanning = true;
             _numberOfSequences = _amountOfKeyboards;
             Reset(true);
         }
@@ -760,7 +760,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 _ScanningSection = BCIScanSections.Box;
             if (_sessionMode == BCIModes.TYPING)
                 _ChangeTimings = true;
-            _defaultLockBoxanimation = defaultLockBoxanimation;
+            _defaultLockBoxAnimation = defaultLockBoxanimation;
             _customLockBoxAnimation = customLockBoxAnimation;
         }
 
@@ -802,7 +802,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 NumIterationsPerTarget = bCISimpleParameters.IterationsPertarget,
                 MinScoreRequired = bCISimpleParameters.MinScore,
             };
-            var strBciModeParams = JsonSerializer.Serialize(bCIUserInputParameters);
+            var strBciModeParams = bCIUserInputParameters;
             _actuator.IoctlRequest((int)OpCodes.RequestParameters, strBciModeParams);
         }
 
@@ -943,7 +943,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             _sessionMode = BCIModes.TRIGGERTEST;
             _triggerTestActive = true;
             BCIMode bCIMode = new() { BciMode = BCIModes.TRIGGERTEST };
-            var strBciMode = JsonSerializer.Serialize(bCIMode);
+            var strBciMode = bCIMode;
             _actuator.IoctlRequest((int)OpCodes.StartSession, strBciMode);
             _actuator.IoctlRequest((int)OpCodes.TriggerTestStart, string.Empty);
         }
@@ -953,13 +953,13 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// </summary>
         public void TypingRequest()
         {
-            _readStartSesionResult = true;
+            _readStartSessionResult = true;
             _sessionMode = BCIModes.TYPING;
             _currEpochCount = 0;
-            _isBoxScannig = true;
+            _isBoxScanning = true;
             _numberOfSequences = _amountOfKeyboards;
             BCIMode bCIMode = new() { BciMode = BCIModes.TYPING };
-            var strBciMode = JsonSerializer.Serialize(bCIMode);
+            var strBciMode = bCIMode;
             _actuator.IoctlRequest((int)OpCodes.StartSession, strBciMode);
         }
 
@@ -1031,7 +1031,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             {
                 Log.Exception("BCI LOG | Exception occurred during request to Actuator in ENDCAL: " + es.Message);
             }
-            var strCalEnd = JsonSerializer.Serialize(bciCalibrationEnd);
+            var strCalEnd = bciCalibrationEnd;
             _actuator?.IoctlRequest((int)OpCodes.CalibrationEnd, strCalEnd);
         }
 
@@ -1084,7 +1084,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             {
                 Log.Exception("BCI LOG | Exception occurred during request to Actuator in CAl: " + es.Message);
             }
-            var strCalRepEnd = JsonSerializer.Serialize(bciCalibrationInput);
+            var strCalRepEnd = bciCalibrationInput;
             _actuator?.IoctlRequest((int)OpCodes.CalibrationEndRepetition, strCalRepEnd);
         }
 
@@ -1093,7 +1093,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             var bciTypingRepetitionEnd = new BCITypingRepetitionEnd();
             try
             {
-                if (!_isBoxScannig)
+                if (!_isBoxScanning)
                 {
                     for (int RowColID = 1; RowColID <= _flashingSequenceList[_activeKeyboard].Count; RowColID++)
                     {
@@ -1144,7 +1144,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             {
                 Log.Exception("BCI LOG | Exception occurred during request to Actuator in TYPE: " + es.Message);
             }
-            var strTypRepEnd = JsonSerializer.Serialize(bciTypingRepetitionEnd);
+            var strTypRepEnd = bciTypingRepetitionEnd;
             _actuator?.IoctlRequest((int)OpCodes.TypingEndRepetition, strTypRepEnd);
         }
 
@@ -1204,7 +1204,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     if (nextProbs.Count != 0)
                     {
                         bciLanguageModelProbabilities.LanguageModelProbabilities = nextProbs;
-                        var strNextProb = JsonSerializer.Serialize(bciLanguageModelProbabilities);
+                        var strNextProb = bciLanguageModelProbabilities;
                         _actuator?.IoctlRequest((int)OpCodes.LanguageModelProbabilities, strNextProb);
                     }
                 }
@@ -1215,11 +1215,11 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
         }
 
-        private void ActuatorResponseCalibrationEndRepetitionResult(String response)
+        private void ActuatorResponseCalibrationEndRepetitionResult(object response)
         {
             try
             {
-                var bciCalibrationEndRepResult = JsonSerializer.Deserialize<BCISensorStatus>(response);
+                var bciCalibrationEndRepResult = response as BCISensorStatus;
                 SensorErrorState = bciCalibrationEndRepResult.Error;
                 AnimationManagerUtils.StatusSignal = (SignalStatus)bciCalibrationEndRepResult.StatusSignal;
             }
@@ -1231,10 +1231,10 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
         }
 
-        private void ActuatorResponseCalibrationResult(String response)
+        private void ActuatorResponseCalibrationResult(object response)
         {
             Log.Debug("BCI LOG | CalibrationResult | AUC " + _AUC + " | Section " + _ScanningSection);
-            var bciCalibrationResult = JsonSerializer.Deserialize<BCICalibrationResult>(response);
+            var bciCalibrationResult = response as BCICalibrationResult;
             _AUC = bciCalibrationResult.AUC;
             if (bciCalibrationResult.CalibrationSuccessful)//Flags to let know the timer thread once is at the final process to do either one or the other event trigger
                 _endCalibration = true;
@@ -1243,12 +1243,12 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             SensorErrorState = bciCalibrationResult.Error;
         }
 
-        private void ActuatorResponseSendParameters(String response)
+        private void ActuatorResponseSendParameters(object response)
         {
             try
             {
                 Log.Debug("BCI LOG | SendParameters | Section " + _ScanningSection);
-                var bciParameters = JsonSerializer.Deserialize<BCIParameters>(response);
+                var bciParameters = response as BCIParameters;
                 _DelayToGetReady = bciParameters.Scanning_DelayToGetReady;
                 _MinimumProgressBarsValue = (bciParameters.MinProbablityToDisplayBarOnTyping);
                 _CalibrationTargetCount = bciParameters.CalibrationParameters[_ScanningSection].TargetCount;
@@ -1291,16 +1291,16 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
         }
 
-        private void ActuatorResponseStartSessionResult(String response)
+        private void ActuatorResponseStartSessionResult(object response)
         {
             Log.Debug("BCI LOG | StartSessionResult | Section " + _ScanningSection);
-            var bciSessionResult = JsonSerializer.Deserialize<BCIStartSessionResult>(response);
+            var bciSessionResult = response as BCIStartSessionResult;
             SensorErrorState = bciSessionResult.Error;
             CreateSequencesLog(bciSessionResult.SessionDirectory);
             Log.Debug("BCI LOG | Scanning Log created in: | Path " + bciSessionResult.SessionDirectory);
             Log.Debug("BCI LOG | bciSessionResult.Error | Status " + bciSessionResult.Error);
-            //_readStartSesionResult flag is for Eyes/Clsoed Calibration form that also has the start session request with this we avoid the event handler to run scanning when Eyes Form is active and here has the event subscribed active
-            if (_readStartSesionResult && !_triggerTestActive)
+            //_readStartSessionResult flag is for Eyes/Clsoed Calibration form that also has the start session request with this we avoid the event handler to run scanning when Eyes Form is active and here has the event subscribed active
+            if (_readStartSessionResult && !_triggerTestActive)
             {
                 _StartSequences = true;
                 if (bciSessionResult.SensorReady && (_endCalibration || _repeatCalibration))
@@ -1314,9 +1314,9 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
         }
 
-        private void ActuatorResponseTriggerTestResult(String response)
+        private void ActuatorResponseTriggerTestResult(object response)
         {
-            var bciTriggerTestResult = JsonSerializer.Deserialize<BCITriggerTestResult>(response);
+            var bciTriggerTestResult = response as BCITriggerTestResult;
             CloseSequencesLog();
             Log.Debug("BCI LOG | TriggerTestResult | DutyCycleAvg " + bciTriggerTestResult.DutyCycleAvg.ToString());
             //Trigger event to call a UI message box from a higher level
@@ -1332,9 +1332,9 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             _TriggerTest_Timer.Start();
         }
 
-        private void ActuatorResponseTypingEndRepetitionResult(String response)
+        private void ActuatorResponseTypingEndRepetitionResult(object response)
         {
-            var bciTypingResult = JsonSerializer.Deserialize<BCITypingRepetitionResult>(response);
+            var bciTypingResult = response as BCITypingRepetitionResult;
             _isDecisionMade = bciTypingResult.DecidedFlag;
             _progressBarsProbs = bciTypingResult.PosteriorProbs;
             SensorErrorState = bciTypingResult.Error;
@@ -1449,7 +1449,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         ChangeColorButtonsSequence(buttonIDs, colorRect, highlightOn, _activeKeyboard);
                         if (_sessionMode == BCIModes.CALIBRATION)
                         {
-                            if (!_isBoxScannig)//Draw the elements of a keyboard
+                            if (!_isBoxScanning)//Draw the elements of a keyboard
                                 _sharpDX_d2dRenderTarget.DrawRoundedRectangle(_rectanglesButtonsRoundList[_activeKeyboard][FindIndexFromID(_currentCalibrationTarget.id)], SharpDXColors.SolidColorBrushTarget, _BorderWidth);
                             else
                             {//To draw the buttons that being used as target in Box calibration
@@ -1463,7 +1463,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                                 DrawFocalPointsFor(BCIModes.CALIBRATION);
                             }
                         }
-                        else if (_sessionMode == BCIModes.TYPING && _isBoxScannig && !_lockAnimation)
+                        else if (_sessionMode == BCIModes.TYPING && _isBoxScanning && !_lockAnimation)
                         {
                             DrawFocalPointsFor(BCIModes.TYPING);
                         }
@@ -1741,7 +1741,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// </summary>
         /// <param name="opcode">Operation code result</param>
         /// <param name="response">Response data</param>
-        private void Evt_ResponseActuator(int opcode, String response)
+        private void Evt_ResponseActuator(int opcode, object response)
         {
             _actuatorAnswer = true;
             switch (opcode)
@@ -2007,7 +2007,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                                         _isDecisionMade = false;//Restore the flag
                                         if (!_changeUserControl)//Flag of precautionary measure it a user control is triggered
                                         {
-                                            if (!_isBoxScannig)//Do something if is box scanning or button scanning
+                                            if (!_isBoxScanning)//Do something if is box scanning or button scanning
                                             {
                                                 ButtonsData decision = FindButtomFromId(_decidedID);
                                                 UpdateCopiedText();
@@ -2018,7 +2018,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                                                 if (!_lockAnimation)//If not lock then continue with box scanning otherwise it will continue with keyboard scanning
                                                 {
                                                     _numberOfSequences = _flashingSequenceBoxList.Length;
-                                                    _isBoxScannig = true;
+                                                    _isBoxScanning = true;
                                                     if (_sessionMode == BCIModes.TYPING)
                                                         _ScanningSection = BCIScanSections.Box;
                                                     _ReturnToBoxScanning = false;
@@ -2031,12 +2031,12 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                                                 if (_ReturnToBoxScanning || !PlayBoxSequences())//if a box was selected return to box scanning anyway
                                                 {
                                                     _numberOfSequences = _flashingSequenceBoxList.Length;
-                                                    _isBoxScannig = true;
+                                                    _isBoxScanning = true;
                                                     _ReturnToBoxScanning = false;
                                                 }
                                                 else
                                                 {
-                                                    _isBoxScannig = false;
+                                                    _isBoxScanning = false;
                                                     if (_sessionMode == BCIModes.TYPING)
                                                     {
                                                         switch (_decidedID)
@@ -2068,7 +2068,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                                         if (_ReturnToBoxScanning)//If the actuator return to go back to box scanning
                                         {
                                             _numberOfSequences = _flashingSequenceBoxList.Length;
-                                            _isBoxScannig = true;
+                                            _isBoxScanning = true;
                                             _ReturnToBoxScanning = false;
                                         }
                                         if (!_changeUserControl)
@@ -2111,19 +2111,19 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             {
                 if (!SuspendAnimations)//This is when a user control is being changed
                 {
-                    if (_TempBoxesData != null && _tempwidgets != null)
+                    if (_TempBoxesData != null && _tempWidget != null)
                     {
                         _UpdateButtonsStrings = false;
-                        SetDataObjectsSharpDX(_TempBoxesData, _tempwidgets);
+                        SetDataObjectsSharpDX(_TempBoxesData, _tempWidget);
                         //null objects after is to avoid if another call the reset fall into here and change the SharpDX objects
                         _TempBoxesData = null;
-                        _tempwidgets = null;
+                        _tempWidget = null;
                     }
                 }
                 else
                 {//This is when pause animations, no user control changes no Message box prompts so it can go back to scannning after is requested
                     SuspendAnimations = false;
-                    _isBoxScannig = true;
+                    _isBoxScanning = true;
                     _numberOfSequences = _amountOfKeyboards;
                 }
             }
@@ -2183,7 +2183,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// </summary>
         private void ScanningNoticeBox()
         {
-            if (_isBoxScannig && !_lockAnimation)
+            if (_isBoxScanning && !_lockAnimation)
             {
                 int tempActiveKeyboard = _activeKeyboard;
                 _activeKeyboard = 0;
@@ -2258,7 +2258,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                             if (value.Value > _MinimumProgressBarsValue)
                             {
                                 SharpDX.Mathematics.Interop.RawRectangleF rect;
-                                if (!_isBoxScannig)
+                                if (!_isBoxScanning)
                                 {
                                     if (_rectanglesProbBars[_activeKeyboard].TryGetValue(value.Key, out rect))
                                     {
@@ -2369,7 +2369,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     ChangeColorButtons(indexButton, false, true, 2); //Stop displaying the decision
                 List<int> seq = new() { _currentCalibrationTarget.id - 1 };
                 NewEntryLog(false, false, seq, 0, true);
-                if (!_changeUserControl && (_isBoxScannig || _lockAnimation) && !_stopAnimation)
+                if (!_changeUserControl && (_isBoxScanning || _lockAnimation) && !_stopAnimation)
                 {
                     int counter = _delayDisplayDecision / 10;
                     int counterToRefresh = 0;
@@ -2586,8 +2586,8 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             {
                 if (_lockAnimation)
                 {
-                    _isBoxScannig = false;
-                    if (_defaultLockBoxanimation)
+                    _isBoxScanning = false;
+                    if (_defaultLockBoxAnimation)
                     {
                         _activeKeyboard = _amountOfKeyboards - 1;
                         _numberOfSequences = _flashingSequenceList[_amountOfKeyboards - 1].Count();
@@ -2605,7 +2605,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     {
                         if (!_stopAnimation && !_changeUserControl)
                         {
-                            if (!_isBoxScannig)
+                            if (!_isBoxScanning)
                             {
                                 ChangeColorButtons(_flashingSequenceList[_activeKeyboard][_currtButtonCount].ToList(), true, true, 0);
                                 NewEntryLog(true, true, _flashingSequenceIDList[_activeKeyboard][_currtButtonCount].ToList(), _currtButtonCount);
@@ -2624,7 +2624,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 {
                     if (!_stopAnimation && !_changeUserControl)
                     {
-                        if (!_isBoxScannig)
+                        if (!_isBoxScanning)
                         {
                             ChangeColorButtons(_flashingSequenceList[_activeKeyboard][_currtButtonCount].ToList(), true, true, 0, true);
                             NewEntryLog(true, false, _flashingSequenceIDList[_activeKeyboard][_currtButtonCount].ToList(), _currtButtonCount);
@@ -2641,7 +2641,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 {
                     if (!_stopAnimation && !_changeUserControl)
                     {
-                        if (!_isBoxScannig)
+                        if (!_isBoxScanning)
                         {
                             ChangeColorButtons(_flashingSequenceList[_activeKeyboard][_currtButtonCount].ToList(), false, true, 0, true);
                             NewEntryLog(false, false, _flashingSequenceIDList[_activeKeyboard][_currtButtonCount].ToList(), _currtButtonCount);
@@ -2658,7 +2658,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     {
                         if (_currSeqCount == 1)// for the actuator request to add the marker latter as the first sequence
                             _firstSequence = true;
-                        if (!_isBoxScannig && _sessionMode == BCIModes.TYPING)//in calibration this is not neccessary
+                        if (!_isBoxScanning && _sessionMode == BCIModes.TYPING)//in calibration this is not neccessary
                             ActuatorRequestValueProbs();
                         ActuatorRequestEndRepetition();
                         _sequenceDone = true;

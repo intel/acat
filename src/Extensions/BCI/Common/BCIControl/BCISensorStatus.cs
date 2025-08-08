@@ -19,8 +19,14 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
     {
         public BCISensorStatus()
         {
-            Error = new BCIError() { ErrorCode = BCIErrorCodes.Status_Ok, ErrorMessage = BCIMessages.Status_Ok };
+            Error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
             StatusSignal = SignalStatus.SIGNAL_KO;
+        }
+
+        public BCISensorStatus(BCIError error, SignalStatus statusSignal)
+        {
+            Error = error;
+            StatusSignal = statusSignal;
         }
 
         /// <summary>

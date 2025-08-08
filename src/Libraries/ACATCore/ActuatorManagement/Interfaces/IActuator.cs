@@ -26,7 +26,7 @@ namespace ACAT.Core.ActuatorManagement
     /// </summary>
     /// <param name="opcode">operation code</param>
     /// <param name="response">response to be sent (typically JSON)</param>
-    public delegate void IoctlResponse(int opcode, String response);
+    public delegate void IoctlResponse(int opcode, object response);
 
     /// <summary>
     /// Delegate for the event raised when a switch is engaged. This is the
@@ -148,7 +148,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="opcode">operation code</param>
         /// <param name="request">Data (typically a JSON script fragment)</param>
         /// <returns></returns>
-        bool IoctlRequest(int opcode, String request);
+        bool IoctlRequest(int opcode, object request);
 
         /// <summary>
         /// Parses the XML node that contains all the info for this actuator

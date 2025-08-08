@@ -8,7 +8,9 @@
 using ACAT.Core.Audit;
 using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Security.Permissions;
+using System.Threading.Tasks;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
@@ -105,63 +107,29 @@ namespace ACAT.Core.Utility
         /// </summary>
         [SecurityPermission(SecurityAction.InheritanceDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
         public static void GetActiveWindow()
-        {
-            Log.Verbose("ENTER");
-
+        {         
             try
             {
-                IntPtr fgHwnd = Windows.GetForegroundWindow();
+                var windowInfo = GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
-                var focusedElement = AutomationElement.FocusedElement;
-                Log.Verbose("focusedElement is " + ((focusedElement != null) ? "not null" : "null"));
-
-                var title = Windows.GetWindowTitle(fgHwnd);
-
-                if (ignoreWindow(title))
+                if (ignoreWindow(windowInfo.Title))
                 {
                     return;
                 }
 
-                var process = GetProcessForWindow(fgHwnd);
-
                 if (EvtFocusChanged != null)
                 {
-                    var monitorInfo = new WindowActivityMonitorInfo
-                    {
-                        FgHwnd = fgHwnd,
-                        Title = title,
-                        FgProcess = process,
-                        FocusedElement = focusedElement,
-                        IsNewWindow = true,
-                        IsNewFocusedElement = true
-                    };
-
-#if abc
-                    Log.Verbose("#$#  SYNC >>>>>>>>>>>>>>>> Triggering FOCUS changed event");
-
-                    Log.Verbose("#$#    title: " + title);
-                    Log.Verbose("#$#    fgHwnd " + fgHwnd);
-                    Log.Verbose("#$#    nativewinhandle: " + focusedElement.Current.NativeWindowHandle);
-                    Log.Verbose("#$#    Process " + process.ProcessName);
-                    Log.Verbose("#$#    class: " + focusedElement.Current.ClassName);
-                    Log.Verbose("#$#    controltype:  " + focusedElement.Current.ControlType.ProgrammaticName);
-                    Log.Verbose("#$#    automationid: " + focusedElement.Current.AutomationId);
-                    Log.Verbose("#$#    newWindow: " + monitorInfo.IsNewWindow);
-                    Log.Verbose("#$#    newFocusElement: " + monitorInfo.IsNewFocusedElement);
-                    Log.Verbose("#$#    IsMinimized :  " + Windows.IsMinimized(monitorInfo.FgHwnd));
-#endif
-                    EvtFocusChanged(monitorInfo);
+                    EvtFocusChanged(windowInfo);
                 }
             }
             catch (Exception e)
             {
                 Log.Exception("Exception: " + e);
             }
-            Log.Verbose("EXIT");
         }
 
         /// <summary>
-        /// Asyncrhonously forces an event to be raised
+        /// Asynchronously forces an event to be raised
         /// regardless of whether focus changed or not
         /// </summary>
         public static void GetActiveWindowAsync()
@@ -176,29 +144,57 @@ namespace ACAT.Core.Utility
         /// </summary>
         /// <returns>window monitor info</returns>
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
-        public static WindowActivityMonitorInfo GetForegroundWindowInfo()
+        public static async Task<WindowActivityMonitorInfo> GetForegroundWindowInfoAsync()
         {
             const int maxTries = 3;
+            const int retryDelayMs = 100;
 
             var monitorInfo = new WindowActivityMonitorInfo();
 
-            // the reason we try a few times is because UI
-            // automation sometimes throws an exception depending
-            // the state of the focused window.
-            for (int ii = 0; ii < maxTries; ii++)
+            for (int attempt = 1; attempt <= maxTries; attempt++)
             {
                 try
                 {
-                    monitorInfo.FgHwnd = Windows.GetForegroundWindow();
-                    monitorInfo.FocusedElement = AutomationElement.FocusedElement;
-                    monitorInfo.Title = Windows.GetWindowTitle(monitorInfo.FgHwnd);
-                    monitorInfo.FgProcess = GetProcessForWindow(monitorInfo.FgHwnd);
+                    IntPtr hwnd = Windows.GetForegroundWindow();
+
+                    monitorInfo.FgHwnd = hwnd;
+                    monitorInfo.Title = Windows.GetWindowTitle(hwnd);
+                    monitorInfo.FgProcess = GetProcessForWindow(hwnd);
+
                     break;
                 }
                 catch
                 {
-                    System.Threading.Thread.Sleep(100);
+                    if (attempt < maxTries)
+                        await Task.Delay(retryDelayMs);
                 }
+            }
+
+            for (int attempt = 1; attempt <= maxTries; attempt++)
+            {
+                try
+                {
+                    monitorInfo.FocusedElement = AutomationElement.FocusedElement;
+                    break;
+                }
+                catch (InvalidCastException)
+                {
+                    monitorInfo.FocusedElement = null;
+                }
+                catch (ElementNotAvailableException)
+                {
+                    monitorInfo.FocusedElement = null;
+                }
+                catch (COMException)
+                {
+                    monitorInfo.FocusedElement = null;
+                }
+
+                if (monitorInfo.FocusedElement != null)
+                    break;
+
+                if (attempt < maxTries)
+                    await Task.Delay(retryDelayMs);
             }
 
             return monitorInfo;
@@ -373,7 +369,6 @@ namespace ACAT.Core.Utility
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         private static void getActiveWindow(bool flag = false)
         {
-            AutomationElement focusedElement = null;
 
             if (_ispaused)
             {
@@ -382,37 +377,26 @@ namespace ACAT.Core.Utility
 
             try
             {
-                IntPtr foregroundWindow = Windows.GetForegroundWindow();
-                var title = Windows.GetWindowTitle(foregroundWindow);
 
-                Log.Verbose("fgHwnd = " + ((foregroundWindow != IntPtr.Zero) ? foregroundWindow.ToString() : "null") + ", title: " + title);
-
+                WindowActivityMonitorInfo windowActivityMonitorInfo = GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                
                 if (Windows.GetOSVersion() == Windows.WindowsVersion.Win10 &&
-                    title.StartsWith("Jump List for"))
+                    windowActivityMonitorInfo.Title.StartsWith("Jump List for"))
                 {
                     return;
                 }
 
-                focusedElement = AutomationElement.FocusedElement;
-
-                Log.Verbose("focusedElement is " + ((focusedElement != null) ? "not null" : "null"));
+                Log.Verbose("focusedElement is " + ((windowActivityMonitorInfo.FocusedElement != null) ? "not null" : "null"));
                 Log.Verbose("_currentfocusedElement is " + ((_currentFocusedElement != null) ? "not null" : "null"));
 
                 bool elementChanged = true;
 
-                var process = GetProcessForWindow(foregroundWindow);
-
                 // check if anything changed. did the window focus change?
                 // did focus change within the window?
-                if (focusedElement != null &&
-                    (_forceGetActiveWindow || flag || foregroundWindow != _currentHwnd || _currentFocusedElement == null ||
-                    (elementChanged = IsDifferent(focusedElement, _currentFocusedElement))))
+                if (windowActivityMonitorInfo.FocusedElement != null &&
+                    (_forceGetActiveWindow || flag || windowActivityMonitorInfo.FgHwnd != _currentHwnd || _currentFocusedElement == null ||
+                    (elementChanged = IsDifferent(windowActivityMonitorInfo.FocusedElement, _currentFocusedElement))))
                 {
-                    //Log.Verbose("Reason: _forceGetActiveWindow: " + _forceGetActiveWindow);
-                    //Log.Verbose("Reason: flag: " + flag);
-                    //Log.Verbose("Reason: fgHwnd != _currentHwnd : " + (fgHwnd != _currentHwnd));
-                    //Log.Verbose("Reason: _currentFocusedElement == null : " + (_currentFocusedElement == null));
-                    //Log.Verbose("Reason: elementChanged : " + elementChanged);
 
                     if (_forceGetActiveWindow)
                     {
@@ -421,14 +405,7 @@ namespace ACAT.Core.Utility
 
                     if (EvtFocusChanged != null)
                     {
-                        var monitorInfo = new WindowActivityMonitorInfo
-                        {
-                            FgHwnd = foregroundWindow,
-                            Title = title,
-                            FgProcess = process,
-                            FocusedElement = focusedElement,
-                            IsNewWindow = _currentHwnd != foregroundWindow
-                        };
+                        var monitorInfo = windowActivityMonitorInfo;
 
                         if (flag)
                         {
@@ -440,32 +417,12 @@ namespace ACAT.Core.Utility
                             monitorInfo.IsNewFocusedElement = true;
                         }
 
-#if VERBOSE
-                        Log.Verbose("#$#>>>>>>>>>>>>>>>> Triggering FOCUS changed event");
-
-                        Log.Verbose("#$#    title: " + title);
-                        Log.Verbose("#$#    fgHwnd " + monitorInfo.FgHwnd);
-                        Log.Verbose("#$#    nativewinhandle: " + focusedElement.Current.NativeWindowHandle);
-                        Log.Verbose("#$#    Process: " + process.ProcessName);
-                        Log.Verbose("#$#    class: " + focusedElement.Current.ClassName);
-                        Log.Verbose("#$#    controltype:  " + focusedElement.Current.ControlType.ProgrammaticName);
-                        Log.Verbose("#$#    automationid: " + focusedElement.Current.AutomationId);
-                        Log.Verbose("#$#    newWindow: " + monitorInfo.IsNewWindow);
-                        Log.Verbose("#$#    newFocusElement: " + monitorInfo.IsNewFocusedElement);
-                        Log.Verbose("#$#    IsMinimized :  " + Windows.IsMinimized(monitorInfo.FgHwnd));
-#endif
-
-                        if (monitorInfo.IsNewWindow)
-                        {
-                            AuditLog.Audit(new AuditEventActiveWindowChange(process.ProcessName, title));
-                        }
-
                         if (EvtFocusChanged != null && !_ispaused)
                         {
                             EvtFocusChanged(monitorInfo);
                         }
 
-                        _currentFocusedElement = focusedElement;
+                        _currentFocusedElement = windowActivityMonitorInfo.FocusedElement;
                     }
                     else
                     {
@@ -473,7 +430,7 @@ namespace ACAT.Core.Utility
                     }
                 }
 
-                _currentHwnd = foregroundWindow;
+                _currentHwnd = windowActivityMonitorInfo.FgHwnd;
 
                 if (_heartbeatToggle && CoreGlobals.AppPreferences.DisableSystemSleepMode)
                 {
@@ -481,16 +438,9 @@ namespace ACAT.Core.Utility
                 }
 
                 // raise the heartbeat event
-                if (EvtWindowMonitorHeartbeat != null && focusedElement != null && _heartbeatToggle)
+                if (EvtWindowMonitorHeartbeat != null && windowActivityMonitorInfo.FgHwnd != null && _heartbeatToggle)
                 {
-                    var monitorInfo = new WindowActivityMonitorInfo
-                    {
-                        FgHwnd = foregroundWindow,
-                        FocusedElement = focusedElement,
-                        Title = title,
-                        FgProcess = process
-                    };
-                    EvtWindowMonitorHeartbeat(monitorInfo);
+                    EvtWindowMonitorHeartbeat(windowActivityMonitorInfo);
                 }
 
                 _heartbeatToggle = !_heartbeatToggle;

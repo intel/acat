@@ -10,7 +10,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ControlzEx.Standard;
 using System;
 using System.Collections.Generic;
 
@@ -22,7 +21,7 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         /// <summary>
         /// Error
         /// </summary>
-        public BCIError Error { get; set; } = new BCIError() { ErrorCode = BCIErrorCodes.Status_Ok, ErrorMessage = BCIMessages.Status_Ok };
+        public BCIError Error { get; set; }
 
         /// <summary>
         /// Dictionary of mappings typing section - classifier calibrated
@@ -31,6 +30,14 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
 
         public BCICalibrationUpdatedMappings()
         {
+            Error = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
+            DictUpdatedMappings = new Dictionary<BCIScanSections, BCIScanSections>();
+        }
+
+        public BCICalibrationUpdatedMappings(Dictionary<BCIScanSections, BCIScanSections> dictUpdatedMappings, BCIError error)
+        {
+            _ = DictUpdatedMappings;
+            Error = error;
         }
     }
 }

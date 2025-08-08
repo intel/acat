@@ -32,6 +32,19 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
             ScanningSection = "";
         }
 
+        public BCILogEntryTypingEnd(string selectedButtonLabel, int selectedButtonID, bool decidedFlag, int repetitionIdx, String scanningSection, List<int> rowColumnIDs, Dictionary<int, int[]> flashingSeq, Dictionary<int, double> nextCharacterProbabilities, Dictionary<int, double> eegProbabilities, Dictionary<int, double> posteriorProbabilities)
+        {
+            SelectedButtonLabel = selectedButtonLabel;
+            SelectedButtonID = selectedButtonID;
+            DecidedFlag = decidedFlag;
+            RepetitionIdx = repetitionIdx;
+            RowColumnIDs = rowColumnIDs;
+            FlashingSequence = flashingSeq;
+            NextCharacterProbabilities = nextCharacterProbabilities;
+            PosteriorProbabilities = posteriorProbabilities;
+            EegProbabilities = eegProbabilities;
+            ScanningSection = scanningSection;
+        }
 
         /// <summary>
         // sensorError = 1 data not received. Message: "Error, data not received from sensor"

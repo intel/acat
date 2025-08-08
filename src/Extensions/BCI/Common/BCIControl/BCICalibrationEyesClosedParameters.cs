@@ -20,15 +20,17 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         /// <summary>
         /// number of repetitions. One repeition is considered as eyes open -> eyes closed
         /// </summary>
-        public int NumRepetitions { get; set; } = 0;
+        public int NumRepetitions;
 
         /// <summary>
         /// Duration where eyes are open or closed
         /// </summary>
-        public int IntervalDuration { get; set; } = 0;
+        public int IntervalDuration;
 
-        public BCICalibrationEyesClosedParameters()
+        public BCICalibrationEyesClosedParameters(int numRepetitions, int intervalDuration)
         {
+            NumRepetitions = numRepetitions;
+            IntervalDuration = intervalDuration;
         }
     }
 }

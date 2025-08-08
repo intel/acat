@@ -117,12 +117,12 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// </summary>
         /// <param name="opcode"></param>
         /// <param name="response"></param>
-        private void BciActuator_EvtIoctlResponse(int opcode, string response)
+        private void BciActuator_EvtIoctlResponse(int opcode, object response)
         {
             switch (opcode)
             {
                 case (int)OpCodes.SendMapOptions:
-                    _bCIMapOptions = JsonSerializer.Deserialize<BCIMapOptions>(response);
+                    _bCIMapOptions = response as BCIMapOptions;
                     ProcessMapOptionsAnswer();
                     break;
             }
@@ -136,7 +136,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 
         private void ButtonDone_Click(object sender, EventArgs e)
         {
-            var strBCICalibrationUpdatedMappings = JsonSerializer.Serialize(GetMappingsValues());
+            var strBCICalibrationUpdatedMappings = GetMappingsValues();
             _bciActuator?.IoctlRequest((int)OpCodes.SendUpdatedMappings, strBCICalibrationUpdatedMappings);
             OptionResult = CheckIfComboBoxValuesChanged();
             Log.Debug("BCI LOG | Mappings change: " + OptionResult);
@@ -179,7 +179,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             {
                 _bciActuator.EvtIoctlResponse += BciActuator_EvtIoctlResponse;
             }
-            var strBciModeParams = JsonSerializer.Serialize(new BCIUserInputParameters());
+            var strBciModeParams = new BCIUserInputParameters();
             _bciActuator?.IoctlRequest((int)OpCodes.RequestMapOptions, strBciModeParams);
         }
 

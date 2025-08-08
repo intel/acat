@@ -135,14 +135,14 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             _Interval = _TempInterval;
             _MaxRepetitions = _TempMaxRepetitions;
-            BCICalibrationEyesClosedParameters bCICalibrationEyesClosedParameters = new() { NumRepetitions = _MaxRepetitions, IntervalDuration=_Interval };
-            var str = JsonSerializer.Serialize(bCICalibrationEyesClosedParameters);
-            _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedSaveParameters, str);
+            BCICalibrationEyesClosedParameters bCICalibrationEyesClosedParameters = new(_MaxRepetitions, _Interval);
+            _bciActuator?.IoctlRequest((int)OpCodes.CalibrationEyesClosedSaveParameters, bCICalibrationEyesClosedParameters);
             ValidateParameters();
         }
 
         private void CalibrationEyesForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -157,12 +157,12 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// </summary>
         /// <param name="opcode"></param>
         /// <param name="response"></param>
-        private void BciActuator_EvtIoctlResponse(int opcode, string response)
+        private void BciActuator_EvtIoctlResponse(int opcode, object response)
         {
             switch (opcode)
             {
                 case (int)OpCodes.CalibrationEyesClosedSendParameters:
-                    var bciParams = JsonSerializer.Deserialize<BCICalibrationEyesClosedParameters>(response);
+                    var bciParams = response as BCICalibrationEyesClosedParameters;
                     _MaxRepetitions = bciParams.NumRepetitions;
                     _Interval = bciParams.IntervalDuration;
                     _TempInterval = bciParams.IntervalDuration;

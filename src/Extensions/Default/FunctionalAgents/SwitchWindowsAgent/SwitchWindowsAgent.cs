@@ -290,11 +290,11 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="eventArgs">event args</param>
-        private void switchWindows_EvtShowScanner(object sender, EventArgs eventArgs)
+        private async void switchWindows_EvtShowScanner(object sender, EventArgs eventArgs)
         {
             if (_switchWindowsScanner != null)
             {
-                var arg = new PanelRequestEventArgs(PanelClasses.AlphabetMinimal, WindowActivityMonitor.GetForegroundWindowInfo())
+                var arg = new PanelRequestEventArgs(PanelClasses.AlphabetMinimal, await WindowActivityMonitor.GetForegroundWindowInfoAsync())
                 {
                     TargetPanel = _switchWindowsScanner,
                     RequestArg = _switchWindowsScanner,

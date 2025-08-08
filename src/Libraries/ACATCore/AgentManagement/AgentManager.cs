@@ -435,7 +435,7 @@ namespace ACAT.Core.AgentManagement
             {
                 Context.AppPanelManager.ClearStack();
                 //EnumWindows.RestoreFocusToTopWindowOnDesktop();
-                WindowActivityMonitor.GetActiveWindow();
+                WindowActivityMonitor.GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
         }
 
@@ -493,7 +493,7 @@ namespace ACAT.Core.AgentManagement
             {
                 if (fgWindow == handle)
                 {
-                    WindowActivityMonitor.GetActiveWindowAsync();
+                    WindowActivityMonitor.GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult();
                 }
             }
         }
@@ -676,7 +676,7 @@ namespace ACAT.Core.AgentManagement
             Log.Debug(" currentAgent: " + _currentAgent);
             if (_currentAgent != null)
             {
-                var activityInfo = WindowActivityMonitor.GetForegroundWindowInfo();
+                var activityInfo = WindowActivityMonitor.GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult();
                 _currentAgent.OnPanelClosed(panelClass, activityInfo);
             }
         }
@@ -732,7 +732,7 @@ namespace ACAT.Core.AgentManagement
             _panelChangeNotifications.Release();
             if (getActiveWindow)
             {
-                WindowActivityMonitor.GetActiveWindowAsync();
+                WindowActivityMonitor.GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
         }
 
@@ -781,7 +781,7 @@ namespace ACAT.Core.AgentManagement
             // active app agent
 
             _getContextMenu = true;
-            WindowActivityMonitor.GetActiveWindow();
+            WindowActivityMonitor.GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
         /// <summary>

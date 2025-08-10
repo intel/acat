@@ -351,15 +351,15 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 
             // Load images for signal quality gradient / heatmap
             _signalQualityGradientImages = new Image[9];
-            _signalQualityGradientImages[0] = Properties.Resources.signalQualityGradient_1AcceptableChannel; // for heatmap - 0 is the same as 1 accepted channel
-            _signalQualityGradientImages[1] = Properties.Resources.signalQualityGradient_1AcceptableChannel;
-            _signalQualityGradientImages[2] = Properties.Resources.signalQualityGradient_2AcceptableChannels;
-            _signalQualityGradientImages[3] = Properties.Resources.signalQualityGradient_3AcceptableChannels;
-            _signalQualityGradientImages[4] = Properties.Resources.signalQualityGradient_4AcceptableChannels;
-            _signalQualityGradientImages[5] = Properties.Resources.signalQualityGradient_5AcceptableChannels;
-            _signalQualityGradientImages[6] = Properties.Resources.signalQualityGradient_6AcceptableChannels;
-            _signalQualityGradientImages[7] = Properties.Resources.signalQualityGradient_7AcceptableChannels;
-            _signalQualityGradientImages[8] = Properties.Resources.signalQualityGradient_8AcceptableChannels;
+            _signalQualityGradientImages[0] = Resources.signalQualityGradient_1AcceptableChannel; // for heatmap - 0 is the same as 1 accepted channel
+            _signalQualityGradientImages[1] = Resources.signalQualityGradient_1AcceptableChannel;
+            _signalQualityGradientImages[2] = Resources.signalQualityGradient_2AcceptableChannels;
+            _signalQualityGradientImages[3] = Resources.signalQualityGradient_3AcceptableChannels;
+            _signalQualityGradientImages[4] = Resources.signalQualityGradient_4AcceptableChannels;
+            _signalQualityGradientImages[5] = Resources.signalQualityGradient_5AcceptableChannels;
+            _signalQualityGradientImages[6] = Resources.signalQualityGradient_6AcceptableChannels;
+            _signalQualityGradientImages[7] = Resources.signalQualityGradient_7AcceptableChannels;
+            _signalQualityGradientImages[8] = Resources.signalQualityGradient_8AcceptableChannels;
 
             // Initialize colors so don't have to constantly create them
             COLOR_ACAT_DEFAULT_ORANGE = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));

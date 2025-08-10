@@ -6,10 +6,10 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)ACATResources\ACAT.Resources.csproj"/>
+    <ProjectReference Include="$(SolutionDir)ACATResources\ACAT.Resources.csproj" />
     <ProjectReference Include="$(SolutionDir)Libraries\ACATCore\ACAT.Core.csproj" />
     <ProjectReference Include="$(SolutionDir)Libraries\ACATExtension\ACAT.Extension.csproj" />
-    <ProjectReference Include="$(SolutionDir)Extensions\BCI\Common\BCIControl\BCIControl.csproj" />
+    <ProjectReference Include="..\BCIControl\ACAT.Extensions.BCI.Common.BCIControl.csproj" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />

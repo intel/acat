@@ -44,9 +44,4 @@
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
-  <ItemGroup>
-      <PackageReference Include="CommunityToolkit.Mvvm">
-      <Version>8.4.0</Version>
-    </PackageReference>
-  </ItemGroup>
 </Project>

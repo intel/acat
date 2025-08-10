@@ -1,17 +1,5 @@
-<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <!-- Safe defaults -->
-    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
-    <Platform Condition="'$(Platform)' == ''">x64</Platform>
-
-    <!-- Default to known valid platforms only -->
-    <SupportedPlatforms>x86;x64</SupportedPlatforms>
-
-    <!-- Default to known valid configurations only -->
-     <SupportedConfigurations>Debug;Release</SupportedConfigurations>
-  </PropertyGroup>
-
-  <!-- Diagnostic message output -->
+<Project>
+  <!-- Diagnostic target should be direct child of Project -->
   <Target Name="PrintProps" BeforeTargets="BeforeBuild">
     <Message Text="--- Custom Build Props Diagnostic ---" Importance="High" />
     <Message Text="Configuration: $(Configuration)" Importance="High" />
@@ -20,28 +8,40 @@
     <Message Text="IntermediateOutputPath: $(IntermediateOutputPath)" Importance="High" />
     <Message Text="ExtensionPath: $(ExtensionPath)" Importance="High" />
   </Target>
-  
-  <!-- Base output structure -->
+
+  <!-- Base output and version info -->
   <PropertyGroup>
     <VersionPrefix>3.13.0</VersionPrefix>
     <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
     <FileVersion>$(VersionPrefix)</FileVersion>
     <InformationalVersion>$(VersionPrefix)</InformationalVersion>
-
-    <!-- Base output locations -->
-    <BaseOutputPath>$(SolutionDir)artifacts\</BaseOutputPath>
-    <BuildPath>$(BaseOutputPath)bin\$(Platform)\$(Configuration)\</BuildPath>
-    <IntermediatePath>$(BaseOutputPath)obj\$(Platform)\$(Configuration)\</IntermediatePath>
-
-    <!-- Defaults if not overridden later -->
-    <OutputPath>$(BuildPath)</OutputPath>
-    <BaseIntermediateOutputPath>$(IntermediatePath)\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
-    <IntermediateOutputPath>$(IntermediatePath)\$(MSBuildProjectName)\</IntermediateOutputPath>
-
-    <!-- Set this globally unless overridden for specific platforms -->
-    <RuntimeIdentifier Condition="'$(Platform)' == 'x86'">win-x86</RuntimeIdentifier>
-    <RuntimeIdentifier Condition="'$(Platform)' == 'x64'">win-x64</RuntimeIdentifier>
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>9.0</LangVersion>
+  </PropertyGroup>
+
+  <!-- Output path configuration -->
+  <PropertyGroup>
+    <!-- Define SolutionDir if not set (e.g. when building project files directly) -->
+    <SolutionDir Condition="'$(SolutionDir)' == ''">$(MSBuildThisFileDirectory)</SolutionDir>
+
+    <!-- Ensure trailing slash -->
+    <SolutionDir Condition="! EndsWith('$(SolutionDir)', '\')">$(SolutionDir)\</SolutionDir>
+
+    <!-- Base output paths -->
+    <BaseOutputPath>$(SolutionDir)build\</BaseOutputPath>
+    <BuildPath>$(BaseOutputPath)bin\$(Configuration)\</BuildPath>
+    <IntermediatePath>$(BaseOutputPath)obj\$(Configuration)\</IntermediatePath>
+
+    <!-- Set output folders -->
+    <OutputPath>$(BuildPath)</OutputPath>
+    <BaseIntermediateOutputPath>$(IntermediatePath)$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(IntermediatePath)$(MSBuildProjectName)\</IntermediateOutputPath>
+  </PropertyGroup>
+    <PropertyGroup>
+    <VersionPrefix>4.0.0</VersionPrefix>
+    <Version>$(VersionPrefix)</Version>
+    <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
+    <FileVersion>$(VersionPrefix)</FileVersion>
+    <InformationalVersion>$(VersionPrefix)</InformationalVersion>
   </PropertyGroup>
 </Project>

@@ -15,7 +15,7 @@
     <PackageReference Include="System.Text.Json" Version="9.0.7" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ACATResources\ACAT.Resources.csproj" />
+    <ProjectReference Include="..\..\ACATResources\ACATResources.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />

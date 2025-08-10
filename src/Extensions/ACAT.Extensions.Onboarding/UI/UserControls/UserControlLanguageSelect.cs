@@ -6,7 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 //using ACATResources;
-using ACAT.ACATResources;
+using ACATResources;
 using ACAT.Core.Onboarding;
 using ACAT.Extensions.Onboarding;
 using System;
@@ -75,7 +75,7 @@ namespace ACAT.Extensions.Onboarding
                 Thread.CurrentThread.CurrentUICulture = selectedItem.CultureInfo;
                 Thread.CurrentThread.CurrentCulture = selectedItem.CultureInfo;
 
-                //var resourcesAssembly = typeof(ACAT.ACATResources.ResourceHelper).Assembly;
+                //var resourcesAssembly = typeof(ACATResources.ResourceHelper).Assembly;
                 _ = new ComponentResourceManager(typeof(UserControlLanguageSelect));
                 //ApplyResourcesToControls(this, resourceManager);
             }

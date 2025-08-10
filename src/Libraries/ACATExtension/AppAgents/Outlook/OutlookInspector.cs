@@ -22,7 +22,7 @@ using ACAT.Core.AgentManagement;
 using ACAT.Core.Utility;
 using System;
 using System.Windows.Automation;
-using ACAT.ACATResources;
+using ACATResources;
 
 namespace ACAT.Extension.AppAgents.Outlook
 {

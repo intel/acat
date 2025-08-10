@@ -19,7 +19,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)ACATResources\ACAT.Resources.csproj" />
+    <ProjectReference Include="..\..\..\..\ACATResources\ACATResources.csproj" />
     <ProjectReference Include="$(SolutionDir)Libraries\ACATCore\ACAT.Core.csproj" />
     <ProjectReference Include="$(SolutionDir)Libraries\ACATExtension\ACAT.Extension.csproj" />
     <ProjectReference Include="..\..\Common\BCIControl\ACAT.Extensions.BCI.Common.BCIControl.csproj" />

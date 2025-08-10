@@ -33,7 +33,7 @@
     <Reference Include="UIAutomationTypes" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)ACATResources\ACAT.Resources.csproj" />
+    <ProjectReference Include="..\..\..\..\ACATResources\ACATResources.csproj" />
     <ProjectReference Include="$(SolutionDir)Libraries\ACATCore\ACAT.Core.csproj" />
     <ProjectReference Include="$(SolutionDir)Libraries\ACATExtension\ACAT.Extension.csproj" />
     <ProjectReference Include="..\EEGDataAcquisition\ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition.csproj" />

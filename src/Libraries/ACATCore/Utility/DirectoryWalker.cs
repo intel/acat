@@ -31,15 +31,15 @@ namespace ACAT.Core.Utility
     /// <param name="fileWildCard">files to find</param>
     public class DirectoryWalker
     {
-        /// <summary>
-        /// Invoked when a directory is found
-        /// </summary>
-        private OnDirectoryFoundDelegate _dirFoundDelegate = null;
+        ///// <summary>
+        ///// Invoked when a directory is found
+        ///// </summary>
+        //private OnDirectoryFoundDelegate _dirFoundDelegate = null;
 
-        /// <summary>
-        /// Invoked when a matching file is found
-        /// </summary>
-        private OnFileFoundDelegate _fileFoundDelegate = null;
+        ///// <summary>
+        ///// Invoked when a matching file is found
+        ///// </summary>
+        //private OnFileFoundDelegate _fileFoundDelegate = null;
 
         /// <summary>
         /// The directory to walk

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net481</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+    <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Update="StringResources.en.resx">
+        <Generator>PublicRexXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="StringResources.es.resx">
+        <Generator>PublicRexXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="StringResources.resx">
+        <Generator>PublicRexXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+    </ItemGroup>
+</Project>

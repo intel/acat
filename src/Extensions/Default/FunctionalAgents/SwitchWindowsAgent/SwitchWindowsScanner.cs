@@ -18,19 +18,16 @@
 // </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
-using ACAT.Core.ActuatorManagement;
+using ACATResources;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.Extensions;
 using ACAT.Core.InputActuators;
 using ACAT.Core.PanelManagement;
-using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.Widgets;
 using ACAT.Extension;
 using ACAT.Scanners;
-using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

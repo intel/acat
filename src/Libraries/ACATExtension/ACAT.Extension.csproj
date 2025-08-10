@@ -5,7 +5,7 @@
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
     <ItemGroup>
-    <ProjectReference Include="..\..\ACATResources\ACAT.Resources.csproj">
+    <ProjectReference Include="..\..\ACATResources\ACATResources.csproj">
       <Project>{a0990d4e-f25b-430c-bda3-40a72560b877}</Project>
       <Name>ACATResources</Name>
       <Private>False</Private>

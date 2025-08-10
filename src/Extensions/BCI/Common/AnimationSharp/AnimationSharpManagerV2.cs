@@ -106,7 +106,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <summary>
         /// Calibration text string target
         /// </summary>
-        private string _CalibrationStringtarget = string.Empty;
+        private string _CalibrationStringTarget = string.Empty;
 
         /// <summary>
         /// Amount of repetitions per full sequences
@@ -135,8 +135,8 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// </summary>
         private int _currSeqCount = 1;
 
-        private int _currtButtonCount = 0;
-        private readonly int _currtButtonCount2 = 0;
+        private int _currentButtonCount = 0;
+        private readonly int _triggerTestButtonCount = 0;
         private int _customLockBoxAnimation = 0;
 
         /// <summary>
@@ -242,7 +242,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         private Form _mainForm;
 
         /// <summary>
-        /// Minimum Value allowed to be visible for the progres bars
+        /// Minimum Value allowed to be visible for the progress bars
         /// </summary>
         private double _MinimumProgressBarsValue;
 
@@ -320,7 +320,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         private Dictionary<int, SharpDX.Mathematics.Interop.RawRectangleF> _rectanglesProbBarsBox;
 
         /// <summary>
-        /// Flag used to know when Calibration mode need to be reestarted
+        /// Flag used to know when Calibration mode need to be restarted
         /// </summary>
         private bool _repeatCalibration = false;
 
@@ -511,7 +511,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <summary>
         /// List of the controls from the Main UI
         /// </summary>
-        private List<ScannerButtonControl>[] _ControlsBtns { get; set; }
+        private List<ScannerButtonControl>[] _ControlsButtons { get; set; }
 
         public void CalibrationEyesCloseRequest()
         {
@@ -591,16 +591,16 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <param name="boxesData"></param>
         /// <param name="widgets"></param>
         /// <returns></returns>
-        public async Task ChangeUserControllayout(Dictionary<List<Control>, string> boxesData, List<Widget>[] widgets)
+        public async Task ChangeUserControlLayout(Dictionary<List<Control>, string> boxesData, List<Widget>[] widgets)
         {
             await Task.Delay(20);
             _changeUserControl = true;//like this if a timer uses SharpDx it wont proceed
             _stopAnimation = true;//like this if a timer uses SharpDx it wont proceed
             StopTimers();
             await Task.Delay(20);
-            AbortTimers();//Ensure that timers are stoped
+            AbortTimers();//Ensure that timers are stopped
             await Task.Delay(100);
-            if (!VerifyIfTimersAreStoped())//Doeble check timers are stoped, if a change is made while SharpDx is working falls into and exception and will break the app
+            if (!VerifyIfTimersAreStoped()) //Check timers are stopped, if a change is made while SharpDx is working falls into and exception and will break the app
             {
                 StopTimers();
                 await Task.Delay(20);
@@ -638,9 +638,13 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     CloseSequencesLog();
                 if (String.IsNullOrEmpty(name))
                 {
-                    //This is to avoid if a log is created right after another and share the same name but only changes the time it was created by a few seconds, avoid append the new log into the old log since the name is the same
-                    //Part of the name goes up to minutes not seconds so it have the possibility that the name is the same only applies in the log folder
-                    //This is to when the log is saved in the same folder
+                    /// This is to avoid if a log is created right after another and share 
+                    /// the same name but only changes the time it was created by a few seconds, 
+                    /// avoid append the new log into the old log since the name is the same
+                    /// Part of the name goes up to minutes not seconds so it has the possibility 
+                    /// that the name is the same only applies in the log folder
+                    /// 
+                    /// This is to when the log is saved in the same folder
                     Random rand = new();
                     int randomIndex = rand.Next(1, 300);
                     baseFileName = _sessionMode.ToString() + "_" + (_triggerTestActive ? "" : _ScanningSection.ToString()) + "_" + randomIndex;
@@ -715,7 +719,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Exception("BCI LOG | Exception occurred during initilization: " + ex.Message);
+                Log.Exception("BCI LOG | Exception occurred during initialization: " + ex.Message);
                 return;
             }
 
@@ -730,7 +734,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             _amountOfKeyboards = 0;
             _nextTarget = GetButtomFromIndex(1);
 
-            _ = UpdateStringsFromButtons().ConfigureAwait(false);//Task to update strings for SharpDX since it uses strings and not the Windows butons properties
+            _ = UpdateStringsFromButtons().ConfigureAwait(false);//Task to update strings for SharpDX since it uses strings and not the Windows buttons properties
             _actuator = Context.AppActuatorManager.GetActuator(new Guid("77809D19-F450-4D36-A633-D818400B3D9A"));
             if (_actuator != null)
                 _actuator.EvtIoctlResponse += Evt_ResponseActuator;
@@ -765,9 +769,9 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         }
 
         /// <summary>
-        /// On Form clossing dispose objects
+        /// On Form closing dispose objects
         /// </summary>
-        public void OnFormClossing()
+        public void OnFormClosing()
         {
             _stopAnimation = true;
             _changeUserControl = true;
@@ -872,31 +876,31 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 var temp_rectanglesButtonsList = SharpDXUtils.GetRectanglesButtonsList(boxData, amountBoxesPerUserControl);
                 var temp_rectanglesButtonsRoundList = SharpDXUtils.GetRectanglesButtonsRoundList(boxData, amountBoxesPerUserControl, _RadiusCornersButtons);
                 var temp_ButtonDataList = AnimationManagerUtils.GetButtonDataList(boxData, amountBoxesPerUserControl, _sharpDX_d2dRenderTarget);
-                var temp_ControlsBtns = AnimationManagerUtils.GetControlsBtns(boxData, amountBoxesPerUserControl, out List<int[]>[] temp_flashingSequenceIDList, out List<int[]>[] temp_flashingSequenceList);
+                var temp_ControlsButtons = AnimationManagerUtils.GetControlsBtns(boxData, amountBoxesPerUserControl, out List<int[]>[] temp_flashingSequenceIDList, out List<int[]>[] temp_flashingSequenceList);
                 var temp_buttonTextFormatList = SharpDXUtils.GetListButtonTextFormat(boxData, widgetsData[indexBoxData], _directWriteFactory, amountBoxesPerUserControl, out string[] temp_typeOfBox);
                 var temp_widgets = AnimationManagerUtils.GetBoxWidgetsList(boxData, widgetsData[indexBoxData], amountBoxesPerUserControl);
                 var temp_offsetStrings = AnimationManagerUtils.GetButtonsOffsetList(boxData, widgetsData[indexBoxData], amountBoxesPerUserControl);
-                var temprectProbBars = SharpDXUtils.GetRecProbabilityBars(boxData.Key, boxData.Value, amountBoxesPerUserControl);
-                var temprectProbBarsBox = SharpDXUtils.GetRecProbabilityBarsBox(boxData.Key, boxData.Value);
+                var tempRectProbBars = SharpDXUtils.GetRecProbabilityBars(boxData.Key, boxData.Value, amountBoxesPerUserControl);
+                var tempRectProbBarsBox = SharpDXUtils.GetRecProbabilityBarsBox(boxData.Key, boxData.Value);
                 for (int boxIndexUserControl = 0; boxIndexUserControl < amountBoxesPerUserControl; boxIndexUserControl++)
                 {
                     _rectanglesButtonsList[indexBox] = temp_rectanglesButtonsList[boxIndexUserControl];
                     _rectanglesButtonsRoundList[indexBox] = temp_rectanglesButtonsRoundList[boxIndexUserControl];
                     _ButtonDataList[indexBox] = temp_ButtonDataList[boxIndexUserControl];
-                    _ControlsBtns[indexBox] = temp_ControlsBtns[boxIndexUserControl];
+                    _ControlsButtons[indexBox] = temp_ControlsButtons[boxIndexUserControl];
                     _flashingSequenceIDList[indexBox] = temp_flashingSequenceIDList[boxIndexUserControl];
                     _flashingSequenceList[indexBox] = temp_flashingSequenceList[boxIndexUserControl];
                     _buttonTextFormatList[indexBox] = temp_buttonTextFormatList[boxIndexUserControl];
                     _typeOfBox[indexBox] = temp_typeOfBox[boxIndexUserControl];
                     _widgets[indexBox] = temp_widgets[boxIndexUserControl];
                     _offsetStrings[indexBox] = temp_offsetStrings[boxIndexUserControl];
-                    _rectanglesProbBars[indexBox] = temprectProbBars[boxIndexUserControl];
+                    _rectanglesProbBars[indexBox] = tempRectProbBars[boxIndexUserControl];
                     try
                     {
-                        for (int pbindex = 0; pbindex < temprectProbBarsBox.Count; pbindex++)
+                        for (int pbIndex = 0; pbIndex < tempRectProbBarsBox.Count; pbIndex++)
                         {
-                            var pbBox = temprectProbBarsBox.ElementAt(pbindex);
-                            _rectanglesProbBarsBox.Add(indexBox + 1 + pbindex, pbBox.Value);
+                            var pbBox = tempRectProbBarsBox.ElementAt(pbIndex);
+                            _rectanglesProbBarsBox.Add(indexBox + 1 + pbIndex, pbBox.Value);
                         }
                     }
                     catch (Exception)
@@ -911,7 +915,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             _rectangleExtraButtonCRG = SharpDXUtils.GetRectanglesCRG(boxesData, widgetsData, _directWriteFactory, out _offsetCRG, out _buttonTextFormatCRG);
             _BoxesData = boxesData;
             _numberOfSequences = _amountOfKeyboards;
-            _currtButtonCount = 0;
+            _currentButtonCount = 0;
             _numberOfSequences = _flashingSequenceBoxList.Length;
         }
 
@@ -980,16 +984,16 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         }
 
         /// <summary>
-        /// Actuate the control given a ID or Tag seted in the control
+        /// Actuate the control given a ID or Tag set in the control
         /// </summary>
         /// <param name="id">ID or Tag defined in the control</param>
         /// <returns>success action</returns>
         private async Task ActuateWidgetFromID(int id)
         {
-            await Task.Delay(1);//Used another thead to ensure if a button that changes to another User control wont interfere to the change and slow the process and where this method was called continue normally
+            await Task.Delay(1);//Used another thread to ensure if a button that changes to another User control wont interfere to the change and slow the process and where this method was called continue normally
             try
             {
-                ScannerButtonControl btn = AnimationManagerUtils.GetControlFromID(id, _ControlsBtns, _activeKeyboard);
+                ScannerButtonControl btn = AnimationManagerUtils.GetControlFromID(id, _ControlsButtons, _activeKeyboard);
                 foreach (Widget widget in _widgets[_activeKeyboard].Where(widget => Int32.Parse(widget.UIControl.Tag.ToString()) == id && widget.Name.Equals(btn.Name) && widget.Enabled))
                 {
                     widget.Actuate();
@@ -1192,10 +1196,10 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
 
                         case "words":
                             if (!_requestProbabilities)
-                                nextProbs = AnimationManagerUtils.GetWordsProbs(_ControlsBtns[_activeKeyboard]);
+                                nextProbs = AnimationManagerUtils.GetWordsProbs(_ControlsButtons[_activeKeyboard]);
                             else
                             {
-                                nextProbs = AnimationManagerUtils.GetWordsProbs(_ControlsBtns[_activeKeyboard], true);
+                                nextProbs = AnimationManagerUtils.GetWordsProbs(_ControlsButtons[_activeKeyboard], true);
                                 _requestProbabilities = false;
                             }
                             bciLanguageModelProbabilities.LanguageModelProbabilityType = ProbabilityType.NextWordProbabilities;
@@ -1256,7 +1260,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 SensorErrorState = bciParameters.Error;
                 _delayDisplayDecision = bciParameters.Scanning_DelayAfterDecision;
                 _useRandomSelectionTargetCalibration = bciParameters.CalibrationParameters[_ScanningSection].UseRandomTargetsFlag;
-                _CalibrationStringtarget = bciParameters.CalibrationParameters[_ScanningSection].Sequence;
+                _CalibrationStringTarget = bciParameters.CalibrationParameters[_ScanningSection].Sequence;
                 _trialITI = bciParameters.CalibrationParameters[_ScanningSection].ScanTime;
                 _pauseTime = bciParameters.Scanning_PauseTime;
                 _shortPauseTime = bciParameters.Scanning_ShortPauseTime;
@@ -2226,7 +2230,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 _rectanglesButtonsRoundList = new List<RoundedRectangle>[recentAmountOfBoxes];
                 _buttonsStringsList = new List<string>[recentAmountOfBoxes];
                 _ButtonDataList = new List<ButtonsData>[recentAmountOfBoxes];
-                _ControlsBtns = new List<ScannerButtonControl>[recentAmountOfBoxes];
+                _ControlsButtons = new List<ScannerButtonControl>[recentAmountOfBoxes];
                 _flashingSequenceIDList = new List<int[]>[recentAmountOfBoxes];
                 _flashingSequenceList = new List<int[]>[recentAmountOfBoxes];
                 _rectanglesProbBars = new Dictionary<int, SharpDX.Mathematics.Interop.RawRectangleF>[recentAmountOfBoxes];
@@ -2431,7 +2435,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         }
                         else
                         {
-                            char[] result = _CalibrationStringtarget.ToUpper().ToCharArray();
+                            char[] result = _CalibrationStringTarget.ToUpper().ToCharArray();
                             int countertargets = 0;
                             while (true)
                             {
@@ -2524,7 +2528,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 _slotTrialTimerCount = 0;
                 if (!_changeUserControl)
                     _trialTimer.Start();
-                _currtButtonCount = 0;
+                _currentButtonCount = 0;
                 _currSeqCount += 1;
             }
         }
@@ -2601,20 +2605,20 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 _slotTrialTimerCount++;
                 if (_slotTrialTimerCount == 1)//Trigger box white, buttons highlighted (orange)
                 {
-                    if (_currtButtonCount < _numberOfSequences)
+                    if (_currentButtonCount < _numberOfSequences)
                     {
                         if (!_stopAnimation && !_changeUserControl)
                         {
                             if (!_isBoxScanning)
                             {
-                                ChangeColorButtons(_flashingSequenceList[_activeKeyboard][_currtButtonCount].ToList(), true, true, 0);
-                                NewEntryLog(true, true, _flashingSequenceIDList[_activeKeyboard][_currtButtonCount].ToList(), _currtButtonCount);
+                                ChangeColorButtons(_flashingSequenceList[_activeKeyboard][_currentButtonCount].ToList(), true, true, 0);
+                                NewEntryLog(true, true, _flashingSequenceIDList[_activeKeyboard][_currentButtonCount].ToList(), _currentButtonCount);
                             }
                             else
                             {
-                                _activeKeyboard = _currtButtonCount;
-                                ChangeColorButtons(_flashingSequenceBoxList[_currtButtonCount].ToList(), true, true, 0);
-                                NewEntryLog(true, true, _flashingSequenceIDBoxList[_currtButtonCount].ToList(), _currtButtonCount);
+                                _activeKeyboard = _currentButtonCount;
+                                ChangeColorButtons(_flashingSequenceBoxList[_currentButtonCount].ToList(), true, true, 0);
+                                NewEntryLog(true, true, _flashingSequenceIDBoxList[_currentButtonCount].ToList(), _currentButtonCount);
                             }
                             ActuatorRequestMarker("1");
                         }
@@ -2626,13 +2630,13 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     {
                         if (!_isBoxScanning)
                         {
-                            ChangeColorButtons(_flashingSequenceList[_activeKeyboard][_currtButtonCount].ToList(), true, true, 0, true);
-                            NewEntryLog(true, false, _flashingSequenceIDList[_activeKeyboard][_currtButtonCount].ToList(), _currtButtonCount);
+                            ChangeColorButtons(_flashingSequenceList[_activeKeyboard][_currentButtonCount].ToList(), true, true, 0, true);
+                            NewEntryLog(true, false, _flashingSequenceIDList[_activeKeyboard][_currentButtonCount].ToList(), _currentButtonCount);
                         }
                         else
                         {
-                            ChangeColorButtons(_flashingSequenceBoxList[_currtButtonCount].ToList(), true, true, 0, true);
-                            NewEntryLog(true, false, _flashingSequenceIDBoxList[_currtButtonCount].ToList(), _currtButtonCount);
+                            ChangeColorButtons(_flashingSequenceBoxList[_currentButtonCount].ToList(), true, true, 0, true);
+                            NewEntryLog(true, false, _flashingSequenceIDBoxList[_currentButtonCount].ToList(), _currentButtonCount);
                         }
                         ActuatorRequestMarker("0");
                     }
@@ -2643,18 +2647,18 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     {
                         if (!_isBoxScanning)
                         {
-                            ChangeColorButtons(_flashingSequenceList[_activeKeyboard][_currtButtonCount].ToList(), false, true, 0, true);
-                            NewEntryLog(false, false, _flashingSequenceIDList[_activeKeyboard][_currtButtonCount].ToList(), _currtButtonCount);
+                            ChangeColorButtons(_flashingSequenceList[_activeKeyboard][_currentButtonCount].ToList(), false, true, 0, true);
+                            NewEntryLog(false, false, _flashingSequenceIDList[_activeKeyboard][_currentButtonCount].ToList(), _currentButtonCount);
                         }
                         else
                         {
-                            ChangeColorButtons(_flashingSequenceBoxList[_currtButtonCount].ToList(), false, true, 0, true);
-                            NewEntryLog(false, false, _flashingSequenceIDBoxList[_currtButtonCount].ToList(), _currtButtonCount);
+                            ChangeColorButtons(_flashingSequenceBoxList[_currentButtonCount].ToList(), false, true, 0, true);
+                            NewEntryLog(false, false, _flashingSequenceIDBoxList[_currentButtonCount].ToList(), _currentButtonCount);
                         }
                     }
-                    _currtButtonCount += 1;
+                    _currentButtonCount += 1;
                     _slotTrialTimerCount = 0;
-                    if (_currtButtonCount == _numberOfSequences) // End of sequence,rotation
+                    if (_currentButtonCount == _numberOfSequences) // End of sequence,rotation
                     {
                         if (_currSeqCount == 1)// for the actuator request to add the marker latter as the first sequence
                             _firstSequence = true;
@@ -2679,7 +2683,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                                 ProcessEndSequence();
 
                             switch (_sessionMode)
-                            {//this is to trigger events that need a UI iteraction so the forms are called from a higher level and not this class
+                            {//this is to trigger events that need a UI interaction so the forms are called from a higher level and not this class
                                 case BCIModes.CALIBRATION://if apply it Need to be called at the end of the sequences so it ensures to be triggered when the timers is at the final step and not during
                                     if (_endCalibration)
                                     {
@@ -2689,7 +2693,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                                             DrawMainLayout();
                                             _mainForm.Invoke(new MethodInvoker(delegate
                                             {
-                                                EvtBCICalibrationComplete?.Invoke("Calibration succeeded \n Score: " + (GetAUC() * 100));
+                                                EvtBCICalibrationComplete?.Invoke($"Calibration Success. Calibration Score: {GetAUC() * 100}.");
                                             }));
                                         }
                                         catch (Exception ex)
@@ -2728,7 +2732,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 _slotTrialTimerCount++;
                 if (_slotTrialTimerCount == 1)
                 {
-                    if (_currtButtonCount2 < _TriggerTestRepetitions)
+                    if (_triggerTestButtonCount < _TriggerTestRepetitions)
                     {
                         if (!_changeUserControl)
                         {
@@ -2754,7 +2758,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     }
                     _slotTrialTimerCount = 0;
                     _TriggerTestRepetitions -= 1;
-                    if (_currtButtonCount2 == _TriggerTestRepetitions)
+                    if (_triggerTestButtonCount == _TriggerTestRepetitions)
                     {
                         _TriggerTest_Timer.Stop();
                         DrawMainLayout();

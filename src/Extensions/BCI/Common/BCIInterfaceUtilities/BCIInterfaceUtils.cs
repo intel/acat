@@ -130,7 +130,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <param name="form"></param>
         public static void ShowCalibrationResultWindow(string titleMessage, string message, Form form)
         {
-            ConfirmBoxOneOption.ShowDialog(message, "", StringResources.OK, form);
+            ConfirmBoxOneOption.ShowDialog(titleMessage, message, StringResources.OK, form);
         }
 
         /// <summary>

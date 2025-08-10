@@ -186,6 +186,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         {
             _scannerCommon = new ScannerCommon(this);
             InitializeComponent();
+            this.DoubleBuffered = true;
             this.WindowState = FormWindowState.Maximized;
             SubscribeToEvents();
             _dispatcher = new Dispatcher(this);
@@ -911,10 +912,10 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// <summary>
         /// Show message box - Calibration modes after a calibration finished successfully
         /// </summary>
-        private void BCIShowCalibrationResult(string message)
+        private void BCIShowCalibrationResult(object message)
         {
             OnPause();
-            BCIInterfaceUtils.ShowCalibrationResultWindow(BCIInterfaceUtils.CALIBRATIONSTATUS, message, this);
+            BCIInterfaceUtils.ShowCalibrationResultWindow(BCIInterfaceUtils.CALIBRATIONSTATUS, message as string, this);
             OnResume();
             EvtBCIInitState?.Invoke(BCIState.ReqCalibrationStatus);
         }
@@ -1395,7 +1396,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             if (init)
                 animationSharpManager.SetDataObjectsSharpDX(boxesData, widgets);
             else
-                animationSharpManager.ChangeUserControllayout(boxesData, widgets);
+                animationSharpManager.ChangeUserControlLayout(boxesData, widgets);
         }
 
         /// <summary>
@@ -1459,7 +1460,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         {
             RemoveWatchdogs();
             UnsubscribeToEvents();
-            animationSharpManager.OnFormClossing();
+            animationSharpManager.OnFormClosing();
             LEDStatusUserControl.OnFormClossing();
             _scannerCommon.OnClosing();
             _scannerCommon.Dispose();

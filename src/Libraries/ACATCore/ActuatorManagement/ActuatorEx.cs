@@ -162,7 +162,7 @@ namespace ACAT.Core.ActuatorManagement
         }
 
         /// <summary>
-        /// Invoked when initaliation is complete.  Sets the event
+        /// Invoked when initialization is complete.  Sets the event
         /// </summary>
         /// <param name="success">was init successful?</param>
         public void OnInitDone(bool success = true)

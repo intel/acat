@@ -260,7 +260,7 @@ namespace ACAT.Core.PanelManagement
 
             // Load Agents from the Agent Manager Instance
             var agents = AgentManager.Instance.GetExtensions();
-            foreach (IApplicationAgent agent in agents)
+            foreach (IApplicationAgent agent in agents.Cast<IApplicationAgent>())
             {
                 Log.Debug("Loading agent " + agent);
                 addTypeToCache(agent.GetType());
@@ -276,12 +276,12 @@ namespace ACAT.Core.PanelManagement
             }
 
             // then walk the resources directories
-            var resourceInfos = new List<(string Path, string Culture)>
+            var resourceInfo = new List<(string Path, string Culture)>
             {
                 ( FileUtils.ACATPath, CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName)
             };
 
-            foreach (var resource in resourceInfos)
+            foreach (var resource in resourceInfo)
             {
                 Log.Debug($"Loading resources from {resource.Path}");
                 var dir = Path.Combine(resource.Path, resource.Culture);
@@ -423,7 +423,7 @@ namespace ACAT.Core.PanelManagement
 
         /// <summary>
         /// Cleans up the map tables of entries that are orphans. These
-        /// are forms that don't have a corresponding animatinon file
+        /// are forms that don't have a corresponding animation file
         /// </summary>
         internal static void CleanupOrphans()
         {
@@ -449,12 +449,12 @@ namespace ACAT.Core.PanelManagement
 
                 if (mapEntry.FormType != null && !String.IsNullOrEmpty(configFilePath))
                 {
-                    Log.Debug("Yes. _configFileLocationMap has configfile " + mapEntry.ConfigFileName);
+                    Log.Debug("Yes. _configFileLocationMap has configFile " + mapEntry.ConfigFileName);
                     mapEntry.ConfigFileName = configFilePath;
                 }
                 else
                 {
-                    Log.Debug("No. _configFileLocationMap does not have configfile " + mapEntry.ConfigFileName);
+                    Log.Debug("No. _configFileLocationMap does not have configFile " + mapEntry.ConfigFileName);
                     removeList.Add(mapEntry);
                 }
             }

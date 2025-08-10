@@ -154,6 +154,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // 
             // tableLayoutPanelMain
             // 
+            this.tableLayoutPanelMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanelMain.AutoSize = true;
             this.tableLayoutPanelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.tableLayoutPanelMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.tableLayoutPanelMain.ColumnCount = 38;
@@ -242,7 +246,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.buttonBack.Enabled = false;
             this.buttonBack.FlatAppearance.BorderSize = 0;
             this.buttonBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonBack.Font = new System.Drawing.Font("Montserrat Thin", 28F, System.Drawing.FontStyle.Underline);
+            this.buttonBack.Font = new System.Drawing.Font("Montserrat Light", 19.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonBack.ForeColor = System.Drawing.Color.Silver;
             this.buttonBack.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.buttonBack.Location = new System.Drawing.Point(1460, 990);
@@ -267,8 +271,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.buttonNext_userControlBCISignalCheck.BorderWidth = 2F;
             this.tableLayoutPanelMain.SetColumnSpan(this.buttonNext_userControlBCISignalCheck, 4);
             this.buttonNext_userControlBCISignalCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonNext_userControlBCISignalCheck.Font = new System.Drawing.Font("Montserrat Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonNext_userControlBCISignalCheck.Location = new System.Drawing.Point(1710, 990);
+            this.buttonNext_userControlBCISignalCheck.Font = new System.Drawing.Font("Montserrat Light", 19.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonNext_userControlBCISignalCheck.Location = new System.Drawing.Point(3420, 1980);
             this.buttonNext_userControlBCISignalCheck.Margin = new System.Windows.Forms.Padding(0);
             this.buttonNext_userControlBCISignalCheck.Name = "buttonNext_userControlBCISignalCheck";
             this.buttonNext_userControlBCISignalCheck.Size = new System.Drawing.Size(150, 55);
@@ -285,7 +289,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelMain.SetColumnSpan(this.buttonExit_userControlBCISignalCheck, 3);
             this.buttonExit_userControlBCISignalCheck.FlatAppearance.BorderSize = 0;
             this.buttonExit_userControlBCISignalCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonExit_userControlBCISignalCheck.Font = new System.Drawing.Font("Montserrat Thin", 30F, System.Drawing.FontStyle.Underline);
+            this.buttonExit_userControlBCISignalCheck.Font = new System.Drawing.Font("Montserrat Light", 19.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonExit_userControlBCISignalCheck.ForeColor = System.Drawing.Color.Silver;
             this.buttonExit_userControlBCISignalCheck.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.buttonExit_userControlBCISignalCheck.Location = new System.Drawing.Point(60, 990);
@@ -302,7 +306,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.panelSignalQualitySlider.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelSignalQualitySlider.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelSignalQualitySlider.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.panelSignalQualitySlider.BackgroundImage = gTecSensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel;
+            this.panelSignalQualitySlider.BackgroundImage = global::ACAT.Extensions.BCI.Actuators.gTecSensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel;
             this.panelSignalQualitySlider.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.tableLayoutPanelMain.SetColumnSpan(this.panelSignalQualitySlider, 6);
             this.panelSignalQualitySlider.Location = new System.Drawing.Point(210, 595);
@@ -1325,7 +1329,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // 
             this.panelSignalQuality.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelSignalQuality.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.panelSignalQuality.BackgroundImage = gTecSensorUI.Properties.Resources.cap_new_no_electrode_positions1;
+            this.panelSignalQuality.BackgroundImage = global::ACAT.Extensions.BCI.Actuators.gTecSensorUI.Properties.Resources.cap_new_no_electrode_positions1;
             this.panelSignalQuality.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.tableLayoutPanelMain.SetColumnSpan(this.panelSignalQuality, 6);
             this.panelSignalQuality.Controls.Add(this.btnElectrodeCapC3);
@@ -1620,6 +1624,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             ((System.ComponentModel.ISupportInitialize)(this.chartRailingTestR3)).EndInit();
             this.panelSignalQuality.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

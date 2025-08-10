@@ -61,10 +61,7 @@ namespace ACAT.Extension.CommandHandlers
                     break;
 
                 case "CmdCloseWindow":
-                    var info = WindowActivityMonitor.GetForegroundWindowInfoAsync()
-                            .ConfigureAwait(false)
-                            .GetAwaiter()
-                            .GetResult();
+                    var info = WindowActivityMonitor.GetForegroundWindowInfo();
                     
                     WindowHighlight win = null;
                     if (info.FgHwnd != IntPtr.Zero)

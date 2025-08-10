@@ -110,7 +110,7 @@ namespace ACAT.Core.Utility
         {         
             try
             {
-                var windowInfo = GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                var windowInfo = GetForegroundWindowInfo();
 
                 if (ignoreWindow(windowInfo.Title))
                 {
@@ -135,6 +135,12 @@ namespace ACAT.Core.Utility
         public static void GetActiveWindowAsync()
         {
             _forceGetActiveWindow = true;
+        }
+
+
+        public static WindowActivityMonitorInfo GetForegroundWindowInfo()
+        {
+            return GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -378,7 +384,7 @@ namespace ACAT.Core.Utility
             try
             {
 
-                WindowActivityMonitorInfo windowActivityMonitorInfo = GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                WindowActivityMonitorInfo windowActivityMonitorInfo = GetForegroundWindowInfo();
                 
                 if (Windows.GetOSVersion() == Windows.WindowsVersion.Win10 &&
                     windowActivityMonitorInfo.Title.StartsWith("Jump List for"))

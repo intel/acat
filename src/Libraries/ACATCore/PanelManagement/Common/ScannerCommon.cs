@@ -659,7 +659,7 @@ namespace ACAT.Core.PanelManagement
 
             subscribeToEvents();
 
-            setWidgetEnabledStates(WindowActivityMonitor.GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult());
+            setWidgetEnabledStates(WindowActivityMonitor.GetForegroundWindowInfo());
 
             Context.AppPanelManager.EvtDisplaySettingsChanged += AppPanelManager_EvtDisplaySettingsChanged;
 

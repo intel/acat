@@ -18,13 +18,12 @@
 // </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
+using ACATResources;
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using ACAT.Extension;
-using ACATResources;
 using Microsoft.Win32;
 using System;
 using System.Diagnostics;

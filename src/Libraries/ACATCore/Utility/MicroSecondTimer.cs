@@ -1,18 +1,11 @@
-﻿////////////////////////////////////////////////////////////////////////////
-//
-// Copyright 2013-2019; 2023 Intel Corporation
-// SPDX-License-Identifier: Apache-2.0
-//
-////////////////////////////////////////////////////////////////////////////
-
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ACAT.Core.Utility
 {
-    /// <summary>
-    /// MicroStopwatch class which tracks timers more accurately than the
-    /// .NET timers
-    /// </summary>
     public class MicroStopwatch : System.Diagnostics.Stopwatch
     {
         private readonly double _microSecPerTick =
@@ -50,6 +43,10 @@ namespace ACAT.Core.Utility
         private long _timerIntervalInMicroSec = 0;
 
         private MicroStopwatch microStopwatch;
+
+        // private MicroStopwatch microSW = new MicroStopwatch();
+
+        // private Boolean swStarted = false;
 
         public MicroTimer()
         {
@@ -121,6 +118,7 @@ namespace ACAT.Core.Utility
 
         public long ElapsedMicroseconds()
         {
+            //return microSW.ElapsedMicroseconds;
             return microStopwatch.ElapsedMicroseconds;
         }
 
@@ -198,7 +196,8 @@ namespace ACAT.Core.Utility
 
                 nextNotification += timerIntervalInMicroSecCurrent;
                 timerCount++;
-                long elapsedMicroseconds;
+                long elapsedMicroseconds = 0;
+
                 while ((elapsedMicroseconds = microStopwatch.ElapsedMicroseconds)
                         < nextNotification)
                 {

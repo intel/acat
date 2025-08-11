@@ -19,18 +19,20 @@ using ACAT.Core.Utility;
 using ACATResources;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Onboarding
+namespace ACAT.Extensions.Onboarding.UI.UserControls
 {
     /// <summary>
     /// User control used in onboarding that allows the user to configure
     /// the hotkey for an external off-the-shelf switch
     /// </summary>
+    [DesignerCategory("code")]
     public partial class UserControlHardwareSwitchTest : UserControl, IOnboardingUserControl
     {
         private const String bodyStyle = " background-color:#232433;";

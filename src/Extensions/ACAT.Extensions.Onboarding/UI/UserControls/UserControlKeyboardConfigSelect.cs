@@ -14,13 +14,15 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using ACAT.Core.Onboarding;
+using System.ComponentModel;
 
-namespace ACAT.Extensions.Onboarding
+namespace ACAT.Extensions.Onboarding.UI.UserControls
 {
     /// <summary>
     /// User control that allows the user to select the keyboard type like
     /// alphbetical and qwerty
     /// </summary>
+    [DesignerCategory("code")]
     public partial class UserControlKeyboardConfigSelect : UserControl, IOnboardingUserControl
     {
         private readonly IOnboardingExtension _onboardingExtension;

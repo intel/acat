@@ -1,12 +1,14 @@
 ﻿using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace ACAT.Extensions.UI.UserControls
 {
     [ClassDescriptor("72061314-CE5E-4DB8-92C8-C0F81E5CB3EE",
         Name = "CursorControlUserControl",
         Description = "User control for the ACAT Dashboard")]
+    [DesignerCategory("code")]
     public class CursorControlUserControl : LargeToolbarUserControl
     {
         public GridMouseMover MouseMover = new GridMouseMover();

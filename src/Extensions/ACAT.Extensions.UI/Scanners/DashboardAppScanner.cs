@@ -8,6 +8,7 @@ using ACAT.Extension.CommandHandlers;
 using ACAT.Extensions.UI.UserControls;
 using ACAT.Scanners;
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -16,6 +17,7 @@ namespace ACAT.Extensions.UI.Scanners
     [ClassDescriptor("D3F4A1B2-3C4D-5E6F-7A8B-9A0B1C2D3E4F",
                 Name = "DashboardAppScanner",
                 Description = "Scanner for Dashboard Applications")]
+    [DesignerCategory("code")]
     public partial class DashboardAppScanner : GenericScannerForm
     {
         private TableLayoutPanel panelDashboardControls;
@@ -97,7 +99,6 @@ namespace ACAT.Extensions.UI.Scanners
             this.ScannerBorder.BackColor = Color.Transparent;
             this.ScannerBorder.Name = "DashboardScannerBorder";
             this.ScannerBorder.AccessibleName = "DashboardScannerBorder";
-            this.ScannerBorder.Margin = new Padding(10);
             this.ScannerBorder.ColumnCount = 1;
             this.ScannerBorder.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f));
             this.ScannerBorder.RowCount = 2;

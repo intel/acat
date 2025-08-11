@@ -18,9 +18,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WordPredictors", "WordPredictors", "{26FDAD1D-8E56-49C0-953A-2CCE29EB2670}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATTalk", "Applications\ACATTalk\ACATTalk.csproj", "{65F2FCCD-1CF4-4FA8-B0EA-B5CDC9088386}"
-	ProjectSection(ProjectDependencies) = postProject
-		{7A3A12B2-0530-4C1D-A99C-C8C0A407A505} = {7A3A12B2-0530-4C1D-A99C-C8C0A407A505}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATResources", "ACATResources\ACATResources.csproj", "{A0990D4E-F25B-430C-BDA3-40A72560B877}"
 EndProject
@@ -71,9 +68,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvAssistTerminate", "Applications\ConvAssistTerminate\ConvAssistTerminate.csproj", "{EDB861EC-18CB-4578-8DFC-36658124F70C}"
-	ProjectSection(ProjectDependencies) = postProject
-		{7A3A12B2-0530-4C1D-A99C-C8C0A407A505} = {7A3A12B2-0530-4C1D-A99C-C8C0A407A505}
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Videos", "Videos", "{341D3FF4-4E2B-4C6D-ACC7-38AE74F58BDF}"
 	ProjectSection(SolutionItems) = preProject
@@ -85,8 +79,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Actuators", "Actuators", "{C91C405B-E0B3-4308-9D3A-B3C8ABA4A36A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{A3F27E94-BF5C-4968-8370-9CE22D62552A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostBuildSolution", "PostBuildSolution\PostBuildSolution.csproj", "{7A3A12B2-0530-4C1D-A99C-C8C0A407A505}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATConfigNext", "Applications\ACATConfigNext\ACATConfigNext.csproj", "{588E27A3-11FB-474A-AC35-BCA7BAB2B4E0}"
 EndProject
@@ -150,6 +142,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATWatch", "Applications\A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATApp", "Applications\ACATApp\ACATApp.csproj", "{BAEAE0C8-2EA8-DC94-BA01-EF7933259DE9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostBuildSolution", "PostBuildSolution\PostBuildSolution.csproj", "{CE49A987-A8C4-E160-E5DF-56A2DEB45950}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -164,8 +158,6 @@ Global
 		{A0990D4E-F25B-430C-BDA3-40A72560B877}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EDB861EC-18CB-4578-8DFC-36658124F70C}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{EDB861EC-18CB-4578-8DFC-36658124F70C}.Release|Any CPU.ActiveCfg = Release|x64
-		{7A3A12B2-0530-4C1D-A99C-C8C0A407A505}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{7A3A12B2-0530-4C1D-A99C-C8C0A407A505}.Release|Any CPU.ActiveCfg = Release|x64
 		{588E27A3-11FB-474A-AC35-BCA7BAB2B4E0}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{588E27A3-11FB-474A-AC35-BCA7BAB2B4E0}.Release|Any CPU.ActiveCfg = Release|x64
 		{826EEEA7-2C6F-8308-786D-11E705D4B02E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -284,6 +276,10 @@ Global
 		{BAEAE0C8-2EA8-DC94-BA01-EF7933259DE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAEAE0C8-2EA8-DC94-BA01-EF7933259DE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAEAE0C8-2EA8-DC94-BA01-EF7933259DE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE49A987-A8C4-E160-E5DF-56A2DEB45950}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE49A987-A8C4-E160-E5DF-56A2DEB45950}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE49A987-A8C4-E160-E5DF-56A2DEB45950}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE49A987-A8C4-E160-E5DF-56A2DEB45950}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

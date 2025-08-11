@@ -87,10 +87,10 @@ namespace ACAT.Applications.ACATApp
 
             Common.AppPreferences.PreferredPanelConfigNames = String.Empty;
 
-            //if (!AppCommon.DoOnboarding())
-            //{
-            //    return;
-            //}
+            if (!AppCommon.DoOnboarding())
+            {
+               return;
+            }
 
             splash = new Splash(2000);
             splash.Show(StringResources.StartingACAT);
@@ -102,9 +102,9 @@ namespace ACAT.Applications.ACATApp
 
             if (!Context.Init(Context.StartupFlags.Minimal |
                                 Context.StartupFlags.TextToSpeech |
-                                Context.StartupFlags.WordPrediction |
+                                //Context.StartupFlags.WordPrediction |
                                 Context.StartupFlags.AgentManager |
-                                Context.StartupFlags.SpellChecker |
+                                //Context.StartupFlags.SpellChecker |
                                 Context.StartupFlags.WindowsActivityMonitor |
                                 Context.StartupFlags.Abbreviations
                 ))

@@ -7,6 +7,7 @@ using ACAT.Extension;
 using ACATResources;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace ACAT.Extensions.UI.UserControls
@@ -14,6 +15,7 @@ namespace ACAT.Extensions.UI.UserControls
     [ClassDescriptor("BE615A9B-3B93-4EF5-9C67-A06C4D34070D",
         Name = "LaunchAppUserControl",
         Description = "User control for the ACAT Dashboard")]
+    [DesignerCategory("code")]
     public class LaunchAppUserControl : LargeToolbarUserControl
     {
         private class LaunchButtonSpec : ButtonSpec

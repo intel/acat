@@ -17,7 +17,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Onboarding
+namespace ACAT.Extensions.Onboarding.UI.UserControls
 {
     public class LanguageItem
     {

@@ -44,4 +44,10 @@
     <FileVersion>$(VersionPrefix)</FileVersion>
     <InformationalVersion>$(VersionPrefix)</InformationalVersion>
   </PropertyGroup>
+  <PropertyGroup>
+    <!-- Show all nullable warnings -->
+    <WarningsAsErrors>CS8600;CS8602;CS8603;CS8604;CS8618</WarningsAsErrors>
+    <!-- Or to turn *all* warnings into errors -->
+    <!-- <TreatWarningsAsErrors>true</TreatWarningsAsErrors> -->
+  </PropertyGroup>
 </Project>

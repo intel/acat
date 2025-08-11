@@ -12,6 +12,7 @@
 
 using ACAT.Core.Onboarding;
 using ACAT.Core.Utility;
+using ACAT.Extensions.Onboarding.UI.UserControls;
 using System;
 
 namespace ACAT.Extensions.Onboarding

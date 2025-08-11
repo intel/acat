@@ -9,6 +9,7 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using System;
 using ACAT.Core.Onboarding;
+using ACAT.Extensions.Onboarding.UI.UserControls;
 
 namespace ACAT.Extensions.Onboarding
 {

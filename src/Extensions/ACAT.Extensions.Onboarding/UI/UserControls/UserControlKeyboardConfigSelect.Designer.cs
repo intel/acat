@@ -1,6 +1,6 @@
 ﻿using ACATResources;
 
-namespace ACAT.Extensions.Onboarding
+namespace ACAT.Extensions.Onboarding.UI.UserControls
 {
     partial class UserControlKeyboardConfigSelect
     {

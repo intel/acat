@@ -3,12 +3,14 @@ using ACAT.Core.WidgetManagement;
 using ACAT.UserControls;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
 namespace ACAT.Extensions.UI.UserControls
 {
+    [DesignerCategory("code")]
     public abstract class LargeToolbarUserControl : KeyboardUserControl
     {
         private TableLayoutPanel ToolbarBox = new TableLayoutPanel
@@ -16,12 +18,9 @@ namespace ACAT.Extensions.UI.UserControls
             Name = "ToolbarBox",
             AccessibleName = "ToolbarBox",
             Dock = DockStyle.Fill,
-            //CellBorderStyle = TableLayoutPanelCellBorderStyle.Single,
             AutoSize = true,
             AutoSizeMode = AutoSizeMode.GrowAndShrink,
             BackColor = Color.Transparent,
-            Padding = new Padding(2),
-            //Margin = new Padding(10),
             ColumnCount = 1,
             RowCount = 1,
             GrowStyle = TableLayoutPanelGrowStyle.AddColumns,
@@ -33,8 +32,6 @@ namespace ACAT.Extensions.UI.UserControls
             AccessibleName = "DefaultButtonsBox",
             AutoSize = true,
             AutoSizeMode = AutoSizeMode.GrowAndShrink,
-            Margin = new Padding(2),
-            //Padding = new Padding(20),
             BackColor = Color.Transparent,
             Dock = DockStyle.Top,
             Anchor = AnchorStyles.Right | AnchorStyles.Top,
@@ -65,8 +62,7 @@ namespace ACAT.Extensions.UI.UserControls
 
         protected virtual void CreateToolbarButtons(TableLayoutPanel parent)
         {
-            var defaultSize = new Size(200, 200);
-            var padding = new Padding(2);
+            var defaultSize = new Size(100, 100);
 
             // Create buttons with specific properties
             foreach (var (button, index) in Buttons.Select((p, i) => (p, i)))
@@ -74,16 +70,15 @@ namespace ACAT.Extensions.UI.UserControls
                 var scannerButton = new ScannerRoundedButtonControl
                 {
                     BorderColor = Color.DimGray,
-                    BorderRadiusBottomLeft = 12,
-                    BorderRadiusBottomRight = 12,
-                    BorderRadiusTopLeft = 12,
-                    BorderRadiusTopRight = 12,
+                    BorderRadiusBottomLeft = 4,
+                    BorderRadiusBottomRight = 4,
+                    BorderRadiusTopLeft = 4,
+                    BorderRadiusTopRight = 4,
                     BorderWidth = 3F,
                     Dock = DockStyle.Fill,
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
                     Font = new Font("bootstrap-icons", 44, FontStyle.Regular, GraphicsUnit.Point, 0),
-                    Margin = new Padding(10),
                     TabIndex = index,
                     Name = button.Name,
                     Text = button.Icon,
@@ -115,7 +110,6 @@ namespace ACAT.Extensions.UI.UserControls
             this.AccessibleName = this.Name;
             this.AutoSize = true;
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            this.Padding = new Padding(10);
             this.Dock = DockStyle.Top;
 
             ToolbarBox.SuspendLayout();

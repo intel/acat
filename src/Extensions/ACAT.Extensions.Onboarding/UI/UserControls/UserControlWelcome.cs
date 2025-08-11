@@ -13,7 +13,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Onboarding
+namespace ACAT.Extensions.Onboarding.UI.UserControls
 {
     /// <summary>
     /// User control that displays the Welcome screen

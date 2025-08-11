@@ -112,7 +112,7 @@ namespace ACAT.Core.Utility
             {
                 var windowInfo = GetForegroundWindowInfo();
 
-                if (ignoreWindow(windowInfo.Title))
+                if (windowInfo == null || ignoreWindow(windowInfo.Title))
                 {
                     return;
                 }
@@ -137,12 +137,6 @@ namespace ACAT.Core.Utility
             _forceGetActiveWindow = true;
         }
 
-
-        public static WindowActivityMonitorInfo GetForegroundWindowInfo()
-        {
-            return GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-        }
-
         /// <summary>
         /// Returns information of the currently focused window
         /// such as the window title, the element inside the window
@@ -150,7 +144,8 @@ namespace ACAT.Core.Utility
         /// </summary>
         /// <returns>window monitor info</returns>
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
-        public static async Task<WindowActivityMonitorInfo> GetForegroundWindowInfoAsync()
+#nullable enable
+        public static WindowActivityMonitorInfo? GetForegroundWindowInfo()
         {
             const int maxTries = 3;
             const int retryDelayMs = 100;
@@ -163,6 +158,9 @@ namespace ACAT.Core.Utility
                 {
                     IntPtr hwnd = Windows.GetForegroundWindow();
 
+                    if (hwnd == IntPtr.Zero)
+                        return null;
+
                     monitorInfo.FgHwnd = hwnd;
                     monitorInfo.Title = Windows.GetWindowTitle(hwnd);
                     monitorInfo.FgProcess = GetProcessForWindow(hwnd);
@@ -172,14 +170,22 @@ namespace ACAT.Core.Utility
                 catch
                 {
                     if (attempt < maxTries)
-                        await Task.Delay(retryDelayMs);
+                        Task.Delay(retryDelayMs);
                 }
             }
+
+            Log.Info($"Current Window is {monitorInfo.Title}");
 
             for (int attempt = 1; attempt <= maxTries; attempt++)
             {
                 try
                 {
+                    uint processId = (uint)Windows.GetWindowThreadProcessId(monitorInfo.FgHwnd);
+                    uint currentProcessId = (uint)Process.GetCurrentProcess().Id;
+
+                    if (currentProcessId != processId)
+                        break;
+
                     monitorInfo.FocusedElement = AutomationElement.FocusedElement;
                     break;
                 }
@@ -191,20 +197,16 @@ namespace ACAT.Core.Utility
                 {
                     monitorInfo.FocusedElement = null;
                 }
-                catch (COMException)
-                {
-                    monitorInfo.FocusedElement = null;
-                }
-
                 if (monitorInfo.FocusedElement != null)
                     break;
 
                 if (attempt < maxTries)
-                    await Task.Delay(retryDelayMs);
+                     Task.Delay(retryDelayMs);
             }
 
             return monitorInfo;
         }
+#nullable disable
 
         /// <summary>
         /// Gets the parent process that owns the specified window handle

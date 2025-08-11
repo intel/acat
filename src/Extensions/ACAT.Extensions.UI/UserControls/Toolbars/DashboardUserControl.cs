@@ -1,12 +1,15 @@
 ﻿using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace ACAT.Extensions.UI.UserControls
 {
     [ClassDescriptor("3933BEAF-FAB3-4C6B-AB16-D0B07B0F2C6D",
         Name = "DashboardUserControl",
         Description = "User control for the ACAT Dashboard")]
+    [DesignerCategory("code")]
+
     public class DashboardUserControl : LargeToolbarUserControl
     {
         public DashboardUserControl() : base("DashboardUserControl") { }

@@ -18,4 +18,22 @@
         <Generator>PublicRexXFileCodeGenerator</Generator>
       </EmbeddedResource>
     </ItemGroup>
+
+  <ItemGroup>
+    <!-- Use Link to preserve folder structure in metadata -->
+    <Assets Include="$(ProjectDir)en\**\*">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Assets>
+  </ItemGroup>
+
+  <Target Name="CopyAssetFiles" AfterTargets="Build">
+    <!-- Ensure destination directories exist -->
+    <MakeDir Directories="$(OutputPath)Assets\%(Assets.RecursiveDir)" />
+
+    <!-- Copy files while preserving subfolders -->
+    <Copy
+      SourceFiles="@(Assets)"
+      DestinationFiles="$(OutputPath)en\%(Assets.RecursiveDir)%(Filename)%(Extension)"
+      SkipUnchangedFiles="true" />
+  </Target>
 </Project>

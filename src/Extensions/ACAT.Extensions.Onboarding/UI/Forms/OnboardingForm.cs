@@ -15,7 +15,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Onboarding
+namespace ACAT.Extensions.Onboarding.UI.Forms
 {
     /// <summary>
     /// The container form for a single step in the onboarding process.

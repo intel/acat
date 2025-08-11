@@ -16,7 +16,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Onboarding
+namespace ACAT.Extensions.Onboarding.UI.UserControls
 {
     /// <summary>
     /// User control that allows the user to select the input switch

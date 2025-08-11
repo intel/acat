@@ -1,4 +1,4 @@
-﻿namespace ACATExtension.UI.UserControls
+﻿namespace ACAT.UserControls
 {
     partial class ScrollingText
     {

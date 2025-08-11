@@ -208,6 +208,10 @@
     <Compile Include="UI\UserControls\KeyboardUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UI\UserControls\ScrollingText.cs" />
+    <Compile Include="UI\UserControls\ScrollingText.Designer.cs">
+      <DependentUpon>ScrollingText.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\UserControlWordPredictionCommon.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -267,6 +271,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\UserControls\GenericUserControl.resx">
       <DependentUpon>GenericUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControls\ScrollingText.resx">
+      <DependentUpon>ScrollingText.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

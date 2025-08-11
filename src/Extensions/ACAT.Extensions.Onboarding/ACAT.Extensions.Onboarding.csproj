@@ -4,7 +4,13 @@
     <TargetFramework>net481</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
+    <EnableDefaultPageItems>false</EnableDefaultPageItems>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Properties\**" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -18,8 +24,95 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ACATResources\ACATResources.csproj" />
+    <ProjectReference Include="$(SolutionDir)ACATResources\ACATResources.csproj" />
     <ProjectReference Include="$(SolutionDir)Libraries\ACATCore\ACAT.Core.csproj" />
     <ProjectReference Include="$(SolutionDir)Libraries\ACATExtension\ACAT.Extension.csproj" />
+  </ItemGroup>
+    <ItemGroup>
+    <Compile Include="Onboarding\OnboardingFinish.cs" />
+    <Compile Include="Onboarding\OnboardingHardwareSwitchSetup.cs" />
+    <Compile Include="Onboarding\OnboardingKeyboardConfigSelect.cs" />
+    <Compile Include="Onboarding\OnboardingLanguageSelect.cs" />
+    <Compile Include="Onboarding\OnboardingSwitchSelect.cs" />
+    <Compile Include="Onboarding\OnboardingWelcome.cs" />
+    <Compile Include="UI\UserControls\UserControlHardwareSwitchSetup.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControls\UserControlHardwareSwitchSetup.Designer.cs">
+      <DependentUpon>UserControlHardwareSwitchSetup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\UserControlHardwareSwitchTest.cs" />
+    <Compile Include="UI\UserControls\UserControlHardwareSwitchTest.Designer.cs">
+      <DependentUpon>UserControlHardwareSwitchTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\UserControlFinish.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControls\UserControlFinish.Designer.cs">
+      <DependentUpon>UserControlFinish.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\UserControlKeyboardConfigSelect.cs" />
+    <Compile Include="UI\UserControls\UserControlKeyboardConfigSelect.Designer.cs">
+      <DependentUpon>UserControlKeyboardConfigSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\UserControlLanguageSelect.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControls\UserControlLanguageSelect.Designer.cs">
+      <DependentUpon>UserControlLanguageSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\UserControlSwitchSelect.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControls\UserControlSwitchSelect.Designer.cs">
+      <DependentUpon>UserControlSwitchSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\UserControlWelcome.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControls\UserControlWelcome.Designer.cs">
+      <DependentUpon>UserControlWelcome.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\OnboardingExtensionBase.cs" />
+    <Compile Include="UI\Forms\OnboardingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\OnboardingForm.Designer.cs">
+      <DependentUpon>OnboardingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\OnboardingSequence.cs" />
+    <Compile Include="UI\OnboardingSequenceItem.cs" />
+    <Compile Include="UI\OnboardingWizard.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\UserControls\UserControlHardwareSwitchSetup.resx">
+      <DependentUpon>UserControlHardwareSwitchSetup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControls\UserControlHardwareSwitchTest.es.resx">
+      <DependentUpon>UserControlHardwareSwitchTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControls\UserControlHardwareSwitchTest.resx">
+      <DependentUpon>UserControlHardwareSwitchTest.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControls\UserControlFinish.resx">
+      <DependentUpon>UserControlFinish.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControls\UserControlKeyboardConfigSelect.resx">
+      <DependentUpon>UserControlKeyboardConfigSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControls\UserControlLanguageSelect.resx">
+      <DependentUpon>UserControlLanguageSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControls\UserControlSwitchSelect.resx">
+      <DependentUpon>UserControlSwitchSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControls\UserControlWelcome.resx">
+      <DependentUpon>UserControlWelcome.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\OnboardingForm.resx">
+      <DependentUpon>OnboardingForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

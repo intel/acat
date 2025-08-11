@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>net481</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <EnableDefaultPageItems>false</EnableDefaultPageItems>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
   </PropertyGroup>
     <ItemGroup>
     <ProjectReference Include="..\..\ACATResources\ACATResources.csproj">
@@ -30,75 +33,10 @@
     <Reference Include="UIAutomationProvider" />
     <Reference Include="UIAutomationTypes" />
   </ItemGroup>
-</Project>
-
-
-<!--<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{17FEDA57-1F08-4E19-9DC3-A2C00EC792A3}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ACATExtension</RootNamespace>
-    <AssemblyName>ACATExtension</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <UseWinFormsOutOfProcDesigner>True</UseWinFormsOutOfProcDesigner>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
-    <Optimize>true</Optimize>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <UseWinFormsOutOfProcDesigner>True</UseWinFormsOutOfProcDesigner>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <UseWinFormsOutOfProcDesigner>True</UseWinFormsOutOfProcDesigner>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
-    <Optimize>true</Optimize>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <UseWinFormsOutOfProcDesigner>True</UseWinFormsOutOfProcDesigner>
-  </PropertyGroup>
   <ItemGroup>
     <Compile Include="CommandHandlers\CommandDescriptors.cs" />
     <Compile Include="CommandHandlers\GoBackHandler.cs" />
     <Compile Include="CommandHandlers\MiscCommandHandler.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="UI\AboutBoxForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -205,7 +143,6 @@
     </Compile>
     <Compile Include="UI\ScannerHelper.cs" />
     <Compile Include="UI\DialogUtils.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\UserControlLayoutInterface.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -230,13 +167,11 @@
     <Compile Include="UI\UserControls\KeyboardUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UI\UserControls\ScrollingText.cs" />
+    <Compile Include="UI\UserControls\ScrollingText.Designer.cs" />
     <Compile Include="UI\UserControlWordPredictionCommon.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\AboutBoxForm.resx">
       <DependentUpon>AboutBoxForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -287,14 +222,6 @@
     <EmbeddedResource Include="UI\UserControls\GenericUserControl.resx">
       <DependentUpon>GenericUserControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControls\ScrollingText.resx" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-  </PropertyGroup>
-</Project> -->
+</Project>

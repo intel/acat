@@ -427,32 +427,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                     KDENontarget.BuildKDE(nonTargetScores.ToArray());
 
                     // ===================== 5. Plot results ==========================
-
-                    if (displayPlots)
-                    {
-                        try
-                        {
-                            Plots.plotERPs(avgTrialData, trialTargetnessArray, _DimReductChannelSelectionObj.channelSubset, sampleRate, meanAUC.ToString());
-                        }
-                        catch (Exception e)
-                        {
-                            Log.Exception(e.Message);
-                        }
-
-                        /* Display plots with class distributions and AUC
-                         * GraphDisplayerForm1x2 graphFormResultsCross = new GraphDisplayerForm1x2();
-                        GraphPane graphPaneCrossLeft = graphFormResultsCross.graphControlLeft.GraphPane;
-                        GraphPane graphPaneCrossRight = graphFormResultsCross.graphControlRight.GraphPane;
-
-                        Plots.plotClassDistributions(scores, trialTargetnessArray, graphPaneCrossLeft);
-                        Plots.plotRoC(TPrate, FPrate, meanAUC, graphPaneCrossRight);
-
-                        graphFormResultsCross.TopMost = true;
-                        graphFormResultsCross.ShowDialog(); //In ACAT, dont show it
-
-                        graphFormResultsCross.ShowDialog(Context.AppPanelManager.GetCurrentForm() as Form);
-                        */
-                    }
+                    //REMOVED ABILITY TO PLOT RESULTS
 
                     // ===================== 6. Save results ==========================
                     // Save AUC

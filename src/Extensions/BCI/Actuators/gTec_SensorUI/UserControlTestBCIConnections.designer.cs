@@ -10,7 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACATExtension.UI.UserControls;
+using ACAT.UserControls;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {

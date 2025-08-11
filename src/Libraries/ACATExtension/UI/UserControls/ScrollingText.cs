@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACATExtension.UI.UserControls
+namespace ACAT.UserControls
 {
     [DesignerCategory("Code")]
     public partial class ScrollingText : UserControl

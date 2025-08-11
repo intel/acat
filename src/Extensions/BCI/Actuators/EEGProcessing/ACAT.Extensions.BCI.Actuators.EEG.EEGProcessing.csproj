@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <TargetFramework>net481</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
@@ -22,6 +22,8 @@
     <PackageReference Include="Accord" Version="3.8.0.0" />
     <PackageReference Include="Accord.Math" Version="3.8.0.0" />
     <PackageReference Include="Accord.Statistics" Version="3.8.0.0" />
-    <PackageReference Include="ZedGraph" version="5.1.7" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Forms\" />
   </ItemGroup>
 </Project>

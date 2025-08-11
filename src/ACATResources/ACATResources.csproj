@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <TargetFramework>net481</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
@@ -19,21 +19,90 @@
       </EmbeddedResource>
     </ItemGroup>
 
+  <!-- Copy Config XML Files-->
   <ItemGroup>
     <!-- Use Link to preserve folder structure in metadata -->
-    <Assets Include="$(ProjectDir)en\**\*">
+    <ConfigXmlFiles Include="$(ProjectDir)en\**\*">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </ConfigXmlFiles>
+  </ItemGroup>
+
+  <Target Name="CopyConfigXMLFiles" AfterTargets="Build">
+    <Message Text="Copy ConfigXML Files" Importance="high" />
+    <Copy
+      SourceFiles="@(ConfigXmlFiles)"
+      DestinationFiles="$(OutputPath)en\%(ConfigXmlFiles.RecursiveDir)%(Filename)%(Extension)"
+      SkipUnchangedFiles="true" />
+  </Target>
+  
+  <!-- Copy Assets Directories -->
+  <ItemGroup>
+    <Assets Include="$(SolutionDir)Assets\**\*">
       <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Assets>
   </ItemGroup>
-
+  
   <Target Name="CopyAssetFiles" AfterTargets="Build">
-    <!-- Ensure destination directories exist -->
+    <Message Text="Copy Asssets Files" Importance="high" />
     <MakeDir Directories="$(OutputPath)Assets\%(Assets.RecursiveDir)" />
-
-    <!-- Copy files while preserving subfolders -->
-    <Copy
-      SourceFiles="@(Assets)"
-      DestinationFiles="$(OutputPath)en\%(Assets.RecursiveDir)%(Filename)%(Extension)"
+    <Copy 
+      SourceFiles="@(Assets)" 
+      DestinationFiles="$(OutputPath)Assets\%(Assets.RecursiveDir)%(Filename)%(Extension)" 
       SkipUnchangedFiles="true" />
+  </Target>
+  
+  <!-- Copy Default User Install Files -->
+  <ItemGroup>
+    <DefaultUserFiles Include="$(SolutionDir)\Applications\Install\Users\**\*">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </DefaultUserFiles>
+  </ItemGroup>
+  
+  <Target Name="CopyInstallFiles" AfterTargets="Build">
+    <Message Text="Copy Install Files" Importance="high" />
+    <Copy 
+      SourceFiles="@(DefaultUserFiles)" 
+      DestinationFiles="$(OutputPath)Install\Users\%(DefaultUserFiles.RecursiveDir)%(Filename)%(Extension)" 
+      SkipUnchangedFiles="true" />
+  </Target>
+  
+  <!-- Copy ConvAssist Static Files -->
+  <ItemGroup>
+    <ConvAssistStatic Include="$(SolutionDir)\Applications\Install\en\**\*">
+      <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </ConvAssistStatic>
+  </ItemGroup>
+  <Target Name="CopyStaticConvAssist" AfterTargets="Build">
+    <Message Text="Copy Static ConvAssist Files" Importance="high" />
+    <!-- Copy files while preserving subfolders -->
+    <Copy 
+      SourceFiles="@(ConvAssistStatic)" 
+      DestinationFiles="$(OutputPath)en\%(ConvAssistStatic.RecursiveDir)%(Filename)%(Extension)" 
+      SkipUnchangedFiles="true" />
+  </Target>
+
+  
+  
+  <!-- Copy ConvAssist Application -->
+  <Target Name="UnzipDependency" AfterTargets="Build">
+    <!-- Define paths -->
+    <PropertyGroup>
+      <ZipFile>$(SolutionDir)\Applications\Install\ConvAssistApp\ConvAssist.zip</ZipFile>
+      <ExtractedDir>$(BaseOutputPath)\UnzippedDependency\</ExtractedDir>
+      <UnzipFlagFile>$(ExtractedDir).unzipped</UnzipFlagFile>
+    </PropertyGroup>
+    <!-- Only unzip if the flag file doesn't exist -->
+    <Message Text="Unzipping dependency files from $(ZipFile) to $(ExtractedDir)" Condition="!Exists('$(UnzipFlagFile)')" Importance="high" />
+    <Exec Condition="!Exists('$(UnzipFlagFile)')" Command="powershell -Command &quot;Expand-Archive -Path '$(ZipFile)' -DestinationPath '$(ExtractedDir)' -Force&quot;" />
+    <Message Text="Unzipped dependency files to $(ExtractedDir)" Condition="!Exists('$(UnzipFlagFile)')" Importance="high" />
+    <!-- Create a flag file to avoid re-extraction -->
+    <WriteLinesToFile Condition="!Exists('$(UnzipFlagFile)')" File="$(UnzipFlagFile)" Lines="Unzipped on $(MSBuildThisFileFullPath)" Overwrite="true" />
+    <Message Text="Copy ConvAssist App" Importance="high" />
+    <!-- Copy contents to OutputPath -->
+    <ItemGroup>
+      <DependencyFiles Include="$(ExtractedDir)**\*" />
+    </ItemGroup>
+    <Message Text="Copying dependency files to output directory: $(OutDir)" Importance="high" />
+    <Copy SourceFiles="@(DependencyFiles)" DestinationFolder="$(OutDir)\ConvAssistApp\%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>
 </Project>

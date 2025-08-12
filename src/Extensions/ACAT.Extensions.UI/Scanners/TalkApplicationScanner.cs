@@ -6,7 +6,6 @@ using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.TTSManagement;
 using ACAT.Core.Utility;
-using ACAT.Core.Win32;
 using ACAT.Core.WordPredictorManagement;
 using ACAT.Core.WordPredictorManagement.Interfaces;
 using ACAT.Extension;
@@ -394,14 +393,14 @@ namespace ACAT.Extensions.UI.Scanners
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == Win32Constants.WM_NCLBUTTONDOWN) //cancels the drag this is IMP
+            if (m.Msg == User32Interop.Win32Constants.WM_NCLBUTTONDOWN) //cancels the drag this is IMP
             {
-                if (m.WParam.ToInt32() == Win32Constants.HTCAPTION) return;
+                if (m.WParam.ToInt32() == User32Interop.Win32Constants.HTCAPTION) return;
             }
-            else if (m.Msg == Win32Constants.WM_SYSCOMMAND)
+            else if (m.Msg == User32Interop.Win32Constants.WM_SYSCOMMAND)
             {
                 int command = m.WParam.ToInt32() & 0xfff0;
-                if (command == Win32Constants.SC_MOVE)
+                if (command == User32Interop.Win32Constants.SC_MOVE)
                 {
                     base.WndProc(ref m);
                     return;

@@ -106,24 +106,24 @@ namespace ACATTalk
 
             AuditLog.Audit(new AuditEvent("Application", "start"));
 
-            AppCommon.addBCIActuatorSetting();
-            AppCommon.addPanelClassConfigMapForBCI();
+            // DOn't need this anymore...  Why was it here in the first place?
+            //AppCommon.addBCIActuatorSetting();
+            //AppCommon.addPanelClassConfigMapForBCI();
 
             CommandDescriptors.Init();
 
             Common.AppPreferences.PreferredPanelConfigNames = string.Empty;
 
-            if (!AppCommon.DoOnboarding())
-            {
-                return;
-            }
+            //if (!AppCommon.DoOnboarding())
+            //{
+            //    return;
+            //}
 
             splash = new Splash(2000);
-            splash.Show(StringResources.BeginusingACAT);
+            splash.Show(StringResources.StartingACAT);
 
             Context.PreInit();
             Common.PreInit();
-
             Context.AppAgentMgr.EnableAppAgentContextSwitch = false;
 
             if (!Context.Init(Context.StartupFlags.Minimal |

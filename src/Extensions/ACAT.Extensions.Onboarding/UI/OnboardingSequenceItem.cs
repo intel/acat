@@ -13,7 +13,6 @@ namespace ACAT.Extensions.Onboarding.UI
     /// Holds the ID of the extension that is a part of
     /// the onboarding process
     /// </summary>
-    [Serializable]
     public class OnboardingSequenceItem
     {
         public OnboardingSequenceItem()

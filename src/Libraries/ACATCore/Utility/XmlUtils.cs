@@ -141,7 +141,7 @@ namespace ACAT.Core.Utility
 
             try
             {
-                var serializer = new XmlSerializer(typeof(T));
+                var serializer = new XmlSerializer(typeof(T), (Type[])null);
 
                 lock (_lock)
                 {
@@ -181,7 +181,7 @@ namespace ACAT.Core.Utility
 
                     using FileStream fileStream = new(filename, FileMode.OpenOrCreate, FileAccess.Read, FileShare.None);
                     using TextReader outputStream = new StreamReader(fileStream);
-                    var xml = new XmlSerializer(typeof(T));
+                    var xml = new XmlSerializer(typeof(T), (Type[])null);
                     retVal = (T)xml.Deserialize(outputStream);
                 }
             }
@@ -247,7 +247,7 @@ namespace ACAT.Core.Utility
         /// <returns>serialized xml string</returns>
         public static string XmlSerializeToString<T>(T obj)
         {
-            var serializer = new XmlSerializer(typeof(T));
+            var serializer = new XmlSerializer(typeof(T), (Type[])null);
             var sb = new StringBuilder();
 
             lock (_lock)

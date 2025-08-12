@@ -54,7 +54,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         /// <summary>
         /// Used to invoke methods/properties of this class
         /// </summary>
-        private readonly ExtensionInvoker _invoker;
+        //private readonly ExtensionInvoker _invoker;
 
         /// <summary>
         /// List of all apps
@@ -260,10 +260,10 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         /// Returns the extension invoker object
         /// </summary>
         /// <returns>invoker object</returns>
-        public ExtensionInvoker GetInvoker()
-        {
-            return _invoker;
-        }
+        //public ExtensionInvoker GetInvoker()
+        //{
+        //    return _invoker;
+        //}
 
         /// <summary>
         /// Initialzes this class

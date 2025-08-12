@@ -46,7 +46,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         /// <summary>
         /// Has anything changed?
         /// </summary>
-        private bool _isDirty = false;
+        //private bool _isDirty = false;
 
         /// <summary>
         /// Initializes an instance of the class
@@ -191,7 +191,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
                 dataGridView2.CommitEdit(DataGridViewDataErrorContexts.Commit);
             }
 
-            _isDirty = true;
+            //_isDirty = true;
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
                 }
             }
 
-            _isDirty = true;
+            //_isDirty = true;
 
             refreshDataGridView();
         }

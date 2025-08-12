@@ -362,6 +362,7 @@ namespace ACAT.Applications
             SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0);
         }
 
+#nullable enable
         private static string? GetFontDisplayName(string fontPath)
         {
             try
@@ -374,6 +375,7 @@ namespace ACAT.Applications
             catch { }
             return null;
         }
+#nullable disable
 
         /// <summary>
         /// Sets the paths to the settings file for the app

@@ -294,34 +294,7 @@ namespace ACAT.Extensions.Onboarding.UI
                 .ToList();
 
             _extensionsTypeCache.AddRange(onboardingTypes);
-
-            // Look for any additional onboarding extensions in the current directory
-            loadOnboardingExtensionsIntoCache(Path.GetDirectoryName(
-                Assembly.GetExecutingAssembly().Location));
         }
-
-        private void loadOnboardingExtensionsIntoCache(string dir)
-        {
-            var walker = new DirectoryWalker(dir, "ACAT.*.dll");
-
-            // Recursively look for Actuators in /Extensions
-            walker.Walk(new OnFileFoundDelegate(onFileFound));
-        }
-
-        private void onFileFound(string dllName)
-        {
-            try
-            {
-                _TypeLoader.LoadFromAssembly(dllName);
-            }
-            catch (Exception ex)
-            {
-                Log.Exception($"Error loading actuator from {dllName}: {ex.Message}");
-                _DLLError = true;
-            }
-        }
-
-
 
         public class OnboardingHistoryEntry
         {

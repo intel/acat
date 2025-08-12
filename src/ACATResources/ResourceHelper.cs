@@ -25,7 +25,7 @@ namespace ACATResources
         /// .NET resource manager object
         /// </summary>
         private static readonly ResourceManager _resourceManager =
-            new ResourceManager(BaseName, Assembly.GetExecutingAssembly());
+            new(BaseName, Assembly.GetExecutingAssembly());
 
         public const String ResourcesDllName = "ACATResources.resources.dll";
 

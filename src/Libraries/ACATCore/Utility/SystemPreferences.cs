@@ -338,5 +338,15 @@ namespace ACAT.Core.Utility
 
             return retVal;
         }
+
+        public override bool Save()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool ResetToDefault()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

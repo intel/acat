@@ -70,8 +70,17 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         public static BCIWordCalibrationSettings Load()
         {
             BCIWordCalibrationSettings retVal = PreferencesBase.Load<BCIWordCalibrationSettings>(SettingsFilePath);
-            Save(retVal, SettingsFilePath);
+            //Save(retVal, SettingsFilePath);
             return retVal;
+        }
+
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<BCIWordCalibrationSettings>();
+            var res = Save(tmp, SettingsFilePath);
+            Load();
+
+            return res;
         }
 
         /// <summary>

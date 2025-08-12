@@ -26,5 +26,7 @@ namespace ACAT.Core.PreferencesManagement.Interfaces
         /// </summary>
         /// <returns>true on sucess</returns>
         bool Save();
+
+        bool ResetToDefault();
     }
 }

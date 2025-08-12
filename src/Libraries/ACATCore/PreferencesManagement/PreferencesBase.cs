@@ -32,7 +32,7 @@ namespace ACAT.Core.PreferencesManagement
     /// a class by deserializing from the xml file.
     /// </summary>
     [Serializable]
-    public partial class PreferencesBase : ObservableValidator, IPreferences
+    public abstract class PreferencesBase : ObservableValidator, IPreferences
     {
         [NonSerialized, XmlIgnore]
         public static Assembly ApplicationAssembly;
@@ -156,8 +156,8 @@ namespace ACAT.Core.PreferencesManagement
         /// Saves preferences
         /// </summary>
         /// <returns></returns>
-        public virtual bool Save() {
-            return false;
-        }
+        public abstract bool Save();
+
+        public abstract bool ResetToDefault();
     }
 }

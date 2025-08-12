@@ -118,6 +118,15 @@ namespace ACAT.Core.PanelManagement.PanelConfig
             return PanelClassConfigs.FirstOrDefault(panelClassConfig => string.Compare(panelClassConfig.AppId, appId, true) == 0);
         }
 
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<PanelClassConfig>();
+            var res = Save(tmp, FileName);
+            Load(FileName);
+
+            return res;
+        }
+
         /// <summary>
         /// Saves settings.  No Op.  Doesn't save.
         /// </summary>

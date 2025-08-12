@@ -39,5 +39,15 @@ namespace ACAT.Core.AgentManagement
         [DefaultValue(true)]
         [ObservableProperty]
         public bool autoSwitchScannerEnable =  true;
+
+        public override bool Save()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool ResetToDefault()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

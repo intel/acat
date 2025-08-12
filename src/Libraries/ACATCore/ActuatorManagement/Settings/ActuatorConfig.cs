@@ -70,6 +70,15 @@ namespace ACAT.Core.ActuatorManagement.Settings
             return ActuatorSettings.FirstOrDefault(actuator => Equals(id, actuator.Id));
         }
 
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<ActuatorConfig>();
+            var res = Save(tmp, ActuatorSettingsFileName);
+            Load();
+
+            return res;
+        }
+
         /// <summary>
         /// Saves the settings to a file indicated by
         /// ActuatorSettingsFileName

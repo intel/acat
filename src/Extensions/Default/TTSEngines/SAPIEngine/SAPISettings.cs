@@ -131,5 +131,14 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
 
             return retVal;
         }
+
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<SAPISettings>();
+            var res = Save(tmp, PreferencesFilePath);
+            Load();
+
+            return res;
+        }
     }
 }

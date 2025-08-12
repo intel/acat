@@ -88,6 +88,15 @@ namespace ACAT.Core.CommandManagement
             return cmdDescriptorList;
         }
 
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<CmdDescriptorTable>();
+            var res = Save(tmp, FilePath);
+            Load();
+
+            return res;
+        }
+
         /// <summary>
         /// Saves the list to the file
         /// </summary>

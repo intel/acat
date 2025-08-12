@@ -978,5 +978,14 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             }
             return false;
         }
+
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<BCIKeyboardRightCalibrationSettings>();
+            var res = Save(tmp, SettingsFilePath);
+            Load();
+
+            return res;
+        }
     }
 }

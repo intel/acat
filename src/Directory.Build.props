@@ -19,6 +19,13 @@
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 
+  <!-- Common Assembly Information -->
+  <PropertyGroup>
+    <Company>Intel Corporation</Company>
+    <Product>Adaptive Contextual Aware Toolkit</Product>
+    <Copyright>Copyright © Intel Corporation 2025</Copyright>
+  </PropertyGroup>
+
   <!-- Output path configuration -->
   <PropertyGroup>
     <!-- Define SolutionDir if not set (e.g. when building project files directly) -->

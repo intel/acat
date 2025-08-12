@@ -7,10 +7,7 @@
     <OutputType>WinExe</OutputType>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyTitle>ACAT Dashboard App</AssemblyTitle>
-    <Company>Intel Corporation</Company>
-    <Product>ACAT</Product>
-    <Copyright>2025 Intel Corporation</Copyright>
+    <AssemblyTitle>ACAT Dashboard</AssemblyTitle>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ACATResources\ACATResources.csproj" />

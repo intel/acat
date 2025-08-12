@@ -8,9 +8,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyTitle>ACAT Talk</AssemblyTitle>
-    <Company>Intel Corporation</Company>
-    <Product>ACAT</Product>
-    <Copyright>2025 Intel Corporation</Copyright>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ACATResources\ACATResources.csproj" />

@@ -1,9 +1,10 @@
 ﻿using ACAT.Core.Utility;
+using ACAT.Core.Utility.Mouse;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace ACAT.Extensions.UI.UserControls
+namespace ACAT.Extensions.UI.UserControls.Toolbars
 {
     [ClassDescriptor("72061314-CE5E-4DB8-92C8-C0F81E5CB3EE",
         Name = "CursorControlUserControl",
@@ -11,7 +12,7 @@ namespace ACAT.Extensions.UI.UserControls
     [DesignerCategory("code")]
     public class CursorControlUserControl : LargeToolbarUserControl
     {
-        public GridMouseMover MouseMover = new GridMouseMover();
+        public GridMouseMover MouseMover = new();
 
         public CursorControlUserControl() : base("CursorControlUserControl") { }
 

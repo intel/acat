@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.PanelConfig
 {
     /// <summary>
     /// Represents a persistent class that contains a list
@@ -39,14 +39,14 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// List of AppPanelClassConfig's for the different ACAT Apps
         /// </summary>
-        public List<PanelClassConfig> PanelClassConfigs = new List<PanelClassConfig>();
+        public List<PanelClassConfig> PanelClassConfigs = new();
 
         [XmlIgnore]
-        public String FileName { get; set; }
+        public string FileName { get; set; }
 
-        public static AppPanelClassConfig Load(String fileName)
+        public static AppPanelClassConfig Load(string fileName)
         {
-            var retVal = AppPanelClassConfig.Load<AppPanelClassConfig>(fileName);
+            var retVal = Load<AppPanelClassConfig>(fileName);
 
             retVal.FileName = fileName;
 
@@ -62,7 +62,7 @@ namespace ACAT.Core.PanelManagement
         /// <param name="appDescription">a brief description</param>
         /// <param name="replaceIfExists">set to true if existing entry should be replaced</param>
         /// <returns></returns>
-        public PanelClassConfig Add(String appId, String appName, String appDescription, bool replaceIfExists = false)
+        public PanelClassConfig Add(string appId, string appName, string appDescription, bool replaceIfExists = false)
         {
             var panelClassConfig = Find(appId);
             if (panelClassConfig == null)
@@ -113,9 +113,9 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         /// <param name="appId">application id</param>
         /// <returns>PanelClassConfig entry, null if not found</returns>
-        public PanelClassConfig Find(String appId)
+        public PanelClassConfig Find(string appId)
         {
-            return PanelClassConfigs.FirstOrDefault(panelClassConfig => String.Compare(panelClassConfig.AppId, appId, true) == 0);
+            return PanelClassConfigs.FirstOrDefault(panelClassConfig => string.Compare(panelClassConfig.AppId, appId, true) == 0);
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace ACAT.Core.PanelManagement
         /// <returns></returns>
         public override bool Save()
         {
-            return AppPanelClassConfig.Save<AppPanelClassConfig>(this, FileName);
+            return Save(this, FileName);
         }
     }
 }

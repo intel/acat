@@ -7,6 +7,7 @@
 using ACAT.Core.ThemeManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using ACAT.Core.WidgetManagement.Interfaces;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
@@ -18,7 +19,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace ACAT.Extensions.BCI.Common.AnimationSharp
+namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
 {
     public class SharpDXUtils
     {
@@ -69,7 +70,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <returns></returns>
         public static FontWeight GetFontWeight(bool useBold)
         {
-            return useBold ? SharpDX.DirectWrite.FontWeight.Black : SharpDX.DirectWrite.FontWeight.Normal;
+            return useBold ? FontWeight.Black : FontWeight.Normal;
         }
 
         /// <summary>
@@ -89,7 +90,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             try
             {
                 var temptypeOfBox = AnimationManagerUtils.GetTypeOfBox(boxesData.Value, totalAmountOfBoxes);
-                var tempbuttonTextFormat = SharpDXUtils.GetTextFormat(widgetsData, boxesData.Value, totalAmountOfBoxes, directWriteFactory, temptypeOfBox);
+                var tempbuttonTextFormat = GetTextFormat(widgetsData, boxesData.Value, totalAmountOfBoxes, directWriteFactory, temptypeOfBox);
                 for (int boxIndex = 0; boxIndex < totalAmountOfBoxes; boxIndex++)
                 {
                     typeOfBox[indexBox] = temptypeOfBox[boxIndex];
@@ -128,7 +129,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         foreach (XmlNode subnode in node)
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
-                            int tag = Int32.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
+                            int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
                             var btn = AnimationManagerUtils.GetControl(controls, name2, tag, false);
                             if (btn != null)
                             {
@@ -172,7 +173,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         foreach (XmlNode subnode in node)
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
-                            int tag = Int32.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
+                            int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
                             var btn = AnimationManagerUtils.GetControl(PBcontrols, name2, tag, false);
                             if (btn != null)
                             {
@@ -214,7 +215,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         foreach (XmlNode subnode in node)
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
-                            int tag = Int32.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
+                            int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
                             var btn = AnimationManagerUtils.GetControl(PBcontrols, name2, tag, false);
                             if (btn != null)
                             {
@@ -258,7 +259,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         foreach (XmlNode subnode in node)
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
-                            int tag = Int32.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
+                            int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
                             var btn = AnimationManagerUtils.GetControl(controls, name2, tag, false);
                             if (btn != null)
                             {
@@ -302,7 +303,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             int indexBox = 0;
             try
             {
-                List<RawRectangleF>[] temprectBtnsAll = SharpDXUtils.GetRecButtons(boxesData.Key, boxesData.Value, totalAmountOfBoxes);
+                List<RawRectangleF>[] temprectBtnsAll = GetRecButtons(boxesData.Key, boxesData.Value, totalAmountOfBoxes);
                 for (int boxIndex = 0; boxIndex < totalAmountOfBoxes; boxIndex++)
                 {
                     rectanglesButtonsList[indexBox] = temprectBtnsAll[boxIndex];
@@ -330,7 +331,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             int indexBox = 0;
             try
             {
-                var temprectBtnsAllRound = SharpDXUtils.GetRecRoundButtons(boxesData.Key, boxesData.Value, totalAmountOfBoxes, radiusCornersButtons);
+                var temprectBtnsAllRound = GetRecRoundButtons(boxesData.Key, boxesData.Value, totalAmountOfBoxes, radiusCornersButtons);
                 for (int boxIndex = 0; boxIndex < totalAmountOfBoxes; boxIndex++)
                 {
                     rectanglesButtonsRoundList[indexBox] = temprectBtnsAllRound[boxIndex];
@@ -368,9 +369,9 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 {
                     var boxData = boxesData.ElementAt(indexBoxData);
                     amountBoxesPerUserControl = AnimationManagerUtils.GetAmountBoxes(boxData.Value);
-                    var temprectExtraButtonCRG = SharpDXUtils.GetRectangleCRG(boxData.Key);
+                    var temprectExtraButtonCRG = GetRectangleCRG(boxData.Key);
                     int tempoffsetCRG = AnimationManagerUtils.GetOffsetCRG(widgetsData[indexBoxData]);
-                    TextFormat tempbuttonTextFormatCRG = SharpDXUtils.GetTextFormatCRG(widgetsData[indexBoxData], directWriteFactory);
+                    TextFormat tempbuttonTextFormatCRG = GetTextFormatCRG(widgetsData[indexBoxData], directWriteFactory);
                     for (int boxIndex = 0; boxIndex < amountBoxesPerUserControl; boxIndex++)
                     {
                         if (temprectExtraButtonCRG.Bottom != 0 && temprectExtraButtonCRG.Top != 0 && temprectExtraButtonCRG.Left != 0 && temprectExtraButtonCRG.Right != 0)
@@ -406,7 +407,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 foreach (var boxData in boxesData)
                 {
                     amountBoxesPerUserControl = AnimationManagerUtils.GetAmountBoxes(boxData.Value);
-                    var temprectExtraButton = SharpDXUtils.GetRectangleTriggerBox(boxData.Key);
+                    var temprectExtraButton = GetRectangleTriggerBox(boxData.Key);
                     for (int boxIndex = 0; boxIndex < amountBoxesPerUserControl; boxIndex++)
                     {
                         if (temprectExtraButton.Bottom != 0 && temprectExtraButton.Top != 0 && temprectExtraButton.Left != 0 && temprectExtraButton.Right != 0)
@@ -468,8 +469,8 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         foreach (XmlNode subnode in node)
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
-                            int tag = Int32.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
-                            var btnWidget = widgets.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals(name2) && w.UIControl.Tag != null && Int32.Parse(w.UIControl.Tag.ToString()) == tag);
+                            int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
+                            var btnWidget = widgets.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals(name2) && w.UIControl.Tag != null && int.Parse(w.UIControl.Tag.ToString()) == tag);
                             if (typeBox[index] != null)
                             {
                                 if (typeBox[index].ToLower().Contains("keyboard".ToLower()) || typeBox[index].ToLower().Contains("Menus".ToLower()) || btnWidget.Name.Equals("PWLItem10") || btnWidget.Name.Equals("SPLItem5"))
@@ -530,8 +531,8 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
 
         private static void CalculateCenterFocalPoint(RawRectangleF rawRectangleF, float maxWidth, float width, float maxHeight, float height, float distance, out float xPoint, out float yPoint)
         {
-            xPoint = ((maxWidth - width) / 2) + rawRectangleF.Left;
-            yPoint = ((maxHeight - height) / 2) + rawRectangleF.Top;
+            xPoint = (maxWidth - width) / 2 + rawRectangleF.Left;
+            yPoint = (maxHeight - height) / 2 + rawRectangleF.Top;
         }
 
         private static void CalculateTopLeftFocalPoint(RawRectangleF rawRectangleF, float distance, out float xPoint, out float yPoint)
@@ -554,9 +555,9 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         private static RawColor4 ConvertToRawColor4(ColorScheme colorScheme)
         {
             return new RawColor4(
-                ((float)colorScheme.HighlightSelectedForeground.R / 255),
-                ((float)colorScheme.HighlightSelectedForeground.G / 255),
-                ((float)colorScheme.HighlightSelectedForeground.B / 255),
+                (float)colorScheme.HighlightSelectedForeground.R / 255,
+                (float)colorScheme.HighlightSelectedForeground.G / 255,
+                (float)colorScheme.HighlightSelectedForeground.B / 255,
                 1.0f
                 );
         }
@@ -626,7 +627,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                                             "montserrat",
                                             FontWeight.Normal,
                                             SharpDX.DirectWrite.FontStyle.Normal,
-                                            (float)28)
+                                            28)
             {
                 TextAlignment = textAlignment
             };

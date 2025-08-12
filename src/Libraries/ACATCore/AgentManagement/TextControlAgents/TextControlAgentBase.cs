@@ -5,15 +5,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
-using ACAT.Core.WordPredictionManagement;
+using ACAT.Core.WordPredictorManagement;
+using ACAT.Core.WordPredictorManagement.Interfaces;
 using System;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ACAT.Core.AgentManagement.TextInterface
+namespace ACAT.Core.AgentManagement.TextControlAgents
 {
     /// <summary>
     /// Base class for all text control agents.  Text control
@@ -26,12 +28,12 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// Keyboard interface to send keystrokes to the target
         /// text window
         /// </summary>
-        private static readonly Keyboard _keyboard = new Keyboard();
+        private static readonly Keyboard _keyboard = new();
 
         /// <summary>
         /// Text manipulation features supported by the base class
         /// </summary>
-        private readonly String[] _supportedCommands =
+        private readonly string[] _supportedCommands =
         {
             "CmdCut",
             "CmdCopy",
@@ -119,7 +121,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
             }
         }
 
-        public virtual bool CheckInsertOrReplaceWord(out int insertOrReplaceOffset, out String wordToReplace)
+        public virtual bool CheckInsertOrReplaceWord(out int insertOrReplaceOffset, out string wordToReplace)
         {
             return TextUtils.CheckInsertOrReplaceWord(
                                     GetText(),
@@ -189,7 +191,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         public virtual void DelNextSentence()
         {
             int currentCaretPos = GetCaretPos();
-            String text = GetText();
+            string text = GetText();
 
             if (currentCaretPos >= text.Length)
             {
@@ -252,7 +254,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
                 currentCaretPos = 0;
             }
 
-            String text = GetText();
+            string text = GetText();
 
             if (currentCaretPos >= text.Length)
             {
@@ -276,7 +278,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
                         currentCaretPos--;
                     }
                 }
-                start = (currentCaretPos > 0) ? ++currentCaretPos : currentCaretPos;
+                start = currentCaretPos > 0 ? ++currentCaretPos : currentCaretPos;
             }
             else
             {
@@ -323,7 +325,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         // Del Prev Sentence: If the cursor is within a sentence, delete the sentence. Then delete the previous sentence each time the button is clicked and continue till all the previous sentences in the text are deleted.
         public virtual void DelPrevSentence()
         {
-            String text = GetText();
+            string text = GetText();
             if (text.Length == 0)
             {
                 return;
@@ -370,7 +372,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
             int currentCaretPos = GetCaretPos() - 1;
             int initialCaretPos = -1;
 
-            String text = GetText();
+            string text = GetText();
 
             char ch = text[currentCaretPos];
             if (GetCaretPos() == text.Length || ch == '\r' || ch == '\n' || ch == ' ')
@@ -511,7 +513,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
             value = '\0';
             var str = GetText();
 
-            if (!String.IsNullOrEmpty(str))
+            if (!string.IsNullOrEmpty(str))
             {
                 if (caretPos < str.Length && caretPos >= 0)
                 {
@@ -538,9 +540,9 @@ namespace ACAT.Core.AgentManagement.TextInterface
 
                 if (caretPos > 0)
                 {
-                    String str = GetText();
+                    string str = GetText();
                     ////Log.Debug("CaretPos: " + caretPos + "str: [" + str + "]");
-                    if (!String.IsNullOrEmpty(str))
+                    if (!string.IsNullOrEmpty(str))
                     {
                         caretPos--;
                         ////Log.Debug("str: [" + str + "], After subtracting CaretPos: " + caretPos);
@@ -565,14 +567,14 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// </summary>
         /// <param name="paragraph">the para text</param>
         /// <returns>offset of the paragraph</returns>
-        public virtual int GetEntireParagraphAtCaret(out String paragraph)
+        public virtual int GetEntireParagraphAtCaret(out string paragraph)
         {
             return TextUtils.GetEntireParagraphAtCaret(GetText(), GetCaretPos(), out paragraph);
         }
 
-        public virtual void GetParagraphAfterCaret(out String sentence)
+        public virtual void GetParagraphAfterCaret(out string sentence)
         {
-            sentence = String.Empty;
+            sentence = string.Empty;
         }
 
         /// <summary>
@@ -581,7 +583,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// </summary>
         /// <param name="paragraph">the para text</param>
         /// <returns>offset of the paragraph</returns>
-        public virtual int GetParagraphAtCaret(out String paragraph)
+        public virtual int GetParagraphAtCaret(out string paragraph)
         {
             return TextUtils.GetParagraphAtCaret(GetText(), GetCaretPos(), out paragraph);
         }
@@ -590,9 +592,9 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// Override this to get para before the caret
         /// </summary>
         /// <param name="paragraph">Returns the paragraph</param>
-        public virtual void GetParagraphBeforeCaret(out String sentence)
+        public virtual void GetParagraphBeforeCaret(out string sentence)
         {
-            sentence = String.Empty;
+            sentence = string.Empty;
         }
 
         /// <summary>
@@ -601,7 +603,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// <param name="count">How many characters to fetch</param>
         /// <param name="word">returns the string of characters</param>
         /// <returns>number of characters </returns>
-        public virtual int GetPrecedingCharacters(int count, out String word)
+        public virtual int GetPrecedingCharacters(int count, out string word)
         {
             return TextUtils.GetPrecedingCharacters(GetText(), GetCaretPos(), count, out word);
         }
@@ -630,9 +632,9 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// </summary>
         /// <param name="prefix">Return the previous words</param>
         /// <param name="word">Return the current word</param>
-        public virtual void GetPrefixAndWordAtCaret(out String prefix, out String word)
+        public virtual void GetPrefixAndWordAtCaret(out string prefix, out string word)
         {
-            String text = GetText();
+            string text = GetText();
             int caretPos = GetCaretPos();
             ////Log.Debug("**** text: [" + text + "], caretPos: " + caretPos);
             Log.Debug("caretPos: " + caretPos);
@@ -644,7 +646,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// </summary>
         /// <param name="word">Word</param>
         /// <returns>Offset of the previous word</returns>
-        public virtual int GetPreviousWordAtCaret(out String word)
+        public virtual int GetPreviousWordAtCaret(out string word)
         {
             return TextUtils.GetPreviousWord(GetText(), GetCaretPos(), out word);
         }
@@ -670,9 +672,9 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// Override this to returns highlighted text in the text control
         /// </summary>
         /// <returns>text</returns>
-        public virtual String GetSelectedText()
+        public virtual string GetSelectedText()
         {
-            return String.Empty;
+            return string.Empty;
         }
 
         /// <summary>
@@ -688,9 +690,9 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// Override to return the sentence after the one the caret is at.
         /// </summary>
         /// <param name="sentence">Returns the sentence</param>
-        public virtual void GetSentenceAfterCaret(out String sentence)
+        public virtual void GetSentenceAfterCaret(out string sentence)
         {
-            sentence = String.Empty;
+            sentence = string.Empty;
         }
 
         /// <summary>
@@ -698,7 +700,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// from the beginning of the sentence up to the caret position
         /// </summary>
         /// <param name="sentence">Returns the sentence</param>
-        public virtual void GetSentenceAtCaret(out String sentence)
+        public virtual void GetSentenceAtCaret(out string sentence)
         {
             TextUtils.GetSentenceAtCaret(GetText(), GetCaretPos(), out sentence);
         }
@@ -707,9 +709,9 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// Override to return the sentence before the one that the caret is at
         /// </summary>
         /// <param name="sentence">return the sentence</param>
-        public virtual void GetSentenceBeforeCaret(out String sentence)
+        public virtual void GetSentenceBeforeCaret(out string sentence)
         {
-            sentence = String.Empty;
+            sentence = string.Empty;
         }
 
         /// <summary>
@@ -718,11 +720,11 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// </summary>
         /// <param name="startPos">Where to start from</param>
         /// <returns>The text</returns>
-        public virtual String GetStringToCaret(int startPos)
+        public virtual string GetStringToCaret(int startPos)
         {
             var text = GetText();
-            String strToCaret = String.Empty;
-            if (!String.IsNullOrEmpty(text))
+            string strToCaret = string.Empty;
+            if (!string.IsNullOrEmpty(text))
             {
                 int caretPos = GetCaretPos();
 
@@ -744,16 +746,16 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// Override this to return text from the text control window
         /// </summary>
         /// <returns>text</returns>
-        public virtual String GetText()
+        public virtual string GetText()
         {
-            return String.Empty;
+            return string.Empty;
         }
 
         /// <summary>
         /// Override this to get current word at caret.
         /// </summary>
         /// <param name="word">return the word</param>
-        public virtual void GetWordAtCaret(out String word)
+        public virtual void GetWordAtCaret(out string word)
         {
             TextUtils.GetWordAtCaret(GetText(), GetCaretPos(), out word);
         }
@@ -840,7 +842,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// </summary>
         /// <param name="offset">Where to insert the word</param>
         /// <param name="word">The word to insert</param>
-        public virtual void Insert(int offset, String word)
+        public virtual void Insert(int offset, string word)
         {
             try
             {
@@ -976,7 +978,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// <param name="offset">0 based starting offset</param>
         /// <param name="count">number of chars to replace</param>
         /// <param name="word">Word to insert at the 'offset'</param>
-        public virtual void Replace(int offset, int count, String word)
+        public virtual void Replace(int offset, int count, string word)
         {
             Log.Debug("HARRIS offset = " + offset + " count " + count + " word " + word);
 
@@ -1167,7 +1169,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// </summary>
         /// <param name="supportedCommands"></param>
         /// <param name="arg"></param>
-        protected void checkCommandEnabled(String[] supportedCommands, CommandEnabledArg arg)
+        protected void checkCommandEnabled(string[] supportedCommands, CommandEnabledArg arg)
         {
             if (supportedCommands.Contains(arg.Command))
             {
@@ -1185,7 +1187,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
             if (handleText != IntPtr.Zero)
             {
                 const uint WM_SETTEXT = 0x000C;
-                User32Interop.SendMessageText(handleText, WM_SETTEXT, IntPtr.Zero, String.Empty);
+                User32Interop.SendMessageText(handleText, WM_SETTEXT, IntPtr.Zero, string.Empty);
             }
         }
 
@@ -1221,7 +1223,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// </summary>
         /// <param name="word">input string</param>
         /// <returns>normalized string</returns>
-        protected String getNormalizedStringForSendWait(String word)
+        protected string getNormalizedStringForSendWait(string word)
         {
             var sb = new StringBuilder();
             const string stopChars = "+^%~()[]{}";
@@ -1244,9 +1246,9 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// Returns highlighted text (if any)
         /// </summary>
         /// <returns>highlighted text</returns>
-        protected String GetSelectedText(IntPtr handleText)
+        protected string GetSelectedText(IntPtr handleText)
         {
-            var selectedText = String.Empty;
+            var selectedText = string.Empty;
 
             if (handleText == IntPtr.Zero)
             {
@@ -1255,8 +1257,8 @@ namespace ACAT.Core.AgentManagement.TextInterface
 
             try
             {
-                Int32 start = -1;
-                Int32 end = -1;
+                int start = -1;
+                int end = -1;
 
                 User32Interop.SendMessageRefRef(handleText, User32Interop.EM_GETSEL, ref start, ref end);
                 var text = GetText();
@@ -1282,9 +1284,9 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// Gets the string of text from the text window
         /// </summary>
         /// <returns>text</returns>
-        protected String GetText(IntPtr handleText)
+        protected string GetText(IntPtr handleText)
         {
-            String str = String.Empty;
+            string str = string.Empty;
 
             Log.Verbose();
 
@@ -1321,7 +1323,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
 
             GetSentenceAtCaret(out string str);
             var trimmed = str.Trim();
-            if (String.IsNullOrEmpty(trimmed))
+            if (string.IsNullOrEmpty(trimmed))
             {
                 Log.Debug("Nothing to learn. sentence is empty");
                 return;
@@ -1350,7 +1352,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// Synchronously sends the string to the target text window
         /// </summary>
         /// <param name="word">string to send</param>
-        protected void sendWait(String word)
+        protected void sendWait(string word)
         {
             SendKeys.SendWait(getNormalizedStringForSendWait(word));
         }
@@ -1380,7 +1382,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// <returns>true on success</returns>
         protected bool SetFocus(IntPtr handleText)
         {
-            Int32 ret = 0;
+            int ret = 0;
 
             Log.Verbose();
 

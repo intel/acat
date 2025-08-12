@@ -12,7 +12,7 @@
 
 using System;
 
-namespace ACAT.Extensions.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist.MessageTypes
 {
     [Serializable]
     internal class WordAndCharacterPredictionResponse
@@ -25,22 +25,22 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <summary>
         /// Prediction result (Letters)
         /// </summary>
-        public String NextCharacters { get; set; }
+        public string NextCharacters { get; set; }
 
         /// <summary>
         /// Prediction result (Letters from sentences)
         /// </summary>
-        public String NextCharactersSentence { get; set; }
+        public string NextCharactersSentence { get; set; }
 
         /// <summary>
         /// Prediction result (Sentences)
         /// </summary>
-        public String PredictedSentence { get; set; }
+        public string PredictedSentence { get; set; }
 
         /// <summary>
         /// Prediction result (Words)
         /// </summary>
-        public String PredictedWords { get; set; }
+        public string PredictedWords { get; set; }
 
         /// <summary>
         /// Prediction request type
@@ -53,10 +53,10 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
         public WordAndCharacterPredictionResponse(ConvAssistMessageTypes msgType,
                                                     ConvAssistPredictionTypes predType,
-                                                    String words,
-                                                    String characters,
-                                                    String charactersSentence,
-                                                    String sentences)
+                                                    string words,
+                                                    string characters,
+                                                    string charactersSentence,
+                                                    string sentences)
         {
             MessageType = msgType;
             PredictionType = predType;

@@ -19,24 +19,17 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.AgentManagement;
-using ACAT.Core.AgentManagement.TextInterface;
+using ACAT.Core.AgentManagement.TextControlAgents;
 using ACAT.Core.PanelManagement;
-using ACAT.Core.UserControlManagement;
+using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
-using ACAT.Extension;
-using ACAT.Extensions.FunctionalAgents.LaunchAppAgent;
-using ACAT.Extensions.FunctionalAgents.UI;
-using ACAT.Extensions.UI.UserControls;
-using ACATResources;
+using ACAT.Extension.UI;
+using ACAT.Extensions.UI.UserControls.Toolbars;
 using System;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Windows.Automation;
-using System.Windows.Forms;
-using static ACAT.Extensions.FunctionalAgents.UI.LaunchAppScanner;
 
 namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
 {

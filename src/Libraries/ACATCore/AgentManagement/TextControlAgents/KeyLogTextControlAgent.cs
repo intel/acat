@@ -9,7 +9,7 @@ using ACAT.Core.Utility;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Core.AgentManagement.TextInterface
+namespace ACAT.Core.AgentManagement.TextControlAgents
 {
     /// <summary>
     /// Uses key logging to manipulate text in the target text control. Use
@@ -62,7 +62,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         {
             get
             {
-                return (_textBox != null) ? _textBox.Handle : IntPtr.Zero;
+                return _textBox != null ? _textBox.Handle : IntPtr.Zero;
             }
         }
 
@@ -73,7 +73,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         {
             if (isValid(_textBox))
             {
-                Windows.SetText(_textBox, String.Empty);
+                Windows.SetText(_textBox, string.Empty);
             }
         }
 
@@ -96,18 +96,18 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// Returns highlighted text if any
         /// </summary>
         /// <returns>highlighted text</returns>
-        public override String GetSelectedText()
+        public override string GetSelectedText()
         {
-            return isValid(_textBox) ? Windows.GetSelectedText(_textBox) : String.Empty;
+            return isValid(_textBox) ? Windows.GetSelectedText(_textBox) : string.Empty;
         }
 
         /// <summary>
         /// Gets the string of text from the shadow text control
         /// </summary>
         /// <returns>text</returns>
-        public override String GetText()
+        public override string GetText()
         {
-            return isValid(_textBox) ? Windows.GetText(_textBox) : String.Empty;
+            return isValid(_textBox) ? Windows.GetText(_textBox) : string.Empty;
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
             bool isFirstWord = true;
             for (int ii = 0; ii < startPos; ii++)
             {
-                if (!Char.IsWhiteSpace(text[ii]))
+                if (!char.IsWhiteSpace(text[ii]))
                 {
                     isFirstWord = false;
                     break;
@@ -179,7 +179,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
             }
 
             Log.Debug("Keycode: " + e.KeyCode +
-                        ", cursor: " + ((_textBox != null) ? _textBox.SelectionStart.ToString() : "-1"));
+                        ", cursor: " + (_textBox != null ? _textBox.SelectionStart.ToString() : "-1"));
         }
 
         /// <summary>
@@ -324,7 +324,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         {
             if (_textBox == null)
             {
-                var name = String.Format("NullAgent_TB_" + _textBoxNameCounter++);
+                var name = string.Format("NullAgent_TB_" + _textBoxNameCounter++);
                 Log.Debug("Creating textbox window " + name);
                 _textBox = new TextBox { Name = name, Multiline = true };
                 _textBox.TextChanged += _textBox_TextChanged;
@@ -369,7 +369,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
             {
                 Log.Debug("textbox changed. Name: " + _textBox.Name +
                             ", caretPos = " + _textBox.SelectionStart +
-                            ", _textBox: " + ((_textBox == null) ? "null" : _textBox.Text));
+                            ", _textBox: " + (_textBox == null ? "null" : _textBox.Text));
             }
 
             triggerTextChanged(this);
@@ -382,7 +382,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         {
             if (isValid(_textBox))
             {
-                Windows.SetText(_textBox, String.Empty);
+                Windows.SetText(_textBox, string.Empty);
             }
 
             onTextChanged();

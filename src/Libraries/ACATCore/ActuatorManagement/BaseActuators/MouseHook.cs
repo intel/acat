@@ -17,7 +17,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace ACAT.Core.InputActuators
+namespace ACAT.Core.ActuatorManagement.BaseActuators
 {
     /// <summary>
     /// Manages windows low level mouse hooks to capture global

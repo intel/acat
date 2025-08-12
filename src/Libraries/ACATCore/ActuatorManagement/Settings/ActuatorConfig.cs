@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace ACAT.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement.Settings
 {
     /// <summary>
     /// Holds the settings for all the actuators discovered. Settings
@@ -34,12 +34,12 @@ namespace ACAT.Core.ActuatorManagement
         /// Name of the settings file
         /// </summary>
         [NonSerialized, XmlIgnore]
-        public static String ActuatorSettingsFileName;
+        public static string ActuatorSettingsFileName;
 
         /// <summary>
         /// Arrary of actuator settings, one for each actuator
         /// </summary>
-        public List<ActuatorSetting> ActuatorSettings = new List<ActuatorSetting>();
+        public List<ActuatorSetting> ActuatorSettings = new();
 
         /// <summary>
         /// Loads settings from file
@@ -55,9 +55,9 @@ namespace ACAT.Core.ActuatorManagement
         /// </summary>
         /// <param name="name">name of the actuator</param>
         /// <returns>object if found, null otherwise</returns>
-        public ActuatorSetting Find(String name)
+        public ActuatorSetting Find(string name)
         {
-            return ActuatorSettings.FirstOrDefault(actuatorSetting => String.Compare(name, actuatorSetting.Name, true) == 0);
+            return ActuatorSettings.FirstOrDefault(actuatorSetting => string.Compare(name, actuatorSetting.Name, true) == 0);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <returns></returns>
         public override bool Save()
         {
-            return !String.IsNullOrEmpty(ActuatorSettingsFileName) && Save(this, ActuatorSettingsFileName);
+            return !string.IsNullOrEmpty(ActuatorSettingsFileName) && Save(this, ActuatorSettingsFileName);
         }
     }
 }

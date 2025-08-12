@@ -19,9 +19,10 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.AgentManagement;
-using ACAT.Core.AgentManagement.TextInterface;
-using ACAT.Core.PanelManagement;
+using ACAT.Core.AgentManagement.TextControlAgents;
+using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.Utility;
+using ACAT.Extension.UI;
 using System;
 using System.Collections.Generic;
 using System.Windows.Automation;

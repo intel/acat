@@ -7,7 +7,7 @@
 
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
-using ACAT.Core.Utility;
+using ACAT.Core.Utility.Mouse;
 using System;
 using System.Windows.Forms;
 

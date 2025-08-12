@@ -22,7 +22,6 @@ using ACAT.Core.AgentManagement;
 using ACAT.Core.Utility;
 using System;
 using System.Windows.Automation;
-using ACATResources;
 
 namespace ACAT.Extension.AppAgents.Outlook
 {
@@ -155,9 +154,6 @@ namespace ACAT.Extension.AppAgents.Outlook
         public bool IsAppointmentSchedulingWindow(WindowActivityMonitorInfo monitorInfo, ref OutlookControlSubType subType)
         {
             subType = OutlookControlSubType.Unknown;
-
-            bool retVal = true;
-
             if (monitorInfo.FocusedElement == null)
             {
                 return false;
@@ -168,9 +164,7 @@ namespace ACAT.Extension.AppAgents.Outlook
                            AgentUtils.FindElementByAutomationId(windowElement, "Button", ControlType.Button, "4370")) ??
                           AgentUtils.FindElementByAutomationId(windowElement, "RichEdit20WPT", ControlType.Edit, "4098");
 
-            retVal = (element != null);
-
-            
+            bool retVal = element != null;
             return retVal;
         }
 
@@ -311,9 +305,6 @@ namespace ACAT.Extension.AppAgents.Outlook
         public bool IsOpenAppointmentWindow(WindowActivityMonitorInfo monitorInfo, ref OutlookControlSubType subType)
         {
             subType = OutlookControlSubType.Unknown;
-
-            bool retVal = true;
-
             if (monitorInfo.FocusedElement == null)
             {
                 return false;
@@ -323,8 +314,7 @@ namespace ACAT.Extension.AppAgents.Outlook
             var element = AgentUtils.FindElementByAutomationId(windowElement, "REComboBox20W", ControlType.ComboBox, "4100") ??
                           AgentUtils.FindElementByAutomationId(windowElement, "RichEdit20WPT", ControlType.Document, "4100");
 
-            retVal = (element != null);
-
+            bool retVal = element != null;
             if (retVal)
             {
                 if (AgentUtils.IsElementByAutomationId(monitorInfo.FocusedElement, "RichEdit20WPT", "ControlType.Document", "4100"))
@@ -349,9 +339,6 @@ namespace ACAT.Extension.AppAgents.Outlook
         public bool IsOpenContactWindow(WindowActivityMonitorInfo monitorInfo, ref OutlookControlSubType subType)
         {
             subType = OutlookControlSubType.Unknown;
-
-            bool retVal = true;
-
             if (monitorInfo.FocusedElement == null)
             {
                 return false;
@@ -362,8 +349,7 @@ namespace ACAT.Extension.AppAgents.Outlook
                            AgentUtils.FindElementByAutomationId(windowElement, "RichEdit20WPT", ControlType.Edit, "4480") ??
                           AgentUtils.FindElementByAutomationId(windowElement, "RichEdit20WPT", ControlType.Edit, "4096"));
 
-            retVal = (element != null);
-
+            bool retVal = element != null;
             if (retVal)
             {
                 if (AgentUtils.IsElementByAutomationId(monitorInfo.FocusedElement, "_WwG", "ControlType.Pane", "", "Message"))
@@ -414,9 +400,6 @@ namespace ACAT.Extension.AppAgents.Outlook
         public bool IsOpenTaskWindow(WindowActivityMonitorInfo monitorInfo, ref OutlookControlSubType subType)
         {
             subType = OutlookControlSubType.Unknown;
-
-            bool retVal = true;
-
             if (monitorInfo.FocusedElement == null)
             {
                 return false;
@@ -433,8 +416,7 @@ namespace ACAT.Extension.AppAgents.Outlook
                            AgentUtils.FindElementByAutomationId(windowElement, "REComboBox20W", ControlType.ComboBox, "4480") ??
                           AgentUtils.FindElementByAutomationId(windowElement, "RichEdit20WPT", ControlType.Edit, "4112"));
 
-            retVal = (element != null);
-
+            bool retVal = element != null;
             if (retVal)
             {
                 if (AgentUtils.IsElementByAutomationId(monitorInfo.FocusedElement, "RichEdit20WPT", "ControlType.Document", "4097"))

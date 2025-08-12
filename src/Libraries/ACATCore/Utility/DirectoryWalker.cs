@@ -6,7 +6,6 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -49,10 +48,10 @@ namespace ACAT.Core.Utility
         /// <summary>
         /// Files to look for
         /// </summary>
-        private String _wildCard = "*.*";
+        private readonly String _wildCard = "*.*";
 
         /// <summary>
-        /// Initialzies an instance of the class.  Finds all
+        /// Initializes an instance of the class.  Finds all
         /// files in the specified directory
         /// </summary>
         /// <param name="rootDir">Directory to walk</param>

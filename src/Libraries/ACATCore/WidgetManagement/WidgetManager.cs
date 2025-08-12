@@ -6,6 +6,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement.Interfaces;
+using ACAT.Core.WidgetManagement.Layout;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,7 +39,7 @@ namespace ACAT.Core.WidgetManagement
         /// <summary>
         /// The layout object for the scanner
         /// </summary>
-        private readonly Layout _layout;
+        private readonly LayoutAttribute _layout;
 
         /// <summary>
         /// Represents the scanner Form
@@ -60,7 +62,7 @@ namespace ACAT.Core.WidgetManagement
         public WidgetManager(Control control)
         {
             _widgetAttributes = new WidgetAttributes();
-            _layout = new Layout();
+            _layout = new LayoutAttribute();
             _rootWidget = new Widget(control);
 
             Log.Debug("control name is " + control.Name);
@@ -79,7 +81,7 @@ namespace ACAT.Core.WidgetManagement
         /// <summary>
         /// Gets for the layout manager object for the scanner
         /// </summary>
-        public Layout Layout
+        public LayoutAttribute Layout
         {
             get { return _layout; }
         }

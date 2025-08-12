@@ -25,7 +25,7 @@ namespace ACAT.Core.CommandManagement
         [NonSerialized, XmlIgnore]
         public static String FilePath;
 
-        private readonly List<CmdDescriptor> _cmdDescriptors = new List<CmdDescriptor>();
+        private readonly List<CmdDescriptor> _cmdDescriptors = new();
 
         /// <summary>
         /// List of command descriptors

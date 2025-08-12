@@ -67,7 +67,7 @@ namespace ACAT.Core.Utility
         public const uint WS_TILEDWINDOW = WS_OVERLAPPEDWINDOW;
         public const uint WS_VISIBLE = 0x10000000;
         public const uint WS_VSCROLL = 0x00200000;
-        public static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+        public static readonly IntPtr HWND_TOPMOST = new(-1);
 
         public delegate bool EnumDelegate(IntPtr hWnd, int lParam);
 

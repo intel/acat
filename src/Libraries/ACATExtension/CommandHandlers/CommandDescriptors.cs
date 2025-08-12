@@ -7,7 +7,7 @@
 
 using ACAT.Core.CommandManagement;
 
-namespace ACATExtension.CommandHandlers
+namespace ACAT.Extension.CommandHandlers
 {
     public class CommandDescriptors
     {

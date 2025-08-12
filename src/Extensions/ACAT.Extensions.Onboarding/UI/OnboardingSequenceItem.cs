@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Extensions.Onboarding
+namespace ACAT.Extensions.Onboarding.UI
 {
     /// <summary>
     /// Holds the ID of the extension that is a part of

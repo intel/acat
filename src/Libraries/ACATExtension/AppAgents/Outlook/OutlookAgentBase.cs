@@ -20,7 +20,6 @@
 
 using ACATResources;
 using ACAT.Core.AgentManagement;
-using ACAT.Core.AgentManagement.TextInterface;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using Microsoft.Win32;
@@ -30,6 +29,10 @@ using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Forms;
 using Task = System.Threading.Tasks.Task;
+using ACAT.Extension.UI;
+using ACAT.Core.AgentManagement.Interfaces;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.AgentManagement.TextControlAgents;
 
 namespace ACAT.Extension.AppAgents.Outlook
 {
@@ -788,10 +791,7 @@ namespace ACAT.Extension.AppAgents.Outlook
             }
             catch
             {
-                if (key != null)
-                {
-                    key.Close();
-                }
+                key?.Close();
             }
 
             return -1;

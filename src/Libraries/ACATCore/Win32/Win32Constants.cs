@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
-using System;
-
-namespace ACAT.Win32
+namespace ACAT.Core.Win32
 {
     /// <summary>
     /// Win32-related constants. Some of these definitions originated from https://pinvoke.net/
@@ -40,8 +38,8 @@ namespace ACAT.Win32
         /// </summary>
         public const uint WS_MINIMIZE = 0x20000000;
 
-        public const Int32 WM_NCLBUTTONDOWN = 0xA1;
-        public const Int32 HTCAPTION = 0x2;
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HTCAPTION = 0x2;
 
         public const int WM_SYSCOMMAND = 0x0112;
         public const int SC_MOVE = 0xF010;

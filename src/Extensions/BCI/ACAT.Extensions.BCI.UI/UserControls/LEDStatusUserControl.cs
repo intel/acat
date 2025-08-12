@@ -11,7 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
-using ACAT.Extensions.BCI.Common.AnimationSharp;
+using ACAT.Extensions.BCI.Common.AnimationSharp.Utility;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using System.Drawing;
 using System.Threading.Tasks;

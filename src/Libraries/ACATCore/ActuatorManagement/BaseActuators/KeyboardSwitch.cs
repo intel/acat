@@ -13,11 +13,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.ActuatorManagement;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.ActuatorManagement.Settings;
 using ACAT.Core.Utility;
-using System;
 
-namespace ACAT.Core.InputActuators
+namespace ACAT.Core.ActuatorManagement.BaseActuators
 {
     /// <summary>
     /// Represents a keyboard switch object. The user can drive the
@@ -52,7 +52,7 @@ namespace ACAT.Core.InputActuators
         /// The keyboard hotkey this switch represents (e.g F5).  This
         /// is the 'source' attribute of a keyboard switch in the xml file
         /// </summary>
-        public String HotKey { get; set; }
+        public string HotKey { get; set; }
 
         /// <summary>
         /// Perform initialization

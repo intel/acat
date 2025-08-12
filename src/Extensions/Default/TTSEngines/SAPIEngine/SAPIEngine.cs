@@ -12,8 +12,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Extensions;
-using ACAT.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.TTSManagement;
+using ACAT.Core.TTSManagement.Interfaces;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using System;
@@ -545,7 +546,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
 
                     Log.Debug("Speaking text");
 
-                    TTSPrompt prompt = new TTSPrompt(ssml, SynthesisTextFormat.Ssml)
+                    TTSPrompt prompt = new(ssml, SynthesisTextFormat.Ssml)
                     {
                         Bookmark = bookmark
                     };

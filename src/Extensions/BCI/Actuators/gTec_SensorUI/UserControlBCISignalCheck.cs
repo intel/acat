@@ -18,7 +18,6 @@ using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using Accord.Math;
 using brainflow;
-using gTecSensorUI;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -193,7 +192,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             // Initialize colors so don't have to constantly create them
             COLOR_ACAT_DEFAULT_ORANGE = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            ColorConverter colorConverter = new ColorConverter();
+            ColorConverter colorConverter = new();
             COLOR_STATUS_OK = (Color)colorConverter.ConvertFromString("#00FF00"); // Green
             COLOR_STATUS_ACCEPTABLE = (Color)colorConverter.ConvertFromString("#FFFF00"); // Yellow
             COLOR_STATUS_KO = (Color)colorConverter.ConvertFromString("#FF4040"); // Red
@@ -611,7 +610,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 // Keep only last N samples in buffer (N samples are used to calculate status)
                 int numSamplesCurrBuffer = inBuffer.GetLength(1);
 
-                List<int> idxToKeep = new List<int>();
+                List<int> idxToKeep = new();
                 for (int i = numSamplesCurrBuffer - numSamplesToKeep; i < numSamplesCurrBuffer; i++)
                 {
                     if (i >= 0)

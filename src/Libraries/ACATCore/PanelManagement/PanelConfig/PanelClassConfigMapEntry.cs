@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.PanelConfig
 {
     /// <summary>
     /// Represents a mapping between a panel class and its
@@ -37,14 +37,14 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// The panel class (eg Alphabet, Punctuations etc)
         /// </summary>
-        public String PanelClass;
+        public string PanelClass;
 
         /// <summary>
         /// Initializes an instance of the class
         /// </summary>
         public PanelClassConfigMapEntry()
         {
-            PanelClass = String.Empty;
+            PanelClass = string.Empty;
             ConfigId = Guid.Empty;
         }
 
@@ -53,7 +53,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         /// <param name="panelClass">Panel class</param>
         /// <param name="configId">the config id it maps to</param>
-        public PanelClassConfigMapEntry(String panelClass, Guid configId)
+        public PanelClassConfigMapEntry(string panelClass, Guid configId)
         {
             PanelClass = panelClass;
             ConfigId = configId;
@@ -64,7 +64,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         /// <param name="panelClass">panel class</param>
         /// <param name="configId">String rep of the config id guid</param>
-        public PanelClassConfigMapEntry(String panelClass, String configId)
+        public PanelClassConfigMapEntry(string panelClass, string configId)
         {
             if (Guid.TryParse(configId, out Guid guid))
             {

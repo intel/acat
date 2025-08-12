@@ -11,7 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.ActuatorManagement;
-using ACAT.Core.InputActuators;
+using ACAT.Core.ActuatorManagement.BaseActuators;
 using ACAT.Core.ThemeManagement;
 using System;
 using System.Threading.Tasks;

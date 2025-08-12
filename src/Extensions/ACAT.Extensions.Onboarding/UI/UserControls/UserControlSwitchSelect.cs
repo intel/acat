@@ -5,8 +5,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.ActuatorManagement;
-using ACAT.Core.Onboarding;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.ActuatorManagement.Settings;
+using ACAT.Core.CoreInterfaces;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACATResources;
@@ -28,7 +29,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
         private const String headStyle = "a:link{color: rgb(255, 170, 0);}";
         private const String textStyle = "font-family:'Montserrat Medium'; font-size:24px; color:white";
         private ActuatorConfig _actuatorConfig;
-        private readonly List<ActuatorSetting> _actuatorSettings = new List<ActuatorSetting>();
+        private readonly List<ActuatorSetting> _actuatorSettings = new();
         private readonly String _htmlTemplate = "<!DOCTYPE html><html><head><style>{0}</style></head><body style=\"{1}\"><p style=\"{2}\">{3}<font></body></html>";
         private readonly IOnboardingExtension _onboardingExtension;
         private readonly String _stepId;
@@ -219,7 +220,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
                 }
             }
 
-            List<String> list = new List<String>();
+            List<String> list = new();
 
             if (param2.ToLower().EndsWith(".mp4"))
             {

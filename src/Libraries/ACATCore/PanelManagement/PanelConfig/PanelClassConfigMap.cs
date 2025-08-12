@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.PanelConfig
 {
     /// <summary>
     /// Represents a single configuration that is a collection
@@ -37,35 +37,35 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// User friendly description
         /// </summary>
-        public String Description;
+        public string Description;
 
-        public String DisplayNameLong;
+        public string DisplayNameLong;
 
-        public String DisplayNameShort;
+        public string DisplayNameShort;
 
         /// <summary>
         /// A name for this configuration
         /// </summary>
-        public String Name;
+        public string Name;
 
         /// <summary>
         /// A list of panels that are in this configuration
         /// </summary>
-        public List<PanelClassConfigMapEntry> PanelClassConfigMapEntries = new List<PanelClassConfigMapEntry>();
+        public List<PanelClassConfigMapEntry> PanelClassConfigMapEntries = new();
 
-        public String ScreenshotFileName;
+        public string ScreenshotFileName;
 
         /// <summary>
         /// Initializes an instance of the class
         /// </summary>
         public PanelClassConfigMap()
         {
-            Name = String.Empty;
-            Description = String.Empty;
+            Name = string.Empty;
+            Description = string.Empty;
             Default = false;
-            ScreenshotFileName = String.Empty;
-            DisplayNameShort = String.Empty;
-            DisplayNameLong = String.Empty;
+            ScreenshotFileName = string.Empty;
+            DisplayNameShort = string.Empty;
+            DisplayNameLong = string.Empty;
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace ACAT.Core.PanelManagement
         /// <param name="name">name of the configuration</param>
         /// <param name="description">description</param>
         /// <param name="isDefault">is this the default?</param>
-        public PanelClassConfigMap(String name, String description, String displayNameShort = "", String displayNameLong = "", bool isDefault = false)
+        public PanelClassConfigMap(string name, string description, string displayNameShort = "", string displayNameLong = "", bool isDefault = false)
         {
             Name = name;
             Description = description;
@@ -90,7 +90,7 @@ namespace ACAT.Core.PanelManagement
         /// <param name="configId">the config ID </param>
         /// <param name="replaceIfExists">set to true if existing entry should be replaced</param>
         /// <returns></returns>
-        public PanelClassConfigMapEntry Add(String panelClass, Guid configId, bool replaceIfExists = false)
+        public PanelClassConfigMapEntry Add(string panelClass, Guid configId, bool replaceIfExists = false)
         {
             var panelClassConfigMapEntry = Find(panelClass);
 
@@ -132,9 +132,9 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         /// <param name="panelClass">panelclass to look for</param>
         /// <returns>entry if found</returns>
-        public PanelClassConfigMapEntry Find(String panelClass)
+        public PanelClassConfigMapEntry Find(string panelClass)
         {
-            return PanelClassConfigMapEntries.FirstOrDefault(panelClassConfigMapEntry => String.Compare(panelClassConfigMapEntry.PanelClass, panelClass, true) == 0);
+            return PanelClassConfigMapEntries.FirstOrDefault(panelClassConfigMapEntry => string.Compare(panelClassConfigMapEntry.PanelClass, panelClass, true) == 0);
         }
     }
 }

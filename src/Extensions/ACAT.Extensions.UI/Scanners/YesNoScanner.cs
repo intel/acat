@@ -14,18 +14,18 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.ActuatorManagement;
+using ACAT.Core.ActuatorManagement.BaseActuators;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.Extensions;
-using ACAT.Core.InputActuators;
-using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
-using ACAT.Extension;
 using ACAT.Extension.CommandHandlers;
+using ACAT.Extension.UI;
 using System;
 using System.Collections.Generic;
-using System.Security.Permissions;
 using System.Windows.Forms;
 
 namespace ACAT.Extensions.UI.Menus

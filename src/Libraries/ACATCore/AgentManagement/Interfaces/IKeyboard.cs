@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace ACAT.Core.AgentManagement
+namespace ACAT.Core.AgentManagement.Interfaces
 {
     /// <summary>
     /// Interface to send keystrokes to the active application by
@@ -96,6 +96,6 @@ namespace ACAT.Core.AgentManagement
         /// Sends the string
         /// </summary>
         /// <param name="str">string to send</param>
-        void Send(String str);
+        void Send(string str);
     }
 }

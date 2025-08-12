@@ -7,8 +7,6 @@
 
 using ACAT.Core.PreferencesManagement;
 using System;
-using System.Reflection;
-using System.Text;
 using System.Xml.Serialization;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;

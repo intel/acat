@@ -1,6 +1,5 @@
-﻿using ACAT.Core.Utility;
-using ACAT.Core.WidgetManagement;
-using ACAT.UserControls;
+﻿using ACAT.Core.WidgetManagement;
+using ACAT.Extension.UI.UserControls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,12 +7,12 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.UI.UserControls
+namespace ACAT.Extensions.UI.UserControls.Toolbars
 {
     [DesignerCategory("code")]
     public abstract class LargeToolbarUserControl : KeyboardUserControl
     {
-        private TableLayoutPanel ToolbarBox = new TableLayoutPanel
+        private readonly TableLayoutPanel ToolbarBox = new()
         {
             Name = "ToolbarBox",
             AccessibleName = "ToolbarBox",
@@ -26,7 +25,7 @@ namespace ACAT.Extensions.UI.UserControls
             GrowStyle = TableLayoutPanelGrowStyle.AddColumns,
         };
 
-        private TableLayoutPanel DefaultButtonsBox = new TableLayoutPanel
+        private readonly TableLayoutPanel DefaultButtonsBox = new()
         {
             Name = "DefaultButtonsBox",
             AccessibleName = "DefaultButtonsBox",
@@ -41,7 +40,7 @@ namespace ACAT.Extensions.UI.UserControls
             Visible = true
         };
 
-        private readonly System.ComponentModel.IContainer container = null;
+        private readonly IContainer container = null;
 
         protected List<ButtonSpec> Buttons { get; set; }
 
@@ -97,7 +96,7 @@ namespace ACAT.Extensions.UI.UserControls
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (container != null))
+            if (disposing && container != null)
             {
                 container.Dispose();
             }
@@ -106,11 +105,11 @@ namespace ACAT.Extensions.UI.UserControls
 
         protected virtual void InitializeComponent()
         {
-            this.SuspendLayout();
-            this.AccessibleName = this.Name;
-            this.AutoSize = true;
-            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            this.Dock = DockStyle.Top;
+            SuspendLayout();
+            AccessibleName = Name;
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            Dock = DockStyle.Top;
 
             ToolbarBox.SuspendLayout();
 
@@ -122,7 +121,7 @@ namespace ACAT.Extensions.UI.UserControls
 
             DefaultButtonsBox.ResumeLayout(true);
             ToolbarBox.ResumeLayout(true);
-            this.ResumeLayout(true);
+            ResumeLayout(true);
         }
 
         // This method should be overridden in derived classes to handle button clicks

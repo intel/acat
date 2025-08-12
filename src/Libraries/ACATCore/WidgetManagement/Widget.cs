@@ -8,6 +8,8 @@
 using ACAT.Core.Interpreter;
 using ACAT.Core.ThemeManagement;
 using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement.Interfaces;
+using ACAT.Core.WidgetManagement.Layout;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -105,7 +107,7 @@ namespace ACAT.Core.WidgetManagement
         /// <summary>
         /// The layout that this widget is a part of
         /// </summary>
-        private Layout _layout;
+        private LayoutAttribute _layout;
 
         /// <summary>
         /// Initializes an instance of the widget class
@@ -731,7 +733,7 @@ namespace ACAT.Core.WidgetManagement
         /// <summary>
         ///  Gets the parent layout object
         /// </summary>
-        public Layout WidgetLayout
+        public LayoutAttribute WidgetLayout
         {
             get { return _layout; }
         }
@@ -1137,7 +1139,7 @@ namespace ACAT.Core.WidgetManagement
         /// Sets the layout that this widget is a part of
         /// </summary>
         /// <param name="layout"></param>
-        internal void SetLayout(Layout layout)
+        internal void SetLayout(LayoutAttribute layout)
         {
             _layout = layout;
         }

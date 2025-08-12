@@ -23,7 +23,6 @@ using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using Accord.Math;
 using brainflow;
-using openBCISensorUI;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

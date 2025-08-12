@@ -11,11 +11,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.ActuatorManagement;
-using ACAT.Core.InputActuators;
-using ACAT.Core.Onboarding;
+using ACAT.Core.ActuatorManagement.BaseActuators;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.CoreInterfaces;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
+using ACAT.Extensions.Onboarding.Onboarding;
 using ACATResources;
 using System;
 using System.Collections.Generic;
@@ -355,7 +356,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
                 }
             }
 
-            List<String> list = new List<String>
+            List<String> list = new()
             {
                 "PDF",
                 "true",

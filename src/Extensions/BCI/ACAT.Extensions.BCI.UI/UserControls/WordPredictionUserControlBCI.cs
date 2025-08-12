@@ -11,12 +11,14 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.AnimationManagement;
-using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.UserControlManagement;
+using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
-using ACAT.Core.WordPredictionManagement;
-using ACAT.Extension;
+using ACAT.Core.WordPredictorManagement;
+using ACAT.Extension.UI;
 using System;
 using System.Windows.Forms;
 

@@ -10,20 +10,26 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.ActuatorManagement;
+using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.Audit;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.ThemeManagement;
 using ACAT.Core.TTSManagement;
 using ACAT.Core.UserControlManagement;
+using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
-using ACAT.Core.WordPredictionManagement;
+using ACAT.Core.WordPredictorManagement;
+using ACAT.Core.WordPredictorManagement.Interfaces;
 using ACAT.Extension;
 using ACAT.Extension.CommandHandlers;
+using ACAT.Extension.UI;
 using ACAT.Extensions.BCI.Common.AnimationSharp;
+using ACAT.Extensions.BCI.Common.AnimationSharp.Utility;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Extensions.BCI.Common.BCIInterfaceUtilities;
 using ACAT.Extensions.BCI.UI.UserControls;
@@ -83,7 +89,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// <summary>
         /// Should the scanner be dimmed
         /// </summary>
-        private bool _dimScanner;
+        private readonly bool _dimScanner;
 
         /// <summary>
         /// If the form is fully loaded and painted

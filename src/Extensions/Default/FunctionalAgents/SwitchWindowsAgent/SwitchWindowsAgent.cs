@@ -20,14 +20,15 @@
 
 using ACATResources;
 using ACAT.Core.AgentManagement;
-using ACAT.Core.AgentManagement.TextInterface;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
-using ACAT.Extension;
 using System;
 using System.Windows.Automation;
 using System.Windows.Forms;
-using ACAT.Core.UserControlManagement;
+using ACAT.Extension.UI;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.UserControlManagement.Interfaces;
+using ACAT.Core.AgentManagement.TextControlAgents;
 
 namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
 {
@@ -110,10 +111,7 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
                     break;
 
                 default:
-                    if (_switchWindowsScanner != null)
-                    {
-                        _switchWindowsScanner.CheckCommandEnabled(arg);
-                    }
+                    _switchWindowsScanner?.CheckCommandEnabled(arg);
                     if (!arg.Handled)
                     {
                         arg.Enabled = false;

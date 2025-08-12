@@ -7,6 +7,8 @@
 
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using ACAT.Core.WidgetManagement.Interfaces;
+using ACAT.Core.WidgetManagement.Layout;
 using System.Windows.Forms;
 
 namespace ACAT.Core.Widgets

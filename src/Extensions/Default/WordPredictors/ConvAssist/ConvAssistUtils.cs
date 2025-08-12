@@ -101,7 +101,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <returns></returns>
         public static string RemoveSpecialCharacters(string str, bool includeApostrophes = true)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             foreach (char c in str)
             {
                 if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.'
@@ -115,7 +115,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
         public static string RemoveSpecialCharactersSentences(string str, bool includeApostrophes = true)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             foreach (char c in str)
             {
                 if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
@@ -129,7 +129,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
         public static List<KeyValuePair<string, double>> ToList(List<string> predictions)
         {
-            List<KeyValuePair<string, double>> newList = new List<KeyValuePair<string, double>>();
+            List<KeyValuePair<string, double>> newList = new();
             try
             {
                 //Create Dictionary of each to set the number value as a Double

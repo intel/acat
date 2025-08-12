@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.PanelConfig
 {
     /// <summary>
     /// Holds config information about a scanner - its type,
@@ -18,18 +18,18 @@ namespace ACAT.Core.PanelManagement
     /// </summary>
     public class PanelConfigMapEntry
     {
-        private readonly Dictionary<String, String> _userControlsDict = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _userControlsDict = new();
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         public PanelConfigMapEntry()
         {
-            PanelClass = String.Empty;
-            ConfigName = String.Empty;
-            ConfigFileName = String.Empty;
+            PanelClass = string.Empty;
+            ConfigName = string.Empty;
+            ConfigFileName = string.Empty;
             FormId = Guid.Empty;
-            Description = String.Empty;
+            Description = string.Empty;
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace ACAT.Core.PanelManagement
         /// <param name="configFileName">animation config file name for the scanner</param>
         /// <param name="formId">guid of the scanner</param>
         /// <param name="formType">.NET class Type of the scanner</param>
-        public PanelConfigMapEntry(Guid configId, String panelClass, String configName, String configFileName, Guid formId, Type formType, String description = null)
+        public PanelConfigMapEntry(Guid configId, string panelClass, string configName, string configFileName, Guid formId, Type formType, string description = null)
         {
             PanelClass = panelClass;
             ConfigName = configName;
@@ -49,13 +49,13 @@ namespace ACAT.Core.PanelManagement
             FormId = formId;
             FormType = formType;
             ConfigId = configId;
-            Description = description ?? String.Empty;
+            Description = description ?? string.Empty;
         }
 
         /// <summary>
         /// Gets the animation config file name for the scanner
         /// </summary>
-        public String ConfigFileName { get; internal set; }
+        public string ConfigFileName { get; internal set; }
 
         /// <summary>
         /// Unique id for this entry
@@ -65,12 +65,12 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Gets the name of the configuration for the scanner
         /// </summary>
-        public String ConfigName { get; internal set; }
+        public string ConfigName { get; internal set; }
 
         /// <summary>
         /// User friendly description of this entry
         /// </summary>
-        public String Description { get; internal set; }
+        public string Description { get; internal set; }
 
         /// <summary>
         /// Gets the ACAT descriptor guid for the scanner
@@ -85,12 +85,12 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Gets the scanner class
         /// </summary>
-        public String PanelClass { get; internal set; }
+        public string PanelClass { get; internal set; }
 
-        public String GetUserControlName(String key)
+        public string GetUserControlName(string key)
         {
             var str = key.ToLower();
-            return (_userControlsDict.ContainsKey(str)) ? _userControlsDict[str] : String.Empty;
+            return _userControlsDict.ContainsKey(str) ? _userControlsDict[str] : string.Empty;
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace ACAT.Core.PanelManagement
             }
             else
             {
-                retVal = String.Compare(ConfigName, mapEntry.ConfigName, true) == 0;
+                retVal = string.Compare(ConfigName, mapEntry.ConfigName, true) == 0;
             }
 
             return retVal;
@@ -135,17 +135,17 @@ namespace ACAT.Core.PanelManagement
 
             var configIdString = XmlUtils.GetXMLAttrString(node, "configId");
 
-            if (String.IsNullOrEmpty(PanelClass))
+            if (string.IsNullOrEmpty(PanelClass))
             {
                 PanelClass = ConfigName;
             }
 
-            String guidString = XmlUtils.GetXMLAttrString(node, "formId");
+            string guidString = XmlUtils.GetXMLAttrString(node, "formId");
 
-            if (String.IsNullOrEmpty(ConfigFileName) ||
-                String.IsNullOrEmpty(ConfigName) ||
-                String.IsNullOrEmpty(configIdString) ||
-                String.IsNullOrEmpty(guidString))
+            if (string.IsNullOrEmpty(ConfigFileName) ||
+                string.IsNullOrEmpty(ConfigName) ||
+                string.IsNullOrEmpty(configIdString) ||
+                string.IsNullOrEmpty(guidString))
             {
                 retVal = false;
             }
@@ -184,9 +184,9 @@ namespace ACAT.Core.PanelManagement
                     " FormType: " + (FormType != null ? FormType.Name : "<not set>");
         }
 
-        private void parseUserControlsList(String userControlsList)
+        private void parseUserControlsList(string userControlsList)
         {
-            if (String.IsNullOrEmpty(userControlsList))
+            if (string.IsNullOrEmpty(userControlsList))
             {
                 return;
             }

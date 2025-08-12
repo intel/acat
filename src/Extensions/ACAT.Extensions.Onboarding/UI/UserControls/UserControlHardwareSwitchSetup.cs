@@ -11,10 +11,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.ActuatorManagement;
-using ACAT.Core.Onboarding;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.CoreInterfaces;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
+using ACAT.Extensions.Onboarding.Onboarding;
 using ACATResources;
 using System;
 using System.Collections.Generic;
@@ -44,8 +45,8 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
 
         private readonly Color _buttonDefaultBackColor;
         private readonly Color _buttonDefaultForeColor;
-        private readonly Dictionary<String, Button> _buttonMap = new Dictionary<string, Button>();
-        private readonly List<String> _functionKeys = new List<String> { "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "f9", "f10", "f11", "f12" };
+        private readonly Dictionary<String, Button> _buttonMap = new();
+        private readonly List<String> _functionKeys = new() { "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "f9", "f10", "f11", "f12" };
 
         // TODO - Localize Me
         private readonly String _htmlTemplate = "<!DOCTYPE html><html><head><style>{0}</style></head><body style=\"{1}\"><p style=\"{2}\">{3}<font></body></html>";
@@ -300,7 +301,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
                 }
             }
 
-            List<String> list = new List<String>
+            List<String> list = new()
             {
                 "PDF",
                 "true",

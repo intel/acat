@@ -5,10 +5,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.ActuatorManagement;
-using ACAT.Core.Onboarding;
-using ACAT.Core.PanelManagement;
+using ACAT.Core.CoreInterfaces;
 using ACAT.Core.Utility;
+using ACAT.Core.Utility.TypeLoader;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +15,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Onboarding
+namespace ACAT.Extensions.Onboarding.UI
 {
     /// <summary>
     /// Represents the onboarding wizard controller. Controls navigation
@@ -26,9 +25,9 @@ namespace ACAT.Extensions.Onboarding
     {
         private static volatile bool _DLLError = false;
         private int _extensionIndex = -1;
-        private readonly List<Type> _extensionsTypeCache = new List<Type>();
-        private readonly List<OnboardingHistoryEntry> _history = new List<OnboardingHistoryEntry>();
-        private readonly List<IOnboardingExtension> _onboardingExtensions = new List<IOnboardingExtension>();
+        private readonly List<Type> _extensionsTypeCache = new();
+        private readonly List<OnboardingHistoryEntry> _history = new();
+        private readonly List<IOnboardingExtension> _onboardingExtensions = new();
         private OnboardingSequence _onboardingSequence;
 
         public OnboardingWizard()
@@ -47,7 +46,7 @@ namespace ACAT.Extensions.Onboarding
 
         public delegate void SetButtonEnabledDelegate(OnboardingButtonTypes button, bool enable);
 
-        public delegate void SetButtonTextDelegate(OnboardingButtonTypes button, String text);
+        public delegate void SetButtonTextDelegate(OnboardingButtonTypes button, string text);
 
         public delegate void SetButtonVisibleDelegate(OnboardingButtonTypes button, bool visible);
 
@@ -70,14 +69,14 @@ namespace ACAT.Extensions.Onboarding
             EvtAddCustomButton?.Invoke(control, buttonType);
         }
 
-        public void AddToHistory(IOnboardingExtension obe, String step)
+        public void AddToHistory(IOnboardingExtension obe, string step)
         {
             _history.Add(new OnboardingHistoryEntry(obe, step));
         }
 
         public IOnboardingExtension GetNextOnboardingExtension()
         {
-            if ((_extensionIndex + 1) >= _onboardingExtensions.Count)
+            if (_extensionIndex + 1 >= _onboardingExtensions.Count)
             {
                 return null;
             }
@@ -231,7 +230,7 @@ namespace ACAT.Extensions.Onboarding
             EvtSetButtonEnabled?.Invoke(button, state);
         }
 
-        public void SetButtonText(OnboardingButtonTypes button, String text)
+        public void SetButtonText(OnboardingButtonTypes button, string text)
         {
             EvtSetButtonText?.Invoke(button, text);
         }
@@ -297,11 +296,11 @@ namespace ACAT.Extensions.Onboarding
             _extensionsTypeCache.AddRange(onboardingTypes);
 
             // Look for any additional onboarding extensions in the current directory
-            loadOnboardingExtensionsIntoCache(System.IO.Path.GetDirectoryName(
-                System.Reflection.Assembly.GetExecutingAssembly().Location));
+            loadOnboardingExtensionsIntoCache(Path.GetDirectoryName(
+                Assembly.GetExecutingAssembly().Location));
         }
 
-        private void loadOnboardingExtensionsIntoCache(String dir)
+        private void loadOnboardingExtensionsIntoCache(string dir)
         {
             var walker = new DirectoryWalker(dir, "ACAT.*.dll");
 
@@ -309,7 +308,7 @@ namespace ACAT.Extensions.Onboarding
             walker.Walk(new OnFileFoundDelegate(onFileFound));
         }
 
-        private void onFileFound(String dllName)
+        private void onFileFound(string dllName)
         {
             try
             {
@@ -326,7 +325,7 @@ namespace ACAT.Extensions.Onboarding
 
         public class OnboardingHistoryEntry
         {
-            public OnboardingHistoryEntry(IOnboardingExtension obe, String step)
+            public OnboardingHistoryEntry(IOnboardingExtension obe, string step)
             {
                 OnboardingExtension = obe;
                 StepId = step;
@@ -334,7 +333,7 @@ namespace ACAT.Extensions.Onboarding
 
             public IOnboardingExtension OnboardingExtension { get; set; }
 
-            public String StepId { get; set; }
+            public string StepId { get; set; }
         }
     }
 }

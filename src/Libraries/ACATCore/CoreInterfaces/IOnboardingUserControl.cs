@@ -5,9 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using System;
-
-namespace ACAT.Core.Onboarding
+namespace ACAT.Core.CoreInterfaces
 {
     /// <summary>
     /// Interface for the user control that is the GUI for
@@ -17,7 +15,7 @@ namespace ACAT.Core.Onboarding
     {
         IOnboardingExtension OnboardingExtension { get; }
 
-        String StepId { get; }
+        string StepId { get; }
 
         bool Initialize();
 

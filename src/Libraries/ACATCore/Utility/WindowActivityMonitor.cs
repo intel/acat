@@ -5,10 +5,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.Audit;
 using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Threading.Tasks;
 using System.Windows.Automation;
@@ -34,7 +32,7 @@ namespace ACAT.Core.Utility
         /// <summary>
         /// To prevent re-entrancy
         /// </summary>
-        private static readonly object _timerSync = new object();
+        private static readonly object _timerSync = new();
 
         /// <summary>
         /// Automation element of the control that is currently in focus
@@ -117,10 +115,7 @@ namespace ACAT.Core.Utility
                     return;
                 }
 
-                if (EvtFocusChanged != null)
-                {
-                    EvtFocusChanged(windowInfo);
-                }
+                EvtFocusChanged?.Invoke(windowInfo);
             }
             catch (Exception e)
             {

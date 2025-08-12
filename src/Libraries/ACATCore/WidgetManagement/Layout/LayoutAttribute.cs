@@ -14,7 +14,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace ACAT.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement.Layout
 {
     /// <summary>
     /// Reads panel layout information from the config file of the scanner.
@@ -22,7 +22,7 @@ namespace ACAT.Core.WidgetManagement
     /// controls in the UI and also contains the Widget class (.NET type)
     /// for each widget which will be used to instantiate the widget.
     /// </summary>
-    public class Layout
+    public class LayoutAttribute
     {
         /// <summary>
         /// List of widgets that have the "contextual=true" attribute
@@ -35,12 +35,12 @@ namespace ACAT.Core.WidgetManagement
         /// Name of the color scheme for the widgets in this layout.  Is read
         /// from the config file
         /// </summary>Hi
-        private String _colorSchemeName;
+        private string _colorSchemeName;
 
         /// <summary>
         /// Name of color scheme for disabled elements
         /// </summary>
-        private String _disabledButtonColorSchemeName;
+        private string _disabledButtonColorSchemeName;
 
         /// <summary>
         /// The Panel form
@@ -50,13 +50,13 @@ namespace ACAT.Core.WidgetManagement
         /// <summary>
         /// Initializes an instance of the Layout class
         /// </summary>
-        public Layout()
+        public LayoutAttribute()
         {
-            _colorSchemeName = String.Empty;
-            _disabledButtonColorSchemeName = String.Empty;
+            _colorSchemeName = string.Empty;
+            _disabledButtonColorSchemeName = string.Empty;
             Colors = ColorSchemes.DefaultColorScheme;
             _contextualWidgets = new List<Widget>();
-            ConfigFile = String.Empty;
+            ConfigFile = string.Empty;
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace ACAT.Core.WidgetManagement
         /// <summary>
         /// Name of the layout config xml file
         /// </summary>
-        public String ConfigFile { get; internal set; }
+        public string ConfigFile { get; internal set; }
 
         /// <summary>
         /// Returns a list of widgets that have the "contextual" attribute set.
@@ -108,7 +108,7 @@ namespace ACAT.Core.WidgetManagement
         /// <param name="classType">Type of the widget class</param>
         /// <param name="widgetName">Name of the widget</param>
         /// <returns>Created widget</returns>
-        public Widget CreateWidget(Type classType, String widgetName)
+        public Widget CreateWidget(Type classType, string widgetName)
         {
             Widget widget = null;
             try
@@ -147,7 +147,7 @@ namespace ACAT.Core.WidgetManagement
 
                 Log.IsNull("Widget created ", widget);
 
-                widget?.SetLayout(this);
+                widget?.SetLayout(layout: this);
             }
             catch (Exception ex)
             {
@@ -168,7 +168,7 @@ namespace ACAT.Core.WidgetManagement
         /// <param name="configFile">Full name of the xml file</param>
         /// <param name="rootWidget">The panel to load layout for</param>
         /// <returns>true on success</returns>
-        public bool Load(String configFile, Widget rootWidget)
+        public bool Load(string configFile, Widget rootWidget)
         {
             bool retVal = true;
 
@@ -218,7 +218,7 @@ namespace ACAT.Core.WidgetManagement
         /// sets the name of the color scheme
         /// </summary>
         /// <param name="scheme"></param>
-        public void SetColorScheme(String scheme)
+        public void SetColorScheme(string scheme)
         {
             _colorSchemeName = scheme;
         }
@@ -227,7 +227,7 @@ namespace ACAT.Core.WidgetManagement
         /// Sets the name color scheme of disabled buttons in this layout
         /// </summary>
         /// <param name="scheme"></param>
-        public void SetDisabledButtonColorScheme(String scheme)
+        public void SetDisabledButtonColorScheme(string scheme)
         {
             _disabledButtonColorSchemeName = scheme;
         }
@@ -241,10 +241,10 @@ namespace ACAT.Core.WidgetManagement
         /// <returns>widget, null if error</returns>
         private Widget createWidget(XmlNode node)
         {
-            String widgetClass = XmlUtils.GetXMLAttrString(node, "class");
-            String widgetName = XmlUtils.GetXMLAttrString(node, "name");
+            string widgetClass = XmlUtils.GetXMLAttrString(node, "class");
+            string widgetName = XmlUtils.GetXMLAttrString(node, "name");
 
-            if (String.IsNullOrEmpty(widgetName) || String.IsNullOrEmpty(widgetClass))
+            if (string.IsNullOrEmpty(widgetName) || string.IsNullOrEmpty(widgetClass))
             {
                 return null;
             }
@@ -259,7 +259,7 @@ namespace ACAT.Core.WidgetManagement
                 Type widgetType = WidgetManager.GetWidgetType(widgetClass);
                 if (widgetType != null)
                 {
-                    widget = (control != null) ?
+                    widget = control != null ?
                                 CreateWidget(widgetType, control) :
                                 CreateWidget(widgetType, widgetName);
 
@@ -286,13 +286,13 @@ namespace ACAT.Core.WidgetManagement
         /// <param name="parent">The .NET parent control</param>
         /// <param name="name">Name of the control</param>
         /// <returns>Control if found, null if not</returns>
-        private Control findControl(Control parent, String name)
+        private Control findControl(Control parent, string name)
         {
             Control retVal = null;
 
             foreach (Control control in parent.Controls)
             {
-                if (String.Compare(name, control.Name, true) == 0)
+                if (string.Compare(name, control.Name, true) == 0)
                 {
                     retVal = control;
                     break;
@@ -314,8 +314,8 @@ namespace ACAT.Core.WidgetManagement
         /// <param name="node">node to parse</param>
         private void getLayoutColors(XmlNode node)
         {
-            String colorScheme = XmlUtils.GetXMLAttrString(node, "colorScheme");
-            if (!String.IsNullOrEmpty(colorScheme))
+            string colorScheme = XmlUtils.GetXMLAttrString(node, "colorScheme");
+            if (!string.IsNullOrEmpty(colorScheme))
             {
                 _colorSchemeName = colorScheme;
             }
@@ -323,7 +323,7 @@ namespace ACAT.Core.WidgetManagement
             Colors = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(_colorSchemeName);
 
             colorScheme = XmlUtils.GetXMLAttrString(node, "disabledButtonColorScheme");
-            if (!String.IsNullOrEmpty(colorScheme))
+            if (!string.IsNullOrEmpty(colorScheme))
             {
                 _disabledButtonColorSchemeName = colorScheme;
             }
@@ -337,9 +337,9 @@ namespace ACAT.Core.WidgetManagement
         /// </summary>
         /// <param name="widgetNames">List of names of widgets</param>
         /// <param name="widgetList">Adds the widgets to this list</param>
-        private void getWidgetList(String widgetNames, List<Widget> widgetList)
+        private void getWidgetList(string widgetNames, List<Widget> widgetList)
         {
-            if (String.IsNullOrEmpty(widgetNames))
+            if (string.IsNullOrEmpty(widgetNames))
             {
                 return;
             }

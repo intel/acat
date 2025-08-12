@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace ACAT.Extensions.Onboarding
+namespace ACAT.Extensions.Onboarding.UI
 {
     /// <summary>
     /// Class that holds a list of GUIDS of all the onboarding
@@ -20,9 +20,9 @@ namespace ACAT.Extensions.Onboarding
     public class OnboardingSequence : PreferencesBase
     {
         [NonSerialized, XmlIgnore]
-        public static String SettingsFilePath;
+        public static string SettingsFilePath;
 
-        public List<OnboardingSequenceItem> OnboardingSequenceItems = new List<OnboardingSequenceItem>();
+        public List<OnboardingSequenceItem> OnboardingSequenceItems = new();
 
         /// <summary>
         /// Loads the settings from the settings file
@@ -30,7 +30,7 @@ namespace ACAT.Extensions.Onboarding
         /// <returns>true on success</returns>
         public static OnboardingSequence Load()
         {
-            OnboardingSequence retVal = PreferencesBase.Load<OnboardingSequence>(SettingsFilePath, false, false);
+            OnboardingSequence retVal = Load<OnboardingSequence>(SettingsFilePath, false, false);
             return retVal;
         }
 

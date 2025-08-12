@@ -16,7 +16,7 @@ using Accord.Statistics.Distributions.Univariate;
 using System;
 using System.Linq;
 
-namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
+namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.Classifiers
 {
     [Serializable]
     public class NormalKDE
@@ -45,7 +45,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             // Calculate Silverman's bandwidth “silverman” - .9 * A * nobs ** (-1/5.), where A is min(std(X),IQR/1.34)
 
             // Calculate iqr: range from the 25th percentile to the 75th percentile, or midlle 50 percent of a data set
-            Measures.Quartiles(data, out double q1, out double q3, false);
+            data.Quartiles(out double q1, out double q3, false);
             double iqr = q3 - q1;
 
             double minValue = Math.Min(data.StandardDeviation(), iqr / 1.34);
@@ -112,7 +112,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         public void plotKDE(double[] data, int nSamples)
         {
             nSamples = 200;
-            double bufferx = 2 * Measures.StandardDeviation(data);
+            double bufferx = 2 * data.StandardDeviation();
             double xMin = data.Min() - bufferx;
             double xMax = data.Max() + bufferx;
             double stepSize = (xMax - xMin) / nSamples;

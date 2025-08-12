@@ -1,12 +1,15 @@
 using ACAT.Core.AgentManagement;
+using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
-using ACAT.Core.UserControlManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Extension;
 using ACAT.Extension.CommandHandlers;
-using ACAT.Extensions.UI.UserControls;
-using ACAT.Scanners;
+using ACAT.Extension.UI.ScannerForms;
+using ACAT.Extensions.UI.UserControls.Toolbars;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -74,7 +77,7 @@ namespace ACAT.Extensions.UI.Scanners
 
         public override bool HandleInitialize(StartupArg startup)
         {
-            _scannerCommon.UserControlManager.GridScanIterations = Common.AppPreferences.GridScanIterations;
+            ScannerCommon.UserControlManager.GridScanIterations = Common.AppPreferences.GridScanIterations;
             bool success = ScannerCommon.UserControlManager.AddUserControlByKeyOrName(panelTopToolbar, "toolbar", "ToolbarUserControl");
             success = success && ScannerCommon.UserControlManager.AddUserControlByKeyOrName(panelDashboardControls, "dashboard", "DashboardUserControl");
 
@@ -146,7 +149,7 @@ namespace ACAT.Extensions.UI.Scanners
             }
 
             panelTopToolbar.Focus();
-            _scannerCommon.OnLoad();
+            ScannerCommon.OnLoad();
 
             SetColorScheme();
 
@@ -167,14 +170,14 @@ namespace ACAT.Extensions.UI.Scanners
 
         public bool HandleCmdPointerControl()
         {
-            bool success = _scannerCommon.UserControlManager.PushUserControlByKeyOrName(panelDashboardControls, "cursorcontroller", "CursorControlUserControl");
-            _scannerCommon.UserControlManager.StartTopLevelAnimation();
+            bool success = ScannerCommon.UserControlManager.PushUserControlByKeyOrName(panelDashboardControls, "cursorcontroller", "CursorControlUserControl");
+            ScannerCommon.UserControlManager.StartTopLevelAnimation();
             return success;
         }
 
         public bool HandleCmdShowSystem()
         {
-            _scannerCommon.UserControlManager.PushUserControlByKeyOrName(panelDashboardControls, "supportedapps", "LaunchAppUserControl");
+            ScannerCommon.UserControlManager.PushUserControlByKeyOrName(panelDashboardControls, "supportedapps", "LaunchAppUserControl");
 
             if (_launchAppAgent != null) 
             {
@@ -182,7 +185,7 @@ namespace ACAT.Extensions.UI.Scanners
                 _launchAppAgent?.Activate(uc.Length > 0 ? uc[0] as IUserControl : null);
             }
 
-            _scannerCommon.UserControlManager.StartTopLevelAnimation();
+            ScannerCommon.UserControlManager.StartTopLevelAnimation();
             return true;
         }
 
@@ -242,7 +245,7 @@ namespace ACAT.Extensions.UI.Scanners
             {
                 var form = Dispatcher.Scanner.Form as DashboardAppScanner;
 
-                form._scannerCommon.UserControlManager.StopTopLevelAnimation();
+                form.ScannerCommon.UserControlManager.StopTopLevelAnimation();
                 form.Visible = false;
 
                 Log.Info($"Executing command: {Command} from source: {source?.GetType().Name}");
@@ -252,22 +255,22 @@ namespace ACAT.Extensions.UI.Scanners
                 handled = true;
 
                 form.Visible = true;
-                form._scannerCommon.UserControlManager.StartTopLevelAnimation();
+                form.ScannerCommon.UserControlManager.StartTopLevelAnimation();
                 return true;
             }
         }
 
         private bool HandleCmdShowKeyboard()
         {
-            _scannerCommon.UserControlManager.PushUserControlByKeyOrName(panelDashboardControls, "keyboard", "KeyboardUserControl");
-            _scannerCommon.UserControlManager.StartTopLevelAnimation();
+            ScannerCommon.UserControlManager.PushUserControlByKeyOrName(panelDashboardControls, "keyboard", "KeyboardUserControl");
+            ScannerCommon.UserControlManager.StartTopLevelAnimation();
             return true;
         }
 
         private bool HandleCmdGoBack()
         {
-            _scannerCommon.UserControlManager.PopUserControl(panelDashboardControls);
-            _scannerCommon.UserControlManager.StartTopLevelAnimation();
+            ScannerCommon.UserControlManager.PopUserControl(panelDashboardControls);
+            ScannerCommon.UserControlManager.StartTopLevelAnimation();
             return true;
         }
 

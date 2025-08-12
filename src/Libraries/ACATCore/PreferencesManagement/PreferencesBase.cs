@@ -13,6 +13,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.Utility;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
@@ -41,7 +42,7 @@ namespace ACAT.Core.PreferencesManagement
         /// </summary>
         public String toString()
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             sb.Append("Preferences: ");
             sb.Append(XmlUtils.XmlSerializeToString(this));
             return sb.ToString();
@@ -139,7 +140,7 @@ namespace ACAT.Core.PreferencesManagement
         /// <param name="fileName">name of the file to save to</param>
         public static void SaveDefaults<T>(String fileName) where T : new()
         {
-            T prefs = new T();
+            T prefs = new();
             Save(prefs, fileName);
         }
 

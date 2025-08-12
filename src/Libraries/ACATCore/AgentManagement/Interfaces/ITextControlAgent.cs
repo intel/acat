@@ -8,7 +8,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Core.AgentManagement.TextInterface
+namespace ACAT.Core.AgentManagement.Interfaces
 {
     /// <summary>
     /// Used for text navigation
@@ -56,7 +56,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// <param name="arg">contextual info about the button</param>
         void CheckCommandEnabled(CommandEnabledArg arg);
 
-        bool CheckInsertOrReplaceWord(out int insertOrReplaceOffset, out String wordToReplace);
+        bool CheckInsertOrReplaceWord(out int insertOrReplaceOffset, out string wordToReplace);
 
         /// <summary>
         /// Clears text in window
@@ -132,7 +132,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// is at.
         /// </summary>
         /// <param name="paragraph">Returns the paragraph</param>
-        void GetParagraphAfterCaret(out String paragraph);
+        void GetParagraphAfterCaret(out string paragraph);
 
         /// <summary>
         /// Returns the current paragraph starting from the beginning
@@ -140,14 +140,14 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// </summary>
         /// <param name="paragraph">the para text</param>
         /// <returns>offset of the paragraph</returns>
-        int GetParagraphAtCaret(out String paragraph);
+        int GetParagraphAtCaret(out string paragraph);
 
         /// <summary>
         /// Returns the paragraph that is before the one that the caret
         /// is at.
         /// </summary>
         /// <param name="paragraph">Returns the paragraph</param>
-        void GetParagraphBeforeCaret(out String paragraph);
+        void GetParagraphBeforeCaret(out string paragraph);
 
         /// <summary>
         /// Returns 'count' character preceding the caret position
@@ -155,7 +155,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// <param name="count">How many characters to fetch</param>
         /// <param name="word">returns the string of characters</param>
         /// <returns>number of characters </returns>
-        int GetPrecedingCharacters(int count, out String word);
+        int GetPrecedingCharacters(int count, out string word);
 
         /// <summary>
         /// Works backward from the caret position looking for whitespaces
@@ -178,14 +178,14 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// </summary>
         /// <param name="prefix">Return the previous words</param>
         /// <param name="word">Return the current word</param>
-        void GetPrefixAndWordAtCaret(out String prefix, out String word);
+        void GetPrefixAndWordAtCaret(out string prefix, out string word);
 
         /// <summary>
         /// Returns the word previous to the one the caret is at.
         /// </summary>
         /// <param name="word">Word</param>
         /// <returns>Offset of the previous word</returns>
-        int GetPreviousWordAtCaret(out String word);
+        int GetPreviousWordAtCaret(out string word);
 
         /// <summary>
         /// Returns the offset to the word previous to the word
@@ -202,7 +202,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// Returns highlighted text (if any)
         /// </summary>
         /// <returns>highlighted text</returns>
-        String GetSelectedText();
+        string GetSelectedText();
 
         /// <summary>
         /// Returns the select mode
@@ -214,20 +214,20 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// Returns the senctence after the one the caret is at.
         /// </summary>
         /// <param name="sentence">Returns the sentence</param>
-        void GetSentenceAfterCaret(out String sentence);
+        void GetSentenceAfterCaret(out string sentence);
 
         /// <summary>
         /// Returns the current sentence at the caret - beginning
         /// from the beginning of the sentence up to the caret position
         /// </summary>
         /// <param name="sentence">Returns the sentence</param>
-        void GetSentenceAtCaret(out String sentence);
+        void GetSentenceAtCaret(out string sentence);
 
         /// <summary>
         /// Returns the sentence before the one that the caret is at
         /// </summary>
         /// <param name="sentence">return the sentence</param>
-        void GetSentenceBeforeCaret(out String sentence);
+        void GetSentenceBeforeCaret(out string sentence);
 
         /// <summary>
         /// Returns the text starting from 'startPos' upto
@@ -235,20 +235,20 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// </summary>
         /// <param name="startPos">Where to start from</param>
         /// <returns>The text</returns>
-        String GetStringToCaret(int startPos);
+        string GetStringToCaret(int startPos);
 
         /// <summary>
         /// Gets the string of text from the text window
         /// </summary>
         /// <returns>text</returns>
-        String GetText();
+        string GetText();
 
         /// <summary>
         /// Returns the word at the caret, starting from the beginning
         /// of the word upto the caret
         /// </summary>
         /// <param name="word">return the word</param>
-        void GetWordAtCaret(out String word);
+        void GetWordAtCaret(out string word);
 
         /// <summary>
         /// Navigate text indicated by GotoItem
@@ -262,7 +262,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// </summary>
         /// <param name="offset">where to insert the word</param>
         /// <param name="word">word to insert</param>
-        void Insert(int offset, String word);
+        void Insert(int offset, string word);
 
         /// <summary>
         /// Has the object been disposed off?
@@ -325,7 +325,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// <param name="offset">Where to start</param>
         /// <param name="count">How many chars to replace</param>
         /// <param name="word">replace with what</param>
-        void Replace(int offset, int count, String word);
+        void Replace(int offset, int count, string word);
 
         /// <summary>
         /// Resume making text changes

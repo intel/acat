@@ -4,9 +4,9 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 //
-// Utilities.cs
+// BinaryUtils.cs
 //
-// Utilities for EEGProcessing
+// BinaryUtils for EEGProcessing
 //
 //
 ////////////////////////////////////////////////////////////////////////////
@@ -18,9 +18,9 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
+namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.Utilities
 {
-    public static class Utilities
+    public static class BinaryUtils
     {
         // Find indices in array that match  certain value
         public static int[] FindAllIndex<T>(this T[] array, Predicate<T> match)
@@ -54,7 +54,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// <returns></returns>
         public static int[] FindAllIndexof<T>(this IEnumerable<T> values, T val)
         {
-            return values.Select((b, i) => object.Equals(b, val) ? i : -1).Where(i => i != -1).ToArray();
+            return values.Select((b, i) => Equals(b, val) ? i : -1).Where(i => i != -1).ToArray();
         }
 
         public static bool IsTarget(int classIdx)

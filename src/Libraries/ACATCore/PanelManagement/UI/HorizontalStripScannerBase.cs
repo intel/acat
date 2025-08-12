@@ -7,6 +7,8 @@
 
 using ACAT.Core.AgentManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using System;
@@ -300,7 +302,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         private void setFormWidth()
         {
-            List<Widget> children = new List<Widget>();
+            List<Widget> children = new();
             _rootWidget.Finder.FindAllButtons(children);
             int count = children.Count();
             int width = B1.Width + B1.Margin.Left + B1.Margin.Right;

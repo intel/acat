@@ -5,7 +5,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Extensions.Onboarding;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using System;
@@ -13,8 +12,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using ACAT.Core.Onboarding;
 using System.ComponentModel;
+using ACAT.Core.CoreInterfaces;
+using ACAT.Core.PanelManagement.PanelConfig;
 
 namespace ACAT.Extensions.Onboarding.UI.UserControls
 {
@@ -27,7 +27,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
     {
         private readonly IOnboardingExtension _onboardingExtension;
         private PanelClassConfig _panelClassConfigForApp;
-        private readonly List<PanelClassConfigMap> _panelClassConfigMaps = new List<PanelClassConfigMap>();
+        private readonly List<PanelClassConfigMap> _panelClassConfigMaps = new();
         private readonly String _stepId;
 
         public UserControlKeyboardConfigSelect(IOnboardingWizard wizard, IOnboardingExtension onboardingExtension, String stepId)
@@ -72,7 +72,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
             }
 
             var keyboardActuatorConfigs = keyboardActuator.GetSupportedKeyboardConfigs();
-            List<String> keyboardConfigs = new List<string>();
+            List<String> keyboardConfigs = new();
 
             var actuators = Context.AppActuatorManager.ActuatorsList;
             foreach (var actuator in actuators)

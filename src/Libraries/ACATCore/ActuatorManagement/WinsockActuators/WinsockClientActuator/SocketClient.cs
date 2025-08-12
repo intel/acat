@@ -17,7 +17,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-namespace ACAT.Core.InputActuators
+namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockClientActuator
 {
     /// <summary>
     /// A generic TCP socket client to send data to a TCP server.  Supports
@@ -116,7 +116,7 @@ namespace ACAT.Core.InputActuators
         /// Invoked by ConnectAsync to indicate there was a connection error
         /// </summary>
         /// <param name="error">Error message</param>
-        public delegate void ClientConnectErrorDelegate(String error);
+        public delegate void ClientConnectErrorDelegate(string error);
 
         /// <summary>
         /// Invoked when the client or the server closed the connection
@@ -136,7 +136,7 @@ namespace ACAT.Core.InputActuators
         /// </summary>
         /// <param name="address">server address</param>
         /// <param name="error">error message</param>
-        public delegate void ClientReadErrorDelegate(IPAddress address, String error);
+        public delegate void ClientReadErrorDelegate(IPAddress address, string error);
 
         /// <summary>
         /// Invoked by WriteAsync to indicate that a async write completed successfully
@@ -149,7 +149,7 @@ namespace ACAT.Core.InputActuators
         /// </summary>
         /// <param name="address">Server address</param>
         /// <param name="error">Error message</param>
-        public delegate void ClientWriteErrorDelegate(IPAddress address, String error);
+        public delegate void ClientWriteErrorDelegate(IPAddress address, string error);
 
         /// <summary>
         /// Event raised by ConnectAsync to indicate that an async connection went through
@@ -318,7 +318,7 @@ namespace ACAT.Core.InputActuators
         /// </summary>
         /// <param name="msg">String data to send.</param>
         /// <returns>number of bytes written, -1 on error</returns>
-        public int Write(String msg)
+        public int Write(string msg)
         {
             return Write(Encoding.ASCII.GetBytes(msg));
         }
@@ -360,7 +360,7 @@ namespace ACAT.Core.InputActuators
         /// Status of the write are notifed through events
         /// </summary>
         /// <param name="msg">String data to send.</param>
-        public void WriteAsync(String msg)
+        public void WriteAsync(string msg)
         {
             WriteAsync(Encoding.ASCII.GetBytes(msg));
         }
@@ -434,7 +434,7 @@ namespace ACAT.Core.InputActuators
                 {
                     if (OnClientConnectError != null)
                     {
-                        this.OnClientConnectError(e.ToString());
+                        OnClientConnectError(e.ToString());
                     }
                 }
                 return;

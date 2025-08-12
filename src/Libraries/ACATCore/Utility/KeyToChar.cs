@@ -18,7 +18,7 @@ namespace ACAT.Core.Utility
         /// <summary>
         /// Holds the mapping
         /// </summary>
-        private static readonly Dictionary<Keys, char> keyToCharMapping = new Dictionary<Keys, char>();
+        private static readonly Dictionary<Keys, char> keyToCharMapping = new();
 
         /// <summary>
         /// Initializes a new instance of the class

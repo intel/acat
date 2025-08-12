@@ -5,10 +5,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.AgentManagement.TextInterface;
+using ACAT.Core.AgentManagement.Interfaces;
+using ACAT.Core.AgentManagement.TextControlAgents;
 using ACAT.Core.Extensions;
-using ACAT.Core.PanelManagement;
-using ACAT.Core.PreferencesManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;

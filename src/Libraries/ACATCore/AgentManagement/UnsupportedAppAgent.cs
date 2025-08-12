@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;

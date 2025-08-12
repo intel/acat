@@ -8,17 +8,21 @@
 using ACAT.Core.AgentManagement;
 using ACAT.Core.AnimationManagement;
 using ACAT.Core.Interpreter;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.PanelManagement.Utils;
 using ACAT.Core.ThemeManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using ACAT.Core.WidgetManagement.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Security.Permissions;
 using System.Windows.Automation;
 using System.Windows.Forms;
+using ACAT.Core.PanelManagement.PanelConfig;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Common
 {
     /// <summary>
     /// Helper class that contains helper function for all the dialog
@@ -63,7 +67,7 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Name of the form in the Panel config map
         /// </summary>
-        private String _panelName;
+        private string _panelName;
 
         /// <summary>
         /// The root widget for this form.  This is the window itself
@@ -94,7 +98,7 @@ namespace ACAT.Core.PanelManagement
         {
             _form = form;
             _form.ShowInTaskbar = false;
-            _panelName = String.Empty;
+            _panelName = string.Empty;
             _dialogPanel = (IDialogPanel)_form;
             _syncLock = new SyncLock();
             AutoDockScanner = true;
@@ -387,7 +391,7 @@ namespace ACAT.Core.PanelManagement
         /// <param name="widget"></param>
         private void createAndShowScannerForWidget(Widget widget)
         {
-            if (!(_form is IPanel))
+            if (_form is not IPanel)
             {
                 return;
             }
@@ -395,7 +399,7 @@ namespace ACAT.Core.PanelManagement
             var startupArg = createStartupArgForScanner(widget);
 
             Log.Debug("Creating Panel " + widget.Panel);
-            Form panel = Context.AppPanelManager.CreatePanel(widget.Panel, String.Empty, startupArg);
+            Form panel = Context.AppPanelManager.CreatePanel(widget.Panel, string.Empty, startupArg);
             var child = panel as IScannerPanel;
             if (child != null)
             {
@@ -458,7 +462,7 @@ namespace ACAT.Core.PanelManagement
             else
             {
                 _rootWidget = _widgetManager.RootWidget;
-                if (String.IsNullOrEmpty(_rootWidget.SubClass))
+                if (string.IsNullOrEmpty(_rootWidget.SubClass))
                 {
                     _rootWidget.SubClass = PanelCategory.Dialog.ToString();
                 }
@@ -492,7 +496,7 @@ namespace ACAT.Core.PanelManagement
                     position = Windows.WindowPosition.MiddleRight;
                 }
 
-                if (((IPanel)arg.Scanner).PanelCommon.DisplayMode != DisplayModeTypes.Popup)
+                if (arg.Scanner.PanelCommon.DisplayMode != DisplayModeTypes.Popup)
                 {
                     Windows.DockWithScanner(_form, arg.Scanner as Form, position, false);
                 }
@@ -534,7 +538,7 @@ namespace ACAT.Core.PanelManagement
 
             foreach (var widget in widgetList)
             {
-                if (widget is IButtonWidget || !String.IsNullOrEmpty(widget.Panel))
+                if (widget is IButtonWidget || !string.IsNullOrEmpty(widget.Panel))
                 {
                     widget.EvtActuated += widget_EvtActuated;
                 }
@@ -560,15 +564,15 @@ namespace ACAT.Core.PanelManagement
 
             if (widget is IButtonWidget)
             {
-                String value = widget.Value;
-                if (!String.IsNullOrEmpty(value))
+                string value = widget.Value;
+                if (!string.IsNullOrEmpty(value))
                 {
                     Log.Debug("**Actuate** " + widget.Name + " Value: " + value);
 
                     _dialogPanel.OnButtonActuated(widget);
                 }
             }
-            else if (!String.IsNullOrEmpty(widget.Panel))
+            else if (!string.IsNullOrEmpty(widget.Panel))
             {
                 _form.Invoke(new MethodInvoker(delegate
                 {
@@ -593,7 +597,7 @@ namespace ACAT.Core.PanelManagement
         private void Windows_EvtWindowPositionChanged(Form form, Windows.WindowPosition position)
         {
             if (AutoDockScanner &&
-                (form is IScannerPanel) &&
+                form is IScannerPanel &&
                 Windows.GetVisible(_form) &&
                 form != _form &&
                 Windows.GetOpacity(_form) != 0.0f)

@@ -2,11 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
 
-namespace ACAT.Win32
+namespace ACAT.Core.Win32
 {
     // Some of these definitions originated from https://pinvoke.net/namespace
-#pragma warning disable CA1712 // Do not prefix enum values with type name
-#pragma warning disable CA1008 // These are defined by Win32 and we won't add a 0 value if not called for
 
     /// <summary>
     /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms646309(v=vs.85).aspx
@@ -54,7 +52,6 @@ namespace ACAT.Win32
         MaxTokenInfoClass,
     }
 
-#pragma warning disable CA1711 // These are Win32 definitions
     /// <summary>
     /// Windows Style Extended
     /// </summary>
@@ -86,7 +83,6 @@ namespace ACAT.Win32
         WS_EX_TRANSPARENT = 0x00000020,
         WS_EX_WINDOWEDGE = 0x00000100
     }
-#pragma warning restore CA1711 // These are Win32 definitions
 
     public enum TernaryRasterOperations
     {
@@ -122,7 +118,7 @@ namespace ACAT.Win32
         FW_HEAVY = 900,
     }
 
-    public enum FontCharSet : UInt32
+    public enum FontCharSet : uint
     {
         ANSI_CHARSET = 0,
         DEFAULT_CHARSET = 1,
@@ -145,7 +141,7 @@ namespace ACAT.Win32
         BALTIC_CHARSET = 186,
     }
 
-    public enum FontPrecision : UInt32
+    public enum FontPrecision : uint
     {
         OUT_DEFAULT_PRECIS = 0,
         OUT_STRING_PRECIS = 1,
@@ -160,19 +156,19 @@ namespace ACAT.Win32
         OUT_PS_ONLY_PRECIS = 10,
     }
 
-    public enum FontClipPrecision : UInt32
+    public enum FontClipPrecision : uint
     {
         CLIP_DEFAULT_PRECIS = 0,
         CLIP_CHARACTER_PRECIS = 1,
         CLIP_STROKE_PRECIS = 2,
         CLIP_MASK = 0xf,
-        CLIP_LH_ANGLES = (1 << 4),
-        CLIP_TT_ALWAYS = (2 << 4),
-        CLIP_DFA_DISABLE = (4 << 4),
-        CLIP_EMBEDDED = (8 << 4),
+        CLIP_LH_ANGLES = 1 << 4,
+        CLIP_TT_ALWAYS = 2 << 4,
+        CLIP_DFA_DISABLE = 4 << 4,
+        CLIP_EMBEDDED = 8 << 4,
     }
 
-    public enum FontQuality : UInt32
+    public enum FontQuality : uint
     {
         DEFAULT_QUALITY = 0,
         DRAFT_QUALITY = 1,
@@ -184,17 +180,17 @@ namespace ACAT.Win32
     }
 
     [Flags]
-    public enum FontPitchAndFamily : UInt32
+    public enum FontPitchAndFamily : uint
     {
         DEFAULT_PITCH = 0,
         FIXED_PITCH = 1,
         VARIABLE_PITCH = 2,
         // FF_DONTCARE = (0 << 4),
-        FF_ROMAN = (1 << 4),
-        FF_SWISS = (2 << 4),
-        FF_MODERN = (3 << 4),
-        FF_SCRIPT = (4 << 4),
-        FF_DECORATIVE = (5 << 4),
+        FF_ROMAN = 1 << 4,
+        FF_SWISS = 2 << 4,
+        FF_MODERN = 3 << 4,
+        FF_SCRIPT = 4 << 4,
+        FF_DECORATIVE = 5 << 4,
     }
 
     public enum SystemMetric
@@ -322,7 +318,6 @@ namespace ACAT.Win32
         ForceMinimize = 11
     }
 
-#pragma warning disable CA1027 // These are not flags
     public enum StockObjects
     {
         WHITE_BRUSH = 0,
@@ -346,7 +341,6 @@ namespace ACAT.Win32
         DC_BRUSH = 18,
         DC_PEN = 19,
     }
-#pragma warning restore CA1027 // These are not flags
 
     [Flags]
     public enum ClassStyles : uint
@@ -365,7 +359,6 @@ namespace ACAT.Win32
         VerticalRedraw = 0x1
     }
 
-#pragma warning disable CA1027 // These are not flags
     public enum CombineRgnStyles : int
     {
         RGN_AND = 1,
@@ -376,7 +369,6 @@ namespace ACAT.Win32
         RGN_MIN = RGN_AND,
         RGN_MAX = RGN_COPY
     }
-#pragma warning restore CA1027 // These are not flags
 
     internal enum WinTrustDataUIChoice : uint
     {
@@ -474,7 +466,4 @@ namespace ACAT.Win32
         /// </summary>
         LOGPIXELSY = 90
     }
-
-#pragma warning restore CA1008 // These are defined by Win32 and we won't add a 0 value if not called for
-#pragma warning restore CA1712 // Do not prefix enum values with type name
 }

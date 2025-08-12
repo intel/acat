@@ -10,7 +10,7 @@ using System;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Core.AgentManagement.TextInterface
+namespace ACAT.Core.AgentManagement.TextControlAgents
 {
     /// <summary>
     /// Text control for a Windows control that supports
@@ -95,7 +95,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// Returns highlighted text (if any)
         /// </summary>
         /// <returns></returns>
-        public override String GetSelectedText()
+        public override string GetSelectedText()
         {
             return GetSelectedText(_handleTextWindow);
         }
@@ -104,11 +104,11 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// Gets the string of text from the target app's window
         /// </summary>
         /// <returns>text</returns>
-        public override String GetText()
+        public override string GetText()
         {
-            return (_handleTextWindow != IntPtr.Zero) ?
+            return _handleTextWindow != IntPtr.Zero ?
                     Windows.GetText(_handleTextWindow) :
-                    String.Empty;
+                    string.Empty;
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
 
         public override void ScrollToCaret()
         {
-            User32Interop.SendMessage(_handleTextWindow, (int)User32Interop.EM_SCROLLCARET, 0, 0);
+            User32Interop.SendMessage(_handleTextWindow, User32Interop.EM_SCROLLCARET, 0, 0);
         }
 
         public override void SelectText(int start, int end)

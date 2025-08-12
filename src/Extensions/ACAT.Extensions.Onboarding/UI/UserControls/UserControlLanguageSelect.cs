@@ -7,8 +7,6 @@
 
 //using ACATResources;
 using ACATResources;
-using ACAT.Core.Onboarding;
-using ACAT.Extensions.Onboarding;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,6 +14,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using ACAT.Core.CoreInterfaces;
 
 namespace ACAT.Extensions.Onboarding.UI.UserControls
 {

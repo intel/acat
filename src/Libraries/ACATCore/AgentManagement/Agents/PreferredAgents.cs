@@ -6,6 +6,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.Utility;
 using System;
 using System.Collections;
@@ -13,7 +14,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Xml;
 
-namespace ACAT.Core.AgentManagement
+namespace ACAT.Core.AgentManagement.Agents
 {
     /// <summary>
     /// Represents a list of preferred IApplicationAgent to use
@@ -38,7 +39,7 @@ namespace ACAT.Core.AgentManagement
         /// <summary>
         /// Name of the preferences file
         /// </summary>
-        private const String PreferredAgentsFileName = "PreferredAgents.xml";
+        private const string PreferredAgentsFileName = "PreferredAgents.xml";
 
         /// <summary>
         /// Table of preferred agents
@@ -68,11 +69,11 @@ namespace ACAT.Core.AgentManagement
         /// </summary>
         /// <param agentName>Category of the agent</param>
         /// <returns></returns>
-        public IApplicationAgent GetPreferredAgentByCategory(String category)
+        public IApplicationAgent GetPreferredAgentByCategory(string category)
         {
             foreach (IApplicationAgent agent in _preferredAgents.Values)
             {
-                if (String.Compare(category, agent.Descriptor.Category, true) == 0)
+                if (string.Compare(category, agent.Descriptor.Category, true) == 0)
                 {
                     return agent;
                 }
@@ -87,11 +88,11 @@ namespace ACAT.Core.AgentManagement
         /// </summary>
         /// <param agentName>Name of the agent</param>
         /// <returns></returns>
-        public IApplicationAgent GetPreferredAgentByName(String agentName)
+        public IApplicationAgent GetPreferredAgentByName(string agentName)
         {
             foreach (IApplicationAgent agent in _preferredAgents.Values)
             {
-                if (String.Compare(agentName, agent.Name, true) == 0)
+                if (string.Compare(agentName, agent.Name, true) == 0)
                 {
                     return agent;
                 }
@@ -105,13 +106,13 @@ namespace ACAT.Core.AgentManagement
         /// </summary>
         /// <param name="processName">Name of the process</param>
         /// <returns>Agent object</returns>
-        public IApplicationAgent GetPreferredAgentForProcess(String processName)
+        public IApplicationAgent GetPreferredAgentForProcess(string processName)
         {
             foreach (IApplicationAgent agent in _preferredAgents.Values)
             {
                 foreach (var agentProcessInfo in agent.ProcessesSupported)
                 {
-                    if (String.Compare(processName, agentProcessInfo.Name, true) == 0)
+                    if (string.Compare(processName, agentProcessInfo.Name, true) == 0)
                     {
                         return agent;
                     }
@@ -133,13 +134,13 @@ namespace ACAT.Core.AgentManagement
             {
                 foreach (var processInfo in agent.ProcessesSupported)
                 {
-                    if (String.Compare(process.ProcessName, processInfo.Name, true) == 0)
+                    if (string.Compare(process.ProcessName, processInfo.Name, true) == 0)
                     {
-                        if (String.IsNullOrEmpty(processInfo.ExecutablePath))
+                        if (string.IsNullOrEmpty(processInfo.ExecutablePath))
                         {
                             nullPathAgent = agent;
                         }
-                        else if (String.Compare(process.MainModule.FileName, processInfo.ExecutablePath, true) == 0)
+                        else if (string.Compare(process.MainModule.FileName, processInfo.ExecutablePath, true) == 0)
                         {
                             return agent;
                         }
@@ -157,7 +158,7 @@ namespace ACAT.Core.AgentManagement
         /// <param name="agentsTable">The table to populate</param>
         public void Load(Hashtable agentsTable)
         {
-            String file = UserManagement.UserManager.GetFullPath(PreferredAgentsFileName);
+            string file = UserManagement.UserManager.GetFullPath(PreferredAgentsFileName);
 
             if (!File.Exists(file))
             {

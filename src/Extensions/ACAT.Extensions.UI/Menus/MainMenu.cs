@@ -11,12 +11,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.ActuatorManagement;
+using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.Utility;
 using ACAT.Extension;
+using ACAT.Extension.UI;
 using ACATResources;
 using System;
 using System.Windows.Forms;

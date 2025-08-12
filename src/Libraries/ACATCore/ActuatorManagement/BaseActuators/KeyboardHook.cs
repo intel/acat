@@ -16,7 +16,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace ACAT.Core.InputActuators
+namespace ACAT.Core.ActuatorManagement.BaseActuators
 {
     /// <summary>
     /// Manages windows low level keyboard hooks to capture global
@@ -165,9 +165,9 @@ namespace ACAT.Core.InputActuators
                         if (User32Interop.ToAscii(hookStruct.vkCode, hookStruct.scanCode, keyState, inBuffer, hookStruct.flags) == 1)
                         {
                             var key = (char)inBuffer[0];
-                            if ((isCapsLockDown ^ isShiftDown) && Char.IsLetter(key))
+                            if (isCapsLockDown ^ isShiftDown && char.IsLetter(key))
                             {
-                                key = Char.ToUpper(key);
+                                key = char.ToUpper(key);
                             }
 
                             var e = new KeyPressEventArgs(key);

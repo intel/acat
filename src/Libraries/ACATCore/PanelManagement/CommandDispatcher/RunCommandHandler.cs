@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PanelManagement.Common;
 using System;
 
 namespace ACAT.Core.PanelManagement.CommandDispatcher

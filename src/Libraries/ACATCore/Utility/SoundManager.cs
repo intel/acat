@@ -26,7 +26,7 @@ namespace ACAT.Core.Utility
         /// <summary>
         /// Main object used to play custom Media sounds
         /// </summary>
-        private static SoundPlayer _soundPlayer = new SoundPlayer();
+        private static SoundPlayer _soundPlayer = new();
 
         /// <summary>
         /// Possible initialized sounds

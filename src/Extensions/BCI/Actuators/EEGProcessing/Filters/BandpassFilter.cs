@@ -14,7 +14,7 @@ using Accord.Math;
 using System;
 using System.Collections.Generic;
 
-namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
+namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.Filters
 {
     /// <summary>
     /// Equirriple bandpass filter with:

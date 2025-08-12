@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Utility.Mouse;
 using System;
 
 //using System.Drawing;
@@ -379,13 +380,13 @@ namespace ACAT.Core.Utility
 
         private void MoveLine(Direction direction, Point point, DoubleAnimation animation)
         {
-            Line line = new Line
+            Line line = new()
             {
                 StrokeThickness = GridLineThickness,
                 Stroke = new SolidColorBrush(GridLineColor)
             };
 
-            Storyboard storyboard = new Storyboard();
+            Storyboard storyboard = new();
             //animation.Completed += animationOnCompleted;
             animation.Duration = new Duration(TimeSpan.FromSeconds(_durationLine));
             animation.AutoReverse = true;
@@ -486,7 +487,7 @@ namespace ACAT.Core.Utility
             if (double.IsNaN(y)) y = 0;
 
             System.Windows.Point screen = MyCanvas.PointToScreen(new System.Windows.Point(x, y));
-            System.Drawing.Point winFormsPoint = new System.Drawing.Point((int)screen.X, (int)screen.Y);
+            System.Drawing.Point winFormsPoint = new((int)screen.X, (int)screen.Y);
 
             Log.Debug($"Setting cursor position to {winFormsPoint}");
 

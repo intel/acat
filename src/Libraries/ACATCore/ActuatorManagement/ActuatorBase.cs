@@ -15,10 +15,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.ActuatorManagement.Settings;
+using ACAT.Core.CoreInterfaces;
 using ACAT.Core.Extensions;
-using ACAT.Core.Onboarding;
 using ACAT.Core.PanelManagement;
-using ACAT.Core.PreferencesManagement;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;

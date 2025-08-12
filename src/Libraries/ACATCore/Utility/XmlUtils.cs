@@ -19,7 +19,7 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class XmlUtils
     {
-        private static readonly object _lock = new object();
+        private static readonly object _lock = new();
 
         /// <summary>
         /// Returns value for an xml attribute. If the attr was
@@ -179,7 +179,7 @@ namespace ACAT.Core.Utility
                         return default;
                     }
 
-                    using FileStream fileStream = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Read, FileShare.None);
+                    using FileStream fileStream = new(filename, FileMode.OpenOrCreate, FileAccess.Read, FileShare.None);
                     using TextReader outputStream = new StreamReader(fileStream);
                     var xml = new XmlSerializer(typeof(T));
                     retVal = (T)xml.Deserialize(outputStream);
@@ -225,7 +225,7 @@ namespace ACAT.Core.Utility
                         writer.Write(xmlobject);
                     }
 
-                    using StreamReader inputStream = new StreamReader(filename);
+                    using StreamReader inputStream = new(filename);
                     var xmlContent = inputStream.ReadToEnd();
                     retVal = XmlUtils.XmlDeserializeFromString<T>(xmlContent, out var _);
                 }

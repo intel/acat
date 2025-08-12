@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ACAT.Core.Utility
 {
@@ -196,8 +192,7 @@ namespace ACAT.Core.Utility
 
                 nextNotification += timerIntervalInMicroSecCurrent;
                 timerCount++;
-                long elapsedMicroseconds = 0;
-
+                long elapsedMicroseconds;
                 while ((elapsedMicroseconds = microStopwatch.ElapsedMicroseconds)
                         < nextNotification)
                 {
@@ -212,7 +207,7 @@ namespace ACAT.Core.Utility
                 }
 
                 MicroTimerEventArgs microTimerEventArgs =
-                     new MicroTimerEventArgs(timerCount,
+                     new(timerCount,
                                              elapsedMicroseconds,
                                              timerLateBy,
                                              callbackFunctionExecutionTime);

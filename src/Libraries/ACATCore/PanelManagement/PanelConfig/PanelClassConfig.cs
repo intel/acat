@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.PanelConfig
 {
     /// <summary>
     /// Represents a list of panel configurations for an
@@ -41,17 +41,17 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// A moniker for the app. Can be anything unique
         /// </summary>
-        public String AppId;
+        public string AppId;
 
         /// <summary>
         /// Name of the application.  Eg ACAT Talk Application
         /// </summary>
-        public String AppName;
+        public string AppName;
 
         /// <summary>
         /// List of panels for this app
         /// </summary>
-        public List<PanelClassConfigMap> PanelClassConfigMaps = new List<PanelClassConfigMap>();
+        public List<PanelClassConfigMap> PanelClassConfigMaps = new();
 
         /// <summary>
         /// Finds the panel config map entry with the specified config map name
@@ -59,12 +59,12 @@ namespace ACAT.Core.PanelManagement
         /// <param name="configMapName">name to look for</param>
         /// <returns>panelclassconfigmap object if found null otherwise</returns>
 
-        public PanelClassConfigMap Add(String configMapName, String description, bool isDefault)
+        public PanelClassConfigMap Add(string configMapName, string description, bool isDefault)
         {
             var panelClassConfigMap = Find(configMapName);
             if (panelClassConfigMap == null)
             {
-                panelClassConfigMap = new PanelClassConfigMap(configMapName, description, String.Empty, String.Empty, isDefault);
+                panelClassConfigMap = new PanelClassConfigMap(configMapName, description, string.Empty, string.Empty, isDefault);
                 PanelClassConfigMaps.Add(panelClassConfigMap);
             }
             else
@@ -80,7 +80,7 @@ namespace ACAT.Core.PanelManagement
         public PanelClassConfigMap Find(string configMapName)
         {
             return PanelClassConfigMaps.FirstOrDefault(panelClassConfigMap =>
-                    String.Compare(panelClassConfigMap.Name, configMapName, true) == 0);
+                    string.Compare(panelClassConfigMap.Name, configMapName, true) == 0);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         /// <param name="panelClass">PanelClass to look for</param>
         /// <returns>object if found, null if not</returns>
-        public PanelClassConfigMapEntry GetDefaultClassConfigMapEntry(String panelClass)
+        public PanelClassConfigMapEntry GetDefaultClassConfigMapEntry(string panelClass)
         {
             foreach (var panelClassConfigMap in PanelClassConfigMaps)
             {
@@ -107,7 +107,7 @@ namespace ACAT.Core.PanelManagement
                 {
                     foreach (var panelClassConfigMapEntry in panelClassConfigMap.PanelClassConfigMapEntries)
                     {
-                        if (String.Compare(panelClass, panelClassConfigMapEntry.PanelClass, true) == 0)
+                        if (string.Compare(panelClass, panelClassConfigMapEntry.PanelClass, true) == 0)
                         {
                             return panelClassConfigMapEntry;
                         }
@@ -124,7 +124,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         /// <param name="configMapName">name of the config map</param>
         /// <returns>true on success</returns>
-        public bool SetDefaultClassConfigMap(String configMapName)
+        public bool SetDefaultClassConfigMap(string configMapName)
         {
             bool retVal = false;
 

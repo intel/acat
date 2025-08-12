@@ -5,8 +5,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.PanelManagement;
-using ACAT.Core.UserControlManagement;
+using ACAT.Core.AgentManagement.Interfaces;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
 using System.Threading;
 

@@ -1,7 +1,5 @@
 ﻿using ACAT.Core.PreferencesManagement;
 using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Hosting;
 using System.Xml.Serialization;
 
 namespace ACAT.Core.Utility

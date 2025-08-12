@@ -37,9 +37,7 @@
     <Compile Include="CommandHandlers\CommandDescriptors.cs" />
     <Compile Include="CommandHandlers\GoBackHandler.cs" />
     <Compile Include="CommandHandlers\MiscCommandHandler.cs" />
-    <Compile Include="UI\AboutBoxForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="UI\AboutBoxForm.cs" />
     <Compile Include="UI\AboutBoxForm.Designer.cs">
       <DependentUpon>AboutBoxForm.cs</DependentUpon>
     </Compile>
@@ -52,9 +50,7 @@
     <Compile Include="CommandHandlers\ShowDialogsHandler.cs" />
     <Compile Include="CommandHandlers\DefaultCommandDispatcher.cs" />
     <Compile Include="Common.cs" />
-    <Compile Include="UI\DisclaimerDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="UI\DisclaimerDialog.cs" />
     <Compile Include="UI\DisclaimerDialog.Designer.cs">
       <DependentUpon>DisclaimerDialog.cs</DependentUpon>
     </Compile>
@@ -65,9 +61,7 @@
       <DependentUpon>HorizontalStripScanner.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\ITalkWindowTextBox.cs" />
-    <Compile Include="UI\ScannerForms\GenericScannerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="UI\ScannerForms\GenericScannerForm.cs" />
     <Compile Include="UI\ScanTimeAdjustForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,38 +129,26 @@
     <Compile Include="UI\TalkWindowTextBoxUserControl.Designer.cs">
       <DependentUpon>TalkWindowTextBoxUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\UserControlContainerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="UI\UserControlContainerForm.cs" />
     <Compile Include="UI\UserControlContainerForm.Designer.cs">
       <DependentUpon>UserControlContainerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\ScannerHelper.cs" />
     <Compile Include="UI\DialogUtils.cs" />
-    <Compile Include="UI\UserControlLayoutInterface.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UI\UserControlLayoutInterface.cs" />
     <Compile Include="UI\UserControlLayoutInterface.Designer.cs">
       <DependentUpon>UserControlLayoutInterface.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\UserControlScreenLock.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UI\UserControlScreenLock.cs" />
     <Compile Include="UI\UserControlScreenLock.Designer.cs">
       <DependentUpon>UserControlScreenLock.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\UserControlDefaultTryout.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UI\UserControlDefaultTryout.cs" />
     <Compile Include="UI\UserControlDefaultTryout.Designer.cs">
       <DependentUpon>UserControlDefaultTryout.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\UserControls\GenericUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\UserControls\KeyboardUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UI\UserControls\GenericUserControl.cs" />
+    <Compile Include="UI\UserControls\KeyboardUserControl.cs" />
     <Compile Include="UI\UserControls\ScrollingText.cs" />
     <Compile Include="UI\UserControls\ScrollingText.Designer.cs" />
     <Compile Include="UI\UserControlWordPredictionCommon.cs" />
@@ -184,6 +166,7 @@
     <EmbeddedResource Include="UI\MenuPanel.resx">
       <DependentUpon>MenuPanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\ScannerForms\GenericScannerForm.resx" />
     <EmbeddedResource Include="UI\ScanTimeAdjustForm.resx">
       <DependentUpon>ScanTimeAdjustForm.cs</DependentUpon>
       <Generator>ResXFileCodeGeneratorEx</Generator>

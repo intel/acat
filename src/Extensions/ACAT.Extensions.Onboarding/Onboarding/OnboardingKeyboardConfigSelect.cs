@@ -5,13 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
-using System;
-using ACAT.Core.Onboarding;
 using ACAT.Extensions.Onboarding.UI.UserControls;
+using ACAT.Extensions.Onboarding.UI;
+using ACAT.Core.CoreInterfaces;
+using ACAT.Core.PanelManagement.PanelConfig;
 
-namespace ACAT.Extensions.Onboarding
+namespace ACAT.Extensions.Onboarding.Onboarding
 {
     /// <summary>
     /// The onboarding extension that lets the user select the preferred
@@ -23,7 +23,7 @@ namespace ACAT.Extensions.Onboarding
     public class OnboardingKeyboardConfigSelect : OnboardingExtensionBase
     {
         // TODO - Localize Me
-        private const String Step1 = "STEP 1";
+        private const string Step1 = "STEP 1";
 
         private IOnboardingWizard _wizard;
 
@@ -37,7 +37,7 @@ namespace ACAT.Extensions.Onboarding
             return GetStep(Step1);
         }
 
-        public override IOnboardingUserControl GetNextStep(String stepID)
+        public override IOnboardingUserControl GetNextStep(string stepID)
         {
             return stepID switch
             {
@@ -45,7 +45,7 @@ namespace ACAT.Extensions.Onboarding
             };
         }
 
-        public override IOnboardingUserControl GetStep(String stepId)
+        public override IOnboardingUserControl GetStep(string stepId)
         {
             switch (stepId)
             {
@@ -54,7 +54,7 @@ namespace ACAT.Extensions.Onboarding
                     var retVal = new UserControlKeyboardConfigSelect(_wizard, this, stepId);
                     bool success = retVal.Initialize();
 
-                    return (success) ? retVal : null;
+                    return success ? retVal : null;
 
                 default:
                     return null;

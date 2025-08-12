@@ -6,14 +6,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.Utility;
+using ACAT.Core.Utility.TypeLoader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Reflection;
 
-namespace ACAT.Core.AgentManagement
+namespace ACAT.Core.AgentManagement.Agents
 {
     /// <summary>
     /// Maintains a cache of application agent objects.  The cache is
@@ -143,7 +144,7 @@ namespace ACAT.Core.AgentManagement
         /// </summary>
         /// <param name="processName">Name of the process</param>
         /// <returns>Agent object, null if not found</returns>
-        public IApplicationAgent GetAgent(String processName)
+        public IApplicationAgent GetAgent(string processName)
         {
             // check if there is a configured preferred agent for the process
             var applicationAgent = _preferredAgents.GetPreferredAgentForProcess(processName);
@@ -184,11 +185,11 @@ namespace ACAT.Core.AgentManagement
                 {
                     foreach (var processInfo in agent.ProcessesSupported)
                     {
-                        if (String.IsNullOrEmpty(processInfo.ExecutablePath))
+                        if (string.IsNullOrEmpty(processInfo.ExecutablePath))
                         {
                             retVal = agent;
                         }
-                        else if (String.Compare(process.MainModule.FileName, processInfo.ExecutablePath, true) == 0)
+                        else if (string.Compare(process.MainModule.FileName, processInfo.ExecutablePath, true) == 0)
                         {
                             return agent;
                         }
@@ -204,14 +205,14 @@ namespace ACAT.Core.AgentManagement
         /// </summary>
         /// <param name="category">Category to lookup</param>
         /// <returns>Application agent object</returns>
-        public IApplicationAgent GetAgentByCategory(String category)
+        public IApplicationAgent GetAgentByCategory(string category)
         {
             var retVal = _preferredAgents.GetPreferredAgentByCategory(category);
             if (retVal == null)
             {
                 foreach (var agent in _agentCache)
                 {
-                    if (String.Compare(category, agent.Descriptor.Category, true) == 0)
+                    if (string.Compare(category, agent.Descriptor.Category, true) == 0)
                     {
                         retVal = agent;
                         break;
@@ -227,14 +228,14 @@ namespace ACAT.Core.AgentManagement
         /// </summary>
         /// <param name="name">Name to lookup</param>
         /// <returns>Application agent object</returns>
-        public IApplicationAgent GetAgentByName(String name)
+        public IApplicationAgent GetAgentByName(string name)
         {
             var retVal = _preferredAgents.GetPreferredAgentByName(name);
             if (retVal == null)
             {
                 foreach (var agent in _agentCache)
                 {
-                    if (String.Compare(name, agent.Name, true) == 0)
+                    if (string.Compare(name, agent.Name, true) == 0)
                     {
                         retVal = agent;
                         break;
@@ -260,7 +261,7 @@ namespace ACAT.Core.AgentManagement
         /// </summary>
         /// <param name="extensionDirs">List of directories to walk</param>
         /// <returns>true on success</returns>
-        public bool Init(IEnumerable<String> extensionDirs)
+        public bool Init(IEnumerable<string> extensionDirs)
         {
             Log.Verbose();
 
@@ -324,10 +325,10 @@ namespace ACAT.Core.AgentManagement
         /// have IApplicationAgent classes
         /// </summary>
         /// <param name="extensionDirs"></param>
-        private void loadCache(IEnumerable<String> extensionDirs)
+        private void loadCache(IEnumerable<string> extensionDirs)
         {
             //TODO: Fix this hack
-            foreach (String dir in extensionDirs)
+            foreach (string dir in extensionDirs)
             {
                 loadAgentsFromDir(dir, "ACAT.Extensions.AppAgents.*.dll");
                 loadAgentsFromDir(dir, "ACAT.Extensions.FunctionalAgents.*.dll");
@@ -342,7 +343,7 @@ namespace ACAT.Core.AgentManagement
         /// Walks the specified directory tree
         /// </summary>
         /// <param name="path">Directory path</param>
-        private void loadAgentsFromDir(String path, string filter)
+        private void loadAgentsFromDir(string path, string filter)
         {
             // Recursively look for ACAT Agents in Extensions/Agents direrctory
             var walker = new DirectoryWalker(path, filter);
@@ -354,7 +355,7 @@ namespace ACAT.Core.AgentManagement
         /// when a dll is found
         /// </summary>
         /// <param name="dllFileName"></param>
-        private void onAgentFound(String agentName)
+        private void onAgentFound(string agentName)
         {
             try
             {
@@ -385,7 +386,7 @@ namespace ACAT.Core.AgentManagement
         {
             foreach (var processInfo in agent.ProcessesSupported)
             {
-                if (!String.IsNullOrEmpty(processInfo.Name))
+                if (!string.IsNullOrEmpty(processInfo.Name))
                 {
                     List<IApplicationAgent> supportedAgents;
                     var processName = processInfo.Name.ToLower();

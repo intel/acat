@@ -12,14 +12,13 @@
 // switch object.
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.ActuatorManagement;
-using ACAT.Core.Onboarding;
+using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace ACAT.Core.InputActuators
+namespace ACAT.Core.ActuatorManagement.BaseActuators
 {
     [ClassDescriptor("D91A1877-C92B-4D7E-9AB6-F01F30B12DF9",
                         "Keyboard Actuator",
@@ -61,7 +60,7 @@ namespace ACAT.Core.InputActuators
         /// </summary>
         public event MouseEventHandler EvtMouseDown;
 
-        public override String OnboardingImageFileName
+        public override string OnboardingImageFileName
         {
             get
             {
@@ -115,9 +114,9 @@ namespace ACAT.Core.InputActuators
         //    return new OnboardingHardwareSwitchSetup(OnboardingHardwareSwitchSetup.SwitchType.Keyboard);
         //}
 
-        public override IEnumerable<String> GetSupportedKeyboardConfigs()
+        public override IEnumerable<string> GetSupportedKeyboardConfigs()
         {
-            return new List<String>() { "TalkApplicationABC", "TalkApplicationQwerty", "TalkApplicationAlternate", "TalkApplicationAlternateABC" };
+            return new List<string>() { "TalkApplicationABC", "TalkApplicationQwerty", "TalkApplicationAlternate", "TalkApplicationAlternateABC" };
         }
 
         /// <summary>
@@ -220,7 +219,7 @@ namespace ACAT.Core.InputActuators
         /// </summary>
         /// <param name="hotKey">The key we are interested in</param>
         /// <returns>The switch object for the key</returns>
-        private IActuatorSwitch findActuatorSwitch(String hotKey)
+        private IActuatorSwitch findActuatorSwitch(string hotKey)
         {
             try
             {
@@ -229,7 +228,7 @@ namespace ACAT.Core.InputActuators
                     var keySwitch = obj as KeyboardSwitch;
                     if (keySwitch != null)
                     {
-                        if (String.Compare(keySwitch.HotKey, hotKey, true) == 0)
+                        if (string.Compare(keySwitch.HotKey, hotKey, true) == 0)
                         {
                             return new KeyboardSwitch(keySwitch);
                         }
@@ -278,7 +277,7 @@ namespace ACAT.Core.InputActuators
                 // the tracker.  Then format the final key. For
                 // eg:  Ctrl+Alt+T
                 string hotKey = KeyStateTracker.GetKeyPressedStatus();
-                if (String.IsNullOrEmpty(hotKey))
+                if (string.IsNullOrEmpty(hotKey))
                 {
                     hotKey = e.KeyCode.ToString();
                 }
@@ -333,7 +332,7 @@ namespace ACAT.Core.InputActuators
                 return;
             }
 
-            var s = String.Format("Keyup{0}.  Alt: {1} Ctrl: {2}", e.KeyCode, e.Alt, e.Control);
+            var s = string.Format("Keyup{0}.  Alt: {1} Ctrl: {2}", e.KeyCode, e.Alt, e.Control);
             Log.Debug(s);
 
             KeyStateTracker.KeyUp(e.KeyCode);

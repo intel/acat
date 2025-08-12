@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Utility.Mouse;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -642,7 +643,7 @@ namespace ACAT.Core.Utility
                 return _dpiX;
             }
 
-            Form form = new Form();
+            Form form = new();
 
             float retVal;
 

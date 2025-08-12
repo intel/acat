@@ -21,19 +21,21 @@
 using ACATResources;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.Extensions;
-using ACAT.Core.InputActuators;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.Widgets;
-using ACAT.Extension;
-using ACAT.Scanners;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Security.Permissions;
 using System.Windows.Forms;
+using ACAT.Extension.UI.ScannerForms;
+using ACAT.Extension.UI;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.ActuatorManagement.BaseActuators;
 
 namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
 {
@@ -273,9 +275,9 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
         /// <returns></returns>
         //public bool Initialize(StartupArg startupArg)
         //{
-        //    _scannerCommon.PositionSizeController.AutoPosition = true;
+        //    ScannerCommon.PositionSizeController.AutoPosition = true;
 
-        //    if (!_scannerCommon.Initialize(startupArg))
+        //    if (!ScannerCommon.Initialize(startupArg))
         //    {
         //        Log.Debug("Could not initialize form " + Name);
         //        return false;
@@ -320,7 +322,7 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
         //protected void OnClientSizeChanged(EventArgs e)
         //{
         //    base.OnClientSizeChanged(e);
-        //    _scannerCommon.OnClientSizeChanged();
+        //    ScannerCommon.OnClientSizeChanged();
         //}
 
         /// <summary>
@@ -329,7 +331,7 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
         /// <param name="e">args</param>
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            _scannerCommon.OnFormClosing(e);
+            ScannerCommon.OnFormClosing(e);
             removeWatchdogs();
 
             Windows.EvtWindowPositionChanged -= Windows_EvtWindowPositionChanged;
@@ -345,9 +347,9 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
         [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
         protected override void WndProc(ref Message m)
         {
-            if (_scannerCommon != null)
+            if (ScannerCommon != null)
             {
-                if (_scannerCommon.HandleWndProc(m))
+                if (ScannerCommon.HandleWndProc(m))
                 {
                     return;
                 }
@@ -414,10 +416,7 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
         /// </summary>
         private void enableWatchdogs()
         {
-            if (_windowActiveWatchdog == null)
-            {
-                _windowActiveWatchdog = new WindowActiveWatchdog(this);
-            }
+            _windowActiveWatchdog ??= new WindowActiveWatchdog(this);
         }
 
         /// <summary>
@@ -579,10 +578,7 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
                 switch (widget.Value)
                 {
                     case "@Quit":
-                        if (EvtDone != null)
-                        {
-                            EvtDone.BeginInvoke(null, null);
-                        }
+                        EvtDone?.BeginInvoke(null, null);
                         break;
 
                     case "@WindowListSort":
@@ -598,10 +594,7 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
                         break;
 
                     case "@WindowListSearch":
-                        if (EvtShowScanner != null)
-                        {
-                            EvtShowScanner.BeginInvoke(null, null, null, null);
-                        }
+                        EvtShowScanner?.BeginInvoke(null, null, null, null);
                         break;
 
                     case "@WindowListClearFilter":
@@ -628,10 +621,7 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
             }
             else if (DialogUtils.ConfirmScanner(String.Format(StringResources.ConfirmSwitchToWindow, wInfo.Title)))
             {
-                if (EvtActivateWindow != null)
-                {
-                    EvtActivateWindow.BeginInvoke(this, wInfo, null, null);
-                }
+                EvtActivateWindow?.BeginInvoke(this, wInfo, null, null);
             }
         }
 
@@ -812,8 +802,8 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
         /// </summary>
         private void SwitchWindowsScanner_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _scannerCommon.OnClosing();
-            _scannerCommon.Dispose();
+            ScannerCommon.OnClosing();
+            ScannerCommon.Dispose();
         }
 
         /// <summary>
@@ -840,7 +830,7 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
         {
             enableWatchdogs();
 
-            _scannerCommon.OnLoad();
+            ScannerCommon.OnLoad();
 
             var list = new List<Widget>();
             PanelCommon.RootWidget.Finder.FindChild(typeof(TabStopScannerButton), list);
@@ -899,15 +889,9 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
                 sortButtonText = "Z-A";
             }
 
-            if (_sortOrderWidget != null)
-            {
-                _sortOrderWidget.SetText(text);
-            }
+            _sortOrderWidget?.SetText(text);
 
-            if (_sortButton != null)
-            {
-                _sortButton.SetText(sortButtonText);
-            }
+            _sortButton?.SetText(sortButtonText);
 
             if (_pageNumberWidget != null)
             {

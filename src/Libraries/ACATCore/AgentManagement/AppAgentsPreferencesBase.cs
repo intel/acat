@@ -6,7 +6,6 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PreferencesManagement;
-using ACAT.Core.Utility;
 using System.ComponentModel.DataAnnotations;
 using System;
 using System.ComponentModel;

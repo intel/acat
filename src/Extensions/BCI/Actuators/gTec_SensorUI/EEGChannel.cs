@@ -1,6 +1,5 @@
 ﻿using ACAT.Core.WidgetManagement;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using System;
 using System.Windows.Forms.DataVisualization.Charting;
 
 ////////////////////////////////////////////////////////////////////////////
@@ -16,7 +15,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 //
 ////////////////////////////////////////////////////////////////////////////
 
-namespace gTecSensorUI
+namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
     /// <summary>
     /// Holds information for each channel / electrode including name, enabled status,
@@ -27,7 +26,7 @@ namespace gTecSensorUI
         /// <summary>
         /// Short name / id (ex: Pz, C3, etc.) of channel
         /// </summary>
-        public String _electrodeName;
+        public string _electrodeName;
 
         /// <summary>
         /// Index of this channel out of the possible 16
@@ -83,7 +82,7 @@ namespace gTecSensorUI
         public ScannerRoundedButtonControl electrodeQualityResults;
         public ScannerRoundedButtonControl railingResultQualityResults;
 
-        public EEGChannel(String electrodeName, int channelIndex, bool enableChannel)
+        public EEGChannel(string electrodeName, int channelIndex, bool enableChannel)
         {
             _electrodeName = electrodeName;
             _channelIndex = channelIndex;

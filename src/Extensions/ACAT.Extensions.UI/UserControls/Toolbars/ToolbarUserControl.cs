@@ -1,13 +1,13 @@
 ﻿using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
-using ACAT.UserControls;
+using ACAT.Extension.UI.UserControls;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.UI.UserControls
+namespace ACAT.Extensions.UI.UserControls.Toolbars
 {
     [ClassDescriptor("4E1A5ED3-ED21-449B-B462-A8AE9F7BDC1F",
         Name = "ToolbarUserControl",
@@ -15,7 +15,7 @@ namespace ACAT.Extensions.UI.UserControls
     [DesignerCategory("code")]
     public class ToolbarUserControl : KeyboardUserControl
     {
-        private TableLayoutPanel ToolbarBox = new TableLayoutPanel
+        private readonly TableLayoutPanel ToolbarBox = new()
         {
             Name = "ToolbarBox",
             Dock = DockStyle.Fill,
@@ -27,7 +27,7 @@ namespace ACAT.Extensions.UI.UserControls
             GrowStyle = TableLayoutPanelGrowStyle.AddColumns,
         };
 
-        private TableLayoutPanel DefaultButtonsBox = new TableLayoutPanel
+        private readonly TableLayoutPanel DefaultButtonsBox = new()
         {
             Name = "DefaultButtonsBox",
             AccessibleName = "DefaultButtonsBox",
@@ -41,7 +41,7 @@ namespace ACAT.Extensions.UI.UserControls
             RowCount = 1,
             Visible = true,
         };
-        
+
         // private TableLayoutPanel PanelSettingsBox = new TableLayoutPanel
         // {
         //     Name = "PanelSettingsBox",
@@ -53,7 +53,7 @@ namespace ACAT.Extensions.UI.UserControls
         //     CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
         // };
 
-        Label appName = new Label
+        readonly Label appName = new()
         {
             Name = "ACAT",
             Text = "ACAT Dashboard",
@@ -65,7 +65,7 @@ namespace ACAT.Extensions.UI.UserControls
             Font = new Font("Montserrat", 28, FontStyle.Regular, GraphicsUnit.Point, 0)
         };
 
-        private System.ComponentModel.IContainer container = null;
+        private readonly IContainer container = null;
 
         protected Dictionary<string, string> DefaultButtons { get; private set; }
         //protected Dictionary<string, string> PanelSettingsButtons { get; private set; }
@@ -133,7 +133,7 @@ namespace ACAT.Extensions.UI.UserControls
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (container != null))
+            if (disposing && container != null)
             {
                 container.Dispose();
             }
@@ -142,12 +142,12 @@ namespace ACAT.Extensions.UI.UserControls
 
         protected void InitializeComponent()
         {
-            this.SuspendLayout();
-            this.Name = "ToolbarUserControl";
-            this.AccessibleName = "ToolbarUserControl";
-            this.AutoSize = true;
-            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            this.Dock = DockStyle.Top;
+            SuspendLayout();
+            Name = "ToolbarUserControl";
+            AccessibleName = "ToolbarUserControl";
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            Dock = DockStyle.Top;
 
             ToolbarBox.SuspendLayout();
 
@@ -156,11 +156,11 @@ namespace ACAT.Extensions.UI.UserControls
             ToolbarBox.Controls.Add(appName, 0, 0);
             ToolbarBox.Controls.Add(DefaultButtonsBox, 1, 0);
 
-            this.Controls.Add(ToolbarBox);
+            Controls.Add(ToolbarBox);
 
             DefaultButtonsBox.ResumeLayout(true);
             ToolbarBox.ResumeLayout(true);
-            this.ResumeLayout(true);
+            ResumeLayout(true);
         }
 
         // public void HandlePanelSettingsClicked()

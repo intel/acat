@@ -51,17 +51,17 @@
     <Compile Include="ActuatorManagement\ActuatorManager.cs" />
     <Compile Include="ActuatorManagement\Actuators.cs" />
     <Compile Include="ActuatorManagement\CalibrationNotifyEventArgs.cs" />
-    <Compile Include="ActuatorManagement\KeyboardActuator\SwitchInterfaceActuator.cs" />
+    <Compile Include="ActuatorManagement\BaseActuators\SwitchInterfaceActuator.cs" />
     <Compile Include="ActuatorManagement\Settings\ActuatorSetting.cs" />
     <Compile Include="ActuatorManagement\Settings\ActuatorConfig.cs" />
     <Compile Include="ActuatorManagement\ActuatorSwitchBase.cs" />
     <Compile Include="ActuatorManagement\ActuatorSwitchEventArgs.cs" />
     <Compile Include="ActuatorManagement\Interfaces\IActuator.cs" />
     <Compile Include="ActuatorManagement\Interfaces\IActuatorSwitch.cs" />
-    <Compile Include="ActuatorManagement\KeyboardActuator\KeyboardActuator.cs" />
-    <Compile Include="ActuatorManagement\KeyboardActuator\KeyboardHook.cs" />
-    <Compile Include="ActuatorManagement\KeyboardActuator\KeyboardSwitch.cs" />
-    <Compile Include="ActuatorManagement\KeyboardActuator\MouseHook.cs" />
+    <Compile Include="ActuatorManagement\BaseActuators\KeyboardActuator.cs" />
+    <Compile Include="ActuatorManagement\BaseActuators\KeyboardHook.cs" />
+    <Compile Include="ActuatorManagement\BaseActuators\KeyboardSwitch.cs" />
+    <Compile Include="ActuatorManagement\BaseActuators\MouseHook.cs" />
     <Compile Include="ActuatorManagement\Settings\SwitchSetting.cs" />
     <Compile Include="ActuatorManagement\UI\ActuatorErrorForm.cs">
       <SubType>Form</SubType>
@@ -115,8 +115,8 @@
     <Compile Include="AgentManagement\AgentContext.cs" />
     <Compile Include="AgentManagement\AgentManager.cs" />
     <Compile Include="AgentManagement\AgentProcessInfo.cs" />
-    <Compile Include="AgentManagement\AgentsCache\AgentsCache.cs" />
-    <Compile Include="AgentManagement\AgentsCache\PreferredAgents.cs" />
+    <Compile Include="AgentManagement\Agents\AgentsCache.cs" />
+    <Compile Include="AgentManagement\Agents\PreferredAgents.cs" />
     <Compile Include="AgentManagement\AgentUtils.cs" />
     <Compile Include="AgentManagement\AppAgentsPreferencesBase.cs" />
     <Compile Include="AgentManagement\CommandEnabledArg.cs" />
@@ -174,10 +174,10 @@
     <Compile Include="CoreInterfaces\IOnboardingExtension.cs" />
     <Compile Include="CoreInterfaces\IOnboardingUserControl.cs" />
     <Compile Include="CoreInterfaces\IOnboardingWizard.cs" />
-    <Compile Include="PanelManagement\PanelConfigMap\AppPanelClassConfig.cs" />
-    <Compile Include="PanelManagement\PanelConfigMap\PanelClassConfig.cs" />
-    <Compile Include="PanelManagement\PanelConfigMap\PanelClassConfigMap.cs" />
-    <Compile Include="PanelManagement\PanelConfigMap\PanelClassConfigMapEntry.cs" />
+    <Compile Include="PanelManagement\PanelConfig\AppPanelClassConfig.cs" />
+    <Compile Include="PanelManagement\PanelConfig\PanelClassConfig.cs" />
+    <Compile Include="PanelManagement\PanelConfig\PanelClassConfigMap.cs" />
+    <Compile Include="PanelManagement\PanelConfig\PanelClassConfigMapEntry.cs" />
     <Compile Include="PanelManagement\UI\ConfirmBoxLargeSingleOption.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -305,8 +305,8 @@
     <Compile Include="PanelManagement\Interfaces\IScannerPreview.cs" />
     <Compile Include="PanelManagement\Interfaces\ISupportsStatusBar.cs" />
     <Compile Include="PanelManagement\Interfaces\ITextController.cs" />
-    <Compile Include="PanelManagement\PanelConfigMap\PanelConfigMap.cs" />
-    <Compile Include="PanelManagement\PanelConfigMap\PanelConfigMapEntry.cs" />
+    <Compile Include="PanelManagement\PanelConfig\PanelConfigMap.cs" />
+    <Compile Include="PanelManagement\PanelConfig\PanelConfigMapEntry.cs" />
     <Compile Include="PanelManagement\PanelManager.cs" />
     <Compile Include="PanelManagement\Utils\AutoPositionScanner.cs" />
     <Compile Include="PanelManagement\Utils\Fonts.cs" />
@@ -421,7 +421,7 @@
     <Compile Include="WidgetManagement\Interfaces\IRowWidget.cs" />
     <Compile Include="WidgetManagement\Layout\WidgetAttribute.cs" />
     <Compile Include="WidgetManagement\Layout\WidgetAttributes.cs" />
-    <Compile Include="WidgetManagement\Layout\Layout.cs" />
+    <Compile Include="WidgetManagement\Layout\LayoutAttribute.cs" />
     <Compile Include="WidgetManagement\ScannerButtonControl.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -12,9 +12,8 @@
 
 //using ACAT.Core.Onboarding;
 using ACAT.Core.Utility;
-using System;
 
-namespace ACAT.Core.InputActuators
+namespace ACAT.Core.ActuatorManagement.BaseActuators
 {
     /// <summary>
     /// The ACAT interface for an external switch switch (off-the-shelf)
@@ -24,7 +23,7 @@ namespace ACAT.Core.InputActuators
                         "External hardware switch")]
     public class SwitchInterfaceActuator : KeyboardActuator
     {
-        public override String OnboardingImageFileName
+        public override string OnboardingImageFileName
         {
             get
             {

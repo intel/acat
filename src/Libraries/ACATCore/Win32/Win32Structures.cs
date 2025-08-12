@@ -3,7 +3,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace ACAT.Win32
+namespace ACAT.Core.Win32
 {
     // Some of these definitions originated from https://pinvoke.net/
 
@@ -45,22 +45,22 @@ namespace ACAT.Win32
     [StructLayout(LayoutKind.Sequential)]
     internal struct TRACKMOUSEEVENT
     {
-        public Int32 cbSize;    // using Int32 instead of UInt32 is safe here, and this avoids casting the result  of Marshal.SizeOf()
+        public int cbSize;    // using Int32 instead of UInt32 is safe here, and this avoids casting the result  of Marshal.SizeOf()
         [MarshalAs(UnmanagedType.U4)]
-        public Int32 dwFlags;
+        public int dwFlags;
         public IntPtr hWnd;
-        public UInt32 dwHoverTime;
+        public uint dwHoverTime;
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     internal class WinTrustFileInfo : IDisposable
     {
-        readonly UInt32 StructSize = (UInt32)Marshal.SizeOf(typeof(WinTrustFileInfo));
+        readonly uint StructSize = (uint)Marshal.SizeOf(typeof(WinTrustFileInfo));
         IntPtr pszFilePath;                     // required, file name to be verified
         readonly IntPtr hFile = IntPtr.Zero;             // optional, open handle to FilePath
         readonly IntPtr pgKnownSubject = IntPtr.Zero;    // optional, subject type if it is known
 
-        public WinTrustFileInfo(String filePath)
+        public WinTrustFileInfo(string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
                 throw new ArgumentNullException(nameof(filePath));
@@ -92,7 +92,7 @@ namespace ACAT.Win32
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     internal class WinTrustData : IDisposable
     {
-        readonly UInt32 StructSize = (UInt32)Marshal.SizeOf(typeof(WinTrustData));
+        readonly uint StructSize = (uint)Marshal.SizeOf(typeof(WinTrustData));
         readonly IntPtr PolicyCallbackData = IntPtr.Zero;
         readonly IntPtr SIPClientData = IntPtr.Zero;
 
@@ -108,7 +108,7 @@ namespace ACAT.Win32
         IntPtr FileInfoPtr = IntPtr.Zero;
         readonly WinTrustDataStateAction StateAction = WinTrustDataStateAction.Verify;
         readonly IntPtr StateData = IntPtr.Zero;
-        readonly String URLReference;
+        readonly string URLReference;
         readonly WinTrustDataProvFlags ProvFlags = WinTrustDataProvFlags.RevocationCheckChainExcludeRoot;
         readonly WinTrustDataUIContext UIContext = WinTrustDataUIContext.Execute;
 
@@ -119,9 +119,9 @@ namespace ACAT.Win32
                 throw new ArgumentNullException(nameof(fileInfo));
 
             // On Win7SP1+, don't allow MD2 or MD4 signatures
-            if ((Environment.OSVersion.Version.Major > 6) ||
-                ((Environment.OSVersion.Version.Major == 6) && (Environment.OSVersion.Version.Minor > 1)) ||
-                ((Environment.OSVersion.Version.Major == 6) && (Environment.OSVersion.Version.Minor == 1) && !String.IsNullOrEmpty(Environment.OSVersion.ServicePack)))
+            if (Environment.OSVersion.Version.Major > 6 ||
+                Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor > 1 ||
+                Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor == 1 && !string.IsNullOrEmpty(Environment.OSVersion.ServicePack))
             {
                 ProvFlags |= WinTrustDataProvFlags.DisableMD2andMD4;
             }

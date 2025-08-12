@@ -13,6 +13,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.ActuatorManagement.Settings;
 using ACAT.Core.Utility;
 using System;
 using System.Diagnostics;
@@ -38,7 +40,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <summary>
         /// Used for synchronization
         /// </summary>
-        private readonly Object _lockObj = new object();
+        private readonly Object _lockObj = new();
 
         /// <summary>
         /// Timer to track the accept time.  If the switch

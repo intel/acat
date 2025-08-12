@@ -12,6 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Utils;
 using ACAT.Core.Utility;
 using ACATResources;
 using System;
@@ -137,7 +138,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
                     {
                         _sampleImageForm = new SampleImageForm();
 
-                        User32Interop.RECT rect = new User32Interop.RECT();
+                        User32Interop.RECT rect = new();
                         User32Interop.GetWindowRect(handle, out rect);
 
                         _sampleImageForm.Show(this);
@@ -541,7 +542,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         {
             pause();
 
-            ConfirmBoxTwoOption msgBox = new ConfirmBoxTwoOption
+            ConfirmBoxTwoOption msgBox = new()
             {
                 Prompt = message,
                 Op1Prompt = StringResources.Yes,

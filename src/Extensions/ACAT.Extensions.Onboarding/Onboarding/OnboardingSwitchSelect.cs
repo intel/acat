@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.ActuatorManagement;
-using ACAT.Core.Onboarding;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.CoreInterfaces;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
+using ACAT.Extensions.Onboarding.UI;
 using ACAT.Extensions.Onboarding.UI.UserControls;
-using System;
 
-namespace ACAT.Extensions.Onboarding
+namespace ACAT.Extensions.Onboarding.Onboarding
 {
     /// <summary>
     /// The onboarding extension that lets the user select the input
@@ -24,7 +24,7 @@ namespace ACAT.Extensions.Onboarding
     public class OnboardingSwitchSelect : OnboardingExtensionBase
     {
         // TODO - Localize Me
-        private const String Step1 = "STEP 1";
+        private const string Step1 = "STEP 1";
 
         private IOnboardingWizard _wizard;
         private IActuator actuatorSelected = null;
@@ -56,7 +56,7 @@ namespace ACAT.Extensions.Onboarding
             return extension;
         }
 
-        public override IOnboardingUserControl GetStep(String stepId)
+        public override IOnboardingUserControl GetStep(string stepId)
         {
             IOnboardingUserControl userControl;
 

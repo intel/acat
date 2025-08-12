@@ -15,6 +15,11 @@
 
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.Classifiers;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DataLoader;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DimReduction;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.Filters;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.Utilities;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using Accord.Math;
@@ -437,12 +442,12 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
 
                     // Save classifier in session directory (this will be saved regardless of the AUC)
                     String filePathClassifier = Path.Combine(sessionDirectory, System.IO.Path.GetFileName(trainedClassifiersFilePath));
-                    Utilities.WriteToBinaryFile(filePathClassifier, this);
+                    BinaryUtils.WriteToBinaryFile(filePathClassifier, this);
 
                     // Save classifier in actuator folder (this is the classifier that will be used on typing, only saved if AUC>minAUC)
                     calibrationTime = DateTime.Now;
                     if (meanAUC >= minAUCRequired)
-                        Utilities.WriteToBinaryFile(trainedClassifiersFilePath, this);
+                        BinaryUtils.WriteToBinaryFile(trainedClassifiersFilePath, this);
                 }
             }
             catch (Exception e)

@@ -5,8 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.Onboarding;
-using ACAT.Extensions.Onboarding;
+using ACAT.Core.CoreInterfaces;
 using ACATResources;
 using System;
 using System.Windows.Forms;

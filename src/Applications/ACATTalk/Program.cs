@@ -11,13 +11,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.AgentManagement;
+using ACAT.Applications;
+using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.Audit;
 using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using ACAT.Extension;
-using ACATExtension.CommandHandlers;
+using ACAT.Extension.CommandHandlers;
 using ACATResources;
 using System;
 using System.Windows.Forms;
@@ -30,7 +33,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography.Pkcs;
 #endif
 
-namespace ACAT.Applications.ACATTalk
+namespace ACATTalk
 {
     /// <summary>
     /// ACAT Talk is an application customized for conversations.
@@ -43,7 +46,7 @@ namespace ACAT.Applications.ACATTalk
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        public static void Main(String[] args)
+        public static void Main(string[] args)
         {
             if (AppCommon.OtherInstancesRunning())
             {
@@ -66,7 +69,7 @@ namespace ACAT.Applications.ACATTalk
 
             CoreGlobals.AppId = "ACATTalk";
             CoreGlobals.ACATUserGuideFileName = "ACAT User Guide.pdf";
-            global::ACAT.Core.Utility.FatalErrorHandler.EvtFatalError += CoreGlobals_EvtFatalError;
+            FatalErrorHandler.EvtFatalError += CoreGlobals_EvtFatalError;
 
             FileUtils.LogAssemblyInfo();
 
@@ -108,7 +111,7 @@ namespace ACAT.Applications.ACATTalk
 
             CommandDescriptors.Init();
 
-            Common.AppPreferences.PreferredPanelConfigNames = String.Empty;
+            Common.AppPreferences.PreferredPanelConfigNames = string.Empty;
 
             if (!AppCommon.DoOnboarding())
             {
@@ -189,7 +192,7 @@ namespace ACAT.Applications.ACATTalk
                 }
                 else
                 {
-                    MessageBox.Show(String.Format(StringResources.InvalidFormName, "TalkApplicationScanner"));
+                    MessageBox.Show(string.Format(StringResources.InvalidFormName, "TalkApplicationScanner"));
                     return;
                 }
 

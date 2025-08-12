@@ -1374,7 +1374,7 @@ namespace ACAT.Applications.ACATWatch
             Log.Debug("h: " + h);
             if (h != 0)
             {
-                IntPtr handle = new IntPtr(h);
+                IntPtr handle = new(h);
 
                 ForceWindowIntoForeground(handle);
             }
@@ -1387,7 +1387,7 @@ namespace ACAT.Applications.ACATWatch
 
         private ContextMenu createContextMenu()
         {
-            ContextMenu retVal = new ContextMenu();
+            ContextMenu retVal = new();
             retVal.MenuItems.Add("&Exit", OnExit);
 
             return retVal;
@@ -1395,7 +1395,7 @@ namespace ACAT.Applications.ACATWatch
 
         private NotifyIcon createTrayIcon()
         {
-            NotifyIcon trayIcon = new NotifyIcon
+            NotifyIcon trayIcon = new()
             {
                 Text = "ACAT Watcher",
                 Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location),
@@ -1478,7 +1478,7 @@ namespace ACAT.Applications.ACATWatch
                         int h = Int32.Parse(message);
                         if (h != 0)
                         {
-                            IntPtr handle = new IntPtr(h);
+                            IntPtr handle = new(h);
 
                             FocusWindow(handle);
                         }

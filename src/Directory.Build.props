@@ -17,6 +17,7 @@
     <InformationalVersion>$(VersionPrefix)</InformationalVersion>
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>9.0</LangVersion>
+    <Platforms>x64</Platforms>
   </PropertyGroup>
 
   <!-- Common Assembly Information -->

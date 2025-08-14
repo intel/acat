@@ -5,9 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using System;
-
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Common
 {
     /// <summary>
     /// Categories of panels in ACAT
@@ -40,54 +38,54 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// The main Alphabet scanner
         /// </summary>
-        public const String Alphabet = "Alphabet";
+        public const string Alphabet = "Alphabet";
 
         /// <summary>
         /// The alphabet scanner without word prediction
         /// </summary>
-        public const String AlphabetMinimal = "AlphabetMinimal";
+        public const string AlphabetMinimal = "AlphabetMinimal";
 
         /// <summary>
         /// The Cursor navigation scanner
         /// </summary>
-        public const String Cursor = "Cursor";
+        public const string Cursor = "Cursor";
 
         /// <summary>
         /// Contexutal menus to interact with application dialogs. E.g. the
         /// Find dialog box when the user presses Ctrl-F in Notepad
         /// </summary>
-        public const String DialogContextMenu = "DialogContextMenu";
+        public const string DialogContextMenu = "DialogContextMenu";
 
         /// <summary>
         /// Scanner for function keys F1 through F12
         /// </summary>
-        public const String FunctionKey = "FunctionKey";
+        public const string FunctionKey = "FunctionKey";
 
         /// <summary>
         /// Contexutal menu to interact with application menus (E.g user right
         /// clicks in an application window and Windows displays a
         /// menu.
         /// </summary>
-        public const String MenuContextMenu = "MenuContextMenu";
+        public const string MenuContextMenu = "MenuContextMenu";
 
         /// <summary>
         /// The Mouse navigation scanner
         /// </summary>
-        public const String Mouse = "Mouse";
+        public const string Mouse = "Mouse";
 
         /// <summary>
         /// For uninitialized panels
         /// </summary>
-        public const String None = "None";
+        public const string None = "None";
 
         /// <summary>
         /// The Numbers scanner (equivalent to the numeric keypad)
         /// </summary>
-        public const String Number = "Number";
+        public const string Number = "Number";
 
         /// <summary>
         /// Scanner to enter Punctuations.
         /// </summary>
-        public const String Punctuation = "Punctuation";
+        public const string Punctuation = "Punctuation";
     }
 }

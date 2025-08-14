@@ -31,7 +31,7 @@ namespace ACAT.Core.Utility
             {
                 if (screen.Primary)
                 {
-                    User32Interop.DEVMODE dm = new User32Interop.DEVMODE
+                    User32Interop.DEVMODE dm = new()
                     {
                         dmSize = (short)Marshal.SizeOf(typeof(User32Interop.DEVMODE))
                     };

@@ -5,14 +5,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.AnimationManagement;
-using ACAT.Core.PanelManagement;
-using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
-using ACAT.Core.WidgetManagement;
-using ACAT.UserControls;
+using ACAT.Extension.UI.UserControls;
 using System;
-using System.Windows.Forms;
 
 namespace ACAT.Extension
 {

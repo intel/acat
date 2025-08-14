@@ -12,11 +12,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
-
-namespace ACAT.Core.PreferencesManagement
+namespace ACAT.Core.PreferencesManagement.Interfaces
 {
     /// <summary>
     /// Implement this interface if the class supports Preferences.
@@ -30,5 +26,7 @@ namespace ACAT.Core.PreferencesManagement
         /// </summary>
         /// <returns>true on sucess</returns>
         bool Save();
+
+        bool ResetToDefault();
     }
 }

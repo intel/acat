@@ -19,15 +19,15 @@ namespace ACAT.Core.Utility
 
         public static string LogFileSuffix = "_" + Process.GetCurrentProcess().StartTime.ToString("s").Replace(':', '_');
 
-        public static Stopwatch Stopwatch1 = new Stopwatch();
+        public static Stopwatch Stopwatch1 = new();
 
-        public static Stopwatch Stopwatch2 = new Stopwatch();
+        public static Stopwatch Stopwatch2 = new();
 
-        public static Stopwatch Stopwatch3 = new Stopwatch();
+        public static Stopwatch Stopwatch3 = new();
 
-        public static Stopwatch Stopwatch4 = new Stopwatch();
+        public static Stopwatch Stopwatch4 = new();
 
-        public static Stopwatch Stopwatch5 = new Stopwatch();
+        public static Stopwatch Stopwatch5 = new();
 
         public static String ACATUserGuideFileName = "ACAT User Guide.pdf";
 

@@ -8,7 +8,7 @@
 using System;
 using System.Linq;
 
-namespace ACAT.Core.AgentManagement.TextInterface
+namespace ACAT.Core.AgentManagement.TextControlAgents
 {
     /// <summary>
     /// Interfaces a text control that disallows editing.  Only
@@ -20,7 +20,7 @@ namespace ACAT.Core.AgentManagement.TextInterface
         /// <summary>
         /// Support only navigation features
         /// </summary>
-        private readonly String[] _supportedCommands =
+        private readonly string[] _supportedCommands =
         {
             "CmdCopy",
             "CmdPrevChar",

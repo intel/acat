@@ -3,18 +3,16 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 
-using ACAT.Core.AbbreviationsManagement;
-using ACAT.Core.AgentManagement;
-using ACAT.Core.AnimationManagement;
 using ACAT.Core.PanelManagement;
-using ACAT.Core.ThemeManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using ACAT.Core.WidgetManagement.Interfaces;
+using ACAT.Core.WidgetManagement.Layout;
 using ACAT.Core.Widgets;
 using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Security.Permissions;
 using System.Windows.Forms;
 
 namespace ACAT.Core.UserControlManagement
@@ -43,7 +41,7 @@ namespace ACAT.Core.UserControlManagement
             if (isPaused ||
                 widget is WordListItemWidget ||
                 String.IsNullOrEmpty(widget.Value) ||
-                !(widget is IButtonWidget))
+                widget is not IButtonWidget)
             {
                 return;
             }

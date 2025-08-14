@@ -14,7 +14,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace ACAT.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement.Layout
 {
     /// <summary>
     /// Holds attributes to a button widget such as the font to use,
@@ -45,9 +45,9 @@ namespace ACAT.Core.WidgetManagement
             FontSize = 0;
             FontBold = false;
             FontItalic = false;
-            Name = String.Empty;
-            Label = String.Empty;
-            Value = String.Empty;
+            Name = string.Empty;
+            Label = string.Empty;
+            Value = string.Empty;
             Modifiers = null;
             MouseClickActuate = true;
             OnMouseClick = new PCode();
@@ -73,7 +73,7 @@ namespace ACAT.Core.WidgetManagement
         /// <summary>
         /// The font to use to display this on the UI
         /// </summary>
-        public String FontName { get; set; }
+        public string FontName { get; set; }
 
         /// <summary>
         /// The size of the font to use
@@ -88,7 +88,7 @@ namespace ACAT.Core.WidgetManagement
         /// <summary>
         /// What to display on the control in the form
         /// </summary>
-        public String Label { get; set; }
+        public string Label { get; set; }
 
         /// <summary>
         /// Modifier keys such as Shift, Alt to send
@@ -104,22 +104,22 @@ namespace ACAT.Core.WidgetManagement
         /// The internal name of the button key.  This is the name
         /// given to the control in the form
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Value when the Shift key is pressed
         /// </summary>
-        public String ShiftValue { get; set; }
+        public string ShiftValue { get; set; }
 
         /// <summary>
         /// Tooltip help string
         /// </summary>
-        public String ToolTip { get; set; }
+        public string ToolTip { get; set; }
 
         /// <summary>
         /// Internal string value.
         /// </summary>
-        public String Value { get; set; }
+        public string Value { get; set; }
 
         /// <summary>
         /// Class factory to create a WidgetAttribute object from
@@ -195,11 +195,11 @@ namespace ACAT.Core.WidgetManagement
             FontBold = XmlUtils.GetXMLAttrBool(node, "bold", FontBold);
             FontItalic = XmlUtils.GetXMLAttrBool(node, "italic", FontItalic);
             IsVirtualKey = XmlUtils.GetXMLAttrBool(node, "virtualkey", false);
-            ToolTip = XmlUtils.GetXMLAttrString(node, "toolTip", String.Empty);
-            ShiftValue = XmlUtils.GetXMLAttrString(node, "shiftValue", String.Empty);
+            ToolTip = XmlUtils.GetXMLAttrString(node, "toolTip", string.Empty);
+            ShiftValue = XmlUtils.GetXMLAttrString(node, "shiftValue", string.Empty);
             MouseClickActuate = XmlUtils.GetXMLAttrBool(node, "mouseClickActuate", true);
-            String onMouseClick = XmlUtils.GetXMLAttrString(node, "onMouseClick");
-            if (!String.IsNullOrEmpty(onMouseClick))
+            string onMouseClick = XmlUtils.GetXMLAttrString(node, "onMouseClick");
+            if (!string.IsNullOrEmpty(onMouseClick))
             {
                 var parser = new Parser();
                 parser.Parse(onMouseClick, ref OnMouseClick);
@@ -207,16 +207,16 @@ namespace ACAT.Core.WidgetManagement
 
             parseModifiers(XmlUtils.GetXMLAttrString(node, "modifiers"));
 
-            String align = XmlUtils.GetXMLAttrString(node, "align");
+            string align = XmlUtils.GetXMLAttrString(node, "align");
 
             Alignment = Enum.IsDefined(typeof(ContentAlignment), align) ?
                                 (ContentAlignment)Enum.Parse(typeof(ContentAlignment), align) :
-                                (ContentAlignment?)null;
+                                null;
 
             ExtendedAttributes = new KeyValuePairs();
 
             var extendedAttr = XmlUtils.GetXMLAttrString(node, "extendedAttributes");
-            if (!String.IsNullOrEmpty(extendedAttr))
+            if (!string.IsNullOrEmpty(extendedAttr))
             {
                 ExtendedAttributes.Parse(extendedAttr);
             }
@@ -228,14 +228,14 @@ namespace ACAT.Core.WidgetManagement
         /// this into array list of keys Keys.LControlKey, Keys.LMenu
         /// </summary>
         /// <param name="modifiers">Modifier string array</param>
-        private void parseModifiers(String modifiers)
+        private void parseModifiers(string modifiers)
         {
-            if (String.IsNullOrEmpty(modifiers))
+            if (string.IsNullOrEmpty(modifiers))
             {
                 return;
             }
 
-            String[] array = modifiers.Split('+');
+            string[] array = modifiers.Split('+');
             if (array.Length > 0)
             {
                 Modifiers = new ArrayList();

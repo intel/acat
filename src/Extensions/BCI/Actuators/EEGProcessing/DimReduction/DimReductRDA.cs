@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
+namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DimReduction
 {
     [Serializable]
     public class DimReductRDA
@@ -99,7 +99,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// <param name="pPriors"></param>
         /// <param name="k"></param>
         /// <returns></returns>
-        public Boolean Learn(List<double[]> inputData, List<int> labels)//, string priorMode, float[] pPriors, int k)
+        public bool Learn(List<double[]> inputData, List<int> labels)//, string priorMode, float[] pPriors, int k)
         {
             //Debug.WriteLine("DimReductRDA k=" + k + "learn");
 
@@ -108,7 +108,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
 
             // Initialize params
             int numClasses = 2;
-            this.numTrainedClasses = numClasses;
+            numTrainedClasses = numClasses;
             int[] numTrialsPerClass = new int[numClasses];
             means = new double[numClasses][];
             inverseCovariances = new double[numClasses][,];
@@ -120,13 +120,13 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             List<double[,]> Sk = new(); //covariance for class k
             double[,] S = new double[numFeatures, numFeatures]; // All classes
 
-            this.priors = new double[numClasses];
+            priors = new double[numClasses];
             int numTotalTrials = 0;
             for (int classIdx = 0; classIdx < numClasses; classIdx++)
             {
                 //Separate in targets and non-targets
-                int[] indClass = Matrix.Find(labels.ToArray(), element => element == classIdx);
-                List<double[]> trialClassData = Matrix.Get(inputData, indClass); //<trial0>[sample0, sample1, sample2...], <trial1[sample0, sample1, sample2]...
+                int[] indClass = labels.ToArray().Find(element => element == classIdx);
+                List<double[]> trialClassData = inputData.Get(indClass); //<trial0>[sample0, sample1, sample2...], <trial1[sample0, sample1, sample2]...
                 numTrialsPerClass[classIdx] = indClass.Length;
                 numTotalTrials += indClass.Length;
 
@@ -140,7 +140,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
 
                 double[] classMean = classData.Mean(0);
                 double[,] classZeroMeanData = classData.Center(classMean, false);
-                double[,] classS = Matrix.Dot(classZeroMeanData.Transpose(), classZeroMeanData);
+                double[,] classS = classZeroMeanData.Transpose().Dot(classZeroMeanData);
 
                 // Save class means and covariances
                 Sk.Add(classS); // Append to list
@@ -151,19 +151,19 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 S = S.Add(classS);//matrix addition
             }
 
-            int N = Matrix.Sum(numTrialsPerClass); // num total samples
+            int N = numTrialsPerClass.Sum(); // num total samples
 
             // Calculate priors (proportional to number of samples of each class)
             if (N == 0)
             {
                 for (int index = 0; index < numClasses; index++)
                 {
-                    this.priors[index] = 0.0f;
+                    priors[index] = 0.0f;
                 }
             }
             else
             {
-                this.priors = numTrialsPerClass.Divide(N);
+                priors = numTrialsPerClass.Divide(N);
             }
 
             double[] Nk = new double[numClasses];//= numTrialsPerClass.Multiply(1 - this.shrinkParam).Add(this.shrinkParam*N);
@@ -176,23 +176,23 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 Nk[classIdx] = (1 - shrinkParam) * numTrialsPerClass[classIdx] + shrinkParam * numTotalTrials;
 
                 // Calculate shrinked covariance
-                double[,] tmpS1 = Sk[classIdx].Multiply(1 - this.shrinkParam); //Matrix.Multiply(S[classIdx],  1-shrinkParam);
-                double[,] tmpS2 = S.Multiply(this.shrinkParam);
+                double[,] tmpS1 = Sk[classIdx].Multiply(1 - shrinkParam); //Matrix.Multiply(S[classIdx],  1-shrinkParam);
+                double[,] tmpS2 = S.Multiply(shrinkParam);
                 double[,] shrinkedCov = tmpS1.Add(tmpS2);
                 shrinkedCov = shrinkedCov.Divide(Nk[classIdx]);
 
                 // Calculate matrix for QR decomposition
-                double[,] tmpR1 = shrinkedCov.Multiply(1 - this.regularizeParam);
-                double coeff = (shrinkedCov.Trace() * this.regularizeParam) / numFeatures;
-                double[,] tmpR2 = Accord.Math.Matrix.Identity(numFeatures).Multiply(coeff);
+                double[,] tmpR1 = shrinkedCov.Multiply(1 - regularizeParam);
+                double coeff = shrinkedCov.Trace() * regularizeParam / numFeatures;
+                double[,] tmpR2 = Matrix.Identity(numFeatures).Multiply(coeff);
                 double[,] regCov = tmpR1.Add(tmpR2);
 
                 // Calculate inverse covariance (methd B)
-                double[,] classInvSigma = Matrix.Inverse(regCov); //(Qt, R);
-                this.inverseCovariances[classIdx] = classInvSigma;
+                double[,] classInvSigma = regCov.Inverse(); //(Qt, R);
+                inverseCovariances[classIdx] = classInvSigma;
 
                 // Calculate log determinant using built-in function
-                this.logDeterminantOfCovariances[classIdx] = Matrix.LogDeterminant(regCov);
+                logDeterminantOfCovariances[classIdx] = regCov.LogDeterminant();
             }
 
             return true;
@@ -206,28 +206,28 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// <param name="outputData"></param>
         /// <param name="k"></param>
         /// <returns></returns>
-        public Boolean Reduce(List<double[]> inputData, out List<double[]> outputData)
+        public bool Reduce(List<double[]> inputData, out List<double[]> outputData)
         {
             //int numTrials = inputData.Count;
             //int numSamples = inputData[0].Length;
-            int numClasses = this.means.Length;
+            int numClasses = means.Length;
 
             List<double[]> classProjections = new();
             for (int classIdx = 0; classIdx < numClasses; classIdx++)
             {
                 double[,] classData = inputData.ToArray().ToMatrix();
-                double[] classMean = this.means[classIdx];
-                double[,] classInvCov = this.inverseCovariances[classIdx];
-                double classLogDeterminantOfCov = this.logDeterminantOfCovariances[classIdx];
+                double[] classMean = means[classIdx];
+                double[,] classInvCov = inverseCovariances[classIdx];
+                double classLogDeterminantOfCov = logDeterminantOfCovariances[classIdx];
                 double classPrior = priors[classIdx]; ;
 
                 // Substract mean
                 double[,] classZeroMeanData = classData.Center(classMean, false);
 
                 // Calculate terms for projection
-                double[,] tmp1 = Matrix.Dot(classZeroMeanData, classInvCov);
+                double[,] tmp1 = classZeroMeanData.Dot(classInvCov);
                 tmp1 = Matrix.ElementwiseMultiply(tmp1, classZeroMeanData);
-                double[] term1 = Matrix.Sum(tmp1, 1);
+                double[] term1 = tmp1.Sum(1);
 
                 term1 = term1.Add(classLogDeterminantOfCov);
                 term1 = term1.Divide(-2);
@@ -248,12 +248,12 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// <param name="inputData"></param>
         /// <param name="outputData"></param>
         /// <returns></returns>
-        public Boolean Reduce(List<double[]> inputData, out List<double> outputData)
+        public bool Reduce(List<double[]> inputData, out List<double> outputData)
         {
             Reduce(inputData, out List<double[]> fullOutput); //[class][trial]
             outputData = new List<double>();
 
-            int numClasses = this.means.Length;
+            int numClasses = means.Length;
             if (numClasses == 2)
             {
                 outputData = fullOutput[1].Subtract(fullOutput[0]).ToList();
@@ -268,7 +268,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// <summary>
         /// Clear all params
         /// </summary>
-        public Boolean Clear()
+        public bool Clear()
         {
             W = new List<double[,]>();
             w = new List<double[]>();
@@ -285,7 +285,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// <returns></returns>
         public object Clone()
         {
-            return this.MemberwiseClone();
+            return MemberwiseClone();
         }
     }
 }

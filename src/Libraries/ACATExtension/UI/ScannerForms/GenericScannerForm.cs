@@ -10,40 +10,53 @@
 // text navigation etc.
 
 using ACAT.Core.AgentManagement;
-using ACAT.Core.Audit;
-using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.ThemeManagement;
-using ACAT.Core.TTSManagement;
 using ACAT.Core.UserControlManagement;
+using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
-using ACAT.Core.WordPredictionManagement;
-using ACATResources;
+using ACAT.Extension.CommandHandlers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Permissions;
 using System.Windows.Forms;
-using ACAT.Extension.CommandHandlers;
-using ACAT.Extension;
 
-namespace ACAT.Scanners
+namespace ACAT.Extension.UI.ScannerForms
 {
-    [ClassDescriptor("D9A5B53F-7119-445B-BDEA-F76EC53077F1",
-                        "TalkApplicationScanner",
-                        "Talk application main window")]
     public partial class GenericScannerForm : Form, IScannerPanel
     {
-        protected readonly ScannerCommon _scannerCommon;
+        private readonly object _lock = new object();
+        private ScannerCommon _scannerCommon;
+
+        public ScannerCommon ScannerCommon
+        {
+            get 
+            { if (_scannerCommon == null)
+                {
+                    lock (_lock)
+                    {
+                        if(_scannerCommon == null)
+                        {
+                            _scannerCommon = new ScannerCommon(this);
+                        }
+                    }
+                }
+            return _scannerCommon;
+            }
+        }
+     
+        
         protected bool _dimScanner;
-        protected String _panelClass;
+        protected string _panelClass;
         protected ScannerHelper _scannerHelper;
+        private Label label1;
         protected WindowActiveWatchdog _windowActiveWatchdog;
         public GenericScannerForm()
         {
-            _scannerCommon = new ScannerCommon(this);
-
             InitializeComponent();
 
             SubscribeToEvents();
@@ -57,15 +70,13 @@ namespace ACAT.Scanners
 
         public Form Form => this;
 
-        public String PanelClass => _panelClass;
+        public string PanelClass => _panelClass;
 
-        public IPanelCommon PanelCommon => _scannerCommon;
-
-        public ScannerCommon ScannerCommon => _scannerCommon;
+        public IPanelCommon PanelCommon => ScannerCommon;
 
         public SyncLock SyncObj
         {
-            get { return _scannerCommon.SyncObj; }
+            get { return ScannerCommon.SyncObj; }
         }
         public virtual ITextController TextController { get; }
 
@@ -102,7 +113,7 @@ namespace ACAT.Scanners
 
             _scannerHelper = new ScannerHelper(this, startupArg);
 
-            bool retVal = _scannerCommon.Initialize(startupArg);
+            bool retVal = ScannerCommon.Initialize(startupArg);
 
             retVal = HandleInitialize(startupArg);
 
@@ -116,7 +127,7 @@ namespace ACAT.Scanners
         }
         public void OnFocusChanged(WindowActivityMonitorInfo monitorInfo)
         {
-            _scannerCommon.OnFocusChanged(monitorInfo);
+            ScannerCommon.OnFocusChanged(monitorInfo);
         }
 
         public virtual void OnPause()
@@ -125,10 +136,10 @@ namespace ACAT.Scanners
             _windowActiveWatchdog?.Pause();
 
             Log.Debug("CALIBTEST calling usercontrolmanager.pause");
-            _scannerCommon.UserControlManager.OnPause();
+            ScannerCommon.UserControlManager.OnPause();
 
             Log.Debug("CALIBTEST calling scannercommon2.pause");
-            _scannerCommon.OnPause(_dimScanner ?
+            ScannerCommon.OnPause(_dimScanner ?
                                 ScannerCommon.PauseDisplayMode.FadeScanner :
                                 ScannerCommon.PauseDisplayMode.None);
 
@@ -150,12 +161,12 @@ namespace ACAT.Scanners
             _dimScanner = true;
 
             Log.Debug("CALIBTEST TalkScanner OnResume. calling user control manager.OnREsume");
-            _scannerCommon.UserControlManager.OnResume();
+            ScannerCommon.UserControlManager.OnResume();
 
             Log.Debug("CALIBTEST TalkScanner OnResume. calling scannercommon2 resume");
-            _scannerCommon.OnResume();
+            ScannerCommon.OnResume();
 
-            //_scannerCommon.ResizeToFitDesktop(this);
+            ScannerCommon.ResizeToFitDesktop(this);
         }
 
         public virtual void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
@@ -176,27 +187,46 @@ namespace ACAT.Scanners
         }
         protected virtual void InitializeComponent()
         {
-            Log.Warn($"No InitializeComponent() defined for {GetType().Name}. Defaulting to do nothing.");
+            this.label1 = new System.Windows.Forms.Label();
+            this.SuspendLayout();
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(103, 97);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(120, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "All Your Bases Are Mine";
+            // 
+            // GenericScannerForm
+            // 
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.label1);
+            this.Name = "GenericScannerForm";
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         protected override void OnClientSizeChanged(EventArgs e)
         {
             base.OnClientSizeChanged(e);
-            _scannerCommon.OnClientSizeChanged();
+            ScannerCommon.OnClientSizeChanged();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            _scannerCommon.OnFormClosing(e);
+            ScannerCommon.OnFormClosing(e);
             base.OnFormClosing(e);
         }
 
-        protected virtual void ScannerFormClosing(object sender, FormClosingEventArgs e)
+        protected virtual void ScannerFormClosing(object sender, FormClosingEventArgs e)    
         {
             removeWatchdogs();
 
-            _scannerCommon.OnClosing();
-            _scannerCommon.Dispose();
+            ScannerCommon.OnClosing();
+            ScannerCommon.Dispose();
         }
 
         protected virtual void ScannerFormLoaded(object sender, EventArgs e)

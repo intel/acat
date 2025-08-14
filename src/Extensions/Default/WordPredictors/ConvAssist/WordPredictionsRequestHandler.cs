@@ -10,9 +10,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.Utility;
-using ACAT.Core.WordPredictionManagement;
+using ACAT.Core.WordPredictorManagement;
+using ACAT.Core.WordPredictorManagement.Interfaces;
+using ACAT.Extensions.WordPredictors.ConvAssist.MessageTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +42,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <summary>
         /// Previous predictions results
         /// </summary>
-        private List<string> PrevWordPredictionResults = new List<string>();
+        private List<string> PrevWordPredictionResults = new();
 
         /// <summary>
         /// Word predictor object
@@ -64,7 +66,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         public WordPredictionResponse ProcessPredictionRequest(WordPredictionRequest request)
         {
             Log.Debug("Predict for: " + request.PrevWords + " " + request.CurrentWord);
-            StringBuilder preceedingWords = new StringBuilder();
+            StringBuilder preceedingWords = new();
 
             if (request.PredictionType != PredictionTypes.Words)
             {
@@ -154,12 +156,12 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <returns>List of predictions with a keyword to tell apart wach type</returns>
         private List<string> ProcessWordPredictions(ConvAssistWordPredictor wordPredictor, string predictions, string currentWord)
         {
-            StringBuilder resultFullPredictionWords = new StringBuilder();
-            WordAndCharacterPredictionResponse answer = new WordAndCharacterPredictionResponse();
+            StringBuilder resultFullPredictionWords = new();
+            WordAndCharacterPredictionResponse answer = new();
             var retVal = new List<string>();
             answer = JsonSerializer.Deserialize<WordAndCharacterPredictionResponse>(predictions);
-            List<string> predictWords = new List<string>();
-            List<string> predictLetters = new List<string>();
+            List<string> predictWords = new();
+            List<string> predictLetters = new();
             int i = 0;
 
             if (answer != null)
@@ -177,7 +179,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 retVal.Add("&WORDS");
 
                 //Create Dictionary of each to set the number value as a Double
-                List<KeyValuePair<string, double>> WordsList = new List<KeyValuePair<string, double>>();
+                List<KeyValuePair<string, double>> WordsList = new();
                 WordsList = ConvAssistUtils.ToList(predictWords);
                 wordPredictor.NotifyNextWordProbabilities(WordsList, true);
 
@@ -233,7 +235,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             try
             {
                 //Create Dictionary of each to set the probability number value as a Double
-                List<KeyValuePair<string, double>> LetterList = new List<KeyValuePair<string, double>>();
+                List<KeyValuePair<string, double>> LetterList = new();
                 LetterList = ConvAssistUtils.ToList(predictLetters);
                 wordPredictor.NotifyNextLetterProbabilities(LetterList, true);
                 i = 0;

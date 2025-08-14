@@ -13,6 +13,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.Utility;
 using System;
 
@@ -23,7 +24,7 @@ namespace ACAT.Core.AbbreviationsManagement
         /// <summary>
         /// Static singleton instance
         /// </summary>
-        private static readonly AbbreviationsManager _instance = new AbbreviationsManager();
+        private static readonly AbbreviationsManager _instance = new();
 
         /// <summary>
         /// Has this object been disposed

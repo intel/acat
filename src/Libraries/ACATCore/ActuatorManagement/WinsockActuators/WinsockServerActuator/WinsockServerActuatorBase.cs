@@ -13,12 +13,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.ActuatorManagement;
+using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.Utility;
-using System;
 using System.Text;
 
-namespace ACAT.Core.InputActuators
+namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
 {
     /// <summary>
     /// Represents the base class for an actuator receives switch triggers from the a
@@ -152,7 +151,7 @@ namespace ACAT.Core.InputActuators
         /// <param name="packet"></param>
         protected virtual void onDataReceived(byte[] packet)
         {
-            String strData = ASCIIEncoding.ASCII.GetString(packet, 0, packet.Length);
+            string strData = Encoding.ASCII.GetString(packet, 0, packet.Length);
             Log.Debug("Received data: " + strData);
 
             // parse the string, find the switch that causes the trigger

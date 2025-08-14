@@ -10,7 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-namespace ACAT.Core.PreferencesManagement
+namespace ACAT.Core.PreferencesManagement.Interfaces
 {
     /// <summary>
     /// Implement this interface if the extension supports settings

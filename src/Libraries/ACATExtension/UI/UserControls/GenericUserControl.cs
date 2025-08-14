@@ -10,17 +10,19 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.AgentManagement;
 using ACAT.Core.AnimationManagement;
-using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.UserControlManagement;
+using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
-using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace ACAT.UserControls
+namespace ACAT.Extension.UI.UserControls
 {
+    [DesignerCategory("Code")]
     public abstract class GenericUserControl : UserControl, IUserControl
     {
         public event AnimationPlayerStateChanged EvtPlayerStateChanged;

@@ -1,18 +1,15 @@
-﻿using ACAT.Core.ActuatorManagement;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ACAT.Core.Utility
+namespace ACAT.Core.Utility.TypeLoader
 {
     public class TypeLoader<TInterface> : ITypeLoader<TInterface>
         where TInterface : class, IPluginExtension
     {
-        private readonly Dictionary<Guid, Type> _typeCache = new Dictionary<Guid, Type>();
+        private readonly Dictionary<Guid, Type> _typeCache = new();
 
         public IReadOnlyDictionary<Guid, Type> LoadedTypes => _typeCache;
 

@@ -10,6 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement.Interfaces;
 using System;
 using System.Windows.Forms;
 

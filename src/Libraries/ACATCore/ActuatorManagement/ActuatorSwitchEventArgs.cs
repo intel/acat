@@ -10,6 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement.Interfaces;
 using System;
 
 namespace ACAT.Core.ActuatorManagement

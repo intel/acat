@@ -77,6 +77,15 @@ namespace ACAT.Core.WordPredictorManagement
             return guid;
         }
 
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<PreferredWordPredictors>();
+            var res = Save(tmp, FilePath);
+            Load();
+
+            return res;
+        }
+
         /// <summary>
         /// Persists this object to a file
         /// </summary>

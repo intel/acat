@@ -22,7 +22,7 @@ namespace ACAT.Core.Utility
         /// <summary>
         /// The queue to hold the items
         /// </summary>
-        private readonly Queue<T> _queue = new Queue<T>();
+        private readonly Queue<T> _queue = new();
 
         /// <summary>
         /// How many itmes are in the queue?

@@ -24,7 +24,7 @@ namespace ACAT.Core.Utility
         /// <returns>a hex string</returns>
         public static string ByteArrayToHexString(byte[] byteArray)
         {
-            StringBuilder sb = new StringBuilder(byteArray.Length * 3);
+            StringBuilder sb = new(byteArray.Length * 3);
             foreach (byte data in byteArray)
             {
                 sb.Append(Convert.ToString(data, 16).PadLeft(2, '0').PadRight(3, ' '));

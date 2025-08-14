@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Utility.Mouse;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -642,7 +643,7 @@ namespace ACAT.Core.Utility
                 return _dpiX;
             }
 
-            Form form = new Form();
+            Form form = new();
 
             float retVal;
 
@@ -676,6 +677,11 @@ namespace ACAT.Core.Utility
             return User32Interop.GetForegroundWindow();
         }
 
+        public static int GetWindowThreadProcessId(IntPtr hWnd)
+        {
+            User32Interop.GetWindowThreadProcessId(hWnd, out int processId);
+            return processId;
+        }
         /// <summary>
         /// Gets the transparency of a form
         /// This is just a helper function that takes care of

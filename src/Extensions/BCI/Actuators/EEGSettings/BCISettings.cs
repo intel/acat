@@ -10,13 +10,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACATResources;
 using ACAT.Core.PreferencesManagement;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Xml.Serialization;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using ACAT.Core.PreferencesManagement.Attributes;
 
 namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
 {
@@ -977,6 +977,15 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
                     break;
             }
             return false;
+        }
+
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<BCIKeyboardRightCalibrationSettings>();
+            var res = Save(tmp, SettingsFilePath);
+            Load();
+
+            return res;
         }
     }
 }

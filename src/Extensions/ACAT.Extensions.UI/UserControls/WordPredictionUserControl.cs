@@ -10,15 +10,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.AnimationManagement;
-using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
-using ACAT.Core.WordPredictionManagement;
-using ACAT.Extension;
-using ACAT.UserControls;
-using System.Windows.Forms;
+using ACAT.Core.WordPredictorManagement;
+using ACAT.Extension.UI;
+using ACAT.Extension.UI.UserControls;
 
 namespace ACAT.Extensions.UI.UserControls
 {

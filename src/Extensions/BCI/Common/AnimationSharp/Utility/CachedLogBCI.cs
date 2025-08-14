@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace ACAT.Extensions.BCI.Common.AnimationSharp
+namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
 {
     /// <summary>
     /// Caches auditlog entries in memory and dumps them to disk when
@@ -21,14 +21,14 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <summary>
         /// Full path to the log file
         /// </summary>
-        private readonly String LogFileFullPath;
+        private readonly string LogFileFullPath;
 
         /// <summary>
         /// Full path to the log file
         /// </summary>
-        private readonly String LogFileFullPathEEG;
+        private readonly string LogFileFullPathEEG;
 
-        private readonly List<String> logEntries = new();
+        private readonly List<string> logEntries = new();
 
         /// <summary>
         /// Name of the audit log file
@@ -37,7 +37,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
 
         public CachedLogBCI(string baseFileName, string baseDirPath = null)
         {
-            if (!String.IsNullOrEmpty(baseFileName))
+            if (!string.IsNullOrEmpty(baseFileName))
             {
                 LogFileName = baseFileName + ".csv";
             }
@@ -48,7 +48,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
 
             string logFileFolder = CreateDefaulLogPath(baseFileName);
             LogFileFullPath = Path.Combine(logFileFolder, Path.GetFileNameWithoutExtension(LogFileName) + CoreGlobals.LogFileSuffix + Path.GetExtension(LogFileName));
-            if (!String.IsNullOrEmpty(baseDirPath) && Directory.Exists(baseDirPath))
+            if (!string.IsNullOrEmpty(baseDirPath) && Directory.Exists(baseDirPath))
             {
                 LogFileFullPathEEG = Path.Combine(baseDirPath, Path.GetFileNameWithoutExtension(LogFileName) + CoreGlobals.LogFileSuffix + Path.GetExtension(LogFileName));
             }
@@ -71,7 +71,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             return logFileFolder;
         }
 
-        public void LogEntry(String eventType, String logEntry)
+        public void LogEntry(string eventType, string logEntry)
         {
             var timeStamp = getTimeStamp();
 
@@ -108,13 +108,13 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
         }
 
-        private String getTimeStamp()
+        private string getTimeStamp()
         {
             DateTime now = DateTime.UtcNow;
 
             var elapsed = now - System.Diagnostics.Process.GetCurrentProcess().StartTime.ToUniversalTime();
 
-            String elapsedTime = ((int)(elapsed.TotalMilliseconds / 1000)).ToString() + "." + (int)(elapsed.TotalMilliseconds % 1000);
+            string elapsedTime = ((int)(elapsed.TotalMilliseconds / 1000)).ToString() + "." + (int)(elapsed.TotalMilliseconds % 1000);
 
             TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
             int secondsSinceEpochUtc = (int)t.TotalSeconds;

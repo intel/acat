@@ -17,9 +17,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement.BaseActuators;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.ActuatorManagement.Settings;
 using ACAT.Core.Audit;
 using ACAT.Core.Extensions;
-using ACAT.Core.InputActuators;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PreferencesManagement;
 using ACAT.Core.UserManagement;
@@ -28,7 +30,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Windows.Forms;
 
 namespace ACAT.Core.ActuatorManagement
 {

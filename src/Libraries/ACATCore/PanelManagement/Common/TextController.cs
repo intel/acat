@@ -7,13 +7,14 @@
 
 using ACAT.Core.AbbreviationsManagement;
 using ACAT.Core.AgentManagement;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
 using System;
 using System.Collections;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Common
 {
     /// <summary>
     /// Implements the ITextController interface.  Contains helper
@@ -31,7 +32,7 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Text of the partial word that was autocompleted
         /// </summary>
-        private static String _autoCompletePartialWord = String.Empty;
+        private static string _autoCompletePartialWord = string.Empty;
 
         /// <summary>
         /// Text offset of the partial word that is to be autocompleted
@@ -92,7 +93,7 @@ namespace ACAT.Core.PanelManagement
         /// and the one that the user selects
         /// </summary>
         /// <param name="wordSelected">the autocomplete word.</param>
-        public void AutoCompleteWord(String wordSelected)
+        public void AutoCompleteWord(string wordSelected)
         {
             if (Context.AppAgentMgr.TextChangedNotifications.OnHold())
             {
@@ -134,7 +135,7 @@ namespace ACAT.Core.PanelManagement
                 int wordToReplaceLength = wordToReplace.Length;
                 if (wordToReplaceLength > 0)
                 {
-                    isCapitalizedWordToReplace = Char.IsUpper(wordToReplace[0]);
+                    isCapitalizedWordToReplace = char.IsUpper(wordToReplace[0]);
                 }
 
                 CoreGlobals.Stopwatch4.Stop();
@@ -177,7 +178,7 @@ namespace ACAT.Core.PanelManagement
                     */
 
                     if (wordToReplaceLength > 0 && isCapitalizedWordToReplace &&
-                        Char.ToUpper(wordToReplace[0]) == Char.ToUpper(wordSelected[0]))
+                        char.ToUpper(wordToReplace[0]) == char.ToUpper(wordSelected[0]))
                     {
                         wordSelected = capitalizeWord(wordSelected);
                     }
@@ -256,7 +257,7 @@ namespace ACAT.Core.PanelManagement
 
                 int startPos = context.TextAgent().GetPreviousWordAtCaret(out string word);
                 Log.Debug("Prev word: " + word);
-                if (String.IsNullOrEmpty(word))
+                if (string.IsNullOrEmpty(word))
                 {
                     return null;
                 }
@@ -269,9 +270,9 @@ namespace ACAT.Core.PanelManagement
                 // do we detect something?
                 if (abbr != null)
                 {
-                    String replacement = abbr.Expansion;
+                    string replacement = abbr.Expansion;
 
-                    String stringToCaret = context.TextAgent().GetStringToCaret(startPos);
+                    string stringToCaret = context.TextAgent().GetStringToCaret(startPos);
 
                     Log.Debug("String to caret from startPos " + startPos + ": [" + stringToCaret + "]");
                     replacement = stringToCaret.Replace(word, replacement);
@@ -279,7 +280,7 @@ namespace ACAT.Core.PanelManagement
 
                     if (isFirstWord)
                     {
-                        String capitalized = TextUtils.Capitalize(replacement);
+                        string capitalized = TextUtils.Capitalize(replacement);
                         if (capitalized != null)
                         {
                             replacement = capitalized;
@@ -288,9 +289,9 @@ namespace ACAT.Core.PanelManagement
 
                     int wordLength = word.Length +
                                      (CoreGlobals.AppPreferences.ExpandAbbreviationsOnSeparator ? 1 : 0);
-                    String replaceWith = (abbr.Mode == Abbreviation.AbbreviationMode.Write)
+                    string replaceWith = abbr.Mode == Abbreviation.AbbreviationMode.Write
                         ? replacement
-                        : String.Empty;
+                        : string.Empty;
 
                     context.TextAgent().Replace(startPos, wordLength, replaceWith);
 
@@ -386,7 +387,7 @@ namespace ACAT.Core.PanelManagement
         /// <param name="inputChar">char to send</param>
         public void HandleAlphaNumericChar(ArrayList modifiers, char inputChar)
         {
-            Context.AppAgentMgr.Keyboard.Send((modifiers != null) ? modifiers.Cast<Keys>().ToList() : KeyStateTracker.GetExtendedKeys(), inputChar);
+            Context.AppAgentMgr.Keyboard.Send(modifiers != null ? modifiers.Cast<Keys>().ToList() : KeyStateTracker.GetExtendedKeys(), inputChar);
 
             KeyStateTracker.KeyTriggered(inputChar);
 
@@ -435,7 +436,7 @@ namespace ACAT.Core.PanelManagement
                 using AgentContext context = Context.AppAgentMgr.ActiveContext();
                 if (!context.TextAgent().EnableSmartPunctuations())
                 {
-                    Context.AppAgentMgr.Keyboard.Send((modifiers != null) ?
+                    Context.AppAgentMgr.Keyboard.Send(modifiers != null ?
                                                         modifiers.Cast<Keys>().ToList() :
                                                         KeyStateTracker.GetExtendedKeys(),
                         punctuation);
@@ -456,7 +457,7 @@ namespace ACAT.Core.PanelManagement
                 }
 
                 Log.Debug("Sending punctuation");
-                Context.AppAgentMgr.Keyboard.Send((modifiers != null) ?
+                Context.AppAgentMgr.Keyboard.Send(modifiers != null ?
                                                     modifiers.Cast<Keys>().ToList() :
                                                     KeyStateTracker.GetExtendedKeys(), punctuation);
 
@@ -492,7 +493,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         /// <param name="modifiers"></param>
         /// <param name="value">the key</param>
-        public void HandleVirtualKey(ArrayList modifiers, String value)
+        public void HandleVirtualKey(ArrayList modifiers, string value)
         {
             _lastAction = LastAction.Unknown;
 
@@ -501,7 +502,7 @@ namespace ACAT.Core.PanelManagement
                 Keys virtualKey = MapVirtualKey(value);
                 if (virtualKey != Keys.None)
                 {
-                    Context.AppAgentMgr.Keyboard.Send((modifiers != null) ?
+                    Context.AppAgentMgr.Keyboard.Send(modifiers != null ?
                                                         modifiers.Cast<Keys>().ToList() :
                                                         KeyStateTracker.GetExtendedKeys(), virtualKey);
                     KeyStateTracker.KeyTriggered(virtualKey);
@@ -518,7 +519,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         /// <param name="value">String representation</param>
         /// <returns>Keys enum version</returns>
-        public Keys MapVirtualKey(String value)
+        public Keys MapVirtualKey(string value)
         {
             Keys retVal;
             try
@@ -628,7 +629,7 @@ namespace ACAT.Core.PanelManagement
 
             int startPos = AgentManager.Instance.TextControlAgent.GetPreviousWordAtCaret(out string word);
             Log.Debug("Prev word: [" + word + "]");
-            if (String.IsNullOrEmpty(word))
+            if (string.IsNullOrEmpty(word))
             {
                 return;
             }
@@ -636,9 +637,9 @@ namespace ACAT.Core.PanelManagement
             bool isFirstWord = AgentManager.Instance.TextControlAgent.IsPreviousWordAtCaretTheFirstWord();
 
             Log.Debug("Looking up " + word);
-            String replacement = Context.AppSpellCheckManager.ActiveSpellChecker.Lookup(word);
+            string replacement = Context.AppSpellCheckManager.ActiveSpellChecker.Lookup(word);
             Log.Debug("Replacement is [" + replacement + "]");
-            if (String.IsNullOrEmpty(replacement) && isFirstWord)
+            if (string.IsNullOrEmpty(replacement) && isFirstWord)
             {
                 replacement = word;
             }
@@ -648,7 +649,7 @@ namespace ACAT.Core.PanelManagement
                 replacement = capitalizeWord(replacement);
             }
 
-            if (!String.IsNullOrEmpty(replacement) && String.Compare(word, replacement) != 0)
+            if (!string.IsNullOrEmpty(replacement) && string.Compare(word, replacement) != 0)
             {
                 replaceMisspeltWord(word, replacement, startPos, isFirstWord);
             }
@@ -679,7 +680,7 @@ namespace ACAT.Core.PanelManagement
                     case LastAction.AutoCompleteWord:
 
                         int caretPos;
-                        String text;
+                        string text;
                         bool isChar = false;
                         using (AgentContext context = Context.AppAgentMgr.ActiveContext())
                         {
@@ -688,7 +689,7 @@ namespace ACAT.Core.PanelManagement
                             if (caretPos <= text.Length - 1)
                             {
                                 char ch = text[caretPos];
-                                isChar = !Char.IsWhiteSpace(ch) && !Char.IsPunctuation(ch);
+                                isChar = !char.IsWhiteSpace(ch) && !char.IsPunctuation(ch);
                             }
                         }
 
@@ -725,7 +726,7 @@ namespace ACAT.Core.PanelManagement
             _autoCompleteCaretPos = -1;
             _beforeAutoCompleteCaretPos = -1;
             _autocompleteStartOffset = -1;
-            _autoCompletePartialWord = String.Empty;
+            _autoCompletePartialWord = string.Empty;
         }
 
         /// <summary>
@@ -733,9 +734,9 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         /// <param name="word">word to capitalize</param>
         /// <returns>Captilized word</returns>
-        private String capitalizeWord(String word)
+        private string capitalizeWord(string word)
         {
-            return Char.ToUpper(word[0]) + ((word.Length > 1) ? word.Substring(1) : String.Empty);
+            return char.ToUpper(word[0]) + (word.Length > 1 ? word.Substring(1) : string.Empty);
         }
 
         /// <summary>
@@ -788,14 +789,14 @@ namespace ACAT.Core.PanelManagement
                     bool retVal = context.TextAgent().GetCharAtCaret(out char charAtCaret);
 
                     Log.Debug("charAtCaret is " + Convert.ToInt32(charAtCaret));
-                    if (!Char.IsPunctuation(charAtCaret) && (!retVal || charAtCaret == 0x0D || !Char.IsWhiteSpace(charAtCaret)))
+                    if (!char.IsPunctuation(charAtCaret) && (!retVal || charAtCaret == 0x0D || !char.IsWhiteSpace(charAtCaret)))
                     {
                         Log.Debug("Sending space suffix... caretpos is " + context.TextAgent().GetCaretPos());
                         Context.AppAgentMgr.Keyboard.Send(KeyStateTracker.GetExtendedKeys(), ' ');
                         Log.Debug("Done sending space suffix caretPos is " + context.TextAgent().GetCaretPos());
                         KeyStateTracker.KeyTriggered(' ');
                     }
-                    else if (Char.IsWhiteSpace(charAtCaret))
+                    else if (char.IsWhiteSpace(charAtCaret))
                     {
                         SendKeys.SendWait("{DELETE}");
                         SendKeys.SendWait(charAtCaret.ToString());
@@ -817,18 +818,18 @@ namespace ACAT.Core.PanelManagement
         /// <param name="replacement">the replacemenet word</param>
         /// <param name="startPos">starting position of the word</param>
         /// <param name="isFirstWord">is this the first word of the sentence</param>
-        private void replaceMisspeltWord(String word, String replacement, int startPos, bool isFirstWord)
+        private void replaceMisspeltWord(string word, string replacement, int startPos, bool isFirstWord)
         {
             try
             {
                 using AgentContext context = Context.AppAgentMgr.ActiveContext();
-                String textToCaret = context.TextAgent().GetStringToCaret(startPos);
+                string textToCaret = context.TextAgent().GetStringToCaret(startPos);
                 Log.Debug("textToCaret : [" + textToCaret + "]");
                 replacement = textToCaret.Replace(word, replacement);
                 Log.Debug("After replacement, replacement : [" + replacement + "]");
                 if (isFirstWord)
                 {
-                    String cap = TextUtils.Capitalize(replacement);
+                    string cap = TextUtils.Capitalize(replacement);
                     if (cap != null)
                     {
                         replacement = cap;

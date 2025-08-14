@@ -5,18 +5,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.PanelManagement;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
-using ACAT.Core.WordPredictorManagement;
+using ACAT.Core.Utility.TypeLoader;
+using ACAT.Core.WordPredictorManagement.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 
-namespace ACAT.Core.WordPredictionManagement
+namespace ACAT.Core.WordPredictorManagement
 {
     /// <summary>
     /// Maintains a list of discovered word predictors in an internal cache.
@@ -29,7 +28,7 @@ namespace ACAT.Core.WordPredictionManagement
         /// <summary>
         /// Name of the config file where Id's of preferred word predictors are stored
         /// </summary>
-        private const String PreferredConfigFile = "PreferredWordPredictors.xml";
+        private const string PreferredConfigFile = "PreferredWordPredictors.xml";
 
         /// <summary>
         /// Null word predictor. Doesn't do anything :-)
@@ -41,12 +40,12 @@ namespace ACAT.Core.WordPredictionManagement
         /// <summary>
         /// Table mapping the GUID and culture to the word predictor Type
         /// </summary>
-        private readonly Dictionary<Guid, Tuple<String, Type>> _wordPredictorsTypeCache;
+        private readonly Dictionary<Guid, Tuple<string, Type>> _wordPredictorsTypeCache;
 
         /// <summary>
         /// Top level language-specific folder (eg en, fr etc)
         /// </summary>
-        private String _dirWalkCurrentCulture;
+        private string _dirWalkCurrentCulture;
         private readonly TypeLoader<IWordPredictor> _WordPredictorsTypeLoader = new();
 
         /// <summary>
@@ -70,7 +69,7 @@ namespace ACAT.Core.WordPredictionManagement
         public WordPredictors()
         {
             _wordPredictors = new List<IWordPredictor>();
-            _wordPredictorsTypeCache = new Dictionary<Guid, Tuple<String, Type>>();
+            _wordPredictorsTypeCache = new Dictionary<Guid, Tuple<string, Type>>();
 
             PreferredWordPredictors.FilePath = UserManager.GetFullPath(PreferredConfigFile);
             _preferredWordPredictors = PreferredWordPredictors.Load();
@@ -126,15 +125,15 @@ namespace ACAT.Core.WordPredictionManagement
         /// </summary>
         /// <param name="language">language (culture)</param>
         /// <returns>list of word predictors</returns>
-        public ICollection<Type> Get(String language)
+        public ICollection<Type> Get(string language)
         {
             var list = _wordPredictorsTypeCache.Values;
 
             //return (from tuple in list where String.Compare(tuple.Item1, language, true) == 0 select tuple.Item2).ToList();
 
-            return (String.IsNullOrEmpty(language) || language.Length == 0) ?
-               (from tuple in list where String.IsNullOrEmpty(tuple.Item1) select tuple.Item2).ToList() :
-               (from tuple in list where String.Compare(tuple.Item1, language, true) == 0 select tuple.Item2).ToList();
+            return string.IsNullOrEmpty(language) || language.Length == 0 ?
+               (from tuple in list where string.IsNullOrEmpty(tuple.Item1) select tuple.Item2).ToList() :
+               (from tuple in list where string.Compare(tuple.Item1, language, true) == 0 select tuple.Item2).ToList();
         }
 
         /// <summary>
@@ -146,21 +145,21 @@ namespace ACAT.Core.WordPredictionManagement
         /// <returns>ID of the word predictor</returns>
         public Guid GetDefaultByCulture(CultureInfo ci)
         {
-            Tuple<String, Type> foundTuple = null;
+            Tuple<string, Type> foundTuple = null;
 
             // first look for culture-specific word predictors
             foreach (var tuple in _wordPredictorsTypeCache.Values)
             {
                 if (ci == null)
                 {
-                    if (String.IsNullOrEmpty(tuple.Item1))
+                    if (string.IsNullOrEmpty(tuple.Item1))
                     {
                         foundTuple = tuple;
                         break;
                     }
                 }
-                else if (!String.IsNullOrEmpty(tuple.Item1) &&
-                    String.Compare(tuple.Item1, ci.TwoLetterISOLanguageName, true) == 0)
+                else if (!string.IsNullOrEmpty(tuple.Item1) &&
+                    string.Compare(tuple.Item1, ci.TwoLetterISOLanguageName, true) == 0)
                 {
                     foundTuple = tuple;
                     break;
@@ -217,7 +216,7 @@ namespace ACAT.Core.WordPredictionManagement
         /// <param name="extensionDirs">Folders to search under</param>
         /// <param name="recursive">recursively descend and search?</param>
         /// <returns>true</returns>
-        public bool Load(IEnumerable<String> extensionDirs, bool recursive = true)
+        public bool Load(IEnumerable<string> extensionDirs, bool recursive = true)
         {
             foreach (string dir in extensionDirs)
             {
@@ -269,7 +268,7 @@ namespace ACAT.Core.WordPredictionManagement
                 }
             }
 
-            Log.Error($"Could not find word predictor for id {guid.ToString()}");
+            Log.Error($"Could not find word predictor for id {guid}");
             return null;
         }
 
@@ -280,7 +279,7 @@ namespace ACAT.Core.WordPredictionManagement
         /// <param name="language">language (culture)</param>
         /// <param name="guid">id of the word predictor</param>
         /// <returns>true on success</returns>
-        public bool SetPreferred(String language, Guid guid)
+        public bool SetPreferred(string language, Guid guid)
         {
             bool retVal = _preferredWordPredictors.SetAsDefault(language, guid);
             if (retVal)
@@ -298,7 +297,7 @@ namespace ACAT.Core.WordPredictionManagement
         /// <param name="guid">guid of the wp to add</param>
         /// <param name="language">language (culture of the wp)</param>
         /// <param name="type">the class Type of the wp</param>
-        internal void Add(Guid guid, String language, Type type)
+        internal void Add(Guid guid, string language, Type type)
         {
             if (_wordPredictorsTypeCache.ContainsKey(guid))
             {
@@ -307,7 +306,7 @@ namespace ACAT.Core.WordPredictionManagement
             }
 
             Log.Debug("Adding Wordpredictor " + type.FullName + ", guid " + guid.ToString() + " to cache");
-            _wordPredictorsTypeCache.Add(guid, new Tuple<String, Type>(language, type));
+            _wordPredictorsTypeCache.Add(guid, new Tuple<string, Type>(language, type));
         }
 
         /// <summary>
@@ -341,14 +340,14 @@ namespace ACAT.Core.WordPredictionManagement
         /// <param name="dir">dir to descend into</param>
         /// <param name="culture">culture (optional) of the word predictor</param>
         /// <param name="recursive">true if deep-descend</param>
-        private void loadWordPredictorsTypesIntoCache(String dir, String culture, bool recursive = true)
+        private void loadWordPredictorsTypesIntoCache(string dir, string culture, bool recursive = true)
         {
             if (!Directory.Exists(dir))
             {
                 Log.Warn($"Directory {dir} doesn't exist.");
                 return;
             }
-            DirectoryWalker walker = new DirectoryWalker(dir, "ACAT.Extensions.WordPredictors.*.dll");
+            DirectoryWalker walker = new(dir, "ACAT.Extensions.WordPredictors.*.dll");
             _dirWalkCurrentCulture = culture;
             walker.Walk(new OnFileFoundDelegate(onFileFound));
 
@@ -363,7 +362,7 @@ namespace ACAT.Core.WordPredictionManagement
         /// look for word predictor types in there. If found, add them to the cache
         /// </summary>
         /// <param name="dllName">name of the dll found</param>
-        private void onFileFound(String dllName)
+        private void onFileFound(string dllName)
         {
             try
             {

@@ -8,7 +8,7 @@
 using System;
 using System.Globalization;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Common
 {
     /// <summary>
     /// Delegate for the event raised when the culture has changed

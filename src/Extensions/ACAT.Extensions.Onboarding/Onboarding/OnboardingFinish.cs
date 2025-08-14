@@ -6,10 +6,11 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
-using System;
-using ACAT.Core.Onboarding;
+using ACAT.Extensions.Onboarding.UI.UserControls;
+using ACAT.Extensions.Onboarding.UI;
+using ACAT.Core.CoreInterfaces;
 
-namespace ACAT.Extensions.Onboarding
+namespace ACAT.Extensions.Onboarding.Onboarding
 {
     /// <summary>
     /// The onboarding extension that signifies the end of onboarding
@@ -20,7 +21,7 @@ namespace ACAT.Extensions.Onboarding
     public class OnboardingFinish : OnboardingExtensionBase
     {
         // TODO - Localize Me
-        private const String Step1 = "STEP 1";
+        private const string Step1 = "STEP 1";
 
         private IOnboardingWizard _wizard;
 
@@ -34,7 +35,7 @@ namespace ACAT.Extensions.Onboarding
             return GetStep(Step1);
         }
 
-        public override IOnboardingUserControl GetStep(String stepId)
+        public override IOnboardingUserControl GetStep(string stepId)
         {
             IOnboardingUserControl userControl;
 

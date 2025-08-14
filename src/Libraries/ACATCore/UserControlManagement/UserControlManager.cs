@@ -8,13 +8,16 @@
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.AnimationManagement;
 using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.PanelManagement.PanelConfig;
+using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.Widgets;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using static ACAT.Core.ActuatorManagement.DllImports;
 
 namespace ACAT.Core.UserControlManagement
 {
@@ -33,9 +36,9 @@ namespace ACAT.Core.UserControlManagement
         private volatile bool _stopTopLevelAnimation = false;
 
         private readonly TextController _textController;
-        private readonly List<IUserControl> _userControls = new List<IUserControl>();
+        private readonly List<IUserControl> _userControls = new();
 
-        private readonly Dictionary<Guid, IUserControl> _userControlCache = new Dictionary<Guid, IUserControl>();
+        private readonly Dictionary<Guid, IUserControl> _userControlCache = new();
 
         public UserControlManager(IScannerPanel scannerPanel, TextController textController)
         {

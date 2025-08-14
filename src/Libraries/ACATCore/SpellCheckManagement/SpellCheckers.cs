@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PanelManagement;
+using ACAT.Core.SpellCheckManagement.Interfaces;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using System;
@@ -338,7 +339,7 @@ namespace ACAT.Core.SpellCheckManagement
         /// <param name="recursive">true if deep-descend</param>
         private void loadSpellCheckerTypesIntoCache(String dir, String culture)
         {
-            DirectoryWalker walker = new DirectoryWalker(dir, "ACAT.Extensions.*.dll");
+            DirectoryWalker walker = new(dir, "ACAT.Extensions.*.dll");
             _dirWalkCurrentCulture = culture;
             walker.Walk(new OnFileFoundDelegate(onFileFound));
         }
@@ -361,7 +362,7 @@ namespace ACAT.Core.SpellCheckManagement
                     }
                     catch (Exception ex)
                     {
-                        ConfirmBoxOneOption ConfirmBoxOneOption = new ConfirmBoxOneOption
+                        ConfirmBoxOneOption ConfirmBoxOneOption = new()
                         {
                             Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n Status Error: ERSC",
                             DecisionPrompt = "ok",

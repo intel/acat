@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
+namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.Utilities
 {
     internal class FileReader
     {
@@ -37,7 +37,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// <param name="triggerSignal"></param>
         /// <param name="markerValues"></param>
         /// <param name="sessionDirectory"></param>
-        public void ReadDataAndMarkersFromFiles(String sessionID, out double[,] rawData, out int[] triggerSignal, out List<int> markerValues, out string sessionDirectory)
+        public void ReadDataAndMarkersFromFiles(string sessionID, out double[,] rawData, out int[] triggerSignal, out List<int> markerValues, out string sessionDirectory)
         {
             //if (_settings.Calibration_ForceRecalibrateFromFile && _settings.Calibration_CalibrationFileId != null && _settings.Calibration_CalibrationFileId != "")
             //{
@@ -69,7 +69,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// <param name="filePathMarkers"></param>
         /// <param name="initDirectory"></param>
         /// <returns></returns>
-        public List<int> ReadMarkersFromFile(String filePathMarkers = "", String initDirectory = "")
+        public List<int> ReadMarkersFromFile(string filePathMarkers = "", string initDirectory = "")
         {
             List<int> markerValues = new();
 
@@ -85,7 +85,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 openFileDialog1.Title = "Select Markers File";
 
                 // Show the Dialog.
-                if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
                 {
                     filePathMarkers = openFileDialog1.FileName;
                     //initDirectory = Path.GetDirectoryName(filePathMarkers);
@@ -117,7 +117,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// <param name="filePath"></param>
         /// <param name="initDirectory"></param>
         /// <returns></returns>
-        public void ReadEEGDataFromFile(out double[,] rawData, out int[] triggerSignal, String filePath = "", String initDirectory = "")
+        public void ReadEEGDataFromFile(out double[,] rawData, out int[] triggerSignal, string filePath = "", string initDirectory = "")
         {
             rawData = null;
             triggerSignal = null;
@@ -137,7 +137,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 // Show the Dialog.
                 // If the user clicked OK in the dialog and
                 // a .CUR file was selected, open it.
-                if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
                 {
                     filePath = openFileDialog1.FileName;
                 }
@@ -161,7 +161,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                         lineIdx++;
                         if (lineIdx > BCISettingsFixed.DataParser_HeaderLinesToSkip)
                         {
-                            String[] values = line.Split(',');
+                            string[] values = line.Split(',');
 
                             // triggerValues are flipped (with the new sensor) 1=0, 0=1
                             if (BCIActuatorSettings.Settings.DataParser_UseSoftwareTrigers)

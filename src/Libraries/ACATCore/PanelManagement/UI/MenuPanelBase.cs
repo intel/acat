@@ -7,8 +7,11 @@
 
 using ACAT.Core.AgentManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using ACAT.Core.WidgetManagement.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

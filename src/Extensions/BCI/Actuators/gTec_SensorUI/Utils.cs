@@ -43,7 +43,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 }
             }
 
-            List<String> list = new List<String>();
+            List<String> list = new();
 
             if (param2.ToLower().EndsWith(".mp4"))
             {

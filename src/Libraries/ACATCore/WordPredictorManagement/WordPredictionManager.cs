@@ -7,16 +7,16 @@
 
 using ACAT.Core.Extensions;
 using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PreferencesManagement;
 using ACAT.Core.Utility;
+using ACAT.Core.WordPredictorManagement.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
-using System.Windows.Forms;
 
-namespace ACAT.Core.WordPredictionManagement
+namespace ACAT.Core.WordPredictorManagement
 {
     /// <summary>
     /// Manages word prediction engines.  The engines are  DLLs
@@ -31,22 +31,22 @@ namespace ACAT.Core.WordPredictionManagement
         /// <summary>
         /// Name of the folder under which the Word predictor DLLs are located
         /// </summary>
-        public static String WordPredictorsRootName = "";
+        public static string WordPredictorsRootName = "";
 
         /// <summary>
         /// Word prediction manager instance
         /// </summary>
-        private static readonly WordPredictionManager _instance = new WordPredictionManager();
+        private static readonly WordPredictionManager _instance = new();
 
         /// <summary>
         /// Current User's current profile directory
         /// </summary>
-        private readonly String _profileRootDir;
+        private readonly string _profileRootDir;
 
         /// <summary>
         /// Word predictor root directory relative to the user's home directory
         /// </summary>
-        private readonly String _userWordPredictorRootDir;
+        private readonly string _userWordPredictorRootDir;
 
         /// <summary>
         /// The active word predictor
@@ -112,7 +112,7 @@ namespace ACAT.Core.WordPredictionManagement
         /// Gets the word predictor root directory relative the user's
         /// current profile
         /// </summary>
-        public String WordPredictorRootDirRelativeToProfile
+        public string WordPredictorRootDirRelativeToProfile
         {
             get { return _profileRootDir; }
         }
@@ -121,7 +121,7 @@ namespace ACAT.Core.WordPredictionManagement
         /// Gets the word predictor root directory relative to the user
         /// home directory
         /// </summary>
-        public String WordPredictorRootDirRelativeToUser
+        public string WordPredictorRootDirRelativeToUser
         {
             get { return _userWordPredictorRootDir; }
         }
@@ -221,7 +221,7 @@ namespace ACAT.Core.WordPredictionManagement
         /// </summary>
         /// <param name="extensionDirs"></param>
         /// <returns></returns>
-        public bool Init(IEnumerable<String> extensionDirs)
+        public bool Init(IEnumerable<string> extensionDirs)
         {
             return true;
         }
@@ -258,7 +258,7 @@ namespace ACAT.Core.WordPredictionManagement
         /// </summary>
         /// <param name="extensionDirs">root directory</param>
         /// <returns>true on success</returns>
-        public bool LoadExtensions(IEnumerable<String> extensionDirs)
+        public bool LoadExtensions(IEnumerable<string> extensionDirs)
         {
             bool retVal = true;
 

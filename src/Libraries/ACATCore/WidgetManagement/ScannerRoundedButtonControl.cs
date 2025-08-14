@@ -172,12 +172,12 @@ namespace ACAT.Core.WidgetManagement
         {
             e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
             base.OnPaint(e);
-            RectangleF Rect = new RectangleF(0, 0, this.Width, this.Height);
+            RectangleF Rect = new(0, 0, this.Width, this.Height);
             using GraphicsPath GraphPath = GetRoundPath(Rect, BorderRadiusTopLeft, BorderRadiusBottomLeft, BorderRadiusTopRight, BorderRadiusBottomRight, BorderWidth);
             //GraphicsPath GraphInnerPath = GetRoundPath(Rect, BorderRadiusLeft, BorderRadiusRight, BorderWidth);
             //Pen pen = new Pen(BorderColor, BorderWidth);
             this.Region = new Region(GraphPath);
-            using Pen pen = new Pen(BorderColor, BorderWidth);
+            using Pen pen = new(BorderColor, BorderWidth);
             pen.Alignment = PenAlignment.Inset;
             e.Graphics.DrawPath(pen, GraphPath);
         }
@@ -208,7 +208,7 @@ namespace ACAT.Core.WidgetManagement
             _ = radiusBottomRight / 2f;
 
             float w2 = width / 2f;
-            GraphicsPath GraphPath = new GraphicsPath();
+            GraphicsPath GraphPath = new();
             //Top-Left Arc
             GraphPath.AddArc(Rect.X + w2, Rect.Y + w2, radiusTopLeft, radiusTopLeft, 180, 90);
 
@@ -232,7 +232,7 @@ namespace ACAT.Core.WidgetManagement
             if (Image != null && grayscale != null)
             {
                 color = new Bitmap(Image);
-                Bitmap c = new Bitmap(Image);
+                Bitmap c = new(Image);
                 int x, y;
                 // Loop through the images pixels to reset color.
                 for (x = 0; x < c.Width; x++)

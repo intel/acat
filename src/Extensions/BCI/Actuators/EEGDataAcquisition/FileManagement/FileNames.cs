@@ -10,7 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
+namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition.FileManagement
 {
     /// <summary>
     /// Names used to store BCI data

@@ -1,7 +1,5 @@
 ﻿using ACAT.Core.PreferencesManagement;
 using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Hosting;
 using System.Xml.Serialization;
 
 namespace ACAT.Core.Utility
@@ -87,5 +85,15 @@ namespace ACAT.Core.Utility
         /// Gets or sets the working directory for the shortcut
         /// </summary>
         public String WorkingDirectory { get; set; }
+
+        public override bool ResetToDefault()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool Save()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

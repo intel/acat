@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition.FileManagement;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGUtils;
 using ACAT.Extensions.BCI.Common.BCIControl;

@@ -6,9 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 //using ACATResources;
-using ACAT.ACATResources;
-using ACAT.Core.Onboarding;
-using ACAT.Extensions.Onboarding;
+using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,8 +14,9 @@ using System.Globalization;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using ACAT.Core.CoreInterfaces;
 
-namespace ACAT.Extensions.Onboarding
+namespace ACAT.Extensions.Onboarding.UI.UserControls
 {
     public class LanguageItem
     {
@@ -75,7 +74,7 @@ namespace ACAT.Extensions.Onboarding
                 Thread.CurrentThread.CurrentUICulture = selectedItem.CultureInfo;
                 Thread.CurrentThread.CurrentCulture = selectedItem.CultureInfo;
 
-                //var resourcesAssembly = typeof(ACAT.ACATResources.ResourceHelper).Assembly;
+                //var resourcesAssembly = typeof(ACATResources.ResourceHelper).Assembly;
                 _ = new ComponentResourceManager(typeof(UserControlLanguageSelect));
                 //ApplyResourcesToControls(this, resourceManager);
             }

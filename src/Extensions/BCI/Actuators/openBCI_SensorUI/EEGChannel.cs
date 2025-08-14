@@ -1,6 +1,5 @@
 ﻿using ACAT.Core.WidgetManagement;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using System;
 using System.Windows.Forms.DataVisualization.Charting;
 
 ////////////////////////////////////////////////////////////////////////////
@@ -16,7 +15,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 //
 ////////////////////////////////////////////////////////////////////////////
 
-namespace openBCISensorUI
+namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 {
     /// <summary>
     /// Holds information for each channel / electrode including name, enabled status,
@@ -27,7 +26,7 @@ namespace openBCISensorUI
         /// <summary>
         /// Short name / id (ex: Pz, C3, etc.) of channel
         /// </summary>
-        public String _electrodeName;
+        public string _electrodeName;
 
         /// <summary>
         /// Index of this channel out of the possible 16
@@ -72,12 +71,12 @@ namespace openBCISensorUI
         /// <summary>
         /// Commands to enable impedance testing for this specific electrode
         /// </summary>
-        public String ImpedanceTestingEnableCmd;
+        public string ImpedanceTestingEnableCmd;
 
         /// <summary>
         /// Command to disable impedance testing for this specific electrode
         /// </summary>
-        public String ImpedanceTestingDisableCmd;
+        public string ImpedanceTestingDisableCmd;
 
         /// <summary>
         /// Time in seconds status was obtained for this channel
@@ -101,7 +100,7 @@ namespace openBCISensorUI
         public ScannerRoundedButtonControl railingResultQualityResults;
         public ScannerRoundedButtonControl impedanceResultQualityResults;
 
-        public EEGChannel(String electrodeName, int channelIndex, bool enableChannel)
+        public EEGChannel(string electrodeName, int channelIndex, bool enableChannel)
         {
             _electrodeName = electrodeName;
             _channelIndex = channelIndex;

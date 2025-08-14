@@ -16,6 +16,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.Utility;
 using System;
 using System.ComponentModel;
@@ -43,17 +44,17 @@ namespace ACAT.Core.ActuatorManagement
         /// <summary>
         /// Event is set when the background task is done
         /// </summary>
-        private readonly ManualResetEvent _bgTaskDoneEvent = new ManualResetEvent(true);
+        private readonly ManualResetEvent _bgTaskDoneEvent = new(true);
 
         /// <summary>
         /// This event is set when the calibration has concluded
         /// </summary>
-        private readonly ManualResetEvent _calibrationDoneEvent = new ManualResetEvent(true);
+        private readonly ManualResetEvent _calibrationDoneEvent = new(true);
 
         /// <summary>
         /// Has the calibartion form been created
         /// </summary>
-        private readonly ManualResetEvent _formCreatedEvent = new ManualResetEvent(false);
+        private readonly ManualResetEvent _formCreatedEvent = new(false);
 
         /// <summary>
         /// Background worker
@@ -70,9 +71,9 @@ namespace ACAT.Core.ActuatorManagement
         /// <summary>
         /// Has initialization completed?
         /// </summary>
-        private readonly ManualResetEvent initDoneEvent = new ManualResetEvent(false);
+        private readonly ManualResetEvent initDoneEvent = new(false);
 
-        private readonly ManualResetEvent postInitDoneEvent = new ManualResetEvent(false);
+        private readonly ManualResetEvent postInitDoneEvent = new(false);
 
         /// <summary>
         /// Initializes an instance of the class

@@ -78,6 +78,15 @@ namespace ACAT.Core.TTSManagement
             return guid;
         }
 
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<PreferredTTSEngines>();
+            var res = Save(tmp, FilePath);
+            Load();
+
+            return res;
+        }
+
         /// <summary>
         /// Persists this object to a file
         /// </summary>

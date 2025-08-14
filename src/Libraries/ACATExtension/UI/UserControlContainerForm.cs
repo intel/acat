@@ -6,11 +6,12 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.AgentManagement;
-using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Extension.CommandHandlers;
-using ACAT.Scanners;
+using ACAT.Extension.UI.ScannerForms;
 using System;
 using System.Security.Permissions;
 using System.Windows.Forms;
@@ -46,7 +47,7 @@ namespace ACAT.Extension
         public override bool HandleInitialize(StartupArg startupArg)
         {
             EmbeddedUserControlName = startupArg.PanelClass;
-            return _scannerCommon.UserControlManager.AddUserControlByKeyOrName(panelContainer, "embedUserControl", EmbeddedUserControlName);
+            return ScannerCommon.UserControlManager.AddUserControlByKeyOrName(panelContainer, "embedUserControl", EmbeddedUserControlName);
 
         }
 
@@ -60,9 +61,9 @@ namespace ACAT.Extension
         //        removeWatchdogs();
         //    }
 
-        //    _scannerCommon.UserControlManager.OnPause();
+        //    ScannerCommon.UserControlManager.OnPause();
 
-        //    _scannerCommon.OnPause(true ?
+        //    ScannerCommon.OnPause(true ?
         //                        ScannerCommon.PauseDisplayMode.FadeScanner :
         //                        ScannerCommon.PauseDisplayMode.None);
         //}
@@ -84,11 +85,11 @@ namespace ACAT.Extension
         //{
         //    enableWatchdogs();
 
-        //    _scannerCommon.UserControlManager.OnResume();
+        //    ScannerCommon.UserControlManager.OnResume();
 
-        //    _scannerCommon.OnResume();
+        //    ScannerCommon.OnResume();
 
-        //    _scannerCommon.ResizeToFitDesktop(this);
+        //    ScannerCommon.ResizeToFitDesktop(this);
         //}
 
         ///// <summary>
@@ -117,7 +118,7 @@ namespace ACAT.Extension
         //protected override void OnClientSizeChanged(EventArgs e)
         //{
         //    base.OnClientSizeChanged(e);
-        //    _scannerCommon.OnClientSizeChanged();
+        //    ScannerCommon.OnClientSizeChanged();
         //}
 
         /// <summary>
@@ -126,7 +127,7 @@ namespace ACAT.Extension
         /// <param name="e">closing param</param>
         //protected override void OnFormClosing(FormClosingEventArgs e)
         //{
-        //    _scannerCommon.OnFormClosing(e);
+        //    ScannerCommon.OnFormClosing(e);
         //    base.OnFormClosing(e);
         //}
 
@@ -159,7 +160,7 @@ namespace ACAT.Extension
                 }
             }
 
-            if (!_scannerCommon.HandleWndProc(m))
+            if (!ScannerCommon.HandleWndProc(m))
             {
                 base.WndProc(ref m);
             }
@@ -213,14 +214,14 @@ namespace ACAT.Extension
 
         private void UserControlContainerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _scannerCommon.OnClosing();
+            ScannerCommon.OnClosing();
         }
 
         private void UserControlContainerForm_Load(object sender, EventArgs e)
         {
-            _scannerCommon.OnLoad();
+            ScannerCommon.OnLoad();
 
-            _scannerCommon.ResizeToFitDesktop(this);
+            ScannerCommon.ResizeToFitDesktop(this);
         }
 
         /// <summary>

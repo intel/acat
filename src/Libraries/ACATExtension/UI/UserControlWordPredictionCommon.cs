@@ -5,21 +5,24 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
+using ACATResources;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.Audit;
 using ACAT.Core.PanelManagement;
-using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.Widgets;
-using ACAT.Core.WordPredictionManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using ACAT.Core.WordPredictorManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.WordPredictorManagement.Interfaces;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.UserControlManagement.Interfaces;
 
-namespace ACAT.Extension
+namespace ACAT.Extension.UI
 {
     /// <summary>
     /// This is a helper class exclusively for Alphabet scanners.
@@ -95,7 +98,7 @@ namespace ACAT.Extension
         /// </summary>
         public void AutocompleteWithFirstWord()
         {
-            List<Widget> list = new List<Widget>();
+            List<Widget> list = new();
             _rootWidget.Finder.FindAllChildren(typeof(WordListItemWidget), list);
 
             if (list.Any())
@@ -340,7 +343,7 @@ namespace ACAT.Extension
 
             var wordSelected = wordListItemWidget.Value.Trim();
 
-            if (!String.IsNullOrEmpty(wordSelected))
+            if (!string.IsNullOrEmpty(wordSelected))
             {
                 KeyStateTracker.ClearAlt();
                 KeyStateTracker.ClearCtrl();
@@ -356,7 +359,7 @@ namespace ACAT.Extension
 
             var letterSelected = letterListItemWidget.Value.Trim();
 
-            if (!String.IsNullOrEmpty(letterSelected))
+            if (!string.IsNullOrEmpty(letterSelected))
             {
                 KeyStateTracker.ClearAlt();
                 KeyStateTracker.ClearCtrl();
@@ -370,7 +373,7 @@ namespace ACAT.Extension
 
             var wordSelected = sentenceListItemWidget.Value.Trim();
 
-            if (!String.IsNullOrEmpty(wordSelected))
+            if (!string.IsNullOrEmpty(wordSelected))
             {
                 KeyStateTracker.ClearAlt();
                 KeyStateTracker.ClearCtrl();
@@ -386,11 +389,11 @@ namespace ACAT.Extension
         /// <param name="count">how many words?</param>
         /// <param name="word">word to check</param>
         /// <returns>true if it does</returns>
-        private bool contains(IEnumerable<String> list, int count, String word)
+        private bool contains(IEnumerable<string> list, int count, string word)
         {
             for (int ii = 0; ii < count && ii < list.Count(); ii++)
             {
-                if (String.Compare(word, list.ElementAt(ii), true) == 0)
+                if (string.Compare(word, list.ElementAt(ii), true) == 0)
                 {
                     return true;
                 }
@@ -423,7 +426,7 @@ namespace ACAT.Extension
 
         private void processSentencePredictionResponse(WordPredictionResponse response)
         {
-            List<string> predictedSentenceList1 = new List<string>();
+            List<string> predictedSentenceList1 = new();
 
             var predictedSentenceList = response.Results;
 
@@ -486,8 +489,8 @@ namespace ACAT.Extension
         private void processWordPredictionResponse(WordPredictionResponse response)
         {
             IEnumerable<string> predictedLettersList = new List<string>();
-            List<string> predictedWordsList1 = new List<string>();
-            List<string> predictedLettersList1 = new List<string>();
+            List<string> predictedWordsList1 = new();
+            List<string> predictedLettersList1 = new();
 
             var predictedWordList = response.Results;
 
@@ -533,7 +536,7 @@ namespace ACAT.Extension
             // check if the current word is a possessive word. If not, we need to create
             // a possessive version of the word and add it as the last word
             // in the predicton list.
-            var possessiveWord = String.Empty;
+            var possessiveWord = string.Empty;
             var wordAtCaret = response.Request.CurrentWord;  // check if it is the same
 
             var charAtCaret = '\0';
@@ -544,7 +547,7 @@ namespace ACAT.Extension
                 Log.Debug("charAtCaret: [" + charAtCaret + "]");
             }
 
-            if (!String.IsNullOrEmpty(wordAtCaret) &&
+            if (!string.IsNullOrEmpty(wordAtCaret) &&
                 ResourceHelper.IsCurrentCultureEnglish() &&
                 Context.AppAgentMgr.CurrentEditingMode == EditingMode.Edit &&
                 !wordAtCaret.EndsWith("'s", StringComparison.InvariantCultureIgnoreCase) &&
@@ -575,7 +578,7 @@ namespace ACAT.Extension
                 }
                 // if there is a possessive form of the word, add
                 // it to the list.
-                if (!String.IsNullOrEmpty(possessiveWord) &&
+                if (!string.IsNullOrEmpty(possessiveWord) &&
                     !contains(predictedWordList, ii, possessiveWord))
                 {
                     int index;
@@ -675,8 +678,8 @@ namespace ACAT.Extension
 
             try
             {
-                String wordAtCaret;
-                String nwords;
+                string wordAtCaret;
+                string nwords;
                 var charAtCaret = '\0';
 
                 using (var agentContext = Context.AppAgentMgr.ActiveContext())
@@ -692,14 +695,14 @@ namespace ACAT.Extension
                     Log.Debug("charAtCaret: [" + charAtCaret + "]");
                 }
 
-                if (String.IsNullOrEmpty(nwords) && String.IsNullOrEmpty(wordAtCaret))
+                if (string.IsNullOrEmpty(nwords) && string.IsNullOrEmpty(wordAtCaret))
                 {
-                    _currentWordWidget?.SetCurrentWord(String.Empty);
+                    _currentWordWidget?.SetCurrentWord(string.Empty);
 
                     _wordListWidgetWidget?.ClearEntries();
 
                     nwords = " ";
-                    wordAtCaret = String.Empty;
+                    wordAtCaret = string.Empty;
                 }
 
                 Log.Debug("wordatcaret length: " + wordAtCaret.Length);
@@ -717,7 +720,7 @@ namespace ACAT.Extension
                 */
 
                 // do the word prediction
-                if (wordAtCaret.Length > 1 && Char.IsPunctuation(wordAtCaret[0]))
+                if (wordAtCaret.Length > 1 && char.IsPunctuation(wordAtCaret[0]))
                 {
                     wordAtCaret = wordAtCaret.Substring(1);
                 }
@@ -725,9 +728,9 @@ namespace ACAT.Extension
                 if (_sentenceListWidget != null)
                 {
                     bool ellipses = false;
-                    if (String.IsNullOrEmpty(wordAtCaret.Trim()))
+                    if (string.IsNullOrEmpty(wordAtCaret.Trim()))
                     {
-                        ellipses = !String.IsNullOrEmpty(nwords);
+                        ellipses = !string.IsNullOrEmpty(nwords);
                     }
 
                     if (ellipses)

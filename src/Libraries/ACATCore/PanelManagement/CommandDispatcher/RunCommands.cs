@@ -27,7 +27,7 @@ namespace ACAT.Core.PanelManagement.CommandDispatcher
         /// <summary>
         /// Table that maps the command with its handler
         /// </summary>
-        private readonly Dictionary<String, IRunCommandHandler> _runCommandLookupTable = new Dictionary<String, IRunCommandHandler>();
+        private readonly Dictionary<String, IRunCommandHandler> _runCommandLookupTable = new();
 
         /// <summary>
         /// Initializes a new instance of the class.

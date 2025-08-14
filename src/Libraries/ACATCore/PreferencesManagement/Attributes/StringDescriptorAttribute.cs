@@ -10,9 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using System;
-
-namespace ACAT.Core.PreferencesManagement
+namespace ACAT.Core.PreferencesManagement.Attributes
 {
     /// <summary>
     /// Custom attribute for String fields/properties
@@ -24,7 +22,7 @@ namespace ACAT.Core.PreferencesManagement
         /// </summary>
         /// <param name="desc">Description of the field/property</param>
         /// <param name="defaultvalue">Default value</param>
-        public StringDescriptorAttribute(String desc, String defaultvalue = "") : base(desc)
+        public StringDescriptorAttribute(string desc, string defaultvalue = "") : base(desc)
         {
             DefaultValue = defaultvalue;
         }
@@ -32,6 +30,6 @@ namespace ACAT.Core.PreferencesManagement
         /// <summary>
         /// Gets or sets the default value
         /// </summary>
-        public String DefaultValue { get; set; }
+        public string DefaultValue { get; set; }
     }
 }

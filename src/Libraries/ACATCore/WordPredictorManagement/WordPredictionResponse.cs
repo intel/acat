@@ -5,17 +5,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using System;
 using System.Collections.Generic;
 
-namespace ACAT.Core.WordPredictionManagement
+namespace ACAT.Core.WordPredictorManagement
 {
     /// <summary>
     /// Represents a response for a word prediction request.
     /// </summary>
     public class WordPredictionResponse
     {
-        public WordPredictionResponse(WordPredictionRequest request, IEnumerable<String> results, bool success)
+        public WordPredictionResponse(WordPredictionRequest request, IEnumerable<string> results, bool success)
         {
             Results = results;
             Success = success;
@@ -23,7 +22,7 @@ namespace ACAT.Core.WordPredictionManagement
         }
 
         public WordPredictionRequest Request { get; }
-        public IEnumerable<String> Results { get; }
+        public IEnumerable<string> Results { get; }
 
         public bool Success { get; }
     }

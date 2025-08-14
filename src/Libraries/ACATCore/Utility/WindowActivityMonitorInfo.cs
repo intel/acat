@@ -77,7 +77,7 @@ namespace ACAT.Core.Utility
                 return "FgHwnd: " + FgHwnd +
                     ", title: " + Title +
                     ", fgProcess: " + FgProcess.ProcessName +
-                    ", focusedClass: " + FocusedElement.Current.ClassName +
+                    ", focusedClass: " + FocusedElement?.Current.ClassName +
                     ", newWindow: " + IsNewWindow +
                     ", newFocus: " + IsNewFocusedElement;
             }

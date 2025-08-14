@@ -15,7 +15,7 @@
 using System;
 using System.Threading;
 
-namespace ACAT.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement.USBHidInterface
 {
     /// <summary>
     /// Opens a HID device and reads data from it.  Notifies
@@ -27,17 +27,17 @@ namespace ACAT.Core.ActuatorManagement
         /// <summary>
         /// The USB PID
         /// </summary>
-        private readonly String _productId;
+        private readonly string _productId;
 
         /// <summary>
         /// USB Interop object to invoke usb functions
         /// </summary>
-        private readonly USBInterop _usbInterop = new USBInterop();
+        private readonly USBInterop _usbInterop = new();
 
         /// <summary>
         /// The USB VID
         /// </summary>
-        private readonly String _vendorId;
+        private readonly string _vendorId;
 
         /// <summary>
         /// Has this object been disposed off yet?
@@ -65,7 +65,7 @@ namespace ACAT.Core.ActuatorManagement
         /// </summary>
         /// <param name="vendorId">Vendor ID of the Hid device manufacturer</param>
         /// <param name="productId">Vendor ID of the Hid device manufacturer</param>
-        public USBDevice(String vendorId, String productId)
+        public USBDevice(string vendorId, string productId)
         {
             _vendorId = vendorId;
             _productId = productId;

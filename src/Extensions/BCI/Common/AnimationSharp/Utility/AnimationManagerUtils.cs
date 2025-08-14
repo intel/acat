@@ -9,6 +9,7 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.ThemeManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using ACAT.Core.WidgetManagement.Interfaces;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using SharpDX.Direct2D1;
 using System;
@@ -18,7 +19,7 @@ using System.Windows.Forms;
 using System.Xml;
 using static ACAT.Extensions.BCI.Common.AnimationSharp.AnimationSharpManagerV2;
 
-namespace ACAT.Extensions.BCI.Common.AnimationSharp
+namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
 {
     /// <summary>
     /// Helper functions to get objects and variables used by BCI
@@ -90,7 +91,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         foreach (XmlNode subnode in node)
                         {
                             string buttonName = XmlUtils.GetXMLAttrString(subnode, "name", null);
-                            int tag = Int32.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
+                            int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
                             ScannerButtonControl btn = GetControl(controls, buttonName, tag);
                             if (btn != null)
                                 btnStringsAll[index].Add(btn.Text);
@@ -145,8 +146,8 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         foreach (XmlNode subnode in node)
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
-                            int tag = Int32.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
-                            var widgetButton = widgets.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals(name2) && w.UIControl.Tag != null && Int32.Parse(w.UIControl.Tag.ToString()) == tag);
+                            int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
+                            var widgetButton = widgets.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals(name2) && w.UIControl.Tag != null && int.Parse(w.UIControl.Tag.ToString()) == tag);
                             widgetsBox[index].Add(widgetButton);
                         }
                         index += 1;
@@ -175,7 +176,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             int indexBox = 0;
             try
             {
-                var tempwidgets = AnimationManagerUtils.GetBoxWidgets(widgetsData, boxesData.Value, totalAmountOfBoxes);
+                var tempwidgets = GetBoxWidgets(widgetsData, boxesData.Value, totalAmountOfBoxes);
                 for (int boxIndex = 0; boxIndex < totalAmountOfBoxes; boxIndex++)
                 {
                     widgets[indexBox] = tempwidgets[boxIndex];
@@ -203,7 +204,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             int indexBox = 0;
             try
             {
-                List<ButtonsData>[] tempmatrixButtonListAll = AnimationManagerUtils.GetMatrixButtons(boxesData.Key, renderTarget, boxesData.Value, totalAmountOfBoxes);
+                List<ButtonsData>[] tempmatrixButtonListAll = GetMatrixButtons(boxesData.Key, renderTarget, boxesData.Value, totalAmountOfBoxes);
                 for (int boxIndex = 0; boxIndex < totalAmountOfBoxes; boxIndex++)
                 {
                     buttonDataList[indexBox] = tempmatrixButtonListAll[boxIndex];
@@ -242,7 +243,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         {
                             foreach (ScannerButtonControl btn in controls[i])
                             {
-                                if (tagID == Int32.Parse(btn.Tag.ToString()))
+                                if (tagID == int.Parse(btn.Tag.ToString()))
                                 {
                                     seq.Add(tempindex);
                                     break;
@@ -277,7 +278,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             int indexBox = 0;
             try
             {
-                var tempoffsetStrings = AnimationManagerUtils.GetOffset(widgetsData, boxesData.Value, totalAmountOfBoxes, boxesData.Key);
+                var tempoffsetStrings = GetOffset(widgetsData, boxesData.Value, totalAmountOfBoxes, boxesData.Key);
                 for (int boxIndex = 0; boxIndex < totalAmountOfBoxes; boxIndex++)
                 {
                     offsetStrings[indexBox] = tempoffsetStrings[boxIndex];
@@ -307,8 +308,8 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             {
                 foreach (var boxData in boxesData)
                 {
-                    amountBoxesPerUserControl = AnimationManagerUtils.GetAmountBoxes(boxData.Value);
-                    List<string>[] tempbtnsStringsAll = AnimationManagerUtils.ExtractButtonText(boxData.Key, boxData.Value, amountBoxesPerUserControl);
+                    amountBoxesPerUserControl = GetAmountBoxes(boxData.Value);
+                    List<string>[] tempbtnsStringsAll = ExtractButtonText(boxData.Key, boxData.Value, amountBoxesPerUserControl);
                     for (int boxIndex = 0; boxIndex < amountBoxesPerUserControl; boxIndex++)
                     {
                         buttonsStringsList[indexBox] = tempbtnsStringsAll[boxIndex];
@@ -335,7 +336,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         public static ScannerButtonControl GetControl(List<Control> controls, string name, int tag, bool tagValidation = true)
         {
             if (tagValidation)
-                return (ScannerButtonControl)controls.FirstOrDefault(control => control.Name.Equals(name) && control.Tag != null && Int32.TryParse(control.Tag.ToString(), out int controlTag) && controlTag == tag);
+                return (ScannerButtonControl)controls.FirstOrDefault(control => control.Name.Equals(name) && control.Tag != null && int.TryParse(control.Tag.ToString(), out int controlTag) && controlTag == tag);
             else
                 return (ScannerButtonControl)controls.FirstOrDefault(control => control.Name.Equals(name));
         }
@@ -351,7 +352,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         public static ScannerButtonControl GetControl2(List<Widget> controls, string name, int tag, bool tagValidation = true)
         {
             if (tagValidation)
-                return (ScannerButtonControl)controls.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals(name) && w.UIControl.Tag != null && Int32.Parse(w.UIControl.Tag.ToString()) == tag).UIControl;
+                return (ScannerButtonControl)controls.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals(name) && w.UIControl.Tag != null && int.Parse(w.UIControl.Tag.ToString()) == tag).UIControl;
             else
                 return (ScannerButtonControl)controls.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals(name)).UIControl;
         }
@@ -368,7 +369,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             ScannerButtonControl tempButton = null;
             foreach (var button in controlsBtns[activeKeyboard])
             {
-                if (Int32.Parse(button.Tag.ToString()) == tag)
+                if (int.Parse(button.Tag.ToString()) == tag)
                 {
                     tempButton = button;
                 }
@@ -392,9 +393,9 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             int indexBox = 0;
             try
             {
-                List<ScannerButtonControl>[] tempcontrolsBtns = AnimationManagerUtils.GetControlsButtons(boxesData.Key, boxesData.Value, totalAmountOfBoxes);
-                List<int[]>[] tempflashingSeqAllID = AnimationManagerUtils.GetSequences(boxesData.Key, boxesData.Value, totalAmountOfBoxes);
-                List<int[]>[] tempflashingSeqAll = AnimationManagerUtils.GetButtonsIndex(tempcontrolsBtns, tempflashingSeqAllID, totalAmountOfBoxes);//
+                List<ScannerButtonControl>[] tempcontrolsBtns = GetControlsButtons(boxesData.Key, boxesData.Value, totalAmountOfBoxes);
+                List<int[]>[] tempflashingSeqAllID = GetSequences(boxesData.Key, boxesData.Value, totalAmountOfBoxes);
+                List<int[]>[] tempflashingSeqAll = GetButtonsIndex(tempcontrolsBtns, tempflashingSeqAllID, totalAmountOfBoxes);//
                 for (int boxIndex = 0; boxIndex < totalAmountOfBoxes; boxIndex++)
                 {
                     buttonDataList[indexBox] = tempcontrolsBtns[boxIndex];
@@ -436,7 +437,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         foreach (XmlNode subnode in node)
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
-                            int tag = Int32.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
+                            int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
                             var btn = GetControl(controls, name2, tag);
                             if (btn != null)
                                 ctrlBtnsAll[index].Add(btn);
@@ -475,7 +476,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     {
                         if (widget.UIControl.Tag != null)
                         {
-                            var tagId = Int32.Parse(widget.UIControl.Tag.ToString());
+                            var tagId = int.Parse(widget.UIControl.Tag.ToString());
                             flashingSequenceIDBoxList[indexBox].Add(tagId);
                             flashingSequenceBoxList[indexBox].Add(tagId - 1);
                         }
@@ -507,7 +508,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     _prevLettersProbs = _lettersProbs;
                     foreach (ScannerButtonControl control in controls)
                     {
-                        if (!control.Name.Contains("PWLItem") && control.Text.Length == 1 && ((control.Text[0] >= 'a' && control.Text[0] <= 'z') || control.Text[0] == ' ') || ((control.Text[0] >= 'A' && control.Text[0] <= 'Z') || control.Text[0] == ' '))
+                        if (!control.Name.Contains("PWLItem") && control.Text.Length == 1 && (control.Text[0] >= 'a' && control.Text[0] <= 'z' || control.Text[0] == ' ') || control.Text[0] >= 'A' && control.Text[0] <= 'Z' || control.Text[0] == ' ')
                         {
                             foreach (var probs in _lettersProbs)
                             {
@@ -546,7 +547,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                     {
                         if (widget.GetText().Length == 1)
                         {
-                            if (!widget.Name.Contains("PWLItem") && ((widget.GetText()[0] >= 'a' && widget.GetText()[0] <= 'z') || widget.GetText()[0] == ' ') || ((widget.GetText()[0] >= 'A' && widget.GetText()[0] <= 'Z') || widget.GetText()[0] == ' '))
+                            if (!widget.Name.Contains("PWLItem") && (widget.GetText()[0] >= 'a' && widget.GetText()[0] <= 'z' || widget.GetText()[0] == ' ') || widget.GetText()[0] >= 'A' && widget.GetText()[0] <= 'Z' || widget.GetText()[0] == ' ')
                             {
                                 IButtonWidget widbtn = widget as IButtonWidget;
                                 var fontData = widbtn.GetWidgetAttribute();
@@ -557,7 +558,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                                         string s = probs.Key.Trim('\'');
                                         // Validation for the "space" charcater for "acat font 1" -> m = space
                                         if (s.Contains(" ") && widget.GetText().ToLower().Equals("m"))
-                                            nextProbs.Add(Int32.Parse(widget.UIControl.Tag.ToString()), probs.Value);
+                                            nextProbs.Add(int.Parse(widget.UIControl.Tag.ToString()), probs.Value);
                                     }
                                 }
                                 else
@@ -567,7 +568,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                                         string s = probs.Key.Trim('\'');
                                         if (widget.GetText().ToLower().Equals(s))
                                         {
-                                            nextProbs.Add(Int32.Parse(widget.UIControl.Tag.ToString()), probs.Value);
+                                            nextProbs.Add(int.Parse(widget.UIControl.Tag.ToString()), probs.Value);
                                         }
                                     }
                                 }
@@ -621,12 +622,12 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         foreach (XmlNode subnode in node)
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
-                            int tag = Int32.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
+                            int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
                             string borderColor = XmlUtils.GetXMLAttrString(subnode, "borderColor", "BCIColorCodedRegionDefault");
                             var btn = GetControl(controls, name2, tag);
                             if (btn != null)
                             {
-                                currMatrixButton.id = Int32.Parse(btn.Tag.ToString());
+                                currMatrixButton.id = int.Parse(btn.Tag.ToString());
                                 currMatrixButton.text = btn.Text;
                                 currMatrixButton.action = currMatrixButton.text;
                                 currMatrixButton.name = btn.Name;
@@ -670,8 +671,8 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         foreach (XmlNode subnode in node)
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
-                            int tag = Int32.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
-                            var btnWidget = widgets.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals(name2) && w.UIControl.Tag != null && Int32.Parse(w.UIControl.Tag.ToString()) == tag);
+                            int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
+                            var btnWidget = widgets.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals(name2) && w.UIControl.Tag != null && int.Parse(w.UIControl.Tag.ToString()) == tag);
                             if (btnWidget != null)
                                 offsets[index].Add(GetOffset(btnWidget));
                             else
@@ -753,9 +754,9 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                                 foreach (XmlNode secNode in subnode)
                                 {
                                     string name2 = XmlUtils.GetXMLAttrString(secNode, "name", null);
-                                    int tag = Int32.Parse(XmlUtils.GetXMLAttrString(secNode, "tagID", null));
+                                    int tag = int.Parse(XmlUtils.GetXMLAttrString(secNode, "tagID", null));
                                     var btn = GetControl(controls, name2, tag);
-                                    if (btn != null && Int32.Parse(btn.Tag.ToString()) == tag && btn.Name.Equals(name2))
+                                    if (btn != null && int.Parse(btn.Tag.ToString()) == tag && btn.Name.Equals(name2))
                                         seq.Add(tag);
                                 }
                                 flashingSeqAll[index].Add(seq.ToArray());
@@ -881,7 +882,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         private static void ActiveWordPredictor_EvtNotifyNextWordProbabilities(List<KeyValuePair<string, double>> wordList, bool wordsChanged)
         {
             _ = new List<KeyValuePair<string, double>>();
-            IDictionary<string, Double> words = new Dictionary<string, Double>();
+            IDictionary<string, double> words = new Dictionary<string, double>();
             try
             {
                 foreach (var element in wordList)
@@ -922,7 +923,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             IButtonWidget widbtn = widget as IButtonWidget;
             var fontData = widbtn.GetWidgetAttribute();
             // Set a dynamic offset of the letters if the buttons change size due to the resolution of the screen The value "1.333" is an aproximation of the value from Font units to Pixels units (6pt aprox 8px)
-            return (((widget.Height) - ((int)(fontData.FontSize * 1.333))) / 2);
+            return (widget.Height - (int)(fontData.FontSize * 1.333)) / 2;
         }
 
         private static class XmlSectionName

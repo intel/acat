@@ -18,8 +18,7 @@
 // </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.AgentManagement.TextInterface;
-using ACAT.Core.Utility;
+using ACAT.Core.AgentManagement.TextControlAgents;
 
 namespace ACAT.Extension.AppAgents.Outlook
 {
@@ -33,22 +32,22 @@ namespace ACAT.Extension.AppAgents.Outlook
         /// <summary>
         /// Whether to enable learning or not (for word prediction)
         /// </summary>
-        private bool _enableLearn;
+        private readonly bool _enableLearn;
 
         /// <summary>
         /// Whether to insert spaces after punctuation
         /// </summary>
-        private bool _enableSmartPunctuations;
+        private readonly bool _enableSmartPunctuations;
 
         /// <summary>
         /// Whether to do ACAT spellcheck or not
         /// </summary>
-        private bool _enableSpellCheck;
+        private readonly bool _enableSpellCheck;
 
         /// <summary>
         /// Whether to automatically expand abbreviations or not
         /// </summary>
-        private bool _expandAbbreviations;
+        private readonly bool _expandAbbreviations;
 
         /// <summary>
         /// Initializes a new instance of the class

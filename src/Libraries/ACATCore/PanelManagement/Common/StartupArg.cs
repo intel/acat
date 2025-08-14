@@ -5,10 +5,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using System;
 using System.Windows.Automation;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Common
 {
     /// <summary>
     /// Argument used in the call to display a scanner.  Has all
@@ -27,11 +26,11 @@ namespace ACAT.Core.PanelManagement
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="panelClass">Class of the scanner (alphabet, numeric etc)</param>
-        public StartupArg(String panelClass) : this (panelClass, null)
+        public StartupArg(string panelClass) : this (panelClass, null)
         {
         }
 
-        public StartupArg(String panelClass, string panelConfig)
+        public StartupArg(string panelClass, string panelConfig)
         {
             init();
             PanelClass = panelClass;
@@ -62,9 +61,9 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Gets or sets the class of the scanner being displayed
         /// </summary>
-        public String PanelClass { get; set; }
+        public string PanelClass { get; set; }
 
-        public String PanelConfig { get; set; }
+        public string PanelConfig { get; set; }
 
         /// <summary>
         /// When the form closes, whether it should exit ACAT
@@ -76,7 +75,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         private void init()
         {
-            PanelClass = String.Empty;
+            PanelClass = string.Empty;
             PanelConfig = null;
             FocusedElement = null;
             DialogMode = false;

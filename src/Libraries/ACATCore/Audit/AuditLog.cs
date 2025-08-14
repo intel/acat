@@ -32,7 +32,7 @@ namespace ACAT.Core.Audit
         /// <summary>
         /// Used for synchronization
         /// </summary>
-        private static readonly Object ObjSync = new Object();
+        private static readonly Object ObjSync = new();
 
         /// <summary>
         /// List of audit log events to ignore

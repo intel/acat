@@ -16,7 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
+namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DimReduction
 {
     [Serializable]
     public class DimReductChanSel
@@ -79,7 +79,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
 
                     int[] indicesSamples = Vector.Range(0, numSamples);
 
-                    reducedData = Matrix.Get(thisTrialData, indicesSamples, channelSubsetZero);
+                    reducedData = thisTrialData.Get(indicesSamples, channelSubsetZero);
                     outputData.Add(reducedData);
                 }
             }

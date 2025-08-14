@@ -5,8 +5,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Interfaces;
 using System;
 
 namespace ACAT.Extension.CommandHandlers

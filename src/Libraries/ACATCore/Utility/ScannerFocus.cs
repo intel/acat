@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Utility.Mouse;
 using ACAT.Core.Utility.NamedPipe;
 using System;
 using System.Diagnostics;

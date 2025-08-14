@@ -5,9 +5,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.Utility;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Interfaces
 {
     /// <summary>
     /// ALL panels in ACAT - Scanners, Dialogs, Menus

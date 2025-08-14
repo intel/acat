@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\ACATResources\ACATResources.csproj" />
+    <ProjectReference Include="$(SolutionDir)Libraries\ACATCore\ACAT.Core.csproj" />
+    <ProjectReference Include="$(SolutionDir)Libraries\ACATExtension\ACAT.Extension.csproj" />
+    <ProjectReference Include="..\..\Common\BCIControl\ACAT.Extensions.BCI.Common.BCIControl.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EEGDataAcquisition\ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition.csproj" />
+    <ProjectReference Include="..\EEGProcessing\ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.csproj" />
+    <ProjectReference Include="..\EEGSettings\ACAT.Extensions.BCI.Actuators.EEG.EEGSettings.csproj" />
+    <ProjectReference Include="..\EEGUtilities\ACAT.Extensions.BCI.Actuators.EEG.EEGUtils.csproj" />
+    <ProjectReference Include="..\gTec_SensorUI\ACAT.Extensions.BCI.Actuators.gTecSensorUI.csproj" />
+    <ProjectReference Include="..\openBCI_SensorUI\ACAT.Extensions.BCI.Actuators.openBCISensorUI.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+</Project>

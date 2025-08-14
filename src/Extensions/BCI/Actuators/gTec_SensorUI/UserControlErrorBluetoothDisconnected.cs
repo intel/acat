@@ -15,7 +15,9 @@ using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
@@ -42,8 +44,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             buttonNext_userControlErrorBluetoothDisconnected.Enabled = false;
 
             // Add handlers for selecting items in the lists
-            listViewPairedDevices.SelectedIndexChanged += ListViewPairedDevices_SelectedIndexChanged;
-            listViewUnPairedDevices.SelectedIndexChanged += ListViewPairedDevices_SelectedIndexChanged;
+            listViewDevices.SelectedIndexChanged += ListViewDevices_SelectedIndexChanged;
         }
 
         /// <summary>
@@ -51,22 +52,17 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ListViewPairedDevices_SelectedIndexChanged(object sender, EventArgs e)
+        private void ListViewDevices_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Enable Next button if something is selected in list
-            bool enableButton = listViewPairedDevices.SelectedItems.Count > 0 || listViewUnPairedDevices.SelectedItems.Count > 0;
+            bool enableButton = listViewDevices.SelectedItems.Count > 0;
             buttonNext_userControlErrorBluetoothDisconnected.Enabled = enableButton;
 
             string selectedDevice = "";
 
-            if (listViewPairedDevices.SelectedItems.Count > 0)
+            if (listViewDevices.SelectedItems.Count > 0)
             {
-                selectedDevice = listViewPairedDevices.SelectedItems[0].Text;
-            }
-
-            if (listViewUnPairedDevices.SelectedItems.Count > 0)
-            {
-                selectedDevice = listViewUnPairedDevices.SelectedItems[0].Text;
+                selectedDevice = listViewDevices.SelectedItems[0].ToString();
             }
 
             // Save selected device in settings
@@ -154,28 +150,30 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
                     Invoke(new Action(() =>
                     {
-                        // Updated paired / unpaired devices list
-                        ListView listViewUpdate = listViewUnPairedDevices;
                         try
                         {
-                            if ((bool)eventParams["paired"])
-                            {
-                                listViewUpdate = listViewPairedDevices;
-                            }
-
                             // Get devices from eventParams dict
                             IList<string> devices = (IList<string>)eventParams["devices"];
                             if (devices.Count > 0)
                             {
-                                listViewUpdate.Items.Clear();
-                                listViewUpdate.Invoke((Action)(() =>
+                                foreach (string device in devices)
                                 {
-                                    foreach (string device in devices)
+                                    // check if the item is not in the list
+                                    if (!listViewDevices.Items.Contains(device))
                                     {
-                                        var listItem = new ListViewItem(device);
-                                        listViewUpdate.Items.Add(listItem);
+                                        listViewDevices.Items.Add(device);
                                     }
-                                }));
+                                }
+
+                                // Also want to remove the devices that are not discoverable
+                                foreach (ListViewItem item in listViewDevices.Items)
+                                {
+                                    if (!devices.Contains(item.Text))
+                                    {
+                                        listViewDevices.Items.Remove(item);
+                                    }
+                                }
+
                             }
                         }
                         catch (Exception ex)

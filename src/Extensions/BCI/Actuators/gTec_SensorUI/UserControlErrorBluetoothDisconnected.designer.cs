@@ -53,18 +53,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.labelTitle = new System.Windows.Forms.Label();
             this.tableLayoutPanelSpacerBottom = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelSpacerTop = new System.Windows.Forms.TableLayoutPanel();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
-            this.listViewPairedDevices = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.listViewUnPairedDevices = new System.Windows.Forms.ListView();
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.buttonNext_userControlErrorBluetoothDisconnected = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.listViewDevices = new ACAT.Core.PanelManagement.ListBoxUserControl();
             this.tableLayoutPanelMain.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanelMain
@@ -76,21 +69,18 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.tableLayoutPanelMain.ColumnCount = 5;
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11F));
-            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 26F));
-            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 26F));
-            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 26F));
+            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 24.90234F));
+            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 28.61328F));
+            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 24.41406F));
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11F));
+            this.tableLayoutPanelMain.Controls.Add(this.label1, 1, 2);
             this.tableLayoutPanelMain.Controls.Add(this.buttonExit_userControlErrorBluetoothDisconnected, 1, 11);
             this.tableLayoutPanelMain.Controls.Add(this.labelTitle, 1, 1);
             this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanelSpacerBottom, 1, 12);
             this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanelSpacerTop, 1, 0);
-            this.tableLayoutPanelMain.Controls.Add(this.label2, 1, 3);
-            this.tableLayoutPanelMain.Controls.Add(this.label3, 2, 3);
-            this.tableLayoutPanelMain.Controls.Add(this.label4, 3, 3);
-            this.tableLayoutPanelMain.Controls.Add(this.panel1, 1, 4);
-            this.tableLayoutPanelMain.Controls.Add(this.listViewPairedDevices, 2, 4);
-            this.tableLayoutPanelMain.Controls.Add(this.listViewUnPairedDevices, 3, 4);
             this.tableLayoutPanelMain.Controls.Add(this.buttonNext_userControlErrorBluetoothDisconnected, 3, 11);
+            this.tableLayoutPanelMain.Controls.Add(this.label3, 2, 5);
+            this.tableLayoutPanelMain.Controls.Add(this.listViewDevices, 2, 6);
             this.tableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanelMain.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
@@ -179,100 +169,34 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelSpacerTop.Size = new System.Drawing.Size(798, 47);
             this.tableLayoutPanelSpacerTop.TabIndex = 73;
             // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.SystemColors.Control;
-            this.label2.Location = new System.Drawing.Point(115, 185);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(260, 23);
-            this.label2.TabIndex = 89;
-            this.label2.Text = "Bluetooth";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // label3
             // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label3.Font = new System.Drawing.Font("Montserrat", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.SystemColors.Control;
-            this.label3.Location = new System.Drawing.Point(381, 185);
+            this.label3.Location = new System.Drawing.Point(370, 248);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(260, 23);
+            this.label3.Size = new System.Drawing.Size(287, 47);
             this.label3.TabIndex = 90;
-            this.label3.Text = "Paired Devices";
+            this.label3.Text = "Available Bluetooth Devices";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label4
-            // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.SystemColors.Control;
-            this.label4.Location = new System.Drawing.Point(647, 185);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(260, 23);
-            this.label4.TabIndex = 91;
-            this.label4.Text = "UnPaired Devices";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.White;
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Location = new System.Drawing.Point(115, 217);
-            this.panel1.Name = "panel1";
-            this.tableLayoutPanelMain.SetRowSpan(this.panel1, 3);
-            this.panel1.Size = new System.Drawing.Size(259, 275);
-            this.panel1.TabIndex = 88;
             // 
             // label1
             // 
+            this.tableLayoutPanelMain.SetColumnSpan(this.label1, 3);
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(9, 95);
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(292, 133);
+            this.label1.Margin = new System.Windows.Forms.Padding(180, 0, 180, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(241, 74);
+            this.tableLayoutPanelMain.SetRowSpan(this.label1, 2);
+            this.label1.Size = new System.Drawing.Size(438, 81);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Please make sure to select CSR8510 A10 from Cambridge Silicon Radio Ltd. is the r" +
-    "ecommended Bluetooth adapter.";
+            this.label1.Text = "To ensure optimal data acquisition from the GTEC device, please select the CSR851" +
+    "0 A10 Bluetooth adapter from Cambridge Silicon Radio Ltd., as it is the recommen" +
+    "ded model.";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // listViewPairedDevices
-            // 
-            this.listViewPairedDevices.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewPairedDevices.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1});
-            this.listViewPairedDevices.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.listViewPairedDevices.HideSelection = false;
-            this.listViewPairedDevices.Location = new System.Drawing.Point(381, 217);
-            this.listViewPairedDevices.Name = "listViewPairedDevices";
-            this.tableLayoutPanelMain.SetRowSpan(this.listViewPairedDevices, 3);
-            this.listViewPairedDevices.Size = new System.Drawing.Size(260, 275);
-            this.listViewPairedDevices.TabIndex = 86;
-            this.listViewPairedDevices.UseCompatibleStateImageBehavior = false;
-            this.listViewPairedDevices.View = System.Windows.Forms.View.List;
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Width = 300;
-            // 
-            // listViewUnPairedDevices
-            // 
-            this.listViewUnPairedDevices.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader2});
-            this.listViewUnPairedDevices.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.listViewUnPairedDevices.HideSelection = false;
-            this.listViewUnPairedDevices.Location = new System.Drawing.Point(647, 217);
-            this.listViewUnPairedDevices.Name = "listViewUnPairedDevices";
-            this.tableLayoutPanelMain.SetRowSpan(this.listViewUnPairedDevices, 3);
-            this.listViewUnPairedDevices.Size = new System.Drawing.Size(259, 275);
-            this.listViewUnPairedDevices.TabIndex = 87;
-            this.listViewUnPairedDevices.UseCompatibleStateImageBehavior = false;
-            this.listViewUnPairedDevices.View = System.Windows.Forms.View.List;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Width = 200;
             // 
             // buttonNext_userControlErrorBluetoothDisconnected
             // 
@@ -297,6 +221,21 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.buttonNext_userControlErrorBluetoothDisconnected.UseMnemonic = false;
             this.buttonNext_userControlErrorBluetoothDisconnected.UseVisualStyleBackColor = false;
             // 
+            // listViewDevices
+            // 
+            this.listViewDevices.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.listViewDevices.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.listViewDevices.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewDevices.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.listViewDevices.Font = new System.Drawing.Font("Montserrat", 21.75F);
+            this.listViewDevices.ForeColor = System.Drawing.Color.White;
+            this.listViewDevices.FormattingEnabled = true;
+            this.listViewDevices.Location = new System.Drawing.Point(370, 298);
+            this.listViewDevices.Name = "listViewDevices";
+            this.tableLayoutPanelMain.SetRowSpan(this.listViewDevices, 3);
+            this.listViewDevices.Size = new System.Drawing.Size(287, 275);
+            this.listViewDevices.TabIndex = 0;
+            // 
             // UserControlErrorBluetoothDisconnected
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -307,7 +246,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.Size = new System.Drawing.Size(1024, 768);
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.tableLayoutPanelMain.PerformLayout();
-            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -321,15 +259,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelSpacerTop;
         public System.Windows.Forms.Button buttonExit_userControlErrorBluetoothDisconnected;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelSpacerBottom;
-        private System.Windows.Forms.ListView listViewPairedDevices;
-        private System.Windows.Forms.ListView listViewUnPairedDevices;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        public System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
         public ScannerRoundedButtonControl buttonNext_userControlErrorBluetoothDisconnected;
+        private Core.PanelManagement.ListBoxUserControl listViewDevices;
     }
 }

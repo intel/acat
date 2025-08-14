@@ -46,10 +46,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelSpacerBottom = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanelContainer = new System.Windows.Forms.TableLayoutPanel();
             this.panelTriggerBox = new System.Windows.Forms.Panel();
             this.timerPlotData = new System.Windows.Forms.Timer(this.components);
             this.timerProcessData = new System.Windows.Forms.Timer(this.components);
+            this.tableLayoutPanelContainer = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -91,22 +91,6 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelSpacerBottom.Size = new System.Drawing.Size(1918, 109);
             this.tableLayoutPanelSpacerBottom.TabIndex = 75;
             // 
-            // tableLayoutPanelContainer
-            // 
-            this.tableLayoutPanelContainer.AutoSize = true;
-            this.tableLayoutPanelContainer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanelContainer.BackColor = System.Drawing.Color.Red;
-            this.tableLayoutPanelContainer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.tableLayoutPanelContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1026F));
-            this.tableLayoutPanelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanelContainer.Location = new System.Drawing.Point(382, 214);
-            this.tableLayoutPanelContainer.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanelContainer.Name = "tableLayoutPanelContainer";
-            this.tableLayoutPanelContainer.RowCount = 1;
-            this.tableLayoutPanelContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 773F));
-            this.tableLayoutPanelContainer.Size = new System.Drawing.Size(3068, 1724);
-            this.tableLayoutPanelContainer.TabIndex = 7;
-            // 
             // panelTriggerBox
             // 
             this.panelTriggerBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
@@ -122,6 +106,22 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // timerProcessData
             // 
             this.timerProcessData.Interval = 10;
+            // 
+            // tableLayoutPanelContainer
+            // 
+            this.tableLayoutPanelContainer.AutoSize = true;
+            this.tableLayoutPanelContainer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanelContainer.BackColor = System.Drawing.Color.Transparent;
+            this.tableLayoutPanelContainer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.tableLayoutPanelContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1026F));
+            this.tableLayoutPanelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanelContainer.Location = new System.Drawing.Point(191, 107);
+            this.tableLayoutPanelContainer.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanelContainer.Name = "tableLayoutPanelContainer";
+            this.tableLayoutPanelContainer.RowCount = 1;
+            this.tableLayoutPanelContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 773F));
+            this.tableLayoutPanelContainer.Size = new System.Drawing.Size(1534, 862);
+            this.tableLayoutPanelContainer.TabIndex = 7;
             // 
             // SensorForm
             // 
@@ -147,11 +147,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         #endregion
 
         public System.Windows.Forms.TableLayoutPanel tableLayoutPanelMain;
-        public System.Windows.Forms.TableLayoutPanel tableLayoutPanelContainer;
         private System.Windows.Forms.Timer timerPlotData;
         public System.Windows.Forms.Panel panelTriggerBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelSpacerBottom;
         private System.Windows.Forms.Timer timerProcessData;
+        public System.Windows.Forms.TableLayoutPanel tableLayoutPanelContainer;
     }
 }
 

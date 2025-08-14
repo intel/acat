@@ -46,7 +46,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
 
         public static AppPanelClassConfig Load(string fileName)
         {
-            var retVal = Load<AppPanelClassConfig>(fileName);
+            var retVal = Load<AppPanelClassConfig>(fileName, false, false);
 
             retVal.FileName = fileName;
 

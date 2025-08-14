@@ -11,13 +11,15 @@
 
   <!-- Base output and version info -->
   <PropertyGroup>
-    <VersionPrefix>3.13.0</VersionPrefix>
+    <VersionPrefix>4.0.0</VersionPrefix>
+    <Version>$(VersionPrefix)</Version>
     <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
     <FileVersion>$(VersionPrefix)</FileVersion>
     <InformationalVersion>$(VersionPrefix)</InformationalVersion>
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>9.0</LangVersion>
     <Platforms>x64</Platforms>
+    <TargetFramework>net481</TargetFramework>
   </PropertyGroup>
 
   <!-- Common Assembly Information -->
@@ -44,14 +46,10 @@
     <OutputPath>$(BuildPath)</OutputPath>
     <BaseIntermediateOutputPath>$(IntermediatePath)$(MSBuildProjectName)\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(IntermediatePath)$(MSBuildProjectName)\</IntermediateOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
-    <PropertyGroup>
-    <VersionPrefix>4.0.0</VersionPrefix>
-    <Version>$(VersionPrefix)</Version>
-    <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
-    <FileVersion>$(VersionPrefix)</FileVersion>
-    <InformationalVersion>$(VersionPrefix)</InformationalVersion>
-  </PropertyGroup>
+
+  <!-- Warnings and Errors -->
   <PropertyGroup>
     <!-- Show all nullable warnings -->
     <WarningsAsErrors>CS8600;CS8602;CS8603;CS8604;CS8618</WarningsAsErrors>

@@ -114,10 +114,10 @@ namespace ACATTalk
 
             Common.AppPreferences.PreferredPanelConfigNames = string.Empty;
 
-            //if (!AppCommon.DoOnboarding())
-            //{
-            //    return;
-            //}
+            if (!AppCommon.DoOnboarding())
+            {
+                return;
+            }
 
             splash = new Splash(2000);
             splash.Show(StringResources.StartingACAT);

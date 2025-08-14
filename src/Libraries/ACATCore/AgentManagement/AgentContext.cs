@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.AgentManagement.TextInterface;
+using ACAT.Core.AgentManagement.Interfaces;
 using System;
 
 namespace ACAT.Core.AgentManagement

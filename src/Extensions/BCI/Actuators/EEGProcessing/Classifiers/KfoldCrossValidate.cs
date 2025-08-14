@@ -10,19 +10,20 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DimReduction;
 using Accord.Math;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
+namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.Classifiers
 {
     [Serializable]
     public class KFoldCrossValidate
     {
         private readonly int nFolds = 10;
-        private readonly String partitioningMethod = "sequential"; //Options: "sequential", "random"
+        private readonly string partitioningMethod = "sequential"; //Options: "sequential", "random"
 
         /// <summary>
         /// Constructor with default parameters (sequential, 10 folds)
@@ -70,8 +71,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             Parallel.For(0, nFolds, i =>
                 {
                     // Generate train and test indices to split in folds
-                    int[] indTrain = Matrix.Find(indicesFolds, element => element != i);
-                    int[] indTest = Matrix.Find(indicesFolds, element => element == i);
+                    int[] indTrain = indicesFolds.Find(element => element != i);
+                    int[] indTest = indicesFolds.Find(element => element == i);
 
                     DimReductRDA DimReductObj = new(DimReductObj4Params.shrinkParam, DimReductObj4Params.regularizeParam);
 
@@ -109,8 +110,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             {
                 case "sequential":
                     // generate indices
-                    int nElementsFold = (int)Math.Floor((double)nTrials / (double)nFolds);
-                    int extraElementFold = (int)nTrials % nFolds;
+                    int nElementsFold = (int)Math.Floor(nTrials / (double)nFolds);
+                    int extraElementFold = nTrials % nFolds;
 
                     int endElementPrev = -1;
                     for (int k = 0; k < nFolds; k++)

@@ -14,7 +14,7 @@ using Accord.Math;
 using System;
 using System.Collections.Generic;
 
-namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
+namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DimReduction
 {
     [Serializable]
     public class DimReductDownSample
@@ -74,7 +74,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                     for (int i = 0; i < numSamples; i += downsampleRate)
                         indicesSamples.Add(i);
 
-                    reducedData = Matrix.Get(thisTrialData, indicesSamples.ToArray(), indicesChannels);
+                    reducedData = thisTrialData.Get(indicesSamples.ToArray(), indicesChannels);
                     outputData.Add(reducedData);
                 }
                 return true;

@@ -22,6 +22,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.ActuatorManagement;
+using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.Utility;
 
 namespace ACAT.Extensions.Actuators.CameraActuator

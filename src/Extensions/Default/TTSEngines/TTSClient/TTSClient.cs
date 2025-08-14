@@ -12,8 +12,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Extensions;
-using ACAT.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.TTSManagement;
+using ACAT.Core.TTSManagement.Interfaces;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using System;

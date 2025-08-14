@@ -7,12 +7,14 @@
 
 using ACAT.Core.AgentManagement;
 using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
 using System;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace ACAT.Extension
+namespace ACAT.Extension.UI
 {
     /// <summary>
     /// Helper functions for scanners
@@ -45,7 +47,7 @@ namespace ACAT.Extension
 
             if (arg.Command == "CmdUndoLastEditChange")
             {
-                arg.Enabled = (Context.AppAgentMgr.CurrentEditingMode == EditingMode.TextEntry && TextController.LastEditChange != TextController.LastAction.Unknown);
+                arg.Enabled = Context.AppAgentMgr.CurrentEditingMode == EditingMode.TextEntry && TextController.LastEditChange != TextController.LastAction.Unknown;
                 arg.Handled = true;
                 return true;
             }

@@ -10,15 +10,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.WordPredictionManagement;
+using ACAT.Core.WordPredictorManagement.Interfaces;
 using System;
 
-namespace ACAT.Extensions.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist.MessageTypes
 {
     [Serializable]
     internal class ConvAssistMessage
     {
-        public String Data { get; set; }
+        public string Data { get; set; }
         public WordPredictorMessageTypes MessageType { get; set; }
         public WordPredictionModes PredictionType { get; set; }
 
@@ -33,7 +33,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <param name="msgType"></param>
         /// <param name="PredictionMode"></param>
         /// <param name="message"></param>
-        public ConvAssistMessage(WordPredictorMessageTypes msgType, WordPredictionModes PredictionMode, String message)
+        public ConvAssistMessage(WordPredictorMessageTypes msgType, WordPredictionModes PredictionMode, string message)
         {
             MessageType = msgType;
             PredictionType = PredictionMode;

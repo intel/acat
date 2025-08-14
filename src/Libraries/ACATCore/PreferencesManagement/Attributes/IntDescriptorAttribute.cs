@@ -10,9 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using System;
-
-namespace ACAT.Core.PreferencesManagement
+namespace ACAT.Core.PreferencesManagement.Attributes
 {
     /// <summary>
     /// Custom attribute for int/Int32 fields/properties
@@ -26,7 +24,7 @@ namespace ACAT.Core.PreferencesManagement
         /// <param name="minvalue">lower bound</param>
         /// <param name="maxvalue">upper bound</param>
         /// <param name="defaultvalue">default value</param>
-        public IntDescriptorAttribute(String desc, int minvalue = int.MinValue, int maxvalue = int.MaxValue, int defaultvalue = 0) : base(desc)
+        public IntDescriptorAttribute(string desc, int minvalue = int.MinValue, int maxvalue = int.MaxValue, int defaultvalue = 0) : base(desc)
         {
             MinValue = minvalue;
             MaxValue = maxvalue;

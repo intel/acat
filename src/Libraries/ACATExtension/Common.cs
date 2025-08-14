@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Utils;
 using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
 using System;

@@ -11,14 +11,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.Audit;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGUtils;
-using ACAT.Extensions.BCI.Common.BCIControl;
 using ACATResources;
 using System;
 using System.Diagnostics;

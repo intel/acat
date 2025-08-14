@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ACAT.Extensions.BCI.Common.AnimationSharp
+namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
 {
     public class BCIUtils
     {
@@ -80,7 +80,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 }
                 else
                 {
-                    sb.Append((idRowColumn + 1));
+                    sb.Append(idRowColumn + 1);
                     if (bCIScanSections == BCIScanSections.Box)
                         sb.Append("," + (idRowColumn + 1));
                     else

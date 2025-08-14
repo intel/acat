@@ -1,10 +1,10 @@
-﻿using ACAT.Core.ActuatorManagement;
-using ACAT.Core.PanelManagement;
+﻿using ACAT.Core.PanelManagement;
 using ACAT.Core.PreferencesManagement;
-using ACAT.Core.TTSManagement;
+using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Extension;
-using ACAT.Extensions.Onboarding;
+using ACAT.Extensions.Onboarding.UI;
+using ACAT.Extensions.Onboarding.UI.Forms;
 using System;
 using System.Collections.Generic;
 using System.Reflection;

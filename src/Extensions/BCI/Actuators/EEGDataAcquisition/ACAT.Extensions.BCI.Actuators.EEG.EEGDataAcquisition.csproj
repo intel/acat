@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\ACATResources\ACATResources.csproj" />
+    <ProjectReference Include="$(SolutionDir)Libraries\ACATCore\ACAT.Core.csproj" />
+    <ProjectReference Include="$(SolutionDir)Libraries\ACATExtension\ACAT.Extension.csproj" />
+    <ProjectReference Include="..\..\Common\AnimationSharp\ACAT.Extensions.BCI.Common.AnimationSharp.csproj" />
+    <ProjectReference Include="..\..\Common\BCIControl\ACAT.Extensions.BCI.Common.BCIControl.csproj" />
+    <ProjectReference Include="..\..\Common\BCIInterfaceUtilities\ACAT.Extensions.BCI.Common.BCIInterfaceUtilities.csproj" />
+    <ProjectReference Include="..\EEGSettings\ACAT.Extensions.BCI.Actuators.EEG.EEGSettings.csproj" />
+    <ProjectReference Include="..\EEGUtilities\ACAT.Extensions.BCI.Actuators.EEG.EEGUtils.csproj" />
+   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="UnicornDotNet" version="1.24.0" />
+    <PackageReference Include="Accord" Version="3.8.0.0" />
+    <PackageReference Include="Accord.Math" Version="3.8.0.0" />
+    <PackageReference Include="brainflow" Version="5.5.0" />
+    <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+  </ItemGroup>
+</Project>

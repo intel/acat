@@ -10,7 +10,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace ACAT.Core.Utility
+namespace ACAT.Core.Utility.Mouse
 {
     /// <summary>
     /// Useful mouse utility functions. Simulates mouse events such

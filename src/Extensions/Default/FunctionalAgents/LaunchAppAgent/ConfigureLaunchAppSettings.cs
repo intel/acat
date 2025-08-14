@@ -19,7 +19,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
-using ACAT.UserControls;
+using ACAT.Extension.UI.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +46,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         /// <summary>
         /// Has anything changed?
         /// </summary>
-        private bool _isDirty = false;
+        //private bool _isDirty = false;
 
         /// <summary>
         /// Initializes an instance of the class
@@ -191,7 +191,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
                 dataGridView2.CommitEdit(DataGridViewDataErrorContexts.Commit);
             }
 
-            _isDirty = true;
+            //_isDirty = true;
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
                 }
             }
 
-            _isDirty = true;
+            //_isDirty = true;
 
             refreshDataGridView();
         }
@@ -360,7 +360,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         /// </summary>
         private void updateDataFromUI()
         {
-            List<AppInfo> list = new List<AppInfo>();
+            List<AppInfo> list = new();
             for (int ii = 0; ii < dataGridView2.Rows.Count; ii++)
             {
                 var appInfo = dataGridView2.Rows[ii].Tag as AppInfo;

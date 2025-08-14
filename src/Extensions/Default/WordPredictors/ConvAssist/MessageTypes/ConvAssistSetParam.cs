@@ -12,7 +12,7 @@
 
 using System;
 
-namespace ACAT.Extensions.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist.MessageTypes
 {
     [Serializable]
     internal class ConvAssistSetParam

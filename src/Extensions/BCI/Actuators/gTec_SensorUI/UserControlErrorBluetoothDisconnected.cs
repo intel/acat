@@ -16,7 +16,6 @@ using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using System.Windows.Media.Animation;
 
 namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 {
@@ -128,7 +127,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="e"></param>
         private void UpdateTimer_Tick(object sender, EventArgs e)
         {
-            Dictionary<String, object> requestParams = new Dictionary<String, object>
+            Dictionary<String, object> requestParams = new()
             {
                 ["paired"] = true
             };

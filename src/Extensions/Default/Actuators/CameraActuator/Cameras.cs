@@ -61,7 +61,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
     public class Cameras
     {
-        public static readonly Guid VideoInputDevice = new Guid(0x860BB310,
+        public static readonly Guid VideoInputDevice = new(0x860BB310,
                                                                 0x5D01, 0x11d0,
                                                                 0xBD, 0x3B,
                                                                 0x00, 0xA0,

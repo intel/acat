@@ -10,9 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using System;
-
-namespace ACAT.Core.PreferencesManagement
+namespace ACAT.Core.PreferencesManagement.Attributes
 {
     /// <summary>
     /// Custom attribute for float fields/properties
@@ -26,7 +24,7 @@ namespace ACAT.Core.PreferencesManagement
         /// <param name="minvalue">lower bound</param>
         /// <param name="maxvalue">upper bound</param>
         /// <param name="defaultvalue">default value</param>
-        public FloatDescriptorAttribute(String desc,
+        public FloatDescriptorAttribute(string desc,
                                         float minvalue = float.MinValue,
                                         float maxvalue = float.MaxValue,
                                         float defaultvalue = 0) : base(desc)

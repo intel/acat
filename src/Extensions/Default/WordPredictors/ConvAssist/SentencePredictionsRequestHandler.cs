@@ -10,9 +10,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.Utility;
-using ACAT.Core.WordPredictionManagement;
+using ACAT.Core.WordPredictorManagement;
+using ACAT.Core.WordPredictorManagement.Interfaces;
+using ACAT.Extensions.WordPredictors.ConvAssist.MessageTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +27,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         private string _prevCurrentWord = null;
         private WordPredictionModes _prevMode = WordPredictionModes.None;
         private string _prevPrevWords = null;
-        private List<string> _prevSentencePredictionResults = new List<string>();
+        private List<string> _prevSentencePredictionResults = new();
         private readonly ConvAssistWordPredictor _wordPredictor;
 
         public SentencePredictionsRequestHandler(ConvAssistWordPredictor wordPredictor)
@@ -44,7 +46,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <returns>A list of predicted words</returns>
         public WordPredictionResponse ProcessPredictionRequest(WordPredictionRequest request)
         {
-            StringBuilder preceedingWords = new StringBuilder();
+            StringBuilder preceedingWords = new();
 
             if (request.PredictionType != PredictionTypes.Sentences)
             {
@@ -154,12 +156,12 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <returns>List of predictions with a keyword to tell apart wach type</returns>
         private List<string> ProcessSentencesPredictions(string predictions, string currentWord)
         {
-            StringBuilder resultFullPredictionWords = new StringBuilder();
-            WordAndCharacterPredictionResponse answer = new WordAndCharacterPredictionResponse();
+            StringBuilder resultFullPredictionWords = new();
+            WordAndCharacterPredictionResponse answer = new();
             var retVal = new List<string>();
             answer = JsonSerializer.Deserialize<WordAndCharacterPredictionResponse>(predictions);
-            List<string> predictSenetnces = new List<string>();
-            List<string> predictLettersSentence = new List<string>();
+            List<string> predictSenetnces = new();
+            List<string> predictLettersSentence = new();
             int i = 0;
 
             if (answer != null)
@@ -172,7 +174,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
             // Keyword to split between predictions
             retVal.Add("&SENTENCES");
-            List<KeyValuePair<string, double>> SentenceList = new List<KeyValuePair<string, double>>();
+            List<KeyValuePair<string, double>> SentenceList = new();
             SentenceList = ConvAssistUtils.ToList(predictSenetnces);
             sentencePred = new string[SentenceList.Count];
             foreach (var element in SentenceList)
@@ -192,7 +194,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             try
             {
                 //Create Dictionary of each to set the number value as a Double
-                List<KeyValuePair<string, double>> SentenceChList = new List<KeyValuePair<string, double>>();
+                List<KeyValuePair<string, double>> SentenceChList = new();
                 SentenceChList = ConvAssistUtils.ToList(predictLettersSentence);
                 sentenceChPred = new string[SentenceChList.Count];
 

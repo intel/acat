@@ -5,16 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.Extensions;
 using ACAT.Core.PanelManagement;
-using ACAT.Core.PreferencesManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.SpellCheckManagement.Interfaces;
 using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
-using System.Windows.Forms;
 
 namespace ACAT.Core.SpellCheckManagement
 {
@@ -37,7 +35,7 @@ namespace ACAT.Core.SpellCheckManagement
         /// <summary>
         /// Word prediction manager instance
         /// </summary>
-        private static readonly SpellCheckManager _instance = new SpellCheckManager();
+        private static readonly SpellCheckManager _instance = new();
 
         /// <summary>
         /// The active word predictor

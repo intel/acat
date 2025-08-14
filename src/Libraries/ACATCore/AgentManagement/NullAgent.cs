@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.AgentManagement.TextInterface;
+using ACAT.Core.AgentManagement.TextControlAgents;
 using ACAT.Core.Utility;
 using System.Collections.Generic;
 
@@ -25,7 +25,7 @@ namespace ACAT.Core.AgentManagement
         /// <summary>
         /// The text interface
         /// </summary>
-        private readonly TextControlAgentBase _textInterface = new TextControlAgentBase();
+        private readonly TextControlAgentBase _textInterface = new();
 
         /// <summary>
         /// Gets which processes this agent supported. Use the

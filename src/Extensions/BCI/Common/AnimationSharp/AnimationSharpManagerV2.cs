@@ -6,10 +6,11 @@
 //
 // AnimationSharpManager.cs
 //
-using ACAT.Core.ActuatorManagement;
+using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using ACAT.Extensions.BCI.Common.AnimationSharp.Utility;
 
 /// Manages the visual states of widgets, starts and stops
 /// animations and handles transitions between animations.

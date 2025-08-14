@@ -6,11 +6,13 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.ActuatorManagement;
-using ACAT.Core.AgentManagement.TextInterface;
-using ACAT.Core.InputActuators;
+using ACAT.Core.ActuatorManagement.BaseActuators;
+using ACAT.Core.AgentManagement.Agents;
+using ACAT.Core.AgentManagement.Interfaces;
+using ACAT.Core.AgentManagement.TextControlAgents;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
-using ACAT.Core.PreferencesManagement;
+using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
@@ -137,7 +139,7 @@ namespace ACAT.Core.AgentManagement
         /// <summary>
         /// Singleton instance of the Agent manager
         /// </summary>
-        private static readonly AgentManager _instance = new AgentManager();
+        private static readonly AgentManager _instance = new();
 
         /// <summary>
         /// Name of the executing assembly
@@ -152,13 +154,13 @@ namespace ACAT.Core.AgentManagement
         /// <summary>
         /// Used for synchronization when activating an agent
         /// </summary>
-        private readonly object _syncActivateAgent = new object();
+        private readonly object _syncActivateAgent = new();
 
         /// <summary>
         /// Used for synchronization when notifying that text changed
         /// in the target window
         /// </summary>
-        private readonly object _syncTextChangeNotifyObj = new object();
+        private readonly object _syncTextChangeNotifyObj = new();
 
         /// <summary>
         /// Used to gate for text change notification calls
@@ -435,7 +437,7 @@ namespace ACAT.Core.AgentManagement
             {
                 Context.AppPanelManager.ClearStack();
                 //EnumWindows.RestoreFocusToTopWindowOnDesktop();
-                WindowActivityMonitor.GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                WindowActivityMonitor.GetForegroundWindowInfo();
             }
         }
 
@@ -493,7 +495,7 @@ namespace ACAT.Core.AgentManagement
             {
                 if (fgWindow == handle)
                 {
-                    WindowActivityMonitor.GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                    WindowActivityMonitor.GetForegroundWindowInfo();
                 }
             }
         }
@@ -676,7 +678,7 @@ namespace ACAT.Core.AgentManagement
             Log.Debug(" currentAgent: " + _currentAgent);
             if (_currentAgent != null)
             {
-                var activityInfo = WindowActivityMonitor.GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                var activityInfo = WindowActivityMonitor.GetForegroundWindowInfo();
                 _currentAgent.OnPanelClosed(panelClass, activityInfo);
             }
         }
@@ -732,7 +734,7 @@ namespace ACAT.Core.AgentManagement
             _panelChangeNotifications.Release();
             if (getActiveWindow)
             {
-                WindowActivityMonitor.GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                WindowActivityMonitor.GetForegroundWindowInfo();
             }
         }
 
@@ -781,7 +783,7 @@ namespace ACAT.Core.AgentManagement
             // active app agent
 
             _getContextMenu = true;
-            WindowActivityMonitor.GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            WindowActivityMonitor.GetForegroundWindowInfo();
         }
 
         /// <summary>

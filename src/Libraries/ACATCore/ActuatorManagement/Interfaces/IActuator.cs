@@ -12,13 +12,14 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Extensions;
-using ACAT.Core.PreferencesManagement;
-using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
-using ACAT.Core.Onboarding;
+using ACAT.Core.PreferencesManagement.Interfaces;
+using ACAT.Core.CoreInterfaces;
+using ACAT.Core.Utility.TypeLoader;
+using ACAT.Core.ActuatorManagement.Settings;
 
-namespace ACAT.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement.Interfaces
 {
     /// <summary>
     /// Delegate for the event raised when an actuator wants to send custom data
@@ -105,9 +106,9 @@ namespace ACAT.Core.ActuatorManagement
         /// <summary>
         /// Gets the name of the actuator
         /// </summary>
-        String Name { get; }
+        string Name { get; }
 
-        String OnboardingImageFileName { get; }
+        string OnboardingImageFileName { get; }
 
         bool ShowTryoutOnStartup { get; }
 
@@ -134,7 +135,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <returns></returns>
         State GetState();
 
-        IEnumerable<String> GetSupportedKeyboardConfigs();
+        IEnumerable<string> GetSupportedKeyboardConfigs();
 
         /// <summary>
         /// Initializes the actuator
@@ -197,7 +198,7 @@ namespace ACAT.Core.ActuatorManagement
         /// </summary>
         /// <param name="name">Switch to unload</param>
         /// <returns></returns>
-        bool RemoveSwitch(String name);
+        bool RemoveSwitch(string name);
 
         /// <summary>
         /// Resumes actuator.  Will resume raising events

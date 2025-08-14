@@ -7,8 +7,8 @@
 
 using ACAT.Core.Audit;
 using ACAT.Core.Interpreter;
-using ACAT.Core.PanelManagement;
-using ACAT.Core.UserControlManagement;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using System;
@@ -75,7 +75,7 @@ namespace ACAT.Core.AnimationManagement
         /// is a list of widgets that are highlighed in the current
         /// scan direction
         /// </summary>
-        private readonly List<Widget> _manualScanPath = new List<Widget>();
+        private readonly List<Widget> _manualScanPath = new();
 
         /// <summary>
         /// root widget of the scanner

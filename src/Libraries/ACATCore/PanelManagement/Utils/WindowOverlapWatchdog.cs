@@ -5,12 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Utils
 {
     /// <summary>
     /// Keeps watch if the form is getting obscured by other
@@ -49,7 +50,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         private Form _window;
 
-        private readonly Int32 _windowHandle;
+        private readonly int _windowHandle;
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -64,7 +65,7 @@ namespace ACAT.Core.PanelManagement
             init();
         }
 
-        public WindowOverlapWatchdog(Int32 windowHandle, bool force = false)
+        public WindowOverlapWatchdog(int windowHandle, bool force = false)
         {
             _windowHandle = windowHandle;
             _force = force;
@@ -153,7 +154,7 @@ namespace ACAT.Core.PanelManagement
                 return false;
             }
 
-            IntPtr windowHandle = (_window != null) ? _window.Handle : new IntPtr(_windowHandle);
+            IntPtr windowHandle = _window != null ? _window.Handle : new IntPtr(_windowHandle);
 
             // to keep track of whether we have already visited this window
             var cache = new HashSet<IntPtr> { windowHandle };
@@ -174,14 +175,14 @@ namespace ACAT.Core.PanelManagement
                         Control ctl = null;
                         if (_window != null)
                         {
-                            ctl = Form.FromHandle(windowHandle);
+                            ctl = Control.FromHandle(windowHandle);
                         }
 
-                        isScanner = (ctl is Form) && (ctl is IScannerPanel);
+                        isScanner = ctl is Form && ctl is IScannerPanel;
                         if (isScanner)
                         {
                             double opacity = Windows.GetOpacity(ctl as Form);
-                            isScanner = (opacity == 1.0f);
+                            isScanner = opacity == 1.0f;
                         }
                     }
                     catch (Exception ex)

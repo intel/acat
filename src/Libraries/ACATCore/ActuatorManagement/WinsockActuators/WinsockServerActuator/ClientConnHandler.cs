@@ -19,7 +19,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace ACAT.Core.InputActuators
+namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
 {
     /// <summary>
     /// Manages the send/receive of data between a connected client.
@@ -29,7 +29,7 @@ namespace ACAT.Core.InputActuators
     internal class ClientConnHandler : IDisposable
     {
         public ConnectionStatus ClientConnectionStatus = ConnectionStatus.Disconnected;
-        public String ID = String.Empty;
+        public string ID = string.Empty;
         public Thread WorkerThread;
         protected const int ReadBufferSize = 8192;
         protected int bytesRead = 0;
@@ -37,7 +37,7 @@ namespace ACAT.Core.InputActuators
         protected IPEndPoint remoteEp;
         protected bool runThread = true;
         protected TcpClient tcpClient;
-        private readonly object _lockObj = new object();
+        private readonly object _lockObj = new();
         private MemoryStream _memoryStream;
         private int _packetSize = 512;
 
@@ -113,11 +113,11 @@ namespace ACAT.Core.InputActuators
         /// <summary>
         /// Gets the IP address of the connected client
         /// </summary>
-        public String ClientIPAddress
+        public string ClientIPAddress
         {
             get
             {
-                var ipe = (IPEndPoint)this.tcpClient.Client.LocalEndPoint;
+                var ipe = (IPEndPoint)tcpClient.Client.LocalEndPoint;
                 var addr = IPAddress.Parse(ipe.Address.ToString());
                 return addr.ToString();
             }
@@ -280,7 +280,7 @@ namespace ACAT.Core.InputActuators
                 while (bytesRemaining > 0)
                 {
                     int bytesLeftInCurrentPacket = _packetSize - (int)_memoryStream.Length;
-                    int bytesToRead = (bytesRemaining < bytesLeftInCurrentPacket) ? bytesRemaining : bytesLeftInCurrentPacket;
+                    int bytesToRead = bytesRemaining < bytesLeftInCurrentPacket ? bytesRemaining : bytesLeftInCurrentPacket;
 
                     _memoryStream.Write(messageFromClient, offset, bytesToRead);
                     if (_memoryStream.Length == _packetSize)
@@ -291,9 +291,9 @@ namespace ACAT.Core.InputActuators
                             Data = _memoryStream.ToArray()
                         };
 
-                        Log.Debug(String.Format("Entire packet received.  Calling threadpool for data received"));
+                        Log.Debug(string.Format("Entire packet received.  Calling threadpool for data received"));
                         ThreadPool.QueueUserWorkItem(Worker, item);
-                        Log.Debug(String.Format("Returned from QueueUserWorkItem"));
+                        Log.Debug(string.Format("Returned from QueueUserWorkItem"));
                         _memoryStream = new MemoryStream();
                     }
 

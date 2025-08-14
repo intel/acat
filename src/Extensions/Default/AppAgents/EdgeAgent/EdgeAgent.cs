@@ -18,40 +18,40 @@
 // </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Extension.AppAgents.InternetExplorer;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
+using ACAT.Extension.AppAgents.InternetExplorer;
 
-namespace ACAT.Extensions.Default.AppAgents.InternetExplorer
+namespace ACAT.Extensions.Default.AppAgents.EdgeAgent
 {
     /// <summary>
     /// Application agent for the Internet Explorer.
     /// Base class does all the heavy-lifting.  Override functions
     /// as required customize
     /// </summary>
-    [DescriptorAttribute("0B183771-C3E7-4ED2-9886-741526343140",
-                        "Internet Explorer Agent",
-                        "Manages interactions with Internet Explorer")]
+    [ClassDescriptor("0B183771-C3E7-4ED2-9886-741526343140",
+                        "Edge Agent",
+                        "Manages interactions with Edge")]
     internal class InternetExplorerAgent : InternetExplorerAgentBase
     {
         /// <summary>
         /// Settings for this agent
         /// </summary>
-        internal static InternetExplorerAgentSettings Settings;
+        internal static EdgeAgentSettings Settings;
 
         /// <summary>
         /// Name of the settings file
         /// </summary>
-        private const string SettingsFileName = "InternetExplorerAgentSettings.xml";
+        private const string SettingsFileName = "EdgeAgentSettings.xml";
 
         /// <summary>
         /// Initializes an instance of the class
         /// </summary>
         public InternetExplorerAgent()
         {
-            InternetExplorerAgentSettings.PreferencesFilePath = UserManager.GetFullPath(SettingsFileName);
-            Settings = InternetExplorerAgentSettings.Load();
+            EdgeAgentSettings.PreferencesFilePath = UserManager.GetFullPath(SettingsFileName);
+            Settings = EdgeAgentSettings.Load();
 
             autoSwitchScanners = Settings.AutoSwitchScannerEnable;
         }
@@ -62,7 +62,7 @@ namespace ACAT.Extensions.Default.AppAgents.InternetExplorer
         /// <returns>Default settings object</returns>
         public override IPreferences GetDefaultPreferences()
         {
-            return PreferencesBase.LoadDefaults<InternetExplorerAgentSettings>();
+            return PreferencesBase.LoadDefaults<EdgeAgentSettings>();
         }
 
         /// <summary>

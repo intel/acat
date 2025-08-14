@@ -5,7 +5,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.PreferencesManagement;
 using ACAT.Core.Utility;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
@@ -13,6 +12,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
 using ACATResources;
+using ACAT.Core.PreferencesManagement.Attributes;
 
 namespace ACAT.Extension
 {

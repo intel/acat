@@ -13,7 +13,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace ACAT.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement.USBHidInterface
 {
     /// <summary>
     /// Interop methods into Windows HID and USB functions
@@ -81,7 +81,7 @@ namespace ACAT.Core.ActuatorManagement
                                         DllImports.GENERIC_READ | DllImports.GENERIC_WRITE,
                                         DllImports.FILE_SHARE_READ | DllImports.FILE_SHARE_WRITE,
                                         0, DllImports.OPEN_EXISTING, 0, 0);
-            return (HidHandle == -1) ? 0 : 1;
+            return HidHandle == -1 ? 0 : 1;
         }
 
         /// <summary>

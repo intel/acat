@@ -51,7 +51,7 @@ namespace ACAT.Core.Utility
             int xwr2 = xw - r2;
             int yhr2 = yh - r2;
 
-            GraphicsPath _graphicsPath = new GraphicsPath();
+            GraphicsPath _graphicsPath = new();
 
             _graphicsPath.StartFigure();
 

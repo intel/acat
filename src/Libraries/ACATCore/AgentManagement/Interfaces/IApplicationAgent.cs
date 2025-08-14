@@ -6,14 +6,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.AgentManagement.TextInterface;
+using ACAT.Core.AgentManagement.TextControlAgents;
 using ACAT.Core.Extensions;
-using ACAT.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.Utility;
+using ACAT.Core.Utility.TypeLoader;
 using System;
 using System.Collections.Generic;
 
-namespace ACAT.Core.AgentManagement
+namespace ACAT.Core.AgentManagement.Interfaces
 {
     /// <summary>
     /// Delegate for the event that is raised when the text changes in
@@ -49,7 +50,7 @@ namespace ACAT.Core.AgentManagement
         /// <summary>
         /// Gets or sets the name of the agent
         /// </summary>
-        String Name { get; set; }
+        string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the parent agent
@@ -104,7 +105,7 @@ namespace ACAT.Core.AgentManagement
         /// </summary>
         /// <param name="panelClass">name/class of the scanner</param>
         /// <param name="monitorInfo">Active focused window info</param>
-        void OnPanelClosed(String panelClass, WindowActivityMonitorInfo monitorInfo);
+        void OnPanelClosed(string panelClass, WindowActivityMonitorInfo monitorInfo);
 
         /// <summary>
         /// Invoked to pause the agent
@@ -123,7 +124,7 @@ namespace ACAT.Core.AgentManagement
         /// <param name="command">The command verb</param>
         /// <param name="arg">optional arguments</param>
         /// <param name="handled">set appropriately</param>
-        void OnRunCommand(String command, object arg, ref bool handled);
+        void OnRunCommand(string command, object arg, ref bool handled);
 
         /// <summary>
         /// Invoked before the agent is deactivated.  Return true if it is

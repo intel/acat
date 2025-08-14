@@ -42,7 +42,7 @@ namespace ACAT.Core.Interpreter
         {
             bool retVal = true;
 
-            XmlDocument doc = new XmlDocument();
+            XmlDocument doc = new();
 
             if (File.Exists(configFile))
             {

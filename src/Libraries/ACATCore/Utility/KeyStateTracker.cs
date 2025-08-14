@@ -104,7 +104,7 @@ namespace ACAT.Core.Utility
         /// <returns></returns>
         public static List<Keys> GetExtendedKeys()
         {
-            List<Keys> retVal = new List<Keys>();
+            List<Keys> retVal = new();
 
             if (IsCtrlOn())
             {

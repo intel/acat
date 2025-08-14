@@ -13,7 +13,7 @@
 using ACAT.Core.Utility;
 using ACAT.Extension.AppAgents.ACATApp;
 
-namespace ACAT.Extensions.AppAgents.ACATApp
+namespace ACAT.Extensions.AppAgents.AcatAgent
 {
     [ClassDescriptor("066A06E9-7178-4058-A6BC-CFA803A67088",
                             "ACAT Agent",

@@ -7,7 +7,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Core.Utility
+namespace ACAT.Core.Utility.Mouse
 {
     /// <summary>
     /// Handles mouse scanning across the display. Methods in

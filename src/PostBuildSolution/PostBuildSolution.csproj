@@ -1,97 +1,52 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- No actual code to compile -->
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{7A3A12B2-0530-4C1D-A99C-C8C0A407A505}</ProjectGuid>
+    <TargetFramework>net481</TargetFramework>
     <OutputType>Library</OutputType>
-    <!-- <AppDesignerFolder>Properties</AppDesignerFolder> -->
-    <RootNamespace>PostBuildSolution</RootNamespace>
-    <AssemblyName>PostBuildSolution</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <PropertyGroup>
-    <RunPostBuildEvent>Always</RunPostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
-    <Optimize>true</Optimize>
-    <PlatformTarget>x64</PlatformTarget>
-    
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
-    <Optimize>true</Optimize>
-    <PlatformTarget>x86</PlatformTarget>
-    
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
+
   <ItemGroup>
-    <None Update="$(SolutionDir)\Assets\**\*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <!-- Use Link to preserve folder structure in metadata -->
+    <Assets Include="$(SolutionDir)Assets\**\*">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Assets>
   </ItemGroup>
+
+  <Target Name="CopyAssetFiles" AfterTargets="Build">
+    <!-- Ensure destination directories exist -->
+    <MakeDir Directories="$(OutputPath)Assets\%(Assets.RecursiveDir)" />
+
+    <!-- Copy files while preserving subfolders -->
+    <Copy
+      SourceFiles="@(Assets)"
+      DestinationFiles="$(OutputPath)Assets\%(Assets.RecursiveDir)%(Filename)%(Extension)"
+      SkipUnchangedFiles="true" />
+  </Target>
+  
   <ItemGroup>
-    <Content Include="$(SolutionDir)\Applications\Install\en\**\*" CopyToOutputDirectory="PreserveNewest">
-      <Link>en\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="$(SolutionDir)\Applications\Install\it\**\*" CopyToOutputDirectory="PreserveNewest">
-      <Link>it\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="$(SolutionDir)\Applications\Install\Users\**\*" CopyToOutputDirectory="PreserveNewest">
+    <InstallFiles Include="$(SolutionDir)\Applications\Install\Users\**\*" >
       <Link>Install\Users\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Content>
+    </InstallFiles>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="$(SolutionDir)\Assets\**\*" CopyToOutputDirectory="PreserveNewest">
-      <Link>Assets\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Content>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-  </PropertyGroup>
-  <Target Name="UnzipDependency" BeforeTargets="Build">
+
+  <Target Name="CopyInstallFiles" AfterTargets="CopyAssetFiles">
+    <!-- Ensure destination directories exist -->
+    <MakeDir Directories="$(OutputPath)Install\Users\%(InstallFiles.RecursiveDir)" />
+
+    <!-- Copy files while preserving subfolders -->
+    <Copy
+      SourceFiles="@(InstallFiles)"
+      DestinationFiles="$(OutputPath)%(InstallFiles.RecursiveDir)%(Filename)%(Extension)"
+      SkipUnchangedFiles="true" />
+  </Target>
+
+
+  <Target Name="UnzipDependency">
     <!-- Define paths -->
     <PropertyGroup>
       <ZipFile>$(SolutionDir)\Applications\Install\ConvAssistApp\ConvAssist.zip</ZipFile>

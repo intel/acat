@@ -82,6 +82,11 @@ namespace ACAT.Core.Utility
             return TerminatorChars.IndexOf(ch) >= 0;
         }
 
+        public override bool ResetToDefault()
+        {
+            return true;
+        }
+
         /// <summary>
         /// Saves the settings to the settings file
         /// </summary>

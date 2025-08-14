@@ -9,18 +9,17 @@ using ACAT.Core.AbbreviationsManagement;
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.CommandManagement;
+using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.SpellCheckManagement;
 using ACAT.Core.ThemeManagement;
 using ACAT.Core.TTSManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
-using ACAT.Core.WordPredictionManagement;
+using ACAT.Core.WordPredictorManagement;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 
 namespace ACAT.Core.PanelManagement
 {
@@ -43,7 +42,7 @@ namespace ACAT.Core.PanelManagement
         private static readonly AgentManager _agentManager;
         private static readonly AutomationEventManager _automationEventManager;
         private static readonly CommandManager _commandManager;
-        private static readonly List<String> _extensionDirs = new List<String>();
+        private static readonly List<String> _extensionDirs = new();
         private static readonly PanelManager _panelManager;
         private static readonly SpellCheckManager _spellCheckManager;
         private static readonly ThemeManager _themeManager;

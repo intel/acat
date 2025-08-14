@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.Onboarding;
+using ACAT.Core.CoreInterfaces;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACATResources;
@@ -15,7 +15,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Onboarding
+namespace ACAT.Extensions.Onboarding.UI.Forms
 {
     /// <summary>
     /// The container form for a single step in the onboarding process.
@@ -31,8 +31,8 @@ namespace ACAT.Extensions.Onboarding
         private readonly string buttonBackText = StringResources.buttonBack;
         private readonly string buttonCancelText = StringResources.buttonCancel;
         private readonly string buttonNextText = StringResources.buttonNext;
-        private readonly Dictionary<OnboardingButtonTypes, Tuple<Color, Color>> _buttonColors = new Dictionary<OnboardingButtonTypes, Tuple<Color, Color>>();
-        private readonly Dictionary<Control, OnboardingButtonTypes> _buttonMap = new Dictionary<Control, OnboardingButtonTypes>();
+        private readonly Dictionary<OnboardingButtonTypes, Tuple<Color, Color>> _buttonColors = new();
+        private readonly Dictionary<Control, OnboardingButtonTypes> _buttonMap = new();
         private IOnboardingExtension _currentOnboardExtension = null;
         private IOnboardingUserControl _currentStep = null;
         private OnboardingWizard _onboardingWizard;

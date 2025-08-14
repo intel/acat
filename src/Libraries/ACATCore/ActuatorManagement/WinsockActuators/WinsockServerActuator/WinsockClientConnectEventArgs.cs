@@ -12,7 +12,7 @@
 
 using System;
 
-namespace ACAT.Core.InputActuators
+namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
 {
     /// <summary>
     /// Argument for the event raised when a TCP/IP client connects
@@ -24,7 +24,7 @@ namespace ACAT.Core.InputActuators
         /// </summary>
         /// <param name="id">Client ID</param>
         /// <param name="ipAddress">IP address of the client</param>
-        public WinsockClientConnectEventArgs(String id, String ipAddress)
+        public WinsockClientConnectEventArgs(string id, string ipAddress)
         {
             Id = id;
             IPAddress = ipAddress;
@@ -33,11 +33,11 @@ namespace ACAT.Core.InputActuators
         /// <summary>
         /// Gets or sets the client id
         /// </summary>
-        public String Id { get; private set; }
+        public string Id { get; private set; }
 
         /// <summary>
         /// Gets or sets the ip address
         /// </summary>
-        public String IPAddress { get; private set; }
+        public string IPAddress { get; private set; }
     }
 }

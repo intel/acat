@@ -17,9 +17,10 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.TTSManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
-using ACAT.Core.WordPredictionManagement;
-using ACAT.Extension;
-using ACAT.UserControls;
+using ACAT.Core.WordPredictorManagement;
+using ACAT.Core.WordPredictorManagement.Interfaces;
+using ACAT.Extension.UI;
+using ACAT.Extension.UI.UserControls;
 using System;
 
 namespace ACAT.Extensions.UI.UserControls

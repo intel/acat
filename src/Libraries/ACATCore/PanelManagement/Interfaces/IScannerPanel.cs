@@ -7,12 +7,12 @@
 
 using ACAT.Core.AgentManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
-using System;
 using System.Windows.Forms;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Interfaces
 {
     /// <summary>
     /// All scanners must implement the IScannerPanel interface.  Examples
@@ -32,7 +32,7 @@ namespace ACAT.Core.PanelManagement
         /// Return the panel type
         /// </summary>
         /// <returns></returns>
-        String PanelClass { get; }
+        string PanelClass { get; }
 
         /// <summary>
         /// Gets the ScannerCommon object.  Every scanner

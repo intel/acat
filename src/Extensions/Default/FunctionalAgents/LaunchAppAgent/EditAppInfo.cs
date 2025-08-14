@@ -1,4 +1,4 @@
-﻿using ACAT.UserControls;
+﻿using ACAT.Extension.UI.UserControls;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -150,7 +150,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         /// <param name="e">event args</param>
         private void buttonSelectFolder_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            FolderBrowserDialog fbd = new();
 
             DialogResult result = fbd.ShowDialog();
 

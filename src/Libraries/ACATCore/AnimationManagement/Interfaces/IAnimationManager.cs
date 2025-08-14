@@ -2,7 +2,7 @@ using ACAT.Core.Interpreter;
 using ACAT.Core.WidgetManagement;
 using System.Collections.Generic;
 
-namespace ACAT.Core.AnimationManagement
+namespace ACAT.Core.AnimationManagement.Interfaces
 {
     public interface IAnimationManager
     {

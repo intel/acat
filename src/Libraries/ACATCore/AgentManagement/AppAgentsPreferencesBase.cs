@@ -6,7 +6,6 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PreferencesManagement;
-using ACAT.Core.Utility;
 using System.ComponentModel.DataAnnotations;
 using System;
 using System.ComponentModel;
@@ -40,5 +39,15 @@ namespace ACAT.Core.AgentManagement
         [DefaultValue(true)]
         [ObservableProperty]
         public bool autoSwitchScannerEnable =  true;
+
+        public override bool Save()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool ResetToDefault()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

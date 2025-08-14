@@ -6,13 +6,14 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Extensions;
-using ACAT.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.Utility;
+using ACAT.Core.WordPredictorManagement.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace ACAT.Core.WordPredictionManagement
+namespace ACAT.Core.WordPredictorManagement
 {
     /// <summary>
     /// The null word predictor basically does nothing.  It is used
@@ -174,7 +175,7 @@ namespace ACAT.Core.WordPredictionManagement
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public bool Learn(String text, WordPredictorMessageTypes RequestType)
+        public bool Learn(string text, WordPredictorMessageTypes RequestType)
         {
             return true;
         }
@@ -184,7 +185,7 @@ namespace ACAT.Core.WordPredictionManagement
         /// currently active.
         /// </summary>
         /// <param name="text"></param>
-        public int LoadContext(String text)
+        public int LoadContext(string text)
         {
             return _contextHandle++;
         }
@@ -203,7 +204,7 @@ namespace ACAT.Core.WordPredictionManagement
         /// </summary>
         /// <param name="configFileDirectory"></param>
         /// <returns></returns>
-        public bool LoadSettings(String configFileDirectory)
+        public bool LoadSettings(string configFileDirectory)
         {
             return true;
         }
@@ -214,14 +215,14 @@ namespace ACAT.Core.WordPredictionManagement
         /// <param name="prevNWords"></param>
         /// <param name="lastWord"></param>
         /// <returns></returns>
-        public IEnumerable<String> Predict(String prevNWords, String lastWord)
+        public IEnumerable<string> Predict(string prevNWords, string lastWord)
         {
-            return new List<String>();
+            return new List<string>();
         }
 
         public WordPredictionResponse Predict(WordPredictionRequest req)
         {
-            return new WordPredictionResponse(req, new List<String>(), true);
+            return new WordPredictionResponse(req, new List<string>(), true);
         }
 
         public bool PredictAsync(WordPredictionRequest req)
@@ -234,7 +235,7 @@ namespace ACAT.Core.WordPredictionManagement
         /// </summary>
         /// <param name="configFileDirectory"></param>
         /// <returns></returns>
-        public bool SaveSettings(String configFileDirectory)
+        public bool SaveSettings(string configFileDirectory)
         {
             return true;
         }

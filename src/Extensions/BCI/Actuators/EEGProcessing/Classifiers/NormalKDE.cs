@@ -14,11 +14,9 @@ using Accord.Math;
 using Accord.Statistics;
 using Accord.Statistics.Distributions.Univariate;
 using System;
-using System.Drawing;
 using System.Linq;
-using ZedGraph;
 
-namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
+namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.Classifiers
 {
     [Serializable]
     public class NormalKDE
@@ -47,7 +45,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             // Calculate Silverman's bandwidth “silverman” - .9 * A * nobs ** (-1/5.), where A is min(std(X),IQR/1.34)
 
             // Calculate iqr: range from the 25th percentile to the 75th percentile, or midlle 50 percent of a data set
-            Measures.Quartiles(data, out double q1, out double q3, false);
+            data.Quartiles(out double q1, out double q3, false);
             double iqr = q3 - q1;
 
             double minValue = Math.Min(data.StandardDeviation(), iqr / 1.34);
@@ -114,7 +112,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         public void plotKDE(double[] data, int nSamples)
         {
             nSamples = 200;
-            double bufferx = 2 * Measures.StandardDeviation(data);
+            double bufferx = 2 * data.StandardDeviation();
             double xMin = data.Min() - bufferx;
             double xMax = data.Max() + bufferx;
             double stepSize = (xMax - xMin) / nSamples;
@@ -122,58 +120,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
 
             BuildKDE(data);
             _ = CalculateProbabilities(xVector);
-        }
-
-        /// <summary>
-        /// Test function: generates data from two gaussian distributions, learn KDEs and display them.
-        /// </summary>
-        /// <param name="args"></param>
-        public static void RunTest()
-        {
-            // Generate normal gaussian samples
-            int numSamples = 100;
-            NormalDistribution normalPDFObj1 = new(mean: -2, stdDev: 0.5);
-            NormalDistribution normalPDFObj2 = new(mean: 2, stdDev: 1.5);
-            double[] samplesPDF1 = normalPDFObj1.Generate(numSamples);
-            double[] samplesPDF2 = normalPDFObj2.Generate(numSamples);
-
-            double[] x = Vector.Range(-10.0, 10.0, 0.2);
-
-            // Build KDE Objects
-            NormalKDE KDEObj1 = new();
-            NormalKDE KDEObj2 = new();
-            KDEObj1.BuildKDE(samplesPDF1);
-            KDEObj2.BuildKDE(samplesPDF2);
-
-            // Calculate probabilities
-            double[] pdfT = KDEObj1.CalculateProbabilities(x);
-            double[] pdfNT = KDEObj2.CalculateProbabilities(x);
-
-            GraphDisplayerForm1x2 graphForm = new();
-            GraphPane graphPaneObjRight = graphForm.graphControlRight.GraphPane;
-
-            // Add datapoints for display
-            PointPairList graphTargetPoints = new();
-            PointPairList graphNontargetPoints = new();
-            for (int i = 0; i < pdfT.Length; i++)
-            {
-                graphNontargetPoints.Add(x[i], pdfNT[i]);
-                graphTargetPoints.Add(x[i], pdfT[i]);
-            }
-
-            // For plotting: Add datapoints to curve
-            graphPaneObjRight.AddCurve("Class 0", graphNontargetPoints, Color.Blue, SymbolType.None);
-            graphPaneObjRight.AddCurve("Class 1", graphTargetPoints, Color.Red, SymbolType.None);
-
-            // Set graph params
-            graphPaneObjRight.AxisChange();
-            graphPaneObjRight.Title.Text = "KDE estimates";
-            graphPaneObjRight.XAxis.Title.Text = "x";
-            graphPaneObjRight.YAxis.Title.Text = "p(x)";
-
-            graphForm.ShowDialog();
-
-            graphForm.Dispose();
         }
     }
 }

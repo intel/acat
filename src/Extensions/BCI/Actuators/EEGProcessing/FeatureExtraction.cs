@@ -15,6 +15,11 @@
 
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.Classifiers;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DataLoader;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DimReduction;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.Filters;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.Utilities;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using Accord.Math;
@@ -427,32 +432,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                     KDENontarget.BuildKDE(nonTargetScores.ToArray());
 
                     // ===================== 5. Plot results ==========================
-
-                    if (displayPlots)
-                    {
-                        try
-                        {
-                            Plots.plotERPs(avgTrialData, trialTargetnessArray, _DimReductChannelSelectionObj.channelSubset, sampleRate, meanAUC.ToString());
-                        }
-                        catch (Exception e)
-                        {
-                            Log.Exception(e.Message);
-                        }
-
-                        /* Display plots with class distributions and AUC
-                         * GraphDisplayerForm1x2 graphFormResultsCross = new GraphDisplayerForm1x2();
-                        GraphPane graphPaneCrossLeft = graphFormResultsCross.graphControlLeft.GraphPane;
-                        GraphPane graphPaneCrossRight = graphFormResultsCross.graphControlRight.GraphPane;
-
-                        Plots.plotClassDistributions(scores, trialTargetnessArray, graphPaneCrossLeft);
-                        Plots.plotRoC(TPrate, FPrate, meanAUC, graphPaneCrossRight);
-
-                        graphFormResultsCross.TopMost = true;
-                        graphFormResultsCross.ShowDialog(); //In ACAT, dont show it
-
-                        graphFormResultsCross.ShowDialog(Context.AppPanelManager.GetCurrentForm() as Form);
-                        */
-                    }
+                    //REMOVED ABILITY TO PLOT RESULTS
 
                     // ===================== 6. Save results ==========================
                     // Save AUC
@@ -462,12 +442,12 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
 
                     // Save classifier in session directory (this will be saved regardless of the AUC)
                     String filePathClassifier = Path.Combine(sessionDirectory, System.IO.Path.GetFileName(trainedClassifiersFilePath));
-                    Utilities.WriteToBinaryFile(filePathClassifier, this);
+                    BinaryUtils.WriteToBinaryFile(filePathClassifier, this);
 
                     // Save classifier in actuator folder (this is the classifier that will be used on typing, only saved if AUC>minAUC)
                     calibrationTime = DateTime.Now;
                     if (meanAUC >= minAUCRequired)
-                        Utilities.WriteToBinaryFile(trainedClassifiersFilePath, this);
+                        BinaryUtils.WriteToBinaryFile(trainedClassifiersFilePath, this);
                 }
             }
             catch (Exception e)

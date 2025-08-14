@@ -6,9 +6,13 @@
 using ACAT.Core.AgentManagement;
 using ACAT.Core.AnimationManagement;
 using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.ThemeManagement;
+using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using ACAT.Core.WidgetManagement.Interfaces;
 using ACAT.Core.Widgets;
 using System;
 using System.Collections.Generic;
@@ -177,7 +181,7 @@ namespace ACAT.Core.UserControlManagement
 
             subscribeToEvents();
 
-            setWidgetEnabledStates(WindowActivityMonitor.GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult());
+            setWidgetEnabledStates(WindowActivityMonitor.GetForegroundWindowInfo());
         }
 
         public void OnPause()
@@ -249,12 +253,10 @@ namespace ACAT.Core.UserControlManagement
             if (isPaused ||
                 widget is WordListItemWidget ||
                 String.IsNullOrEmpty(widget.Value) ||
-                !(widget is IButtonWidget))
+                widget is not IButtonWidget)
             {
                 return;
             }
-
-            var button = (IButtonWidget)widget;
 
             ActuatedWidget = widget;
 

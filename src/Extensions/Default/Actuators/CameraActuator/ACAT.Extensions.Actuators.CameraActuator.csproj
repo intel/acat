@@ -9,7 +9,7 @@
     <ProjectReference Include="$(SolutionDir)\ACATResources\ACATResources.csproj" />
     <ProjectReference Include="$(SolutionDir)Libraries\ACATCore\ACAT.Core.csproj" />
     <ProjectReference Include="$(SolutionDir)Libraries\ACATExtension\ACAT.Extension.csproj" />
-    <PackageReference Include="AcatCameraNative" version="1.0.16" />
+    <PackageReference Include="AcatCameraNative" version="1.0.17" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />

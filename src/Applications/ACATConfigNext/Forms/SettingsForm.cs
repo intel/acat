@@ -13,6 +13,8 @@ using ACAT.Core.PreferencesManagement;
 using System.ComponentModel;
 using ACATResources;
 using System.Reflection;
+using ACAT.Extension;
+using ACAT.Core.PreferencesManagement.Interfaces;
 
 namespace ACATConfigNext.Forms
 {
@@ -246,7 +248,7 @@ namespace ACATConfigNext.Forms
                 {
                     if (CoreGlobals.AppPreferences != null)
                     {
-                        var defaultPrefs = ACATPreferences.LoadDefaultSettings();
+                        var defaultPrefs = ACATPreferences.LoadDefaultSettings() as IPreferences;
                         if (defaultPrefs != null)
                         {
                             CopyPreferencesValues(defaultPrefs, CoreGlobals.AppPreferences);

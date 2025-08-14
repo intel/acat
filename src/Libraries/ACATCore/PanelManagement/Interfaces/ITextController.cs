@@ -6,9 +6,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.AbbreviationsManagement;
-using System;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Interfaces
 {
     /// <summary>
     /// Interface used for text manipulation of text in
@@ -22,7 +21,7 @@ namespace ACAT.Core.PanelManagement
         /// This is typically done by word prediction
         /// </summary>
         /// <param name="partialWord"></param>
-        void AutoCompleteWord(String partialWord);
+        void AutoCompleteWord(string partialWord);
 
         /// <summary>
         /// Check if an abbreviation was entered and if so,

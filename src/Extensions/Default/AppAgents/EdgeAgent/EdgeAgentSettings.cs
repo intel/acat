@@ -1,5 +1,5 @@
 ﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="InternetExplorerAgentSettings.cs" company="Intel Corporation">
+// <copyright file="EdgeAgentSettings.cs" company="Intel Corporation">
 //
 // Copyright (c) 2013-2017 Intel Corporation 
 //
@@ -18,18 +18,18 @@
 // </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.PreferencesManagement;
 using System;
 using System.Xml.Serialization;
 
-namespace ACAT.Extensions.Default.AppAgents.InternetExplorer
+namespace ACAT.Extensions.Default.AppAgents.EdgeAgent
 {
     /// <summary>
     /// Settings for the Internet Explorer Agent.
     /// </summary>
     [Serializable]
-    public class InternetExplorerAgentSettings : AppAgentsPreferencesBase
+    public class EdgeAgentSettings : AppAgentsPreferencesBase
     {
         /// <summary>
         /// Name of the settings file
@@ -40,7 +40,7 @@ namespace ACAT.Extensions.Default.AppAgents.InternetExplorer
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public InternetExplorerAgentSettings()
+        public EdgeAgentSettings()
         {
             AutoSwitchScannerEnable = true;
         }
@@ -49,9 +49,9 @@ namespace ACAT.Extensions.Default.AppAgents.InternetExplorer
         /// Load settings
         /// </summary>
         /// <returns>settings object</returns>
-        public static InternetExplorerAgentSettings Load()
+        public static EdgeAgentSettings Load()
         {
-            return PreferencesBase.Load<InternetExplorerAgentSettings>(PreferencesFilePath);
+            return PreferencesBase.Load<EdgeAgentSettings>(PreferencesFilePath);
         }
 
         /// <summary>

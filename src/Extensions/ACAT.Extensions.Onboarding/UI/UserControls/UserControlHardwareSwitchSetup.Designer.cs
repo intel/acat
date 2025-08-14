@@ -1,6 +1,6 @@
 ﻿using ACAT.Core.WidgetManagement;
 
-namespace ACAT.Extensions.Onboarding
+namespace ACAT.Extensions.Onboarding.UI.UserControls
 {
     partial class UserControlHardwareSwitchSetup
     {

@@ -10,9 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using System;
-
-namespace ACAT.Core.PreferencesManagement
+namespace ACAT.Core.PreferencesManagement.Attributes
 {
     /// <summary>
     /// Custom attribute for boolean fields/properties
@@ -24,7 +22,7 @@ namespace ACAT.Core.PreferencesManagement
         /// </summary>
         /// <param name="desc">Description of the field/property</param>
         /// <param name="defaultvalue">Default value</param>
-        public BoolDescriptorAttribute(String desc, bool defaultvalue = false) : base(desc)
+        public BoolDescriptorAttribute(string desc, bool defaultvalue = false) : base(desc)
         {
             DefaultValue = defaultvalue;
         }

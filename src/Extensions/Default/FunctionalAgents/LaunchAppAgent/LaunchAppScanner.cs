@@ -22,12 +22,13 @@ using ACAT.Core.AgentManagement;
 using ACAT.Core.Extensions;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.Widgets;
-using ACAT.Extension;
 using ACAT.Extension.CommandHandlers;
-using ACAT.Scanners;
+using ACAT.Extension.UI;
+using ACAT.Extension.UI.ScannerForms;
 using ACATResources;
 using System;
 using System.Collections.Generic;
@@ -53,7 +54,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         /// <summary>
         /// Used to invoke methods/properties of this class
         /// </summary>
-        private readonly ExtensionInvoker _invoker;
+        //private readonly ExtensionInvoker _invoker;
 
         /// <summary>
         /// List of all apps
@@ -117,7 +118,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         /// </summary>
         //public LaunchAppScanner()
         //{
-        //    _scannerCommon = new ScannerCommon(this);
+        //    ScannerCommon = new ScannerCommon(this);
 
         //    InitializeComponent();
 
@@ -259,10 +260,10 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         /// Returns the extension invoker object
         /// </summary>
         /// <returns>invoker object</returns>
-        public ExtensionInvoker GetInvoker()
-        {
-            return _invoker;
-        }
+        //public ExtensionInvoker GetInvoker()
+        //{
+        //    return _invoker;
+        //}
 
         /// <summary>
         /// Initialzes this class
@@ -271,9 +272,9 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         /// <returns>true on success</returns>
         //public bool Initialize(StartupArg startupArg)
         //{
-        //    _scannerCommon.PositionSizeController.AutoPosition = true;
+        //    ScannerCommon.PositionSizeController.AutoPosition = true;
 
-        //    if (!_scannerCommon.Initialize(startupArg))
+        //    if (!ScannerCommon.Initialize(startupArg))
         //    {
         //        Log.Debug("Could not initialize form " + Name);
         //        return false;
@@ -329,7 +330,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         /// <param name="e">event args</param>
         //protected void OnFormClosing(FormClosingEventArgs e)
         //{
-        //    _scannerCommon.OnFormClosing(e);
+        //    ScannerCommon.OnFormClosing(e);
         //    removeWatchdogs();
 
         //    Windows.EvtWindowPositionChanged -= Windows_EvtWindowPositionChanged;
@@ -345,9 +346,9 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
         protected override void WndProc(ref Message m)
         {
-            if (_scannerCommon != null)
+            if (ScannerCommon != null)
             {
-                if (_scannerCommon.HandleWndProc(m))
+                if (ScannerCommon.HandleWndProc(m))
                 {
                     return;
                 }
@@ -433,10 +434,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         /// </summary>
         private void enableWatchdogs()
         {
-            if (_windowActiveWatchdog == null)
-            {
-                _windowActiveWatchdog = new WindowActiveWatchdog(this);
-            }
+            _windowActiveWatchdog ??= new WindowActiveWatchdog(this);
         }
 
         /// <summary>
@@ -460,7 +458,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         {
             return new List<AppInfo>()
             {
-                new AppInfo()
+                new()
                 {
                     Name = "Chrome",
                     CommandLine = $"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
@@ -566,10 +564,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         {
             if (DialogUtils.ConfirmScanner(String.Format(StringResources.LaunchApp, appInfo.Name)))
             {
-                if (EvtLaunchApp != null)
-                {
-                    EvtLaunchApp.BeginInvoke(this, appInfo, null, null);
-                }
+                EvtLaunchApp?.BeginInvoke(this, appInfo, null, null);
             }
         }
 
@@ -607,10 +602,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
                         break;
 
                     case "@AppListSearch":
-                        if (EvtShowScanner != null)
-                        {
-                            EvtShowScanner.BeginInvoke(null, null, null, null);
-                        }
+                        EvtShowScanner?.BeginInvoke(null, null, null, null);
                         break;
 
                     case "@AppListClearFilter":
@@ -640,7 +632,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         {
             enableWatchdogs();
 
-            _scannerCommon.OnLoad();
+            ScannerCommon.OnLoad();
 
             var list = new List<Widget>();
             PanelCommon.RootWidget.Finder.FindChild(typeof(TabStopScannerButton), list);
@@ -670,8 +662,8 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         /// </summary>
         private void LaunchAppScanner_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _scannerCommon.OnClosing();
-            _scannerCommon.Dispose();
+            ScannerCommon.OnClosing();
+            ScannerCommon.Dispose();
         }
 
         /// <summary>
@@ -894,15 +886,9 @@ namespace ACAT.Extensions.FunctionalAgents.UI
                 sortButtonText = "Z-A";
             }
 
-            if (_sortOrderWidget != null)
-            {
-                _sortOrderWidget.SetText(text);
-            }
+            _sortOrderWidget?.SetText(text);
 
-            if (_sortButton != null)
-            {
-                _sortButton.SetText(sortButtonText);
-            }
+            _sortButton?.SetText(sortButtonText);
 
             if (_pageNumberWidget != null)
             {

@@ -5,15 +5,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.AgentManagement;
+using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.Extensions;
 using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace ACAT.Extension
+namespace ACAT.Extension.UI
 {
     /// <summary>
     /// Contains useful utility cover functions such as
@@ -28,7 +29,7 @@ namespace ACAT.Extension
         /// <param name="caption">Prompt string</param>
         /// <param name="title">title of the dialog</param>
         /// <returns>true if yes</returns>
-        public static bool Confirm(String caption, String title)
+        public static bool Confirm(string caption, string title)
         {
             return Confirm(null, caption, title);
         }
@@ -38,7 +39,7 @@ namespace ACAT.Extension
         /// </summary>
         /// <param name="caption">Prompt string</param>
         /// <returns>true if yes</returns>
-        public static bool Confirm(String caption)
+        public static bool Confirm(string caption)
         {
             return Confirm(null, caption, null);
         }
@@ -50,7 +51,7 @@ namespace ACAT.Extension
         /// <param name="caption">prompt string</param>
         /// <param name="title">title of the dialog</param>
         /// <returns>true if yes</returns>
-        public static bool Confirm(IPanel parent, String caption, String title = null)
+        public static bool Confirm(IPanel parent, string caption, string title = null)
         {
             bool retVal = false;
 
@@ -62,7 +63,7 @@ namespace ACAT.Extension
                 {
                     var invoker = (form as IExtension).GetInvoker();
                     bool? yesNo = invoker != null && invoker.GetBoolValue("Choice").Value;
-                    retVal = (yesNo != null) && yesNo.Value;
+                    retVal = yesNo != null && yesNo.Value;
                 }
             }
 
@@ -74,7 +75,7 @@ namespace ACAT.Extension
         /// </summary>
         /// <param name="caption">prompt string</param>
         /// <returns>true if yes</returns>
-        public static bool ConfirmScanner(String caption)
+        public static bool ConfirmScanner(string caption)
         {
             return ConfirmScanner(null, caption);
         }
@@ -85,7 +86,7 @@ namespace ACAT.Extension
         /// <param name="parent">parent scanner</param>
         /// <param name="caption">prompt string</param>
         /// <returns>true if yes</returns>
-        public static bool ConfirmScanner(IPanel parent, String caption)
+        public static bool ConfirmScanner(IPanel parent, string caption)
         {
             return showYesNoScanner(parent, "YesNoScanner", caption);
         }
@@ -95,7 +96,7 @@ namespace ACAT.Extension
         /// </summary>
         /// <param name="caption">prompt string</param>
         /// <returns>true if yes</returns>
-        public static bool ConfirmScannerNarrow(String caption)
+        public static bool ConfirmScannerNarrow(string caption)
         {
             return ConfirmScannerNarrow(null, caption);
         }
@@ -107,7 +108,7 @@ namespace ACAT.Extension
         /// <param name="caption">prompt string</param>
         /// <param name="title">scanner title</param>
         /// <returns>true if yes</returns>
-        public static bool ConfirmScannerNarrow(IPanel parent, String caption, String title = null)
+        public static bool ConfirmScannerNarrow(IPanel parent, string caption, string title = null)
         {
             return showYesNoScanner(parent, "YesNoScannerNarrow", caption);
         }
@@ -136,9 +137,9 @@ namespace ACAT.Extension
         /// <param name="companyInfo">company information</param>
         /// <param name="copyrightInfo">copyright info</param>
         /// <param name="attributions">3rd party attributions</param>
-        public static void ShowAboutBox(Form parentForm, String appName,
-                                        String versionInfo, String companyInfo, String copyrightInfo,
-                                        IEnumerable<String> attributions)
+        public static void ShowAboutBox(Form parentForm, string appName,
+                                        string versionInfo, string companyInfo, string copyrightInfo,
+                                        IEnumerable<string> attributions)
         {
             if (parentForm is IPanel)
             {
@@ -195,7 +196,7 @@ namespace ACAT.Extension
         /// <summary>
         /// Activates the File Browser functional agent.
         /// </summary>
-        public static async void ShowFileBrowser(String action)
+        public static async void ShowFileBrowser(string action)
         {
             try
             {
@@ -261,14 +262,14 @@ namespace ACAT.Extension
         /// notepad, word)
         /// </summary>
         /// <param name="taskName">filter by this process name</param>
-        public static void ShowTaskSwitcherAltTab(String taskName = "")
+        public static void ShowTaskSwitcherAltTab(string taskName = "")
         {
             try
             {
                 Form taskSwitcherForm = Context.AppPanelManager.CreatePanel("TaskSwitcherForm");
                 if (taskSwitcherForm != null)
                 {
-                    if (!String.IsNullOrEmpty(taskName) && taskSwitcherForm is IExtension)
+                    if (!string.IsNullOrEmpty(taskName) && taskSwitcherForm is IExtension)
                     {
                         IExtension extension = taskSwitcherForm as IExtension;
                         extension.GetInvoker().SetValue("FilterProcessName", taskName);
@@ -288,7 +289,7 @@ namespace ACAT.Extension
         /// </summary>
         /// <param name="message">message to display</param>
         /// <param name="timeout">how long to display</param>
-        public static void Toast(String message, int timeout = 2000)
+        public static void Toast(string message, int timeout = 2000)
         {
             var toast = new ToastForm(message, timeout);
             var panel = Context.AppPanelManager.GetCurrentPanel() as Form;
@@ -304,9 +305,9 @@ namespace ACAT.Extension
         /// <param name="title">title of the dialog</param>
         /// <param name="caption">caption to display</param>
         /// <returns>The dialog form object</returns>
-        private static Form initYesNoDialog(String title, String caption)
+        private static Form initYesNoDialog(string title, string caption)
         {
-            const String panelClass = "YesNoDialog";
+            const string panelClass = "YesNoDialog";
 
             Log.Debug("Creating panel " + panelClass);
             Form form = Context.AppPanelManager.CreatePanel(panelClass);
@@ -318,7 +319,7 @@ namespace ACAT.Extension
             if (form is IExtension)
             {
                 var invoker = (form as IExtension).GetInvoker();
-                invoker.SetValue("TitleBar", String.IsNullOrEmpty(title) ? Common.AppPreferences.AppName : title);
+                invoker.SetValue("TitleBar", string.IsNullOrEmpty(title) ? Common.AppPreferences.AppName : title);
                 invoker.SetValue("Caption", caption);
             }
 
@@ -331,7 +332,7 @@ namespace ACAT.Extension
         /// <param name="title">title of the dialog</param>
         /// <param name="caption">caption to display</param>
         /// <returns>The dialog form object</returns>
-        private static Form initYesNoScanner(String panelClass, String title, String caption)
+        private static Form initYesNoScanner(string panelClass, string title, string caption)
         {
             Log.Debug("Creating panel " + panelClass);
             Form form = Context.AppPanelManager.CreatePanel(panelClass, title);
@@ -358,7 +359,7 @@ namespace ACAT.Extension
         /// <param name="panelClass">The yes/no scanner class</param>
         /// <param name="caption">prompt string</param>
         /// <returns>true if yes</returns>
-        private static bool showYesNoScanner(IPanel parent, String panelClass, String caption)
+        private static bool showYesNoScanner(IPanel parent, string panelClass, string caption)
         {
             bool retVal = false;
 
@@ -370,7 +371,7 @@ namespace ACAT.Extension
                 {
                     var invoker = (form as IExtension).GetInvoker();
                     bool? yesNo = invoker != null && invoker.GetBoolValue("Choice").Value;
-                    retVal = (yesNo != null) && yesNo.Value;
+                    retVal = yesNo != null && yesNo.Value;
                 }
             }
 

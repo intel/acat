@@ -6,14 +6,16 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.AgentManagement;
-using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using ACAT.Extension.UI;
 using System;
 using System.Security.Permissions;
 using System.Windows.Forms;
-using static ACAT.Core.PanelManagement.ScannerCommon;
+using static ACAT.Core.PanelManagement.Common.ScannerCommon;
 
 namespace ACAT.Extension
 {

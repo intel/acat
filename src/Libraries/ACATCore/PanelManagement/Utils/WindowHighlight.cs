@@ -3,7 +3,7 @@ using System;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Utils
 {
     /// <summary>
     /// Highlights a window by drawing a border around it.  If the window
@@ -19,7 +19,7 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Used for synchronization
         /// </summary>
-        private readonly object _sync = new object();
+        private readonly object _sync = new();
 
         /// <summary>
         /// Automation wrapper for the window

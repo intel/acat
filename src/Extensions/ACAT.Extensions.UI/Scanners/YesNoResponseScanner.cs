@@ -14,13 +14,14 @@
 
 using ACAT.Core.AgentManagement;
 using ACAT.Core.Extensions;
-using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.TTSManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
-using ACAT.Extension;
 using ACAT.Extension.CommandHandlers;
+using ACAT.Extension.UI;
 using System;
 using System.Security.Permissions;
 using System.Windows.Forms;

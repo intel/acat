@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ACAT.Core.PreferencesManagement
+namespace ACAT.Core.PreferencesManagement.Attributes
 {
     public class DescriptorAttribute : Attribute
     {
-        public DescriptorAttribute(String description)
+        public DescriptorAttribute(string description)
         {
             Description = description;
             Category = "";
         }
 
-        public DescriptorAttribute(String description, String category) : this(description)
+        public DescriptorAttribute(string description, string category) : this(description)
         {
             Category = category;
         }

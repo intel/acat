@@ -12,7 +12,6 @@
 using ACAT.Core.PanelManagement;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACATResources;
-using ControlzEx.Standard;
 using System;
 using System.Windows.Forms;
 

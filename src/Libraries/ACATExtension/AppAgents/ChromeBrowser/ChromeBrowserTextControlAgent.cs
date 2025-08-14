@@ -18,8 +18,7 @@
 // </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.AgentManagement.TextInterface;
-using ACAT.Core.Utility;
+using ACAT.Core.AgentManagement.TextControlAgents;
 using System;
 using System.Windows.Automation;
 

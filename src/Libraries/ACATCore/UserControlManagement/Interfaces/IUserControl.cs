@@ -6,11 +6,12 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.AnimationManagement;
-using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 
-namespace ACAT.Core.UserControlManagement
+namespace ACAT.Core.UserControlManagement.Interfaces
 {
     public delegate void AnimationPlayerStateChanged(IUserControl userControl, PlayerStateChangedEventArgs e);
 

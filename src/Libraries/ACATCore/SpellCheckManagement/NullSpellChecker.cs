@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Extensions;
+using ACAT.Core.SpellCheckManagement.Interfaces;
 using ACAT.Core.Utility;
 using System;
 using System.Globalization;

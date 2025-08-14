@@ -9,6 +9,8 @@ using ACAT.Core.AgentManagement;
 using ACAT.Core.Audit;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.Widgets;
@@ -20,7 +22,7 @@ using System.Linq;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
-namespace ACAT.Extension
+namespace ACAT.Extension.UI
 {
     /// <summary>
     /// This is a helper class exclusively for Alphabet scanners.
@@ -96,7 +98,7 @@ namespace ACAT.Extension
         /// <param name="index">index number of the word in the list</param>
         /// <param name="word">the predicted word</param>
         /// <returns>formatted string</returns>
-        public delegate String FormatPredictionWord(int index, String word);
+        public delegate string FormatPredictionWord(int index, string word);
 
         /// <summary>
         /// Raised to format the predicted word
@@ -127,7 +129,7 @@ namespace ACAT.Extension
         /// Gets the PanelClass of the scanner. Call this in
         /// the PanelClass getter in the Alphabet scanner.
         /// </summary>
-        public String PanelClass { get; private set; }
+        public string PanelClass { get; private set; }
 
         /// <summary>
         /// Gets the PanelCommon object
@@ -185,7 +187,7 @@ namespace ACAT.Extension
         /// </summary>
         public void AutocompleteWithFirstWord()
         {
-            List<Widget> list = new List<Widget>();
+            List<Widget> list = new();
             _rootWidget.Finder.FindAllChildren(typeof(WordListItemWidget), list);
 
             if (list.Any())
@@ -411,7 +413,7 @@ namespace ACAT.Extension
             int desktopHeight = Screen.PrimaryScreen.WorkingArea.Height;
             if (form.Height > desktopHeight)
             {
-                float ratio = ((float)desktopHeight / form.Height);
+                float ratio = (float)desktopHeight / form.Height;
 
                 form.Top = 0;
                 form.Height = desktopHeight;
@@ -534,7 +536,7 @@ namespace ACAT.Extension
 
             var wordSelected = wordListItemWidget.Value.Trim();
 
-            if (!String.IsNullOrEmpty(wordSelected))
+            if (!string.IsNullOrEmpty(wordSelected))
             {
                 KeyStateTracker.ClearAlt();
                 KeyStateTracker.ClearCtrl();
@@ -550,7 +552,7 @@ namespace ACAT.Extension
 
             var letterSelected = letterListItemWidget.Value.Trim();
 
-            if (!String.IsNullOrEmpty(letterSelected))
+            if (!string.IsNullOrEmpty(letterSelected))
             {
                 KeyStateTracker.ClearAlt();
                 KeyStateTracker.ClearCtrl();
@@ -640,8 +642,8 @@ namespace ACAT.Extension
 
             try
             {
-                String wordAtCaret;
-                String nwords;
+                string wordAtCaret;
+                string nwords;
                 var charAtCaret = '\0';
 
                 using (var agentContext = Context.AppAgentMgr.ActiveContext())
@@ -657,14 +659,14 @@ namespace ACAT.Extension
                     Log.Debug("charAtCaret: [" + charAtCaret + "]");
                 }
 
-                if (String.IsNullOrEmpty(nwords) && String.IsNullOrEmpty(wordAtCaret))
+                if (string.IsNullOrEmpty(nwords) && string.IsNullOrEmpty(wordAtCaret))
                 {
-                    _currentWordWidget?.SetCurrentWord(String.Empty);
+                    _currentWordWidget?.SetCurrentWord(string.Empty);
 
                     _wordListWidgetWidget?.ClearEntries();
 
                     nwords = " ";
-                    wordAtCaret = String.Empty;
+                    wordAtCaret = string.Empty;
                 }
 
                 Log.Debug("wordatcaret length: " + wordAtCaret.Length);
@@ -675,7 +677,7 @@ namespace ACAT.Extension
                 Log.Debug("CurrentWord: [" + wordAtCaret + "]");
 
                 // do the word prediction
-                if (wordAtCaret.Length > 1 && Char.IsPunctuation(wordAtCaret[0]))
+                if (wordAtCaret.Length > 1 && char.IsPunctuation(wordAtCaret[0]))
                 {
                     wordAtCaret = wordAtCaret.Substring(1);
                 }
@@ -730,7 +732,7 @@ namespace ACAT.Extension
             /// </summary>
             /// <param name="alphabetScannerCommon">parent object</param>
             /// <param name="cmd">command to execute</param>
-            public CommandHandler(AlphabetScannerCommon alphabetScannerCommon, String cmd)
+            public CommandHandler(AlphabetScannerCommon alphabetScannerCommon, string cmd)
                 : base(cmd)
             {
                 _alphabetScannerCommon = alphabetScannerCommon;

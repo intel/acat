@@ -61,6 +61,11 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
             return PreferencesBase.Load<LaunchAppSettings>(PreferencesFilePath);
         }
 
+        public override bool ResetToDefault()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Save settings to the preferences file (PreferencesFilePath)
         /// </summary>

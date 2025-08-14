@@ -19,7 +19,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace ACAT.Core.InputActuators
+namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
 {
     /// <summary>
     /// Represents the TCP socket listener to wait for incoming
@@ -31,12 +31,12 @@ namespace ACAT.Core.InputActuators
         /// <summary>
         /// List of clients connected to this socket server
         /// </summary>
-        public ListDictionary clientList = new ListDictionary();
+        public ListDictionary clientList = new();
 
         /// <summary>
         /// IP address to bind to
         /// </summary>
-        private readonly String ipToBind;
+        private readonly string ipToBind;
 
         /// <summary>
         /// The socket listener thread
@@ -68,14 +68,14 @@ namespace ACAT.Core.InputActuators
         /// </summary>
         /// <param name="listenPort">TCP port to listen on</param>
         public SocketServer(int listenPort)
-            : this(String.Empty, listenPort)
+            : this(string.Empty, listenPort)
         {
         }
 
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public SocketServer(String listenAddress, int listenPort)
+        public SocketServer(string listenAddress, int listenPort)
         {
             ipToBind = listenAddress;
             portToBind = listenPort;
@@ -115,7 +115,7 @@ namespace ACAT.Core.InputActuators
 
         public static IPAddress GetIPToBind()
         {
-            return GetIPToBind(String.Empty);
+            return GetIPToBind(string.Empty);
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace ACAT.Core.InputActuators
         /// bound to the network card, the default (localhost) IP Address is selected.
         /// </summary>
         /// <returns>IP Address to bind to.</returns>
-        public static IPAddress GetIPToBind(String configAddr)
+        public static IPAddress GetIPToBind(string configAddr)
         {
             string host = Dns.GetHostName();
             IPHostEntry he = Dns.GetHostEntry(host);
@@ -132,7 +132,7 @@ namespace ACAT.Core.InputActuators
 
             //  If address in configuration file is null, == localhost or == 127.0.0.1
             //  return the Loopback address as the IP Address to bind to.
-            if (String.IsNullOrEmpty(configAddr) ||
+            if (string.IsNullOrEmpty(configAddr) ||
                 configAddr.Equals("localhost", StringComparison.InvariantCultureIgnoreCase) ||
                 configAddr.Equals("127.0.0.1", StringComparison.InvariantCultureIgnoreCase))
             {
@@ -167,7 +167,7 @@ namespace ACAT.Core.InputActuators
         /// <param name="clientid">client id</param>
         /// <param name="byteData">data to send</param>
         /// <param name="count">how many bytes</param>
-        public void Send(String clientid, byte[] byteData, int count)
+        public void Send(string clientid, byte[] byteData, int count)
         {
             if (clientList.Contains(clientid))
             {
@@ -268,9 +268,9 @@ namespace ACAT.Core.InputActuators
             Log.Debug("SocketServer: Listener Thread");
             try
             {
-                this.tcpListener.Start();
+                tcpListener.Start();
             }
-            catch (System.Net.Sockets.SocketException se)
+            catch (SocketException se)
             {
                 //Log.Error(se.IncludeStackTrace);
                 Log.Error(se.StackTrace);
@@ -290,7 +290,7 @@ namespace ACAT.Core.InputActuators
 
                     IPEndPoint ipe = (IPEndPoint)client.Client.LocalEndPoint;
                     IPAddress addr = IPAddress.Parse(ipe.Address.ToString());
-                    String strAddr = addr.ToString();
+                    string strAddr = addr.ToString();
 
                     Log.Debug("Client " + strAddr + " has connected");
 
@@ -299,7 +299,7 @@ namespace ACAT.Core.InputActuators
                     // object constructor and a thread is started with the objects worker method... allowing the thread access to the client.
                     var connHandler = new ClientConnHandler(client);
                     connHandler.OnPacketReceived += connHandler_OnPacketReceived;
-                    if (!String.IsNullOrEmpty(connHandler.ID))
+                    if (!string.IsNullOrEmpty(connHandler.ID))
                     {
                         connHandler.OnClientConnStatusChanged += connHandler_OnClientConnStatusChanged;
                         connHandler.WorkerThread = new Thread(connHandler.WorkerThreadMethod) { IsBackground = true };
@@ -336,7 +336,7 @@ namespace ACAT.Core.InputActuators
                 throw ex;
             }
 
-            string startMessage = String.Format("SERVER: Listener Started on {0}:{1}",
+            string startMessage = string.Format("SERVER: Listener Started on {0}:{1}",
                 ((IPEndPoint)tcpListener.LocalEndpoint).Address,
                 ((IPEndPoint)tcpListener.LocalEndpoint).Port);
             Log.Debug(startMessage);

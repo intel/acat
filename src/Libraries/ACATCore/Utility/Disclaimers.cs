@@ -20,7 +20,7 @@ namespace ACAT.Core.Utility
         /// Stores mapping between the attribution source and the
         /// attribution string
         /// </summary>
-        private static readonly Dictionary<String, String> _disclaimers = new Dictionary<string, string>();
+        private static readonly Dictionary<String, String> _disclaimers = new();
 
         /// <summary>
         /// Adds a disclaimer. Token is a string to ensure if the

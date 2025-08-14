@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
-namespace ACAT.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement.Layout
 {
     /// <summary>
     /// Represents a collection of WidgetAttribute objects.
@@ -28,14 +28,14 @@ namespace ACAT.Core.WidgetManagement
         /// <summary>
         /// Maps the name of the widget to its widget attribute
         /// </summary>
-        private Dictionary<String, WidgetAttribute> _widgetAttributes;
+        private Dictionary<string, WidgetAttribute> _widgetAttributes;
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         public WidgetAttributes()
         {
-            _widgetAttributes = new Dictionary<String, WidgetAttribute>();
+            _widgetAttributes = new Dictionary<string, WidgetAttribute>();
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace ACAT.Core.WidgetManagement
         /// </summary>
         /// <param name="name">name of the button</param>
         /// <returns>its button attribute, null if none</returns>
-        public WidgetAttribute this[String name]
+        public WidgetAttribute this[string name]
         {
             get
             {
@@ -67,7 +67,7 @@ namespace ACAT.Core.WidgetManagement
         /// </summary>
         /// <param name="name">name of the widget</param>
         /// <returns>true if it does</returns>
-        public bool Contains(String name)
+        public bool Contains(string name)
         {
             return this[name] != null;
         }
@@ -98,7 +98,7 @@ namespace ACAT.Core.WidgetManagement
         /// </summary>
         /// <param name="configFile">Full path to the xml file</param>
         /// <returns>true on success</returns>
-        public bool Load(String configFile)
+        public bool Load(string configFile)
         {
             bool retVal = true;
 
@@ -136,7 +136,7 @@ namespace ACAT.Core.WidgetManagement
             }   
             catch (Exception ex)
             {
-                Log.Exception($"Error loading config file {configFile} -  {ex.ToString()}");
+                Log.Exception($"Error loading config file {configFile} -  {ex}");
                 retVal = false;
             }
 

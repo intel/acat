@@ -6,7 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.AgentManagement;
-using ACAT.Core.AgentManagement.TextInterface;
+using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.Utility;

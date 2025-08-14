@@ -2,16 +2,18 @@ using ACAT.Core.AgentManagement;
 using ACAT.Core.Audit;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
-using ACAT.Core.ThemeManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.TTSManagement;
 using ACAT.Core.Utility;
-using ACAT.Core.WordPredictionManagement;
+using ACAT.Core.WordPredictorManagement;
+using ACAT.Core.WordPredictorManagement.Interfaces;
 using ACAT.Extension;
 using ACAT.Extension.CommandHandlers;
-using ACAT.Scanners;
+using ACAT.Extension.UI;
+using ACAT.Extension.UI.ScannerForms;
 using ACATResources;
 using System;
-using System.Diagnostics;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
@@ -84,10 +86,10 @@ namespace ACAT.Extensions.UI.Scanners
 
         public override bool HandleInitialize(StartupArg startupArg)
         {
-            _scannerCommon.UserControlManager.GridScanIterations = Common.AppPreferences.GridScanIterations;
-            _scannerCommon.UserControlManager.AddUserControlByKeyOrName(panelWordPrediction, "wordPrediction", "WordPredictionUserControl");
-            _scannerCommon.UserControlManager.AddUserControlByKeyOrName(panelSentencePrediction, "sentencePrediction", "SentencePredictionUserControl");
-            _scannerCommon.UserControlManager.AddUserControlByKeyOrName(panelKeyboard, "keyboard", "KeyboardQwertyUserControl");
+            ScannerCommon.UserControlManager.GridScanIterations = Common.AppPreferences.GridScanIterations;
+            ScannerCommon.UserControlManager.AddUserControlByKeyOrName(panelWordPrediction, "wordPrediction", "WordPredictionUserControl");
+            ScannerCommon.UserControlManager.AddUserControlByKeyOrName(panelSentencePrediction, "sentencePrediction", "SentencePredictionUserControl");
+            ScannerCommon.UserControlManager.AddUserControlByKeyOrName(panelKeyboard, "keyboard", "KeyboardQwertyUserControl");
             _textBoxUserControl = new TalkWindowTextBoxUserControl(this, panelTextBox);
             _textBoxPhraseModeUserControl = new TalkWindowTextBoxPhraseModeUserControl(this, panelTextBox);
 
@@ -128,11 +130,11 @@ namespace ACAT.Extensions.UI.Scanners
 
             WordPredictionManager.Instance.ActiveWordPredictor.PredictionWordCount = 10;
 
-            _scannerCommon.OnLoad();
+            ScannerCommon.OnLoad();
 
             SetColorScheme();
 
-            _scannerCommon.ResizeToFitDesktop(this);
+            ScannerCommon.ResizeToFitDesktop(this);
 
             _windowActiveWatchdog = new WindowActiveWatchdog(this);
         }
@@ -391,21 +393,21 @@ namespace ACAT.Extensions.UI.Scanners
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == ACAT.Win32.Win32Constants.WM_NCLBUTTONDOWN) //cancels the drag this is IMP
+            if (m.Msg == User32Interop.Win32Constants.WM_NCLBUTTONDOWN) //cancels the drag this is IMP
             {
-                if (m.WParam.ToInt32() == ACAT.Win32.Win32Constants.HTCAPTION) return;
+                if (m.WParam.ToInt32() == User32Interop.Win32Constants.HTCAPTION) return;
             }
-            else if (m.Msg == ACAT.Win32.Win32Constants.WM_SYSCOMMAND)
+            else if (m.Msg == User32Interop.Win32Constants.WM_SYSCOMMAND)
             {
                 int command = m.WParam.ToInt32() & 0xfff0;
-                if (command == ACAT.Win32.Win32Constants.SC_MOVE)
+                if (command == User32Interop.Win32Constants.SC_MOVE)
                 {
                     base.WndProc(ref m);
                     return;
                 }
             }
 
-            if (!_scannerCommon.HandleWndProc(m))
+            if (!ScannerCommon.HandleWndProc(m))
             {
                 base.WndProc(ref m);
             }
@@ -437,13 +439,13 @@ namespace ACAT.Extensions.UI.Scanners
                         break;
 
                     case "CmdNumberScanner":
-                        form._scannerCommon.UserControlManager.PushUserControlByKeyOrName(form.panelKeyboard, "numeric", "KeyboardNumberUserControl");
-                        form._scannerCommon.UserControlManager.StartTopLevelAnimation();
+                        form.ScannerCommon.UserControlManager.PushUserControlByKeyOrName(form.panelKeyboard, "numeric", "KeyboardNumberUserControl");
+                        form.ScannerCommon.UserControlManager.StartTopLevelAnimation();
                         break;
 
                     case "CmdEditScanner":
-                        form._scannerCommon.UserControlManager.PushUserControlByKeyOrName(form.panelKeyboard, "edit", "KeyboardEditUserControl");
-                        form._scannerCommon.UserControlManager.StartTopLevelAnimation();
+                        form.ScannerCommon.UserControlManager.PushUserControlByKeyOrName(form.panelKeyboard, "edit", "KeyboardEditUserControl");
+                        form.ScannerCommon.UserControlManager.StartTopLevelAnimation();
                         break;
 
                     case "CmdPhraseSpeak":
@@ -460,8 +462,8 @@ namespace ACAT.Extensions.UI.Scanners
                         break;
 
                     case "CmdMainKeyboard":
-                        form._scannerCommon.UserControlManager.AddUserControlByKeyOrName(form.panelKeyboard, "keyboard", "KeyboardQwertyUserControl");
-                        form._scannerCommon.UserControlManager.StartTopLevelAnimation();
+                        form.ScannerCommon.UserControlManager.AddUserControlByKeyOrName(form.panelKeyboard, "keyboard", "KeyboardQwertyUserControl");
+                        form.ScannerCommon.UserControlManager.StartTopLevelAnimation();
                         break;
 
                     case "CmdMainMenu":
@@ -522,8 +524,8 @@ namespace ACAT.Extensions.UI.Scanners
                         if (source is UserControl)
                         {
                             var userControl = source as UserControl;
-                            form._scannerCommon.UserControlManager.PopUserControl(userControl.Parent);//form.panelKeyboard);
-                            form._scannerCommon.UserControlManager.StartTopLevelAnimation();
+                            form.ScannerCommon.UserControlManager.PopUserControl(userControl.Parent);//form.panelKeyboard);
+                            form.ScannerCommon.UserControlManager.StartTopLevelAnimation();
                         }
                         break;
                 }

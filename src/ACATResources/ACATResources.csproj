@@ -1,93 +1,108 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{A0990D4E-F25B-430C-BDA3-40A72560B877}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ACATResources</RootNamespace>
-    <AssemblyName>ACATResources</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
-    <Optimize>true</Optimize>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
-    <Optimize>true</Optimize>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="StringResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StringResources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="StringResources.es.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StringResources.es.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceHelper.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="en\*.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="StringResources.en.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="StringResources.resx">
-      <SubType>Designer</SubType>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>StringResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="StringResources.es.resx">
-      <SubType>Designer</SubType>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>StringResources.es.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
+    <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+    <ItemGroup>
+      <EmbeddedResource Update="StringResources.en.resx">
+        <Generator>PublicRexXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="StringResources.es.resx">
+        <Generator>PublicRexXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="StringResources.resx">
+        <Generator>PublicRexXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+    </ItemGroup>
+
+  <!-- Copy Config XML Files-->
+  <ItemGroup>
+    <!-- Use Link to preserve folder structure in metadata -->
+    <ConfigXmlFiles Include="$(ProjectDir)en\**\*">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </ConfigXmlFiles>
+  </ItemGroup>
+
+  <Target Name="CopyConfigXMLFiles" AfterTargets="Build">
+    <Message Text="Copy ConfigXML Files" Importance="high" />
+    <Copy
+      SourceFiles="@(ConfigXmlFiles)"
+      DestinationFiles="$(OutputPath)en\%(ConfigXmlFiles.RecursiveDir)%(Filename)%(Extension)"
+      SkipUnchangedFiles="true" />
   </Target>
-  <Target Name="AfterBuild">
+  
+  <!-- Copy Assets Directories -->
+  <ItemGroup>
+    <Assets Include="$(SolutionDir)Assets\**\*">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Assets>
+  </ItemGroup>
+  
+  <Target Name="CopyAssetFiles" AfterTargets="Build">
+    <Message Text="Copy Asssets Files" Importance="high" />
+    <MakeDir Directories="$(OutputPath)Assets\%(Assets.RecursiveDir)" />
+    <Copy 
+      SourceFiles="@(Assets)" 
+      DestinationFiles="$(OutputPath)Assets\%(Assets.RecursiveDir)%(Filename)%(Extension)" 
+      SkipUnchangedFiles="true" />
   </Target>
-  -->
+  
+  <!-- Copy Default User Install Files -->
+  <ItemGroup>
+    <DefaultUserFiles Include="$(SolutionDir)\Applications\Install\Users\**\*">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </DefaultUserFiles>
+  </ItemGroup>
+  
+  <Target Name="CopyInstallFiles" AfterTargets="Build">
+    <Message Text="Copy Install Files" Importance="high" />
+    <Copy 
+      SourceFiles="@(DefaultUserFiles)" 
+      DestinationFiles="$(OutputPath)Install\Users\%(DefaultUserFiles.RecursiveDir)%(Filename)%(Extension)" 
+      SkipUnchangedFiles="true" />
+  </Target>
+  
+  <!-- Copy ConvAssist Static Files -->
+  <ItemGroup>
+    <ConvAssistStatic Include="$(SolutionDir)\Applications\Install\en\**\*">
+      <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </ConvAssistStatic>
+  </ItemGroup>
+  <Target Name="CopyStaticConvAssist" AfterTargets="Build">
+    <Message Text="Copy Static ConvAssist Files" Importance="high" />
+    <!-- Copy files while preserving subfolders -->
+    <Copy 
+      SourceFiles="@(ConvAssistStatic)" 
+      DestinationFiles="$(OutputPath)en\%(ConvAssistStatic.RecursiveDir)%(Filename)%(Extension)" 
+      SkipUnchangedFiles="true" />
+  </Target>
+
+  
+  
+  <!-- Copy ConvAssist Application -->
+  <Target Name="UnzipDependency" AfterTargets="Build">
+    <!-- Define paths -->
+    <PropertyGroup>
+      <ZipFile>$(SolutionDir)\Applications\Install\ConvAssistApp\ConvAssist.zip</ZipFile>
+      <ExtractedDir>$(BaseOutputPath)\UnzippedDependency\</ExtractedDir>
+      <UnzipFlagFile>$(ExtractedDir).unzipped</UnzipFlagFile>
+    </PropertyGroup>
+    <!-- Only unzip if the flag file doesn't exist -->
+    <Message Text="Unzipping dependency files from $(ZipFile) to $(ExtractedDir)" Condition="!Exists('$(UnzipFlagFile)')" Importance="high" />
+    <Exec Condition="!Exists('$(UnzipFlagFile)')" Command="powershell -Command &quot;Expand-Archive -Path '$(ZipFile)' -DestinationPath '$(ExtractedDir)' -Force&quot;" />
+    <Message Text="Unzipped dependency files to $(ExtractedDir)" Condition="!Exists('$(UnzipFlagFile)')" Importance="high" />
+    <!-- Create a flag file to avoid re-extraction -->
+    <WriteLinesToFile Condition="!Exists('$(UnzipFlagFile)')" File="$(UnzipFlagFile)" Lines="Unzipped on $(MSBuildThisFileFullPath)" Overwrite="true" />
+    <Message Text="Copy ConvAssist App" Importance="high" />
+    <!-- Copy contents to OutputPath -->
+    <ItemGroup>
+      <DependencyFiles Include="$(ExtractedDir)**\*" />
+    </ItemGroup>
+    <Message Text="Copying dependency files to output directory: $(OutDir)" Importance="high" />
+    <Copy SourceFiles="@(DependencyFiles)" DestinationFolder="$(OutDir)\ConvAssistApp\%(RecursiveDir)" SkipUnchangedFiles="true" />
+  </Target>
 </Project>

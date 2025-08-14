@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.AgentManagement.TextInterface;
+using ACAT.Core.AgentManagement.TextControlAgents;
 using ACAT.Core.Utility;
 using System;
 using System.Windows.Automation;

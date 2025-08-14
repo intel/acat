@@ -7,13 +7,13 @@
 
 using ACAT.Core.Extensions;
 using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PreferencesManagement;
+using ACAT.Core.TTSManagement.Interfaces;
 using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Windows.Forms;
 
 namespace ACAT.Core.TTSManagement
 {
@@ -53,7 +53,7 @@ namespace ACAT.Core.TTSManagement
         /// <summary>
         /// Singleton instance of the manager
         /// </summary>
-        private static readonly TTSManager _instance = new TTSManager();
+        private static readonly TTSManager _instance = new();
 
         /// <summary>
         /// Has this object been disposed

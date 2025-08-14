@@ -21,7 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
+namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DimReduction
 {
     [Serializable]
     public class DimReductPCA
@@ -33,7 +33,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// by specified level of their associated variances.
         /// Accepted values: 'threshold', 'firstNcomponents', 'minRelativeEigenvalue'
         /// </summary>
-        public String componentSortMethod;
+        public string componentSortMethod;
 
         /// <summary>
         /// number of principle components to reduce dimensionality with
@@ -67,10 +67,10 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// </summary>
         /// <param name="pComponentSortedMethod"></param>
         /// <param name="numberOfComponents"></param>
-        public DimReductPCA(String pComponentSortedMethod, int numberOfComponents)
+        public DimReductPCA(string pComponentSortedMethod, int numberOfComponents)
         {
             // Create PCA object with numberOfComponents as a method
-            if (String.Equals(pComponentSortedMethod, "firstNcomponents"))
+            if (string.Equals(pComponentSortedMethod, "firstNcomponents"))
             {
                 chPCAObj = new List<PrincipalComponentAnalysis>();
                 componentSortMethod = pComponentSortedMethod;
@@ -87,9 +87,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// </summary>
         /// <param name="componentSortedMethod"></param>
         /// <param name="threshold"></param>
-        public DimReductPCA(String pComponentSortedMethod, float pThreshold)
+        public DimReductPCA(string pComponentSortedMethod, float pThreshold)
         {
-            if (String.Equals(pComponentSortedMethod, "threshold"))
+            if (string.Equals(pComponentSortedMethod, "threshold"))
             {
                 chPCAObj = new List<PrincipalComponentAnalysis>();
                 componentSortMethod = pComponentSortedMethod;
@@ -106,9 +106,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
         /// </summary>
         /// <param name="componentSortedMethod"></param>
         /// <param name="threshold"></param>
-        public DimReductPCA(String pComponentSortedMethod, double pMinEigenValue)
+        public DimReductPCA(string pComponentSortedMethod, double pMinEigenValue)
         {
-            if (String.Equals(pComponentSortedMethod, "minRelativeEigenvalue"))
+            if (string.Equals(pComponentSortedMethod, "minRelativeEigenvalue"))
             {
                 chPCAObj = new List<PrincipalComponentAnalysis>();
                 componentSortMethod = pComponentSortedMethod;
@@ -131,14 +131,14 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             int numChannels = inputData[0].GetLength(1);
 
             double[][] chData = new double[numTrials][]; //[trials][samples]
-            this.projectionMatrix = new List<double[,]>();
+            projectionMatrix = new List<double[,]>();
             // Apply PCA to each channel
             for (int channelIdx = 0; channelIdx < numChannels; channelIdx++)
             {
                 // Get data for the channel
                 for (int trialIdx = 0; trialIdx < numTrials; trialIdx++)
                 {
-                    chData[trialIdx] = Matrix.GetColumn(inputData[trialIdx], channelIdx); //chData[trialIdx][featureIdx]
+                    chData[trialIdx] = inputData[trialIdx].GetColumn(channelIdx); //chData[trialIdx][featureIdx]
                 }
 
                 // Remove mean
@@ -146,7 +146,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 double[,] zeroMeanChData = chData.Center(means).ToMatrix();
                 //double[,] zeroMeanChData = Elementwise.S chData Subtract(means).ToMatrix();
 
-                var m = Matrix.Dot(zeroMeanChData.Transpose(), zeroMeanChData); //covariance
+                var m = zeroMeanChData.Transpose().Dot(zeroMeanChData); //covariance
 
                 // Calculate eigenvalues and eigenvectors
                 var EigenValueDecompObj = new EigenvalueDecomposition(m, false, false);
@@ -180,7 +180,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 //indSelectedEigenValues = indSelectedEigenValues.Subtract(-numFeatures + 1);
                 double[,] chProjectionMatrix = eigenVectors.GetColumns(indSelectedEigenValues).Transpose();
 
-                this.projectionMatrix.Add(chProjectionMatrix);
+                projectionMatrix.Add(chProjectionMatrix);
             }
         }
 
@@ -202,12 +202,12 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 // Get data for the channel
                 for (int trialIdx = 0; trialIdx < numTrials; trialIdx++)
                 {
-                    chData[trialIdx] = Matrix.GetColumn(inputData[trialIdx], channelIdx); //chData[trialIdx][featureIdx]
+                    chData[trialIdx] = inputData[trialIdx].GetColumn(channelIdx); //chData[trialIdx][featureIdx]
                 }
 
                 // Calculate reduced features for the channel
                 var tmp = chData.ToMatrix().Transpose();
-                double[,] reducedFeaturesChannel = this.projectionMatrix[channelIdx].Dot(tmp); //[numOutputComponents, numTrials]
+                double[,] reducedFeaturesChannel = projectionMatrix[channelIdx].Dot(tmp); //[numOutputComponents, numTrials]
 
                 for (int trialIdx = 0; trialIdx < numTrials; trialIdx++)
                 {
@@ -217,7 +217,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                     if (channelIdx == 0)
                         matrixReducedData[trialIdx] = chDataConcatenated;
                     else
-                        matrixReducedData[trialIdx] = Matrix.Concatenate(matrixReducedData[trialIdx], chDataConcatenated);
+                        matrixReducedData[trialIdx] = matrixReducedData[trialIdx].Concatenate(chDataConcatenated);
                 }
             }
             reducedData = matrixReducedData.ToList();

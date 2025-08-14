@@ -9,7 +9,8 @@ using ACAT.Core.AgentManagement;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
-using ACAT.Core.WordPredictionManagement;
+using ACAT.Core.WordPredictorManagement.Interfaces;
+using ACAT.Extension.UI;
 using System;
 
 namespace ACAT.Extension
@@ -133,7 +134,6 @@ namespace ACAT.Extension
             {
                 if (DialogUtils.ConfirmScanner(this, prompt))
                 {
-                    handled = true;
                     Context.AppWordPredictionManager.ActiveWordPredictor.SetMode(mode);
                     Windows.CloseAsync(this);
                 }

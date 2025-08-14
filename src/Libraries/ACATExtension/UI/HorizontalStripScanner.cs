@@ -7,6 +7,7 @@
 
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extension.CommandHandlers;
@@ -31,7 +32,7 @@ namespace ACAT.Extension
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        /// <param name="panelClass">The panel class of the conextual menu</param>
+        /// <param name="panelClass">The panel class of the contextual menu</param>
         /// <param name="panelTitle">title of the contextual</param>
         public HorizontalStripScanner(String panelClass, String panelTitle)
             : base(panelClass, panelTitle)

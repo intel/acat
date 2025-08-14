@@ -5,13 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PanelManagement.Utils;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Common
 {
     /// <summary>
     /// Represents a controller that controls the position
@@ -292,11 +293,11 @@ namespace ACAT.Core.PanelManagement
         {
             if (ResizeToFitDesktop != ResizeType.None)
             {
-                resizeScannerToFitDesktop(CoreGlobals.AppPreferences.ScannerScaleFactor / (float)IntMultiplier);
+                resizeScannerToFitDesktop(CoreGlobals.AppPreferences.ScannerScaleFactor / IntMultiplier);
             }
             else
             {
-                ScaleFactor = CoreGlobals.AppPreferences.ScannerScaleFactor / (float)IntMultiplier;
+                ScaleFactor = CoreGlobals.AppPreferences.ScannerScaleFactor / IntMultiplier;
                 ScaleForm(ScaleFactor);
             }
         }
@@ -457,9 +458,9 @@ namespace ACAT.Core.PanelManagement
                         if (newSize.Height > desktopHeight)
                             newSize.Height = desktopHeight;
 
-                        float ratio = ((float)newSize.Width / newSize.Height);
+                        float ratio = (float)newSize.Width / newSize.Height;
 
-                        newSize = new Size((int)((float)desktopHeight * ratio), desktopHeight);
+                        newSize = new Size((int)(desktopHeight * ratio), desktopHeight);
                         _form.Size = newSize;
 
                         _form.Top = 0;

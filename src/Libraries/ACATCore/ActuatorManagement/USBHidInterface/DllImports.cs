@@ -13,7 +13,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace ACAT.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement.USBHidInterface
 {
     /// <summary>
     /// pInvoke functions into Windows USB and HID functions
@@ -140,8 +140,8 @@ namespace ACAT.Core.ActuatorManagement
         public struct GUID
         {
             public int Data1;
-            public UInt16 Data2;
-            public UInt16 Data3;
+            public ushort Data2;
+            public ushort Data3;
 
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
             public byte[] data4;
@@ -150,25 +150,25 @@ namespace ACAT.Core.ActuatorManagement
         [StructLayout(LayoutKind.Sequential)]
         public struct HIDP_CAPS
         {
-            public UInt16 Usage;
-            public UInt16 UsagePage;
-            public UInt16 InputReportByteLength;
-            public UInt16 OutputReportByteLength;
-            public UInt16 FeatureReportByteLength;
+            public ushort Usage;
+            public ushort UsagePage;
+            public ushort InputReportByteLength;
+            public ushort OutputReportByteLength;
+            public ushort FeatureReportByteLength;
 
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 17)]
-            public UInt16[] Reserved;
+            public ushort[] Reserved;
 
-            public UInt16 NumLinkCollectionNodes;
-            public UInt16 NumInputButtonCaps;
-            public UInt16 NumbInputValueCaps;
-            public UInt16 NumInputDataIndices;
-            public UInt16 NumOutputButtonCaps;
-            public UInt16 NumOutputValueCaps;
-            public UInt16 NumOutputDataIndices;
-            public UInt16 NumFeatureButtonCaps;
-            public UInt16 NumFeatureValueCaps;
-            public UInt16 NumFeatureDataIndices;
+            public ushort NumLinkCollectionNodes;
+            public ushort NumInputButtonCaps;
+            public ushort NumbInputValueCaps;
+            public ushort NumInputDataIndices;
+            public ushort NumOutputButtonCaps;
+            public ushort NumOutputValueCaps;
+            public ushort NumOutputDataIndices;
+            public ushort NumFeatureButtonCaps;
+            public ushort NumFeatureValueCaps;
+            public ushort NumFeatureDataIndices;
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]

@@ -11,26 +11,29 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.ActuatorManagement;
-using ACAT.Core.InputActuators;
-using ACAT.Core.Onboarding;
+using ACAT.Core.ActuatorManagement.BaseActuators;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.CoreInterfaces;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
+using ACAT.Extensions.Onboarding.Onboarding;
 using ACATResources;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Onboarding
+namespace ACAT.Extensions.Onboarding.UI.UserControls
 {
     /// <summary>
     /// User control used in onboarding that allows the user to configure
     /// the hotkey for an external off-the-shelf switch
     /// </summary>
+    [DesignerCategory("code")]
     public partial class UserControlHardwareSwitchTest : UserControl, IOnboardingUserControl
     {
         private const String bodyStyle = " background-color:#232433;";
@@ -353,7 +356,7 @@ namespace ACAT.Extensions.Onboarding
                 }
             }
 
-            List<String> list = new List<String>
+            List<String> list = new()
             {
                 "PDF",
                 "true",

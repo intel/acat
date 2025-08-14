@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -15,6 +16,7 @@ namespace ACAT.Extension
     /// A single button message box with an optional checkbox for
     /// "Don't show this again"
     /// </summary>
+    [DesignerCategory("Code")]
     public partial class DisclaimerDialog : Form
     {
         public DisclaimerDialog()

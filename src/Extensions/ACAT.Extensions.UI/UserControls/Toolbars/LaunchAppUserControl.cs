@@ -1,19 +1,16 @@
-﻿using ACAT.Core.AgentManagement;
-using ACAT.Core.Extensions;
-using ACAT.Core.PanelManagement;
-using ACAT.Core.Utility;
+﻿using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
-using ACAT.Extension;
-using ACATResources;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
-namespace ACAT.Extensions.UI.UserControls
+namespace ACAT.Extensions.UI.UserControls.Toolbars
 {
     [ClassDescriptor("BE615A9B-3B93-4EF5-9C67-A06C4D34070D",
         Name = "LaunchAppUserControl",
         Description = "User control for the ACAT Dashboard")]
+    [DesignerCategory("code")]
     public class LaunchAppUserControl : LargeToolbarUserControl
     {
         private class LaunchButtonSpec : ButtonSpec
@@ -31,7 +28,7 @@ namespace ACAT.Extensions.UI.UserControls
         /// <summary>
         /// List of apps that match the filter specified by the user
         /// </summary>
-        private List<AppInfo> _appsList;
+        private readonly List<AppInfo> _appsList;
 
 
         public LaunchAppUserControl() : base("LaunchAppUserControl")
@@ -105,7 +102,6 @@ namespace ACAT.Extensions.UI.UserControls
             }
             else
             {
-                handled = true;
                 switch (widget.Value)
                 {
                     //case "@AppListSort":
@@ -147,10 +143,7 @@ namespace ACAT.Extensions.UI.UserControls
         /// <param name="appInfo"></param>
         private void handleAppSelect(AppInfo appInfo)
         {
-            if (EvtLaunchApp != null)
-            {
-                EvtLaunchApp.BeginInvoke(this, appInfo, null, null);
-            }
+            EvtLaunchApp?.BeginInvoke(this, appInfo, null, null);
         }
 
         /// <summary>

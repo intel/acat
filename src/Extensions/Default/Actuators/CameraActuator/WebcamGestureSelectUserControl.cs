@@ -13,7 +13,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.ActuatorManagement;
+using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
@@ -26,7 +26,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
     public partial class WebcamGestureSelectUserControl : UserControl
     {
         private readonly Color _buttonBackColor;
-        private readonly Dictionary<int, IActuatorSwitch> _dict = new Dictionary<int, IActuatorSwitch>();
+        private readonly Dictionary<int, IActuatorSwitch> _dict = new();
         private IEnumerable<string> _installedCameras;
         private readonly CameraActuator _cameraActuator;
         private int bothIndex = -1;

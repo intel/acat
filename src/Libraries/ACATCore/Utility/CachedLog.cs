@@ -22,7 +22,7 @@ namespace ACAT.Core.Utility
         /// </summary>
         private readonly String LogFileFullPath;
 
-        private readonly List<String> logEntries = new List<string>();
+        private readonly List<String> logEntries = new();
 
         /// <summary>
         /// Name of the audit log file

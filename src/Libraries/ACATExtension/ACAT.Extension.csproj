@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    
+    <UseWindowsForms>true</UseWindowsForms>
+    <EnableDefaultPageItems>false</EnableDefaultPageItems>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+  </PropertyGroup>
+    <ItemGroup>
+    <ProjectReference Include="..\..\ACATResources\ACATResources.csproj">
+      <Project>{a0990d4e-f25b-430c-bda3-40a72560b877}</Project>
+      <Name>ACATResources</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\ACATCore\ACAT.Core.csproj">
+      <Project>{827ad764-63dd-4b12-974d-2b70cc877051}</Project>
+      <Name>Core</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="lioncs.ColorSlider">
+      <Version>1.0.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationClient" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CommandHandlers\CommandDescriptors.cs" />
+    <Compile Include="CommandHandlers\GoBackHandler.cs" />
+    <Compile Include="CommandHandlers\MiscCommandHandler.cs" />
+    <Compile Include="UI\AboutBoxForm.cs" />
+    <Compile Include="UI\AboutBoxForm.Designer.cs">
+      <DependentUpon>AboutBoxForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\AlphabetScannerCommon.cs" />
+    <Compile Include="AppAgents\ACATApp\ACATAgentBase.cs" />
+    <Compile Include="AppAgents\DialogControlAgent\DialogControlAgentBase.cs" />
+    <Compile Include="ACATPreferences.cs" />
+    <Compile Include="CommandHandlers\ContextMenuHandler.cs" />
+    <Compile Include="CommandHandlers\AppWindowManagementHandler.cs" />
+    <Compile Include="CommandHandlers\ShowDialogsHandler.cs" />
+    <Compile Include="CommandHandlers\DefaultCommandDispatcher.cs" />
+    <Compile Include="Common.cs" />
+    <Compile Include="UI\DisclaimerDialog.cs" />
+    <Compile Include="UI\DisclaimerDialog.Designer.cs">
+      <DependentUpon>DisclaimerDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\HorizontalStripScanner.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\HorizontalStripScanner.Designer.cs">
+      <DependentUpon>HorizontalStripScanner.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ITalkWindowTextBox.cs" />
+    <Compile Include="UI\ScannerForms\GenericScannerForm.cs" />
+    <Compile Include="UI\ScanTimeAdjustForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ScanTimeAdjustForm.Designer.cs">
+      <DependentUpon>ScanTimeAdjustForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\MenuPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\MenuPanel.Designer.cs">
+      <DependentUpon>MenuPanel.cs</DependentUpon>
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="AppAgents\Outlook\DefaultOutlookInspector.cs" />
+    <Compile Include="AppAgents\Outlook\IOutlookInspector.cs" />
+    <Compile Include="AppAgents\Outlook\OutlookAgentBase.cs" />
+    <Compile Include="AppAgents\Outlook\OutlookAgentKeyLoggerTextInterface.cs" />
+    <Compile Include="AppAgents\Outlook\OutlookAgentTextInterface.cs" />
+    <Compile Include="AppAgents\Outlook\OutlookInspector.cs" />
+    <Compile Include="CommandHandlers\MouseHandler.cs" />
+    <Compile Include="CommandHandlers\SendKeyHandler.cs" />
+    <Compile Include="CommandHandlers\CreateAndShowScanner.cs" />
+    <Compile Include="CommandHandlers\TalkWindowHandler.cs" />
+    <Compile Include="CommandHandlers\DocumentEditingHandler.cs" />
+    <Compile Include="CommandHandlers\NavigationHandler.cs" />
+    <Compile Include="CommandHandlers\ModifierKeyTriggerHandler.cs" />
+    <Compile Include="CommandHandlers\FunctionKeyHandler.cs" />
+    <Compile Include="CommandHandlers\ShowScreenLockHandler.cs" />
+    <Compile Include="CommandHandlers\ShowMenusHandler.cs" />
+    <Compile Include="AppAgents\ChromeBrowser\ChromeBrowserAgentBase.cs" />
+    <Compile Include="AppAgents\ChromeBrowser\ChromeBrowserTextControlAgent.cs" />
+    <Compile Include="UI\ShowDisclaimersForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ShowDisclaimersForm.Designer.cs">
+      <DependentUpon>ShowDisclaimersForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ShowLicenseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ShowLicenseForm.Designer.cs">
+      <DependentUpon>ShowLicenseForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\TalkWindowTextBoxPhraseModeUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\TalkWindowTextBoxPhraseModeUserControl.Designer.cs">
+      <DependentUpon>TalkWindowTextBoxPhraseModeUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\TalkWindowTextBoxPromptUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\TalkWindowTextBoxPromptUserControl.Designer.cs">
+      <DependentUpon>TalkWindowTextBoxPromptUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\TalkWindowTextBoxPromptUserControlLabel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\TalkWindowTextBoxPromptUserControlLabel.Designer.cs">
+      <DependentUpon>TalkWindowTextBoxPromptUserControlLabel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\TalkWindowTextBoxUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\TalkWindowTextBoxUserControl.Designer.cs">
+      <DependentUpon>TalkWindowTextBoxUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControlContainerForm.cs" />
+    <Compile Include="UI\UserControlContainerForm.Designer.cs">
+      <DependentUpon>UserControlContainerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ScannerHelper.cs" />
+    <Compile Include="UI\DialogUtils.cs" />
+    <Compile Include="UI\UserControlLayoutInterface.cs" />
+    <Compile Include="UI\UserControlLayoutInterface.Designer.cs">
+      <DependentUpon>UserControlLayoutInterface.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControlScreenLock.cs" />
+    <Compile Include="UI\UserControlScreenLock.Designer.cs">
+      <DependentUpon>UserControlScreenLock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControlDefaultTryout.cs" />
+    <Compile Include="UI\UserControlDefaultTryout.Designer.cs">
+      <DependentUpon>UserControlDefaultTryout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\GenericUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControls\KeyboardUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControls\ScrollingText.cs" />
+    <Compile Include="UI\UserControls\ScrollingText.Designer.cs">
+      <DependentUpon>ScrollingText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControlWordPredictionCommon.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\AboutBoxForm.resx">
+      <DependentUpon>AboutBoxForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DisclaimerDialog.resx">
+      <DependentUpon>DisclaimerDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\HorizontalStripScanner.resx">
+      <DependentUpon>HorizontalStripScanner.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MenuPanel.resx">
+      <DependentUpon>MenuPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ScannerForms\GenericScannerForm.resx" />
+    <EmbeddedResource Include="UI\ScanTimeAdjustForm.resx">
+      <DependentUpon>ScanTimeAdjustForm.cs</DependentUpon>
+      <Generator>ResXFileCodeGeneratorEx</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ShowDisclaimersForm.resx">
+      <DependentUpon>ShowDisclaimersForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ShowLicenseForm.resx">
+      <DependentUpon>ShowLicenseForm.cs</DependentUpon>
+      <Generator>ResXFileCodeGeneratorEx</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\TalkWindowTextBoxPhraseModeUserControl.resx">
+      <DependentUpon>TalkWindowTextBoxPhraseModeUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\TalkWindowTextBoxPromptUserControl.resx">
+      <DependentUpon>TalkWindowTextBoxPromptUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\TalkWindowTextBoxPromptUserControlLabel.resx">
+      <DependentUpon>TalkWindowTextBoxPromptUserControlLabel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\TalkWindowTextBoxUserControl.resx">
+      <DependentUpon>TalkWindowTextBoxUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControlLayoutInterface.resx">
+      <DependentUpon>UserControlLayoutInterface.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControlScreenLock.resx">
+      <DependentUpon>UserControlScreenLock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControlDefaultTryout.resx">
+      <DependentUpon>UserControlDefaultTryout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControlContainerForm.resx">
+      <DependentUpon>UserControlContainerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControls\GenericUserControl.resx">
+      <DependentUpon>GenericUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControls\ScrollingText.resx">
+      <DependentUpon>ScrollingText.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationClient" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="lioncs.ColorSlider">
+      <Version>1.0.0</Version>
+    </PackageReference>
+  </ItemGroup>
+</Project>

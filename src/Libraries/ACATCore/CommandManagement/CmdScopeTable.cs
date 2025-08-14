@@ -56,6 +56,15 @@ namespace ACAT.Core.CommandManagement
             CmdScopeMapEntries.Add(cmdScopeMapEntry);
         }
 
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<CmdScopeTable>();
+            var res = Save(tmp, FilePath);
+            Load();
+
+            return res;
+        }
+
         /// <summary>
         /// Save the table to FilePath
         /// </summary>

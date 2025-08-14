@@ -33,7 +33,7 @@ namespace ACAT.Core.ThemeManagement
         /// <summary>
         /// Mapping between the Theme name and the directory
         /// </summary>
-        public readonly Dictionary<String, String> ThemesLookupTable = new Dictionary<String, String>();
+        public readonly Dictionary<String, String> ThemesLookupTable = new();
 
         /// <summary>
         ///  Theme config file name
@@ -43,7 +43,7 @@ namespace ACAT.Core.ThemeManagement
         /// <summary>
         /// Returns the singleton instance
         /// </summary>
-        private static readonly ThemeManager _instance = new ThemeManager();
+        private static readonly ThemeManager _instance = new();
 
         /// <summary>
         /// The current active ksin

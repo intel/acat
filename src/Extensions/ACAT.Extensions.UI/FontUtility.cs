@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ACAT.Extensions.UI
 {
@@ -25,7 +22,7 @@ namespace ACAT.Extensions.UI
             }
         }
 
-        static Dictionary<string, int> BootStrapFontCharaters = new Dictionary<string, int>
+        static readonly Dictionary<string, int> BootStrapFontCharaters = new()
         {
             { "123", 63103 },
             { "alarm-fill", 61697 },

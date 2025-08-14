@@ -1,40 +1,38 @@
 ﻿using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
-using ACAT.UserControls;
+using ACAT.Extension.UI.UserControls;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.UI.UserControls
+namespace ACAT.Extensions.UI.UserControls.Toolbars
 {
     [ClassDescriptor("4E1A5ED3-ED21-449B-B462-A8AE9F7BDC1F",
         Name = "ToolbarUserControl",
         Description = "User control for the toolbar in the ACAT Dashboard")]
+    [DesignerCategory("code")]
     public class ToolbarUserControl : KeyboardUserControl
     {
-        private TableLayoutPanel ToolbarBox = new TableLayoutPanel
+        private readonly TableLayoutPanel ToolbarBox = new()
         {
             Name = "ToolbarBox",
             Dock = DockStyle.Fill,
             AutoSize = true,
             AutoSizeMode = AutoSizeMode.GrowAndShrink,
             BackColor = Color.Transparent,
-            Padding = new Padding(10),
-            Margin = new Padding(10),
             ColumnCount = 2,
             RowCount = 1,
             GrowStyle = TableLayoutPanelGrowStyle.AddColumns,
         };
 
-        private TableLayoutPanel DefaultButtonsBox = new TableLayoutPanel
+        private readonly TableLayoutPanel DefaultButtonsBox = new()
         {
             Name = "DefaultButtonsBox",
             AccessibleName = "DefaultButtonsBox",
             AutoSize = true,
             AutoSizeMode = AutoSizeMode.GrowAndShrink,
-            Margin = new Padding(10),
-            Padding = new Padding(20),
             BackColor = Color.Transparent,
             Dock = DockStyle.Top,
             Anchor = AnchorStyles.Right | AnchorStyles.Top,
@@ -43,7 +41,7 @@ namespace ACAT.Extensions.UI.UserControls
             RowCount = 1,
             Visible = true,
         };
-        
+
         // private TableLayoutPanel PanelSettingsBox = new TableLayoutPanel
         // {
         //     Name = "PanelSettingsBox",
@@ -55,12 +53,11 @@ namespace ACAT.Extensions.UI.UserControls
         //     CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
         // };
 
-        Label appName = new Label
+        readonly Label appName = new()
         {
             Name = "ACAT",
             Text = "ACAT Dashboard",
             AutoSize = true,
-            Padding = new Padding(10),
             TextAlign = ContentAlignment.MiddleCenter,
             Anchor = AnchorStyles.Top | AnchorStyles.Left,
             Dock = DockStyle.Left,
@@ -68,7 +65,7 @@ namespace ACAT.Extensions.UI.UserControls
             Font = new Font("Montserrat", 28, FontStyle.Regular, GraphicsUnit.Point, 0)
         };
 
-        private System.ComponentModel.IContainer container = null;
+        private readonly IContainer container = null;
 
         protected Dictionary<string, string> DefaultButtons { get; private set; }
         //protected Dictionary<string, string> PanelSettingsButtons { get; private set; }
@@ -101,8 +98,8 @@ namespace ACAT.Extensions.UI.UserControls
 
         protected virtual void CreateToolbarButtons(TableLayoutPanel parent, Dictionary<string, string> buttons)
         {
-            var defaultSize = new Size(100, 100);
-            var padding = new Padding(10);
+            var defaultSize = new Size(40, 40);
+            //var padding = new Padding(10);
 
             // Create buttons with specific properties
             foreach (var (button, index) in buttons.Select((p, i) => (p, i)))
@@ -110,16 +107,15 @@ namespace ACAT.Extensions.UI.UserControls
                 var scannerButton = new ScannerRoundedButtonControl
                 {
                     BorderColor = Color.DimGray,
-                    BorderRadiusBottomLeft = 12,
-                    BorderRadiusBottomRight = 12,
-                    BorderRadiusTopLeft = 12,
-                    BorderRadiusTopRight = 12,
+                    BorderRadiusBottomLeft = 4,
+                    BorderRadiusBottomRight = 4,
+                    BorderRadiusTopLeft = 4,
+                    BorderRadiusTopRight = 4,
                     BorderWidth = 3F,
                     Dock = DockStyle.Fill,
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("bootstrap-icons", 24, FontStyle.Regular, GraphicsUnit.Point, 0),
-                    Margin = new Padding(10),
+                    Font = new Font("bootstrap-icons", 18, FontStyle.Regular, GraphicsUnit.Point, 0),
                     TabIndex = index,
                     Name = button.Key,
                     Text = button.Value,
@@ -137,7 +133,7 @@ namespace ACAT.Extensions.UI.UserControls
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (container != null))
+            if (disposing && container != null)
             {
                 container.Dispose();
             }
@@ -146,13 +142,12 @@ namespace ACAT.Extensions.UI.UserControls
 
         protected void InitializeComponent()
         {
-            this.SuspendLayout();
-            this.Name = "ToolbarUserControl";
-            this.AccessibleName = "ToolbarUserControl";
-            this.AutoSize = true;
-            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            this.Padding = new Padding(10);
-            this.Dock = DockStyle.Top;
+            SuspendLayout();
+            Name = "ToolbarUserControl";
+            AccessibleName = "ToolbarUserControl";
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            Dock = DockStyle.Top;
 
             ToolbarBox.SuspendLayout();
 
@@ -161,11 +156,11 @@ namespace ACAT.Extensions.UI.UserControls
             ToolbarBox.Controls.Add(appName, 0, 0);
             ToolbarBox.Controls.Add(DefaultButtonsBox, 1, 0);
 
-            this.Controls.Add(ToolbarBox);
+            Controls.Add(ToolbarBox);
 
             DefaultButtonsBox.ResumeLayout(true);
             ToolbarBox.ResumeLayout(true);
-            this.ResumeLayout(true);
+            ResumeLayout(true);
         }
 
         // public void HandlePanelSettingsClicked()

@@ -6,10 +6,11 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
-using System;
-using ACAT.Core.Onboarding;
+using ACAT.Extensions.Onboarding.UI.UserControls;
+using ACAT.Extensions.Onboarding.UI;
+using ACAT.Core.CoreInterfaces;
 
-namespace ACAT.Extensions.Onboarding
+namespace ACAT.Extensions.Onboarding.Onboarding
 {
     /// <summary>
     /// The onboarding extension that lets the user select the input
@@ -21,7 +22,7 @@ namespace ACAT.Extensions.Onboarding
     public class OnboardingLanguageSelect : OnboardingExtensionBase
     {
         // TODO - Localize Me
-        private const String Step1 = "STEP 1";
+        private const string Step1 = "STEP 1";
 
         private IOnboardingWizard _wizard;
 
@@ -40,7 +41,7 @@ namespace ACAT.Extensions.Onboarding
             return null;
         }
 
-        public override IOnboardingUserControl GetStep(String stepId)
+        public override IOnboardingUserControl GetStep(string stepId)
         {
             IOnboardingUserControl userControl;
 

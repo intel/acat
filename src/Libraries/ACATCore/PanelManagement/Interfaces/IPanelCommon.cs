@@ -7,10 +7,11 @@
 
 using ACAT.Core.AgentManagement;
 using ACAT.Core.AnimationManagement;
+using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.WidgetManagement;
 using System;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Interfaces
 {
     /// <summary>
     /// Returns common properties of all panels -

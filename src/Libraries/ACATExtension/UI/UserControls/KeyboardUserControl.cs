@@ -1,15 +1,14 @@
 ﻿/// Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-using ACAT.Core.AnimationManagement;
-using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.UserControlManagement;
-using ACAT.Core.Utility;
-using ACAT.Core.WidgetManagement;
-using System.Windows.Forms;
+using System.ComponentModel;
 
-namespace ACAT.UserControls
+namespace ACAT.Extension.UI.UserControls
 {
+    [DesignerCategory("Code")]
     public class KeyboardUserControl : GenericUserControl
     {
         public UserControlKeyboardCommon _keybordUserControlCommon => (UserControlKeyboardCommon)_userControlCommon;

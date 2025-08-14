@@ -17,7 +17,7 @@ namespace ACAT.Core.CommandManagement
         /// </summary>
         public CmdDescriptorTable AppCommandTable;
 
-        private static readonly CommandManager _instance = new CommandManager();
+        private static readonly CommandManager _instance = new();
 
         private CommandManager()
         {

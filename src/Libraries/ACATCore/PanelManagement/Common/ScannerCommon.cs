@@ -10,10 +10,15 @@ using ACAT.Core.AgentManagement;
 using ACAT.Core.AnimationManagement;
 using ACAT.Core.Audit;
 using ACAT.Core.Interpreter;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.PanelManagement.PanelConfig;
+using ACAT.Core.PanelManagement.Utils;
 using ACAT.Core.ThemeManagement;
 using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using ACAT.Core.WidgetManagement.Interfaces;
+using ACAT.Core.WidgetManagement.Layout;
 using ACAT.Core.Widgets;
 using System;
 using System.Collections.Generic;
@@ -22,7 +27,7 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Common
 {
     /// <summary>
     /// This is a helper class for all scanners.  It contains functions
@@ -39,7 +44,7 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Status bar for the scanner form
         /// </summary>
-        public readonly StatusBar StatusBarControl = new StatusBar();
+        public readonly StatusBar StatusBarControl = new();
 
         /// <summary>
         /// Used for trapping mouse_activate events
@@ -343,7 +348,7 @@ namespace ACAT.Core.PanelManagement
         /// caret position
         /// </summary>
         /// <param name="word">The completed word</param>
-        public void AutoCompleteWord(String word)
+        public void AutoCompleteWord(string word)
         {
             TextController.AutoCompleteWord(word);
         }
@@ -659,7 +664,7 @@ namespace ACAT.Core.PanelManagement
 
             subscribeToEvents();
 
-            setWidgetEnabledStates(WindowActivityMonitor.GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult());
+            setWidgetEnabledStates(WindowActivityMonitor.GetForegroundWindowInfo());
 
             Context.AppPanelManager.EvtDisplaySettingsChanged += AppPanelManager_EvtDisplaySettingsChanged;
 
@@ -749,11 +754,11 @@ namespace ACAT.Core.PanelManagement
             int desktopHeight = Screen.PrimaryScreen.WorkingArea.Height;
             if (form.Height > desktopHeight)
             {
-                float ratio = ((float)desktopHeight / form.Height);
+                float ratio = (float)desktopHeight / form.Height;
 
                 form.Top = 0;
                 form.Height = desktopHeight;
-                form.Width = (int)((float)form.Width * ratio);
+                form.Width = (int)(form.Width * ratio);
             }
         }
 
@@ -866,8 +871,8 @@ namespace ACAT.Core.PanelManagement
 
             if (_isPaused ||
                 widget is WordListItemWidget ||
-                String.IsNullOrEmpty(widget.Value) ||
-                !(widget is IButtonWidget))
+                string.IsNullOrEmpty(widget.Value) ||
+                widget is not IButtonWidget)
             {
                 return;
             }
@@ -923,7 +928,7 @@ namespace ACAT.Core.PanelManagement
             if (!TextController.HandlePunctuation(widgetAttribute.Modifiers, value))
             {
                 if ((KeyStateTracker.IsShiftOn() || KeyStateTracker.IsCapsLockOn()) &&
-                    !String.IsNullOrEmpty(widgetAttribute.ShiftValue))
+                    !string.IsNullOrEmpty(widgetAttribute.ShiftValue))
                 {
                     TextController.HandleAlphaNumericChar(widgetAttribute.ShiftValue[0]);
                 }
@@ -941,7 +946,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         /// <param name="widgetAttribute">widgetattribute of the button</param>
         /// <param name="value">value of the key</param>
-        private void actuateVirtualKey(WidgetAttribute widgetAttribute, String value)
+        private void actuateVirtualKey(WidgetAttribute widgetAttribute, string value)
         {
             Log.Debug("VirtualKey: " + value);
 
@@ -1026,7 +1031,7 @@ namespace ACAT.Core.PanelManagement
             try
             {
                 if (Windows.GetVisible(ScannerForm) &&
-                    !(ScannerForm is MenuPanelBase) &&
+                    ScannerForm is not MenuPanelBase &&
                     Context.AppAgentMgr.CurrentEditingMode == EditingMode.TextEntry)
                 {
                     bool abbreviationDetected = false;
@@ -1065,7 +1070,7 @@ namespace ACAT.Core.PanelManagement
         {
             Log.Debug("CALIBTEST Calibration end notify for " + ScannerForm.Name);
 
-            if ((Context.AppPanelManager.GetCurrentForm() as Form) != ScannerForm)
+            if (Context.AppPanelManager.GetCurrentForm() as Form != ScannerForm)
             {
                 Log.Debug("CALIBTESTForm is not the current form. returning " + ScannerForm.Name + " CurrentForm is " + (Context.AppPanelManager.GetCurrentForm() as Form).Name);
                 return;
@@ -1093,7 +1098,7 @@ namespace ACAT.Core.PanelManagement
         {
             Log.Debug("CALIBTEST ScannerCommon2: Calibration start notify for " + ScannerForm.Name);
 
-            if ((Context.AppPanelManager.GetCurrentForm() as Form) != ScannerForm)
+            if (Context.AppPanelManager.GetCurrentForm() as Form != ScannerForm)
             {
                 Log.Debug("CALIBTEST Form is not the current form. returning " + ScannerForm.Name + " CurrentForm is " + (Context.AppPanelManager.GetCurrentForm() as Form).Name);
                 return;
@@ -1290,9 +1295,9 @@ namespace ACAT.Core.PanelManagement
             else
             {
                 _rootWidget = _widgetManager.RootWidget;
-                if (String.IsNullOrEmpty(_rootWidget.SubClass))
+                if (string.IsNullOrEmpty(_rootWidget.SubClass))
                 {
-                    _rootWidget.SubClass = (ScannerForm is MenuPanelBase) ?
+                    _rootWidget.SubClass = ScannerForm is MenuPanelBase ?
                                             PanelCategory.Menu.ToString() :
                                             PanelCategory.Scanner.ToString();
                 }
@@ -1342,10 +1347,10 @@ namespace ACAT.Core.PanelManagement
                 return;
             }
 
-            String scannerName = e.Args[0];
-            String title = (e.Args.Count > 1) ? e.Args[1] : string.Empty;
+            string scannerName = e.Args[0];
+            string title = e.Args.Count > 1 ? e.Args[1] : string.Empty;
 
-            (ScannerForm).Invoke(new MethodInvoker(delegate
+            ScannerForm.Invoke(new MethodInvoker(delegate
             {
                 IPanel panel = Context.AppPanelManager.CreatePanel(scannerName, title) as IPanel;
                 if (panel != null)
@@ -1400,7 +1405,7 @@ namespace ACAT.Core.PanelManagement
         /// agent is invoked.
         /// </summary>
         /// <param name="command"></param>
-        private void runCommand(String command)
+        private void runCommand(string command)
         {
             bool handled = false;
 
@@ -1412,14 +1417,14 @@ namespace ACAT.Core.PanelManagement
             Log.Debug("Calling scanner common runcomand with " + command);
             ScannerForm.Invoke(new MethodInvoker(delegate
             {
-                String[] parts = command.Split('.');
+                string[] parts = command.Split('.');
                 if (parts.Length > 1)
                 {
-                    if (String.Compare(parts[0], "agent", true) == 0)
+                    if (string.Compare(parts[0], "agent", true) == 0)
                     {
                         runCommandAgent(parts[1], ref handled);
                     }
-                    else if (String.Compare(parts[0], "scanner", true) == 0)
+                    else if (string.Compare(parts[0], "scanner", true) == 0)
                     {
                         runCommandScanner(parts[1], ref handled);
                     }
@@ -1440,7 +1445,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         /// <param name="command">command to execute</param>
         /// <param name="handled">was it handled?</param>
-        private void runCommandAgent(String command, ref bool handled)
+        private void runCommandAgent(string command, ref bool handled)
         {
             Context.AppAgentMgr.RunCommand(command, null, ref handled);
         }
@@ -1451,7 +1456,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         /// <param name="command">command to run</param>
         /// <param name="handled">was it handled?</param>
-        private void runCommandScanner(String command, ref bool handled)
+        private void runCommandScanner(string command, ref bool handled)
         {
             var dispatcher = _scannerPanel.CommandDispatcher;
             dispatcher?.Dispatch(command, ref handled);
@@ -1591,7 +1596,7 @@ namespace ACAT.Core.PanelManagement
         /// active text-to-speech engine
         /// </summary>
         /// <param name="text">text to convert</param>
-        private void textToSpeech(String text)
+        private void textToSpeech(string text)
         {
             Log.Debug("Convert to speech. text=" + text);
             Context.AppTTSManager.ActiveEngine.Speak(text);
@@ -1653,7 +1658,7 @@ namespace ACAT.Core.PanelManagement
             if (!handled && widget is IButtonWidget)
             {
                 var value = widget.Value;
-                if (!String.IsNullOrEmpty(value))
+                if (!string.IsNullOrEmpty(value))
                 {
                     Log.Debug("**Actuate** " + widget.Name + " Value: " + value);
 

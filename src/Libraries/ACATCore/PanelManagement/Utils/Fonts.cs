@@ -12,7 +12,7 @@ using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Utils
 {
     /// <summary>
     /// Collection of fonts used by ACAT. ACAT uses its own font
@@ -27,12 +27,12 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Singleton instance of this class
         /// </summary>
-        private static readonly Fonts _instance = new Fonts();
+        private static readonly Fonts _instance = new();
 
         /// <summary>
         /// Collection of installed fonts
         /// </summary>
-        private readonly InstalledFontCollection _ifc = new InstalledFontCollection();
+        private readonly InstalledFontCollection _ifc = new();
 
         /// <summary>
         /// Collection of installed font families
@@ -61,7 +61,7 @@ namespace ACAT.Core.PanelManagement
             get { return _instance; }
         }
 
-        public static void LoadFontsFromDir(String directory)
+        public static void LoadFontsFromDir(string directory)
         {
             if (!Directory.Exists(directory))
             {
@@ -77,7 +77,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         /// <param name="fontFileName">full path to the font file</param>
         /// <returns>true on success</returns>
-        public bool AddFontFile(String fontFileName)
+        public bool AddFontFile(string fontFileName)
         {
             bool retVal = true;
 
@@ -107,9 +107,9 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         /// <param name="name">name of font</param>
         /// <returns>font family</returns>
-        public FontFamily GetFontFamily(String name)
+        public FontFamily GetFontFamily(string name)
         {
-            return _privateFonts.Families.FirstOrDefault(fontFamily => String.Compare(name, fontFamily.Name, true) == 0);
+            return _privateFonts.Families.FirstOrDefault(fontFamily => string.Compare(name, fontFamily.Name, true) == 0);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         /// <param name="fontNames">array of font names</param>
         /// <returns>Font family object, null if it can't</returns>
-        public FontFamily GetFontFamily(String[] fontNames)
+        public FontFamily GetFontFamily(string[] fontNames)
         {
             return tryCollection(fontNames) ?? tryInstalledFonts(fontNames);
         }
@@ -130,7 +130,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         /// <param name="directory">Root diretory to start from</param>
         /// <param name="wildCard">matching wild cards to look for</param>
-        private static void loadFontsFromDir(String directory, String wildCard)
+        private static void loadFontsFromDir(string directory, string wildCard)
         {
             var walker = new DirectoryWalker(directory, wildCard);
             Log.Verbose("Walking dir " + directory);
@@ -141,7 +141,7 @@ namespace ACAT.Core.PanelManagement
         /// Directory walker delegate when it finds a file.
         /// </summary>
         /// <param name="file"></param>
-        private static void onFileFound(String file)
+        private static void onFileFound(string file)
         {
             Log.Verbose("Found font file " + file);
             Instance.AddFontFile(file);
@@ -153,7 +153,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         /// <param name="fontNames">list of font names</param>
         /// <returns>font family if found, null otherwise</returns>
-        private FontFamily tryCollection(String[] fontNames)
+        private FontFamily tryCollection(string[] fontNames)
         {
             return fontNames.Select(name => GetFontFamily(name)).FirstOrDefault(font => font != null);
         }
@@ -164,7 +164,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         /// <param name="fontNames">array of font names</param>
         /// <returns>Font object</returns>
-        private FontFamily tryInstalledFonts(String[] fontNames)
+        private FontFamily tryInstalledFonts(string[] fontNames)
         {
             FontFamily font = null;
             //var ifc = new InstalledFontCollection();
@@ -174,7 +174,7 @@ namespace ACAT.Core.PanelManagement
             {
                 foreach (var family in _installedFamilies)
                 {
-                    if (String.Compare(family.Name, name, true) == 0)
+                    if (string.Compare(family.Name, name, true) == 0)
                     {
                         font = family;
                         done = true;

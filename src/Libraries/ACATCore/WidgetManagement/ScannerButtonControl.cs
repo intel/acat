@@ -37,7 +37,7 @@ namespace ACAT.Core.WidgetManagement
             if (Image != null && grayscale != null)
             {
                 color = new Bitmap(Image);
-                Bitmap c = new Bitmap(Image);
+                Bitmap c = new(Image);
                 int x, y;
                 // Loop through the images pixels to reset color.
                 for (x = 0; x < c.Width; x++)

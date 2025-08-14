@@ -63,8 +63,20 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap BCIUsbDongle {
+        internal static System.Drawing.Bitmap BCISignalCheck_CapViewIcon {
             get {
+                object obj = ResourceManager.GetObject("BCISignalCheck_CapViewIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap BCIUsbDongle
+        {
+            get
+            {
                 object obj = ResourceManager.GetObject("BCIUsbDongle", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
@@ -80,6 +92,107 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ImageUsbDongleError
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("ImageUsbDongleError", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap signalQualityGradient_1AcceptableChannel {
+            get {
+                object obj = ResourceManager.GetObject("signalQualityGradient_1AcceptableChannel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap signalQualityGradient_2AcceptableChannels {
+            get {
+                object obj = ResourceManager.GetObject("signalQualityGradient_2AcceptableChannels", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap signalQualityGradient_3AcceptableChannels {
+            get {
+                object obj = ResourceManager.GetObject("signalQualityGradient_3AcceptableChannels", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap signalQualityGradient_4AcceptableChannels {
+            get {
+                object obj = ResourceManager.GetObject("signalQualityGradient_4AcceptableChannels", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap signalQualityGradient_5AcceptableChannels {
+            get {
+                object obj = ResourceManager.GetObject("signalQualityGradient_5AcceptableChannels", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap signalQualityGradient_6AcceptableChannels {
+            get {
+                object obj = ResourceManager.GetObject("signalQualityGradient_6AcceptableChannels", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap signalQualityGradient_7AcceptableChannels {
+            get {
+                object obj = ResourceManager.GetObject("signalQualityGradient_7AcceptableChannels", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap signalQualityGradient_8AcceptableChannels {
+            get {
+                object obj = ResourceManager.GetObject("signalQualityGradient_8AcceptableChannels", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap signalQualityGradient_Default {
+            get {
+                object obj = ResourceManager.GetObject("signalQualityGradient_Default", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>

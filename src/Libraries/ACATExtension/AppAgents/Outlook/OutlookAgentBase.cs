@@ -20,7 +20,6 @@
 
 using ACATResources;
 using ACAT.Core.AgentManagement;
-using ACAT.Core.AgentManagement.TextInterface;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using Microsoft.Win32;
@@ -30,6 +29,10 @@ using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Forms;
 using Task = System.Threading.Tasks.Task;
+using ACAT.Extension.UI;
+using ACAT.Core.AgentManagement.Interfaces;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.AgentManagement.TextControlAgents;
 
 namespace ACAT.Extension.AppAgents.Outlook
 {
@@ -332,7 +335,7 @@ namespace ACAT.Extension.AppAgents.Outlook
                 case "EmailSelectField":
                     if (!actuateStandardControl(controlType))
                     {
-                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfo();
                         showPanel(this, new PanelRequestEventArgs("Alphabet", monitorInfo));
                     }
 
@@ -377,10 +380,7 @@ namespace ACAT.Extension.AppAgents.Outlook
                 case "ApptSelectField":
                     if (!actuateStandardControl(controlType))
                     {
-                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfoAsync()
-                            .ConfigureAwait(false)
-                            .GetAwaiter()
-                            .GetResult();
+                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfo();
 
                         showPanel(this, new PanelRequestEventArgs("Alphabet", monitorInfo));
                     }
@@ -433,10 +433,7 @@ namespace ACAT.Extension.AppAgents.Outlook
                 case "ContactSelectField":
                     if (!actuateStandardControl(controlType))
                     {
-                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfoAsync()
-                            .ConfigureAwait(false)
-                            .GetAwaiter()
-                            .GetResult();
+                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfo();
                         
                         showPanel(this, new PanelRequestEventArgs("Alphabet", monitorInfo));
                     }
@@ -466,10 +463,7 @@ namespace ACAT.Extension.AppAgents.Outlook
                 case "TaskSelectField":
                     if (!actuateStandardControl(controlType))
                     {
-                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfoAsync()
-                            .ConfigureAwait(false)
-                            .GetAwaiter()
-                            .GetResult();
+                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfo();
 
                         showPanel(this, new PanelRequestEventArgs("Alphabet", monitorInfo));
                     }
@@ -503,20 +497,14 @@ namespace ACAT.Extension.AppAgents.Outlook
                 case "SwitchTo":
                     showPanel(this, new PanelRequestEventArgs("OutlookMailBoxesContextMenu",
                                                                 StringResources.SwitchTo,
-                                                                WindowActivityMonitor.GetForegroundWindowInfoAsync()
-                                                                    .ConfigureAwait(false)
-                                                                    .GetAwaiter()
-                                                                    .GetResult(),
+                                                                WindowActivityMonitor.GetForegroundWindowInfo(),
                                                                 true));
                     break;
 
                 case "EmailAction":
                     showPanel(this, new PanelRequestEventArgs("OutlookEmailActionContextMenu",
                                                             PanelTitle,
-                                                            WindowActivityMonitor.GetForegroundWindowInfoAsync()
-                                                                    .ConfigureAwait(false)
-                                                                    .GetAwaiter()
-                                                                    .GetResult(),
+                                                            WindowActivityMonitor.GetForegroundWindowInfo(),
                                                             true));
                     break;
 
@@ -528,11 +516,7 @@ namespace ACAT.Extension.AppAgents.Outlook
                     if (!actuateStandardControl(controlType))
                     {
                         showPanel(this, new PanelRequestEventArgs("Alphabet", 
-                            WindowActivityMonitor.GetForegroundWindowInfoAsync()
-                                .ConfigureAwait(false)
-                                .GetAwaiter()
-                                .GetResult()
-                            ));
+                            WindowActivityMonitor.GetForegroundWindowInfo()));
                     }
 
                     break;
@@ -600,10 +584,7 @@ namespace ACAT.Extension.AppAgents.Outlook
 
             for (int ii = 0; ii < 10; ii++)
             {
-                var info1 = WindowActivityMonitor.GetForegroundWindowInfoAsync()                            
-                            .ConfigureAwait(false)
-                            .GetAwaiter()
-                            .GetResult();
+                var info1 = WindowActivityMonitor.GetForegroundWindowInfo();
       
                 if (String.Compare(info1.Title, "TODO", true) == 0)
                 {
@@ -810,10 +791,7 @@ namespace ACAT.Extension.AppAgents.Outlook
             }
             catch
             {
-                if (key != null)
-                {
-                    key.Close();
-                }
+                key?.Close();
             }
 
             return -1;

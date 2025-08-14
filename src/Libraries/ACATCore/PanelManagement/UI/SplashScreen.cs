@@ -28,7 +28,7 @@ namespace ACAT.Core.PanelManagement
         private int _count = 0;
 
         /// <summary>
-        /// Timer used to udpate info on the form
+        /// Timer used to update info on the form
         /// </summary>
         private Timer _timer;
 
@@ -37,7 +37,7 @@ namespace ACAT.Core.PanelManagement
 
         /// <summary>
         /// Initializes a new instance of the class..  Parameters
-        /// can be used to cutomize the screen
+        /// can be used to customize the screen
         /// </summary>
         public SplashScreen(string message)
         {
@@ -109,14 +109,14 @@ namespace ACAT.Core.PanelManagement
         }
 
         /// <summary>
-        /// Perfoms initialization
+        /// Performs initialization
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
         private void SplashScreen_Load(object sender, EventArgs e)
         {
             var assembly = Assembly.GetEntryAssembly();
-            // get appname and copyright information
+            // get AppName and Copyright information
             object[] attributes = assembly.GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
 
             var appName = (attributes.Length != 0) ?

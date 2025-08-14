@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-namespace ACAT.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement.Interfaces
 {
     /// <summary>
     /// Represents a box (e.g. a TableLayout control in a form)

@@ -40,7 +40,7 @@ namespace ACAT.UserControls
             if (IsDesignTime) { _timer.Enabled = false; return; }
             _timer.Enabled = Visible && IsHandleCreated;
         }
-
+#nullable enable
         private void Timer_Tick(object? sender, EventArgs e)
         {
             if (_textWidth <= 0 || Width <= 0) return;
@@ -51,6 +51,7 @@ namespace ACAT.UserControls
 
             Invalidate();
         }
+#nullable disable
 
         private void UpdateTextMetrics()
         {

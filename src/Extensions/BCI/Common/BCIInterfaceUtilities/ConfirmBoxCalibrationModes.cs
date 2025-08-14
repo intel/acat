@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.ActuatorManagement;
+using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;

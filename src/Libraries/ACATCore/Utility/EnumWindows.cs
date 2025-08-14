@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -78,7 +79,7 @@ namespace ACAT.Core.Utility
             Log.Debug("winList Count: " + winList.Count);
             bool found = false;
             var handle = IntPtr.Zero;
-            IntPtr ignoreWindowHandle = new IntPtr(ignoreHandle);
+            IntPtr ignoreWindowHandle = new(ignoreHandle);
 
             foreach (var windowInfo in winList)
             {
@@ -103,8 +104,8 @@ namespace ACAT.Core.Utility
                 // utility used to display debug messages from ACAT
                 if (!windowInfo.Title.Contains("DebugView") &&
                     !Windows.IsMinimized(handle) &&
-                    !(control is MenuPanelBase) &&
-                    !(control is IScannerPanel))
+                    control is not MenuPanelBase &&
+                    control is not IScannerPanel)
                 {
                     Log.Debug("Found top window " + windowInfo.Title);
                     found = true;

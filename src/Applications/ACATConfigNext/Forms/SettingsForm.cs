@@ -11,6 +11,8 @@ using System.Windows.Forms;
 using ACAT.Core.Extensions;
 using ACAT.Core.PreferencesManagement;
 using System.ComponentModel;
+using ACATResources;
+using System.Reflection;
 
 namespace ACATConfigNext.Forms
 {
@@ -26,11 +28,12 @@ namespace ACATConfigNext.Forms
 
         private Button selectedCategoryButton;
         private Button saveButton;
-        private Button resetButton;
+        private Button cancelButton;
         private Button exitButton;
 
         private List<(UserControl Panel, string Label)> breadcrumbStack = new();
         private string currentPageLabel;
+        private string _currentCategory;
 
         private UserControl currentSettingsPanel;
 
@@ -218,22 +221,6 @@ namespace ACATConfigNext.Forms
                     prefsPanel?.Save();
                     _isDirty = false;
                     saveButton.Enabled = _isDirty;
-
-                    //bool success = AppCommon.SaveAllPreferences();
-                    //if (success)
-                    //{
-                    //    if (CoreGlobals.AppPreferences != null)
-                    //    {
-                    //        success &= CoreGlobals.AppPreferences.Save();
-                    //    }
-                    //    MessageBox.Show("Settings saved successfully.", "Save Complete",
-                    //        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    //}
-                    //else
-                    //{
-                    //    MessageBox.Show("Some settings could not be saved. Please check the logs.",
-                    //        "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    //}
                 }
                 catch (Exception ex)
                 {
@@ -243,9 +230,9 @@ namespace ACATConfigNext.Forms
                 }
             };
 
-            resetButton = new ScannerRoundedButtonControl()
+            cancelButton = new ScannerRoundedButtonControl()
             {
-                Text = "Reset to Defaults",
+                Text = "Cancel",
                 Font = new Font("Montserrat", 18, FontStyle.Italic),
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
@@ -253,23 +240,29 @@ namespace ACATConfigNext.Forms
                 Dock = DockStyle.Top,
                 Enabled = false
             };
-            resetButton.Click += (s, e) =>
+            cancelButton.Click += (s, e) =>
             {
                 try
                 {
-                    var list = new List<PreferencesCategory>();
-                    bool success = AppCommon.ResetAllPreferences(list);
-                    if (success)
+                    if (CoreGlobals.AppPreferences != null)
                     {
-                        _isDirty = false;
-                        saveButton.Enabled = _isDirty;
-                        resetButton.Enabled = _isDirty;
+                        var defaultPrefs = ACATPreferences.LoadDefaultSettings();
+                        if (defaultPrefs != null)
+                        {
+                            CopyPreferencesValues(defaultPrefs, CoreGlobals.AppPreferences);
+                        }
                     }
+
+                    CancelExtensionChanges(_currentCategory);
+
+                    _isDirty = false;
+                    saveButton.Enabled = _isDirty;
+                    cancelButton.Enabled = _isDirty;
                 }
                 catch (Exception ex)
                 {
                     Log.Exception(ex);
-                    MessageBox.Show("An error occurred while saving settings.", "Save Error",
+                    MessageBox.Show("An error occurred while canceling changes.", "Cancel Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             };
@@ -327,12 +320,12 @@ namespace ACATConfigNext.Forms
 
 
             bottomPanel.Controls.Add(saveButton, 0, 0);
-            bottomPanel.Controls.Add(resetButton, 1, 0);
+            bottomPanel.Controls.Add(cancelButton, 1, 0);
             bottomPanel.Controls.Add(new Panel(), 2, 0);
             bottomPanel.Controls.Add(exitButton, 3, 0);
 
             bottomPanel.Controls.Add(saveButton);
-            bottomPanel.Controls.Add(resetButton);
+            bottomPanel.Controls.Add(cancelButton);
             bottomPanel.Controls.Add(exitButton);
 
 
@@ -345,6 +338,63 @@ namespace ACATConfigNext.Forms
             Controls.Add(basePanel);
 
             LoadNavigation();
+        }
+
+        private void CancelExtensionChanges(string category)
+        {
+            var extensions = LoadSettings(category);
+
+            if (extensions != null)
+            {
+                foreach (var extension in extensions)
+                {
+                    if (extension is ISupportsPreferences supportsPrefs)
+                    {
+                        var defaultPrefs = supportsPrefs.GetDefaultPreferences();
+                        if (defaultPrefs != null)
+                        {
+                            var currentPrefs = supportsPrefs.GetPreferences();
+                            if (currentPrefs != null)
+                            {
+                                CopyPreferencesValues(defaultPrefs, currentPrefs);
+                               
+                                currentPrefs.Save();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void CopyPreferencesValues(IPreferences source, IPreferences target)
+        {
+            if (source == null || target == null) return;
+
+            var sourceType = source.GetType();
+            var targetType = target.GetType();
+
+            var properties = sourceType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (var prop in properties)
+            {
+                if (prop.CanRead && prop.CanWrite)
+                {
+                    try
+                    {
+                        var value = prop.GetValue(source);
+                        var targetProp = targetType.GetProperty(prop.Name);
+
+                        if (targetProp != null && targetProp.CanWrite && targetProp.PropertyType == prop.PropertyType)
+                        {
+                            targetProp.SetValue(target, value);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Debug($"Could not copy property {prop.Name}: {ex.Message}");
+                    }
+                }
+            }
         }
 
 
@@ -366,7 +416,6 @@ namespace ACATConfigNext.Forms
                 case "Word Predictors":
                     if (Context.AppWordPredictionManager.LoadExtensions(Context.ExtensionDirs))
                     {
-                        //  return Context.AppWordPredictionManager.WordPredictorsList;
                         var wordPredictorTypes = Context.AppWordPredictionManager.WordPredictorExtensions;
                         var wordPredictorExtensions = wordPredictorTypes
                             .Select(type => Activator.CreateInstance(type) as IExtension)
@@ -379,8 +428,6 @@ namespace ACATConfigNext.Forms
                 case "Text to Speech":
                     if (Context.AppTTSManager.LoadExtensions(Context.ExtensionDirs))
                     {
-                       // return Context.AppTTSManager.TTSEnginesList;
-
                         var ttsEngineTypes = Context.AppTTSManager.GetExtensions();
                         var ttsExtensions = ttsEngineTypes
                             .Select(type => Activator.CreateInstance(type) as IExtension)
@@ -450,6 +497,9 @@ namespace ACATConfigNext.Forms
                 var (Category, Settings) = ((string Category, IEnumerable<IExtension> Settings))clickedButton.Tag;
                 string category = Category;
 
+                _currentCategory = category;
+
+
                 if (Settings == null)
                 {
                     Settings = Enumerable.Empty<IExtension>();
@@ -468,8 +518,6 @@ namespace ACATConfigNext.Forms
                     _ => throw new ArgumentException("Invalid category"),
                 };
 
-                //AttachInputEvents(panel);
-
                 ShowPanel(panel, category);
             }
         }
@@ -478,7 +526,7 @@ namespace ACATConfigNext.Forms
         {
             _isDirty = true;
             saveButton.Enabled = _isDirty;
-            resetButton.Enabled = _isDirty;
+            cancelButton.Enabled = _isDirty;
             //EvtPreferencesChangeMade();
         }
 

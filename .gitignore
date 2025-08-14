@@ -356,10 +356,9 @@ MigrationBackup/
 src/Redistributable/
 
 # Installer Stuff
-src/Setup/ACATSetup*.exe
-src/Setup/*.nsi
-src/Applications/ACATConfigurator/*
-
+src/Setup/SetupAcat/
+# src/Setup/*.nsi
+src/Setup/*.zip
 .vscode/
 src/WindowsFormsApp1/App.config
 src/WindowsFormsApp1/Program.cs

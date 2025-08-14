@@ -10,9 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using System;
-
-namespace ACAT.Core.PreferencesManagement
+namespace ACAT.Core.PreferencesManagement.Attributes
 {
     /// <summary>
     /// Custom attribute for long fields/properties
@@ -26,7 +24,7 @@ namespace ACAT.Core.PreferencesManagement
         /// <param name="minvalue">lower bound</param>
         /// <param name="maxvalue">upper bound</param>
         /// <param name="defaultvalue">default value</param>
-        public LongDescriptorAttribute(String desc, long minvalue = long.MinValue, long maxvalue = long.MaxValue, long defaultvalue = 0) : base(desc)
+        public LongDescriptorAttribute(string desc, long minvalue = long.MinValue, long maxvalue = long.MaxValue, long defaultvalue = 0) : base(desc)
         {
             MinValue = minvalue;
             MaxValue = maxvalue;

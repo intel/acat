@@ -13,20 +13,22 @@
 //#define OPTICAL_SENSOR
 
 using ACAT.Core.ActuatorManagement;
+using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.Audit;
 using ACAT.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using ACAT.Extension;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DataLoader;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGUtils;
 using ACAT.Extensions.BCI.Actuators.gTecSensorUI;
 using ACAT.Extensions.BCI.Actuators.openBCISensorUI;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACATResources;
-using ControlzEx.Standard;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -1341,7 +1343,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         {
             Log.Debug("Calibration end repetition received");
 
-            BCIError sensorError = new BCIError(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
+            BCIError sensorError = new(BCIErrorCodes.Status_Ok, BCIMessages.Status_Ok);
             SignalStatus statusSignal = SignalStatus.SIGNAL_KO;
             int numTriggerPulsesExpected = 0;
             int numTriggerPulsesDetected = 0;

@@ -5,10 +5,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.AgentManagement.TextInterface;
+using ACAT.Core.AgentManagement.Interfaces;
+using ACAT.Core.AgentManagement.TextControlAgents;
 using ACAT.Core.Extensions;
-using ACAT.Core.PanelManagement;
-using ACAT.Core.PreferencesManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
@@ -310,10 +311,7 @@ namespace ACAT.Core.AgentManagement
 
                 case "CmdMouseScanner":
                     {
-                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfoAsync()
-                            .ConfigureAwait(false)
-                            .GetAwaiter()
-                            .GetResult();
+                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfo();
                         var panelArg = new PanelRequestEventArgs(PanelClasses.Mouse, monitorInfo)
                         {
                             UseCurrentScreenAsParent = true
@@ -325,10 +323,7 @@ namespace ACAT.Core.AgentManagement
 
                 case "CmdCursorScanner":
                     {
-                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfoAsync()
-                            .ConfigureAwait(false)
-                            .GetAwaiter()
-                            .GetResult();
+                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfo();
 
                         var panelArg = new PanelRequestEventArgs(PanelClasses.Cursor, monitorInfo)
                         {

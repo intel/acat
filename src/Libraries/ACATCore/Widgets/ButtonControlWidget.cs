@@ -5,10 +5,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Utils;
 using ACAT.Core.ThemeManagement;
 using ACAT.Core.Utility;
-using ACAT.Core.WidgetManagement;
+using ACAT.Core.WidgetManagement.Layout;
 using System.Drawing;
 using System.Windows.Forms;
 

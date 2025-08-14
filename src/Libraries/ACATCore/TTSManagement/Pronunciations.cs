@@ -42,7 +42,7 @@ namespace ACAT.Core.TTSManagement
         /// <summary>
         /// Holds a sorted list of pronunciations
         /// </summary>
-        private readonly SortedDictionary<String, Pronunciation> _pronunciationList = new SortedDictionary<string, Pronunciation>();
+        private readonly SortedDictionary<String, Pronunciation> _pronunciationList = new();
 
         /// <summary>
         /// Has this object been disposed

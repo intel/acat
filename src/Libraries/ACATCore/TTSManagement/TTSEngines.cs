@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using ACAT.Core.Utility.TypeLoader;
+using ACAT.Core.TTSManagement.Interfaces;
 
 namespace ACAT.Core.TTSManagement
 {
@@ -128,7 +130,7 @@ namespace ACAT.Core.TTSManagement
                     }
                 }
 
-                Log.Error($"Could not find TTS engine for id {guid.ToString()}");
+                Log.Error($"Could not find TTS engine for id {guid}");
                 return null;
             }
         }
@@ -368,7 +370,7 @@ namespace ACAT.Core.TTSManagement
         /// <param name="recursive">true if deep-descend</param>
         private void loadTTSEngineTypesIntoCache(String dir, String culture, bool recursive = true)
         {
-            DirectoryWalker walker = new DirectoryWalker(dir, "ACAT.Extensions.TTSEngines.*.dll");
+            DirectoryWalker walker = new(dir, "ACAT.Extensions.TTSEngines.*.dll");
             _dirWalkCurrentCulture = culture;
             walker.Walk(new OnFileFoundDelegate(onFileFound));
 

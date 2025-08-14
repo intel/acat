@@ -5,10 +5,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.Audit;
 using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Threading.Tasks;
 using System.Windows.Automation;
@@ -34,7 +32,7 @@ namespace ACAT.Core.Utility
         /// <summary>
         /// To prevent re-entrancy
         /// </summary>
-        private static readonly object _timerSync = new object();
+        private static readonly object _timerSync = new();
 
         /// <summary>
         /// Automation element of the control that is currently in focus
@@ -110,17 +108,14 @@ namespace ACAT.Core.Utility
         {         
             try
             {
-                var windowInfo = GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                var windowInfo = GetForegroundWindowInfo();
 
-                if (ignoreWindow(windowInfo.Title))
+                if (windowInfo == null || ignoreWindow(windowInfo.Title))
                 {
                     return;
                 }
 
-                if (EvtFocusChanged != null)
-                {
-                    EvtFocusChanged(windowInfo);
-                }
+                EvtFocusChanged?.Invoke(windowInfo);
             }
             catch (Exception e)
             {
@@ -144,7 +139,8 @@ namespace ACAT.Core.Utility
         /// </summary>
         /// <returns>window monitor info</returns>
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
-        public static async Task<WindowActivityMonitorInfo> GetForegroundWindowInfoAsync()
+#nullable enable
+        public static WindowActivityMonitorInfo? GetForegroundWindowInfo()
         {
             const int maxTries = 3;
             const int retryDelayMs = 100;
@@ -157,6 +153,9 @@ namespace ACAT.Core.Utility
                 {
                     IntPtr hwnd = Windows.GetForegroundWindow();
 
+                    if (hwnd == IntPtr.Zero)
+                        return null;
+
                     monitorInfo.FgHwnd = hwnd;
                     monitorInfo.Title = Windows.GetWindowTitle(hwnd);
                     monitorInfo.FgProcess = GetProcessForWindow(hwnd);
@@ -166,14 +165,22 @@ namespace ACAT.Core.Utility
                 catch
                 {
                     if (attempt < maxTries)
-                        await Task.Delay(retryDelayMs);
+                        Task.Delay(retryDelayMs);
                 }
             }
+
+            Log.Info($"Current Window is {monitorInfo.Title}");
 
             for (int attempt = 1; attempt <= maxTries; attempt++)
             {
                 try
                 {
+                    uint processId = (uint)Windows.GetWindowThreadProcessId(monitorInfo.FgHwnd);
+                    uint currentProcessId = (uint)Process.GetCurrentProcess().Id;
+
+                    if (currentProcessId != processId)
+                        break;
+
                     monitorInfo.FocusedElement = AutomationElement.FocusedElement;
                     break;
                 }
@@ -185,20 +192,16 @@ namespace ACAT.Core.Utility
                 {
                     monitorInfo.FocusedElement = null;
                 }
-                catch (COMException)
-                {
-                    monitorInfo.FocusedElement = null;
-                }
-
                 if (monitorInfo.FocusedElement != null)
                     break;
 
                 if (attempt < maxTries)
-                    await Task.Delay(retryDelayMs);
+                     Task.Delay(retryDelayMs);
             }
 
             return monitorInfo;
         }
+#nullable disable
 
         /// <summary>
         /// Gets the parent process that owns the specified window handle
@@ -378,7 +381,7 @@ namespace ACAT.Core.Utility
             try
             {
 
-                WindowActivityMonitorInfo windowActivityMonitorInfo = GetForegroundWindowInfoAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                WindowActivityMonitorInfo windowActivityMonitorInfo = GetForegroundWindowInfo();
                 
                 if (Windows.GetOSVersion() == Windows.WindowsVersion.Win10 &&
                     windowActivityMonitorInfo.Title.StartsWith("Jump List for"))

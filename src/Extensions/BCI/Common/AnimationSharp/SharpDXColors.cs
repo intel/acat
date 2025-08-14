@@ -10,6 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Extensions.BCI.Common.AnimationSharp.Utility;
 using SharpDX.Direct2D1;
 using System.Drawing;
 

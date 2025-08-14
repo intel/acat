@@ -13,12 +13,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.ActuatorManagement;
+using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 
-namespace ACAT.Core.InputActuators
+namespace ACAT.Core.ActuatorManagement.WinsockActuators
 {
     /// <summary>
     /// A helper class for winsock based actuators.  Data
@@ -36,7 +36,7 @@ namespace ACAT.Core.InputActuators
         /// </summary>
         /// <param name="action">String representation of gesture event</param>
         /// <returns>SwitchAction enum</returns>
-        public static SwitchAction getSwitchAction(String action)
+        public static SwitchAction getSwitchAction(string action)
         {
             var retVal = SwitchAction.Unknown;
             try
@@ -76,14 +76,14 @@ namespace ACAT.Core.InputActuators
         /// <param name="createSwitchDel">A delegate function that creates an actuator switch object</param>
         /// <returns>A clone of the matching switch object from the collection</returns>
         public static IActuatorSwitch parseAndGetSwitch(
-                                            String strData,
+                                            string strData,
                                             ICollection<IActuatorSwitch> switches,
                                             CreateSwitchDelegate createSwitchDel)
         {
             IActuatorSwitch actuatorSwitch = null;
-            String gesture = String.Empty;
+            string gesture = string.Empty;
             var switchAction = SwitchAction.Unknown;
-            String tag = String.Empty;
+            string tag = string.Empty;
             int confidence = -1;
             long time = -1;
             bool actuate = true;
@@ -91,7 +91,7 @@ namespace ACAT.Core.InputActuators
             var tokens = strData.Split(';');
             foreach (var token in tokens)
             {
-                String[] nameValue = token.Split('=');
+                string[] nameValue = token.Split('=');
                 if (nameValue.Length == 2)
                 {
                     switch (nameValue[0])
@@ -113,7 +113,7 @@ namespace ACAT.Core.InputActuators
                             break;
 
                         case "actuate":
-                            actuate = String.Compare(nameValue[1], "true", true) == 0;
+                            actuate = string.Compare(nameValue[1], "true", true) == 0;
                             break;
 
                         case "tag":
@@ -123,7 +123,7 @@ namespace ACAT.Core.InputActuators
                 }
             }
 
-            if (!String.IsNullOrEmpty(gesture) && switchAction != SwitchAction.Unknown)
+            if (!string.IsNullOrEmpty(gesture) && switchAction != SwitchAction.Unknown)
             {
                 actuatorSwitch = getSwitchForGesture(gesture, switches, createSwitchDel);
 
@@ -145,7 +145,7 @@ namespace ACAT.Core.InputActuators
         /// </summary>
         /// <param name="val">string representation</param>
         /// <returns>long value</returns>
-        public static long parseLong(String val)
+        public static long parseLong(string val)
         {
             long retVal = -1;
             try
@@ -169,14 +169,14 @@ namespace ACAT.Core.InputActuators
         /// <param name="createSwitchDel">Delegate that creates a clone of the switch</param>
         /// <returns></returns>
         private static IActuatorSwitch getSwitchForGesture(
-                                            String gesture,
+                                            string gesture,
                                             IEnumerable<IActuatorSwitch> switches,
                                             CreateSwitchDelegate createSwitchDel)
         {
             foreach (var switchObj in switches)
             {
                 var imageSwitch = switchObj;
-                if (String.Compare(imageSwitch.Source, gesture, true) == 0)
+                if (string.Compare(imageSwitch.Source, gesture, true) == 0)
                 {
                     Log.Debug("Found switch object " + switchObj.Name + " for gesture" + gesture);
                     return createSwitchDel(switchObj);

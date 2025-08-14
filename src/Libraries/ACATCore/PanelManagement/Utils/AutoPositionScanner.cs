@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.ActuatorManagement;
-using ACAT.Core.InputActuators;
+using ACAT.Core.ActuatorManagement.BaseActuators;
+using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACATResources;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Utils
 {
     /// <summary>
     /// Repositions the scanner to one of the pre-defined spots on

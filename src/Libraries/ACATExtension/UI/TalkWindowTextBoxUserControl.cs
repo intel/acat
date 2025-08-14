@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using ACAT.Extension.UI;
 using System;
 using System.Windows.Forms;
 

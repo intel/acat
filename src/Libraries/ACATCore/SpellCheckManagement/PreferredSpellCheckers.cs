@@ -70,6 +70,15 @@ namespace ACAT.Core.SpellCheckManagement
             return guid;
         }
 
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<PreferredSpellCheckers>();
+            var res = Save(tmp, FilePath);
+            Load();
+
+            return res;
+        }
+
         /// <summary>
         /// Persists this object to a file
         /// </summary>

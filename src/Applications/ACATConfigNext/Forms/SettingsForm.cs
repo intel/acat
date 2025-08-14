@@ -2,26 +2,19 @@
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
-using ACAT.Core.Utility.WpfUserControlUtilities;
 using ACATConfigNext.UserControls;
-using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using System.Windows.Forms.Integration;
-using MahAppsControls = MahApps.Metro.Controls;
-using Windows = System.Windows;
-using WPFControls = System.Windows.Controls;
 using ACAT.Core.Extensions;
 using ACAT.Core.PreferencesManagement;
-using ACAT.Extension;
 using System.ComponentModel;
 using ACATResources;
 using System.Reflection;
 
-namespace ACATConfigNext
+namespace ACATConfigNext.Forms
 {
     public class SettingsForm : Form
     {

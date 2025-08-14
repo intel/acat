@@ -6,11 +6,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Extensions;
-using ACAT.Core.PreferencesManagement;
-using ACAT.Core.Utility;
-using System;
+using ACAT.Core.Utility.TypeLoader;
 
-namespace ACAT.Core.Onboarding
+namespace ACAT.Core.CoreInterfaces
 {
     /// <summary>
     /// Reason for navigation in the onboarding process
@@ -40,15 +38,15 @@ namespace ACAT.Core.Onboarding
 
         IOnboardingExtension GetNextOnboardingExtension();
 
-        IOnboardingUserControl GetNextStep(String currentStepID);
+        IOnboardingUserControl GetNextStep(string currentStepID);
 
-        IOnboardingUserControl GetStep(String currentStepId);
+        IOnboardingUserControl GetStep(string currentStepId);
 
         bool Initialize(IOnboardingWizard wizard);
 
-        bool IsFirstStep(String stepId1);
+        bool IsFirstStep(string stepId1);
 
-        bool IsLastStep(String stepId);
+        bool IsLastStep(string stepId);
 
         bool OnBeginOnboarding();
 

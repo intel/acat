@@ -1,18 +1,17 @@
 ﻿using ACAT.Core.ActuatorManagement;
-using ACAT.Core.AgentManagement;
-using ACAT.Core.Audit;
-using ACAT.Core.CommandManagement;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.AnimationManagement.Interfaces;
 using ACAT.Core.Interpreter;
-using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using ACAT.Core.WidgetManagement.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Media;
-    /// <summary>
-    /// Enmeration of the different modes for manual scanning
-    /// </summary>
-    public enum ManualScanModes
+/// <summary>
+/// Enmeration of the different modes for manual scanning
+/// </summary>
+public enum ManualScanModes
     {
         /// <summary>
         /// Undefined

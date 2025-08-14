@@ -1,11 +1,16 @@
 ﻿using ACAT.Core.ActuatorManagement;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.ActuatorManagement.Settings;
 using ACAT.Core.AgentManagement;
+using ACAT.Core.AnimationManagement.Interfaces;
 using ACAT.Core.Audit;
 using ACAT.Core.CommandManagement;
 using ACAT.Core.Interpreter;
-using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.PanelManagement.PanelConfig;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using ACAT.Core.WidgetManagement.Interfaces;
 using System;
 
 namespace ACAT.Core.AnimationManagement
@@ -371,7 +376,7 @@ namespace ACAT.Core.AnimationManagement
             if (runCommand)
             {
                 Log.Debug("Executing OnTrigger command " + onTrigger + " for panel..." + _currentPanel.Name);
-                PCode pcode = new PCode { Script = "run(" + onTrigger + ")" };
+                PCode pcode = new() { Script = "run(" + onTrigger + ")" };
                 var parser = new Parser();
                 if (parser.Parse(pcode.Script, ref pcode))
                 {

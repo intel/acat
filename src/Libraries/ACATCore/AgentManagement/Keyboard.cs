@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;

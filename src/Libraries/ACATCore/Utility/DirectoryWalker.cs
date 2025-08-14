@@ -6,7 +6,6 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -31,15 +30,15 @@ namespace ACAT.Core.Utility
     /// <param name="fileWildCard">files to find</param>
     public class DirectoryWalker
     {
-        /// <summary>
-        /// Invoked when a directory is found
-        /// </summary>
-        private OnDirectoryFoundDelegate _dirFoundDelegate = null;
+        ///// <summary>
+        ///// Invoked when a directory is found
+        ///// </summary>
+        //private OnDirectoryFoundDelegate _dirFoundDelegate = null;
 
-        /// <summary>
-        /// Invoked when a matching file is found
-        /// </summary>
-        private OnFileFoundDelegate _fileFoundDelegate = null;
+        ///// <summary>
+        ///// Invoked when a matching file is found
+        ///// </summary>
+        //private OnFileFoundDelegate _fileFoundDelegate = null;
 
         /// <summary>
         /// The directory to walk
@@ -49,10 +48,10 @@ namespace ACAT.Core.Utility
         /// <summary>
         /// Files to look for
         /// </summary>
-        private String _wildCard = "*.*";
+        private readonly String _wildCard = "*.*";
 
         /// <summary>
-        /// Initialzies an instance of the class.  Finds all
+        /// Initializes an instance of the class.  Finds all
         /// files in the specified directory
         /// </summary>
         /// <param name="rootDir">Directory to walk</param>

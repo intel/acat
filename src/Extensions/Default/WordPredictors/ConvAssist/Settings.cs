@@ -106,5 +106,14 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         {
             return Save(this, PreferencesFilePath);
         }
+
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<Settings>();
+            var res = Save(tmp, PreferencesFilePath);
+            Load();
+
+            return res;
+        }
     }
 }

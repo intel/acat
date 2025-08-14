@@ -11,6 +11,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACATResources;
 using System;

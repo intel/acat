@@ -1,9 +1,11 @@
 ﻿// Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-using ACAT.Core.PanelManagement;
-using ACAT.Core.PreferencesManagement;
+using ACAT.Core.ActuatorManagement.BaseActuators;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.ActuatorManagement.Settings;
 using ACAT.Core.Utility;
+using ACAT.Core.Utility.TypeLoader;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -180,15 +182,15 @@ namespace ACAT.Core.ActuatorManagement
         /// <returns>true on success</returns>
         public bool Load(IEnumerable<String> extensionDirs, String configFile, bool loadAll = false)
         {
-            ClassDescriptorAttribute keyboard = typeof(InputActuators.KeyboardActuator)
+            ClassDescriptorAttribute keyboard = typeof(KeyboardActuator)
                 .GetCustomAttributes(typeof(ClassDescriptorAttribute), inherit: false)
                 .FirstOrDefault() as ClassDescriptorAttribute;
-            ClassDescriptorAttribute switchInterface = typeof(InputActuators.SwitchInterfaceActuator)
+            ClassDescriptorAttribute switchInterface = typeof(SwitchInterfaceActuator)
                 .GetCustomAttributes(typeof(ClassDescriptorAttribute), inherit: false)
                 .FirstOrDefault() as ClassDescriptorAttribute;
 
-            _actuatorTypeLoader.AddAssemblytoCache(keyboard.Id, typeof(InputActuators.KeyboardActuator));
-            _actuatorTypeLoader.AddAssemblytoCache(switchInterface.Id, typeof(InputActuators.SwitchInterfaceActuator));
+            _actuatorTypeLoader.AddAssemblytoCache(keyboard.Id, typeof(KeyboardActuator));
+            _actuatorTypeLoader.AddAssemblytoCache(switchInterface.Id, typeof(SwitchInterfaceActuator));
 
             foreach (string dir in extensionDirs)
             {

@@ -59,7 +59,7 @@ BenchmarkDotNet.Artifacts/
 # .NET Core
 project.lock.json
 project.fragment.lock.json
-artifacts/
+build/
 
 # StyleCop
 StyleCopReport.xml

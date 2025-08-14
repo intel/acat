@@ -16,7 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
+namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DataLoader
 {
     [Serializable]
     public class DataParser
@@ -136,7 +136,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 _symbolsInGroups = pSymbolsInGroups;
 
             // Get params and dimensions
-            int windowLength = (int)(sampleRate * windowDuration / 1000);
+            int windowLength = sampleRate * windowDuration / 1000;
             int numSamples = inputData.GetLength(1);
             int numChannels = inputData.GetLength(0);
 
@@ -175,9 +175,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
 
                         stimulusID = markerValues[stimulusIdx]; //stimulusIDx is incremented accordingly
 
-                        if ((triggerIsOnForTargets && stimulusID > 0 && stimulusID < offsetTarget) ||
-                            (!triggerIsOnForTargets && hasTargets && targetID > 0 && stimulusID > 0 && stimulusID < offsetTarget) ||
-                            (!triggerIsOnForTargets && !hasTargets && stimulusID > 0 && stimulusID < offsetTarget))
+                        if (triggerIsOnForTargets && stimulusID > 0 && stimulusID < offsetTarget ||
+                            !triggerIsOnForTargets && hasTargets && targetID > 0 && stimulusID > 0 && stimulusID < offsetTarget ||
+                            !triggerIsOnForTargets && !hasTargets && stimulusID > 0 && stimulusID < offsetTarget)
                         {
                             //stimulusID = stimulusID;///// - 20;  ///!!!!!!!!!!!!!!! DEPENDING ON
 
@@ -287,7 +287,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 int numRemainingSamples = numSamples - startingSampleIdx; // from onset - 1 sample
                 remainingData = new double[numColumns, numRemainingSamples];
 
-                String txtLog = "Get " + numRemainingSamples + " remaining data. Input data with Num Columns: " + numColumns + " Num Samples: " + numSamples;
+                string txtLog = "Get " + numRemainingSamples + " remaining data. Input data with Num Columns: " + numColumns + " Num Samples: " + numSamples;
                 Log.Debug(txtLog);
                 try
                 {

@@ -5,11 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.Onboarding;
+using ACAT.Core.CoreInterfaces;
 using ACAT.Core.Utility;
-using System;
+using ACAT.Extensions.Onboarding.UI;
+using ACAT.Extensions.Onboarding.UI.UserControls;
 
-namespace ACAT.Extensions.Onboarding
+namespace ACAT.Extensions.Onboarding.Onboarding
 {
     /// <summary>
     /// The onboarding extension that displays the Welcome screen
@@ -20,7 +21,7 @@ namespace ACAT.Extensions.Onboarding
     public class OnboardingWelcome : OnboardingExtensionBase
     {
         // TODO - Localize Me
-        private const String Step1 = "STEP 1";
+        private const string Step1 = "STEP 1";
 
         private IOnboardingWizard _wizard;
 
@@ -34,7 +35,7 @@ namespace ACAT.Extensions.Onboarding
             return GetStep(Step1);
         }
 
-        public override IOnboardingUserControl GetStep(String stepId)
+        public override IOnboardingUserControl GetStep(string stepId)
         {
             IOnboardingUserControl userControl;
 

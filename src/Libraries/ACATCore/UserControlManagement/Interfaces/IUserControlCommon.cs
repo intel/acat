@@ -9,7 +9,7 @@ using ACAT.Core.AgentManagement;
 using ACAT.Core.AnimationManagement;
 using ACAT.Core.WidgetManagement;
 
-namespace ACAT.Core.UserControlManagement
+namespace ACAT.Core.UserControlManagement.Interfaces
 {
     /// <summary>
     /// Returns common properties of UserControls

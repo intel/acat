@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PanelManagement;
+using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
 using System;
 using System.Collections;
@@ -524,7 +525,7 @@ namespace ACAT.Core.UserControlManagement
                     }
                     catch (Exception ex)
                     {
-                        ConfirmBoxOneOption ConfirmBoxOneOption = new ConfirmBoxOneOption
+                        ConfirmBoxOneOption ConfirmBoxOneOption = new()
                         {
                             Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n Status Error: ERUCCM",
                             DecisionPrompt = "ok",

@@ -11,11 +11,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement.Settings;
 using System;
 using System.Diagnostics;
 using System.Media;
 
-namespace ACAT.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement.Interfaces
 {
     /// <summary>
     /// Delegate for the event raised when the accept time for the switch elapses
@@ -150,12 +151,12 @@ namespace ACAT.Core.ActuatorManagement
         /// Gets or sets the name of the WAV file containing the beep associated
         /// with the switch. Beep is sounded when the switch is trigerred
         /// </summary>
-        String BeepFile { get; set; }
+        string BeepFile { get; set; }
 
         /// <summary>
         /// Command that is mapped to this switch
         /// </summary>
-        String Command { get; }
+        string Command { get; }
 
         /// <summary>
         /// Gets or sets the confidence level of activation.  For future use.
@@ -165,7 +166,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <summary>
         /// Gets or sets the description
         /// </summary>
-        String Description { get; set; }
+        string Description { get; set; }
 
         /// <summary>
         /// Gets or sets whether this switch is enabled or not
@@ -180,19 +181,19 @@ namespace ACAT.Core.ActuatorManagement
         /// <summary>
         /// Name of the switch
         /// </summary>
-        String Name { get; }
+        string Name { get; }
 
         /// <summary>
         /// Gets or sets the source of the switch activation.Depends on the type of
         /// the switch.  For instance, for a keyboard switch, source
         /// would be "F5" for the F5 function key.
         /// </summary>
-        String Source { get; set; }
+        string Source { get; set; }
 
         /// <summary>
         /// Gets or sets auxilliary data.  Opaque, can be set by the application.
         /// </summary>
-        String Tag { get; set; }
+        string Tag { get; set; }
 
         /// <summary>
         /// Gets or sets the timestamp of switch event

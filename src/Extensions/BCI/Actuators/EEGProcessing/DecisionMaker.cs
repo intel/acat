@@ -14,6 +14,7 @@
 
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.Utilities;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using System;
 using System.Collections.Generic;
@@ -107,7 +108,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
 
                 if (File.Exists(TrainedClassifiersFilePath))
                 {
-                    TrainedClassifiersObj = Utilities.ReadFromBinaryFile<FeatureExtraction>(TrainedClassifiersFilePath);
+                    TrainedClassifiersObj = BinaryUtils.ReadFromBinaryFile<FeatureExtraction>(TrainedClassifiersFilePath);
 
                     string logTxt = "Decision maker created with calibration file " + TrainedClassifiersObj.trainedClassifiersSessionID + ". AUC: " + TrainedClassifiersObj.meanAUC + " Max number of sequences: " + maxNumberOfSequences + ". Confidence threshold: " + confidenceThreshold;
                     Log.Debug(logTxt);
@@ -132,7 +133,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             // Load trained classifier
             String filePath = Path.Combine(UserManager.CurrentUserDir, "EEGData", "TrainedClassifiers");
             if (File.Exists(filePath))
-                TrainedClassifiersObj = Utilities.ReadFromBinaryFile<FeatureExtraction>(filePath);
+                TrainedClassifiersObj = BinaryUtils.ReadFromBinaryFile<FeatureExtraction>(filePath);
             else
                 Log.Debug("Calibration file does not exist");
 

@@ -12,6 +12,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.ActuatorManagement.Settings;
 using ACAT.Core.ActuatorManagement.UI;
 using ACAT.Core.PanelManagement;
 using ACATResources;
@@ -466,7 +468,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <returns>true if there are no duplicates</returns>
         private bool noDuplicateShortcuts()
         {
-            List<String> array = new List<string>();
+            List<String> array = new();
             for (int ii = 0; ii < dataGridView2.Rows.Count; ii++)
             {
                 array.Add(dataGridView2[ShortcutColumn.Name, ii].Value as String);

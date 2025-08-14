@@ -5,7 +5,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-namespace ACAT.Core.WidgetManagement
+using ACAT.Core.WidgetManagement.Layout;
+
+namespace ACAT.Core.WidgetManagement.Interfaces
 {
     /// <summary>
     /// Represents a button control on a form.

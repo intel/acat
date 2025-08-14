@@ -4,12 +4,12 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 ////////////////////////////////////////////////////////////////////////////
+using ACAT.Core.CoreInterfaces;
 using ACAT.Core.Extensions;
-using ACAT.Core.Onboarding;
 using ACAT.Core.Utility;
 using System;
 
-namespace ACAT.Extensions.Onboarding
+namespace ACAT.Extensions.Onboarding.UI
 {
     /// <summary>
     /// The base class for onboarding extensions

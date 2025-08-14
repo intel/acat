@@ -1,11 +1,9 @@
 ﻿using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Speech.Recognition;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;

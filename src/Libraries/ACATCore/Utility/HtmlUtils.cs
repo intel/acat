@@ -115,7 +115,7 @@ namespace ACAT.Core.Utility
                 string tempFilePathLogs = Path.Combine(FileUtils.GetLogsDir(), "TempFile.html");
                 try
                 {
-                    using StreamWriter writer = new StreamWriter(tempFilePathLogs);
+                    using StreamWriter writer = new(tempFilePathLogs);
                     writer.Write(htmlContent);
                 }
                 catch (Exception exp)
@@ -179,7 +179,7 @@ namespace ACAT.Core.Utility
         public static string EncodeString(string text)
         {
             text = text.Replace("\\", "/");
-            StringBuilder encodedStringBuilder = new StringBuilder();
+            StringBuilder encodedStringBuilder = new();
             foreach (char c in text)
             {
                 //Exlclude cases. so the path is readeable by the browser for Videos or objects sources

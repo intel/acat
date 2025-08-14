@@ -5,6 +5,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.TTSManagement.Interfaces;
+
 namespace ACAT.Core.TTSManagement
 {
     /// <summary>

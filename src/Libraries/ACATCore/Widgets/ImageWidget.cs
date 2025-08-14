@@ -6,7 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
-using ACAT.Core.WidgetManagement;
+using ACAT.Core.WidgetManagement.Layout;
 using System;
 using System.Drawing;
 using System.Windows.Forms;

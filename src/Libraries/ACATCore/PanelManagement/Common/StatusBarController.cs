@@ -6,10 +6,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
-using System;
 using System.Windows.Forms;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Common
 {
     /// <summary>
     /// Use this class to display a status bar in the scanner
@@ -55,7 +54,7 @@ namespace ACAT.Core.PanelManagement
         {
             if (_statusBar != null && _statusBar.AltStatus != null)
             {
-                String label = String.Empty;
+                string label = string.Empty;
                 if (KeyStateTracker.IsStickyAltOn())
                 {
                     label = "ALT LOCK";
@@ -77,7 +76,7 @@ namespace ACAT.Core.PanelManagement
         {
             if (_statusBar != null && _statusBar.CtrlStatus != null)
             {
-                String label = String.Empty;
+                string label = string.Empty;
                 if (KeyStateTracker.IsStickyCtrlOn())
                 {
                     label = "CTRL LOCK";
@@ -99,7 +98,7 @@ namespace ACAT.Core.PanelManagement
         {
             if (_statusBar != null && _statusBar.ShiftStatus != null)
             {
-                String label = String.Empty;
+                string label = string.Empty;
                 if (KeyStateTracker.IsStickyShiftOn())
                 {
                     label = "CAPS";
@@ -127,7 +126,7 @@ namespace ACAT.Core.PanelManagement
             }
         }
 
-        private void setText(object control, String text)
+        private void setText(object control, string text)
         {
             if (control is ToolStripStatusLabel)
             {

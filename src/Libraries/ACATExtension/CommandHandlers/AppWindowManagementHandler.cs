@@ -9,7 +9,10 @@ using ACAT.Core.AgentManagement;
 using ACAT.Core.Extensions;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.PanelManagement.Utils;
 using ACAT.Core.Utility;
+using ACAT.Extension.UI;
 using ACATResources;
 using System;
 using System.Windows.Automation;
@@ -61,10 +64,7 @@ namespace ACAT.Extension.CommandHandlers
                     break;
 
                 case "CmdCloseWindow":
-                    var info = WindowActivityMonitor.GetForegroundWindowInfoAsync()
-                            .ConfigureAwait(false)
-                            .GetAwaiter()
-                            .GetResult();
+                    var info = WindowActivityMonitor.GetForegroundWindowInfo();
                     
                     WindowHighlight win = null;
                     if (info.FgHwnd != IntPtr.Zero)

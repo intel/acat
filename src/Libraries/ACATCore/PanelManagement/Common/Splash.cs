@@ -7,11 +7,10 @@
 
 using ACAT.Core.Utility;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Threading;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Common
 {
     /// <summary>
     /// Displays a splash screen.  The splash screen has a

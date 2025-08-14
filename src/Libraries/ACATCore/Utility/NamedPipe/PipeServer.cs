@@ -48,7 +48,7 @@ namespace ACAT.Core.Utility.NamedPipe
             }
             else
             {
-                PipeSecurity pipeSecurity = new PipeSecurity();
+                PipeSecurity pipeSecurity = new();
                 var id = new SecurityIdentifier(WellKnownSidType.AuthenticatedUserSid, null);
                 //Allow Everyone read and write access to the pipe.
                 pipeSecurity.SetAccessRule(new PipeAccessRule(id, PipeAccessRights.ReadWrite, AccessControlType.Allow));

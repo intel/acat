@@ -12,7 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
-using ACAT.UserControls;
+using ACAT.Extension.UI.UserControls;
 
 namespace ACAT.Scanners.UserControls
 {

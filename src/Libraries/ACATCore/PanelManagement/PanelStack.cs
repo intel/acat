@@ -6,6 +6,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Audit;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.PanelManagement.PanelConfig;
 using ACAT.Core.Utility;
 using System;
 using System.Linq;
@@ -70,7 +73,7 @@ namespace ACAT.Core.PanelManagement
         {
             get
             {
-                if (_currentForm == null || !(_currentForm is IPanel))
+                if (_currentForm == null || _currentForm is not IPanel)
                 {
                     return DisplayModeTypes.None;
                 }
@@ -477,7 +480,7 @@ namespace ACAT.Core.PanelManagement
         /// <returns>true on success</returns>
         public bool ShowDialog(IPanel parent, IPanel panel)
         {
-            if (!(panel is Form))
+            if (panel is not Form)
             {
                 return false;
             }

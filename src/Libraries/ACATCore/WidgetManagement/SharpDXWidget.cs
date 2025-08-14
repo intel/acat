@@ -645,15 +645,12 @@ namespace ACAT.Core.WidgetManagement
                 if (trialTimer != null)
                     trialTimer.Stop();
 
-                //dipose of all objects
+                //dispose of all objects
                 sharpDX_device.Dispose();
                 sharpDX_swapChain.Dispose();
                 stopSequences();
             }
-            catch (Exception es)
-            {
-
-            }
+            catch { }
 
         }
 

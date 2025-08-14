@@ -33,19 +33,19 @@ namespace ACAT.Core.Utility
         /// <summary>
         /// Returns the singleton instance
         /// </summary>
-        private static readonly AutomationEventManager _instance = new AutomationEventManager();
+        private static readonly AutomationEventManager _instance = new();
 
         /// <summary>
         /// Maps a window handle to its WindowElement object (see below)
         /// </summary>
-        private static readonly Hashtable WindowTable = new Hashtable();
+        private static readonly Hashtable WindowTable = new();
 
         /// <summary>
         /// Queue on which add/remove requests are added. They are
         /// processed asnchronously on a separate thread.
         ///
         /// </summary>
-        private readonly BlockingQueue<object> _queue = new BlockingQueue<object>();
+        private readonly BlockingQueue<object> _queue = new();
 
         /// <summary>
         /// Has this object been disposed

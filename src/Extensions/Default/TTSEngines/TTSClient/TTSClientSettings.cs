@@ -141,5 +141,14 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
 
             return retVal;
         }
+
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<TTSClientSettings>();
+            var res = Save(tmp, PreferencesFilePath);
+            Load();
+
+            return res;
+        }
     }
 }

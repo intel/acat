@@ -20,14 +20,14 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
+namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition.FileManagement
 {
     public class FileWriter
     {
         /// <summary>
         /// Directory for session
         /// </summary>
-        public String sessionDirectory = "";
+        public string sessionDirectory = "";
 
         private StreamWriter sw_dataRaw;
         private StreamWriter sw_dataFiltered;
@@ -53,7 +53,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         ///
         /// </summary>
         /// <param name="sessionID"></param>
-        public FileWriter(String sessionID)
+        public FileWriter(string sessionID)
         {
             //Create directory
             string dataDir = Path.Combine(UserManager.CurrentUserDir, "Actuators\\BCI\\" + BCIActuatorSettings.Settings.DAQ_OutputDirectory);
@@ -69,7 +69,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// <param name="dataDir"> directory where files will be created </param>
         /// <param name="sessionID"> ID of the session</param>
         /// <returns></returns>
-        public bool CreateFiles(String dataDir, string sessionID)
+        public bool CreateFiles(string dataDir, string sessionID)
         {
             if (!Directory.Exists(dataDir))
                 Directory.CreateDirectory(dataDir);
@@ -119,7 +119,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 sw.WriteLine("%  Brainflow EEG Data");
                 sw.WriteLine("%  Raw data?  " + isRawData);
                 sw.WriteLine("%  Sample rate: " + sampleRate);
-                sw.WriteLine("%  Indices EEG channels: [" + String.Join(",", indEEGChannels) + "]");
+                sw.WriteLine("%  Indices EEG channels: [" + string.Join(",", indEEGChannels) + "]");
                 sw.WriteLine("%  Index Optical sensor channel: " + indOpticalSensor);
                 sw.WriteLine("%");
             }
@@ -217,7 +217,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// </summary>
         /// <param name="syncObj">Object used to synchronoze</param>
         /// <returns>true if entered successfully</returns>
-        private bool TryEnter(Object syncObj)
+        private bool TryEnter(object syncObj)
         {
             bool lockTaken = false;
             Monitor.TryEnter(syncObj, ref lockTaken);
@@ -265,7 +265,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             {
                 foreach (int[] markerValues in markers)
                 {
-                    foreach (Object v in markerValues)
+                    foreach (object v in markerValues)
                     {
                         sw_markerValues.Write(v.ToString() + " ");
                     }

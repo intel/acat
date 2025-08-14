@@ -7,10 +7,11 @@
 
 using ACAT.Core.Extensions;
 using ACAT.Core.Utility;
-using ACAT.Core.PreferencesManagement;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using ACAT.Core.PreferencesManagement.Interfaces;
+using ACAT.Core.TTSManagement.Interfaces;
 
 namespace ACAT.Core.TTSManagement
 {
@@ -30,17 +31,17 @@ namespace ACAT.Core.TTSManagement
         /// <summary>
         /// Pitch of the voice
         /// </summary>
-        private readonly TTSValue _speechPitch = new TTSValue(0, 0, 0);
+        private readonly TTSValue _speechPitch = new(0, 0, 0);
 
         /// <summary>
         /// Speech rate
         /// </summary>
-        private readonly TTSValue _speechRate = new TTSValue(0, 0, 0);
+        private readonly TTSValue _speechRate = new(0, 0, 0);
 
         /// <summary>
         /// Speech volume
         /// </summary>
-        private readonly TTSValue _speechVolume = new TTSValue(0, 0, 0);
+        private readonly TTSValue _speechVolume = new(0, 0, 0);
 
         /// <summary>
         /// Has this object been disposed

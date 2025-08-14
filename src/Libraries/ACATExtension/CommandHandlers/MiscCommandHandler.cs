@@ -7,6 +7,8 @@
 
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Extension.UI;
 using ACATResources;
 using System;
 

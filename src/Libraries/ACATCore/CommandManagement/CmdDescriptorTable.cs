@@ -25,7 +25,7 @@ namespace ACAT.Core.CommandManagement
         [NonSerialized, XmlIgnore]
         public static String FilePath;
 
-        private readonly List<CmdDescriptor> _cmdDescriptors = new List<CmdDescriptor>();
+        private readonly List<CmdDescriptor> _cmdDescriptors = new();
 
         /// <summary>
         /// List of command descriptors
@@ -86,6 +86,15 @@ namespace ACAT.Core.CommandManagement
             }
 
             return cmdDescriptorList;
+        }
+
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<CmdDescriptorTable>();
+            var res = Save(tmp, FilePath);
+            Load();
+
+            return res;
         }
 
         /// <summary>

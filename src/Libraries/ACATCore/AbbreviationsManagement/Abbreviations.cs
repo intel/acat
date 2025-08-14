@@ -47,7 +47,7 @@ namespace ACAT.Core.AbbreviationsManagement
         /// <summary>
         /// Holds a sorted list of abbreviations
         /// </summary>
-        private readonly SortedDictionary<String, Abbreviation> _abbreviationList = new SortedDictionary<string, Abbreviation>();
+        private readonly SortedDictionary<String, Abbreviation> _abbreviationList = new();
 
         /// <summary>
         /// Has this object been disposed

@@ -7,8 +7,6 @@
 
 using ACAT.Core.PreferencesManagement;
 using System;
-using System.Reflection;
-using System.Text;
 using System.Xml.Serialization;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
@@ -339,6 +337,16 @@ namespace ACAT.Core.Utility
             }
 
             return retVal;
+        }
+
+        public override bool Save()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool ResetToDefault()
+        {
+            throw new NotImplementedException();
         }
     }
 }

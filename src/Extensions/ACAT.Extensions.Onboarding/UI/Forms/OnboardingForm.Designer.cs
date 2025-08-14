@@ -1,5 +1,5 @@
 ﻿
-namespace ACAT.Extensions.Onboarding
+namespace ACAT.Extensions.Onboarding.UI.Forms
 {
     partial class OnboardingForm
     {

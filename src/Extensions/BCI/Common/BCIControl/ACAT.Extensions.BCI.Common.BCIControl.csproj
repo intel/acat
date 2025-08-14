@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\ACATResources\ACATResources.csproj" />
+    <ProjectReference Include="$(SolutionDir)Libraries\ACATCore\ACAT.Core.csproj" />
+    <ProjectReference Include="$(SolutionDir)Libraries\ACATExtension\ACAT.Extension.csproj" />
+    <Reference Include="System" />
+  </ItemGroup>
+</Project>

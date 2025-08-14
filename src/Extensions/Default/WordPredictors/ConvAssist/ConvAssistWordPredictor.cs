@@ -12,9 +12,12 @@
 //#define DEBUG_CONVASSIST
 
 using ACAT.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
-using ACAT.Core.WordPredictionManagement;
+using ACAT.Core.WordPredictorManagement;
+using ACAT.Core.WordPredictorManagement.Interfaces;
+using ACAT.Extensions.WordPredictors.ConvAssist.MessageTypes;
 using ACATResources;
 using System;
 using System.Collections.Generic;
@@ -61,12 +64,12 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <summary>
         /// Used the synchronization for multiple calls
         /// </summary>
-        private readonly object _syncObj = new object();
+        private readonly object _syncObj = new();
 
-        private readonly object _writeSyncObj = new object();
+        private readonly object _writeSyncObj = new();
 
-        private readonly CancellationTokenSource cts = new CancellationTokenSource();
-        private readonly ManualResetEvent mevent = new ManualResetEvent(false);
+        private readonly CancellationTokenSource cts = new();
+        private readonly ManualResetEvent mEvent = new(false);
         private readonly Stack<object> sentenceStack;
         private readonly Stack<object> wpStack;
         private readonly SentencePredictionsRequestHandler _sentencePredictionsRequestHandler;
@@ -171,7 +174,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             Process[] runningProcesses = Process.GetProcessesByName(ConvAssistName);
             if (runningProcesses.Length == 0)
             {
-                ProcessStartInfo convAssistInfo = new ProcessStartInfo
+                ProcessStartInfo convAssistInfo = new()
                 {
                     FileName = path,
                     WorkingDirectory = Path.GetDirectoryName(path),
@@ -182,12 +185,10 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                     CreateNoWindow = false
                 };
 
-                using (Process convAssist = Process.Start(convAssistInfo))
+                using Process convAssist = Process.Start(convAssistInfo);
+                while (!convAssist.Responding)
                 {
-                    while (!convAssist.Responding)
-                    {
-                        Thread.Sleep(100);
-                    }
+                    Thread.Sleep(100);
                 }
             }
 #endif
@@ -226,12 +227,12 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             if (req.PredictionType == PredictionTypes.Words)
             {
                 wpStack.Push(req);
-                mevent.Set();
+                mEvent.Set();
             }
             else if (req.PredictionType == PredictionTypes.Sentences)
             {
                 sentenceStack.Push(req);
-                mevent.Set();
+                mEvent.Set();
             }
             else
             {
@@ -248,7 +249,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <returns>Sentences predictions</returns>
         public string ConvAssistLearn(string text, WordPredictorMessageTypes requestType)
         {
-            ConvAssistMessage message = new ConvAssistMessage(requestType, WordPredictionModes.None, text);
+            ConvAssistMessage message = new(requestType, WordPredictionModes.None, text);
             string jsonMessage = JsonSerializer.Serialize(message);
             //var answer = namedPipe.WriteSync(text, 150);
             return namedPipe.WriteSync(jsonMessage, 10000);
@@ -261,7 +262,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <returns>Sentences predictions</returns>
         public string SendMessageConvAssistSentencePrediction(string text, WordPredictionModes mode)
         {
-            ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.NextSentencePredictionRequest, mode, text);
+            ConvAssistMessage message = new(WordPredictorMessageTypes.NextSentencePredictionRequest, mode, text);
             string jsonMessage = JsonSerializer.Serialize(message);
             //var answer = namedPipe.WriteSync(text, 150);
             return namedPipe.WriteSync(jsonMessage, 10000);
@@ -274,7 +275,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <returns>Words and letters predictions</returns>
         public string SendMessageConvAssistWordPrediction(string text, WordPredictionModes mode)
         {
-            ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.NextWordPredictionRequest, mode, text);
+            ConvAssistMessage message = new(WordPredictorMessageTypes.NextWordPredictionRequest, mode, text);
             string jsonMessage = JsonSerializer.Serialize(message);
             //var answer = namedPipe.WriteSync(text, 150);
             return namedPipe.WriteSync(jsonMessage, 10000);
@@ -311,7 +312,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         {
             wpStack.Push(null);
             sentenceStack.Push(null);
-            mevent.Set();
+            mEvent.Set();
 
             if (waitOnCompletion)
             {
@@ -382,7 +383,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
                 if (wpStack.Count == 0 && sentenceStack.Count == 0)
                 {
-                    mevent.WaitOne();
+                    mEvent.WaitOne();
                 }
 
                 while (wpStack.Count > 0)
@@ -394,7 +395,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                             item = wpStack.Pop() as WordPredictionRequest;
                             if (item == null)
                             {
-                                mevent.Reset();
+                                mEvent.Reset();
                                 return;
                             }
 
@@ -414,7 +415,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                         item = sentenceStack.Pop() as WordPredictionRequest;
                         if (item == null)
                         {
-                            mevent.Reset();
+                            mEvent.Reset();
                             return;
                         }
                         sentenceStack.Clear();
@@ -423,7 +424,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
                 if (item == null)
                 {
-                    mevent.Reset();
+                    mEvent.Reset();
                     return;
                 }
 
@@ -431,7 +432,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
                 notifyPredictionResults(response);
 
-                mevent.Reset();
+                mEvent.Reset();
             }
         }
 

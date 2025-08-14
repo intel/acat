@@ -9,7 +9,7 @@ using ACAT.Core.Utility;
 using System;
 using System.Text;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Common
 {
     /// <summary>
     /// Represents event args for the event raised to
@@ -30,7 +30,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         /// <param name="panelClass">The scanner to be activted</param>
         /// <param name="monitorInfo">Contextual info about app window</param>
-        public PanelRequestEventArgs(String panelClass, WindowActivityMonitorInfo monitorInfo)
+        public PanelRequestEventArgs(string panelClass, WindowActivityMonitorInfo monitorInfo)
         {
             init();
 
@@ -45,8 +45,8 @@ namespace ACAT.Core.PanelManagement
         /// <param name="panelTitle">Title of the scanner </param>
         /// <param name="monitorInfo">Contextual info about app window</param>
         /// <param name="useCurrentScreenAsParent">Set to true to use the current panel as the parent</param>
-        public PanelRequestEventArgs(String panelClass,
-                                        String panelTitle,
+        public PanelRequestEventArgs(string panelClass,
+                                        string panelTitle,
                                         WindowActivityMonitorInfo monitorInfo,
                                         bool useCurrentScreenAsParent = false)
             : this(panelClass, monitorInfo)
@@ -64,7 +64,7 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Gets or sets the scanner class
         /// </summary>
-        public String PanelClass { get; set; }
+        public string PanelClass { get; set; }
 
         /// <summary>
         /// Gets or sets User-defined arguments for the scanner
@@ -80,7 +80,7 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Gets or sets title of the scanner
         /// </summary>
-        public String Title { get; set; }
+        public string Title { get; set; }
 
         /// <summary>
         /// Gets or sets whether to use the current scanner as the parent
@@ -96,7 +96,7 @@ namespace ACAT.Core.PanelManagement
         public override string ToString()
         {
             var sb = new StringBuilder();
-            String title = Title ?? "<null>";
+            string title = Title ?? "<null>";
             sb.Append("PanelRequestEventArgs: PanelClass: " + PanelClass +
                         ",  UseAsParent: " + UseCurrentScreenAsParent +
                         " Title: " + title);

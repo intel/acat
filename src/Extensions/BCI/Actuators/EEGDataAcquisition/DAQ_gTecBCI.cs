@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition.FileManagement;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using Accord.Math;
@@ -894,13 +895,11 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     try
                     {
                         Log.Debug($"Selected device: {BCIActuatorSettings.Settings.GTecDeviceName}, trying to connect...");
-                        using (Unicorn device = new Unicorn(BCIActuatorSettings.Settings.GTecDeviceName))
-                        {
-                            device.Dispose();
-                            Log.Debug($"Device: {device} is connected...");
-                            EvtBluetoothResult(BluetoothEvent.SUCCESSFUL_CONNECTION, null);
-                            return true;
-                        }
+                        using Unicorn device = new(BCIActuatorSettings.Settings.GTecDeviceName);
+                        device.Dispose();
+                        Log.Debug($"Device: {device} is connected...");
+                        EvtBluetoothResult(BluetoothEvent.SUCCESSFUL_CONNECTION, null);
+                        return true;
                     }
                     catch (Gtec.Unicorn.DeviceException ex)
                     {

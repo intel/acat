@@ -5,9 +5,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using System;
+using ACAT.Core.WordPredictorManagement.Interfaces;
 
-namespace ACAT.Core.WordPredictionManagement
+namespace ACAT.Core.WordPredictorManagement
 {
     public enum PredictionTypes
     {
@@ -20,7 +20,7 @@ namespace ACAT.Core.WordPredictionManagement
     /// </summary>
     public class WordPredictionRequest
     {
-        public WordPredictionRequest(String prevWords, String currentWord, PredictionTypes predictionType, WordPredictionModes mode)
+        public WordPredictionRequest(string prevWords, string currentWord, PredictionTypes predictionType, WordPredictionModes mode)
         {
             PrevWords = prevWords;
             CurrentWord = currentWord;
@@ -28,9 +28,9 @@ namespace ACAT.Core.WordPredictionManagement
             WordPredictionMode = mode;
         }
 
-        public String CurrentWord { get; }
+        public string CurrentWord { get; }
         public PredictionTypes PredictionType { get; }
-        public String PrevWords { get; }
+        public string PrevWords { get; }
         public WordPredictionModes WordPredictionMode { get; }
     }
 }

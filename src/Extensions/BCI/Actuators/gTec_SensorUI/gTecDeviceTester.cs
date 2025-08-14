@@ -11,12 +11,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Core.Audit;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
-using ACAT.Extensions.BCI.Common.BCIControl;
 using ACATResources;
 using System;
 using System.Collections.Generic;
@@ -318,7 +316,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             if (_Testing_useSensor)
             {
                 // Non-zero value is needed for startBCIDeviceTesting so "connecting..." screen has time to show to the user
-                Thread t = new Thread(start: () => startBCIDeviceTesting(3));
+                Thread t = new(start: () => startBCIDeviceTesting(3));
                 t.Start();
             }
         }
@@ -360,7 +358,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     updateOnboardingStatus(_currentOnboardingUserState, null);
 
                     // Non-zero value is needed for startBCIDeviceTesting so "connecting..." screen has time to show to the user
-                    Thread t = new Thread(() => startBCIDeviceTesting(3));
+                    Thread t = new(() => startBCIDeviceTesting(3));
                     t.Start();
 
                     break;
@@ -537,7 +535,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             if (maxTimeHasElapsed)
             {
                 _currentOnboardingUserState = OnboardingUserState.SignalCheckRequired_MaxTimeElapsed;
-                Dictionary<string, object> dictionary = new Dictionary<String, object>
+                Dictionary<string, object> dictionary = new()
                 {
                     ["maxTimeMins"] = maxTimeMins
                 };
@@ -573,7 +571,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             updateOnboardingStatus(_currentOnboardingUserState, null);
 
             // Non-zero value is needed for startBCIDeviceTesting so "connecting..." screen has time to show to the user
-            Thread t = new Thread(() => startBCIDeviceTesting(3));
+            Thread t = new(() => startBCIDeviceTesting(3));
             t.Start();
         }
 

@@ -1,14 +1,12 @@
-﻿using ACAT.Core.Interpreter;
-using ACAT.Core.PanelManagement;
+﻿using ACAT.Core.PanelManagement.PanelConfig;
 using ACAT.Core.WidgetManagement;
-using System.Collections.Generic;
 
-namespace ACAT.Core.AnimationManagement
+namespace ACAT.Core.AnimationManagement.Interfaces
 {
     public interface IPanelAnimationManager : IAnimationManager
     {
-        event PanelAnimationManager.PlayerStateChanged EvtPlayerStateChanged;
-        event PanelAnimationManager.ResolveWidgetChildren EvtResolveWidgetChildren;
+        event AnimationManager.PlayerStateChanged EvtPlayerStateChanged;
+        event AnimationManager.ResolveWidgetChildren EvtResolveWidgetChildren;
 
         bool Init(PanelConfigMapEntry panelConfigMapEntry, Widget panelWidget = null);
         void Start(Widget panelWidget, string animationName = null);

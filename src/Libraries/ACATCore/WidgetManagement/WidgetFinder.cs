@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.WidgetManagement.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

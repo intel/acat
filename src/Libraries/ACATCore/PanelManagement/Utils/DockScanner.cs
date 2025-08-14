@@ -3,7 +3,7 @@ using System;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Utils
 {
     /// <summary>
     /// Docks a scanner to a specified parent window at a specified
@@ -215,7 +215,7 @@ namespace ACAT.Core.PanelManagement
             {
                 if (spaceLeftHoriz < _form.Width)
                 {
-                    var parentFormLeft = (screenWidth - _form.Width - parentWidth);
+                    var parentFormLeft = screenWidth - _form.Width - parentWidth;
                     User32Interop.MoveWindow(_windowHandleDockTo, parentFormLeft, windowRect.top, parentWidth, parentHeight, true);
                     User32Interop.GetWindowRect(_windowHandleDockTo, out windowRect);
                 }
@@ -277,7 +277,7 @@ namespace ACAT.Core.PanelManagement
             }
 
             int screenHeight = Screen.FromControl(_form).Bounds.Height;
-            if ((_form.Top + _form.Height) > screenHeight)
+            if (_form.Top + _form.Height > screenHeight)
             {
                 _form.Top = screenHeight - _form.Height;
             }

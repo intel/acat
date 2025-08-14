@@ -5,13 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.PanelManagement.PanelConfig;
 using ACAT.Core.UserControlManagement;
 using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Security.Permissions;
-using System.Windows.Automation;
 using System.Windows.Forms;
 
 namespace ACAT.Core.PanelManagement
@@ -66,7 +67,7 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Represents the stack of panels
         /// </summary>
-        private readonly Stack<PanelStack> _stack = new Stack<PanelStack>();
+        private readonly Stack<PanelStack> _stack = new();
 
         /// <summary>
         /// Is calibration in progress?

@@ -1,26 +1,7 @@
-﻿////////////////////////////////////////////////////////////////////////////
-// <copyright file="AppCommon.cs" company="Intel Corporation">
-//
-// Copyright (c) 2013-2017 Intel Corporation 
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// </copyright>
-////////////////////////////////////////////////////////////////////////////
-
-using ACAT.ACATResources;
-using ACAT.Core.ActuatorManagement;
+﻿using ACAT.Core.ActuatorManagement;
+using ACAT.Core.ActuatorManagement.Settings;
 using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.PanelConfig;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using ACAT.Extension;
@@ -74,7 +55,7 @@ namespace ACAT.Applications
         /// </summary>
         /// <param name="arg">arg to check</param>
         /// <returns>true if it is</returns>
-        public static bool IsOption(String arg)
+        public static bool IsOption(string arg)
         {
             if (!String.IsNullOrEmpty(arg))
             {
@@ -108,7 +89,7 @@ namespace ACAT.Applications
             Common.AppPreferences = ACATPreferences.Load();
             if (Common.AppPreferences == null)
             {
-                MessageBox.Show(String.Format(StringResources.UnableToReadPreferences), FileUtils.AppPreferencesDir);
+                MessageBox.Show($"Unable to read preferences from {FileUtils.AppPreferencesDir}");
                 return false;
             }
 
@@ -219,7 +200,7 @@ namespace ACAT.Applications
         /// <summary>
         /// Sets the active profile name
         /// </summary>
-        public static void SetProfileName(String profile = null)
+        public static void SetProfileName(string profile = null)
         {
             // if the profile has not been specified in the
             // command line, use the one from GlobalPreferences
@@ -240,7 +221,7 @@ namespace ACAT.Applications
         /// <summary>
         /// Sets the active user name
         /// </summary>
-        public static void SetUserName(String userName = null)
+        public static void SetUserName(string userName = null)
         {
             // if username has not been specified in the
             // command line, use the one from GlobalPreferences
@@ -333,7 +314,7 @@ namespace ACAT.Applications
                                      .Where(f => f.EndsWith(".ttf", StringComparison.OrdinalIgnoreCase) ||
                                                  f.EndsWith(".otf", StringComparison.OrdinalIgnoreCase));
 
-            using RegistryKey fontRegKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion\Fonts", writable: true)
+            using Microsoft.Win32.RegistryKey fontRegKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion\Fonts", writable: true)
                                                ?? Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows NT\CurrentVersion\Fonts");
 
             //var existingValues = fontRegKey.GetValueNames()
@@ -381,6 +362,7 @@ namespace ACAT.Applications
             SendMessage(HWND_BROADCAST, WM_FONTCHANGE, 0, 0);
         }
 
+#nullable enable
         private static string? GetFontDisplayName(string fontPath)
         {
             try
@@ -393,6 +375,7 @@ namespace ACAT.Applications
             catch { }
             return null;
         }
+#nullable disable
 
         /// <summary>
         /// Sets the paths to the settings file for the app

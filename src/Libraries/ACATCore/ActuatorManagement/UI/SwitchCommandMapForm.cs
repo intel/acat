@@ -12,6 +12,7 @@
 
 using ACAT.Core.CommandManagement;
 using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACATResources;
 using System;
 using System.Windows.Forms;
@@ -120,6 +121,12 @@ namespace ACAT.Core.ActuatorManagement
         /// </summary>
         private void refreshDataGridView()
         {
+            if (CommandManager.Instance?.AppCommandTable?.CmdDescriptors == null)
+            {
+                Log.Debug("CommandManager or AppCommandTable not initialized");
+                return;
+            }
+
             foreach (var cmdDescriptor in CommandManager.Instance.AppCommandTable.CmdDescriptors)
             {
                 if (cmdDescriptor.EnableSwitchMap)

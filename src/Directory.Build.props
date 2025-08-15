@@ -56,4 +56,13 @@
     <!-- Or to turn *all* warnings into errors -->
     <!-- <TreatWarningsAsErrors>true</TreatWarningsAsErrors> -->
   </PropertyGroup>
+  
+  <!-- Configurations -->
+  <PropertyGroup>
+    <Configurations>Debug;Release;Debug_TestGTEC</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug_TestGTEC'">
+    <DefineConstants>DEBUG;TRACE;SIMULATIONBOARD</DefineConstants>
+  </PropertyGroup>
 </Project>

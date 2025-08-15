@@ -116,13 +116,14 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 }
             }
         }
-
+        
         /// <summary>
         /// Function executed during each timer tick. Sends bluetooth requests to scan for paired/unpaired devices
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void UpdateTimer_Tick(object sender, EventArgs e)
         {
+            _updateTimer.Stop();
             Dictionary<String, object> requestParams = new()
             {
                 ["paired"] = true
@@ -131,6 +132,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             requestParams["paired"] = false;
             EvtBluetoothRequest(DAQ_gTecBCI.BluetoothEvent.SCAN_DEVICES_REQUEST, requestParams);
+            
+            _updateTimer.Start();
         }
 
         /// <summary>
@@ -156,24 +159,29 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                             IList<string> devices = (IList<string>)eventParams["devices"];
                             if (devices.Count > 0)
                             {
-                                foreach (string device in devices)
+                                // Add new devices that aren't already in the ListView
+                                foreach (string deviceName in devices)
                                 {
-                                    // check if the item is not in the list
-                                    if (!listViewDevices.Items.Contains(device))
+                                    bool exists = listViewDevices.Items
+                                        .Cast<ListViewItem>()
+                                        .Any(item => item.Text.Equals(deviceName, StringComparison.OrdinalIgnoreCase));
+
+                                    if (!exists)
                                     {
-                                        listViewDevices.Items.Add(device);
+                                        listViewDevices.Items.Add(new ListViewItem(deviceName));
                                     }
                                 }
 
-                                // Also want to remove the devices that are not discoverable
-                                foreach (ListViewItem item in listViewDevices.Items)
+                                // Remove devices from ListView that are no longer discoverable
+                                // Iterate backwards to safely remove items while enumerating
+                                for (int i = listViewDevices.Items.Count - 1; i >= 0; i--)
                                 {
-                                    if (!devices.Contains(item.Text))
+                                    ListViewItem item = listViewDevices.Items[i] as ListViewItem;
+                                    if (!devices.Contains(item.Text, StringComparer.OrdinalIgnoreCase))
                                     {
-                                        listViewDevices.Items.Remove(item);
+                                        listViewDevices.Items.RemoveAt(i);
                                     }
                                 }
-
                             }
                         }
                         catch (Exception ex)

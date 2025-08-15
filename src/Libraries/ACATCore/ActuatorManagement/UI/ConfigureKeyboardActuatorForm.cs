@@ -627,7 +627,13 @@ namespace ACAT.Core.ActuatorManagement
                 switchSetting.Source = dataGridView2[ShortcutColumn.Name, ii].Value as String;
             }
 
-            var actuatorSetting = actuatorConfig.Find(Actuator.Name);
+            string ActuatorName = Actuator.Name;
+            if (Actuator.Name.Equals("Keyboard Actuator", StringComparison.OrdinalIgnoreCase))
+            {
+                ActuatorName = "Keyboard";
+            }
+
+            var actuatorSetting = actuatorConfig.Find(ActuatorName);
 
             if (actuatorSetting != null)
             {

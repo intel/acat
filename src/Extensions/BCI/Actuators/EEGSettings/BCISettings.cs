@@ -214,6 +214,13 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         [ObservableProperty]
         private int dAQ_NumEEGChannels = 8;
 
+        [Descriptor("Type of the BCI device")]
+        [UIHint("TextBox")]
+        [DefaultValue("GTecBCI")]
+        //[ObservableProperty]
+        public string DAQ_DeviceType { get; set; }
+
+
         /// <summary>
         /// ComPort where the optical sensor is connected (this will be automatically detected in Onboarding)
         /// </summary>
@@ -754,6 +761,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             DimReductRDA_ShrinkParam = 0.9;
             DimReductRDA_RegParam = 0.1;
 
+            DAQ_DeviceType = "GTecBCI";
             DAQ_ComPort = "COM4";
             dAQ_DisableChannelsAutomatically = false;
             DAQ_FrontendFilterIdx = 4; //Bandpass 5-50Hz

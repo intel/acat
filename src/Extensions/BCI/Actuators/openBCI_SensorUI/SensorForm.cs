@@ -113,14 +113,14 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         public static bool _stopTimers = false;
 
         /// <summary>
-        /// Interval in milliseconds at which timer event for plotting optical sensor data fires
-        /// </summary>
-        private readonly int _timer_plot_data_interval_ms = 40;
-
-        /// <summary>
         /// Interval in milliseconds at which timer event for acquiring and processing data fires
         /// </summary>
         private readonly int _timer_process_data_interval_ms = 10;
+        
+        /// <summary>
+        /// The DAQ instance for OpenBCI
+        /// </summary>
+        private BaseDAQ _daqInstance;
 
         // Form which acts as parent for / base for all possible user controls displayed during testing process
         public SensorForm(DeviceTestingState initialState)
@@ -128,6 +128,9 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             InitializeComponent();
             TriggerBox.BackColor = Color.Black;
             this.WindowState = FormWindowState.Maximized;
+
+            // Initialize DAQ instance
+            _daqInstance = DAQFactory.CreateDAQ(DAQDeviceType.OpenBCI);
 
             // Set initial / default values of static variables
             _stopTimers = false;
@@ -329,58 +332,6 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
         }
 
-        /// <summary>
-        /// Start / stop timer which plots data
-        /// </summary>
-        /// <param name="state"></param>
-        private void startStopPlotDataTimer(bool startPlotDataTimer, DeviceTestingState state)
-        {
-            Log.Debug("startStopPlotDataTimer | startProcessDataTimer: " + startPlotDataTimer.ToString() +
-                " | state: " + state.ToString());
-
-            if (startPlotDataTimer)
-            {
-                startStopPlotDataTimer(false, state);
-                try
-                {
-                    timerPlotData = new Timer(this.components)
-                    {
-                        Enabled = true,
-                        Interval = _timer_plot_data_interval_ms //// 50, 100, 200
-                    };
-                    timerPlotData.Stop();
-
-                    if (state == DeviceTestingState.ReceivedBCIError_OpticalSensor)
-                    {
-                        timerPlotData.Tick += new EventHandler(this.PlotOpticalSensorData_Tick);
-                    }
-
-                    timerPlotData.Start();
-                    Log.Debug("startStopPlotDataTimer | Started timerPlotData");
-                }
-                catch (Exception e)
-                {
-                    Log.Exception("startStopPlotDataTimer | Exception: " + e.ToString());
-                }
-            }
-            else
-            {
-                try
-                {
-                    if (timerPlotData != null && timerPlotData.Enabled)
-                    {
-                        timerPlotData.Stop();
-                        timerPlotData.Enabled = false;
-                        timerPlotData.Dispose();
-                        timerPlotData = null;
-                    }
-                }
-                catch (Exception e)
-                {
-                    Log.Exception("startStopPlotDataTimer | Exception: " + e.ToString());
-                }
-            }
-        }
 
         /// <summary>
         /// Start / stop timer which processes signal status
@@ -451,24 +402,6 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         {
             await Task.Delay(100);
 
-            // Start data processing timer for Optical sensor error screen
-            if (state == DeviceTestingState.ReceivedBCIError_OpticalSensor)
-            {
-                Invoke(new Action(() =>
-                {
-                    startStopPlotDataTimer(true, state);
-                }));
-            }
-
-            // Stop data processing timer for Optical sensor error screen
-            else
-            {
-                Invoke(new Action(() =>
-                {
-                    startStopPlotDataTimer(false, state);
-                }));
-            }
-
             // Start task which processes data for signal status checks
             if (state == DeviceTestingState.BCISignalCheck)
             {
@@ -502,57 +435,16 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 return;
             }
 
-            if (DAQ_OpenBCI.deviceInitialized)
+            if (_daqInstance.deviceInitialized)
             {
-                //double[,] data = DAQ_OpenBCI.GetData();
-
-                double[,] data = DAQ_OpenBCI.GetData2();
+                double[,] data = _daqInstance.GetData(true);
 
                 if (data != null && data.Length > 0 && data.GetLength(1) > 0)
                 {
                     double[,] dataCopy = (double[,])data.Clone();
-                    double[,] DAQ_filteredData = DAQ_OpenBCI.daq_filter_data(dataCopy);
+                    double[,] DAQ_filteredData = _daqInstance.daq_filter_data(dataCopy);
 
                     _userControlBCISignalCheck?.ProcessDataSignalCheck(data, DAQ_filteredData);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Update optical sensor data plot
-        /// Plot samples at every tick (this simulates data is received continuously)
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void PlotOpticalSensorData_Tick(object sender, EventArgs e)
-        {
-            // Check flag to stop all timers (checked during possible timer tick)
-            if (_stopTimers)
-            {
-                startStopPlotDataTimer(false, DeviceTestingState.ExitBCITesting);
-                return;
-            }
-
-            if (DAQ_OpenBCI.deviceInitialized)
-            {
-                // REMOVE ONLY FOR TESTING
-                DAQ_OpenBCI.InsertMarker(5.89f);
-
-                double[,] data = DAQ_OpenBCI.GetData();
-
-                if (data != null && data.Length > 0)
-                {
-                    int numSamples = data.GetLength(1);
-                    double[] opticalSensorData = new double[numSamples];
-                    for (int sampleIdx = 0; sampleIdx < numSamples; sampleIdx++)
-                    {
-                        opticalSensorData[sampleIdx] = 1 - data[DAQ_OpenBCI.indOpticalSensorChannel, sampleIdx]; // 1- data[DAQ_OpenBCI.indOpticalSensorChannel, sampleIdx]
-                    }
-
-                    Invoke(new Action(() =>
-                    {
-                        _userControlBCIErrorOpticalSensor.updateOpticalSensorDataPlot(opticalSensorData);
-                    }));
                 }
             }
         }
@@ -586,9 +478,6 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 // Set flag to stop any timer tick in the middle of execution
                 _stopTimers = true;
 
-                // Stop plot data timer
-                startStopPlotDataTimer(false, DeviceTestingState.ExitBCITesting);
-
                 // Stop process data timer
                 startStopProcessDataTimer(false, DeviceTestingState.ExitBCITesting);
 
@@ -609,6 +498,12 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 _userControlBCISignalCheckStartPrompt?.Dispose();
                 _userControlPromptBCIFIlterSettings?.Dispose();
                 _userControlBCISignalCheck?.Dispose();
+                
+                // Stop DAQ instance if it's active
+                if (_daqInstance != null)
+                {
+                    _daqInstance.Stop();
+                }
             }
         }
 

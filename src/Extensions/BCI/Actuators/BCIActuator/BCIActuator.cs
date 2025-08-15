@@ -75,15 +75,11 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// </summary>
         public static BCITypingCalibrationMappings TypingCalibrationMappings = null;
 
-        // Probably want to make one parent DeviceTester class and children = OpenBCI, gTec device testers?
+        /// <summary>
+        /// The DAQ instance
+        /// </summary>
 
-        public enum Device
-        {
-            GTEC,
-            OPENBCI,
-        }
-
-        public Device _device;
+        private BaseDAQ _daqInstance;
 
         /// <summary>
         /// OpenBCI device tester
@@ -212,11 +208,6 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// This parameter is read from BCISettings
         /// </summary>
         private bool useSensor;
-
-        /// <summary>
-        /// Screen to select BCI board / headset (ex: gTec or OpenBCI)
-        /// </summary>
-        private UserControlBCIDeviceSelection _deviceSelectionForm;
 
         /// <summary>
         /// Initializes an instance of the class
@@ -558,31 +549,16 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
             showDisclaimer();
 
-            //TODO IN PROCESS
+            _daqInstance = DAQFactory.CreateDAQFromSettings();
 
-            // Check if Gtec is available
-            // check if OpenBCI is available
-            //  If both avaiable, show selection dialog
-            // otherwise run corresponding TestDevice call
-
-            bool gtecAvailable = GTecDeviceTester.GtecDeviceAvailable;
-            //bool gtecAvailable = true; //DAQ_gTecBCI.IsDeviceAvailable();
-            // bool openBciAvailable = IsOpenBciAvailable();
-            bool openBciAvailable = false;
-            // bool gtecAvailable = true;
-
-            if (gtecAvailable && openBciAvailable)
+            if (_daqInstance.GetType() == typeof(DAQ_gTecBCI))
             {
-                SelectBCIDevice();
-            }
-            else if (gtecAvailable)
-            {
-                _device = Device.GTEC;
+                Log.Debug("startgTecUnicornTesting");
                 TestGtecDevice();
             }
-            else if (openBciAvailable)
+            else
             {
-                _device = Device.OPENBCI;
+                Log.Debug("startOpenBCITesting");
                 TestBCIDevices();
             }
 
@@ -593,60 +569,6 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                 return false;
             else
                 return true;
-        }
-
-        /// <summary>
-        /// Start device testing process for gTec BCI headset
-        /// </summary>
-        private void startgTecUnicornTesting()
-        {
-            Log.Debug("startgTecUnicornTesting");
-            _device = Device.GTEC;
-            closeBciBoardSelection();
-            TestGtecDevice();
-        }
-
-        /// <summary>
-        /// Start device testing process for Open BCI headset
-        /// </summary>
-        private void startOpenBCITesting()
-        {
-            Log.Debug("startOpenBCITesting");
-            _device = Device.OPENBCI;
-            closeBciBoardSelection();
-            TestBCIDevices();
-        }
-
-        /// <summary>
-        /// Show form to select the BCI headset to use
-        /// </summary>
-        private void SelectBCIDevice()
-        {
-            if (_deviceSelectionForm == null)
-            {
-                Log.Debug("SelectBCIDevice | Creating new _deviceSelectionForm");
-                _deviceSelectionForm = new UserControlBCIDeviceSelection();
-                _deviceSelectionForm.EvtgtecUnicornSelected += startgTecUnicornTesting;
-                _deviceSelectionForm.EvtOpenBCISelected += startOpenBCITesting;
-            }
-
-            _deviceSelectionForm.ShowDialog();
-        }
-
-        /// <summary>
-        /// Close form to select the BCI headset to use
-        /// </summary>
-        private void closeBciBoardSelection()
-        {
-            if (_deviceSelectionForm != null && _deviceSelectionForm.IsDisposed == false)
-            {
-                Log.Debug("closeBciBoardSelection | Closing and disposing _deviceSelectionForm");
-                _deviceSelectionForm.EvtgtecUnicornSelected -= startgTecUnicornTesting;
-                _deviceSelectionForm.EvtOpenBCISelected -= startOpenBCITesting;
-                _deviceSelectionForm.Close();
-                _deviceSelectionForm.Dispose();
-                _deviceSelectionForm = null;
-            }
         }
 
         /// <summary>
@@ -820,7 +742,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         private void bciDeviceTestingCompleted()
         {
             // Set actuatorState based on OpenBCIDeviceTester._ExitOnboardingEarly flag
-            if (_device == Device.OPENBCI)
+            if (_daqInstance.GetType() == typeof(DAQ_OpenBCI))
             {
                 actuatorState = (OpenBCIDeviceTester.ExitOnboardingEarly) ? State.Stopped : State.Running;
             }
@@ -1127,7 +1049,11 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         private void OnTriggerTestStart(object request)
         {
             Log.Debug("Trigger test start");
-            _ = DAQ_OpenBCI.TriggerTestStart();
+            if (_daqInstance.GetType() == typeof(DAQ_OpenBCI))
+            {
+                _ = ((DAQ_OpenBCI)_daqInstance).TriggerTestStart();
+            }
+               
             Log.Debug("Trigger test started");
             SendIoctlResponse((int)OpCodes.TriggerTestStartReady, null);
             Log.Debug("IoctRequest " + OpCodes.TriggerTestStartReady + " sent. Message:null ");
@@ -1140,10 +1066,10 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         private void OnTriggerTestStop(object request)
         {
             Log.Debug("Trigger test stop");
-            DAQ_OpenBCI.ExitCodes exitCode = DAQ_OpenBCI.TriggerTestStop(BCIActuatorSettings.Settings.TriggerTest_NumRepetitions, out _, out List<double> dutyCycleList, out double dutyCycleAvg);
+            BaseDAQ.ExitCodes exitCode = ((DAQ_OpenBCI)_daqInstance).TriggerTestStop(BCIActuatorSettings.Settings.TriggerTest_NumRepetitions, out _, out List<double> dutyCycleList, out double dutyCycleAvg);
 
             bool triggerTestSuccesful = false;
-            if (exitCode == DAQ_OpenBCI.ExitCodes.PHOTOSENSOR_STATUS_OK)
+            if (exitCode == BaseDAQ.ExitCodes.STATUS_OK)
                 triggerTestSuccesful = true;
 
             // Send parameters to ACAT
@@ -1267,30 +1193,21 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             {
                 try
                 {
-                    // Get all the data and stop sensor
-                    if (_device == Device.OPENBCI)
-                    {
-                        Thread.Sleep(2000); // Delay to ensure enough data is collected
-                        DAQ_OpenBCI.GetData();
-                        DAQ_OpenBCI.EndSession();
-                    }
-                    else
-                    {
-                        _gtecDeviceTester.gTecBCI.GetData();
-                        _gtecDeviceTester.gTecBCI.EndSession();
-                    }
+                    _daqInstance.GetData();
+                    Thread.Sleep(2000); // Delay to ensure enough data is collected
+                    _daqInstance.EndSession();
 
                     // Train classifiers and estimate threshold for eyes closed detection
                     var FeatureExtractionObj = new FeatureExtraction(bciCalibrationEnd.FlashingSequence, DictCalibrationParameters[_currentCalibrationMode]);
 
                     // Eyes closed estimation
-                    if (_device == Device.OPENBCI)
+                    if (_daqInstance.GetType() == typeof(DAQ_OpenBCI))
                     {
                         if (!BCIActuatorSettings.Settings.EyesClosed_UseFixThreshold)
                         {
                             BCIActuatorSettings.Settings.EyesClosed_AdaptiveThreshold = FeatureExtractionObj.LearnEyesClosedAdaptiveThreshold(avgAlphaValues);
                             BCIActuatorSettings.Save();
-                            DAQ_OpenBCI.SetEyesClosedAdaptiveThreshold(BCIActuatorSettings.Settings.EyesClosed_AdaptiveThreshold);
+                            ((DAQ_OpenBCI)_daqInstance).SetEyesClosedAdaptiveThreshold(BCIActuatorSettings.Settings.EyesClosed_AdaptiveThreshold);
                         }
                     }
 
@@ -1359,19 +1276,19 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                         if (BCIActuatorSettings.Settings.DAQ_DelayAfterCalibrationRepetition > 0)
                             Thread.Sleep(BCIActuatorSettings.Settings.DAQ_DelayAfterCalibrationRepetition); // Delay added to have same behavior as typing
 
-                        double[,] allData = _device == Device.OPENBCI ? DAQ_OpenBCI.GetData() : _gtecDeviceTester.gTecBCI.GetData();
+                        double[,] allData = _daqInstance.GetData();
 
                         if (allData == null || allData.Length == 0)
                             sensorError = new BCIError(BCIErrorCodes.SensorError_DataNotReceived, StringResources.SensorError);
                         else
                         {
                             // Get signal status
-                            if (_device == Device.OPENBCI)
+                            if (_daqInstance.GetType() == typeof(DAQ_OpenBCI))
                             {
                                 // Write marker values to file
-                                DAQ_OpenBCI.WriteMarkerValues2File(bciCalibrationInput.RowColumnIDs);
+                                ((DAQ_OpenBCI)_daqInstance).WriteMarkerValues2File(bciCalibrationInput.RowColumnIDs);
 
-                                var overallStatus = DAQ_OpenBCI.GetStatus(out SignalStatus[] signalStatus, out SignalStatus opticalSensorStatus);
+                                var overallStatus = ((DAQ_OpenBCI)_daqInstance).GetStatus(out SignalStatus[] signalStatus);
                                 if (overallStatus == SignalStatus.SIGNAL_OK)
                                     statusSignal = SignalStatus.SIGNAL_OK;
 
@@ -1392,7 +1309,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                                 //    sensorError = new BCIError(BCIErrorCodes.OpticalSensorError_NotEnoughPulsesDetected, BCIMessages.OpticalSensorError);
 
                                 // Save AlphaValues
-                                bool eyesClosedDetected = DAQ_OpenBCI.DetectEyesClosed(out double[] alphaValues, out double avgAlpha, out double[] betaValues, out double avgBeta);
+                                bool eyesClosedDetected = ((DAQ_OpenBCI)_daqInstance).DetectEyesClosed(out double[] alphaValues, out double avgAlpha, out double[] betaValues, out double avgBeta);
                                 avgAlphaValues.Add(avgAlpha);
 
                                 // Log results
@@ -1444,14 +1361,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         private void OnHighlightOnOff(object request)
         {
             float marker = float.Parse(request as string);
-            if (_device == Device.OPENBCI)
-            {
-                DAQ_OpenBCI.InsertMarker(marker);
-            }
-            else
-            {
-                _gtecDeviceTester.gTecBCI.InsertMarker(marker);
-            }
+            _daqInstance.InsertMarker(marker);
         }
 
         /// <summary>
@@ -1538,8 +1448,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                 //Clear data in actuator
                 if (useSensor)
                 {
-                    if (_device == Device.OPENBCI) { DAQ_OpenBCI.GetData(); }
-                    else { _gtecDeviceTester.gTecBCI.GetData(); }
+                    _daqInstance.GetData();
 
                     EEGProcessingGlobals.RestartAllDecisionMakerProbabilities();
                     onResumeFlagActivated = true;
@@ -1663,22 +1572,12 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                         bool deviceStarted = false;
                         _currentCalibrationMode = bciModeObj.BciCalibrationMode;
 
-                        if (_device == Device.OPENBCI)
-                        {
-                            if (DAQ_OpenBCI.IsAcquiring())
-                                DAQ_OpenBCI.GetData(); // empty buffer
-                            else
-                                deviceStarted = DAQ_OpenBCI.Start();
-                        }
+                        if (_daqInstance.IsAcquiring())
+                            _daqInstance.GetData(); // empty buffer
                         else
-                        {
-                            if (_gtecDeviceTester.gTecBCI.IsAcquiring())
-                                _gtecDeviceTester.gTecBCI.GetData(); // empty buffer
-                            else
-                                deviceStarted = _gtecDeviceTester.gTecBCI.Start();
-                        }
+                            deviceStarted = _daqInstance.Start();
 
-                        if ((_device == Device.OPENBCI ? DAQ_OpenBCI.IsAcquiring() : _gtecDeviceTester.gTecBCI.IsAcquiring()) || deviceStarted)
+                        if (_daqInstance.IsAcquiring() || deviceStarted)
                         {
                             switch (bciModeObj.BciMode)
                             {
@@ -1716,8 +1615,8 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
                             // Start session
                             Log.Debug("Starting session: " + sessionID);
-                            sensorReady = _device == Device.OPENBCI ? DAQ_OpenBCI.StartSession(sessionID, true) : _gtecDeviceTester.gTecBCI.StartSession(sessionID, true);
-                            sessionDirectory = _device == Device.OPENBCI ? DAQ_OpenBCI.GetSessionDirectory() : _gtecDeviceTester.gTecBCI.GetSessionDirectory();
+                            sensorReady = _daqInstance.StartSession(sessionID, true);
+                            sessionDirectory = _daqInstance.GetSessionDirectory();
                             _isSessionInProgress = false; // set to true on calibrationEndRepetition and TypingEndRepetition
 
                             // Copy files to folder
@@ -1877,9 +1776,9 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                 try
                 {
                     Thread.Sleep(BCIActuatorSettings.Settings.DAQ_DelayAfterTypingRepetition);
-                    if (_device == Device.OPENBCI ? DAQ_OpenBCI.IsAcquiring() : _gtecDeviceTester.gTecBCI.IsAcquiring())
+                    if (_daqInstance.IsAcquiring())
                     {
-                        double[,] allSamples = _device == Device.OPENBCI ? DAQ_OpenBCI.GetData() : _gtecDeviceTester.gTecBCI.GetData();
+                        double[,] allSamples = _daqInstance.GetData();
 
                         if (allSamples != null && allSamples.Length > 0)
                         {
@@ -1890,17 +1789,8 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                             SignalStatus[] signalStatus;
 
                             // Fix for Problem 3 and Problem 4: Ensure 'signalStatus' is properly initialized by calling the appropriate method.
-                            if (_device == Device.OPENBCI)
-                            {
-                                // Write marker values to file
-                                DAQ_OpenBCI.WriteMarkerValues2File(bciTypingRepetitionEnd.RowColumnIDs);
-                                overallStatus = DAQ_OpenBCI.GetStatus(out signalStatus, out SignalStatus opticalSensorStatus);
-                            }
-                            else
-                            {
-                                _gtecDeviceTester.gTecBCI.WriteMarkerValues2File(bciTypingRepetitionEnd.RowColumnIDs);
-                                overallStatus = _gtecDeviceTester.gTecBCI.GetStatus(out signalStatus);
-                            }
+                            _daqInstance.WriteMarkerValues2File(bciTypingRepetitionEnd.RowColumnIDs);
+                            overallStatus = _daqInstance.GetStatus(out signalStatus);
 
                             bool[] availableChannels = new bool[signalStatus.Length];
                             int numKOChannels = 0;
@@ -1937,10 +1827,10 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                                 //    availableChannels[channelIdx] = true;
                             }
 
-                            if (_device == Device.OPENBCI)
+                            if (_daqInstance.GetType() == typeof(DAQ_OpenBCI))
                             {
                                 // Check if eyes open / closed
-                                eyesClosedDetected = DAQ_OpenBCI.DetectEyesClosed(out double[] alphaValues, out double avgAlpha, out double[] betaValues, out double avgBeta);
+                                eyesClosedDetected = ((DAQ_OpenBCI)_daqInstance).DetectEyesClosed(out double[] alphaValues, out double avgAlpha, out double[] betaValues, out double avgBeta);
 
                                 // Log values for eyes open /closed
                                 var bciLogEntry2 = new BCILogEntryEyesClosed() 
@@ -2223,34 +2113,11 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         {
             actuatorState = State.Stopped;
 
-            if (_device == Device.OPENBCI)
+            if (_daqInstance != null)
             {
-                DAQ_OpenBCI.Stop();
+                _daqInstance.Stop();
             }
-            else
-            {
-                if (_gtecDeviceTester?.gTecBCI != null)
-                {
-                    _gtecDeviceTester.gTecBCI.Stop();
-                }
-            }
-
-            if (_device == Device.OPENBCI)
-            {
-                try
-                {
-                    //#if OPTICAL_SENSOR
-                    if (OpticalSensorComm.IsConnected())
-                    {
-                        OpticalSensorComm.StopStreaming();
-                        OpticalSensorComm.Close();
-                    }
-                    //#endif
-                }
-                catch
-                {
-                }
-            }
+            
         }
 
         /// <summary>

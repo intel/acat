@@ -26,155 +26,15 @@ using System.Threading.Tasks;
 
 namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 {
-    public class DAQ_gTecBCI
+    /// <summary>
+    /// GTec implementation of DAQ for interfacing with the GTEC Unicorn sensor
+    /// </summary>
+    public class DAQ_gTecBCI : BaseDAQ
     {
-        /// <summary>
-        /// Settings
-        /// </summary>
-        public String SettingsFileName = "BCIActuatorSettings.xml";
-
-        // ********** Params set here (not read from settings)
-        private readonly string boardLogFileName = "boardLog";
-
-        private readonly bool boardLoggerEnabled = false;
-
-#if SIMULATIONBOARD
-        private readonly int boardID = (int)BoardIds.SYNTHETIC_BOARD;
-#else
-        // ********* Params read from settings
-        private readonly int boardID = (int)BoardIds.UNICORN_BOARD;
-#endif
-        /// <summary>
-        /// Sample rate
-        /// </summary>
-        public int sampleRate;
-
-        /// <summary>
-        /// Bolean, true if data shoudl be saved in file
-        /// </summary>
-        private bool saveDataToFile;
-
-        /// <summary>
-        /// Index for the notch filter
-        /// </summary>
-        private int notchFilterIdx;
-
-        /// <summary>
-        /// Index for the frontend filter
-        /// </summary>
-        private int frontendFilterIdx;
-
-        /// <summary>
-        /// Duration used to calculate VRMS and detect signal status (red/yellow/green)
-        /// </summary>
-        private int SignalControl_WindowDurationForVrmsMeaseurment;
-
         /// <summary>
         /// MInimum duty cycle required to pass trigger test. Set to 0 for no duty cycle requirement
         /// </summary>
         private float SignalControl_MinDutyCycleToPassTriggerTest;
-
-        // ********** Objects for this class
-
-        /// <summary>
-        /// Object to interact with cyton board via Brainflow library
-        /// </summary>
-        private BoardShim DeviceObj;
-
-        /// <summary>
-        /// Object to handle writting to files
-        /// </summary>
-        private FileWriter FileWriterObj;
-
-        /// <summary>
-        /// Notch filter
-        /// </summary>
-        private Filter NotchFilter;
-
-        /// <summary>
-        /// Frontend (bandpass) filter
-        /// </summary>
-        private Filter FrontendFilter;
-
-        /// <summary>
-        /// Status of the board
-        /// </summary>
-        private BoardStatus status;
-
-        /// <summary>
-        /// Boolean, true if device initialized
-        /// </summary>
-        public bool deviceInitialized = false;
-
-        /// <summary>
-        /// Buffer to store data and calculate signal stauts
-        /// </summary>
-        private double[,] _bufferSignalStatus;
-
-        ///// <summary>
-        ///// Buffer for triggertest
-        ///// </summary>
-        //private readonly List<double> _bufferTriggerTest;
-
-        /// <summary>
-        /// Flag, true when trigger test is in progress
-        /// </summary>
-        //private bool triggerTestInProgressFlag;
-
-        /// <summary>
-        /// Index of the EEG channels in data returned from sensor
-        /// This is directly via from brainflow
-        /// </summary>
-        public int[] indEegChannels;
-
-        public enum DeviceStatus
-        {
-            DEVICE_STANDBY,
-            DEVICE_ERROR,
-            DEVICE_ACQUIRINGDATA,
-        };
-
-        public DeviceStatus deviceStatus;
-
-        public enum BoardStatus
-        {
-            BOARD_STANDBY,
-            BOARD_OPEN,
-            BOARD_CLOSED,
-            BOARD_ACQUIRINGDATA,
-        };
-
-        public ExitCode sensorStatus;
-
-        public enum ExitCode
-        {
-            STATUS_OK,
-            PORT_ALREADY_OPEN_ERROR,
-            UNABLE_TO_OPEN_PORT_ERROR,
-            SET_PORT_ERROR,
-            BOARD_WRITE_ERROR,
-            INCOMMING_MSG_ERROR,
-            INITIAL_MSG_ERROR,
-            BOARD_NOT_READY_ERROR,
-            STREAM_ALREADY_RUN_ERROR,
-            INVALID_bufferSignalStatus_SIZE_ERROR,
-            STREAM_THREAD_ERROR,
-            STREAM_THREAD_IS_NOT_RUNNING,
-            EMPTY_bufferSignalStatus_ERROR,
-            INVALID_ARGUMENTS_ERROR,
-            UNSUPPORTED_BOARD_ERROR,
-            BOARD_NOT_CREATED_ERROR,
-            ANOTHER_BOARD_IS_CREATED_ERROR,
-            GENERAL_ERROR,
-            SYNC_TIMEOUT_ERROR,
-            JSON_NOT_FOUND_ERROR,
-            NO_SUCH_DATA_IN_JSON_ERROR,
-            CLASSIFIER_IS_NOT_PREPARED_ERROR,
-            ANOTHER_CLASSIFIER_IS_PREPARED_ERROR,
-            UNSUPPORTED_CLASSIFIER_AND_METRIC_COMBINATION_ERROR,
-            UNABLE_TO_CLOSE,
-            IDLE,
-        };
 
         public enum BluetoothEvent
         {
@@ -189,9 +49,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         public event DelegateBluetoothUpdate EvtBluetoothResult;
 
         /// <summary>
-        ///  Default contstructor
+        /// Load settings from configuration
         /// </summary>
-        public void LoadSettings()
+        public override void LoadSettings()
         {
             SignalControl_WindowDurationForVrmsMeaseurment = BCIActuatorSettings.Settings.SignalControl_WindowDurationForVrmsMeaseurment;
             SignalControl_MinDutyCycleToPassTriggerTest = BCIActuatorSettings.Settings.TriggerTest_MinDutyCycleToPassTriggerTest;
@@ -230,30 +90,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             Log.Debug(" Frontend filter: " + frontendFilterIdx + " Notch filter: " + notchFilterIdx);
         }
 
-        /// <summary>
-        /// Get session directory
-        /// </summary>
-        /// <returns></returns>
-        public String GetSessionDirectory()
-        {
-            if (FileWriterObj != null)
-                return FileWriterObj.sessionDirectory;
-            else
-                return null;
-        }
-
-        /// <summary>
-        /// Checks if device is acquiring data
-        /// </summary>
-        /// <returns></returns>
-        public bool IsAcquiring()
-        {
-            if (status == BoardStatus.BOARD_ACQUIRINGDATA)
-                return true;
-            else
-                return false;
-        }
-
         public static bool IsDeviceAvailable()
         {
             bool success = false;
@@ -281,11 +117,11 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         }
 
         /// <summary>
-        /// Initializes sensor
+        /// Initialize the device
         /// </summary>
-        /// <param name="serial_number"></param>
-        /// <returns></returns>
-        public bool InitDevice(string serial_number = "")
+        /// <param name="serial_number">Serial number of device to connect</param>
+        /// <returns>True if successful, false otherwise</returns>
+        public override bool InitDevice(string serial_number = "")
         {
 #if SIMULATIONBOARD
             // Hardcode serial_number to indicate it's a simulator
@@ -294,6 +130,13 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 
             try
             {
+                // Initialize boardID from base class
+#if SIMULATIONBOARD
+                boardID = (int)BoardIds.SYNTHETIC_BOARD;
+#else
+                boardID = (int)BoardIds.UNICORN_BOARD;
+#endif
+
                 if (status == BoardStatus.BOARD_OPEN)
                 {
                     Log.Debug("Board was open, closing device");
@@ -325,16 +168,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     // Test port
                     Log.Debug("Testing port: " + serial_number);
                     bool sensorConnected = TestPort(serial_number, out _);
-
-                    // TODO: Celal check if we can do anything with GTEC
-                    //if (!sensorConnected)
-                    //{
-                    //    Log.Debug("Sensor not connected to port " + serial_number + ". Starting port detection");
-                    //    serial_number = DetectPort();
-                    //    Log.Debug("Port " + serial_number + " detected. Testing port");
-                    //    sensorConnected = TestPort(serial_number, out _);
-                    //    Log.Debug("Port " + serial_number + " tested. Result: " + sensorConnected);
-                    //}
 
                     BrainFlowInputParams input_params = new();
 
@@ -378,7 +211,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 
                         deviceInitialized = true;
 
-                        AddWarning(ExitCode.IDLE, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  STATUS                 MESSAGE: Device initialized at serial port: " + serial_number);
+                        AddWarning(ExitCodes.IDLE, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  STATUS                 MESSAGE: Device initialized at serial port: " + serial_number);
                         Log.Debug("Board initialized. Status: " + status.ToString());
 
                         return true;
@@ -390,20 +223,20 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             catch (Exception e)
             {
                 Log.Exception(e.Message);
-                sensorStatus = getErrorCode(e.Message, ExitCode.BOARD_NOT_READY_ERROR);
+                sensorStatus = getErrorCode(e.Message, ExitCodes.BOARD_NOT_READY_ERROR);
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING             MESSAGE: Error Code: " + sensorStatus);
                 return false;
             }
         }
 
         /// <summary>
-        /// Starts sensor
+        /// Start data acquisition
         /// </summary>
-        /// <param name="serial_number"></param>
-        /// <param name="saveData"></param>
-        /// <param name="sessionID"></param>
-        /// <returns></returns>
-        public bool Start(String serial_number = "", bool saveData = false, String sessionID = "")
+        /// <param name="serial_number">Serial number of device to connect</param>
+        /// <param name="saveData">Whether to save data to file</param>
+        /// <param name="sessionID">Session identifier</param>
+        /// <returns>True if successful, false otherwise</returns>
+        public override bool Start(string serial_number = "", bool saveData = false, string sessionID = "")
         {
             bool success = false;
             try
@@ -439,7 +272,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e) //needs to handle error better
             {
-                sensorStatus = getErrorCode(e.Message, ExitCode.BOARD_NOT_CREATED_ERROR);
+                sensorStatus = getErrorCode(e.Message, ExitCodes.BOARD_NOT_CREATED_ERROR);
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING             MESSAGE: Error Code: " + sensorStatus);
                 Log.Exception("Exception:" + e.Message + " Error code:" + sensorStatus);
                 success = false;
@@ -449,10 +282,10 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         }
 
         /// <summary>
-        /// Stops sensor
+        /// Stop data acquisition
         /// </summary>
-        /// <returns></returns>
-        public bool Stop()
+        /// <returns>True if successful, false otherwise</returns>
+        public override bool Stop()
         {
             try
             {
@@ -477,7 +310,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                sensorStatus = getErrorCode(e.Message, ExitCode.SYNC_TIMEOUT_ERROR);
+                sensorStatus = getErrorCode(e.Message, ExitCodes.SYNC_TIMEOUT_ERROR);
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING               MESSAGE: Error Code: " + sensorStatus);
                 Log.Exception("Exception:" + e.Message + " Error code: " + sensorStatus);
                 return false;
@@ -485,10 +318,10 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         }
 
         /// <summary>
-        /// CLoses sensor and files
+        /// Close device and release resources
         /// </summary>
-        /// <returns></returns>
-        public bool CloseDevice()
+        /// <returns>True if successful, false otherwise</returns>
+        public override bool CloseDevice()
         {
             try
             {
@@ -509,19 +342,19 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                sensorStatus = getErrorCode(e.Message, ExitCode.UNABLE_TO_CLOSE);
+                sensorStatus = getErrorCode(e.Message, ExitCodes.UNABLE_TO_CLOSE);
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING             MESSAGE: Error Code: " + sensorStatus);
                 Log.Exception("Exception:" + e.Message + " Error code: " + sensorStatus);
                 return false;
             }
         }
 
-        /// TODO - Fix function. Currently modifies rawData returned
         /// <summary>
         /// Get all available data from sensor
         /// </summary>
-        /// <returns></returns>
-        public double[,] GetData(bool returnFilteredData = true)
+        /// <param name="returnFilteredData">Whether to return filtered data</param>
+        /// <returns>Array of data samples</returns>
+        public override double[,] GetData(bool returnFilteredData = true)
         {
             double[,] rawData = null;
             double[,] filteredData = null;
@@ -541,7 +374,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         // Append data to buffer for status signal
                         AppendDataToBuffer(filteredData, _bufferSignalStatus, SignalControl_WindowDurationForVrmsMeaseurment, out _bufferSignalStatus);
 
-                        // TODO : Celal check how ofthen writing data to file!
                         // Write data to file
                         if (saveDataToFile && FileWriterObj != null && FileWriterObj.isFileOpened)
                         {
@@ -563,72 +395,14 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 return rawData;
         }
 
-        public double[,] daq_filter_data(double[,] unfilteredData)
-        {
-            var filteredData_notch = NotchFilter.FilterData(unfilteredData, indEegChannels);
-            double[,] filteredData = FrontendFilter.FilterData(filteredData_notch, indEegChannels);
-            return filteredData;
-        }
-
         /// <summary>
-        /// Inserts marker
+        /// Insert marker
         /// </summary>
-        /// <param name="marker"></param>
-        public void InsertMarker(float marker)
+        /// <param name="marker">Marker value</param>
+        public override void InsertMarker(float marker)
         {
             if (status == BoardStatus.BOARD_ACQUIRINGDATA)
-                DeviceObj.insert_marker(marker + 1);//1=off, 2=0n
-        }
-
-        /// <summary>
-        /// Writes markers to file
-        /// </summary>
-        /// <param name="markerValues"></param>
-        public void WriteMarkerValues2File(List<int> markerValues)
-        {
-            if (saveDataToFile)
-            {
-                FileWriterObj ??= new FileWriter();
-
-                FileWriterObj.WriteMarkerValueToFile(markerValues);
-            }
-        }
-
-        /// <summary>
-        /// For internal use, adds filtered data to a buffer to assess signal status
-        /// </summary>
-        /// <param name="rawData"></param>
-        /// <returns></returns>
-        private bool AppendDataToBuffer(double[,] data, double[,] inBuffer, int numSamplesInBuffer, out double[,] outBuffer)
-        {
-            bool result = false;
-            outBuffer = null;
-            try
-            {
-                // Append to buffer
-                if (inBuffer != null)
-                    inBuffer = Matrix.Concatenate(inBuffer, data);
-                else
-                    inBuffer = data;
-
-                // Keep only last N samples in buffer (N samples are used to calculate status)
-                int numSamplesCurrBuffer = inBuffer.GetLength(1);
-                int numSamplesToKeep = (numSamplesInBuffer * sampleRate) / 1000;
-                List<int> idxToKeep = new();
-                for (int i = numSamplesCurrBuffer - numSamplesToKeep; i < numSamplesCurrBuffer; i++)
-                {
-                    if (i >= 0)
-                        idxToKeep.Add(i);
-                }
-                outBuffer = inBuffer.GetColumns(idxToKeep.ToArray());
-
-                result = true;
-            }
-            catch (Exception e)
-            {
-                Log.Exception(e.Message);
-            }
-            return result;
+                DeviceObj.insert_marker(marker + 1); //1=off, 2=0n
         }
 
         #region Utils
@@ -655,8 +429,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             catch (Exception e)
             {
-                sensorStatus = getErrorCode(e.Message, ExitCode.SET_PORT_ERROR);
-                if (sensorStatus == ExitCode.ANOTHER_BOARD_IS_CREATED_ERROR)
+                sensorStatus = getErrorCode(e.Message, ExitCodes.SET_PORT_ERROR);
+                if (sensorStatus == ExitCodes.ANOTHER_BOARD_IS_CREATED_ERROR)
                     portAlreadyOpen = true;
                 AddWarning(sensorStatus, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  WARNING             MESSAGE: Error Code: " + sensorStatus);
                 Log.Exception("Exception: " + e.Message);
@@ -670,9 +444,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// <param name="message"></param>
         /// <param name="defaultErrorCode"></param>
         /// <returns></returns>
-        private ExitCode getErrorCode(string message, ExitCode defaultErrorCode)
+        private ExitCodes getErrorCode(string message, ExitCodes defaultErrorCode)
         {
-            foreach (ExitCode code in Enum.GetValues(typeof(ExitCode)))
+            foreach (ExitCodes code in Enum.GetValues(typeof(ExitCodes)))
             {
                 if (message.Contains(code.ToString()))
                     return code;
@@ -680,114 +454,19 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             return defaultErrorCode;
         }
 
-        /// <summary>
-        /// Creates files where data is stored
-        /// </summary>
-        /// <param name="sessionID"></param>
-        private void CreateFiles(String sessionID)
-        {
-            if (saveDataToFile)
-            {
-                if (FileWriterObj == null)
-                {
-                    Log.Debug("Creating files for session: " + sessionID);
-
-                    if (sessionID == "")
-                        FileWriterObj = new FileWriter();
-                    else
-                        FileWriterObj = new FileWriter(sessionID);
-                }
-
-                FileWriterObj.WriteHeaders(BoardShim.get_sampling_rate(boardID), indEegChannels, -1);
-            }
-        }
-
-        /// <summary>
-        /// Creates a new sesion (new files) without having to stop and start the device
-        /// </summary>
-        /// <param name="sessionID"></param>
-        public bool StartSession(String sessionID, bool forceSavingData)
-        {
-            bool result = false;
-            try
-            {
-                if (forceSavingData)
-                    saveDataToFile = forceSavingData; // THis is useful for calibration where data should always be saved
-                else
-                    saveDataToFile = BCIActuatorSettings.Settings.DAQ_SaveToFileFlag;
-
-                if (status == BoardStatus.BOARD_ACQUIRINGDATA)
-                {
-                    // Empty buffer
-                    GetData();
-
-                    if (saveDataToFile)
-                    {
-                        Log.Debug("Creating files for session: " + sessionID);
-
-                        // Creates new file
-                        if (sessionID == "")
-                            FileWriterObj = new FileWriter();
-                        else
-                            FileWriterObj = new FileWriter(sessionID);
-
-                        FileWriterObj.WriteHeaders(BoardShim.get_sampling_rate(boardID), indEegChannels, -1);
-
-                        result = true;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Exception("Exception " + e.Message);
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Ends session
-        /// </summary>
-        /// <returns></returns>
-        public bool EndSession()
-        {
-            bool result = false;
-            try
-            {
-                if (saveDataToFile && FileWriterObj != null && FileWriterObj.isFileOpened)
-                {
-                    FileWriterObj.CloseFiles();
-                    FileWriterObj = null;
-                }
-                if (status == BoardStatus.BOARD_ACQUIRINGDATA)
-                {
-                    //triggerTestInProgressFlag = false;
-                    GetData(); // Empty buffer
-                }
-                Log.Debug("Session closed");
-                result = true;
-            }
-            catch (Exception e)
-            {
-                Log.Exception("Exception " + e.Message);
-            }
-
-            return result;
-        }
-
-        private readonly Queue<Dictionary<ExitCode, string>> warnings = new();
-        private readonly int limit = 10;
+        private readonly Queue<Dictionary<ExitCodes, string>> warnings = new();
 
         /// <summary>
         /// Add a warning to the queue
         /// </summary>
         /// <param name="info">string warnings</param>
-        public void AddWarning(ExitCode code, String info)
+        public void AddWarning(ExitCodes code, String info)
         {
-            var data = new Dictionary<ExitCode, string>
+            var data = new Dictionary<ExitCodes, string>
             {
                 { code, info }
             };
-            if (warnings.Count < limit)
+            if (warnings.Count < warningLimit)
             {
                 warnings.Enqueue(data);
             }
@@ -802,9 +481,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Gets the available warnings in the queue
         /// </summary>
         /// <returns>Warnings</returns>
-        public Dictionary<ExitCode, string> getWarning()
+        public Dictionary<ExitCodes, string> getWarning()
         {
-            Dictionary<ExitCode, string> info = null;
+            Dictionary<ExitCodes, string> info = null;
             try
             {
                 if (warnings.Count() > 0)
@@ -816,23 +495,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 return info;
             }
             return info;
-        }
-
-        /// <summary>
-        /// Send lower level config command to BoardShim device
-        /// </summary>
-        /// <param name="cmd"></param>
-        public void Config_Board(string cmd)
-        {
-            try
-            {
-                Log.Debug("Config board. Command" + cmd);
-                DeviceObj.config_board(cmd);
-            }
-            catch (Exception ex)
-            {
-                Log.Exception(ex);
-            }
         }
 
 //#if SIMULATIONBOARD
@@ -878,14 +540,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             DeviceObj.stop_stream();
         }
 
-        /// <summary>
-        /// Helper function to reset Cyton board to default state
-        /// </summary>
-        //public void Reset_Board()
-        //{
-        //    Config_Board("d");
-        //}
-
+        #endregion Utils
+        
         /// <summary>
         /// Get Unicorn paired / unpaired devices using Unicorn API
         /// Pass on lists of devices in EvtBluetoothResult
@@ -1002,10 +658,11 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         }
 
         /// <summary>
-        /// Gets status
+        /// Gets the status of the signals
         /// </summary>
-        /// <returns></returns>v
-        public SignalStatus GetStatus(out SignalStatus[] statusSignals)
+        /// <param name="statusSignals">Array of signal status values for each channel</param>
+        /// <returns>Overall signal status</returns>
+        public override SignalStatus GetStatus(out SignalStatus[] statusSignals)
         {
             SignalStatus statusAllSignals = SignalStatus.SIGNAL_ERROR;
             statusSignals = new SignalStatus[indEegChannels.Length];
@@ -1035,6 +692,4 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             return statusAllSignals;
         }
     }
-
-#endregion Utils
 }

@@ -24,7 +24,6 @@ using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition.DAQ_OpenBCI;
 
 namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 {
@@ -106,16 +105,6 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         public ScannerRoundedButtonControl _triggerBox;
 
         /// <summary>
-        /// Time used to switch color for the trigger box
-        /// </summary>
-        private int _triggerBoxSwitchDelayMsec = 600;
-
-        /// <summary>
-        /// Amount of iteration for the test in the trigger box
-        /// </summary>
-        private readonly int _triggerBoxNumTestIterations = 10;
-
-        /// <summary>
         /// Start trigger box test
         /// </summary>
         private bool _requestTestTriggerBox = false;
@@ -187,6 +176,11 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// Whether Exit was selected and then confirmed from any screen - left Onboarding without completion
         /// </summary>
         public static bool ExitOnboardingEarly = false;
+        
+        /// <summary>
+        /// The DAQ instance for OpenBCI
+        /// </summary>
+        private BaseDAQ _daqInstance;
 
         /// <summary>
         /// Tests BCI devices - connections to the hw and data quality
@@ -225,8 +219,6 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 Log.Exception(ex);
             }
 
-            initOpticalSensor();
-
             if (ExitOnboardingEarly)
             {
                 EvtBCIDeviceTestingCompleted();
@@ -242,13 +234,13 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             ExitOnboardingEarly = false;
             dateTimeLastReceivedOKSignalStatus = DateTime.MinValue;
 
-            DAQ_OpenBCI.pastOpticalSensorData = new double[1];
-            DAQ_OpenBCI.dateTimeLastChangeOpticalSensorData = DateTime.MinValue;
-
             // Unset flags that will end async tasks and timers
             _endSignalCheckTimer = false;
             _endTriggerBoxTask = false;
             _endTasks = false;
+
+            // Initialize DAQ instance
+            _daqInstance = DAQFactory.CreateDAQ(DAQDeviceType.OpenBCI);
 
             // Create main form
             _mainForm = new SensorForm(_deviceTestingState);
@@ -648,15 +640,15 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             // Don't need below anymore?
             // TaskStartStopDataProcessing needed to be called in these cases because plotting
             // timer needs to be stopped (optical sensor or BCI signal check)
-            switch (DAQ_OpenBCI.deviceStatus)
+            switch (_daqInstance.deviceStatus)
             {
-                case DAQ_OpenBCI.DeviceStatus.DEVICE_STANDBY:
+                case BaseDAQ.DeviceStatus.DEVICE_STANDBY:
                     InitDAQ();
                     _mainForm.TaskStartStopDataProcessing(DeviceTestingState.Testing_BCIConnections);
                     break;
 
-                case DAQ_OpenBCI.DeviceStatus.DEVICE_ERROR:
-                    DAQ_OpenBCI.Stop(); // close board connection before attempting new one if got error
+                case BaseDAQ.DeviceStatus.DEVICE_ERROR:
+                    _daqInstance.Stop(); // close board connection before attempting new one if got error
                     InitDAQ();
                     _mainForm.TaskStartStopDataProcessing(DeviceTestingState.Testing_BCIConnections);
                     break;
@@ -818,111 +810,6 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
         }
 
-        /// <summary>
-        /// Continuous loop which processes the optical sensor data
-        /// Updates the box in the upper left and can run sensor quality / validation test when flag "_requestTestTriggerBox" set
-        /// </summary>
-        /// <returns></returns>
-        public async Task TriggerBoxHighlighting() // Original function
-        {
-            _triggerBoxTaskStopped = false;
-            int counter = 0;
-            bool startTest = false;
-
-            Log.Debug("OPTSEN: Enter TriggerBoxHighlighting()");
-
-            while (!_endTasks && !_endTriggerBoxTask)
-            {
-                if (_requestTestTriggerBox && !startTest)
-                {
-                    if ((!OpticalSensorComm.IsConnected() || _opticalSensorDisconnected))
-                    {
-                        if (!openOpticalSensor())
-                        {
-                            Log.Debug("OPTSEN: OpenBCIDeviceTester | Failed to open optical sensor COM port. ");
-                            _deviceTestingState = DeviceTestingState.ReceivedBCIError_OpticalSensor;
-                            changeDeviceTestingState(DeviceTestingState.ReceivedBCIError_OpticalSensor);
-                        }
-                    }
-
-                    Log.Debug("OPTSEN: Stop streaming");
-                    OpticalSensorComm.StopStreaming();
-                    await Task.Delay(1000);
-
-                    Log.Debug("OPTSEN: Setting lux threshold to " + BCIActuatorSettings.Settings.DAQ_OpticalSensorLuxThreshold);
-                    OpticalSensorComm.SetLuxThreshold(BCIActuatorSettings.Settings.DAQ_OpticalSensorLuxThreshold);
-
-                    Log.Debug("OPTSEN: Start streaming");
-                    OpticalSensorComm.StartStreaming();
-                    await Task.Delay(1000);
-
-                    // Start TriggerBox test
-                    Log.Debug("TriggerBoxHighlighting | _requestTestTriggerBox | !startTest");
-
-                    DAQ_OpenBCI.TriggerTestStart();
-                    startTest = true;
-                    changeTriggerBoxColor(Color.Black);
-                    _triggerBoxSwitchDelayMsec = 100;
-                    await Task.Delay(200);
-                    counter = 0;
-                }
-
-                changeTriggerBoxColor(Color.White);
-                await Task.Delay(_triggerBoxSwitchDelayMsec);
-
-                changeTriggerBoxColor(Color.Black);
-                await Task.Delay(_triggerBoxSwitchDelayMsec);
-
-                if (_requestTestTriggerBox)
-                {
-                    counter += 1;
-
-                    if (counter >= _triggerBoxNumTestIterations)
-                    {
-                        await Task.Delay(200);
-                        var status = DAQ_OpenBCI.TriggerTestStop(10, out int result, out _, out _);
-
-                        if (status == DAQ_OpenBCI.ExitCodes.PHOTOSENSOR_STATUS_OK)
-                        {
-                            BCIActuatorSettings.Save();
-
-                            // Go to first stage of signal quality checking process
-                            startSignalQualityTestingState(DeviceTestingState.BCISignalCheckStartRequired);
-                        }
-                        else
-                        {
-                            Log.Debug("OpenBCIDeviceTester | _deviceTestingState = DeviceTestingState.ReceivedBCIError_OpticalSensor: " + status);
-                            _deviceTestingState = DeviceTestingState.ReceivedBCIError_OpticalSensor;
-                            changeDeviceTestingState(DeviceTestingState.ReceivedBCIError_OpticalSensor);
-                        }
-
-                        DAQ_OpenBCI.AddWarning(DAQ_OpenBCI.ExitCodes.STATUS_OK, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + " STATUS " + " MESSAGE: Trigger box Test result");
-                        DAQ_OpenBCI.AddWarning(DAQ_OpenBCI.ExitCodes.STATUS_OK, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + " STATUS " + " MESSAGE: Repetitions: 10 - Result: " + result);
-                        DAQ_OpenBCI.AddWarning(status, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + " STATUS " + " MESSAGE: " + status);
-                        _triggerBoxSwitchDelayMsec = 600;
-                        counter = 0;
-                        _requestTestTriggerBox = false;
-                        startTest = false;
-                    }
-                }
-            }
-
-            _triggerBoxTaskStopped = true;
-
-            Log.Debug("OPTSEN: Exiting TriggerBoxHighlighting()");
-
-            Debug.WriteLine("TriggerBoxHighlighting | hole | _triggerBoxTask_TaskStopped = true");
-        }
-
-        /// <summary>
-        /// Handler for error related to receving data from the optical sensor
-        /// </summary>
-        /// <param name="msg"></param>
-        private void OpticalSensorComm_EvtOpticalSensorDataReceiveError(string msg)
-        {
-            Debug.WriteLine("OPTSEN: Data receive error. Please (re)plug in the optical sensor");
-            _opticalSensorDisconnected = true;
-        }
 
         /// <summary>
         /// Task to Initialize the DAQ sensor if is already then process skip the init method
@@ -940,9 +827,9 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 {
                     await Task.Delay(1500); // Original delay
 
-                    // Log.Debug("OpenBCIDeviceTester | InitDAQ() | Calling DAQ_OpenBCI.getUsbDongleConnected()");
-                    ExitCodes exitCode = DAQ_OpenBCI.getUsbDongleConnected();
-                    if (exitCode == ExitCodes.UNABLE_TO_OPEN_PORT_ERROR)
+                    // Use the DAQ instance instead of static methods
+                    BaseDAQ.ExitCodes exitCode = ((DAQ_OpenBCI)_daqInstance).getUsbDongleConnected();
+                    if (exitCode == BaseDAQ.ExitCodes.UNABLE_TO_OPEN_PORT_ERROR)
                     {
                         Log.Debug("OpenBCIDeviceTester | _deviceTestingState = DeviceTestingState.ReceivedBCIError_UsbDongle");
                         _deviceTestingState = DeviceTestingState.ReceivedBCIError_UsbDongle;
@@ -951,40 +838,28 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                     else
                     {
                         Log.Debug("InitDAQ | exitCode: " + exitCode.ToString());
-                        bool success = DAQ_OpenBCI.Start("");
+                        bool success = _daqInstance.Start("");
                         if (success)
                         {
                             Log.Debug("DAQ_OpenBCI.Start() | true");
 
                             // Check latency setting of port is set correctly
-                            bool latencyPortOk = DAQ_OpenBCI.CheckLatencyPort();
+                            bool latencyPortOk = ((DAQ_OpenBCI)_daqInstance).CheckLatencyPort();
                             if (latencyPortOk)
                             {
                                 Log.Debug("DAQ_OpenBCI.CheckLatencyPort() | true");
 
-                                if (DAQ_OpenBCI.deviceInitialized)
+                                if (_daqInstance.deviceInitialized)
                                 {
                                     Log.Debug("DAQ_OpenBCI.deviceInitialized | true");
 
-                                    if (!_Testing_BCIOnboardingIgnoreOpticalSensorChecks)
-                                    {
-                                        // BCI impedence / railing integration - only go to signal check screens if optical sensor / trigger box tests successful
-                                        Log.Debug("_Testing_BCIOnboardingIgnoreOpticalSensorChecks == false");
+         
+                                    // BCI impedence / railing integration - debugging option, go straight to signal check screens without checking optical sensor
+                                    Log.Debug("_Testing_BCIOnboardingIgnoreOpticalSensorChecks == true");
 
-                                        DAQ_OpenBCI.TriggerTestStart();
-                                        DAQ_OpenBCI.AddWarning(DAQ_OpenBCI.ExitCodes.STATUS_OK, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + " STATUS " + " MESSAGE: Starting Trigger box Test");
-                                        _requestTestTriggerBox = true;
-                                        _triggerBoxSwitchDelayMsec = 100;
-                                        TriggerBoxHighlighting();
-                                    }
-                                    else
-                                    {
-                                        // BCI impedence / railing integration - debugging option, go straight to signal check screens without checking optical sensor
-                                        Log.Debug("_Testing_BCIOnboardingIgnoreOpticalSensorChecks == true");
-
-                                        // Go to first stage of signal quality checking process
-                                        startSignalQualityTestingState(DeviceTestingState.BCISignalCheckStartRequired);
-                                    }
+                                    // Go to first stage of signal quality checking process
+                                    startSignalQualityTestingState(DeviceTestingState.BCISignalCheckStartRequired);
+                                    
                                 }
                                 else
                                 {
@@ -994,7 +869,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                             else
                             {
                                 Log.Debug("DAQ_OpenBCI.CheckLatencyPort() | false | _deviceTestingState = DeviceTestingState.ReceivedBCIError_PortConfig");
-                                DAQ_OpenBCI.Stop();
+                                _daqInstance.Stop();
                                 _deviceTestingState = DeviceTestingState.ReceivedBCIError_PortConfig;
                                 changeDeviceTestingState(DeviceTestingState.ReceivedBCIError_PortConfig);
                             }
@@ -1017,63 +892,6 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         }
 
         /// <summary>
-        /// Custom form for when there is an error connecting to the optical sensor
-        /// </summary>
-        private SensorForm _opticalSensorErrorForm;
-
-        /// <summary>
-        /// Initialize optical sensor, show it, and connect custom handlers for the Exit and Retest buttons
-        /// </summary>
-        private void initOpticalSensor()
-        {
-            if (!_Testing_useSensor && !_Testing_BCIOnboardingIgnoreOpticalSensorChecks)
-            {
-                return;
-            }
-
-            if (!openOpticalSensor())
-            {
-                _opticalSensorErrorForm = new SensorForm(DeviceTestingState.OpticalSensorDetectError);
-                _opticalSensorErrorForm.EvtButtonCancelClicked += SensorForm_EvtButtonCancelClicked;
-                _opticalSensorErrorForm.EvtButtonRetestClicked += SensorForm_EvtButtonRetestClicked;
-
-                _opticalSensorErrorForm.ShowDialog();
-
-                _opticalSensorErrorForm.EvtButtonCancelClicked -= SensorForm_EvtButtonCancelClicked;
-                _opticalSensorErrorForm.EvtButtonRetestClicked -= SensorForm_EvtButtonRetestClicked;
-            }
-        }
-
-        /// <summary>
-        /// Handler for when Retry button selected
-        /// </summary>
-        /// <param name="sender"></param>
-        private void SensorForm_EvtButtonRetestClicked(object sender)
-        {
-            if (openOpticalSensor())
-            {
-                _opticalSensorErrorForm.Close();
-            }
-        }
-
-        /// <summary>
-        /// Handler for when Exit button selected
-        /// </summary>
-        /// <param name="sender"></param>
-        private void SensorForm_EvtButtonCancelClicked(object sender)
-        {
-            if (!confirmExit(_opticalSensorErrorForm))
-            {
-                return;
-            }
-            else
-            {
-                ExitOnboardingEarly = true; // Set flag corresponding to early exit
-                _opticalSensorErrorForm.Close();
-            }
-        }
-
-        /// <summary>
         /// Display confirmation to quit BCI onboarding
         /// </summary>
         /// <param name="parent"></param>
@@ -1082,40 +900,6 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         {
             return ConfirmBoxTwoOption.ShowDialog("Onboarding incomplete.",
                 "Quit anyway?", StringResources.Yes, StringResources.No, parent, true);
-        }
-
-        /// <summary>
-        /// Connect to optical sensor COM port and attach callbacks related to receiving data
-        /// </summary>
-        /// <returns></returns>
-        private bool openOpticalSensor()
-        {
-            if (!_Testing_useSensor || _Testing_BCIOnboardingIgnoreOpticalSensorChecks)
-            {
-                return true;
-            }
-
-            try
-            {
-                _opticalSensorDisconnected = false;
-
-                Log.Debug("OPTSEN: Opening optical sensor port...");
-                OpticalSensorComm.Open();
-                Log.Debug("OPTSEN: Optical sensor port opened successfully");
-
-                OpticalSensorComm.EvtOpticalSensorDataReceiveError -= OpticalSensorComm_EvtOpticalSensorDataReceiveError;
-                OpticalSensorComm.EvtOpticalSensorDataReceiveError += OpticalSensorComm_EvtOpticalSensorDataReceiveError;
-
-                Log.Debug("OPTSEN: Sending stop streaming command");
-                OpticalSensorComm.StopStreaming();
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Log.Exception("OPTSEN: OpenBCIDeviceTester | Failed to open optical sensor COM port. " + ex.Message);
-                return false;
-            }
         }
     }
 }

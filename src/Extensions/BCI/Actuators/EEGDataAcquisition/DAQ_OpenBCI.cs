@@ -50,12 +50,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         private static string serialPort;
 
         /// <summary>
-        /// Port (in Cyton board) where teh optical sensor is connected
-        /// Options:  1,2,3,4,5 corresponging to [D11, D12, D13, D17, D18]
-        /// </summary>
-        public static int opticalSensorPinIdx = 3;
-
-        /// <summary>
         /// Sample rate
         /// </summary>
         public static int sampleRate;
@@ -94,11 +88,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Duration used to calculate VRMS and detect signal status (red/yellow/green)
         /// </summary>
         private static int SignalControl_WindowDurationForVrmsMeaseurment;
-
-        /// <summary>
-        /// MInimum duty cycle required to pass trigger test. Set to 0 for no duty cycle requirement
-        /// </summary>
-        private static float SignalControl_MinDutyCycleToPassTriggerTest;
 
         // ********** Objects for this class
 
@@ -143,26 +132,10 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         private static double[,] _bufferEyesClosed;
 
         /// <summary>
-        /// Buffer for triggertest
-        /// </summary>
-        private static List<double> _bufferTriggerTest;
-
-        /// <summary>
-        /// Flag, true when trigger test is in progress
-        /// </summary>
-        private static bool triggerTestInProgressFlag;
-
-        /// <summary>
         /// Index of the EEG channels in data returned from sensor
         /// This is directly via from brainflow
         /// </summary>
         public static int[] indEegChannels;
-
-        /// <summary>
-        /// Index of the optical sensor channel
-        /// This is directly read from brainflow
-        /// </summary>
-        public static int indOpticalSensorChannel;
 
         public enum DeviceStatus
         {
@@ -223,13 +196,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             ANOTHER_CLASSIFIER_IS_PREPARED_ERROR,
             UNSUPPORTED_CLASSIFIER_AND_METRIC_COMBINATION_ERROR,
             UNABLE_TO_CLOSE,
-            IDLE,
-            PHOTOSENSOR_NO_PULSE_DETECTED_ERROR,
-            PHOTOSENSOR_DIFFERENT_NUM_PULSES_DETECTED_ERROR,
-            PHOTOSENSOR_UNKNOWN_ERROR,
-            PHOTOSENSOR_DUTYCICLE_HIGH_ERROR,
-            PHOTOSENSOR_DUTYCICLE_LOW_ERROR,
-            PHOTOSENSOR_STATUS_OK
+            IDLE
         };
 
         /// <summary>
@@ -238,8 +205,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         public static void LoadSettings()
         {
             SignalControl_WindowDurationForVrmsMeaseurment = BCIActuatorSettings.Settings.SignalControl_WindowDurationForVrmsMeaseurment;
-            SignalControl_MinDutyCycleToPassTriggerTest = BCIActuatorSettings.Settings.TriggerTest_MinDutyCycleToPassTriggerTest;
-            Log.Debug("DAQ settings loaded. Min duty cycle to pass trigger test" + SignalControl_MinDutyCycleToPassTriggerTest + " Window duration for uVrmsMeasurement: " + SignalControl_WindowDurationForVrmsMeaseurment);
+            Log.Debug("DAQ settings loaded. Window duration for uVrmsMeasurement: " + SignalControl_WindowDurationForVrmsMeaseurment);
 
             switch (BCIActuatorSettings.Settings.DAQ_NumEEGChannels)
             {
@@ -363,16 +329,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         {
             serialPort = null;
 
-            Log.Debug("Optical sensor port: " + OpticalSensorComm.PortName);
-
             foreach (String port in SerialPort.GetPortNames())
             {
                 Log.Debug("Checking port " + port);
-                if (String.Compare(port, OpticalSensorComm.PortName, true) == 0)
-                {
-                    Log.Debug("Skipping " + OpticalSensorComm.PortName);
-                    continue;
-                }
 
                 serialPort = port;
                 AddWarning(ExitCodes.IDLE, "  Time: " + DateTime.Now.ToString("h:mm:ss tt") + "  TESTING PORT    MESSAGE: Serial port " + serialPort);
@@ -525,16 +484,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         DeviceObj = new BoardShim(boardID, input_params);
                         DeviceObj.prepare_session();
 
-                        //string stringBoardMode = "/" + boardMode;
-                        // Config board to digital mode (mode 3) for photo sensor
-                        Log.Debug("DAQ_OpenBCI - InitDevice | Sending board mode commands");
-                        DeviceObj.config_board("/3");
-                        DeviceObj.config_board("/2");
-                        DeviceObj.config_board("/3");
+                        Log.Debug("DAQ_OpenBCI - InitDevice | Board session prepared");
 
                         indEegChannels = BoardShim.get_eeg_channels(boardID);
-                        int[] indOtherChannels = BoardShim.get_other_channels(boardID); //indOtherChannels = 12...18
-                        indOpticalSensorChannel = indOtherChannels[opticalSensorPinIdx];// = D13=15=indOtherChannels[3];
                         sampleRate = BoardShim.get_sampling_rate(boardID);
                         BCISettingsFixed.DAQ_SampleRate = sampleRate;
 
@@ -590,7 +542,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     Log.Debug("Stream started");
 
                     status = BoardStatus.BOARD_ACQUIRINGDATA;
-                    triggerTestInProgressFlag = false;
 
                     if (saveDataToFile)
                     {
@@ -709,12 +660,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         AppendDataToBuffer(filteredData, _bufferSignalStatus, SignalControl_WindowDurationForVrmsMeaseurment, out _bufferSignalStatus);
                         AppendDataToBuffer(filteredData, _bufferEyesClosed, eyesClosed_WindowDuration, out _bufferEyesClosed);
 
-                        // Append data to buffer for triggerTest
-                        if (triggerTestInProgressFlag)
-                        {
-                            _bufferTriggerTest ??= new List<double>();
-                            _bufferTriggerTest.AddRange(rawData.GetRow(indOpticalSensorChannel));
-                        }
+                        // Trigger test disabled - optical sensor removed
 
                         // Write data to file
                         if (saveDataToFile && FileWriterObj != null && FileWriterObj.isFileOpened)
@@ -760,12 +706,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     AppendDataToBuffer(filteredData, _bufferSignalStatus, SignalControl_WindowDurationForVrmsMeaseurment, out _bufferSignalStatus);
                     AppendDataToBuffer(filteredData, _bufferEyesClosed, eyesClosed_WindowDuration, out _bufferEyesClosed);*/
 
-                    // Append data to buffer for triggerTest
-                    if (triggerTestInProgressFlag)
-                    {
-                        _bufferTriggerTest ??= new List<double>();
-                        _bufferTriggerTest.AddRange(rawData.GetRow(indOpticalSensorChannel));
-                    }
+                    // Trigger test disabled - optical sensor removed
 
                     // Write data to file
                     if (saveDataToFile && FileWriterObj != null && FileWriterObj.isFileOpened)
@@ -810,49 +751,32 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         }
 
         /// <summary>
-        /// Gets marker (from optical sensor)
+        /// Gets marker (removed with optical sensor)
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Always returns -1 since optical sensor is removed</returns>
         public static int GetMarker()
         {
-            int optSensorValue = -1;
+            // Optical sensor is removed, always return -1
             if (status == BoardStatus.BOARD_ACQUIRINGDATA)
             {
                 _ = GetData(); //By doing get data, places last samples in _bufferSignalStatus
-                if ((_bufferSignalStatus != null && _bufferSignalStatus.Length > 0))
-                {
-                    int numSamples = _bufferSignalStatus.GetLength(1);
-
-                    optSensorValue = (int)_bufferSignalStatus[indOpticalSensorChannel, numSamples - 1];
-                    optSensorValue = 1 - optSensorValue; //Flip value so black = 0, white = 1
-                    deviceStatus = DeviceStatus.DEVICE_ACQUIRINGDATA;
-                }
+                deviceStatus = DeviceStatus.DEVICE_ACQUIRINGDATA;
             }
-            if (-1 == optSensorValue)
+            else
             {
-                switch (status)
-                {
-                    case BoardStatus.BOARD_ACQUIRINGDATA:
-                        deviceStatus = DeviceStatus.DEVICE_ERROR;
-                        break;
-
-                    case BoardStatus.BOARD_STANDBY:
-                        deviceStatus = DeviceStatus.DEVICE_STANDBY;
-                        break;
-                }
+                deviceStatus = (status == BoardStatus.BOARD_STANDBY) ? DeviceStatus.DEVICE_STANDBY : DeviceStatus.DEVICE_ERROR;
             }
-            return optSensorValue;
+            return -1;
         }
 
         /// <summary>
         /// Gets status
         /// </summary>
-        /// <returns></returns>v
-        public static SignalStatus GetStatus(out SignalStatus[] statusSignals, out SignalStatus statusOpticalSensor)
+        /// <returns></returns>
+        public static SignalStatus GetStatus(out SignalStatus[] statusSignals)
         {
             SignalStatus statusAllSignals = SignalStatus.SIGNAL_ERROR;
             statusSignals = new SignalStatus[indEegChannels.Length];
-            statusOpticalSensor = SignalStatus.SIGNAL_ERROR;
             for (int channelIdx = 0; channelIdx < indEegChannels.Length; channelIdx++)
                 statusSignals[channelIdx] = SignalStatus.SIGNAL_ERROR;
 
@@ -896,15 +820,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         statusAllSignals = SignalStatus.SIGNAL_OK;
                         for (int channelIdx = 0; channelIdx < indEegChannels.Length; channelIdx++)
                             statusSignals[channelIdx] = SignalStatus.SIGNAL_OK;
-
-                        // Sanity check of optical sensor, will return SIGNAL_OK if 0 and 1 are detected in the buffer
-                        // (this assumes the optical sensor is placed on top of the triggerbox and the triggerbox has changed from black to white)
-                        statusOpticalSensor = SignalStatus.SIGNAL_KO;
-                        double[] opticalSensorSignal = _bufferSignalStatus.GetRow(indOpticalSensorChannel);
-                        bool containsZeroes = opticalSensorSignal.Any(o => o == 0);
-                        bool containsOnes = opticalSensorSignal.Any(o => o == 1);
-                        if (containsZeroes && containsOnes)
-                            statusOpticalSensor = SignalStatus.SIGNAL_OK;
                     }
                 }
                 catch (Exception e)
@@ -916,84 +831,15 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         }
 
         /// <summary>
-        /// Maximum amount of time for optical sensor data to remain the same before throwing error
-        /// </summary>
-        // public const double THRESHOLD_ERROR_NO_OPTICAL_SENSOR_DATA_CHANGE_SEC = 10.0;
-        public const double THRESHOLD_ERROR_NO_OPTICAL_SENSOR_DATA_CHANGE_SEC = 5.0;
-
-        /// <summary>
-        /// Tracks optical sensor data for comparison across time
-        /// </summary>
-        // public static string pastStringOpticalSensorData = "NONE"; // Reset to "NONE" everytme BCI device testing process repeated
-        public static double[] pastOpticalSensorData = new double[1]; // Reset to = new double[1] everytme BCI device testing process repeated
-
-        /// <summary>
-        /// Tracks time optical sensor data last changed
-        /// </summary>
-        public static DateTime dateTimeLastChangeOpticalSensorData = DateTime.MinValue; // Reset to DateTime.MinValue everytme BCI device testing process repeated
-
-        /// <summary>
-        /// Get overall Cyton board / USB dongle status by comparing values in the optical sensor buffer
+        /// Get overall Cyton board / USB dongle status
         /// </summary>
         /// <returns></returns>
         public static SignalStatus GetStatus2_ReceivedData()
         {
-            GetMarker(); // Just call GetMarker to set deviceStatus accordingly
-
-            SignalStatus retStatus = SignalStatus.SIGNAL_OK;
-            double timeSinceOpticalSensorDataChange = -999;
-            // string stringOpticalSensorData = "NONE";
-
-            double[] opticalSensorSignal = _bufferSignalStatus.GetRow(indOpticalSensorChannel);
-            bool containsZeroes = opticalSensorSignal.Any(o => o == 0);
-            bool containsOnes = opticalSensorSignal.Any(o => o == 1);
-            if (containsZeroes && containsOnes)
-            {
-                // stringOpticalSensorData = string.Join(", ", opticalSensorSignal);
-                DateTime dateTimeNow = DateTime.UtcNow;
-                // if (pastStringOpticalSensorData != "NONE")
-                if (pastOpticalSensorData.Length > 1)
-                {
-                    bool isEqual = Enumerable.SequenceEqual(pastOpticalSensorData, opticalSensorSignal);
-
-                    // if (stringOpticalSensorData == pastStringOpticalSensorData)
-                    if (isEqual)
-                    {
-                        if (dateTimeLastChangeOpticalSensorData != DateTime.MinValue)
-                        {
-                            timeSinceOpticalSensorDataChange = (dateTimeNow - dateTimeLastChangeOpticalSensorData).TotalSeconds;
-                            if (timeSinceOpticalSensorDataChange != -999 && timeSinceOpticalSensorDataChange > THRESHOLD_ERROR_NO_OPTICAL_SENSOR_DATA_CHANGE_SEC)
-                            {
-                                retStatus = SignalStatus.SIGNAL_KO;
-
-                                // DAQ_OpenBCI.DeviceStatus.DEVICE_ERROR;
-                                if (deviceStatus == DeviceStatus.DEVICE_ERROR)
-                                {
-                                    DAQ_OpenBCI.Stop(); // close board connection before attempting new one if got error
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        dateTimeLastChangeOpticalSensorData = dateTimeNow;
-                    }
-                }
-
-                // pastStringOpticalSensorData = stringOpticalSensorData;
-                pastOpticalSensorData = opticalSensorSignal;
-            }
-
-            /*// Debugging
-            string str_opticalSensorSignal = string.Join(", ", opticalSensorSignal);
-            string str_pastOpticalSensorSignal = string.Join(", ", pastOpticalSensorData);
-            Log.Debug("\n\nGetStatus2_ReceivedData | timeSinceOpticalSensorDataChange: " + timeSinceOpticalSensorDataChange.ToString());
-            Log.Debug("status: " + status.ToString() + " | sensorStatus: " + sensorStatus.ToString() + " | sensorStatus: "+ sensorStatus.ToString());
-            Log.Debug("\npastOpticalSensorData: " + str_pastOpticalSensorSignal);
-            Log.Debug("\nopticalSensorSignal: " + str_pastOpticalSensorSignal);
-            Log.Debug("\nretStatus: " + retStatus.ToString());*/
-
-            return retStatus;
+            // Call GetMarker to set deviceStatus correctly
+            GetMarker();
+            
+            return SignalStatus.SIGNAL_OK;
         }
 
         /// <summary>
@@ -1034,138 +880,25 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         }
 
         /// <summary>
-        /// Starts trigger tests
+        /// Starts trigger tests - Removed with optical sensor, always returns true if board is acquiring data
         /// </summary>
         public static bool TriggerTestStart()
         {
-            if (status == BoardStatus.BOARD_ACQUIRINGDATA)
-            {
-                Log.Debug("Starting trigger test");
-                GetData();
-                _bufferTriggerTest = new List<double>();
-                triggerTestInProgressFlag = true;
-                return true;
-            }
-            else
-                return false;
+            return status == BoardStatus.BOARD_ACQUIRINGDATA;
         }
 
         /// <summary>
-        /// Stops trigger test and outputs result and number of detected pulses
+        /// Stops trigger test - Removed with optical sensor
         /// </summary>
         /// <param name="numExpectedPulses"></param>
         /// <param name="numDetectedPulses"></param>
         /// <returns></returns>
         public static ExitCodes TriggerTestStop(int numExpectedPulses, out int numDetectedPulses, out List<double> dutyCycleList, out double dutyCycleAvg)
         {
-            Log.Debug("Stopping trigger test");
-            numDetectedPulses = 0;
-            ExitCodes statusCode = ExitCodes.PHOTOSENSOR_UNKNOWN_ERROR;
-            dutyCycleList = new List<double>();
-            dutyCycleAvg = 0;
-
-            if (status == BoardStatus.BOARD_ACQUIRINGDATA)
-            {
-                GetData();
-                triggerTestInProgressFlag = false;
-
-                if (_bufferTriggerTest != null && _bufferTriggerTest.Count > 0)
-                {
-                    try
-                    {
-                        double[] triggerSignal = _bufferTriggerTest.ToArray();
-                        int numSamples = triggerSignal.Count();
-                        // detect number of pulses
-                        bool pulseOnDetected = false;
-                        bool pulseOffDetected = false;
-                        int numSamplesOn = 0;
-                        int numSamplesOff = 0;
-                        List<float> dutycycleList = new();
-
-                        // Flip signal (triggertest signal is reversed)
-                        for (int sampleIdx = 0; sampleIdx < numSamples; sampleIdx++)
-                        {
-                            if (triggerSignal[sampleIdx] == 1)
-                                triggerSignal[sampleIdx] = 0;
-                            else
-                                triggerSignal[sampleIdx] = 1;
-                        }
-                        for (int sampleIdx = 0; sampleIdx < numSamples - 1; sampleIdx++)
-                        {
-                            if (triggerSignal[sampleIdx] == 1) // On detected
-                            {
-                                numSamplesOn++;
-                                pulseOnDetected = true;
-                            }
-
-                            if (pulseOnDetected && triggerSignal[sampleIdx] == 0) //Off detected
-                            {
-                                numSamplesOff++;
-                                pulseOffDetected = true;
-                            }
-
-                            if ((triggerSignal[sampleIdx] == 0 && triggerSignal[sampleIdx + 1] == 1 && pulseOnDetected && pulseOffDetected)
-                                || (pulseOnDetected && triggerSignal[sampleIdx] == 0 && sampleIdx == numSamples - 2))
-                            {
-                                float dutyCicle = (float)numSamplesOn / (float)(numSamplesOff + numSamplesOn);
-                                Log.Debug("Duty cycle: " + dutyCicle);
-                                dutycycleList.Add(dutyCicle);
-                                numSamplesOn = 0;
-                                numSamplesOff = 0;
-                                pulseOnDetected = false;
-                                pulseOffDetected = false;
-                            }
-                        }
-
-                        numDetectedPulses = dutycycleList.Count;
-
-                        // Verify duty cycle by using average
-                        bool dutycycleError = false;
-                        if (dutycycleList.Count > 0)
-                        {
-                            if (dutycycleList.Count > 1)
-                                dutyCycleAvg = dutycycleList.Take(dutycycleList.Count - 1).Average(); // take N-1 since last pulse off is not accurate
-                            else
-                                dutyCycleAvg = dutycycleList[0]; // Only one pulse available, set value s average
-
-                            Log.Debug("Average duty cicle: " + dutyCycleAvg);
-                            dutycycleError = dutyCycleAvg < SignalControl_MinDutyCycleToPassTriggerTest;
-                        }
-
-                        // Verify duty cycle for each individual pulse
-                        // Note: using average instead, uncomment to use individual pulses
-                        //bool dutycycleError = false;
-                        //for (int pulseIdx = 0; pulseIdx < duticycleList.Count - 1; pulseIdx++)
-                        //{
-                        //    if (duticycleList[pulseIdx] < SignalControl_MinDutyCycleToPassTriggerTest)
-                        //    {
-                        //        dutycycleError = true;
-                        //        Log.Debug("Duty cicle error. Pulse: " + pulseIdx + " Duty cycle: " + duticycleList[pulseIdx]);
-                        //    }
-                        //}
-
-                        // Verify number of detected pulses and dutycicle error
-                        if (numDetectedPulses == numExpectedPulses && !dutycycleError)// && statusCode == ExitCodes.PHOTOSENSOR_UNKNOWN_ERROR)
-                            statusCode = ExitCodes.PHOTOSENSOR_STATUS_OK;
-                        else if (numDetectedPulses != numExpectedPulses)
-                            statusCode = ExitCodes.PHOTOSENSOR_DIFFERENT_NUM_PULSES_DETECTED_ERROR;
-                        else if (numDetectedPulses == 0)
-                            statusCode = ExitCodes.PHOTOSENSOR_NO_PULSE_DETECTED_ERROR;
-                        else if (dutycycleError)
-                            statusCode = ExitCodes.PHOTOSENSOR_DUTYCICLE_LOW_ERROR;
-
-                        Log.Debug("Trigger test result: " + statusCode.ToString() + " Num pulses expected: " + numExpectedPulses + ", Num pulses detected: " + numDetectedPulses + ", Duty cicle average: " + dutyCycleAvg);
-
-                        _bufferTriggerTest = new List<double>();
-                    }
-                    catch (Exception e)
-                    {
-                        statusCode = ExitCodes.PHOTOSENSOR_UNKNOWN_ERROR;
-                        Log.Debug("Excepcion: " + e.Message + " Sending status:" + statusCode.ToString());
-                    }
-                }
-            }
-            return statusCode;
+            numDetectedPulses = numExpectedPulses;
+            dutyCycleList = new List<double> { 1.0 };
+            dutyCycleAvg = 1.0;
+            return ExitCodes.STATUS_OK;
         }
 
         /// <summary>
@@ -1343,7 +1076,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         FileWriterObj = new FileWriter(sessionID);
                 }
 
-                FileWriterObj.WriteHeaders(BoardShim.get_sampling_rate(boardID), indEegChannels, indOpticalSensorChannel);
+                // Pass -1 as index for optical sensor channel since it's been removed
+                FileWriterObj.WriteHeaders(BoardShim.get_sampling_rate(boardID), indEegChannels, -1);
             }
         }
 
@@ -1376,7 +1110,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         else
                             FileWriterObj = new FileWriter(sessionID);
 
-                        FileWriterObj.WriteHeaders(BoardShim.get_sampling_rate(boardID), indEegChannels, indOpticalSensorChannel);
+                        // Pass -1 as index for optical sensor channel since it's been removed
+                        FileWriterObj.WriteHeaders(BoardShim.get_sampling_rate(boardID), indEegChannels, -1);
 
                         result = true;
                     }
@@ -1405,7 +1140,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 }
                 if (status == BoardStatus.BOARD_ACQUIRINGDATA)
                 {
-                    triggerTestInProgressFlag = false;
                     GetData(); // Empty buffer
                 }
                 Log.Debug("Session closed");

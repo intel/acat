@@ -9,11 +9,6 @@
 // Interfaces with the GTEC Unicorn sensor
 //
 ////////////////////////////////////////////////////////////////////////////
-
-
-/*
-#define SIMULATIONBOARD
-//*/
 using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition.FileManagement;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
@@ -257,7 +252,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         initPortSuccess = true;
 
                     Log.Debug("Starting stream");
-                    DeviceObj.start_stream();
+                    Start_Streaming();
                     Log.Debug("Stream started");
 
                     status = BoardStatus.BOARD_ACQUIRINGDATA;
@@ -298,8 +293,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 {
                     Log.Debug("Board acquiring data. Stopping device");
                     GetData();
-                    DeviceObj.stop_stream();
-                    DeviceObj.release_session();
+                    Stop_Streaming();
                     Log.Debug("Device stopped");
                 }
 
@@ -338,9 +332,10 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 }
 
                 if (status == BoardStatus.BOARD_ACQUIRINGDATA)
-                    DeviceObj.stop_stream();
+                {
+                    Stop_Streaming();
+                }
 
-                DeviceObj.release_session();
                 status = BoardStatus.BOARD_CLOSED;
                 Log.Debug("Device closed");
                 return true;
@@ -502,6 +497,48 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             return info;
         }
 
+//#if SIMULATIONBOARD
+//        [DllImport("user32.dll")]
+//        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+//        [DllImport("user32.dll")]
+//        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+//        private const int HOTKEY_ID = 1;
+//        protected override void WndProc(ref Message m)
+//        {
+//            const int WM_HOTKEY = 0x0312;
+//            if (m.Msg == WM_HOTKEY && m.WParam.ToInt32() == HOTKEY_ID)
+//            {
+//                DeviceObj.insert_marker(1.0);
+//                Console.WriteLine("Global marker inserted!");
+//            }
+//            base.WndProc(ref m);
+//        }
+
+
+//#endif
+
+        /// <summary>
+        /// Helper function to start Cyton board streaming
+        /// </summary>
+        public void Start_Streaming()
+        {
+            DeviceObj.start_stream();
+//#if SIMULATIONBOARD
+//            RegisterHotKey(foo, HOTKEY_ID, 0x0002, (uint)Keys.Space);
+//#endif
+        }
+
+        /// <summary>
+        /// Helper function to stop Cyton board streaming
+        /// </summary>
+        public void Stop_Streaming()
+        {
+//#if SIMULATIONBOARD
+//            UnRegisterHotKey(foo, HOTKEY_ID);
+//#endif
+            DeviceObj.stop_stream();
+        }
 
         #endregion Utils
         

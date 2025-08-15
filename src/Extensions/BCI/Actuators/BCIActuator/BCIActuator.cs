@@ -2234,23 +2234,6 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                     _gtecDeviceTester.gTecBCI.Stop();
                 }
             }
-
-            if (_device == Device.OPENBCI)
-            {
-                try
-                {
-                    //#if OPTICAL_SENSOR
-                    if (OpticalSensorComm.IsConnected())
-                    {
-                        OpticalSensorComm.StopStreaming();
-                        OpticalSensorComm.Close();
-                    }
-                    //#endif
-                }
-                catch
-                {
-                }
-            }
         }
 
         /// <summary>

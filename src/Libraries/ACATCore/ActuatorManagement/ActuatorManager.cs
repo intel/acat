@@ -118,12 +118,12 @@ namespace ACAT.Core.ActuatorManagement
         /// <summary>
         /// Prevents a default instance of ActuatorManager class from being created
         /// </summary>
-        private ActuatorManager()
-        {
-            //_activeSwitches = new Dictionary<String, IActuatorSwitch>();
-            //_nonActuateSwitches = new Dictionary<String, IActuatorSwitch>();
-            //_syncObjectSwitches = new object();
-        }
+        //private ActuatorManager()
+        //{
+        //    _activeSwitches = new Dictionary<String, IActuatorSwitch>();
+        //    _nonActuateSwitches = new Dictionary<String, IActuatorSwitch>();
+        //    _syncObjectSwitches = new object();
+        //}
 
         /// <summary>
         /// Deleagate for notification of start of calibration by an actuator

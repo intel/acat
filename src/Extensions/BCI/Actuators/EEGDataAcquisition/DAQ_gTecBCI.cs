@@ -10,13 +10,20 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+
+/*
+#define SIMULATIONBOARD
+//*/
 using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition.FileManagement;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using Accord.Math;
 using brainflow;
+#if !SIMULATIONBOARD
 using Gtec.Unicorn;
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,9 +43,12 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 
         private readonly bool boardLoggerEnabled = false;
 
+#if SIMULATIONBOARD
+        private readonly int boardID = (int)BoardIds.SYNTHETIC_BOARD;
+#else
         // ********* Params read from settings
         private readonly int boardID = (int)BoardIds.UNICORN_BOARD;
-
+#endif
         /// <summary>
         /// Sample rate
         /// </summary>
@@ -196,7 +206,11 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             BCIActuatorSettings.Settings.DAQ_NumEEGChannels = 8;
             BCIActuatorSettings.Settings.DataParser_UseSoftwareTrigers = true;
 
+#if SIMULATIONBOARD
+            BCISettingsFixed.DataParser_IdxTriggerSignal_Sw = 32;
+#else
             BCISettingsFixed.DataParser_IdxTriggerSignal_Sw = 19;
+#endif
             BCISettingsFixed.DimReduct_DownsampleRate = 2;
 
             // Gtec does not use 9 to 16 it is only 8 channels
@@ -250,6 +264,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             bool success = false;
             try
             {
+#if SIMULATIONBOARD
+                success = true;
+#else
                 // check if drivers are installed
                 success = Unicorn.IsDeviceLibraryLoadable();
 
@@ -258,6 +275,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 
                 success = success && devices.Count > 0;
                 //*/
+#endif
             }
             catch (Exception ex)
             {
@@ -274,6 +292,11 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// <returns></returns>
         public bool InitDevice(string serial_number = "")
         {
+#if SIMULATIONBOARD
+            // Hardcode serial_number to indicate it's a simulator
+            serial_number = "SYNTHETIC_BOARD";
+#endif
+
             try
             {
                 if (status == BoardStatus.BOARD_OPEN)
@@ -342,7 +365,11 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         int[] gyro = BoardShim.get_gyro_channels(boardID);
                         int timestamp = BoardShim.get_timestamp_channel(boardID);
                         int battery = BoardShim.get_battery_channel(boardID);
+#if SIMULATIONBOARD
+                        int[] indOtherChannels = new int[7] { 12, 13, 14, 15, 16, 17, 18 };
+#else
                         int[] indOtherChannels = BoardShim.get_other_channels(boardID); //indOtherChannels = 12...18
+#endif
                         sampleRate = BoardShim.get_sampling_rate(boardID);
                         BCISettingsFixed.DAQ_SampleRate = sampleRate;
 
@@ -816,28 +843,28 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// <summary>
         /// Helper function to start Cyton board streaming
         /// </summary>
-        public void Start_Streaming()
-        {
-            DeviceObj.start_stream();
-            //Config_Board("b");
-        }
+        //public void Start_Streaming()
+        //{
+        //    DeviceObj.start_stream();
+        //    //Config_Board("b");
+        //}
 
         /// <summary>
         /// Helper function to stop Cyton board streaming
         /// </summary>
-        public void Stop_Streaming()
-        {
-            DeviceObj.stop_stream();
-            //Config_Board("s");
-        }
+        //public void Stop_Streaming()
+        //{
+        //    DeviceObj.stop_stream();
+        //    //Config_Board("s");
+        //}
 
         /// <summary>
         /// Helper function to reset Cyton board to default state
         /// </summary>
-        public void Reset_Board()
-        {
-            Config_Board("d");
-        }
+        //public void Reset_Board()
+        //{
+        //    Config_Board("d");
+        //}
 
         /// <summary>
         /// Get Unicorn paired / unpaired devices using Unicorn API
@@ -849,12 +876,18 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         {
             return await Task.Run(() =>
             {
-                IList<string> devices = new List<string>();
+                IList<string> devices = null;
 
                 try
                 {
+#if SIMULATIONBOARD
+                    devices = new List<string>()
+                    {
+                        "SYNTHETIC_BOARD"
+                    };
+#else
                     devices = Unicorn.GetAvailableDevices(paired);
-
+#endif
                     Dictionary<String, object> eventParams = new()
                     {
                         ["paired"] = paired,
@@ -894,10 +927,13 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                 {   
                     try
                     {
+
+#if !SIMULATIONBOARD
                         Log.Debug($"Selected device: {BCIActuatorSettings.Settings.GTecDeviceName}, trying to connect...");
                         using Unicorn device = new(BCIActuatorSettings.Settings.GTecDeviceName);
-                        device.Dispose();
                         Log.Debug($"Device: {device} is connected...");
+                        device.Dispose();
+#endif
                         EvtBluetoothResult(BluetoothEvent.SUCCESSFUL_CONNECTION, null);
                         return true;
                     }
@@ -980,5 +1016,5 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         }
     }
 
-    #endregion Utils
+#endregion Utils
 }

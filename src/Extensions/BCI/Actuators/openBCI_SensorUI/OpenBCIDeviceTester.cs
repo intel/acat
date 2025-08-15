@@ -24,7 +24,6 @@ using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition.DAQ_OpenBCI;
 
 namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 {
@@ -177,6 +176,11 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// Whether Exit was selected and then confirmed from any screen - left Onboarding without completion
         /// </summary>
         public static bool ExitOnboardingEarly = false;
+        
+        /// <summary>
+        /// The DAQ instance for OpenBCI
+        /// </summary>
+        private BaseDAQ _daqInstance;
 
         /// <summary>
         /// Tests BCI devices - connections to the hw and data quality
@@ -234,6 +238,9 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             _endSignalCheckTimer = false;
             _endTriggerBoxTask = false;
             _endTasks = false;
+
+            // Initialize DAQ instance
+            _daqInstance = DAQFactory.CreateDAQ(DAQDeviceType.OpenBCI);
 
             // Create main form
             _mainForm = new SensorForm(_deviceTestingState);
@@ -633,15 +640,15 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             // Don't need below anymore?
             // TaskStartStopDataProcessing needed to be called in these cases because plotting
             // timer needs to be stopped (optical sensor or BCI signal check)
-            switch (DAQ_OpenBCI.deviceStatus)
+            switch (_daqInstance.deviceStatus)
             {
-                case DAQ_OpenBCI.DeviceStatus.DEVICE_STANDBY:
+                case BaseDAQ.DeviceStatus.DEVICE_STANDBY:
                     InitDAQ();
                     _mainForm.TaskStartStopDataProcessing(DeviceTestingState.Testing_BCIConnections);
                     break;
 
-                case DAQ_OpenBCI.DeviceStatus.DEVICE_ERROR:
-                    DAQ_OpenBCI.Stop(); // close board connection before attempting new one if got error
+                case BaseDAQ.DeviceStatus.DEVICE_ERROR:
+                    _daqInstance.Stop(); // close board connection before attempting new one if got error
                     InitDAQ();
                     _mainForm.TaskStartStopDataProcessing(DeviceTestingState.Testing_BCIConnections);
                     break;
@@ -820,9 +827,9 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 {
                     await Task.Delay(1500); // Original delay
 
-                    // Log.Debug("OpenBCIDeviceTester | InitDAQ() | Calling DAQ_OpenBCI.getUsbDongleConnected()");
-                    ExitCodes exitCode = DAQ_OpenBCI.getUsbDongleConnected();
-                    if (exitCode == ExitCodes.UNABLE_TO_OPEN_PORT_ERROR)
+                    // Use the DAQ instance instead of static methods
+                    BaseDAQ.ExitCodes exitCode = ((DAQ_OpenBCI)_daqInstance).getUsbDongleConnected();
+                    if (exitCode == BaseDAQ.ExitCodes.UNABLE_TO_OPEN_PORT_ERROR)
                     {
                         Log.Debug("OpenBCIDeviceTester | _deviceTestingState = DeviceTestingState.ReceivedBCIError_UsbDongle");
                         _deviceTestingState = DeviceTestingState.ReceivedBCIError_UsbDongle;
@@ -831,18 +838,18 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                     else
                     {
                         Log.Debug("InitDAQ | exitCode: " + exitCode.ToString());
-                        bool success = DAQ_OpenBCI.Start("");
+                        bool success = _daqInstance.Start("");
                         if (success)
                         {
                             Log.Debug("DAQ_OpenBCI.Start() | true");
 
                             // Check latency setting of port is set correctly
-                            bool latencyPortOk = DAQ_OpenBCI.CheckLatencyPort();
+                            bool latencyPortOk = ((DAQ_OpenBCI)_daqInstance).CheckLatencyPort();
                             if (latencyPortOk)
                             {
                                 Log.Debug("DAQ_OpenBCI.CheckLatencyPort() | true");
 
-                                if (DAQ_OpenBCI.deviceInitialized)
+                                if (_daqInstance.deviceInitialized)
                                 {
                                     Log.Debug("DAQ_OpenBCI.deviceInitialized | true");
 
@@ -862,7 +869,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                             else
                             {
                                 Log.Debug("DAQ_OpenBCI.CheckLatencyPort() | false | _deviceTestingState = DeviceTestingState.ReceivedBCIError_PortConfig");
-                                DAQ_OpenBCI.Stop();
+                                _daqInstance.Stop();
                                 _deviceTestingState = DeviceTestingState.ReceivedBCIError_PortConfig;
                                 changeDeviceTestingState(DeviceTestingState.ReceivedBCIError_PortConfig);
                             }

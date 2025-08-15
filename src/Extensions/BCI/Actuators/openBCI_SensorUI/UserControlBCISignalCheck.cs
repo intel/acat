@@ -38,6 +38,11 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
     /// </summary>
     public partial class UserControlBCISignalCheck : UserControl
     {
+        /// <summary>
+        /// The DAQ instance for OpenBCI
+        /// </summary>
+        private BaseDAQ _daqInstance;
+        
         private readonly String _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  <head>\r\n  <style>\r\n    a:link{color: rgb(255, 170, 0);}\r\n  " +
                             "</style>\r\n  </head>\r\n  <body style=\"background-color:#232433;\">\r\n    " +
                             "<p style=\"font-family:'Montserrat Medium'; font-size:20px; color:white; text-align: center;\">\r\n" +
@@ -272,6 +277,9 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         public UserControlBCISignalCheck(String stepId)
         {
             InitializeComponent();
+
+            // Initialize the DAQ instance
+            _daqInstance = DAQFactory.CreateDAQ(DAQDeviceType.OpenBCI);
 
             _stepId = stepId;
             buttonNext.Enabled = true;
@@ -626,9 +634,9 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             _Testing_BCIOnboardingIgnoreOpticalSensorChecks = BCIActuatorSettings.Settings.Testing_BCIOnboardingIgnoreOpticalSensorChecks;
 
             // Get / initialize variables related to board config used in data processing
-            _indEegChannels = DAQ_OpenBCI.indEegChannels;
+            _indEegChannels = _daqInstance.indEegChannels;
             _numChannels = BCIActuatorSettings.Settings.DAQ_NumEEGChannels;
-            _samplingRate = DAQ_OpenBCI.sampleRate;
+            _samplingRate = _daqInstance.sampleRate;
             _scaleIdx = BCIActuatorSettings.Settings.SignalMonitor_ScaleIdx;
 
             // If Daisy board connection found earlier or testing parameter set to duplicate required channels
@@ -839,7 +847,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         {
             Log.Debug("StartImpedanceTesting");
 
-            if (!_runImpedanceTestingCycle && DAQ_OpenBCI.deviceInitialized)
+            if (!_runImpedanceTestingCycle && _daqInstance.deviceInitialized)
             {
                 _runImpedanceTestingCycle = true;
                 _impedanceTestingRunning = true;
@@ -848,7 +856,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 ////// Before running impedance tests ///////
                 //// Stop streaming on board, does not consistently register commands while streaming
                 Log.Debug("Stop streaming");
-                DAQ_OpenBCI.Stop_Streaming();
+                ((DAQ_OpenBCI)_daqInstance).Stop_Streaming();
                 Thread.Sleep(50);
 
                 while (_runImpedanceTestingCycle)
@@ -873,19 +881,19 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                         currentEegChannel.impedanceResultImpedanceTest.BackColor = Color.DarkOrange;
                     }));
 
-                    DAQ_OpenBCI.GetData(); // Clear buffer
+                    _daqInstance.GetData(); // Clear buffer
 
                     //// Send enable electrode Impedance testing commands
                     Log.Debug(String.Format("Sending enable electrode {0} Impedance testing command: {1}", electrodeName, cmdStartElectrodeImpedanceTest));
-                    DAQ_OpenBCI.Config_Board(cmdStartElectrodeImpedanceTest);
+                    ((DAQ_OpenBCI)_daqInstance).Config_Board(cmdStartElectrodeImpedanceTest);
                     Thread.Sleep(750);
 
-                    // Make sure DAQ_OpenBCI.deviceInitialized set to true when streaming enabled
-                    DAQ_OpenBCI.deviceInitialized = true;
+                    // Make sure deviceInitialized set to true when streaming enabled
+                    _daqInstance.deviceInitialized = true;
 
                     //// Send start streaming
                     Log.Debug("Start streaming");
-                    DAQ_OpenBCI.Start_Streaming();
+                    ((DAQ_OpenBCI)_daqInstance).Start_Streaming();
                     Thread.Sleep(50);
 
                     // Wait for a bit then send stop streaming and disable impedance testing commands
@@ -897,18 +905,18 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                         currentTimestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                     }
 
-                    // Set DAQ_OpenBCI.deviceInitialized to false to stop processing data when streaming stopped
-                    // Will be set to true again during DAQ_OpenBCI.Start()
-                    DAQ_OpenBCI.deviceInitialized = false;
+                    // Set deviceInitialized to false to stop processing data when streaming stopped
+                    // Will be set to true again during Start()
+                    _daqInstance.deviceInitialized = false;
 
                     //// Stop streaming
                     Log.Debug("Stop streaming");
-                    DAQ_OpenBCI.Stop_Streaming();
+                    ((DAQ_OpenBCI)_daqInstance).Stop_Streaming();
                     Thread.Sleep(50);
 
                     // Send command to disable impedance testing for specific electrode
                     Log.Debug(String.Format("Sending disable electrode {0} impedance testing command: {1}", electrodeName, cmdEndElectrodeImpedanceTest));
-                    DAQ_OpenBCI.Config_Board(cmdEndElectrodeImpedanceTest);
+                    ((DAQ_OpenBCI)_daqInstance).Config_Board(cmdEndElectrodeImpedanceTest);
                     Thread.Sleep(750);
                     Log.Debug("Completed impedance testing electrode: " + _currentImpedanceTestElectrodeIndex.ToString());
 
@@ -951,18 +959,18 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 
                 // Reset board to default parameters
                 Log.Debug("Send command to reset board");
-                DAQ_OpenBCI.Reset_Board(); // Run multiple times? DAQ_OpenBCI.Reset_Board();
+                ((DAQ_OpenBCI)_daqInstance).Reset_Board(); // Run multiple times?
                 Thread.Sleep(750); // Tested 750 - is ok
                 Log.Debug("Send command to reset board");
-                DAQ_OpenBCI.Reset_Board();
+                ((DAQ_OpenBCI)_daqInstance).Reset_Board();
                 Thread.Sleep(4500);
 
-                Log.Debug("Calling DAQ_OpenBCI.Stop()");
-                DAQ_OpenBCI.Stop();
+                Log.Debug("Calling Stop()");
+                _daqInstance.Stop();
                 Thread.Sleep(250); // Tested 250 - is ok
 
-                Log.Debug("Calling DAQ_OpenBCI.Start()");
-                DAQ_OpenBCI.Start(); // Also starts streaming
+                Log.Debug("Calling Start()");
+                _daqInstance.Start(); // Also starts streaming
 
                 // Stopped Impedance testing cycle, update UI accordingly
                 Invoke(new Action(() =>

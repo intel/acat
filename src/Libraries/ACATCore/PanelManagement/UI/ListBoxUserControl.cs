@@ -57,8 +57,11 @@ namespace ACAT.Core.PanelManagement
             // Draw the background of the ListBox control for each item.
             e.DrawBackground();
 
-            SizeF size = e.Graphics.MeasureString(Items[e.Index].ToString(), e.Font);
-            e.Graphics.DrawString(Items[e.Index].ToString(), e.Font, brush, e.Bounds.Left, e.Bounds.Top + (e.Bounds.Height / 2 - size.Height / 2));
+            var item = Items[e.Index] as ListViewItem;
+
+
+            SizeF size = e.Graphics.MeasureString(item.Text, e.Font);
+            e.Graphics.DrawString(item.Text, e.Font, brush, e.Bounds.Left, e.Bounds.Top + (e.Bounds.Height / 2 - size.Height / 2));
 
             // If the ListBox has focus, draw a focus rectangle around the selected item.
             e.DrawFocusRectangle();

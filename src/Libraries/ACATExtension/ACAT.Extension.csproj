@@ -147,12 +147,8 @@
     <Compile Include="UI\UserControlDefaultTryout.Designer.cs">
       <DependentUpon>UserControlDefaultTryout.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\UserControls\GenericUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\UserControls\KeyboardUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UI\UserControls\GenericUserControl.cs" />
+    <Compile Include="UI\UserControls\KeyboardUserControl.cs" />
     <Compile Include="UI\UserControls\ScrollingText.cs" />
     <Compile Include="UI\UserControls\ScrollingText.Designer.cs">
       <DependentUpon>ScrollingText.cs</DependentUpon>

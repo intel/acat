@@ -132,7 +132,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATApp", "Applications\ACA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATTalk", "Applications\ACATTalk\ACATTalk.csproj", "{A7F35610-4A21-CBD9-229C-8A82A0A975B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATConfigNext", "Applications\ACATConfigNext\ACATConfigNext.csproj", "{489EAED8-55EB-C35C-59B7-6B862E57F816}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATConfig", "Applications\ACATConfigNext\ACATConfig.csproj", "{489EAED8-55EB-C35C-59B7-6B862E57F816}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -364,7 +364,7 @@ Global
 		{489EAED8-55EB-C35C-59B7-6B862E57F816} = {17F81CBF-F114-42F9-9103-8E92E1B7650D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_AutoCreateNewLanguageFiles = True
 		SolutionGuid = {6C18E44C-06E3-46DB-9C9C-5B18BC658072}
+		RESX_AutoCreateNewLanguageFiles = True
 	EndGlobalSection
 EndGlobal

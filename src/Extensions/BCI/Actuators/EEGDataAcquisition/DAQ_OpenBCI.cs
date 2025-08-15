@@ -26,116 +26,58 @@ using System.Threading;
 
 namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 {
-    public class DAQ_OpenBCI
+    public class DAQ_OpenBCI : BaseDAQ
     {
-        /// <summary>
-        /// Settings
-        /// </summary>
-        public static String SettingsFileName = "BCIActuatorSettings.xml";
-
         // ********** Params set here (not read from settings)
-        // private static readonly string[] otherChannelsPinsNameList = { "x", "D11", "D12", "D13", "D17", "D18", "x" };
-        // private static readonly int[] otherChannelsPinsIdxList = {12, 13, 14, 15, 16, 17, 18}; this is returnet when DeviceObj.get_other_channels();
-        private static readonly string boardLogFileName = "boardLog";
-
-        private static readonly bool boardLoggerEnabled = false;
-
-        // ********* Params read from settings
-        private static int boardID; //0=Cyton, -1 = synthetic,  1=ganglion, 2=daysi
+        // private readonly string[] otherChannelsPinsNameList = { "x", "D11", "D12", "D13", "D17", "D18", "x" };
+        // private readonly int[] otherChannelsPinsIdxList = {12, 13, 14, 15, 16, 17, 18}; this is returnet when DeviceObj.get_other_channels();
 
         /// <summary>
         /// port where sensor is connected
         /// (this can be input, read from settings or automatically detected from this class)
         /// </summary>
-        private static string serialPort;
-
-        /// <summary>
-        /// Sample rate
-        /// </summary>
-        public static int sampleRate;
-
-        /// <summary>
-        /// Bolean, true if data shoudl be saved in file
-        /// </summary>
-        private static bool saveDataToFile;
-
-        /// <summary>
-        /// Index for the notch filter
-        /// </summary>
-        private static int notchFilterIdx;
-
-        /// <summary>
-        /// Index for the frontend filter
-        /// </summary>
-        private static int frontendFilterIdx;
+        private string serialPort;
 
         /// <summary>
         /// Eys closes detection method (true if fix threshold, false if adaptive threshold)
         /// </summary>
-        private static bool eyesClosedDetectionUseFixThreshold;
+        private bool eyesClosedDetectionUseFixThreshold;
 
         /// <summary>
         /// Threshold for eyes closed detection
         /// </summary>
-        private static double eyesClosedDetectionThreshold;
+        private double eyesClosedDetectionThreshold;
 
         /// <summary>
         /// Window duration used to calculate alpha values in eyes close detection
         /// </summary>
-        private static int eyesClosed_WindowDuration;
-
-        /// <summary>
-        /// Duration used to calculate VRMS and detect signal status (red/yellow/green)
-        /// </summary>
-        private static int SignalControl_WindowDurationForVrmsMeaseurment;
-
-        // ********** Objects for this class
-
-        /// <summary>
-        /// Object to interact with cyton board via Brainflow library
-        /// </summary>
-        private static BoardShim DeviceObj;
-
-        /// <summary>
-        /// Object to handle writting to files
-        /// </summary>
-        private static FileWriter FileWriterObj;
-
-        /// <summary>
-        /// Notch filter
-        /// </summary>
-        private static Filter NotchFilter;
-
-        /// <summary>
-        /// Frontend (bandpass) filter
-        /// </summary>
-        private static Filter FrontendFilter;
+        private int eyesClosed_WindowDuration;
 
         /// <summary>
         /// Status of the board
         /// </summary>
-        private static BoardStatus status;
+        private BoardStatus status;
 
         /// <summary>
         /// Boolean, true if device initialized
         /// </summary>
-        public static bool deviceInitialized = false;
+        public bool deviceInitialized = false;
 
         /// <summary>
         /// Buffer to store data and calculate signal stauts
         /// </summary>
-        private static double[,] _bufferSignalStatus;
+        private double[,] _bufferSignalStatus;
 
         /// <summary>
         /// Buffer to store data for eyes closed detection
         /// </summary>
-        private static double[,] _bufferEyesClosed;
+        private double[,] _bufferEyesClosed;
 
         /// <summary>
         /// Index of the EEG channels in data returned from sensor
         /// This is directly via from brainflow
         /// </summary>
-        public static int[] indEegChannels;
+        public int[] indEegChannels;
 
         public enum DeviceStatus
         {
@@ -144,17 +86,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             DEVICE_ACQUIRINGDATA,
         };
 
-        public static DeviceStatus deviceStatus;
+        public DeviceStatus deviceStatus;
 
-        public enum BoardStatus
-        {
-            BOARD_STANDBY,
-            BOARD_OPEN,
-            BOARD_CLOSED,
-            BOARD_ACQUIRINGDATA,
-        };
-
-        public static ExitCodes sensorStatus;
+        // BoardStatus enum is now inherited from BaseDAQ
 
         public enum DaisyBoardStatus
         {
@@ -167,42 +101,14 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Flag denoting whether or not daisy board connection has been tested
         /// Testing function initializes it's own serial port so cannot run test after BoardShim device has been initialized
         /// </summary>
-        public static DaisyBoardStatus _daisyBoardStatus = DaisyBoardStatus.UNKNOWN;
+        public DaisyBoardStatus _daisyBoardStatus = DaisyBoardStatus.UNKNOWN;
 
-        public enum ExitCodes
-        {
-            STATUS_OK,
-            PORT_ALREADY_OPEN_ERROR,
-            UNABLE_TO_OPEN_PORT_ERROR,
-            SET_PORT_ERROR,
-            BOARD_WRITE_ERROR,
-            INCOMMING_MSG_ERROR,
-            INITIAL_MSG_ERROR,
-            BOARD_NOT_READY_ERROR,
-            STREAM_ALREADY_RUN_ERROR,
-            INVALID_bufferSignalStatus_SIZE_ERROR,
-            STREAM_THREAD_ERROR,
-            STREAM_THREAD_IS_NOT_RUNNING,
-            EMPTY_bufferSignalStatus_ERROR,
-            INVALID_ARGUMENTS_ERROR,
-            UNSUPPORTED_BOARD_ERROR,
-            BOARD_NOT_CREATED_ERROR,
-            ANOTHER_BOARD_IS_CREATED_ERROR,
-            GENERAL_ERROR,
-            SYNC_TIMEOUT_ERROR,
-            JSON_NOT_FOUND_ERROR,
-            NO_SUCH_DATA_IN_JSON_ERROR,
-            CLASSIFIER_IS_NOT_PREPARED_ERROR,
-            ANOTHER_CLASSIFIER_IS_PREPARED_ERROR,
-            UNSUPPORTED_CLASSIFIER_AND_METRIC_COMBINATION_ERROR,
-            UNABLE_TO_CLOSE,
-            IDLE
-        };
+        // ExitCodes enum is now inherited from BaseDAQ
 
         /// <summary>
-        ///  Default contstructor
+        /// Loads settings from the configuration file
         /// </summary>
-        public static void LoadSettings()
+        public override void LoadSettings()
         {
             SignalControl_WindowDurationForVrmsMeaseurment = BCIActuatorSettings.Settings.SignalControl_WindowDurationForVrmsMeaseurment;
             Log.Debug("DAQ settings loaded. Window duration for uVrmsMeasurement: " + SignalControl_WindowDurationForVrmsMeaseurment);
@@ -254,23 +160,13 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 
         #region Get/set
 
-        /// <summary>
-        /// Get session directory
-        /// </summary>
-        /// <returns></returns>
-        public static String GetSessionDirectory()
-        {
-            if (FileWriterObj != null)
-                return FileWriterObj.sessionDirectory;
-            else
-                return null;
-        }
+        // GetSessionDirectory() is inherited from BaseDAQ
 
         /// <summary>
         /// Get list of serial ports in the computer
         /// </summary>
         /// <returns></returns>
-        public static List<String> GetSerialPorts()
+        public List<String> GetSerialPorts()
         {
             string[] serialPorts = SerialPort.GetPortNames();
             if (serialPorts == null)
@@ -283,7 +179,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Sets port where device is connected
         /// </summary>
         /// <param name="port"></param>
-        public static void SetPort(String port)
+        public void SetPort(String port)
         {
             serialPort = port;
         }
@@ -292,7 +188,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Sets eyes closed adaptive threshold
         /// </summary>
         /// <param name="threshold"></param>
-        public static void SetEyesClosedAdaptiveThreshold(float threshold)
+        public void SetEyesClosedAdaptiveThreshold(float threshold)
         {
             if (!eyesClosedDetectionUseFixThreshold)
                 eyesClosedDetectionThreshold = threshold;
@@ -302,7 +198,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Gets eyes closes threshold
         /// </summary>
         /// <returns></returns>
-        public static double GetEyesClosedThreshold()
+        public double GetEyesClosedThreshold()
         {
             return eyesClosedDetectionThreshold;
         }
@@ -313,19 +209,13 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Checks if device is acquiring data
         /// </summary>
         /// <returns></returns>
-        public static bool IsAcquiring()
-        {
-            if (status == BoardStatus.BOARD_ACQUIRINGDATA)
-                return true;
-            else
-                return false;
-        }
+        // IsAcquiring() is inherited from BaseDAQ
 
         /// <summary>
         /// Detects port where sensor is connected
         /// </summary>
         /// <returns></returns>
-        public static String DetectPort()
+        public String DetectPort()
         {
             serialPort = null;
 
@@ -349,7 +239,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Checks the latency of the port. It returns true if latency==1ms, false otherwise
         /// </summary>
         /// <returns></returns>
-        public static bool CheckLatencyPort()
+        public bool CheckLatencyPort()
         {
             uint latency = ReadLatencyTimerValue(serialPort);
             return latency == 1;
@@ -357,7 +247,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 
         // Function to detect specific UNABLE_TO_OPEN_PORT_ERROR error
         // Some redudancy with existing functions but don't want to mess with existing functionality - afraid I might break something
-        public static ExitCodes getUsbDongleConnected(String port = null)
+        public ExitCodes getUsbDongleConnected(String port = null)
         {
             try
             {
@@ -401,8 +291,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// </summary>
         /// <param name="port"></param>
         /// <returns></returns>
-        public static bool InitDevice(string port)
+        public override bool InitDevice(string deviceIdentifier)
         {
+            string port = deviceIdentifier;
             try
             {
                 if (status == BoardStatus.BOARD_OPEN)
@@ -522,7 +413,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// <param name="saveData"></param>
         /// <param name="sessionID"></param>
         /// <returns></returns>
-        public static bool Start(String port = null, bool saveData = false, String sessionID = "")
+        public override bool Start(string deviceIdentifier = "", bool saveData = false, string sessionID = "")
         {
             bool success = false;
             try
@@ -533,7 +424,12 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                     bool initPortSuccess;
                     Log.Debug("Initiating device");
                     if (status != BoardStatus.BOARD_OPEN)
-                        initPortSuccess = InitDevice(port);
+                    {
+                        if (!String.IsNullOrWhiteSpace(deviceIdentifier))
+                            initPortSuccess = InitDevice(deviceIdentifier);
+                        else
+                            initPortSuccess = InitDevice(serialPort);
+                    }
                     else
                         initPortSuccess = true;
 
@@ -570,7 +466,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Stops sensor
         /// </summary>
         /// <returns></returns>
-        public static bool Stop()
+        public override bool Stop()
         {
             try
             {
@@ -607,7 +503,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// CLoses sensor and files
         /// </summary>
         /// <returns></returns>
-        public static bool CloseDevice()
+        public override bool CloseDevice()
         {
             try
             {
@@ -639,7 +535,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Get all available data from sensor
         /// </summary>
         /// <returns></returns>
-        public static double[,] GetData(bool returnFilteredData = true)
+        public override double[,] GetData(bool returnFilteredData = true)
         {
             double[,] rawData = null;
             double[,] filteredData = null;
@@ -687,7 +583,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Get all available data from sensor
         /// </summary>
         /// <returns></returns>
-        public static double[,] GetData2()
+        public double[,] GetData2()
         {
             if (status == BoardStatus.BOARD_ACQUIRINGDATA)
             {
@@ -719,18 +615,13 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             return null;
         }
 
-        public static double[,] daq_filter_data(double[,] unfilteredData)
-        {
-            var filteredData_notch = NotchFilter.FilterData(unfilteredData, indEegChannels);
-            double[,] filteredData = FrontendFilter.FilterData(filteredData_notch, indEegChannels);
-            return filteredData;
-        }
+        // daq_filter_data() is inherited from BaseDAQ
 
         /// <summary>
         /// Inserts marker
         /// </summary>
         /// <param name="marker"></param>
-        public static void InsertMarker(float marker)
+        public override void InsertMarker(float marker)
         {
             if (status == BoardStatus.BOARD_ACQUIRINGDATA)
                 DeviceObj.insert_marker(marker + 1);//1=off, 2=0n
@@ -740,7 +631,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Writes markers to file
         /// </summary>
         /// <param name="markerValues"></param>
-        public static void WriteMarkerValues2File(List<int> markerValues)
+        public override void WriteMarkerValues2File(List<int> markerValues)
         {
             if (saveDataToFile)
             {
@@ -754,7 +645,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Gets marker (removed with optical sensor)
         /// </summary>
         /// <returns>Always returns -1 since optical sensor is removed</returns>
-        public static int GetMarker()
+        public int GetMarker()
         {
             // Optical sensor is removed, always return -1
             if (status == BoardStatus.BOARD_ACQUIRINGDATA)
@@ -773,7 +664,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Gets status
         /// </summary>
         /// <returns></returns>
-        public static SignalStatus GetStatus(out SignalStatus[] statusSignals)
+        public override SignalStatus GetStatus(out SignalStatus[] statusSignals)
         {
             SignalStatus statusAllSignals = SignalStatus.SIGNAL_ERROR;
             statusSignals = new SignalStatus[indEegChannels.Length];
@@ -834,7 +725,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Get overall Cyton board / USB dongle status
         /// </summary>
         /// <returns></returns>
-        public static SignalStatus GetStatus2_ReceivedData()
+        public SignalStatus GetStatus2_ReceivedData()
         {
             // Call GetMarker to set deviceStatus correctly
             GetMarker();
@@ -847,7 +738,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// </summary>
         /// <param name="rawData"></param>
         /// <returns></returns>
-        private static bool AppendDataToBuffer(double[,] data, double[,] inBuffer, int numSamplesInBuffer, out double[,] outBuffer)
+        private bool AppendDataToBuffer(double[,] data, double[,] inBuffer, int numSamplesInBuffer, out double[,] outBuffer)
         {
             bool result = false;
             outBuffer = null;
@@ -882,7 +773,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// <summary>
         /// Starts trigger tests - Removed with optical sensor, always returns true if board is acquiring data
         /// </summary>
-        public static bool TriggerTestStart()
+        public bool TriggerTestStart()
         {
             return status == BoardStatus.BOARD_ACQUIRINGDATA;
         }
@@ -893,7 +784,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// <param name="numExpectedPulses"></param>
         /// <param name="numDetectedPulses"></param>
         /// <returns></returns>
-        public static ExitCodes TriggerTestStop(int numExpectedPulses, out int numDetectedPulses, out List<double> dutyCycleList, out double dutyCycleAvg)
+        public ExitCodes TriggerTestStop(int numExpectedPulses, out int numDetectedPulses, out List<double> dutyCycleList, out double dutyCycleAvg)
         {
             numDetectedPulses = numExpectedPulses;
             dutyCycleList = new List<double> { 1.0 };
@@ -909,7 +800,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// <param name="betaValues"></param>
         /// <param name="avgBeta"></param>
         /// <returns></returns>
-        public static bool DetectEyesClosed(out double[] alphaValues, out double avgAlpha, out double[] betaValues, out double avgBeta)
+        public bool DetectEyesClosed(out double[] alphaValues, out double avgAlpha, out double[] betaValues, out double avgBeta)
         {
             alphaValues = new double[indEegChannels.Length];
             betaValues = new double[indEegChannels.Length];
@@ -964,7 +855,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// </summary>
         /// <param name="port"></param> port to test
         /// <returns></returns>
-        private static bool TestPort(String port, out bool portAlreadyOpen)
+        private bool TestPort(String port, out bool portAlreadyOpen)
         {
             portAlreadyOpen = false;
             try
@@ -997,7 +888,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// </summary>
         /// <param name="comPort"></param>
         /// <returns></returns>
-        private static UInt32 ReadLatencyTimerValue(String comPort)
+        private UInt32 ReadLatencyTimerValue(String comPort)
         {
             try
             {
@@ -1048,7 +939,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// <param name="message"></param>
         /// <param name="defaultErrorCode"></param>
         /// <returns></returns>
-        private static ExitCodes getErrorCode(string message, ExitCodes defaultErrorCode)
+        private ExitCodes getErrorCode(string message, ExitCodes defaultErrorCode)
         {
             foreach (ExitCodes code in Enum.GetValues(typeof(ExitCodes)))
             {
@@ -1062,7 +953,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Creates files where data is stored
         /// </summary>
         /// <param name="sessionID"></param>
-        private static void CreateFiles(String sessionID)
+        private void CreateFiles(String sessionID)
         {
             if (saveDataToFile)
             {
@@ -1085,7 +976,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Creates a new sesion (new files) without having to stop and start the device
         /// </summary>
         /// <param name="sessionID"></param>
-        public static bool StartSession(String sessionID, bool forceSavingData)
+        public override bool StartSession(string sessionID, bool forceSavingData)
         {
             bool result = false;
             try
@@ -1128,7 +1019,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Ends session
         /// </summary>
         /// <returns></returns>
-        public static bool EndSession()
+        public override bool EndSession()
         {
             bool result = false;
             try
@@ -1153,14 +1044,14 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             return result;
         }
 
-        private static readonly Queue<Dictionary<ExitCodes, string>> warnings = new();
-        private static readonly int limit = 10;
+        private readonly Queue<Dictionary<ExitCodes, string>> warnings = new();
+        private readonly int limit = 10;
 
         /// <summary>
         /// Add a warning to the queue
         /// </summary>
         /// <param name="info">string warnings</param>
-        public static void AddWarning(ExitCodes code, String info)
+        public void AddWarning(ExitCodes code, String info)
         {
             var data = new Dictionary<ExitCodes, string>
             {
@@ -1181,7 +1072,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Gets the available warnings in the queue
         /// </summary>
         /// <returns>Warnings</returns>
-        public static Dictionary<ExitCodes, string> getWarning()
+        public Dictionary<ExitCodes, string> getWarning()
         {
             Dictionary<ExitCodes, string> info = null;
             try
@@ -1201,7 +1092,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// Send lower level config command to BoardShim device
         /// </summary>
         /// <param name="cmd"></param>
-        public static void Config_Board(string cmd)
+        public void Config_Board(string cmd)
         {
             try
             {
@@ -1217,7 +1108,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// <summary>
         /// Helper function to start Cyton board streaming
         /// </summary>
-        public static void Start_Streaming()
+        public void Start_Streaming()
         {
             //DeviceObj.start_stream();
             Config_Board("b");
@@ -1226,7 +1117,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// <summary>
         /// Helper function to stop Cyton board streaming
         /// </summary>
-        public static void Stop_Streaming()
+        public void Stop_Streaming()
         {
             //DeviceObj.stop_stream();
             Config_Board("s");
@@ -1235,7 +1126,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// <summary>
         /// Helper function to reset Cyton board to default state
         /// </summary>
-        public static void Reset_Board()
+        public void Reset_Board()
         {
             Config_Board("d");
         }
@@ -1250,7 +1141,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// it will default to 16 channel capability
         /// </summary>
         /// <param name="comPort">COM port to connect to and send command to check for daisy connection</param>
-        private static bool cytonIsDaisyAttached(String comPort)
+        private bool cytonIsDaisyAttached(String comPort)
         {
             bool receivedResponse = false;
             bool daisyBoardAttached = false;

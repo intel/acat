@@ -116,6 +116,11 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// Interval in milliseconds at which timer event for acquiring and processing data fires
         /// </summary>
         private readonly int _timer_process_data_interval_ms = 10;
+        
+        /// <summary>
+        /// The DAQ instance for OpenBCI
+        /// </summary>
+        private BaseDAQ _daqInstance;
 
         // Form which acts as parent for / base for all possible user controls displayed during testing process
         public SensorForm(DeviceTestingState initialState)
@@ -123,6 +128,9 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             InitializeComponent();
             TriggerBox.BackColor = Color.Black;
             this.WindowState = FormWindowState.Maximized;
+
+            // Initialize DAQ instance
+            _daqInstance = DAQFactory.CreateDAQ(DAQDeviceType.OpenBCI);
 
             // Set initial / default values of static variables
             _stopTimers = false;
@@ -427,16 +435,14 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 return;
             }
 
-            if (DAQ_OpenBCI.deviceInitialized)
+            if (_daqInstance.deviceInitialized)
             {
-                //double[,] data = DAQ_OpenBCI.GetData();
-
-                double[,] data = DAQ_OpenBCI.GetData2();
+                double[,] data = _daqInstance.GetData(true);
 
                 if (data != null && data.Length > 0 && data.GetLength(1) > 0)
                 {
                     double[,] dataCopy = (double[,])data.Clone();
-                    double[,] DAQ_filteredData = DAQ_OpenBCI.daq_filter_data(dataCopy);
+                    double[,] DAQ_filteredData = _daqInstance.daq_filter_data(dataCopy);
 
                     _userControlBCISignalCheck?.ProcessDataSignalCheck(data, DAQ_filteredData);
                 }
@@ -492,6 +498,12 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                 _userControlBCISignalCheckStartPrompt?.Dispose();
                 _userControlPromptBCIFIlterSettings?.Dispose();
                 _userControlBCISignalCheck?.Dispose();
+                
+                // Stop DAQ instance if it's active
+                if (_daqInstance != null)
+                {
+                    _daqInstance.Stop();
+                }
             }
         }
 

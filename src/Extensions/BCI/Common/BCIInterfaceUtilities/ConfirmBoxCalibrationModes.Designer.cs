@@ -126,7 +126,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.checkBoxAdditionalCalibrations = new System.Windows.Forms.CheckBox();
             this.webBrowser = new System.Windows.Forms.WebBrowser();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.scannerRoundedButtonControl3 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanelOptions = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelType = new System.Windows.Forms.TableLayoutPanel();
             this.ButtonBeginACAT = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
@@ -166,7 +165,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutPanel8.SuspendLayout();
             this.tableLayoutBox.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
-            this.tableLayoutPanel6.SuspendLayout();
             this.tableLayoutPanelOptions.SuspendLayout();
             this.tableLayoutPanelType.SuspendLayout();
             this.tableLayoutPanelExit.SuspendLayout();
@@ -206,10 +204,9 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             // 
             // labelParametersTitle
             // 
-            resources.ApplyResources(this.labelParametersTitle, "labelParametersTitle");
             this.labelParametersTitle.ForeColor = System.Drawing.Color.White;
+            resources.ApplyResources(this.labelParametersTitle, "labelParametersTitle");
             this.labelParametersTitle.Name = "labelParametersTitle";
-            this.labelParametersTitle.Text = StringResources.Parameters;
             // 
             // tableLayoutPanelTitleModes
             // 
@@ -224,7 +221,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             resources.ApplyResources(this.labelModeTitle, "labelModeTitle");
             this.labelModeTitle.ForeColor = System.Drawing.Color.White;
             this.labelModeTitle.Name = "labelModeTitle";
-            this.labelModeTitle.Text = StringResources.Mode;
             // 
             // labelScoreTitle
             // 
@@ -232,7 +228,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutPanelTitleModes.SetColumnSpan(this.labelScoreTitle, 2);
             this.labelScoreTitle.ForeColor = System.Drawing.Color.White;
             this.labelScoreTitle.Name = "labelScoreTitle";
-            this.labelScoreTitle.Text = StringResources.Score;
             // 
             // panel2
             // 
@@ -246,7 +241,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutPanel1.SetColumnSpan(this.labelTitle, 2);
             this.labelTitle.ForeColor = System.Drawing.SystemColors.Control;
             this.labelTitle.Name = "labelTitle";
-            this.labelTitle.Text = StringResources.CalibrateNow;
             // 
             // tableLayoutConfigurations
             // 
@@ -284,14 +278,12 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonUpMinimumScore.UseMnemonic = false;
             this.ButtonUpMinimumScore.UseVisualStyleBackColor = true;
             this.ButtonUpMinimumScore.Click += new System.EventHandler(this.ButtonUp_Click);
-            this.ButtonUpMinimumScore.Text = StringResources.AdvancedOptions;
             // 
             // labelMinimumScore
             // 
             resources.ApplyResources(this.labelMinimumScore, "labelMinimumScore");
             this.labelMinimumScore.ForeColor = System.Drawing.Color.White;
             this.labelMinimumScore.Name = "labelMinimumScore";
-            this.labelMinimumScore.Text = "77";
             // 
             // customSliderMinimumScore
             // 
@@ -370,7 +362,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonDownMinimumScore.UseMnemonic = false;
             this.ButtonDownMinimumScore.UseVisualStyleBackColor = true;
             this.ButtonDownMinimumScore.Click += new System.EventHandler(this.ButtonDown_Click);
-            this.ButtonDownMinimumScore.Text = "-";
             // 
             // tableLayoutPanel14
             // 
@@ -385,7 +376,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             resources.ApplyResources(this.label4, "label4");
             this.label4.ForeColor = System.Drawing.Color.White;
             this.label4.Name = "label4";
-            this.label4.Text = StringResources.MinimumScore;
             // 
             // tableLayoutPanel15
             // 
@@ -409,7 +399,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonInfoMinimumScore.UseVisualStyleBackColor = false;
             this.ButtonInfoMinimumScore.MouseEnter += new System.EventHandler(this.ButtonInfoParameters_MouseEnter);
             this.ButtonInfoMinimumScore.MouseLeave += new System.EventHandler(this.ButtonInfoModes_MouseLeave);
-            this.ButtonInfoMinimumScore.Text = "?";
             // 
             // tableLayoutIterationsTarget
             // 
@@ -435,14 +424,12 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonUpIterationstarget.UseMnemonic = false;
             this.ButtonUpIterationstarget.UseVisualStyleBackColor = true;
             this.ButtonUpIterationstarget.Click += new System.EventHandler(this.ButtonUp_Click);
-            this.ButtonUpIterationstarget.Text = StringResources.Additional_Calibrations + "*";
             // 
             // labelIterationstarget
             // 
             resources.ApplyResources(this.labelIterationstarget, "labelIterationstarget");
             this.labelIterationstarget.ForeColor = System.Drawing.Color.White;
             this.labelIterationstarget.Name = "labelIterationstarget";
-            this.labelIterationstarget.Text = "77";
             // 
             // customSliderIterationstarget
             // 
@@ -521,7 +508,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonDownIterationstarget.UseMnemonic = false;
             this.ButtonDownIterationstarget.UseVisualStyleBackColor = true;
             this.ButtonDownIterationstarget.Click += new System.EventHandler(this.ButtonDown_Click);
-            this.ButtonDownIterationstarget.Text = "-";
             // 
             // tableLayoutPanel16
             // 
@@ -536,7 +522,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             resources.ApplyResources(this.label5, "label5");
             this.label5.ForeColor = System.Drawing.Color.White;
             this.label5.Name = "label5";
-            this.label5.Text = StringResources.Iterationspertarget;
             // 
             // tableLayoutPanel17
             // 
@@ -560,7 +545,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonInfoIterationsTarget.UseVisualStyleBackColor = false;
             this.ButtonInfoIterationsTarget.MouseEnter += new System.EventHandler(this.ButtonInfoParameters_MouseEnter);
             this.ButtonInfoIterationsTarget.MouseLeave += new System.EventHandler(this.ButtonInfoModes_MouseLeave);
-            this.ButtonInfoIterationsTarget.Text = "?";
             // 
             // tableLayoutScanningTime
             // 
@@ -600,7 +584,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             resources.ApplyResources(this.label7, "label7");
             this.label7.ForeColor = System.Drawing.Color.White;
             this.label7.Name = "label7";
-            this.label7.Text = StringResources.ScanSpeed;
             // 
             // tableLayoutPanel19
             // 
@@ -624,7 +607,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonInfoScanningTime.UseVisualStyleBackColor = false;
             this.ButtonInfoScanningTime.MouseEnter += new System.EventHandler(this.ButtonInfoParameters_MouseEnter);
             this.ButtonInfoScanningTime.MouseLeave += new System.EventHandler(this.ButtonInfoModes_MouseLeave);
-            this.ButtonInfoScanningTime.Text = "?";
             // 
             // customSliderScanningTime
             // 
@@ -703,7 +685,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonDownScanningTime.UseMnemonic = false;
             this.ButtonDownScanningTime.UseVisualStyleBackColor = true;
             this.ButtonDownScanningTime.Click += new System.EventHandler(this.ButtonDown_Click);
-            this.ButtonDownScanningTime.Text = "-";
             // 
             // tableLayoutPanel20
             // 
@@ -717,14 +698,12 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             resources.ApplyResources(this.labelScanningTime, "labelScanningTime");
             this.labelScanningTime.ForeColor = System.Drawing.Color.White;
             this.labelScanningTime.Name = "labelScanningTime";
-            this.labelScanningTime.Text = "2000";
             // 
             // label2
             // 
             resources.ApplyResources(this.label2, "label2");
             this.label2.ForeColor = System.Drawing.Color.White;
             this.label2.Name = "label2";
-            this.label2.Text = "ms";
             // 
             // tableLayoutNumberTargets
             // 
@@ -750,14 +729,12 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonUpNumberTargets.UseMnemonic = false;
             this.ButtonUpNumberTargets.UseVisualStyleBackColor = true;
             this.ButtonUpNumberTargets.Click += new System.EventHandler(this.ButtonUp_Click);
-            this.ButtonUpNumberTargets.Text = "+";
             // 
             // labelNumberTargets
             // 
             resources.ApplyResources(this.labelNumberTargets, "labelNumberTargets");
             this.labelNumberTargets.ForeColor = System.Drawing.Color.White;
             this.labelNumberTargets.Name = "labelNumberTargets";
-            this.labelNumberTargets.Text = "77";
             // 
             // customSliderNumberTargets
             // 
@@ -836,7 +813,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonDownNumberTargets.UseMnemonic = false;
             this.ButtonDownNumberTargets.UseVisualStyleBackColor = true;
             this.ButtonDownNumberTargets.Click += new System.EventHandler(this.ButtonDown_Click);
-            this.ButtonDownNumberTargets.Text = "-";
             // 
             // tableLayoutPanel21
             // 
@@ -851,7 +827,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             resources.ApplyResources(this.label6, "label6");
             this.label6.ForeColor = System.Drawing.Color.White;
             this.label6.Name = "label6";
-            this.label6.Text = StringResources.NumberofTargets;
             // 
             // tableLayoutPanel22
             // 
@@ -875,7 +850,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonInfoNumberTargets.UseVisualStyleBackColor = false;
             this.ButtonInfoNumberTargets.MouseEnter += new System.EventHandler(this.ButtonInfoParameters_MouseEnter);
             this.ButtonInfoNumberTargets.MouseLeave += new System.EventHandler(this.ButtonInfoModes_MouseLeave);
-            this.ButtonInfoNumberTargets.Text = "?";
             // 
             // panel1
             // 
@@ -905,7 +879,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonRestoreDefaults.UseMnemonic = false;
             this.ButtonRestoreDefaults.UseVisualStyleBackColor = true;
             this.ButtonRestoreDefaults.Click += new System.EventHandler(this.ButtonRestoreDefaults_Click);
-            this.ButtonRestoreDefaults.Text = StringResources.RestoreDefaults;
             // 
             // checkBoxAdvancesParameters
             // 
@@ -914,7 +887,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.checkBoxAdvancesParameters.Name = "checkBoxAdvancesParameters";
             this.checkBoxAdvancesParameters.UseVisualStyleBackColor = true;
             this.checkBoxAdvancesParameters.CheckedChanged += new System.EventHandler(this.checkBoxAdvancesParameters_CheckedChanged);
-            this.checkBoxAdvancesParameters.Text = StringResources.Additional_Calibrations + "*";
             // 
             // tableLayoutKeyboardLeft
             // 
@@ -940,7 +912,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonCalibrateKeyboardL.UseMnemonic = false;
             this.ButtonCalibrateKeyboardL.UseVisualStyleBackColor = true;
             this.ButtonCalibrateKeyboardL.Click += new System.EventHandler(this.ButtonCalibrate_Click);
-            this.ButtonCalibrateKeyboardL.Text = StringResources.CalibrateNow;
             // 
             // tableLayoutPanel9
             // 
@@ -964,7 +935,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonInfoKeyboardL.UseVisualStyleBackColor = false;
             this.ButtonInfoKeyboardL.MouseEnter += new System.EventHandler(this.ButtonInfoModes_MouseEnter);
             this.ButtonInfoKeyboardL.MouseLeave += new System.EventHandler(this.ButtonInfoModes_MouseLeave);
-            this.ButtonInfoKeyboardL.Text = "?";
             // 
             // ButtonOpcKeyboardL
             // 
@@ -981,7 +951,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOpcKeyboardL.UseMnemonic = false;
             this.ButtonOpcKeyboardL.UseVisualStyleBackColor = false;
             this.ButtonOpcKeyboardL.Click += new System.EventHandler(this.ButtonOpc_Click);
-            this.ButtonOpcKeyboardL.Text = StringResources.KeyboardLeft;
             // 
             // labelScoreKeyboardL
             // 
@@ -1009,7 +978,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             resources.ApplyResources(this.labelCalibrationMessage, "labelCalibrationMessage");
             this.labelCalibrationMessage.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.labelCalibrationMessage.Name = "labelCalibrationMessage";
-            this.labelCalibrationMessage.Text = StringResources.RunallthreeoFThecalibrationsabove;
             // 
             // tableLayoutPanelAdditionalOptions
             // 
@@ -1042,7 +1010,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonCalibrateKeyboardR.UseMnemonic = false;
             this.ButtonCalibrateKeyboardR.UseVisualStyleBackColor = true;
             this.ButtonCalibrateKeyboardR.Click += new System.EventHandler(this.ButtonCalibrate_Click);
-            this.ButtonCalibrateKeyboardR.Text = StringResources.Recalibrate;
             // 
             // tableLayoutPanel11
             // 
@@ -1066,7 +1033,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonInfoKeyboardR.UseVisualStyleBackColor = false;
             this.ButtonInfoKeyboardR.MouseEnter += new System.EventHandler(this.ButtonInfoModes_MouseEnter);
             this.ButtonInfoKeyboardR.MouseLeave += new System.EventHandler(this.ButtonInfoModes_MouseLeave);
-            this.ButtonInfoKeyboardR.Text = "?";
             // 
             // ButtonOpcKeyboardR
             // 
@@ -1083,7 +1049,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOpcKeyboardR.UseMnemonic = false;
             this.ButtonOpcKeyboardR.UseVisualStyleBackColor = false;
             this.ButtonOpcKeyboardR.Click += new System.EventHandler(this.ButtonOpc_Click);
-            this.ButtonOpcKeyboardR.Text = StringResources.KeyboardRight;
             // 
             // labelScoreKeyboardR
             // 
@@ -1122,7 +1087,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonCalibrateWord.UseMnemonic = false;
             this.ButtonCalibrateWord.UseVisualStyleBackColor = true;
             this.ButtonCalibrateWord.Click += new System.EventHandler(this.ButtonCalibrate_Click);
-            this.ButtonCalibrateWord.Text = StringResources.CalibrateNow;
             // 
             // tableLayoutPanel10
             // 
@@ -1146,7 +1110,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonInfoWord.UseVisualStyleBackColor = false;
             this.ButtonInfoWord.MouseEnter += new System.EventHandler(this.ButtonInfoModes_MouseEnter);
             this.ButtonInfoWord.MouseLeave += new System.EventHandler(this.ButtonInfoModes_MouseLeave);
-            this.ButtonInfoWord.Text = "?";
             // 
             // ButtonOpcWord
             // 
@@ -1163,7 +1126,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOpcWord.UseMnemonic = false;
             this.ButtonOpcWord.UseVisualStyleBackColor = false;
             this.ButtonOpcWord.Click += new System.EventHandler(this.ButtonOpc_Click);
-            this.ButtonOpcWord.Text = StringResources.Word + "*";
             // 
             // labelScoreWord
             // 
@@ -1202,7 +1164,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonCalibrateSentence.UseMnemonic = false;
             this.ButtonCalibrateSentence.UseVisualStyleBackColor = true;
             this.ButtonCalibrateSentence.Click += new System.EventHandler(this.ButtonCalibrate_Click);
-            this.ButtonCalibrateSentence.Text = StringResources.CalibrateOptionalText;
             // 
             // tableLayoutPanel8
             // 
@@ -1226,7 +1187,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonInfoSentence.UseVisualStyleBackColor = false;
             this.ButtonInfoSentence.MouseEnter += new System.EventHandler(this.ButtonInfoModes_MouseEnter);
             this.ButtonInfoSentence.MouseLeave += new System.EventHandler(this.ButtonInfoModes_MouseLeave);
-            this.ButtonInfoSentence.Text = "?";
             // 
             // ButtonOpcSentence
             // 
@@ -1243,7 +1203,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOpcSentence.UseMnemonic = false;
             this.ButtonOpcSentence.UseVisualStyleBackColor = false;
             this.ButtonOpcSentence.Click += new System.EventHandler(this.ButtonOpc_Click);
-            this.ButtonOpcSentence.Text = StringResources.Sentence;
             // 
             // labelScoreSentence
             // 
@@ -1282,7 +1241,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonCalibrateBox.UseMnemonic = false;
             this.ButtonCalibrateBox.UseVisualStyleBackColor = true;
             this.ButtonCalibrateBox.Click += new System.EventHandler(this.ButtonCalibrate_Click);
-            this.ButtonCalibrateBox.Text = StringResources.CalibrateNow;
             // 
             // ButtonOpcBox
             // 
@@ -1299,7 +1257,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOpcBox.UseMnemonic = false;
             this.ButtonOpcBox.UseVisualStyleBackColor = false;
             this.ButtonOpcBox.Click += new System.EventHandler(this.ButtonOpc_Click);
-            this.ButtonOpcBox.Text = StringResources.Box;
             // 
             // labelScoreBox
             // 
@@ -1329,7 +1286,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonInfoBox.UseVisualStyleBackColor = false;
             this.ButtonInfoBox.MouseEnter += new System.EventHandler(this.ButtonInfoModes_MouseEnter);
             this.ButtonInfoBox.MouseLeave += new System.EventHandler(this.ButtonInfoModes_MouseLeave);
-            this.ButtonInfoBox.Text = "?";
             // 
             // LineBoxSelection
             // 
@@ -1345,7 +1301,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.checkBoxAdditionalCalibrations.Name = "checkBoxAdditionalCalibrations";
             this.checkBoxAdditionalCalibrations.UseVisualStyleBackColor = true;
             this.checkBoxAdditionalCalibrations.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            this.checkBoxAdditionalCalibrations.Text = StringResources.AdvancedOptions;
             // 
             // webBrowser
             // 
@@ -1358,22 +1313,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             // tableLayoutPanel6
             // 
             resources.ApplyResources(this.tableLayoutPanel6, "tableLayoutPanel6");
-            this.tableLayoutPanel6.Controls.Add(this.scannerRoundedButtonControl3, 0, 1);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
-            // 
-            // scannerRoundedButtonControl3
-            // 
-            this.scannerRoundedButtonControl3.BackColor = System.Drawing.Color.White;
-            this.scannerRoundedButtonControl3.BorderColor = System.Drawing.Color.Transparent;
-            this.scannerRoundedButtonControl3.BorderRadiusBottomLeft = 1;
-            this.scannerRoundedButtonControl3.BorderRadiusBottomRight = 1;
-            this.scannerRoundedButtonControl3.BorderRadiusTopLeft = 1;
-            this.scannerRoundedButtonControl3.BorderRadiusTopRight = 1;
-            this.scannerRoundedButtonControl3.BorderWidth = 3F;
-            resources.ApplyResources(this.scannerRoundedButtonControl3, "scannerRoundedButtonControl3");
-            this.scannerRoundedButtonControl3.Name = "scannerRoundedButtonControl3";
-            this.scannerRoundedButtonControl3.UseMnemonic = false;
-            this.scannerRoundedButtonControl3.UseVisualStyleBackColor = false;
             // 
             // tableLayoutPanelOptions
             // 
@@ -1407,7 +1347,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonBeginACAT.Click += new System.EventHandler(this.ButtonBeginACAT_Click);
             this.ButtonBeginACAT.MouseEnter += new System.EventHandler(this.ButtonInfoModes_MouseEnter);
             this.ButtonBeginACAT.MouseLeave += new System.EventHandler(this.ButtonInfoModes_MouseLeave);
-            this.ButtonBeginACAT.Text = StringResources.BeginusingACAT;
             // 
             // tableLayoutPanelExit
             // 
@@ -1429,7 +1368,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonExit.UseMnemonic = false;
             this.ButtonExit.UseVisualStyleBackColor = true;
             this.ButtonExit.Click += new System.EventHandler(this.ButtonExit_Click_1);
-            this.ButtonExit.Text = StringResources.Exit;
             // 
             // tableLayoutPaneladvancedOpt
             // 
@@ -1451,7 +1389,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOtherTest.UseMnemonic = false;
             this.ButtonOtherTest.UseVisualStyleBackColor = true;
             this.ButtonOtherTest.Click += new System.EventHandler(this.ButtonOtherTest_Click);
-            this.ButtonOtherTest.Text = StringResources.AdvancedOptions;
             // 
             // tableLayoutPanel12
             // 
@@ -1472,7 +1409,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
-            this.tableLayoutPanel3.PerformLayout();
             this.tableLayoutPanelTitleModes.ResumeLayout(false);
             this.tableLayoutPanelTitleModes.PerformLayout();
             this.tableLayoutConfigurations.ResumeLayout(false);
@@ -1516,7 +1452,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutBox.ResumeLayout(false);
             this.tableLayoutBox.PerformLayout();
             this.tableLayoutPanel7.ResumeLayout(false);
-            this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanelOptions.ResumeLayout(false);
             this.tableLayoutPanelType.ResumeLayout(false);
             this.tableLayoutPanelExit.ResumeLayout(false);
@@ -1527,7 +1462,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 
         #endregion
         private System.Windows.Forms.TableLayoutPanel tableLayoutParameters;
-        private ScannerRoundedButtonControl scannerRoundedButtonControl3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelOptions;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelType;

@@ -31,7 +31,6 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         {
             this.WordPredictionBox1 = new ACAT.Core.WidgetManagement.ScannerTableLayout();
             this.scannerTableLayout1 = new ACAT.Core.WidgetManagement.ScannerTableLayout();
-            this.BTrigger = new ACAT.Core.WidgetManagement.ScannerButtonControl();
             this.BtnCRG = new ACAT.Core.WidgetManagement.ScannerButtonControl();
             this.PWLItem1 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
             this.PB1 = new ACAT.Core.WidgetManagement.ScannerButtonControl();
@@ -92,61 +91,46 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             this.WordPredictionBox1.Name = "WordPredictionBox1";
             this.WordPredictionBox1.RowCount = 14;
             this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 28.57755F));
-            this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 12F));
-            this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 12F));
+            this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28449F));
-            this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 12F));
+            this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28449F));
-            this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 12F));
+            this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28449F));
-            this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 12F));
+            this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28449F));
-            this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 12F));
+            this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28449F));
-            this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 12F));
-            this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 12F));
-            this.WordPredictionBox1.Size = new System.Drawing.Size(953, 805);
+            this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.WordPredictionBox1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.WordPredictionBox1.Size = new System.Drawing.Size(715, 654);
             this.WordPredictionBox1.TabIndex = 0;
             // 
             // scannerTableLayout1
             // 
             this.scannerTableLayout1.BackColor = System.Drawing.Color.Transparent;
-            this.scannerTableLayout1.ColumnCount = 2;
+            this.scannerTableLayout1.ColumnCount = 1;
             this.WordPredictionBox1.SetColumnSpan(this.scannerTableLayout1, 2);
-            this.scannerTableLayout1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8F));
-            this.scannerTableLayout1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 92F));
-            this.scannerTableLayout1.Controls.Add(this.BTrigger, 0, 0);
-            this.scannerTableLayout1.Controls.Add(this.BtnCRG, 1, 0);
+            this.scannerTableLayout1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 91.30434F));
+            this.scannerTableLayout1.Controls.Add(this.BtnCRG, 0, 0);
             this.scannerTableLayout1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.scannerTableLayout1.Location = new System.Drawing.Point(0, 2);
-            this.scannerTableLayout1.Margin = new System.Windows.Forms.Padding(0, 2, 3, 2);
+            this.scannerTableLayout1.Margin = new System.Windows.Forms.Padding(0, 2, 2, 2);
             this.scannerTableLayout1.Name = "scannerTableLayout1";
             this.scannerTableLayout1.RowCount = 1;
             this.WordPredictionBox1.SetRowSpan(this.scannerTableLayout1, 2);
             this.scannerTableLayout1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.scannerTableLayout1.Size = new System.Drawing.Size(1188, 263);
+            this.scannerTableLayout1.Size = new System.Drawing.Size(713, 170);
             this.scannerTableLayout1.TabIndex = 25;
-            // 
-            // BTrigger
-            // 
-            this.BTrigger.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BTrigger.Location = new System.Drawing.Point(0, 1);
-            this.BTrigger.Margin = new System.Windows.Forms.Padding(0, 1, 4, 1);
-            this.BTrigger.Name = "BTrigger";
-            this.BTrigger.Size = new System.Drawing.Size(91, 261);
-            this.BTrigger.TabIndex = 0;
-            this.BTrigger.Tag = "1";
-            this.BTrigger.Text = "TriggerBox";
-            this.BTrigger.UseMnemonic = false;
-            this.BTrigger.UseVisualStyleBackColor = true;
             // 
             // BtnCRG
             // 
             this.BtnCRG.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BtnCRG.Location = new System.Drawing.Point(99, 1);
-            this.BtnCRG.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
+            this.BtnCRG.Location = new System.Drawing.Point(3, 1);
+            this.BtnCRG.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.BtnCRG.Name = "BtnCRG";
-            this.BtnCRG.Size = new System.Drawing.Size(1085, 261);
+            this.BtnCRG.Size = new System.Drawing.Size(707, 168);
             this.BtnCRG.TabIndex = 1;
             this.BtnCRG.Text = "CRG";
             this.BtnCRG.UseMnemonic = false;
@@ -155,10 +139,10 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             // PWLItem1
             // 
             this.PWLItem1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PWLItem1.Location = new System.Drawing.Point(4, 227);
-            this.PWLItem1.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
+            this.PWLItem1.Location = new System.Drawing.Point(3, 185);
+            this.PWLItem1.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.PWLItem1.Name = "PWLItem1";
-            this.PWLItem1.Size = new System.Drawing.Size(468, 99);
+            this.PWLItem1.Size = new System.Drawing.Size(351, 79);
             this.PWLItem1.TabIndex = 0;
             this.PWLItem1.Text = "Word 1";
             this.PWLItem1.UseMnemonic = false;
@@ -167,10 +151,10 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             // PB1
             // 
             this.PB1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PB1.Location = new System.Drawing.Point(3, 329);
-            this.PB1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.PB1.Location = new System.Drawing.Point(2, 267);
+            this.PB1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.PB1.Name = "PB1";
-            this.PB1.Size = new System.Drawing.Size(470, 8);
+            this.PB1.Size = new System.Drawing.Size(353, 6);
             this.PB1.TabIndex = 1;
             this.PB1.UseMnemonic = false;
             this.PB1.UseVisualStyleBackColor = true;
@@ -178,10 +162,10 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             // PWLItem2
             // 
             this.PWLItem2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PWLItem2.Location = new System.Drawing.Point(4, 340);
-            this.PWLItem2.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
+            this.PWLItem2.Location = new System.Drawing.Point(3, 276);
+            this.PWLItem2.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.PWLItem2.Name = "PWLItem2";
-            this.PWLItem2.Size = new System.Drawing.Size(468, 99);
+            this.PWLItem2.Size = new System.Drawing.Size(351, 79);
             this.PWLItem2.TabIndex = 2;
             this.PWLItem2.Text = "Word 2";
             this.PWLItem2.UseMnemonic = false;
@@ -190,10 +174,10 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             // PB2
             // 
             this.PB2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PB2.Location = new System.Drawing.Point(3, 442);
-            this.PB2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.PB2.Location = new System.Drawing.Point(2, 358);
+            this.PB2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.PB2.Name = "PB2";
-            this.PB2.Size = new System.Drawing.Size(470, 8);
+            this.PB2.Size = new System.Drawing.Size(353, 6);
             this.PB2.TabIndex = 3;
             this.PB2.UseMnemonic = false;
             this.PB2.UseVisualStyleBackColor = true;
@@ -201,10 +185,10 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             // PWLItem3
             // 
             this.PWLItem3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PWLItem3.Location = new System.Drawing.Point(4, 453);
-            this.PWLItem3.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
+            this.PWLItem3.Location = new System.Drawing.Point(3, 367);
+            this.PWLItem3.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.PWLItem3.Name = "PWLItem3";
-            this.PWLItem3.Size = new System.Drawing.Size(468, 99);
+            this.PWLItem3.Size = new System.Drawing.Size(351, 79);
             this.PWLItem3.TabIndex = 4;
             this.PWLItem3.Text = "Word 3";
             this.PWLItem3.UseMnemonic = false;
@@ -213,10 +197,10 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             // PB3
             // 
             this.PB3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PB3.Location = new System.Drawing.Point(3, 555);
-            this.PB3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.PB3.Location = new System.Drawing.Point(2, 449);
+            this.PB3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.PB3.Name = "PB3";
-            this.PB3.Size = new System.Drawing.Size(470, 8);
+            this.PB3.Size = new System.Drawing.Size(353, 6);
             this.PB3.TabIndex = 6;
             this.PB3.UseMnemonic = false;
             this.PB3.UseVisualStyleBackColor = true;
@@ -224,10 +208,10 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             // PWLItem4
             // 
             this.PWLItem4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PWLItem4.Location = new System.Drawing.Point(4, 566);
-            this.PWLItem4.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
+            this.PWLItem4.Location = new System.Drawing.Point(3, 458);
+            this.PWLItem4.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.PWLItem4.Name = "PWLItem4";
-            this.PWLItem4.Size = new System.Drawing.Size(468, 99);
+            this.PWLItem4.Size = new System.Drawing.Size(351, 79);
             this.PWLItem4.TabIndex = 5;
             this.PWLItem4.Text = "Word 4";
             this.PWLItem4.UseMnemonic = false;
@@ -236,10 +220,10 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             // PB4
             // 
             this.PB4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PB4.Location = new System.Drawing.Point(3, 668);
-            this.PB4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.PB4.Location = new System.Drawing.Point(2, 540);
+            this.PB4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.PB4.Name = "PB4";
-            this.PB4.Size = new System.Drawing.Size(470, 8);
+            this.PB4.Size = new System.Drawing.Size(353, 6);
             this.PB4.TabIndex = 7;
             this.PB4.UseMnemonic = false;
             this.PB4.UseVisualStyleBackColor = true;
@@ -247,10 +231,10 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             // PWLItem5
             // 
             this.PWLItem5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PWLItem5.Location = new System.Drawing.Point(4, 679);
-            this.PWLItem5.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
+            this.PWLItem5.Location = new System.Drawing.Point(3, 549);
+            this.PWLItem5.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.PWLItem5.Name = "PWLItem5";
-            this.PWLItem5.Size = new System.Drawing.Size(468, 99);
+            this.PWLItem5.Size = new System.Drawing.Size(351, 79);
             this.PWLItem5.TabIndex = 11;
             this.PWLItem5.Text = "Word 5";
             this.PWLItem5.UseMnemonic = false;
@@ -259,10 +243,10 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             // PB5
             // 
             this.PB5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PB5.Location = new System.Drawing.Point(3, 781);
-            this.PB5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.PB5.Location = new System.Drawing.Point(2, 631);
+            this.PB5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.PB5.Name = "PB5";
-            this.PB5.Size = new System.Drawing.Size(470, 8);
+            this.PB5.Size = new System.Drawing.Size(353, 6);
             this.PB5.TabIndex = 8;
             this.PB5.UseMnemonic = false;
             this.PB5.UseVisualStyleBackColor = true;
@@ -270,10 +254,10 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             // PWLItem6
             // 
             this.PWLItem6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PWLItem6.Location = new System.Drawing.Point(480, 227);
-            this.PWLItem6.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
+            this.PWLItem6.Location = new System.Drawing.Point(360, 185);
+            this.PWLItem6.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.PWLItem6.Name = "PWLItem6";
-            this.PWLItem6.Size = new System.Drawing.Size(469, 99);
+            this.PWLItem6.Size = new System.Drawing.Size(352, 79);
             this.PWLItem6.TabIndex = 13;
             this.PWLItem6.Text = "Word 6";
             this.PWLItem6.UseMnemonic = false;
@@ -282,10 +266,10 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             // PB6
             // 
             this.PB6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PB6.Location = new System.Drawing.Point(479, 329);
-            this.PB6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.PB6.Location = new System.Drawing.Point(359, 267);
+            this.PB6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.PB6.Name = "PB6";
-            this.PB6.Size = new System.Drawing.Size(471, 8);
+            this.PB6.Size = new System.Drawing.Size(354, 6);
             this.PB6.TabIndex = 14;
             this.PB6.UseMnemonic = false;
             this.PB6.UseVisualStyleBackColor = true;
@@ -293,10 +277,10 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             // PWLItem7
             // 
             this.PWLItem7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PWLItem7.Location = new System.Drawing.Point(480, 340);
-            this.PWLItem7.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
+            this.PWLItem7.Location = new System.Drawing.Point(360, 276);
+            this.PWLItem7.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.PWLItem7.Name = "PWLItem7";
-            this.PWLItem7.Size = new System.Drawing.Size(469, 99);
+            this.PWLItem7.Size = new System.Drawing.Size(352, 79);
             this.PWLItem7.TabIndex = 15;
             this.PWLItem7.Text = "Word 7";
             this.PWLItem7.UseMnemonic = false;
@@ -305,10 +289,10 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             // PB7
             // 
             this.PB7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PB7.Location = new System.Drawing.Point(479, 442);
-            this.PB7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.PB7.Location = new System.Drawing.Point(359, 358);
+            this.PB7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.PB7.Name = "PB7";
-            this.PB7.Size = new System.Drawing.Size(471, 8);
+            this.PB7.Size = new System.Drawing.Size(354, 6);
             this.PB7.TabIndex = 16;
             this.PB7.UseMnemonic = false;
             this.PB7.UseVisualStyleBackColor = true;
@@ -316,10 +300,10 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             // PWLItem8
             // 
             this.PWLItem8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PWLItem8.Location = new System.Drawing.Point(480, 453);
-            this.PWLItem8.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
+            this.PWLItem8.Location = new System.Drawing.Point(360, 367);
+            this.PWLItem8.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.PWLItem8.Name = "PWLItem8";
-            this.PWLItem8.Size = new System.Drawing.Size(469, 99);
+            this.PWLItem8.Size = new System.Drawing.Size(352, 79);
             this.PWLItem8.TabIndex = 17;
             this.PWLItem8.Text = "Word 8";
             this.PWLItem8.UseMnemonic = false;
@@ -328,10 +312,10 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             // PB8
             // 
             this.PB8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PB8.Location = new System.Drawing.Point(479, 555);
-            this.PB8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.PB8.Location = new System.Drawing.Point(359, 449);
+            this.PB8.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.PB8.Name = "PB8";
-            this.PB8.Size = new System.Drawing.Size(471, 8);
+            this.PB8.Size = new System.Drawing.Size(354, 6);
             this.PB8.TabIndex = 18;
             this.PB8.UseMnemonic = false;
             this.PB8.UseVisualStyleBackColor = true;
@@ -339,10 +323,10 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             // PWLItem9
             // 
             this.PWLItem9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PWLItem9.Location = new System.Drawing.Point(480, 566);
-            this.PWLItem9.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
+            this.PWLItem9.Location = new System.Drawing.Point(360, 458);
+            this.PWLItem9.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.PWLItem9.Name = "PWLItem9";
-            this.PWLItem9.Size = new System.Drawing.Size(469, 99);
+            this.PWLItem9.Size = new System.Drawing.Size(352, 79);
             this.PWLItem9.TabIndex = 19;
             this.PWLItem9.Text = "Word 9";
             this.PWLItem9.UseMnemonic = false;
@@ -351,10 +335,10 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             // PB9
             // 
             this.PB9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PB9.Location = new System.Drawing.Point(479, 668);
-            this.PB9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.PB9.Location = new System.Drawing.Point(359, 540);
+            this.PB9.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.PB9.Name = "PB9";
-            this.PB9.Size = new System.Drawing.Size(471, 8);
+            this.PB9.Size = new System.Drawing.Size(354, 6);
             this.PB9.TabIndex = 20;
             this.PB9.UseMnemonic = false;
             this.PB9.UseVisualStyleBackColor = true;
@@ -362,10 +346,10 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             // PWLItem10
             // 
             this.PWLItem10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PWLItem10.Location = new System.Drawing.Point(480, 679);
-            this.PWLItem10.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
+            this.PWLItem10.Location = new System.Drawing.Point(360, 549);
+            this.PWLItem10.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.PWLItem10.Name = "PWLItem10";
-            this.PWLItem10.Size = new System.Drawing.Size(469, 99);
+            this.PWLItem10.Size = new System.Drawing.Size(352, 79);
             this.PWLItem10.TabIndex = 21;
             this.PWLItem10.Text = "Word 10";
             this.PWLItem10.UseMnemonic = false;
@@ -374,10 +358,10 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             // PB10
             // 
             this.PB10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PB10.Location = new System.Drawing.Point(479, 781);
-            this.PB10.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.PB10.Location = new System.Drawing.Point(359, 631);
+            this.PB10.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.PB10.Name = "PB10";
-            this.PB10.Size = new System.Drawing.Size(471, 8);
+            this.PB10.Size = new System.Drawing.Size(354, 6);
             this.PB10.TabIndex = 22;
             this.PB10.UseMnemonic = false;
             this.PB10.UseVisualStyleBackColor = true;
@@ -386,21 +370,22 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             // 
             this.WordPredictionBox1.SetColumnSpan(this.PBMain1, 2);
             this.PBMain1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PBMain1.Location = new System.Drawing.Point(4, 993);
+            this.PBMain1.Location = new System.Drawing.Point(2, 641);
+            this.PBMain1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.PBMain1.Name = "PBMain1";
-            this.PBMain1.Size = new System.Drawing.Size(1184, 10);
+            this.PBMain1.Size = new System.Drawing.Size(711, 11);
             this.PBMain1.TabIndex = 3;
             this.PBMain1.UseMnemonic = false;
             this.PBMain1.UseVisualStyleBackColor = true;
             // 
             // WordPredictionUserControlBCI
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.WordPredictionBox1);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "WordPredictionUserControlBCI";
-            this.Size = new System.Drawing.Size(953, 805);
+            this.Size = new System.Drawing.Size(715, 654);
             this.WordPredictionBox1.ResumeLayout(false);
             this.scannerTableLayout1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -431,7 +416,6 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         private ACAT.Core.WidgetManagement.ScannerButtonControl PWLItem10;
         private ACAT.Core.WidgetManagement.ScannerButtonControl PB10;
         private ACAT.Core.WidgetManagement.ScannerTableLayout scannerTableLayout1;
-        private ACAT.Core.WidgetManagement.ScannerButtonControl BTrigger;
         private ACAT.Core.WidgetManagement.ScannerButtonControl BtnCRG;
     }
 }

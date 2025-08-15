@@ -189,7 +189,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="e">event args</param>
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            if (!_isDirty || ConfirmBoxTwoOption.ShowDialog("Changes not saved.", "Quit anyway?", "No", "Yes"))
+            if (!_isDirty || ConfirmBoxTwoOption.ShowDialog("Changes not saved.", "Quit anyway?", "Yes", "No"))
             {
                 DialogResult = DialogResult.Cancel;
                 Close();
@@ -205,7 +205,7 @@ namespace ACAT.Core.ActuatorManagement
         {
             if (validate())
             {
-                if (_isDirty && ConfirmBoxTwoOption.ShowDialog("Save changes?", "", "No", "Yes"))
+                if (_isDirty && ConfirmBoxTwoOption.ShowDialog("Save changes?", "", "Yes", "No"))
                 {
                     updateDataFromUIAndSave();
                     DialogResult = DialogResult.OK;
@@ -405,7 +405,7 @@ namespace ACAT.Core.ActuatorManagement
         {
             var shortcut = dataGridView2.Rows[e.RowIndex].Cells[ShortcutColumn.Name].Value as String;
 
-            bool result = ConfirmBoxTwoOption.ShowDialog("Delete shortcut " + shortcut.ToString() + " ?", "", "No", "Yes");
+            bool result = ConfirmBoxTwoOption.ShowDialog("Delete shortcut " + shortcut.ToString() + " ?", "", "Yes", "No");
 
             if (!result)
             {

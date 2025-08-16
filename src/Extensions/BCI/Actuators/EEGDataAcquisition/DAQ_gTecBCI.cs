@@ -497,36 +497,12 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             return info;
         }
 
-//#if SIMULATIONBOARD
-//        [DllImport("user32.dll")]
-//        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
-//        [DllImport("user32.dll")]
-//        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-
-//        private const int HOTKEY_ID = 1;
-//        protected override void WndProc(ref Message m)
-//        {
-//            const int WM_HOTKEY = 0x0312;
-//            if (m.Msg == WM_HOTKEY && m.WParam.ToInt32() == HOTKEY_ID)
-//            {
-//                DeviceObj.insert_marker(1.0);
-//                Console.WriteLine("Global marker inserted!");
-//            }
-//            base.WndProc(ref m);
-//        }
-
-
-//#endif
-
         /// <summary>
         /// Helper function to start Cyton board streaming
         /// </summary>
         public void Start_Streaming()
         {
             DeviceObj.start_stream();
-//#if SIMULATIONBOARD
-//            RegisterHotKey(foo, HOTKEY_ID, 0x0002, (uint)Keys.Space);
-//#endif
         }
 
         /// <summary>
@@ -534,10 +510,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
         /// </summary>
         public void Stop_Streaming()
         {
-//#if SIMULATIONBOARD
-//            UnRegisterHotKey(foo, HOTKEY_ID);
-//#endif
             DeviceObj.stop_stream();
+            DeviceObj.release_session();
         }
 
         #endregion Utils

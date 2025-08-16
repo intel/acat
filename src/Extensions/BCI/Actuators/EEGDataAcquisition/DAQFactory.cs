@@ -68,7 +68,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
             }
             else
             {
-                // Default to OpenBCI
+                // Default to GTecBCI
                 return new DAQ_gTecBCI();
             }
         }

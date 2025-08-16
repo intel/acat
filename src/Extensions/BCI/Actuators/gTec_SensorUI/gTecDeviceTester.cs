@@ -601,6 +601,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             // Do something with the lostConnection flag? - Might not be needed
 
+            gTecBCI.Stop();
+            gTecBCI.CloseDevice();
+
             // Set flags that will end async tasks and timers
             _endSignalCheckTimer = true;
 

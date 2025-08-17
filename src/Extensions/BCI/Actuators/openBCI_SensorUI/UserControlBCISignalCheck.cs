@@ -23,6 +23,7 @@ using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using Accord.Math;
 using brainflow;
+//using SharpDX.Direct2D1;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -358,15 +359,15 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 
             // Load images for signal quality gradient / heatmap
             _signalQualityGradientImages = new Image[9];
-            _signalQualityGradientImages[0] = Resources.signalQualityGradient_1AcceptableChannel; // for heatmap - 0 is the same as 1 accepted channel
-            _signalQualityGradientImages[1] = Resources.signalQualityGradient_1AcceptableChannel;
-            _signalQualityGradientImages[2] = Resources.signalQualityGradient_2AcceptableChannels;
-            _signalQualityGradientImages[3] = Resources.signalQualityGradient_3AcceptableChannels;
-            _signalQualityGradientImages[4] = Resources.signalQualityGradient_4AcceptableChannels;
-            _signalQualityGradientImages[5] = Resources.signalQualityGradient_5AcceptableChannels;
-            _signalQualityGradientImages[6] = Resources.signalQualityGradient_6AcceptableChannels;
-            _signalQualityGradientImages[7] = Resources.signalQualityGradient_7AcceptableChannels;
-            _signalQualityGradientImages[8] = Resources.signalQualityGradient_8AcceptableChannels;
+            _signalQualityGradientImages[0] = ACAT.Extensions.BCI.Common.BCIControl.Properties.Resources.signalQualityGradient_1AcceptableChannel; // for heatmap - 0 is the same as 1 accepted channel
+            _signalQualityGradientImages[1] = ACAT.Extensions.BCI.Common.BCIControl.Properties.Resources.signalQualityGradient_1AcceptableChannel;
+            _signalQualityGradientImages[2] = ACAT.Extensions.BCI.Common.BCIControl.Properties.Resources.signalQualityGradient_2AcceptableChannels;
+            _signalQualityGradientImages[3] = ACAT.Extensions.BCI.Common.BCIControl.Properties.Resources.signalQualityGradient_3AcceptableChannels;
+            _signalQualityGradientImages[4] = ACAT.Extensions.BCI.Common.BCIControl.Properties.Resources.signalQualityGradient_4AcceptableChannels;
+            _signalQualityGradientImages[5] = ACAT.Extensions.BCI.Common.BCIControl.Properties.Resources.signalQualityGradient_5AcceptableChannels;
+            _signalQualityGradientImages[6] = ACAT.Extensions.BCI.Common.BCIControl.Properties.Resources.signalQualityGradient_6AcceptableChannels;
+            _signalQualityGradientImages[7] = ACAT.Extensions.BCI.Common.BCIControl.Properties.Resources.signalQualityGradient_7AcceptableChannels;
+            _signalQualityGradientImages[8] = ACAT.Extensions.BCI.Common.BCIControl.Properties.Resources.signalQualityGradient_8AcceptableChannels;
 
             // Initialize colors so don't have to constantly create them
             COLOR_ACAT_DEFAULT_ORANGE = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));

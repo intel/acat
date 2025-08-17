@@ -9,7 +9,7 @@
 !define LONG_NAME "Assistive Context-Aware Toolkit (ACAT)"
 !define PUBLISHER "Intel Corporation"
 !define COPYRIGHT "©2025 Intel Corporation"
-!define VERSION "4.0.0.040328"
+!define VERSION "4.0.0.081725"
 !define SETUPNAME "SetupACAT\SetupACAT64.exe"
 !define ASSETS_FOLDER "Assets"
 !define MUI_WARN_UNUSED_VARIABLES "false"

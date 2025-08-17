@@ -98,7 +98,7 @@ namespace ACAT.Extensions.UI.Menus
             this.ItemText1.Name = "ItemText1";
             this.ItemText1.Size = new System.Drawing.Size(139, 75);
             this.ItemText1.TabIndex = 0;
-            this.ItemText1.Text = ".";
+            this.ItemText1.Text = "";
             this.ItemText1.UseMnemonic = false;
             this.ItemText1.UseVisualStyleBackColor = true;
             this.ItemText1.Click += new System.EventHandler(this.scannerRoundedButtonControl1_Click);
@@ -119,7 +119,7 @@ namespace ACAT.Extensions.UI.Menus
             this.ItemText2.Name = "ItemText2";
             this.ItemText2.Size = new System.Drawing.Size(139, 75);
             this.ItemText2.TabIndex = 1;
-            this.ItemText2.Text = ".";
+            this.ItemText2.Text = "";
             this.ItemText2.UseMnemonic = false;
             this.ItemText2.UseVisualStyleBackColor = true;
             // 
@@ -139,7 +139,7 @@ namespace ACAT.Extensions.UI.Menus
             this.ItemText3.Name = "ItemText3";
             this.ItemText3.Size = new System.Drawing.Size(139, 75);
             this.ItemText3.TabIndex = 2;
-            this.ItemText3.Text = ".";
+            this.ItemText3.Text = "";
             this.ItemText3.UseMnemonic = false;
             this.ItemText3.UseVisualStyleBackColor = true;
             // 
@@ -159,7 +159,7 @@ namespace ACAT.Extensions.UI.Menus
             this.ItemText4.Name = "ItemText4";
             this.ItemText4.Size = new System.Drawing.Size(141, 75);
             this.ItemText4.TabIndex = 3;
-            this.ItemText4.Text = ".";
+            this.ItemText4.Text = "";
             this.ItemText4.UseMnemonic = false;
             this.ItemText4.UseVisualStyleBackColor = true;
             // 

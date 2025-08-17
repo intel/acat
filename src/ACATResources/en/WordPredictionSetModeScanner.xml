@@ -3,8 +3,8 @@
     <!ENTITY usebold "false">
     <!ENTITY characterButtonBlackFontName "Montserrat">
     <!ENTITY functionButtonFontName "ACAT FONT 1">
-    <!ENTITY characterButtonFontSize "20">
-    <!ENTITY functionButtonFontSize "32">
+    <!ENTITY characterButtonFontSize "18">
+    <!ENTITY functionButtonFontSize "30">
 ]>
 
 <ACAT>

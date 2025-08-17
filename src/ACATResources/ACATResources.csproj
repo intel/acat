@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    
-    <UseWindowsForms>true</UseWindowsForms>
+    <OutputType>Library</OutputType>
   </PropertyGroup>
     <ItemGroup>
     <Reference Include="System" />
@@ -18,6 +17,9 @@
         <Generator>PublicRexXFileCodeGenerator</Generator>
       </EmbeddedResource>
     </ItemGroup>
+  <PropertyGroup>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+  </PropertyGroup>
 
   <!-- Copy Config XML Files-->
   <ItemGroup>
@@ -80,9 +82,6 @@
       DestinationFiles="$(OutputPath)en\%(ConvAssistStatic.RecursiveDir)%(Filename)%(Extension)" 
       SkipUnchangedFiles="true" />
   </Target>
-
-  
-  
   <!-- Copy ConvAssist Application -->
   <Target Name="UnzipDependency" AfterTargets="Build">
     <!-- Define paths -->

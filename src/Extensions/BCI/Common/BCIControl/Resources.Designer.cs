@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI {
+namespace ACAT.Extensions.BCI.Common.BCIControl.Properties {
     using System;
     
     
@@ -22,24 +22,24 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        public Resources() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ACAT.Extensions.BCI.Actuators.gTecSensorUI.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ACAT.Extensions.BCI.Actuators.gTecSensorUI.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,9 +63,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap BCIUsbDongle {
+        public static System.Drawing.Bitmap BCI_Connecting_GIF {
             get {
-                object obj = ResourceManager.GetObject("BCIUsbDongle", resourceCulture);
+                object obj = ResourceManager.GetObject("BCI Connecting GIF", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,7 +73,17 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap cap_new {
+        public static System.Drawing.Bitmap BCISignalCheck_CapViewIcon {
+            get {
+                object obj = ResourceManager.GetObject("BCISignalCheck_CapViewIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap cap_new {
             get {
                 object obj = ResourceManager.GetObject("cap_new", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -83,7 +93,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap cap_new_no_electrode_positions {
+        public static System.Drawing.Bitmap cap_new_no_electrode_positions {
             get {
                 object obj = ResourceManager.GetObject("cap_new_no_electrode_positions", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -93,9 +103,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Loading {
+        public static System.Drawing.Bitmap cap_new_no_electrode_positions1 {
             get {
-                object obj = ResourceManager.GetObject("Loading", resourceCulture);
+                object obj = ResourceManager.GetObject("cap_new_no_electrode_positions1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,9 +113,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap OfflineReconnect {
+        public static System.Drawing.Bitmap ImageUsbDongleError {
             get {
-                object obj = ResourceManager.GetObject("OfflineReconnect", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageUsbDongleError", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,9 +123,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap pause_black {
+        public static System.Drawing.Bitmap signalQualityGradient_1AcceptableChannel {
             get {
-                object obj = ResourceManager.GetObject("pause_black", resourceCulture);
+                object obj = ResourceManager.GetObject("signalQualityGradient_1AcceptableChannel", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -123,9 +133,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap PauseImg {
+        public static System.Drawing.Bitmap signalQualityGradient_2AcceptableChannels {
             get {
-                object obj = ResourceManager.GetObject("PauseImg", resourceCulture);
+                object obj = ResourceManager.GetObject("signalQualityGradient_2AcceptableChannels", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,9 +143,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap PinOutBoard {
+        public static System.Drawing.Bitmap signalQualityGradient_3AcceptableChannels {
             get {
-                object obj = ResourceManager.GetObject("PinOutBoard", resourceCulture);
+                object obj = ResourceManager.GetObject("signalQualityGradient_3AcceptableChannels", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -143,9 +153,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap PinOutDescription {
+        public static System.Drawing.Bitmap signalQualityGradient_4AcceptableChannels {
             get {
-                object obj = ResourceManager.GetObject("PinOutDescription", resourceCulture);
+                object obj = ResourceManager.GetObject("signalQualityGradient_4AcceptableChannels", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -153,9 +163,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap play_black {
+        public static System.Drawing.Bitmap signalQualityGradient_5AcceptableChannels {
             get {
-                object obj = ResourceManager.GetObject("play_black", resourceCulture);
+                object obj = ResourceManager.GetObject("signalQualityGradient_5AcceptableChannels", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -163,9 +173,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap PlayImg {
+        public static System.Drawing.Bitmap signalQualityGradient_6AcceptableChannels {
             get {
-                object obj = ResourceManager.GetObject("PlayImg", resourceCulture);
+                object obj = ResourceManager.GetObject("signalQualityGradient_6AcceptableChannels", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -173,9 +183,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap redo {
+        public static System.Drawing.Bitmap signalQualityGradient_7AcceptableChannels {
             get {
-                object obj = ResourceManager.GetObject("redo", resourceCulture);
+                object obj = ResourceManager.GetObject("signalQualityGradient_7AcceptableChannels", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -183,9 +193,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap SuccessOS {
+        public static System.Drawing.Bitmap signalQualityGradient_8AcceptableChannels {
             get {
-                object obj = ResourceManager.GetObject("SuccessOS", resourceCulture);
+                object obj = ResourceManager.GetObject("signalQualityGradient_8AcceptableChannels", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -193,29 +203,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap testinOS {
+        public static System.Drawing.Bitmap signalQualityGradient_Default {
             get {
-                object obj = ResourceManager.GetObject("testinOS", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap TestOS {
-            get {
-                object obj = ResourceManager.GetObject("TestOS", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap TryAgainOS {
-            get {
-                object obj = ResourceManager.GetObject("TryAgainOS", resourceCulture);
+                object obj = ResourceManager.GetObject("signalQualityGradient_Default", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

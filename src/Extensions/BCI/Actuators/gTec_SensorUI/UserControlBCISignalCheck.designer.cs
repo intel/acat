@@ -306,7 +306,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.panelSignalQualitySlider.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelSignalQualitySlider.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelSignalQualitySlider.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.panelSignalQualitySlider.BackgroundImage = global::ACAT.Extensions.BCI.Actuators.gTecSensorUI.Properties.Resources.signalQualityGradient_1AcceptableChannel;
+            this.panelSignalQualitySlider.BackgroundImage = global::ACAT.Extensions.BCI.Common.BCIControl.Properties.Resources.signalQualityGradient_1AcceptableChannel;
             this.panelSignalQualitySlider.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.tableLayoutPanelMain.SetColumnSpan(this.panelSignalQualitySlider, 6);
             this.panelSignalQualitySlider.Location = new System.Drawing.Point(210, 595);
@@ -1329,7 +1329,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // 
             this.panelSignalQuality.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelSignalQuality.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.panelSignalQuality.BackgroundImage = global::ACAT.Extensions.BCI.Actuators.gTecSensorUI.Properties.Resources.cap_new_no_electrode_positions1;
+            this.panelSignalQuality.BackgroundImage = global::ACAT.Extensions.BCI.Common.BCIControl.Properties.Resources.cap_new_no_electrode_positions1;
             this.panelSignalQuality.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.tableLayoutPanelMain.SetColumnSpan(this.panelSignalQuality, 6);
             this.panelSignalQuality.Controls.Add(this.btnElectrodeCapC3);

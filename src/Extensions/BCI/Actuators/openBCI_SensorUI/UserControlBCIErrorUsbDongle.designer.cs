@@ -12,6 +12,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 using ACAT.Core.WidgetManagement;
+using ACAT.Extensions.BCI.Common.BCIControl;
 
 namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 {
@@ -143,7 +144,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             // tableLayoutPanelBCIError
             // 
             this.tableLayoutPanelBCIError.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.tableLayoutPanelBCIError.BackgroundImage = openBCISensorUI.Resources.BCIUsbDongle;
+            //this.tableLayoutPanelBCIError.BackgroundImage = ACAT.Extensions.BCI.Common.BCIControl.Properties.Resources.BciUsbDongle;
             this.tableLayoutPanelBCIError.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.tableLayoutPanelBCIError.ColumnCount = 3;
             this.tableLayoutPanelMain.SetColumnSpan(this.tableLayoutPanelBCIError, 3);

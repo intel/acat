@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" ?>
 <!DOCTYPE ACAT [
     <!ENTITY usebold "false">
-    <!ENTITY characterButtonBlackFontName "Montserrat Black">
+    <!ENTITY characterButtonBlackFontName "Montserrat">
     <!ENTITY functionButtonFontName "ACAT FONT 1">
-    <!ENTITY characterButtonFontSize "22">
+    <!ENTITY characterButtonFontSize "20">
     <!ENTITY functionButtonFontSize "32">
 ]>
 

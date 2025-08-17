@@ -171,6 +171,8 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             //So, we don't need to start it here
             string path = Path.Combine(FileUtils.ACATPath, ConvAssistAppFolder, ConvAssistAppName);
 
+            Log.Info("ConvAssist path: " + path);
+
             Process[] runningProcesses = Process.GetProcessesByName(ConvAssistName);
             if (runningProcesses.Length == 0)
             {
@@ -192,6 +194,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 }
             }
 #endif
+            Log.Info("ConvAssist process started. Starting Named Pipe.");
             // Now start the named pipe server and wait for the client to connect
             string convAssistSettings = Path.Combine(UserManager.CurrentUserDir, CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, "WordPredictors", "ConvAssist", "Settings");
 

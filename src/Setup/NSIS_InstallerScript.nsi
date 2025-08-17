@@ -6,6 +6,10 @@
 !define MUI_ICON ".\installer_icons\intel.ico"
 !define MUI_UNICON ".\installer_icons\intel.ico"
 !define NAME "ACAT"
+!define LONG_NAME "Assistive Context-Aware Toolkit (ACAT)"
+!define PUBLISHER "Intel Corporation"
+!define COPYRIGHT "©2025 Intel Corporation"
+!define VERSION "4.0.0.040328"
 !define SETUPNAME "SetupACAT\SetupACAT64.exe"
 !define ASSETS_FOLDER "Assets"
 !define MUI_WARN_UNUSED_VARIABLES "false"
@@ -16,7 +20,19 @@ OutFile ${SETUPNAME}
 InstallDir "$PROGRAMFILES64\ACAT"
 RequestExecutionLevel admin
 
+VIProductVersion "${VERSION}"     ; must be 4 numbers
+VIFileVersion    "${VERSION}"     ; optional, defaults to ProductVersion
+
+VIAddVersionKey "ProductName"     "${LONG_NAME}"
+VIAddVersionKey "FileDescription" "${Name} Installer"
+VIAddVersionKey "CompanyName"     "${PUBLISHER}"
+VIAddVersionKey "LegalCopyright"  "${COPYRIGHT}"
+VIAddVersionKey "FileVersion"     "${VERSION}"
+VIAddVersionKey "ProductVersion"  "${VERSION}"
+VIAddVersionKey "OriginalFilename" "SetupACAT64.exe"
+
 SetCompress auto
+SetOverwrite ifnewer
 
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
 
@@ -73,7 +89,7 @@ Section "Install"
   ; Install main application files from build output (compressed)
   SetOutPath "$INSTDIR"
 
-  !define BUILD_OUTPUT "..\build\bin\Debug"
+  !define BUILD_OUTPUT "..\build\bin\Debug\win-x64"
   File /r /x ConvAssistApp /x *.dat "${BUILD_OUTPUT}\*.*"
 
   CopyFiles /SILENT "$EXEDIR\${ASSETS_FOLDER}\*.*" "$INSTDIR"
@@ -120,9 +136,9 @@ Section "Install"
 
   ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
 
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "DisplayName" "Assistive Context-Aware Toolkit (ACAT)"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "DisplayVersion" "4.0.0"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "Publisher" "Intel Corporation"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "DisplayName" "${LONG_NAME}"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "DisplayVersion" "${VERSION}"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "Publisher" "${PUBLISHER}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "InstallLocation" "$INSTDIR"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "UninstallString" "$INSTDIR\Uninstall.exe"
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "NoModify" 1
@@ -166,6 +182,6 @@ Section "Uninstall"
 ;     FindNext $0 $1
 ;   ${Loop}
 ;   FindClose $0
-  DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" \
+  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" \
 
 SectionEnd

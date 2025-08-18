@@ -73,7 +73,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         public static ResultParams ShowDialog(string label, Form parent = null, bool setTopMost = false)
         {
             var confirmBox = new CalibrationEyesSettingsForm();
-s            confirmBox.ShowDialog(parent);
+            confirmBox.ShowDialog(parent);
             ResultParams retVal = confirmBox.ResultParameters;
             confirmBox.Dispose();
             return retVal;

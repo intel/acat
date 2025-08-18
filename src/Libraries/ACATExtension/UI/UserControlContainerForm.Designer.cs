@@ -83,7 +83,6 @@ namespace ACAT.Extension
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.ResumeLayout(false);
-
         }
 
         #endregion

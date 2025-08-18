@@ -623,8 +623,6 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         /// </summary>
         private void LauncAppScanner_Load(object sender, EventArgs e)
         {
-            enableWatchdogs();
-
             ScannerCommon.OnLoad();
 
             var list = new List<Widget>();

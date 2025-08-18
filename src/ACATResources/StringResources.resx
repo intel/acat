@@ -183,7 +183,7 @@ enables selection of medium sized regions on the Main Talk UI. With default valu
 enables selection of medium sized regions on the Main Talk UI. With default values, this calibration takes ~ 4 mins.</value>
   </data>
   <data name="IterationNumber" xml:space="preserve">
-    <value>Abbreviation expansion is empty</value>
+    <value>Target #</value>
   </data>
   <data name="Of" xml:space="preserve">
     <value>File already exists</value>

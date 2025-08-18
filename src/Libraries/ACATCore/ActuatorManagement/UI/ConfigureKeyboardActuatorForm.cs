@@ -499,8 +499,6 @@ namespace ACAT.Core.ActuatorManagement
                 ClientSize = new System.Drawing.Size(ClientSize.Width, (int)(_designTimeAspectRatio * ClientSize.Width));
             }
 
-            TopMost = false;
-            TopMost = true;
 
             if (!String.IsNullOrEmpty(Title))
             {

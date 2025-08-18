@@ -172,8 +172,6 @@ namespace ACAT.Core.PreferencesManagement
 
             CenterToScreen();
 
-            TopMost = false;
-            TopMost = true;
 
             labelCurrentLanguage.Text = (CultureInfo.DefaultThreadCurrentUICulture != null)
                 ? CultureInfo.DefaultThreadCurrentUICulture.DisplayName

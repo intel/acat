@@ -25,6 +25,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// </summary>
         private SplashScreen _form;
 
+
         /// <summary>
         /// Minimum time in ms the splash screen has to stay up
         /// </summary>
@@ -79,7 +80,9 @@ namespace ACAT.Core.PanelManagement.Common
         {
             _thread = new Thread(() =>
             {
-                showSplash(message);
+                _form = new SplashScreen(message);
+
+                _form.ShowDialog();
             }) { IsBackground = true };
             _thread.SetApartmentState(ApartmentState.STA);
             _stopWatch.Start();
@@ -94,16 +97,6 @@ namespace ACAT.Core.PanelManagement.Common
         {
             _minUpTime = minUpTime;
             _stopWatch = new Stopwatch();
-        }
-
-        /// <summary>
-        /// Displays the splash screen
-        /// </summary>
-        private void showSplash(string message)
-        {
-            _form = new SplashScreen(message);
-
-            _form.ShowDialog();
         }
 
         /// <summary>

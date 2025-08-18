@@ -470,7 +470,6 @@
             this.Name = "LaunchAppScanner";
             this.ShowIcon = false;
             this.Text = "Launch Application";
-            this.TopMost = true;
             this.Load += new System.EventHandler(this.LauncAppScanner_Load);
             this.ScannerBorder.ResumeLayout(false);
             this.TopStatusBar.ResumeLayout(false);

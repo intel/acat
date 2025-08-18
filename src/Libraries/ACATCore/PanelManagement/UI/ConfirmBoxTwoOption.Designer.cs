@@ -151,7 +151,6 @@ namespace ACAT.Core.PanelManagement
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "ConfirmBoxTwoOption";
             this.Text = "ACAT";
-            this.TopMost = true;
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 

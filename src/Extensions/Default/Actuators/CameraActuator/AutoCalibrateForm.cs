@@ -22,8 +22,6 @@ namespace ACAT.Extensions.Actuators.CameraActuator
     {
         private VideoWindowFinder _videoWindowFinder;
         private readonly CameraActuator _visionActuator;
-        private WindowActiveWatchdog _windowActiveWatchdog;
-        private WindowOverlapWatchdog _windowOverlapWatchdog;
 
         public AutoCalibrateForm(CameraActuator visionActuator)
         {
@@ -38,8 +36,6 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         {
             try
             {
-                _windowOverlapWatchdog = new WindowOverlapWatchdog(handle.ToInt32());
-
                 _videoWindowFinder.DockVideoWindow(this);
             }
             catch
@@ -47,23 +43,10 @@ namespace ACAT.Extensions.Actuators.CameraActuator
             }
         }
 
-        private void AutoCalibrateForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (_windowOverlapWatchdog != null)
-            {
-                _windowOverlapWatchdog.Dispose();
-                _windowOverlapWatchdog = null;
-            }
-        }
 
         private void AutoCalibrateForm_Load(object sender, EventArgs e)
         {
             Resize += AutoCalibrateForm_Resize;
-
-            FormClosing += AutoCalibrateForm_FormClosing;
-
-            TopMost = false;
-            TopMost = true;
 
             Left = Top = 0;
             CameraSensor.showVideoWindow();
@@ -79,9 +62,6 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
         private void AutoCalibrateForm_Shown(object sender, EventArgs e)
         {
-            ScannerFocus.SetFocus(this);
-
-            _windowActiveWatchdog = new WindowActiveWatchdog(this);
 
             _videoWindowFinder = new VideoWindowFinder();
             _videoWindowFinder.EvtVideoWindowDisplayed += _videoWindowFinder_EvtVideoWindowDisplayed;
@@ -92,7 +72,6 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         {
             CameraSensor.hideVideoWindow();
 
-            _windowActiveWatchdog.Dispose();
 
             Windows.CloseForm(this);
         }
@@ -106,7 +85,6 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         {
             _visionActuator.EvtCalibrationEnd -= VisionActuator_EvtCalibrationEnd;
 
-            _windowActiveWatchdog.Dispose();
 
             if (_videoWindowFinder != null)
             {

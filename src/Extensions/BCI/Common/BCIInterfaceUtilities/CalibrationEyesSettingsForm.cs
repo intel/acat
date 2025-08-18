@@ -63,7 +63,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
-            this.TopMost = true;
             Screen primaryScreen = Screen.PrimaryScreen;
             this.StartPosition = FormStartPosition.Manual;
             this.Location = primaryScreen.WorkingArea.Location;
@@ -74,12 +73,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         public static ResultParams ShowDialog(string label, Form parent = null, bool setTopMost = false)
         {
             var confirmBox = new CalibrationEyesSettingsForm();
-            if (parent != null && setTopMost)
-            {
-                parent.TopMost = false;
-                confirmBox.TopMost = true;
-            }
-            confirmBox.ShowDialog(parent);
+s            confirmBox.ShowDialog(parent);
             ResultParams retVal = confirmBox.ResultParameters;
             confirmBox.Dispose();
             return retVal;

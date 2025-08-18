@@ -228,7 +228,6 @@ namespace ACAT.Extensions.UI.Scanners
             this.ShowInTaskbar = true;
             this.Name = "TalkApplicationScannerQwerty";
             this.Text = "Talk App";
-            this.TopMost = true;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.ScannerBorder.ResumeLayout(false);
             this.tableLayoutTop.ResumeLayout(false);

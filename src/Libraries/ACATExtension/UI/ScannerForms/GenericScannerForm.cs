@@ -54,7 +54,6 @@ namespace ACAT.Extension.UI.ScannerForms
         protected string _panelClass;
         protected ScannerHelper _scannerHelper;
         private Label label1;
-        protected WindowActiveWatchdog _windowActiveWatchdog;
         public GenericScannerForm()
         {
             InitializeComponent();
@@ -132,8 +131,6 @@ namespace ACAT.Extension.UI.ScannerForms
 
         public virtual void OnPause()
         {
-            Log.Debug("CALIBTEST TalkScanner OnPause. Pausing watchdog");
-            _windowActiveWatchdog?.Pause();
 
             Log.Debug("CALIBTEST calling usercontrolmanager.pause");
             ScannerCommon.UserControlManager.OnPause();
@@ -156,7 +153,6 @@ namespace ACAT.Extension.UI.ScannerForms
             HandleResume();
 
             Log.Debug("CALIBTEST TalkScanner OnResume. Resuming watchdog");
-            _windowActiveWatchdog?.Resume();
 
             _dimScanner = true;
 
@@ -223,8 +219,6 @@ namespace ACAT.Extension.UI.ScannerForms
 
         protected virtual void ScannerFormClosing(object sender, FormClosingEventArgs e)    
         {
-            removeWatchdogs();
-
             ScannerCommon.OnClosing();
             ScannerCommon.Dispose();
         }
@@ -264,15 +258,6 @@ namespace ACAT.Extension.UI.ScannerForms
             // If you want to handle any messages, override this method and
             // call base.WndProc only if you do not handle the message.
             base.WndProc(ref m);
-        }
-
-        private void removeWatchdogs()
-        {
-            if (_windowActiveWatchdog != null)
-            {
-                _windowActiveWatchdog.Dispose();
-                _windowActiveWatchdog = null;
-            }
         }
     }
 }

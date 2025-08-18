@@ -419,7 +419,6 @@ namespace ACAT.Extensions.FunctionalAgents.UI
                 if (((IPanel)scanner).PanelCommon.DisplayMode != DisplayModeTypes.Popup)
                 {
                     Windows.DockWithScanner(this, scanner, Context.AppWindowPosition);
-                    Windows.SetTopMost(scanner);
                 }
             }
 
@@ -429,13 +428,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
             }
         }
 
-        /// <summary>
-        /// Enables watchdogs
-        /// </summary>
-        private void enableWatchdogs()
-        {
-            _windowActiveWatchdog ??= new WindowActiveWatchdog(this);
-        }
+
 
         /// <summary>
         /// Selects apps whose names match with the specified
@@ -772,17 +765,6 @@ namespace ACAT.Extensions.FunctionalAgents.UI
             graphics.Dispose();
         }
 
-        /// <summary>
-        /// Disables watchdogs
-        /// </summary>
-        private void removeWatchdogs()
-        {
-            if (_windowActiveWatchdog != null)
-            {
-                _windowActiveWatchdog.Dispose();
-                _windowActiveWatchdog = null;
-            }
-        }
 
         /// <summary>
         /// Search filter text changed

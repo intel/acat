@@ -55,8 +55,6 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         private VideoWindowFinder _videoWindowFinder;
         private WebcamGestureSelectUserControl _webcamGestureSelectUserControl;
         private WebcamGestureSettingsUserControl _webcamGestureSettingsUserControl;
-        private WindowActiveWatchdog _windowActiveWatchdog;
-        private WindowOverlapWatchdog _windowOverlapWatchdog;
 
         internal ConfigureActuatorForm(CameraActuator cameraActuator)
         {
@@ -122,7 +120,6 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
             try
             {
-                _windowOverlapWatchdog = new WindowOverlapWatchdog(handle.ToInt32());
 
                 Log.Debug("Docking calibration window");
 
@@ -224,8 +221,6 @@ namespace ACAT.Extensions.Actuators.CameraActuator
             CameraSensor.hideVideoWindow();
 
             _textTimer.Stop();
-
-            _windowActiveWatchdog.Dispose();
 
             saveActuatorConfig();
 
@@ -332,11 +327,6 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
         private void ConfigureActuatorForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (_windowOverlapWatchdog != null)
-            {
-                _windowOverlapWatchdog.Dispose();
-                _windowOverlapWatchdog = null;
-            }
 
             if (_sampleImageForm != null)
             {
@@ -354,7 +344,6 @@ namespace ACAT.Extensions.Actuators.CameraActuator
             Log.Debug("ENtered ConfigureActuatorForm_Load");
 
             Resize += CalibrateForm_Resize;
-            _windowActiveWatchdog = new WindowActiveWatchdog(this);
 
             _webcamGestureSelectUserControl = new WebcamGestureSelectUserControl(_cameraActuator);
             _webcamGestureSettingsUserControl = new WebcamGestureSettingsUserControl(_cameraActuator);
@@ -373,7 +362,6 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
         private void ConfigureActuatorForm_Shown(object sender, EventArgs e)
         {
-            ScannerFocus.SetFocus(this);
 
             _textTimer = new Timer
             {
@@ -427,12 +415,10 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
         private void pause()
         {
-            _windowActiveWatchdog.Pause();
         }
 
         private void resume()
         {
-            _windowActiveWatchdog.Resume();
         }
 
         private void saveActuatorConfig()

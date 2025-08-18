@@ -332,7 +332,6 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             ScannerCommon.OnFormClosing(e);
-            removeWatchdogs();
 
             Windows.EvtWindowPositionChanged -= Windows_EvtWindowPositionChanged;
 
@@ -401,7 +400,6 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
                 if (((IPanel)scanner).PanelCommon.DisplayMode != DisplayModeTypes.Popup)
                 {
                     Windows.DockWithScanner(this, scanner, Context.AppWindowPosition);
-                    Windows.SetTopMost(scanner);
                 }
             }
 
@@ -411,13 +409,6 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
             }
         }
 
-        /// <summary>
-        /// Enable watchdogs to keep this window in focus
-        /// </summary>
-        private void enableWatchdogs()
-        {
-            _windowActiveWatchdog ??= new WindowActiveWatchdog(this);
-        }
 
         /// <summary>
         /// Filters the list by the specified filter and returns only
@@ -714,17 +705,6 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
             graphics.Dispose();
         }
 
-        /// <summary>
-        /// Remove all the watchdogs
-        /// </summary>
-        private void removeWatchdogs()
-        {
-            if (_windowActiveWatchdog != null)
-            {
-                _windowActiveWatchdog.Dispose();
-                _windowActiveWatchdog = null;
-            }
-        }
 
         /// <summary>
         /// Search filter text changed. Reload the list and
@@ -828,8 +808,6 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
         /// </summary>
         private void SwitchWindowsScanner_Load(object sender, EventArgs e)
         {
-            enableWatchdogs();
-
             ScannerCommon.OnLoad();
 
             var list = new List<Widget>();

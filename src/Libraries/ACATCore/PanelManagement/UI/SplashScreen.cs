@@ -50,7 +50,6 @@ namespace ACAT.Core.PanelManagement
             FormClosing += Form1_FormClosing;
 
             ShowInTaskbar = false;
-            TopMost = false;
             StartPosition = FormStartPosition.CenterScreen;
             FormBorderStyle = FormBorderStyle.None;
 
@@ -147,7 +146,6 @@ namespace ACAT.Core.PanelManagement
         /// <param name="e">event args</param>
         private void SplashScreen_Shown(object sender, EventArgs e)
         {
-            Windows.SetTopMost(this);
         }
 
         /// <summary>

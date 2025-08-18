@@ -48,8 +48,6 @@ namespace ACAT.Extension
         /// <param name="e">event args</param>
         private void ShowDisclaimersForm_Load(object sender, EventArgs e)
         {
-            TopMost = true;
-
             CenterToScreen();
 
             buttonOK.Text = StringResources.ResourceManager.GetString(buttonOK.Text);

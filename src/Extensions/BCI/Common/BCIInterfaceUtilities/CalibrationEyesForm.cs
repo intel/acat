@@ -90,7 +90,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
-            this.TopMost = true;
             Screen primaryScreen = Screen.PrimaryScreen;
             this.StartPosition = FormStartPosition.Manual;
             this.Location = primaryScreen.WorkingArea.Location;

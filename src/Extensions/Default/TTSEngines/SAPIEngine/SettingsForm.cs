@@ -167,7 +167,6 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
 
             //Show();
 
-            //this.TopMost = true;
 
             _settings = SAPISettings.Load();
         }
@@ -189,13 +188,11 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// <returns>true if yes</returns>
         private bool confirm(String prompt)
         {
-            this.TopMost = false;
             Hide();
 
             bool result = ConfirmBoxTwoOption.ShowDialog(prompt.ToString(), "", StringResources.Yes, StringResources.No, null, false);
 
             Show();
-            this.TopMost = true;
 
             return result;
         }
@@ -249,8 +246,6 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
                 ClientSize = new System.Drawing.Size(ClientSize.Width, (int)(_designTimeAspectRatio * ClientSize.Width));
             }
 
-            TopMost = false;
-            TopMost = true;
 
             CenterToScreen();
 

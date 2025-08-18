@@ -1286,7 +1286,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                             if (_daqInstance.GetType() == typeof(DAQ_OpenBCI))
                             {
                                 // Write marker values to file
-                                ((DAQ_OpenBCI)_daqInstance).WriteMarkerValues2File(bciCalibrationInput.RowColumnIDs);
+                                _daqInstance.WriteMarkerValues2File(bciCalibrationInput.RowColumnIDs);
 
                                 var overallStatus = ((DAQ_OpenBCI)_daqInstance).GetStatus(out SignalStatus[] signalStatus);
                                 if (overallStatus == SignalStatus.SIGNAL_OK)
@@ -1329,7 +1329,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                             else
                             {
                                 //TODO Need to add log for Gtec Device as well!
-                                _gtecDeviceTester.gTecBCI.WriteMarkerValues2File(bciCalibrationInput.RowColumnIDs);
+                                _daqInstance.WriteMarkerValues2File(bciCalibrationInput.RowColumnIDs);
                             }
                         }
                     }

@@ -580,7 +580,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 
 #if !SIMULATIONBOARD
                         Log.Debug($"Selected device: {BCIActuatorSettings.Settings.GTecDeviceName}, trying to connect...");
-                        using Unicorn device = new(BCIActuatorSettings.Settings.GTecDeviceName);
+                        using Unicorn device = new Unicorn(BCIActuatorSettings.Settings.GTecDeviceName.ToString());
                         Log.Debug($"Device: {device} is connected...");
                         device.Dispose();
 #endif

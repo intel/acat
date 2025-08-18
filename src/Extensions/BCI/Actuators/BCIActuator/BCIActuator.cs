@@ -41,7 +41,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
     /// BCI Actuator ID
     /// </summary>
     [ClassDescriptorAttribute("77809D19-F450-4D36-A633-D818400B3D9A",
-                            "BCI EEG Actuator",
+                            "BCI",
                             "BCI Actuator")]
     internal class BCIActuator : ActuatorBase, ISupportsPreferences
     {

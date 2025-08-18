@@ -81,8 +81,6 @@ namespace ACAT.Core.Utility
 
         private delegate void setText(Control control, string text);
 
-        private delegate void setTopMost(Form form, bool value);
-
         private delegate void setTrackBarValue(TrackBar trackBar, int positionValue);
 
         private delegate void setVisible(Control control, bool flag);
@@ -1438,38 +1436,6 @@ namespace ACAT.Core.Utility
             }
         }
 
-        /// <summary>
-        /// Sets topmost to true
-        /// </summary>
-        /// <param name="form">which form?</param>
-        /// <param name="topMost">set to true for topmost, false otherwise</param>
-        public static void SetTopMost(Form form, bool topMost = true)
-        {
-            if (form == null)
-            {
-                return;
-            }
-
-            if (form.InvokeRequired)
-            {
-                form.Invoke(new setTopMost(SetTopMost), form, topMost);
-            }
-            else
-            {
-                // need to toggle to false and
-                // then to true for this to take effect
-
-                if (topMost)
-                {
-                    form.TopMost = false;
-                    form.TopMost = true;
-                }
-                else
-                {
-                    form.TopMost = false;
-                }
-            }
-        }
 
         /// <summary>
         /// Sets value of a tackbar as an integer
@@ -1767,32 +1733,6 @@ namespace ACAT.Core.Utility
             }
         }
 
-        /// <summary>
-        /// Show the window as topmost without activating it. Sets
-        ///  the form's parent to parentForm
-        /// </summary>
-        /// <param name="parentForm">the parent of the form</param>
-        /// <param name="form">the form</param>
-        public static void ShowInactiveTopmost(Form parentForm, Form form)
-        {
-            if (form.InvokeRequired)
-            {
-                form.Invoke(new show(ShowInactiveTopmost), parentForm, form);
-            }
-            else
-            {
-                const int SW_SHOWNOACTIVATE = 4;
-                const int HWND_TOPMOST = -1;
-                const uint SWP_NOACTIVATE = 0x0010;
-
-                form.Owner = parentForm;
-
-                User32Interop.ShowWindow(form.Handle.ToInt32(), SW_SHOWNOACTIVATE);
-                User32Interop.SetWindowPos(form.Handle.ToInt32(), HWND_TOPMOST,
-                    form.Left, form.Top, form.Width, form.Height,
-                    SWP_NOACTIVATE);
-            }
-        }
 
         /// <summary>
         /// Show or hide the specified form in the Windows taskbar

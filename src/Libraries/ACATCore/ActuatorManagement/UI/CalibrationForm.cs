@@ -195,8 +195,6 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="eventArgs">event args</param>
         private void OnLoad(object sender, EventArgs eventArgs)
         {
-            TopMost = false;
-            TopMost = true;
             Text = Caption;
             labelPrompt.Text = Prompt;
 

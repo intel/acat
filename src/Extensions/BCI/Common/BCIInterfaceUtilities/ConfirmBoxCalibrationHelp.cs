@@ -40,11 +40,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         public static bool ShowDialogHelp(Form parent = null, bool setTopMost = false)
         {
             var confirmBox = new ConfirmBoxCalibrationHelp();
-            if (parent != null && setTopMost)
-            {
-                parent.TopMost = false;
-                confirmBox.TopMost = true;
-            }
             if (parent != null)
             {
                 confirmBox.StartPosition = FormStartPosition.Manual;
@@ -59,11 +54,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             confirmBox.BringToFront();
             confirmBox.ShowDialog(parent);
             bool retVal = confirmBox.Result;
-            if (parent != null && setTopMost)
-            {
-                //parent.TopMost = true;
-                confirmBox.TopMost = false;
-            }
             confirmBox.Dispose();
             return retVal;
         }

@@ -427,7 +427,6 @@ namespace ACAT.Core.PanelManagement
 
             if (isEnabled(StartupFlags.WindowsActivityMonitor))
             {
-                WindowActivityMonitor.GetActiveWindow();
                 WindowActivityMonitor.Start();
             }
 

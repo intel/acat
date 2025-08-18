@@ -532,7 +532,6 @@ namespace ACAT.Core.UserControlManagement
                             LabelFont = 10
                         };
                         ConfirmBoxOneOption.BringToFront();
-                        ConfirmBoxOneOption.TopMost = true;
                         ConfirmBoxOneOption.ShowDialog();
                         ConfirmBoxOneOption.Dispose();
                         _DLLError = true;

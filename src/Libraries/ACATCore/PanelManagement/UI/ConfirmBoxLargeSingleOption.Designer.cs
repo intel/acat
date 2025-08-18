@@ -154,7 +154,6 @@ namespace ACAT.Core.PanelManagement
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "ConfirmBoxLargeSingleOption";
             this.Text = "ACAT";
-            this.TopMost = true;
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);

@@ -123,8 +123,6 @@ namespace ACAT.Core.ActuatorManagement.UI
 
             CenterToScreen();
 
-            TopMost = false;
-            TopMost = true;
 
             radioButtonTriggerSelect.Checked = IsTriggerSelect;
             radioButtonMapToCommand.Checked = !IsTriggerSelect;

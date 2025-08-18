@@ -835,7 +835,6 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MenuPanelBase";
             this.Text = "ACAT";
-            this.TopMost = true;
             this.tableLayoutPanel1.ResumeLayout(false);
             this.Row8.ResumeLayout(false);
             this.Row7.ResumeLayout(false);

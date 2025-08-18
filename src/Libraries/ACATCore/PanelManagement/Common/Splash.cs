@@ -9,6 +9,7 @@ using ACAT.Core.Utility;
 using System;
 using System.Diagnostics;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace ACAT.Core.PanelManagement.Common
 {
@@ -25,6 +26,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// </summary>
         private SplashScreen _form;
 
+        public Form SplashScreen => _form;
 
         /// <summary>
         /// Minimum time in ms the splash screen has to stay up

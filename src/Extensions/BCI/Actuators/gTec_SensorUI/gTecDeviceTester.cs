@@ -138,7 +138,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         {
             Log.Debug("gTecDeviceTester | initialize");
 
-            gTecBCI = new DAQ_gTecBCI();
+            gTecBCI = (DAQ_gTecBCI)DAQFactory.CreateDAQ(DAQDeviceType.GTecBCI);
 
             // Close main form if for some reason it's opened at this point
             if (_mainForm != null && _mainForm.IsDisposed == false)

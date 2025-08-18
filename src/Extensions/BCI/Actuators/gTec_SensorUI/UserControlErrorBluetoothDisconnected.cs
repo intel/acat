@@ -62,7 +62,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
 
             if (listViewDevices.SelectedItems.Count > 0)
             {
-                selectedDevice = listViewDevices.SelectedItems[0].ToString();
+                selectedDevice = ((ListViewItem)listViewDevices.SelectedItem).Text;
             }
 
             // Save selected device in settings

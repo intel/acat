@@ -189,9 +189,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
                         DeviceObj.prepare_session();
 
                         indEegChannels = BoardShim.get_eeg_channels(boardID);
-                        int[] accel = BoardShim.get_accel_channels(boardID);
-                        int[] gyro = BoardShim.get_gyro_channels(boardID);
-                        int timestamp = BoardShim.get_timestamp_channel(boardID);
                         int battery = BoardShim.get_battery_channel(boardID);
 #if SIMULATIONBOARD
                         int[] indOtherChannels = new int[7] { 12, 13, 14, 15, 16, 17, 18 };
@@ -580,7 +577,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition
 
 #if !SIMULATIONBOARD
                         Log.Debug($"Selected device: {BCIActuatorSettings.Settings.GTecDeviceName}, trying to connect...");
-                        using Unicorn device = new Unicorn(BCIActuatorSettings.Settings.GTecDeviceName.ToString());
+                        using Unicorn device = new Unicorn(BCIActuatorSettings.Settings.GTecDeviceName);
                         Log.Debug($"Device: {device} is connected...");
                         device.Dispose();
 #endif

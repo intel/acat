@@ -409,7 +409,7 @@ namespace ACAT.Applications
                 Enabled = false,
                 Id = new Guid("77809D19-F450-4D36-A633-D818400B3D9A"),
                 ImageFileName = "BCISwitch.png",
-                Name = "BCI EEG Actuator"
+                Name = "BCI"
             };
 
             var switchSetting = new SwitchSetting

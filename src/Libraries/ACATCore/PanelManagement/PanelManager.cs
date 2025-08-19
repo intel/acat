@@ -388,7 +388,7 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         /// <param name="extensionDirs">extension dirs to walk</param>
         /// <returns>true on success</returns>
-        public bool Init(IEnumerable<String> extensionDirs)
+        public bool Init(IEnumerable<string> extensionDirs)
         {
             PanelConfigMap.Reset();
 

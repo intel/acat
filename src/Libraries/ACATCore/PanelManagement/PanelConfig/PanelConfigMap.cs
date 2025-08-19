@@ -32,7 +32,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// </summary>
         public static string PanelClassConfigFileName = "panelclassconfig.xml";
 
-        private const string DefaultCulture = "en";
+        private const string DefaultKey = "panelconfigs";
         /// <summary>
         /// Name of the config file that has the mapping.  This is loaded from
         /// the user directory
@@ -44,9 +44,9 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// </summary>
         private static Dictionary<string, Dictionary<string, string>> _configFileLocationMap;
 
-        private static Dictionary<string, AppPanelClassConfig> _cultureAppPanelClassConfig;
-        private static Dictionary<string, List<Guid>> _cultureConfigIdMapTable;
-        private static Dictionary<string, PanelClassConfig> _culturePanelClassConfigMapTable;
+        private static Dictionary<string, AppPanelClassConfig> _AppPanelClassConfig;
+        private static Dictionary<string, List<Guid>> _ConfigIdMapTable;
+        private static Dictionary<string, PanelClassConfig> _PanelClassConfigMapTable;
         private static AppPanelClassConfig _currentAppPanelClassConfig = null;
         private static volatile bool _DLLError = false;
         /// <summary>
@@ -55,7 +55,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         private static Hashtable _formsCache;
 
         private static Dictionary<string, string> _loadConfigFileLocationMap;
-        private static string _loadCulture;
+
         private static List<Guid> _loadPanelConfigMapTable;
         private static Dictionary<Guid, PanelConfigMapEntry> _masterPanelConfigMapTable;
 
@@ -66,15 +66,15 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// <param name="language"></param>
         /// <param name="panelClassConfigMap"></param>
         /// <returns></returns>
-        public static bool AddPanelClassConfigMap(string appId, string language, PanelClassConfigMap panelClassConfigMap)
+        public static bool AddPanelClassConfigMap(string appId, PanelClassConfigMap panelClassConfigMap)
         {
-            var panelClassConfigFilePath = Path.Combine(FileUtils.GetDefaultResourcesDir(), PanelClassConfigFileName);
+            var panelClassConfigFilePath = Path.Combine(FileUtils.GetPanelConfigsDir(), PanelClassConfigFileName);
 
             if (File.Exists(panelClassConfigFilePath))
             {
                 var appPanelClassConfig = AppPanelClassConfig.Load(panelClassConfigFilePath);
 
-                var panelClassConfig = appPanelClassConfig.Find(CoreGlobals.AppId);
+                var panelClassConfig = appPanelClassConfig.Find(appId);
 
                 if (panelClassConfig != null)
                 {
@@ -150,9 +150,9 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// Returns the panelclass config filename for the current culture
         /// </summary>
         /// <returns>the full file name</returns>
-        public static string GetCurrentCulturePanelClassConfigFile()
+        public static string GetCurrentPanelClassConfigFile()
         {
-            return Path.Combine(FileUtils.GetDefaultResourcesDir(), PanelClassConfigFileName);
+            return Path.Combine(FileUtils.GetPanelConfigsDir(), PanelClassConfigFileName);
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// <returns>the full filename</returns>
         public static string GetDefaultPanelClassConfigFileName()
         {
-            return Path.Combine(FileUtils.GetDefaultResourcesDir(), PanelClassConfigFileName);
+            return Path.Combine(FileUtils.GetPanelConfigsDir(), PanelClassConfigFileName);
         }
 
         /// <summary>
@@ -174,13 +174,9 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         ///
         public static PanelClassConfigMap GetDefaultPanelClassConfigMap()
         {
-            if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, out PanelClassConfig panelClassConfig))
+            if (_PanelClassConfigMapTable.TryGetValue(DefaultKey, out PanelClassConfig panelClassConfig))
             {
-                _currentAppPanelClassConfig = _cultureAppPanelClassConfig[CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName];
-            }
-            else if (_culturePanelClassConfigMapTable.TryGetValue(DefaultCulture, out panelClassConfig))
-            {
-                _currentAppPanelClassConfig = _cultureAppPanelClassConfig[DefaultCulture];
+                _currentAppPanelClassConfig = _AppPanelClassConfig[DefaultKey];
             }
 
             return panelClassConfig?.GetDefaultClassConfigMap();
@@ -188,13 +184,9 @@ namespace ACAT.Core.PanelManagement.PanelConfig
 
         public static PanelClassConfig GetPanelClassConfigForApp()
         {
-            if (_culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, out PanelClassConfig panelClassConfig))
+            if (_PanelClassConfigMapTable.TryGetValue(DefaultKey, out PanelClassConfig panelClassConfig))
             {
-                _currentAppPanelClassConfig = _cultureAppPanelClassConfig[CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName];
-            }
-            else if (_culturePanelClassConfigMapTable.TryGetValue(DefaultCulture, out panelClassConfig))
-            {
-                _currentAppPanelClassConfig = _cultureAppPanelClassConfig[DefaultCulture];
+                _currentAppPanelClassConfig = _AppPanelClassConfig[DefaultKey];
             }
 
             return panelClassConfig;
@@ -213,9 +205,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
 
             if (retVal == null)
             {
-                retVal = getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, panel);
-
-                retVal ??= getCultureConfigMapEntry(DefaultCulture, panel);
+                retVal = getConfigMapEntry(panel);
             }
 
             return retVal;
@@ -245,17 +235,17 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// <returns>true on success</returns>
         public static bool Load(IEnumerable<string> extensionDirs)
         {
-            _culturePanelClassConfigMapTable = new Dictionary<string, PanelClassConfig>();
+            _PanelClassConfigMapTable = new Dictionary<string, PanelClassConfig>();
 
             _masterPanelConfigMapTable = new Dictionary<Guid, PanelConfigMapEntry>();
 
             LoadPanelClassConfig();
 
-            _cultureConfigIdMapTable = new Dictionary<string, List<Guid>>();
+            _ConfigIdMapTable = new Dictionary<string, List<Guid>>();
             _configFileLocationMap = new Dictionary<string, Dictionary<string, string>>();
-            _cultureAppPanelClassConfig = new Dictionary<string, AppPanelClassConfig>();
+            _AppPanelClassConfig = new Dictionary<string, AppPanelClassConfig>();
             _formsCache = new Hashtable();
-            _loadCulture = DefaultCulture;
+
             _loadPanelConfigMapTable = new List<Guid>();
             _loadConfigFileLocationMap = new Dictionary<string, string>();
 
@@ -276,29 +266,18 @@ namespace ACAT.Core.PanelManagement.PanelConfig
                     return false;
             }
 
-            // then walk the resources directories
-            var resourceInfo = new List<(string Path, string Culture)>
+            var configsDir = FileUtils.GetPanelConfigsDir();
+            Log.Debug($"Loading resources from {configsDir}");
+
+            if (Directory.Exists(configsDir))
             {
-                ( FileUtils.ACATPath, CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName)
-            };
+                _loadPanelConfigMapTable = new List<Guid>();
+                _loadConfigFileLocationMap = new Dictionary<string, string>();
 
-            foreach (var resource in resourceInfo)
-            {
-                Log.Debug($"Loading resources from {resource.Path}");
-                var dir = Path.Combine(resource.Path, resource.Culture);
+                LoadResourcesFromDir(configsDir);
 
-                if (Directory.Exists(dir))
-                {
-                    _loadCulture = resource.Culture;
-
-                    _loadPanelConfigMapTable = new List<Guid>();
-                    _loadConfigFileLocationMap = new Dictionary<string, string>();
-
-                    LoadResourcesFromDir(dir);
-
-                    _cultureConfigIdMapTable.Add(_loadCulture, _loadPanelConfigMapTable);
-                    _configFileLocationMap.Add(_loadCulture, _loadConfigFileLocationMap);
-                }
+                _ConfigIdMapTable.Add(DefaultKey, _loadPanelConfigMapTable);
+                _configFileLocationMap.Add(DefaultKey, _loadConfigFileLocationMap);
             }
 
             return true;
@@ -316,18 +295,17 @@ namespace ACAT.Core.PanelManagement.PanelConfig
             return loadTypesFromAssembly(assembly);
         }
 
-        public static void LoadPanelClassConfig()
-        {
-            loadPanelClassConfig(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName);
-            loadPanelClassConfig(DefaultCulture);
-        }
+        //public static void LoadPanelClassConfig()
+        //{
+        //    loadPanelClassConfig();
+        //}
 
         public static void Reset()
         {
-            if (_cultureConfigIdMapTable != null)
+            if (_ConfigIdMapTable != null)
             {
-                _cultureConfigIdMapTable.Clear();
-                _cultureConfigIdMapTable = null;
+                _ConfigIdMapTable.Clear();
+                _ConfigIdMapTable = null;
             }
 
             if (_masterPanelConfigMapTable != null)
@@ -342,16 +320,16 @@ namespace ACAT.Core.PanelManagement.PanelConfig
                 _configFileLocationMap = null;
             }
 
-            if (_culturePanelClassConfigMapTable != null)
+            if (_PanelClassConfigMapTable != null)
             {
-                _culturePanelClassConfigMapTable.Clear();
-                _culturePanelClassConfigMapTable = null;
+                _PanelClassConfigMapTable.Clear();
+                _PanelClassConfigMapTable = null;
             }
 
-            if (_cultureAppPanelClassConfig != null)
+            if (_AppPanelClassConfig != null)
             {
-                _cultureAppPanelClassConfig.Clear();
-                _cultureAppPanelClassConfig = null;
+                _AppPanelClassConfig.Clear();
+                _AppPanelClassConfig = null;
             }
 
             if (_loadConfigFileLocationMap != null)
@@ -393,10 +371,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
                 return false;
             }
 
-            if (
-                _culturePanelClassConfigMapTable.TryGetValue(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, out PanelClassConfig panelClassConfig) ||
-                _culturePanelClassConfigMapTable.TryGetValue(DefaultCulture, out panelClassConfig)
-                )
+            if ( _PanelClassConfigMapTable.TryGetValue(DefaultKey, out PanelClassConfig panelClassConfig))
             {
                 retVal = panelClassConfig.SetDefaultClassConfigMap(configName);
             }
@@ -441,12 +416,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
 
                 Log.IsNull("mapEntry.FormType ", mapEntry.FormType);
 
-                var configFilePath = getConfigFilePathFromLocationMap(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, mapEntry.ConfigFileName);
-
-                if (string.IsNullOrEmpty(configFilePath))
-                {
-                    configFilePath = getConfigFilePathFromLocationMap(DefaultCulture, mapEntry.ConfigFileName);
-                }
+                var configFilePath = getConfigFilePathFromLocationMap(mapEntry.ConfigFileName);
 
                 if (mapEntry.FormType != null && !string.IsNullOrEmpty(configFilePath))
                 {
@@ -528,11 +498,11 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// <param name="language">the culture</param>
         /// <param name="panelClass">panel class</param>
         /// <returns>object, null if not found</returns>
-        private static PanelClassConfigMapEntry getClassConfigMapEntryForCulture(string language, string panelClass)
+        private static PanelClassConfigMapEntry getClassConfigMapEntry(string panelClass)
         {
-            if (_culturePanelClassConfigMapTable.ContainsKey(language))
+            if (_PanelClassConfigMapTable.ContainsKey(DefaultKey))
             {
-                var panelClassConfig = _culturePanelClassConfigMapTable[language];
+                var panelClassConfig = _PanelClassConfigMapTable[DefaultKey];
 
                 return panelClassConfig.GetDefaultClassConfigMapEntry(panelClass);
             }
@@ -546,11 +516,11 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// <param name="language">culture</param>
         /// <param name="configFile">config file</param>
         /// <returns>full path, empty if not found</returns>
-        private static string getConfigFilePathFromLocationMap(string language, string configFile)
+        private static string getConfigFilePathFromLocationMap(string configFile)
         {
-            if (_configFileLocationMap.ContainsKey(language))
+            if (_configFileLocationMap.ContainsKey(DefaultKey))
             {
-                var map = _configFileLocationMap[language];
+                var map = _configFileLocationMap[DefaultKey];
 
                 if (map.ContainsKey(configFile))
                 {
@@ -568,14 +538,14 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// <param name="language">language</param>
         /// <param name="panelClass">panel class</param>
         /// <returns>object, null if not found</returns>
-        private static PanelConfigMapEntry getCultureConfigMapEntry(string language, string panelClass)
+        private static PanelConfigMapEntry getConfigMapEntry(string panelClass)
         {
-            if (!_cultureConfigIdMapTable.ContainsKey(language))
+            if (!_ConfigIdMapTable.ContainsKey(DefaultKey))
             {
                 return null;
             }
 
-            List<Guid> configIds = _cultureConfigIdMapTable[language];
+            List<Guid> configIds = _ConfigIdMapTable[DefaultKey];
 
             foreach (var configId in configIds)
             {
@@ -600,7 +570,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// <returns>the object, null if not found</returns>
         private static PanelConfigMapEntry getMapEntryFromPanelClassConfigMap(string panelClass)
         {
-            var entry = getClassConfigMapEntryForCulture(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, panelClass);
+            var entry = getClassConfigMapEntry(panelClass);
 
             if (entry == null)
             {
@@ -634,24 +604,24 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// the panelclassconfig.xml file
         /// </summary>
         /// <param name="language"></param>
-        private static void loadPanelClassConfig(string language)
+        public static void LoadPanelClassConfig()
         {
-            _cultureAppPanelClassConfig ??= new Dictionary<string, AppPanelClassConfig>();
+            _AppPanelClassConfig ??= new Dictionary<string, AppPanelClassConfig>();
 
-            _culturePanelClassConfigMapTable ??= new Dictionary<string, PanelClassConfig>();
+            _PanelClassConfigMapTable ??= new Dictionary<string, PanelClassConfig>();
 
-            var panelClassConfigFilePath = Path.Combine(FileUtils.GetDefaultResourcesDir(), PanelClassConfigFileName);
+            var panelClassConfigFilePath = Path.Combine(FileUtils.GetPanelConfigsDir(), PanelClassConfigFileName);
 
-            if (File.Exists(panelClassConfigFilePath) && !_culturePanelClassConfigMapTable.ContainsKey(language))
+            if (File.Exists(panelClassConfigFilePath) && !_PanelClassConfigMapTable.ContainsKey(DefaultKey))
             {
                 var appPanelClassConfig = AppPanelClassConfig.Load(panelClassConfigFilePath);
-                _cultureAppPanelClassConfig[language] = appPanelClassConfig;
+                _AppPanelClassConfig[DefaultKey] = appPanelClassConfig;
 
                 var panelClassConfig = appPanelClassConfig.Find(CoreGlobals.AppId);
 
                 if (panelClassConfig != null && panelClassConfig.PanelClassConfigMaps.Count > 0)
                 {
-                    _culturePanelClassConfigMapTable[language] = panelClassConfig;
+                    _PanelClassConfigMapTable[DefaultKey] = panelClassConfig;
                 }
             }
         }

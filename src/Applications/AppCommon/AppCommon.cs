@@ -429,27 +429,27 @@ namespace ACAT.Applications
             config.Save();
         }
 
-        public static void addPanelClassConfigMapForBCI()
-        {
-            var panelClassConfigMap = new PanelClassConfigMap
-            {
-                Default = false,
-                Description = "An alphabetically arranged keyboard with predictive text/sentences to help you communicate",
-                Name = "TalkApplicationBCIScannerABC",
-                ScreenshotFileName = "ABCKeyboardLayout.png",
-                DisplayNameShort = "Alphabetical",
-                DisplayNameLong = "ABC Keyboard Layout"
-            };
+        //public static void addPanelClassConfigMapForBCI()
+        //{
+        //    var panelClassConfigMap = new PanelClassConfigMap
+        //    {
+        //        Default = false,
+        //        Description = "An alphabetically arranged keyboard with predictive text/sentences to help you communicate",
+        //        Name = "TalkApplicationBCIScannerABC",
+        //        ScreenshotFileName = "ABCKeyboardLayout.png",
+        //        DisplayNameShort = "Alphabetical",
+        //        DisplayNameLong = "ABC Keyboard Layout"
+        //    };
 
-            var panelClassConfigMapEntry = new PanelClassConfigMapEntry
-            {
-                ConfigId = new Guid("18f8796a-c0e2-4d4b-ac20-1e76e0a57bcd"),
-                PanelClass = "TalkApplicationScanner"
-            };
+        //    var panelClassConfigMapEntry = new PanelClassConfigMapEntry
+        //    {
+        //        ConfigId = new Guid("18f8796a-c0e2-4d4b-ac20-1e76e0a57bcd"),
+        //        PanelClass = "TalkApplicationScanner"
+        //    };
 
-            panelClassConfigMap.PanelClassConfigMapEntries.Add(panelClassConfigMapEntry);
+        //    panelClassConfigMap.PanelClassConfigMapEntries.Add(panelClassConfigMapEntry);
 
-            PanelConfigMap.AddPanelClassConfigMap(CoreGlobals.AppId, CultureInfo.CurrentCulture.TwoLetterISOLanguageName, panelClassConfigMap);
-        }
+        //    PanelConfigMap.AddPanelClassConfigMap(CoreGlobals.AppId, panelClassConfigMap);
+        //}
     }
 }

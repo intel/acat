@@ -28,7 +28,7 @@ namespace ACATConfigNext.Forms
         private TableLayoutPanel contentPanel;
         private TableLayoutPanel bottomPanel;
 
-        private Button selectedCategoryButton;
+        private ScannerRoundedButtonControl selectedCategoryButton;
         private Button saveButton;
         private Button cancelButton;
         private Button exitButton;
@@ -58,12 +58,13 @@ namespace ACATConfigNext.Forms
         private void InitializeComponent()
         { 
             Text = "ACAT Settings";
-            MaximumSize = new Size(2000, 1400);
-            MinimumSize = new Size(2000, 1200);
+            //MaximumSize = new Size(2000, 1400);
+            Size = new Size(2000, 1400);
+            MinimumSize = new Size(1000, 600);
             StartPosition = FormStartPosition.CenterScreen;
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            MaximizeBox = false;
-            MinimizeBox = false;
+            FormBorderStyle = FormBorderStyle.Sizable;
+            MaximizeBox = true;
+            MinimizeBox = true;
             BackColor = Color.FromArgb(31, 31, 56);
             ForeColor = Color.White;
 
@@ -74,11 +75,13 @@ namespace ACATConfigNext.Forms
                 BackColor = Color.Transparent,
                 /*/
                 BackColor = Color.Red,
+           
                 //*/
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 ColumnCount = 2,
                 RowCount = 1,
+                MaximumSize = new Size(2000, 1440),
                 GrowStyle = TableLayoutPanelGrowStyle.AddRows,
                 ColumnStyles = { new ColumnStyle(SizeType.AutoSize), new ColumnStyle(SizeType.Percent, 100F) }
             };
@@ -94,35 +97,16 @@ namespace ACATConfigNext.Forms
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 FlowDirection = FlowDirection.TopDown,
-                Padding = new Padding(10),
+                WrapContents = false, // stack vertically only
+               // Padding = new Padding(10),
+                 Padding = new Padding(left: 40, top: 48, right: 20, bottom: 48), // inner padding
                 Margin = new Padding(0),
-            };
-                
-            var acatlabel = new Label
-            {
-                Text = "ACAT",
-                Font = new Font("Montserrat.Thin", 64),
-                ForeColor = Color.White,
-                Dock = DockStyle.Top,
-                TextAlign = ContentAlignment.MiddleCenter,
-                AutoSize = true
-            };
 
-            var settingslabel = new Label
-            {
-                Text = "Settings",
-                Font = new Font("Montserrat", 32, FontStyle.Bold),
-                ForeColor = Color.White,
-                Dock = DockStyle.Top,
-                TextAlign = ContentAlignment.MiddleCenter,
-                AutoSize = true
             };
-            leftPanel.Controls.Add(acatlabel);
-            leftPanel.Controls.Add(settingslabel);
 
             navPanel = new TableLayoutPanel
             {
-                Dock = DockStyle.Left,
+               // Dock = DockStyle.Left,
                 //*
                 BackColor = Color.Transparent,
                 /*/
@@ -132,11 +116,69 @@ namespace ACATConfigNext.Forms
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 ColumnCount = 1,
                 RowCount = 4,
-                GrowStyle = TableLayoutPanelGrowStyle.AddRows
+                GrowStyle = TableLayoutPanelGrowStyle.AddRows,
+                Margin = new Padding(0, 40, 0, 0)
             };
 
-               
-            leftPanel.Controls.Add(navPanel);
+            // container that aligns acatlabel + navPanel in 1 column
+            var centerPanel = new TableLayoutPanel
+            {
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                ColumnCount = 1,
+                RowCount = 2,
+                Dock = DockStyle.Top,
+                BackColor = Color.Transparent
+            };
+            centerPanel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+
+            var acatlabel = new Label
+            {
+                Text = "ACAT",
+                Font = new Font("Montserrat Thin", 64),
+                ForeColor = Color.White,
+                Dock = DockStyle.Top,
+                TextAlign = ContentAlignment.MiddleCenter,
+                AutoSize = false,
+                Margin = new Padding(0, 0, 0, 0) ,
+                Height = 250,
+                Width = 300
+            };
+
+            acatlabel.Paint += (s, e) =>
+            {
+                var settingsText = "Settings";
+                using (var font = new Font("Montserrat", 38, FontStyle.Bold))
+                using (var brush = new SolidBrush(Color.White))
+                {
+                    var textSize = e.Graphics.MeasureString(settingsText, font);
+                    float x = (acatlabel.Width - textSize.Width) / 2;
+                    float y = acatlabel.Font.Height * 1.53f; //overlap
+                    e.Graphics.DrawString(settingsText, font, brush, x, y);
+                }
+            };
+
+
+            centerPanel.Controls.Add(acatlabel, 0, 0);
+            centerPanel.Controls.Add(navPanel, 0, 2);
+
+
+            // centerPanel.SetColumnSpan(acatlabel, 1);
+            // centerPanel.SetColumnSpan(navPanel, 1);
+
+            acatlabel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+          //  settingslabel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            navPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+
+            leftPanel.Controls.Add(centerPanel);
+
+           // leftPanel.Controls.Add(acatlabel);
+        //    leftPanel.Controls.Add(settingslabel);
+          //  leftPanel.Controls.Add(navPanel);
+
+         //   navPanel.Width = settingslabel.PreferredWidth;
+          //  settingslabel.SizeChanged += (s, e) => navPanel.Width = settingslabel.Width;
+         //  settingslabel.Width = acatlabel.Width;
 
             mainPanel = new TableLayoutPanel
             {
@@ -151,7 +193,8 @@ namespace ACATConfigNext.Forms
                 ColumnCount = 1,
                 RowCount = 3,
                 GrowStyle = TableLayoutPanelGrowStyle.AddRows,
-                RowStyles = { new RowStyle(SizeType.AutoSize), new RowStyle(SizeType.Percent, 100F), new RowStyle(SizeType.AutoSize) }
+                RowStyles = { new RowStyle(SizeType.AutoSize), new RowStyle(SizeType.Percent, 100F), new RowStyle(SizeType.AutoSize) },
+                Padding = new Padding(left: 28, top: 48, right: 48, bottom: 48)
             };
 
             breadcrumbPanel = new FlowLayoutPanel
@@ -175,8 +218,8 @@ namespace ACATConfigNext.Forms
                 Dock = DockStyle.Fill,
                 //*/
                 BackColor = Color.Transparent,
-                /*
-                BackColor = Color.DarkBlue,
+                /*/
+                BackColor = Color.DeepPink,
                 //*/
                 Padding = new Padding(10),
                 Margin = new Padding(10),
@@ -451,12 +494,18 @@ namespace ACATConfigNext.Forms
                 var btn = new ScannerRoundedButtonControl()
                 {
                     Text = category,
-                    Font = new Font("Montserrat", 18, FontStyle.Italic),
+                    Font = new Font("Montserrat", 18, FontStyle.Regular),
                     AutoSize = true,
                     AutoSizeMode = AutoSizeMode.GrowAndShrink,
                     ForeColor = Color.White,
                     Dock = DockStyle.Top,
-                    Tag = (Category: category, Settings: LoadSettings(category))
+                    Tag = (Category: category, Settings: LoadSettings(category)),
+                    FlatStyle = FlatStyle.Flat,
+                 //   BorderRadiusBottomLeft = 0,
+                 //   BorderRadiusBottomRight = 0,
+                //    BorderRadiusTopLeft = 0,
+                 //   BorderRadiusTopRight = 0,
+                   // BorderWidth = 0F,
                 };
 
                 btn.Click += Category_Click;
@@ -479,7 +528,7 @@ namespace ACATConfigNext.Forms
 
         private void Category_Click(object sender, EventArgs e)
         {
-            if (sender is Button clickedButton)
+            if (sender is ScannerRoundedButtonControl clickedButton)
             {
                 // Check if the clicked button is already selected  
                 if (selectedCategoryButton == clickedButton)
@@ -491,10 +540,25 @@ namespace ACATConfigNext.Forms
                 if (selectedCategoryButton != null)
                 {
                     selectedCategoryButton.BackColor = Color.Transparent; // Reset previous button color
+                    selectedCategoryButton.BorderColor = Color.White; // Reset previous button color
+                    selectedCategoryButton.ForeColor = Color.White;
                 }
 
                 selectedCategoryButton = clickedButton;
-                selectedCategoryButton.BackColor = Color.FromArgb(255, 170, 0); // Highlight selected button
+                //selectedCategoryButton.BackColor = Color.FromArgb(255, 169, 0); // Highlight selected button
+
+                // Make sure the button is flat and has no border
+                clickedButton.FlatStyle = FlatStyle.Flat;
+                clickedButton.FlatAppearance.BorderSize = 0;
+                clickedButton.TabStop = false; // prevents focus rectangle
+
+                // Highlight the button
+                clickedButton.BackColor = Color.FromArgb(255, 169, 0);
+                clickedButton.BorderColor = Color.FromArgb(255, 169, 0);
+                clickedButton.ForeColor = Color.Black;
+
+                // Remove focus immediately so the outline disappears
+                this.ActiveControl = null;
 
                 var (Category, Settings) = ((string Category, IEnumerable<IExtension> Settings))clickedButton.Tag;
                 string category = Category;

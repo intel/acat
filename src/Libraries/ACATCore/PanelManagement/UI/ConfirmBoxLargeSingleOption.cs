@@ -66,7 +66,6 @@ namespace ACAT.Core.PanelManagement
         {
             CenterToScreen();
 
-            TopMost = true;
 
             labelPrompt.Text = Prompt;
             if (LabelFont != 0)

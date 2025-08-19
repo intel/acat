@@ -56,8 +56,6 @@ namespace ACAT.Extension
         /// <param name="e">event args</param>
         private void ShowLicenseForm_Load(object sender, EventArgs e)
         {
-            TopMost = true;
-
             CenterToScreen();
 
             if (String.IsNullOrEmpty(LicenseFileName))

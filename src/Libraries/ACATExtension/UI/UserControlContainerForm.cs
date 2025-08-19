@@ -208,7 +208,6 @@ namespace ACAT.Extension
         private void subscribeToEvents()
         {
             Load += UserControlContainerForm_Load;
-            Shown += UserControlContainerForm_Shown;
             FormClosing += UserControlContainerForm_FormClosing; ;
         }
 
@@ -222,16 +221,6 @@ namespace ACAT.Extension
             ScannerCommon.OnLoad();
 
             ScannerCommon.ResizeToFitDesktop(this);
-        }
-
-        /// <summary>
-        /// Event handler for when form is shown
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event args</param>
-        private void UserControlContainerForm_Shown(object sender, EventArgs e)
-        {
-            ScannerFocus.SetFocus(this);
         }
 
         private class ContainerFormDispatcher : DefaultCommandDispatcher

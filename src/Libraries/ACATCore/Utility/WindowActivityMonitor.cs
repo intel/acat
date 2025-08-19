@@ -1,9 +1,5 @@
-﻿////////////////////////////////////////////////////////////////////////////
-//
-// Copyright 2013-2019; 2023 Intel Corporation
+﻿// Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
-//
-////////////////////////////////////////////////////////////////////////////
 
 using System;
 using System.Diagnostics;
@@ -14,82 +10,22 @@ using System.Windows.Forms;
 
 namespace ACAT.Core.Utility
 {
-    /// <summary>
-    /// Monitors the activity of the foreground window and notifies
-    /// event subscribers if the focues of the active window changes,
-    /// OR if the focus changes from one control to another inside
-    /// the active window
-    /// Also supports a heartbeat where subscribers can be periodically
-    /// notified of the current focused window/ window element
-    /// </summary>
     public class WindowActivityMonitor
     {
-        /// <summary>
-        /// How often to check for active window focus changes
-        /// </summary>
         private const int Interval = 600;
-
-        /// <summary>
-        /// To prevent re-entrancy
-        /// </summary>
         private static readonly object _timerSync = new();
-
-        /// <summary>
-        /// Automation element of the control that is currently in focus
-        /// </summary>
         private static AutomationElement _currentFocusedElement;
-
-        /// <summary>
-        /// Currently active window
-        /// </summary>
         private static IntPtr _currentHwnd = IntPtr.Zero;
-
-        /// <summary>
-        /// Normally events are raised only if something changes.  Set
-        /// this to true to force raising an event even if nothing has changed
-        /// </summary>
         private static volatile bool _forceGetActiveWindow;
-
-        /// <summary>
-        /// Used to control whether the heartbeat will trigger
-        /// an event or not
-        /// </summary>
         private static bool _heartbeatToggle = true;
-
-        /// <summary>
-        /// Timer to track focus changes
-        /// </summary>
         private static Timer _timer;
+        private static Form _form;
+        private static volatile bool _isPaused = false;
 
-        /// <summary>
-        /// For the event raised for activity monitoring
-        /// </summary>
-        /// <param name="monitorInfo">activity info</param>
         public delegate void ActivityMonitorDelegate(WindowActivityMonitorInfo monitorInfo);
-
-        /// <summary>
-        /// For the event raised when the focus changes
-        /// </summary>
-        /// <param name="element">currently focused element</param>
-        public delegate void AutomationElementFocusChanged(AutomationElement element);
-
-        /// <summary>
-        /// Raised when focus changes
-        /// </summary>
         public static event ActivityMonitorDelegate EvtFocusChanged;
-
-        /// <summary>
-        /// Raised for heartbeat subscribers
-        /// </summary>
         public static event ActivityMonitorDelegate EvtWindowMonitorHeartbeat;
 
-        private static volatile bool _ispaused = false;
-
-        private static Form _form;
-
-        /// <summary>
-        /// Disposes resources
-        /// </summary>
         public static void Dispose()
         {
             if (_timer != null)
@@ -99,221 +35,21 @@ namespace ACAT.Core.Utility
             }
         }
 
-        /// <summary>
-        /// Synchronously raises an event to get info
-        /// about the currently active window
-        /// </summary>
-        [SecurityPermission(SecurityAction.InheritanceDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
-        public static void GetActiveWindow()
-        {         
-            try
-            {
-                var windowInfo = GetForegroundWindowInfo();
-
-                if (windowInfo == null || ignoreWindow(windowInfo.Title))
-                {
-                    return;
-                }
-
-                EvtFocusChanged?.Invoke(windowInfo);
-            }
-            catch (Exception e)
-            {
-                Log.Exception("Exception: " + e);
-            }
-        }
-
-        /// <summary>
-        /// Asynchronously forces an event to be raised
-        /// regardless of whether focus changed or not
-        /// </summary>
-        public static void GetActiveWindowAsync()
-        {
-            _forceGetActiveWindow = true;
-        }
-
-        /// <summary>
-        /// Returns information of the currently focused window
-        /// such as the window title, the element inside the window
-        /// that is currently focused etc
-        /// </summary>
-        /// <returns>window monitor info</returns>
-        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
-#nullable enable
-        public static WindowActivityMonitorInfo? GetForegroundWindowInfo()
-        {
-            const int maxTries = 3;
-            const int retryDelayMs = 100;
-
-            var monitorInfo = new WindowActivityMonitorInfo();
-
-            for (int attempt = 1; attempt <= maxTries; attempt++)
-            {
-                try
-                {
-                    IntPtr hwnd = Windows.GetForegroundWindow();
-
-                    if (hwnd == IntPtr.Zero)
-                        return null;
-
-                    monitorInfo.FgHwnd = hwnd;
-                    monitorInfo.Title = Windows.GetWindowTitle(hwnd);
-                    monitorInfo.FgProcess = GetProcessForWindow(hwnd);
-
-                    break;
-                }
-                catch
-                {
-                    if (attempt < maxTries)
-                        Task.Delay(retryDelayMs);
-                }
-            }
-
-            Log.Info($"Current Window is {monitorInfo.Title}");
-
-            for (int attempt = 1; attempt <= maxTries; attempt++)
-            {
-                try
-                {
-                    uint processId = (uint)Windows.GetWindowThreadProcessId(monitorInfo.FgHwnd);
-                    uint currentProcessId = (uint)Process.GetCurrentProcess().Id;
-
-                    if (currentProcessId != processId)
-                        break;
-
-                    monitorInfo.FocusedElement = AutomationElement.FocusedElement;
-                    break;
-                }
-                catch (InvalidCastException)
-                {
-                    monitorInfo.FocusedElement = null;
-                }
-                catch (ElementNotAvailableException)
-                {
-                    monitorInfo.FocusedElement = null;
-                }
-                if (monitorInfo.FocusedElement != null)
-                    break;
-
-                if (attempt < maxTries)
-                     Task.Delay(retryDelayMs);
-            }
-
-            return monitorInfo;
-        }
-#nullable disable
-
-        /// <summary>
-        /// Gets the parent process that owns the specified window handle
-        /// </summary>
-        /// <param name="hwnd">window handle</param>
-        /// <returns>parent process</returns>
-        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
-        public static Process GetProcessForWindow(IntPtr hwnd)
-        {
-            User32Interop.GetWindowThreadProcessId(hwnd, out int pid);
-
-            return Process.GetProcessById(pid);
-        }
-
-        /// <summary>
-        /// Compares the two automation elements and returns if
-        /// they are identical or not
-        /// </summary>
-        /// <param name="ele1">first element</param>
-        /// <param name="ele2">second element</param>
-        /// <returns></returns>
-        public static bool IsDifferent(AutomationElement ele1, AutomationElement ele2)
-        {
-            bool retVal;
-            if (ele1 == null || ele2 == null)
-            {
-                return true;
-            }
-
-            try
-            {
-                retVal = !Automation.Compare(ele1.GetRuntimeId(), ele2.GetRuntimeId());
-            }
-            catch
-            {
-                retVal = true;
-            }
-
-            Log.Verbose(retVal ? "YES" : "NO");
-            return retVal;
-        }
-
-        /// <summary>
-        /// Pauses the activity monitoring.  No events
-        /// will be raised when paused
-        /// </summary>
-        public static void Pause()
-        {
-            _ispaused = true;
-
-            if (_form == null)
-            {
-                return;
-            }
-
-            if (_timer != null)
-            {
-                _form.Invoke(new MethodInvoker(delegate
-                {
-                    _timer.Stop();
-                    _currentHwnd = IntPtr.Zero;
-                }));
-            }
-        }
-
-        /// <summary>
-        /// Resumes window activity monitoring.
-        /// </summary>
-        public static void Resume()
-        {
-            _ispaused = false;
-
-            if (_form == null)
-            {
-                return;
-            }
-
-            try
-            {
-                _form.Invoke(new MethodInvoker(delegate
-                {
-                    _timer?.Start();
-                }));
-            }
-            catch (Exception ex)
-            {
-                Log.Exception(ex.ToString());
-            }
-        }
-
-        /// <summary>
-        /// Starts activity monitoring
-        /// </summary>
-        /// <returns>true</returns>
         public static bool Start()
         {
             if (_form == null)
             {
-                _form = new Form
-                {
-                    Visible = false
-                };
+                _form = new Form { Visible = false };
                 _form.Show();
                 _form.Visible = false;
             }
 
             if (_timer == null)
             {
-                _form.Invoke(new MethodInvoker(delegate
+                _form.Invoke(new MethodInvoker(() =>
                 {
                     _timer = new Timer { Interval = Interval };
-                    _timer.Tick += _timer_Tick;
+                    _timer.Tick += Timer_Tick;
                     _timer.Start();
                 }));
             }
@@ -321,166 +57,122 @@ namespace ACAT.Core.Utility
             return true;
         }
 
-        /// <summary>
-        /// The timer function to check the currently focused window
-        /// and to see if focus changed or not
-        /// </summary>
-        /// <param name="sender">event sender</param>
-        /// <param name="e">event arg</param>
-        private static void _timer_Tick(object sender, EventArgs e)
+        public static void Pause()
         {
-            if (_ispaused)
-            {
-                return;
-            }
-
-            // prevent re-entrancy
-            if (!tryEnter(_timerSync))
-            {
-                Log.Verbose("TryEnter failed!! Returning");
-                return;
-            }
-
-            Log.Verbose("tryenter sucess!");
-
-            getActiveWindow();
-
-            release(_timerSync);
+            _isPaused = true;
+            _timer?.Stop();
+            _currentHwnd = IntPtr.Zero;
         }
 
-        /// <summary>
-        /// Returns true if a window with the specified title should be
-        /// ignored  Some windows in Win10 cause the Automation.FocusedElement
-        /// to freeze.
-        /// </summary>
-        /// <param name="title">title of the window</param>
-        /// <returns>true if it should</returns>
-        private static bool ignoreWindow(String title)
+        public static void Resume()
         {
-            return Windows.GetOSVersion() == Windows.WindowsVersion.Win10 && title.ToLower().StartsWith("jump list for");
+            _isPaused = false;
+            _timer?.Start();
         }
 
-        /// <summary>
-        /// This is the heart of WindowActivityMonitor.  It checks which
-        /// window currently has focus, and within the window, which UI control
-        /// has focus and raises an event to notify apps.  THe event is raised
-        /// only if the focus changeed since the previous call to this function.
-        /// Set the flag to true to force raising the event even if the focus
-        /// has no changed to a new control since the last call.
-        /// </summary>
-        /// <param name="flag">see notes above</param>
-        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
-        private static void getActiveWindow(bool flag = false)
+        private static void Timer_Tick(object sender, EventArgs e)
         {
-
-            if (_ispaused)
-            {
-                return;
-            }
+            if (_isPaused) return;
+            if (!TryEnter(_timerSync)) return;
 
             try
             {
-
-                WindowActivityMonitorInfo windowActivityMonitorInfo = GetForegroundWindowInfo();
-                
-                if (Windows.GetOSVersion() == Windows.WindowsVersion.Win10 &&
-                    windowActivityMonitorInfo.Title.StartsWith("Jump List for"))
-                {
-                    return;
-                }
-
-                Log.Verbose("focusedElement is " + ((windowActivityMonitorInfo.FocusedElement != null) ? "not null" : "null"));
-                Log.Verbose("_currentfocusedElement is " + ((_currentFocusedElement != null) ? "not null" : "null"));
-
-                bool elementChanged = true;
-
-                // check if anything changed. did the window focus change?
-                // did focus change within the window?
-                if (windowActivityMonitorInfo.FocusedElement != null &&
-                    (_forceGetActiveWindow || flag || windowActivityMonitorInfo.FgHwnd != _currentHwnd || _currentFocusedElement == null ||
-                    (elementChanged = IsDifferent(windowActivityMonitorInfo.FocusedElement, _currentFocusedElement))))
-                {
-
-                    if (_forceGetActiveWindow)
-                    {
-                        _forceGetActiveWindow = false;
-                    }
-
-                    if (EvtFocusChanged != null)
-                    {
-                        var monitorInfo = windowActivityMonitorInfo;
-
-                        if (flag)
-                        {
-                            monitorInfo.IsNewWindow = true;
-                        }
-
-                        if (monitorInfo.IsNewWindow || _currentFocusedElement == null || elementChanged)
-                        {
-                            monitorInfo.IsNewFocusedElement = true;
-                        }
-
-                        if (EvtFocusChanged != null && !_ispaused)
-                        {
-                            EvtFocusChanged(monitorInfo);
-                        }
-
-                        _currentFocusedElement = windowActivityMonitorInfo.FocusedElement;
-                    }
-                    else
-                    {
-                        Log.Verbose("EvtFocusChanged is null");
-                    }
-                }
-
-                _currentHwnd = windowActivityMonitorInfo.FgHwnd;
-
-                if (_heartbeatToggle && CoreGlobals.AppPreferences.DisableSystemSleepMode)
-                {
-                    Kernel32Interop.SetThreadExecutionState(Kernel32Interop.EXECUTION_STATE.ES_SYSTEM_REQUIRED | Kernel32Interop.EXECUTION_STATE.ES_DISPLAY_REQUIRED);
-                }
-
-                // raise the heartbeat event
-                if (EvtWindowMonitorHeartbeat != null && windowActivityMonitorInfo.FgHwnd != null && _heartbeatToggle)
-                {
-                    EvtWindowMonitorHeartbeat(windowActivityMonitorInfo);
-                }
-
-                _heartbeatToggle = !_heartbeatToggle;
+                GetActiveWindowInternal();
             }
-            catch (Exception e)
+            finally
             {
-                Log.Exception("Exception: " + e);
-                _currentFocusedElement = null;
+                Release(_timerSync);
             }
         }
 
-        /// <summary>
-        /// Releases the synch object
-        /// </summary>
-        /// <param name="syncObj">synch object</param>
-        private static void release(Object syncObj)
+        private static void GetActiveWindowInternal()
         {
+            var windowInfo = GetForegroundWindowInfo();
+            if (windowInfo == null) return;
+
+            bool elementChanged = IsDifferent(windowInfo.FocusedElement, _currentFocusedElement);
+
+            // Raise focus changed event only if focus actually changed
+            if (_forceGetActiveWindow || elementChanged || windowInfo.FgHwnd != _currentHwnd)
+            {
+                _forceGetActiveWindow = false;
+                windowInfo.IsNewWindow = windowInfo.FgHwnd != _currentHwnd;
+                windowInfo.IsNewFocusedElement = elementChanged;
+                EvtFocusChanged?.Invoke(windowInfo);
+                _currentFocusedElement = windowInfo.FocusedElement;
+            }
+
+            _currentHwnd = windowInfo.FgHwnd;
+
+            // Heartbeat
+            if (_heartbeatToggle)
+            {
+                EvtWindowMonitorHeartbeat?.Invoke(windowInfo);
+            }
+            _heartbeatToggle = !_heartbeatToggle;
+        }
+
+        public static WindowActivityMonitorInfo GetForegroundWindowInfo()
+        {
+            IntPtr hwnd = Windows.GetForegroundWindow();
+            if (hwnd == IntPtr.Zero) return null;
+
+            var info = new WindowActivityMonitorInfo
+            {
+                FgHwnd = hwnd,
+                Title = Windows.GetWindowTitle(hwnd),
+                FgProcess = GetProcessForWindow(hwnd)
+            };
+
             try
             {
-                System.Threading.Monitor.Exit(syncObj);
+                uint processId = (uint)Windows.GetWindowThreadProcessId(hwnd);
+                uint currentProcessId = (uint)Process.GetCurrentProcess().Id;
+
+                if (currentProcessId == processId)
+                {
+                    info.FocusedElement = AutomationElement.FocusedElement;
+                }
             }
-            catch (Exception ex)
+            catch
             {
-                Log.Exception(ex);
+                info.FocusedElement = null;
+            }
+
+            return info;
+        }
+
+        public static Process GetProcessForWindow(IntPtr hwnd)
+        {
+            User32Interop.GetWindowThreadProcessId(hwnd, out int pid);
+            return Process.GetProcessById(pid);
+        }
+
+        public static bool IsDifferent(AutomationElement ele1, AutomationElement ele2)
+        {
+            if (ele1 == null || ele2 == null) return true;
+
+            try
+            {
+                return !Automation.Compare(ele1.GetRuntimeId(), ele2.GetRuntimeId());
+            }
+            catch
+            {
+                return true;
             }
         }
 
-        /// <summary>
-        /// Uses Monitor to see if it can enter
-        /// </summary>
-        /// <param name="syncObj">synchronization object</param>
-        /// <returns>true if it entered</returns>
-        private static bool tryEnter(Object syncObj)
+        private static bool TryEnter(object syncObj)
         {
             bool lockTaken = false;
             System.Threading.Monitor.TryEnter(syncObj, ref lockTaken);
             return lockTaken;
+        }
+
+        private static void Release(object syncObj)
+        {
+            try { System.Threading.Monitor.Exit(syncObj); }
+            catch { }
         }
     }
 }

@@ -24,7 +24,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             InitializeComponent();
             ShowInTaskbar = false;
-            TopMost = true;
+            //TopMost = true;
             StartPosition = FormStartPosition.Manual;
             //Closing += OnClosing;
         }

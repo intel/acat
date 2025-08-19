@@ -440,8 +440,6 @@ namespace ACAT.Core.Utility
         /// </summary>
         private void animateHorizontalRectangle()
         {
-            Topmost = false;
-            Topmost = true;
 
             _rectHoriz = new Rectangle
             {
@@ -614,8 +612,8 @@ namespace ACAT.Core.Utility
         /// <param name="e">event args</param>
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            Topmost = false;
-            Topmost = true;
+            //TopMost = false;
+            //TopMost = true;
 
             transitionState();
         }

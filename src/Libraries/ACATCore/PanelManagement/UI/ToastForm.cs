@@ -48,7 +48,6 @@ namespace ACAT.Core.PanelManagement
         {
             InitializeComponent();
             ShowInTaskbar = false;
-            TopMost = true;
             Load += ToastForm_Load;
             Closing += OnClosing;
             _timeout = timeOut;

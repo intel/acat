@@ -9,6 +9,7 @@ using ACAT.Core.Utility;
 using System;
 using System.Diagnostics;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace ACAT.Core.PanelManagement.Common
 {
@@ -24,6 +25,8 @@ namespace ACAT.Core.PanelManagement.Common
         /// The splash screen form
         /// </summary>
         private SplashScreen _form;
+
+        public Form SplashScreen => _form;
 
         /// <summary>
         /// Minimum time in ms the splash screen has to stay up
@@ -79,7 +82,9 @@ namespace ACAT.Core.PanelManagement.Common
         {
             _thread = new Thread(() =>
             {
-                showSplash(message);
+                _form = new SplashScreen(message);
+
+                _form.ShowDialog();
             }) { IsBackground = true };
             _thread.SetApartmentState(ApartmentState.STA);
             _stopWatch.Start();
@@ -94,16 +99,6 @@ namespace ACAT.Core.PanelManagement.Common
         {
             _minUpTime = minUpTime;
             _stopWatch = new Stopwatch();
-        }
-
-        /// <summary>
-        /// Displays the splash screen
-        /// </summary>
-        private void showSplash(string message)
-        {
-            _form = new SplashScreen(message);
-
-            _form.ShowDialog();
         }
 
         /// <summary>

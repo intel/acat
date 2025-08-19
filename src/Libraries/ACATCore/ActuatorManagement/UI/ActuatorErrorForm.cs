@@ -106,8 +106,6 @@ namespace ACAT.Core.ActuatorManagement
         {
             CenterToScreen();
 
-            TopMost = false;
-            TopMost = true;
             labelCaption.Text = Caption;
             labelPrompt.Text = Prompt;
 

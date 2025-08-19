@@ -53,18 +53,8 @@ namespace ACAT.Core.PanelManagement
                 PromptTitle = promptTitle,
                 Prompt = prompt
             };
-            if (parent != null && setTopMost)
-            {
-                parent.TopMost = false;
-                confirmBox.TopMost = true;
-            }
             confirmBox.ShowDialog(parent);
 
-            if (parent != null && setTopMost)
-            {
-                parent.TopMost = true;
-                confirmBox.TopMost = false;
-            }
             confirmBox.Dispose();
             return true;
         }

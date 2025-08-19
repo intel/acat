@@ -25,7 +25,6 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
         private void SampleImageForm_Load(object sender, EventArgs e)
         {
-            TopMost = true;
         }
     }
 }

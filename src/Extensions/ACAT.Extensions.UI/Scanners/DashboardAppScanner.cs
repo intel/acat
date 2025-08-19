@@ -153,13 +153,8 @@ namespace ACAT.Extensions.UI.Scanners
 
             SetColorScheme();
 
-            _windowActiveWatchdog = new WindowActiveWatchdog(this);
         }
 
-        protected override void ScannerShown(object sender, EventArgs e)
-        {
-            ScannerFocus.SetFocus(this);
-        }
 
         protected override void SubscribeToEvents()
         {

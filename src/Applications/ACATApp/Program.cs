@@ -25,6 +25,7 @@ using ACATResources;
 using System;
 using System.Windows.Forms;
 
+
 namespace ACATApp
 {
     /// <summary>
@@ -182,8 +183,6 @@ namespace ACATApp
 
                     Common.Uninit();
 
-                    ScannerFocus.Stop();
-
                     //AppCommon.ExitMessageClose();
                     splash.Close();
 
@@ -210,7 +209,6 @@ namespace ACATApp
         {
             splash?.Close();
 
-            ScannerFocus.Stop();
 
             if (Context.AppPanelManager != null && Context.AppPanelManager.GetCurrentForm() != null &&
                 Context.AppPanelManager.GetCurrentForm().PanelCommon != null && Context.AppPanelManager.GetCurrentForm().PanelCommon.RootWidget != null)

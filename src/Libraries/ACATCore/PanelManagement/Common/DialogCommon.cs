@@ -84,10 +84,6 @@ namespace ACAT.Core.PanelManagement.Common
         /// </summary>
         //private GraphicsPath _formGraphicsPath;
 
-        /// <summary>
-        /// Make sure nothing overlaps the form
-        /// </summary>
-        private WindowOverlapWatchdog _windowOverlapWatchdog;
 
         /// <summary>
         /// Initializes an new instance of the DialogCommon class.  Create this
@@ -247,14 +243,12 @@ namespace ACAT.Core.PanelManagement.Common
                 retVal = initAnimationManager(panelConfigMapEntry);
             }
 
-            Windows.SetTopMost(_form);
 
             PanelManager.Instance.EvtScannerShow += Instance_EvtScannerShow;
             Windows.EvtWindowPositionChanged += Windows_EvtWindowPositionChanged;
 
             Windows.SetWindowPositionAndNotify(_form, Windows.WindowPosition.CenterScreen);
 
-            _windowOverlapWatchdog = new WindowOverlapWatchdog(_form);
 
             return retVal;
         }
@@ -304,7 +298,6 @@ namespace ACAT.Core.PanelManagement.Common
         /// </summary>
         public void OnPause()
         {
-            _windowOverlapWatchdog?.Pause();
 
             _animationManager.Pause();
         }
@@ -317,7 +310,6 @@ namespace ACAT.Core.PanelManagement.Common
         {
             Windows.SetWindowPositionAndNotify(_form, Windows.WindowPosition.CenterScreen);
 
-            _windowOverlapWatchdog?.Resume();
 
             _animationManager.Resume();
         }
@@ -357,8 +349,6 @@ namespace ACAT.Core.PanelManagement.Common
                     Log.Verbose();
 
                     _animationManager?.Dispose();
-
-                    _windowOverlapWatchdog?.Dispose();
 
                     _rootWidget?.Dispose();
                 }
@@ -505,8 +495,6 @@ namespace ACAT.Core.PanelManagement.Common
                 {
                     _form.Left = 0;
                 }
-
-                Windows.SetTopMost(arg.Scanner as Form);
             }
         }
 
@@ -613,8 +601,6 @@ namespace ACAT.Core.PanelManagement.Common
                 {
                     _form.Left = 0;
                 }
-
-                Windows.SetTopMost(form);
             }
         }
     }

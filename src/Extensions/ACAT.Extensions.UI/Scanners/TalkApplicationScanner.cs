@@ -136,14 +136,12 @@ namespace ACAT.Extensions.UI.Scanners
 
             ScannerCommon.ResizeToFitDesktop(this);
 
-            _windowActiveWatchdog = new WindowActiveWatchdog(this);
         }
 
         protected override void ScannerShown(object sender, EventArgs e)
         {
             setModeLabel(Context.AppWordPredictionManager.ActiveWordPredictor.GetMode());
 
-            ScannerFocus.SetFocus(this);
         }
 
         protected override void SubscribeToEvents()

@@ -121,6 +121,7 @@ namespace ACATTalk
 
             splash = new Splash(2000);
             splash.Show(StringResources.StartingACAT);
+            TopMostManager.Register(splash.SplashScreen);
 
             Context.PreInit();
             Common.PreInit();
@@ -135,6 +136,8 @@ namespace ACATTalk
                                 Context.StartupFlags.Abbreviations))
             {
                 splash.Close();
+                TopMostManager.Unregister(splash.SplashScreen);
+
                 splash = null;
 
                 ConfirmBoxOneOption.ShowDialog(Context.GetInitCompletionStatus(), "", StringResources.OK);
@@ -150,7 +153,7 @@ namespace ACATTalk
             Context.AppAgentMgr.DefaultAgentForContextSwitchDisable = Context.AppAgentMgr.NullAgent;
 
             splash?.Close();
-
+            TopMostManager.Unregister(splash.SplashScreen);
             splash = null;
 
             if (!Context.PostInit())
@@ -204,7 +207,6 @@ namespace ACATTalk
 
                 Common.Uninit();
 
-                ScannerFocus.Stop();
 
                 splash?.Close();
                 splash = null;
@@ -229,7 +231,6 @@ namespace ACATTalk
         {
             splash?.Close();
 
-            ScannerFocus.Stop();
 
             if (Context.AppPanelManager != null && Context.AppPanelManager.GetCurrentForm() != null &&
                 Context.AppPanelManager.GetCurrentForm().PanelCommon != null && Context.AppPanelManager.GetCurrentForm().PanelCommon.RootWidget != null)

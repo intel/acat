@@ -9,6 +9,7 @@ using ACAT.Core.AnimationManagement;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
+using ACAT.Core.Utility.TypeLoader;
 using ACAT.Core.WidgetManagement;
 
 namespace ACAT.Core.UserControlManagement.Interfaces
@@ -18,7 +19,7 @@ namespace ACAT.Core.UserControlManagement.Interfaces
     /// <summary>
     /// ALL UserControls panels in ACAT must implement this.
     /// </summary>
-    public interface IUserControl
+    public interface IUserControl : IPluginExtension
     {
         event AnimationPlayerStateChanged EvtPlayerStateChanged;
 

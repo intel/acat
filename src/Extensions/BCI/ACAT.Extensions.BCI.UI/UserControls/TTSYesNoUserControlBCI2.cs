@@ -48,6 +48,8 @@ namespace ACAT.Extensions.BCI.UI.UserControls
             get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
+        public Guid Id => Descriptor.Id;
+
         /// <summary>
         /// Gets the snchronization object
         /// </summary>

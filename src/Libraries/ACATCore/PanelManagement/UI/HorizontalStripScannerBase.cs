@@ -136,6 +136,8 @@ namespace ACAT.Core.PanelManagement
             get { return _scannerCommon.TextController; }
         }
 
+        public Guid Id => Descriptor.Id;
+
         /// <summary>
         /// Set the form style
         /// </summary>

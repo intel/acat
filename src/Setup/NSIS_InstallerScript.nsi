@@ -89,8 +89,9 @@ Section "Install"
   ; Install main application files from build output (compressed)
   SetOutPath "$INSTDIR"
 
-  !define BUILD_OUTPUT "..\build\bin\Debug\win-x64"
-  File /r /x ConvAssistApp /x *.dat "${BUILD_OUTPUT}\*.*"
+  !define BUILD_OUTPUT "..\build\bin\Debug\"
+  File /r /x ConvAssistApp /x *.dat /x Assets "${BUILD_OUTPUT}\*.*"
+  File /r /x Videos "${BUILD_OUTPUT}\Assets\*.*"
 
   CopyFiles /SILENT "$EXEDIR\${ASSETS_FOLDER}\*.*" "$INSTDIR"
 
@@ -134,17 +135,17 @@ Section "Install"
 ;   ;--------------------------------
   WriteUninstaller "$INSTDIR\Uninstall.exe"
 
+
   ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
+  StrCpy $R0 $0
 
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "DisplayName" "${LONG_NAME}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "DisplayVersion" "${VERSION}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "Publisher" "${PUBLISHER}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "InstallLocation" "$INSTDIR"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "UninstallString" "$INSTDIR\Uninstall.exe"
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "NoModify" 1
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "NoRepair" 1
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "DisplayIcon" "$INSTDIR\ACATApp.exe"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Name}" "EstimatedSize" $0
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Name}" "EstimatedSize" $R0
 
   ; Optional: prevent Modify/Repair buttons
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}" "NoModify" 1

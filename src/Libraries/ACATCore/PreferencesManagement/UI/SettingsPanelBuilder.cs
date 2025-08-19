@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -57,7 +59,8 @@ namespace ACAT.Core.PreferencesManagement.UI
         {
             var stackPanel = new StackPanel
             {
-                Orientation = Orientation.Vertical
+                Orientation = Orientation.Vertical,
+              //  HorizontalAlignment = HorizontalAlignment.Left
             };
 
             var scrollViewer = new ScrollViewer
@@ -142,13 +145,14 @@ namespace ACAT.Core.PreferencesManagement.UI
 
             var grid = new Grid();
 
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(7, GridUnitType.Star) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(3, GridUnitType.Star) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto }); // for ToggleSwitch
+            // grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(3, GridUnitType.Star) });
 
             var stackPanel = new StackPanel
             {
                 Orientation = Orientation.Vertical,
-                HorizontalAlignment = HorizontalAlignment.Left
+                HorizontalAlignment = HorizontalAlignment.Stretch
             };
 
             var displayAttribute = prop.GetAttribute<DisplayAttribute>();
@@ -171,8 +175,8 @@ namespace ACAT.Core.PreferencesManagement.UI
                 var description = new TextBlock
                 {
                     Text = displayAttribute?.ResourceType?.GetProperty(displayAttribute.Description, BindingFlags.Static | BindingFlags.Public)? .GetValue(null, null) as string ?? displayAttribute?.Description,
-                    FontStyle = FontStyles.Italic,
-                    FontSize = 12,
+                    FontStyle = FontStyles.Normal,
+                    FontSize = 14,
                     FontFamily = label.FontFamily,
                     Foreground = System.Windows.Media.Brushes.White,
                     TextWrapping = TextWrapping.WrapWithOverflow,
@@ -202,13 +206,45 @@ namespace ACAT.Core.PreferencesManagement.UI
             }
             else if (prop.Property.PropertyType == typeof(bool))
             {
-                inputControl = new ToggleSwitch
+
+                bool initialState = value is bool b && b;
+                var toggleContainer = new StackPanel
                 {
-                    //IsOn = value is bool b && b,
-                    OnContent = "Yes",
-                    OffContent = "No"
+                    Orientation = Orientation.Horizontal,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Right
                 };
-                inputControl.SetBinding(ToggleSwitch.IsOnProperty, binding);
+
+                var labeltoogle = new TextBlock
+                {
+                    Text = initialState ? "On" : "Off", // initial text
+                    FontFamily = new System.Windows.Media.FontFamily("Montserrat"),
+                    Foreground = System.Windows.Media.Brushes.White,
+                    FontSize = 14,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Margin = new Thickness(0, 0, 8, 0) // spacing before toggle
+                };
+
+                var toggle = new ToggleSwitch
+                {
+                    // OnContent = "Yes",
+                    // OffContent = "No",
+                    IsOn = initialState,
+                    OnContent = null,
+                    OffContent = null,
+                    VerticalAlignment = VerticalAlignment.Center,
+                };
+                toggle.SetBinding(ToggleSwitch.IsOnProperty, binding);
+
+                toggle.Toggled += (s, e) =>
+                {
+                    labeltoogle.Text = toggle.IsOn ? "On" : "Off";
+                };
+
+                toggleContainer.Children.Add(labeltoogle);
+                toggleContainer.Children.Add(toggle);
+                inputControl = toggleContainer;
+
             }
 
             else if (prop.GetAttribute<UIHintAttribute>()?.UIHint == "TextBox" || prop.Property.PropertyType == typeof(string))
@@ -249,8 +285,9 @@ namespace ACAT.Core.PreferencesManagement.UI
             inputControl.HorizontalAlignment = HorizontalAlignment.Right;
 
             inputControl.Tag = prop;
-            Grid.SetColumn(inputControl, 1);
 
+            Grid.SetColumn(inputControl, 1);
+            
             grid.Children.Add(stackPanel);
             grid.Children.Add(inputControl);
             return grid;

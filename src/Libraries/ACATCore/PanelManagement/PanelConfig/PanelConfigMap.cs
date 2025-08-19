@@ -5,6 +5,7 @@ using ACAT.Core.AgentManagement;
 using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
+using ACAT.Core.Utility.TypeLoader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -443,11 +444,23 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// <returns>The descirptor guid</returns>
         internal static Guid GetFormId(Type type)
         {
-            var descAttribute = ClassDescriptorAttribute.GetDescriptor(type);
             Guid retVal = Guid.Empty;
+
+            var descAttribute = ClassDescriptorAttribute.GetDescriptor(type);
             if (descAttribute != null)
             {
                 retVal = descAttribute.Id;
+            }
+            else
+            {
+                if (type.GUID != null && type.GUID != Guid.Empty)
+                {
+                    retVal = type.GUID;
+                }
+                else
+                {
+                    Log.Error("Type " + type.FullName + " does not have a valid ACAT descriptor guid");
+                }
             }
 
             return retVal;
@@ -674,48 +687,78 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         /// <param name="dllName">name of the dll</param>
         private static void onDllFound(string dllName)
         {
+            TypeLoader<IPanel> typeLoader = new();
+
             try
             {
                 Log.Debug("Found dll " + dllName);
 
-                var retVal = VerifyDigitalSignature.ValidateCertificate(dllName);
-                if (retVal && !_DLLError)
+                typeLoader.LoadFromAssembly(dllName, false);
+
+                foreach (var type in typeLoader.LoadedTypes.Values)
                 {
-                    try
-                    {
-                        VerifyDigitalSignature.Verify(dllName);
-                    }
-                    catch (Exception ex)
-                    {
-                        ConfirmBoxOneOption ConfirmBoxOneOption = new()
-                        {
-                            Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n Status Error: ERPCM",
-                            DecisionPrompt = "ok",
-                            LabelFont = 10
-                        };
-                        ConfirmBoxOneOption.BringToFront();
-                        ConfirmBoxOneOption.TopMost = true;
-                        ConfirmBoxOneOption.ShowDialog();
-                        ConfirmBoxOneOption.Dispose();
-                        _DLLError = true;
-                    }
+                    Log.Debug("Found type " + type.FullName);
+                    addTypeToCache(type);
                 }
-                if (!_DLLError)
-                    loadTypesFromAssembly(Assembly.LoadFile(dllName));
             }
+
+            catch (BadImageFormatException ex)
+            {
+                Log.Exception($"Error loading dll {dllName} Exception: {ex.Message}");
+                //_DLLError = true;
+            }
+
             catch (Exception ex)
             {
-                Log.Verbose("Could get types from assembly " + dllName + ". Exception : " + ex);
-                if (ex is ReflectionTypeLoadException)
-                {
-                    var typeLoadException = (ReflectionTypeLoadException)ex;
-                    var exceptions = typeLoadException.LoaderExceptions;
-                    foreach (var e in exceptions)
-                    {
-                        Log.Debug("Loader exception: " + e);
-                    }
-                }
+                Log.Exception($"Error loading dll{dllName} Exception: {ex.Message}");
+                _DLLError = true;
             }
+
+
+
+            //try
+            //{
+            //    Log.Debug("Found dll " + dllName);
+
+
+            //    var retVal = VerifyDigitalSignature.ValidateCertificate(dllName);
+            //    if (retVal && !_DLLError)
+            //    {
+            //        try
+            //        {
+            //            VerifyDigitalSignature.Verify(dllName);
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            ConfirmBoxOneOption ConfirmBoxOneOption = new()
+            //            {
+            //                Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n Status Error: ERPCM",
+            //                DecisionPrompt = "ok",
+            //                LabelFont = 10
+            //            };
+            //            ConfirmBoxOneOption.BringToFront();
+            //            ConfirmBoxOneOption.TopMost = true;
+            //            ConfirmBoxOneOption.ShowDialog();
+            //            ConfirmBoxOneOption.Dispose();
+            //            _DLLError = true;
+            //        }
+            //    }
+            //    if (!_DLLError)
+            //        loadTypesFromAssembly(Assembly.LoadFile(dllName));
+            //}
+            //catch (Exception ex)
+            //{
+            //    Log.Verbose("Could get types from assembly " + dllName + ". Exception : " + ex);
+            //    if (ex is ReflectionTypeLoadException)
+            //    {
+            //        var typeLoadException = (ReflectionTypeLoadException)ex;
+            //        var exceptions = typeLoadException.LoaderExceptions;
+            //        foreach (var e in exceptions)
+            //        {
+            //            Log.Debug("Loader exception: " + e);
+            //        }
+            //    }
+            //}
         }
 
         /// <summary>

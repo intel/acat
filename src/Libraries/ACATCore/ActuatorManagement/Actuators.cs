@@ -194,7 +194,7 @@ namespace ACAT.Core.ActuatorManagement
 
             foreach (string dir in extensionDirs)
             {
-                String extensionDir = dir + "\\" + ActuatorManager.ActuatorsRootDir;
+                String extensionDir = Path.Combine(dir, ActuatorManager.ActuatorsRootDir);
                 LoadTypesIntoCache(extensionDir);
             }
             if (_DLLError)

@@ -20,22 +20,6 @@
   <PropertyGroup>
     <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
   </PropertyGroup>
-
-  <!-- Copy Config XML Files-->
-  <ItemGroup>
-    <!-- Use Link to preserve folder structure in metadata -->
-    <ConfigXmlFiles Include="$(ProjectDir)en\**\*">
-      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </ConfigXmlFiles>
-  </ItemGroup>
-
-  <Target Name="CopyConfigXMLFiles" AfterTargets="Build">
-    <Message Text="Copy ConfigXML Files" Importance="high" />
-    <Copy
-      SourceFiles="@(ConfigXmlFiles)"
-      DestinationFiles="$(OutputPath)en\%(ConfigXmlFiles.RecursiveDir)%(Filename)%(Extension)"
-      SkipUnchangedFiles="true" />
-  </Target>
   
   <!-- Copy Assets Directories -->
   <ItemGroup>

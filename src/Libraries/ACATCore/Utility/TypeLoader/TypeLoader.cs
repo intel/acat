@@ -27,7 +27,7 @@ namespace ACAT.Core.Utility.TypeLoader
             }
         }
 
-        private static readonly byte[] AllowedPublicKeyToken = { 0x12, 0x34, 0x56, 0x78, 0xAB, 0xCD, 0xEF, 0x01 };
+        private static readonly byte[] AllowedPublicKeyToken = { 0xfa, 0x89, 0x3d, 0xbf, 0x69, 0x53, 0x84, 0x7b };
 
         public static bool IsFromTrustedPublisher(string assemblyPath)
         {
@@ -62,6 +62,10 @@ namespace ACAT.Core.Utility.TypeLoader
             if (!File.Exists(assemblyPath))
                 throw new FileNotFoundException("Assembly not found", assemblyPath);
 
+            if (!IsDotNetAssembly(assemblyPath))
+                // Don't try to load it.  just return
+                return;
+
 #if SIGNED_RELEASE
 
             // In signed release builds, we enforce strong-naming and publisher trust checks
@@ -71,11 +75,8 @@ namespace ACAT.Core.Utility.TypeLoader
                     throw new InvalidOperationException("Assembly is not strong-named.");
             }
 #endif
-            if (IsDotNetAssembly(assemblyPath))
-            {
-                var assembly = Assembly.LoadFrom(assemblyPath);
-                LoadTypesFromAssembly(assembly, firstordefault);
-            }
+            var assembly = Assembly.LoadFrom(assemblyPath);
+            LoadTypesFromAssembly(assembly, firstordefault);
         }
 
 

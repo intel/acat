@@ -644,7 +644,7 @@ namespace ACAT.Core.PanelManagement.Common
 
             subscribeToEvents();
 
-            setWidgetEnabledStates(WindowActivityMonitor.GetForegroundWindowInfo());
+            setWidgetEnabledStates(WindowActivityMonitor.CurrentWindowInfo());
 
             Context.AppPanelManager.EvtDisplaySettingsChanged += AppPanelManager_EvtDisplaySettingsChanged;
 

@@ -10,6 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACATResources;
 using System;

@@ -429,7 +429,7 @@ namespace ACAT.Core.AnimationManagement
         {
             if (_timer == null)
             {
-                Log.Verbose("_timer is null");
+                Log.Verbose("_heartbeatTimer is null");
                 return;
             }
 

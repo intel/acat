@@ -292,7 +292,7 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
         {
             if (_switchWindowsScanner != null)
             {
-                var arg = new PanelRequestEventArgs(PanelClasses.AlphabetMinimal, WindowActivityMonitor.GetForegroundWindowInfo())
+                var arg = new PanelRequestEventArgs(PanelClasses.AlphabetMinimal, WindowActivityMonitor.CurrentWindowInfo())
                 {
                     TargetPanel = _switchWindowsScanner,
                     RequestArg = _switchWindowsScanner,

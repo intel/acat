@@ -436,8 +436,7 @@ namespace ACAT.Core.AgentManagement
             else if (exitCode == CompletionCode.ContextSwitch)
             {
                 Context.AppPanelManager.ClearStack();
-                //EnumWindows.RestoreFocusToTopWindowOnDesktop();
-                WindowActivityMonitor.GetForegroundWindowInfo();
+                WindowActivityMonitor.Refresh();
             }
         }
 
@@ -495,7 +494,7 @@ namespace ACAT.Core.AgentManagement
             {
                 if (fgWindow == handle)
                 {
-                    WindowActivityMonitor.GetForegroundWindowInfo();
+                    WindowActivityMonitor.Refresh();
                 }
             }
         }
@@ -678,8 +677,8 @@ namespace ACAT.Core.AgentManagement
             Log.Debug(" currentAgent: " + _currentAgent);
             if (_currentAgent != null)
             {
-                var activityInfo = WindowActivityMonitor.GetForegroundWindowInfo();
-                _currentAgent.OnPanelClosed(panelClass, activityInfo);
+                var currentWindow = WindowActivityMonitor.CurrentWindowInfo();
+                _currentAgent.OnPanelClosed(panelClass, currentWindow);
             }
         }
 
@@ -734,7 +733,7 @@ namespace ACAT.Core.AgentManagement
             _panelChangeNotifications.Release();
             if (getActiveWindow)
             {
-                WindowActivityMonitor.GetForegroundWindowInfo();
+                WindowActivityMonitor.Refresh();
             }
         }
 
@@ -783,7 +782,7 @@ namespace ACAT.Core.AgentManagement
             // active app agent
 
             _getContextMenu = true;
-            WindowActivityMonitor.GetForegroundWindowInfo();
+            WindowActivityMonitor.Refresh();
         }
 
         /// <summary>

@@ -206,6 +206,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
         public async Task SendParams()
         {
+            int waitDelay = 300;
             //Static Path
             string staticPath = Path.Combine(FileUtils.GetResourcesDir(), "WordPredictors", "ConvAssist");
 
@@ -233,7 +234,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                     var message = JsonSerializer.Serialize(new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, param));
                     
                     //TODO: Check result and handle appropriately.
-                    _ = WriteAsync(message, 150).ConfigureAwait(false).GetAwaiter().GetResult();
+                    _ = WriteAsync(message, waitDelay).ConfigureAwait(false).GetAwaiter().GetResult();
                 }
                 catch (Exception ex)
                 {
@@ -260,7 +261,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                         tcs.SetResult(true);
                         break;
                     }
-                    await Task.Delay(200);
+                    await Task.Delay(waitDelay);
                 }
             });
 

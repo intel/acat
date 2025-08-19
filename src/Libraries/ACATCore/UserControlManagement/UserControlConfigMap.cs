@@ -26,7 +26,7 @@ namespace ACAT.Core.UserControlManagement
     /// </summary>
     public class UserControlConfigMap
     {
-        private const String DefaultCulture = "en";
+        private const String DefaultKey = "panelconfigs";
 
         /// <summary>
         /// Name of the config file that has the mapping.  This is loaded from
@@ -39,11 +39,11 @@ namespace ACAT.Core.UserControlManagement
         /// </summary>
         private static Dictionary<String, Dictionary<String, String>> _configFileLocationMap;
 
-        private static Dictionary<String, List<Guid>> _cultureConfigIdMapTable;
+        private static Dictionary<String, List<Guid>> _ConfigIdMapTable;
 
         private static Dictionary<String, String> _loadConfigFileLocationMap;
 
-        private static String _loadCulture;
+        //private static String _loadCulture;
 
         private static List<Guid> _loadUserControlConfigMapTable;
 
@@ -138,9 +138,7 @@ namespace ACAT.Core.UserControlManagement
         /// <returns>Panel config map object</returns>
         public static UserControlConfigMapEntry GetUserControlConfigMapEntry(Guid guid)
         {
-            var retVal = (getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, guid)) ??
-                getCultureConfigMapEntry(DefaultCulture, guid);
-            return retVal;
+            return getConfigMapEntry(guid);
         }
 
         /// <summary>
@@ -152,9 +150,7 @@ namespace ACAT.Core.UserControlManagement
         /// <returns>Panel config map object</returns>
         public static UserControlConfigMapEntry GetUserControlConfigMapEntry(String name)
         {
-            var retVal = ( getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, name)) ?? 
-                getCultureConfigMapEntry(DefaultCulture, name);
-            return retVal;
+            return getConfigMapEntry(name);
         }
 
         /// <summary>
@@ -196,13 +192,11 @@ namespace ACAT.Core.UserControlManagement
         {
             _masterUserControlConfigMapTable = new Dictionary<Guid, UserControlConfigMapEntry>();
 
-            _cultureConfigIdMapTable = new Dictionary<string, List<Guid>>();
+            _ConfigIdMapTable = new Dictionary<string, List<Guid>>();
 
             _configFileLocationMap = new Dictionary<string, Dictionary<string, string>>();
 
             _userControlsCache = new Hashtable();
-
-            _loadCulture = DefaultCulture;
 
             _loadUserControlConfigMapTable = new List<Guid>();
 
@@ -211,47 +205,19 @@ namespace ACAT.Core.UserControlManagement
             // first walk the extension directories
             foreach (string dir in extensionDirs)
             {
-                //String extensionDir = dir + "\\" + AgentManager.AppAgentsRootDir;
-                //load(extensionDir);
-
-                //extensionDir = dir + "\\" + AgentManager.FunctionalAgentsRootDir;
-                //load(extensionDir);
-
-                String extensionDir = dir + "\\" + PanelManager.UiRootDir;
-                load(extensionDir, "ACAT*.dll");
+                load(dir, "ACAT*.dll");
                 if (_DLLError)
                     return false;
             }
 
             // load the panels from the default culture (which is English)
-            var resourcesDir = FileUtils.GetDefaultResourcesDir();
+            var resourcesDir = FileUtils.GetPanelConfigsDir();
             Log.Debug("DefaultResourcesDir: " + resourcesDir);
             load(resourcesDir, "*.xml");
 
-            _cultureConfigIdMapTable.Add(_loadCulture, _loadUserControlConfigMapTable);
+            _ConfigIdMapTable.Add(DefaultKey, _loadUserControlConfigMapTable);
 
-            _configFileLocationMap.Add(_loadCulture, _loadConfigFileLocationMap);
-
-            // load for the current culture
-            if (!_cultureConfigIdMapTable.ContainsKey(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName))
-            {
-                resourcesDir = Path.Combine(FileUtils.ACATPath, CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName);
-                if (Directory.Exists(resourcesDir))
-                {
-                    _loadCulture = CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName;
-
-                    _loadUserControlConfigMapTable = new List<Guid>();
-
-                    _loadConfigFileLocationMap = new Dictionary<string, string>();
-
-                    Log.Debug("ResourcesDir: " + resourcesDir);
-                    load(resourcesDir, "*.xml");
-
-                    _cultureConfigIdMapTable.Add(_loadCulture, _loadUserControlConfigMapTable);
-
-                    _configFileLocationMap.Add(_loadCulture, _loadConfigFileLocationMap);
-                }
-            }
+            _configFileLocationMap.Add(DefaultKey, _loadConfigFileLocationMap);
 
             return true;
         }
@@ -270,10 +236,10 @@ namespace ACAT.Core.UserControlManagement
 
         public static void Reset()
         {
-            if (_cultureConfigIdMapTable != null)
+            if (_ConfigIdMapTable != null)
             {
-                _cultureConfigIdMapTable.Clear();
-                _cultureConfigIdMapTable = null;
+                _ConfigIdMapTable.Clear();
+                _ConfigIdMapTable = null;
             }
 
             if (_masterUserControlConfigMapTable != null)
@@ -314,12 +280,7 @@ namespace ACAT.Core.UserControlManagement
 
                 Log.IsNull("mapEntry.UsercontrolType", mapEntry.UserControlType);
 
-                var configFilePath = getConfigFilePathFromLocationMap(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, mapEntry.ConfigFileName);
-
-                if (String.IsNullOrEmpty(configFilePath))
-                {
-                    configFilePath = getConfigFilePathFromLocationMap(DefaultCulture, mapEntry.ConfigFileName);
-                }
+                var configFilePath = getConfigFilePathFromLocationMap(mapEntry.ConfigFileName);
 
                 if (mapEntry.UserControlType != null && !String.IsNullOrEmpty(configFilePath))
                 {
@@ -382,11 +343,11 @@ namespace ACAT.Core.UserControlManagement
         /// <param name="language">culture</param>
         /// <param name="configFile">config file</param>
         /// <returns>full path, empty if not found</returns>
-        private static String getConfigFilePathFromLocationMap(String language, String configFile)
+        private static String getConfigFilePathFromLocationMap(String configFile)
         {
-            if (_configFileLocationMap.ContainsKey(language))
+            if (_configFileLocationMap.ContainsKey(DefaultKey))
             {
-                var map = _configFileLocationMap[language];
+                var map = _configFileLocationMap[DefaultKey];
 
                 if (map.ContainsKey(configFile))
                 {
@@ -404,14 +365,14 @@ namespace ACAT.Core.UserControlManagement
         /// <param name="language">language</param>
         /// <param name="panelClass">panel class</param>
         /// <returns>object, null if not found</returns>
-        private static UserControlConfigMapEntry getCultureConfigMapEntry(String language, String name)
+        private static UserControlConfigMapEntry getConfigMapEntry(String name)
         {
-            if (!_cultureConfigIdMapTable.ContainsKey(language))
+            if (!_ConfigIdMapTable.ContainsKey(DefaultKey))
             {
                 return null;
             }
 
-            List<Guid> configIds = _cultureConfigIdMapTable[language];
+            List<Guid> configIds = _ConfigIdMapTable[DefaultKey];
 
             foreach (var configId in configIds)
             {
@@ -435,14 +396,14 @@ namespace ACAT.Core.UserControlManagement
         /// <param name="language">language</param>
         /// <param name="panelClass">panel class</param>
         /// <returns>object, null if not found</returns>
-        private static UserControlConfigMapEntry getCultureConfigMapEntry(String language, Guid guid)
+        private static UserControlConfigMapEntry getConfigMapEntry( Guid guid)
         {
-            if (!_cultureConfigIdMapTable.ContainsKey(language))
+            if (!_ConfigIdMapTable.ContainsKey(DefaultKey))
             {
                 return null;
             }
 
-            List<Guid> configIds = _cultureConfigIdMapTable[language];
+            List<Guid> configIds = _ConfigIdMapTable[DefaultKey];
 
             foreach (var configId in configIds)
             {

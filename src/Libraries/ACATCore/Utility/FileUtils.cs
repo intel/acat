@@ -306,6 +306,11 @@ namespace ACAT.Core.Utility
             return Path.Combine(ACATPath, "en");
         }
 
+        public static String GetPanelConfigsDir()
+        {
+            return Path.Combine(UserManager.GetUserDir(UserManager.DefaultUserName), "panelconfigs");
+        }
+
         /// <summary>
         /// Gets version of assembly and referenced assemblies
         /// </summary>

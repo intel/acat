@@ -364,11 +364,6 @@ namespace ACAT.Core.PanelManagement
             Log.Debug($"Found panel class {panelConfigMapEntry.PanelClass} with. name {panelConfigMapEntry.FormType.Name}");
 
             var form = DynamicallyCreatePanelForm(panelClass, panelTitle, panelConfigMapEntry.FormType, winHandle, focusedElement);
-
-            if (form != null)
-            {
-                TopMostManager.Register(form);
-            }
             return form;
         }
 

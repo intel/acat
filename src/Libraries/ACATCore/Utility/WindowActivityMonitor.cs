@@ -1,39 +1,43 @@
 ﻿// Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
+using ControlzEx.Standard;
 using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Security.Permissions;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Automation;
 using System.Windows.Forms;
+
 
 namespace ACAT.Core.Utility
 {
     public class WindowActivityMonitor
     {
-        private const int Interval = 600;
-        private static readonly object _timerSync = new();
-        private static AutomationElement _currentFocusedElement;
-        private static IntPtr _currentHwnd = IntPtr.Zero;
-        private static volatile bool _forceGetActiveWindow;
-        private static bool _heartbeatToggle = true;
-        private static Timer _timer;
         private static Form _form;
         private static volatile bool _isPaused = false;
+        private static Timer _heartbeatTimer;
+        private static bool _heartbeatToggle = true;
+        private static int HeartbeatInterval = 5000; // Default heartbeat interval in milliseconds
+
+
+        private static IntPtr _forgroundHook = IntPtr.Zero;
+        private static IntPtr _createDestroyHook = IntPtr.Zero;
+        private static WinEventDelegate _winEventDelegate;
+        private static WinEventDelegate _createDestroyDelegate;
+
+        private static IntPtr _currentHwnd = IntPtr.Zero;
+        private static AutomationElement _currentFocusedElement;
 
         public delegate void ActivityMonitorDelegate(WindowActivityMonitorInfo monitorInfo);
         public static event ActivityMonitorDelegate EvtFocusChanged;
         public static event ActivityMonitorDelegate EvtWindowMonitorHeartbeat;
 
-        public static void Dispose()
-        {
-            if (_timer != null)
-            {
-                _timer.Stop();
-                _timer.Dispose();
-            }
-        }
+        private delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType,
+            IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
+
 
         public static bool Start()
         {
@@ -44,99 +48,209 @@ namespace ACAT.Core.Utility
                 _form.Visible = false;
             }
 
-            if (_timer == null)
+            if (_forgroundHook == IntPtr.Zero)
+            {
+                _winEventDelegate = ForegroundEventCallback;
+                _forgroundHook = NativeMethods.SetWinEventHook(
+                    NativeMethods.EVENT_SYSTEM_FOREGROUND,
+                    NativeMethods.EVENT_SYSTEM_FOREGROUND,
+                    IntPtr.Zero,
+                    _winEventDelegate,
+                    0,
+                    0,
+                    NativeMethods.WINEVENT_OUTOFCONTEXT);
+            }
+
+            if (_createDestroyHook == IntPtr.Zero)
+            {
+                _createDestroyDelegate = CreateDestroyEventCallback;
+                _createDestroyHook = NativeMethods.SetWinEventHook(
+                    NativeMethods.EVENT_OBJECT_CREATE,
+                    NativeMethods.EVENT_OBJECT_DESTROY,
+                    IntPtr.Zero,
+                    _createDestroyDelegate,
+                    (uint)Process.GetCurrentProcess().Id,
+                    0,
+                    NativeMethods.WINEVENT_OUTOFCONTEXT);
+            }
+
+            if (_heartbeatTimer == null)
             {
                 _form.Invoke(new MethodInvoker(() =>
                 {
-                    _timer = new Timer { Interval = Interval };
-                    _timer.Tick += Timer_Tick;
-                    _timer.Start();
+                    _heartbeatTimer = new Timer { Interval = HeartbeatInterval };
+                    _heartbeatTimer.Tick += HeartbeatTick;
+                    _heartbeatTimer.Start();
                 }));
             }
 
+            Automation.AddAutomationFocusChangedEventHandler(OnAutomationFocusChanged);
             return true;
+        }
+
+        public static void Refresh()
+        {
+            if (_isPaused) return;
+            // Get the current foreground window and focused element
+            var info = GetForegroundWindowInfo();
+            if (info != null)
+            {
+                HandleFocusOrWindowChange(info);
+            }
+        }
+
+        public static WindowActivityMonitorInfo CurrentWindowInfo()
+        {
+            return new WindowActivityMonitorInfo
+            {
+                FgHwnd = _currentHwnd,
+                FocusedElement = _currentFocusedElement,
+                FgProcess = _currentHwnd != IntPtr.Zero ? GetProcessForWindow(_currentHwnd) : null,
+                Title = _currentHwnd != IntPtr.Zero ? NativeMethods.GetWindowTitle(_currentHwnd) : null
+            };
         }
 
         public static void Pause()
         {
             _isPaused = true;
-            _timer?.Stop();
-            _currentHwnd = IntPtr.Zero;
+            _heartbeatTimer?.Stop();
         }
 
         public static void Resume()
         {
             _isPaused = false;
-            _timer?.Start();
+            _heartbeatTimer?.Start();
         }
 
-        private static void Timer_Tick(object sender, EventArgs e)
+        public static void Dispose()
+        {
+            if (_heartbeatTimer != null)
+            {
+                _heartbeatTimer.Stop();
+                _heartbeatTimer.Dispose();
+            }
+
+            if (_forgroundHook != IntPtr.Zero)
+            {
+                NativeMethods.UnhookWinEvent(_forgroundHook);
+            }
+
+            Automation.RemoveAllEventHandlers();
+        }
+
+        private static void HeartbeatTick(object sender, EventArgs e)
         {
             if (_isPaused) return;
-            if (!TryEnter(_timerSync)) return;
 
-            try
+            if(_currentHwnd != IntPtr.Zero)
             {
-                GetActiveWindowInternal();
-            }
-            finally
-            {
-                Release(_timerSync);
+                var info = GetForegroundWindowInfo();
+                EvtWindowMonitorHeartbeat?.Invoke(info);
             }
         }
 
-        private static void GetActiveWindowInternal()
+        private static void ForegroundEventCallback(IntPtr hWinEventHook, uint eventType,
+            IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
         {
-            var windowInfo = GetForegroundWindowInfo();
-            if (windowInfo == null) return;
+            if (_isPaused || hwnd == IntPtr.Zero) return;
 
-            bool elementChanged = IsDifferent(windowInfo.FocusedElement, _currentFocusedElement);
-
-            // Raise focus changed event only if focus actually changed
-            if (_forceGetActiveWindow || elementChanged || windowInfo.FgHwnd != _currentHwnd)
-            {
-                _forceGetActiveWindow = false;
-                windowInfo.IsNewWindow = windowInfo.FgHwnd != _currentHwnd;
-                windowInfo.IsNewFocusedElement = elementChanged;
-                EvtFocusChanged?.Invoke(windowInfo);
-                _currentFocusedElement = windowInfo.FocusedElement;
-            }
-
-            _currentHwnd = windowInfo.FgHwnd;
-
-            // Heartbeat
-            if (_heartbeatToggle)
-            {
-                EvtWindowMonitorHeartbeat?.Invoke(windowInfo);
-            }
-            _heartbeatToggle = !_heartbeatToggle;
+            var info = GetForegroundWindowInfo(hwnd);
+            HandleFocusOrWindowChange(info);
         }
 
-        public static WindowActivityMonitorInfo GetForegroundWindowInfo()
+        private static void CreateDestroyEventCallback(IntPtr hWinEventHook, uint eventType,
+            IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
         {
-            IntPtr hwnd = Windows.GetForegroundWindow();
+            if (_isPaused || hwnd == IntPtr.Zero) return;
+
+            const int OBJID_WINDOW = 0;
+            if (idObject != OBJID_WINDOW || idChild != 0) return;
+
+            var form = Form.FromChildHandle(hwnd);
+            if (form == null) return;
+
+            switch (eventType)
+            {
+                case NativeMethods.EVENT_OBJECT_CREATE:
+                    TopMostManager.Register(form as Form);
+                    break;
+                case NativeMethods.EVENT_OBJECT_DESTROY:
+                    TopMostManager.Unregister(form as Form);
+                    break;
+            }
+        }
+
+        private static void OnAutomationFocusChanged(object sender, AutomationFocusChangedEventArgs e)
+        {
+            if (_isPaused) return;
+
+            var focusedElement = AutomationElement.FocusedElement;
+
+            if (focusedElement == null) return;
+
+            var info = GetForegroundWindowInfo();
+            info.FocusedElement = focusedElement;
+            HandleFocusOrWindowChange(info);
+        }
+
+        private static void HandleFocusOrWindowChange(WindowActivityMonitorInfo info)
+        {
+            bool isNewWindow = info.FgHwnd != _currentHwnd;
+            bool isNewElement;
+
+            if (info.FocusedElement == null && _currentFocusedElement == null)
+            {
+                // No focused element, nothing to compare
+                isNewElement = false;
+            }
+            else if (info.FocusedElement == null || _currentFocusedElement == null)
+            {
+                // One of them is null, so they are different
+                isNewElement = true;
+            }
+
+            else
+            {
+                isNewElement = !Automation.Compare(info.FocusedElement?.GetRuntimeId(),
+                                                       _currentFocusedElement?.GetRuntimeId());
+            }
+
+            if (isNewWindow || isNewElement)
+            {
+                info.IsNewWindow = isNewWindow;
+                info.IsNewFocusedElement = isNewElement;
+
+                // Marshal to UI thread
+                _form.BeginInvoke((MethodInvoker)(() =>
+                {
+                    EvtFocusChanged?.Invoke(info);
+                }));
+
+                _currentHwnd = info.FgHwnd;
+                _currentFocusedElement = info.FocusedElement;
+            }
+        }
+
+        private static WindowActivityMonitorInfo GetForegroundWindowInfo()
+        {
+            IntPtr hwnd = NativeMethods.GetForegroundWindow();
+            return GetForegroundWindowInfo(hwnd);
+        }
+
+        private static WindowActivityMonitorInfo GetForegroundWindowInfo(IntPtr hwnd)
+        {
             if (hwnd == IntPtr.Zero) return null;
 
             var info = new WindowActivityMonitorInfo
             {
                 FgHwnd = hwnd,
-                Title = Windows.GetWindowTitle(hwnd),
+                Title = NativeMethods.GetWindowTitle(hwnd),
                 FgProcess = GetProcessForWindow(hwnd)
             };
 
-            try
+            if (Process.GetCurrentProcess().Id == NativeMethods.GetWindowProcessId(hwnd))
             {
-                uint processId = (uint)Windows.GetWindowThreadProcessId(hwnd);
-                uint currentProcessId = (uint)Process.GetCurrentProcess().Id;
-
-                if (currentProcessId == processId)
-                {
-                    info.FocusedElement = AutomationElement.FocusedElement;
-                }
-            }
-            catch
-            {
-                info.FocusedElement = null;
+                info.FocusedElement = AutomationElement.FocusedElement;
             }
 
             return info;
@@ -144,35 +258,46 @@ namespace ACAT.Core.Utility
 
         public static Process GetProcessForWindow(IntPtr hwnd)
         {
-            User32Interop.GetWindowThreadProcessId(hwnd, out int pid);
+            int pid = NativeMethods.GetWindowProcessId(hwnd);
             return Process.GetProcessById(pid);
         }
 
-        public static bool IsDifferent(AutomationElement ele1, AutomationElement ele2)
+        private static class NativeMethods
         {
-            if (ele1 == null || ele2 == null) return true;
+            public const uint EVENT_SYSTEM_FOREGROUND = 0x0003;
+            public const uint EVENT_OBJECT_CREATE = 0x8000;
+            public const uint EVENT_OBJECT_DESTROY = 0x8001;
+            public const uint WINEVENT_OUTOFCONTEXT = 0;
 
-            try
+            [DllImport("user32.dll")]
+            public static extern IntPtr SetWinEventHook(
+                uint eventMin, uint eventMax, IntPtr hmodWinEventProc,
+                WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
+
+            [DllImport("user32.dll")]
+            public static extern bool UnhookWinEvent(IntPtr hWinEventHook);
+
+            [DllImport("user32.dll")]
+            public static extern IntPtr GetForegroundWindow();
+
+            [DllImport("user32.dll", SetLastError = true)]
+            public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+
+            [DllImport("user32.dll")]
+            public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
+
+            public static string GetWindowTitle(IntPtr hwnd)
             {
-                return !Automation.Compare(ele1.GetRuntimeId(), ele2.GetRuntimeId());
+                StringBuilder sb = new StringBuilder(256);
+                GetWindowText(hwnd, sb, sb.Capacity);
+                return sb.ToString();
             }
-            catch
+
+            public static int GetWindowProcessId(IntPtr hwnd)
             {
-                return true;
+                GetWindowThreadProcessId(hwnd, out int pid);
+                return pid;
             }
-        }
-
-        private static bool TryEnter(object syncObj)
-        {
-            bool lockTaken = false;
-            System.Threading.Monitor.TryEnter(syncObj, ref lockTaken);
-            return lockTaken;
-        }
-
-        private static void Release(object syncObj)
-        {
-            try { System.Threading.Monitor.Exit(syncObj); }
-            catch { }
         }
     }
 }

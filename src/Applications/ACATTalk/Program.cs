@@ -25,14 +25,6 @@ using ACATResources;
 using System;
 using System.Windows.Forms;
 
-#if ENABLE_DIGITAL_VERIFICATION
-using System.ComponentModel;
-using System.IO;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.Pkcs;
-#endif
-
 namespace ACATTalk
 {
     /// <summary>
@@ -55,12 +47,6 @@ namespace ACATTalk
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            if (!validateACATCoreLibraryCertificates() || !validateConvAssistCertificate() || !validateACATWatchCertificate())
-            {
-                MessageBox.Show("Please reinstall ACAT and retry", "ACAT", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
 
             //if (!AppCommon.CheckFontsInstalled())
             //{
@@ -106,10 +92,6 @@ namespace ACATTalk
 
             AuditLog.Audit(new AuditEvent("Application", "start"));
 
-            // DOn't need this anymore...  Why was it here in the first place?
-            //AppCommon.addBCIActuatorSetting();
-            //AppCommon.addPanelClassConfigMapForBCI();
-
             CommandDescriptors.Init();
 
             Common.AppPreferences.PreferredPanelConfigNames = string.Empty;
@@ -121,7 +103,6 @@ namespace ACATTalk
 
             splash = new Splash(2000);
             splash.Show(StringResources.StartingACAT);
-            TopMostManager.Register(splash.SplashScreen);
 
             Context.PreInit();
             Common.PreInit();
@@ -136,7 +117,6 @@ namespace ACATTalk
                                 Context.StartupFlags.Abbreviations))
             {
                 splash.Close();
-                TopMostManager.Unregister(splash.SplashScreen);
 
                 splash = null;
 
@@ -148,12 +128,11 @@ namespace ACATTalk
             }
 
             Context.ShowTalkWindowOnStartup = false;
-            Context.AppAgentMgr.EnableContextualMenusForDialogs = false;
-            Context.AppAgentMgr.EnableContextualMenusForMenus = false;
+            Context.AppAgentMgr.EnableContextualMenusForDialogs = true;
+            Context.AppAgentMgr.EnableContextualMenusForMenus = true;
             Context.AppAgentMgr.DefaultAgentForContextSwitchDisable = Context.AppAgentMgr.NullAgent;
 
             splash?.Close();
-            TopMostManager.Unregister(splash.SplashScreen);
             splash = null;
 
             if (!Context.PostInit())
@@ -262,136 +241,5 @@ namespace ACATTalk
                 Context.AppPanelManager.ShowDialog(form as IPanel);
             }
         }
-
-
-
-        private static bool validateACATCoreLibraryCertificates()
-        {
-#if ENABLE_DIGITAL_VERIFICATION
-
-            String [] listOfDlls = { "ACATCore.dll", "ACATExtension.dll", "ACATResources.dll", "AppCommon.dll"};
-            var appPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-
-            foreach (var dll in listOfDlls)
-            {
-                var dllPath = Path.Combine(appPath, "SharedLibs", dll);
-                if (!validateCertificate(dllPath))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-#else
-            return true;
-#endif
-        }
-
-        private static bool validateConvAssistCertificate()
-        {
-#if ENABLE_DIGITAL_VERIFICATION
-
-            var appPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            var convAssistPath = Path.Combine(appPath, "ConvAssistApp", "ConvAssist.exe");
-            if (!validateCertificate(convAssistPath))
-            {
-                return false;
-            }
-
-            return true;
-#else
-            return true;
-#endif
-        }
-
-        private static bool validateACATWatchCertificate()
-        {
-#if ENABLE_DIGITAL_VERIFICATION
-
-            var appPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            var acatWatchPath = Path.Combine(appPath, "ACATWatch.exe");
-            if (!validateCertificate(acatWatchPath))
-            {
-                return false;
-            }
-
-            return true;
-#else
-            return true;
-#endif
-        }
-
-#if ENABLE_DIGITAL_VERIFICATION
-        private static bool validateCertificate(String filePath)
-        {
-            try
-            {
-                Verify(filePath);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Digital signature verification failed for the following file.\n\n" + filePath + "\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                return false;
-            }
-
-            return true;
-        }
-
-        private static void Verify(String fileName)
-        {
-            IntPtr certStore = IntPtr.Zero;
-            IntPtr msgHandle = IntPtr.Zero;
-            IntPtr context = IntPtr.Zero;
-            int msgAndCertEncodingType = 0;
-            int contentType = 0;
-            int formatType = 0;
-            const int ErrCertExpired = -2146762495;
-
-            if (!CryptoInterop.CryptQueryObject(
-                CryptoInterop.CERT_QUERY_OBJECT_FILE,
-                fileName,
-                CryptoInterop.CERT_QUERY_CONTENT_FLAG_ALL,
-                CryptoInterop.CERT_QUERY_FORMAT_FLAG_ALL,
-                0,
-                ref msgAndCertEncodingType,
-                ref contentType,
-                ref formatType,
-                ref certStore,
-                ref msgHandle,
-                ref context
-            ))
-            {
-                throw new Win32Exception(Marshal.GetLastWin32Error());
-            }
-
-            int data = 0;
-            if (!CryptoInterop.CryptMsgGetParam(msgHandle, CryptoInterop.CMSG_ENCODED_MESSAGE, 0, null, ref data))
-            {
-                throw new Win32Exception(Marshal.GetLastWin32Error());
-            }
-
-            byte[] pvData = new byte[data];
-            CryptoInterop.CryptMsgGetParam(msgHandle, CryptoInterop.CMSG_ENCODED_MESSAGE, 0, pvData, ref data);
-            var signedCms = new SignedCms();
-            signedCms.Decode(pvData);
-            try
-            {
-                signedCms.CheckSignature(false);
-            }
-            catch (Exception e)
-            {
-                if (e.HResult != ErrCertExpired)
-                {
-                    throw (e);
-                }
-            }
-            finally
-            {
-                CryptoInterop.CryptMsgClose(msgHandle);
-                CryptoInterop.CertCloseStore(certStore, 0);
-            }
-        }
-
-#endif
     }
 }

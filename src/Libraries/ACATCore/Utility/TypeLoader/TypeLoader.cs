@@ -44,7 +44,20 @@ namespace ACAT.Core.Utility.TypeLoader
         }
 #endif
 
-        public void LoadFromAssembly(string assemblyPath)
+        private static bool IsDotNetAssembly(string assemblyPath)
+        {
+            try
+            {
+                AssemblyName.GetAssemblyName(assemblyPath);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public void LoadFromAssembly(string assemblyPath, bool firstordefault = true)
         {
             if (!File.Exists(assemblyPath))
                 throw new FileNotFoundException("Assembly not found", assemblyPath);
@@ -58,10 +71,13 @@ namespace ACAT.Core.Utility.TypeLoader
                     throw new InvalidOperationException("Assembly is not strong-named.");
             }
 #endif
-
-            var assembly = Assembly.LoadFrom(assemblyPath);
-            LoadTypesFromAssembly(assembly);
+            if (IsDotNetAssembly(assemblyPath))
+            {
+                var assembly = Assembly.LoadFrom(assemblyPath);
+                LoadTypesFromAssembly(assembly, firstordefault);
+            }
         }
+
 
         public void LoadFromAssemblies(IEnumerable<string> assemblyPaths)
         {
@@ -80,7 +96,7 @@ namespace ACAT.Core.Utility.TypeLoader
             _typeCache[id] = type;
         }
 
-        private void LoadTypesFromAssembly(Assembly assembly)
+        private void LoadTypesFromAssembly(Assembly assembly, bool firstordefault = true)
         {
             try
             {
@@ -95,8 +111,9 @@ namespace ACAT.Core.Utility.TypeLoader
                     // Some types couldn't load, fall back to what we can access
                     types = ex.Types.Where(t => t != null).ToArray();
                 }
-
-                var matchingType = types
+                if (firstordefault)
+                {
+                    var matchingType = types
                     .Where(type =>
                         type.IsClass && !type.IsAbstract &&
                         typeof(TInterface).IsAssignableFrom(type))
@@ -106,11 +123,34 @@ namespace ACAT.Core.Utility.TypeLoader
                         return attr != null && attr.Id != Guid.Empty;
                     });
 
-                if (matchingType != null)
+                    if (matchingType != null)
+                    {
+                        var attr = ClassDescriptorAttribute.GetDescriptor(matchingType);
+                        //_typeCache[attr.Id] = matchingType;
+                        AddAssemblytoCache(attr.Id, matchingType);
+                    }
+                }
+                else
                 {
-                    var attr = ClassDescriptorAttribute.GetDescriptor(matchingType);
-                    //_typeCache[attr.Id] = matchingType;
-                    AddAssemblytoCache(attr.Id, matchingType);
+                    var matchingTypes = types
+                        .Where(type =>
+                            type.IsClass &&
+                            !type.IsAbstract &&
+                            typeof(TInterface).IsAssignableFrom(type));
+                            //&&
+                            //ClassDescriptorAttribute.GetDescriptor(type) is { Id: var id } && id != Guid.Empty);
+
+                    if (matchingTypes != null)
+                    {
+                        foreach (var matchingType in matchingTypes)
+                        {
+                            //var attr = ClassDescriptorAttribute.GetDescriptor(matchingType);
+                            if (matchingType.GUID != null)
+                            {
+                                AddAssemblytoCache(matchingType.GUID, matchingType);
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)

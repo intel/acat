@@ -7,6 +7,7 @@
 
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.Utility;
+using ACAT.Core.Utility.TypeLoader;
 
 namespace ACAT.Core.PanelManagement.Interfaces
 {
@@ -14,7 +15,7 @@ namespace ACAT.Core.PanelManagement.Interfaces
     /// ALL panels in ACAT - Scanners, Dialogs, Menus
     /// and Contextual Menus must implement this.
     /// </summary>
-    public interface IPanel
+    public interface IPanel: IPluginExtension
     {
         /// <summary>
         /// Gets the Descriptor for the panel. Descriptor

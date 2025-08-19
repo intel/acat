@@ -114,6 +114,8 @@ namespace ACAT.Extensions.UI.Menus
         /// </summary>
         public ClassDescriptorAttribute Descriptor => ClassDescriptorAttribute.GetDescriptor(GetType());
 
+        public Guid Id => Descriptor.Id;
+
         /// <summary>
         /// Gets the form
         /// </summary>

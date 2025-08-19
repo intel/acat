@@ -17,6 +17,7 @@ using ACAT.Core.UserControlManagement;
 using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 
@@ -31,6 +32,8 @@ namespace ACAT.Extension.UI.UserControls
         /// Gets the descriptor for this class
         /// </summary>
         public ClassDescriptorAttribute Descriptor => ClassDescriptorAttribute.GetDescriptor(GetType());
+
+        public Guid Id => Descriptor.Id;
 
         /// <summary>
         /// Gets the snchronization object

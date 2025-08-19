@@ -68,6 +68,8 @@ namespace ACAT.Extension.UI.ScannerForms
         public virtual RunCommandDispatcher CommandDispatcher { get; }
         public ClassDescriptorAttribute Descriptor => ClassDescriptorAttribute.GetDescriptor(GetType());
 
+        public Guid Id => Descriptor.Id;
+
         public Form Form => this;
 
         public string PanelClass => _panelClass;

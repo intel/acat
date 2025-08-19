@@ -98,6 +98,8 @@ namespace ACAT.Core.PanelManagement
             get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
+        public Guid Id => Descriptor.Id;
+
         /// <summary>
         /// Gets this form
         /// </summary>

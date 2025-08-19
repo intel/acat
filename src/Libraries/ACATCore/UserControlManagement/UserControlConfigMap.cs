@@ -6,8 +6,10 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
+using ACAT.Core.Utility.TypeLoader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -222,18 +224,6 @@ namespace ACAT.Core.UserControlManagement
             return true;
         }
 
-        /// <summary>
-        /// Loads class Types from the specified assembly
-        /// </summary>
-        /// <param name="assembly">Assembly to load from</param>
-        /// <returns>true on success</returns>
-        public static bool Load(Assembly assembly)
-        {
-            _userControlsCache ??= new Hashtable();
-
-            return loadTypesFromAssembly(assembly);
-        }
-
         public static void Reset()
         {
             if (_ConfigIdMapTable != null)
@@ -436,35 +426,6 @@ namespace ACAT.Core.UserControlManagement
             }
         }
 
-        /// <summary>
-        /// Loads relevant types from the assembly and caches them
-        /// </summary>
-        /// <param name="assembly">name of the assembly</param>
-        /// <returns>true on success</returns>
-        private static bool loadTypesFromAssembly(Assembly assembly)
-        {
-            bool retVal = true;
-
-            if (assembly == null)
-            {
-                return false;
-            }
-
-            try
-            {
-                foreach (Type type in assembly.GetTypes())
-                {
-                    addUserControlTypeToCache(type);
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Exception(ex.ToString());
-                retVal = false;
-            }
-
-            return retVal;
-        }
 
         /// <summary>
         /// Found a DLL.  Load the class Types of all the relevant classes
@@ -473,53 +434,31 @@ namespace ACAT.Core.UserControlManagement
         /// <param name="dllName">name of the dll</param>
         private static void onDllFound(String dllName)
         {
+            TypeLoader<IUserControl> typeLoader = new();
+
             try
             {
                 Log.Debug("Found dll " + dllName);
 
-                var retVal = VerifyDigitalSignature.ValidateCertificate(dllName);
-                if (retVal && !_DLLError)
+                typeLoader.LoadFromAssembly(dllName, false);
+
+                foreach (var type in typeLoader.LoadedTypes.Values)
                 {
-                    try
-                    {
-                        VerifyDigitalSignature.Verify(dllName);
-                    }
-                    catch (Exception ex)
-                    {
-                        ConfirmBoxOneOption ConfirmBoxOneOption = new()
-                        {
-                            Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n Status Error: ERUCCM",
-                            DecisionPrompt = "ok",
-                            LabelFont = 10
-                        };
-                        ConfirmBoxOneOption.BringToFront();
-                        ConfirmBoxOneOption.TopMost = true;
-                        ConfirmBoxOneOption.ShowDialog();
-                        ConfirmBoxOneOption.Dispose();
-                        _DLLError = true;
-                    }
-                }
-                if (!_DLLError)
-                {
-                    if (dllName.ToLower().Contains("usercontrols.dll"))
-                    {
-                        Log.Debug("HAHA");
-                    }
-                    loadTypesFromAssembly(Assembly.LoadFile(dllName));
+                    Log.Debug("Found type " + type.FullName);
+                    addUserControlTypeToCache(type);
                 }
             }
+
+            catch (BadImageFormatException ex)
+            {
+                Log.Exception($"Error loading dll {dllName} Exception: {ex.Message}");
+                //_DLLError = true;
+            }
+
             catch (Exception ex)
             {
-                Log.Verbose("Could get types from assembly " + dllName + ". Exception : " + ex);
-                if (ex is ReflectionTypeLoadException)
-                {
-                    var typeLoadException = (ReflectionTypeLoadException)ex;
-                    var exceptions = typeLoadException.LoaderExceptions;
-                    foreach (var e in exceptions)
-                    {
-                        Log.Debug("Loader exception: " + e);
-                    }
-                }
+                Log.Exception($"Error loading dll{dllName} Exception: {ex.Message}");
+                _DLLError = true;
             }
         }
 

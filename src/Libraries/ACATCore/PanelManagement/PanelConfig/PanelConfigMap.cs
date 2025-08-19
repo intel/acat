@@ -713,52 +713,6 @@ namespace ACAT.Core.PanelManagement.PanelConfig
                 Log.Exception($"Error loading dll{dllName} Exception: {ex.Message}");
                 _DLLError = true;
             }
-
-
-
-            //try
-            //{
-            //    Log.Debug("Found dll " + dllName);
-
-
-            //    var retVal = VerifyDigitalSignature.ValidateCertificate(dllName);
-            //    if (retVal && !_DLLError)
-            //    {
-            //        try
-            //        {
-            //            VerifyDigitalSignature.Verify(dllName);
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            ConfirmBoxOneOption ConfirmBoxOneOption = new()
-            //            {
-            //                Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n Status Error: ERPCM",
-            //                DecisionPrompt = "ok",
-            //                LabelFont = 10
-            //            };
-            //            ConfirmBoxOneOption.BringToFront();
-            //            ConfirmBoxOneOption.TopMost = true;
-            //            ConfirmBoxOneOption.ShowDialog();
-            //            ConfirmBoxOneOption.Dispose();
-            //            _DLLError = true;
-            //        }
-            //    }
-            //    if (!_DLLError)
-            //        loadTypesFromAssembly(Assembly.LoadFile(dllName));
-            //}
-            //catch (Exception ex)
-            //{
-            //    Log.Verbose("Could get types from assembly " + dllName + ". Exception : " + ex);
-            //    if (ex is ReflectionTypeLoadException)
-            //    {
-            //        var typeLoadException = (ReflectionTypeLoadException)ex;
-            //        var exceptions = typeLoadException.LoaderExceptions;
-            //        foreach (var e in exceptions)
-            //        {
-            //            Log.Debug("Loader exception: " + e);
-            //        }
-            //    }
-            //}
         }
 
         /// <summary>

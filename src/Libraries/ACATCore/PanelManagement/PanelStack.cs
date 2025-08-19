@@ -166,7 +166,6 @@ namespace ACAT.Core.PanelManagement
                     _currentPanel.Owner == null)
                 {
                     Log.Debug("Current panel is already " + requestedPanelClass + ", calling Show()");
-                    _currentPanel.TopMost = true;
 
                     if (_currentPanel is MenuPanelBase)
                     {
@@ -322,10 +321,11 @@ namespace ACAT.Core.PanelManagement
 
             if (form is IPanel)
             {
+                // Continue with the rest of the initialization
                 (form as IPanel).Initialize(startupArg);
             }
 
-            Log.Debug("Returning form from createPanel");
+            Log.Debug("Returning form from DynamicallyCreatePanelForm");
 
             return form;
         }
@@ -363,7 +363,13 @@ namespace ACAT.Core.PanelManagement
 
             Log.Debug($"Found panel class {panelConfigMapEntry.PanelClass} with. name {panelConfigMapEntry.FormType.Name}");
 
-            return createPanel(panelClass, panelTitle, panelConfigMapEntry.FormType, winHandle, focusedElement);
+            var form = DynamicallyCreatePanelForm(panelClass, panelTitle, panelConfigMapEntry.FormType, winHandle, focusedElement);
+
+            if (form != null)
+            {
+                TopMostManager.Register(form);
+            }
+            return form;
         }
 
         /// <summary>
@@ -610,7 +616,7 @@ namespace ACAT.Core.PanelManagement
         /// <param name="focusedElement">Target focused element</param>
         /// <returns></returns>
         ///
-        private Form createPanel(
+        private Form DynamicallyCreatePanelForm(
             string panelClass,
             string panelTitle,
             Type type,
@@ -899,7 +905,7 @@ namespace ACAT.Core.PanelManagement
             Log.Debug("Calling show for ..." + eventArg.PanelClass);
             if (form == null)
             {
-                Log.Debug("createPanel returned null!!");
+                Log.Debug("DynamicallyCreatePanelForm returned null!!");
             }
             else
             {

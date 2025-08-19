@@ -86,11 +86,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         public static Tuple<BCIMenuOptions.Options, BCISimpleParameters> ShowDialog(BCICalibrationStatus actuatorResponse, bool enableBeginBtn, Form parent = null, bool setTopMost = false)
         {
             var confirmBox = new ConfirmBoxCalibrationModes();
-            if (parent != null && setTopMost)
-            {
-                parent.TopMost = false;
-                confirmBox.TopMost = true;
-            }
             //To always display the form in the main screen
             confirmBox.StartPosition = FormStartPosition.Manual;
             confirmBox.Location = confirmBox.primaryScreen.WorkingArea.Location;
@@ -98,11 +93,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             confirmBox.IsTypingEnabled = enableBeginBtn;
             confirmBox.ShowDialog(parent);
             Tuple<BCIMenuOptions.Options, BCISimpleParameters> retVal = confirmBox.OptionResult;
-            if (parent != null && setTopMost)
-            {
-                parent.TopMost = true;
-                confirmBox.TopMost = false;
-            }
             confirmBox.Dispose();
             return retVal;
         }
@@ -918,7 +908,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 
             try
             {
-                this.TopMost = false;
+                //this.TopMost = false;
                 HtmlUtils.LoadHtml(SmartPath.ApplicationPath, list.ToArray());
             }
             catch

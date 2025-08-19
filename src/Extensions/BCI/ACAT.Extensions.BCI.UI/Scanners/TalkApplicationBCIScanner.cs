@@ -173,7 +173,6 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// <summary>
         /// Ensures that the window stays focused
         /// </summary>
-        private WindowActiveWatchdog _windowActiveWatchdog;
 
         /// <summary>
         /// If the actuator initialized correctly
@@ -536,7 +535,6 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// </summary>
         public void OnPause()
         {
-            _windowActiveWatchdog?.Pause();
             _scannerCommon.UserControlManager.OnPause();
             _scannerCommon.OnPause(_dimScanner ?
                                 ScannerCommon.PauseDisplayMode.FadeScanner :
@@ -1261,17 +1259,6 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             animationSharpManager.SuspendAnimations = true;
         }
 
-        /// <summary>
-        /// Removes all the watchdogs
-        /// </summary>
-        private void RemoveWatchdogs()
-        {
-            if (_windowActiveWatchdog != null)
-            {
-                _windowActiveWatchdog.Dispose();
-                _windowActiveWatchdog = null;
-            }
-        }
 
         /// <summary>
         /// Resume animations and requests for BCI
@@ -1463,7 +1450,6 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// </summary>
         private void TalkApplicationScanner_FormClosing(object sender, FormClosingEventArgs e)
         {
-            RemoveWatchdogs();
             UnsubscribeToEvents();
             animationSharpManager.OnFormClosing();
             LEDStatusUserControl.OnFormClossing();
@@ -1489,7 +1475,6 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             _textBoxTalkWindow.BackColor = colorScheme.Background;
             _textBoxTalkWindow.ForeColor = colorScheme.Foreground;
             _scannerCommon.ResizeToFitDesktop(this);
-            _windowActiveWatchdog = new WindowActiveWatchdog(this);
             animationSharpManager = new AnimationSharpManagerV2();
             animationSharpManager.EvtBCIResumeWatchDog += BCIEvent;
             animationSharpManager.EvtBCIExitApplication += ExitApplication;
@@ -1507,7 +1492,6 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// <param name="e">event args</param>
         private void TalkApplicationScannerQwerty_Shown(object sender, EventArgs e)
         {
-            ScannerFocus.SetFocus(this);
             var mainColorScheme = AnimationManagerUtils.GetMainColorScheme("BCIColorCodedRegionDefault");
             _textBoxTalkWindow.BackColor = mainColorScheme.HighlightForeground;
             panelTextbox.BackColor = mainColorScheme.Background;

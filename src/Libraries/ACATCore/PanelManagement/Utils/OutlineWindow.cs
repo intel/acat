@@ -171,7 +171,6 @@ namespace ACAT.Core.PanelManagement.Utils
             form.WindowState = FormWindowState.Maximized;
 
             Log.Debug("Form width: " + form.Width + "Form height: " + form.Height);
-            form.TopMost = true;
             int boundWidth = Screen.PrimaryScreen.Bounds.Width;
             int boundHeight = Screen.PrimaryScreen.Bounds.Height;
             Log.Debug("boundWidth=" + boundWidth + " boundHeight=" + boundHeight);

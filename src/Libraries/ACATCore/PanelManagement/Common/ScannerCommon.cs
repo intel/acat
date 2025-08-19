@@ -132,11 +132,6 @@ namespace ACAT.Core.PanelManagement.Common
         /// </summary>
         private WidgetManager _widgetManager;
 
-        /// <summary>
-        /// Watchdog object that makes sure that the scanner
-        /// is not overlapped by another window
-        /// </summary>
-        private WindowOverlapWatchdog _windowOverlapWatchdog;
 
         /// <summary>
         /// Initializes a new instance of the class
@@ -257,18 +252,6 @@ namespace ACAT.Core.PanelManagement.Common
             set
             {
                 _previewMode = value;
-                if (_windowOverlapWatchdog != null)
-                {
-                    if (_previewMode)
-                    {
-                        Windows.SetTopMost(ScannerForm, false);
-                        _windowOverlapWatchdog.Pause();
-                    }
-                    else
-                    {
-                        _windowOverlapWatchdog.Resume();
-                    }
-                }
             }
         }
 
@@ -391,7 +374,6 @@ namespace ACAT.Core.PanelManagement.Common
         /// </summary>
         public void FadeScanner()
         {
-            _windowOverlapWatchdog?.Pause();
 
             //Windows.SetOpacity(ScannerForm, 0.7f);
             _scannerFaded = true;
@@ -458,7 +440,6 @@ namespace ACAT.Core.PanelManagement.Common
 
             StatusBarController = new StatusBarController();
 
-            ScannerForm.TopMost = true;
 
             ScannerForm.MaximizeBox = false;
 
@@ -511,7 +492,6 @@ namespace ACAT.Core.PanelManagement.Common
 
                 PositionSizeController.AutoSetPosition();
 
-                _windowOverlapWatchdog = new WindowOverlapWatchdog(ScannerForm);
 
                 WindowActivityMonitor.EvtWindowMonitorHeartbeat += WindowActivityMonitor_EvtWindowMonitorHeartbeat;
 
@@ -739,10 +719,6 @@ namespace ACAT.Core.PanelManagement.Common
             }
         }
 
-        public void PauseOverlapWatchdog()
-        {
-            _windowOverlapWatchdog?.Pause();
-        }
 
         /// <summary>
         /// Resizes form to fit the height of the desktop if it
@@ -762,10 +738,6 @@ namespace ACAT.Core.PanelManagement.Common
             }
         }
 
-        public void ResumeOverlapWatchdog()
-        {
-            _windowOverlapWatchdog?.Resume();
-        }
 
         /// <summary>
         /// Creates the status bar for the form to display the status of the
@@ -812,12 +784,10 @@ namespace ACAT.Core.PanelManagement.Common
             if (ScannerForm != null)
             {
                 Windows.SetVisible(ScannerForm, true);
-                Windows.SetTopMost(ScannerForm);
 
                 if (_scannerFaded)
                 {
                     Windows.SetOpacity(ScannerForm, 1.0f);
-                    _windowOverlapWatchdog?.Resume();
                     _scannerFaded = false;
                 }
             }
@@ -838,7 +808,6 @@ namespace ACAT.Core.PanelManagement.Common
                 {
                     Context.AppPanelManager.EvtDisplaySettingsChanged -= AppPanelManager_EvtDisplaySettingsChanged;
 
-                    _windowOverlapWatchdog?.Dispose();
 
                     // dispose all managed resources.
                     _widgetManager?.Dispose();
@@ -1076,8 +1045,6 @@ namespace ACAT.Core.PanelManagement.Common
                 return;
             }
 
-            _windowOverlapWatchdog?.Resume();
-
             if (_hideScannerOnCalibration)
             {
                 Windows.SetVisible(ScannerForm, true);
@@ -1106,7 +1073,6 @@ namespace ACAT.Core.PanelManagement.Common
 
             if (ScannerForm != null && Windows.GetVisible(ScannerForm))
             {
-                _windowOverlapWatchdog?.Pause();
                 if (args.HideScanner)
                 {
                     Windows.SetVisible(ScannerForm, false);
@@ -1193,7 +1159,6 @@ namespace ACAT.Core.PanelManagement.Common
         private void form_Shown(object sender, EventArgs e)
         {
             Log.Debug("Shown " + ScannerForm.Name);
-            Windows.SetTopMost(ScannerForm);
         }
 
         /// <summary>

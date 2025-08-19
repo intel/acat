@@ -46,21 +46,11 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         public static BCIMenuOptions.Options ShowFormDialog(Form parent = null, bool setTopMost = false)
         {
             var confirmBox = new OtherTestForm();
-            if (parent != null && setTopMost)
-            {
-                parent.TopMost = false;
-                confirmBox.TopMost = true;
-            }
             //To always display the form in the main screen
             confirmBox.StartPosition = FormStartPosition.Manual;
             confirmBox.Location = confirmBox.primaryScreen.WorkingArea.Location;
             confirmBox.ShowDialog(parent);
             BCIMenuOptions.Options retVal = confirmBox.Options;
-            if (parent != null && setTopMost)
-            {
-                parent.TopMost = true;
-                confirmBox.TopMost = false;
-            }
             confirmBox.Dispose();
             return retVal;
         }

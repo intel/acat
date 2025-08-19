@@ -167,8 +167,6 @@ namespace ACAT.Core.ActuatorManagement
 
             CenterToScreen();
 
-            TopMost = false;
-            TopMost = true;
 
             if (!String.IsNullOrEmpty(Title))
             {

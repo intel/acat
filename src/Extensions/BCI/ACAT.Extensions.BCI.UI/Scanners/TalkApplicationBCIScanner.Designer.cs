@@ -243,7 +243,6 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "ACAT Talk";
-            this.TopMost = true;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();

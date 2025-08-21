@@ -57,8 +57,8 @@ namespace ACATConfigNext.Forms
         { 
             Text = "ACAT Settings";
             //MaximumSize = new Size(2000, 1400);
-            Size = new Size(2000, 1400);
-            MinimumSize = new Size(1000, 600);
+            Size = new Size(1980, 2000);
+            MinimumSize = new Size(1980, 2000);
             StartPosition = FormStartPosition.CenterScreen;
             FormBorderStyle = FormBorderStyle.Sizable;
             MaximizeBox = true;
@@ -97,7 +97,7 @@ namespace ACATConfigNext.Forms
                 FlowDirection = FlowDirection.TopDown,
                 WrapContents = false, // stack vertically only
                // Padding = new Padding(10),
-                 Padding = new Padding(left: 40, top: 48, right: 20, bottom: 48), // inner padding
+                 Padding = new Padding(left: 40, top: 48, right: 0, bottom: 48), // inner padding
                 Margin = new Padding(0),
 
             };
@@ -192,14 +192,14 @@ namespace ACATConfigNext.Forms
                 RowCount = 3,
                 GrowStyle = TableLayoutPanelGrowStyle.AddRows,
                 RowStyles = { new RowStyle(SizeType.AutoSize), new RowStyle(SizeType.Percent, 100F), new RowStyle(SizeType.AutoSize) },
-                Padding = new Padding(left: 28, top: 48, right: 48, bottom: 48)
+                Padding = new Padding(left: 20, top: 48, right: 20, bottom: 48)
             };
 
             breadcrumbPanel = new FlowLayoutPanel
             {
                 Dock = DockStyle.Top,
                 Name = "Settings",
-                Padding = new Padding(5),
+                Padding = new Padding(left: 0, top: 48, right: 48, bottom: 0),
                 AutoScroll = false,
                 //*/
                 BackColor = Color.Transparent,
@@ -219,8 +219,8 @@ namespace ACATConfigNext.Forms
                 /*/
                 BackColor = Color.DeepPink,
                 //*/
-                Padding = new Padding(10),
-                Margin = new Padding(10),
+                Padding = new Padding(left: 0, top: 0, right: 20, bottom: 0),
+                Margin = new Padding(8),
                 RowCount = 1,
                 ColumnCount = 1,
                 GrowStyle = TableLayoutPanelGrowStyle.AddRows,
@@ -236,8 +236,8 @@ namespace ACATConfigNext.Forms
                 /*/
                 BackColor = Color.DarkBlue,
                 //*/
-                Padding = new Padding(10),
-                Margin = new Padding(10),
+                Padding = new Padding(left: 0, top: 0, right: 20, bottom: 0),
+                Margin = new Padding(8),
                 //RowCount = 1,
                 //ColumnCount = 1,
                 //GrowStyle = TableLayoutPanelGrowStyle.AddRows,

@@ -7,9 +7,12 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using ACAT.Core.PreferencesManagement;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.ComponentModel;
+
+using MMC = MahApps.Metro.Controls;
+using SW = System.Windows;
+
+using System.Windows.Forms.Integration;
 
 namespace ACATConfigNext.UserControls
 {
@@ -40,7 +43,7 @@ namespace ACATConfigNext.UserControls
             {
                 var panel = new TableLayoutPanel
                 {
-                    BackColor = Color.FromArgb(74, 75, 93),
+                    BackColor = Color.FromArgb(74, 75, 93),//Gray
                     Name = extension.Descriptor.Name,
                     Dock = DockStyle.Top,
                     Padding = new Padding(10),
@@ -48,15 +51,32 @@ namespace ACATConfigNext.UserControls
                     AutoSize = true,
                     AutoSizeMode = AutoSizeMode.GrowAndShrink,
                     RowCount = 1,
-                    ColumnCount = 2,
+                    ColumnCount = 3,
                     GrowStyle = TableLayoutPanelGrowStyle.AddRows,
                     Tag = extension
                    
                 };
                 panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F)); 
-                panel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));     
-
+                panel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+                panel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
                 AddPanelClickEvent(panel, showPanel, settingsChangedHandler);
+
+                /*var binding = new Binding(prop.Name)
+                {
+                    Source = settingsInstance,
+                    Mode = BindingMode.TwoWay
+                };*/
+
+                // var value = prop.Property.GetValue(settingsInstance);
+
+                // bool initialState = value is bool b && b;
+                bool initialState = true;
+                var toggleContainer = new SW.Controls.StackPanel
+                {
+                    Orientation = SW.Controls.Orientation.Horizontal,
+                    VerticalAlignment = SW.VerticalAlignment.Center,
+                    HorizontalAlignment = SW.HorizontalAlignment.Right
+                };
 
                 var label1 = new Label
                 {
@@ -67,6 +87,41 @@ namespace ACATConfigNext.UserControls
                     Anchor = AnchorStyles.Left,
                 };
 
+                var labeltoogle = new SW.Controls.TextBlock
+                {
+                    Text = initialState ? "Enable" : "Enable", // initial text
+                    FontFamily = new System.Windows.Media.FontFamily("Montserrat"),
+                    Foreground = System.Windows.Media.Brushes.White,
+                    FontSize = 14,
+                    VerticalAlignment = SW.VerticalAlignment.Center,
+                    Margin = new SW.Thickness(0, 0, 8, 0) // spacing before toggle
+                };
+
+                var toggle = new MMC.ToggleSwitch
+                {
+                    // OnContent = "Yes",
+                    // OffContent = "No",
+                    IsOn = initialState,
+                    OnContent = null,
+                    OffContent = null,
+                    VerticalAlignment = SW.VerticalAlignment.Center,
+                };
+               // toggle.SetBinding(MMC.ToggleSwitch.IsOnProperty, binding);
+
+                toggle.Toggled += (s, e) =>
+                {
+                    labeltoogle.Text = toggle.IsOn ? "Enable" : "Enable";
+                };
+
+                toggleContainer.Children.Add(labeltoogle);
+                toggleContainer.Children.Add(toggle);
+                //inputControl = toggleContainer;
+
+                var host = new ElementHost
+                {
+                    Dock = DockStyle.Fill,
+                    Child = toggleContainer
+                };
                 AddPanelClickEvent(label1, showPanel, settingsChangedHandler);
 
                 var label2 = new Label
@@ -84,7 +139,13 @@ namespace ACATConfigNext.UserControls
                 AddPanelClickEvent(label2, showPanel, settingsChangedHandler);
 
                 panel.Controls.Add(label1, 0, 0); // Column 0
-                panel.Controls.Add(label2, 1, 0); // Column 1
+
+                if (acat_extensions.Count() >= 4)
+                {
+                    panel.Controls.Add(host, 1, 0); // Column 1
+                }
+                panel.Controls.Add(label2, 2, 0); // Column 2
+
                 basePanel.Controls.Add(panel);
             }
             Controls.Add(basePanel);

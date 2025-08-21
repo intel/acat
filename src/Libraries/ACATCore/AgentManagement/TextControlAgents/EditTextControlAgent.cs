@@ -222,9 +222,14 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
         /// <returns>true on success</returns>
         private bool trackTextChanges(IntPtr handleMainWindow, AutomationElement textElement)
         {
-            bool retVal = true;
 
-            Log.Verbose();
+            bool retVal = textElement != null;
+
+            if (!retVal)
+            {
+                Log.Debug("Text element is null");
+                return false;
+            }
 
             try
             {

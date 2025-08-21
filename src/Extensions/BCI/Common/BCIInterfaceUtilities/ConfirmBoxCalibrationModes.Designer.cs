@@ -1398,7 +1398,8 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             // ConfirmBoxCalibrationModes
             // 
             resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.ControlBox = false;
             this.Controls.Add(this.tableLayoutParameters);

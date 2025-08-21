@@ -10,6 +10,7 @@
 // to the BCI gTec board
 //
 ////////////////////////////////////////////////////////////////////////////
+using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACATResources;
 
@@ -108,7 +109,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.buttonExit_userControlBCIErrorgTecBoard.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.buttonExit_userControlBCIErrorgTecBoard.FlatAppearance.BorderSize = 0;
             this.buttonExit_userControlBCIErrorgTecBoard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonExit_userControlBCIErrorgTecBoard.Font = new System.Drawing.Font("Montserrat Thin", 36F, System.Drawing.FontStyle.Underline);
+            this.buttonExit_userControlBCIErrorgTecBoard.Font = FontUtil.ScaleFontToHeight(this.buttonExit_userControlBCIErrorgTecBoard.Size.Height, "Montserrat Thin", System.Drawing.FontStyle.Underline, 0.9f); //new System.Drawing.Font("Montserrat Thin", 36F, System.Drawing.FontStyle.Underline);
             this.buttonExit_userControlBCIErrorgTecBoard.ForeColor = System.Drawing.Color.Silver;
             this.buttonExit_userControlBCIErrorgTecBoard.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.buttonExit_userControlBCIErrorgTecBoard.Location = new System.Drawing.Point(112, 657);
@@ -126,7 +127,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.labelTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.tableLayoutPanelMain.SetColumnSpan(this.labelTitle, 3);
             this.labelTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelTitle.Font = new System.Drawing.Font("Montserrat", 33.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTitle.Font = FontUtil.ScaleFontToHeight(this.labelTitle.Height, "Montserrat Thin", scale: 0.9f);// new System.Drawing.Font("Montserrat", 33.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTitle.ForeColor = System.Drawing.Color.White;
             this.labelTitle.Location = new System.Drawing.Point(112, 47);
             this.labelTitle.Margin = new System.Windows.Forms.Padding(0);
@@ -147,7 +148,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelBCIError.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanelBCIError.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanelBCIError.Controls.Add(this.buttonRetry_userControlBCIErrorgTecBoard, 2, 0);
-            this.tableLayoutPanelBCIError.Font = new System.Drawing.Font("Montserrat Medium", 19F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tableLayoutPanelBCIError.Font = FontUtil.ScaleFontToHeight(tableLayoutPanelBCIError.Height, "Montserrat Medium", System.Drawing.FontStyle.Bold, 0.9f);
             this.tableLayoutPanelBCIError.ForeColor = System.Drawing.Color.White;
             this.tableLayoutPanelBCIError.Location = new System.Drawing.Point(112, 295);
             this.tableLayoutPanelBCIError.Margin = new System.Windows.Forms.Padding(0);
@@ -173,7 +174,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.buttonRetry_userControlBCIErrorgTecBoard.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.buttonRetry_userControlBCIErrorgTecBoard.FlatAppearance.BorderSize = 0;
             this.buttonRetry_userControlBCIErrorgTecBoard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonRetry_userControlBCIErrorgTecBoard.Font = new System.Drawing.Font("Montserrat", 28F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonRetry_userControlBCIErrorgTecBoard.Font = FontUtil.ScaleFontToHeight(buttonRetry_userControlBCIErrorgTecBoard.Height, "Montserrat", System.Drawing.FontStyle.Underline, 0.9f);
             this.buttonRetry_userControlBCIErrorgTecBoard.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
             this.buttonRetry_userControlBCIErrorgTecBoard.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonRetry_userControlBCIErrorgTecBoard.Location = new System.Drawing.Point(555, 69);
@@ -243,7 +244,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // 
             // UserControlBCIErrorGTecBoard
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.Controls.Add(this.tableLayoutPanelMain);
             this.Margin = new System.Windows.Forms.Padding(0);

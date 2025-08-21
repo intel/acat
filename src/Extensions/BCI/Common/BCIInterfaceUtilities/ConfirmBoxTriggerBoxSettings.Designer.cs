@@ -813,7 +813,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.label1.AutoSize = true;
             this.tableLayoutPanel1.SetColumnSpan(this.label1, 2);
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("Montserrat Medium", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Montserrat Medium", 19F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.Control;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
@@ -933,8 +933,8 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             // 
             // ConfirmBoxTriggerBoxSettings
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.ClientSize = new System.Drawing.Size(1552, 911);
             this.ControlBox = false;

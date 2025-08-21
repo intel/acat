@@ -189,6 +189,10 @@ namespace ACAT.Core.Utility
             if (focusedElement == null) return;
 
             var info = GetForegroundWindowInfo();
+
+            if (info == null)
+                return;
+
             info.FocusedElement = focusedElement;
             HandleFocusOrWindowChange(info);
         }

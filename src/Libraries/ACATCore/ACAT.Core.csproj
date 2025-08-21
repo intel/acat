@@ -362,7 +362,7 @@
     <Compile Include="Utility\DpiScaling.cs" />
     <Compile Include="Utility\DualMonitor.cs" />
     <Compile Include="Utility\FatalErrorHandler.cs" />
-    <Compile Include="Utility\FontCheck.cs" />
+    <Compile Include="Utility\FontUtil.cs" />
     <Compile Include="Utility\HtmlUtils.cs" />
     <Compile Include="Utility\JsonSerializer.cs" />
     <Compile Include="Utility\Kernel32Interop.cs" />

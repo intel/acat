@@ -7,13 +7,14 @@
 
 using System;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Checks if the specified font or the Montserrat font has been installed
     /// </summary>
-    public static class FontCheck
+    public static class FontUtil
     {
         public static bool IsFontInstalled(string fontName)
         {
@@ -36,5 +37,12 @@ namespace ACAT.Core.Utility
                     IsFontInstalled("Montserrat Semibold") &&
                     IsFontInstalled("Montserrat Thin");
         }
+
+        public static Font ScaleFontToHeight(int height, string font, FontStyle style = FontStyle.Regular, float scale = 0.7f)
+        {
+            float fontSize = height * scale;
+            return new Font(font, fontSize, style, GraphicsUnit.Pixel);
+        }
+
     }
 }

@@ -46,10 +46,10 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelSpacerBottom = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanelContainer = new System.Windows.Forms.TableLayoutPanel();
             this.panelTriggerBox = new System.Windows.Forms.Panel();
             this.timerPlotData = new System.Windows.Forms.Timer(this.components);
             this.timerProcessData = new System.Windows.Forms.Timer(this.components);
-            this.tableLayoutPanelContainer = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,7 +72,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1918, 1078);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(3836, 2156);
             this.tableLayoutPanelMain.TabIndex = 0;
             // 
             // tableLayoutPanelSpacerBottom
@@ -83,13 +83,29 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.tableLayoutPanelSpacerBottom.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelSpacerBottom.Cursor = System.Windows.Forms.Cursors.Default;
             this.tableLayoutPanelSpacerBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanelSpacerBottom.Location = new System.Drawing.Point(0, 969);
+            this.tableLayoutPanelSpacerBottom.Location = new System.Drawing.Point(0, 1939);
             this.tableLayoutPanelSpacerBottom.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanelSpacerBottom.Name = "tableLayoutPanelSpacerBottom";
             this.tableLayoutPanelSpacerBottom.RowCount = 1;
             this.tableLayoutPanelSpacerBottom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelSpacerBottom.Size = new System.Drawing.Size(1918, 109);
+            this.tableLayoutPanelSpacerBottom.Size = new System.Drawing.Size(3836, 217);
             this.tableLayoutPanelSpacerBottom.TabIndex = 75;
+            // 
+            // tableLayoutPanelContainer
+            // 
+            this.tableLayoutPanelContainer.AutoSize = true;
+            this.tableLayoutPanelContainer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanelContainer.BackColor = System.Drawing.Color.Transparent;
+            this.tableLayoutPanelContainer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.tableLayoutPanelContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanelContainer.Location = new System.Drawing.Point(383, 215);
+            this.tableLayoutPanelContainer.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanelContainer.Name = "tableLayoutPanelContainer";
+            this.tableLayoutPanelContainer.RowCount = 1;
+            this.tableLayoutPanelContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelContainer.Size = new System.Drawing.Size(3068, 1724);
+            this.tableLayoutPanelContainer.TabIndex = 7;
             // 
             // panelTriggerBox
             // 
@@ -98,42 +114,28 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             this.panelTriggerBox.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.panelTriggerBox.Location = new System.Drawing.Point(0, 0);
             this.panelTriggerBox.Margin = new System.Windows.Forms.Padding(0);
-            this.panelTriggerBox.MinimumSize = new System.Drawing.Size(447, 198);
+            this.panelTriggerBox.MinimumSize = new System.Drawing.Size(894, 396);
             this.panelTriggerBox.Name = "panelTriggerBox";
-            this.panelTriggerBox.Size = new System.Drawing.Size(447, 198);
+            this.panelTriggerBox.Size = new System.Drawing.Size(894, 396);
             this.panelTriggerBox.TabIndex = 6;
             // 
             // timerProcessData
             // 
             this.timerProcessData.Interval = 10;
             // 
-            // tableLayoutPanelContainer
-            // 
-            this.tableLayoutPanelContainer.AutoSize = true;
-            this.tableLayoutPanelContainer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanelContainer.BackColor = System.Drawing.Color.Transparent;
-            this.tableLayoutPanelContainer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.tableLayoutPanelContainer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1026F));
-            this.tableLayoutPanelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanelContainer.Location = new System.Drawing.Point(191, 107);
-            this.tableLayoutPanelContainer.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanelContainer.Name = "tableLayoutPanelContainer";
-            this.tableLayoutPanelContainer.RowCount = 1;
-            this.tableLayoutPanelContainer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 773F));
-            this.tableLayoutPanelContainer.Size = new System.Drawing.Size(1534, 862);
-            this.tableLayoutPanelContainer.TabIndex = 7;
-            // 
             // SensorForm
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(192F, 192F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.ClientSize = new System.Drawing.Size(1918, 1078);
+            this.ClientSize = new System.Drawing.Size(3836, 2156);
             this.ControlBox = false;
             this.Controls.Add(this.tableLayoutPanelMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.MinimumSize = new System.Drawing.Size(1024, 768);
+            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.MinimumSize = new System.Drawing.Size(2048, 1536);
             this.Name = "SensorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

@@ -28,7 +28,6 @@ namespace ACATConfigNext.UserControls
                 BackColor = Color.Transparent,
                 Dock = DockStyle.Fill,
                 AutoScroll = true,
-                Margin = new Padding(10)
             };
 
             _prefs = prefs;
@@ -44,8 +43,8 @@ namespace ACATConfigNext.UserControls
                 Dock = DockStyle.Fill,
                 Child = scrollViewer,
             };
-
             basePanel.Controls.Add(host);
+
             Controls.Add(basePanel);
         }
 

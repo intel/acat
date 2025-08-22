@@ -32,6 +32,6 @@
     <UserControlConfigMapEntry name="LaunchAppUserControl" configName="LaunchAppUserControl" configId="BE615A9B-3B93-4EF5-9C67-A06C4D34070D" userControlId="BE615A9B-3B93-4EF5-9C67-A06C4D34070D" configFile="LaunchAppUserControl.xml" />
     <UserControlConfigMapEntry name="CursorControlUserControl" configName="CursorControlUserControl" configId="72061314-CE5E-4DB8-92C8-C0F81E5CB3EE" userControlId="72061314-CE5E-4DB8-92C8-C0F81E5CB3EE" configFile="CursorControlUserControl.xml" />
     <UserControlConfigMapEntry name="ToolbarUserControl" configName="ToolbarUserControl" configId="BC0ABB77-FA46-4D92-A9C1-7BF32B2FF1A0" userControlId="4E1A5ED3-ED21-449B-B462-A8AE9F7BDC1F" configFile="ToolbarUserControl.xml" />
-    <UserControlConfigMapEntry name="DashboardUserControl" configName="DashboardUserControl" configId="A80DB445-334A-4FBB-AFCA-D25228D89B0D" userControlId="3933BEAF-FAB3-4C6B-AB16-D0B07B0F2C6D" configFile="DashboardUserControl.xml" />
+    <UserControlConfigMapEntry name="ToolsMenuUserControl" configName="ToolsMenuUserControl" configId="A80DB445-334A-4FBB-AFCA-D25228D89B0D" userControlId="3933BEAF-FAB3-4C6B-AB16-D0B07B0F2C6D" configFile="ToolsMenuUserControl.xml" />
   </UserControlConfigMapEntries>
 </ACAT>

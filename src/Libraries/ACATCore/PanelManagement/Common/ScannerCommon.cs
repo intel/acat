@@ -1658,7 +1658,7 @@ namespace ACAT.Core.PanelManagement.Common
         {
             if (form == ScannerForm)
             {
-                if (PositionSizeController.AutoPosition)
+                if (!PositionSizeController.AutoPosition)
                 {
                     Context.AppWindowPosition = position;
                 }

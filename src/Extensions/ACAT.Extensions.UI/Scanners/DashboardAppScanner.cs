@@ -4,9 +4,12 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.UserControlManagement;
 using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
+using ACAT.Core.WordPredictorManagement.Interfaces;
 using ACAT.Extension;
+using ACAT.Extension.AppAgents.ChromeBrowser;
 using ACAT.Extension.CommandHandlers;
 using ACAT.Extension.UI.ScannerForms;
 using ACAT.Extensions.UI.UserControls.Toolbars;
@@ -55,18 +58,13 @@ namespace ACAT.Extensions.UI.Scanners
         {
             switch (arg.Command)
             {
-                case "CmdACATMenu":
-                    break;
-                case "CmdACATTalk":
-                case "CmdQuick":
-                case "CmdPointer":
-                case "CmdKeyboard":
-                case "CmdSystem":
-                case "CmdLocation":
+                case "CmdTalkSentenceMode":
+                case "CmdTalkPhraseMode":
+                case "CmdTalkShorthandMode":
+                case "CmdSwitchWindow":
                     arg.Handled = true;
                     arg.Enabled = true;
                     break;
-
                 default:
                     _scannerHelper.CheckCommandEnabled(arg);
                     break;
@@ -79,7 +77,7 @@ namespace ACAT.Extensions.UI.Scanners
         {
             ScannerCommon.UserControlManager.GridScanIterations = Common.AppPreferences.GridScanIterations;
             bool success = ScannerCommon.UserControlManager.AddUserControlByKeyOrName(panelTopToolbar, "toolbar", "ToolbarUserControl");
-            success = success && ScannerCommon.UserControlManager.AddUserControlByKeyOrName(panelDashboardControls, "dashboard", "DashboardUserControl");
+            success = success && ScannerCommon.UserControlManager.AddUserControlByKeyOrName(panelDashboardControls, "dashboard", "ToolsMenuUserControl");
 
             return success;
         }
@@ -88,6 +86,9 @@ namespace ACAT.Extensions.UI.Scanners
 
         protected override void InitializeComponent()
         {
+            this.AutoScaleDimensions = new SizeF(240F, 240F);
+            this.AutoScaleMode = AutoScaleMode.Dpi;
+
             this.ScannerBorder = new TableLayoutPanel();
             this.panelTopToolbar = new TableLayoutPanel();
             this.panelDashboardControls = new TableLayoutPanel();
@@ -184,6 +185,81 @@ namespace ACAT.Extensions.UI.Scanners
             return true;
         }
 
+        public bool HandleCmdLaunchBrowser(string Command, object source)
+        {
+            LargeToolbarUserControl largeToolbarUserControl = source as LargeToolbarUserControl;
+            largeToolbarUserControl?.OnButtonClicked(source, new DashboardAppCommandHandler.CommandHandlerArgs(Command));
+            
+            return true;
+        }
+
+        public bool HandleTalkAppRequest(string Command)
+        {
+            Log.Debug($"Handling Talk App Request: {Command}");
+            ScannerCommon.UserControlManager.StopTopLevelAnimation();
+            this.Hide();
+
+            var startupArg = new StartupArg("TalkApplicationScanner")
+            {
+                QuitAppOnFormClose = false
+            };
+
+            var form = PanelManager.Instance.CreatePanel("TalkApplicationScanner", startupArg);
+            IntPtr formHandle = form.Handle;
+
+            var agent = Context.AppAgentMgr.GetAgentByName("Talk Application Agent");
+
+            if (agent != null)
+            {
+                Context.AppAgentMgr.AddAgent(formHandle, agent);
+            }
+            else
+            {
+                Log.Error("Talk Application Agent not found. Ensure it is registered in the ACAT configuration.");
+                return false;
+            }
+
+            if (Command == "CmdTalkSentenceMode")
+            {
+                Context.AppWordPredictionManager.ActiveWordPredictor.SetMode(WordPredictionModes.Sentence);
+            }
+            else if (Command == "CmdTalkPhraseMode")
+            {
+                Context.AppWordPredictionManager.ActiveWordPredictor.SetMode(WordPredictionModes.CannedPhrases);
+            }
+            else if (Command == "CmdTalkShorthandMode")
+            {
+                Context.AppWordPredictionManager.ActiveWordPredictor.SetMode(WordPredictionModes.Shorthand);
+            }
+
+            Context.AppPanelManager.ShowDialog(form as IPanel);
+
+            Context.AppAgentMgr.RemoveAgent(formHandle);
+
+            form.Dispose();
+            form = null;
+
+            this.Show();
+            ScannerCommon.UserControlManager.StartTopLevelAnimation();
+            return true;
+        }
+
+        //public bool HandleSwitchWindowRequest()
+        //{
+        //    var switchWindowAgent = Context.AppAgentMgr.GetFunctionalAgentByName("Windows Task Switcher") as IFunctionalAgent;
+        //    if (switchWindowAgent != null)
+        //    {
+        //        Log.Debug("Switching window using SwitchWindowAgent.");
+        //        switchWindowAgent.Activate();
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        Log.Error("SwitchWindowAgent not found. Ensure it is registered in the ACAT configuration.");
+        //        return false;
+        //    }
+        //}
+
         private void InitializeDashboard()
         {
             this.panelDashboardControls.Name = "Dashboard";
@@ -201,9 +277,9 @@ namespace ACAT.Extensions.UI.Scanners
             this.panelTopToolbar.AutoSize = true;
             this.panelTopToolbar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
         }
-        private class DashboardAppCommandHandler : RunCommandHandler
+        protected class DashboardAppCommandHandler : RunCommandHandler
         {
-            private class CommandHandlerArgs :EventArgs
+            public class CommandHandlerArgs :EventArgs
             {
                 public CommandHandlerArgs(String command)
                 {
@@ -226,10 +302,10 @@ namespace ACAT.Extensions.UI.Scanners
 
                 handled = Command switch
                 {
-                    "CmdShowKeyboard" => form.HandleCmdShowKeyboard(),
+                    "CmdTalkSentenceMode" => form.HandleTalkAppRequest(Command),
+                    "CmdTalkPhraseMode" => form.HandleTalkAppRequest(Command),
+                    "CmdTalkShorthandMode" => form.HandleTalkAppRequest(Command),
                     "CmdGoBack" => form.HandleCmdGoBack(),
-                    "CmdShowPointerControl" => form.HandleCmdPointerControl(),
-                    "CmdShowSystem" => form.HandleCmdShowSystem(),
                     _ => false,
                 };
 
@@ -245,8 +321,13 @@ namespace ACAT.Extensions.UI.Scanners
 
                 Log.Info($"Executing command: {Command} from source: {source?.GetType().Name}");
 
-                LargeToolbarUserControl largeToolbarUserControl = source as LargeToolbarUserControl;                
-                largeToolbarUserControl?.OnButtonClicked(source, new CommandHandlerArgs(Command));
+                switch (Command)
+                {
+                    case "Chrome":
+                    case "Edge":
+                        form.HandleCmdLaunchBrowser(Command, source);
+                        break;
+                }
                 handled = true;
 
                 form.Visible = true;
@@ -274,12 +355,9 @@ namespace ACAT.Extensions.UI.Scanners
             public DashboardAppDispatcher(IScannerPanel panel) : base(panel)
             {
                 /* Main Menu Commands */
-                Commands.Add(new DashboardAppCommandHandler("CmdShowACATTalk"));
-                Commands.Add(new DashboardAppCommandHandler("CmdShowQuickTalk"));
-                Commands.Add(new DashboardAppCommandHandler("CmdShowPointerControl"));
-                Commands.Add(new DashboardAppCommandHandler("CmdShowKeyboard"));
-                Commands.Add(new DashboardAppCommandHandler("CmdShowSystem"));
-                Commands.Add(new DashboardAppCommandHandler("CmdShowLocation"));
+                Commands.Add(new DashboardAppCommandHandler("CmdTalkSentenceMode"));
+                Commands.Add(new DashboardAppCommandHandler("CmdTalkPhraseMode"));
+                Commands.Add(new DashboardAppCommandHandler("CmdTalkShorthandMode"));
                 
                 /* Top Toolbar Commands */
                 Commands.Add(new DashboardAppCommandHandler("CmdACATMenu"));

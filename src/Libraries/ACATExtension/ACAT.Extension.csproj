@@ -36,7 +36,9 @@
   <ItemGroup>
     <Compile Include="CommandHandlers\CommandDescriptors.cs" />
     <Compile Include="CommandHandlers\GoBackHandler.cs" />
+    <Compile Include="CommandHandlers\LaunchAppHandler.cs" />
     <Compile Include="CommandHandlers\MiscCommandHandler.cs" />
+    <Compile Include="CommandHandlers\PositionSizeScannerHandler.cs" />
     <Compile Include="UI\AboutBoxForm.cs" />
     <Compile Include="UI\AboutBoxForm.Designer.cs">
       <DependentUpon>AboutBoxForm.cs</DependentUpon>
@@ -91,6 +93,8 @@
     <Compile Include="CommandHandlers\FunctionKeyHandler.cs" />
     <Compile Include="CommandHandlers\ShowScreenLockHandler.cs" />
     <Compile Include="CommandHandlers\ShowMenusHandler.cs" />
+    <Compile Include="CommandHandlers\SwitchWindowsHandler.cs" />
+    <Compile Include="CommandHandlers\SwitchAppsHandler.cs" />
     <Compile Include="AppAgents\ChromeBrowser\ChromeBrowserAgentBase.cs" />
     <Compile Include="AppAgents\ChromeBrowser\ChromeBrowserTextControlAgent.cs" />
     <Compile Include="UI\ShowDisclaimersForm.cs">

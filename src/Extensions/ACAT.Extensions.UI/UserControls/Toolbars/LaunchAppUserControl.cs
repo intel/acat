@@ -1,4 +1,5 @@
-﻿using ACAT.Core.Utility;
+﻿using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using System;
 using System.Collections.Generic;
@@ -60,6 +61,9 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
             {
                 handleAppSelect(button.AppInfo);
             }
+
+            bool handled = false;
+            Context.AppAgentMgr.RunCommand("CmdContextMenu", ref handled);
 
 
             //switch (buttonName)

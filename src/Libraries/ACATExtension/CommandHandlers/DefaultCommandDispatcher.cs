@@ -7,6 +7,7 @@
 
 using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Lib.Extension.CommandHandlers;
 using System;
 
 namespace ACAT.Extension.CommandHandlers
@@ -58,6 +59,10 @@ namespace ACAT.Extension.CommandHandlers
             addHandler(new ShowScreenLockHandler("CmdLockScreen"));
             addHandler(new ContextMenuHandler("CmdContextMenu"));
 
+            Commands.Add(new SwitchWindowsHandler("CmdSwitchWindows"));
+            Commands.Add(new SwitchAppsHandler("CmdSwitchApps"));
+            Commands.Add(new LaunchAppHandler("CmdLaunchApp"));
+
             addHandler(new AppWindowManagementHandler("CmdCloseWindow"));
             addHandler(new AppWindowManagementHandler("CmdMoveWindow"));
             addHandler(new AppWindowManagementHandler("CmdSizeWindow"));
@@ -76,6 +81,17 @@ namespace ACAT.Extension.CommandHandlers
             addHandler(new TalkWindowHandler("CmdTalkWindowClear"));
             addHandler(new TalkWindowHandler("CmdTalkWindowClose"));
             addHandler(new TalkWindowHandler("CmdTalkApp"));
+
+            Commands.Add(new PositionSizeScannerHandler("CmdAutoPositionScanner"));
+            Commands.Add(new PositionSizeScannerHandler("CmdPositionScannerTopRight"));
+            Commands.Add(new PositionSizeScannerHandler("CmdPositionScannerMiddleRight"));
+            Commands.Add(new PositionSizeScannerHandler("CmdPositionScannerBottomRight"));
+            Commands.Add(new PositionSizeScannerHandler("CmdPositionScannerTopLeft"));
+            Commands.Add(new PositionSizeScannerHandler("CmdPositionScannerMiddleLeft"));
+            Commands.Add(new PositionSizeScannerHandler("CmdPositionScannerBottomLeft"));
+            Commands.Add(new PositionSizeScannerHandler("CmdScannerZoomIn"));
+            Commands.Add(new PositionSizeScannerHandler("CmdScannerZoomOut"));
+            Commands.Add(new PositionSizeScannerHandler("CmdScannerZoomDefault"));
 
             addHandler(new FunctionKeyHandler("F1"));
             addHandler(new FunctionKeyHandler("F2"));

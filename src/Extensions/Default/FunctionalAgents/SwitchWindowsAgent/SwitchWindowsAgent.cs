@@ -40,8 +40,8 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
     /// </summary>
     [ClassDescriptor("16478B95-A328-4575-A3F1-D8289781CC20",
                         "Windows Task Switcher",
-                        "SwitchWindowsAgent",
-                        "Alt-Tab equivalent.  Switch between active windows")]
+                        "Alt-Tab equivalent.  Switch between active windows",
+                        "SwitchWindowsAgent")]
     internal class SwitchWindowsAgent : FunctionalAgentBase
     {
         /// <summary>

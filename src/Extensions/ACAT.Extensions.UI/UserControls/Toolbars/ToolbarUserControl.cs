@@ -1,6 +1,7 @@
 ﻿using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extension.UI.UserControls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -62,7 +63,7 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
             Anchor = AnchorStyles.Top | AnchorStyles.Left,
             Dock = DockStyle.Left,
             ForeColor = Color.White,
-            Font = new Font("Montserrat", 28, FontStyle.Regular, GraphicsUnit.Point, 0)
+            //Font = new Font("Montserrat", 28, FontStyle.Regular, GraphicsUnit.Point, 0)
         };
 
         private readonly IContainer container = null;
@@ -98,8 +99,8 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
 
         protected virtual void CreateToolbarButtons(TableLayoutPanel parent, Dictionary<string, string> buttons)
         {
-            var defaultSize = new Size(40, 40);
-            //var padding = new Padding(10);
+            float scaleFactor = this.DeviceDpi / 96f;
+            var defaultSize = new Size((int)(80 * scaleFactor), (int)(80 * scaleFactor));
 
             // Create buttons with specific properties
             foreach (var (button, index) in buttons.Select((p, i) => (p, i)))
@@ -115,7 +116,7 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
                     Dock = DockStyle.Fill,
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("bootstrap-icons", 18, FontStyle.Regular, GraphicsUnit.Point, 0),
+                    //Font = new Font("bootstrap-icons", 18, FontStyle.Regular, GraphicsUnit.Point, 0),
                     TabIndex = index,
                     Name = button.Key,
                     Text = button.Value,
@@ -128,6 +129,12 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
 
                 parent.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
                 parent.Controls.Add(scannerButton, index, 1);
+                scannerButton.Font = FontUtil.ScaleFontToHeight(scannerButton.Height, "bootstrap-icons", scale: 0.5f);
+                scannerButton.Resize += (s, e) =>
+                {
+                    Button button = (Button)s;
+                    button.Font= FontUtil.ScaleFontToHeight(button.Height, "bootstrap-icons", scale: 0.5f);
+                };
             }
         }
 
@@ -154,6 +161,7 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
             CreateToolbarButtons(DefaultButtonsBox, DefaultButtons);
 
             ToolbarBox.Controls.Add(appName, 0, 0);
+            appName.Font = FontUtil.ScaleFontToHeight(DefaultButtonsBox.Height, "Montserrat Thin");
             ToolbarBox.Controls.Add(DefaultButtonsBox, 1, 0);
 
             Controls.Add(ToolbarBox);

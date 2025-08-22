@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+]>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="ACATTalkSentence" value="@CmdTalkSentenceMode"  />
+    <WidgetAttribute name="ACATTalkPhrase" value="@CmdTalkPhraseMode"  />
+    <WidgetAttribute name="ACATTalkShorthand" value="@CmdTalkShorthandMode"  />
+    <WidgetAttribute name="SwitchWindow" value="@CmdSwitchWindows"  />
+    <WidgetAttribute name="LaunchApp" value="@CmdShowPointerControl"  />
+    <WidgetAttribute name="Location" value="@CmdAutoPositionScanner"  />
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="BoxWidget"  name="ToolbarBox">
+      <Widget class="RowWidget" name="DefaultButtonsBox">
+        <Widget class="ScannerButton" name="ACATTalkSentence" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="ACATTalkPhrase" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="ACATTalkShorthand" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="SwitchWindow" colorScheme="ScannerButton"/>
+        <Widget class="ScannerButton" name="LaunchApp" colorScheme="ScannerButton" />
+        <Widget class="ScannerButton" name="Location" colorScheme="ScannerButton" />
+      </Widget>
+    </Widget>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopButtonRotation"
+               start="true"
+               onEnter=""
+               scanTime="@MenuDialogScanTime"
+               iterations="1"
+               onSelect="actuate(@SelectedWidget);stop();">
+      <Widget name="ACATTalkSentence" />
+      <Widget name="ACATTalkPhrase" />
+      <Widget name="ACATTalkShorthand" />
+      <Widget name="SwitchWindow" />
+      <Widget name="LaunchApp" />
+      <Widget name="Location" />
+    </Animation>
+  </Animations>
+</ACAT>

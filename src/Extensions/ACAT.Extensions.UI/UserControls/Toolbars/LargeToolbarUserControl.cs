@@ -1,4 +1,5 @@
-﻿using ACAT.Core.WidgetManagement;
+﻿using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using ACAT.Extension.UI.UserControls;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,8 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
             Anchor = AnchorStyles.Right | AnchorStyles.Top,
             GrowStyle = TableLayoutPanelGrowStyle.AddColumns,
             ColumnCount = 7,
-            RowCount = 1,
+            RowCount = 2,
+            RowStyles = { new RowStyle(SizeType.AutoSize), new RowStyle(SizeType.AutoSize) },
             Visible = true
         };
 
@@ -49,6 +51,7 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
             public string Name { get; set; }
             public string Icon { get; set; }
             public bool Visible { get; set; }
+            public string LabelText { get; set; }
         }
         public LargeToolbarUserControl(string name)
         {
@@ -61,7 +64,8 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
 
         protected virtual void CreateToolbarButtons(TableLayoutPanel parent)
         {
-            var defaultSize = new Size(100, 100);
+            float scaleFactor = this.DeviceDpi / 96f;
+            var defaultSize = new Size((int)(200 * scaleFactor), (int)(200 * scaleFactor));
 
             // Create buttons with specific properties
             foreach (var (button, index) in Buttons.Select((p, i) => (p, i)))
@@ -77,20 +81,44 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
                     Dock = DockStyle.Fill,
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("bootstrap-icons", 44, FontStyle.Regular, GraphicsUnit.Point, 0),
                     TabIndex = index,
                     Name = button.Name,
                     Text = button.Icon,
                     Visible = button.Visible,
                     UseMnemonic = false,
-                    Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                    Anchor = AnchorStyles.Top,
                     Size = defaultSize,
                     AutoSize = false,
                     TextAlign = ContentAlignment.MiddleCenter,
+                    Margin = new Padding(4, 4, 4, 4)
                 };
 
                 parent.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-                parent.Controls.Add(scannerButton, index, 1);
+                parent.Controls.Add(scannerButton, index, 0);
+                scannerButton.Font = FontUtil.ScaleFontToHeight(scannerButton.Height, "bootstrap-icons", scale: 0.5f);
+                scannerButton.Resize += (s, e) =>
+                {
+                    Button button = (Button)s;
+                    button.Font = FontUtil.ScaleFontToHeight(button.Height, "bootstrap-icons", scale: 0.5f);
+                };
+
+                if (button.LabelText != null && button.LabelText.Length > 0)
+                {
+                    var label = new Label
+                    {
+                        Text = button.LabelText,
+                        ForeColor = Color.White,
+                        BackColor = Color.Transparent,
+                        TextAlign = ContentAlignment.MiddleCenter,
+                        Dock = DockStyle.Fill,
+                        AutoSize = true,
+                        Anchor = AnchorStyles.Top,
+                    };
+                    label.Font = FontUtil.ScaleFontToHeight((int)(scannerButton.Width * .5f), "Montserrat Thin", FontStyle.Regular, scale: 0.45f);
+                    parent.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                    parent.Controls.Add(label, index, 1);
+                }
+
             }
         }
 

@@ -271,7 +271,7 @@ namespace ACAT.Applications
         //{
         //    string fontPath = SmartPath.ApplicationPath + "\\Assets\\Fonts";
 
-        //    if (!FontCheck.IsMontserratFontInstalled())
+        //    if (!FontUtil.IsMontserratFontInstalled())
         //    {
         //        MessageBox.Show("Default fonts are not installed on this system.\nPlease install them and restart ACAT.\nThe fonts can be found here: " + fontPath,
         //                            "ACAT",
@@ -281,7 +281,7 @@ namespace ACAT.Applications
         //    }
 
         //    String fontName = "ACAT Font 1";
-        //    if (!FontCheck.IsFontInstalled(fontName))
+        //    if (!FontUtil.IsFontInstalled(fontName))
         //    {
         //        MessageBox.Show("Font \"" + fontName + "\" is not installed on this system.\nPlease install it and restart ACAT.\nThe font can be found here: " + fontPath,
         //                            "ACAT",

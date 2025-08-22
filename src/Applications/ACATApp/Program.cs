@@ -106,7 +106,7 @@ namespace ACATApp
 
             if (!Context.Init(Context.StartupFlags.Minimal |
                                 Context.StartupFlags.TextToSpeech |
-                                //Context.StartupFlags.WordPrediction |
+                                Context.StartupFlags.WordPrediction |
                                 Context.StartupFlags.AgentManager |
                                 //Context.StartupFlags.SpellChecker |
                                 Context.StartupFlags.WindowsActivityMonitor |
@@ -158,7 +158,7 @@ namespace ACATApp
                     if (form != null)
                     {
                         // Add ad-hoc agent that will handle the form
-                        IApplicationAgent agent = Context.AppAgentMgr.GetAgentByName("Talk Application Agent");
+                        IApplicationAgent agent = Context.AppAgentMgr.GetAgentByName("ACAT Agent");
                         if (agent == null)
                         {
                             MessageBox.Show("Could not find application agent for this application.");

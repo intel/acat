@@ -206,7 +206,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
         public async Task SendParams()
         {
-            int waitDelay = 300;
+            int waitDelay = 3200;
             //Static Path
             string staticPath = Path.Combine(FileUtils.GetResourcesDir(), "WordPredictors", "ConvAssist");
 
@@ -253,7 +253,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             {
                 while (!clientReady)
                 {
-                    var result = WriteAsync(msg, 150).ConfigureAwait(false).GetAwaiter().GetResult();
+                    var result = WriteAsync(msg, waitDelay).ConfigureAwait(false).GetAwaiter().GetResult();
                     var resultObject = JsonSerializer.Deserialize<WordAndCharacterPredictionResponse>(result);
                     if (resultObject != null && resultObject.MessageType != WordAndCharacterPredictionResponse.ConvAssistMessageTypes.NotReady)
                     {
@@ -272,7 +272,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// Starts the named pipe server.
         /// </summary>
         /// <param name="token"></param>
-        public async Task<bool> StartNamedPipeServer(CancellationToken token, bool send_params = true, int timeout_sec = 30)
+        public async Task<bool> StartNamedPipeServer(CancellationToken token, bool send_params = true, int timeout_sec = 90)
         {
             bool success = false;
 
@@ -314,7 +314,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                     try
                     {
                         var sendTask = SendParams();
-                        if(await Task.WhenAny(sendTask, Task.Delay(5000)) != sendTask)
+                        if(await Task.WhenAny(sendTask, Task.Delay(TimeSpan.FromSeconds(60))) != sendTask)
                         {
                             throw new TimeoutException("SendParam() took too long.");
                         }

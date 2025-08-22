@@ -26,6 +26,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
     <ItemGroup>
+    <Compile Include="Dialogs\WindowMoveResizeScannerForm.cs" />
+    <Compile Include="Dialogs\WindowMoveResizeScannerForm.Designer.cs" />
     <Compile Include="FontUtility.cs" />
     <Compile Include="Menus\MainMenu.cs">
       <SubType>Form</SubType>
@@ -58,7 +60,7 @@
     </Compile>
     <Compile Include="UserControls\Toolbars\CursorControlUserControl.cs" />
     <Compile Include="UserControls\Toolbars\LargeToolbarUserControl.cs" />
-    <Compile Include="UserControls\Toolbars\DashboardUserControl.cs" />
+    <Compile Include="UserControls\Toolbars\ToolsMenuUserControl.cs" />
     <Compile Include="UserControls\Toolbars\LaunchAppUserControl.cs" />
     <Compile Include="UserControls\Toolbars\ToolbarUserControl.cs" />
     <Compile Include="UserControls\KeyboardAbcUserControl.cs" />

@@ -425,7 +425,7 @@ namespace ACAT.Core.PanelManagement.Common
         {
             if (AutoPosition)
             {
-                //AutoSetPosition();
+                AutoSetPosition();
             }
         }
 

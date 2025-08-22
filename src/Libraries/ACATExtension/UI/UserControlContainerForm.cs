@@ -47,6 +47,7 @@ namespace ACAT.Extension
         public override bool HandleInitialize(StartupArg startupArg)
         {
             EmbeddedUserControlName = startupArg.PanelClass;
+            subscribeToEvents();
             return ScannerCommon.UserControlManager.AddUserControlByKeyOrName(panelContainer, "embedUserControl", EmbeddedUserControlName);
 
         }
@@ -54,19 +55,14 @@ namespace ACAT.Extension
         /// <summary>
         /// Pauses animations
         /// </summary>
-        //public override void OnPause()
-        //{
-        //    if (_pauseWatchdog)
-        //    {
-        //        removeWatchdogs();
-        //    }
+        public override void OnPause()
+        {
+            ScannerCommon.UserControlManager.OnPause();
 
-        //    ScannerCommon.UserControlManager.OnPause();
-
-        //    ScannerCommon.OnPause(true ?
-        //                        ScannerCommon.PauseDisplayMode.FadeScanner :
-        //                        ScannerCommon.PauseDisplayMode.None);
-        //}
+            ScannerCommon.OnPause(true ?
+                                ScannerCommon.PauseDisplayMode.FadeScanner :
+                                ScannerCommon.PauseDisplayMode.None);
+        }
 
         /// <summary>
         /// Not used
@@ -81,16 +77,12 @@ namespace ACAT.Extension
         /// <summary>
         /// Resumes animation
         /// </summary>
-        //public override void OnResume()
-        //{
-        //    enableWatchdogs();
-
-        //    ScannerCommon.UserControlManager.OnResume();
-
-        //    ScannerCommon.OnResume();
-
-        //    ScannerCommon.ResizeToFitDesktop(this);
-        //}
+        public override void OnResume()
+        {
+            ScannerCommon.UserControlManager.OnResume();
+            ScannerCommon.OnResume();
+            ScannerCommon.ResizeToFitDesktop(this);
+        }
 
         ///// <summary>
         ///// Triggered when the user actuates a widget
@@ -99,7 +91,7 @@ namespace ACAT.Extension
         ///// <param name="handled">was this handled?</param>
         //public void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
         //{
-        //    //_alphabetScannerCommon.OnWidgetActuated(e, ref handled);
+        //    _alphabetScannerCommon.OnWidgetActuated(e, ref handled);
         //}
 
         /// <summary>
@@ -115,21 +107,21 @@ namespace ACAT.Extension
         /// Size of the client changed
         /// </summary>
         /// <param name="e">event args</param>
-        //protected override void OnClientSizeChanged(EventArgs e)
-        //{
-        //    base.OnClientSizeChanged(e);
-        //    ScannerCommon.OnClientSizeChanged();
-        //}
+        protected override void OnClientSizeChanged(EventArgs e)
+        {
+            base.OnClientSizeChanged(e);
+            ScannerCommon.OnClientSizeChanged();
+        }
 
         /// <summary>
         /// Form is closing. Release resources
         /// </summary>
         /// <param name="e">closing param</param>
-        //protected override void OnFormClosing(FormClosingEventArgs e)
-        //{
-        //    ScannerCommon.OnFormClosing(e);
-        //    base.OnFormClosing(e);
-        //}
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            ScannerCommon.OnFormClosing(e);
+            base.OnFormClosing(e);
+        }
 
         protected override void ScannerFormLoaded(object sender, EventArgs e)
         {
@@ -166,41 +158,17 @@ namespace ACAT.Extension
             }
         }
 
-        //private void buttonCancel_Click(object sender, EventArgs e)
-        //{
-        //    FormClosing -= UserControlContainerForm_FormClosing;
-        //    removeUserControl();
-        //    Close();
-        //}
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            FormClosing -= UserControlContainerForm_FormClosing;
+            removeUserControl();
+            Close();
+        }
 
-        /// <summary>
-        /// Makes sure the scanner stays focused
-        /// </summary>
-        //private void enableWatchdogs()
-        //{
-        //    //return;
-
-        //    if (_windowActiveWatchdog == null)
-        //    {
-        //        _windowActiveWatchdog = new WindowActiveWatchdog(this);
-        //    }
-
-        //    _pauseWatchdog = false;
-        //}
-
-        //private void removeUserControl()
-        //{
-        //    this.panelContainer.Controls.Clear();
-        //}
-
-        //private void removeWatchdogs()
-        //{
-        //    if (_windowActiveWatchdog != null)
-        //    {
-        //        _windowActiveWatchdog.Dispose();
-        //        _windowActiveWatchdog = null;
-        //    }
-        //}
+        private void removeUserControl()
+        {
+            this.panelContainer.Controls.Clear();
+        }
 
         /// <summary>
         /// Subscribes to the various events

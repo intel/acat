@@ -1,5 +1,6 @@
 ﻿using ACATResources;
 using ACAT.Core.WidgetManagement;
+using ACAT.Core.Utility;
 
 namespace ACAT.Extension
 
@@ -83,7 +84,7 @@ namespace ACAT.Extension
             // 
             // labelScanSpeedSelect3
             // 
-            this.labelScanSpeedSelect3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.labelScanSpeedSelect3.BackColor = System.Drawing.Color.FromArgb(35, 36, 51);
             this.tableLayoutPanelMain.SetColumnSpan(this.labelScanSpeedSelect3, 11);
             this.labelScanSpeedSelect3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.labelScanSpeedSelect3.Font = new System.Drawing.Font("Montserrat Medium", 15F);
@@ -163,7 +164,7 @@ namespace ACAT.Extension
             // 
             // customSliderScanningSpeed
             // 
-            this.customSliderScanningSpeed.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.customSliderScanningSpeed.BackColor = System.Drawing.Color.FromArgb(35, 36, 51);
             this.customSliderScanningSpeed.BarInnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
             this.customSliderScanningSpeed.BarPenColorBottom = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
             this.customSliderScanningSpeed.BarPenColorTop = System.Drawing.Color.Empty;
@@ -213,8 +214,8 @@ namespace ACAT.Extension
             0,
             0});
             this.customSliderScanningSpeed.TabIndex = 77;
-            this.customSliderScanningSpeed.ThumbInnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.customSliderScanningSpeed.ThumbOuterColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.customSliderScanningSpeed.ThumbInnerColor = System.Drawing.Color.FromArgb(35, 36, 51);
+            this.customSliderScanningSpeed.ThumbOuterColor = System.Drawing.Color.FromArgb(35, 36, 51);
             this.customSliderScanningSpeed.ThumbPenColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
             this.customSliderScanningSpeed.ThumbRoundRectSize = new System.Drawing.Size(56, 56);
             this.customSliderScanningSpeed.ThumbSize = new System.Drawing.Size(56, 56);
@@ -240,13 +241,15 @@ namespace ACAT.Extension
             this.tableLayoutPanelMain.SetColumnSpan(this.B4, 2);
             this.B4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.B4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.B4.Font = new System.Drawing.Font("Arial", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.B4.Font = FontUtil.ScaleFontToHeight(this.B4.Width, "Montserrat", System.Drawing.FontStyle.Bold, scale: 1.4f);
+            //this.B4.Font = new System.Drawing.Font("Montserrat", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.B4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.B4.Location = new System.Drawing.Point(747, 515);
             this.B4.Name = "B4";
             this.tableLayoutPanelMain.SetRowSpan(this.B4, 2);
             this.B4.Size = new System.Drawing.Size(180, 122);
             this.B4.TabIndex = 76;
-            this.B4.Text = "t";
+            this.B4.Text = "a";
             this.B4.UseMnemonic = false;
             this.B4.UseVisualStyleBackColor = false;
             // 
@@ -262,7 +265,9 @@ namespace ACAT.Extension
             this.tableLayoutPanelMain.SetColumnSpan(this.B3, 2);
             this.B3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.B3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.B3.Font = new System.Drawing.Font("Arial", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.B3.Font = FontUtil.ScaleFontToHeight(this.B3.Width, "Montserrat", System.Drawing.FontStyle.Bold, scale: 1.4f);
+            //this.B3.Font = new System.Drawing.Font("Montserrat", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.B3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.B3.Location = new System.Drawing.Point(561, 515);
             this.B3.Name = "B3";
             this.tableLayoutPanelMain.SetRowSpan(this.B3, 2);
@@ -284,13 +289,15 @@ namespace ACAT.Extension
             this.tableLayoutPanelMain.SetColumnSpan(this.B2, 2);
             this.B2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.B2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.B2.Font = new System.Drawing.Font("Arial", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.B2.Font = FontUtil.ScaleFontToHeight(this.B1.Width, "Montserrat", System.Drawing.FontStyle.Bold, scale: 1.4f);
+            //this.B2.Font = new System.Drawing.Font("Montserrat", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.B2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.B2.Location = new System.Drawing.Point(375, 515);
             this.B2.Name = "B2";
             this.tableLayoutPanelMain.SetRowSpan(this.B2, 2);
             this.B2.Size = new System.Drawing.Size(180, 122);
             this.B2.TabIndex = 74;
-            this.B2.Text = "t";
+            this.B2.Text = "e";
             this.B2.UseMnemonic = false;
             this.B2.UseVisualStyleBackColor = false;
             // 
@@ -306,13 +313,15 @@ namespace ACAT.Extension
             this.tableLayoutPanelMain.SetColumnSpan(this.B1, 2);
             this.B1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.B1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.B1.Font = new System.Drawing.Font("Arial", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.B1.Font = FontUtil.ScaleFontToHeight(this.B1.Width, "Montserrat", System.Drawing.FontStyle.Bold, scale: 1.4f);
+            //this.B1.Font = new System.Drawing.Font("Montserrat", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.B1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.B1.Location = new System.Drawing.Point(189, 515);
             this.B1.Name = "B1";
             this.tableLayoutPanelMain.SetRowSpan(this.B1, 2);
             this.B1.Size = new System.Drawing.Size(180, 122);
             this.B1.TabIndex = 73;
-            this.B1.Text = "t";
+            this.B1.Text = "b";
             this.B1.UseMnemonic = false;
             this.B1.UseVisualStyleBackColor = false;
             // 
@@ -388,7 +397,7 @@ namespace ACAT.Extension
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.BackColor = System.Drawing.Color.FromArgb(35, 36, 51);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "UserControlDefaultTryout";

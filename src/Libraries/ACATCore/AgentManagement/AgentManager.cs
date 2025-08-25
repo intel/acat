@@ -977,7 +977,7 @@ namespace ACAT.Core.AgentManagement
                 {
                     bool handled = false;
 
-                    Log.Debug(monitorInfo.ToString());
+                    //Log.Debug(monitorInfo.ToString());
 
                     // did a request for displaying the contextual
                     // menu come in?  If so handle it.
@@ -1457,7 +1457,7 @@ namespace ACAT.Core.AgentManagement
                 return;
             }
 
-            Log.Debug(monitorInfo.ToString());
+            //Log.Debug(monitorInfo.ToString());
 
             //Log.Debug(" hwnd: " + hWnd + " Title:  [" + title + "] process: " + process.ProcessName +
             //      ". focusedElement: [" +

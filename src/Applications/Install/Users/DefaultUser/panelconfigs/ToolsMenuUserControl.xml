@@ -8,7 +8,7 @@
     <WidgetAttribute name="ACATTalkPhrase" value="@CmdTalkPhraseMode"  />
     <WidgetAttribute name="ACATTalkShorthand" value="@CmdTalkShorthandMode"  />
     <WidgetAttribute name="SwitchWindow" value="@CmdSwitchWindows"  />
-    <WidgetAttribute name="LaunchApp" value="@CmdShowPointerControl"  />
+    <WidgetAttribute name="LaunchApp" value="@CmdLaunchApp"  />
     <WidgetAttribute name="Location" value="@CmdAutoPositionScanner"  />
   </WidgetAttributes>
 

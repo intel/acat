@@ -7,6 +7,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Automation;
 
@@ -74,14 +75,18 @@ namespace ACAT.Core.Utility
         {
             try
             {
-                return "FgHwnd: " + FgHwnd +
-                    ", title: " + Title +
-                    ", fgProcess: " + FgProcess.ProcessName +
-                    ", focusedClass: " + FocusedElement?.Current.ClassName +
-                    ", newWindow: " + IsNewWindow +
-                    ", newFocus: " + IsNewFocusedElement;
+                string className;
+                try { className = FocusedElement?.Current.ClassName; }
+                catch (COMException) { className = "<timeout>"; }
+
+                string processName;
+                try { processName = FgProcess?.ProcessName; }
+                catch (Exception) { processName = "<unavailable>"; }
+
+                return $"FgHwnd: {FgHwnd}, title: {Title} , fgProcess: {processName}" +
+                    $", focusedClass: {className}, newWindow: {IsNewWindow}, newFocus: {IsNewFocusedElement}";
             }
-            catch (Exception)
+            catch
             {
                 return String.Empty;
             }

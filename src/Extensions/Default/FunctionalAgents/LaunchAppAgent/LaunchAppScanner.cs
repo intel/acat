@@ -18,10 +18,13 @@
 // </copyright>
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.ActuatorManagement.BaseActuators;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.Extensions;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
@@ -75,6 +78,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         /// The total number of pages
         /// </summary>
         private int _numPages;
+        private ExtensionInvoker _invoker;
 
         /// <summary>
         /// The current page number
@@ -112,36 +116,15 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         /// info about the apps
         /// </summary>
         private int _tabStopButtonCount;
+        private KeyboardActuator _keyboardActuator;
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        //public LaunchAppScanner()
-        //{
-        //    ScannerCommon = new ScannerCommon(this);
-
-        //    InitializeComponent();
-
-        //    PanelClass = "LaunchAppScanner";
-        //    _pageStartIndex = 0;
-        //    _pageNumber = 0;
-        //    _numPages = 0;
-        //    _invoker = new ExtensionInvoker(this);
-        //    KeyPreview = true;
-
-        //    subscribeToEvents();
-
-        //    var actuator = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
-        //    if (actuator is KeyboardActuator)
-        //    {
-        //        _keyboardActuator = actuator as KeyboardActuator;
-        //        _keyboardActuator.EvtKeyPress += _keyboardActuator_EvtKeyPress;
-        //    }
-
-        //    _dispatcher = new Dispatcher(this);
-
-        //    createStatusBar();
-        //}
+        public LaunchAppScanner() : base()
+        {
+            InitializeComponent();
+        }
 
         /// <summary>
         /// For the event raised to quit
@@ -260,30 +243,38 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         /// Returns the extension invoker object
         /// </summary>
         /// <returns>invoker object</returns>
-        //public ExtensionInvoker GetInvoker()
-        //{
-        //    return _invoker;
-        //}
+        public ExtensionInvoker GetInvoker()
+        {
+            return _invoker;
+        }
 
         /// <summary>
         /// Initialzes this class
         /// </summary>
         /// <param name="startupArg">startup args</param>
         /// <returns>true on success</returns>
-        //public bool Initialize(StartupArg startupArg)
-        //{
-        //    ScannerCommon.PositionSizeController.AutoPosition = true;
+        public override bool HandleInitialize(StartupArg startupArg)
+        {
+            _pageStartIndex = 0;
+            _pageNumber = 0;
+            _numPages = 0;
+            _invoker = new ExtensionInvoker(this);
+            KeyPreview = true;
 
-        //    if (!ScannerCommon.Initialize(startupArg))
-        //    {
-        //        Log.Debug("Could not initialize form " + Name);
-        //        return false;
-        //    }
+            subscribeToEvents();
 
-        //    Windows.EvtWindowPositionChanged += Windows_EvtWindowPositionChanged;
+            var actuator = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
+            if (actuator is KeyboardActuator)
+            {
+                _keyboardActuator = actuator as KeyboardActuator;
+                _keyboardActuator.EvtKeyPress += _keyboardActuator_EvtKeyPress;
+            }
 
-        //    return true;
-        //}
+            createStatusBar();
+
+            Windows.EvtWindowPositionChanged += Windows_EvtWindowPositionChanged;
+            return true;
+        }
 
         /// <summary>
         /// Returns if the filter string is empty
@@ -328,34 +319,30 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         /// Invoked when the form is closing
         /// </summary>
         /// <param name="e">event args</param>
-        //protected void OnFormClosing(FormClosingEventArgs e)
-        //{
-        //    ScannerCommon.OnFormClosing(e);
-        //    removeWatchdogs();
-
-        //    Windows.EvtWindowPositionChanged -= Windows_EvtWindowPositionChanged;
-
-        //    _keyboardActuator.EvtKeyPress -= _keyboardActuator_EvtKeyPress;
-        //    base.OnFormClosing(e);
-        //}
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            Windows.EvtWindowPositionChanged -= Windows_EvtWindowPositionChanged;
+            _keyboardActuator.EvtKeyPress -= _keyboardActuator_EvtKeyPress;
+            base.OnFormClosing(e);
+        }
 
         /// <summary>
         /// Window proc
         /// </summary>
         /// <param name="m"></param>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
-        protected override void WndProc(ref Message m)
-        {
-            if (ScannerCommon != null)
-            {
-                if (ScannerCommon.HandleWndProc(m))
-                {
-                    return;
-                }
-            }
+        //[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        //protected  void WndProc(ref Message m)
+        //{
+        //    if (ScannerCommon != null)
+        //    {
+        //        if (ScannerCommon.HandleWndProc(m))
+        //        {
+        //            return;
+        //        }
+        //    }
 
-            base.WndProc(ref m);
-        }
+        //    base.WndProc(ref m);
+        //}
 
         /// <summary>
         /// Key press event handler.  Process the ESC
@@ -458,6 +445,14 @@ namespace ACAT.Extensions.FunctionalAgents.UI
                     Description = "",
                     WorkingDirectory = $"C:\\Program Files\\Google\\Chrome\\Application",
                 },
+                new()
+                {
+                    Name = "Edge",
+                    CommandLine = $"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+                    Description = "",
+                    WorkingDirectory = $"C:\\Program Files\\Google\\Chrome\\Application",
+
+                }
             };
         }
 
@@ -679,12 +674,12 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
-        private void LaunchAppScanner_Shown(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-            //Windows.SetForegroundWindow(Handle);
-            //Windows.ClickOnWindow(this);
-        }
+        //private void LaunchAppScanner_Shown(object sender, EventArgs e)
+        //{
+        //    //throw new NotImplementedException();
+        //    //Windows.SetForegroundWindow(Handle);
+        //    //Windows.ClickOnWindow(this);
+        //}
 
         /// <summary>
         /// Loads a list of apps to launch and refreshes the UI
@@ -825,7 +820,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         private void subscribeToEvents()
         {
             FormClosing += LaunchAppScanner_FormClosing;
-            Shown += LaunchAppScanner_Shown;
+            //Shown += LaunchAppScanner_Shown;
             KeyDown += LaunchAppScanner_KeyDown;
         }
 
@@ -938,7 +933,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
             /// </summary>
             /// <param name="handled">true if it was handled</param>
             /// <returns>true on success</returns>
-            public override bool Execute(ref bool handled)
+            public  bool Execute(ref bool handled)
             {
                 handled = true;
 

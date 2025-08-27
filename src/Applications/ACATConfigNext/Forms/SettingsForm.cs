@@ -50,36 +50,69 @@ namespace ACATConfigNext.Forms
             WpfInitializationHelper.EnsureApplicationResources();
 
             InitializeComponent();
+            this.WindowState = FormWindowState.Maximized;
 
         }
 
         private void InitializeComponent()
         { 
             Text = "ACAT Settings";
-            //MaximumSize = new Size(2000, 1400);
-            Size = new Size(1980, 2000);
-            MinimumSize = new Size(1980, 2000);
             StartPosition = FormStartPosition.CenterScreen;
             FormBorderStyle = FormBorderStyle.Sizable;
             MaximizeBox = true;
             MinimizeBox = true;
             BackColor = Color.FromArgb(31, 31, 56);
             ForeColor = Color.White;
+            //AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
+
+            var hostPanel = new TableLayoutPanel
+            {
+                AutoSize = true,
+                Dock = DockStyle.Fill,
+                BackColor = Color.Transparent,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                ColumnCount = 3,
+                RowCount = 3,
+                GrowStyle = TableLayoutPanelGrowStyle.FixedSize,
+                ColumnStyles = { new ColumnStyle(SizeType.Percent, 50), new ColumnStyle(SizeType.AutoSize), new ColumnStyle(SizeType.Percent, 50) },
+                RowStyles = { new RowStyle(SizeType.Percent, 50), new RowStyle(SizeType.AutoSize), new RowStyle(SizeType.Percent, 50) },
+                CellBorderStyle = TableLayoutPanelCellBorderStyle.Single,
+            };
+
+#if DEBUG
+            //*/  Zoom Testing
+            // var dpi = 96f;// 100% Zoom
+            // var dpi = 120f; // 125% Zoom
+            // var dpi = 144f; // 150% Zoom
+            // var dpi = 168f; // 175% Zoom
+            //var dpi = 192f; // 200% Zoom
+            // var dpi = 240f; // 250% Zoom
+            //var dpi = 288f; // 300% Zoom
+            var dpi = this.DeviceDpi; // actual dpi of the monitor
+
+            float scaleFactor = dpi / 96f; // for debugging on a non-dpi aware monitor
+#else
+            float scaleFactor = this.DeviceDpi / 96f;
+#endif
+
+            var scaledWidth = (int)(1440 * scaleFactor);
+            var scaledHeight = (int)(810 * scaleFactor);
 
             basePanel = new TableLayoutPanel
             {
-                Dock = DockStyle.Fill,
                 //*
                 BackColor = Color.Transparent,
                 /*/
                 BackColor = Color.Red,
-           
                 //*/
-                AutoSize = true,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                Anchor = AnchorStyles.None,
+                Dock = DockStyle.None,
+                //AutoSize = true,
+                //AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 ColumnCount = 2,
                 RowCount = 1,
-                MaximumSize = new Size(2000, 1440),
+                Size = new Size(scaledWidth, scaledHeight),
                 GrowStyle = TableLayoutPanelGrowStyle.AddRows,
                 ColumnStyles = { new ColumnStyle(SizeType.AutoSize), new ColumnStyle(SizeType.Percent, 100F) }
             };
@@ -378,7 +411,10 @@ namespace ACATConfigNext.Forms
 
             basePanel.Controls.Add(leftPanel, 0, 0);
             basePanel.Controls.Add(mainPanel, 1, 0);
-            Controls.Add(basePanel);
+
+            hostPanel.Controls.Add(basePanel, 1, 1);
+
+            Controls.Add(hostPanel);
 
             LoadNavigation();
         }

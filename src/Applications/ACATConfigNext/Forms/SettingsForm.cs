@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.Reflection;
 using ACAT.Extension;
 using ACAT.Core.PreferencesManagement.Interfaces;
+using System.Windows.Media.Media3D;
 
 namespace ACATConfigNext.Forms
 {
@@ -50,72 +51,64 @@ namespace ACATConfigNext.Forms
             WpfInitializationHelper.EnsureApplicationResources();
 
             InitializeComponent();
-            this.WindowState = FormWindowState.Maximized;
 
         }
 
         private void InitializeComponent()
         { 
             Text = "ACAT Settings";
+
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+
+            WindowState = FormWindowState.Maximized;
+            MinimumSize = new Size(1440,1024);
             StartPosition = FormStartPosition.CenterScreen;
             FormBorderStyle = FormBorderStyle.Sizable;
             MaximizeBox = true;
             MinimizeBox = true;
             BackColor = Color.FromArgb(31, 31, 56);
             ForeColor = Color.White;
-            //AutoScaleDimensions = new SizeF(96F, 96F);
-            AutoScaleMode = AutoScaleMode.Dpi;
 
-            var hostPanel = new TableLayoutPanel
+
+            float scaleFactor;
+            using (Graphics g = Graphics.FromHwnd(IntPtr.Zero))
             {
-                AutoSize = true,
-                Dock = DockStyle.Fill,
-                BackColor = Color.Transparent,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                ColumnCount = 3,
-                RowCount = 3,
-                GrowStyle = TableLayoutPanelGrowStyle.FixedSize,
-                ColumnStyles = { new ColumnStyle(SizeType.Percent, 50), new ColumnStyle(SizeType.AutoSize), new ColumnStyle(SizeType.Percent, 50) },
-                RowStyles = { new RowStyle(SizeType.Percent, 50), new RowStyle(SizeType.AutoSize), new RowStyle(SizeType.Percent, 50) },
-                CellBorderStyle = TableLayoutPanelCellBorderStyle.Single,
-            };
+                scaleFactor = g.DpiX / 96f;
+            }
 
-#if DEBUG
-            //*/  Zoom Testing
-            // var dpi = 96f;// 100% Zoom
-            // var dpi = 120f; // 125% Zoom
-            // var dpi = 144f; // 150% Zoom
-            // var dpi = 168f; // 175% Zoom
-            //var dpi = 192f; // 200% Zoom
-            // var dpi = 240f; // 250% Zoom
-            //var dpi = 288f; // 300% Zoom
-            var dpi = this.DeviceDpi; // actual dpi of the monitor
-
-            float scaleFactor = dpi / 96f; // for debugging on a non-dpi aware monitor
-#else
-            float scaleFactor = this.DeviceDpi / 96f;
-#endif
-
-            var scaledWidth = (int)(1440 * scaleFactor);
-            var scaledHeight = (int)(810 * scaleFactor);
 
             basePanel = new TableLayoutPanel
             {
-                //*
                 BackColor = Color.Transparent,
-                /*/
-                BackColor = Color.Red,
-                //*/
                 Anchor = AnchorStyles.None,
                 Dock = DockStyle.None,
                 //AutoSize = true,
                 //AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 ColumnCount = 2,
                 RowCount = 1,
-                Size = new Size(scaledWidth, scaledHeight),
+                Size = new Size(1440, 1024),
                 GrowStyle = TableLayoutPanelGrowStyle.AddRows,
                 ColumnStyles = { new ColumnStyle(SizeType.AutoSize), new ColumnStyle(SizeType.Percent, 100F) }
+
             };
+
+            if (Screen.PrimaryScreen.Bounds.Width > 1440 && Screen.PrimaryScreen.Bounds.Height >1024)
+            {
+                this.Load += (s, e) =>
+                {
+                    basePanel.Left = (this.ClientSize.Width - basePanel.Width) / 2;
+                    basePanel.Top = (this.ClientSize.Height - basePanel.Height) / 2;
+                };
+                this.Resize += (s, e) =>
+                {
+                    basePanel.Left = (this.ClientSize.Width - basePanel.Width) / 2;
+                    basePanel.Top = (this.ClientSize.Height - basePanel.Height) / 2;
+                };
+            }
+
+
+
 
             leftPanel = new FlowLayoutPanel
             {
@@ -129,8 +122,7 @@ namespace ACATConfigNext.Forms
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 FlowDirection = FlowDirection.TopDown,
                 WrapContents = false, // stack vertically only
-               // Padding = new Padding(10),
-                 Padding = new Padding(left: 40, top: 48, right: 0, bottom: 48), // inner padding
+                 Padding = new Padding(40, 48, 0, 48),
                 Margin = new Padding(0),
 
             };
@@ -148,10 +140,9 @@ namespace ACATConfigNext.Forms
                 ColumnCount = 1,
                 RowCount = 4,
                 GrowStyle = TableLayoutPanelGrowStyle.AddRows,
-                Margin = new Padding(0, 40, 0, 0)
+                Margin = new Padding(0, 80, 0, 0)
             };
 
-            // container that aligns acatlabel + navPanel in 1 column
             var centerPanel = new TableLayoutPanel
             {
                 AutoSize = true,
@@ -159,32 +150,44 @@ namespace ACATConfigNext.Forms
                 ColumnCount = 1,
                 RowCount = 2,
                 Dock = DockStyle.Top,
+                Padding = new Padding(0, -120, 0, 0),
+                Margin = new Padding(0, 60, 0, 0),
+                //*
                 BackColor = Color.Transparent
+                /*/
+                BackColor = Color.Green,
+             //*/
             };
             centerPanel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+
+            int scaledWidthLabel = (int)(274 / scaleFactor);
+            int scaledHeightLabel = (int)(180 / scaleFactor);
+            float mainFontSize = 64f / scaleFactor;
+            float settingsFontSize = 38f / scaleFactor;
+
 
             var acatlabel = new Label
             {
                 Text = "ACAT",
-                Font = new Font("Montserrat Thin", 64),
+                Font = new Font("Montserrat Thin", mainFontSize),
                 ForeColor = Color.White,
                 Dock = DockStyle.Top,
                 TextAlign = ContentAlignment.MiddleCenter,
                 AutoSize = false,
                 Margin = new Padding(0, 0, 0, 0) ,
-                Height = 250,
-                Width = 300
+                Height = scaledHeightLabel,
+                Width = scaledWidthLabel
             };
 
             acatlabel.Paint += (s, e) =>
             {
                 var settingsText = "Settings";
-                using (var font = new Font("Montserrat", 38, FontStyle.Bold))
+                using (var font = new Font("Montserrat", settingsFontSize, FontStyle.Bold))
                 using (var brush = new SolidBrush(Color.White))
                 {
                     var textSize = e.Graphics.MeasureString(settingsText, font);
                     float x = (acatlabel.Width - textSize.Width) / 2;
-                    float y = acatlabel.Font.Height * 1.53f; //overlap
+                    float y = acatlabel.Font.Height * 1.15f; //overlap
                     e.Graphics.DrawString(settingsText, font, brush, x, y);
                 }
             };
@@ -193,23 +196,10 @@ namespace ACATConfigNext.Forms
             centerPanel.Controls.Add(acatlabel, 0, 0);
             centerPanel.Controls.Add(navPanel, 0, 2);
 
-
-            // centerPanel.SetColumnSpan(acatlabel, 1);
-            // centerPanel.SetColumnSpan(navPanel, 1);
-
             acatlabel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-          //  settingslabel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             navPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 
             leftPanel.Controls.Add(centerPanel);
-
-           // leftPanel.Controls.Add(acatlabel);
-        //    leftPanel.Controls.Add(settingslabel);
-          //  leftPanel.Controls.Add(navPanel);
-
-         //   navPanel.Width = settingslabel.PreferredWidth;
-          //  settingslabel.SizeChanged += (s, e) => navPanel.Width = settingslabel.Width;
-         //  settingslabel.Width = acatlabel.Width;
 
             mainPanel = new TableLayoutPanel
             {
@@ -225,21 +215,24 @@ namespace ACATConfigNext.Forms
                 RowCount = 3,
                 GrowStyle = TableLayoutPanelGrowStyle.AddRows,
                 RowStyles = { new RowStyle(SizeType.AutoSize), new RowStyle(SizeType.Percent, 100F), new RowStyle(SizeType.AutoSize) },
-                Padding = new Padding(left: 20, top: 48, right: 20, bottom: 48)
+                Padding = new Padding( 20,88,20,48)
             };
+
+            float breadcrumbPanelFontSize = 14f / scaleFactor;
 
             breadcrumbPanel = new FlowLayoutPanel
             {
                 Dock = DockStyle.Top,
                 Name = "Settings",
-                Padding = new Padding(left: 0, top: 48, right: 48, bottom: 0),
+                Padding = new Padding(0,73,48,0),
                 AutoScroll = false,
                 //*/
                 BackColor = Color.Transparent,
                 /*/
                 BackColor = Color.Orange,
                 //*/
-                Font = new Font("Montserrat", 14, FontStyle.Italic),
+                Font = new Font("Montserrat", breadcrumbPanelFontSize, FontStyle.Regular),
+
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink
             };
@@ -269,7 +262,7 @@ namespace ACATConfigNext.Forms
                 /*/
                 BackColor = Color.DarkBlue,
                 //*/
-                Padding = new Padding(left: 0, top: 0, right: 20, bottom: 0),
+                Padding = new Padding(0, 20,  20,  0),
                 Margin = new Padding(8),
                 //RowCount = 1,
                 //ColumnCount = 1,
@@ -278,10 +271,12 @@ namespace ACATConfigNext.Forms
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
             };
 
+            float buttonFontSize = 18f / scaleFactor;
+
             saveButton = new ScannerRoundedButtonControl()
             {
                 Text = "Save",
-                Font = new Font("Montserrat", 18, FontStyle.Italic),
+                Font = new Font("Montserrat", buttonFontSize, FontStyle.Regular),
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 ForeColor = Color.White,
@@ -309,7 +304,7 @@ namespace ACATConfigNext.Forms
             cancelButton = new ScannerRoundedButtonControl()
             {
                 Text = "Cancel",
-                Font = new Font("Montserrat", 18, FontStyle.Italic),
+                Font = new Font("Montserrat", buttonFontSize, FontStyle.Regular),
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 ForeColor = Color.White,
@@ -346,7 +341,7 @@ namespace ACATConfigNext.Forms
             exitButton = new ScannerRoundedButtonControl()
             {
                 Text = "Exit",
-                Font = new Font("Montserrat", 18, FontStyle.Italic),
+                Font = new Font("Montserrat", buttonFontSize, FontStyle.Regular),
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 ForeColor = Color.White,
@@ -411,10 +406,7 @@ namespace ACATConfigNext.Forms
 
             basePanel.Controls.Add(leftPanel, 0, 0);
             basePanel.Controls.Add(mainPanel, 1, 0);
-
-            hostPanel.Controls.Add(basePanel, 1, 1);
-
-            Controls.Add(hostPanel);
+            Controls.Add(basePanel);
 
             LoadNavigation();
         }
@@ -521,6 +513,14 @@ namespace ACATConfigNext.Forms
 
         private void LoadNavigation()
         {
+            float scaleFactor;
+            using (Graphics g = Graphics.FromHwnd(IntPtr.Zero))
+            {
+                scaleFactor = g.DpiX / 96f; // 96 is default DPI
+            }
+
+            float buttonFontSize = 18f / scaleFactor;
+
             string[] categories = { "General", "Actuators", "Word Predictors", "Text to Speech" };
 
             foreach (var category in categories)
@@ -528,18 +528,20 @@ namespace ACATConfigNext.Forms
                 var btn = new ScannerRoundedButtonControl()
                 {
                     Text = category,
-                    Font = new Font("Montserrat", 18, FontStyle.Regular),
-                    AutoSize = true,
+                    Font = new Font("Montserrat", buttonFontSize, FontStyle.Regular),
+                    //AutoSize = true,
+                    Size = new Size(234,52),
                     AutoSizeMode = AutoSizeMode.GrowAndShrink,
                     ForeColor = Color.White,
                     Dock = DockStyle.Top,
                     Tag = (Category: category, Settings: LoadSettings(category)),
                     FlatStyle = FlatStyle.Flat,
-                 //   BorderRadiusBottomLeft = 0,
-                 //   BorderRadiusBottomRight = 0,
-                //    BorderRadiusTopLeft = 0,
-                 //   BorderRadiusTopRight = 0,
-                   // BorderWidth = 0F,
+                    Padding = new Padding(0, 0, 0, 0),
+                    BorderRadiusBottomLeft = 0,
+                    BorderRadiusBottomRight = 0,
+                    BorderRadiusTopLeft = 0,
+                    BorderRadiusTopRight = 0,
+                    BorderWidth = 0F,
                 };
 
                 btn.Click += Category_Click;

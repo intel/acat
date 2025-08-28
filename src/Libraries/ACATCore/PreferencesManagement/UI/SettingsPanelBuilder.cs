@@ -11,6 +11,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
+using System.Windows.Interop;
+using System.Xml.Linq;
 using SW = System.Windows;
 
 namespace ACAT.Core.PreferencesManagement.UI
@@ -78,36 +80,47 @@ namespace ACAT.Core.PreferencesManagement.UI
             var tableLayout = new TableLayoutPanel
             {
                 BackColor = Color.FromArgb(74, 75, 93),//Gray
-                Dock = DockStyle.Top,
-                Padding = new Padding(10),
-                Margin = new Padding(10),
-                AutoSize = true,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                Dock = DockStyle.Fill,
+                //Padding = new Padding(10),
+                //Margin = new Padding(0,0,0,2),
+            //    AutoSize = true,
+             //   AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 //RowCount = 1,
                 ColumnCount = 1,
                 GrowStyle = TableLayoutPanelGrowStyle.AddRows,
+               //  RowStyles = { new RowStyle(SizeType.AutoSize) },
 
-            };  // we’ll grow rows dynamically
+            }; 
             tableLayout.RowCount = 0;
-            tableLayout.GrowStyle = TableLayoutPanelGrowStyle.AddRows;
+          //  tableLayout.GrowStyle = TableLayoutPanelGrowStyle.AddRows;
 
             foreach (var prop in props)
             {
                 var stackPanel = new SW.Controls.StackPanel
                 {
                     Orientation = SW.Controls.Orientation.Horizontal,
-                    Margin = new SW.Thickness(8)
+                  //  Margin = new SW.Thickness(8)
+
                 };
 
 
                 var labeledPanel = CreateLabeledPanel(prop, prefs);
-                //labeledPanel.Margin = new Thickness(8);
                 stackPanel.Children.Add(labeledPanel);
+
+                float scaleFactor;
+                using (Graphics g = Graphics.FromHwnd(IntPtr.Zero))
+                {
+                    scaleFactor = g.DpiX / 96f; // 96 is default DPI
+                }
+                int heightPanel = (int)(85 * scaleFactor);
 
                 var elementHost = new ElementHost
                 {
                     Dock = DockStyle.Fill,
-                    Child = stackPanel
+                    Child = stackPanel,
+                    Margin = new Padding(0,0,0,16),
+                    Height = heightPanel,
+                    Padding = new Padding(0, 8, 0, 8),
                 };
 
                 // add to new row
@@ -201,11 +214,23 @@ namespace ACAT.Core.PreferencesManagement.UI
                 VerticalAlignment = VerticalAlignment.Center
             };
 
+
+            float scaleFactor;
+            using (Graphics g = Graphics.FromHwnd(IntPtr.Zero))
+            {
+                scaleFactor = g.DpiX / 96f; // 96 is default DPI
+            }
+
+            var scaledWidthColumn1 = (int)(600 / scaleFactor);
+            var scaledWidthColumn2 = (int)(60 / scaleFactor);
+
+
             // COLUMN 0: labels
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1100) });
+            var leftColumn = new ColumnDefinition { Width = new GridLength(scaledWidthColumn1) };
+            grid.ColumnDefinitions.Add(leftColumn);
 
             // COLUMN 1: middle spacer (width will be set dynamically)
-            var middleColumn = new ColumnDefinition { Width = new GridLength(0) };
+            var middleColumn = new ColumnDefinition { Width = new GridLength(scaledWidthColumn2) };
             grid.ColumnDefinitions.Add(middleColumn);
 
             // COLUMN 2: input control
@@ -217,6 +242,8 @@ namespace ACAT.Core.PreferencesManagement.UI
                 Orientation = System.Windows.Controls.Orientation.Vertical,
                 HorizontalAlignment = SW.HorizontalAlignment.Stretch
             };
+
+            float labelFontSize = 14f / scaleFactor;
 
             var displayAttribute = prop.GetAttribute<DisplayAttribute>();
             var label = new TextBlock
@@ -243,7 +270,7 @@ namespace ACAT.Core.PreferencesManagement.UI
                     Text = displayAttribute?.ResourceType?.GetProperty(displayAttribute.Description, BindingFlags.Static | BindingFlags.Public)?
                         .GetValue(null, null) as string ?? displayAttribute?.Description,
                     FontStyle = FontStyles.Normal,
-                    FontSize = 14,
+                    FontSize = label.FontSize,
                     FontFamily = label.FontFamily,
                     Foreground = System.Windows.Media.Brushes.White,
                     TextWrapping = TextWrapping.WrapWithOverflow,
@@ -279,7 +306,9 @@ namespace ACAT.Core.PreferencesManagement.UI
                 {
                     MaxLength = 5,
                     VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = SW.HorizontalAlignment.Right
+                    HorizontalAlignment = SW.HorizontalAlignment.Stretch,
+                    MinWidth = scaledWidthColumn1/2,
+                    Padding = new Thickness(200, 0, 0, 0)
                 };
             }
             else if (prop.Property.PropertyType == typeof(bool))
@@ -298,7 +327,7 @@ namespace ACAT.Core.PreferencesManagement.UI
                     Text = initialState ? "On" : "Off",
                     FontFamily = new System.Windows.Media.FontFamily("Montserrat"),
                     Foreground = System.Windows.Media.Brushes.White,
-                    FontSize = 14,
+                    FontSize = labelFontSize,
                     VerticalAlignment = VerticalAlignment.Center,
                     Margin = new Thickness(0, 0, 8, 0)
                 };
@@ -335,6 +364,8 @@ namespace ACAT.Core.PreferencesManagement.UI
                 var sliderStack = CreateLabeledSlider((int)range.Minimum, (int)range.Maximum, value is int i ? i : 0, 1);
                 sliderStack.VerticalAlignment = VerticalAlignment.Center;
                 sliderStack.HorizontalAlignment =  SW.HorizontalAlignment.Right;
+                var sliderStackscaledWidth = (int)(300 / scaleFactor);
+                sliderStack.Width = sliderStackscaledWidth;
 
                 var slider = sliderStack?.Children?.OfType<Slider>().FirstOrDefault();
                 slider?.SetBinding(Slider.ValueProperty, binding);
@@ -353,22 +384,33 @@ namespace ACAT.Core.PreferencesManagement.UI
                 };
             }
 
-          
             if (inputControl is StackPanel sp && sp.Children.OfType<ToggleSwitch>().Any())
             {
-                middleColumn.Width = new GridLength(280); // toggle switch
+                middleColumn.Width = new GridLength(scaledWidthColumn2 * 4.7); // toggle switch
             }
-            else
-            {
-                middleColumn.Width = new GridLength(60); // other controls
-            }
-
-            inputControl.VerticalAlignment = VerticalAlignment.Center;
-            inputControl.HorizontalAlignment = SW.HorizontalAlignment.Right;
 
             Grid.SetColumn(inputControl, 2);
             grid.Children.Add(inputControl);
+            container.Child = grid;
 
+
+            //  var wpfWindow = Window.GetWindow(container);
+            // if (wpfWindow != null)
+            // {
+            //  var interopHelper = new WindowInteropHelper(wpfWindow);
+            //  var hwnd = interopHelper.Handle;
+
+            //  var winFormsControl = SW.Forms.Control.FromHandle(hwnd);
+            //   var parentForm = winFormsControl?.FindForm();
+            // }
+
+
+            // inputControl.VerticalAlignment = VerticalAlignment.Center;
+            //   inputControl.HorizontalAlignment = SW.HorizontalAlignment.Right;
+
+
+
+            /*
             container.SizeChanged += (s, e) =>
             {
                 double availableWidth = container.ActualWidth;
@@ -376,10 +418,48 @@ namespace ACAT.Core.PreferencesManagement.UI
                 double col2Width = inputControl.ActualWidth;
 
                 double spacerWidth = Math.Max(availableWidth - col0Width - col2Width - 1440, 0);
-                spacer.Width = spacerWidth;
-            };
 
-            container.Child = grid;
+             
+
+
+
+                spacer.Width = spacerWidth;
+            };*/
+
+
+            /*void AdjustColumns()
+            {
+                var mainForm = SW.Forms.Application.OpenForms.Cast<Form>().FirstOrDefault();
+                if (mainForm == null) return;
+
+                bool isToggle = inputControl is StackPanel sp && sp.Children.OfType<ToggleSwitch>().Any();
+
+                if (mainForm.WindowState == FormWindowState.Maximized)
+                {
+                    // Shrink a little to leave some margin
+                    middleColumn.Width = new GridLength(isToggle ? 280 : 60);
+                    leftColumn.Width = new GridLength(1060); // original 1100 minus 40
+                }
+                else
+                {
+                    // Normal sizing
+                    middleColumn.Width = new GridLength(isToggle ? 280 : 60);
+                    leftColumn.Width = new GridLength(1100);
+                }
+            }
+
+            // Call once in case form is already shown
+            AdjustColumns();
+
+            /*
+            // Hook resizing so it updates dynamically
+            var formRef = SW.Forms.Application.OpenForms.Cast<Form>().FirstOrDefault();
+            if (formRef != null)
+            {
+                formRef.SizeChanged += (s, e) => AdjustColumns();
+                formRef.ResizeEnd += (s, e) => AdjustColumns();
+            }
+            */
             return container;
         }
     }

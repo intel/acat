@@ -543,8 +543,16 @@ namespace ACAT.Extension.UI
 
             using (var agentContext = Context.AppAgentMgr.ActiveContext())
             {
-                agentContext.TextAgent().GetCharAtCaret(out charAtCaret);
-                Log.Debug("charAtCaret: [" + charAtCaret + "]");
+                try
+                {
+                    agentContext.TextAgent().GetCharAtCaret(out charAtCaret);
+                    Log.Debug("charAtCaret: [" + charAtCaret + "]");
+                }
+                catch (InvalidAgentContextException ex)
+                {
+                    Log.Exception(ex.ToString());
+
+                }
             }
 
             if (!string.IsNullOrEmpty(wordAtCaret) &&

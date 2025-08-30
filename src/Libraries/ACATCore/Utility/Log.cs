@@ -32,7 +32,7 @@ namespace ACAT.Core.Utility
         ///    Warning = 2,
         ///    Info = 3,
         ///    Verbose = 4
-        public static TraceSwitch TraceLevelSwitch = new("AppTraceSwitch", "Controls tracing level", "Verbose");
+        public static TraceSwitch TraceLevelSwitch = new("AppTraceSwitch", "Controls tracing level", "Info");
 
         private static DateTime? prevMessageTimeStamp = null;
 

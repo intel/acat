@@ -601,14 +601,14 @@ namespace ACAT.Core.PanelManagement.Common
 
             if (_animationManager != null)
             {
-                Log.Debug("Before animationmangoer.stop");
+                Log.Verbose("Before animationmangoer.stop");
                 _animationManager.Stop();
-                Log.Debug("After animationmangoer.stop");
+                Log.Verbose("After animationmangoer.stop");
             }
 
-            Log.Debug("Unsubscribe to EvtHeartbeat for " + ScannerForm.Name);
+            Log.Verbose("Unsubscribe to EvtHeartbeat for " + ScannerForm.Name);
             WindowActivityMonitor.EvtWindowMonitorHeartbeat -= WindowActivityMonitor_EvtWindowMonitorHeartbeat;
-            Log.Debug("Unsubscribe to EvtHeartbeat DONE for " + ScannerForm.Name);
+            Log.Verbose("Unsubscribe to EvtHeartbeat DONE for " + ScannerForm.Name);
 
             PositionSizeController.OnClosing();
 
@@ -672,9 +672,9 @@ namespace ACAT.Core.PanelManagement.Common
                     return;
                 }
 
-                Log.Debug("CALIBTEST Pausing animation manager");
+                Log.Verbose("CALIBTEST Pausing animation manager");
                 AnimationManager.Pause();
-                Log.Debug("CALIBTEST calling setDisplayStateOnpause");
+                Log.Verbose("CALIBTEST calling setDisplayStateOnpause");
                 setDisplayStateOnPause(mode);
             }
             catch (Exception ex)
@@ -700,10 +700,10 @@ namespace ACAT.Core.PanelManagement.Common
             {
                 PositionSizeController.ScaleForm();
 
-                Log.Debug("CALIBTEST Scannercommon2 Showing scanner");
+                Log.Verbose("CALIBTEST Scannercommon2 Showing scanner");
                 ShowScanner();
 
-                Log.Debug("CALIBTEST Calling Animationmanager resume");
+                Log.Verbose("CALIBTEST Calling Animationmanager resume");
                 AnimationManager.Resume();
 
                 updateStatusBar();
@@ -868,7 +868,7 @@ namespace ACAT.Core.PanelManagement.Common
                     SendKeys.SendWait(widget.Value + " ");
                     Context.AppAgentMgr.TextChangedNotifications.Release();
                     CoreGlobals.Stopwatch1.Stop();
-                    Log.Debug("TimeElapsed 1: " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                    Log.Verbose("TimeElapsed 1: " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
                 }
                 else
                 {
@@ -878,7 +878,7 @@ namespace ACAT.Core.PanelManagement.Common
                     actuateKey(button.GetWidgetAttribute(), widget.Value[0]);
 
                     CoreGlobals.Stopwatch1.Stop();
-                    Log.Debug("TimeElapsed 2 : " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                    Log.Verbose("TimeElapsed 2 : " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
                 }
             }
 
@@ -893,7 +893,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// <param name="value">String to send</param>
         private void actuateKey(WidgetAttribute widgetAttribute, char value)
         {
-            Log.Debug(value.ToString());
+            Log.Verbose(value.ToString());
             if (!TextController.HandlePunctuation(widgetAttribute.Modifiers, value))
             {
                 if ((KeyStateTracker.IsShiftOn() || KeyStateTracker.IsCapsLockOn()) &&
@@ -917,7 +917,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// <param name="value">value of the key</param>
         private void actuateVirtualKey(WidgetAttribute widgetAttribute, string value)
         {
-            Log.Debug("VirtualKey: " + value);
+            Log.Verbose("VirtualKey: " + value);
 
             Keys key = TextController.MapVirtualKey(value);
             if (key == Keys.Escape && _dialogMode)
@@ -1016,9 +1016,9 @@ namespace ACAT.Core.PanelManagement.Common
 
                     if (!abbreviationDetected && !context.TextAgent().SupportsSpellCheck())
                     {
-                        Log.Debug("Calling spellccheck " + Kernel32Interop.GetCurrentThreadId());
+                        Log.Verbose("Calling spellccheck " + Kernel32Interop.GetCurrentThreadId());
                         TextController.SpellCheck();
-                        Log.Debug("Returned from spellccheck " + Kernel32Interop.GetCurrentThreadId());
+                        Log.Verbose("Returned from spellccheck " + Kernel32Interop.GetCurrentThreadId());
                     }
                 }
             }
@@ -1027,7 +1027,7 @@ namespace ACAT.Core.PanelManagement.Common
                 Log.Exception(ex.ToString());
             }
 
-            Log.Debug("Leave " + Kernel32Interop.GetCurrentThreadId());
+            Log.Verbose("Leave " + Kernel32Interop.GetCurrentThreadId());
         }
 
         /// <summary>
@@ -1041,7 +1041,7 @@ namespace ACAT.Core.PanelManagement.Common
 
             if (Context.AppPanelManager.GetCurrentForm() as Form != ScannerForm)
             {
-                Log.Debug("CALIBTESTForm is not the current form. returning " + ScannerForm.Name + " CurrentForm is " + (Context.AppPanelManager.GetCurrentForm() as Form).Name);
+                Log.Verbose("CALIBTESTForm is not the current form. returning " + ScannerForm.Name + " CurrentForm is " + (Context.AppPanelManager.GetCurrentForm() as Form).Name);
                 return;
             }
 
@@ -1052,7 +1052,7 @@ namespace ACAT.Core.PanelManagement.Common
             }
             else
             {
-                Log.Debug("CALIBTESTCalling OnResume for scanner");
+                Log.Verbose("CALIBTESTCalling OnResume for scanner");
                 (ScannerForm as IScannerPanel).OnResume();
             }
         }
@@ -1067,7 +1067,7 @@ namespace ACAT.Core.PanelManagement.Common
 
             if (Context.AppPanelManager.GetCurrentForm() as Form != ScannerForm)
             {
-                Log.Debug("CALIBTEST Form is not the current form. returning " + ScannerForm.Name + " CurrentForm is " + (Context.AppPanelManager.GetCurrentForm() as Form).Name);
+                Log.Verbose("CALIBTEST Form is not the current form. returning " + ScannerForm.Name + " CurrentForm is " + (Context.AppPanelManager.GetCurrentForm() as Form).Name);
                 return;
             }
 
@@ -1080,7 +1080,7 @@ namespace ACAT.Core.PanelManagement.Common
                 }
                 else
                 {
-                    Log.Debug("CALIBTEST Calling onPause for " + ScannerForm.Name);
+                    Log.Verbose("CALIBTEST Calling onPause for " + ScannerForm.Name);
 
                     (ScannerForm as IScannerPanel).OnPause();
                 }
@@ -1189,7 +1189,7 @@ namespace ACAT.Core.PanelManagement.Common
 
                 if (_scannerPanel.PanelClass == "Alphabet")
                 {
-                    Log.Debug("form_visibleChanged " + ScannerForm.Width);
+                    Log.Verbose("form_visibleChanged " + ScannerForm.Width);
                 }
                 notifyScannerShow();
             }
@@ -1295,7 +1295,7 @@ namespace ACAT.Core.PanelManagement.Common
                 return;
             }
 
-            Log.Debug(e.Script);
+            Log.Verbose(e.Script);
 
             runCommand(e.Script);
         }
@@ -1450,7 +1450,7 @@ namespace ACAT.Core.PanelManagement.Common
             Log.Debug("CALIBTEST scannerocmmon2. setDisplayStateOnPause. mode: " + mode);
             if (mode == PauseDisplayMode.None)
             {
-                Log.Debug("CALIBTEST scannerocmmon2. it is none. Returning");
+                Log.Verbose("CALIBTEST scannerocmmon2. it is none. Returning");
                 return;
             }
 
@@ -1516,7 +1516,7 @@ namespace ACAT.Core.PanelManagement.Common
                             break;
                         }
 
-                        Log.Debug("widget.Enabled set to : " + widget.Enabled + " for feature " + widget.SubClass);
+                        Log.Verbose("widget.Enabled set to : " + widget.Enabled + " for feature " + widget.SubClass);
                     }
                 }
             }

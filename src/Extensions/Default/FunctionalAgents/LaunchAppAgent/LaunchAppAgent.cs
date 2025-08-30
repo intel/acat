@@ -34,6 +34,8 @@ using ACAT.Extensions.FunctionalAgents.UI;
 using System.Windows.Forms;
 using ACAT.Core.PanelManagement.Common;
 using ACATResources;
+using System.Web.UI.WebControls;
+using static ACAT.Extensions.FunctionalAgents.UI.LaunchAppScanner;
 
 namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
 {
@@ -73,6 +75,14 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         private AppInfo _appToLaunchInfo;
         private LaunchAppScanner _launchAppScanner;
 
+        // Expose the LaunchAppScanner Events so others can be notified of what's going on. 
+        // TODO: FIX THIS HACK
+        public event FormClosingEventHandler FormClosing;
+        public event QuitEventDelegate EvtQuit;
+        public event LaunchAppDelegate EvtLaunchApp;
+        public event EventHandler EvtShowScanner;
+
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -96,7 +106,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
             //throw new NotImplementedException();
             _launchAppScanner.FormClosing += _form_FormClosing;
             _launchAppScanner.EvtQuit += _launchAppScanner_EvtQuit;
-            _launchAppScanner.EvtLaunchApp += _launchAppUserControl_EvtLaunchApp;
+            _launchAppScanner.EvtLaunchApp += _launchAppScanner_EvtLaunchApp;
             _launchAppScanner.EvtShowScanner += launchAppScanner_EvtShowScanner;
 
             IsActive = true;
@@ -106,31 +116,39 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
 
         public override bool Activate(IUserControl usercontrol)
         {
-            IsClosing = false;
+            throw new NotImplementedException();
+            //IsClosing = false;
 
-            ExitCode = CompletionCode.ContextSwitch;
-            _appToLaunchInfo = null;
+            //ExitCode = CompletionCode.ContextSwitch;
+            //_appToLaunchInfo = null;
 
-            _launchAppUserControl = usercontrol as LaunchAppUserControl;
-            if (_launchAppUserControl != null)
-            {
-                _launchAppScanner.FormClosing += _form_FormClosing;
-                _launchAppScanner.EvtQuit += _launchAppScanner_EvtQuit;
-                _launchAppUserControl.EvtLaunchApp += _launchAppUserControl_EvtLaunchApp;
-                _launchAppScanner.EvtShowScanner += launchAppScanner_EvtShowScanner;
+            //_launchAppUserControl = usercontrol as LaunchAppUserControl;
+            //if (_launchAppUserControl != null)
+            //{
+            //    _launchAppScanner.FormClosing += _form_FormClosing;
+            //    _launchAppScanner.EvtQuit += _launchAppScanner_EvtQuit;
+            //    _launchAppUserControl.EvtLaunchApp += _launchAppScanner_EvtLaunchApp;
+            //    _launchAppScanner.EvtShowScanner += launchAppScanner_EvtShowScanner;
 
-                IsActive = true;
-                Context.AppPanelManager.ShowDialog(_launchAppScanner);
-            }
+            //    IsActive = true;
+            //    Context.AppPanelManager.ShowDialog(_launchAppScanner);
+            //}
 
-            return true;
+            //return true;
         }
 
-        private void _launchAppUserControl_EvtLaunchApp(object sender, AppInfo appInfo)
+        private void _launchAppScanner_EvtLaunchApp(object sender, AppInfo appInfo)
         {
             _appToLaunchInfo = appInfo;
 
+            //Notify the event is happening
+            EvtLaunchApp?.Invoke(this, appInfo);
+
             launchProcess(_appToLaunchInfo);
+
+            closeScanner();
+
+            Close();
         }
 
         /// <summary>
@@ -192,10 +210,6 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         /// <returns>true on success</returns>
         public override bool OnRequestClose()
         {
-            if (_launchAppUserControl != null)
-            {
-                _launchAppUserControl.EvtLaunchApp -= _launchAppUserControl_EvtLaunchApp;
-            }
             quit();
             return true;
         }
@@ -243,7 +257,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
             {
                 _launchAppScanner.FormClosing -= _form_FormClosing;
                 _launchAppScanner.EvtQuit -= _launchAppScanner_EvtQuit;
-                _launchAppUserControl.EvtLaunchApp -= _launchAppUserControl_EvtLaunchApp;
+                _launchAppScanner.EvtLaunchApp -= _launchAppScanner_EvtLaunchApp;
                 _launchAppScanner.EvtShowScanner -= launchAppScanner_EvtShowScanner;
             }
 
@@ -260,6 +274,8 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         {
             if (confirm(StringResources.Close))
             {
+                //Notify everyone
+                EvtQuit?.Invoke(this, args);
                 quit();
             }
         }
@@ -281,15 +297,15 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         /// <summary>
         /// Close the launchapp scanner
         /// </summary>
-        //private void closeScanner()
-        //{
-        //    if (_launchAppScanner != null)
-        //    {
-        //        Windows.CloseForm(_launchAppScanner);
+        private void closeScanner()
+        {
+            if (_launchAppScanner != null)
+            {
+                Windows.CloseForm(_launchAppScanner);
 
-        //        _launchAppScanner = null;
-        //    }
-        //}
+                _launchAppScanner = null;
+            }
+        }
 
         /// <summary>
         /// Get confirmation from the user
@@ -316,6 +332,10 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
                     RequestArg = _launchAppScanner,
                     UseCurrentScreenAsParent = true
                 };
+                
+                //Notify this is happening
+                EvtShowScanner?.Invoke(this, arg);
+
                 showPanel(this, arg);
             }
         }
@@ -329,14 +349,20 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         {
             bool retVal = true;
 
+            //var startInfo = new ProcessStartInfo
+            //{
+            //    FileName = info.Name,
+            //    Arguments = info.Arguments,
+            //    UseShellExecute = info.UseShellExecute,
+            //    RedirectStandardOutput = false,
+            //    RedirectStandardError = false,
+            //    CreateNoWindow = false
+            //};
+
             var startInfo = new ProcessStartInfo
             {
-                FileName = info.Name,
-                Arguments = info.Arguments,
-                UseShellExecute = info.UseShellExecute,
-                RedirectStandardOutput = false,
-                RedirectStandardError = false,
-                CreateNoWindow = false
+                FileName = info.Path,
+                Arguments = normalizeCommandLine(info.CommandLine)
             };
 
             try
@@ -405,7 +431,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
             IsClosing = true;
             IsActive = false;
             ExitCode = CompletionCode.None;
-            //closeScanner();
+            closeScanner();
             Close();
         }
 

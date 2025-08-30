@@ -482,17 +482,17 @@ namespace ACAT.Core.AgentManagement
         /// </summary>
         /// <param name="handle">window handle</param>
         /// <param name="agent">agent to add</param>
-        public void AddAgent(IntPtr handle, IApplicationAgent agent)
+        public void AddAgent(Form form, IApplicationAgent agent)
         {
-            Log.Debug("hwnd: " + handle + ", " + agent.Name);
+            Log.Debug("hwnd: " + form + ", " + agent.Name);
 
             agent.EvtPanelRequest += agent_EvtPanelRequest;
-            _agentsCache.AddAgent(handle, agent);
+            _agentsCache.AddAgent(form, agent);
 
             var fgWindow = User32Interop.GetForegroundWindow();
             if (fgWindow != IntPtr.Zero)
             {
-                if (fgWindow == handle)
+                if (fgWindow == form.Handle)
                 {
                     WindowActivityMonitor.Refresh();
                 }
@@ -703,24 +703,45 @@ namespace ACAT.Core.AgentManagement
             return true;
         }
 
+
+        //public void RemoveAgent(string AgentName)
+        //{
+        //    IApplicationAgent agent = _agentsCache.GetAgentByName(AgentName);
+        //    if (agent != null)
+        //    {
+        //        //RemoveAgent(agent.);
+        //    }
+        //}
+
+
+        //public void RemoveAgent(string AgentName)
+        //{
+        //    IntPtr handle  = _agentsCache.GetHandleByAgentName(AgentName);
+
+        //    if(handle != null)
+        //    {
+        //        RemoveAgent(handle);
+        //    }
+        //}
+
         /// <summary>
         /// Removes a previously added ad-hoc agent
         /// </summary>
         /// <param name="handle">window handle for the agent</param>
-        public void RemoveAgent(IntPtr handle)
-        {
-            IApplicationAgent agent = _agentsCache.GetAgent(handle);
+        //public void RemoveAgent(Form form)
+        //{
+        //    IApplicationAgent agent = _agentsCache.GetAgent(form);
 
-            if (agent != null)
-            {
-                agent.EvtPanelRequest -= agent_EvtPanelRequest;
-                _agentsCache.RemoveAgent(handle);
-                if (agent == _currentAgent)
-                {
-                    _currentAgent = null;
-                }
-            }
-        }
+        //    if (agent != null)
+        //    {
+        //        agent.EvtPanelRequest -= agent_EvtPanelRequest;
+        //        _agentsCache.RemoveAgent(form);
+        //        if (agent == _currentAgent)
+        //        {
+        //            _currentAgent = null;
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// Resumes notifications for requests to display scanners.
@@ -964,15 +985,15 @@ namespace ACAT.Core.AgentManagement
         {
             if (inActivateAppAgent)
             {
-                Log.Debug("Already inside. returning");
+                Log.Warn("Already inside. returning");
                 return;
             }
 
-            Log.Debug("Before syncsetagent");
+            Log.Verbose("Before syncsetagent");
             lock (_syncActivateAgent)
             {
                 inActivateAppAgent = true;
-                Log.Debug("After syncsetagent");
+                Log.Verbose("After syncsetagent");
                 try
                 {
                     bool handled = false;
@@ -984,7 +1005,7 @@ namespace ACAT.Core.AgentManagement
 
                     bool getContextMenu = _getContextMenu;
 
-                    Log.Debug("getContextMenu: " + getContextMenu);
+                    Log.Verbose("getContextMenu: " + getContextMenu);
 
                     _getContextMenu = false;
 
@@ -992,52 +1013,52 @@ namespace ACAT.Core.AgentManagement
 
                     // first check if there is an ad-hoc agent, if so,
                     // activate it
-                    Log.Debug("Looking for adhoc agent for " + monitorInfo.FgHwnd);
-                    IApplicationAgent agent = _agentsCache.GetAgent(monitorInfo.FgHwnd);
+                    Log.Verbose("Looking for adhoc agent for " + monitorInfo.FgForm);
+                    IApplicationAgent agent = _agentsCache.GetAgent(monitorInfo.FgForm);
                     if (agent == null)
                     {
                         // check if a dialog or menu is active
-                        Log.Debug("Adhoc agent not present for " + monitorInfo.FgHwnd);
+                        Log.Verbose("Adhoc agent not present for " + monitorInfo.FgForm);
 
-                        IntPtr parent = User32Interop.GetParent(monitorInfo.FgHwnd);
+                        IntPtr parent = User32Interop.GetParent(monitorInfo.FgForm.Handle);
                         if (parent != IntPtr.Zero)
                         {
                             if (EnableContextualMenusForDialogs &&
                                 (String.Compare(processName, _currentProcessName, true) != 0) &&
                                 isDialog(monitorInfo))
                             {
-                                Log.Debug("Fg window is a dialog.  Setting agent to dialog agent");
+                                Log.Verbose("Fg window is a dialog.  Setting agent to dialog agent");
 
                                 agent = _dialogAgent;
                             }
                             else if (EnableContextualMenusForMenus && isMenu(monitorInfo))
                             {
-                                Log.Debug("Fg window is a menu.  Setting agent to menu agent");
+                                Log.Verbose("Fg window is a menu.  Setting agent to menu agent");
                                 agent = _menuControlAgent;
                             }
                         }
 
                         if (agent == null)
                         {
-                            if (Windows.IsMinimized(monitorInfo.FgHwnd))
+                            if (Windows.IsMinimized(monitorInfo.FgForm.Handle))
                             {
-                                Log.Debug("Window is minimized. Use generic agent");
+                                Log.Verbose("Window is minimized. Use generic agent");
                                 agent = _genericAppAgent;
                             }
                             else
                             {
                                 // check if there is a dedicated agent for this process
-                                Log.Debug("Getting agent for " + processName);
+                                Log.Verbose("Getting agent for " + processName);
                                 agent = _agentsCache.GetAgent(monitorInfo.FgProcess);
                             }
                         }
                     }
                     else
                     {
-                        Log.Debug("Adhoc agent IS present for " + monitorInfo.FgHwnd);
+                        Log.Verbose("Adhoc agent IS present for " + monitorInfo.FgForm);
                     }
 
-                    Log.Debug("Current agent: " + ((_currentAgent != null) ?
+                    Log.Verbose("Current agent: " + ((_currentAgent != null) ?
                                                     _currentAgent.Name : "null") +
                                                     ", agent:  " + ((agent != null) ? agent.Name : "null"));
 
@@ -1047,7 +1068,7 @@ namespace ACAT.Core.AgentManagement
                     if (_currentAgent != null && _currentAgent != agent)
                     {
                         bool allowSwitch = _currentAgent.QueryAgentSwitch(agent);
-                        Log.Debug("CurrentAgent is " + _currentAgent.Name + ", queryAgentSwitch: " + allowSwitch);
+                        Log.Verbose("CurrentAgent is " + _currentAgent.Name + ", queryAgentSwitch: " + allowSwitch);
                         if (!allowSwitch)
                         {
                             _currentAgent.OnFocusChanged(monitorInfo, ref handled);
@@ -1064,7 +1085,7 @@ namespace ACAT.Core.AgentManagement
                     {
                         agent ??= _genericAppAgent;
 
-                        Log.Debug("agent : " + agent.Name);
+                        Log.Verbose("agent : " + agent.Name);
                         agent.OnContextMenuRequest(monitorInfo);
                         return;
                     }
@@ -1074,9 +1095,9 @@ namespace ACAT.Core.AgentManagement
                     // is appropriated for the context.
                     if (agent != null)
                     {
-                        Log.Debug("Trying agent " + agent.Name);
+                        Log.Verbose("Trying agent " + agent.Name);
                         agent.OnFocusChanged(monitorInfo, ref handled);
-                        Log.Debug("Returned from agent.OnFOcus");
+                        Log.Verbose("Returned from agent.OnFOcus");
                     }
 
                     // If we have reached here, it means there was no
@@ -1084,8 +1105,8 @@ namespace ACAT.Core.AgentManagement
                     // if it will handle it
                     if (!handled)
                     {
-                        Log.Debug("Did not find agent for " + processName + ". trying generic app agent");
-                        Log.Debug("_genericAppAgent is " + ((_genericAppAgent != null) ? "not null" : "null"));
+                        Log.Verbose("Did not find agent for " + processName + ". trying generic app agent");
+                        Log.Verbose("_genericAppAgent is " + ((_genericAppAgent != null) ? "not null" : "null"));
                         agent = _genericAppAgent;
                         try
                         {
@@ -1099,10 +1120,10 @@ namespace ACAT.Core.AgentManagement
 
                     // even the generic agent refused.  Use the null agent
                     // as the last resort
-                    Log.Debug("handled " + handled);
+                    Log.Verbose("handled " + handled);
                     if (!handled)
                     {
-                        Log.Debug("generic app agent refused. Using null agent");
+                        Log.Verbose("generic app agent refused. Using null agent");
                         agent = _nullAgent;
                         agent.OnFocusChanged(monitorInfo, ref handled);
                     }
@@ -1119,7 +1140,7 @@ namespace ACAT.Core.AgentManagement
                 }
             }
 
-            Log.Debug("Return");
+            Log.Verbose("Return");
         }
 
         /// <summary>
@@ -1179,7 +1200,7 @@ namespace ACAT.Core.AgentManagement
 
             // check if there is an adhoc agent for the current window
             // if not, check if there is an agent for the current process
-            var agent = _agentsCache.GetAgent(monitorInfo.FgHwnd);
+            var agent = _agentsCache.GetAgent(monitorInfo.FgForm);
             if (agent == null)
             {
                 if (String.Compare(monitorInfo.FgProcess.ProcessName, _currentProcessName, true) == 0)
@@ -1275,14 +1296,14 @@ namespace ACAT.Core.AgentManagement
         /// <returns>true if it is</returns>
         private bool isDialog(WindowActivityMonitorInfo monitorInfo)
         {
-            if (monitorInfo.FgHwnd == IntPtr.Zero)
+            if (monitorInfo.FgForm.Handle == IntPtr.Zero)
             {
                 return false;
             }
 
             bool retVal = false;
 
-            AutomationElement window = AutomationElement.FromHandle(monitorInfo.FgHwnd);
+            AutomationElement window = AutomationElement.FromHandle(monitorInfo.FgForm.Handle);
             Log.Debug("controltype: " + window.Current.ControlType.ProgrammaticName);
 
             if (Equals(window.Current.ControlType, ControlType.Menu))
@@ -1297,7 +1318,7 @@ namespace ACAT.Core.AgentManagement
                 Log.Debug("CanMinimize: " + windowPattern.Current.CanMinimize + ", canMaximize: " + windowPattern.Current.CanMaximize + ", isModal: " + windowPattern.Current.IsModal);
                 Log.Debug("retVal: " + retVal);
 
-                retVal = retVal && !Windows.IsMinimized(monitorInfo.FgHwnd);
+                retVal = retVal && !Windows.IsMinimized(monitorInfo.FgForm.Handle);
             }
 
             Log.Debug("returning " + retVal);
@@ -1451,7 +1472,7 @@ namespace ACAT.Core.AgentManagement
         /// <param name="monitorInfo">Info about focused element</param>
         private void onFocusChanged(WindowActivityMonitorInfo monitorInfo)
         {
-            if (monitorInfo.FgHwnd == IntPtr.Zero)
+            if (monitorInfo.FgForm.Handle == IntPtr.Zero)
             {
                 Log.Debug("hWnd is null");
                 return;

@@ -116,7 +116,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         /// info about the apps
         /// </summary>
         private int _tabStopButtonCount;
-        private KeyboardActuator _keyboardActuator;
+        //private KeyboardActuator _keyboardActuator;
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -264,11 +264,11 @@ namespace ACAT.Extensions.FunctionalAgents.UI
             subscribeToEvents();
 
             var actuator = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
-            if (actuator is KeyboardActuator)
-            {
-                _keyboardActuator = actuator as KeyboardActuator;
-                _keyboardActuator.EvtKeyPress += _keyboardActuator_EvtKeyPress;
-            }
+            //if (actuator is KeyboardActuator)
+            //{
+            //    _keyboardActuator = actuator as KeyboardActuator;
+            //    _keyboardActuator.EvtKeyPress += _keyboardActuator_EvtKeyPress;
+            //}
 
             createStatusBar();
 
@@ -310,9 +310,9 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         /// </summary>
         /// <param name="widget">which one</param>
         /// <param name="handled">are we handling it?</param>
-        public void OnWidgetActuated(Widget widget, ref bool handled)
+        public override void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
         {
-            actuateWidget(widget, ref handled);
+            actuateWidget(e.SourceWidget as Widget, ref handled);
         }
 
         /// <summary>
@@ -322,7 +322,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             Windows.EvtWindowPositionChanged -= Windows_EvtWindowPositionChanged;
-            _keyboardActuator.EvtKeyPress -= _keyboardActuator_EvtKeyPress;
+            //_keyboardActuator.EvtKeyPress -= _keyboardActuator_EvtKeyPress;
             base.OnFormClosing(e);
         }
 
@@ -330,19 +330,19 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         /// Window proc
         /// </summary>
         /// <param name="m"></param>
-        //[EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
-        //protected  void WndProc(ref Message m)
-        //{
-        //    if (ScannerCommon != null)
-        //    {
-        //        if (ScannerCommon.HandleWndProc(m))
-        //        {
-        //            return;
-        //        }
-        //    }
+        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        protected override void WndProc(ref Message m)
+        {
+            if (ScannerCommon != null)
+            {
+                if (ScannerCommon.HandleWndProc(m))
+                {
+                    return;
+                }
+            }
 
-        //    base.WndProc(ref m);
-        //}
+            base.WndProc(ref m);
+        }
 
         /// <summary>
         /// Key press event handler.  Process the ESC
@@ -451,8 +451,14 @@ namespace ACAT.Extensions.FunctionalAgents.UI
                     CommandLine = $"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
                     Description = "",
                     WorkingDirectory = $"C:\\Program Files\\Google\\Chrome\\Application",
-
+                },
+                new()
+                {
+                    Name = "My Documents",
+                    CommandLine = "@mydocuments",
+                    Path = "explorer.exe"
                 }
+
             };
         }
 
@@ -518,7 +524,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
                 {
                     _pageStartIndex += _entriesPerPage;
                     _pageNumber++;
-                    refreshAppList();
+                    RefreshAppList();
                 }
             }
         }
@@ -538,7 +544,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
 
                 _pageStartIndex = index;
                 _pageNumber--;
-                refreshAppList();
+                RefreshAppList();
             }
         }
 
@@ -612,12 +618,16 @@ namespace ACAT.Extensions.FunctionalAgents.UI
             PanelCommon.RootWidget.HighlightOff();
         }
 
+        private bool _loaded = false;
 
         /// <summary>
         /// The form has loaded.  Initialize
         /// </summary>
         private void LauncAppScanner_Load(object sender, EventArgs e)
         {
+            if (_loaded)
+                return;
+
             ScannerCommon.OnLoad();
 
             var list = new List<Widget>();
@@ -640,6 +650,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
                 dockToScanner(panel as Form);
             }
 
+            _loaded = true;
             PanelCommon.AnimationManager.Start(PanelCommon.RootWidget);
         }
 
@@ -674,12 +685,12 @@ namespace ACAT.Extensions.FunctionalAgents.UI
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
-        //private void LaunchAppScanner_Shown(object sender, EventArgs e)
-        //{
-        //    //throw new NotImplementedException();
-        //    //Windows.SetForegroundWindow(Handle);
-        //    //Windows.ClickOnWindow(this);
-        //}
+        private void LaunchAppScanner_Shown(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            //Windows.SetForegroundWindow(Handle);
+            //Windows.ClickOnWindow(this);
+        }
 
         /// <summary>
         /// Loads a list of apps to launch and refreshes the UI
@@ -692,70 +703,88 @@ namespace ACAT.Extensions.FunctionalAgents.UI
             if (_tabStopButtonCount >= 3)
             {
                 _entriesPerPage = _tabStopButtonCount - 2;
-                refreshAppList();
+                RefreshAppList();
             }
         }
 
-        /// <summary>
-        /// Refreshes the window list with a list of apps
-        /// </summary>
-        private void refreshAppList()
+        private List<Widget> GetTabStopButtons()
         {
             var list = new List<Widget>();
             PanelCommon.RootWidget.Finder.FindChild(typeof(TabStopScannerButton), list);
+            return list;
+        }
 
-            int count = list.Count;
-            if (count == 0)
-            {
+        private void ShowEmptyState(Widget firstButton)
+        {
+            if (firstButton is not TabStopScannerButton tabButton)
                 return;
-            }
 
-            foreach (var button in list)
+            tabButton.SetTabStops(0.0f, new float[] { 100 });
+            tabButton.SetText("\t" + StringResources.AppsListIsEmpty);
+        }
+
+        private void ClearButtons(IEnumerable<Widget> buttons)
+        {
+            foreach (var button in buttons)
             {
                 button.UserData = null;
-                button.SetText(String.Empty);
+                button.SetText(string.Empty);
             }
+        }
 
-            _entriesPerPage = count;
-            _numPages = _appsList.Count() / _entriesPerPage;
+        private string MeasureAndFitString(TabStopScannerButton button, string text)
+        {
+            using var image = new Bitmap(1, 1);
+            using var graphics = Graphics.FromImage(image);
 
-            if ((_appsList.Count() % _entriesPerPage) != 0)
+            return getMeasuredString(graphics, button.UIControl.Font, button.Width, text);
+        }
+
+        //public string GetFittedText(string text)
+        //{
+        //    using var image = new Bitmap(1, 1);
+        //    using var graphics = Graphics.FromImage(image);
+        //    return getMeasuredString(graphics, UIControl.Font, Width, text);
+        //}
+        private void FillPageWithApps(List<Widget> buttons)
+        {
+            int buttonIndex = 0;
+            for (int appIndex = _pageStartIndex; appIndex < _appsList.Count && buttonIndex < buttons.Count; appIndex++, buttonIndex++)
             {
-                _numPages++;
+                if (buttons[buttonIndex] is not TabStopScannerButton tabButton)
+                    continue;
+
+                tabButton.SetTabStops(0.0f, new float[] { 0 });
+
+                var app = _appsList[appIndex];
+                tabButton.UserData = app;
+
+                // declarative: "here’s the app name, make it fit"
+                tabButton.SetText(MeasureAndFitString(tabButton, app.Name));
             }
+        }
+        private void RefreshAppList()
+        {
+            var buttons = GetTabStopButtons();
+            if (buttons.Count == 0)
+                return;
+
+            ClearButtons(buttons);
+
+            _entriesPerPage = buttons.Count;
+            int appsCount = _appsList.Count;
+            _numPages = (appsCount + _entriesPerPage - 1) / _entriesPerPage;
 
             updateButtonBar();
-
             updateStatusBar();
 
-            if (!_appsList.Any())
+            if (appsCount == 0)
             {
-                (list[0] as TabStopScannerButton).SetTabStops(0.0f, new float[] { 100 });
-                list[0].SetText("\t" + StringResources.AppsListIsEmpty);
+                ShowEmptyState(buttons[0]);
                 return;
             }
 
-            int ii = 0;
-            var image = new Bitmap(1, 1);
-            var graphics = Graphics.FromImage(image);
-
-            for (int jj = _pageStartIndex; jj < _appsList.Count && ii < count; ii++, jj++)
-            {
-                var tabStopScannerButton = list[ii] as TabStopScannerButton;
-
-                tabStopScannerButton.SetTabStops(0.0f, new float[] { 0 });
-
-                list[ii].UserData = _appsList[jj];
-
-                var title = _appsList[jj].Name;
-
-                var str = getMeasuredString(graphics, tabStopScannerButton.UIControl.Font, tabStopScannerButton.Width, title);
-
-                list[ii].SetText(str);
-            }
-
-            image.Dispose();
-            graphics.Dispose();
+            FillPageWithApps(buttons);
         }
 
 
@@ -769,7 +798,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
             _pageNumber = 0;
             _pageStartIndex = 0;
             _appsList = filterApps(_allAppsList, Windows.GetText(SearchFilter));
-            refreshAppList();
+            RefreshAppList();
         }
 
         /// <summary>
@@ -835,7 +864,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
             _pageStartIndex = 0;
             loadAppsList();
             _appsList = filterApps(_allAppsList, Windows.GetText(SearchFilter));
-            refreshAppList();
+            RefreshAppList();
         }
 
         /// <summary>
@@ -933,7 +962,7 @@ namespace ACAT.Extensions.FunctionalAgents.UI
             /// </summary>
             /// <param name="handled">true if it was handled</param>
             /// <returns>true on success</returns>
-            public  bool Execute(ref bool handled)
+            public override bool Execute(ref bool handled)
             {
                 handled = true;
 

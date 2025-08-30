@@ -133,6 +133,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATTalk", "Applications\AC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACATConfig", "Applications\ACATConfigNext\ACATConfig.csproj", "{489EAED8-55EB-C35C-59B7-6B862E57F816}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACAT.Extensions.AppAgents.WindowsExplorerAgent", "Extensions\Default\AppAgents\WindowsExplorerAgent\ACAT.Extensions.AppAgents.WindowsExplorerAgent.csproj", "{07818F5B-4F27-1E9D-C94F-4D082D234906}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_TestGTEC|x64 = Debug_TestGTEC|x64
@@ -308,6 +310,12 @@ Global
 		{489EAED8-55EB-C35C-59B7-6B862E57F816}.Debug|x64.Build.0 = Debug|x64
 		{489EAED8-55EB-C35C-59B7-6B862E57F816}.Release|x64.ActiveCfg = Release|x64
 		{489EAED8-55EB-C35C-59B7-6B862E57F816}.Release|x64.Build.0 = Release|x64
+		{07818F5B-4F27-1E9D-C94F-4D082D234906}.Debug_TestGTEC|x64.ActiveCfg = Debug_TestGTEC|x64
+		{07818F5B-4F27-1E9D-C94F-4D082D234906}.Debug_TestGTEC|x64.Build.0 = Debug_TestGTEC|x64
+		{07818F5B-4F27-1E9D-C94F-4D082D234906}.Debug|x64.ActiveCfg = Debug|x64
+		{07818F5B-4F27-1E9D-C94F-4D082D234906}.Debug|x64.Build.0 = Debug|x64
+		{07818F5B-4F27-1E9D-C94F-4D082D234906}.Release|x64.ActiveCfg = Release|x64
+		{07818F5B-4F27-1E9D-C94F-4D082D234906}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -354,9 +362,10 @@ Global
 		{BAEAE0C8-2EA8-DC94-BA01-EF7933259DE9} = {17F81CBF-F114-42F9-9103-8E92E1B7650D}
 		{A7F35610-4A21-CBD9-229C-8A82A0A975B6} = {17F81CBF-F114-42F9-9103-8E92E1B7650D}
 		{489EAED8-55EB-C35C-59B7-6B862E57F816} = {17F81CBF-F114-42F9-9103-8E92E1B7650D}
+		{07818F5B-4F27-1E9D-C94F-4D082D234906} = {7E0D614D-B425-44A5-BD39-277AC72EBA0B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_AutoCreateNewLanguageFiles = True
 		SolutionGuid = {6C18E44C-06E3-46DB-9C9C-5B18BC658072}
+		RESX_AutoCreateNewLanguageFiles = True
 	EndGlobalSection
 EndGlobal

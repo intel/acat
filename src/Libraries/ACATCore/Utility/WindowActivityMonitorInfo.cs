@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Automation;
+using System.Windows.Forms;
 
 namespace ACAT.Core.Utility
 {
@@ -26,7 +27,7 @@ namespace ACAT.Core.Utility
         /// </summary>
         public WindowActivityMonitorInfo()
         {
-            FgHwnd = IntPtr.Zero;
+            FgForm = null;
             Title = String.Empty;
             FgProcess = null;
             FocusedElement = null;
@@ -37,7 +38,7 @@ namespace ACAT.Core.Utility
         /// <summary>
         /// Gets or sets the handle of the foreground window
         /// </summary>
-        public IntPtr FgHwnd { get; set; }
+        public Form FgForm { get; set; }
 
         /// <summary>
         /// Gets or sets the process that owns the foreground window
@@ -83,7 +84,7 @@ namespace ACAT.Core.Utility
                 try { processName = FgProcess?.ProcessName; }
                 catch (Exception) { processName = "<unavailable>"; }
 
-                return $"FgHwnd: {FgHwnd}, title: {Title} , fgProcess: {processName}" +
+                return $"title: {Title} , fgProcess: {processName}" +
                     $", focusedClass: {className}, newWindow: {IsNewWindow}, newFocus: {IsNewFocusedElement}";
             }
             catch

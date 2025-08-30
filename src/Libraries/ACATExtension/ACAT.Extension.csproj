@@ -83,6 +83,7 @@
     <Compile Include="AppAgents\Outlook\OutlookAgentKeyLoggerTextInterface.cs" />
     <Compile Include="AppAgents\Outlook\OutlookAgentTextInterface.cs" />
     <Compile Include="AppAgents\Outlook\OutlookInspector.cs" />
+    <Compile Include="AppAgents\WindowsExplorer\WindowsExplorerAgentBase.cs" />
     <Compile Include="CommandHandlers\MouseHandler.cs" />
     <Compile Include="CommandHandlers\SendKeyHandler.cs" />
     <Compile Include="CommandHandlers\CreateAndShowScanner.cs" />

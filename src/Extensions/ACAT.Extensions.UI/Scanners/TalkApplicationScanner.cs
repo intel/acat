@@ -97,7 +97,23 @@ namespace ACAT.Extensions.UI.Scanners
 
             Context.AppWordPredictionManager.ActiveWordPredictor.EvtModeChanged += ActiveWordPredictor_EvtModeChanged;
 
+            if (startupArg.PredictionMode != WordPredictionModes.None)
+            {
+                Context.AppWordPredictionManager.ActiveWordPredictor.SetMode(startupArg.PredictionMode);
+            }
+
             return true;
+        }
+
+        protected override void ScannerFormClosing(Object sender, FormClosingEventArgs e)
+        {
+            ScannerCommon.OnFormClosing(e);
+            if (e.Cancel)
+            {
+                return;
+            }
+            Context.AppWordPredictionManager.ActiveWordPredictor.EvtModeChanged -= ActiveWordPredictor_EvtModeChanged;
+            WordPredictionManager.Instance.ActiveWordPredictor.PredictionWordCount = 0;
         }
 
         protected override void HandlePause()
@@ -153,18 +169,21 @@ namespace ACAT.Extensions.UI.Scanners
 
         private void ActiveWordPredictor_EvtModeChanged(WordPredictionModes newMode)
         {
-            setModeLabel(newMode);
-            Invoke(new MethodInvoker(delegate
+            if (InvokeRequired)
             {
-                if (newMode == WordPredictionModes.CannedPhrases)
-                {
-                    addTextBoxUserControl(_textBoxPhraseModeUserControl);
-                }
-                else
-                {
-                    addTextBoxUserControl(_textBoxUserControl);
-                }
-            }));
+                BeginInvoke(new MethodInvoker(() => ActiveWordPredictor_EvtModeChanged(newMode)));
+            }
+
+            setModeLabel(newMode);
+
+            if (newMode == WordPredictionModes.CannedPhrases)
+            {
+                addTextBoxUserControl(_textBoxPhraseModeUserControl);
+            }
+            else
+            {
+                addTextBoxUserControl(_textBoxUserControl);
+            }
 
             if (Common.AppPreferences.ClearTalkWindowOnTypeModeChange)
             {

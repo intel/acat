@@ -63,11 +63,11 @@ namespace ACAT.Extension.AppAgents.DialogControlAgent
         /// <param name="handled">set to true if handled</param>
         public override void OnFocusChanged(WindowActivityMonitorInfo monitorInfo, ref bool handled)
         {
-            Log.Debug("prevHwnd: " + _prevHwnd + ", fgHwnd: " + monitorInfo.FgHwnd);
+            Log.Debug("prevHwnd: " + _prevHwnd + ", fgHwnd: " + monitorInfo.FgForm.Handle);
 
             base.OnFocusChanged(monitorInfo, ref handled);
 
-            if (autoSwitchScanners && _prevHwnd != monitorInfo.FgHwnd)
+            if (autoSwitchScanners && _prevHwnd != monitorInfo.FgForm.Handle)
             {
                 Log.Debug("They are not equal. Show dialog panel");
 
@@ -75,7 +75,7 @@ namespace ACAT.Extension.AppAgents.DialogControlAgent
                                                             monitorInfo.Title,
                                                             monitorInfo));
 
-                _prevHwnd = monitorInfo.FgHwnd;
+                _prevHwnd = monitorInfo.FgForm.Handle;
             }
 
             handled = true;

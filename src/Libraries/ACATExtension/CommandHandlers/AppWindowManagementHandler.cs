@@ -67,9 +67,9 @@ namespace ACAT.Extension.CommandHandlers
                     var info = WindowActivityMonitor.CurrentWindowInfo();
                     
                     WindowHighlight win = null;
-                    if (info.FgHwnd != IntPtr.Zero)
+                    if (info.FgForm.Handle != IntPtr.Zero)
                     {
-                        win = new WindowHighlight(info.FgHwnd, Dispatcher.Scanner.Form);
+                        win = new WindowHighlight(info.FgForm.Handle, Dispatcher.Scanner.Form);
                     }
 
                     if (DialogUtils.ConfirmScanner(null, StringResources.CloseHighlightedWindow))

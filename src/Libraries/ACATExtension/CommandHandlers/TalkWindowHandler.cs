@@ -46,7 +46,7 @@ namespace ACAT.Extension.CommandHandlers
                         var agent = Context.AppAgentMgr.GetAgentByName("Talk Application Agent");
                         if (agent != null)
                         {
-                            Context.AppAgentMgr.AddAgent(form.Handle, agent);
+                            Context.AppAgentMgr.AddAgent(form, agent);
                             Context.AppPanelManager.ShowDialog(form as IPanel);
                         }
                     }

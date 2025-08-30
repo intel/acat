@@ -98,6 +98,127 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         public DisplayModeTypes PreShowPanelDisplayMode { get; private set; }
 
+
+        public void AppAgent_EvtPanelRequest(object sender, PanelRequestEventArgs args)
+        {
+            Log.Debug($"Panel Request: {args}");
+
+            if (_currentForm != null)
+            {
+                LogCurrentFormState();
+
+                if (!args.UseCurrentScreenAsParent && IsModalBlocked(_currentForm, args.TargetPanel as IPanel))
+                {
+                    Log.Warn("Model dialog open; request denied.");
+                    return;
+                }
+            }
+
+            string requestedPanelClass = ResolveRequestedPanel(args.PanelClass);
+
+            if (args.MonitorInfo.IsNewWindow)
+            {
+                HandleNewWindowRequest(args, requestedPanelClass);
+            }
+            else
+            {
+                HandleExistingWindowRequest(args, requestedPanelClass);
+            }
+        }
+
+        private void LogCurrentFormState()
+        {
+            Log.Verbose($"_currentForm: {_currentForm.Name}, Modal={_currentForm.Modal}");
+            if (_currentForm.Owner != null)
+            {
+                Log.Verbose($"Owner: {_currentForm.Owner.Name}, Modal={_currentForm.Owner.Modal}");
+            }
+            else
+            {
+                Log.Verbose("_currentForm.Owner is null");
+            }
+        }
+
+        private bool IsModalBlocked(Form form, IPanel target)
+        {
+            if (target != null && target == form)
+            {
+                return false;
+            }
+
+            return form.Modal || (form.Owner?.Modal ?? false);
+        }
+
+        private string ResolveRequestedPanel(string panelClass)
+        {
+            if (PanelConfigMap.AreEqual(panelClass, PanelClasses.None))
+            {
+                return PanelClasses.Alphabet;
+            }
+
+            return panelClass;
+        }
+
+        private void HandleNewWindowRequest(PanelRequestEventArgs args, string requestedPanelClass)
+        {
+            IScannerPanel currentScanner = _currentPanel as IScannerPanel;
+
+            if (currentScanner != null && PanelConfigMap.AreEqual(currentScanner.PanelClass, requestedPanelClass) && _currentPanel.Owner == null)
+            {
+                Log.Debug("Current panel is already {0}, showing it", requestedPanelClass);
+                if (_currentPanel is MenuPanelBase menu)
+                    menu.SetTitle(args.Title);
+
+                Show(null, (IPanel)_currentPanel);
+                return;
+            }
+
+            if ((currentScanner == null) || currentScanner.OnQueryPanelChange(args))
+            {
+                SwapPanel(args, requestedPanelClass);
+            }
+        }
+
+        private void HandleExistingWindowRequest(PanelRequestEventArgs args, string requestedPanelClass)
+        {
+            IScannerPanel currentScanner = _currentPanel as IScannerPanel;
+            if (currentScanner == null)
+            {
+                Log.Debug("_currentPanel is null. Returning.");
+                return;
+            }
+
+            if (!PanelConfigMap.AreEqual(currentScanner.PanelClass, requestedPanelClass) &&
+                currentScanner.OnQueryPanelChange(args))
+            {
+                SwapPanel(args, requestedPanelClass);
+            }
+            else if (currentScanner is MenuPanelBase menu)
+            {
+                menu.SetTitle(args.Title);
+            }
+        }
+
+        private void SwapPanel(PanelRequestEventArgs args, string requestedPanelClass)
+        {
+            Log.Debug("Swapping panel to {0}", requestedPanelClass);
+
+            Form newPanelForm = PanelManager.Instance.CreatePanel(requestedPanelClass, args.Title ) as Form;
+            if (newPanelForm == null)
+            {
+                MessageBox.Show($"Invalid form requested: {requestedPanelClass}");
+                return;
+            }
+
+            if (args.UseCurrentScreenAsParent && _currentForm != null)
+            {
+                newPanelForm.Owner = _currentForm;
+                Log.Debug("Parent override enabled; new panel Owner set to _currentForm");
+            }
+
+            Show(null, newPanelForm as IPanel);
+        }
+
         /// <summary>
         /// Event handler for request to display a scanner. The
         /// arg parameter contains information about which scanner
@@ -105,113 +226,114 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="arg">event arg</param>
-        public void AppAgent_EvtPanelRequest(object sender, PanelRequestEventArgs arg)
-        {
-            Log.Debug("A request came in for panel " + arg.PanelClass + ".  NewWindow is " +
-                      arg.MonitorInfo.IsNewWindow);
+        //public void AppAgent_EvtPanelRequest(object sender, PanelRequestEventArgs arg)
+        //{
+        //    Log.Debug("A request came in for panel " + arg.PanelClass + ".  NewWindow is " +
+        //              arg.MonitorInfo.IsNewWindow);
 
-            if (_currentForm != null)
-            {
-                Log.Debug("_currentForm is " + _currentForm.Name + ", type: " + _currentForm.GetType() +
-                            ", IsModal: " + _currentForm.Modal);
+        //    if (_currentForm != null)
+        //    {
+        //        Log.Debug("_currentForm is " + _currentForm.Name + ", type: " + _currentForm.GetType() +
+        //                    ", IsModal: " + _currentForm.Modal);
 
-                Form owner = _currentForm.Owner;
-                if (owner != null)
-                {
-                    Log.Debug("owner is : " + owner.Name + ", type: " + owner.GetType() +
-                                ", is owner ipanel? " + (_currentForm.Owner is IPanel));
-                }
-                else
-                {
-                    Log.Debug("_currentForm.Owner is null");
-                }
+        //        Form owner = _currentForm.Owner;
+        //        if (owner != null)
+        //        {
+        //            Log.Debug("owner is : " + owner.Name + ", type: " + owner.GetType() +
+        //                        ", is owner ipanel? " + (_currentForm.Owner is IPanel));
+        //        }
+        //        else
+        //        {
+        //            Log.Debug("_currentForm.Owner is null");
+        //        }
 
-                // if a modal dialog is currently open, don't honor the request.
-                // the modal dialog has to be closed first.
-                if (arg.TargetPanel == null || arg.TargetPanel != _currentForm)
-                {
-                    if (_currentForm.Modal || (_currentForm.Owner != null && _currentForm.Owner.Modal))
-                    {
-                        Log.Debug("A modal dialog is open. Will not honor panel request");
-                        return;
-                    }
-                }
-            }
+        //        if (arg.TargetPanel == null || arg.TargetPanel != _currentForm)
+        //        {
+        //            //return;
+        //            // if a modal dialog is currently open, don't honor the request.
+        //            // the modal dialog has to be closed first.
+        //            if (_currentForm.Modal || (_currentForm.Owner != null && _currentForm.Owner.Modal))
+        //            {
+        //                Log.Debug("A modal dialog is open. Will not honor panel request");
+        //                return;
+        //            }
+        //        }
+        //    }
 
-            // if no panel type, use the alphabet scanner as the
-            String requestedPanelClass = arg.PanelClass;
-            if (PanelConfigMap.AreEqual(arg.PanelClass, PanelClasses.None))
-            {
-                requestedPanelClass = PanelClasses.Alphabet;
-            }
+        //    // if no panel type, use the alphabet scanner as the
+        //    String requestedPanelClass = arg.PanelClass;
+        //    if (PanelConfigMap.AreEqual(arg.PanelClass, PanelClasses.None))
+        //    {
+        //        requestedPanelClass = PanelClasses.Alphabet;
+        //    }
 
-            IScannerPanel currentScanner = _currentPanel as IScannerPanel;
+        //    IScannerPanel currentScanner = _currentPanel as IScannerPanel;
 
-            if (arg.MonitorInfo.IsNewWindow)
-            {
-                Log.Debug("This is a new window. winHandle: " + arg.MonitorInfo.FgHwnd);
+        //    if (arg.MonitorInfo.IsNewWindow)
+        //    {
+        //        Log.Debug("This is a new window. winHandle: " + arg.MonitorInfo.FgHwnd);
 
-                if (currentScanner != null)
-                {
-                    Log.Debug("currentpanel: " + currentScanner.PanelClass + ", requested:  " + requestedPanelClass);
-                }
-                else
-                {
-                    Log.Debug("_currentPanel is null or not IScannerPanel. Activate alphabet scanner");
-                    requestedPanelClass = PanelClasses.Alphabet;
-                }
+        //        if (currentScanner != null)
+        //        {
+        //            Log.Debug("currentpanel: " + currentScanner.PanelClass + ", requested:  " + requestedPanelClass);
+        //        }
+        //        else
+        //        {
+        //            Log.Debug("_currentPanel is null or not IScannerPanel. Activate alphabet scanner");
+        //            requestedPanelClass = PanelClasses.Alphabet;
+        //        }
 
-                // if the current scanner is the same as the requested one, just show it
-                if (currentScanner != null && PanelConfigMap.AreEqual(currentScanner.PanelClass, requestedPanelClass) &&
-                    _currentPanel.Owner == null)
-                {
-                    Log.Debug("Current panel is already " + requestedPanelClass + ", calling Show()");
+        //        // if the current scanner is the same as the requested one, just show it
+        //        if (currentScanner != null && PanelConfigMap.AreEqual(currentScanner.PanelClass, requestedPanelClass) &&
+        //            _currentPanel.Owner == null)
+        //        {
+        //            Log.Debug("Current panel is already " + requestedPanelClass + ", calling Show()");
 
-                    if (_currentPanel is MenuPanelBase)
-                    {
-                        (_currentPanel as MenuPanelBase).SetTitle(arg.Title);
-                    }
-                    Show(null, (IPanel)_currentPanel);
-                }
-                else
-                {
-                    // check with the agent if it is OK to switch panels.
-                    if ((currentScanner == null) || currentScanner.OnQueryPanelChange(arg))
-                    {
-                        switchCurrentPanel(arg);
-                    }
-                }
-            }
-            else
-            {
-                if (currentScanner == null)
-                {
-                    Log.Debug("_currentPanel is null. returning");
-                    return;
-                }
+        //            if (_currentPanel is MenuPanelBase)
+        //            {
+        //                (_currentPanel as MenuPanelBase).SetTitle(arg.Title);
+        //            }
+        //            Show(null, (IPanel)_currentPanel);
+        //        }
+        //        else
+        //        {
+        //            // check with the agent if it is OK to switch panels.
+        //            if ((currentScanner == null) || currentScanner.OnQueryPanelChange(arg))
+        //            {
+        //                switchCurrentPanel(arg);
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (currentScanner == null)
+        //        {
+        //            Log.Debug("_currentPanel is null. returning");
+        //            return;
+        //        }
 
-                Log.Debug("Not a new window.  _currentPanel is " + currentScanner.PanelClass +
-                                " requested panel is " + requestedPanelClass);
+        //        Log.Debug("Not a new window.  _currentPanel is " + currentScanner.PanelClass +
+        //                        " requested panel is " + requestedPanelClass);
 
-                // if the current panel is not the same as the requested one, query the
-                // agent if it is OK to switch and then do the switch
-                if (!PanelConfigMap.AreEqual(currentScanner.PanelClass, requestedPanelClass) &&
-                                            currentScanner.OnQueryPanelChange(arg))
-                {
-                    switchCurrentPanel(arg);
-                }
-                else
-                {
-                    Log.Debug("Will not switch panels.  Current: " + currentScanner.PanelClass +
-                                    ", requested: " + requestedPanelClass);
+        //        // if the current panel is not the same as the requested one, query the
+        //        // agent if it is OK to switch and then do the switch
+        //        if (!PanelConfigMap.AreEqual(currentScanner.PanelClass, requestedPanelClass) &&
+        //                                    currentScanner.OnQueryPanelChange(arg))
+        //        {
+        //            switchCurrentPanel(arg);
+        //        }
+        //        else
+        //        {
+        //            Log.Debug("Will not switch panels.  Current: " + currentScanner.PanelClass +
+        //                            ", requested: " + requestedPanelClass);
 
-                    if (currentScanner is MenuPanelBase)
-                    {
-                        (currentScanner as MenuPanelBase).SetTitle(arg.Title);
-                    }
-                }
-            }
-        }
+        //            if (currentScanner is MenuPanelBase)
+        //            {
+        //                (currentScanner as MenuPanelBase).SetTitle(arg.Title);
+        //            }
+        //        }
+        //    }
+        //}
 
         public void CloseCurrentForm()
         {
@@ -592,7 +714,7 @@ namespace ACAT.Core.PanelManagement
             Form form = CreatePanel(
                             ref panelClass,
                             eventArg.Title,
-                            eventArg.MonitorInfo.FgHwnd,
+                            eventArg.MonitorInfo.FgForm.Handle,
                             eventArg.MonitorInfo.FocusedElement);
             eventArg.PanelClass = panelClass;
             return form;

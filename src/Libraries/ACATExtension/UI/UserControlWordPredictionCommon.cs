@@ -551,7 +551,6 @@ namespace ACAT.Extension.UI
                 catch (InvalidAgentContextException ex)
                 {
                     Log.Exception(ex.ToString());
-
                 }
             }
 

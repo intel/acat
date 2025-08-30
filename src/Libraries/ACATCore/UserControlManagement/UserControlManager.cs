@@ -156,7 +156,7 @@ namespace ACAT.Core.UserControlManagement
 
             foreach (var userControl in _userControls)
             {
-                Log.Debug("CALIBTEST calling onPause for " + userControl.Descriptor.Name);
+                Log.Verbose("CALIBTEST calling onPause for " + userControl.Descriptor.Name);
                 userControl.OnPause();
             }
         }
@@ -169,7 +169,7 @@ namespace ACAT.Core.UserControlManagement
 
             foreach (var userControl in _userControls)
             {
-                Log.Debug("CALIBTEST. Calling onResume for uc" + userControl.Descriptor.Name);
+                Log.Verbose("CALIBTEST. Calling onResume for uc" + userControl.Descriptor.Name);
                 userControl.OnResume();
             }
 
@@ -204,7 +204,7 @@ namespace ACAT.Core.UserControlManagement
                 }
                 else
                 {
-                    Log.Debug("MLEAK: list.Count is already zero");
+                    Log.Warn("MLEAK: list.Count is already zero");
                 }
             }
 
@@ -327,13 +327,13 @@ namespace ACAT.Core.UserControlManagement
 
             if (!isTopLevel)
             {
-                Log.Debug("AP1: SETTING _PlayerTransitioned to TRUE");
+                Log.Verbose("AP1: SETTING _PlayerTransitioned to TRUE");
                 _playerTransitioned = true;
                 _iterationCount = 0;
             }
             else
             {
-                Log.Debug("AP1: SETTING _PlayerTransitioned to FALSE");
+                Log.Verbose("AP1: SETTING _PlayerTransitioned to FALSE");
                 _playerTransitioned = false;
             }
         }
@@ -345,7 +345,7 @@ namespace ACAT.Core.UserControlManagement
             {
                 var playerState = userControl.UserControlCommon.AnimationManager.GetPlayerState();
 
-                Log.Debug("userControl: " + userControl.Descriptor.Name + ", state: " + playerState);
+                Log.Verbose("userControl: " + userControl.Descriptor.Name + ", state: " + playerState);
 
                 if (playerState != PlayerState.Timeout && playerState != PlayerState.Interrupted)
                 {
@@ -387,12 +387,12 @@ namespace ACAT.Core.UserControlManagement
                 iUserControl = (userControl as IUserControl);
 
                 _userControlCache.Add(iUserControl.Descriptor.Id, iUserControl);
-                Log.Debug("Adding UserControl to cache: " + iUserControl.Descriptor.Name);
+                Log.Verbose("Adding UserControl to cache: " + iUserControl.Descriptor.Name);
             }
             else
             {
                 userControl = (iUserControl as UserControl);
-                Log.Debug("Got UserControl from cache: " + iUserControl.Descriptor.Name);
+                Log.Verbose("Got UserControl from cache: " + iUserControl.Descriptor.Name);
             }
 
             if (tag != null)
@@ -427,12 +427,12 @@ namespace ACAT.Core.UserControlManagement
         private IUserControl getNextUserControl(IUserControl userControl)
         {
             int ii;
-            Log.Debug("AP1 Find next user control. Count: " + _userControls.Count);
+            Log.Verbose("AP1 Find next user control. Count: " + _userControls.Count);
             for (ii = 0; ii < _userControls.Count; ii++)
             {
                 if (_userControls[ii] == userControl)
                 {
-                    Log.Debug("AP1 Found! ii = " + ii);
+                    Log.Verbose("AP1 Found! ii = " + ii);
                     break;
                 }
             }
@@ -445,7 +445,7 @@ namespace ACAT.Core.UserControlManagement
                     ii = 0;
                 }
 
-                Log.Debug("AP1 Returning next user control " + _userControls[ii].Descriptor.Name);
+                Log.Verbose("AP1 Returning next user control " + _userControls[ii].Descriptor.Name);
                 return _userControls[ii];
             }
 
@@ -471,23 +471,23 @@ namespace ACAT.Core.UserControlManagement
 
         private void userControl_EvtPlayerStateChanged(IUserControl userControl, PlayerStateChangedEventArgs e)
         {
-            Log.Debug("AP1 playerStateChanged for " + userControl.Descriptor.Name + ", " + "newState: " + e.NewState);
+            Log.Verbose("AP1 playerStateChanged for " + userControl.Descriptor.Name + ", " + "newState: " + e.NewState);
 
             if (_playerTransitioned)
             {
-                Log.Debug("AP1: _playterTransitioned is TRUE.  Returning");
+                Log.Verbose("AP1: _playterTransitioned is TRUE.  Returning");
                 return;
             }
 
             if (_stopTopLevelAnimation)
             {
-                Log.Debug("AP1: _stopTopLevelanimation is TRUE.  Returning");
+                Log.Verbose("AP1: _stopTopLevelanimation is TRUE.  Returning");
                 return;
             }
 
             if (e.NewState == PlayerState.Timeout)
             {
-                Log.Debug("AP1 timeout for " + userControl.Descriptor.Name);
+                Log.Verbose("PlayerState timeout for " + userControl.Descriptor.Name);
                 var next = getNextUserControl(userControl);
                 if (next != null)
                 {
@@ -495,7 +495,7 @@ namespace ACAT.Core.UserControlManagement
 
                     if (_iterationCount < _iterations)
                     {
-                        Log.Debug("AP1 Calling start on " + next.Descriptor.Name);
+                        Log.Verbose("AP1 Calling start on " + next.Descriptor.Name);
                         next.UserControlCommon.AnimationManager.Start();
                     }
                 }

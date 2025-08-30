@@ -23,11 +23,14 @@ using ACAT.Extension;
 using ACAT.Extension.CommandHandlers;
 using ACATResources;
 using System;
+using System.Web.UI;
 using System.Windows.Forms;
+using System.Windows.Navigation;
 
 
 namespace ACATApp
 {
+
     /// <summary>
     /// ACAT Talk is an application customized for conversations.
     /// </summary>
@@ -49,156 +52,162 @@ namespace ACATApp
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            //if (!AppCommon.CheckFontsInstalled())
-            //{
-            //   return;
-            //}
-            // AppCommon.InstallFontsForCurrentUser();
+            InitializeGlobals();
+            InitializeUser();
+            InitializeLogging();
+            InitializeContext();
 
-            CoreGlobals.AppId = "ACATDashboard";
-            CoreGlobals.ACATUserGuideFileName = "ACAT User Guide.pdf";
-            FatalErrorHandler.EvtFatalError += CoreGlobals_EvtFatalError;
-
-            FileUtils.LogAssemblyInfo();
-
-            AppCommon.LoadGlobalSettings();
-
-            AppCommon.SetUserName();
-            AppCommon.SetProfileName();
-
-            bool freshInstallForUser = !UserManager.UserExists(UserManager.CurrentUser);
-
-            if (!AppCommon.CreateUserAndProfile() || !AppCommon.LoadUserPreferences() || !AppCommon.SetCulture())
+            if (!PerformOnboarding())
             {
                 return;
             }
 
-            User32Interop.SetProcessDPIAware();
+            ShowSplashScreen("Starting ACAT");
 
-            AppCommon.CheckDisplayScalingAndResolution();
+            var initialized = InitializeApplication();
 
-            Common.AppPreferences.AppName = "ACAT App";
-
-            Log.SetupListeners();
-            Log.Debug("ACAT App Application Launch");
-
-            //AuditLog.Audit(new AuditEvent("Application", "start"));
-
-            //AppCommon.addBCIActuatorSetting();
-            //AppCommon.addPanelClassConfigMapForBCI();
-
-            CommandDescriptors.Init();
-
-            Common.AppPreferences.PreferredPanelConfigNames = string.Empty;
-
-            if (!AppCommon.DoOnboarding())
+            if (!initialized)
             {
-               return;
+                Context.Dispose();
+                return;
             }
 
-            splash = new Splash(2000);
-            splash.Show(StringResources.StartingACAT);
+            if (!PostInitialization())
+            {
+                Context.Dispose();
+                return;
+            }
+
+            CloseSplashScreen();
+            ShowMainPanel();
+
+            ShowSplashScreen("Closing ACAT");
+            ShutdownApplication();
+        }
+
+        private static void InitializeGlobals()
+        {
+            CoreGlobals.AppId = "ACATDashboard";
+            CoreGlobals.ACATUserGuideFileName = "ACAT User Guide.pdf";
+            FatalErrorHandler.EvtFatalError += CoreGlobals_EvtFatalError;
+            FileUtils.LogAssemblyInfo();
+
+            AppCommon.LoadGlobalSettings();
+        }
+
+        private static void InitializeLogging()
+        {
+            Log.SetupListeners();
+            Log.Debug("ACAT Dashboard Application Launch");
+        }
+
+        private static void InitializeUser()
+        {
+            AppCommon.SetUserName();
+            AppCommon.SetProfileName();
+
+            if (!AppCommon.CreateUserAndProfile() ||
+                !AppCommon.LoadUserPreferences() ||
+                !AppCommon.SetCulture())
+            {
+                throw new Exception("Failed to initialize user");
+            }
+        }
+
+        private static void InitializeContext()
+        {
+            User32Interop.SetProcessDPIAware();
+            AppCommon.CheckDisplayScalingAndResolution();
+            Common.AppPreferences.AppName = "ACAT Dashboard";
+
+            CommandDescriptors.Init();
+            Common.AppPreferences.PreferredPanelConfigNames = string.Empty;
 
             Context.PreInit();
             Common.PreInit();
 
             Context.AppAgentMgr.EnableAppAgentContextSwitch = true;
+        }
 
-            if (!Context.Init(Context.StartupFlags.Minimal |
+        private static bool PerformOnboarding()
+        {
+            return AppCommon.DoOnboarding();
+        }
+
+        private static void ShowSplashScreen(string message, int durationMs = 2000)
+        {
+            splash = new Splash(durationMs);
+            splash.Show(message);
+        }
+
+        private static void CloseSplashScreen()
+        {
+            splash?.Close();
+            splash = null;
+        }
+
+        private static bool InitializeApplication()
+        {
+            return Context.Init(Context.StartupFlags.Minimal |
                                 Context.StartupFlags.TextToSpeech |
                                 Context.StartupFlags.WordPrediction |
                                 Context.StartupFlags.AgentManager |
-                                //Context.StartupFlags.SpellChecker |
                                 Context.StartupFlags.WindowsActivityMonitor |
-                                Context.StartupFlags.Abbreviations
-                ))
-            {
-                splash?.Close();
-                splash = null;
+                                Context.StartupFlags.Abbreviations);
+        }
 
-                ConfirmBoxOneOption.ShowDialog("ACAT Fatal Error", Context.GetInitCompletionStatus(), StringResources.OK);
-                //return;
+        private static bool PostInitialization()
+        {
+            Context.ShowTalkWindowOnStartup = false;
+            Context.AppAgentMgr.EnableContextualMenusForDialogs = false;
+            Context.AppAgentMgr.EnableContextualMenusForMenus = false;
+            Context.AppAgentMgr.DefaultAgentForContextSwitchDisable = Context.AppAgentMgr.NullAgent;
+
+            return Context.PostInit();
+        }
+
+        private static void ShowMainPanel()
+        {
+            var startupArg = new StartupArg("DashboardAppScanner")
+            {
+                QuitAppOnFormClose = false
+            };
+
+            var form = PanelManager.Instance.CreatePanel("DashboardAppScanner", startupArg);
+            if (form == null)
+            {
+                MessageBox.Show(string.Format(StringResources.InvalidFormName, startupArg.ToString()));
+                return;
             }
 
-            else
+            IApplicationAgent agent = Context.AppAgentMgr.GetAgentByName("ACAT Agent");
+            if (agent == null)
             {
-                Context.ShowTalkWindowOnStartup = false;
-                Context.AppAgentMgr.EnableContextualMenusForDialogs = false;
-                Context.AppAgentMgr.EnableContextualMenusForMenus = false;
-                Context.AppAgentMgr.DefaultAgentForContextSwitchDisable = Context.AppAgentMgr.NullAgent;
-
-                splash?.Close();
-
-                splash = null;
-
-                if (!Context.PostInit())
-                {
-                    Context.Dispose();
-                    return;
-                }
-
-                Common.Init();
-
-                Context.AppWindowPosition = Windows.WindowPosition.CenterScreen;
-
-                AuditLog.Audit(new AuditEvent("Application", "Initialiation complete"));
-
-                try
-                {
-                    Context.AppActuatorManager.ShowTryoutDialog(true);
-
-                    // showTalkInterfaceDescription();
-
-                    var startupArg = new StartupArg("DashboardAppScanner")
-                    {
-                        QuitAppOnFormClose = false
-                    };
-
-                    var form = PanelManager.Instance.CreatePanel("DashboardAppScanner", startupArg);
-                    if (form != null)
-                    {
-                        // Add ad-hoc agent that will handle the form
-                        IApplicationAgent agent = Context.AppAgentMgr.GetAgentByName("ACAT Agent");
-                        if (agent == null)
-                        {
-                            MessageBox.Show("Could not find application agent for this application.");
-                            return;
-                        }
-
-                        Context.AppAgentMgr.AddAgent(form.Handle, agent);
-                        Context.AppPanelManager.ShowDialog(form as IPanel);
-                    }
-                    else
-                    {
-                        MessageBox.Show(string.Format(StringResources.InvalidFormName, startupArg.ToString()));
-                        return;
-                    }
-
-                    splash = new Splash();
-                    splash.Show("Closing ACAT");
-
-                    AuditLog.Audit(new AuditEvent("Application", "stop"));
-
-                    Context.Dispose();
-
-                    Common.Uninit();
-
-                    //AppCommon.ExitMessageClose();
-                    splash.Close();
-
-                    Log.Debug("ACATTalk Application shutdown");
-
-                    Log.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
-
+                MessageBox.Show("Could not find application agent for this application.");
+                return;
             }
 
+
+            form.FormClosed += (s, e) =>
+            {
+                ShutdownApplication();
+            };
+
+
+            Context.AppAgentMgr.AddAgent(form, agent);
+            Context.AppPanelManager.ShowDialog(form as IPanel);
+            //Application.Run(form as Form);
+        }
+
+        private static void ShutdownApplication()
+        {
+            AuditLog.Audit(new AuditEvent("Application", "stop"));
+            Context.Dispose();
+            Common.Uninit();
+            CloseSplashScreen();
+            Log.Debug("ACATTalk Application shutdown");
+            Log.Close();
             AppCommon.OnExit();
-
         }
 
         /// <summary>

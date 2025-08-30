@@ -1,15 +1,5 @@
-﻿////////////////////////////////////////////////////////////////////////////
-//
-// Copyright 2013-2019; 2023 Intel Corporation
+﻿// Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
-//
-//
-// MainMenu.cs
-//
-// Form for the main menu for the application. Some of the commands
-// are handled by the command dispatcher in the base class
-//
-////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.AgentManagement;
@@ -25,9 +15,9 @@ using System.Windows.Forms;
 namespace ACAT.Extensions.UI.Menus
 {
     [ClassDescriptor("148257A1-A8B7-4E75-93F0-56AFCD5B2A3E",
-                        "MainMenu",
-                        "Main AppMenu")]
-    public partial class MainMenu : MenuPanel
+                        "WindowsExplorerContextMenu",
+                        "WindowsExplorerContextMenu")]
+    public partial class WindowsExplorerContextMenu : MenuPanel
     {
         private readonly IActuator _calibrationSupporedActuator;
         private readonly bool _enableScanTimingConfigure = false;
@@ -37,18 +27,18 @@ namespace ACAT.Extensions.UI.Menus
         /// </summary>
         /// <param name="panelClass">Panel class of the scanner</param>
         /// <param name="panelTitle">title of the panel (not used)</param>
-        public MainMenu(String panelClass, String panelTitle)
-            : base(panelClass, StringResources.MainMenu)
+        public WindowsExplorerContextMenu(String panelClass, String panelTitle)
+            : base(panelClass, "WindowsExplorerContextMenu")
         {
-            // add commands that are not supported by the base class
-            commandDispatcher.Commands.Add(new CommandHandler("Exit"));
-            commandDispatcher.Commands.Add(new CommandHandler("CmdAdjustScanSpeed"));
-            commandDispatcher.Commands.Add(new CommandHandler("CmdCalibrateActuator"));
-            _enableScanTimingConfigure = Context.AppActuatorManager.CheckScanTimingConfigureEnable();
+            //// add commands that are not supported by the base class
+            //commandDispatcher.Commands.Add(new CommandHandler("Exit"));
+            //commandDispatcher.Commands.Add(new CommandHandler("CmdAdjustScanSpeed"));
+            //commandDispatcher.Commands.Add(new CommandHandler("CmdCalibrateActuator"));
+            //_enableScanTimingConfigure = Context.AppActuatorManager.CheckScanTimingConfigureEnable();
 
-            _calibrationSupporedActuator = Context.AppActuatorManager.GetCalibrationSupportedActuator();
+            //_calibrationSupporedActuator = Context.AppActuatorManager.GetCalibrationSupportedActuator();
 
-            Load += MainMenu_Load;
+            Load += WindowsExplorerContextMenu_Load;
         }
 
         /// <summary>
@@ -56,21 +46,21 @@ namespace ACAT.Extensions.UI.Menus
         /// to determine the 'enabled' state.
         /// </summary>
         /// <param name="arg">info about the scanner button</param>
-        public override bool CheckCommandEnabled(CommandEnabledArg arg)
-        {
-            if (arg.Command == "CmdAdjustScanSpeed")
-            {
-                arg.Enabled = _enableScanTimingConfigure;
-                arg.Handled = true;
-            }
-            else if (arg.Command == "CmdCalibrateActuator")
-            {
-                arg.Enabled = (_calibrationSupporedActuator != null);
-                arg.Handled = true;
-            }
+        //public override bool CheckCommandEnabled(CommandEnabledArg arg)
+        //{
+        //    if (arg.Command == "CmdAdjustScanSpeed")
+        //    {
+        //        arg.Enabled = _enableScanTimingConfigure;
+        //        arg.Handled = true;
+        //    }
+        //    else if (arg.Command == "CmdCalibrateActuator")
+        //    {
+        //        arg.Enabled = (_calibrationSupporedActuator != null);
+        //        arg.Handled = true;
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
         /// <summary>
         /// User wants to quit the app. Confirm and exit
@@ -86,7 +76,7 @@ namespace ACAT.Extensions.UI.Menus
             }));
         }
 
-        private void MainMenu_Load(object sender, EventArgs e)
+        private void WindowsExplorerContextMenu_Load(object sender, EventArgs e)
         {
             CenterToScreen();
         }
@@ -96,18 +86,7 @@ namespace ACAT.Extensions.UI.Menus
         /// </summary>
         private void quitApplication()
         {
-            //HACK for ACAT App
-            bool quitApp = true;
-
-            if ((this.Owner != null) &&
-                (this.Owner.Owner != null))
-            {
-                // Just close myself, and don't set AppQuit to true
-                quitApp = false;
-            }
-
-            Context.AppQuit = quitApp;
-
+            Context.AppQuit = true;
             Close();
             if (Owner != null)
             {
@@ -144,7 +123,7 @@ namespace ACAT.Extensions.UI.Menus
             {
                 handled = true;
 
-                var form = Dispatcher.Scanner.Form as MainMenu;
+                var form = Dispatcher.Scanner.Form as WindowsExplorerContextMenu;
 
                 switch (Command)
                 {

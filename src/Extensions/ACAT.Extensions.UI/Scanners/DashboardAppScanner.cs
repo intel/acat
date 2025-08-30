@@ -193,55 +193,86 @@ namespace ACAT.Extensions.UI.Scanners
             return true;
         }
 
+        public bool ShowTalkPanel(WordPredictionModes mode)
+        {
+            var startupArg = new StartupArg("TalkApplicationScanner")
+            {
+                QuitAppOnFormClose = false,
+                PredictionMode = mode
+            };
+
+            // create the panel instance
+            var form = PanelManager.Instance.CreatePanel("TalkApplicationScanner", startupArg);
+            if (form == null)
+            {
+                Log.Error("Could not create TalkApplicationScanner panel.");
+                return false;
+            }
+
+            var agent = Context.AppAgentMgr.GetAgentByName("Talk Application Agent");
+            if (agent == null)
+            {
+                Log.Error("Talk Application Agent not found. Ensure it is registered in the ACAT configuration.");
+                form.Dispose();
+                return false;
+            }
+
+            // Register the agent safely with the form handle
+            Context.AppAgentMgr.AddAgent(form, agent);
+            
+            try
+            {
+                Context.AppPanelManager.ShowDialog(this, form as IPanel);
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                Log.Exception(ex.Message);
+                return false;
+            }
+            //finally
+            //{
+            //    // Unregister the agent safely
+            //    Context.AppAgentMgr.RemoveAgent(agent.Name);
+            //    //Context.AppAgentMgr.RemoveAgentByAgent(agent);
+            //    form.Dispose();
+            //}
+
+        }
+
+
         public bool HandleTalkAppRequest(string Command)
         {
             Log.Debug($"Handling Talk App Request: {Command}");
             ScannerCommon.UserControlManager.StopTopLevelAnimation();
             this.Hide();
 
-            var startupArg = new StartupArg("TalkApplicationScanner")
-            {
-                QuitAppOnFormClose = false
-            };
-
-            var form = PanelManager.Instance.CreatePanel("TalkApplicationScanner", startupArg);
-            IntPtr formHandle = form.Handle;
-
-            var agent = Context.AppAgentMgr.GetAgentByName("Talk Application Agent");
-
-            if (agent != null)
-            {
-                Context.AppAgentMgr.AddAgent(formHandle, agent);
-            }
-            else
-            {
-                Log.Error("Talk Application Agent not found. Ensure it is registered in the ACAT configuration.");
-                return false;
-            }
-
+            var predictionMode = WordPredictionModes.None;
             if (Command == "CmdTalkSentenceMode")
             {
-                Context.AppWordPredictionManager.ActiveWordPredictor.SetMode(WordPredictionModes.Sentence);
+                predictionMode = WordPredictionModes.Sentence;
             }
             else if (Command == "CmdTalkPhraseMode")
             {
-                Context.AppWordPredictionManager.ActiveWordPredictor.SetMode(WordPredictionModes.CannedPhrases);
+                predictionMode = WordPredictionModes.CannedPhrases;
             }
             else if (Command == "CmdTalkShorthandMode")
             {
-                Context.AppWordPredictionManager.ActiveWordPredictor.SetMode(WordPredictionModes.Shorthand);
+                predictionMode = WordPredictionModes.Shorthand;
             }
 
-            Context.AppPanelManager.ShowDialog(form as IPanel);
+            else
+            {
+                Log.Error($"Unknown command: {Command}");
+                return false;
+            }
 
-            Context.AppAgentMgr.RemoveAgent(formHandle);
-
-            form.Dispose();
-            form = null;
+            var success = ShowTalkPanel(predictionMode);
 
             this.Show();
             ScannerCommon.UserControlManager.StartTopLevelAnimation();
-            return true;
+            return success;
         }
 
         //public bool HandleSwitchWindowRequest()
@@ -305,6 +336,7 @@ namespace ACAT.Extensions.UI.Scanners
                     "CmdTalkSentenceMode" => form.HandleTalkAppRequest(Command),
                     "CmdTalkPhraseMode" => form.HandleTalkAppRequest(Command),
                     "CmdTalkShorthandMode" => form.HandleTalkAppRequest(Command),
+                    "Exit" => form.HandleCmdExit(),
                     "CmdGoBack" => form.HandleCmdGoBack(),
                     _ => false,
                 };
@@ -336,6 +368,11 @@ namespace ACAT.Extensions.UI.Scanners
             }
         }
 
+        private bool HandleCmdExit()
+        {
+            throw new NotImplementedException();
+        }
+
         private bool HandleCmdShowKeyboard()
         {
             ScannerCommon.UserControlManager.PushUserControlByKeyOrName(panelDashboardControls, "keyboard", "KeyboardUserControl");
@@ -352,6 +389,7 @@ namespace ACAT.Extensions.UI.Scanners
 
         private class DashboardAppDispatcher : DefaultCommandDispatcher
         {
+
             public DashboardAppDispatcher(IScannerPanel panel) : base(panel)
             {
                 /* Main Menu Commands */
@@ -379,6 +417,9 @@ namespace ACAT.Extensions.UI.Scanners
                 Commands.Add(new DashboardAppCommandHandler("ClickHold"));
                 Commands.Add(new DashboardAppCommandHandler("ScrollUp"));
                 Commands.Add(new DashboardAppCommandHandler("ScrollDown"));
+
+                /* System Commands */
+                Commands.Add(new DashboardAppCommandHandler("Exit"));
 
                 /* Launch App Commands */
                 Commands.Add(new DashboardAppCommandHandler("Chrome"));

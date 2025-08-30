@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.WordPredictorManagement.Interfaces;
 using System.Windows.Automation;
 
 namespace ACAT.Core.PanelManagement.Common
@@ -32,7 +33,7 @@ namespace ACAT.Core.PanelManagement.Common
 
         public StartupArg(string panelClass, string panelConfig)
         {
-            init();
+            //init();
             PanelClass = panelClass;
             PanelConfig = panelConfig;
         }
@@ -40,48 +41,50 @@ namespace ACAT.Core.PanelManagement.Common
         /// <summary>
         /// Optional user-defined arguments
         /// </summary>
-        public object Arg { get; set; }
+        public object Arg { get; set; } = null;
 
         /// <summary>
         /// Auto-position the scanner to its default position?
         /// </summary>
-        public bool AutoPosition { get; set; }
+        public bool AutoPosition { get; set; } = true;
 
         /// <summary>
         /// Is the scanner being used in as a panel for a
         /// dialog box?
         /// </summary>
-        public bool DialogMode { get; set; }
+        public bool DialogMode { get; set; } = true;
 
         /// <summary>
         /// The currently focused control in the application window
         /// </summary>
-        public AutomationElement FocusedElement { get; set; }
+        public AutomationElement FocusedElement { get; set; } = null;
 
         /// <summary>
         /// Gets or sets the class of the scanner being displayed
         /// </summary>
-        public string PanelClass { get; set; }
+        public string PanelClass { get; set; } = string.Empty;
 
-        public string PanelConfig { get; set; }
+        public string PanelConfig { get; set; } = null;
+
+        public WordPredictionModes PredictionMode { get; set; } = WordPredictionModes.Sentence;
 
         /// <summary>
         /// When the form closes, whether it should exit ACAT
         /// </summary>
-        public bool QuitAppOnFormClose { get; set; }
+        public bool QuitAppOnFormClose { get; set; } = false;
 
         /// <summary>
         /// Initializes the class
         /// </summary>
-        private void init()
-        {
-            PanelClass = string.Empty;
-            PanelConfig = null;
-            FocusedElement = null;
-            DialogMode = false;
-            Arg = null;
-            AutoPosition = true;
-            QuitAppOnFormClose = false;
-        }
+        //private void init()
+        //{
+        //    PanelClass = string.Empty;
+        //    PanelConfig = null;
+        //    FocusedElement = null;
+        //    DialogMode = false;
+        //    Arg = null;
+        //    AutoPosition = true;
+        //    QuitAppOnFormClose = false;
+        //}
     }
 }

@@ -77,7 +77,7 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
                     BorderRadiusBottomRight = 4,
                     BorderRadiusTopLeft = 4,
                     BorderRadiusTopRight = 4,
-                    BorderWidth = 3F,
+                    //BorderWidth = 3F,
                     Dock = DockStyle.Fill,
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
@@ -90,12 +90,12 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
                     Size = defaultSize,
                     AutoSize = false,
                     TextAlign = ContentAlignment.MiddleCenter,
-                    Margin = new Padding(4, 4, 4, 4)
+                    Margin = new Padding(16, 0, 16, 0)
                 };
 
                 parent.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
                 parent.Controls.Add(scannerButton, index, 0);
-                scannerButton.Font = FontUtil.ScaleFontToHeight(scannerButton.Height, "bootstrap-icons", scale: 0.5f);
+                scannerButton.Font = FontUtil.ScaleFontToHeight(scannerButton.Height, "bootstrap-icons", scale: 0.45f);
                 scannerButton.Resize += (s, e) =>
                 {
                     Button button = (Button)s;
@@ -114,7 +114,7 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
                         AutoSize = true,
                         Anchor = AnchorStyles.Top,
                     };
-                    label.Font = FontUtil.ScaleFontToHeight((int)(scannerButton.Width * .5f), "Montserrat Thin", FontStyle.Regular, scale: 0.45f);
+                    label.Font = FontUtil.ScaleFontToHeight(scannerButton.Height, "Montserrat Thin", FontStyle.Regular, scale: .2f);
                     parent.RowStyles.Add(new RowStyle(SizeType.AutoSize));
                     parent.Controls.Add(label, index, 1);
                 }

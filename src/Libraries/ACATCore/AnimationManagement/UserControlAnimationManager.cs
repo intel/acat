@@ -115,12 +115,12 @@ namespace ACAT.Core.AnimationManagement
         {
             if (!CoreGlobals.AppPreferences.EnableAutoStartScan)
             {
-                Log.Debug("CALIBTEST: UserControlAnimationManager.Start.  Do AutoTransition");
+                Log.Verbose("CALIBTEST: UserControlAnimationManager.Start.  Do AutoTransition");
                 Transition();
             }
             else
             {
-                Log.Debug("CALIBTEST: UserControlAnimationManager.Start.");
+                Log.Verbose("CALIBTEST: UserControlAnimationManager.Start.");
                 Transition(_firstAnimation);
             }
         }

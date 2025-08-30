@@ -241,7 +241,7 @@ namespace ACAT.Core.AnimationManagement
         {
             clearAnimationWidgetList();
 
-            Log.Debug(rootWidget.Name + ". widgetXMLNodeList count: " + _widgetXMLNodeList.Count);
+            Log.Verbose(rootWidget.Name + ". widgetXMLNodeList count: " + _widgetXMLNodeList.Count);
 
             foreach (XmlNode xmlNode in _widgetXMLNodeList)
             {
@@ -421,16 +421,16 @@ namespace ACAT.Core.AnimationManagement
         {
             var name = XmlUtils.GetXMLAttrString(xmlNode, "name");
 
-            Log.Debug("name=" + name);
+            Log.Verbose("name=" + name);
             if (!String.IsNullOrEmpty(name) && !name.Contains("*"))
             {
                 var widgetName = resolveName(variables, name);
-                Log.Debug("Resolved name : " + widgetName);
+                Log.Verbose("Resolved name : " + widgetName);
 
                 var uiWidget = rootWidget.Finder.FindChild(widgetName);
                 if (uiWidget != null && (uiWidget.UIControl == null || uiWidget.Visible))
                 {
-                    Log.Debug("Found child name : " + widgetName);
+                    Log.Verbose("Found child name : " + widgetName);
                     var animationWidget = createAndAddAnimationWidget(uiWidget);
                     animationWidget?.Load(xmlNode);
                 }

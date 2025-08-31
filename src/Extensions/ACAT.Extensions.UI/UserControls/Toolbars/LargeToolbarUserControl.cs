@@ -65,7 +65,7 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
         protected virtual void CreateToolbarButtons(TableLayoutPanel parent)
         {
             float scaleFactor = this.DeviceDpi / 96f;
-            var defaultSize = new Size((int)(200 * scaleFactor), (int)(200 * scaleFactor));
+            var defaultSize = new Size((int)(100 * scaleFactor), (int)(100 * scaleFactor));
 
             // Create buttons with specific properties
             foreach (var (button, index) in Buttons.Select((p, i) => (p, i)))

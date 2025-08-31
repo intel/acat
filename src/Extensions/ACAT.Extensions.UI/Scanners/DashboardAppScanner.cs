@@ -1,4 +1,4 @@
-using ACAT.Core.AgentManagement;
+ using ACAT.Core.AgentManagement;
 using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
@@ -86,7 +86,7 @@ namespace ACAT.Extensions.UI.Scanners
 
         protected override void InitializeComponent()
         {
-            this.AutoScaleDimensions = new SizeF(240F, 240F);
+            this.AutoScaleDimensions = new SizeF(96F, 96F);
             this.AutoScaleMode = AutoScaleMode.Dpi;
 
             this.ScannerBorder = new TableLayoutPanel();
@@ -114,7 +114,7 @@ namespace ACAT.Extensions.UI.Scanners
             this.ScannerBorder.Controls.Add(this.panelTopToolbar, 0, 0);
             this.ScannerBorder.Controls.Add(this.panelDashboardControls, 0, 1);
 
-            this.Text = "ACAT Dashboard";
+            this.Text = "ACAT";
             this.Name = "DashboardAppScanner";
             this.BackColor = Color.FromArgb(35, 36, 51);
             this.ForeColor = Color.White;
@@ -396,34 +396,6 @@ namespace ACAT.Extensions.UI.Scanners
                 Commands.Add(new DashboardAppCommandHandler("CmdTalkSentenceMode"));
                 Commands.Add(new DashboardAppCommandHandler("CmdTalkPhraseMode"));
                 Commands.Add(new DashboardAppCommandHandler("CmdTalkShorthandMode"));
-                
-                /* Top Toolbar Commands */
-                Commands.Add(new DashboardAppCommandHandler("CmdACATMenu"));
-                Commands.Add(new DashboardAppCommandHandler("CmdShowSettings"));
-                Commands.Add(new DashboardAppCommandHandler("CmdShowHelp"));
-                Commands.Add(new DashboardAppCommandHandler("CmdShowAbout"));
-                Commands.Add(new DashboardAppCommandHandler("CmdPanelSettings"));
-                Commands.Add(new DashboardAppCommandHandler("CmdGoBack"));
-                Commands.Add(new DashboardAppCommandHandler("CmdShrink"));
-                Commands.Add(new DashboardAppCommandHandler("CmdGrow"));
-                Commands.Add(new DashboardAppCommandHandler("CmdFade"));
-                Commands.Add(new DashboardAppCommandHandler("CmdUnfade"));
-
-                /* Cursor Control Commands */
-                Commands.Add(new DashboardAppCommandHandler("MoveAndClick"));
-                Commands.Add(new DashboardAppCommandHandler("Move"));
-                Commands.Add(new DashboardAppCommandHandler("LeftClick"));
-                Commands.Add(new DashboardAppCommandHandler("RightClick"));
-                Commands.Add(new DashboardAppCommandHandler("ClickHold"));
-                Commands.Add(new DashboardAppCommandHandler("ScrollUp"));
-                Commands.Add(new DashboardAppCommandHandler("ScrollDown"));
-
-                /* System Commands */
-                Commands.Add(new DashboardAppCommandHandler("Exit"));
-
-                /* Launch App Commands */
-                Commands.Add(new DashboardAppCommandHandler("Chrome"));
-                Commands.Add(new DashboardAppCommandHandler("Edge"));
             }
         }
     }

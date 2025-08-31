@@ -163,6 +163,7 @@ namespace ACAT.Core.PanelManagement
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "SplashScreen";
             this.TopMost = true;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);

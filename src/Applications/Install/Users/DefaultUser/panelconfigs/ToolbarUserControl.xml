@@ -4,34 +4,13 @@
 
 <ACAT>
   <WidgetAttributes>
-    <WidgetAttribute name="Settings" value="@CmdShowSettings" />
-    <WidgetAttribute name="Help" value="@CmdShowHelp" />
-    <WidgetAttribute name="About" value="@CmdShowAbout" />
-    <WidgetAttribute name="Home" value="@CmdGoBack" />
-    <WidgetAttribute name="Exit" value="@CmdExitAppWithConfirm" />
-    <WidgetAttribute name="Shrink" value="@CmdShrink" />
-    <WidgetAttribute name="Grow" value="@CmdGrow" />
-    <WidgetAttribute name="Fade" value="@CmdFade" />
-    <WidgetAttribute name="Unfade" value="@CmdUnfade" />
+    <WidgetAttribute name="Menu" value="@CmdMainMenu" />
   </WidgetAttributes>
 
   <Layout>
     <Widget class="BoxWidget"  name="ToolbarBox">
       <Widget class="RowWidget" name ="DefaultButtonsBox">
-        <Widget class="ScannerButton" name="Settings" colorScheme="ScannerButton" />
-        <Widget class="ScannerButton" name="Help" colorScheme="ScannerButton" />
-        <Widget class="ScannerButton" name="About" colorScheme="ScannerButton" />
-        <Widget class="ScannerButton" name="Home" colorScheme="ScannerButton" />
-        <Widget class="ScannerButton" name="Exit" colorScheme="ScannerButton" />
-      </Widget>
-    </Widget>
-    <Widget class="BoxWidget"  name="ToolbarBox">
-      <Widget class="RowWidget" name ="PanelSettingsBox">
-        <Widget class="ScannerButton" name="Shrink" colorScheme="ScannerButton" />
-        <Widget class="ScannerButton" name="Grow" colorScheme="ScannerButton" enabled="false"/>
-        <Widget class="ScannerButton" name="Fade" colorScheme="ScannerButton" />
-        <Widget class="ScannerButton" name="Unfade" colorScheme="ScannerButton" enabled="false"/>
-        <Widget class="ScannerButton" name="Home" colorScheme="ScannerButton" />
+        <Widget class="ScannerButton" name="Menu" colorScheme="ScannerButton" />
       </Widget>
     </Widget>
   </Layout>
@@ -43,11 +22,7 @@
             scanTime="@MenuDialogScanTime"
             iterations="1"
             onSelect="actuate(@SelectedWidget);stop();">
-      <Widget name="Settings" />
-      <Widget name="Help" />
-      <Widget name="About" />
-      <Widget name="Home" />
-      <Widget name="Exit" />
+      <Widget name="Menu" />
     </Animation>
   </Animations>
 </ACAT>

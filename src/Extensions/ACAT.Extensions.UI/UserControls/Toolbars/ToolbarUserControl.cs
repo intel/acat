@@ -43,27 +43,14 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
             Visible = true,
         };
 
-        // private TableLayoutPanel PanelSettingsBox = new TableLayoutPanel
-        // {
-        //     Name = "PanelSettingsBox",
-        //     AccessibleName = "PanelSettingsBox",
-        //     AutoSize = true,
-        //     AutoSizeMode = AutoSizeMode.GrowAndShrink,
-        //     Dock = DockStyle.Top | DockStyle.Right,
-        //     GrowStyle = TableLayoutPanelGrowStyle.AddColumns,
-        //     CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
-        // };
-
         readonly Label appName = new()
         {
-            Name = "ACAT",
-            Text = "ACAT Dashboard",
-            AutoSize = true,
+            Name = "ACAT Dashboard",
+            Text = "ACAT Dashboard",            
             TextAlign = ContentAlignment.MiddleCenter,
             Anchor = AnchorStyles.Top | AnchorStyles.Left,
             Dock = DockStyle.Left,
             ForeColor = Color.White,
-            //Font = new Font("Montserrat", 28, FontStyle.Regular, GraphicsUnit.Point, 0)
         };
 
         private readonly IContainer container = null;
@@ -81,11 +68,11 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
         {
             DefaultButtons = new Dictionary<string, string>()
             {
-                { "Settings", BootstrapFontUtility.GetBootstrapFontCharacter("gear-wide-connected") },
-                { "Help", BootstrapFontUtility.GetBootstrapFontCharacter("life-preserver") },
-                { "About", BootstrapFontUtility.GetBootstrapFontCharacter("question-circle") },
-                { "Home", BootstrapFontUtility.GetBootstrapFontCharacter("house-door") },
-                { "Exit", BootstrapFontUtility.GetBootstrapFontCharacter("door-closed") }
+                //{ "Settings", BootstrapFontUtility.GetBootstrapFontCharacter("gear-wide-connected") },
+                //{ "Help", BootstrapFontUtility.GetBootstrapFontCharacter("life-preserver") },
+                //{ "About", BootstrapFontUtility.GetBootstrapFontCharacter("question-circle") },
+                //{ "Home", BootstrapFontUtility.GetBootstrapFontCharacter("house-door") },
+                { "Menu", BootstrapFontUtility.GetBootstrapFontCharacter("list") }
             };
         //PanelSettingsButtons = new Dictionary<string, string>
         // {
@@ -100,7 +87,7 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
         protected virtual void CreateToolbarButtons(TableLayoutPanel parent, Dictionary<string, string> buttons)
         {
             float scaleFactor = this.DeviceDpi / 96f;
-            var defaultSize = new Size((int)(80 * scaleFactor), (int)(80 * scaleFactor));
+            var defaultSize = new Size((int)(40 * scaleFactor), (int)(40 * scaleFactor));
 
             // Create buttons with specific properties
             foreach (var (button, index) in buttons.Select((p, i) => (p, i)))
@@ -160,9 +147,13 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
 
             CreateToolbarButtons(DefaultButtonsBox, DefaultButtons);
 
-            ToolbarBox.Controls.Add(appName, 0, 0);
-            appName.Font = FontUtil.ScaleFontToHeight(DefaultButtonsBox.Height, "Montserrat Thin");
             ToolbarBox.Controls.Add(DefaultButtonsBox, 1, 0);
+            appName.Font = FontUtil.ScaleFontToHeight(DefaultButtonsBox.Height, "Montserrat Thin");
+            appName.Resize += (s, e) =>
+            {
+                appName.Font = FontUtil.ScaleFontToHeight(DefaultButtonsBox.Height, "Montserrat Thin");
+            };
+            ToolbarBox.Controls.Add(appName, 0, 0);
 
             Controls.Add(ToolbarBox);
 
@@ -170,80 +161,5 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
             ToolbarBox.ResumeLayout(true);
             ResumeLayout(true);
         }
-
-        // public void HandlePanelSettingsClicked()
-        // {
-        //     DefaultButtonsBox.Visible = false;
-        //     PanelSettingsBox.Visible = true;
-        // }
-
-        // internal void HandleCommand(string cmd)
-        // {
-        //     switch (cmd)
-        //     {
-        //         case "Shrink":
-        //             Shrink();
-        //             break;
-        //         case "Grow":
-        //             Grow();
-        //             break;
-        //         case "Fade":
-        //             Fade();
-        //             break;
-        //         case "Unfade":
-        //             UnFade();
-        //             break;
-        //         case "Home2":
-        //             HandlePanelSettingsClicked();
-        //             break;
-        //         default:
-        //             // Handle other commands or do nothing
-        //             break;
-        //     }
-        // }
-
-        // private bool _transparencyIncreasing = false;
-
-        // private void ToggleTransparency()
-        // {
-        //     const double MinOpacity = 0.5;
-        //     const double MaxOpacity = 1.0;
-        //     const double Step = 0.1;
-
-        //     using var parent = this.TopLevelControl as Form;
-
-        //     if (_transparencyIncreasing)
-        //     {
-        //         parent.Opacity = Math.Min(MaxOpacity, parent.Opacity + Step);
-        //         if (parent.Opacity >= MaxOpacity)
-        //             _transparencyIncreasing = false;
-        //     }
-        //     else
-        //     {
-        //         parent.Opacity = Math.Max(MinOpacity, parent.Opacity - Step);
-        //         if (parent.Opacity <= MinOpacity)
-        //             _transparencyIncreasing = true;
-        //     }
-        // }
-
-        // private void Fade()
-        // {
-        //     ToggleTransparency();
-        // }
-
-        // private void UnFade()
-        // {
-        //     ToggleTransparency();
-        // }
-
-        // private void Grow()
-        // {
-
-        // }
-
-        // private void Shrink()
-        // {
-
-        // }
     }
 }

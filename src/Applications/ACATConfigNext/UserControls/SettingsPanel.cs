@@ -27,7 +27,7 @@ namespace ACATConfigNext.UserControls
             {
                 BackColor = Color.Transparent,
                 Dock = DockStyle.Fill,
-                AutoScroll = true,
+                AutoScroll = false,
             };
 
             _prefs = prefs;

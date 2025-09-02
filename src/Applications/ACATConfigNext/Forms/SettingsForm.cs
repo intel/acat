@@ -58,7 +58,7 @@ namespace ACATConfigNext.Forms
             leftPanel = new FlowLayoutPanel
             {
                 Dock = DockStyle.Fill,
-                /*
+                //*
                 BackColor = Color.Transparent,
                 /*/
                 BackColor = Color.Green,
@@ -79,7 +79,7 @@ namespace ACATConfigNext.Forms
         {
             var parent = new TableLayoutPanel
             {
-                BackColor = Color.Green,
+                BackColor = Color.Transparent,
                 Dock = DockStyle.Fill,
                 ColumnCount = 1,
                 RowCount = 3,
@@ -127,7 +127,7 @@ namespace ACATConfigNext.Forms
             return new TableLayoutPanel
             {
                 AccessibleName = "SettingsPanel",
-                BackColor = Color.Azure,
+                BackColor = Color.Transparent,
                 Dock = DockStyle.Fill,
            };
         }
@@ -137,7 +137,7 @@ namespace ACATConfigNext.Forms
             breadcrumbPanel = new FlowLayoutPanel
             {
                 AccessibleName = "BreadcrumbPanel",
-                BackColor = Color.Blue,
+                BackColor = Color.Transparent,
                 Dock = DockStyle.Top,
                 FlowDirection = FlowDirection.LeftToRight,
 
@@ -276,7 +276,7 @@ namespace ACATConfigNext.Forms
                 Dock = DockStyle.Fill,
                 TextAlign = ContentAlignment.TopCenter,
                 Margin = new Padding(0),
-                BackColor = Color.MediumAquamarine
+                BackColor = Color.Transparent
             };
            
             var subTitle = new Label
@@ -324,8 +324,7 @@ namespace ACATConfigNext.Forms
             FormBorderStyle = FormBorderStyle.Sizable;
             MaximizeBox = true;
             MinimizeBox = true;
-            //BackColor = Color.FromArgb(31, 31, 56);
-            BackColor = Color.LightGreen;
+            BackColor = Color.FromArgb(31, 31, 56);
             ForeColor = Color.White;
 
             basePanel = new TableLayoutPanel
@@ -498,7 +497,7 @@ namespace ACATConfigNext.Forms
                 }
 
                 selectedCategoryButton = clickedButton;
-                //selectedCategoryButton.BackColor = Color.FromArgb(255, 169, 0); // Highlight selected button
+                selectedCategoryButton.BackColor = Color.FromArgb(255, 169, 0); // Highlight selected button
 
                 // Make sure the button is flat and has no border
                 clickedButton.FlatStyle = FlatStyle.Flat;

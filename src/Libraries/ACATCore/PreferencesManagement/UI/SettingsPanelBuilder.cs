@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.ConstrainedExecution;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -162,204 +163,90 @@ namespace ACAT.Core.PreferencesManagement.UI
             labelPanel.Children.Add(maxLabel);
             return labelPanel;
         }
-
         protected FrameworkElement CreateLabeledPanel(ObservablePropertyInfo prop, object settingsInstance)
         {
             var value = prop.Property.GetValue(settingsInstance);
 
+            // --- WRAP THE ROW IN A BORDER FOR BACKGROUND AND MARGIN ---
             var container = new Border
             {
-                Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(200, 74, 75, 93)),
+                Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(200, 74, 75, 93)), // row-specific background
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 Padding = new Thickness(16),
+                Margin = new Thickness(0, 4, 0, 4) // vertical spacing between rows
             };
 
-            var grid = new Grid
+            // --- ROW GRID WITH CONSISTENT COLUMN DEFINITIONS ---
+            var rowGrid = new Grid
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Center,
                 ShowGridLines = true,
             };
 
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }); // labels
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(60) });                   // spacer
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });                      // input
+            rowGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(3, GridUnitType.Star) }); // label
+            rowGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(8) });                    // spacer
+            rowGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });                       // control
 
+            // --- LEFT: label stack ---
             var labelStack = BuildLabelStack(prop);
             Grid.SetColumn(labelStack, 0);
-            grid.Children.Add(labelStack);
+            rowGrid.Children.Add(labelStack);
 
+            // --- MIDDLE: spacer (optional) ---
             var spacer = new Border { HorizontalAlignment = HorizontalAlignment.Stretch };
             Grid.SetColumn(spacer, 1);
-            grid.Children.Add(spacer);
+            rowGrid.Children.Add(spacer);
 
+            // --- RIGHT: input control ---
             var inputControl = BuildInputControl(prop, value, settingsInstance);
             Grid.SetColumn(inputControl, 2);
-            grid.Children.Add(inputControl);
+            rowGrid.Children.Add(inputControl);
 
-            container.Child = grid;
+            // --- SET THE ROW GRID AS THE CHILD OF THE BORDER ---
+            container.Child = rowGrid;
 
             return container;
-
-            //// LEFT: labels
-            //var stackPanel = new StackPanel
-            //{
-            //    Orientation = System.Windows.Controls.Orientation.Vertical,
-            //    HorizontalAlignment = HorizontalAlignment.Stretch
-            //};
-
-            //float labelFontSize = 14f / scaleFactor;
-
-            //var displayAttribute = prop.GetAttribute<DisplayAttribute>();
-            //var label = new TextBlock
-            //{
-            //    Text = displayAttribute?.ResourceType != null && !string.IsNullOrEmpty(displayAttribute.Name)
-            //        ? (displayAttribute.ResourceType.GetProperty(displayAttribute.Name, BindingFlags.Static | BindingFlags.Public)?
-            //            .GetValue(null, null) as string ?? displayAttribute.Name)
-            //        : displayAttribute?.Name ?? "MISSING DESCRIPTION",
-            //    HorizontalAlignment = HorizontalAlignment.Stretch,
-            //    FontFamily = new System.Windows.Media.FontFamily("Montserrat"),
-            //    FontSize = 14,
-            //    FontWeight = FontWeights.DemiBold,
-            //    Foreground = System.Windows.Media.Brushes.White,
-            //    TextWrapping = TextWrapping.WrapWithOverflow,
-            //    Padding = new Thickness(left: 10, top: 0, right: 0, bottom: 0),
-            //};
-
-            //stackPanel.Children.Add(label);
-
-            //if (!string.IsNullOrEmpty(displayAttribute?.Description))
-            //{
-            //    var description = new TextBlock
-            //    {
-            //        Text = displayAttribute?.ResourceType?.GetProperty(displayAttribute.Description, BindingFlags.Static | BindingFlags.Public)?
-            //            .GetValue(null, null) as string ?? displayAttribute?.Description,
-            //        FontStyle = FontStyles.Normal,
-            //        FontSize = label.FontSize,
-            //        FontFamily = label.FontFamily,
-            //        Foreground = System.Windows.Media.Brushes.White,
-            //        TextWrapping = TextWrapping.WrapWithOverflow,
-            //        Padding = new Thickness(left: 14, top: 0, right: 0, bottom: 0),
-            //    };
-            //    stackPanel.Children.Add(description);
-            //}
-
-            //Grid.SetColumn(stackPanel, 0);
-            //grid.Children.Add(stackPanel);
-
-            //// MIDDLE: spacer
-            //var spacer = new Border
-            //{
-            //    HorizontalAlignment = HorizontalAlignment.Stretch
-            //};
-            //Grid.SetColumn(spacer, 1);
-            //grid.Children.Add(spacer);
-
-            //// RIGHT: input control
-            //var binding = new System.Windows.Data.Binding(prop.Name)
-            //{
-            //    Source = settingsInstance,
-            //    Mode = BindingMode.TwoWay
-            //};
-
-            //FrameworkElement inputControl;
-
-            //if (prop.Property.PropertyType == typeof(string) &&
-            //    prop.GetAttribute<UIHintAttribute>()?.UIHint == "PinEntry")
-            //{
-            //    inputControl = new PasswordBox
-            //    {
-            //        MaxLength = 5,
-            //        VerticalAlignment = VerticalAlignment.Center,
-            //        HorizontalAlignment = HorizontalAlignment.Stretch,
-            //        MinWidth = scaledWidthColumn1/2,
-            //        Padding = new Thickness(200, 0, 0, 0)
-            //    };
-            //}
-            //else if (prop.Property.PropertyType == typeof(bool))
-            //{
-            //    bool initialState = value is bool b && b;
-
-            //    var toggleContainer = new StackPanel
-            //    {
-            //        Orientation = System.Windows.Controls.Orientation.Horizontal,
-            //        VerticalAlignment = VerticalAlignment.Center,
-            //        HorizontalAlignment = HorizontalAlignment.Right
-            //    };
-
-            //    var labelToggle = new TextBlock
-            //    {
-            //        Text = initialState ? "On" : "Off",
-            //        FontFamily = new System.Windows.Media.FontFamily("Montserrat"),
-            //        Foreground = System.Windows.Media.Brushes.White,
-            //        FontSize = labelFontSize,
-            //        VerticalAlignment = VerticalAlignment.Center,
-            //        Margin = new Thickness(0, 0, 8, 0)
-            //    };
-
-            //    var toggle = new ToggleSwitch
-            //    {
-            //        IsOn = initialState,
-            //        OnContent = null,
-            //        OffContent = null,
-            //        VerticalAlignment = VerticalAlignment.Center
-            //    };
-            //    toggle.SetBinding(ToggleSwitch.IsOnProperty, binding);
-            //    toggle.Toggled += (s, e) => { labelToggle.Text = toggle.IsOn ? "On" : "Off"; };
-
-            //    toggleContainer.Children.Add(labelToggle);
-            //    toggleContainer.Children.Add(toggle);
-            //    inputControl = toggleContainer;
-            //}
-            //else if (prop.GetAttribute<UIHintAttribute>()?.UIHint == "TextBox" ||
-            //         prop.Property.PropertyType == typeof(string))
-            //{
-            //    var tb = new System.Windows.Controls.TextBox
-            //    {
-            //        VerticalAlignment = VerticalAlignment.Center,
-            //        HorizontalAlignment = HorizontalAlignment.Right
-            //    };
-            //    tb.SetBinding(System.Windows.Controls.TextBox.TextProperty, binding);
-            //    inputControl = tb;
-            //}
-            //else if (prop.Property.PropertyType == typeof(int))
-            //{
-            //    RangeAttribute range = prop.GetAttribute<RangeAttribute>() ?? new RangeAttribute(0, 25);
-
-            //    var sliderStack = CreateLabeledSlider((int)range.Minimum, (int)range.Maximum, value is int i ? i : 0, 1);
-            //    sliderStack.VerticalAlignment = VerticalAlignment.Center;
-            //    sliderStack.HorizontalAlignment =  HorizontalAlignment.Right;
-            //    var sliderStackscaledWidth = (int)(300 / scaleFactor);
-            //    sliderStack.Width = sliderStackscaledWidth;
-
-            //    var slider = sliderStack?.Children?.OfType<Slider>().FirstOrDefault();
-            //    slider?.SetBinding(Slider.ValueProperty, binding);
-            //    slider?.SetBinding(Slider.ToolTipProperty, binding);
-
-            //    inputControl = sliderStack;
-            //}
-            //else
-            //{
-            //    inputControl = new TextBlock
-            //    {
-            //        Text = $"Unsupported: {prop.Property.PropertyType.Name}",
-            //        Foreground = System.Windows.Media.Brushes.Gray,
-            //        VerticalAlignment = VerticalAlignment.Center,
-            //        HorizontalAlignment = HorizontalAlignment.Right
-            //    };
-            //}
-
-            //if (inputControl is StackPanel sp && sp.Children.OfType<ToggleSwitch>().Any())
-            //{
-            //    middleColumn.Width = new GridLength(scaledWidthColumn2 * 4.7); // toggle switch
-            //}
-
-            //Grid.SetColumn(inputControl, 2);
-            //grid.Children.Add(inputControl);
-            //container.Child = grid;
-
-            //return container;
         }
+
+        //protected FrameworkElement CreateLabeledPanel(ObservablePropertyInfo prop, object settingsInstance)
+        //{
+        //    var value = prop.Property.GetValue(settingsInstance);
+
+        //    var container = new Border
+        //    {
+        //        Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(200, 74, 75, 93)),
+        //        HorizontalAlignment = HorizontalAlignment.Stretch,
+        //        Padding = new Thickness(16),
+        //    };
+
+        //    var rowgrid = new Grid
+        //    {
+        //        HorizontalAlignment = HorizontalAlignment.Stretch,
+        //        VerticalAlignment = VerticalAlignment.Center,
+        //        ShowGridLines = true,
+        //    };
+
+        //    rowgrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }); // labels
+        //    rowgrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(60) });                   // spacer
+        //    rowgrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });                      // input
+
+        //    var labelStack = BuildLabelStack(prop);
+        //    Grid.SetColumn(labelStack, 0);
+        //    rowgrid.Children.Add(labelStack);
+
+        //    var spacer = new Border { HorizontalAlignment = HorizontalAlignment.Stretch };
+        //    Grid.SetColumn(spacer, 1);
+        //    rowgrid.Children.Add(spacer);
+
+        //    var inputControl = BuildInputControl(prop, value, settingsInstance);
+        //    Grid.SetColumn(inputControl, 2);
+        //    rowgrid.Children.Add(inputControl);
+
+        //    container.Child = rowgrid;
+
+        //    return container;
+        //}
 
         private UIElement BuildInputControl(ObservablePropertyInfo prop, object value, object settingsInstance)
         {
@@ -393,6 +280,7 @@ namespace ACAT.Core.PreferencesManagement.UI
                     FontFamily = new System.Windows.Media.FontFamily("Montserrat"),
                     Foreground = System.Windows.Media.Brushes.White,
                     VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Right,
                     Margin = new Thickness(0, 0, 8, 0)
                 };
 
@@ -401,7 +289,9 @@ namespace ACAT.Core.PreferencesManagement.UI
                     IsOn = initialState,
                     OnContent = null,
                     OffContent = null,
-                    VerticalAlignment = VerticalAlignment.Center
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Right
+
                 };
                 toggle.Toggled += (s, e) => { labelToggle.Text = toggle.IsOn ? "On" : "Off"; };
 
@@ -487,24 +377,6 @@ namespace ACAT.Core.PreferencesManagement.UI
             }
 
             return stackPanel;
-        }
-
-        private StackPanel AddSettingRow(UIElement label, UIElement control, double verticalMargin = 8)
-        {
-            var rowPanel = new StackPanel
-            {
-                Orientation = Orientation.Horizontal,
-                Margin = new Thickness(0, verticalMargin / 2, 0, verticalMargin / 2),
-                HorizontalAlignment = HorizontalAlignment.Stretch
-            };
-
-            rowPanel.Children.Add(label);
-            rowPanel.Children.Add(control);
-
-            // Control will stretch to fill remaining space
-            //control.HorizontalAlignment = HorizontalAlignment.Stretch;
-
-            return rowPanel;
         }
     }
 }

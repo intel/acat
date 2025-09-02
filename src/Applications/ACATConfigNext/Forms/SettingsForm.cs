@@ -1,19 +1,21 @@
 ﻿using ACAT.Applications;
+using ACAT.Core.Extensions;
 using ACAT.Core.PanelManagement;
+using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using ACAT.Extension;
 using ACATConfigNext.UserControls;
+using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
-using ACAT.Core.Extensions;
-using System.ComponentModel;
 using System.Reflection;
-using ACAT.Extension;
-using ACAT.Core.PreferencesManagement.Interfaces;
-using System.Windows.Media.Media3D;
+using System.Runtime.Remoting.Channels;
+using System.Windows.Forms;
+using System.Windows.Shapes;
 
 namespace ACATConfigNext.Forms
 {
@@ -24,13 +26,10 @@ namespace ACATConfigNext.Forms
         private TableLayoutPanel navPanel;
         private TableLayoutPanel mainPanel;
         private FlowLayoutPanel breadcrumbPanel;
-        private TableLayoutPanel contentPanel;
-        private TableLayoutPanel bottomPanel;
+        private TableLayoutPanel settingsPanel;
+        private FlowLayoutPanel buttonPanel;
 
         private ScannerRoundedButtonControl selectedCategoryButton;
-        private Button saveButton;
-        private Button cancelButton;
-        private Button exitButton;
 
         private List<(UserControl Panel, string Label)> breadcrumbStack = new();
         private string currentPageLabel;
@@ -54,66 +53,12 @@ namespace ACATConfigNext.Forms
 
         }
 
-        private void InitializeComponent()
-        { 
-            Text = "ACAT Settings";
-
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-
-            WindowState = FormWindowState.Maximized;
-            MinimumSize = new Size(1440,1024);
-            StartPosition = FormStartPosition.CenterScreen;
-            FormBorderStyle = FormBorderStyle.Sizable;
-            MaximizeBox = true;
-            MinimizeBox = true;
-            BackColor = Color.FromArgb(31, 31, 56);
-            ForeColor = Color.White;
-
-
-            float scaleFactor;
-            using (Graphics g = Graphics.FromHwnd(IntPtr.Zero))
-            {
-                scaleFactor = g.DpiX / 96f;
-            }
-
-
-            basePanel = new TableLayoutPanel
-            {
-                BackColor = Color.Transparent,
-                Anchor = AnchorStyles.None,
-                Dock = DockStyle.None,
-                //AutoSize = true,
-                //AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                ColumnCount = 2,
-                RowCount = 1,
-                Size = new Size(1440, 1024),
-                GrowStyle = TableLayoutPanelGrowStyle.AddRows,
-                ColumnStyles = { new ColumnStyle(SizeType.AutoSize), new ColumnStyle(SizeType.Percent, 100F) }
-
-            };
-
-            if (Screen.PrimaryScreen.Bounds.Width > 1440 && Screen.PrimaryScreen.Bounds.Height >1024)
-            {
-                this.Load += (s, e) =>
-                {
-                    basePanel.Left = (this.ClientSize.Width - basePanel.Width) / 2;
-                    basePanel.Top = (this.ClientSize.Height - basePanel.Height) / 2;
-                };
-                this.Resize += (s, e) =>
-                {
-                    basePanel.Left = (this.ClientSize.Width - basePanel.Width) / 2;
-                    basePanel.Top = (this.ClientSize.Height - basePanel.Height) / 2;
-                };
-            }
-
-
-
-
+        private FlowLayoutPanel CreateLeftPanel() 
+        {
             leftPanel = new FlowLayoutPanel
             {
-                Dock = DockStyle.Left,
-                //*
+                Dock = DockStyle.Fill,
+                /*
                 BackColor = Color.Transparent,
                 /*/
                 BackColor = Color.Green,
@@ -122,294 +67,290 @@ namespace ACATConfigNext.Forms
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 FlowDirection = FlowDirection.TopDown,
                 WrapContents = false, // stack vertically only
-                 Padding = new Padding(40, 48, 0, 48),
-                Margin = new Padding(0),
-
+                Margin = new Padding(40, 48, 40, 48)
             };
 
-            navPanel = new TableLayoutPanel
-            {
-               // Dock = DockStyle.Left,
-                //*
-                BackColor = Color.Transparent,
-                /*/
-                BackColor = Color.Blue,
-                //*/
-                AutoSize = true,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                ColumnCount = 1,
-                RowCount = 4,
-                GrowStyle = TableLayoutPanelGrowStyle.AddRows,
-                Margin = new Padding(0, 80, 0, 0)
-            };
+            leftPanel.Controls.Add(CreateTitleLabel());
 
-            var centerPanel = new TableLayoutPanel
+            return leftPanel;
+        }
+
+        private TableLayoutPanel CreateMainPanel()
+        {
+            var parent = new TableLayoutPanel
             {
-                AutoSize = true,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                ColumnCount = 1,
-                RowCount = 2,
-                Dock = DockStyle.Top,
-                Padding = new Padding(0, -120, 0, 0),
-                Margin = new Padding(0, 60, 0, 0),
-                //*
-                BackColor = Color.Transparent
-                /*/
                 BackColor = Color.Green,
-             //*/
-            };
-            centerPanel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-
-            int scaledWidthLabel = (int)(274 / scaleFactor);
-            int scaledHeightLabel = (int)(180 / scaleFactor);
-            float mainFontSize = 64f / scaleFactor;
-            float settingsFontSize = 38f / scaleFactor;
-
-
-            var acatlabel = new Label
-            {
-                Text = "ACAT",
-                Font = new Font("Montserrat Thin", mainFontSize),
-                ForeColor = Color.White,
-                Dock = DockStyle.Top,
-                TextAlign = ContentAlignment.MiddleCenter,
-                AutoSize = false,
-                Margin = new Padding(0, 0, 0, 0) ,
-                Height = scaledHeightLabel,
-                Width = scaledWidthLabel
-            };
-
-            acatlabel.Paint += (s, e) =>
-            {
-                var settingsText = "Settings";
-                using (var font = new Font("Montserrat", settingsFontSize, FontStyle.Bold))
-                using (var brush = new SolidBrush(Color.White))
-                {
-                    var textSize = e.Graphics.MeasureString(settingsText, font);
-                    float x = (acatlabel.Width - textSize.Width) / 2;
-                    float y = acatlabel.Font.Height * 1.15f; //overlap
-                    e.Graphics.DrawString(settingsText, font, brush, x, y);
-                }
-            };
-
-
-            centerPanel.Controls.Add(acatlabel, 0, 0);
-            centerPanel.Controls.Add(navPanel, 0, 2);
-
-            acatlabel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            navPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-
-            leftPanel.Controls.Add(centerPanel);
-
-            mainPanel = new TableLayoutPanel
-            {
                 Dock = DockStyle.Fill,
-                //*
-                BackColor = Color.Transparent,
-                /*/
-                BackColor = Color.Purple,
-                //*/
-                AutoSize = true,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 ColumnCount = 1,
                 RowCount = 3,
-                GrowStyle = TableLayoutPanelGrowStyle.AddRows,
-                RowStyles = { new RowStyle(SizeType.AutoSize), new RowStyle(SizeType.Percent, 100F), new RowStyle(SizeType.AutoSize) },
-                Padding = new Padding( 20,88,20,48)
+                Margin = new Padding(0, 48, 48, 48)
             };
+            parent.RowStyles.Add(new RowStyle(SizeType.AutoSize));   // top row autosizes
+            parent.RowStyles.Add(new RowStyle(SizeType.Percent, 100)); // middle row fills remaining space
+            parent.RowStyles.Add(new RowStyle(SizeType.AutoSize));   // bottom row autosizes
 
-            float breadcrumbPanelFontSize = 14f / scaleFactor;
+            breadcrumbPanel = CreateBreadcrumbPanel();
+            parent.Controls.Add(breadcrumbPanel, 0, 0);
 
-            breadcrumbPanel = new FlowLayoutPanel
-            {
-                Dock = DockStyle.Top,
-                Name = "Settings",
-                Padding = new Padding(0,73,48,0),
-                AutoScroll = false,
-                //*/
-                BackColor = Color.Transparent,
-                /*/
-                BackColor = Color.Orange,
-                //*/
-                Font = new Font("Montserrat", breadcrumbPanelFontSize, FontStyle.Regular),
+            settingsPanel = CreateSettingsPanel();
+            parent.Controls.Add(settingsPanel, 0, 1);
 
-                AutoSize = true,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink
-            };
+            buttonPanel = CreateBottomPanel();
 
-            contentPanel = new TableLayoutPanel
+            parent.Controls.Add(buttonPanel, 0, 2);
+
+            // finally add parent to your form
+            return parent;
+
+        }
+
+        private FlowLayoutPanel CreateBottomPanel()
+        {
+            // bottom row: a flowlayoutpanel for buttons
+            var buttonPanel = new FlowLayoutPanel
             {
                 Dock = DockStyle.Fill,
-                //*/
-                BackColor = Color.Transparent,
-                /*/
-                BackColor = Color.DeepPink,
-                //*/
-                Padding = new Padding(left: 0, top: 0, right: 20, bottom: 0),
-                Margin = new Padding(8),
-                RowCount = 1,
-                ColumnCount = 1,
-                GrowStyle = TableLayoutPanelGrowStyle.AddRows,
+                FlowDirection = FlowDirection.RightToLeft,
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                Padding = new Padding(5),
             };
 
-            bottomPanel = new TableLayoutPanel
-            {
-                Dock = DockStyle.Bottom,
-                //*/
-                BackColor = Color.Transparent,
-                /*/
-                BackColor = Color.DarkBlue,
-                //*/
-                Padding = new Padding(0, 20,  20,  0),
-                Margin = new Padding(8),
-                //RowCount = 1,
-                //ColumnCount = 1,
-                //GrowStyle = TableLayoutPanelGrowStyle.AddRows,
-                AutoSize = true,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink,
-            };
+            buttonPanel.Controls.Add(CreateButton("Exit", true, ButtonClicked_Exit));
+            buttonPanel.Controls.Add(CreateButton("Cancel", false, ButtonClicked_Cancel));
+            buttonPanel.Controls.Add(CreateButton("Save", false, ButtonClicked_Save));
+            return buttonPanel;
+        }
 
-            float buttonFontSize = 18f / scaleFactor;
-
-            saveButton = new ScannerRoundedButtonControl()
+        private TableLayoutPanel CreateSettingsPanel()
+        {
+            return new TableLayoutPanel
             {
-                Text = "Save",
-                Font = new Font("Montserrat", buttonFontSize, FontStyle.Regular),
-                AutoSize = true,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                ForeColor = Color.White,
+                AccessibleName = "SettingsPanel",
+                BackColor = Color.Azure,
+                Dock = DockStyle.Fill,
+           };
+        }
+
+        private FlowLayoutPanel CreateBreadcrumbPanel()
+        {
+            breadcrumbPanel = new FlowLayoutPanel
+            {
+                AccessibleName = "BreadcrumbPanel",
+                BackColor = Color.Blue,
                 Dock = DockStyle.Top,
-                Enabled = false
+                FlowDirection = FlowDirection.LeftToRight,
 
             };
-            saveButton.Click += (s, e) =>
-            {
-                try
-                {
-                    var prefsPanel = currentSettingsPanel as SettingsPanel;
-                    prefsPanel?.Save();
-                    _isDirty = false;
-                    saveButton.Enabled = _isDirty;
-                }
-                catch (Exception ex)
-                {
-                    Log.Exception(ex);
-                    MessageBox.Show("An error occurred while saving settings.", "Save Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            };
 
-            cancelButton = new ScannerRoundedButtonControl()
+            return breadcrumbPanel;
+        }
+
+        private void ButtonClicked_Save(object sender, EventArgs e)
+        {
+            try
             {
-                Text = "Cancel",
-                Font = new Font("Montserrat", buttonFontSize, FontStyle.Regular),
-                AutoSize = true,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                ForeColor = Color.White,
-                Dock = DockStyle.Top,
-                Enabled = false
-            };
-            cancelButton.Click += (s, e) =>
+                var prefsPanel = currentSettingsPanel as SettingsPanel;
+                prefsPanel?.Save();
+                _isDirty = false;
+                //saveButton.Enabled = _isDirty;
+            }
+            catch (Exception ex)
             {
-                try
+                Log.Exception(ex);
+                MessageBox.Show("An error occurred while saving settings.", "Save Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void ButtonClicked_Cancel(object sender, EventArgs e)
+        {
+            try
+            {
+                if (CoreGlobals.AppPreferences != null)
                 {
-                    if (CoreGlobals.AppPreferences != null)
+                    var defaultPrefs = ACATPreferences.LoadDefaultSettings() as IPreferences;
+                    if (defaultPrefs != null)
                     {
-                        var defaultPrefs = ACATPreferences.LoadDefaultSettings() as IPreferences;
-                        if (defaultPrefs != null)
-                        {
-                            CopyPreferencesValues(defaultPrefs, CoreGlobals.AppPreferences);
-                        }
+                        CopyPreferencesValues(defaultPrefs, CoreGlobals.AppPreferences);
                     }
-
-                    CancelExtensionChanges(_currentCategory);
-
-                    _isDirty = false;
-                    saveButton.Enabled = _isDirty;
-                    cancelButton.Enabled = _isDirty;
                 }
-                catch (Exception ex)
-                {
-                    Log.Exception(ex);
-                    MessageBox.Show("An error occurred while canceling changes.", "Cancel Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            };
 
-            exitButton = new ScannerRoundedButtonControl()
+                CancelExtensionChanges(_currentCategory);
+
+                _isDirty = false;
+                //saveButton.Enabled = _isDirty;
+                //cancelButton.Enabled = _isDirty;
+            }
+            catch (Exception ex)
             {
-                Text = "Exit",
-                Font = new Font("Montserrat", buttonFontSize, FontStyle.Regular),
-                AutoSize = true,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                ForeColor = Color.White,
-                Enabled = true
-            };
+                Log.Exception(ex);
+                MessageBox.Show("An error occurred while canceling changes.", "Cancel Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
-            exitButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-
-            exitButton.Click += (s, e) =>
+        private void ButtonClicked_Exit(object sender, EventArgs e)
+        {
+            try
             {
-                try
+                if (_isDirty)
                 {
-                    if (_isDirty)
+                    if (!ConfirmBoxTwoOption.ShowDialog("You have unsaved changes.",
+                        "Save changes before exiting?", "Don't Save", "Save"))
                     {
-                        if (!ConfirmBoxTwoOption.ShowDialog("You have unsaved changes.",
-                            "Save changes before exiting?", "Don't Save", "Save"))
-                        {
-                            Close();
-                            return;
-                        }
-                        else
-                        {
-                            var prefsPanel = currentSettingsPanel as SettingsPanel;
-                            prefsPanel?.Save();
-                            Close();
-                        }
+                        Close();
+                        return;
                     }
                     else
                     {
+                        var prefsPanel = currentSettingsPanel as SettingsPanel;
+                        prefsPanel?.Save();
                         Close();
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    Log.Exception(ex);
-                    MessageBox.Show("An error occurred while saving settings.", "Save Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Close();
                 }
+            }
+            catch (Exception ex)
+            {
+                Log.Exception(ex);
+                MessageBox.Show("An error occurred while saving settings.", "Save Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private ScannerRoundedButtonControl CreateButton(string text, bool defaultenabled, EventHandler onClick = null)
+        {
+            var btn = new ScannerRoundedButtonControl()
+            {
+                Text = text,
+                Font = new Font("Montserrat", 18, FontStyle.Regular, GraphicsUnit.Point),
+                ForeColor = Color.White,
+                BorderRadiusBottomLeft = 4,
+                BorderRadiusTopRight = 4,
+                BorderRadiusBottomRight = 4,
+                BorderRadiusTopLeft = 4,
+                Enabled = defaultenabled,
+                AutoSize = true,
+                Dock = DockStyle.Fill
             };
 
+            if (onClick != null)
+            {
+                btn.Click += onClick;
+            }
 
-            bottomPanel.ColumnCount = 4;
-            bottomPanel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize)); 
-            bottomPanel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize)); 
-            bottomPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F)); 
-            bottomPanel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize)); 
+            return btn;
+        }
 
+        private Panel CreateTitleLabel()
+        {
+            var panel = new TableLayoutPanel
+            {
+                Dock = DockStyle.Top,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                BackColor = Color.Transparent,
+                ColumnCount = 1,
+                RowCount = 4,
+            };
 
-            bottomPanel.Controls.Add(saveButton, 0, 0);
-            bottomPanel.Controls.Add(cancelButton, 1, 0);
-            bottomPanel.Controls.Add(new Panel(), 2, 0);
-            bottomPanel.Controls.Add(exitButton, 3, 0);
+            // One column, full width
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
 
-            bottomPanel.Controls.Add(saveButton);
-            bottomPanel.Controls.Add(cancelButton);
-            bottomPanel.Controls.Add(exitButton);
+            // Two auto-sizing rows
+            panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
 
+            var title = new Label
+            {
+                Text = "ACAT",
+                Font = new Font("Montserrat Thin", 48f, GraphicsUnit.Point), // DPI aware
+                ForeColor = Color.White,
+                AutoSize = true,
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.TopCenter,
+                Margin = new Padding(0),
+                BackColor = Color.MediumAquamarine
+            };
+           
+            var subTitle = new Label
+            {
+                Text = "Settings",
+                Font = new Font("Montserrat", 28f, FontStyle.Bold, GraphicsUnit.Point), // DPI aware
+                ForeColor = Color.White,
+                AutoSize = true,
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Margin = new Padding(0),
+            };
 
-            mainPanel.Controls.Add(breadcrumbPanel, 0, 0);
-            mainPanel.Controls.Add(contentPanel, 0, 1);
-            mainPanel.Controls.Add(bottomPanel, 0, 2);
+            var separator = new Panel
+            {
+                Height = 1,
+                Dock = DockStyle.Top,
+                BackColor = Color.White,
+                Margin = new Padding(0, 38, 0, 38) // insets + spacing below
+            };
+            navPanel = new TableLayoutPanel
+            {
+                AutoSize = true,
+                Dock = DockStyle.Top,
+                Margin = new Padding(0, 0, 0, 0)
+            };
+
+            panel.Controls.Add(title, 0, 0);
+            panel.Controls.Add(subTitle, 0, 1);
+            panel.Controls.Add(separator, 0, 2);
+            panel.Controls.Add(navPanel, 0, 3);
+
+            return panel;
+        }
+
+        private void InitializeComponent()
+        {
+            SuspendLayout();
+            Text = "ACAT Settings";
+
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            MinimumSize = new Size(1440, 1024);
+            StartPosition = FormStartPosition.CenterScreen;
+            WindowState = FormWindowState.Maximized;
+            FormBorderStyle = FormBorderStyle.Sizable;
+            MaximizeBox = true;
+            MinimizeBox = true;
+            //BackColor = Color.FromArgb(31, 31, 56);
+            BackColor = Color.LightGreen;
+            ForeColor = Color.White;
+
+            basePanel = new TableLayoutPanel
+            {
+                BackColor = Color.Transparent,
+                Dock = DockStyle.Fill,
+                ColumnCount = 2,
+                RowCount = 1,
+                GrowStyle = TableLayoutPanelGrowStyle.AddRows,
+            };
+
+            basePanel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            basePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f));
+
+            leftPanel = CreateLeftPanel();
+            mainPanel = CreateMainPanel();
 
             basePanel.Controls.Add(leftPanel, 0, 0);
             basePanel.Controls.Add(mainPanel, 1, 0);
-            Controls.Add(basePanel);
 
+            Controls.Add(basePanel);
             LoadNavigation();
+            ResumeLayout(false);
         }
+
 
         private void CancelExtensionChanges(string category)
         {
@@ -513,38 +454,14 @@ namespace ACATConfigNext.Forms
 
         private void LoadNavigation()
         {
-            float scaleFactor;
-            using (Graphics g = Graphics.FromHwnd(IntPtr.Zero))
-            {
-                scaleFactor = g.DpiX / 96f; // 96 is default DPI
-            }
-
-            float buttonFontSize = 18f / scaleFactor;
 
             string[] categories = { "General", "Actuators", "Word Predictors", "Text to Speech" };
 
             foreach (var category in categories)
             {
-                var btn = new ScannerRoundedButtonControl()
-                {
-                    Text = category,
-                    Font = new Font("Montserrat", buttonFontSize, FontStyle.Regular),
-                    //AutoSize = true,
-                    Size = new Size(234,52),
-                    AutoSizeMode = AutoSizeMode.GrowAndShrink,
-                    ForeColor = Color.White,
-                    Dock = DockStyle.Top,
-                    Tag = (Category: category, Settings: LoadSettings(category)),
-                    FlatStyle = FlatStyle.Flat,
-                    Padding = new Padding(0, 0, 0, 0),
-                    BorderRadiusBottomLeft = 0,
-                    BorderRadiusBottomRight = 0,
-                    BorderRadiusTopLeft = 0,
-                    BorderRadiusTopRight = 0,
-                    BorderWidth = 0F,
-                };
+                var btn = CreateButton(category, true, Category_Click);
+                btn.Tag = (Category: category, Settings: LoadSettings(category));
 
-                btn.Click += Category_Click;
                 navPanel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
                 navPanel.Controls.Add(btn);
             }
@@ -558,7 +475,7 @@ namespace ACATConfigNext.Forms
             else
             {
                 // If no categories, show a default message
-                contentPanel.Controls.Add(new Label { Text = "No settings available.", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter });
+                settingsPanel.Controls.Add(new Label { Text = "No settings available.", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter });
             }
         }
 
@@ -601,14 +518,13 @@ namespace ACATConfigNext.Forms
 
                 _currentCategory = category;
 
-
                 if (Settings == null)
                 {
                     Settings = Enumerable.Empty<IExtension>();
                 }
 
                 breadcrumbStack.Clear();
-                contentPanel.Controls.Clear();
+                //contentPanel.Controls.Clear();
                 currentPageLabel = category;
 
                 UserControl panel = category switch
@@ -627,30 +543,31 @@ namespace ACATConfigNext.Forms
         private void SettingsChanged(object sender, PropertyChangedEventArgs e)
         {
             _isDirty = true;
-            saveButton.Enabled = _isDirty;
-            cancelButton.Enabled = _isDirty;
+            //saveButton.Enabled = _isDirty;
+            //cancelButton.Enabled = _isDirty;
             //EvtPreferencesChangeMade();
         }
 
 
         public void ShowPanel(UserControl panel, string label)
         {
-            if (contentPanel.Controls.Count > 0)
+
+            if (settingsPanel.Controls.Count > 0)
             {
-                var lastPanel = (UserControl)contentPanel.Controls[0];
+                var lastPanel = (UserControl)settingsPanel.Controls[0];
                 var lastLabel = breadcrumbPanel.Controls.OfType<Control>().LastOrDefault(c => c is Label || c is LinkLabel)?.Text;
 
                 breadcrumbStack.Add((lastPanel, lastLabel));
-                contentPanel.Controls.Clear();
+                settingsPanel.Controls.Clear();
             }
 
             currentPageLabel = label;
             currentSettingsPanel = panel;
 
             panel.Dock = DockStyle.Fill;
-            contentPanel.Controls.Add(panel);
-            contentPanel.DataBindings.Clear(); // Clear any existing bindings to avoid conflicts
-            contentPanel.DataBindings.Add("Tag", panel, "Tag", true, DataSourceUpdateMode.OnPropertyChanged);
+            settingsPanel.Controls.Add(panel);
+            settingsPanel.DataBindings.Clear(); // Clear any existing bindings to avoid conflicts
+            settingsPanel.DataBindings.Add("Tag", panel, "Tag", true, DataSourceUpdateMode.OnPropertyChanged);
 
             UpdateBreadcrumbTrail();
         }
@@ -658,19 +575,25 @@ namespace ACATConfigNext.Forms
         private void UpdateBreadcrumbTrail()
         {
             breadcrumbPanel.Controls.Clear();
+            breadcrumbPanel.FlowDirection = FlowDirection.LeftToRight;
+            breadcrumbPanel.WrapContents = false; // important: force single line
+            breadcrumbPanel.AutoSize = true;
 
             for (int i = 0; i < breadcrumbStack.Count; i++)
             {
+                // Add the breadcrumb link
                 var link = new LinkLabel
                 {
                     Text = breadcrumbStack[i].Label,
-                    AutoSize = true,
                     Tag = i,
+                    Font = new Font("Montserrat", 32f, FontStyle.Bold, GraphicsUnit.Point),
                     LinkColor = Color.White,
                     ActiveLinkColor = Color.White,
                     VisitedLinkColor = Color.White,
                     LinkBehavior = LinkBehavior.NeverUnderline,
-                    Cursor = Cursors.Default
+                    Cursor = Cursors.Default,
+                    AutoSize = true,
+                    Margin = new Padding(0)
                 };
 
                 link.Click += (s, e) =>
@@ -680,18 +603,27 @@ namespace ACATConfigNext.Forms
                 };
 
                 breadcrumbPanel.Controls.Add(link);
-            }
 
-            // Add separator before the current (last) label if not first
-            if (breadcrumbStack.Count > 0)
-                breadcrumbPanel.Controls.Add(new Label { Text = " > ", AutoSize = true });
+                // Add separator if not the last item
+                if (i < breadcrumbStack.Count - 1)
+                {
+                    breadcrumbPanel.Controls.Add(new Label
+                    {
+                        Text = " > ",
+                        AutoSize = true,
+                        Font = new Font("Montserrat", 32f, FontStyle.Bold, GraphicsUnit.Point),
+                        Margin = new Padding(0)
+                    });
+                }
+            }
 
             // Add current page as plain text
             breadcrumbPanel.Controls.Add(new Label
             {
                 Text = currentPageLabel,
                 AutoSize = true,
-                //Font = new Font(DefaultFont, FontStyle.Bold)
+                Font = new Font("Montserrat", 32f, FontStyle.Bold, GraphicsUnit.Point),
+                Margin = new Padding(8, 0, 0, 0) // space after last separator
             });
         }
 
@@ -705,9 +637,9 @@ namespace ACATConfigNext.Forms
 
             currentPageLabel = label;
 
-            contentPanel.Controls.Clear();
+            settingsPanel.Controls.Clear();
             targetPanel.Dock = DockStyle.Fill;
-            contentPanel.Controls.Add(targetPanel);
+            settingsPanel.Controls.Add(targetPanel);
 
             UpdateBreadcrumbTrail();
         }

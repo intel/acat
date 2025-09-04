@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using ACAT.Core.SpellCheckManagement;
+using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -90,18 +91,23 @@ namespace ACAT.Core.PreferencesManagement.UI
 
         private DataTemplate BuildItemTemplate(PreferencesBase prefs)
         {
+            // This DataTemplate is for ObservablePropertyInfo items
             var template = new DataTemplate(typeof(ObservablePropertyInfo));
 
-            var factory = new FrameworkElementFactory(typeof(ContentPresenter));
+            // Use ContentControl instead of ContentPresenter to avoid recursion
+            var factory = new FrameworkElementFactory(typeof(ContentControl));
 
-            factory.SetBinding(ContentPresenter.ContentProperty, new Binding("."));
-            factory.SetValue(ContentPresenter.MarginProperty, new Thickness(0, 0, 0, 16));
-            factory.AddHandler(ContentPresenter.LoadedEvent,
+            // Give a little margin like before
+            factory.SetValue(ContentControl.MarginProperty, new Thickness(0, 0, 0, 16));
+
+            // Replace the content with your dynamically generated panel
+            factory.AddHandler(ContentControl.LoadedEvent,
                 new RoutedEventHandler((s, e) =>
                 {
-                    if (s is ContentPresenter cp && cp.Content is ObservablePropertyInfo prop)
+                    if (s is ContentControl cc && cc.DataContext is ObservablePropertyInfo prop)
                     {
-                        cp.Content = CreateLabeledPanel(prop, prefs);
+                        // Generate the actual labeled control for this property
+                        cc.Content = CreateLabeledPanel(prop, prefs);
                     }
                 }));
 
@@ -109,7 +115,6 @@ namespace ACAT.Core.PreferencesManagement.UI
 
             return template;
         }
-
         private static StackPanel CreateLabeledSlider(double min, double max, double initialValue = 0, double tickFrequency = 0)
         {
             var panel = new StackPanel
@@ -181,7 +186,6 @@ namespace ACAT.Core.PreferencesManagement.UI
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Center,
-                ShowGridLines = true,
             };
 
             rowGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(3, GridUnitType.Star) }); // label
@@ -209,45 +213,6 @@ namespace ACAT.Core.PreferencesManagement.UI
             return container;
         }
 
-        //protected FrameworkElement CreateLabeledPanel(ObservablePropertyInfo prop, object settingsInstance)
-        //{
-        //    var value = prop.Property.GetValue(settingsInstance);
-
-        //    var container = new Border
-        //    {
-        //        Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(200, 74, 75, 93)),
-        //        HorizontalAlignment = HorizontalAlignment.Stretch,
-        //        Padding = new Thickness(16),
-        //    };
-
-        //    var rowgrid = new Grid
-        //    {
-        //        HorizontalAlignment = HorizontalAlignment.Stretch,
-        //        VerticalAlignment = VerticalAlignment.Center,
-        //        ShowGridLines = true,
-        //    };
-
-        //    rowgrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }); // labels
-        //    rowgrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(60) });                   // spacer
-        //    rowgrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });                      // input
-
-        //    var labelStack = BuildLabelStack(prop);
-        //    Grid.SetColumn(labelStack, 0);
-        //    rowgrid.Children.Add(labelStack);
-
-        //    var spacer = new Border { HorizontalAlignment = HorizontalAlignment.Stretch };
-        //    Grid.SetColumn(spacer, 1);
-        //    rowgrid.Children.Add(spacer);
-
-        //    var inputControl = BuildInputControl(prop, value, settingsInstance);
-        //    Grid.SetColumn(inputControl, 2);
-        //    rowgrid.Children.Add(inputControl);
-
-        //    container.Child = rowgrid;
-
-        //    return container;
-        //}
-
         private UIElement BuildInputControl(ObservablePropertyInfo prop, object value, object settingsInstance)
         {
             FrameworkElement inputControl;
@@ -255,13 +220,23 @@ namespace ACAT.Core.PreferencesManagement.UI
             if (prop.Property.PropertyType == typeof(string) &&
                 prop.GetAttribute<UIHintAttribute>()?.UIHint == "PinEntry")
             {
-                inputControl = new PasswordBox
+                var passwordBox = new TextBox
                 {
+                    FontSize = 24,
                     MaxLength = 5,
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     //Padding = new Thickness(200, 0, 0, 0)
                 };
+
+                passwordBox.SetBinding(TextBox.TextProperty, new Binding(prop.Name)
+                {
+                    Source = settingsInstance,
+                    Mode = BindingMode.TwoWay,
+                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                });
+
+                inputControl = passwordBox;
             }
             else if (prop.Property.PropertyType == typeof(bool))
             {
@@ -278,6 +253,7 @@ namespace ACAT.Core.PreferencesManagement.UI
                 {
                     Text = initialState ? "On" : "Off",
                     FontFamily = new System.Windows.Media.FontFamily("Montserrat"),
+                    FontSize = 24,
                     Foreground = System.Windows.Media.Brushes.White,
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Right,
@@ -290,9 +266,15 @@ namespace ACAT.Core.PreferencesManagement.UI
                     OnContent = null,
                     OffContent = null,
                     VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Right
-
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    FontSize = 24,
                 };
+                toggle.SetBinding(ToggleSwitch.IsOnProperty, new Binding(prop.Name)
+                {
+                    Source = settingsInstance,
+                    Mode = BindingMode.TwoWay,
+                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                });
                 toggle.Toggled += (s, e) => { labelToggle.Text = toggle.IsOn ? "On" : "Off"; };
 
                 toggleContainer.Children.Add(labelToggle);
@@ -302,12 +284,21 @@ namespace ACAT.Core.PreferencesManagement.UI
             else if (prop.GetAttribute<UIHintAttribute>()?.UIHint == "TextBox" ||
                      prop.Property.PropertyType == typeof(string))
             {
-                var tb = new System.Windows.Controls.TextBox
+                var textBox = new System.Windows.Controls.TextBox
                 {
                     VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Right
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    FontSize = 24,
+
                 };
-                inputControl = tb;
+                textBox.SetBinding(TextBox.TextProperty, new Binding(prop.Name)
+                {
+                    Source = settingsInstance,
+                    Mode = BindingMode.TwoWay,
+                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                });
+
+                inputControl = textBox;
             }
             else if (prop.Property.PropertyType == typeof(int))
             {
@@ -319,6 +310,21 @@ namespace ACAT.Core.PreferencesManagement.UI
 
                 var slider = sliderStack?.Children?.OfType<Slider>().FirstOrDefault();
 
+                if (slider != null)
+                {
+                    slider.SetBinding(Slider.ValueProperty, new Binding(prop.Name)
+                    {
+                        Source = settingsInstance,
+                        Mode = BindingMode.TwoWay,
+                        UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                    });
+                    slider.ToolTip = $"Value: {slider.Value}";
+                    slider.ValueChanged += (s, e) =>
+                    {
+                        slider.ToolTip = $"Value: {slider.Value}";
+                    };
+                }
+
                 inputControl = sliderStack;
             }
             else
@@ -328,7 +334,9 @@ namespace ACAT.Core.PreferencesManagement.UI
                     Text = $"Unsupported: {prop.Property.PropertyType.Name}",
                     Foreground = System.Windows.Media.Brushes.Gray,
                     VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Right
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    FontSize = 24,
+
                 };
             }
 
@@ -352,8 +360,8 @@ namespace ACAT.Core.PreferencesManagement.UI
                     : displayAttribute?.Name ?? "MISSING DESCRIPTION",
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 FontFamily = new System.Windows.Media.FontFamily("Montserrat"),
-                FontSize = 14,
-                FontWeight = FontWeights.Bold,
+                FontSize = 24,  // 18 Point in WinForms
+                FontWeight = FontWeights.Regular,
                 Foreground = System.Windows.Media.Brushes.White,
                 TextWrapping = TextWrapping.WrapWithOverflow,
             };
@@ -367,7 +375,7 @@ namespace ACAT.Core.PreferencesManagement.UI
                     Text = displayAttribute?.ResourceType?.GetProperty(displayAttribute.Description, BindingFlags.Static | BindingFlags.Public)?
                         .GetValue(null, null) as string ?? displayAttribute?.Description,
                     FontStyle = FontStyles.Normal,
-                    FontSize = label.FontSize,
+                    FontSize = 23.3,  // 16 Point in WinForms
                     FontFamily = label.FontFamily,
                     Foreground = System.Windows.Media.Brushes.White,
                     TextWrapping = TextWrapping.WrapWithOverflow,

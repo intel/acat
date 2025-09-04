@@ -6,16 +6,13 @@ using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extension;
 using ACATConfigNext.UserControls;
-using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Remoting.Channels;
 using System.Windows.Forms;
-using System.Windows.Shapes;
 
 namespace ACATConfigNext.Forms
 {
@@ -29,6 +26,10 @@ namespace ACATConfigNext.Forms
         private TableLayoutPanel settingsPanel;
         private FlowLayoutPanel buttonPanel;
 
+        private Button saveButton;
+        private Button cancelButton;
+        private Button exitButton;
+
         private ScannerRoundedButtonControl selectedCategoryButton;
 
         private List<(UserControl Panel, string Label)> breadcrumbStack = new();
@@ -38,12 +39,6 @@ namespace ACATConfigNext.Forms
         private UserControl currentSettingsPanel;
 
         private bool _isDirty = false;
-
-        //Delegate for the event triggered when the user makes a change to a preference setting 
-        public delegate void NotifyPreferencesChangeMade();
-
-        //Event raised when the user makes a change to a preference setting 
-        public event NotifyPreferencesChangeMade EvtPreferencesChangeMade;
 
         public SettingsForm()
         {
@@ -116,9 +111,12 @@ namespace ACATConfigNext.Forms
                 Padding = new Padding(5),
             };
 
-            buttonPanel.Controls.Add(CreateButton("Exit", true, ButtonClicked_Exit));
-            buttonPanel.Controls.Add(CreateButton("Cancel", false, ButtonClicked_Cancel));
-            buttonPanel.Controls.Add(CreateButton("Save", false, ButtonClicked_Save));
+            exitButton = CreateButton("Exit", true, ButtonClicked_Exit);
+            buttonPanel.Controls.Add(exitButton);
+            cancelButton = CreateButton("Cancel", false, ButtonClicked_Cancel);
+            buttonPanel.Controls.Add(cancelButton);
+            saveButton = CreateButton("Save", false, ButtonClicked_Save);
+            buttonPanel.Controls.Add(saveButton);
             return buttonPanel;
         }
 
@@ -140,7 +138,7 @@ namespace ACATConfigNext.Forms
                 BackColor = Color.Transparent,
                 Dock = DockStyle.Top,
                 FlowDirection = FlowDirection.LeftToRight,
-
+                Margin = new Padding(0, 0, 0, 40)
             };
 
             return breadcrumbPanel;
@@ -153,7 +151,8 @@ namespace ACATConfigNext.Forms
                 var prefsPanel = currentSettingsPanel as SettingsPanel;
                 prefsPanel?.Save();
                 _isDirty = false;
-                //saveButton.Enabled = _isDirty;
+                saveButton.Enabled = _isDirty;
+                cancelButton.Enabled = _isDirty;
             }
             catch (Exception ex)
             {
@@ -179,8 +178,8 @@ namespace ACATConfigNext.Forms
                 CancelExtensionChanges(_currentCategory);
 
                 _isDirty = false;
-                //saveButton.Enabled = _isDirty;
-                //cancelButton.Enabled = _isDirty;
+                saveButton.Enabled = _isDirty;
+                cancelButton.Enabled = _isDirty;
             }
             catch (Exception ex)
             {
@@ -542,9 +541,8 @@ namespace ACATConfigNext.Forms
         private void SettingsChanged(object sender, PropertyChangedEventArgs e)
         {
             _isDirty = true;
-            //saveButton.Enabled = _isDirty;
-            //cancelButton.Enabled = _isDirty;
-            //EvtPreferencesChangeMade();
+            saveButton.Enabled = _isDirty;
+            cancelButton.Enabled = _isDirty;
         }
 
 

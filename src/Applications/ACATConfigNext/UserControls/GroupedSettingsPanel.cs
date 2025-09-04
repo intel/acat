@@ -26,7 +26,7 @@ namespace ACATConfigNext.UserControls
                 BackColor = Color.Transparent,
                 Dock = DockStyle.Fill,
                 AutoScroll = true,
-                Margin = new Padding(8),
+                Margin = new Padding(24),
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 GrowStyle = TableLayoutPanelGrowStyle.AddRows,
@@ -47,7 +47,7 @@ namespace ACATConfigNext.UserControls
                     Name = extension.Descriptor.Name,
                     Dock = DockStyle.Top,
                     Padding = new Padding(8),
-                    Margin = new Padding(8),
+                    Margin = new Padding(24),
                     AutoSize = true,
                     AutoSizeMode = AutoSizeMode.GrowAndShrink,
                     RowCount = 1,
@@ -139,11 +139,7 @@ namespace ACATConfigNext.UserControls
                 AddPanelClickEvent(label2, showPanel, settingsChangedHandler);
 
                 panel.Controls.Add(label1, 0, 0); // Column 0
-
-                if (acat_extensions.Count() >= 4)
-                {
-                    panel.Controls.Add(host, 1, 0); // Column 1
-                }
+                panel.Controls.Add(host, 1, 0); // Column 1
                 panel.Controls.Add(label2, 2, 0); // Column 2
 
                 basePanel.Controls.Add(panel);

@@ -32,8 +32,26 @@ namespace ACAT.Core.PreferencesManagement
     /// a class by deserializing from the xml file.
     /// </summary>
     [Serializable]
-    public abstract class PreferencesBase : ObservableValidator, IPreferences
+    public abstract class PreferencesBase : ObservableValidator, IPreferences, IDisposable
     {
+        [XmlIgnore]
+        public bool IsDirty { get; private set; } = false;
+
+        public PreferencesBase()
+        {
+            PropertyChanged += PreferencesBase_PropertyChanged;
+
+        }
+
+        private void PreferencesBase_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(IsDirty))
+            {
+                IsDirty = true;
+                NotifyPreferencesChanged();
+            }
+        }
+
         [NonSerialized, XmlIgnore]
         public static Assembly ApplicationAssembly;
 
@@ -159,5 +177,16 @@ namespace ACAT.Core.PreferencesManagement
         public abstract bool Save();
 
         public abstract bool ResetToDefault();
+
+        private bool _disposed = false;
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+
+            PropertyChanged -= PreferencesBase_PropertyChanged;
+            _disposed = true;
+
+        }
     }
 }

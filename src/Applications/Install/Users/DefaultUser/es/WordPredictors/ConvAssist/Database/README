@@ -1,0 +1,4 @@
+Make sure the below 3 files are in the folder. (Rest of the files can be created by the application)
+1) personalizedCannedPhrases.txt
+2) shorthand_sqlite.db
+3) startSentences.txt

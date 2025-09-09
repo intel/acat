@@ -1,0 +1,10 @@
+diff a/src/Libraries/ACATExtension/AppAgents/Outlook/OutlookInspector.cs b/src/Libraries/ACATExtension/AppAgents/Outlook/OutlookInspector.cs	(rejected hunks)
+@@ -278,7 +278,7 @@
+         /// <returns>true if it is</returns>
+         public bool IsInboxWindow(WindowActivityMonitorInfo monitorInfo)
+         {
+-            var windowElement = AutomationElement.FromHandle(monitorInfo.FgHwnd);
++            var windowElement = AutomationElement.FromHandle(monitorInfo.FgForm.Handle);
+ 
+             var element = AgentUtils.FindElementByAutomationId(windowElement, "SuperGrid", ControlType.Table, "4704");
+ 

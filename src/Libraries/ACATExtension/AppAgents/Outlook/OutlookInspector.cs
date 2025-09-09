@@ -111,7 +111,7 @@ namespace ACAT.Extension.AppAgents.Outlook
         /// <returns>true if it is</returns>
         public bool IsAddressBookDetailsWindow(WindowActivityMonitorInfo monitorInfo)
         {
-            var windowElement = AutomationElement.FromHandle(monitorInfo.FgForm.Handle);
+            var windowElement = AutomationElement.FromHandle(monitorInfo.FgHwnd);
 
             var element = AgentUtils.FindElementByAutomationId(windowElement, "Edit", "ControlType.Edit", "2002") ??
                             AgentUtils.FindElementByAutomationId(windowElement, "Edit", "ControlType.Edit", "2006") ??
@@ -128,7 +128,7 @@ namespace ACAT.Extension.AppAgents.Outlook
         /// <returns>true if it is</returns>
         public bool IsAddressBookWindow(WindowActivityMonitorInfo monitorInfo, ref OutlookControlSubType subType)
         {
-            var windowElement = AutomationElement.FromHandle(monitorInfo.FgForm.Handle);
+            var windowElement = AutomationElement.FromHandle(monitorInfo.FgHwnd);
 
             var retVal = (windowElement != null) && (monitorInfo.Title.ToLower().StartsWith("TODO") &&
                                                       AgentUtils.IsElementByAutomationId(windowElement, "OutexABCLS",
@@ -159,7 +159,7 @@ namespace ACAT.Extension.AppAgents.Outlook
                 return false;
             }
 
-            var windowElement = AutomationElement.FromHandle(monitorInfo.FgForm.Handle);
+            var windowElement = AutomationElement.FromHandle(monitorInfo.FgHwnd);
             var element = (AgentUtils.FindElementByAutomationId(windowElement, "OutlookGrid", ControlType.List, "4542") ??
                            AgentUtils.FindElementByAutomationId(windowElement, "Button", ControlType.Button, "4370")) ??
                           AgentUtils.FindElementByAutomationId(windowElement, "RichEdit20WPT", ControlType.Edit, "4098");
@@ -218,7 +218,7 @@ namespace ACAT.Extension.AppAgents.Outlook
                 return false;
             }
 
-            var windowElement = AutomationElement.FromHandle(monitorInfo.FgForm.Handle);
+            var windowElement = AutomationElement.FromHandle(monitorInfo.FgHwnd);
             var element = AgentUtils.FindElementByAutomationId(windowElement, "RichEdit20WPT", ControlType.Document, "4099");
             var toButton = AgentUtils.FindElementByAutomationId(windowElement, "Button", ControlType.Button, "4352");
 
@@ -278,7 +278,7 @@ namespace ACAT.Extension.AppAgents.Outlook
         /// <returns>true if it is</returns>
         public bool IsInboxWindow(WindowActivityMonitorInfo monitorInfo)
         {
-            var windowElement = AutomationElement.FromHandle(monitorInfo.FgForm.Handle);
+            var windowElement = AutomationElement.FromHandle(monitorInfo.FgHwnd);
 
             var element = AgentUtils.FindElementByAutomationId(windowElement, "SuperGrid", ControlType.Table, "4704");
 
@@ -310,7 +310,7 @@ namespace ACAT.Extension.AppAgents.Outlook
                 return false;
             }
 
-            var windowElement = AutomationElement.FromHandle(monitorInfo.FgForm.Handle);
+            var windowElement = AutomationElement.FromHandle(monitorInfo.FgHwnd);
             var element = AgentUtils.FindElementByAutomationId(windowElement, "REComboBox20W", ControlType.ComboBox, "4100") ??
                           AgentUtils.FindElementByAutomationId(windowElement, "RichEdit20WPT", ControlType.Document, "4100");
 
@@ -344,7 +344,7 @@ namespace ACAT.Extension.AppAgents.Outlook
                 return false;
             }
 
-            var windowElement = AutomationElement.FromHandle(monitorInfo.FgForm.Handle);
+            var windowElement = AutomationElement.FromHandle(monitorInfo.FgHwnd);
             var element = (AgentUtils.FindElementByAutomationId(windowElement, "RichEdit20WPT", ControlType.Edit, "4481") ??
                            AgentUtils.FindElementByAutomationId(windowElement, "RichEdit20WPT", ControlType.Edit, "4480") ??
                           AgentUtils.FindElementByAutomationId(windowElement, "RichEdit20WPT", ControlType.Edit, "4096"));
@@ -405,7 +405,7 @@ namespace ACAT.Extension.AppAgents.Outlook
                 return false;
             }
 
-            var windowElement = AutomationElement.FromHandle(monitorInfo.FgForm.Handle);
+            var windowElement = AutomationElement.FromHandle(monitorInfo.FgHwnd);
 
             if (windowElement == null)
             {

@@ -28,7 +28,7 @@ namespace ACAT.Core.Utility
         private static WinEventDelegate _winEventDelegate;
         private static WinEventDelegate _createDestroyDelegate;
 
-        private static Form _currentForm = null;
+        private static IntPtr _currentHwnd = IntPtr.Zero;
         private static AutomationElement _currentFocusedElement;
 
         public delegate void ActivityMonitorDelegate(WindowActivityMonitorInfo monitorInfo);
@@ -38,41 +38,6 @@ namespace ACAT.Core.Utility
         private delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType,
             IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
 
-        public event EventHandler<WindowActivityMonitorInfo> ForegroundChanged;
-
-        private void RaiseForegroundChanged(WindowActivityMonitorInfo info)
-        {
-            var handler = ForegroundChanged;
-            if (handler == null) return;
-
-            // Find a form to marshal onto the UI thread
-            if (Application.OpenForms.Count > 0)
-            {
-                var mainForm = Application.OpenForms[0];
-
-                if (mainForm.IsHandleCreated)
-                {
-                    mainForm.BeginInvoke(new Action(() => handler(this, info)));
-                }
-                else
-                {
-                    // fallback: raise directly (rare, but safe)
-                    handler(this, info);
-                }
-            }
-            else
-            {
-                // no forms — just raise on the current thread
-                handler(this, info);
-            }
-        }
-
-        // example usage inside your polling loop or hook
-        private void CheckForegroundWindow()
-        {
-            var info = GetForegroundWindowInfo();
-            RaiseForegroundChanged(info);
-        }
 
         public static bool Start()
         {
@@ -138,10 +103,10 @@ namespace ACAT.Core.Utility
         {
             return new WindowActivityMonitorInfo
             {
-                FgForm = _currentForm,
+                FgHwnd = _currentHwnd,
                 FocusedElement = _currentFocusedElement,
-                FgProcess = _currentForm != null ? GetProcessForWindow(_currentForm.Handle) : null,
-                Title = _currentForm != null ? NativeMethods.GetWindowTitle(_currentForm.Handle) : null
+                FgProcess = _currentHwnd != IntPtr.Zero ? GetProcessForWindow(_currentHwnd) : null,
+                Title = _currentHwnd != IntPtr.Zero ? NativeMethods.GetWindowTitle(_currentHwnd) : null
             };
         }
 
@@ -175,9 +140,9 @@ namespace ACAT.Core.Utility
 
         private static void HeartbeatTick(object sender, EventArgs e)
         {
-            if (_isPaused || _currentForm == null) return;
+            if (_isPaused) return;
 
-            if(_currentForm.Handle != IntPtr.Zero)
+            if(_currentHwnd != IntPtr.Zero)
             {
                 var info = GetForegroundWindowInfo();
                 EvtWindowMonitorHeartbeat?.Invoke(info);
@@ -189,8 +154,7 @@ namespace ACAT.Core.Utility
         {
             if (_isPaused || hwnd == IntPtr.Zero) return;
 
-            Form? fgForm = NativeMethods.GetForegroundWindow() == hwnd ? Control.FromHandle(hwnd) as Form : null;
-            var info = GetForegroundWindowInfo(fgForm);
+            var info = GetForegroundWindowInfo(hwnd);
             HandleFocusOrWindowChange(info);
         }
 
@@ -230,23 +194,12 @@ namespace ACAT.Core.Utility
                 return;
 
             info.FocusedElement = focusedElement;
-
-            if (_form.InvokeRequired)
-            {
-                _form.Invoke(new Action(() => HandleFocusOrWindowChange(info)));
-                return;
-            }
-            else
-            {
-                HandleFocusOrWindowChange(info);
-            }
+            HandleFocusOrWindowChange(info);
         }
 
         private static void HandleFocusOrWindowChange(WindowActivityMonitorInfo info)
         {
-            if (info == null || info.FgForm == null || _currentForm == null) return;
-
-            bool isNewWindow = info.FgForm.Handle != _currentForm.Handle;
+            bool isNewWindow = info.FgHwnd != _currentHwnd;
             bool isNewElement;
 
             if (info.FocusedElement == null && _currentFocusedElement == null)
@@ -259,6 +212,7 @@ namespace ACAT.Core.Utility
                 // One of them is null, so they are different
                 isNewElement = true;
             }
+
             else
             {
                 isNewElement = !Automation.Compare(info.FocusedElement?.GetRuntimeId(),
@@ -270,20 +224,13 @@ namespace ACAT.Core.Utility
                 info.IsNewWindow = isNewWindow;
                 info.IsNewFocusedElement = isNewElement;
 
-                if (info.FgForm.InvokeRequired)
-                {
-                    info.FgForm.Invoke(new Action(() =>
-                    {
-                        EvtFocusChanged?.Invoke(info);
-                    }));
-                }
-
-                else
+                // Marshal to UI thread
+                _form.BeginInvoke((MethodInvoker)(() =>
                 {
                     EvtFocusChanged?.Invoke(info);
-                }
+                }));
 
-                _currentForm = info.FgForm;
+                _currentHwnd = info.FgHwnd;
                 _currentFocusedElement = info.FocusedElement;
             }
         }
@@ -291,47 +238,26 @@ namespace ACAT.Core.Utility
         private static WindowActivityMonitorInfo GetForegroundWindowInfo()
         {
             IntPtr hwnd = NativeMethods.GetForegroundWindow();
-
-            Form? forgroundForm = Control.FromHandle(hwnd) as Form;
-
-            return GetForegroundWindowInfo(forgroundForm);
+            return GetForegroundWindowInfo(hwnd);
         }
 
-        private static WindowActivityMonitorInfo GetForegroundWindowInfo(Form form)
+        private static WindowActivityMonitorInfo GetForegroundWindowInfo(IntPtr hwnd)
         {
-            if (form == null) return null;
+            if (hwnd == IntPtr.Zero) return null;
 
-            if (form.InvokeRequired)
+            var info = new WindowActivityMonitorInfo
             {
-                return (WindowActivityMonitorInfo)form.Invoke(new Func<WindowActivityMonitorInfo>(() =>
-                {
-                    return new WindowActivityMonitorInfo
-                    {
-                        FgForm = form,
-                        Title = NativeMethods.GetWindowTitle(form.Handle),
-                        FgProcess = GetProcessForWindow(form.Handle),
-                        FocusedElement = Process.GetCurrentProcess().Id == NativeMethods.GetWindowProcessId(form.Handle) ? AutomationElement.FocusedElement : null
-                    };
-                }));
-            }
-            else
-            {
-                return new WindowActivityMonitorInfo
-                {
-                    FgForm = form,
-                    Title = NativeMethods.GetWindowTitle(form.Handle),
-                    FgProcess = GetProcessForWindow(form.Handle),
-                    FocusedElement = Process.GetCurrentProcess().Id == NativeMethods.GetWindowProcessId(form.Handle) ? AutomationElement.FocusedElement : null
-                };
+                FgHwnd = hwnd,
+                Title = NativeMethods.GetWindowTitle(hwnd),
+                FgProcess = GetProcessForWindow(hwnd)
+            };
 
+            if (Process.GetCurrentProcess().Id == NativeMethods.GetWindowProcessId(hwnd))
+            {
+                info.FocusedElement = AutomationElement.FocusedElement;
             }
 
-            //if (Process.GetCurrentProcess().Id == NativeMethods.GetWindowProcessId(form.Handle))
-            //{
-            //    info.FocusedElement = AutomationElement.FocusedElement;
-            //}
-
-            //return info;
+            return info;
         }
 
         public static Process GetProcessForWindow(IntPtr hwnd)

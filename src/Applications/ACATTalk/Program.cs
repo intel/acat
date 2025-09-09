@@ -169,7 +169,7 @@ namespace ACATTalk
                         return;
                     }
 
-                    Context.AppAgentMgr.AddAgent(form, agent);
+                    Context.AppAgentMgr.AddAgent(form.Handle, agent);
                     Context.AppPanelManager.ShowDialog(form as IPanel);
                 }
                 else

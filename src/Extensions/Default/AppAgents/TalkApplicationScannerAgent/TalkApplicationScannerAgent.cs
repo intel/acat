@@ -104,7 +104,7 @@ namespace ACAT.Extensions.AppAgents.TalkApplicationScannerAgent
         {
             Log.Verbose();
 
-            _windowHandle = monitorInfo.FgForm.Handle;
+            _windowHandle = monitorInfo.FgHwnd;
 
             Log.Debug("window handle: " + _windowHandle);
 
@@ -116,7 +116,7 @@ namespace ACAT.Extensions.AppAgents.TalkApplicationScannerAgent
                     Log.Debug("found automationelement for the text box");
 
                     disposeTextInterface();
-                    createTalkWindowTextInterface(monitorInfo.FgForm.Handle, automationElement);
+                    createTalkWindowTextInterface(monitorInfo.FgHwnd, automationElement);
                 }
                 else
                 {

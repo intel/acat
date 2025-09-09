@@ -283,7 +283,7 @@ namespace ACAT.Extension.AppAgents.WindowsExplorer
         /// <returns>true if it found a menu for the window</returns>
         protected bool getMenu(WindowActivityMonitorInfo monitorInfo, ref String panelClass)
         {
-            AutomationElement windowElement = getWindowElement(monitorInfo.FgForm.Handle);
+            AutomationElement windowElement = getWindowElement(monitorInfo.FgHwnd);
 
             bool retVal = true;
             if (windowElement != null)
@@ -291,7 +291,7 @@ namespace ACAT.Extension.AppAgents.WindowsExplorer
                 if (isFileExplorer(windowElement))
                 {
                     Log.Debug("isFileExploer is TRUE ");
-                    if (Windows.IsMinimized(monitorInfo.FgForm.Handle))
+                    if (Windows.IsMinimized(monitorInfo.FgHwnd))
                     {
                         retVal = false;
                     }

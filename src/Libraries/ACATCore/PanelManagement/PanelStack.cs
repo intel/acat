@@ -714,7 +714,7 @@ namespace ACAT.Core.PanelManagement
             Form form = CreatePanel(
                             ref panelClass,
                             eventArg.Title,
-                            eventArg.MonitorInfo.FgForm.Handle,
+                            eventArg.MonitorInfo.FgHwnd,
                             eventArg.MonitorInfo.FocusedElement);
             eventArg.PanelClass = panelClass;
             return form;

@@ -218,7 +218,7 @@ namespace ACAT.Extensions.UI.Scanners
             }
 
             // Register the agent safely with the form handle
-            Context.AppAgentMgr.AddAgent(form, agent);
+            Context.AppAgentMgr.AddAgent(form.Handle, agent);
             
             try
             {

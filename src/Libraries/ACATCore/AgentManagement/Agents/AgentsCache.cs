@@ -13,8 +13,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Windows.Forms;
 
 namespace ACAT.Core.AgentManagement.Agents
 {
@@ -33,8 +31,7 @@ namespace ACAT.Core.AgentManagement.Agents
         /// agents are attached to a window handle and activated when that
         /// window becomes active.
         /// </summary>
-        //private readonly Hashtable _adhocAgentTable;
-        private readonly Dictionary<Form, IApplicationAgent> _adhocAgentTable = new();
+        private readonly Hashtable _adhocAgentTable;
 
         /// <summary>
         /// A list of application agents
@@ -69,7 +66,7 @@ namespace ACAT.Core.AgentManagement.Agents
             _agentCache = new List<IApplicationAgent>();
             _agentLookupTableByProcessName = new Hashtable();
             _agentLookupTableById = new Hashtable();
-            //_adhocAgentTable = new Hashtable();
+            _adhocAgentTable = new Hashtable();
             _preferredAgents = new PreferredAgents();
         }
 
@@ -92,46 +89,10 @@ namespace ACAT.Core.AgentManagement.Agents
         /// </summary>
         /// <param name="handle">An application window handle</param>
         /// <param name="agent">Agent that supports the application</param>
-        public void AddAgent(Form form, IApplicationAgent agent)
+        public void AddAgent(IntPtr handle, IApplicationAgent agent)
         {
-            if (form == null || agent == null)
-            {
-                throw new ArgumentNullException();
-            }
-            if (_adhocAgentTable.ContainsKey(form))
-            {
-                throw new ArgumentException("An agent for this handle already exists");
-            }
-            Log.Debug("Adding adhoc agent " + agent.Name + " for form " + form.Name);
-            _adhocAgentTable[form] = agent;
-
-            form.FormClosed += (s, e) =>
-            {
-                if (RemoveAgent(form, out var removedAgent))
-                {
-                    removedAgent.Dispose();
-                    Log.Debug("Disposed adhoc agent " + removedAgent.Name + " for form " + form.Name);
-                }
-            };
-            // raise event that an agent was added
+            _adhocAgentTable[handle] = agent;
             EvtAgentAdded?.Invoke(agent);
-        }
-
-        public bool RemoveAgent(Form form, out IApplicationAgent agent)
-        {
-            if (form == null)
-            {
-                agent = null;
-                return false;
-            }
-
-            if (_adhocAgentTable.TryGetValue(form, out agent))
-            {
-                _adhocAgentTable.Remove(form);
-                return true;
-            }
-
-            return false;
         }
 
         /// <summary>
@@ -172,23 +133,10 @@ namespace ACAT.Core.AgentManagement.Agents
         /// </summary>
         /// <param name="handle">window handle</param>
         /// <returns>agent object, null if not found</returns>
-        public IApplicationAgent GetAgent(Form form)
+        public IApplicationAgent GetAgent(IntPtr handle)
         {
-            return (IApplicationAgent)_adhocAgentTable[form];
+            return (IApplicationAgent)_adhocAgentTable[handle];
         }
-
-        //public IntPtr GetHandleByAgentName(string agentName)
-        //{
-        //    foreach (DictionaryEntry entry in _adhocAgentTable)
-        //    {
-        //        var agent = (IApplicationAgent)entry.Value;
-        //        if (string.Compare(agent.Name, agentName, true) == 0)
-        //        {
-        //            return (IntPtr)entry.Key;
-        //        }
-        //    }
-        //    return IntPtr.Zero;
-        //}
 
         /// <summary>
         /// Returns the preferred agent that supports the process identified by
@@ -333,19 +281,19 @@ namespace ACAT.Core.AgentManagement.Agents
         /// </summary>
         /// <param name="handle">Handle of the window supported by the agent</param>
         /// <param name="dispose">Set this to true to dispose the agent object as well</param>
-        //public void RemoveAgent(Form form, bool dispose = true)
-        //{
-        //    if (_adhocAgentTable.Contains(form))
-        //    {
-        //        var agent = (IApplicationAgent)_adhocAgentTable[form];
-        //        _adhocAgentTable.Remove(form);
+        public void RemoveAgent(IntPtr handle, bool dispose = true)
+        {
+            if (_adhocAgentTable.Contains(handle))
+            {
+                var agent = (IApplicationAgent)_adhocAgentTable[handle];
+                _adhocAgentTable.Remove(handle);
 
-        //        if (dispose && agent != null)
-        //        {
-        //            agent.Dispose();
-        //        }
-        //    }
-        //}
+                if (dispose && agent != null)
+                {
+                    agent.Dispose();
+                }
+            }
+        }
 
         /// <summary>
         /// Creates an instance of the specified type and adds

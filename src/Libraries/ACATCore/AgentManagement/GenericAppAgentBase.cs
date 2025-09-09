@@ -155,8 +155,8 @@ namespace ACAT.Core.AgentManagement
         {
             disposeTextInterface();
             Log.Debug("Calling createEditControlTextInterface");
-            var textInterface = createEditControlTextInterface(monitorInfo.FgForm.Handle, monitorInfo.FocusedElement) ??
-                                createKeyLoggerTextInterface(monitorInfo.FgForm.Handle, monitorInfo.FocusedElement);
+            var textInterface = createEditControlTextInterface(monitorInfo.FgHwnd, monitorInfo.FocusedElement) ??
+                                createKeyLoggerTextInterface(monitorInfo.FgHwnd, monitorInfo.FocusedElement);
 
             appTextInterface = textInterface;
             appTextInterface.EvtTextChanged += _textInterface_EvtTextChanged;

@@ -1,41 +1,41 @@
-Sit me up
-I feel short of breath
-I have pain in the neck
-I am too hot
-I am too cold
-I have cramp
-My bedsheets are uncomfortable
-How wonderful to see you
-How glorious to see you
-How fantastic to see you
-How superb to see you
-Ah, how lovely to see you
-Hello darling
-Hello sweetheart
-Hello, great to see you!
-I'm absolutely wonderful
-I feel excellent.
-I am doing good
-I'm fine
-I'm OK
-I don't feel brilliant
-I'm not at my best
-I feel awful
-I'm utterly miserable
-I feel horrible
-I feel awesome
-I am tired
-I'm great
-Have a wonderful day
-Have a lovely day
-Have a glorious day
-Bye
-Goodbye my darling!
-My shirt is uncomfortable
-I want a hug
-Give me a kiss
-Touch me!
-Reach out and touch me!
-Come hold my hand
-Helloo! Anybody there?
-Hey is anyone there?
+Siéntame
+Siento que me falta el aliento
+Tengo dolor en el cuello
+Estoy demasiado caliente
+Tengo demasiado frío
+Tengo calambres
+Mis sábanas son incómodas
+Qué maravilloso verte
+Qué glorioso verte
+Qué fantástico verte
+Qué soberbio verte
+Ah, qué lindo verte
+Hola, cariño
+Hola cariño
+¡Hola, me alegro de verte!
+Soy absolutamente maravilloso
+Me siento excelente.
+Lo estoy haciendo bien
+Estoy bien
+Estoy bien
+No me siento brillante
+No estoy en mi mejor momento
+Me siento fatal
+Soy completamente miserable
+Me siento horrible
+Me siento increíble
+Estoy cansado
+Soy genial
+Que tenga un día maravilloso
+Que tengas un hermoso día
+Que tengas un día glorioso
+Adiós
+¡Adiós mi amor!
+Mi camisa es incómoda
+Quiero un abrazo
+Dame un beso
+¡Tócame!
+¡Extiende la mano y tócame!
+Ven a tomar mi mano
+¡Hola! ¿Alguien ahí?
+Oye, ¿hay alguien ahí?

@@ -17,8 +17,10 @@ using ACAT.Core.WordPredictorManagement.Interfaces;
 using ACAT.Extensions.WordPredictors.ConvAssist.MessageTypes;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
@@ -195,7 +197,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 {
                     var pref = (wordPredictor as ISupportsPreferences).GetPreferences();
 
-                    if ((pref as Settings).UseDefaultEncoding)
+                    if (CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.Equals("en") && (pref as Settings).UseDefaultEncoding)
                     {
                         wordsPred[ii] = ConvAssistUtils.DefaultEncodingToUTF8(wordsPred[ii]);
                     }

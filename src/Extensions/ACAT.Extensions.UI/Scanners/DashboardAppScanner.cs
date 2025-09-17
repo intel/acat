@@ -86,7 +86,7 @@ namespace ACAT.Extensions.UI.Scanners
 
         protected override void InitializeComponent()
         {
-            this.AutoScaleDimensions = new SizeF(96F, 96F);
+            this.AutoScaleDimensions = new SizeF(192F, 192F);
             this.AutoScaleMode = AutoScaleMode.Dpi;
 
             this.ScannerBorder = new TableLayoutPanel();

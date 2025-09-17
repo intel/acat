@@ -14,6 +14,7 @@ using ACAT.Core.Utility;
 using ACAT.Extension;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -118,8 +119,16 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             StringBuilder sb = new();
             foreach (char c in str)
             {
-                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
-                    c == '.' || c == '_' || c == ' ' || c == ',' || (includeApostrophes && c == '\''))
+                var category = CharUnicodeInfo.GetUnicodeCategory(c);
+
+                if (category == UnicodeCategory.UppercaseLetter ||
+                    category == UnicodeCategory.LowercaseLetter ||
+                    category == UnicodeCategory.TitlecaseLetter ||
+                    category == UnicodeCategory.ModifierLetter ||
+                    category == UnicodeCategory.OtherLetter ||
+                    category == UnicodeCategory.DecimalDigitNumber ||
+                    c == '.' || c == '_' || c == ' ' || c == ',' ||
+                    (includeApostrophes && c == '\''))
                 {
                     sb.Append(c);
                 }

@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.IO.Pipes;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -419,10 +420,21 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// </exception>
         public void Write(string value)
         {
-            if (!this.disposed)
+            if (this.disposed) return;
+
+            byte[] payload = Encoding.UTF8.GetBytes(value);
+            byte[] lengthPrefix = BitConverter.GetBytes(payload.Length);
+
+            try
             {
-                byte[] buffer = Encoding.UTF8.GetBytes(value);
-                this.NamedPipeServer.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServer);
+                this.NamedPipeServer.Write(lengthPrefix, 0, lengthPrefix.Length);
+                this.NamedPipeServer.Write(payload, 0, payload.Length);
+                this.NamedPipeServer.Flush();
+            }
+
+            catch (Exception ex)
+            {
+                Log.Exception("ConvAssist Write Error: " + ex.Message);
             }
         }
 
@@ -437,13 +449,31 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
             var writeTcs = new TaskCompletionSource<object?>();
 
-            byte[] buffer = Encoding.UTF8.GetBytes(value);
-            this.NamedPipeServer.BeginWrite(buffer, 0, buffer.Length, ar =>
+            byte[] payload = Encoding.UTF8.GetBytes(value);
+
+            Log.Debug("Payload hex: " + BitConverter.ToString(payload));
+
+            byte[] lengthPrefix = BitConverter.GetBytes(payload.Length);
+
+            this.NamedPipeServer.BeginWrite(lengthPrefix, 0, lengthPrefix.Length, ar =>
             {
                 try
                 {
                     this.NamedPipeServer.EndWrite(ar);
-                    writeTcs.TrySetResult(null);
+
+                    this.NamedPipeServer.BeginWrite(payload, 0, payload.Length, ar2 =>
+                    {
+                        try
+                        {
+                            this.NamedPipeServer.EndWrite(ar2);
+                            this.NamedPipeServer.Flush();
+                            writeTcs.TrySetResult(null);
+                        }
+                        catch (Exception ex)
+                        {
+                            writeTcs.TrySetException(ex);
+                        }
+                    }, null);
                 }
                 catch (Exception ex)
                 {
@@ -466,10 +496,8 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 }
             }
 
-            catch (TaskCanceledException)
-            {
-                // Expected if msDelay elapsed
-            }
+            catch (TaskCanceledException) { }
+
             finally
             {
                 TaskFinished = true;
@@ -477,56 +505,9 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
             var message = messageReceived;
             messageReceived = string.Empty;
+
             return message;
         }
-#nullable disable
-        ///// <summary>
-        ///// Sends a string to the client. Async method
-        ///// </summary>
-        ///// <param name="value">
-        ///// The string to send to the server.
-        ///// </param>
-        ///// <exception cref="ObjectDisposedException">
-        ///// The object is disposed.
-        ///// </exception>
-        //public async Task<string> WriteAsync(string value, int msDelay)
-        //{
-        //    TaskFinished = false;
-        //    string message;
-        //    //Variable set when the event from receiving data triggers
-        //    messageReceived = string.Empty;
-        //    if (!this.disposed)
-        //    {
-        //        byte[] buffer = Encoding.UTF8.GetBytes(value);
-        //        this.NamedPipeServer.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServer);
-        //    }
-
-        //    CancellationTokenSource source = new CancellationTokenSource(msDelay);
-
-        //    try
-        //    {
-        //        while (!source.IsCancellationRequested)
-        //        {
-        //            if (messageReceived != string.Empty)
-        //            {
-        //                source.Cancel(true);
-        //            }
-        //            await Task.Delay(10);
-        //        }
-        //    }
-        //    catch
-        //    {
-        //    }
-        //    finally
-        //    {
-        //        source.Dispose();
-        //    }
-
-        //    message = messageReceived;
-        //    messageReceived = string.Empty;
-        //    TaskFinished = true;
-        //    return message;
-        //}
 
         /// <summary>
         /// Sends a string to the client. Sync method
@@ -550,18 +531,23 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                     messageReceived = string.Empty;
                     if (!this.disposed)
                     {
-                        byte[] buffer = Encoding.UTF8.GetBytes(value);
-                        this.NamedPipeServer.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServer);
+                        byte[] payload = Encoding.UTF8.GetBytes(value);
+                        byte[] lengthPrefix = BitConverter.GetBytes(payload.Length);
+
+                        this.NamedPipeServer.Write(lengthPrefix, 0, lengthPrefix.Length);
+                        this.NamedPipeServer.Write(payload, 0, payload.Length);
+                        this.NamedPipeServer.Flush();
                     }
 
-                    CancellationTokenSource source = new(msDelay);
+                    using CancellationTokenSource source = new(msDelay);
                     try
                     {
                         while (!source.IsCancellationRequested)
                         {
-                            if (messageReceived != string.Empty)
+                            if (!string.IsNullOrEmpty(messageReceived))
                             {
                                 source.Cancel(true);
+                                break;
                             }
                             Thread.Sleep(10);
                         }
@@ -570,7 +556,6 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                     {
                     }
 
-                    source.Dispose();
                     message = messageReceived;
                     messageReceived = string.Empty;
                     TaskFinished = true;
@@ -582,11 +567,6 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             }
             Log.Debug("ConvAssist WriteSync Lock off");
             return message;
-        }
-
-        public void WriteToPipe(string data)
-        {
-            Write(data);
         }
 
         /// <summary>
@@ -652,12 +632,28 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 PipeServer_EvtClientDisconnected();
                 return;
             }
+
+            // Must have at least 4 bytes for length prefix
             if (received < 4)
             {
                 return;
             }
-            string stringData = Encoding.UTF8.GetString(pipeState.Buffer, 0, received);
+
+            // Extract length prefix
+            int messageLength = BitConverter.ToInt32(pipeState.Buffer, 0);
+
+            // Sanity check
+            if (messageLength <= 0 || messageLength > PipeServerStateConvAssist.BufferSize - 4)
+            {
+                // Something went wrong — bad prefix or oversized payload
+                return;
+            }
+
+            // Extract payload
+            string stringData = Encoding.UTF8.GetString(pipeState.Buffer, 4, messageLength);
+
             pipeState.Message.Append(stringData);
+
             if (pipeState.PipeServer.IsMessageComplete)
             {
                 OnMessageReceived(new MessageReceivedEventArgs(stringData));
@@ -668,7 +664,13 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             {
                 if (pipeState.PipeServer.IsConnected)
                 {
-                    pipeState.PipeServer.BeginRead(pipeState.Buffer, 0, PipeServerStateConvAssist.BufferSize, ReadCallback, pipeState);
+                    pipeState.PipeServer.BeginRead(
+                        pipeState.Buffer,
+                        0,
+                        PipeServerStateConvAssist.BufferSize,
+                        ReadCallback,
+                        pipeState
+                    );
                 }
                 else
                 {

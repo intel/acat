@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Diagnostics;
+using System.Text.Encodings.Web;
 
 namespace ACAT.Core.Utility
 {
@@ -8,7 +9,12 @@ namespace ACAT.Core.Utility
     {
         public static string Serialize<TValue>(TValue message)
         {
-            var res = System.Text.Json.JsonSerializer.Serialize(message);
+            var options = new System.Text.Json.JsonSerializerOptions
+            {
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            };
+
+            var res = System.Text.Json.JsonSerializer.Serialize(message, options);
 
             if (string.IsNullOrEmpty(res))
             {

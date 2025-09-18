@@ -80,59 +80,33 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
         public static string RemoveApostrophes(string inputStr, bool sentence = false)
         {
-            string outputStr = string.Empty;
-            try
-            {
-                outputStr = inputStr.Trim(new char[] { (char)39 });
-            }
-            catch (Exception)
-            {
-                if (!sentence)
-                    outputStr = RemoveSpecialCharacters(inputStr, false);
-                //else
-                //outputStr = RemoveSpecialCharactersSenetnces(inputStr, false);
-            }
-            return outputStr;
+            return CleanText(inputStr, sentence, false);
         }
 
-        /// <summary>
-        /// Removes special characters from the string
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        public static string RemoveSpecialCharacters(string str, bool includeApostrophes = true)
+        public static string CleanText(string input, bool keepSpaces = true, bool keepApostrophes = true)
         {
-            StringBuilder sb = new();
-            foreach (char c in str)
+            if (string.IsNullOrEmpty(input))
+                return string.Empty;
+
+            var sb = new StringBuilder(input.Length);
+
+            foreach (char c in input)
             {
-                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.'
-                        || c == '_' || (includeApostrophes && c == '\''))
+                if (char.IsLetterOrDigit(c)) // keeps all Unicode letters and digits
                 {
                     sb.Append(c);
                 }
-            }
-            return sb.ToString();
-        }
-
-        public static string RemoveSpecialCharactersSentences(string str, bool includeApostrophes = true)
-        {
-            StringBuilder sb = new();
-            foreach (char c in str)
-            {
-                var category = CharUnicodeInfo.GetUnicodeCategory(c);
-
-                if (category == UnicodeCategory.UppercaseLetter ||
-                    category == UnicodeCategory.LowercaseLetter ||
-                    category == UnicodeCategory.TitlecaseLetter ||
-                    category == UnicodeCategory.ModifierLetter ||
-                    category == UnicodeCategory.OtherLetter ||
-                    category == UnicodeCategory.DecimalDigitNumber ||
-                    c == '.' || c == '_' || c == ' ' || c == ',' ||
-                    (includeApostrophes && c == '\''))
+                else if (keepSpaces && char.IsWhiteSpace(c))
+                {
+                    sb.Append(' '); // normalize all whitespace to a single space
+                }
+                else if (keepApostrophes && c == '\'')
                 {
                     sb.Append(c);
                 }
+                // else: skip punctuation, symbols, control chars, etc.
             }
+
             return sb.ToString();
         }
 
@@ -160,12 +134,6 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             return newList;
         }
 
-        public static string UTF8EncodingToDefault(string input)
-        {
-            int length = Encoding.UTF8.GetBytes(input, 0, input.Length, _byteBuffer, 0);
-
-            return Encoding.Default.GetString(_byteBuffer, 0, length);
-        }
 
         public static async Task<T> WithTimeout<T>(Task<T> task, TimeSpan timeout)
         {

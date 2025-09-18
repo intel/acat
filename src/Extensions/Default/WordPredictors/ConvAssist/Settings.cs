@@ -39,16 +39,16 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         [NonSerialized, XmlIgnore]
         public static String PreferencesFilePath;
 
-        /// <summary>
-        /// Set this to true if the language uses diacritics
-        /// </summary>
-        [Display(Name = nameof(StringResources.SetthistotrueiftheConvAssistdatabaseforthislanguagerequiresencodingtranslation),
-         Description = nameof(StringResources.Sethistotrueifthelanguageusesdiacritics),
-        ResourceType = typeof(StringResources))]
-        [UIHint("ToggleSwitch")]
-        [DefaultValue(true)]
-        [ObservableProperty]
-        private bool useDefaultEncoding = true;
+        ///// <summary>
+        ///// Set this to true if the language uses diacritics
+        ///// </summary>
+        //[Display(Name = nameof(StringResources.SetthistotrueiftheConvAssistdatabaseforthislanguagerequiresencodingtranslation),
+        // Description = nameof(StringResources.Sethistotrueifthelanguageusesdiacritics),
+        //ResourceType = typeof(StringResources))]
+        //[UIHint("ToggleSwitch")]
+        //[DefaultValue(true)]
+        //[ObservableProperty]
+        //private bool useDefaultEncoding = true;
 
         [Display(Name = nameof(StringResources.Displaydisclaimeronapplicationstartup),
         ResourceType = typeof(StringResources))]

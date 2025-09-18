@@ -72,11 +72,11 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                     String prevWords = request.PrevWords;
                     String currentWord = request.CurrentWord;
 
-                    if ((pref as Settings).UseDefaultEncoding)
-                    {
-                        prevWords = ConvAssistUtils.UTF8EncodingToDefault(prevWords);
-                        currentWord = ConvAssistUtils.UTF8EncodingToDefault(currentWord);
-                    }
+                    //if ((pref as Settings).UseDefaultEncoding)
+                    //{
+                    //    prevWords = ConvAssistUtils.UTF8EncodingToDefault(prevWords);
+                    //    currentWord = ConvAssistUtils.UTF8EncodingToDefault(currentWord);
+                    //}
 
                     preceedingWords.Clear();
                     preceedingWords.Append(prevWords);
@@ -179,7 +179,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             sentencePred = new string[SentenceList.Count];
             foreach (var element in SentenceList)
             {
-                sentencePred[i] = ConvAssistUtils.RemoveApostrophes(ConvAssistUtils.RemoveSpecialCharactersSentences(element.Key), true);
+                sentencePred[i] = ConvAssistUtils.CleanText(element.Key, true, false); //ConvAssistUtils.RemoveApostrophes(ConvAssistUtils.RemoveSpecialCharactersSentences(element.Key), true);
                 i += 1;
             }
             for (int count = 0, ii = 0; count < 5 && ii < SentenceList.Count(); ii++)
@@ -200,7 +200,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
                 foreach (var (item, index) in SentenceChList.Select((item, index) => (item, index)))
                 {
-                    sentenceChPred[index] = ConvAssistUtils.RemoveApostrophes(ConvAssistUtils.RemoveSpecialCharacters(item.Key));
+                    sentenceChPred[index] = ConvAssistUtils.CleanText(item.Key, false, false); //ConvAssistUtils.RemoveApostrophes(ConvAssistUtils.RemoveSpecialCharacters(item.Key));
                 }
             }
             catch (Exception sentencesLetters)

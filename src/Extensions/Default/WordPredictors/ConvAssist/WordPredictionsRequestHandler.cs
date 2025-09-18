@@ -93,11 +93,11 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
                     var pref = (WordPredictor as ISupportsPreferences).GetPreferences();
 
-                    if ((pref as Settings).UseDefaultEncoding)
-                    {
-                        prevWords = ConvAssistUtils.UTF8EncodingToDefault(prevWords);
-                        currentWord = ConvAssistUtils.UTF8EncodingToDefault(currentWord);
-                    }
+                    //if ((pref as Settings).UseDefaultEncoding)
+                    //{
+                    //    prevWords = ConvAssistUtils.UTF8EncodingToDefault(prevWords);
+                    //    currentWord = ConvAssistUtils.UTF8EncodingToDefault(currentWord);
+                    //}
 
                     preceedingWords.Clear();
                     preceedingWords.Append(prevWords);
@@ -190,17 +190,17 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
                 foreach (var element in WordsList)
                 {
-                    wordsPred[i] = ConvAssistUtils.RemoveApostrophes(ConvAssistUtils.RemoveSpecialCharacters(element.Key));
+                    wordsPred[i] = ConvAssistUtils.CleanText(element.Key, false, false);
                     i += 1;
                 }
                 for (int ii = 0; ii < wordsPred.Length; ii++)
                 {
                     var pref = (wordPredictor as ISupportsPreferences).GetPreferences();
 
-                    if (CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.Equals("en") && (pref as Settings).UseDefaultEncoding)
-                    {
-                        wordsPred[ii] = ConvAssistUtils.DefaultEncodingToUTF8(wordsPred[ii]);
-                    }
+                    //if (CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.Equals("en") && (pref as Settings).UseDefaultEncoding)
+                    //{
+                    //    wordsPred[ii] = ConvAssistUtils.DefaultEncodingToUTF8(wordsPred[ii]);
+                    //}
 
                     if (!String.IsNullOrEmpty((pref as Settings).FilterChars))
                     {
@@ -209,7 +209,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 }
                 foreach (var element in wordsPred)
                 {
-                    resultFullPredictionWords.Append(ConvAssistUtils.RemoveApostrophes(ConvAssistUtils.RemoveSpecialCharacters(element)) + ",");
+                    resultFullPredictionWords.Append(ConvAssistUtils.CleanText(element, false, false) + ",");
                 }
                 var tempList = resultFullPredictionWords.ToString();
                 if (tempList.Length > 0)
@@ -244,7 +244,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 letterPred = new string[LetterList.Count];
                 foreach (var element in LetterList)
                 {
-                    letterPred[i] = ConvAssistUtils.RemoveApostrophes(ConvAssistUtils.RemoveSpecialCharacters(element.Key));
+                    letterPred[i] = ConvAssistUtils.CleanText(element.Key, false, false);
                     i += 1;
                 }
                 for (int count = 0, ii = 0; count < wordPredictor.PredictionLetterCount && ii < LetterList.Count(); ii++)

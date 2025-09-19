@@ -303,12 +303,12 @@ namespace ACAT.Core.Utility
         /// <returns>Resources dir</returns>
         public static String GetDefaultResourcesDir()
         {
-            return Path.Combine(ACATPath, "en");
+           return Path.Combine(ACATPath, "en");
         }
 
-        public static String GetPanelConfigsDir()
+        public static String GetPanelConfigDir()
         {
-            return Path.Combine(UserManager.GetUserDir(UserManager.DefaultUserName), "panelconfigs");
+            return Path.Combine(ACATPath, "panelconfigs");
         }
 
         /// <summary>

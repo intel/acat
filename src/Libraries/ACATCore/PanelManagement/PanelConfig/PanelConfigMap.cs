@@ -4,6 +4,7 @@
 using ACAT.Core.AgentManagement;
 using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.Utility.TypeLoader;
 using System;
@@ -61,42 +62,6 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         private static Dictionary<Guid, PanelConfigMapEntry> _masterPanelConfigMapTable;
 
         /// <summary>
-        /// Add a new entry to the PanelClassConfig and save the file
-        /// </summary>
-        /// <param name="appId"></param>
-        /// <param name="language"></param>
-        /// <param name="panelClassConfigMap"></param>
-        /// <returns></returns>
-        public static bool AddPanelClassConfigMap(string appId, PanelClassConfigMap panelClassConfigMap)
-        {
-            var panelClassConfigFilePath = Path.Combine(FileUtils.GetPanelConfigsDir(), PanelClassConfigFileName);
-
-            if (File.Exists(panelClassConfigFilePath))
-            {
-                var appPanelClassConfig = AppPanelClassConfig.Load(panelClassConfigFilePath);
-
-                var panelClassConfig = appPanelClassConfig.Find(appId);
-
-                if (panelClassConfig != null)
-                {
-                    var result = panelClassConfig.PanelClassConfigMaps.Find(mapEntry => string.Compare(mapEntry.Name, panelClassConfigMap.Name, true) == 0);
-
-                    if (result != null)
-                    {
-                        return false;
-                    }
-
-                    panelClassConfig.PanelClassConfigMaps.Add(panelClassConfigMap);
-                    appPanelClassConfig.Save();
-
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
         /// Checks if two scanners are the same
         /// </summary>
         /// <param name="panel1">first scanner</param>
@@ -105,27 +70,6 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         public static bool AreEqual(string panel1, string panel2)
         {
             return string.Compare(panel1, panel2, true) == 0;
-        }
-
-        /// <summary>
-        /// Returns the name of the animation config file for the specified
-        /// scanner.  The GetPanelConfigMapEntry function first checks
-        /// the culture folder (if non-English is the current culture)
-        /// It it doesn't find it thre, it looks up
-        /// the English culture folder
-        /// </summary>
-        /// <param name="panelClass">scanner name/class</param>
-        /// <returns>the animation config file name</returns>
-        public static string GetConfigFileForPanel(string panelClass)
-        {
-            var retVal = string.Empty;
-            var mapEntry = GetPanelConfigMapEntry(panelClass);
-            if (mapEntry != null)
-            {
-                retVal = mapEntry.ConfigFileName;
-            }
-
-            return retVal;
         }
 
         /// <summary>
@@ -145,24 +89,6 @@ namespace ACAT.Core.PanelManagement.PanelConfig
             }
 
             return Guid.Empty;
-        }
-
-        /// <summary>
-        /// Returns the panelclass config filename for the current culture
-        /// </summary>
-        /// <returns>the full file name</returns>
-        public static string GetCurrentPanelClassConfigFile()
-        {
-            return Path.Combine(FileUtils.GetPanelConfigsDir(), PanelClassConfigFileName);
-        }
-
-        /// <summary>
-        /// Returns the panelclass config file name for the default English language
-        /// </summary>
-        /// <returns>the full filename</returns>
-        public static string GetDefaultPanelClassConfigFileName()
-        {
-            return Path.Combine(FileUtils.GetPanelConfigsDir(), PanelClassConfigFileName);
         }
 
         /// <summary>
@@ -267,20 +193,26 @@ namespace ACAT.Core.PanelManagement.PanelConfig
                     return false;
             }
 
-            var configsDir = FileUtils.GetPanelConfigsDir();
+            var configsDir = FileUtils.GetPanelConfigDir();
             Log.Debug($"Loading resources from {configsDir}");
 
-            if (Directory.Exists(configsDir))
+            if (Directory.Exists(Path.Combine(configsDir, "common")))
             {
-                _loadPanelConfigMapTable = new List<Guid>();
-                _loadConfigFileLocationMap = new Dictionary<string, string>();
+                _loadPanelConfigMapTable ??= new List<Guid>();
+                _loadConfigFileLocationMap ??= new Dictionary<string, string>();
 
                 LoadResourcesFromDir(configsDir);
+            }
+            if (Directory.Exists(Path.Combine(configsDir, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName)))
+            {
+                _loadPanelConfigMapTable ??= new List<Guid>();
+                _loadConfigFileLocationMap ??= new Dictionary<string, string>();
 
-                _ConfigIdMapTable.Add(DefaultKey, _loadPanelConfigMapTable);
-                _configFileLocationMap.Add(DefaultKey, _loadConfigFileLocationMap);
+                LoadResourcesFromDir(configsDir);
             }
 
+            _ConfigIdMapTable.Add(DefaultKey, _loadPanelConfigMapTable);
+            _configFileLocationMap.Add(DefaultKey, _loadConfigFileLocationMap);
             return true;
         }
 
@@ -597,20 +529,24 @@ namespace ACAT.Core.PanelManagement.PanelConfig
                             : null;
         }
 
-        ///// <summary>
-        ///// Walks the specified directory (rescursively)
-        ///// to look for files
-        ///// </summary>
-        ///// <param name="dir">Directory to walk</param>
-        //private static void load(String dir, String wildcard)
-        //{
-        //    if (Directory.Exists(dir) && !_DLLError)
-        //    {
-        //var walker = new DirectoryWalker(dir, wildcard);
-        //        Log.Debug("Walking dir " + dir);
-        //        walker.Walk(new OnFileFoundDelegate(onFileFound), recursive);
-        //    }
-        //}
+        private static string GetOrCreateUserPanelClassConfigFile()
+        {
+            var userPath = Path.Combine(UserManager.CurrentUserDir, PanelClassConfigFileName);
+            var commonDir = FileUtils.GetPanelConfigDir();
+            var commonPath = Path.Combine(commonDir, PanelClassConfigFileName);
+
+            // Ensure user directory exists
+            Directory.CreateDirectory(Path.GetDirectoryName(userPath)!);
+
+            // Copy from common dir on first run
+            if (!File.Exists(userPath) && File.Exists(commonPath))
+            {
+                File.Copy(commonPath, userPath, overwrite: false);
+            }
+
+            return userPath;
+        }
+
 
         /// <summary>
         /// For this application, load the panel configurations to use from
@@ -623,7 +559,7 @@ namespace ACAT.Core.PanelManagement.PanelConfig
 
             _PanelClassConfigMapTable ??= new Dictionary<string, PanelClassConfig>();
 
-            var panelClassConfigFilePath = Path.Combine(FileUtils.GetPanelConfigsDir(), PanelClassConfigFileName);
+            var panelClassConfigFilePath = GetOrCreateUserPanelClassConfigFile();
 
             if (File.Exists(panelClassConfigFilePath) && !_PanelClassConfigMapTable.ContainsKey(DefaultKey))
             {
@@ -758,15 +694,20 @@ namespace ACAT.Core.PanelManagement.PanelConfig
             string filePath = xmlFileName.ToLower();
             string fileName = Path.GetFileName(filePath);
 
-            if (string.Compare(fileName, PanelConfigMapFileName, true) == 0)
+            if (string.Equals(fileName, PanelConfigMapFileName, StringComparison.OrdinalIgnoreCase))
             {
                 onPanelConfigMapFileFound(filePath);
             }
 
-            if (!_loadConfigFileLocationMap.ContainsKey(fileName))
+            if (_loadConfigFileLocationMap.ContainsKey(fileName))
             {
-                Log.Debug("Adding xmlfile " + fileName + ", fullPath: " + xmlFileName);
-                _loadConfigFileLocationMap.Add(fileName.ToLower(), xmlFileName);
+                Log.Debug($"Updating xmlfile {fileName}, fullPath: {xmlFileName}");
+                _loadConfigFileLocationMap[fileName] = xmlFileName;
+            }
+            else
+            {
+                Log.Debug($"Adding xmlfile {fileName}, fullPath: {xmlFileName}");
+                _loadConfigFileLocationMap.Add(fileName, xmlFileName);
             }
         }
 

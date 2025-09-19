@@ -213,12 +213,16 @@ namespace ACAT.Core.UserControlManagement
             }
 
             // load the panels from the default culture (which is English)
-            var resourcesDir = FileUtils.GetPanelConfigsDir();
+            var resourcesDir = Path.Combine(FileUtils.GetPanelConfigDir(), "common");
+            Log.Debug("DefaultResourcesDir: " + resourcesDir);
+            load(resourcesDir, "*.xml");
+
+            // Also pick up any overrides for the current culture
+            resourcesDir = Path.Combine(FileUtils.GetPanelConfigDir(), CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
             Log.Debug("DefaultResourcesDir: " + resourcesDir);
             load(resourcesDir, "*.xml");
 
             _ConfigIdMapTable.Add(DefaultKey, _loadUserControlConfigMapTable);
-
             _configFileLocationMap.Add(DefaultKey, _loadConfigFileLocationMap);
 
             return true;
@@ -532,11 +536,17 @@ namespace ACAT.Core.UserControlManagement
         /// <param name="xmlFileName">name of the xml file</param>
         private static void onXmlFileFound(String xmlFileName)
         {
-            String fileName = Path.GetFileName(xmlFileName).ToLower();
-            if (!_loadConfigFileLocationMap.ContainsKey(fileName))
+            string fileName = Path.GetFileName(xmlFileName).ToLower();
+
+            if (_loadConfigFileLocationMap.ContainsKey(fileName))
+            {
+                Log.Debug("Updating xmlfile " + fileName + ", fullPath: " + xmlFileName);
+                _loadConfigFileLocationMap[fileName] = xmlFileName;
+            }
+            else
             {
                 Log.Debug("Adding xmlfile " + fileName + ", fullPath: " + xmlFileName);
-                _loadConfigFileLocationMap.Add(fileName.ToLower(), xmlFileName);
+                _loadConfigFileLocationMap.Add(fileName, xmlFileName);
             }
         }
 

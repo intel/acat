@@ -59,10 +59,23 @@
   
   <!-- Configurations -->
   <PropertyGroup>
-    <Configurations>Debug;Release;Debug_TestGTEC</Configurations>
+    <Configurations>Debug;Release;Debug_TestGTEC;Debug_signed;Release_signed</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug_TestGTEC'">
     <DefineConstants>DEBUG;TRACE;SIMULATIONBOARD</DefineConstants>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug_signed'">
+    <DefineConstants>DEBUG;TRACE;STRONG_ASSEMBLY_CHECK</DefineConstants>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(SolutionDir)keys\acat-dev-signingcert.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release_signed'">
+    <DefineConstants>RELEASE;TRACE;STRONG_ASSEMBLY_CHECK</DefineConstants>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(SolutionDir)keys\acat-rel-signingcert.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
 </Project>

@@ -13,7 +13,7 @@ namespace ACAT.Core.Utility.TypeLoader
 
         public IReadOnlyDictionary<Guid, Type> LoadedTypes => _typeCache;
 
-#if SIGNED_RELEASE
+#if STRONG_ASSEMBLY_CHECK
         public static bool IsAssemblyStrongNamed(string assemblyPath)
         {
             try
@@ -66,7 +66,7 @@ namespace ACAT.Core.Utility.TypeLoader
                 // Don't try to load it.  just return
                 return;
 
-#if SIGNED_RELEASE
+#if STRONG_ASSEMBLY_CHECK
 
             // In signed release builds, we enforce strong-naming and publisher trust checks
             if (!IsFromTrustedPublisher(assemblyPath))

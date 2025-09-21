@@ -62,6 +62,42 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         private static Dictionary<Guid, PanelConfigMapEntry> _masterPanelConfigMapTable;
 
         /// <summary>
+        /// Add a new entry to the PanelClassConfig and save the file
+        /// </summary>
+        /// <param name="appId"></param>
+        /// <param name="language"></param>
+        /// <param name="panelClassConfigMap"></param>
+        /// <returns></returns>
+        public static bool AddPanelClassConfigMap(string appId, PanelClassConfigMap panelClassConfigMap)
+        {
+            var panelClassConfigFilePath = GetOrCreateUserPanelClassConfigFile();
+
+            if (File.Exists(panelClassConfigFilePath))
+            {
+                var appPanelClassConfig = AppPanelClassConfig.Load(panelClassConfigFilePath);
+
+                var panelClassConfig = appPanelClassConfig.Find(appId);
+
+                if (panelClassConfig != null)
+                {
+                    var result = panelClassConfig.PanelClassConfigMaps.Find(mapEntry => string.Compare(mapEntry.Name, panelClassConfigMap.Name, true) == 0);
+
+                    if (result != null)
+                    {
+                        return false;
+                    }
+
+                    panelClassConfig.PanelClassConfigMaps.Add(panelClassConfigMap);
+                    appPanelClassConfig.Save();
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Checks if two scanners are the same
         /// </summary>
         /// <param name="panel1">first scanner</param>
@@ -70,6 +106,27 @@ namespace ACAT.Core.PanelManagement.PanelConfig
         public static bool AreEqual(string panel1, string panel2)
         {
             return string.Compare(panel1, panel2, true) == 0;
+        }
+
+        /// <summary>
+        /// Returns the name of the animation config file for the specified
+        /// scanner.  The GetPanelConfigMapEntry function first checks
+        /// the culture folder (if non-English is the current culture)
+        /// It it doesn't find it thre, it looks up
+        /// the English culture folder
+        /// </summary>
+        /// <param name="panelClass">scanner name/class</param>
+        /// <returns>the animation config file name</returns>
+        public static string GetConfigFileForPanel(string panelClass)
+        {
+            var retVal = string.Empty;
+            var mapEntry = GetPanelConfigMapEntry(panelClass);
+            if (mapEntry != null)
+            {
+                retVal = mapEntry.ConfigFileName;
+            }
+
+            return retVal;
         }
 
         /// <summary>

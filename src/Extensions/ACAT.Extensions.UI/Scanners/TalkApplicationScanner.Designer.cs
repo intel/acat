@@ -11,7 +11,7 @@ namespace ACAT.Extensions.UI.Scanners
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        //private System.Windows.Forms.Label labelCurrentTypingMode;
+        private System.Windows.Forms.Label labelCurrentTypingMode;
 
         private System.Windows.Forms.Panel panelKeyboard;
 
@@ -61,7 +61,7 @@ namespace ACAT.Extensions.UI.Scanners
             this.panelWordPrediction = new System.Windows.Forms.Panel();
             this.panelSentencePrediction = new System.Windows.Forms.Panel();
             this.panelTextBox = new System.Windows.Forms.Panel();
-            //this.labelCurrentTypingMode = new System.Windows.Forms.Label();
+            this.labelCurrentTypingMode = new System.Windows.Forms.Label();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -106,9 +106,9 @@ namespace ACAT.Extensions.UI.Scanners
             this.tableLayoutTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutTop.Controls.Add(this.panelWordPrediction, 0, 2);
-            this.tableLayoutTop.Controls.Add(this.panelSentencePrediction, 1, 2);
-            this.tableLayoutTop.Controls.Add(this.panelTextBox, 0, 0);
-            //this.tableLayoutTop.Controls.Add(this.labelCurrentTypingMode, 0, 0);
+            this.tableLayoutTop.Controls.Add(this.panelSentencePrediction, 1, 0);
+            this.tableLayoutTop.Controls.Add(this.panelTextBox, 0, 5);
+            this.tableLayoutTop.Controls.Add(this.labelCurrentTypingMode, 0, 0);
             this.tableLayoutTop.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutTop.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutTop.Margin = new System.Windows.Forms.Padding(0);
@@ -154,23 +154,22 @@ namespace ACAT.Extensions.UI.Scanners
             this.panelTextBox.Margin = new System.Windows.Forms.Padding(27, 12, 10, 6);
             this.panelTextBox.Name = "panelTextBox";
             this.tableLayoutTop.SetRowSpan(this.panelTextBox, 2);
-            this.tableLayoutTop.SetColumnSpan(this.panelTextBox, 2);
             this.panelTextBox.Size = new System.Drawing.Size(555, 167);
             this.panelTextBox.TabIndex = 3;
             // 
             // labelCurrentTypingMode
             // 
-            //this.labelCurrentTypingMode.AutoSize = true;
-            //this.labelCurrentTypingMode.Dock = System.Windows.Forms.DockStyle.Fill;
-            //this.labelCurrentTypingMode.Font = new System.Drawing.Font("Montserrat Black", 24F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            //this.labelCurrentTypingMode.ForeColor = System.Drawing.Color.Gainsboro;
-            //this.labelCurrentTypingMode.Location = new System.Drawing.Point(4, 0);
-            //this.labelCurrentTypingMode.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            //this.labelCurrentTypingMode.Name = "labelCurrentTypingMode";
-            //this.tableLayoutTop.SetRowSpan(this.labelCurrentTypingMode, 2);
-            //this.labelCurrentTypingMode.Size = new System.Drawing.Size(584, 184);
-            //this.labelCurrentTypingMode.TabIndex = 4;
-            //this.labelCurrentTypingMode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelCurrentTypingMode.AutoSize = true;
+            this.labelCurrentTypingMode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelCurrentTypingMode.Font = new System.Drawing.Font("Montserrat Black", 24F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCurrentTypingMode.ForeColor = System.Drawing.Color.Gainsboro;
+            this.labelCurrentTypingMode.Location = new System.Drawing.Point(4, 0);
+            this.labelCurrentTypingMode.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelCurrentTypingMode.Name = "labelCurrentTypingMode";
+            this.tableLayoutTop.SetRowSpan(this.labelCurrentTypingMode, 2);
+            this.labelCurrentTypingMode.Size = new System.Drawing.Size(584, 184);
+            this.labelCurrentTypingMode.TabIndex = 4;
+            this.labelCurrentTypingMode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // statusStrip
             // 

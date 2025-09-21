@@ -2040,4 +2040,16 @@ ACAT uses two metrics - “railing” and “impedance” - to check signal qual
   <data name="Tryhighervalueshead" xml:space="preserve">
     <value>Try higher values if the system is trying to recalibrate too often with involuntary head movements​</value>
   </data>
+  <data name="ConfigureKeyboardHotkey_Title" xml:space="preserve">
+    <value>Configure Keyboard Hotkey</value>
+  </data>
+  <data name="ConfigureKeyboardHotkey_Prompt" xml:space="preserve">
+    <value>ACAT is configured to trigger on the hotkey displayed in green below.  You can change the hotkey by clicking on the buttons to select a different key combination.</value>
+  </data>
+  <data name="ConfigureSwitch_Title" xml:space="preserve">
+    <value>Configure Switch</value>
+  </data>
+  <data name="ConfigureSwitch_Prompt" xml:space="preserve">
+    <value>ACAT is configured to trigger on the hotkey displayed in green below. Your switch should be pre-configured to send this hotkey when it is activated. Refer to the manual for your switch on how to do this. Alternatively, you can click on the buttons below to change ACAT's hotkey to match the hotkey configuration for your switch.</value>
+  </data>
 </root>

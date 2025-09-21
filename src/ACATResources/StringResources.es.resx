@@ -2041,4 +2041,16 @@ ACAT utiliza dos métricas - “saturación” e “impedancia” - para verific
   <data name="Tryhighervalueshead" xml:space="preserve">
     <value>Pruebe valores más altos si el sistema intenta recalibrarse con demasiada frecuencia con movimientos involuntarios de la cabeza.</value>
   </data>
+  <data name="ConfigureKeyboardHotkey_Title" xml:space="preserve">
+    <value>Configurar tecla de acceso rápido del teclado</value>
+  </data>
+  <data name="ConfigureKeyboardHotkey_Prompt" xml:space="preserve">
+    <value>ACAT está configurado para activarse con la tecla de acceso rápido que se muestra en verde a continuación. Puedes cambiar la tecla de acceso rápido haciendo clic en los botones para seleccionar una combinación de teclas diferente.</value>
+  </data>
+  <data name="ConfigureSwitch_Title" xml:space="preserve">
+    <value>Configurar interruptor</value>
+  </data>
+  <data name="ConfigureSwitch_Prompt" xml:space="preserve">
+    <value>ACAT está configurado para activarse con la tecla de acceso rápido que se muestra en verde a continuación. Tu interruptor debe estar preconfigurado para enviar esta tecla de acceso rápido cuando se active. Consulta el manual de tu interruptor para saber cómo hacerlo. Alternativamente, puedes hacer clic en los botones a continuación para cambiar la tecla de acceso rápido de ACAT y que coincida con la configuración de tu interruptor.</value>
+  </data>
 </root>

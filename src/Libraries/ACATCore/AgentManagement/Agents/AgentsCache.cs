@@ -138,6 +138,19 @@ namespace ACAT.Core.AgentManagement.Agents
             return (IApplicationAgent)_adhocAgentTable[handle];
         }
 
+        public IntPtr GetHandleByAgentName(string agentName)
+        {
+            foreach (DictionaryEntry entry in _adhocAgentTable)
+            {
+                var agent = (IApplicationAgent)entry.Value;
+                if (string.Compare(agent.Name, agentName, true) == 0)
+                {
+                    return (IntPtr)entry.Key;
+                }
+            }
+            return IntPtr.Zero;
+        }
+
         /// <summary>
         /// Returns the preferred agent that supports the process identified by
         /// the specified process name.

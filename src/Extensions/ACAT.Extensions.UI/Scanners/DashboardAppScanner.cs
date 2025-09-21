@@ -62,6 +62,7 @@ namespace ACAT.Extensions.UI.Scanners
                 case "CmdTalkPhraseMode":
                 case "CmdTalkShorthandMode":
                 case "CmdSwitchWindow":
+                case "Exit":
                     arg.Handled = true;
                     arg.Enabled = true;
                     break;

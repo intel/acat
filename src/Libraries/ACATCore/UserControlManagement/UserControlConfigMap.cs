@@ -182,6 +182,7 @@ namespace ACAT.Core.UserControlManagement
             return retVal;
         }
 
+
         /// <summary>
         /// Walks the directories specified in extensionDir,
         /// looks for DLL's, loads all the types and looks for
@@ -211,6 +212,10 @@ namespace ACAT.Core.UserControlManagement
                 if (_DLLError)
                     return false;
             }
+
+            // load the usercontrolconfigmap.xml file
+            var usercontrolConfigMapFile = Path.Combine(FileUtils.GetPanelConfigDir(), UserControlConfigMapFileName);
+            LoadUserControlConfigMap(usercontrolConfigMapFile);
 
             // load the panels from the default culture (which is English)
             var resourcesDir = Path.Combine(FileUtils.GetPanelConfigDir(), "common");
@@ -477,21 +482,14 @@ namespace ACAT.Core.UserControlManagement
             String filePath = file.ToLower();
             String fileName = Path.GetFileName(filePath);
 
-            if (String.Compare(fileName, UserControlConfigMapFileName, true) == 0)
+            String extension = Path.GetExtension(filePath);
+            if (String.Compare(extension, ".dll", true) == 0)
             {
-                onPanelConfigMapFileFound(filePath);
+                onDllFound(filePath);
             }
-            else
+            else if (String.Compare(extension, ".xml", true) == 0)
             {
-                String extension = Path.GetExtension(filePath);
-                if (String.Compare(extension, ".dll", true) == 0)
-                {
-                    onDllFound(filePath);
-                }
-                else if (String.Compare(extension, ".xml", true) == 0)
-                {
-                    onXmlFileFound(filePath);
-                }
+                onXmlFileFound(filePath);
             }
         }
 
@@ -503,7 +501,7 @@ namespace ACAT.Core.UserControlManagement
         /// from the file.
         /// </summary>
         /// <param name="configFileName">full path to the config file</param>
-        private static void onPanelConfigMapFileFound(String configFileName)
+        private static void LoadUserControlConfigMap(String configFileName)
         {
             try
             {

@@ -52,6 +52,21 @@
       SkipUnchangedFiles="true" />
   </Target>
   
+  <!-- Copy PanelConfigs -->
+  <ItemGroup>
+    <PanelConfigs Include="$(ProjectDir)\panelconfigs\**\*">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </PanelConfigs>
+  </ItemGroup>
+  
+  <Target Name="CopyPanelConfigs" AfterTargets="Build">
+    <Message Text="Copy Panel Config Files" Importance="high" />
+    <Copy 
+      SourceFiles="@(PanelConfigs)" 
+      DestinationFiles="$(OutputPath)\panelconfigs\%(PanelConfigs.RecursiveDir)%(Filename)%(Extension)" 
+      SkipUnchangedFiles="true" />
+    </Target>
+  
   <!-- Copy ConvAssist Static Files -->
   <ItemGroup>
     <ConvAssistStatic Include="$(SolutionDir)\Applications\Install\en\**\*">

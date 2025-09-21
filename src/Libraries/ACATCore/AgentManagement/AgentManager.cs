@@ -703,6 +703,27 @@ namespace ACAT.Core.AgentManagement
             return true;
         }
 
+
+        //public void RemoveAgent(string AgentName)
+        //{
+        //    IApplicationAgent agent = _agentsCache.GetAgentByName(AgentName);
+        //    if (agent != null)
+        //    {
+        //        //RemoveAgent(agent.);
+        //    }
+        //}
+
+
+        public void RemoveAgent(string AgentName)
+        {
+            IntPtr handle  = _agentsCache.GetHandleByAgentName(AgentName);
+
+            if(handle != null)
+            {
+                RemoveAgent(handle);
+            }
+        }
+
         /// <summary>
         /// Removes a previously added ad-hoc agent
         /// </summary>
@@ -992,12 +1013,12 @@ namespace ACAT.Core.AgentManagement
 
                     // first check if there is an ad-hoc agent, if so,
                     // activate it
-                    Log.Debug("Looking for adhoc agent for " + monitorInfo.FgHwnd);
+                    Log.Verbose("Looking for adhoc agent for " + monitorInfo.FgHwnd);
                     IApplicationAgent agent = _agentsCache.GetAgent(monitorInfo.FgHwnd);
                     if (agent == null)
                     {
                         // check if a dialog or menu is active
-                        Log.Debug("Adhoc agent not present for " + monitorInfo.FgHwnd);
+                        Log.Verbose("Adhoc agent not present for " + monitorInfo.FgHwnd);
 
                         IntPtr parent = User32Interop.GetParent(monitorInfo.FgHwnd);
                         if (parent != IntPtr.Zero)
@@ -1006,13 +1027,13 @@ namespace ACAT.Core.AgentManagement
                                 (String.Compare(processName, _currentProcessName, true) != 0) &&
                                 isDialog(monitorInfo))
                             {
-                                Log.Debug("Fg window is a dialog.  Setting agent to dialog agent");
+                                Log.Verbose("Fg window is a dialog.  Setting agent to dialog agent");
 
                                 agent = _dialogAgent;
                             }
                             else if (EnableContextualMenusForMenus && isMenu(monitorInfo))
                             {
-                                Log.Debug("Fg window is a menu.  Setting agent to menu agent");
+                                Log.Verbose("Fg window is a menu.  Setting agent to menu agent");
                                 agent = _menuControlAgent;
                             }
                         }
@@ -1021,23 +1042,23 @@ namespace ACAT.Core.AgentManagement
                         {
                             if (Windows.IsMinimized(monitorInfo.FgHwnd))
                             {
-                                Log.Debug("Window is minimized. Use generic agent");
+                                Log.Verbose("Window is minimized. Use generic agent");
                                 agent = _genericAppAgent;
                             }
                             else
                             {
                                 // check if there is a dedicated agent for this process
-                                Log.Debug("Getting agent for " + processName);
+                                Log.Verbose("Getting agent for " + processName);
                                 agent = _agentsCache.GetAgent(monitorInfo.FgProcess);
                             }
                         }
                     }
                     else
                     {
-                        Log.Debug("Adhoc agent IS present for " + monitorInfo.FgHwnd);
+                        Log.Verbose("Adhoc agent IS present for " + monitorInfo.FgHwnd);
                     }
 
-                    Log.Debug("Current agent: " + ((_currentAgent != null) ?
+                    Log.Verbose("Current agent: " + ((_currentAgent != null) ?
                                                     _currentAgent.Name : "null") +
                                                     ", agent:  " + ((agent != null) ? agent.Name : "null"));
 

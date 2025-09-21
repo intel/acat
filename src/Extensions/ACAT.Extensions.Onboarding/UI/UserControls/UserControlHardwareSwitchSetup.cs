@@ -110,18 +110,14 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
             String bookmark = String.Empty;
             if (_switchType == OnboardingHardwareSwitchSetup.SwitchType.Keyboard)
             {
-                labelTitle.Text = "Configure Keyboard Hotkey";
-                labelPrompt.Text = "ACAT is configured to trigger on the hotkey displayed in green below. " +
-                                    "You can change the hotkey by clicking on the buttons to select a different key combination.";
+                labelTitle.Text = StringResources.ConfigureKeyboardHotkey_Title;
+                labelPrompt.Text = StringResources.ConfigureKeyboardHotkey_Prompt;
                 bookmark = "KeyboardSwitch";
             }
             else
             {
-                labelTitle.Text = "Configure Switch";
-                labelPrompt.Text = "ACAT is configured to trigger on the hotkey displayed in green below. Your switch should be pre-configured to send this hotkey when it is activated. " +
-                                    "Refer to the manual for your switch on how to do this. " +
-                                    "Alternatively, you can click on the buttons below to change ACAT's hotkey to " +
-                                    "match the hotkey configuration for your switch.";
+                labelTitle.Text = StringResources.ConfigureSwitch_Title;
+                labelPrompt.Text = StringResources.ConfigureSwitch_Prompt;
                 bookmark = "SwitchConfigure";
             }
 

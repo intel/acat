@@ -5493,5 +5493,34 @@ namespace ACATResources {
                 return ResourceManager.GetString("ZoomWarning", resourceCulture);
             }
         }
+
+        public static string ConfigureKeyboardHotkey_Title
+        {
+            get
+            {
+                return ResourceManager.GetString("ConfigureKeyboardHotkey_Title", resourceCulture);
+            }
+        }
+        public static string ConfigureKeyboardHotkey_Prompt
+        {
+            get
+            {
+                return ResourceManager.GetString("ConfigureKeyboardHotkey_Prompt", resourceCulture);
+            }
+        }
+        public static string ConfigureSwitch_Title
+        {
+            get
+            {
+                return ResourceManager.GetString("ConfigureSwitch_Title", resourceCulture);
+            }
+        }
+        public static string ConfigureSwitch_Prompt
+        {
+            get
+            {
+                return ResourceManager.GetString("ConfigureSwitch_Prompt", resourceCulture);
+            }
+        }
     }
 }

@@ -72,13 +72,14 @@ namespace ACATApp
                 return;
             }
 
+            CloseSplashScreen();
+
             if (!PostInitialization())
             {
                 Context.Dispose();
                 return;
             }
 
-            CloseSplashScreen();
             ShowMainPanel();
 
             ShowSplashScreen("Closing ACAT");

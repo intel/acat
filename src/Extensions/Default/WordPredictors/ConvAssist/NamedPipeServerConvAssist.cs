@@ -212,7 +212,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             string staticPath = Path.Combine(FileUtils.GetResourcesDir(), "WordPredictors", "ConvAssist");
 
             //Personalize Path
-            string personalizedPath = Path.Combine(UserManager.CurrentUserDir, CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, "WordPredictors", "ConvAssist", "Database");
+            string personalizedPath = Path.Combine(UserManager.CurrentUserDir, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, "WordPredictors", "ConvAssist", "Database");
 
 
             List<string> parameters = new()

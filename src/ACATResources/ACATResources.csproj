@@ -67,18 +67,23 @@
       SkipUnchangedFiles="true" />
     </Target>
   
-  <!-- Copy ConvAssist Static Files -->
+  <!-- Copy English ConvAssist Static Files -->
   <ItemGroup>
     <ConvAssistStatic Include="$(SolutionDir)\Applications\Install\en\**\*">
+      <Lang>en</Lang>
+      <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </ConvAssistStatic>
+    <ConvAssistStatic Include="$(SolutionDir)\Applications\Install\es\**\*">
+      <Lang>es</Lang>
       <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
     </ConvAssistStatic>
   </ItemGroup>
   <Target Name="CopyStaticConvAssist" AfterTargets="Build">
     <Message Text="Copy Static ConvAssist Files" Importance="high" />
     <!-- Copy files while preserving subfolders -->
-    <Copy 
-      SourceFiles="@(ConvAssistStatic)" 
-      DestinationFiles="$(OutputPath)en\%(ConvAssistStatic.RecursiveDir)%(Filename)%(Extension)" 
+    <Copy
+      SourceFiles="@(ConvAssistStatic)"
+      DestinationFiles="$(OutputPath)%(ConvAssistStatic.Lang)\%(ConvAssistStatic.RecursiveDir)%(Filename)%(Extension)"  
       SkipUnchangedFiles="true" />
   </Target>
   <!-- Copy ConvAssist Application -->

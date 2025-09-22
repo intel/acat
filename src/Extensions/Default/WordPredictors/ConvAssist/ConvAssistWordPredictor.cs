@@ -196,7 +196,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 #endif
             Log.Info("ConvAssist process started. Starting Named Pipe.");
             // Now start the named pipe server and wait for the client to connect
-            string convAssistSettings = Path.Combine(UserManager.CurrentUserDir, CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, "WordPredictors", "ConvAssist", "Settings");
+            string convAssistSettings = Path.Combine(UserManager.CurrentUserDir, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, "WordPredictors", "ConvAssist", "Settings");
 
             namedPipe = new NamedPipeServerConvAssist(PipeName, PipeDirection.InOut, convAssistSettings);
             pipeCreated = namedPipe.CreatePipeServer(send_params);

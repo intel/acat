@@ -234,26 +234,26 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         public static bool ShowTalkWindowOnStartup { get; set; }
 
-        /// <summary>
-        /// Changes the culture to the specified culture
-        /// </summary>
-        /// <param name="culture">culture to change to</param>
-        public static void ChangeCulture(CultureInfo cultureInfo)
-        {
-            var culture = CultureInfo.CreateSpecificCulture(cultureInfo.Name);
+        ///// <summary>
+        ///// Changes the culture to the specified culture
+        ///// </summary>
+        ///// <param name="culture">culture to change to</param>
+        //public static void ChangeCulture(CultureInfo cultureInfo)
+        //{
+        //    var culture = CultureInfo.CreateSpecificCulture(cultureInfo.Name);
 
-            CultureInfo.DefaultThreadCurrentCulture = culture;
-            CultureInfo.DefaultThreadCurrentUICulture = culture;
+        //    CultureInfo.DefaultThreadCurrentCulture = culture;
+        //    CultureInfo.DefaultThreadCurrentUICulture = culture;
 
-            ResourceUtils.InstallLanguageForUser();
+        //    ResourceUtils.InstallLanguageForUser();
 
-            if (EvtCultureChanged != null)
-            {
-                WindowActivityMonitor.Pause();
-                EvtCultureChanged(cultureInfo, new CultureChangedEventArg(cultureInfo));
-                WindowActivityMonitor.Resume();
-            }
-        }
+        //    if (EvtCultureChanged != null)
+        //    {
+        //        WindowActivityMonitor.Pause();
+        //        EvtCultureChanged(cultureInfo, new CultureChangedEventArg(cultureInfo));
+        //        WindowActivityMonitor.Resume();
+        //    }
+        //}
 
         /// <summary>
         /// Disposes allocated resources

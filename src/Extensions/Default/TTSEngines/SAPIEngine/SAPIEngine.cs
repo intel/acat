@@ -730,7 +730,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
                 else
                 {
                     _speechSynthesizer.SelectVoiceByHints(SAPISettings.Gender, VoiceAge.NotSet, 0,
-                        CultureInfo.DefaultThreadCurrentUICulture);
+                        CultureInfo.CurrentUICulture);
                 }
             }
             catch (Exception ex)

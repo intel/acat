@@ -789,7 +789,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
             sb.AppendLine("<speak version=\"1.1\" xmlns=\"http://www.w3.org/2001/10/synthesis\"");
             //sb.AppendLine("xmlns:xsi = \"http://www.w3.org/2001/XMLSchema-instance\"");
             //sb.AppendLine("xsi:schemaLocation=\"http://www.w3.org/TR/speech-synthesis11/synthesis.xsd\">");
-            sb.AppendLine("xml:lang=\"" + CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName + "\">");
+            sb.AppendLine("xml:lang=\"" + CultureInfo.CurrentUICulture.TwoLetterISOLanguageName + "\">");
             sb.AppendLine("<p><s>");
             sb.AppendLine(text);
             sb.AppendLine("</s></p>");

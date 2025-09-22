@@ -202,7 +202,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
             comboBoxSelectVoice.Items.Clear();
 
             IEnumerable<InstalledVoice> ins = currentCulture
-                ? _speechSynthesizer.GetInstalledVoices(CultureInfo.DefaultThreadCurrentUICulture)
+                ? _speechSynthesizer.GetInstalledVoices(CultureInfo.CurrentUICulture)
                 : _speechSynthesizer.GetInstalledVoices();
 
             foreach (InstalledVoice iv in ins)

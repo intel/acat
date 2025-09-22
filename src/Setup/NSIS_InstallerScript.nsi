@@ -23,9 +23,6 @@ OutFile ${SETUPNAME}
 InstallDir "$PROGRAMFILES64\ACAT"
 RequestExecutionLevel admin
 
-Var CreateDesktopShortcuts
-Var CreateStartMenu
-
 VIProductVersion "${VERSION}"     ; must be 4 numbers
 VIFileVersion    "${VERSION}"     ; optional, defaults to ProductVersion
 
@@ -42,35 +39,43 @@ SetOverwrite ifnewer
 
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
 
-LangString MUI_UNTEXT_UNINSTALLING_TITLE ${LANG_ENGLISH} "TODO"
-LangString MUI_UNTEXT_UNINSTALLING_SUBTITLE ${LANG_ENGLISH} "TODO"
-LangString MUI_UNTEXT_FINISH_TITLE ${LANG_ENGLISH} "TODO"
-LangString MUI_UNTEXT_FINISH_SUBTITLE ${LANG_ENGLISH} "TODO"
-LangString MUI_UNTEXT_CONFIRM_TITLE ${LANG_ENGLISH} "TODO"
-LangString MUI_UNTEXT_CONFIRM_SUBTITLE ${LANG_ENGLISH} "TODO"
-LangString MUI_UNTEXT_ABORT_TITLE ${LANG_ENGLISH} "TODO"
-LangString MUI_UNTEXT_ABORT_SUBTITLE ${LANG_ENGLISH} "TODO"
+LangString MUI_UNTEXT_UNINSTALLING_TITLE ${LANG_ENGLISH} "Uninstalling ACAT"
+LangString MUI_UNTEXT_UNINSTALLING_SUBTITLE ${LANG_ENGLISH} "Please wait while ACAT is being removed from your computer."
+LangString MUI_UNTEXT_FINISH_TITLE ${LANG_ENGLISH} "Uninstallation Complete"
+LangString MUI_UNTEXT_FINISH_SUBTITLE ${LANG_ENGLISH} "ACAT has been successfully removed."
+LangString MUI_UNTEXT_CONFIRM_TITLE ${LANG_ENGLISH} "Confirm Uninstall"
+LangString MUI_UNTEXT_CONFIRM_SUBTITLE ${LANG_ENGLISH} "Are you sure you want to completely remove ACAT and all of its components?"
+LangString MUI_UNTEXT_ABORT_TITLE ${LANG_ENGLISH} "Uninstallation Cancelled"
+LangString MUI_UNTEXT_ABORT_SUBTITLE ${LANG_ENGLISH} "ACAT was not removed from your computer."
+
 LangString MUI_TEXT_WELCOME_INFO_TITLE ${LANG_ENGLISH} "Welcome to the ACAT Installer"
-LangString MUI_TEXT_WELCOME_INFO_TEXT ${LANG_ENGLISH}  "TODO"
+LangString MUI_TEXT_WELCOME_INFO_TEXT ${LANG_ENGLISH} "This setup will install ACAT on your computer. It is recommended that you close all other applications before continuing."
 LangString MUI_TEXT_WELCOME_INFO ${LANG_ENGLISH} "This installer will guide you through the installation of ACAT."
+
 LangString MUI_TEXT_LICENSE_TITLE ${LANG_ENGLISH} "License Agreement"
 LangString MUI_TEXT_LICENSE_SUBTITLE ${LANG_ENGLISH} "Please read the following terms before continuing."
-LangString MUI_TEXT_INSTALLING_TITLE ${LANG_ENGLISH}  "TODO"
-LangString MUI_TEXT_INSTALLING_SUBTITLE ${LANG_ENGLISH}  "TODO"
-LangString MUI_TEXT_FINISH_TITLE ${LANG_ENGLISH}  "TODO"
-LangString MUI_TEXT_FINISH_SUBTITLE ${LANG_ENGLISH}  "TODO"
-LangString MUI_TEXT_FINISH_REBOOTNOW ${LANG_ENGLISH}  "TODO"
-LangString MUI_TEXT_FINISH_REBOOTLATER ${LANG_ENGLISH}  "TODO"
-LangString MUI_TEXT_FINISH_INFO_TITLE ${LANG_ENGLISH}  "TODO"
-LangString MUI_TEXT_FINISH_INFO_TEXT ${LANG_ENGLISH}  "TODO"
-LangString MUI_TEXT_FINISH_INFO_REBOOT ${LANG_ENGLISH}  "TODO"
-LangString MUI_TEXT_DIRECTORY_TITLE ${LANG_ENGLISH}  "TODO"
-LangString MUI_TEXT_DIRECTORY_SUBTITLE ${LANG_ENGLISH}  "TODO"
-LangString MUI_TEXT_ABORT_TITLE ${LANG_ENGLISH}  "TODO"
-LangString MUI_TEXT_ABORT_SUBTITLE ${LANG_ENGLISH}  "TODO"
-LangString MUI_INNERTEXT_LICENSE_TOP ${LANG_ENGLISH}  "TODO"
-LangString MUI_INNERTEXT_LICENSE_BOTTOM ${LANG_ENGLISH}  "TODO"
-LangString MUI_BUTTONTEXT_FINISH ${LANG_ENGLISH}  "TODO"
+
+LangString MUI_TEXT_INSTALLING_TITLE ${LANG_ENGLISH} "Installing ACAT"
+LangString MUI_TEXT_INSTALLING_SUBTITLE ${LANG_ENGLISH} "Please wait while ACAT is being installed on your computer."
+
+LangString MUI_TEXT_FINISH_TITLE ${LANG_ENGLISH} "Installation Complete"
+LangString MUI_TEXT_FINISH_SUBTITLE ${LANG_ENGLISH} "Setup has finished installing ACAT on your computer."
+LangString MUI_TEXT_FINISH_REBOOTNOW ${LANG_ENGLISH} "Restart now"
+LangString MUI_TEXT_FINISH_REBOOTLATER ${LANG_ENGLISH} "I want to manually restart later"
+LangString MUI_TEXT_FINISH_INFO_TITLE ${LANG_ENGLISH} "Completing the ACAT Setup Wizard"
+LangString MUI_TEXT_FINISH_INFO_TEXT ${LANG_ENGLISH} "ACAT has been installed successfully. Click Finish to exit the Setup Wizard."
+LangString MUI_TEXT_FINISH_INFO_REBOOT ${LANG_ENGLISH} "To complete the installation, your computer must be restarted."
+
+LangString MUI_TEXT_DIRECTORY_TITLE ${LANG_ENGLISH} "Choose Install Location"
+LangString MUI_TEXT_DIRECTORY_SUBTITLE ${LANG_ENGLISH} "Select the folder where ACAT will be installed."
+
+LangString MUI_TEXT_ABORT_TITLE ${LANG_ENGLISH} "Installation Cancelled"
+LangString MUI_TEXT_ABORT_SUBTITLE ${LANG_ENGLISH} "Setup was not completed. ACAT has not been installed."
+
+LangString MUI_INNERTEXT_LICENSE_TOP ${LANG_ENGLISH} "Please read the license agreement carefully before installing ACAT."
+LangString MUI_INNERTEXT_LICENSE_BOTTOM ${LANG_ENGLISH} "If you accept the terms of the agreement, click I Agree to continue."
+
+LangString MUI_BUTTONTEXT_FINISH ${LANG_ENGLISH} "Finish"
 
 ; !insertmacro MUI_LANGUAGE "English"
 
@@ -79,7 +84,7 @@ LangString MUI_BUTTONTEXT_FINISH ${LANG_ENGLISH}  "TODO"
 !insertmacro MUI_PAGE_LICENSE "license.txt"
 !insertmacro MUI_PAGE_DIRECTORY
 
-Page custom ShowShortcutOptions
+Page custom ShowShortcutOptions LeaveShortcutOptions
 
 !insertmacro MUI_PAGE_INSTFILES
 ; !insertmacro MUI_PAGE_FINISH
@@ -87,6 +92,12 @@ Page custom ShowShortcutOptions
 ; Uninstaller pages
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
+
+Var CreateDesktopShortcuts
+Var CreateStartMenu
+Var DesktopChoice
+Var StartMenuChoice
+
 
 ; Section: Main Installation
 Section "Install"
@@ -132,33 +143,36 @@ Section "Install"
   Push "$INSTDIR\Assets\Fonts\Montserrat-VariableFont_wght.ttf"
   Call InstallSystemFont
 
+;   ;--------------------------------
+;   ; Write uninstaller
+;   ;--------------------------------
+  WriteUninstaller "$INSTDIR\Uninstall.exe"
+
   ;--------------------------------
   ; Create Start Menu entries
   ;--------------------------------
-  ${NSD_GetState} $CreateStartMenu $0
-  ${If} $0 == 1
+  ${If} $StartMenuChoice == 1
     CreateDirectory "$SMPROGRAMS\ACAT"
     CreateShortcut  "$SMPROGRAMS\ACAT\ACAT Dashboard.lnk" "$INSTDIR\ACATApp.exe"
     CreateShortcut  "$SMPROGRAMS\ACAT\ACAT Talk.lnk" "$INSTDIR\ACATTalk.exe"
     CreateShortcut  "$SMPROGRAMS\ACAT\ACAT Config.lnk" "$INSTDIR\ACATConfig.exe"
     CreateShortcut  "$SMPROGRAMS\ACAT\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
+  ${Else}
+    DetailPrint "Skipping Start Menu shortcut creation as per user choice."
   ${EndIf}
 
   ;--------------------------------
   ; Create Desktop shortcuts
   ;--------------------------------
-  ${NSD_GetState} $CreateDesktopShortcuts $0
-  ${If} $0 == 1
+  ${If} $DesktopChoice == 1
     CreateShortcut  "$DESKTOP\ACAT Dashboard.lnk" "$INSTDIR\ACATApp.exe"
     CreateShortcut  "$DESKTOP\ACAT Talk.lnk" "$INSTDIR\ACATTalk.exe"
     CreateShortcut  "$DESKTOP\ACAT Config.lnk" "$INSTDIR\ACATConfig.exe"
+  ${Else}
+    DetailPrint "Skipping Desktop shortcut creation as per user choice."
   ${EndIf}
 
 
-;   ;--------------------------------
-;   ; Write uninstaller
-;   ;--------------------------------
-  WriteUninstaller "$INSTDIR\Uninstall.exe"
 
   ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
   StrCpy $R0 $0
@@ -187,6 +201,10 @@ Section "Uninstall"
 
   ; Remove Start Menu entries
   RMDir /r "$SMPROGRAMS\ACAT"
+
+  Delete "$DESKTOP\ACAT Dashboard.lnk"
+  Delete "$DESKTOP\ACAT Talk.lnk"
+  Delete "$DESKTOP\ACAT Config.lnk"
 
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}"
 SectionEnd
@@ -238,42 +256,29 @@ Function ShowShortcutOptions
   nsDialogs::Create 1018
   Pop $0
   ${If} $0 == error
-      Abort
+    Abort
   ${EndIf}
 
   ${NSD_CreateCheckBox} 20u 20u 150u 12u "Create Desktop Shortcut"
   Pop $CreateDesktopShortcuts
-  ${NSD_SetState} $CreateDesktopShortcuts 1 ; Default to checked
+  ${NSD_SetState} $CreateDesktopShortcuts 1
 
   ${NSD_CreateCheckBox} 20u 40u 150u 12u "Create Start Menu Shortcut"
   Pop $CreateStartMenu
-  ${NSD_SetState} $CreateStartMenu 1 ; Default to checked
+  ${NSD_SetState} $CreateStartMenu 1
 
   nsDialogs::Show
 FunctionEnd
 
-; ;--------------------------------
-; ; Function: UninstallFontHKLM
-; ; Expects: font file name on stack
-; Function UninstallFontHKLM
-;     Exch $0 ; pop font file name into $0
+Function LeaveShortcutOptions
+  ${NSD_GetState} $CreateDesktopShortcuts $0
+  StrCpy $DesktopChoice $0
+  ${NSD_GetState} $CreateStartMenu $0
+  StrCpy $StartMenuChoice $0
 
-;     StrCpy $1 "$WINDIR\Fonts"
+    ; Debugging
+  DetailPrint "DesktopChoice = $DesktopChoice"
+  DetailPrint "StartMenuChoice = $StartMenuChoice"
 
-;     ; Extract display name for registry key
-;     ${GetFileName} "$0" $2
-;     StrCpy $2 $2 0
+FunctionEnd
 
-;     ; Remove registry entry
-;     DeleteRegKey /ifempty HKLM "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts" "$2 (TrueType)"
-
-;     ; Remove font from current session
-;     System::Call 'gdi32::RemoveFontResourceEx(t "$1\$0", i 0x10, i 0)'
-
-;     ; Delete the font file from system fonts folder
-;     Delete "$1\$0"
-
-;     ; Notify all applications that fonts have changed
-;     System::Call 'user32::SendMessageTimeout(i 0xffff, i ${WM_FONTCHANGE}, i 0, i 0, i 0, i 1000, *i .r0)'
-
-; FunctionEnd

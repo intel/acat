@@ -223,8 +223,12 @@ namespace ACAT.Core.Utility
 
         public String Extensions = "";
 
-        [XmlElement(IsNullable = true)]
-        public String Language = String.Empty;
+        [Display(Name = nameof(StringResources.Language),
+            ResourceType = typeof(StringResources))]
+        [UIHint("LanguageSelection")]
+        [DefaultValue("en")]
+        [ObservableProperty]
+        private string language = "en";
 
         [XmlElement(IsNullable = true)]
         public String DefaultScanTimingsConfigurePanelName = String.Empty;

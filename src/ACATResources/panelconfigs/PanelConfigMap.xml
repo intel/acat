@@ -38,5 +38,11 @@
     <ConfigMapEntry panelClass="MainMenu" configName="WindowsExplorerNavigateMenu" configId="3E59B0CF-47CC-4839-BB55-57E262AB7539" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="WindowsExplorerNavigateMenu.xml"/>
     <ConfigMapEntry panelClass="MainMenu" configName="WindowsExplorerFileOpsMenu" configId="F87C002A-5749-4EFD-B1D1-66968B9509DF" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="WindowsExplorerFileOpsMenu.xml"/>
     <ConfigMapEntry panelClass="MainMenu" configName="WindowsExplorerClipboardMenu" configId="D851C770-DD4D-4219-9B25-9EC899C1E7B8" formId="6307D870-D90E-45ED-8A7E-43A3BA97D868" configFile="WindowsExplorerClipboardMenu.xml"/>
+    <ConfigMapEntry panelClass="LetterA" configName="LetterA" configId="6D97DA47-49A4-43F7-8BF8-F6CB5041A79C" formId="4287E55B-3364-46B5-A5B2-6C8BE3C57F1E" configFile="LetterA.xml"/>
+    <ConfigMapEntry panelClass="LetterE" configName="LetterE" configId="F08ABD9A-54EF-44CA-8405-7093814CFC8F" formId="4287E55B-3364-46B5-A5B2-6C8BE3C57F1E" configFile="LetterE.xml"/>
+    <ConfigMapEntry panelClass="LetterI" configName="LetterI" configId="E056A226-0B5C-48A7-86A6-C0CD4CF9C1B0" formId="4287E55B-3364-46B5-A5B2-6C8BE3C57F1E" configFile="LetterI.xml"/>
+    <ConfigMapEntry panelClass="LetterN" configName="LetterN" configId="72A88B1A-0F7E-475C-BC4C-D433E6968547" formId="4287E55B-3364-46B5-A5B2-6C8BE3C57F1E" configFile="LetterN.xml"/>
+    <ConfigMapEntry panelClass="LetterO" configName="LetterO" configId="F5438B63-B077-49C4-A4D0-E3373FD55579" formId="4287E55B-3364-46B5-A5B2-6C8BE3C57F1E" configFile="LetterO.xml"/>
+    <ConfigMapEntry panelClass="LetterU" configName="LetterU" configId="D827B23D-C0B2-4233-BA60-1DEBA8DE54BE" formId="4287E55B-3364-46B5-A5B2-6C8BE3C57F1E" configFile="LetterU.xml"/>
   </ConfigMapEntries>
 </ACAT>

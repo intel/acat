@@ -9,6 +9,7 @@ using ACAT.Core.Utility;
 using ACAT.Extensions.Onboarding.UI.UserControls;
 using ACAT.Extensions.Onboarding.UI;
 using ACAT.Core.CoreInterfaces;
+using System.Globalization;
 
 namespace ACAT.Extensions.Onboarding.Onboarding
 {
@@ -79,10 +80,15 @@ namespace ACAT.Extensions.Onboarding.Onboarding
 
         public override void OnEndStep(IOnboardingUserControl userControl, Reason reason)
         {
+            using var userControlLang = (UserControlLanguageSelect)userControl;
             switch (userControl.StepId)
             {
                 case Step1:
-                    Log.Debug("Not Implemented");
+                    var cultureInfo = userControlLang.currentCulture;
+                    Log.Debug ("User selected language: " + cultureInfo.DisplayName);
+
+                    CoreGlobals.AppPreferences.Language = cultureInfo.TwoLetterISOLanguageName;
+                    CoreGlobals.AppPreferences.Save();
 
                     break;
             }

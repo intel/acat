@@ -43,6 +43,8 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
         private readonly IOnboardingExtension _onboardingExtension;
         private readonly String _stepId;
 
+        public CultureInfo currentCulture = CultureInfo.CurrentUICulture;
+
         public UserControlLanguageSelect(IOnboardingWizard wizard, IOnboardingExtension onboardingExtension, String stepId)
         {
             InitializeComponent();
@@ -51,8 +53,6 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
             _stepId = stepId;
             var _currentCultureId = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
             listBoxLanguages.SelectedIndexChanged += listBoxLanguages_SelectedIndexChanged;
-
-            var currentCulture = CultureInfo.CurrentUICulture;
 
             List<CultureInfo> installedCultures = ResourceHelper.GetAvailableResourceCultures(Assembly.GetExecutingAssembly());
 
@@ -77,6 +77,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
                 //var resourcesAssembly = typeof(ACATResources.ResourceHelper).Assembly;
                 _ = new ComponentResourceManager(typeof(UserControlLanguageSelect));
                 //ApplyResourcesToControls(this, resourceManager);
+                currentCulture = selectedItem.CultureInfo;
             }
         }
 

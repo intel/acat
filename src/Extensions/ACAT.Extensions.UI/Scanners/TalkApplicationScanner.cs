@@ -296,26 +296,26 @@ namespace ACAT.Extensions.UI.Scanners
         }
         private void setModeLabel(WordPredictionModes mode)
         {
-            //Invoke(new MethodInvoker(delegate
-            //{
-            //    String modeStr = String.Empty; ;
-            //    switch (mode)
-            //    {
-            //        case WordPredictionModes.Sentence:
-            //            modeStr = "Sentence";
-            //            break;
+            Invoke(new MethodInvoker(delegate
+            {
+                String modeStr = String.Empty; ;
+                switch (mode)
+                {
+                    case WordPredictionModes.Sentence:
+                        modeStr = "Sentence";
+                        break;
 
-            //        case WordPredictionModes.CannedPhrases:
-            //            modeStr = "Canned Phrase";
-            //            break;
+                    case WordPredictionModes.CannedPhrases:
+                        modeStr = "Canned Phrase";
+                        break;
 
-            //        case WordPredictionModes.Shorthand:
-            //            modeStr = "Shorthand";
-            //            break;
-            //    }
+                    case WordPredictionModes.Shorthand:
+                        modeStr = "Shorthand";
+                        break;
+                }
 
-                //labelCurrentTypingMode.Text = "Mode: " + modeStr;
-            //}));
+                labelCurrentTypingMode.Text = "Mode: " + modeStr;
+            }));
         }
 
         private void speak()

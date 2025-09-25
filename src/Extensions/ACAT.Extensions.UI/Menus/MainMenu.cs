@@ -40,6 +40,8 @@ namespace ACAT.Extensions.UI.Menus
         public MainMenu(String panelClass, String panelTitle)
             : base(panelClass, StringResources.MainMenu)
         {
+            InitializeComponent();
+
             // add commands that are not supported by the base class
             commandDispatcher.Commands.Add(new CommandHandler("Exit"));
             commandDispatcher.Commands.Add(new CommandHandler("CmdAdjustScanSpeed"));

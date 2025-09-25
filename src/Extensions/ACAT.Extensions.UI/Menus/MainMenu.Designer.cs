@@ -28,12 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainMenu));
             this.SuspendLayout();
             // 
             // MainMenu
             // 
-            resources.ApplyResources(this, "$this");
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(776, 1708);
             this.Name = "MainMenu";
             this.ResumeLayout(false);
 

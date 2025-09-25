@@ -1436,6 +1436,8 @@ namespace ACAT.Core.WidgetManagement
         {
             if (Enabled && EvtMouseClicked != null)
             {
+                Log.Debug("Widget control_MouseClick");
+
                 EvtMouseClicked(this, new WidgetEventArgs(this));
             }
         }

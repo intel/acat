@@ -13,6 +13,7 @@
 
 using ACAT.Core.Utility;
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -89,6 +90,10 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
             bool handled = false;
             if (nCode >= 0)
             {
+                if (!User32Interop.IsForegroundApp())
+                {
+                    return User32Interop.CallNextHookEx(_hookHandle, nCode, wParam, lParam);
+                }
                 var keyboardLLHookStruct = (KBDLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(KBDLLHOOKSTRUCT));
                 var wmKeyboard = (KeyboardWParam)wParam;
 
@@ -145,11 +150,14 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
             switch (wParam)
             {
                 case KeyboardWParam.WM_SYSKEYDOWN:
+                    Debug.WriteLine($"[notifyEvent] SYSKEYDOWN vk={hookStruct.vkCode} key={(Keys)hookStruct.vkCode}");
                     EvtKeyDown?.Invoke(this, args);
 
                     break;
 
                 case KeyboardWParam.WM_KEYDOWN:
+                    Debug.WriteLine($"[notifyEvent] KEYDOWN vk={hookStruct.vkCode} key={(Keys)hookStruct.vkCode}");
+
                     EvtKeyDown?.Invoke(this, args);
 
                     if (EvtKeyPress != null)
@@ -170,6 +178,7 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
                                 key = char.ToUpper(key);
                             }
 
+                            Debug.WriteLine($"[notifyEvent] KEYPRESS '{key}' from vk={hookStruct.vkCode}");
                             var e = new KeyPressEventArgs(key);
                             EvtKeyPress(this, e);
                         }
@@ -179,12 +188,16 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
 
                 case KeyboardWParam.WM_SYSKEYUP:
                 case KeyboardWParam.WM_KEYUP:
+                    Debug.WriteLine($"[notifyEvent] KEYUP vk={hookStruct.vkCode} key={(Keys)hookStruct.vkCode}");
+
                     EvtKeyUp?.Invoke(this, args);
 
                     break;
             }
 
             handled = args.Handled;
+            Debug.WriteLine($"[notifyEvent END] handled={handled}");
+
         }
 
         /// <summary>

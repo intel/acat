@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -252,6 +253,18 @@ namespace ACAT.Core.Utility
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
+        public static bool IsForegroundApp()
+        {
+            IntPtr hwnd = GetForegroundWindow();
+            if (hwnd == IntPtr.Zero)
+            {
+                return false;
+            }
+
+            GetWindowThreadProcessId(hwnd, out uint procId);
+            return procId == (uint)Process.GetCurrentProcess().Id;
+        }
 
         [DllImport("user32.dll", EntryPoint = "GetWindowThreadProcessId")]
         public static extern int GetWindowThreadProcessId([In()] IntPtr handle, out int lpdwProcessId);

@@ -8,6 +8,8 @@ using ACAT.Core.WidgetManagement.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Media;
+using System.Linq;
+
 /// <summary>
 /// Enmeration of the different modes for manual scanning
 /// </summary>
@@ -92,7 +94,8 @@ namespace ACAT.Core.AnimationManagement
         /// <summary>
         /// Interpret script
         /// </summary>
-        protected readonly Interpret _interpreter;
+        //protected readonly Interpret _interpreter;
+        protected readonly Interpret _interpreter = Interpret.Instance;
 
         /// <summary>
         /// Stores transient variables for animation
@@ -143,7 +146,7 @@ namespace ACAT.Core.AnimationManagement
 
         public AnimationManager()
         {
-            _interpreter = new Interpret();
+            //_interpreter = new Interpret();
             _animationsCollection = new AnimationsCollection();
             _soundPlayer = null;
             _currentPanel = null;
@@ -705,6 +708,22 @@ namespace ACAT.Core.AnimationManagement
 
             if (widget.Enabled)
             {
+                // TOTAL HACK.  JUST TO SEE IF THIS WORKS
+                // Fix for the line causing multiple errors
+                // Original line: if (widget.Value in { "a", "e", "i", "o", "u", "n"})
+                // Explanation: The 'in' keyword is not valid in C#. Instead, use a collection and check if it contains the value.
+                
+                //if (new[] { "a", "e", "i", "o", "u", "n" }.Contains(widget.UIControl.Text.ToLowerInvariant()))
+                //{
+                //    widget.Value = widget.UIControl.Text.ToLowerInvariant();
+                //    Log.Info("Vowel clicked: " + widget.Value);
+                //    if (widget.IsMouseClickActuateOn)
+                //        widget.Actuate();
+    
+                //    return;
+                //}
+
+
                 if (widget.OnMouseClick != null && widget.OnMouseClick.HasCode())
                 {
                     if (_player.State != PlayerState.Paused)

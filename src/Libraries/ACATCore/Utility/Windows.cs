@@ -281,6 +281,9 @@ namespace ACAT.Core.Utility
         /// <param name="form">Form to close</param>
         public static void CloseForm(Form form)
         {
+            if (form == null || form.IsDisposed || form.Disposing)
+                return;
+
             if (form.InvokeRequired)
             {
                 form.Invoke(new closeForm(CloseForm), form);

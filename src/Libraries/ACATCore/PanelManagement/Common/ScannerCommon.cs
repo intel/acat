@@ -1308,21 +1308,19 @@ namespace ACAT.Core.PanelManagement.Common
         private void Interpreter_EvtShowPopup(object sender, InterpreterEventArgs e)
         {
             if (e.Args.Count == 0)
-            {
                 return;
-            }
 
             string scannerName = e.Args[0];
             string title = e.Args.Count > 1 ? e.Args[1] : string.Empty;
 
-            ScannerForm.Invoke(new MethodInvoker(delegate
+            ScannerForm.InvokeIfRequired(() =>
             {
                 IPanel panel = Context.AppPanelManager.CreatePanel(scannerName, title) as IPanel;
                 if (panel != null)
                 {
                     Context.AppPanelManager.ShowPopup(ScannerForm as IPanel, panel);
                 }
-            }));
+            });
         }
 
         /// <summary>
@@ -1549,10 +1547,14 @@ namespace ACAT.Core.PanelManagement.Common
 
             Context.AppAgentMgr.EvtTextChanged += AppAgent_EvtTextChanged;
 
+            AnimationManager.Interpreter.EvtCloseNotify -= Interpreter_EvtCloseNotify;
             AnimationManager.Interpreter.EvtCloseNotify += Interpreter_EvtCloseNotify;
+            AnimationManager.Interpreter.EvtRun -= Interpreter_EvtRun;
             AnimationManager.Interpreter.EvtRun += Interpreter_EvtRun;
-            AnimationManager.Interpreter.EvtShowPopup += Interpreter_EvtShowPopup;
 
+            Log.Debug("Subscribing on instance " + AnimationManager.Interpreter.GetHashCode());
+            AnimationManager.Interpreter.EvtShowPopup -= Interpreter_EvtShowPopup;
+            AnimationManager.Interpreter.EvtShowPopup += Interpreter_EvtShowPopup;
             subscribeToButtonEvents();
         }
 
@@ -1583,7 +1585,7 @@ namespace ACAT.Core.PanelManagement.Common
 
             if (AnimationManager != null)
             {
-                AnimationManager.Interpreter.EvtCloseNotify -= Interpreter_EvtCloseNotify;
+                //AnimationManager.Interpreter.EvtCloseNotify -= Interpreter_EvtCloseNotify;
                 AnimationManager.Interpreter.EvtRun -= Interpreter_EvtRun;
             }
 

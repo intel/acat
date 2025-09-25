@@ -28,29 +28,35 @@
         <WidgetAttribute name="B11" label="l" value="@CmdNumberScanner" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;"  bold="&usebold;" />
         <WidgetAttribute name="B12" label="H" value="@CmdMainMenu" fontname="&functionButtonFontName;" fontsize="&functionButtonFontSize;" bold="&usebold;" />
 
-        <WidgetAttribute name="B13" label="A" value="" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" onMouseClick="showPopup(LetterA, Letra A)"/>
+        <!-- <WidgetAttribute name="B13" label="A" value="" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" onMouseClick="showPopup(LetterA, Letra A)"/> -->
+        <WidgetAttribute name="B13" label="A" value="a" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
         <WidgetAttribute name="B14" label="B" value="b" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
         <WidgetAttribute name="B15" label="C" value="c" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
         <WidgetAttribute name="B16" label="D" value="d" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
-        <WidgetAttribute name="B17" label="E" value="" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" onMouseClick="showPopup(LetterE, Letra E)"/>
+        <!-- <WidgetAttribute name="B17" label="E" value="" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" onMouseClick="showPopup(LetterE, Letra E)"/> -->
+        <WidgetAttribute name="B17" label="E" value="e" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
         <WidgetAttribute name="B18" label="F" value="f" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
         <WidgetAttribute name="B19" label="G" value="g" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
 
         <WidgetAttribute name="B20" label="H" value="h" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
-        <WidgetAttribute name="B21" label="I" value="" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" onMouseClick="showPopup(LetterI, Letra I)"/>
+        <WidgetAttribute name="B21" label="I" value="i" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
+        <!-- <WidgetAttribute name="B21" label="I" value="" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" onMouseClick="showPopup(LetterI, Letra I)"/> -->
         <WidgetAttribute name="B22" label="J" value="j" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
         <WidgetAttribute name="B23" label="K" value="k" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
         <WidgetAttribute name="B24" label="L" value="l" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
         <WidgetAttribute name="B25" label="M" value="m" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
-        <WidgetAttribute name="B26" label="N" value="n" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" onMouseClick="showPopup(LetterN, Letra N)"/>
+        <!-- <WidgetAttribute name="B26" label="N" value="n" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" onMouseClick="showPopup(LetterN, Letra N)"/> -->
+        <WidgetAttribute name="B26" label="N" value="n" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
 
-        <WidgetAttribute name="B27" label="O" value="o" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;"  onMouseClick="showPopup(LetterO, Letra O)"/>
+        <!-- <WidgetAttribute name="B27" label="O" value="o" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;"  onMouseClick="showPopup(LetterO, Letra O)"/> -->
+        <WidgetAttribute name="B27" label="O" value="o" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
         <WidgetAttribute name="B28" label="P" value="p" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
         <WidgetAttribute name="B29" label="Q" value="q" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
         <WidgetAttribute name="B30" label="R" value="r" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
         <WidgetAttribute name="B31" label="S" value="s" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
         <WidgetAttribute name="B32" label="T" value="t" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
-        <WidgetAttribute name="B33" label="U" value="u" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;"  onMouseClick="showPopup(LetterU, Letra U)"/>
+        <!-- <WidgetAttribute name="B33" label="U" value="u" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;"  onMouseClick="showPopup(LetterU, Letra U)"/> -->
+        <WidgetAttribute name="B33" label="U" value="u" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
 
         <WidgetAttribute name="B34" label="V" value="v" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />
         <WidgetAttribute name="B35" label="W" value="w" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"   bold="&usebold;" />

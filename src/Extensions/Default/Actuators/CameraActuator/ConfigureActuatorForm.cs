@@ -535,15 +535,13 @@ namespace ACAT.Extensions.Actuators.CameraActuator
                 Op3Prompt = StringResources.No
             };
 
-            msgBox.ShowDialog(this);
-
-            //var result = msgBox.OptionsResult;
+            var result = msgBox.ShowDialog(this);
 
             msgBox.Dispose();
 
             resume();
 
-            return false; // TODO - Localize Me
+            return result == DialogResult.Yes; // TODO - Localize Me
             //return result == ConfirmBoxTwoOption.Options.Option1;
         }
 

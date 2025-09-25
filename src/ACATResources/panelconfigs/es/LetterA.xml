@@ -13,10 +13,10 @@
   </WidgetAttributes>
 
   <Layout>
-    <Widget class="ScannerButton" name="B1" colorScheme="ColorCodedRegion2"  disabledButtonColorScheme="ColorCodedRegion2" enabled="false"/>
-    <Widget class="ScannerButton" name="B2" colorScheme="ColorCodedRegion2"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
-    <Widget class="ScannerButton" name="B3" colorScheme="ColorCodedRegion2"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
-    <Widget class="ScannerButton" name="B4" colorScheme="ColorCodedRegion2"  disabledButtonColorScheme="DisabledColorCodedRegion2"/>
+    <Widget class="ScannerButton" name="B1" colorScheme="Menu" enabled="false"/>
+    <Widget class="ScannerButton" name="B2" colorScheme="Menu" />
+    <Widget class="ScannerButton" name="B3" colorScheme="Menu" />
+    <Widget class="ScannerButton" name="B4" colorScheme="Menu" />
   </Layout>
 
   <Animations>

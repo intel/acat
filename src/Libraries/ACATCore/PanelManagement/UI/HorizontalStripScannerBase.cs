@@ -9,6 +9,7 @@ using ACAT.Core.AgentManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.ThemeManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using System;
@@ -293,6 +294,10 @@ namespace ACAT.Core.PanelManagement
             setFormWidth();
 
             _scannerCommon.OnLoad();
+            var colorScheme = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(ColorSchemes.TalkWindowSchemeName);
+            this.BackColor = colorScheme.Background;
+            this.ForeColor = colorScheme.Foreground;
+
 
             PanelCommon.AnimationManager.Start(_rootWidget);
         }

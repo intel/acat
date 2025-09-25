@@ -29,6 +29,9 @@ namespace ACAT.Extension
         /// </summary>
         protected Dispatcher commandDispatcher;
 
+        //public event Action TextSubmitted;
+
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -56,6 +59,8 @@ namespace ACAT.Extension
         /// <param name="handled">was this handled here?</param>
         public override void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
         {
+            Log.Debug("HorizontalStripScanner onWidgetActuated");
+            Windows.CloseAsync(this);
             handled = false;
         }
 

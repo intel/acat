@@ -73,6 +73,7 @@ namespace ACAT.Extension.UI.UserControls
 
         public virtual void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
         {
+            Log.Debug("GenericUserControl onWidgetActuated");
             handled = false;
         }
 

@@ -64,8 +64,8 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
 
         protected virtual void CreateToolbarButtons(TableLayoutPanel parent)
         {
-            float scaleFactor = 1; //this.DeviceDpi / 96f;
-            var defaultSize = new Size((int)(100 * scaleFactor), (int)(100 * scaleFactor));
+            float scaleFactor = this.DeviceDpi / 96f;
+            var defaultSize = new Size((int)(80 * scaleFactor), (int)(80 * scaleFactor));
 
             // Create buttons with specific properties
             foreach (var (button, index) in Buttons.Select((p, i) => (p, i)))
@@ -150,6 +150,14 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
             DefaultButtonsBox.ResumeLayout(true);
             ToolbarBox.ResumeLayout(true);
             ResumeLayout(true);
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            Log.Debug($"{e.Graphics.DpiX} x {e.Graphics.DpiY}");
+
+            e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            base.OnPaint(e);
         }
 
         // This method should be overridden in derived classes to handle button clicks

@@ -46,8 +46,9 @@ namespace ACAT.Extensions.UI.UserControls.Toolbars
         readonly Label appName = new()
         {
             Name = "ACAT Dashboard",
-            Text = "ACAT Dashboard",            
-            TextAlign = ContentAlignment.MiddleCenter,
+            Text = "ACAT Dashboard",
+            AutoSize = true,
+            TextAlign = ContentAlignment.MiddleLeft,
             Anchor = AnchorStyles.Top | AnchorStyles.Left,
             Dock = DockStyle.Left,
             ForeColor = Color.White,

@@ -35,8 +35,6 @@
       <Widget name="ACATTalkSentence" />
       <Widget name="ACATTalkPhrase" />
       <Widget name="ACATTalkShorthand" />
-      <Widget name="SwitchWindow" />
-      <Widget name="LaunchApp" />
       <Widget name="Location" />
     </Animation>
   </Animations>

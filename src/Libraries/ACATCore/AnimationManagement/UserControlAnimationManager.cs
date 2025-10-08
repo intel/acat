@@ -315,7 +315,7 @@ namespace ACAT.Core.AnimationManagement
                         _interpreter.Execute(code);
                     }
 
-                    Log.Debug("AP1: _player.State is " + _player.State);
+                    //Log.Debug("AP1: _player.State is " + _player.State);
                 }
                 else
                 {

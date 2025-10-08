@@ -75,7 +75,7 @@ namespace ACAT.Core.Utility
         [ObservableProperty]
         private bool scanDisabledElements = true;
 
-        public Windows.WindowPosition ScannerPosition = Windows.WindowPosition.MiddleRight;
+        public Windows.WindowPosition ScannerPosition = Windows.WindowPosition.CenterScreen;
 
         public String PreferredPanelConfigNames = "AlphabetQwerty";
 

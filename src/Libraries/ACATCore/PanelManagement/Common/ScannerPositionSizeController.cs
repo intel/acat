@@ -229,7 +229,7 @@ namespace ACAT.Core.PanelManagement.Common
             ScaleFactor = 1.0f;
             ScaleForm(ScaleFactor);
             AutoPosition = true;
-            Context.AppWindowPosition = Windows.WindowPosition.MiddleRight;
+            Context.AppWindowPosition = Windows.WindowPosition.CenterScreen;
             Windows.SetWindowPositionAndNotify(_form, Context.AppWindowPosition);
         }
 

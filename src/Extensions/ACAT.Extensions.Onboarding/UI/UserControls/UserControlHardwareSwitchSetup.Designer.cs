@@ -17,6 +17,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
         {
             if (disposing && (components != null))
             {
+                webBrowser.Navigating -= webBrowser_Navigating;
                 components.Dispose();
             }
             base.Dispose(disposing);

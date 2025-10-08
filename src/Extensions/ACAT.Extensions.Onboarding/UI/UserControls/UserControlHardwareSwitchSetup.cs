@@ -124,9 +124,25 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
             String html = String.Format(_htmlTemplate, headStyle, bodyStyle, textStyle, "Click <a href=" + HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName) + "#" + bookmark + ">here</a> for help");
             Log.Debug(html);
 
-            webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
-            webBrowser.DocumentText = html;
+            webBrowser.Navigating += webBrowser_Navigating;
 
+            // Ensure the browser has a document loaded first
+            if (webBrowser.Document == null)
+            {
+                webBrowser.Navigate("about:blank");
+                webBrowser.DocumentCompleted += (s, e) =>
+                {
+                    // When blank document is ready, write your HTML
+                    webBrowser.Document.OpenNew(true);
+                    webBrowser.Document.Write(html);
+                };
+            }
+            else
+            {
+                // Already has a document, safe to overwrite
+                webBrowser.Document.OpenNew(true);
+                webBrowser.Document.Write(html);
+            }
             if (actuator != null)
             {
                 foreach (var setting in config.ActuatorSettings)
@@ -262,11 +278,11 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
             setKeyComboAndUpdateButtonColors();
         }
 
-        private void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {
-            webBrowser.Navigating -= webBrowser_Navigating;
-            webBrowser.Navigating += webBrowser_Navigating;
-        }
+        //private void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        //{
+        //    webBrowser.Navigating -= webBrowser_Navigating;
+        //    webBrowser.Navigating += webBrowser_Navigating;
+        //}
 
         private void webBrowser_Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {

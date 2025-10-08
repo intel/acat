@@ -123,7 +123,7 @@ namespace ACAT.Extensions.UI.Scanners
             this.ShowInTaskbar = true;
             this.AutoSize = true;
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            this.StartPosition = FormStartPosition.CenterScreen;
+            this.StartPosition = FormStartPosition.WindowsDefaultLocation;
 
             this.panelTopToolbar.ResumeLayout(true);
             this.panelDashboardControls.ResumeLayout(true);

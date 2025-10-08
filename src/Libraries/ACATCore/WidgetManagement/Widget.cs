@@ -1001,9 +1001,9 @@ namespace ACAT.Core.WidgetManagement
 
             EnabledState = parseEnabledValue(XmlUtils.GetXMLAttrString(node, "enabled", "true"));
 
-            DefaultEnabled = XmlUtils.GetXMLAttrBool(node, "defaultEnabled", false);
+            DefaultEnabled = XmlUtils.GetXMLAttrBool(node, "defaultEnabled", true);
 
-            Enabled = true;
+            Enabled = DefaultEnabled;
         }
 
         /// <summary>

@@ -75,7 +75,7 @@ namespace ACAT.Core.PanelManagement
         static Context()
         {
             AppQuit = false;
-            AppWindowPosition = Windows.WindowPosition.MiddleRight;
+            AppWindowPosition = Windows.WindowPosition.CenterScreen;
 
             //Initialize all the manager singleton objects
             _abbreviationsManager = AbbreviationsManager.Instance;

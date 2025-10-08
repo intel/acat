@@ -161,6 +161,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
                 html = html.Replace(CoreGlobals.MacroACATUserGuide, HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName));
 
                 webBrowserDesc.DocumentText = html;
+                webBrowserDesc.Refresh();
             }
 
             var file = _actuatorSettings[listBoxActuators.SelectedIndex].ImageFileName;

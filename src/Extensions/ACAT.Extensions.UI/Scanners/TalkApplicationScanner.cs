@@ -296,6 +296,11 @@ namespace ACAT.Extensions.UI.Scanners
         }
         private void setModeLabel(WordPredictionModes mode)
         {
+            if (this.IsHandleCreated == false)
+            {
+                return;
+            }
+
             Invoke(new MethodInvoker(delegate
             {
                 String modeStr = String.Empty; ;

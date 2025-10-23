@@ -8,6 +8,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyTitle>ACAT Talk</AssemblyTitle>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ACATResources\ACATResources.csproj" />

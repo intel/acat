@@ -109,7 +109,7 @@ Section "Install"
   ; Install main application files from build output (compressed)
   SetOutPath "$INSTDIR"
 
-  !define BUILD_OUTPUT "..\build\bin\Debug_signed\"
+  !define BUILD_OUTPUT "..\build\bin\Release_signed\"
   File /r /x Assets "${BUILD_OUTPUT}\*.*"
 
   SetOutPath "$INSTDIR\ConvAssistApp\_internal\Assets"

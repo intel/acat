@@ -97,11 +97,11 @@ namespace ACAT.Core.Utility
         [Display(Name = nameof(StringResources.Logapplicationmessagestoafilesewithcaution),
         ResourceType = typeof(StringResources))]
         [UIHint("ToggleSwitch")]
-        [DefaultValue(false)]
+        [DefaultValue(true)]
         [ObservableProperty]
-        private bool enableLogs = false;
+        private bool enableLogs = true;
 
-        public bool DebugLogMessagesToFile = false;
+        public bool DebugLogMessagesToFile = true;
         public bool DebugMessagesEnable = false;
 
         public bool DebugAssertOnError = false;

@@ -36,11 +36,13 @@
   </PropertyGroup>
 
   <Target Name="SignBinaries" AfterTargets="Build" Condition="'$(Configuration)'=='Release_signed'">
+    <Message Text="Signing $(TargetPath)" Importance="High" />
     <Exec
       Command='"$(SignToolPath)" sign /fd sha256 /sha1 f4d92f3f1cc377a89792941ddb5c600b485d8f9f /tr http://timestamp.intel.com/TSS/HttpTspServer /td SHA256 "$(TargetPath)"' />
   </Target>
 
-  <Target Name="SignBinaries" AfterTargets="Build" Condition="'$(Configuration)'=='Debug_signed'">
+  <Target Name="SignBinariesDebug" AfterTargets="Build" Condition="'$(Configuration)'=='Debug_signed'">
+    <Message Text="Signing $(TargetPath)" Importance="High" />
     <Exec
       Command='"$(SignToolPath)" sign /fd sha256 /sha1 f4d92f3f1cc377a89792941ddb5c600b485d8f9f /tr http://timestamp.intel.com/TSS/HttpTspServer /td SHA256 "$(TargetPath)"' />
   </Target>

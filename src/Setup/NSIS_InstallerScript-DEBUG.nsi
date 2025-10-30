@@ -109,7 +109,7 @@ Section "Install"
   ; Install main application files from build output (compressed)
   SetOutPath "$INSTDIR"
 
-  !define BUILD_OUTPUT "..\build\bin\Release_signed\"
+  !define BUILD_OUTPUT "..\build\bin\Debug_signed\"
   File /r /x Assets "${BUILD_OUTPUT}\*.*"
 
   SetOutPath "$INSTDIR\ConvAssistApp\_internal\Assets"
@@ -152,7 +152,6 @@ Section "Install"
   ; Create Start Menu entries
   ;--------------------------------
   ${If} $StartMenuChoice == 1
-    SetOutPath "$INSTDIR\"
     CreateDirectory "$SMPROGRAMS\ACAT"
     CreateShortcut  "$SMPROGRAMS\ACAT\ACAT Dashboard.lnk" "$INSTDIR\ACATApp.exe"
     CreateShortcut  "$SMPROGRAMS\ACAT\ACAT Talk.lnk" "$INSTDIR\ACATTalk.exe"
@@ -166,8 +165,7 @@ Section "Install"
   ; Create Desktop shortcuts
   ;--------------------------------
   ${If} $DesktopChoice == 1
-    SetOutPath "$INSTDIR\"
-    CreateShortcut  "$DESKTOP\ACAT Dashboard.lnk" "$INSTDIR\ACATApp.exe" ""
+    CreateShortcut  "$DESKTOP\ACAT Dashboard.lnk" "$INSTDIR\ACATApp.exe"
     CreateShortcut  "$DESKTOP\ACAT Talk.lnk" "$INSTDIR\ACATTalk.exe"
     CreateShortcut  "$DESKTOP\ACAT Config.lnk" "$INSTDIR\ACATConfig.exe"
   ${Else}

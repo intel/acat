@@ -101,8 +101,17 @@ namespace ACAT.Core.Utility
         [ObservableProperty]
         private bool enableLogs = true;
 
-        public bool DebugLogMessagesToFile = true;
-        public bool DebugMessagesEnable = false;
+        [Display(Name = "Log Messages to File")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        private bool debugLogMessagesToFile = true;
+
+        [Display(Name = "Enable Debug Logs")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        private bool debugMessagesEnable = false;
 
         public bool DebugAssertOnError = false;
 

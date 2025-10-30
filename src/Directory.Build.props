@@ -67,12 +67,15 @@
     <DefineConstants>DEBUG;TRACE;SIMULATIONBOARD</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug_signed'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug_signed' or '$(Configuration)' == 'Debug'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release_signed'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Release_signed' or '$(Configuration)' == 'Release'">
     <DefineConstants>TRACE</DefineConstants>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
 
 </Project>

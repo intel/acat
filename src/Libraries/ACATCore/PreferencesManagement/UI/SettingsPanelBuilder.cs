@@ -1,4 +1,5 @@
 ﻿using ACAT.Core.SpellCheckManagement;
+using CommunityToolkit.Mvvm.ComponentModel;
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
@@ -31,10 +32,25 @@ namespace ACAT.Core.PreferencesManagement.UI
 #nullable disable
         }
 
+        protected static IEnumerable<FieldInfo> GetAllInstanceFields(Type type)
+        {
+            const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly;
+
+            while (type != null)
+            {
+                foreach (var field in type.GetFields(flags))
+                {
+                    yield return field;
+                }
+                type = type.BaseType;
+            }
+        }
+
         protected static List<ObservablePropertyInfo> GetObservableProperties(Type type)
         {
-            var fields = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
-//                .Where(f => f.GetCustomAttribute(typeof(ObservablePropertyAttribute)) != null);
+
+            var fields = GetAllInstanceFields(type)
+                .Where(f => f.GetCustomAttribute<ObservablePropertyAttribute>() != null);
 
             var list = new List<ObservablePropertyInfo>();
 

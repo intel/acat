@@ -39,13 +39,13 @@ namespace ACAT.Core.Utility
         /// <summary>
         // set  this to true if you don't want to trigger the assertions in this file
         /// </summary>
-#if DEBUG
+//#if DEBUG
         private const bool AssertionMode = true;
         private const bool simpleLog = true;
-#else
-        private const bool AssertionMode = false;
-        private const bool simpleLog = false;
-#endif
+//#else
+        //private const bool AssertionMode = false;
+        //private const bool simpleLog = false;
+//#endif
         private const bool IncludeStackTrace = false;
 
         /// <summary>
@@ -136,19 +136,20 @@ namespace ACAT.Core.Utility
                 // cleanup logs folder if the flag is turned off
             }
 
-#if !DEBUG
-            if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugMessagesEnable)
-            {
-                if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugLogMessagesToFile)
-                {
-                    var listener = new TextWriterTraceListener(logFileFullPath, "ACATDebugListener");
-                    Trace.Listeners.Add(listener);
-                }
-            }
-#else
+//#if !DEBUG
+//            if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugMessagesEnable)
+//            {
+//                if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugLogMessagesToFile)
+//                {
+//                    var listener = new TextWriterTraceListener(logFileFullPath, "ACATDebugListener");
+//                    Trace.Listeners.Add(listener);
+//                }
+//            }
+//#else
             var listener = new TextWriterTraceListener(logFileFullPath, "ACATDebugListener");
             Trace.Listeners.Add(listener);
-#endif
+
+            //#endif
         }
 
         /// <summary>
@@ -227,12 +228,12 @@ namespace ACAT.Core.Utility
         /// <param name="message">Message to log.</param>
         public static void WriteTrace(string message, string filename, int linenumber, TraceLevel traceLevel, bool assert = false)
         {
-#if !DEBUG
-            if (CoreGlobals.AppPreferences != null && !CoreGlobals.AppPreferences.DebugMessagesEnable)
-            {
-                return;
-            }
-#else
+//#if !DEBUG
+//            if (CoreGlobals.AppPreferences != null && !CoreGlobals.AppPreferences.DebugMessagesEnable)
+//            {
+//                return;
+//            }
+//#else
             if (TraceLevelSwitch.Level >= traceLevel )
             {
                 Trace.WriteLine($@"{filename}({linenumber},1): {message}");
@@ -241,7 +242,7 @@ namespace ACAT.Core.Utility
             {
                 Trace.Assert(AssertionMode);
             }
-#endif
+//#endif
         }
 
         public static void IsNull(String message, object obj)

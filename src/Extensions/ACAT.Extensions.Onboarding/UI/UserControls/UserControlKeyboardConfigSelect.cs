@@ -5,16 +5,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.CoreInterfaces;
 using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.PanelConfig;
 using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using System.ComponentModel;
-using ACAT.Core.CoreInterfaces;
-using ACAT.Core.PanelManagement.PanelConfig;
 
 namespace ACAT.Extensions.Onboarding.UI.UserControls
 {

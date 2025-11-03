@@ -167,8 +167,6 @@ namespace ACAT.Core.UserControlManagement
             WindowActivityMonitor.EvtWindowMonitorHeartbeat -= WindowActivityMonitorEvtWindowMonitorHeartbeat;
             Log.Debug("Unsubscribe to EvtHeartbeat DONE for " + ScannerForm.Name);
 
-            //TextController.OnClosing();
-
             unsubscribeEvents();
 
             Log.Debug("Exiting FormClosing for " + ScannerForm.Name);
@@ -177,8 +175,6 @@ namespace ACAT.Core.UserControlManagement
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public void OnLoad(bool resetTalkWindowPosition = true)
         {
-            //TextController.OnLoad();
-
             subscribeToEvents();
 
             setWidgetEnabledStates(WindowActivityMonitor.CurrentWindowInfo());

@@ -38,17 +38,6 @@ namespace ACAT.Core.Interpreter
         /// </summary>
         private Scripts _scripts;
 
-        private static readonly Lazy<Interpret> _instance =
-            new Lazy<Interpret>(() => new Interpret());
-
-        // Private constructor: nobody outside can call "new Interpret()"
-        private Interpret()
-        {
-            Log.Debug($"Interpret singleton created. HashCode={this.GetHashCode()}");
-        }
-
-        public static Interpret Instance => _instance.Value;
-
         /// <summary>
         /// "Actuates" action associated with a widget.
         /// </summary>
@@ -417,7 +406,6 @@ namespace ACAT.Core.Interpreter
 
         private bool showPopup(List<String> args)
         {
-            Log.Debug("showPopup firing on instance " + this.GetHashCode());
             EvtShowPopup?.Invoke(this, new InterpreterEventArgs(args));
 
             return true;

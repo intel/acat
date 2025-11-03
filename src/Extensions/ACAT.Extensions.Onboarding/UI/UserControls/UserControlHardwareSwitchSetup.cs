@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
+//using System.Windows.Controls;
 using System.Windows.Forms;
 
 namespace ACAT.Extensions.Onboarding.UI.UserControls
@@ -106,43 +107,6 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
             actuator = (_switchType == OnboardingHardwareSwitchSetup.SwitchType.Keyboard) ?
                                         Context.AppActuatorManager.GetKeyboardActuator() :
                                         Context.AppActuatorManager.GetSwitchInterfaceActuator();
-
-            String bookmark = String.Empty;
-            if (_switchType == OnboardingHardwareSwitchSetup.SwitchType.Keyboard)
-            {
-                labelTitle.Text = StringResources.ConfigureKeyboardHotkey_Title;
-                labelPrompt.Text = StringResources.ConfigureKeyboardHotkey_Prompt;
-                bookmark = "KeyboardSwitch";
-            }
-            else
-            {
-                labelTitle.Text = StringResources.ConfigureSwitch_Title;
-                labelPrompt.Text = StringResources.ConfigureSwitch_Prompt;
-                bookmark = "SwitchConfigure";
-            }
-
-            String html = String.Format(_htmlTemplate, headStyle, bodyStyle, textStyle, "Click <a href=" + HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName) + "#" + bookmark + ">here</a> for help");
-            Log.Debug(html);
-
-            webBrowser.Navigating += webBrowser_Navigating;
-
-            // Ensure the browser has a document loaded first
-            if (webBrowser.Document == null)
-            {
-                webBrowser.Navigate("about:blank");
-                webBrowser.DocumentCompleted += (s, e) =>
-                {
-                    // When blank document is ready, write your HTML
-                    webBrowser.Document.OpenNew(true);
-                    webBrowser.Document.Write(html);
-                };
-            }
-            else
-            {
-                // Already has a document, safe to overwrite
-                webBrowser.Document.OpenNew(true);
-                webBrowser.Document.Write(html);
-            }
             if (actuator != null)
             {
                 foreach (var setting in config.ActuatorSettings)
@@ -495,5 +459,35 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
         }
 
         #endregion Methods
+
+        private void UserControlHardwareSwitchSetup_Load(object sender, EventArgs e)
+        {
+            String bookmark = String.Empty;
+            if (_switchType == OnboardingHardwareSwitchSetup.SwitchType.Keyboard)
+            {
+                labelTitle.Text = StringResources.ConfigureKeyboardHotkey_Title;
+                labelPrompt.Text = StringResources.ConfigureKeyboardHotkey_Prompt;
+                bookmark = "KeyboardSwitch";
+            }
+            else
+            {
+                labelTitle.Text = StringResources.ConfigureSwitch_Title;
+                labelPrompt.Text = StringResources.ConfigureSwitch_Prompt;
+                bookmark = "SwitchConfigure";
+            }
+
+            String html = String.Format(_htmlTemplate, headStyle, bodyStyle, textStyle, "Click <a href=" + HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName) + "#" + bookmark + ">here</a> for help");
+            Log.Debug(html);
+
+            webBrowser.DocumentText = html;
+            //webBrowser.DocumentText =
+            //    "<html><body>Please enter your name:<br/>" +
+            //    "<input type='text' name='userName'/><br/>" +
+            //    "<a href='http://www.microsoft.com'>continue</a>" +
+            //    "</body></html>";
+            webBrowser.Navigating +=
+                new WebBrowserNavigatingEventHandler(webBrowser_Navigating);
+
+        }
     }
 }

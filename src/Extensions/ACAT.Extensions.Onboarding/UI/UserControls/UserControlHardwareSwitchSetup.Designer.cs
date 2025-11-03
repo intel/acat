@@ -17,7 +17,6 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
         {
             if (disposing && (components != null))
             {
-                webBrowser.Navigating -= webBrowser_Navigating;
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -300,6 +299,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.Controls.Add(this.tableLayoutPanelMain);
             this.Name = "UserControlHardwareSwitchSetup";
+            this.Load += new System.EventHandler(this.UserControlHardwareSwitchSetup_Load);
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.ResumeLayout(false);
 

@@ -11,7 +11,7 @@
         <WidgetAttribute name="SPLItem2" label=" " value="@SPLItem2" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
         <WidgetAttribute name="SPLItem3" label=" " value="@SPLItem3" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
         <WidgetAttribute name="SPLItem4" label=" " value="@SPLItem4" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
-        <WidgetAttribute name="SPLItem5" label=" " value="@SPLItem15" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
+        <WidgetAttribute name="SPLItem5" label=" " value="@SPLItem5" fontname="&characterButtonFontName;" fontsize="&characterButtonFontSize;"  bold="&usebold;" />
     </WidgetAttributes>
 
     <Layout>

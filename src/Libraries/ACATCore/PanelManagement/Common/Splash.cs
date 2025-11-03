@@ -83,7 +83,14 @@ namespace ACAT.Core.PanelManagement.Common
             _thread = new Thread(() =>
             {
                 _form = new SplashScreen(message);
-
+                _form.TopMost = true;
+                _form.ShowInTaskbar = true;
+                _form.StartPosition = FormStartPosition.CenterScreen;
+                _form.Shown += (s, e) =>
+                {
+                    _form.BringToFront();
+                    _form.Activate();
+                };
                 _form.ShowDialog();
             }) { IsBackground = true };
             _thread.SetApartmentState(ApartmentState.STA);

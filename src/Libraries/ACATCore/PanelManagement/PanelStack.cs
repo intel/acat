@@ -206,7 +206,8 @@ namespace ACAT.Core.PanelManagement
             Form newPanelForm = PanelManager.Instance.CreatePanel(requestedPanelClass, args.Title ) as Form;
             if (newPanelForm == null)
             {
-                MessageBox.Show($"Invalid form requested: {requestedPanelClass}");
+                //MessageBox.Show($"Invalid form requested: {requestedPanelClass}");
+                Log.Error($"Invalid form requested: {requestedPanelClass}");
                 return;
             }
 

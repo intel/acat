@@ -1696,7 +1696,7 @@ namespace ACAT.Core.Utility
         /// <summary>
         /// Shows the child window as a dialog of the parent window
         /// This is just a helper function that takes care of
-        /// cross-thread invokations that would result in .NET
+        /// cross-thread invocations that would result in .NET
         /// exceptions.
         /// </summary>
         /// <param name="parent"></param>

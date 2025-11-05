@@ -1445,10 +1445,9 @@ namespace ACAT.Core.PanelManagement.Common
         /// <param name="mode">what to do?</param>
         private void setDisplayStateOnPause(PauseDisplayMode mode)
         {
-            Log.Debug("CALIBTEST scannerocmmon2. setDisplayStateOnPause. mode: " + mode);
+            Log.Debug("setDisplayStateOnPause. mode: " + mode);
             if (mode == PauseDisplayMode.None)
             {
-                Log.Verbose("CALIBTEST scannerocmmon2. it is none. Returning");
                 return;
             }
 

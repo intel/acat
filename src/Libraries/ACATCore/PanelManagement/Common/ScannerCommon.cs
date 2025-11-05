@@ -1463,14 +1463,7 @@ namespace ACAT.Core.PanelManagement.Common
                     break;
 
                 case PauseDisplayMode.Default:
-                    if (Context.AppPanelManager.PreShowPanelDisplayMode == DisplayModeTypes.Popup)
-                    {
-                        FadeScanner();
-                    }
-                    else
-                    {
-                        HideScanner();
-                    }
+                    FadeScanner();
                     break;
             }
         }

@@ -172,6 +172,7 @@ namespace ACAT.Extensions.UI.Scanners
             if (InvokeRequired)
             {
                 BeginInvoke(new MethodInvoker(() => ActiveWordPredictor_EvtModeChanged(newMode)));
+                return;
             }
 
             setModeLabel(newMode);

@@ -404,8 +404,7 @@ namespace ACAT.Applications
             var bciActuatorSetting = new ActuatorSetting
             {
                 Description = "Brain Computer Interface (BCI) is technology that reads brain waves to help you interact " +
-                                                "with your computer. Click &lt;a href=$ASSETS_VIDEOS_DIR#ACATOverviewBCI.mp4&gt;here&lt;/a&gt; for " +
-                                                "a demonstration of BCI. You can find more details &lt;a href=$ACAT_USER_GUIDE#BCISwitch&gt;here&lt;/a&gt;",
+                                                "with your computer. You can find more details &lt;a href=$ACAT_USER_GUIDE#BCISwitch&gt;here&lt;/a&gt;",
                 Enabled = false,
                 Id = new Guid("77809D19-F450-4D36-A633-D818400B3D9A"),
                 ImageFileName = "BCISwitch.png",

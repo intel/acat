@@ -1269,7 +1269,7 @@ El Gorro de Electrodos OpenBCI no es un dispositivo médico ni está destinado p
   &lt;/head&gt;
   &lt;body style="background-color:#232433;"&gt;
     &lt;p style="font-family:'Montserrat Medium'; font-size:24px; color:white; text-align: center;"&gt;
-    Para obtener instrucciones completas sobre la configuración, vea este &lt;a href="$ASSETS_VIDEOS_DIR#ACATOverviewBCI.mp4"&gt;video&lt;/a&gt; o revise la &lt;a href=$ACAT_USER_GUIDE#TableOfContents&gt;guía de configuración&lt;/a&gt;
+    Para obtener instrucciones completas sobre la configuración revise la &lt;a href=$ACAT_USER_GUIDE#TableOfContents&gt;guía de configuración&lt;/a&gt;
     &lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</value>
@@ -1285,7 +1285,7 @@ El Gorro de Electrodos OpenBCI no es un dispositivo médico ni está destinado p
   &lt;body style="background-color:#232433;"&gt;
     &lt;p style="font-family:'Montserrat Medium'; font-size:14px; color:white; text-align: center;"&gt;
 Calibrar BCI es crucial para comprender los patrones en sus señales cerebrales al seleccionar un elemento resaltado en la pantalla. ACAT requiere completar tres calibraciones distintas, cada una con una puntuación mínima.
-Asegúrese de que la velocidad de escaneo esté ajustada a un nivel que sea cómodo para usted.&lt;br/&gt;Para obtener instrucciones completas, vea este &lt;a href="$ASSETS_VIDEOS_DIR#ACATOverviewBCI.mp4"&gt;video&lt;/a&gt; o revise la &lt;a href=$ACAT_USER_GUIDE#BCICalibration&gt;guía de configuración&lt;/a&gt;
+Asegúrese de que la velocidad de escaneo esté ajustada a un nivel que sea cómodo para usted.&lt;br/&gt;Para obtener instrucciones completas o revise la &lt;a href=$ACAT_USER_GUIDE#BCICalibration&gt;guía de configuración&lt;/a&gt;
     &lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</value>
@@ -1880,7 +1880,7 @@ ACAT utiliza dos métricas - “saturación” e “impedancia” - para verific
     <value>¡Trabajo bueno!</value>
   </data>
   <data name="TryoutSuccess" xml:space="preserve">
-    <value>Continuar practicando o presionando \ "Next \" para continuar</value>
+    <value>Continuar practicando o presionando "Next" para continuar</value>
   </data>
   <data name="Usedigits1throug5only" xml:space="preserve">
     <value>Utilice únicamente los dígitos del 1 al 5</value>

@@ -36,8 +36,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         private readonly String _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  <head>\r\n  <style>\r\n    a:link{color: rgb(255, 170, 0);}\r\n  " +
                             "</style>\r\n  </head>\r\n  <body style=\"background-color:#232433;\">\r\n    " +
                             "<p style=\"font-family:'Montserrat Medium'; font-size:20px; color:white; text-align: center;\">\r\n" +
-                            "For additional help on getting good signal quality, watch this <a href=\"$ASSETS_VIDEOS_DIR#ACATOverviewBCI.mp4\">video</a> " +
-                            "or review the <a href=$ACAT_USER_GUIDE#SignalCheck>setup guide</a>\r\n    </p>\r\n  </body>\r\n</html>";
+                            "For additional help on getting good signal quality review the <a href=$ACAT_USER_GUIDE#SignalCheck>setup guide</a>\r\n    </p>\r\n  </body>\r\n</html>";
 
         /// <summary>
         /// Describes the different states for which to update the texts related to impedance testing

@@ -53,6 +53,12 @@ namespace ACATWatch
 
                 Log.Close();
             }
+            else
+            {
+                Log.SetupListeners();
+                Log.Error("Failed to load user preferences. Exiting application.");
+                Log.Close();
+            }
         }
     }
 }

@@ -1269,6 +1269,7 @@ El Gorro de Electrodos OpenBCI no es un dispositivo médico ni está destinado p
   &lt;/head&gt;
   &lt;body style="background-color:#232433;"&gt;
     &lt;p style="font-family:'Montserrat Medium'; font-size:24px; color:white; text-align: center;"&gt;
+
     Para obtener instrucciones completas sobre la configuración revise la &lt;a href=$ACAT_USER_GUIDE#TableOfContents&gt;guía de configuración&lt;/a&gt;
     &lt;/p&gt;
   &lt;/body&gt;

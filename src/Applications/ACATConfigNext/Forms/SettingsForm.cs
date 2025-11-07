@@ -196,16 +196,16 @@ namespace ACATConfigNext.Forms
                 if (_isDirty)
                 {
                     if (!ConfirmBoxTwoOption.ShowDialog("You have unsaved changes.",
-                        "Save changes before exiting?", "Don't Save", "Save"))
-                    {
-                        Close();
-                        return;
-                    }
-                    else
+                        "Save changes before exiting?", "Save", "Don't Save"))
                     {
                         var prefsPanel = currentSettingsPanel as SettingsPanel;
                         prefsPanel?.Save();
                         Close();
+                    }
+                    else
+                    {
+                        Close();
+                        return;
                     }
                 }
                 else

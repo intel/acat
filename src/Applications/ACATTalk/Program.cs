@@ -128,8 +128,8 @@ namespace ACATTalk
             }
 
             Context.ShowTalkWindowOnStartup = false;
-            Context.AppAgentMgr.EnableContextualMenusForDialogs = true;
-            Context.AppAgentMgr.EnableContextualMenusForMenus = true;
+            Context.AppAgentMgr.EnableContextualMenusForDialogs = false;
+            Context.AppAgentMgr.EnableContextualMenusForMenus = false;
             Context.AppAgentMgr.DefaultAgentForContextSwitchDisable = Context.AppAgentMgr.NullAgent;
 
             splash?.Close();

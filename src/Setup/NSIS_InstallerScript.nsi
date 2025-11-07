@@ -127,6 +127,12 @@ Section "Install"
   SetOutPath "$INSTDIR\Assets\Themes"
   File /r "${BUILD_OUTPUT}\Assets\Themes\*.*"
 
+  SetOutPath "$INSTDIR"
+  File /r "license.txt"
+
+  SetOutPath "$INSTDIR\Docs\en"
+  file /r "..\Docs\en\*.*"
+
   ; Install fonts
   Push "$INSTDIR\Assets\Fonts\ACAT Icon.ttf"
   Call InstallSystemFont
@@ -158,6 +164,10 @@ Section "Install"
     CreateShortcut  "$SMPROGRAMS\ACAT\ACAT Talk.lnk" "$INSTDIR\ACATTalk.exe"
     CreateShortcut  "$SMPROGRAMS\ACAT\ACAT Config.lnk" "$INSTDIR\ACATConfig.exe"
     CreateShortcut  "$SMPROGRAMS\ACAT\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
+    CreateDirectory "$SMPROGRAMS\ACAT\User Guides"
+    CreateShortcut "$SMPROGRAMS\ACAT\User Guides\ACAT User Guide.lnk" "$INSTDIR\Docs\en\ACAT User Guide.pdf"
+    CreateShortcut "$SMPROGRAMS\ACAT\User Guides\ACAT BCI User Guide.lnk" "$INSTDIR\Docs\en\ACAT BCI User Guide.pdf"
+    CreateShortcut "$SMPROGRAMS\ACAT\User Guides\ACAT Developer User Guide.lnk" "$INSTDIR\Docs\en\ACAT Developer Guide.pdf"
   ${Else}
     DetailPrint "Skipping Start Menu shortcut creation as per user choice."
   ${EndIf}

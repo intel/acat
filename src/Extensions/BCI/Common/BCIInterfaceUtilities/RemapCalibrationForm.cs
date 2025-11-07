@@ -49,7 +49,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                             "Each calibration that you have completed is assigned to the specific section for which you have trained. " +
                             "Sometimes using the calibration from one section and applying it to a different section can help with accuracy. " +
                             "To change where a calibration is  applied. Use the interface below.<br/>" +
-                            "For more information watch this <a href=\"$ASSETS_VIDEOS_DIR#ACATOverviewBCI.mp4\">video</a> or review the <a href=$ACAT_USER_GUIDE#BCICalibrationRemap>set up guide</a>" +
+                            "For more information review the <a href=$ACAT_USER_GUIDE#BCICalibrationRemap>set up guide</a>" +
                             "</p>\r\n</body>\r\n</html>";
 
         /// <summary>

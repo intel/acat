@@ -1226,7 +1226,7 @@ The OpenBCI Electrode Cap is not a medical device nor is it intended for medical
   &lt;/head&gt;
   &lt;body style="background-color:#232433;"&gt;
     &lt;p style="font-family:'Montserrat Medium'; font-size:24px; color:white; text-align: center;"&gt;
-    For complete setup instructions, watch this &lt;a href="$ASSETS_VIDEOS_DIR#ACATOverviewBCI.mp4"&gt;video&lt;/a&gt; or review the &lt;a href=$ACAT_USER_GUIDE#TableOfContents&gt;setup guide&lt;/a&gt;
+    For complete setup instructions review the &lt;a href=$ACAT_USER_GUIDE#TableOfContents&gt;setup guide&lt;/a&gt;
     &lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</value>
@@ -1242,7 +1242,7 @@ The OpenBCI Electrode Cap is not a medical device nor is it intended for medical
   &lt;body style="background-color:#232433;"&gt;
     &lt;p style="font-family:'Montserrat Medium'; font-size:14px; color:white; text-align: center;"&gt;
 Calibrating BCI is crucial for understanding the patterns in your brain signals when selecting a highlighted item on the screen. ACAT requires completing three distinct calibrations, each with a minimum score.
-Ensure the scanning speed is adjusted to a level that is comfortable for you.&lt;br/&gt;For complete instructions, watch this &lt;a href="$ASSETS_VIDEOS_DIR#ACATOverviewBCI.mp4"&gt;video&lt;/a&gt; or review the &lt;a href=$ACAT_USER_GUIDE#BCICalibration&gt;setup guide&lt;/a&gt;
+Ensure the scanning speed is adjusted to a level that is comfortable for you.&lt;br/&gt;For complete instructions review the &lt;a href=$ACAT_USER_GUIDE#BCICalibration&gt;setup guide&lt;/a&gt;
     &lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</value>
@@ -1840,7 +1840,7 @@ ACAT uses two metrics - “railing” and “impedance” - to check signal qual
     <value>Good Work!</value>
   </data>
   <data name="TryoutSuccess" xml:space="preserve">
-    <value>Continue practicing or hit \"Next\" to continue</value>
+    <value>Continue practicing or hit "Next" to continue</value>
   </data>
   <data name="Usedigits1throug5only" xml:space="preserve">
     <value>Use digits 1 through 5 only</value>

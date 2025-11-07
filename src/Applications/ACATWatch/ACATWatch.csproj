@@ -7,7 +7,7 @@
     <OutputType>WinExe</OutputType>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyTitle>ACAT Dashboard</AssemblyTitle>
+    <AssemblyTitle>ACATWatch</AssemblyTitle>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)ACATResources\ACATResources.csproj" />

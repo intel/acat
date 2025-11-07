@@ -5,6 +5,7 @@ Assistive Context-Aware Toolkit (ACAT)
 Distributed under the Apache 2.0 license 
 (https://spdx.org/licenses/Apache-2.0.html)
 
+
 Copyright (c) 2013-2025 Intel Corporation 
 
 Licensed under the Apache License, Version 2.0 (the "License");

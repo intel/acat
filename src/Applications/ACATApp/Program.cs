@@ -23,10 +23,8 @@ using ACAT.Extension;
 using ACAT.Extension.CommandHandlers;
 using ACATResources;
 using System;
-using System.Web.UI;
 using System.Windows.Forms;
 using System.Windows.Navigation;
-
 
 namespace ACATApp
 {

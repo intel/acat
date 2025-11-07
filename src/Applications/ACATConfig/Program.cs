@@ -58,7 +58,18 @@ namespace ACATConfig
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            PreferencesEditForm.EnsureInitialized();
+            // Ensure PreferencesEditForm is initialized before other steps.
+            // This is required to avoid issues with preference editing dialogs later.
+            // If initialization fails, log the error and exit.
+                        try
+                        {
+                            PreferencesEditForm.EnsureInitialized();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Failed to initialize PreferencesEditForm.\n\n" + ex.Message, "ACAT", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
 
             if (!validateACATCoreLibraryCertificates())
             {

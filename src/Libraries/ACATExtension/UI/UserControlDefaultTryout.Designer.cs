@@ -1,4 +1,8 @@
-﻿namespace ACAT.Lib.Extension
+﻿using ACATResources;
+using ACAT.Core.WidgetManagement;
+using ACAT.Core.Utility;
+
+namespace ACAT.Extension
 
 {
     partial class UserControlDefaultTryout
@@ -35,13 +39,13 @@
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.customSlider2PositiveLabel = new System.Windows.Forms.Button();
             this.customSliderScanningSpeed = new ColorSlider.ColorSlider();
-            this.B4 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B4 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B3 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B2 = new ScannerRoundedButtonControl();
+            this.B1 = new ScannerRoundedButtonControl();
             this.labelCustomSliderValue = new System.Windows.Forms.Label();
             this.customSliderNegativeLabel = new System.Windows.Forms.Button();
-            this.scannerRoundedButtonControl1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.scannerRoundedButtonControl1 = new ScannerRoundedButtonControl();
             this.checkBoxDontShowThisOnStartup = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanelMain.SuspendLayout();
             this.SuspendLayout();
@@ -75,12 +79,12 @@
             this.tableLayoutPanelMain.SetRowSpan(this.label1, 2);
             this.label1.Size = new System.Drawing.Size(831, 128);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Switch Scanning Tryout";
+            this.label1.Text = StringResources.SwitchScanningTryout;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelScanSpeedSelect3
             // 
-            this.labelScanSpeedSelect3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.labelScanSpeedSelect3.BackColor = System.Drawing.Color.FromArgb(35, 36, 51);
             this.tableLayoutPanelMain.SetColumnSpan(this.labelScanSpeedSelect3, 11);
             this.labelScanSpeedSelect3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.labelScanSpeedSelect3.Font = new System.Drawing.Font("Montserrat Medium", 15F);
@@ -92,9 +96,7 @@
             this.tableLayoutPanelMain.SetRowSpan(this.labelScanSpeedSelect3, 2);
             this.labelScanSpeedSelect3.Size = new System.Drawing.Size(1024, 128);
             this.labelScanSpeedSelect3.TabIndex = 71;
-            this.labelScanSpeedSelect3.Text = "Type the 3 letter word using your switch to select the letters from the bottom ro" +
-    "w.\r\nAdjust the scan speed using the slider.\r\nClick Next when you are comfortable" +
-    " using ​the switch scanning​\r\n";
+            this.labelScanSpeedSelect3.Text = StringResources.labelScanSpeedSelect;
             this.labelScanSpeedSelect3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanelMain
@@ -162,7 +164,7 @@
             // 
             // customSliderScanningSpeed
             // 
-            this.customSliderScanningSpeed.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.customSliderScanningSpeed.BackColor = System.Drawing.Color.FromArgb(35, 36, 51);
             this.customSliderScanningSpeed.BarInnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
             this.customSliderScanningSpeed.BarPenColorBottom = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
             this.customSliderScanningSpeed.BarPenColorTop = System.Drawing.Color.Empty;
@@ -212,8 +214,8 @@
             0,
             0});
             this.customSliderScanningSpeed.TabIndex = 77;
-            this.customSliderScanningSpeed.ThumbInnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.customSliderScanningSpeed.ThumbOuterColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.customSliderScanningSpeed.ThumbInnerColor = System.Drawing.Color.FromArgb(35, 36, 51);
+            this.customSliderScanningSpeed.ThumbOuterColor = System.Drawing.Color.FromArgb(35, 36, 51);
             this.customSliderScanningSpeed.ThumbPenColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
             this.customSliderScanningSpeed.ThumbRoundRectSize = new System.Drawing.Size(56, 56);
             this.customSliderScanningSpeed.ThumbSize = new System.Drawing.Size(56, 56);
@@ -239,13 +241,15 @@
             this.tableLayoutPanelMain.SetColumnSpan(this.B4, 2);
             this.B4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.B4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.B4.Font = new System.Drawing.Font("Arial", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.B4.Font = FontUtil.ScaleFontToHeight(this.B4.Width, "Montserrat", System.Drawing.FontStyle.Bold, scale: 1.4f);
+            //this.B4.Font = new System.Drawing.Font("Montserrat", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.B4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.B4.Location = new System.Drawing.Point(747, 515);
             this.B4.Name = "B4";
             this.tableLayoutPanelMain.SetRowSpan(this.B4, 2);
             this.B4.Size = new System.Drawing.Size(180, 122);
             this.B4.TabIndex = 76;
-            this.B4.Text = "t";
+            this.B4.Text = "a";
             this.B4.UseMnemonic = false;
             this.B4.UseVisualStyleBackColor = false;
             // 
@@ -261,7 +265,9 @@
             this.tableLayoutPanelMain.SetColumnSpan(this.B3, 2);
             this.B3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.B3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.B3.Font = new System.Drawing.Font("Arial", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.B3.Font = FontUtil.ScaleFontToHeight(this.B3.Width, "Montserrat", System.Drawing.FontStyle.Bold, scale: 1.4f);
+            //this.B3.Font = new System.Drawing.Font("Montserrat", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.B3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.B3.Location = new System.Drawing.Point(561, 515);
             this.B3.Name = "B3";
             this.tableLayoutPanelMain.SetRowSpan(this.B3, 2);
@@ -283,13 +289,15 @@
             this.tableLayoutPanelMain.SetColumnSpan(this.B2, 2);
             this.B2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.B2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.B2.Font = new System.Drawing.Font("Arial", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.B2.Font = FontUtil.ScaleFontToHeight(this.B1.Width, "Montserrat", System.Drawing.FontStyle.Bold, scale: 1.4f);
+            //this.B2.Font = new System.Drawing.Font("Montserrat", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.B2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.B2.Location = new System.Drawing.Point(375, 515);
             this.B2.Name = "B2";
             this.tableLayoutPanelMain.SetRowSpan(this.B2, 2);
             this.B2.Size = new System.Drawing.Size(180, 122);
             this.B2.TabIndex = 74;
-            this.B2.Text = "t";
+            this.B2.Text = "e";
             this.B2.UseMnemonic = false;
             this.B2.UseVisualStyleBackColor = false;
             // 
@@ -305,13 +313,15 @@
             this.tableLayoutPanelMain.SetColumnSpan(this.B1, 2);
             this.B1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.B1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.B1.Font = new System.Drawing.Font("Arial", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.B1.Font = FontUtil.ScaleFontToHeight(this.B1.Width, "Montserrat", System.Drawing.FontStyle.Bold, scale: 1.4f);
+            //this.B1.Font = new System.Drawing.Font("Montserrat", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.B1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.B1.Location = new System.Drawing.Point(189, 515);
             this.B1.Name = "B1";
             this.tableLayoutPanelMain.SetRowSpan(this.B1, 2);
             this.B1.Size = new System.Drawing.Size(180, 122);
             this.B1.TabIndex = 73;
-            this.B1.Text = "t";
+            this.B1.Text = "b";
             this.B1.UseMnemonic = false;
             this.B1.UseVisualStyleBackColor = false;
             // 
@@ -364,7 +374,7 @@
             this.scannerRoundedButtonControl1.Name = "scannerRoundedButtonControl1";
             this.scannerRoundedButtonControl1.Size = new System.Drawing.Size(181, 58);
             this.scannerRoundedButtonControl1.TabIndex = 82;
-            this.scannerRoundedButtonControl1.Text = "Next";
+            this.scannerRoundedButtonControl1.Text = StringResources.LMNext;
             this.scannerRoundedButtonControl1.UseMnemonic = false;
             this.scannerRoundedButtonControl1.UseVisualStyleBackColor = false;
             this.scannerRoundedButtonControl1.Click += new System.EventHandler(this.buttonDone_Click);
@@ -380,14 +390,14 @@
             this.checkBoxDontShowThisOnStartup.Name = "checkBoxDontShowThisOnStartup";
             this.checkBoxDontShowThisOnStartup.Size = new System.Drawing.Size(366, 58);
             this.checkBoxDontShowThisOnStartup.TabIndex = 83;
-            this.checkBoxDontShowThisOnStartup.Text = "Don\'t show this again";
+            this.checkBoxDontShowThisOnStartup.Text = StringResources.DonTShowThisAgain;
             this.checkBoxDontShowThisOnStartup.UseVisualStyleBackColor = true;
             // 
             // UserControlDefaultTryout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.BackColor = System.Drawing.Color.FromArgb(35, 36, 51);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "UserControlDefaultTryout";
@@ -402,12 +412,12 @@
 
         private System.Windows.Forms.RichTextBox richTextBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelMain;
-        private Core.WidgetManagement.ScannerRoundedButtonControl B4;
-        private Core.WidgetManagement.ScannerRoundedButtonControl B3;
-        private Core.WidgetManagement.ScannerRoundedButtonControl B2;
+        private ScannerRoundedButtonControl B4;
+        private ScannerRoundedButtonControl B3;
+        private ScannerRoundedButtonControl B2;
         private System.Windows.Forms.Label labelScanSpeedSelect3;
         private System.Windows.Forms.Label label1;
-        private Core.WidgetManagement.ScannerRoundedButtonControl B1;
+        private ScannerRoundedButtonControl B1;
         private ColorSlider.ColorSlider customSliderScanningSpeed;
         private System.Windows.Forms.Label labelCustomSliderValue;
         private System.Windows.Forms.Button customSliderNegativeLabel;

@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Widgets
+namespace ACAT.Core.Widgets
 {
     /// <summary>
     /// Extension class for checkbox widget
@@ -39,10 +39,7 @@ namespace ACAT.Lib.Core.Widgets
         /// <param name="state">the state to set to</param>
         public static void SetState(this CheckBoxWidget widget, Boolean state)
         {
-            if (widget != null)
-            {
-                widget.SetToggleState(state);
-            }
+            widget?.SetToggleState(state);
         }
     }
 

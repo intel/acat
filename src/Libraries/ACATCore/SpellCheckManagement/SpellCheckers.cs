@@ -5,9 +5,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.SpellCheckManagement.Interfaces;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,7 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace ACAT.Lib.Core.SpellCheckManagement
+namespace ACAT.Core.SpellCheckManagement
 {
     /// <summary>
     /// Maintains a list of discovered SpellCheckers in an internal cache.
@@ -53,10 +54,12 @@ namespace ACAT.Lib.Core.SpellCheckManagement
         /// Has this object been disposed
         /// </summary>
         private bool _disposed;
+
         /// <summary>
         /// If one of the dll found has an error with the certificate
         /// </summary>
         private static volatile bool _DLLError = false;
+
         /// <summary>
         /// Initializes an instance of the class
         /// </summary>
@@ -145,7 +148,6 @@ namespace ACAT.Lib.Core.SpellCheckManagement
                     }
                 }
                 else if (!String.IsNullOrEmpty(tuple.Item1) &&
-                    (String.Compare(tuple.Item1, ci.Name, true) == 0) ||
                     String.Compare(tuple.Item1, ci.TwoLetterISOLanguageName, true) == 0)
                 {
                     foundTuple = tuple;
@@ -155,10 +157,10 @@ namespace ACAT.Lib.Core.SpellCheckManagement
 
             if (foundTuple != null)
             {
-                IDescriptor descriptor = DescriptorAttribute.GetDescriptor(foundTuple.Item2);
+                ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(foundTuple.Item2);
                 if (descriptor != null)
                 {
-                    Log.Debug("Found spellchecker for culture " + (ci != null ? ci.Name : "Neutral") + "[" + descriptor.Name + "]");
+                    Log.Debug("Found spellchecker for culture " + (ci != null ? ci.TwoLetterISOLanguageName : "Neutral") + "[" + descriptor.Name + "]");
                     return descriptor.Id;
                 }
             }
@@ -204,17 +206,17 @@ namespace ACAT.Lib.Core.SpellCheckManagement
         /// <param spellCheckerName="extensionDirs">list of extension directories</param>
         /// <param spellCheckerName="recursive">should it look deep?</param>
         /// <returns></returns>
-        public bool Load(IEnumerable<String> extensionDirs, bool recursive = true)
+        public bool Load(IEnumerable<String> extensionDirs)
         {
             foreach (var dir in extensionDirs)
             {
                 var extensionDir = dir + "\\" + SpellCheckManager.SpellCheckersRootName;
-                loadSpellCheckerTypesIntoCache(extensionDir, null, recursive);
+                loadSpellCheckerTypesIntoCache(extensionDir, null);
             }
             if (_DLLError)
                 return false;
 
-            var languageDirs = ResourceUtils.GetInstalledLanugageDirectories();
+            var languageDirs = ResourceUtils.GetInstalledLangugageDirectories();
             foreach (string dir in languageDirs)
             {
                 var extensionDir = dir + "\\" + FileUtils.ExtensionsDir;
@@ -227,7 +229,7 @@ namespace ACAT.Lib.Core.SpellCheckManagement
                     var extensionRoot = Path.Combine(extensionDir, root);
                     extensionRoot = Path.Combine(extensionRoot, SpellCheckManager.SpellCheckersRootName);
 
-                    loadSpellCheckerTypesIntoCache(extensionRoot, language, recursive);
+                    loadSpellCheckerTypesIntoCache(extensionRoot, language);
                 }
             }
             return true;
@@ -248,15 +250,15 @@ namespace ACAT.Lib.Core.SpellCheckManagement
 
             foreach (Type type in Collection)
             {
-                IDescriptor descriptor = DescriptorAttribute.GetDescriptor(type);
+                ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(type);
                 if (descriptor != null && Equals(guid, descriptor.Id))
                 {
-                    Log.Debug("Found spellchecker of type " + type);
+                    Log.Debug($"Found spellchecker of type {type}");
                     return type;
                 }
             }
 
-            Log.Debug("Could not find spellchecker for id " + guid);
+            Log.Error($"Could not find spellchecker for id {guid}");
             return null;
         }
 
@@ -313,16 +315,13 @@ namespace ACAT.Lib.Core.SpellCheckManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
                     _spellCheckersTypeCache.Clear();
 
-                    if (_nullSpellChecker != null)
-                    {
-                        _nullSpellChecker.Dispose();
-                    }
+                    _nullSpellChecker?.Dispose();
                 }
 
                 // Release unmanaged resources.
@@ -337,10 +336,10 @@ namespace ACAT.Lib.Core.SpellCheckManagement
         /// </summary>
         /// <param name="dir">dir to descend into</param>
         /// <param name="culture">culture (optional) of the word predictor</param>
-        /// <param name="resursive">true if deep-descend</param>
-        private void loadSpellCheckerTypesIntoCache(String dir, String culture, bool resursive = true)
+        /// <param name="recursive">true if deep-descend</param>
+        private void loadSpellCheckerTypesIntoCache(String dir, String culture)
         {
-            DirectoryWalker walker = new DirectoryWalker(dir, "*.dll");
+            DirectoryWalker walker = new(dir, "ACAT.Extensions.*.dll");
             _dirWalkCurrentCulture = culture;
             walker.Walk(new OnFileFoundDelegate(onFileFound));
         }
@@ -354,7 +353,6 @@ namespace ACAT.Lib.Core.SpellCheckManagement
         {
             try
             {
-
                 var retVal = VerifyDigitalSignature.ValidateCertificate(dllName);
                 if (retVal && !_DLLError)
                 {
@@ -364,16 +362,15 @@ namespace ACAT.Lib.Core.SpellCheckManagement
                     }
                     catch (Exception ex)
                     {
-                        ConfirmBoxSingleOption confirmBoxSingleOption = new ConfirmBoxSingleOption
+                        ConfirmBoxOneOption ConfirmBoxOneOption = new()
                         {
                             Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n Status Error: ERSC",
                             DecisionPrompt = "ok",
                             LabelFont = 10
                         };
-                        confirmBoxSingleOption.BringToFront();
-                        confirmBoxSingleOption.TopMost = true;
-                        confirmBoxSingleOption.ShowDialog();
-                        confirmBoxSingleOption.Dispose();
+                        ConfirmBoxOneOption.BringToFront();
+                        ConfirmBoxOneOption.ShowDialog();
+                        ConfirmBoxOneOption.Dispose();
                         _DLLError = true;
                     }
                 }
@@ -384,7 +381,7 @@ namespace ACAT.Lib.Core.SpellCheckManagement
                     {
                         if (typeof(ISpellChecker).IsAssignableFrom(type))
                         {
-                            var attr = DescriptorAttribute.GetDescriptor(type);
+                            var attr = ClassDescriptorAttribute.GetDescriptor(type);
                             if (attr != null && attr.Id != Guid.Empty)
                             {
                                 Add(attr.Id, _dirWalkCurrentCulture, type);
@@ -392,11 +389,10 @@ namespace ACAT.Lib.Core.SpellCheckManagement
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {
-                Log.Debug("Could get types from assembly " + dllName + ". Exception : " + ex);
+                Log.Exception("Could get types from assembly " + dllName + ". Exception : " + ex);
             }
         }
     }

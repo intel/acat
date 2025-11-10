@@ -13,7 +13,7 @@ using System.IO.Pipes;
 using System.Text;
 using System.Threading;
 
-namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
     public class PipeServerStateConvAssist
     {

@@ -9,7 +9,7 @@ using System;
 using System.IO.Pipes;
 using System.Text;
 
-namespace ACAT.Lib.Core.Utility.NamedPipe
+namespace ACAT.Core.Utility.NamedPipe
 {
     public sealed class PipeClient : IDisposable
     {
@@ -127,11 +127,7 @@ namespace ACAT.Lib.Core.Utility.NamedPipe
         /// </param>
         private void OnMessageReceived(MessageReceivedEventArgs e)
         {
-            EventHandler<MessageReceivedEventArgs> handler = MessageReceived;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            MessageReceived?.Invoke(this, e);
         }
 
         /// <summary>
@@ -152,10 +148,7 @@ namespace ACAT.Lib.Core.Utility.NamedPipe
                 var str = pipeState.Message.ToString();
                 if (String.IsNullOrEmpty(str))
                 {
-                    if (EvtServerDisconnected != null)
-                    {
-                        EvtServerDisconnected(this, new EventArgs());
-                    }
+                    EvtServerDisconnected?.Invoke(this, new EventArgs());
                 }
                 else
                 {

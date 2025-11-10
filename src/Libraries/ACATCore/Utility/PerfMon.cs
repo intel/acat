@@ -11,23 +11,23 @@ using System.IO;
 using System.Text;
 using System.Timers;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
-    ///  Has functions to track performance monitor stats such as 
+    ///  Has functions to track performance monitor stats such as
     ///  free memory, handles, page file bytes, processor time etc
     /// </summary>
     public static class PerfMon
     {
         private const int cpuCounterIterations = 50;
         private const int MB = 1048576;
-        private static PerformanceCounter committedMemCounter;
-        private static PerformanceCounter freeMemCounter;
-        private static PerformanceCounter handleCountCounter;
+        private static readonly PerformanceCounter committedMemCounter;
+        private static readonly PerformanceCounter freeMemCounter;
+        private static readonly PerformanceCounter handleCountCounter;
         private static volatile bool inTimer;
-        private static PerformanceCounter pageFileBytesCounter;
-        private static PerformanceCounter privateBytesCounter;
-        private static PerformanceCounter processorTimeCounter;
+        private static readonly PerformanceCounter pageFileBytesCounter;
+        private static readonly PerformanceCounter privateBytesCounter;
+        private static readonly PerformanceCounter processorTimeCounter;
         private static Timer timer;
         private static bool timerPaused;
         private static bool timerStarted;
@@ -159,7 +159,6 @@ namespace ACAT.Lib.Core.Utility
                 file?.Close();
                 file?.Dispose();
             }
-
 
             return true;
         }

@@ -5,18 +5,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WordPredictorManagement.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
-using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.WordPredictionManagement
+namespace ACAT.Core.WordPredictorManagement
 {
     /// <summary>
     /// Manages word prediction engines.  The engines are  DLLs
@@ -31,22 +31,22 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// <summary>
         /// Name of the folder under which the Word predictor DLLs are located
         /// </summary>
-        public static String WordPredictorsRootName = "WordPredictors";
+        public static string WordPredictorsRootName = "";
 
         /// <summary>
         /// Word prediction manager instance
         /// </summary>
-        private static readonly WordPredictionManager _instance = new WordPredictionManager();
+        private static readonly WordPredictionManager _instance = new();
 
         /// <summary>
         /// Current User's current profile directory
         /// </summary>
-        private readonly String _profileRootDir;
+        private readonly string _profileRootDir;
 
         /// <summary>
         /// Word predictor root directory relative to the user's home directory
         /// </summary>
-        private readonly String _userWordPredictorRootDir;
+        private readonly string _userWordPredictorRootDir;
 
         /// <summary>
         /// The active word predictor
@@ -87,6 +87,11 @@ namespace ACAT.Lib.Core.WordPredictionManagement
             get { return _instance; }
         }
 
+        public IEnumerable<IWordPredictor> WordPredictorsList
+        {
+            get { return _wordPredictors.WordPredictorsList; }
+        }
+
         /// <summary>
         /// Gets the currently active word predictor
         /// </summary>
@@ -107,7 +112,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// Gets the word predictor root directory relative the user's
         /// current profile
         /// </summary>
-        public String WordPredictorRootDirRelativeToProfile
+        public string WordPredictorRootDirRelativeToProfile
         {
             get { return _profileRootDir; }
         }
@@ -116,7 +121,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// Gets the word predictor root directory relative to the user
         /// home directory
         /// </summary>
-        public String WordPredictorRootDirRelativeToUser
+        public string WordPredictorRootDirRelativeToUser
         {
             get { return _userWordPredictorRootDir; }
         }
@@ -137,86 +142,86 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// Returns form that displays preferences selection form for word predictors and allows configuration.
         /// User can enable/disable word predictors and also configure settings for each word predictor.
         /// </summary>
-        public Form GetPreferencesSelectionForm(IntPtr parentControlHandle)
-        {
-            if (!ResourceUtils.IsInstalledCulture(CultureInfo.DefaultThreadCurrentUICulture))
-            {
-                return null;
-            }
+        //public Form GetPreferencesSelectionForm(IntPtr parentControlHandle)
+        //{
+        //    if (!ResourceUtils.IsInstalledCulture(CultureInfo.DefaultThreadCurrentUICulture))
+        //    {
+        //        return null;
+        //    }
 
-            var ci = CultureInfo.DefaultThreadCurrentUICulture;
+        //    var ci = CultureInfo.DefaultThreadCurrentUICulture;
 
-            List<Type> wpTypeList = new List<Type>();
+        //    List<Type> wpTypeList = new List<Type>();
 
-            // Add all the word predictors for the selected language
-            wpTypeList.AddRange(_wordPredictors.Get(ci.Name).ToList());
+        //    // Add all the word predictors for the selected language
+        //    wpTypeList.AddRange(_wordPredictors.Get(ci.TwoLetterISOLanguageName).ToList());
 
-            if (String.Compare(ci.Name, ci.TwoLetterISOLanguageName, true) != 0)
-            {
-                wpTypeList.AddRange(_wordPredictors.Get(ci.TwoLetterISOLanguageName).ToList());
-            }
+        //    if (String.Compare(ci.TwoLetterISOLanguageName, ci.TwoLetterISOLanguageName, true) != 0)
+        //    {
+        //        wpTypeList.AddRange(_wordPredictors.Get(ci.TwoLetterISOLanguageName).ToList());
+        //    }
 
-            // Get names of word predictor types added thus far
-            List<String> wpTypeNameList = wpTypeList.Select(type => type.Name).ToList();
+        //    // Get names of word predictor types added thus far
+        //    List<String> wpTypeNameList = wpTypeList.Select(type => type.Name).ToList();
 
-            // Get culture neutral word predictor types and only add if type not already added for specific language
-            foreach (Type wpNeutralCultureType in _wordPredictors.Get(null).ToList())
-            {
-                if (!wpTypeNameList.Contains(wpNeutralCultureType.Name))
-                {
-                    wpTypeList.Add(wpNeutralCultureType);
-                }
-            }
+        //    // Get culture neutral word predictor types and only add if type not already added for specific language
+        //    foreach (Type wpNeutralCultureType in _wordPredictors.Get(null).ToList())
+        //    {
+        //        if (!wpTypeNameList.Contains(wpNeutralCultureType.Name))
+        //        {
+        //            wpTypeList.Add(wpNeutralCultureType);
+        //        }
+        //    }
 
-            // Add NullWordPredictor
-            wpTypeList.Add(typeof(NullWordPredictor));
+        //    // Add NullWordPredictor
+        //    wpTypeList.Add(typeof(NullWordPredictor));
 
-            // Now create a list of all the word predictor objects
-            List<object> objList = wpTypeList.Select(type => Activator.CreateInstance(type)).ToList();
+        //    // Now create a list of all the word predictor objects
+        //    List<object> objList = wpTypeList.Select(type => Activator.CreateInstance(type)).ToList();
 
-            var categories = objList.Select(wordPredictor => new PreferencesCategory(wordPredictor)).ToList();
+        //    var categories = objList.Select(wordPredictor => new PreferencesCategory(wordPredictor)).ToList();
 
-            var preferredGuid = _wordPredictors.GetPreferredOrDefaultByCulture(ci);
-            if (Equals(preferredGuid, Guid.Empty))
-            {
-                preferredGuid = _wordPredictors.GetPreferredOrDefaultByCulture(null);
-            }
+        //    var preferredGuid = _wordPredictors.GetPreferredOrDefaultByCulture(ci);
+        //    if (Equals(preferredGuid, Guid.Empty))
+        //    {
+        //        preferredGuid = _wordPredictors.GetPreferredOrDefaultByCulture(null);
+        //    }
 
-            foreach (var category in categories)
-            {
-                category.Enable = false;
-            }
+        //    foreach (var category in categories)
+        //    {
+        //        category.Enable = false;
+        //    }
 
-            foreach (var category in categories)
-            {
-                var iExtension = category.PreferenceObj as IExtension;
-                category.Enable = (iExtension != null && iExtension.Descriptor.Id == preferredGuid);
-                if (category.Enable)
-                {
-                    break;
-                }
-            }
+        //    foreach (var category in categories)
+        //    {
+        //        var iExtension = category.PreferenceObj as IExtension;
+        //        category.Enable = (iExtension != null && iExtension.Descriptor.Id == preferredGuid);
+        //        if (category.Enable)
+        //        {
+        //            break;
+        //        }
+        //    }
 
-            /// Create and return the form for the user to select default word predictor, change settings etc.
-            var form = new PreferencesCategorySelectForm
-            {
-                PreferencesCategories = categories,
-                Title = "Word Predictors - " + ci.DisplayName,
-                EnableColumnHeaderText = "Default",
-                CategoryColumnHeaderText = "Word Predictor",
-                AllowMultiEnable = false,
-                ParentControlHandle = parentControlHandle
-            };
+        //    /// Create and return the form for the user to select default word predictor, change settings etc.
+        //    var form = new PreferencesCategorySelectForm
+        //    {
+        //        PreferencesCategories = categories,
+        //        Title = "Word Predictors - " + ci.DisplayName,
+        //        EnableColumnHeaderText = "Default",
+        //        CategoryColumnHeaderText = "Word Predictor",
+        //        AllowMultiEnable = false,
+        //        ParentControlHandle = parentControlHandle
+        //    };
 
-            return form;
-        }
+        //    return form;
+        //}
 
         /// <summary>
         /// Initialize the Word Predictor manager
         /// </summary>
         /// <param name="extensionDirs"></param>
         /// <returns></returns>
-        public bool Init(IEnumerable<String> extensionDirs)
+        public bool Init(IEnumerable<string> extensionDirs)
         {
             return true;
         }
@@ -253,7 +258,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// </summary>
         /// <param name="extensionDirs">root directory</param>
         /// <returns>true on success</returns>
-        public bool LoadExtensions(IEnumerable<String> extensionDirs)
+        public bool LoadExtensions(IEnumerable<string> extensionDirs)
         {
             bool retVal = true;
 
@@ -278,7 +283,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
             {
                 if (category.Enable && category.PreferenceObj is IExtension)
                 {
-                    _wordPredictors.SetPreferred(ci.Name, ((IExtension)category.PreferenceObj).Descriptor.Id);
+                    _wordPredictors.SetPreferred(ci.TwoLetterISOLanguageName, ((IExtension)category.PreferenceObj).Descriptor.Id);
                     break;
                 }
             }
@@ -301,10 +306,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// <returns>true on success</returns>
         public bool SetActiveWordPredictor(CultureInfo ci = null)
         {
-            if (ci == null)
-            {
-                ci = CultureInfo.DefaultThreadCurrentUICulture;
-            }
+            ci ??= CultureInfo.DefaultThreadCurrentUICulture;
 
             Guid guid = _wordPredictors.GetPreferredOrDefaultByCulture(ci);
             Guid cultureNeutralGuid = _wordPredictors.GetPreferredOrDefaultByCulture(null);
@@ -335,7 +337,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
 
                     if (!retVal)
                     {
-                        ci = new CultureInfo("en-US");
+                        ci = new CultureInfo("en");
                         guid = _wordPredictors.GetDefaultByCulture(ci);
                         if (!Equals(guid, Guid.Empty))
                         {
@@ -383,22 +385,16 @@ namespace ACAT.Lib.Core.WordPredictionManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 Context.EvtCultureChanged -= Context_EvtCultureChanged;
 
                 if (disposing)
                 {
                     // dispose all managed resources.
-                    if (_activeWordPredictor != null)
-                    {
-                        _activeWordPredictor.Dispose();
-                    }
+                    _activeWordPredictor?.Dispose();
 
-                    if (_wordPredictors != null)
-                    {
-                        _wordPredictors.Dispose();
-                    }
+                    _wordPredictors?.Dispose();
                 }
 
                 // Release unmanaged resources.
@@ -440,7 +436,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Unable to load WordPredictor " + type + ", assembly: " + type.Assembly.FullName + ". Exception: " + ex);
+                Log.Exception("Unable to load WordPredictor " + type + ", assembly: " + type.Assembly.FullName + ". Exception: " + ex);
                 retVal = false;
             }
 

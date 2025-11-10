@@ -10,12 +10,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Xml.Serialization;
+using ACATResources;
 
-namespace ACAT.Extensions.Default.TTSEngines.TTSClient
+namespace ACAT.Extensions.TTSEngines.TTSClient
 {
     public enum TransportProtocol
     {
@@ -26,7 +30,7 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
     /// Settings for TTSClient
     /// </summary>
     [Serializable]
-    public class TTSClientSettings : PreferencesBase
+    public partial class TTSClientSettings : PreferencesBase
     {
         /// <summary>
         /// Path to the preferences file
@@ -44,8 +48,8 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
         /// </summary>
         public TTSClientSettings()
         {
-            Volume = 100;
-            Rate = 0;
+            volume = 100;
+            rate = 0;
             Pitch = 0;
             Protocol = TransportProtocol.Http;
             HttpSettings = new HttpSettings();
@@ -55,8 +59,13 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
         /// Gets or sets whether a puncutation should be appended if it
         /// is not already there.
         /// </summary>
-        [BoolDescriptor("Auto append sentence terminator?", false)]
-        public bool AutoAppendPunctuation { get; set; }
+        [Display(Name = nameof(StringResources.Autoappendsentenceterminator),
+            Description = nameof(StringResources.Getsorsetswhetherapuncutationshouldbeappendedifitisnotalreadythere),
+            ResourceType = typeof(StringResources))]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(false)]
+        [ObservableProperty]
+        private bool autoAppendPunctuation = false;
 
         public HttpSettings HttpSettings { get; set; }
 
@@ -70,14 +79,23 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
         /// <summary>
         /// Gets or sets the rate of speech
         /// </summary>
-        [IntDescriptor("Speaking rate", -10, 10)]
-        public int Rate { get; set; }
+        [Display(Name = nameof(StringResources.Speakiate),
+         Description = nameof(StringResources.Getsorsetstherateofspeech),
+         ResourceType = typeof(StringResources))]
+        [Range(-10, 10)]
+        [UIHint("Slider")]
+        [ObservableProperty]
+        private int rate;
 
         /// <summary>
         /// Gets or sets whether to use alternate pronunciations
         /// </summary>
-        [BoolDescriptor("Use alternate pronunciations?", false)]
-        public bool UseAlternatePronunciations { get; set; }
+        [Display(Name = nameof(StringResources.Usealternatepronunciations),
+         ResourceType = typeof(StringResources))]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(false)]
+        [ObservableProperty]
+        private bool useAlternatePronunciations = false;
 
         /// <summary>
         /// Gets or sets the voice for TTS
@@ -87,8 +105,12 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
         /// <summary>
         /// Gets or sets the volume
         /// </summary>
-        [IntDescriptor("Volume setting", 0, 100)]
-        public int Volume { get; set; }
+        [Display(Name = nameof(StringResources.Volumesetting),
+         ResourceType = typeof(StringResources))]
+        [Range(0, 100)]
+        [UIHint("Slider")]
+        [ObservableProperty]
+        private int volume;
 
         /// <summary>
         /// Loads settings from file
@@ -111,13 +133,22 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
         /// <returns>true on success</returns>
         public override bool Save()
         {
-            bool retVal = Save<TTSClientSettings>(this, PreferencesFilePath);
+            bool retVal = Save(this, PreferencesFilePath);
             if (retVal)
             {
                 NotifyPreferencesChanged();
             }
 
             return retVal;
+        }
+
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<TTSClientSettings>();
+            var res = Save(tmp, PreferencesFilePath);
+            Load();
+
+            return res;
         }
     }
 }

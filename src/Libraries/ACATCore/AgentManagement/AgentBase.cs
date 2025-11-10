@@ -5,18 +5,19 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement.TextInterface;
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.AgentManagement.Interfaces;
+using ACAT.Core.AgentManagement.TextControlAgents;
+using ACAT.Core.Extensions;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PreferencesManagement.Interfaces;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// Base class for all application agents.  Implements some of the
@@ -81,9 +82,9 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <summary>
         /// Gets the descriptor object for this agent
         /// </summary>
-        public virtual IDescriptor Descriptor
+        public virtual ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>
@@ -131,6 +132,8 @@ namespace ACAT.Lib.Core.AgentManagement
         {
             get { return _textInterface ?? _nullTextInterface; }
         }
+
+        public Guid Id => Descriptor.Id;
 
         /// <summary>
         /// Invoked to check if a command  should be enabled or not.  This depends
@@ -247,7 +250,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <param name="command">The command verb</param>
         /// <param name="arg">optional arguments</param>
         /// <param name="handled">set appropriately</param>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public virtual void OnRunCommand(String command, object arg, ref bool handled)
         {
             handled = true;
@@ -308,7 +311,7 @@ namespace ACAT.Lib.Core.AgentManagement
 
                 case "CmdMouseScanner":
                     {
-                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfo();
+                        var monitorInfo = WindowActivityMonitor.CurrentWindowInfo();
                         var panelArg = new PanelRequestEventArgs(PanelClasses.Mouse, monitorInfo)
                         {
                             UseCurrentScreenAsParent = true
@@ -320,7 +323,8 @@ namespace ACAT.Lib.Core.AgentManagement
 
                 case "CmdCursorScanner":
                     {
-                        var monitorInfo = WindowActivityMonitor.GetForegroundWindowInfo();
+                        var monitorInfo = WindowActivityMonitor.CurrentWindowInfo();
+
                         var panelArg = new PanelRequestEventArgs(PanelClasses.Cursor, monitorInfo)
                         {
                             UseCurrentScreenAsParent = true
@@ -376,10 +380,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <param name="e">event args</param>
         protected void notifyAgentClose(AgentCloseEventArgs e)
         {
-            if (EvtAgentClose != null)
-            {
-                EvtAgentClose(this, e);
-            }
+            EvtAgentClose?.Invoke(this, e);
         }
 
         /// <summary>
@@ -416,10 +417,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <param name="arg">event arg</param>
         protected void showPanel(object sender, PanelRequestEventArgs arg)
         {
-            if (EvtPanelRequest != null)
-            {
-                EvtPanelRequest.Invoke(this, arg);
-            }
+            EvtPanelRequest?.Invoke(this, arg);
         }
 
         /// <summary>
@@ -430,10 +428,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <param name="textInterface">text agent</param>
         protected void triggerTextChanged(ITextControlAgent textInterface)
         {
-            if (EvtTextChanged != null)
-            {
-                EvtTextChanged(this, new TextChangedEventArgs(textInterface));
-            }
+            EvtTextChanged?.Invoke(this, new TextChangedEventArgs(textInterface));
         }
 
         /// <summary>
@@ -444,10 +439,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <param name="textInterface">text agent</param>
         protected void triggerTextChangedAsync(ITextControlAgent textInterface)
         {
-            if (EvtTextChanged != null)
-            {
-                EvtTextChanged.BeginInvoke(this, new TextChangedEventArgs(textInterface), null, null);
-            }
+            EvtTextChanged?.BeginInvoke(this, new TextChangedEventArgs(textInterface), null, null);
         }
 
         /// <summary>
@@ -458,14 +450,11 @@ namespace ACAT.Lib.Core.AgentManagement
         {
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
-                    if (_nullTextInterface != null)
-                    {
-                        _nullTextInterface.Dispose();
-                    }
+                    _nullTextInterface?.Dispose();
 
                     OnDispose();
                 }

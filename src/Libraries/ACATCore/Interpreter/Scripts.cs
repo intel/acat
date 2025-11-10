@@ -5,13 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Collections;
 using System.IO;
 using System.Xml;
 
-namespace ACAT.Lib.Core.Interpreter
+namespace ACAT.Core.Interpreter
 {
     /// <summary>
     /// A hashtable that contains a list of scripts loaded from
@@ -42,7 +42,7 @@ namespace ACAT.Lib.Core.Interpreter
         {
             bool retVal = true;
 
-            XmlDocument doc = new XmlDocument();
+            XmlDocument doc = new();
 
             if (File.Exists(configFile))
             {

@@ -14,11 +14,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Text.RegularExpressions;
 
-namespace ACAT.Lib.Core.AbbreviationsManagement
+namespace ACAT.Core.AbbreviationsManagement
 {
     public class Abbreviation : IDisposable
     {

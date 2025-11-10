@@ -10,7 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Blocking queue on which work items can be enqueued.
@@ -22,7 +22,7 @@ namespace ACAT.Lib.Core.Utility
         /// <summary>
         /// The queue to hold the items
         /// </summary>
-        private readonly Queue<T> _queue = new Queue<T>();
+        private readonly Queue<T> _queue = new();
 
         /// <summary>
         /// How many itmes are in the queue?

@@ -5,11 +5,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Reflection;
 
-namespace ACAT.Lib.Core.Extensions
+namespace ACAT.Core.Extensions
 {
     /// <summary>
     /// Delegate for an event raised by the invoker
@@ -74,7 +74,7 @@ namespace ACAT.Lib.Core.Extensions
         /// <summary>
         /// Returns the descriptor object (always null for this class)
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
             get { return null; }
         }
@@ -233,7 +233,7 @@ namespace ACAT.Lib.Core.Extensions
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
             return result;
@@ -245,10 +245,7 @@ namespace ACAT.Lib.Core.Extensions
         /// <param name="args">Event args</param>
         public void NotifyEvent(ExtensionEventArgs args)
         {
-            if (_eventDelegate != null)
-            {
-                _eventDelegate(_objThis, args);
-            }
+            _eventDelegate?.Invoke(_objThis, args);
         }
 
         /// <summary>
@@ -257,10 +254,7 @@ namespace ACAT.Lib.Core.Extensions
         /// <param name="args">event args</param>
         public void NotifyEventAsync(ExtensionEventArgs args)
         {
-            if (_eventDelegate != null)
-            {
-                _eventDelegate.BeginInvoke(_objThis, args, null, null);
-            }
+            _eventDelegate?.BeginInvoke(_objThis, args, null, null);
         }
 
         /// <summary>
@@ -281,10 +275,7 @@ namespace ACAT.Lib.Core.Extensions
                     {
                         case MemberTypes.Field:
                             FieldInfo fieldInfo = _objThis.GetType().GetField(property);
-                            if (fieldInfo != null)
-                            {
-                                fieldInfo.SetValue(_objThis, value);
-                            }
+                            fieldInfo?.SetValue(_objThis, value);
 
                             break;
 
@@ -296,7 +287,7 @@ namespace ACAT.Lib.Core.Extensions
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 

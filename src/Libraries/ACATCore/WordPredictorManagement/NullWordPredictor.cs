@@ -5,20 +5,21 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
+using ACAT.Core.PreferencesManagement.Interfaces;
+using ACAT.Core.Utility;
+using ACAT.Core.WordPredictorManagement.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace ACAT.Lib.Core.WordPredictionManagement
+namespace ACAT.Core.WordPredictorManagement
 {
     /// <summary>
     /// The null word predictor basically does nothing.  It is used
     /// where no word predictor is currently valid.
     /// </summary>
-    [DescriptorAttribute("3EF5A318-6357-467D-BF45-9C925CF72FF4",
+    [ClassDescriptor("3EF5A318-6357-467D-BF45-9C925CF72FF4",
                             "Null Word Predictor",
                             "Disable word prediction")]
     public class NullWordPredictor : IWordPredictor, ISupportsPreferences, IExtension
@@ -59,10 +60,12 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
+
+        public Guid Id => Descriptor.Id;
 
         /// <summary>
         /// Gets or sets whether to filter punctuations
@@ -159,7 +162,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         }
 
         /// <summary>
-        /// Post Init 
+        /// Post Init
         /// </summary>
         /// <returns>true</returns>
         public bool PostInit()
@@ -172,7 +175,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public bool Learn(String text, WordPredictorMessageTypes RequestType)
+        public bool Learn(string text, WordPredictorMessageTypes RequestType)
         {
             return true;
         }
@@ -182,7 +185,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// currently active.
         /// </summary>
         /// <param name="text"></param>
-        public int LoadContext(String text)
+        public int LoadContext(string text)
         {
             return _contextHandle++;
         }
@@ -201,7 +204,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// </summary>
         /// <param name="configFileDirectory"></param>
         /// <returns></returns>
-        public bool LoadSettings(String configFileDirectory)
+        public bool LoadSettings(string configFileDirectory)
         {
             return true;
         }
@@ -212,14 +215,14 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// <param name="prevNWords"></param>
         /// <param name="lastWord"></param>
         /// <returns></returns>
-        public IEnumerable<String> Predict(String prevNWords, String lastWord)
+        public IEnumerable<string> Predict(string prevNWords, string lastWord)
         {
-            return new List<String>();
+            return new List<string>();
         }
 
         public WordPredictionResponse Predict(WordPredictionRequest req)
         {
-            return new WordPredictionResponse(req, new List<String>(), true);
+            return new WordPredictionResponse(req, new List<string>(), true);
         }
 
         public bool PredictAsync(WordPredictionRequest req)
@@ -232,7 +235,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// </summary>
         /// <param name="configFileDirectory"></param>
         /// <returns></returns>
-        public bool SaveSettings(String configFileDirectory)
+        public bool SaveSettings(string configFileDirectory)
         {
             return true;
         }
@@ -273,7 +276,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {

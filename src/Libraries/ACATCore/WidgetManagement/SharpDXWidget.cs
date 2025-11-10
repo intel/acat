@@ -9,9 +9,9 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Threading;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
     class SharpDXWidget
     {
@@ -645,15 +645,12 @@ namespace ACAT.Lib.Core.WidgetManagement
                 if (trialTimer != null)
                     trialTimer.Stop();
 
-                //dipose of all objects
+                //dispose of all objects
                 sharpDX_device.Dispose();
                 sharpDX_swapChain.Dispose();
                 stopSequences();
             }
-            catch (Exception es)
-            {
-
-            }
+            catch { }
 
         }
 

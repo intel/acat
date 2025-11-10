@@ -10,9 +10,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement.Interfaces;
 using System;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// Event argument for switch trigger events

@@ -10,19 +10,20 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Extension;
+using ACAT.Core.Utility;
+using ACAT.Extension;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
     public class ConvAssistUtils
     {
-        private static byte[] _byteBuffer = new byte[10240];
+        private static readonly byte[] _byteBuffer = new byte[10240];
 
         public static string DefaultEncodingToUTF8(string input)
         {
@@ -79,57 +80,39 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
 
         public static string RemoveApostrophes(string inputStr, bool sentence = false)
         {
-            string outputStr = string.Empty;
-            try
-            {
-                outputStr = inputStr.Trim(new char[] { (char)39 });
-            }
-            catch (Exception)
-            {
-                if (!sentence)
-                    outputStr = RemoveSpecialCharacters(inputStr, false);
-                //else
-                //outputStr = RemoveSpecialCharactersSenetnces(inputStr, false);
-            }
-            return outputStr;
+            return CleanText(inputStr, sentence, false);
         }
 
-        /// <summary>
-        /// Removes special characters from the string
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        public static string RemoveSpecialCharacters(string str, bool includeApostrophes = true)
+        public static string CleanText(string input, bool keepSpaces = true, bool keepApostrophes = true)
         {
-            StringBuilder sb = new StringBuilder();
-            foreach (char c in str)
+            if (string.IsNullOrEmpty(input))
+                return string.Empty;
+
+            var sb = new StringBuilder(input.Length);
+
+            foreach (char c in input)
             {
-                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' 
-                        || c == '_' || (includeApostrophes && c == '\''))
+                if (char.IsLetterOrDigit(c)) // keeps all Unicode letters and digits
                 {
                     sb.Append(c);
                 }
-            }
-            return sb.ToString();
-        }
-
-        public static string RemoveSpecialCharactersSentences(string str, bool includeApostrophes = true)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (char c in str)
-            {
-                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') ||
-                    c == '.' || c == '_' || c == ' ' || c == ',' || (includeApostrophes && c == '\''))
+                else if (keepSpaces && char.IsWhiteSpace(c))
+                {
+                    sb.Append(' '); // normalize all whitespace to a single space
+                }
+                else if (keepApostrophes && c == '\'')
                 {
                     sb.Append(c);
                 }
+                // else: skip punctuation, symbols, control chars, etc.
             }
+
             return sb.ToString();
         }
 
         public static List<KeyValuePair<string, double>> ToList(List<string> predictions)
         {
-            List<KeyValuePair<string, double>> newList = new List<KeyValuePair<string, double>>();
+            List<KeyValuePair<string, double>> newList = new();
             try
             {
                 //Create Dictionary of each to set the number value as a Double
@@ -146,17 +129,11 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception es)
             {
-                Log.Debug("ConvAssist Predict " + es);
+                Log.Exception("ConvAssist Predict " + es);
             }
             return newList;
         }
 
-        public static string UTF8EncodingToDefault(string input)
-        {
-            int length = Encoding.UTF8.GetBytes(input, 0, input.Length, _byteBuffer, 0);
-
-            return Encoding.Default.GetString(_byteBuffer, 0, length);
-        }
 
         public static async Task<T> WithTimeout<T>(Task<T> task, TimeSpan timeout)
         {

@@ -17,7 +17,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGUtils
 {
     public class MatrixManipulations
     {
-
         /// <summary>
         /// Concatenate data (data is formated in classes or groups)
         /// </summary>
@@ -25,17 +24,17 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGUtils
         /// <returns></returns>
         public static List<List<double[]>> ConcatenateFeatures(List<List<double[,]>> dataInClasses)
         {
-            List<List<double[]>> concatenatedData = new List<List<double[]>>();
+            List<List<double[]>> concatenatedData = new();
             int numGroups = dataInClasses.Count;
             for (int groupIdx = 0; groupIdx < numGroups; groupIdx++)
             {
                 int numTrials = dataInClasses[groupIdx].Count;
-                List<double[]> trialData = new List<double[]>();
+                List<double[]> trialData = new();
                 for (int trialIdx = 0; trialIdx < numTrials; trialIdx++)
                 {
                     int numChannels = dataInClasses[groupIdx][trialIdx].GetLength(1);
                     int numSamples = dataInClasses[groupIdx][trialIdx].GetLength(0);
-                    List<double> trialConcatenatedData = new List<double>();
+                    List<double> trialConcatenatedData = new();
                     for (int sampleIdx = 0; sampleIdx < numSamples; sampleIdx++)
                         for (int channelIdx = 0; channelIdx < numChannels; channelIdx++)
                             trialConcatenatedData.Add(dataInClasses[groupIdx][trialIdx][sampleIdx, channelIdx]);

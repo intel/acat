@@ -13,13 +13,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.ActuatorManagement.Settings;
+using ACAT.Core.Utility;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Media;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// Represents the attributes of a switch object. Note that
@@ -38,7 +40,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <summary>
         /// Used for synchronization
         /// </summary>
-        private readonly Object _lockObj = new object();
+        private readonly Object _lockObj = new();
 
         /// <summary>
         /// Timer to track the accept time.  If the switch
@@ -392,7 +394,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {

@@ -10,12 +10,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.CommandManagement;
-using ACAT.Lib.Core.PanelManagement;
+using ACAT.Core.CommandManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
+using ACATResources;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     public partial class SwitchCommandMapForm : Form
     {
@@ -76,9 +78,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
                 var row = dataGridView2.SelectedRows[0];
 
                 SelectedCommand = row.Cells[0].Value as String;
-
-                // MessageBox.Show("Selected Command: " + SelectedCommand, Text);
-                bool result = ConfirmBox.ShowDialog("Selected Command: " + SelectedCommand, null, false);
+                _ = ConfirmBoxOneOption.ShowDialog("Selected Command: " + SelectedCommand, "", StringResources.OK);
             }
             Close();
         }
@@ -94,8 +94,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             if (dataGridView2.SelectedCells.Count > 0)
             {
                 int selectedrowindex = dataGridView2.SelectedCells[0].RowIndex;
-
-                DataGridViewRow selectedRow = dataGridView2.Rows[selectedrowindex];
+                _ = dataGridView2.Rows[selectedrowindex];
                 dataGridView2.Rows[selectedrowindex].Selected = true;
             }
         }
@@ -122,6 +121,12 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         private void refreshDataGridView()
         {
+            if (CommandManager.Instance?.AppCommandTable?.CmdDescriptors == null)
+            {
+                Log.Debug("CommandManager or AppCommandTable not initialized");
+                return;
+            }
+
             foreach (var cmdDescriptor in CommandManager.Instance.AppCommandTable.CmdDescriptors)
             {
                 if (cmdDescriptor.EnableSwitchMap)
@@ -162,8 +167,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
             CenterToScreen();
 
-            TopMost = false;
-            TopMost = true;
 
             if (!String.IsNullOrEmpty(Title))
             {

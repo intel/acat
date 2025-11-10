@@ -15,15 +15,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.Onboarding;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.ActuatorManagement.Settings;
+using ACAT.Core.CoreInterfaces;
+using ACAT.Core.Extensions;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.PreferencesManagement.Interfaces;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// Base class for all the actuators.  Actuators are input mechanisms
@@ -86,9 +89,9 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <summary>
         /// Gets the descriptor for the actuator class
         /// </summary>
-        public virtual IDescriptor Descriptor
+        public virtual ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>
@@ -156,6 +159,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// Gets or sets the current state of the actuator
         /// </summary>
         protected State actuatorState { get; set; }
+        public Guid Id => Descriptor.Id;
 
         /// <summary>
         /// Class factory to create a switch.  Override this in the
@@ -252,7 +256,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="opcode">operation code</param>
         /// <param name="request">data (typically JSON string)</param>
         /// <returns>true on success</returns>
-        public virtual bool IoctlRequest(int opcode, String request)
+        public virtual bool IoctlRequest(int opcode, object request)
         {
             return true;
         }
@@ -288,7 +292,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
                     }
                     else
                     {
-                        Log.Error("Warning.  Switch " + actuatorSwitch.Name + " defined more than once");
+                        Log.Warn("Warning.  Switch " + actuatorSwitch.Name + " defined more than once");
                     }
                 }
             }
@@ -418,7 +422,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -507,10 +511,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             switchObj.Action = SwitchAction.Down;
 
-            if (EvtSwitchActivated != null)
-            {
-                EvtSwitchActivated(this, new ActuatorSwitchEventArgs(switchObj));
-            }
+            EvtSwitchActivated?.Invoke(this, new ActuatorSwitchEventArgs(switchObj));
         }
 
         /// <summary>
@@ -522,10 +523,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             switchObj.Action = SwitchAction.Up;
 
-            if (EvtSwitchDeactivated != null)
-            {
-                EvtSwitchDeactivated(this, new ActuatorSwitchEventArgs(switchObj));
-            }
+            EvtSwitchDeactivated?.Invoke(this, new ActuatorSwitchEventArgs(switchObj));
         }
 
         /// <summary>
@@ -644,12 +642,9 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         /// <param name="opcode">operation code</param>
         /// <param name="response">data to be sent</param>
-        protected virtual void SendIoctlResponse(int opcode, String response)
+        protected virtual void SendIoctlResponse(int opcode, object response)
         {
-            if (EvtIoctlResponse != null)
-            {
-                EvtIoctlResponse(opcode, response);
-            }
+            EvtIoctlResponse?.Invoke(opcode, response);
         }
 
         protected bool ShowDefaultScanTimingsConfigureDialog()

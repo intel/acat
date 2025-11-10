@@ -4,21 +4,22 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 ////////////////////////////////////////////////////////////////////////////
+using ACAT.Core.ThemeManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Core.WidgetManagement.Interfaces;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.ThemeManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
 using SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
 using SharpDX.Mathematics.Interop;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
-using System;
 
-namespace ACAT.Extensions.BCI.Common.AnimationSharp
+namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
 {
     public class SharpDXUtils
     {
@@ -27,29 +28,29 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// </summary>
         /// <param name="colorCodeRegion">name of the color</param>
         /// <returns></returns>
-        public static SharpDX.Mathematics.Interop.RawColor4 GetBorderColorScheme(string colorCodeRegion)
+        public static RawColor4 GetBorderColorScheme(string colorCodeRegion)
         {
             var colorScheme = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(colorCodeRegion);
             return ConvertToRawColor4(colorScheme);
         }
+
         /// <summary>
         /// Gets a rectangle used as focal area for box calibration
         /// </summary>
         /// <param name="rawRoundRectangleList"></param>
         /// <param name="cornerRadius"></param>
         /// <returns></returns>
-        public static RoundedRectangle GetFocalAreaForBox(List<SharpDX.Direct2D1.RoundedRectangle> rawRoundRectangleList, float width, float height, float cornerRadius, float distanceFromEdge, BCIFocalAreaRegion bCIFocalAreaRegions)
+        public static RoundedRectangle GetFocalAreaForBox(List<RoundedRectangle> rawRoundRectangleList, float width, float height, float cornerRadius, float distanceFromEdge, BCIFocalAreaRegion bCIFocalAreaRegions)
         {
             try
             {
-                SharpDX.Mathematics.Interop.RawRectangleF focalRect = GetFocalAreaFromRectangle(GetBoundingRectangle(rawRoundRectangleList), width, height, distanceFromEdge, bCIFocalAreaRegions);
+                RawRectangleF focalRect = GetFocalAreaFromRectangle(GetBoundingRectangle(rawRoundRectangleList), width, height, distanceFromEdge, bCIFocalAreaRegions);
                 return GetRoundedRectangle(focalRect, cornerRadius);
             }
             catch (Exception)
             {
                 return new RoundedRectangle();
             }
-
         }
 
         /// <summary>
@@ -63,13 +64,13 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         }
 
         /// <summary>
-        /// Gets te Type of weight font 
+        /// Gets te Type of weight font
         /// </summary>
         /// <param name="useBold"></param>
         /// <returns></returns>
-        public static SharpDX.DirectWrite.FontWeight GetFontWeight(bool useBold)
+        public static FontWeight GetFontWeight(bool useBold)
         {
-            return useBold ? SharpDX.DirectWrite.FontWeight.Black : SharpDX.DirectWrite.FontWeight.Normal;
+            return useBold ? FontWeight.Black : FontWeight.Normal;
         }
 
         /// <summary>
@@ -89,7 +90,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             try
             {
                 var temptypeOfBox = AnimationManagerUtils.GetTypeOfBox(boxesData.Value, totalAmountOfBoxes);
-                var tempbuttonTextFormat = SharpDXUtils.GetTextFormat(widgetsData, boxesData.Value, totalAmountOfBoxes, directWriteFactory, temptypeOfBox);
+                var tempbuttonTextFormat = GetTextFormat(widgetsData, boxesData.Value, totalAmountOfBoxes, directWriteFactory, temptypeOfBox);
                 for (int boxIndex = 0; boxIndex < totalAmountOfBoxes; boxIndex++)
                 {
                     typeOfBox[indexBox] = temptypeOfBox[boxIndex];
@@ -99,11 +100,12 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetListButtonTextFormat: " + ex.Message);
+                Log.Exception("Error in GetListButtonTextFormat: " + ex.Message);
                 return new List<TextFormat>[totalAmountOfBoxes];
             }
             return buttonTextFormatList;
         }
+
         /// <summary>
         /// Gets the location and shape for each control in the form, returns list with rectangles
         /// </summary>
@@ -111,12 +113,12 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <param name="configFilePath">path for the config file</param>
         /// <param name="amountBoxes">amount of boxes in the layout</param>
         /// <returns></returns>
-        public static List<SharpDX.Mathematics.Interop.RawRectangleF>[] GetRecButtons(List<Control> controls, string configFilePath, int amountBoxes)
+        public static List<RawRectangleF>[] GetRecButtons(List<Control> controls, string configFilePath, int amountBoxes)
         {
             var configNodes = GetNodesList(configFilePath, "/ACAT/Layout/Layouts");
             int index = 0;
             string xmlSection = "KeyboardBoxMapping".ToLower();
-            List<SharpDX.Mathematics.Interop.RawRectangleF>[] rectBtns = Enumerable.Range(0, amountBoxes).Select(_ => new List<SharpDX.Mathematics.Interop.RawRectangleF>()).ToArray();
+            List<RawRectangleF>[] rectBtns = Enumerable.Range(0, amountBoxes).Select(_ => new List<RawRectangleF>()).ToArray();
             try
             {
                 foreach (XmlNode node in configNodes)
@@ -127,7 +129,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         foreach (XmlNode subnode in node)
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
-                            int tag = Int32.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
+                            int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
                             var btn = AnimationManagerUtils.GetControl(controls, name2, tag, false);
                             if (btn != null)
                             {
@@ -155,12 +157,12 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <param name="configFilePath">path for the config file</param>
         /// <param name="amountBoxes">amount of boxes in the layout</param>
         /// <returns></returns>
-        public static Dictionary<int, SharpDX.Mathematics.Interop.RawRectangleF>[] GetRecProbabilityBars(List<Control> PBcontrols, string configFilePath, int amountBoxes)
+        public static Dictionary<int, RawRectangleF>[] GetRecProbabilityBars(List<Control> PBcontrols, string configFilePath, int amountBoxes)
         {
             var configNodes = GetNodesList(configFilePath, "/ACAT/Layout/Layouts");
             string xmlSection = "ProgressBarsMapping".ToLower();
             int index = 0;
-            Dictionary<int, SharpDX.Mathematics.Interop.RawRectangleF>[] probBars = Enumerable.Range(0, amountBoxes).Select(_ => new Dictionary<int, SharpDX.Mathematics.Interop.RawRectangleF>()).ToArray();
+            Dictionary<int, RawRectangleF>[] probBars = Enumerable.Range(0, amountBoxes).Select(_ => new Dictionary<int, RawRectangleF>()).ToArray();
             try
             {
                 foreach (XmlNode node in configNodes)
@@ -171,7 +173,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         foreach (XmlNode subnode in node)
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
-                            int tag = Int32.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
+                            int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
                             var btn = AnimationManagerUtils.GetControl(PBcontrols, name2, tag, false);
                             if (btn != null)
                             {
@@ -180,7 +182,6 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                             }
                         }
                         index += 1;
-
                     }
                     name = null;
                 }
@@ -199,11 +200,11 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <param name="PBcontrols">Controls of the probs bars</param>
         /// <param name="configFilePath">path for the config file</param>
         /// <returns></returns>
-        public static Dictionary<int, SharpDX.Mathematics.Interop.RawRectangleF> GetRecProbabilityBarsBox(List<Control> PBcontrols, string configFilePath)
+        public static Dictionary<int, RawRectangleF> GetRecProbabilityBarsBox(List<Control> PBcontrols, string configFilePath)
         {
             var configNodes = GetNodesList(configFilePath, "/ACAT/Layout/Layouts");
             string xmlSection = "ProgressBarsBoxMapping".ToLower();
-            Dictionary<int, SharpDX.Mathematics.Interop.RawRectangleF> probBars = new Dictionary<int, SharpDX.Mathematics.Interop.RawRectangleF>();
+            Dictionary<int, RawRectangleF> probBars = new();
             try
             {
                 foreach (XmlNode node in configNodes)
@@ -214,7 +215,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         foreach (XmlNode subnode in node)
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
-                            int tag = Int32.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
+                            int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
                             var btn = AnimationManagerUtils.GetControl(PBcontrols, name2, tag, false);
                             if (btn != null)
                             {
@@ -230,7 +231,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             {
                 Log.Exception(ex);
             }
-            configNodes = null;
+
             return probBars;
         }
 
@@ -242,12 +243,12 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <param name="amountBoxes">amount of boxes in the layout</param>
         /// <param name="radius">Value for the UI radius of the buttons corners</param>
         /// <returns></returns>
-        public static List<SharpDX.Direct2D1.RoundedRectangle>[] GetRecRoundButtons(List<Control> controls, string configFilePath, int amountBoxes, float radius)
+        public static List<RoundedRectangle>[] GetRecRoundButtons(List<Control> controls, string configFilePath, int amountBoxes, float radius)
         {
             var configNodes = GetNodesList(configFilePath, "/ACAT/Layout/Layouts");
             int index = 0;
             string xmlSection = "KeyboardBoxMapping".ToLower();
-            List<SharpDX.Direct2D1.RoundedRectangle>[] rectBtns = Enumerable.Range(0, amountBoxes).Select(_ => new List<SharpDX.Direct2D1.RoundedRectangle>()).ToArray();
+            List<RoundedRectangle>[] rectBtns = Enumerable.Range(0, amountBoxes).Select(_ => new List<RoundedRectangle>()).ToArray();
             try
             {
                 foreach (XmlNode node in configNodes)
@@ -258,7 +259,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         foreach (XmlNode subnode in node)
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
-                            int tag = Int32.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
+                            int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
                             var btn = AnimationManagerUtils.GetControl(controls, name2, tag, false);
                             if (btn != null)
                             {
@@ -285,23 +286,24 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// </summary>
         /// <param name="controls">Controls of the form</param>
         /// <returns>Rectangle</returns>
-        public static SharpDX.Mathematics.Interop.RawRectangleF GetRectangleCRG(List<Control> controls)
+        public static RawRectangleF GetRectangleCRG(List<Control> controls)
         {
             return GetRectangleFromName(controls, "BtnCRG");
         }
+
         /// <summary>
         /// Gets the list of all the rectangles of each button for each box within the user control
         /// </summary>
         /// <param name="boxesData"></param>
         /// <param name="totalAmountOfBoxes"></param>
         /// <returns></returns>
-        public static List<SharpDX.Mathematics.Interop.RawRectangleF>[] GetRectanglesButtonsList(KeyValuePair<List<Control>, string> boxesData, int totalAmountOfBoxes)
+        public static List<RawRectangleF>[] GetRectanglesButtonsList(KeyValuePair<List<Control>, string> boxesData, int totalAmountOfBoxes)
         {
-            List<SharpDX.Mathematics.Interop.RawRectangleF>[] rectanglesButtonsList = new List<SharpDX.Mathematics.Interop.RawRectangleF>[totalAmountOfBoxes];
+            List<RawRectangleF>[] rectanglesButtonsList = new List<RawRectangleF>[totalAmountOfBoxes];
             int indexBox = 0;
             try
             {
-                List<SharpDX.Mathematics.Interop.RawRectangleF>[] temprectBtnsAll = SharpDXUtils.GetRecButtons(boxesData.Key, boxesData.Value, totalAmountOfBoxes);
+                List<RawRectangleF>[] temprectBtnsAll = GetRecButtons(boxesData.Key, boxesData.Value, totalAmountOfBoxes);
                 for (int boxIndex = 0; boxIndex < totalAmountOfBoxes; boxIndex++)
                 {
                     rectanglesButtonsList[indexBox] = temprectBtnsAll[boxIndex];
@@ -310,8 +312,8 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetRectanglesButtonsList: " + ex.Message);
-                return new List<SharpDX.Mathematics.Interop.RawRectangleF>[totalAmountOfBoxes];
+                Log.Exception("Error in GetRectanglesButtonsList: " + ex.Message);
+                return new List<RawRectangleF>[totalAmountOfBoxes];
             }
             return rectanglesButtonsList;
         }
@@ -323,13 +325,13 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <param name="totalAmountOfBoxes"></param>
         /// <param name="radiusCornersButtons"></param>
         /// <returns></returns>
-        public static List<SharpDX.Direct2D1.RoundedRectangle>[] GetRectanglesButtonsRoundList(KeyValuePair<List<Control>, string> boxesData, int totalAmountOfBoxes, float radiusCornersButtons)
+        public static List<RoundedRectangle>[] GetRectanglesButtonsRoundList(KeyValuePair<List<Control>, string> boxesData, int totalAmountOfBoxes, float radiusCornersButtons)
         {
-            List<SharpDX.Direct2D1.RoundedRectangle>[] rectanglesButtonsRoundList = new List<RoundedRectangle>[totalAmountOfBoxes];
+            List<RoundedRectangle>[] rectanglesButtonsRoundList = new List<RoundedRectangle>[totalAmountOfBoxes];
             int indexBox = 0;
             try
             {
-                var temprectBtnsAllRound = SharpDXUtils.GetRecRoundButtons(boxesData.Key, boxesData.Value, totalAmountOfBoxes, radiusCornersButtons);
+                var temprectBtnsAllRound = GetRecRoundButtons(boxesData.Key, boxesData.Value, totalAmountOfBoxes, radiusCornersButtons);
                 for (int boxIndex = 0; boxIndex < totalAmountOfBoxes; boxIndex++)
                 {
                     rectanglesButtonsRoundList[indexBox] = temprectBtnsAllRound[boxIndex];
@@ -338,7 +340,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetRectanglesButtonsRoundList: " + ex.Message);
+                Log.Exception("Error in GetRectanglesButtonsRoundList: " + ex.Message);
                 return new List<RoundedRectangle>[totalAmountOfBoxes];
             }
             return rectanglesButtonsRoundList;
@@ -353,11 +355,10 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <param name="offsetCRG"></param>
         /// <param name="buttonTextFormatCRG"></param>
         /// <returns></returns>
-        public static SharpDX.Mathematics.Interop.RawRectangleF GetRectanglesCRG(Dictionary<List<Control>, string> boxesData, List<Widget>[] widgetsData, SharpDX.DirectWrite.Factory directWriteFactory, out int offsetCRG, out TextFormat buttonTextFormatCRG)
+        public static RawRectangleF GetRectanglesCRG(Dictionary<List<Control>, string> boxesData, List<Widget>[] widgetsData, SharpDX.DirectWrite.Factory directWriteFactory, out int offsetCRG, out TextFormat buttonTextFormatCRG)
         {
-            SharpDX.Mathematics.Interop.RawRectangleF rectangleExtraButtonCRG = new SharpDX.Mathematics.Interop.RawRectangleF();
-            int tempoffsetCRG = 1;
-            TextFormat tempbuttonTextFormatCRG = GetDefaultButtonTextFormat(directWriteFactory, TextAlignment.Center);
+            RawRectangleF rectangleExtraButtonCRG = new();
+            _ = GetDefaultButtonTextFormat(directWriteFactory, TextAlignment.Center);
             offsetCRG = 1;
             buttonTextFormatCRG = GetDefaultButtonTextFormat(directWriteFactory, TextAlignment.Center);
             int amountBoxesPerUserControl;
@@ -368,9 +369,9 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 {
                     var boxData = boxesData.ElementAt(indexBoxData);
                     amountBoxesPerUserControl = AnimationManagerUtils.GetAmountBoxes(boxData.Value);
-                    var temprectExtraButtonCRG = SharpDXUtils.GetRectangleCRG(boxData.Key);
-                    tempoffsetCRG = AnimationManagerUtils.GetOffsetCRG(widgetsData[indexBoxData]);
-                    tempbuttonTextFormatCRG = SharpDXUtils.GetTextFormatCRG(widgetsData[indexBoxData], directWriteFactory);
+                    var temprectExtraButtonCRG = GetRectangleCRG(boxData.Key);
+                    int tempoffsetCRG = AnimationManagerUtils.GetOffsetCRG(widgetsData[indexBoxData]);
+                    TextFormat tempbuttonTextFormatCRG = GetTextFormatCRG(widgetsData[indexBoxData], directWriteFactory);
                     for (int boxIndex = 0; boxIndex < amountBoxesPerUserControl; boxIndex++)
                     {
                         if (temprectExtraButtonCRG.Bottom != 0 && temprectExtraButtonCRG.Top != 0 && temprectExtraButtonCRG.Left != 0 && temprectExtraButtonCRG.Right != 0)
@@ -385,7 +386,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetRectanglesCRG: " + ex.Message);
+                Log.Exception("Error in GetRectanglesCRG: " + ex.Message);
                 return rectangleExtraButtonCRG;
             }
             return rectangleExtraButtonCRG;
@@ -396,9 +397,9 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// </summary>
         /// <param name="boxesData"></param>
         /// <returns></returns>
-        public static SharpDX.Mathematics.Interop.RawRectangleF GetRectanglesTriggerBox(Dictionary<List<Control>, string> boxesData)
+        public static RawRectangleF GetRectanglesTriggerBox(Dictionary<List<Control>, string> boxesData)
         {
-            SharpDX.Mathematics.Interop.RawRectangleF rectangleExtraButton = new SharpDX.Mathematics.Interop.RawRectangleF();
+            RawRectangleF rectangleExtraButton = new();
             int amountBoxesPerUserControl;
             int indexBox = 0;
             try
@@ -406,7 +407,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 foreach (var boxData in boxesData)
                 {
                     amountBoxesPerUserControl = AnimationManagerUtils.GetAmountBoxes(boxData.Value);
-                    var temprectExtraButton = SharpDXUtils.GetRectangleTriggerBox(boxData.Key);
+                    var temprectExtraButton = GetRectangleTriggerBox(boxData.Key);
                     for (int boxIndex = 0; boxIndex < amountBoxesPerUserControl; boxIndex++)
                     {
                         if (temprectExtraButton.Bottom != 0 && temprectExtraButton.Top != 0 && temprectExtraButton.Left != 0 && temprectExtraButton.Right != 0)
@@ -417,7 +418,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             }
             catch (Exception ex)
             {
-                Log.Debug("Error in GetRectanglesTriggerBox: " + ex.Message);
+                Log.Exception("Error in GetRectanglesTriggerBox: " + ex.Message);
                 return rectangleExtraButton;
             }
             return rectangleExtraButton;
@@ -428,17 +429,18 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// </summary>
         /// <param name="controls">Controls of the form</param>
         /// <returns>Rectangle</returns>
-        public static SharpDX.Mathematics.Interop.RawRectangleF GetRectangleTriggerBox(List<Control> controls)
+        public static RawRectangleF GetRectangleTriggerBox(List<Control> controls)
         {
             return GetRectangleFromName(controls, "BTrigger");
         }
+
         /// <summary>
         /// Get a rectangle with round edges
         /// </summary>
         /// <param name="rawRectangleF"></param>
         /// <param name="radius"></param>
         /// <returns></returns>
-        public static RoundedRectangle GetRoundedRectangle(SharpDX.Mathematics.Interop.RawRectangleF rawRectangleF, float radius)
+        public static RoundedRectangle GetRoundedRectangle(RawRectangleF rawRectangleF, float radius)
         {
             return new RoundedRectangle { Rect = rawRectangleF, RadiusX = radius, RadiusY = radius };
         }
@@ -467,8 +469,8 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                         foreach (XmlNode subnode in node)
                         {
                             string name2 = XmlUtils.GetXMLAttrString(subnode, "name", null);
-                            int tag = Int32.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
-                            var btnWidget = widgets.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals(name2) && w.UIControl.Tag != null && Int32.Parse(w.UIControl.Tag.ToString()) == tag);
+                            int tag = int.Parse(XmlUtils.GetXMLAttrString(subnode, "tagID", null));
+                            var btnWidget = widgets.SelectMany(w => w.Children).FirstOrDefault(w => w.Name.Equals(name2) && w.UIControl.Tag != null && int.Parse(w.UIControl.Tag.ToString()) == tag);
                             if (typeBox[index] != null)
                             {
                                 if (typeBox[index].ToLower().Contains("keyboard".ToLower()) || typeBox[index].ToLower().Contains("Menus".ToLower()) || btnWidget.Name.Equals("PWLItem10") || btnWidget.Name.Equals("SPLItem5"))
@@ -515,31 +517,31 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             return textFormatCRG;
         }
 
-        private static void CalculateBottomLeftFocalPoint(SharpDX.Mathematics.Interop.RawRectangleF rawRectangleF, float height, float distance, out float xPoint, out float yPoint)
+        private static void CalculateBottomLeftFocalPoint(RawRectangleF rawRectangleF, float height, float distance, out float xPoint, out float yPoint)
         {
             xPoint = rawRectangleF.Left + distance;
             yPoint = rawRectangleF.Bottom - distance - height;
         }
 
-        private static void CalculateBottomRightFocalPoint(SharpDX.Mathematics.Interop.RawRectangleF rawRectangleF, float width, float height, float distance, out float xPoint, out float yPoint)
+        private static void CalculateBottomRightFocalPoint(RawRectangleF rawRectangleF, float width, float height, float distance, out float xPoint, out float yPoint)
         {
             xPoint = rawRectangleF.Right - distance - width;
             yPoint = rawRectangleF.Bottom - distance - height;
         }
 
-        private static void CalculateCenterFocalPoint(SharpDX.Mathematics.Interop.RawRectangleF rawRectangleF, float maxWidth, float width, float maxHeight, float height, float distance, out float xPoint, out float yPoint)
+        private static void CalculateCenterFocalPoint(RawRectangleF rawRectangleF, float maxWidth, float width, float maxHeight, float height, float distance, out float xPoint, out float yPoint)
         {
-            xPoint = ((maxWidth - width) / 2) + rawRectangleF.Left;
-            yPoint = ((maxHeight - height) / 2) + rawRectangleF.Top;
+            xPoint = (maxWidth - width) / 2 + rawRectangleF.Left;
+            yPoint = (maxHeight - height) / 2 + rawRectangleF.Top;
         }
 
-        private static void CalculateTopLeftFocalPoint(SharpDX.Mathematics.Interop.RawRectangleF rawRectangleF, float distance, out float xPoint, out float yPoint)
+        private static void CalculateTopLeftFocalPoint(RawRectangleF rawRectangleF, float distance, out float xPoint, out float yPoint)
         {
             xPoint = rawRectangleF.Left + distance;
             yPoint = rawRectangleF.Top + distance;
         }
 
-        private static void CalculateTopRightFocalPoint(SharpDX.Mathematics.Interop.RawRectangleF rawRectangleF, float width, float distance, out float xPoint, out float yPoint)
+        private static void CalculateTopRightFocalPoint(RawRectangleF rawRectangleF, float width, float distance, out float xPoint, out float yPoint)
         {
             xPoint = rawRectangleF.Right - distance - width;
             yPoint = rawRectangleF.Top + distance;
@@ -550,12 +552,12 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// </summary>
         /// <param name="colorScheme"></param>
         /// <returns></returns>
-        private static SharpDX.Mathematics.Interop.RawColor4 ConvertToRawColor4(ColorScheme colorScheme)
+        private static RawColor4 ConvertToRawColor4(ColorScheme colorScheme)
         {
-            return new SharpDX.Mathematics.Interop.RawColor4(
-                ((float)colorScheme.HighlightSelectedForeground.R / 255),
-                ((float)colorScheme.HighlightSelectedForeground.G / 255),
-                ((float)colorScheme.HighlightSelectedForeground.B / 255),
+            return new RawColor4(
+                (float)colorScheme.HighlightSelectedForeground.R / 255,
+                (float)colorScheme.HighlightSelectedForeground.G / 255,
+                (float)colorScheme.HighlightSelectedForeground.B / 255,
                 1.0f
                 );
         }
@@ -565,12 +567,12 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// </summary>
         /// <param name="roundedRectangles"></param>
         /// <returns></returns>
-        private static List<SharpDX.Mathematics.Interop.RawRectangleF> ConvertToRawRectangles(List<SharpDX.Direct2D1.RoundedRectangle> roundedRectangles)
+        private static List<RawRectangleF> ConvertToRawRectangles(List<RoundedRectangle> roundedRectangles)
         {
-            List<SharpDX.Mathematics.Interop.RawRectangleF> rawRectangles = new List<SharpDX.Mathematics.Interop.RawRectangleF>();
-            foreach (SharpDX.Direct2D1.RoundedRectangle roundedRect in roundedRectangles)
+            List<RawRectangleF> rawRectangles = new();
+            foreach (RoundedRectangle roundedRect in roundedRectangles)
             {
-                SharpDX.Mathematics.Interop.RawRectangleF rawRect = new SharpDX.Mathematics.Interop.RawRectangleF(roundedRect.Rect.Left, roundedRect.Rect.Top, roundedRect.Rect.Right, roundedRect.Rect.Bottom);
+                RawRectangleF rawRect = new(roundedRect.Rect.Left, roundedRect.Rect.Top, roundedRect.Rect.Right, roundedRect.Rect.Bottom);
                 rawRectangles.Add(rawRect);
             }
             return rawRectangles;
@@ -581,14 +583,14 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// </summary>
         /// <param name="rawRoundRectangleList"></param>
         /// <returns></returns>
-        private static SharpDX.Mathematics.Interop.RawRectangleF GetBoundingRectangle(List<SharpDX.Direct2D1.RoundedRectangle> rawRoundRectangleList)
+        private static RawRectangleF GetBoundingRectangle(List<RoundedRectangle> rawRoundRectangleList)
         {
             List<RawRectangleF> rawRectangleList = ConvertToRawRectangles(rawRoundRectangleList);
             float minleft = rawRectangleList.Min(rect => rect.Left);
             float mintop = rawRectangleList.Min(rect => rect.Top);
             float maxright = rawRectangleList.Max(rect => rect.Right);
             float maxbottom = rawRectangleList.Max(rect => rect.Bottom);
-            return new SharpDX.Mathematics.Interop.RawRectangleF(minleft, mintop, maxright, maxbottom);
+            return new RawRectangleF(minleft, mintop, maxright, maxbottom);
         }
 
         /// <summary>
@@ -606,8 +608,10 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                                             fontData.FontName,
                                             GetFontWeight(fontData.FontBold),
                                             GetFontStyle(fontData.FontItalic),
-                                            (float)fontData.FontSize);
-            buttonTextFormat.TextAlignment = textAlignment;
+                                            (float)fontData.FontSize)
+            {
+                TextAlignment = textAlignment
+            };
             return buttonTextFormat;
         }
 
@@ -619,12 +623,14 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <returns></returns>
         private static TextFormat GetDefaultButtonTextFormat(SharpDX.DirectWrite.Factory directWriteFactory, TextAlignment textAlignment)
         {
-            TextFormat buttonTextFormat = new TextFormat(directWriteFactory,
+            TextFormat buttonTextFormat = new(directWriteFactory,
                                             "montserrat",
                                             FontWeight.Normal,
                                             SharpDX.DirectWrite.FontStyle.Normal,
-                                            (float)28);
-            buttonTextFormat.TextAlignment = textAlignment;
+                                            28)
+            {
+                TextAlignment = textAlignment
+            };
             return buttonTextFormat;
         }
 
@@ -635,7 +641,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <returns></returns>
-        private static SharpDX.Mathematics.Interop.RawRectangleF GetFocalAreaFromRectangle(SharpDX.Mathematics.Interop.RawRectangleF rawRectangleF, float width, float height, float distanceFromEdge, BCIFocalAreaRegion bCIFocalAreaRegions)
+        private static RawRectangleF GetFocalAreaFromRectangle(RawRectangleF rawRectangleF, float width, float height, float distanceFromEdge, BCIFocalAreaRegion bCIFocalAreaRegions)
         {
             float maxWidth = rawRectangleF.Right - rawRectangleF.Left;
             float maxHeight = rawRectangleF.Bottom - rawRectangleF.Top;
@@ -646,15 +652,19 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
                 case BCIFocalAreaRegion.TopLeft:
                     CalculateTopLeftFocalPoint(rawRectangleF, distanceFromEdge, out xPoint, out yPoint);
                     break;
+
                 case BCIFocalAreaRegion.TopRight:
                     CalculateTopRightFocalPoint(rawRectangleF, width, distanceFromEdge, out xPoint, out yPoint);
                     break;
+
                 case BCIFocalAreaRegion.Center:
                     CalculateCenterFocalPoint(rawRectangleF, maxWidth, width, maxHeight, height, distanceFromEdge, out xPoint, out yPoint);
                     break;
+
                 case BCIFocalAreaRegion.BottomLeft:
                     CalculateBottomLeftFocalPoint(rawRectangleF, height, distanceFromEdge, out xPoint, out yPoint);
                     break;
+
                 case BCIFocalAreaRegion.BottomRight:
                     CalculateBottomRightFocalPoint(rawRectangleF, width, height, distanceFromEdge, out xPoint, out yPoint);
                     break;
@@ -674,19 +684,20 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
             doc.Load(configFilePath);
             return doc.SelectNodes(nodeSection);
         }
+
         /// <summary>
         /// Get the rectangle based on the position of the button in the Form
         /// </summary>
         /// <param name="scannerButton"></param>
         /// <returns></returns>
-        private static SharpDX.Mathematics.Interop.RawRectangleF GetRectangleFromLocationOnForm(ScannerButtonControl scannerButton)
+        private static RawRectangleF GetRectangleFromLocationOnForm(ScannerButtonControl scannerButton)
         {
-            Point locationOnForm = new Point();
+            Point locationOnForm = new();
             if (scannerButton.InvokeRequired)
                 scannerButton.Invoke(new Action(() => { locationOnForm = scannerButton.FindForm().PointToClient(scannerButton.Parent.PointToScreen(scannerButton.Location)); }));
             else
                 locationOnForm = scannerButton.FindForm().PointToClient(scannerButton.Parent.PointToScreen(scannerButton.Location));
-            return new SharpDX.Mathematics.Interop.RawRectangleF(
+            return new RawRectangleF(
                 locationOnForm.X,
                 locationOnForm.Y,
                 locationOnForm.X + scannerButton.Width,
@@ -699,9 +710,9 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <param name="controls"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        private static SharpDX.Mathematics.Interop.RawRectangleF GetRectangleFromName(List<Control> controls, string name)
+        private static RawRectangleF GetRectangleFromName(List<Control> controls, string name)
         {
-            SharpDX.Mathematics.Interop.RawRectangleF rectExtraButton = new SharpDX.Mathematics.Interop.RawRectangleF();
+            RawRectangleF rectExtraButton = new();
             var btn = AnimationManagerUtils.GetControl(controls, name, 1, false);
             if (btn != null)
                 rectExtraButton = GetRectangleFromLocationOnForm(btn);

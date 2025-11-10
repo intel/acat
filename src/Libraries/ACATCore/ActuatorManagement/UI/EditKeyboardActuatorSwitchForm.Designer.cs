@@ -10,7 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-namespace ACAT.Lib.Core.ActuatorManagement.UI
+namespace ACAT.Core.ActuatorManagement.UI
 {
     partial class EditKeyboardActuatorSwitchForm
     {
@@ -48,8 +48,8 @@ namespace ACAT.Lib.Core.ActuatorManagement.UI
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonOK = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
+            this.buttonOK = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -91,6 +91,7 @@ namespace ACAT.Lib.Core.ActuatorManagement.UI
             this.buttonCommand.Size = new System.Drawing.Size(403, 45);
             this.buttonCommand.TabIndex = 6;
             this.buttonCommand.UseVisualStyleBackColor = false;
+            this.buttonCommand.Visible = false;
             this.buttonCommand.Click += new System.EventHandler(this.buttonCommand_Click);
             // 
             // radioButtonMapToCommand
@@ -105,6 +106,7 @@ namespace ACAT.Lib.Core.ActuatorManagement.UI
             this.radioButtonMapToCommand.TabStop = true;
             this.radioButtonMapToCommand.Text = "Map to a Command";
             this.radioButtonMapToCommand.UseVisualStyleBackColor = true;
+            this.radioButtonMapToCommand.Visible = false;
             this.radioButtonMapToCommand.CheckedChanged += new System.EventHandler(this.radioButtonMapToCommand_CheckedChanged);
             // 
             // radioButtonTriggerSelect
@@ -180,21 +182,6 @@ namespace ACAT.Lib.Core.ActuatorManagement.UI
             this.tableLayoutPanel3.Size = new System.Drawing.Size(828, 102);
             this.tableLayoutPanel3.TabIndex = 6;
             // 
-            // buttonOK
-            // 
-            this.buttonOK.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.buttonOK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.buttonOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonOK.Font = new System.Drawing.Font("Montserrat Medium", 18F, System.Drawing.FontStyle.Bold);
-            this.buttonOK.Location = new System.Drawing.Point(748, 28);
-            this.buttonOK.Margin = new System.Windows.Forms.Padding(0);
-            this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(80, 45);
-            this.buttonOK.TabIndex = 10;
-            this.buttonOK.Text = "OK";
-            this.buttonOK.UseVisualStyleBackColor = false;
-            this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
-            // 
             // buttonCancel
             // 
             this.buttonCancel.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -212,6 +199,21 @@ namespace ACAT.Lib.Core.ActuatorManagement.UI
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = false;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            // 
+            // buttonOK
+            // 
+            this.buttonOK.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.buttonOK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
+            this.buttonOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonOK.Font = new System.Drawing.Font("Montserrat Medium", 18F, System.Drawing.FontStyle.Bold);
+            this.buttonOK.Location = new System.Drawing.Point(748, 28);
+            this.buttonOK.Margin = new System.Windows.Forms.Padding(0);
+            this.buttonOK.Name = "buttonOK";
+            this.buttonOK.Size = new System.Drawing.Size(80, 45);
+            this.buttonOK.TabIndex = 10;
+            this.buttonOK.Text = "OK";
+            this.buttonOK.UseVisualStyleBackColor = false;
+            this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
             // EditKeyboardActuatorSwitchForm
             // 

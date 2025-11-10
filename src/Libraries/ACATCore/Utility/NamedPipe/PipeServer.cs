@@ -13,12 +13,12 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 
-namespace ACAT.Lib.Core.Utility.NamedPipe
+namespace ACAT.Core.Utility.NamedPipe
 {
     public sealed class PipeServer : IDisposable
     {
         private CancellationToken cancellationToken;
-        private CancellationTokenSource cancellationTokenSource;
+        private readonly CancellationTokenSource cancellationTokenSource;
         private bool disposed;
 
         /// <summary>
@@ -48,9 +48,9 @@ namespace ACAT.Lib.Core.Utility.NamedPipe
             }
             else
             {
-                PipeSecurity pipeSecurity = new PipeSecurity();
+                PipeSecurity pipeSecurity = new();
                 var id = new SecurityIdentifier(WellKnownSidType.AuthenticatedUserSid, null);
-                //Allow Everyone read and write access to the pipe. 
+                //Allow Everyone read and write access to the pipe.
                 pipeSecurity.SetAccessRule(new PipeAccessRule(id, PipeAccessRights.ReadWrite, AccessControlType.Allow));
 
                 ServerStream = new NamedPipeServerStream(
@@ -165,11 +165,7 @@ namespace ACAT.Lib.Core.Utility.NamedPipe
         /// </param>
         private void OnMessageReceived(MessageReceivedEventArgs e)
         {
-            EventHandler<MessageReceivedEventArgs> handler = MessageReceived;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            MessageReceived?.Invoke(this, e);
         }
 
         /// <summary>
@@ -205,11 +201,23 @@ namespace ACAT.Lib.Core.Utility.NamedPipe
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Log.Debug("Error in ReadCallback: " + ex.Message);
-            }
+                Log.Exception("Error in ReadCallback: " + ex.Message);
 
+                // Check to make sure the Pipe is still around
+                try
+                {
+                    var checkPipe = (PipeServerState)ar.AsyncState;
+                    checkPipe.PipeServer.Write(checkPipe.Buffer, 0, checkPipe.Buffer.Length);
+                }
+                catch (Exception e)
+                {
+                   // Something happened to the pipe. Just send an Exit message to the client
+                    Log.Debug("Pipe is not connected. Sending exit message to client. " + e.Message);
+                    OnMessageReceived(new MessageReceivedEventArgs("quit"));
+                }
+            }
         }
 
         /// <summary>

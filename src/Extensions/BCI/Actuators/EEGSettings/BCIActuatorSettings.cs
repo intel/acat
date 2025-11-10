@@ -10,7 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.UserManagement;
+using ACAT.Core.UserManagement;
 using System;
 
 namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
@@ -19,6 +19,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
     {
         public static BCISettings Settings;
         public const String SettingsFileName = "BCIActuatorSettings.xml";
+
         public static void Load()
         {
             BCISettings.SettingsFilePath = UserManager.GetFullPath(SettingsFileName);
@@ -28,10 +29,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
 
         public static void Save()
         {
-            if (Settings != null)
-            {
-                Settings.Save();
-            }
+            Settings?.Save();
         }
     }
 }

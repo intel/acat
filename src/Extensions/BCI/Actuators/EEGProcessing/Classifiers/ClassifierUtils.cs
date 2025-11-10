@@ -13,10 +13,9 @@
 using Accord.Math;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 
-namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
+namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.Classifiers
 {
     public class ClassifierUtils
     {
@@ -39,7 +38,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                     .ToList();
             List<double> sortedScores = sorted.Select(x => x.Key).ToList();
             int[] indices = sorted.Select(x => x.Value).ToList().ToArray<int>();
-            int[] sortedLabels = Matrix.Get(trueLabels, indices);
+            int[] sortedLabels = trueLabels.Get(indices);
 
             // Calculated cumulative for true and false cases
             int[] cumTrue = sortedLabels.CumulativeSum();
@@ -50,8 +49,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
 
             // Calculate true positive and false positive rates
             int numPoints = cumTrue.Length + 1;
-            int[] tmpTPrate = Matrix.Concatenate(0, cumTrue);
-            int[] tmpFPrate = Matrix.Concatenate(0, cumFalse);
+            int[] tmpTPrate = 0.Concatenate(cumTrue);
+            int[] tmpFPrate = 0.Concatenate(cumFalse);
 
             // Normalize true positives and negatives between 0 and 1
             int maxCumTrue = cumTrue[cumTrue.Length - 1];

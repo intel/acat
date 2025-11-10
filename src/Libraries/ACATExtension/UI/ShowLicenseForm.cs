@@ -5,13 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
+using ACATResources;
 using System;
 using System.IO;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     /// <summary>
     /// A form to display text from license.txt which contains a list
@@ -56,8 +56,6 @@ namespace ACAT.Lib.Extension
         /// <param name="e">event args</param>
         private void ShowLicenseForm_Load(object sender, EventArgs e)
         {
-            TopMost = true;
-
             CenterToScreen();
 
             if (String.IsNullOrEmpty(LicenseFileName))
@@ -72,7 +70,7 @@ namespace ACAT.Lib.Extension
                 Close();
             }
 
-            buttonOK.Text = R.GetString(buttonOK.Text);
+            buttonOK.Text = StringResources.ResourceManager.GetString(buttonOK.Text);
 
             try
             {

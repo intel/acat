@@ -11,15 +11,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.Utility;
+using ACATResources;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// Form to display the status of calibration. Displays calibration status
@@ -35,12 +36,12 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <summary>
         /// How much time has elapsed since calibration started
         /// </summary>
-        private readonly String _timeElapsedPrompt = R.GetString("TimeElapsed") + ": ";
+        private readonly String _timeElapsedPrompt = StringResources.TimeElapsed + ": ";
 
         /// <summary>
         /// How much time is remaining until end of calibration
         /// </summary>
-        private readonly String _timeRemainingPrompt = R.GetString("TimeRemaining") + ": ";
+        private readonly String _timeRemainingPrompt = StringResources.TimeRemaining + ": ";
 
         /// <summary>
         /// To track calibration time
@@ -148,15 +149,13 @@ namespace ACAT.Lib.Core.ActuatorManagement
             {
                 const int thickness = BorderThickness;
                 const int halfThickness = thickness / 2;
-                using (var pen = new Pen(Color.Black, thickness))
-                {
-                    e.Graphics.DrawRectangle(
-                        pen,
-                        new Rectangle(halfThickness,
-                        halfThickness,
-                        BorderPanel.ClientSize.Width - thickness,
-                        BorderPanel.ClientSize.Height - thickness));
-                }
+                using var pen = new Pen(Color.Black, thickness);
+                e.Graphics.DrawRectangle(
+                    pen,
+                    new Rectangle(halfThickness,
+                    halfThickness,
+                    BorderPanel.ClientSize.Width - thickness,
+                    BorderPanel.ClientSize.Height - thickness));
             }
         }
 
@@ -196,8 +195,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="eventArgs">event args</param>
         private void OnLoad(object sender, EventArgs eventArgs)
         {
-            TopMost = false;
-            TopMost = true;
             Text = Caption;
             labelPrompt.Text = Prompt;
 
@@ -280,7 +277,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         private void TimerOnTick(object sender, EventArgs eventArgs)
         {
             labelTimePrompt.Text = (_timerIncrement == -1) ? _timeRemainingPrompt : _timeElapsedPrompt;
-            labelTimePrompt.Text += _timerCount + " " + R.GetString("Secs");
+            labelTimePrompt.Text += _timerCount + " " + StringResources.Secs;
 
             _timerCount += _timerIncrement;
 

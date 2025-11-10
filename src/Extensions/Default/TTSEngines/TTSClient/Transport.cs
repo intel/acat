@@ -13,7 +13,7 @@
 
 using System;
 
-namespace ACAT.Extensions.Default.TTSEngines.TTSClient
+namespace ACAT.Extensions.TTSEngines.TTSClient
 {
     public class Transport : ITTSTransport
     {
@@ -22,7 +22,7 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
         /// </summary>
         private static TTSClientSettings _settings;
 
-        private TransportHttp _transportHttp;
+        private readonly TransportHttp _transportHttp;
 
         public Transport()
         {
@@ -34,14 +34,11 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
         {
             get
             {
-                switch (Protocol)
+                return Protocol switch
                 {
-                    case TransportProtocol.Http:
-                        return _settings.HttpSettings.Format;
-
-                    default:
-                        return TTSFormat.Text;
-                }
+                    TransportProtocol.Http => _settings.HttpSettings.Format,
+                    _ => TTSFormat.Text,
+                };
             }
         }
 
@@ -55,13 +52,12 @@ namespace ACAT.Extensions.Default.TTSEngines.TTSClient
 
         public bool Send(String data, TTSFormat format = TTSFormat.None)
         {
-            bool retVal = true;
-
             if (format == TTSFormat.None)
             {
                 format = Format;
             }
 
+            bool retVal;
             switch (Protocol)
             {
                 case TransportProtocol.Http:

@@ -1,4 +1,6 @@
-﻿namespace ACAT.Lib.Extension
+﻿using ACATResources;
+
+namespace ACAT.Extension
 {
     partial class ShowDisclaimersForm
     {
@@ -93,7 +95,7 @@
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(111, 44);
             this.buttonOK.TabIndex = 0;
-            this.buttonOK.Text = "Close";
+            this.buttonOK.Text = StringResources.Close;
             this.buttonOK.UseVisualStyleBackColor = false;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
@@ -108,7 +110,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ShowDisclaimersForm";
-            this.Text = "Disclaimers";
+            this.Text = StringResources.Disclaimer;
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);

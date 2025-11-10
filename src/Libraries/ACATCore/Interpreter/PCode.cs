@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ACAT.Lib.Core.Interpreter
+namespace ACAT.Core.Interpreter
 {
     /// <summary>
     /// Represents an intermediate 'interpreted' form of
@@ -49,10 +49,7 @@ namespace ACAT.Lib.Core.Interpreter
         public void Clear()
         {
             Script = String.Empty;
-            if (ActionVerbList != null)
-            {
-                ActionVerbList.Clear();
-            }
+            ActionVerbList?.Clear();
         }
 
         /// <summary>

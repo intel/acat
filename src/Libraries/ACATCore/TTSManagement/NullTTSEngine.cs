@@ -5,19 +5,21 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using ACAT.Core.PreferencesManagement.Interfaces;
+using ACAT.Core.TTSManagement.Interfaces;
 
-namespace ACAT.Lib.Core.TTSManagement
+namespace ACAT.Core.TTSManagement
 {
     /// <summary>
     /// Represents a 'no-op' text-to-speech engine.  Has no TTS
     /// functionality. Useful if there is no active TTS engine.
     /// </summary>
-    [DescriptorAttribute("A98DA439-A6A9-48EF-AC8D-3D3588363341",
+    [ClassDescriptor("A98DA439-A6A9-48EF-AC8D-3D3588363341",
                         "Null Text-to-speech Engine",
                         "Text-to-speech disabled")]
     public class NullTTSEngine : ExtensionInvoker, ITTSEngine
@@ -29,17 +31,17 @@ namespace ACAT.Lib.Core.TTSManagement
         /// <summary>
         /// Pitch of the voice
         /// </summary>
-        private readonly TTSValue _speechPitch = new TTSValue(0, 0, 0);
+        private readonly TTSValue _speechPitch = new(0, 0, 0);
 
         /// <summary>
         /// Speech rate
         /// </summary>
-        private readonly TTSValue _speechRate = new TTSValue(0, 0, 0);
+        private readonly TTSValue _speechRate = new(0, 0, 0);
 
         /// <summary>
         /// Speech volume
         /// </summary>
-        private readonly TTSValue _speechVolume = new TTSValue(0, 0, 0);
+        private readonly TTSValue _speechVolume = new(0, 0, 0);
 
         /// <summary>
         /// Has this object been disposed
@@ -90,10 +92,12 @@ namespace ACAT.Lib.Core.TTSManagement
         /// <summary>
         /// Gets the ACAT descriptor for this engine
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
+
+        public Guid Id => Descriptor.Id;
 
         /// <summary>
         /// Returns the current status of the speech engine
@@ -118,6 +122,8 @@ namespace ACAT.Lib.Core.TTSManagement
 
             set { }
         }
+
+        public bool SupportsPreferencesDialog => throw new NotImplementedException();
 
         /// <summary>
         /// Disposes resources
@@ -349,7 +355,7 @@ namespace ACAT.Lib.Core.TTSManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -372,6 +378,21 @@ namespace ACAT.Lib.Core.TTSManagement
             {
                 EvtPropertyChanged(this, new EventArgs());
             }
+        }
+
+        public IPreferences GetDefaultPreferences()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPreferences GetPreferences()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ShowPreferencesDialog()
+        {
+            throw new NotImplementedException();
         }
     }
 }

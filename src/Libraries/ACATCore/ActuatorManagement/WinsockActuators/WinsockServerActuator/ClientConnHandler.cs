@@ -12,14 +12,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace ACAT.Lib.Core.InputActuators
+namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
 {
     /// <summary>
     /// Manages the send/receive of data between a connected client.
@@ -29,7 +29,7 @@ namespace ACAT.Lib.Core.InputActuators
     internal class ClientConnHandler : IDisposable
     {
         public ConnectionStatus ClientConnectionStatus = ConnectionStatus.Disconnected;
-        public String ID = String.Empty;
+        public string ID = string.Empty;
         public Thread WorkerThread;
         protected const int ReadBufferSize = 8192;
         protected int bytesRead = 0;
@@ -37,7 +37,7 @@ namespace ACAT.Lib.Core.InputActuators
         protected IPEndPoint remoteEp;
         protected bool runThread = true;
         protected TcpClient tcpClient;
-        private readonly object _lockObj = new object();
+        private readonly object _lockObj = new();
         private MemoryStream _memoryStream;
         private int _packetSize = 512;
 
@@ -113,11 +113,11 @@ namespace ACAT.Lib.Core.InputActuators
         /// <summary>
         /// Gets the IP address of the connected client
         /// </summary>
-        public String ClientIPAddress
+        public string ClientIPAddress
         {
             get
             {
-                var ipe = (IPEndPoint)this.tcpClient.Client.LocalEndPoint;
+                var ipe = (IPEndPoint)tcpClient.Client.LocalEndPoint;
                 var addr = IPAddress.Parse(ipe.Address.ToString());
                 return addr.ToString();
             }
@@ -178,10 +178,7 @@ namespace ACAT.Lib.Core.InputActuators
         public void WorkerThreadMethod()
         {
             ClientConnectionStatus = ConnectionStatus.Connected;
-            if (OnClientConnStatusChanged != null)
-            {
-                OnClientConnStatusChanged.Invoke(this, ConnectionStatus.Connected);
-            }
+            OnClientConnStatusChanged?.Invoke(this, ConnectionStatus.Connected);
 
             var message = new byte[ReadBufferSize];
             _memoryStream.SetLength(0);
@@ -210,20 +207,14 @@ namespace ACAT.Lib.Core.InputActuators
 
                 // Data has been received, let's process it.
                 Log.Debug("Calling OnClientMsgReceived");
-                if (OnClientMsgReceived != null)
-                {
-                    OnClientMsgReceived.Invoke(message, bytesRead);
-                }
+                OnClientMsgReceived?.Invoke(message, bytesRead);
 
                 Log.Debug("Returned from OnClientMsgReceived");
             }
 
             // Out of the WorkerThreadMethod loop... time to close stuff down.
             ClientConnectionStatus = ConnectionStatus.Disconnected;
-            if (OnClientConnStatusChanged != null)
-            {
-                OnClientConnStatusChanged.Invoke(this, ConnectionStatus.Disconnected);
-            }
+            OnClientConnStatusChanged?.Invoke(this, ConnectionStatus.Disconnected);
 
             tcpClient.Close();
         }
@@ -289,7 +280,7 @@ namespace ACAT.Lib.Core.InputActuators
                 while (bytesRemaining > 0)
                 {
                     int bytesLeftInCurrentPacket = _packetSize - (int)_memoryStream.Length;
-                    int bytesToRead = (bytesRemaining < bytesLeftInCurrentPacket) ? bytesRemaining : bytesLeftInCurrentPacket;
+                    int bytesToRead = bytesRemaining < bytesLeftInCurrentPacket ? bytesRemaining : bytesLeftInCurrentPacket;
 
                     _memoryStream.Write(messageFromClient, offset, bytesToRead);
                     if (_memoryStream.Length == _packetSize)
@@ -300,9 +291,9 @@ namespace ACAT.Lib.Core.InputActuators
                             Data = _memoryStream.ToArray()
                         };
 
-                        Log.Debug(String.Format("Entire packet received.  Calling threadpool for data received"));
+                        Log.Debug(string.Format("Entire packet received.  Calling threadpool for data received"));
                         ThreadPool.QueueUserWorkItem(Worker, item);
-                        Log.Debug(String.Format("Returned from QueueUserWorkItem"));
+                        Log.Debug(string.Format("Returned from QueueUserWorkItem"));
                         _memoryStream = new MemoryStream();
                     }
 

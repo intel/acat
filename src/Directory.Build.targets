@@ -1,0 +1,50 @@
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(OutputType)' == 'Library'">
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <ReferenceAssemblyPath>
+      $(OutputPath)$(AssemblyName).ref.dll
+    </ReferenceAssemblyPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(OutputType)' == 'Exe'">
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm">
+      <Version>8.4.0</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <Target Name="FilterBrainFlowNativeFiles" AfterTargets="CopyMyPackageFiles">
+    <!-- Remove non-Windows files from output -->
+    <ItemGroup>
+      <FilesToDelete Include="$(OutputPath)**\*.dylib;$(OutputPath)**\*.so" />
+    </ItemGroup>
+    <Delete Files="@(FilesToDelete)" />
+    <ItemGroup>
+      <FilesToDelete Include="$(OutputPath)**\*.dylib;$(OutputPath)**\*.dylib" />
+    </ItemGroup>
+    <Delete Files="@(FilesToDelete)" />
+  </Target>
+
+
+  <PropertyGroup>
+    <SignToolPath>C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\signtool.exe</SignToolPath>
+  </PropertyGroup>
+
+  <Target Name="SignBinaries" AfterTargets="Build" Condition="'$(Configuration)'=='Release_signed'">
+    <Message Text="Signing $(TargetPath)" Importance="High" />
+    <Exec
+      Command='"$(SignToolPath)" sign /fd sha384 /sha1 619446055846541120570829B59910707A3B1951 /tr http://timestamp.intel.com/TSS/HttpTspServer /td SHA384 "$(TargetPath)"' />
+  </Target>
+
+  <Target Name="SignBinariesDebug" AfterTargets="Build" Condition="'$(Configuration)'=='Debug_signed'">
+    <Message Text="Signing $(TargetPath)" Importance="High" />
+    <Exec
+      Command='"$(SignToolPath)" sign /fd sha256 /sha1 f4d92f3f1cc377a89792941ddb5c600b485d8f9f /tr http://timestamp.intel.com/TSS/HttpTspServer /td SHA256 "$(TargetPath)"' />
+  </Target>
+
+</Project>

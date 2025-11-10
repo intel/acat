@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement.Interfaces
 {
     /// <summary>
     /// Represents a button control on a form.
@@ -19,7 +19,7 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// </summary>
         event EventHandler EvtToggleStateChanged;
 
-        String ToggleGroup { get; set; }
+        string ToggleGroup { get; set; }
         bool ToggleState { get; set; }
     }
 }

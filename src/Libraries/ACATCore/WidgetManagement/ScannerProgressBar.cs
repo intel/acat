@@ -9,7 +9,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
     /// <summary>
     /// A progress bar user control
@@ -151,7 +151,7 @@ namespace ACAT.Lib.Core.WidgetManagement
                 percent = (float)(oldValue - min) / (float)(max - min);
                 oldValueRect.Width = (int)((float)oldValueRect.Width * percent);
 
-                Rectangle updateRect = new Rectangle();
+                Rectangle updateRect = new();
 
                 // Find only the part of the screen that must be updated.
                 if (newValueRect.Width > oldValueRect.Width)
@@ -175,7 +175,7 @@ namespace ACAT.Lib.Core.WidgetManagement
         protected override void OnPaint(PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            SolidBrush brush = new SolidBrush(BarColor);
+            SolidBrush brush = new(BarColor);
             float percent = (float)(val - min) / (float)(max - min);
             Rectangle rect = this.ClientRectangle;
 

@@ -6,9 +6,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.UserControlManagement.Interfaces;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement.Interfaces
 {
     /// <summary>
     /// All functional agents must derive from this interface.  Functional agents
@@ -45,6 +46,8 @@ namespace ACAT.Lib.Core.AgentManagement
         /// </summary>
         /// <returns>true on success</returns>
         bool Activate();
+
+        bool Activate(IUserControl panel);
 
         /// <summary>
         /// Call this function to exit the functional agent

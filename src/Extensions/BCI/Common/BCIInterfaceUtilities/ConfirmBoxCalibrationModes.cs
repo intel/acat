@@ -5,17 +5,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
-using Newtonsoft.Json;
+using ACATResources;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using System;
 
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
@@ -23,11 +22,12 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
     /// Form that handles different calibraitons options to configure and initialize calibration sesion
     /// </summary>
     ///
-    [DescriptorAttribute("4C48F7B3-FB3F-4857-9C36-E4148BA8FE5D",
+    [ClassDescriptor("4C48F7B3-FB3F-4857-9C36-E4148BA8FE5D",
                         "ConfirmBoxCalibrationModes",
                         "Application window used as a calibration UI for different modes")]
     public partial class ConfirmBoxCalibrationModes : Form
     {
+        #region Properties
         /// <summary>
         /// Main object of the actuator
         /// </summary>
@@ -41,7 +41,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <summary>
         /// Buttons states
         /// </summary>
-        private Dictionary<ScannerRoundedButtonControl, CalibrationModeControls> _ButtonsState = new Dictionary<ScannerRoundedButtonControl, CalibrationModeControls>();
+        private readonly Dictionary<ScannerRoundedButtonControl, CalibrationModeControls> _ButtonsState = new();
 
         /// <summary>
         /// Mode selected when paramaters show
@@ -56,7 +56,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <summary>
         /// Custom Tooltip object
         /// </summary>
-        private CustomToolTip customToolTip = new CustomToolTip();
+        private CustomToolTip customToolTip = new();
 
         /// <summary>
         /// IF typing is enalbed
@@ -68,7 +68,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// </summary>
         private Tuple<BCIMenuOptions.Options, BCISimpleParameters> OptionResult;
 
-        private Screen primaryScreen = Screen.PrimaryScreen;
+        private readonly Screen primaryScreen = Screen.PrimaryScreen;
 
         /// <summary>
         /// Confirm Box with multiple results
@@ -76,21 +76,16 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         public ConfirmBoxCalibrationModes()
         {
             InitializeComponent();
-            Load += ConfirmBox_Load;
+            Load += ConfirmBoxCalibrationModes_Load;
 
             webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
-            var html = R.GetString("BCICalibrationHtmlText").Replace(CoreGlobals.MacroACATUserGuide, HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName));
+            var html = StringResources.BCICalibrationHtmlText.Replace(CoreGlobals.MacroACATUserGuide, HtmlUtils.EncodeString(CoreGlobals.ACATUserGuideFileName));
             webBrowser.DocumentText = html;
         }
 
         public static Tuple<BCIMenuOptions.Options, BCISimpleParameters> ShowDialog(BCICalibrationStatus actuatorResponse, bool enableBeginBtn, Form parent = null, bool setTopMost = false)
         {
             var confirmBox = new ConfirmBoxCalibrationModes();
-            if (parent != null && setTopMost)
-            {
-                parent.TopMost = false;
-                confirmBox.TopMost = true;
-            }
             //To always display the form in the main screen
             confirmBox.StartPosition = FormStartPosition.Manual;
             confirmBox.Location = confirmBox.primaryScreen.WorkingArea.Location;
@@ -98,11 +93,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             confirmBox.IsTypingEnabled = enableBeginBtn;
             confirmBox.ShowDialog(parent);
             Tuple<BCIMenuOptions.Options, BCISimpleParameters> retVal = confirmBox.OptionResult;
-            if (parent != null && setTopMost)
-            {
-                parent.TopMost = true;
-                confirmBox.TopMost = false;
-            }
             confirmBox.Dispose();
             return retVal;
         }
@@ -125,17 +115,15 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
         }
 
-        /// <summary>
-        /// Actuator event handler
-        /// </summary>
-        /// <param name="opcode"></param>
-        /// <param name="response"></param>
-        private void BciActuator_EvtIoctlResponse(int opcode, string response)
+        #endregion Properties
+
+        #region Control Events
+        private void BciActuator_EvtIoctlResponse(int opcode, object response)
         {
             switch (opcode)
             {
                 case (int)OpCodes.SendParameters:
-                    _bCIParameters = JsonConvert.DeserializeObject<BCIParameters>(response);
+                    _bCIParameters = response as BCIParameters;
                     TriggeFirstOptioFromMenu();
                     break;
             }
@@ -153,10 +141,11 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         private void ButtonCalibrate_Click(object sender, EventArgs e)
         {
             Log.Debug("BCI LOG | Mode Selected: " + _scanSectionsSelected);
-            BCISimpleParameters parameters = new BCISimpleParameters();
+            _ = new BCISimpleParameters();
             try
             {
                 ScannerRoundedButtonControl scannerRoundedButtonControl = (ScannerRoundedButtonControl)sender;
+                BCISimpleParameters parameters;
                 switch (scannerRoundedButtonControl.Name)
                 {
                     case var _ when scannerRoundedButtonControl.Name.Contains("Box"):
@@ -208,7 +197,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error ButtonCalibrate_Click " + ex.Message);
+                Log.Exception("BCI LOG | Error ButtonCalibrate_Click " + ex.Message);
             }
         }
 
@@ -267,28 +256,28 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             switch (scannerRoundedButtonControl.Name)
             {
                 case var _ when scannerRoundedButtonControl.Name.Contains("Box"):
-                    customToolTip?.ShowToolTip(BCIR.GetString("HintBoxCalibrationScreen"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip?.ShowToolTip(StringResources.ResourceManager.GetString("HintBoxCalibrationScreen"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("Sentence"):
-                    customToolTip?.ShowToolTip(BCIR.GetString("HintSentenceCalibrationScreen"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip?.ShowToolTip(StringResources.ResourceManager.GetString("HintSentenceCalibrationScreen"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("KeyboardL"):
-                    customToolTip?.ShowToolTip(BCIR.GetString("HintKeyboardLeftCalibrationScreen"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip?.ShowToolTip(StringResources.ResourceManager.GetString("HintKeyboardLeftCalibrationScreen"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("Word"):
-                    customToolTip?.ShowToolTip(BCIR.GetString("HintWordCalibrationScreen"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip?.ShowToolTip(StringResources.ResourceManager.GetString("HintWordCalibrationScreen"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("KeyboardR"):
-                    customToolTip?.ShowToolTip(BCIR.GetString("HintKeyboardRightCalibrationScreen"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip?.ShowToolTip(StringResources.ResourceManager.GetString("HintKeyboardRightCalibrationScreen"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("ButtonBeginACAT"):
                     if (!IsTypingEnabled)
-                        customToolTip?.ShowToolTip(BCIR.GetString("HintCalibrationBeginACATNotEnalbed"), (ScannerRoundedButtonControl)sender, -120, -260);
+                        customToolTip?.ShowToolTip(StringResources.ResourceManager.GetString("HintCalibrationBeginACATNotEnalbed"), (ScannerRoundedButtonControl)sender, -120, -260);
                     break;
             }
         }
@@ -304,19 +293,19 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             switch (scannerRoundedButtonControl.Name)
             {
                 case var _ when scannerRoundedButtonControl.Name.Contains("ScanningTime"):
-                    customToolTip?.ShowToolTip(BCIR.GetString("HintScanningTime"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip?.ShowToolTip(StringResources.ResourceManager.GetString("HintScanningTime"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("NumberTargets"):
-                    customToolTip?.ShowToolTip(BCIR.GetString("HintNumberTargets"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip?.ShowToolTip(StringResources.ResourceManager.GetString("HintNumberTargets"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("IterationsTarget"):
-                    customToolTip?.ShowToolTip(BCIR.GetString("HintIterationstarget"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip?.ShowToolTip(StringResources.ResourceManager.GetString("HintIterationstarget"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("MinimumScore"):
-                    customToolTip?.ShowToolTip(BCIR.GetString("HintMinimumScore"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip?.ShowToolTip(StringResources.ResourceManager.GetString("HintMinimumScore"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
             }
         }
@@ -361,7 +350,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error ButtonOpc_Click " + ex.Message);
+                Log.Exception("BCI LOG | Error ButtonOpc_Click " + ex.Message);
             }
         }
 
@@ -456,7 +445,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             ShowAllOptionsParameters(checkBoxAdvancesParameters.Checked);
         }
 
-        private void ConfirmBox_Load(object sender, EventArgs e)
+        private void ConfirmBoxCalibrationModes_Load(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Maximized;
             InitializeButtonsState();
@@ -471,7 +460,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             {
                 _bciActuator.EvtIoctlResponse += BciActuator_EvtIoctlResponse;
             }
-            var strBciModeParams = JsonConvert.SerializeObject(new BCIUserInputParameters());
+            var strBciModeParams = new BCIUserInputParameters();
             _bciActuator?.IoctlRequest((int)OpCodes.RequestParameters, strBciModeParams);
             DisplayCalibrationHelp();
         }
@@ -507,9 +496,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             labelScanningTime.Text = customSliderScanningTime.Value.ToString();
         }
 
-        /// <summary>
-        /// Shows the calibration help
-        /// </summary>
         private void DisplayCalibrationHelp()
         {
             try
@@ -526,14 +512,14 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Exception DisplayCalibrationHelp " + ex.Message);
+                Log.Exception("BCI LOG | Exception DisplayCalibrationHelp " + ex.Message);
             }
         }
 
-        /// <summary>
-        /// Gets the parameters values from the sliders from the active calibration selected
-        /// </summary>
-        /// <returns></returns>
+        #endregion Control Events
+
+        #region GetParameter
+
         private BCISimpleParameters GetCalibrationParameters()
         {
             return new BCISimpleParameters { ScannTime = (int)customSliderScanningTime.Value, Targets = (int)customSliderNumberTargets.Value, IterationsPertarget = (int)customSliderIterationstarget.Value, MinScore = (int)customSliderMinimumScore.Value };
@@ -545,7 +531,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <returns></returns>
         private BCISimpleParameters GetCalibrationParametersDefault(BCIScanSections bCIScanSections)
         {
-            BCISimpleParameters bciSimpleParameters = new BCISimpleParameters();
+            BCISimpleParameters bciSimpleParameters = new();
             try
             {
                 bciSimpleParameters = new BCISimpleParameters
@@ -558,10 +544,14 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error GetCalibrationParametersDefault | " + ex.Message.ToString());
+                Log.Exception("BCI LOG | Error GetCalibrationParametersDefault | " + ex.Message.ToString());
             }
             return bciSimpleParameters;
         }
+
+        #endregion GetParameter
+
+        #region Methods
 
         /// <summary>
         /// Sets the initial state of controls for the UI
@@ -590,6 +580,63 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             customSliderMinimumScore.Minimum = 10;
             customSliderMinimumScore.Maximum = 100;
         }
+        // TODO Delete after testing if all labels are correct
+        /* private void SetDefaultStringsToControls()
+         {
+           //  ButtonBeginACAT.Text = "Begin using ACAT";
+           //  ButtonCalibrateBox.Text = "Calibrate Now";
+           //  ButtonCalibrateKeyboardL.Text = "Calibrate Now";
+           //  ButtonCalibrateKeyboardR.Text = "Recalibrate";
+            // ButtonCalibrateSentence.Text = "Calibrate Optional";
+            // ButtonCalibrateWord.Text = "Calibrate Now";
+           //  ButtonDownIterationstarget.Text = "-";
+          //   ButtonDownMinimumScore.Text = "-";
+           //  ButtonDownNumberTargets.Text = "-";
+           //  ButtonDownScanningTime.Text = "-";
+            // ButtonUpNumberTargets.Text = "+";
+           //  ButtonExit.Text = "Exit ACAT";
+           //  ButtonInfoBox.Text = "?";
+          //   ButtonInfoIterationsTarget.Text = "?";
+          //   ButtonInfoKeyboardL.Text = "?";
+           //  ButtonInfoKeyboardR.Text = "?";
+           //  ButtonInfoMinimumScore.Text = "?";
+          //   ButtonInfoNumberTargets.Text = "?";
+          //   ButtonInfoScanningTime.Text = "?";
+         //    ButtonInfoSentence.Text = "?";
+            // ButtonInfoWord.Text = "?";
+           //  ButtonOpcBox.Text = "Box";
+            // ButtonOpcKeyboardL.Text = "Keyboard(Left)";
+           //  ButtonOpcKeyboardR.Text = "Keyboard(Right)";
+           //  ButtonOpcSentence.Text = "Setence";
+           //  ButtonOpcWord.Text = "Word*";
+             //ButtonOtherTest.Text = "Advanced Options";
+          //   ButtonRestoreDefaults.Text = "Restore";
+            // ButtonUpIterationstarget.Text = "Additional Calibrations*";
+          //   ButtonUpMinimumScore.Text = "Advanced";
+
+           //  checkBoxAdvancesParameters.Text = "Additional Calibrations*";
+           //  checkBoxAdditionalCalibrations.Text = "Advanced";
+
+             //label2.Text = "ms";
+             //label4.Text = "Minimum Score*";
+           //  label5.Text = StringResources.Iterationspertarget;
+           //  label6.Text = "Number of Targets";
+           //  label7.Text = "Scanning speed";
+            // labelCalibrationMessage.Text = "Run all three of the calibrations above";
+            // labelIterationstarget.Text = "77";
+            // labelMinimumScore.Text = "77";
+             //labelModeTitle.Text = "Mode";
+            // labelNumberTargets.Text = "77";
+           //  labelParametersTitle.Text = "Parameters";
+            // labelScanningTime.Text = "2000";
+            // labelScoreBox.Text = "-";
+            // labelScoreKeyboardL.Text = "-";
+            // labelScoreKeyboardR.Text = "-";
+            // labelScoreSentence.Text = "-";
+            // labelScoreTitle.Text = "Score";
+            // labelScoreWord.Text = "-";
+             //labelTitle.Text = "Calibrate";
+         }*/
 
         /// <summary>
         /// Process the result from the actuator to display the scores of calibrations if applicable
@@ -626,7 +673,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error ProcessCalibrationStatusResult | " + ex.Message.ToString());
+                Log.Exception("BCI LOG | Error ProcessCalibrationStatusResult | " + ex.Message.ToString());
             }
         }
 
@@ -675,19 +722,24 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 label.Text = "-";
             switch (bCIClassifierInfo.ClassifierStatus)
             {
+                case BCIClassifierStatus.Mismatch:
                 case BCIClassifierStatus.Expired:
                 case BCIClassifierStatus.NotFound:
                     if (bCIClassifierInfo.IsRequired)
-                        scannerRoundedButtonControl.Text = BCIR.GetString("CalibrateNow");
+                        //scannerRoundedButtonControl.Text = BCIR.GetString("CalibrateNow");
+                        scannerRoundedButtonControl.Text = StringResources.CalibrateNowText;
                     else
-                        scannerRoundedButtonControl.Text = BCIR.GetString("CalibrateOptional");
+                        // scannerRoundedButtonControl.Text = BCIR.GetString("CalibrateOptional");
+                        scannerRoundedButtonControl.Text = StringResources.CalibrateOptionalText;
                     break;
 
                 case BCIClassifierStatus.Ok:
                     if (bCIClassifierInfo.IsRequired)
-                        scannerRoundedButtonControl.Text = BCIR.GetString("Recalibrate");
+                        //scannerRoundedButtonControl.Text = BCIR.GetString("Recalibrate");
+                        scannerRoundedButtonControl.Text = StringResources.RecalibrateText;
                     else
-                        scannerRoundedButtonControl.Text = BCIR.GetString("CalibrateOptional");
+                        //scannerRoundedButtonControl.Text = BCIR.GetString("CalibrateOptional");
+                        scannerRoundedButtonControl.Text = StringResources.CalibrateOptionalText;
                     break;
             }
         }
@@ -697,7 +749,8 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// </summary>
         private void SetTextUIElements()
         {
-            ButtonBeginACAT.Text = BCIR.GetString("StartTyping");
+            //ButtonBeginACAT.Text = BCIR.GetString("StartTyping");
+            ButtonBeginACAT.Text = StringResources.StartTypingText;
         }
 
         /// <summary>
@@ -835,7 +888,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 }
             }
 
-            List<String> list = new List<String>();
+            List<String> list = new();
 
             if (param2.ToLower().EndsWith(".mp4"))
             {
@@ -849,14 +902,14 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             {
                 list.Add("PDF");
                 list.Add("true");
-                list.Add(R.GetString("PDFLoaderHtml"));
+                list.Add(StringResources.PDFLoaderHtml);
                 list.Add(param1);
                 list.Add(param2);
             }
 
             try
             {
-                this.TopMost = false;
+                //this.TopMost = false;
                 HtmlUtils.LoadHtml(SmartPath.ApplicationPath, list.ToArray());
             }
             catch
@@ -872,5 +925,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             public Panel DivisionLineMode;
             public bool IsSelected;
         }
+
+        #endregion Methods
     }
 }

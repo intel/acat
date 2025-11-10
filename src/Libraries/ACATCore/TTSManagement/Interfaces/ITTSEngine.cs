@@ -5,12 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
+using ACAT.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using ACAT.Core.PreferencesManagement.Interfaces;
+using ACAT.Core.Utility.TypeLoader;
 
-namespace ACAT.Lib.Core.TTSManagement
+namespace ACAT.Core.TTSManagement.Interfaces
 {
     /// <summary>
     /// Indicates a bookmark has been reached in the text-to-speech
@@ -76,7 +78,7 @@ namespace ACAT.Lib.Core.TTSManagement
     /// Interface for the TTS Engine.  All TTS Engines must implement
     /// this interface.
     /// </summary>
-    public interface ITTSEngine : IDisposable, IExtension
+    public interface ITTSEngine : IDisposable, IExtension, IPluginExtension, ISupportsPreferences
     {
         /// <summary>
         /// Raised when bookmark reached after async text to speech
@@ -117,7 +119,7 @@ namespace ACAT.Lib.Core.TTSManagement
         /// <summary>
         /// Gets or sets the voice to use
         /// </summary>
-        String Voice { get; set; }
+        string Voice { get; set; }
 
         /// <summary>
         /// Pitch of speech. Value range depends on the
@@ -134,7 +136,7 @@ namespace ACAT.Lib.Core.TTSManagement
         /// Returns a list of voices supported by the speech engine
         /// </summary>
         /// <returns>List of names of vlices</returns>
-        List<String> GetVoices();
+        List<string> GetVoices();
 
         /// <summary>
         /// Volume of speech. Value is engine-dependent
@@ -210,7 +212,7 @@ namespace ACAT.Lib.Core.TTSManagement
         /// </summary>
         /// <param name="text">Text to convert</param>
         /// <returns>true on success, false on error</returns>
-        bool Speak(String text);
+        bool Speak(string text);
 
         /// <summary>
         /// Converts TTS asynchronously.  Bookmark is sent back as an
@@ -219,14 +221,14 @@ namespace ACAT.Lib.Core.TTSManagement
         /// <param name="text">Text to convert</param>
         /// <param name="bookmark">Bookmark</param>
         /// <returns></returns>
-        bool SpeakAsync(String text, out int bookmark);
+        bool SpeakAsync(string text, out int bookmark);
 
         /// <summary>
         /// Converts text to speech with text in the SSML format
         /// </summary>
         /// <param name="ssml">SSML formatted text</param>
         /// <returns>true on success, false on error</returns>
-        bool SpeakSsml(String ssml, String text, String ttsPlaceHolder);
+        bool SpeakSsml(string ssml, string text, string ttsPlaceHolder);
 
         /// <summary>
         /// Converts TTS asynchronously.  Bookmark is sent back as an
@@ -235,7 +237,7 @@ namespace ACAT.Lib.Core.TTSManagement
         /// <param name="ssml">Text to convert (SSML format)</param>
         /// <param name="bookmark">Bookmark</param>
         /// <returns></returns>
-        bool SpeakSsmlAsync(String ssml, String text, String ttsPlaceHolder, out int bookmark);
+        bool SpeakSsmlAsync(string ssml, string text, string ttsPlaceHolder, out int bookmark);
 
         /// <summary>
         /// Stops the speech. All items are

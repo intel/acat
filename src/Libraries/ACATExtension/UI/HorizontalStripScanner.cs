@@ -5,20 +5,20 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
-using ACAT.Lib.Extension.CommandHandlers;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Extension.CommandHandlers;
 using System;
-using System.Diagnostics.CodeAnalysis;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     /// <summary>
     /// This is a scanner with a single row of buttons.
     /// </summary>
-    [Descriptor("4287E55B-3364-46B5-A5B2-6C8BE3C57F1E",
+    [ClassDescriptor("4287E55B-3364-46B5-A5B2-6C8BE3C57F1E",
                     "HorizontalStripScanner",
                     "Horizontal strip of buttons")]
     public partial class HorizontalStripScanner : HorizontalStripScannerBase
@@ -29,17 +29,13 @@ namespace ACAT.Lib.Extension
         /// </summary>
         protected Dispatcher commandDispatcher;
 
-        /// <summary>
-        /// Initalizes a new instance of the class
-        /// </summary>
-        public HorizontalStripScanner()
-        {
-        }
+        //public event Action TextSubmitted;
+
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        /// <param name="panelClass">The panel class of the conextual menu</param>
+        /// <param name="panelClass">The panel class of the contextual menu</param>
         /// <param name="panelTitle">title of the contextual</param>
         public HorizontalStripScanner(String panelClass, String panelTitle)
             : base(panelClass, panelTitle)
@@ -63,6 +59,8 @@ namespace ACAT.Lib.Extension
         /// <param name="handled">was this handled here?</param>
         public override void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
         {
+            Log.Debug("HorizontalStripScanner onWidgetActuated");
+            Windows.CloseAsync(this);
             handled = false;
         }
 

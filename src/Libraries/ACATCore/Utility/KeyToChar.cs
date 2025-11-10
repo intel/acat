@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Maps a Key to its corresponding char value
@@ -18,7 +18,7 @@ namespace ACAT.Lib.Core.Utility
         /// <summary>
         /// Holds the mapping
         /// </summary>
-        private static readonly Dictionary<Keys, char> keyToCharMapping = new Dictionary<Keys, char>();
+        private static readonly Dictionary<Keys, char> keyToCharMapping = new();
 
         /// <summary>
         /// Initializes a new instance of the class

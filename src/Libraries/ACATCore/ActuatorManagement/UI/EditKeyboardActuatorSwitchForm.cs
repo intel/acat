@@ -10,11 +10,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
+using ACAT.Core.PanelManagement;
+using ACATResources;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.ActuatorManagement.UI
+namespace ACAT.Core.ActuatorManagement.UI
 {
     public partial class EditKeyboardActuatorSwitchForm : Form
     {
@@ -122,8 +123,6 @@ namespace ACAT.Lib.Core.ActuatorManagement.UI
 
             CenterToScreen();
 
-            TopMost = false;
-            TopMost = true;
 
             radioButtonTriggerSelect.Checked = IsTriggerSelect;
             radioButtonMapToCommand.Checked = !IsTriggerSelect;
@@ -159,10 +158,7 @@ namespace ACAT.Lib.Core.ActuatorManagement.UI
 
         private void showError(String message)
         {
-            /*MessageBox.Show(message, Text,
-                MessageBoxButtons.OK, MessageBoxIcon.Error);*/
-
-            bool result = ConfirmBox.ShowDialog(message.ToString(), null, false);
+            _ = ConfirmBoxOneOption.ShowDialog(message.ToString(), "", StringResources.OK);
         }
 
         private void textBoxKeyboardShortcut_KeyDown(object sender, KeyEventArgs e)

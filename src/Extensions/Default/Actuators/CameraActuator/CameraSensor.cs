@@ -13,7 +13,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace ACAT.Extensions.Default.Actuators.CameraActuator
+namespace ACAT.Extensions.Actuators.CameraActuator
 {
     public class CameraSensor
     {
@@ -21,7 +21,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 
         public delegate void CameraEventCallback(string text);
 
-        [DllImport(DllFilePath, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(DllFilePath, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
         public static extern void acatVision();
 
         [DllImport(DllFilePath, CallingConvention = CallingConvention.StdCall)]

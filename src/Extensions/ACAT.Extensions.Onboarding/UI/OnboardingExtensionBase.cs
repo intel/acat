@@ -1,0 +1,81 @@
+﻿////////////////////////////////////////////////////////////////////////////
+//
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+//
+////////////////////////////////////////////////////////////////////////////
+using ACAT.Core.CoreInterfaces;
+using ACAT.Core.Extensions;
+using ACAT.Core.Utility;
+using System;
+
+namespace ACAT.Extensions.Onboarding.UI
+{
+    /// <summary>
+    /// The base class for onboarding extensions
+    /// </summary>
+    public abstract class OnboardingExtensionBase : IOnboardingExtension
+    {
+        public abstract ClassDescriptorAttribute Descriptor { get; }
+        public virtual bool StartOverOnBackwardNavigation => false;
+
+        public Guid Id => Descriptor.Id;
+
+        public virtual IOnboardingUserControl GetFirstStep()
+        {
+            return null;
+        }
+
+        public ExtensionInvoker GetInvoker()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual IOnboardingExtension GetNextOnboardingExtension()
+        {
+            return null;
+        }
+
+        public virtual IOnboardingUserControl GetNextStep(string currentStepID)
+        {
+            return null;
+        }
+
+        public virtual IOnboardingUserControl GetStep(string currentStepId)
+        {
+            return null;
+        }
+
+        public virtual bool Initialize(IOnboardingWizard wizard)
+        {
+            return true;
+        }
+
+        public virtual bool IsFirstStep(string stepId1)
+        {
+            return false;
+        }
+
+        public virtual bool IsLastStep(string stepId)
+        {
+            return false;
+        }
+
+        public virtual bool OnBeginOnboarding()
+        {
+            return true;
+        }
+
+        public virtual void OnBeginStep(IOnboardingUserControl userControl)
+        {
+        }
+
+        public virtual void OnEndOnboarding(Reason reason)
+        {
+        }
+
+        public virtual void OnEndStep(IOnboardingUserControl userControl, Reason reason)
+        {
+        }
+    }
+}

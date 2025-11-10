@@ -1,4 +1,6 @@
-﻿namespace ACAT.Lib.Extension
+﻿using ACATResources;
+
+namespace ACAT.Extension
 {
     partial class AboutBoxForm
     {
@@ -37,7 +39,7 @@
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonDisclaimer = new System.Windows.Forms.Button();
             this.buttonLicenses = new System.Windows.Forms.Button();
-            this.buttonOK = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonOK = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -80,7 +82,7 @@
             this.labelCopyrightInfo.Name = "labelCopyrightInfo";
             this.labelCopyrightInfo.Size = new System.Drawing.Size(673, 78);
             this.labelCopyrightInfo.TabIndex = 32;
-            this.labelCopyrightInfo.Text = "Copyright";
+            this.labelCopyrightInfo.Text = StringResources.InitializeComponent_Copyright;
             this.labelCopyrightInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelVersionInfo
@@ -122,7 +124,7 @@
             this.labelAppTitle.Name = "labelAppTitle";
             this.labelAppTitle.Size = new System.Drawing.Size(715, 132);
             this.labelAppTitle.TabIndex = 19;
-            this.labelAppTitle.Text = "Assistive Context-Aware Toolkit (ACAT)";
+            this.labelAppTitle.Text = StringResources.InitializeComponent_AssistiveContextAwareToolkitACAT;
             this.labelAppTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel4
@@ -160,7 +162,7 @@
             this.buttonDisclaimer.Size = new System.Drawing.Size(201, 78);
             this.buttonDisclaimer.TabIndex = 4;
             this.buttonDisclaimer.TabStop = false;
-            this.buttonDisclaimer.Text = "Disclaimers";
+            this.buttonDisclaimer.Text = StringResources.InitializeComponent_Disclaimers;
             this.buttonDisclaimer.UseCompatibleTextRendering = true;
             this.buttonDisclaimer.UseVisualStyleBackColor = false;
             this.buttonDisclaimer.Click += new System.EventHandler(this.buttonDisclaimer_Click);
@@ -180,7 +182,7 @@
             this.buttonLicenses.Size = new System.Drawing.Size(181, 78);
             this.buttonLicenses.TabIndex = 3;
             this.buttonLicenses.TabStop = false;
-            this.buttonLicenses.Text = "Licenses";
+            this.buttonLicenses.Text = StringResources.InitializeComponent_Licenses;
             this.buttonLicenses.UseCompatibleTextRendering = true;
             this.buttonLicenses.UseVisualStyleBackColor = false;
             this.buttonLicenses.Click += new System.EventHandler(this.buttonLicenses_Click);
@@ -202,7 +204,7 @@
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(136, 70);
             this.buttonOK.TabIndex = 0;
-            this.buttonOK.Text = "OK";
+            this.buttonOK.Text = StringResources.OK;
             this.buttonOK.UseMnemonic = false;
             this.buttonOK.UseVisualStyleBackColor = false;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);

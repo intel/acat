@@ -5,13 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PreferencesManagement
+namespace ACAT.Core.PreferencesManagement
 {
     /// <summary>
     /// Displays a list of languages (culturues, localized resource folders)
@@ -132,23 +132,13 @@ namespace ACAT.Lib.Core.PreferencesManagement
                 {
                     var culture = item.Tag as CultureInfo;
                     if (String.Compare(culture.TwoLetterISOLanguageName, "en", true) == 0 &&
-                        (String.Compare(culture.Name, "en", true) == 0 ||
-                         String.Compare(culture.Name, "en-US", true) == 0))
+                        (String.Compare(culture.Name, "en", true) == 0))
                     {
                         return item.Index;
                     }
                 }
 
                 return 0;
-            }
-
-            foreach (ListViewItem item in listBoxLanguages.Items)
-            {
-                var culture = item.Tag as CultureInfo;
-                if (String.Compare(culture.Name, CultureInfo.DefaultThreadCurrentUICulture.Name, true) == 0)
-                {
-                    return item.Index;
-                }
             }
 
             foreach (ListViewItem item in listBoxLanguages.Items)
@@ -182,8 +172,6 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
             CenterToScreen();
 
-            TopMost = false;
-            TopMost = true;
 
             labelCurrentLanguage.Text = (CultureInfo.DefaultThreadCurrentUICulture != null)
                 ? CultureInfo.DefaultThreadCurrentUICulture.DisplayName

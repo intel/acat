@@ -5,14 +5,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.Utility;
+using ACAT.Extension.UI;
+using ACATResources;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension.CommandHandlers
+namespace ACAT.Extension.CommandHandlers
 {
     /// <summary>
     /// Displays the ACAT Screen Lock dialog.  This locks the display
@@ -42,7 +44,7 @@ namespace ACAT.Lib.Extension.CommandHandlers
             Form form = Dispatcher.Scanner.Form;
             form.Invoke(new MethodInvoker(delegate
             {
-                if (DialogUtils.ConfirmScanner(form as IPanel, R.GetString("LockTheScreen")))
+                if (DialogUtils.ConfirmScanner(form as IPanel, StringResources.LockTheScreen))
                 {
                     var screenLockForm = PanelManager.Instance.CreatePanel("ScreenLockScanner", "Lock Screen");
                     if (screenLockForm != null)

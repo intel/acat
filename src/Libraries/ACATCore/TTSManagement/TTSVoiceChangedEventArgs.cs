@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.TTSManagement
+namespace ACAT.Core.TTSManagement
 {
     /// <summary>
     /// Event args for the event raised when the TTS voice changes

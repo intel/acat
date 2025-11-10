@@ -5,17 +5,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.TTSManagement.Interfaces;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.TTSManagement
+namespace ACAT.Core.TTSManagement
 {
     /// <summary>
     /// Manages text to speech (TTS) engines.  There are a variety
@@ -36,7 +36,7 @@ namespace ACAT.Lib.Core.TTSManagement
         /// <summary>
         /// The root directory where all the TTS engines are located.
         /// </summary>
-        public static String TTSRootDir = "TTSEngines";
+        public static String TTSRootDir = "";
 
         /// <summary>
         /// Upper bound for the volume
@@ -53,7 +53,7 @@ namespace ACAT.Lib.Core.TTSManagement
         /// <summary>
         /// Singleton instance of the manager
         /// </summary>
-        private static readonly TTSManager _instance = new TTSManager();
+        private static readonly TTSManager _instance = new();
 
         /// <summary>
         /// Has this object been disposed
@@ -98,6 +98,10 @@ namespace ACAT.Lib.Core.TTSManagement
         /// Gets the currently active TTS engine
         /// </summary>
         public ITTSEngine ActiveEngine { get; private set; }
+        public IEnumerable<IExtension> TTSEnginesList 
+        {
+            get { return _ttsEngines.TTSEnginesList; }
+        }
 
         /// <summary>
         /// Disposes resources
@@ -147,79 +151,79 @@ namespace ACAT.Lib.Core.TTSManagement
         /// Returns form that displays preferences selection form for text-to-speech engines and allows configuration.
         /// User can enable/disable text-to-speech engines and also configure settings for each text-to-speech engine.
         /// </summary>
-        public Form GetPreferencesSelectionForm(IntPtr parentControlHandle)
-        {
-            if (!ResourceUtils.IsInstalledCulture(CultureInfo.DefaultThreadCurrentUICulture))
-            {
-                return null;
-            }
+        //public Form GetPreferencesSelectionForm(IntPtr parentControlHandle)
+        //{
+        //    if (!ResourceUtils.IsInstalledCulture(CultureInfo.DefaultThreadCurrentUICulture))
+        //    {
+        //        return null;
+        //    }
 
-            var ci = CultureInfo.DefaultThreadCurrentUICulture;
+        //    var ci = CultureInfo.DefaultThreadCurrentUICulture;
 
-            List<Type> ttsEngineTypeList = new List<Type>();
+        //    List<Type> ttsEngineTypeList = new List<Type>();
 
-            // Add all the text-to-speech engines for the selected language
-            ttsEngineTypeList.AddRange(_ttsEngines.Get(ci.Name).ToList());
+        //    // Add all the text-to-speech engines for the selected language
+        //    ttsEngineTypeList.AddRange(_ttsEngines.Get(ci.Name).ToList());
 
-            if (String.Compare(ci.Name, ci.TwoLetterISOLanguageName, true) != 0)
-            {
-                ttsEngineTypeList.AddRange(_ttsEngines.Get(ci.TwoLetterISOLanguageName).ToList());
-            }
+        //    if (String.Compare(ci.Name, ci.TwoLetterISOLanguageName, true) != 0)
+        //    {
+        //        ttsEngineTypeList.AddRange(_ttsEngines.Get(ci.TwoLetterISOLanguageName).ToList());
+        //    }
 
-            // Get names of text-to-speech engines added thus far
-            List<String> ttsEngineTypeNameList = ttsEngineTypeList.Select(type => type.Name).ToList();
+        //    // Get names of text-to-speech engines added thus far
+        //    List<String> ttsEngineTypeNameList = ttsEngineTypeList.Select(type => type.Name).ToList();
 
-            // Get culture neutral text-to-speech engines and only add if engine not already added for specific language
-            foreach (Type ttsEngineNeutralCultureType in _ttsEngines.Get(null).ToList())
-            {
-                if (!ttsEngineTypeNameList.Contains(ttsEngineNeutralCultureType.Name))
-                {
-                    ttsEngineTypeList.Add(ttsEngineNeutralCultureType);
-                }
-            }
+        //    // Get culture neutral text-to-speech engines and only add if engine not already added for specific language
+        //    foreach (Type ttsEngineNeutralCultureType in _ttsEngines.Get(null).ToList())
+        //    {
+        //        if (!ttsEngineTypeNameList.Contains(ttsEngineNeutralCultureType.Name))
+        //        {
+        //            ttsEngineTypeList.Add(ttsEngineNeutralCultureType);
+        //        }
+        //    }
 
-            // Add NullTTSEngine
-            ttsEngineTypeList.Add(typeof(NullTTSEngine));
+        //    // Add NullTTSEngine
+        //    ttsEngineTypeList.Add(typeof(NullTTSEngine));
 
-            // Now create a list of all the text-to-speech engine objects
-            List<object> objList = ttsEngineTypeList.Select(type => Activator.CreateInstance(type)).ToList();
+        //    // Now create a list of all the text-to-speech engine objects
+        //    List<object> objList = ttsEngineTypeList.Select(type => Activator.CreateInstance(type)).ToList();
 
-            var categories = objList.Select(ttsEngine => new PreferencesCategory(ttsEngine)).ToList();
+        //    var categories = objList.Select(ttsEngine => new PreferencesCategory(ttsEngine)).ToList();
 
-            var preferredGuid = _ttsEngines.GetPreferredOrDefaultByCulture(ci);
-            if (Equals(preferredGuid, Guid.Empty))
-            {
-                preferredGuid = _ttsEngines.GetPreferredOrDefaultByCulture(null);
-            }
+        //    var preferredGuid = _ttsEngines.GetPreferredOrDefaultByCulture(ci);
+        //    if (Equals(preferredGuid, Guid.Empty))
+        //    {
+        //        preferredGuid = _ttsEngines.GetPreferredOrDefaultByCulture(null);
+        //    }
 
-            foreach (var category in categories)
-            {
-                category.Enable = false;
-            }
+        //    foreach (var category in categories)
+        //    {
+        //        category.Enable = false;
+        //    }
 
-            foreach (var category in categories)
-            {
-                var iExtension = category.PreferenceObj as IExtension;
-                category.Enable = (iExtension != null && iExtension.Descriptor.Id == preferredGuid);
-                if (category.Enable)
-                {
-                    break;
-                }
-            }
+        //    foreach (var category in categories)
+        //    {
+        //        var iExtension = category.PreferenceObj as IExtension;
+        //        category.Enable = (iExtension != null && iExtension.Descriptor.Id == preferredGuid);
+        //        if (category.Enable)
+        //        {
+        //            break;
+        //        }
+        //    }
 
-            // Create and return the form for the user to select default text-to-speech engine, change settings etc.
-            var form = new PreferencesCategorySelectForm
-            {
-                PreferencesCategories = categories,
-                EnableColumnHeaderText = "Default",
-                CategoryColumnHeaderText = "TTS Engine",
-                Title = "Text-to-speech - " + ci.DisplayName,
-                AllowMultiEnable = false,
-                ParentControlHandle = parentControlHandle
-            };
+        //    // Create and return the form for the user to select default text-to-speech engine, change settings etc.
+        //    var form = new PreferencesCategorySelectForm
+        //    {
+        //        PreferencesCategories = categories,
+        //        EnableColumnHeaderText = "Default",
+        //        CategoryColumnHeaderText = "TTS Engine",
+        //        Title = "Text-to-speech - " + ci.DisplayName,
+        //        AllowMultiEnable = false,
+        //        ParentControlHandle = parentControlHandle
+        //    };
 
-            return form;
-        }
+        //    return form;
+        //}
 
         /// <summary>
         /// Initializes the TTS manager
@@ -268,7 +272,7 @@ namespace ACAT.Lib.Core.TTSManagement
             {
                 if (category.Enable && category.PreferenceObj is IExtension)
                 {
-                    _ttsEngines.SetPreferred(ci.Name, ((IExtension)category.PreferenceObj).Descriptor.Id);
+                    _ttsEngines.SetPreferred(ci.TwoLetterISOLanguageName, ((IExtension)category.PreferenceObj).Descriptor.Id);
                     break;
                 }
             }
@@ -282,18 +286,11 @@ namespace ACAT.Lib.Core.TTSManagement
         /// <returns>true on success</returns>
         public bool SetActiveEngine(CultureInfo ci = null)
         {
-            bool retVal = true;
-            Guid guid = Guid.Empty;
-            Guid cultureNeutralGuid = Guid.Empty;
+            ci ??= CultureInfo.DefaultThreadCurrentUICulture;
 
-            if (ci == null)
-            {
-                ci = CultureInfo.DefaultThreadCurrentUICulture;
-            }
-
-            guid = _ttsEngines.GetPreferredOrDefaultByCulture(ci);
-            cultureNeutralGuid = _ttsEngines.GetPreferredOrDefaultByCulture(null);
-
+            Guid guid = _ttsEngines.GetPreferredOrDefaultByCulture(ci);
+            Guid cultureNeutralGuid = _ttsEngines.GetPreferredOrDefaultByCulture(null);
+            bool retVal;
             if (!Equals(guid, Guid.Empty))  // found something for the specific culture
             {
                 var type = _ttsEngines.Lookup(guid);
@@ -382,20 +379,14 @@ namespace ACAT.Lib.Core.TTSManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
                     // dispose all managed resources.
-                    if (ActiveEngine != null)
-                    {
-                        ActiveEngine.Dispose();
-                    }
+                    ActiveEngine?.Dispose();
 
-                    if (_ttsEngines != null)
-                    {
-                        _ttsEngines.Dispose();
-                    }
+                    _ttsEngines?.Dispose();
                 }
 
                 // Release unmanaged resources.
@@ -437,7 +428,7 @@ namespace ACAT.Lib.Core.TTSManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Unable to load TTS Engine" + type + ", assembly: " + type.Assembly.FullName + ". Exception: " + ex);
+                Log.Exception("Unable to load TTS Engine" + type + ", assembly: " + type.Assembly.FullName + ". Exception: " + ex);
                 retVal = false;
             }
 
@@ -451,10 +442,7 @@ namespace ACAT.Lib.Core.TTSManagement
         /// <param name="newEngine">the newly activated engine</param>
         private void notifyEngineChanged(ITTSEngine oldEngine, ITTSEngine newEngine)
         {
-            if (EvtEngineChanged != null)
-            {
-                EvtEngineChanged(oldEngine, newEngine);
-            }
+            EvtEngineChanged?.Invoke(oldEngine, newEngine);
         }
 
         /// <summary>

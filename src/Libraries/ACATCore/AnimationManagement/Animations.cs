@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 
-namespace ACAT.Lib.Core.AnimationManagement
+namespace ACAT.Core.AnimationManagement
 {
     /// <summary>
     /// Represents a collection of animations for a panel
@@ -59,8 +59,7 @@ namespace ACAT.Lib.Core.AnimationManagement
         {
             get
             {
-                Animation retVal;
-                _animationTable.TryGetValue(index, out retVal);
+                _animationTable.TryGetValue(index, out Animation retVal);
                 return retVal;
             }
         }

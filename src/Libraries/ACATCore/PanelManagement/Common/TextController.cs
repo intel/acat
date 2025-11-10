@@ -5,15 +5,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AbbreviationsManagement;
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.AbbreviationsManagement;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.Utility;
 using System;
 using System.Collections;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Common
 {
     /// <summary>
     /// Implements the ITextController interface.  Contains helper
@@ -31,7 +32,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// Text of the partial word that was autocompleted
         /// </summary>
-        private static String _autoCompletePartialWord = String.Empty;
+        private static string _autoCompletePartialWord = string.Empty;
 
         /// <summary>
         /// Text offset of the partial word that is to be autocompleted
@@ -92,7 +93,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// and the one that the user selects
         /// </summary>
         /// <param name="wordSelected">the autocomplete word.</param>
-        public void AutoCompleteWord(String wordSelected)
+        public void AutoCompleteWord(string wordSelected)
         {
             if (Context.AppAgentMgr.TextChangedNotifications.OnHold())
             {
@@ -103,117 +104,115 @@ namespace ACAT.Lib.Core.PanelManagement
             Log.Debug("Entered AutoCompleteWord");
             try
             {
-                using (AgentContext context = Context.AppAgentMgr.ActiveContext())
+                using AgentContext context = Context.AppAgentMgr.ActiveContext();
+                Context.AppAgentMgr.TextChangedNotifications.Hold();
+
+                CoreGlobals.Stopwatch4.Reset();
+                CoreGlobals.Stopwatch4.Start();
+
+                int caretPos = context.TextAgent().GetCaretPos();
+
+                _beforeAutoCompleteCaretPos = caretPos;
+                _autocompleteStartOffset = -1;
+
+                context.TextAgent().GetPrevWordOffsetAutoComplete(out int offset, out int count);
+                Log.Debug("PrevWord offset: " + offset + ", count: " + count);
+
+                CoreGlobals.Stopwatch4.Stop();
+                Log.Debug("AutoComplete TimeElapsed 1: " + CoreGlobals.Stopwatch4.ElapsedMilliseconds);
+
+                CoreGlobals.Stopwatch4.Reset();
+                CoreGlobals.Stopwatch4.Start();
+
+                // check if we are just completing the current word or inserting a new word
+                bool checkInsert = context.TextAgent().CheckInsertOrReplaceWord(out int insertOrReplaceOffset, out string wordToReplace);
+                Log.Debug("checkInsert: " + checkInsert + ", insertorreplaceoffset: " + insertOrReplaceOffset +
+                          ", caret: " + caretPos + ", caretPos-delprev: " + (caretPos - count));
+                Log.Debug("wordtoReplace: " + wordToReplace);
+
+                _autoCompletePartialWord = wordToReplace;
+
+                int wordToReplaceLength = wordToReplace.Length;
+                if (wordToReplaceLength > 0)
                 {
-                    Context.AppAgentMgr.TextChangedNotifications.Hold();
+                    isCapitalizedWordToReplace = char.IsUpper(wordToReplace[0]);
+                }
 
-                    CoreGlobals.Stopwatch4.Reset();
-                    CoreGlobals.Stopwatch4.Start();
+                CoreGlobals.Stopwatch4.Stop();
+                Log.Debug("AutoComplete TimeElapsed 2: " + CoreGlobals.Stopwatch4.ElapsedMilliseconds);
+                CoreGlobals.Stopwatch4.Reset();
+                CoreGlobals.Stopwatch4.Start();
 
-                    int caretPos = context.TextAgent().GetCaretPos();
+                Log.Debug("checkInsert: " + checkInsert + ". inserRepOff: " + insertOrReplaceOffset +
+                          ". wordTORep: " + wordToReplace);
 
-                    _beforeAutoCompleteCaretPos = caretPos;
-                    _autocompleteStartOffset = -1;
+                if (KeyStateTracker.IsStickyShiftOn())
+                {
+                    wordSelected = wordSelected.ToUpper();
+                }
+                else if (KeyStateTracker.IsShiftOn())
+                {
+                    wordSelected = capitalizeWord(wordSelected);
+                    KeyStateTracker.KeyTriggered(wordSelected[0]);
+                }
 
-                    context.TextAgent().GetPrevWordOffsetAutoComplete(out int offset, out int count);
-                    Log.Debug("PrevWord offset: " + offset + ", count: " + count);
+                if (checkInsert)
+                {
+                    Log.Debug("Inserting [" + wordSelected + "] at offset " + insertOrReplaceOffset);
 
-                    CoreGlobals.Stopwatch4.Stop();
-                    Log.Debug("AutoComplete TimeElapsed 1: " + CoreGlobals.Stopwatch4.ElapsedMilliseconds);
+                    CoreGlobals.Stopwatch5.Reset();
+                    CoreGlobals.Stopwatch5.Start();
 
-                    CoreGlobals.Stopwatch4.Reset();
-                    CoreGlobals.Stopwatch4.Start();
+                    context.TextAgent().Insert(insertOrReplaceOffset, wordSelected);
 
-                    // check if we are just completing the current word or inserting a new word
-                    bool checkInsert = context.TextAgent().CheckInsertOrReplaceWord(out int insertOrReplaceOffset, out string wordToReplace);
-                    Log.Debug("checkInsert: " + checkInsert + ", insertorreplaceoffset: " + insertOrReplaceOffset +
-                              ", caret: " + caretPos + ", caretPos-delprev: " + (caretPos - count));
-                    Log.Debug("wordtoReplace: " + wordToReplace);
-
-                    _autoCompletePartialWord = wordToReplace;
-
-                    int wordToReplaceLength = wordToReplace.Length;
-                    if (wordToReplaceLength > 0)
+                    CoreGlobals.Stopwatch5.Stop();
+                    Log.Debug("AutoComplete Insert operation TimeElapsed: " + CoreGlobals.Stopwatch5.ElapsedMilliseconds);
+                }
+                else
+                {
+                    /*
+                    if (count > 0)
                     {
-                        isCapitalizedWordToReplace = Char.IsUpper(wordToReplace[0]);
+                        wordToReplaceLength = count;
                     }
+                    */
 
-                    CoreGlobals.Stopwatch4.Stop();
-                    Log.Debug("AutoComplete TimeElapsed 2: " + CoreGlobals.Stopwatch4.ElapsedMilliseconds);
-                    CoreGlobals.Stopwatch4.Reset();
-                    CoreGlobals.Stopwatch4.Start();
-
-                    Log.Debug("checkInsert: " + checkInsert + ". inserRepOff: " + insertOrReplaceOffset +
-                              ". wordTORep: " + wordToReplace);
-
-                    if (KeyStateTracker.IsStickyShiftOn())
-                    {
-                        wordSelected = wordSelected.ToUpper();
-                    }
-                    else if (KeyStateTracker.IsShiftOn())
+                    if (wordToReplaceLength > 0 && isCapitalizedWordToReplace &&
+                        char.ToUpper(wordToReplace[0]) == char.ToUpper(wordSelected[0]))
                     {
                         wordSelected = capitalizeWord(wordSelected);
-                        KeyStateTracker.KeyTriggered(wordSelected[0]);
                     }
 
-                    if (checkInsert)
-                    {
-                        Log.Debug("Inserting [" + wordSelected + "] at offset " + insertOrReplaceOffset);
+                    Log.Debug("Replacing word at offset " + insertOrReplaceOffset + ". Length: " +
+                              wordToReplaceLength + ". with [" + wordSelected + "]");
 
-                        CoreGlobals.Stopwatch5.Reset();
-                        CoreGlobals.Stopwatch5.Start();
-
-                        context.TextAgent().Insert(insertOrReplaceOffset, wordSelected);
-
-                        CoreGlobals.Stopwatch5.Stop();
-                        Log.Debug("AutoComplete Insert operation TimeElapsed: " + CoreGlobals.Stopwatch5.ElapsedMilliseconds);
-                    }
-                    else
-                    {
-                        /*
-                        if (count > 0)
-                        {
-                            wordToReplaceLength = count;
-                        }
-                        */
-
-                        if (wordToReplaceLength > 0 && isCapitalizedWordToReplace &&
-                            Char.ToUpper(wordToReplace[0]) == Char.ToUpper(wordSelected[0]))
-                        {
-                            wordSelected = capitalizeWord(wordSelected);
-                        }
-
-                        Log.Debug("Replacing word at offset " + insertOrReplaceOffset + ". Length: " +
-                                  wordToReplaceLength + ". with [" + wordSelected + "]");
-
-                        context.TextAgent().Replace(insertOrReplaceOffset, wordToReplaceLength, wordSelected);
-                    }
-
-                    CoreGlobals.Stopwatch4.Stop();
-                    Log.Debug("AutoComplete TimeElapsed 3: " + CoreGlobals.Stopwatch4.ElapsedMilliseconds);
-                    CoreGlobals.Stopwatch4.Reset();
-                    CoreGlobals.Stopwatch4.Start();
-
-                    _autocompleteStartOffset = insertOrReplaceOffset;
-
-                    _lastAction = LastAction.AutoCompleteWord;
-
-                    postAutoCompleteWord();
-
-                    _autoCompleteCaretPos = context.TextAgent().GetCaretPos();
-                    Log.Debug("_autocompleteCursorPos is " + _autoCompleteCaretPos);
-
-                    CoreGlobals.Stopwatch4.Stop();
-                    Log.Debug("AutoComplete TimeElapsed 4: " + CoreGlobals.Stopwatch4.ElapsedMilliseconds);
+                    context.TextAgent().Replace(insertOrReplaceOffset, wordToReplaceLength, wordSelected);
                 }
+
+                CoreGlobals.Stopwatch4.Stop();
+                Log.Debug("AutoComplete TimeElapsed 3: " + CoreGlobals.Stopwatch4.ElapsedMilliseconds);
+                CoreGlobals.Stopwatch4.Reset();
+                CoreGlobals.Stopwatch4.Start();
+
+                _autocompleteStartOffset = insertOrReplaceOffset;
+
+                _lastAction = LastAction.AutoCompleteWord;
+
+                postAutoCompleteWord();
+
+                _autoCompleteCaretPos = context.TextAgent().GetCaretPos();
+                Log.Debug("_autocompleteCursorPos is " + _autoCompleteCaretPos);
+
+                CoreGlobals.Stopwatch4.Stop();
+                Log.Debug("AutoComplete TimeElapsed 4: " + CoreGlobals.Stopwatch4.ElapsedMilliseconds);
             }
             catch (InvalidAgentContextException iace)
             {
-                Log.Debug("Agent Context is invalid " + iace);
+                Log.Exception("Agent Context is invalid " + iace);
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
             finally
             {
@@ -243,64 +242,62 @@ namespace ACAT.Lib.Core.PanelManagement
 
             try
             {
-                using (AgentContext context = Context.AppAgentMgr.ActiveContext())
+                using AgentContext context = Context.AppAgentMgr.ActiveContext();
+                if (!context.TextAgent().GetCharLeftOfCaret(out char charAtCaret))
                 {
-                    if (!context.TextAgent().GetCharLeftOfCaret(out char charAtCaret))
+                    return null;
+                }
+
+                if (CoreGlobals.AppPreferences.ExpandAbbreviationsOnSeparator &&
+                    !TextUtils.IsTerminatorOrWhiteSpace(charAtCaret))
+                {
+                    Log.Debug("no sentence terminator or white space here.  returning");
+                    return null;
+                }
+
+                int startPos = context.TextAgent().GetPreviousWordAtCaret(out string word);
+                Log.Debug("Prev word: " + word);
+                if (string.IsNullOrEmpty(word))
+                {
+                    return null;
+                }
+
+                // if there is a preceeding sentence terminator, we have to capitalize the word
+                bool isFirstWord = context.TextAgent().IsPreviousWordAtCaretTheFirstWord();
+
+                abbr = Context.AppAbbreviationsManager.Abbreviations.Lookup(word);
+
+                // do we detect something?
+                if (abbr != null)
+                {
+                    string replacement = abbr.Expansion;
+
+                    string stringToCaret = context.TextAgent().GetStringToCaret(startPos);
+
+                    Log.Debug("String to caret from startPos " + startPos + ": [" + stringToCaret + "]");
+                    replacement = stringToCaret.Replace(word, replacement);
+                    Log.Debug("After replacement, replacement : [" + replacement + "]");
+
+                    if (isFirstWord)
                     {
-                        return null;
-                    }
-
-                    if (CoreGlobals.AppPreferences.ExpandAbbreviationsOnSeparator &&
-                        !TextUtils.IsTerminatorOrWhiteSpace(charAtCaret))
-                    {
-                        Log.Debug("no sentence terminator or white space here.  returning");
-                        return null;
-                    }
-
-                    int startPos = context.TextAgent().GetPreviousWordAtCaret(out string word);
-                    Log.Debug("Prev word: " + word);
-                    if (String.IsNullOrEmpty(word))
-                    {
-                        return null;
-                    }
-
-                    // if there is a preceeding sentence terminator, we have to capitalize the word
-                    bool isFirstWord = context.TextAgent().IsPreviousWordAtCaretTheFirstWord();
-
-                    abbr = Context.AppAbbreviationsManager.Abbreviations.Lookup(word);
-
-                    // do we detect something?
-                    if (abbr != null)
-                    {
-                        String replacement = abbr.Expansion;
-
-                        String stringToCaret = context.TextAgent().GetStringToCaret(startPos);
-
-                        Log.Debug("String to caret from startPos " + startPos + ": [" + stringToCaret + "]");
-                        replacement = stringToCaret.Replace(word, replacement);
-                        Log.Debug("After replacement, replacement : [" + replacement + "]");
-
-                        if (isFirstWord)
+                        string capitalized = TextUtils.Capitalize(replacement);
+                        if (capitalized != null)
                         {
-                            String capitalized = TextUtils.Capitalize(replacement);
-                            if (capitalized != null)
-                            {
-                                replacement = capitalized;
-                            }
+                            replacement = capitalized;
                         }
+                    }
 
-                        int wordLength = word.Length +
-                                         (CoreGlobals.AppPreferences.ExpandAbbreviationsOnSeparator ? 1 : 0);
-                        String replaceWith = (abbr.Mode == Abbreviation.AbbreviationMode.Write)
-                            ? replacement
-                            : String.Empty;
+                    int wordLength = word.Length +
+                                     (CoreGlobals.AppPreferences.ExpandAbbreviationsOnSeparator ? 1 : 0);
+                    string replaceWith = abbr.Mode == Abbreviation.AbbreviationMode.Write
+                        ? replacement
+                        : string.Empty;
 
-                        context.TextAgent().Replace(startPos, wordLength, replaceWith);
+                    context.TextAgent().Replace(startPos, wordLength, replaceWith);
 
-                        if (abbr.Mode == Abbreviation.AbbreviationMode.Write)
-                        {
-                            handled = true;
-                        }
+                    if (abbr.Mode == Abbreviation.AbbreviationMode.Write)
+                    {
+                        handled = true;
                     }
                 }
             }
@@ -333,47 +330,45 @@ namespace ACAT.Lib.Core.PanelManagement
             {
                 Context.AppAgentMgr.TextChangedNotifications.Hold();
 
-                using (AgentContext context = Context.AppAgentMgr.ActiveContext())
+                using AgentContext context = Context.AppAgentMgr.ActiveContext();
+                int caretPos = context.TextAgent().GetCaretPos();
+
+                if (_lastAction == LastAction.AutoCompleteWord &&
+                    _autoCompleteCaretPos >= 0 &&
+                    caretPos == _autoCompleteCaretPos &&
+                    _beforeAutoCompleteCaretPos >= 0)
                 {
-                    int caretPos = context.TextAgent().GetCaretPos();
+                    Log.Debug("Delete: _autoCompleteCaretPos: " + _autoCompleteCaretPos +
+                              ",  _beforeAutoCOmpleteCaretPos: " + _beforeAutoCompleteCaretPos + ", count: " +
+                              (_autoCompleteCaretPos - _beforeAutoCompleteCaretPos));
 
-                    if (_lastAction == LastAction.AutoCompleteWord &&
-                        _autoCompleteCaretPos >= 0 &&
-                        caretPos == _autoCompleteCaretPos &&
-                        _beforeAutoCompleteCaretPos >= 0)
+                    int prefixLen = _autoCompletePartialWord.Length;
+                    Log.Debug("prefixLen: " + prefixLen);
+                    if (prefixLen > 0)
                     {
-                        Log.Debug("Delete: _autoCompleteCaretPos: " + _autoCompleteCaretPos +
-                                  ",  _beforeAutoCOmpleteCaretPos: " + _beforeAutoCompleteCaretPos + ", count: " +
-                                  (_autoCompleteCaretPos - _beforeAutoCompleteCaretPos));
+                        int start = _autocompleteStartOffset;
+                        Log.Debug("start: " + start);
+                        start = Math.Max(0, start);
 
-                        int prefixLen = _autoCompletePartialWord.Length;
-                        Log.Debug("prefixLen: " + prefixLen);
-                        if (prefixLen > 0)
-                        {
-                            int start = _autocompleteStartOffset;
-                            Log.Debug("start: " + start);
-                            start = Math.Max(0, start);
-
-                            Log.Debug("Deleting from " + start + ", numchars: " + (_autoCompleteCaretPos - start));
-                            context.TextAgent().Delete(start, _autoCompleteCaretPos - start);
-                            Log.Debug("Inserting at " + start + ", string: " + _autoCompletePartialWord);
-                            context.TextAgent().Insert(start, _autoCompletePartialWord);
-                        }
-                        else
-                        {
-                            Log.Debug("Delete from " + _beforeAutoCompleteCaretPos);
-                            context.TextAgent().Delete(_beforeAutoCompleteCaretPos, _autoCompleteCaretPos - _beforeAutoCompleteCaretPos);
-                        }
+                        Log.Debug("Deleting from " + start + ", numchars: " + (_autoCompleteCaretPos - start));
+                        context.TextAgent().Delete(start, _autoCompleteCaretPos - start);
+                        Log.Debug("Inserting at " + start + ", string: " + _autoCompletePartialWord);
+                        context.TextAgent().Insert(start, _autoCompletePartialWord);
                     }
                     else
                     {
-                        context.TextAgent().DelPrevWord();
+                        Log.Debug("Delete from " + _beforeAutoCompleteCaretPos);
+                        context.TextAgent().Delete(_beforeAutoCompleteCaretPos, _autoCompleteCaretPos - _beforeAutoCompleteCaretPos);
                     }
-
-                    _autoCompleteCaretPos = -1;
-                    _beforeAutoCompleteCaretPos = -1;
-                    _autocompleteStartOffset = -1;
                 }
+                else
+                {
+                    context.TextAgent().DelPrevWord();
+                }
+
+                _autoCompleteCaretPos = -1;
+                _beforeAutoCompleteCaretPos = -1;
+                _autocompleteStartOffset = -1;
             }
             catch (Exception ex)
             {
@@ -392,7 +387,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="inputChar">char to send</param>
         public void HandleAlphaNumericChar(ArrayList modifiers, char inputChar)
         {
-            Context.AppAgentMgr.Keyboard.Send((modifiers != null) ? modifiers.Cast<Keys>().ToList() : KeyStateTracker.GetExtendedKeys(), inputChar);
+            Context.AppAgentMgr.Keyboard.Send(modifiers != null ? modifiers.Cast<Keys>().ToList() : KeyStateTracker.GetExtendedKeys(), inputChar);
 
             KeyStateTracker.KeyTriggered(inputChar);
 
@@ -420,7 +415,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <returns>true on success</returns>
         public bool HandlePunctuation(ArrayList modifiers, char punctuation)
         {
-            Log.Debug();
+            Log.Verbose();
 
             try
             {
@@ -438,48 +433,46 @@ namespace ACAT.Lib.Core.PanelManagement
                 KeyStateTracker.ClearAlt();
                 KeyStateTracker.ClearCtrl();
 
-                using (AgentContext context = Context.AppAgentMgr.ActiveContext())
+                using AgentContext context = Context.AppAgentMgr.ActiveContext();
+                if (!context.TextAgent().EnableSmartPunctuations())
                 {
-                    if (!context.TextAgent().EnableSmartPunctuations())
-                    {
-                        Context.AppAgentMgr.Keyboard.Send((modifiers != null) ?
-                                                            modifiers.Cast<Keys>().ToList() :
-                                                            KeyStateTracker.GetExtendedKeys(),
-                            punctuation);
-                        _lastAction = LastAction.AlphaNumeric;
-                        return true;
-                    }
-
-                    if (ResourceUtils.LanguageSettings().IsDeletePrecedingSpacesChar(punctuation))
-                    {
-                        // delete any spaces before the punctuation
-                        context.TextAgent().GetPrecedingWhiteSpaces(out int offset, out int count);
-                        Log.Debug("Preceding whitespace count: " + count);
-                        if (count > 0)
-                        {
-                            Log.Debug("Deleting whitespaces from offset " + offset);
-                            context.TextAgent().Delete(offset, count);
-                        }
-                    }
-
-                    Log.Debug("Sending punctuation");
-                    Context.AppAgentMgr.Keyboard.Send((modifiers != null) ?
+                    Context.AppAgentMgr.Keyboard.Send(modifiers != null ?
                                                         modifiers.Cast<Keys>().ToList() :
-                                                        KeyStateTracker.GetExtendedKeys(), punctuation);
-
-                    if (ResourceUtils.LanguageSettings().IsInsertSpaceAfterChar(punctuation))
-                    {
-                        Context.AppAgentMgr.Keyboard.Send(KeyStateTracker.GetExtendedKeys(), ' ');
-                    }
-
-                    _autoCompleteCaretPos = context.TextAgent().GetCaretPos();
-
-                    Log.Debug("after actuating, caretpos is " + _autoCompleteCaretPos);
-
-                    KeyStateTracker.KeyTriggered(punctuation);
-
-                    _lastAction = LastAction.Punctuation;
+                                                        KeyStateTracker.GetExtendedKeys(),
+                        punctuation);
+                    _lastAction = LastAction.AlphaNumeric;
+                    return true;
                 }
+
+                if (ResourceUtils.LanguageSettings().IsDeletePrecedingSpacesChar(punctuation))
+                {
+                    // delete any spaces before the punctuation
+                    context.TextAgent().GetPrecedingWhiteSpaces(out int offset, out int count);
+                    Log.Debug("Preceding whitespace count: " + count);
+                    if (count > 0)
+                    {
+                        Log.Debug("Deleting whitespaces from offset " + offset);
+                        context.TextAgent().Delete(offset, count);
+                    }
+                }
+
+                Log.Debug("Sending punctuation");
+                Context.AppAgentMgr.Keyboard.Send(modifiers != null ?
+                                                    modifiers.Cast<Keys>().ToList() :
+                                                    KeyStateTracker.GetExtendedKeys(), punctuation);
+
+                if (ResourceUtils.LanguageSettings().IsInsertSpaceAfterChar(punctuation))
+                {
+                    Context.AppAgentMgr.Keyboard.Send(KeyStateTracker.GetExtendedKeys(), ' ');
+                }
+
+                _autoCompleteCaretPos = context.TextAgent().GetCaretPos();
+
+                Log.Debug("after actuating, caretpos is " + _autoCompleteCaretPos);
+
+                KeyStateTracker.KeyTriggered(punctuation);
+
+                _lastAction = LastAction.Punctuation;
             }
             catch (Exception ex)
             {
@@ -500,7 +493,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         /// <param name="modifiers"></param>
         /// <param name="value">the key</param>
-        public void HandleVirtualKey(ArrayList modifiers, String value)
+        public void HandleVirtualKey(ArrayList modifiers, string value)
         {
             _lastAction = LastAction.Unknown;
 
@@ -509,7 +502,7 @@ namespace ACAT.Lib.Core.PanelManagement
                 Keys virtualKey = MapVirtualKey(value);
                 if (virtualKey != Keys.None)
                 {
-                    Context.AppAgentMgr.Keyboard.Send((modifiers != null) ?
+                    Context.AppAgentMgr.Keyboard.Send(modifiers != null ?
                                                         modifiers.Cast<Keys>().ToList() :
                                                         KeyStateTracker.GetExtendedKeys(), virtualKey);
                     KeyStateTracker.KeyTriggered(virtualKey);
@@ -526,7 +519,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         /// <param name="value">String representation</param>
         /// <returns>Keys enum version</returns>
-        public Keys MapVirtualKey(String value)
+        public Keys MapVirtualKey(string value)
         {
             Keys retVal;
             try
@@ -636,7 +629,7 @@ namespace ACAT.Lib.Core.PanelManagement
 
             int startPos = AgentManager.Instance.TextControlAgent.GetPreviousWordAtCaret(out string word);
             Log.Debug("Prev word: [" + word + "]");
-            if (String.IsNullOrEmpty(word))
+            if (string.IsNullOrEmpty(word))
             {
                 return;
             }
@@ -644,9 +637,9 @@ namespace ACAT.Lib.Core.PanelManagement
             bool isFirstWord = AgentManager.Instance.TextControlAgent.IsPreviousWordAtCaretTheFirstWord();
 
             Log.Debug("Looking up " + word);
-            String replacement = Context.AppSpellCheckManager.ActiveSpellChecker.Lookup(word);
+            string replacement = Context.AppSpellCheckManager.ActiveSpellChecker.Lookup(word);
             Log.Debug("Replacement is [" + replacement + "]");
-            if (String.IsNullOrEmpty(replacement) && isFirstWord)
+            if (string.IsNullOrEmpty(replacement) && isFirstWord)
             {
                 replacement = word;
             }
@@ -656,7 +649,7 @@ namespace ACAT.Lib.Core.PanelManagement
                 replacement = capitalizeWord(replacement);
             }
 
-            if (!String.IsNullOrEmpty(replacement) && String.Compare(word, replacement) != 0)
+            if (!string.IsNullOrEmpty(replacement) && string.Compare(word, replacement) != 0)
             {
                 replaceMisspeltWord(word, replacement, startPos, isFirstWord);
             }
@@ -687,7 +680,7 @@ namespace ACAT.Lib.Core.PanelManagement
                     case LastAction.AutoCompleteWord:
 
                         int caretPos;
-                        String text;
+                        string text;
                         bool isChar = false;
                         using (AgentContext context = Context.AppAgentMgr.ActiveContext())
                         {
@@ -696,7 +689,7 @@ namespace ACAT.Lib.Core.PanelManagement
                             if (caretPos <= text.Length - 1)
                             {
                                 char ch = text[caretPos];
-                                isChar = !Char.IsWhiteSpace(ch) && !Char.IsPunctuation(ch);
+                                isChar = !char.IsWhiteSpace(ch) && !char.IsPunctuation(ch);
                             }
                         }
 
@@ -733,7 +726,7 @@ namespace ACAT.Lib.Core.PanelManagement
             _autoCompleteCaretPos = -1;
             _beforeAutoCompleteCaretPos = -1;
             _autocompleteStartOffset = -1;
-            _autoCompletePartialWord = String.Empty;
+            _autoCompletePartialWord = string.Empty;
         }
 
         /// <summary>
@@ -741,9 +734,9 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         /// <param name="word">word to capitalize</param>
         /// <returns>Captilized word</returns>
-        private String capitalizeWord(String word)
+        private string capitalizeWord(string word)
         {
-            return Char.ToUpper(word[0]) + ((word.Length > 1) ? word.Substring(1) : String.Empty);
+            return char.ToUpper(word[0]) + (word.Length > 1 ? word.Substring(1) : string.Empty);
         }
 
         /// <summary>
@@ -755,27 +748,25 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             try
             {
-                using (AgentContext context = Context.AppAgentMgr.ActiveContext())
+                using AgentContext context = Context.AppAgentMgr.ActiveContext();
+                if (Context.AppAgentMgr.CurrentEditingMode == EditingMode.TextEntry)
                 {
-                    if (Context.AppAgentMgr.CurrentEditingMode == EditingMode.TextEntry)
+                    int numChars = 2;  // punctuation + space after punctuation
+                    context.TextAgent().GetPrecedingCharacters(numChars, out string precedingChars);
+                    Log.Debug("prev " + numChars + " chars are : [" + precedingChars + "]");
+                    if (precedingChars.Length == numChars && ResourceUtils.LanguageSettings().IsInsertSpaceAfterChar(precedingChars[0]))
                     {
-                        int numChars = 2;  // punctuation + space after punctuation
-                        context.TextAgent().GetPrecedingCharacters(numChars, out string precedingChars);
-                        Log.Debug("prev " + numChars + " chars are : [" + precedingChars + "]");
-                        if (precedingChars.Length == numChars && ResourceUtils.LanguageSettings().IsInsertSpaceAfterChar(precedingChars[0]))
-                        {
-                            Context.AppAgentMgr.Keyboard.Send(Keys.Back, numChars);
-                            Context.AppAgentMgr.Keyboard.Send(Keys.Space);
-                        }
-                        else
-                        {
-                            DeletePreviousWord();
-                        }
+                        Context.AppAgentMgr.Keyboard.Send(Keys.Back, numChars);
+                        Context.AppAgentMgr.Keyboard.Send(Keys.Space);
                     }
                     else
                     {
                         DeletePreviousWord();
                     }
+                }
+                else
+                {
+                    DeletePreviousWord();
                 }
             }
             catch (Exception ex)
@@ -791,26 +782,24 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             try
             {
-                using (AgentContext context = Context.AppAgentMgr.ActiveContext())
+                using AgentContext context = Context.AppAgentMgr.ActiveContext();
+                int caretPos = context.TextAgent().GetCaretPos();
+                if (caretPos > 0)
                 {
-                    int caretPos = context.TextAgent().GetCaretPos();
-                    if (caretPos > 0)
-                    {
-                        bool retVal = context.TextAgent().GetCharAtCaret(out char charAtCaret);
+                    bool retVal = context.TextAgent().GetCharAtCaret(out char charAtCaret);
 
-                        Log.Debug("charAtCaret is " + Convert.ToInt32(charAtCaret));
-                        if (!Char.IsPunctuation(charAtCaret) && (!retVal || charAtCaret == 0x0D || !Char.IsWhiteSpace(charAtCaret)))
-                        {
-                            Log.Debug("Sending space suffix... caretpos is " + context.TextAgent().GetCaretPos());
-                            Context.AppAgentMgr.Keyboard.Send(KeyStateTracker.GetExtendedKeys(), ' ');
-                            Log.Debug("Done sending space suffix caretPos is " + context.TextAgent().GetCaretPos());
-                            KeyStateTracker.KeyTriggered(' ');
-                        }
-                        else if (Char.IsWhiteSpace(charAtCaret))
-                        {
-                            SendKeys.SendWait("{DELETE}");
-                            SendKeys.SendWait(charAtCaret.ToString());
-                        }
+                    Log.Debug("charAtCaret is " + Convert.ToInt32(charAtCaret));
+                    if (!char.IsPunctuation(charAtCaret) && (!retVal || charAtCaret == 0x0D || !char.IsWhiteSpace(charAtCaret)))
+                    {
+                        Log.Debug("Sending space suffix... caretpos is " + context.TextAgent().GetCaretPos());
+                        Context.AppAgentMgr.Keyboard.Send(KeyStateTracker.GetExtendedKeys(), ' ');
+                        Log.Debug("Done sending space suffix caretPos is " + context.TextAgent().GetCaretPos());
+                        KeyStateTracker.KeyTriggered(' ');
+                    }
+                    else if (char.IsWhiteSpace(charAtCaret))
+                    {
+                        SendKeys.SendWait("{DELETE}");
+                        SendKeys.SendWait(charAtCaret.ToString());
                     }
                 }
             }
@@ -829,30 +818,28 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="replacement">the replacemenet word</param>
         /// <param name="startPos">starting position of the word</param>
         /// <param name="isFirstWord">is this the first word of the sentence</param>
-        private void replaceMisspeltWord(String word, String replacement, int startPos, bool isFirstWord)
+        private void replaceMisspeltWord(string word, string replacement, int startPos, bool isFirstWord)
         {
             try
             {
-                using (AgentContext context = Context.AppAgentMgr.ActiveContext())
+                using AgentContext context = Context.AppAgentMgr.ActiveContext();
+                string textToCaret = context.TextAgent().GetStringToCaret(startPos);
+                Log.Debug("textToCaret : [" + textToCaret + "]");
+                replacement = textToCaret.Replace(word, replacement);
+                Log.Debug("After replacement, replacement : [" + replacement + "]");
+                if (isFirstWord)
                 {
-                    String textToCaret = context.TextAgent().GetStringToCaret(startPos);
-                    Log.Debug("textToCaret : [" + textToCaret + "]");
-                    replacement = textToCaret.Replace(word, replacement);
-                    Log.Debug("After replacement, replacement : [" + replacement + "]");
-                    if (isFirstWord)
+                    string cap = TextUtils.Capitalize(replacement);
+                    if (cap != null)
                     {
-                        String cap = TextUtils.Capitalize(replacement);
-                        if (cap != null)
-                        {
-                            replacement = cap;
-                        }
+                        replacement = cap;
                     }
-
-                    Log.Debug("Replace word at " + startPos + ". Length: " + replacement.Length + ". replacement: " +
-                              replacement);
-
-                    context.TextAgent().Replace(startPos, word.Length + 1, replacement);
                 }
+
+                Log.Debug("Replace word at " + startPos + ". Length: " + replacement.Length + ". replacement: " +
+                          replacement);
+
+                context.TextAgent().Replace(startPos, word.Length + 1, replacement);
             }
             catch (Exception ex)
             {

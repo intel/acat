@@ -10,13 +10,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Extension;
+using ACAT.Applications;
+using ACAT.Applications.ACATWatch;
+using ACAT.Core.Utility;
+using ACAT.Extension;
 using System;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace ACAT.Applications.ACATWatch
+namespace ACATWatch
 {
     internal static class Program
     {
@@ -31,28 +33,32 @@ namespace ACAT.Applications.ACATWatch
                 return;
             }
 
-            if (!AppCommon.LoadUserPreferences())
+            if (AppCommon.LoadUserPreferences())
             {
-                return;
+                CoreGlobals.AppId = "ACATWatcher";
+                Common.AppPreferences.AppName = "ACAT Watcher";
+
+                CoreGlobals.AppPreferences.DebugLogMessagesToFile = true;
+                CoreGlobals.AppPreferences.DebugMessagesEnable = true;
+
+                Log.SetupListeners();
+
+                FileUtils.LogAssemblyInfo(Assembly.GetExecutingAssembly());
+
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new ACATWatchForm());
+
+                Log.Info("**** Exit " + Common.AppPreferences.AppName + " " + DateTime.Now.ToString() + " ****");
+
+                Log.Close();
             }
-
-            CoreGlobals.AppId = "ACATWatcher";
-            Common.AppPreferences.AppName = "ACAT Watcher";
-
-            CoreGlobals.AppPreferences.DebugLogMessagesToFile = true;
-            CoreGlobals.AppPreferences.DebugMessagesEnable = true;
-
-            Log.SetupListeners();
-
-            FileUtils.LogAssemblyInfo(Assembly.GetExecutingAssembly());
-
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ACATWatchForm());
-
-            Log.Info("**** Exit " + Common.AppPreferences.AppName + " " + DateTime.Now.ToString() + " ****");
-
-            Log.Close();
+            else
+            {
+                Log.SetupListeners();
+                Log.Error("Failed to load user preferences. Exiting application.");
+                Log.Close();
+            }
         }
     }
 }

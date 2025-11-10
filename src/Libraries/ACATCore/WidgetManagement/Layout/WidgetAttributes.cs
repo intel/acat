@@ -5,13 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement.Layout
 {
     /// <summary>
     /// Represents a collection of WidgetAttribute objects.
@@ -28,14 +28,14 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// <summary>
         /// Maps the name of the widget to its widget attribute
         /// </summary>
-        private Dictionary<String, WidgetAttribute> _widgetAttributes;
+        private Dictionary<string, WidgetAttribute> _widgetAttributes;
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         public WidgetAttributes()
         {
-            _widgetAttributes = new Dictionary<String, WidgetAttribute>();
+            _widgetAttributes = new Dictionary<string, WidgetAttribute>();
         }
 
         /// <summary>
@@ -52,12 +52,11 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// </summary>
         /// <param name="name">name of the button</param>
         /// <returns>its button attribute, null if none</returns>
-        public WidgetAttribute this[String name]
+        public WidgetAttribute this[string name]
         {
             get
             {
-                WidgetAttribute retVal = null;
-                _widgetAttributes.TryGetValue(name, out retVal);
+                _widgetAttributes.TryGetValue(name, out WidgetAttribute retVal);
                 return retVal;
             }
         }
@@ -68,7 +67,7 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// </summary>
         /// <param name="name">name of the widget</param>
         /// <returns>true if it does</returns>
-        public bool Contains(String name)
+        public bool Contains(string name)
         {
             return this[name] != null;
         }
@@ -99,47 +98,45 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// </summary>
         /// <param name="configFile">Full path to the xml file</param>
         /// <returns>true on success</returns>
-        public bool Load(String configFile)
+        public bool Load(string configFile)
         {
             bool retVal = true;
 
             var xmlDoc = new XmlDocument();
 
-            Log.Debug("configFile=" + configFile);
+            Log.Debug($"Loading config file {configFile}.");
 
-            if (File.Exists(configFile))
+            try
             {
-                try
+                xmlDoc.Load(configFile);
+
+                XmlNodeList widgetAttributeNodes = xmlDoc.SelectNodes("/ACAT/WidgetAttributes/WidgetAttribute");
+                if (_widgetAttributes == null)
                 {
-                    xmlDoc.Load(configFile);
-
-                    XmlNodeList widgetAttributeNodes = xmlDoc.SelectNodes("/ACAT/WidgetAttributes/WidgetAttribute");
-                    if (_widgetAttributes == null)
-                    {
-                        return false;
-                    }
-
-                    // load all the elements
-                    foreach (XmlNode node in widgetAttributeNodes)
-                    {
-                        var widgetAttribute = WidgetAttribute.CreateWidgetAttribute(node);
-                        if (!_widgetAttributes.ContainsKey(widgetAttribute.Name))
-                        {
-                            _widgetAttributes.Add(widgetAttribute.Name, widgetAttribute);
-                        }
-
-                        widgetAttribute.Dispose();
-                    }
+                    Log.Error("widgetAttributes == null.");
+                    return false;
                 }
-                catch (Exception ex)
+
+                // load all the elements
+                foreach (XmlNode node in widgetAttributeNodes)
                 {
-                    Log.Debug("Error loading config file " + configFile + ", " + ex.ToString());
-                    retVal = false;
+                    var widgetAttribute = WidgetAttribute.CreateWidgetAttribute(node);
+                    if (!_widgetAttributes.ContainsKey(widgetAttribute.Name))
+                    {
+                        _widgetAttributes.Add(widgetAttribute.Name, widgetAttribute);
+                    }
+
+                    widgetAttribute.Dispose();
                 }
             }
-            else
+            catch (FileNotFoundException)
             {
-                Log.Debug("Could not load WidgetAttributes. File does not exist " + configFile);
+                Log.Exception($"Could not load config file. File does not exist - {configFile}");
+                retVal = false;            
+            }   
+            catch (Exception ex)
+            {
+                Log.Exception($"Error loading config file {configFile} -  {ex}");
                 retVal = false;
             }
 
@@ -155,7 +152,7 @@ namespace ACAT.Lib.Core.WidgetManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {

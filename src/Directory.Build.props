@@ -1,23 +1,81 @@
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project>
+  <!-- Diagnostic target should be direct child of Project -->
+  <Target Name="PrintProps" BeforeTargets="BeforeBuild">
+    <Message Text="--- Custom Build Props Diagnostic ---" Importance="High" />
+    <Message Text="Configuration: $(Configuration)" Importance="High" />
+    <Message Text="Platform: $(Platform)" Importance="High" />
+    <Message Text="OutputPath: $(OutputPath)" Importance="High" />
+    <Message Text="IntermediateOutputPath: $(IntermediateOutputPath)" Importance="High" />
+    <Message Text="ExtensionPath: $(ExtensionPath)" Importance="High" />
+  </Target>
+
+  <!-- Base output and version info -->
   <PropertyGroup>
-    <VersionPrefix>3.13.0</VersionPrefix>
-    <AssemblyVersion>$(VersionPrefix).*</AssemblyVersion>
+    <VersionPrefix>4.0.0</VersionPrefix>
+    <Version>$(VersionPrefix)</Version>
+    <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
     <FileVersion>$(VersionPrefix)</FileVersion>
     <InformationalVersion>$(VersionPrefix)</InformationalVersion>
+    <NeutralLanguage>en</NeutralLanguage>
+    <LangVersion>9.0</LangVersion>
+    <Platforms>x64</Platforms>
+    <TargetFramework>net481</TargetFramework>
   </PropertyGroup>
 
-  <Target Name="InjectAssemblyVersion" BeforeTargets="BeforeCompile">
-    <WriteLinesToFile
-      File="$(IntermediateOutputPath)AutoAssemblyVersion.cs"
-      Lines='
-using System.Reflection%3B
-[assembly: AssemblyVersion("$(AssemblyVersion)")]
-[assembly: AssemblyFileVersion("$(FileVersion)")]
-[assembly: AssemblyInformationalVersion("$(InformationalVersion)")];
-'
-      Overwrite="true" />
-    <ItemGroup>
-      <Compile Include="$(IntermediateOutputPath)AutoAssemblyVersion.cs" />
-    </ItemGroup>
-  </Target>
+  <!-- Common Assembly Information -->
+  <PropertyGroup>
+    <Company>Intel Corporation</Company>
+    <Product>Adaptive Contextual Aware Toolkit</Product>
+    <Copyright>Copyright © Intel Corporation 2025</Copyright>
+  </PropertyGroup>
+
+  <!-- Output path configuration -->
+  <PropertyGroup>
+    <!-- Define SolutionDir if not set (e.g. when building project files directly) -->
+    <SolutionDir Condition="'$(SolutionDir)' == ''">$(MSBuildThisFileDirectory)</SolutionDir>
+
+    <!-- Ensure trailing slash -->
+    <SolutionDir Condition="! EndsWith('$(SolutionDir)', '\')">$(SolutionDir)\</SolutionDir>
+
+    <!-- Base output paths -->
+    <BaseOutputPath>$(SolutionDir)build\</BaseOutputPath>
+    <BuildPath>$(BaseOutputPath)bin\$(Configuration)\</BuildPath>
+    <IntermediatePath>$(BaseOutputPath)obj\$(Configuration)\</IntermediatePath>
+
+    <!-- Set output folders -->
+    <OutputPath>$(BuildPath)</OutputPath>
+    <BaseIntermediateOutputPath>$(IntermediatePath)$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(IntermediatePath)$(MSBuildProjectName)\</IntermediateOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <!-- Warnings and Errors -->
+  <PropertyGroup>
+    <!-- Show all nullable warnings -->
+    <WarningsAsErrors>CS8600;CS8602;CS8603;CS8604;CS8618</WarningsAsErrors>
+    <!-- Or to turn *all* warnings into errors -->
+    <!-- <TreatWarningsAsErrors>true</TreatWarningsAsErrors> -->
+  </PropertyGroup>
+  
+  <!-- Configurations -->
+  <PropertyGroup>
+    <Configurations>Debug;Release;Debug_TestGTEC;Debug_signed;Release_signed</Configurations>
+    <UsePreviewSdk>false</UsePreviewSdk>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug_TestGTEC'">
+    <DefineConstants>DEBUG;TRACE;SIMULATIONBOARD</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug_signed' or '$(Configuration)' == 'Debug'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release_signed' or '$(Configuration)' == 'Release'">
+    <DefineConstants>TRACE</DefineConstants>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
 </Project>

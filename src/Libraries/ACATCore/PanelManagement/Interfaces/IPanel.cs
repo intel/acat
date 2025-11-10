@@ -5,21 +5,23 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.Utility;
+using ACAT.Core.Utility.TypeLoader;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Interfaces
 {
     /// <summary>
     /// ALL panels in ACAT - Scanners, Dialogs, Menus
     /// and Contextual Menus must implement this.
     /// </summary>
-    public interface IPanel
+    public interface IPanel: IPluginExtension
     {
         /// <summary>
         /// Gets the Descriptor for the panel. Descriptor
         /// contains name and ID of the panel
         /// </summary>
-        IDescriptor Descriptor { get; }
+        ClassDescriptorAttribute Descriptor { get; }
 
         /// <summary>
         /// Gets the PanelCommon interface that contains properties

@@ -1,4 +1,7 @@
-﻿namespace ACAT.Lib.Extension
+﻿using ACATResources;
+using ACAT.Core.WidgetManagement;
+
+namespace ACAT.Extension
 
 {
     partial class UserControlLayoutInterface
@@ -33,7 +36,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.labelScanSpeedSelect3 = new System.Windows.Forms.Label();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
-            this.scannerRoundedButtonControl1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.scannerRoundedButtonControl1 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.checkBoxDontShowThisOnStartup = new System.Windows.Forms.CheckBox();
             this.pictureBoxInterface = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanelMain.SuspendLayout();
@@ -52,7 +55,7 @@
             this.tableLayoutPanelMain.SetRowSpan(this.label1, 2);
             this.label1.Size = new System.Drawing.Size(831, 128);
             this.label1.TabIndex = 0;
-            this.label1.Text = "App UI Layout";
+            this.label1.Text = StringResources.AppUILayout;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelScanSpeedSelect3
@@ -68,7 +71,7 @@
             this.labelScanSpeedSelect3.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
             this.labelScanSpeedSelect3.Size = new System.Drawing.Size(837, 64);
             this.labelScanSpeedSelect3.TabIndex = 71;
-            this.labelScanSpeedSelect3.Text = "Shown below is the layout of the main window of the application ";
+            this.labelScanSpeedSelect3.Text = StringResources.labelScanSpeedSelect3;
             this.labelScanSpeedSelect3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanelMain
@@ -127,7 +130,7 @@
             this.scannerRoundedButtonControl1.Name = "scannerRoundedButtonControl1";
             this.scannerRoundedButtonControl1.Size = new System.Drawing.Size(181, 58);
             this.scannerRoundedButtonControl1.TabIndex = 82;
-            this.scannerRoundedButtonControl1.Text = "Next";
+            this.scannerRoundedButtonControl1.Text = StringResources.LMNext;
             this.scannerRoundedButtonControl1.UseMnemonic = false;
             this.scannerRoundedButtonControl1.UseVisualStyleBackColor = false;
             this.scannerRoundedButtonControl1.Click += new System.EventHandler(this.buttonDone_Click);
@@ -143,7 +146,7 @@
             this.checkBoxDontShowThisOnStartup.Name = "checkBoxDontShowThisOnStartup";
             this.checkBoxDontShowThisOnStartup.Size = new System.Drawing.Size(366, 58);
             this.checkBoxDontShowThisOnStartup.TabIndex = 83;
-            this.checkBoxDontShowThisOnStartup.Text = "Don\'t show this again";
+            this.checkBoxDontShowThisOnStartup.Text = StringResources.DonTShowThisAgain;
             this.checkBoxDontShowThisOnStartup.UseVisualStyleBackColor = true;
             // 
             // pictureBoxInterface
@@ -180,7 +183,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelMain;
         private System.Windows.Forms.Label labelScanSpeedSelect3;
         private System.Windows.Forms.Label label1;
-        private Core.WidgetManagement.ScannerRoundedButtonControl scannerRoundedButtonControl1;
+        private ScannerRoundedButtonControl scannerRoundedButtonControl1;
         private System.Windows.Forms.CheckBox checkBoxDontShowThisOnStartup;
         private System.Windows.Forms.PictureBox pictureBoxInterface;
     }

@@ -1,4 +1,7 @@
-﻿namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
+﻿using ACAT.Core.WidgetManagement;
+using ACATResources;
+
+namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
     partial class CalibrationEyesForm
     {
@@ -37,16 +40,16 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonCancel = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.ButtonStart = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonExit = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonCancel = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonStart = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.panelPictures = new System.Windows.Forms.Panel();
             this.labelCountdown = new System.Windows.Forms.Label();
             this.pictureBoxEyesOpen = new System.Windows.Forms.PictureBox();
             this.pictureBoxEyesClosed = new System.Windows.Forms.PictureBox();
             this.labelInstruction = new System.Windows.Forms.Label();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonClose = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.ButtonExit = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonClose = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -145,26 +148,26 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("Montserrat Medium", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Montserrat Medium", 36F, System.Drawing.FontStyle.Bold);
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(1016, 130);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Eyes Closed Calibration";
+            this.label1.Text = StringResources.EyesClosedCalibration;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Font = new System.Drawing.Font("Montserrat Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Montserrat Medium", 20F, System.Drawing.FontStyle.Bold);
             this.label2.ForeColor = System.Drawing.Color.White;
             this.label2.Location = new System.Drawing.Point(3, 548);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(1016, 90);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Open and close your eyes when prompted";
+            this.label2.Text = StringResources.OpenAndCloseYourEyes;
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel4
@@ -189,6 +192,27 @@
             this.tableLayoutPanel4.Size = new System.Drawing.Size(1022, 70);
             this.tableLayoutPanel4.TabIndex = 3;
             // 
+            // ButtonExit
+            // 
+            this.ButtonExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
+            this.ButtonExit.BorderColor = System.Drawing.Color.Transparent;
+            this.ButtonExit.BorderRadiusBottomLeft = 5;
+            this.ButtonExit.BorderRadiusBottomRight = 5;
+            this.ButtonExit.BorderRadiusTopLeft = 5;
+            this.ButtonExit.BorderRadiusTopRight = 5;
+            this.ButtonExit.BorderWidth = 0F;
+            this.ButtonExit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ButtonExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ButtonExit.Font = new System.Drawing.Font("Montserrat ExtraLight", 24F);
+            this.ButtonExit.Location = new System.Drawing.Point(33, 3);
+            this.ButtonExit.Name = "ButtonExit";
+            this.ButtonExit.Size = new System.Drawing.Size(194, 64);
+            this.ButtonExit.TabIndex = 4;
+            this.ButtonExit.Text = StringResources.Exit;
+            this.ButtonExit.UseMnemonic = false;
+            this.ButtonExit.UseVisualStyleBackColor = false;
+            this.ButtonExit.Click += new System.EventHandler(this.ButtonExit_Click);
+            // 
             // ButtonCancel
             // 
             this.ButtonCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
@@ -200,12 +224,12 @@
             this.ButtonCancel.BorderWidth = 0F;
             this.ButtonCancel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ButtonCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ButtonCancel.Font = new System.Drawing.Font("Montserrat ExtraLight", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonCancel.Font = new System.Drawing.Font("Montserrat ExtraLight", 24F);
             this.ButtonCancel.Location = new System.Drawing.Point(565, 3);
             this.ButtonCancel.Name = "ButtonCancel";
             this.ButtonCancel.Size = new System.Drawing.Size(194, 64);
             this.ButtonCancel.TabIndex = 3;
-            this.ButtonCancel.Text = "Cancel";
+            this.ButtonCancel.Text = StringResources.Cancel;
             this.ButtonCancel.UseMnemonic = false;
             this.ButtonCancel.UseVisualStyleBackColor = false;
             this.ButtonCancel.Click += new System.EventHandler(this.ButtonCancel_Click_1);
@@ -221,12 +245,12 @@
             this.ButtonStart.BorderWidth = 0F;
             this.ButtonStart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ButtonStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ButtonStart.Font = new System.Drawing.Font("Montserrat ExtraLight", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonStart.Font = new System.Drawing.Font("Montserrat ExtraLight", 24F);
             this.ButtonStart.Location = new System.Drawing.Point(795, 3);
             this.ButtonStart.Name = "ButtonStart";
             this.ButtonStart.Size = new System.Drawing.Size(194, 64);
             this.ButtonStart.TabIndex = 2;
-            this.ButtonStart.Text = "Start";
+            this.ButtonStart.Text = StringResources.Start;
             this.ButtonStart.UseMnemonic = false;
             this.ButtonStart.UseVisualStyleBackColor = false;
             this.ButtonStart.Click += new System.EventHandler(this.buttonStart_Click);
@@ -239,20 +263,19 @@
             this.panelPictures.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelPictures.Location = new System.Drawing.Point(3, 243);
             this.panelPictures.Name = "panelPictures";
-            this.panelPictures.Padding = new System.Windows.Forms.Padding(50);
+            this.panelPictures.Padding = new System.Windows.Forms.Padding(50, 50, 50, 50);
             this.panelPictures.Size = new System.Drawing.Size(1016, 282);
             this.panelPictures.TabIndex = 4;
             // 
             // labelCountdown
             // 
             this.labelCountdown.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelCountdown.Font = new System.Drawing.Font("Montserrat SemiBold", 50F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCountdown.Font = new System.Drawing.Font("Montserrat SemiBold", 50F);
             this.labelCountdown.ForeColor = System.Drawing.Color.White;
             this.labelCountdown.Location = new System.Drawing.Point(50, 50);
             this.labelCountdown.Name = "labelCountdown";
             this.labelCountdown.Size = new System.Drawing.Size(916, 182);
             this.labelCountdown.TabIndex = 2;
-            this.labelCountdown.Text = "Press start to initialize \nEyes calibration";
             this.labelCountdown.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pictureBoxEyesOpen
@@ -282,13 +305,13 @@
             this.labelInstruction.AutoSize = true;
             this.labelInstruction.BackColor = System.Drawing.Color.Transparent;
             this.labelInstruction.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelInstruction.Font = new System.Drawing.Font("Montserrat Light", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelInstruction.Font = new System.Drawing.Font("Montserrat Light", 30F);
             this.labelInstruction.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.labelInstruction.Location = new System.Drawing.Point(3, 130);
             this.labelInstruction.Name = "labelInstruction";
             this.labelInstruction.Size = new System.Drawing.Size(1016, 90);
             this.labelInstruction.TabIndex = 5;
-            this.labelInstruction.Text = "Eyes open";
+            this.labelInstruction.Text = StringResources.EyesOpen;
             this.labelInstruction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel5
@@ -316,7 +339,7 @@
             this.ButtonClose.BorderWidth = 3F;
             this.ButtonClose.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ButtonClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ButtonClose.Font = new System.Drawing.Font("Montserrat ExtraLight", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonClose.Font = new System.Drawing.Font("Montserrat ExtraLight", 25F);
             this.ButtonClose.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.ButtonClose.Location = new System.Drawing.Point(364, 0);
             this.ButtonClose.Margin = new System.Windows.Forms.Padding(0);
@@ -328,27 +351,6 @@
             this.ButtonClose.UseVisualStyleBackColor = true;
             this.ButtonClose.Click += new System.EventHandler(this.ButtonCancel_Close);
             // 
-            // ButtonExit
-            // 
-            this.ButtonExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.ButtonExit.BorderColor = System.Drawing.Color.Transparent;
-            this.ButtonExit.BorderRadiusBottomLeft = 5;
-            this.ButtonExit.BorderRadiusBottomRight = 5;
-            this.ButtonExit.BorderRadiusTopLeft = 5;
-            this.ButtonExit.BorderRadiusTopRight = 5;
-            this.ButtonExit.BorderWidth = 0F;
-            this.ButtonExit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ButtonExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ButtonExit.Font = new System.Drawing.Font("Montserrat ExtraLight", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButtonExit.Location = new System.Drawing.Point(33, 3);
-            this.ButtonExit.Name = "ButtonExit";
-            this.ButtonExit.Size = new System.Drawing.Size(194, 64);
-            this.ButtonExit.TabIndex = 4;
-            this.ButtonExit.Text = "Exit";
-            this.ButtonExit.UseMnemonic = false;
-            this.ButtonExit.UseVisualStyleBackColor = false;
-            this.ButtonExit.Click += new System.EventHandler(this.ButtonExit_Click);
-            // 
             // CalibrationEyesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -358,7 +360,6 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "CalibrationEyesForm";
-            this.Text = "CalibrationEyesForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CalibrationEyesForm_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -384,15 +385,15 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonStart;
+        private ScannerRoundedButtonControl ButtonStart;
         private System.Windows.Forms.Panel panelPictures;
         private System.Windows.Forms.PictureBox pictureBoxEyesOpen;
         private System.Windows.Forms.PictureBox pictureBoxEyesClosed;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonClose;
+        private ScannerRoundedButtonControl ButtonClose;
         private System.Windows.Forms.Label labelInstruction;
         private System.Windows.Forms.Label labelCountdown;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonCancel;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonExit;
+        private ScannerRoundedButtonControl ButtonCancel;
+        private ScannerRoundedButtonControl ButtonExit;
     }
 }

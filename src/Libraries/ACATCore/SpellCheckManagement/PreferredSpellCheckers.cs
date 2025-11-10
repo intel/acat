@@ -1,11 +1,11 @@
-﻿using ACAT.Lib.Core.PreferencesManagement;
+﻿using ACAT.Core.PreferencesManagement;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace ACAT.Lib.Core.SpellCheckManagement
+namespace ACAT.Core.SpellCheckManagement
 {
     /// <summary>
     /// Maintains a list of preferred spell checkers
@@ -66,14 +66,17 @@ namespace ACAT.Lib.Core.SpellCheckManagement
                 return getByLanguage(String.Empty);
             }
 
-            var guid = getByLanguage(ci.Name);
-
-            if (Guid.Equals(guid, Guid.Empty))
-            {
-                guid = getByLanguage(ci.TwoLetterISOLanguageName);
-            }
-
+            var guid = getByLanguage(ci.TwoLetterISOLanguageName);
             return guid;
+        }
+
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<PreferredSpellCheckers>();
+            var res = Save(tmp, FilePath);
+            Load();
+
+            return res;
         }
 
         /// <summary>

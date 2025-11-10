@@ -5,9 +5,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Interpreter;
-using ACAT.Lib.Core.ThemeManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Interpreter;
+using ACAT.Core.ThemeManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement.Interfaces;
+using ACAT.Core.WidgetManagement.Layout;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,7 +19,7 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
     /// <summary>
     /// For the event to indicate that the widget highlight turned off
@@ -105,7 +107,7 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// <summary>
         /// The layout that this widget is a part of
         /// </summary>
-        private Layout _layout;
+        private LayoutAttribute _layout;
 
         /// <summary>
         /// Initializes an instance of the widget class
@@ -731,7 +733,7 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// <summary>
         ///  Gets the parent layout object
         /// </summary>
-        public Layout WidgetLayout
+        public LayoutAttribute WidgetLayout
         {
             get { return _layout; }
         }
@@ -940,7 +942,7 @@ namespace ACAT.Lib.Core.WidgetManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
             return true;
@@ -999,9 +1001,9 @@ namespace ACAT.Lib.Core.WidgetManagement
 
             EnabledState = parseEnabledValue(XmlUtils.GetXMLAttrString(node, "enabled", "true"));
 
-            DefaultEnabled = XmlUtils.GetXMLAttrBool(node, "defaultEnabled", false);
+            DefaultEnabled = XmlUtils.GetXMLAttrBool(node, "defaultEnabled", true);
 
-            Enabled = true;
+            Enabled = DefaultEnabled;
         }
 
         /// <summary>
@@ -1137,7 +1139,7 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// Sets the layout that this widget is a part of
         /// </summary>
         /// <param name="layout"></param>
-        internal void SetLayout(Layout layout)
+        internal void SetLayout(LayoutAttribute layout)
         {
             _layout = layout;
         }
@@ -1169,7 +1171,7 @@ namespace ACAT.Lib.Core.WidgetManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -1434,6 +1436,8 @@ namespace ACAT.Lib.Core.WidgetManagement
         {
             if (Enabled && EvtMouseClicked != null)
             {
+                Log.Debug("Widget control_MouseClick");
+
                 EvtMouseClicked(this, new WidgetEventArgs(this));
             }
         }
@@ -1455,23 +1459,12 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// <returns></returns>
         private EnabledStates parseEnabledValue(String value)
         {
-            EnabledStates retVal;
-
-            switch (value.ToLower())
+            var retVal = value.ToLower() switch
             {
-                case "false":
-                    retVal = EnabledStates.Disabled;
-                    break;
-
-                case "contextual":
-                    retVal = EnabledStates.Contextual;
-                    break;
-
-                default:
-                    retVal = EnabledStates.Enabled;
-                    break;
-            }
-
+                "false" => EnabledStates.Disabled,
+                "contextual" => EnabledStates.Contextual,
+                _ => EnabledStates.Enabled,
+            };
             return retVal;
         }
 
@@ -1495,10 +1488,7 @@ namespace ACAT.Lib.Core.WidgetManagement
                 child.Dispose(true);
             }
 
-            if (graphicsPath != null)
-            {
-                graphicsPath.Dispose();
-            }
+            graphicsPath?.Dispose();
         }
     }
 }

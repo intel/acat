@@ -1,9 +1,9 @@
-﻿using ACAT.Lib.Core.Utility;
+﻿using ACAT.Core.Utility;
 using System;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Utils
 {
     /// <summary>
     /// Highlights a window by drawing a border around it.  If the window
@@ -19,7 +19,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// Used for synchronization
         /// </summary>
-        private readonly object _sync = new object();
+        private readonly object _sync = new();
 
         /// <summary>
         /// Automation wrapper for the window
@@ -58,7 +58,7 @@ namespace ACAT.Lib.Core.PanelManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 _automationElement = null;
             }
         }
@@ -84,12 +84,12 @@ namespace ACAT.Lib.Core.PanelManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
                     // dispose all managed resources.
-                    Log.Debug();
+                    Log.Verbose();
 
                     stopTimer();
 
@@ -103,7 +103,7 @@ namespace ACAT.Lib.Core.PanelManagement
                         }
                         catch (Exception ex)
                         {
-                            Log.Debug(ex.ToString());
+                            Log.Exception(ex.ToString());
                         }
                     }
 
@@ -126,13 +126,11 @@ namespace ACAT.Lib.Core.PanelManagement
             highlightWindow(_automationElement);
         }
 
-        /// <summary>
-        /// Highlights the window
-        /// </summary>
-        /// <param name="focusedElement">automation element of window</param>
+        // ...
+
         private void highlightWindow(AutomationElement focusedElement)
         {
-            Log.Debug();
+            Log.Verbose();
             try
             {
                 lock (_sync)
@@ -143,19 +141,22 @@ namespace ACAT.Lib.Core.PanelManagement
                         {
                             if (focusedElement != null && _outlineWindow != null)
                             {
-                                _outlineWindow.Draw(focusedElement.Current.BoundingRectangle, 6);
+                                // Convert System.Windows.Rect to System.Drawing.Rectangle
+                                var rect = focusedElement.Current.BoundingRectangle;
+                                var drawingRect = new System.Drawing.Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height);
+                                _outlineWindow.Draw(drawingRect, 6);
                             }
                         }
                         catch (Exception exp)
                         {
-                            Log.Debug(exp.ToString());
+                            Log.Exception(exp.ToString());
                         }
                     }));
                 }
             }
             catch (Exception e)
             {
-                Log.Debug(e.ToString());
+                Log.Exception(e.ToString());
             }
         }
 
@@ -179,10 +180,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         private void stopTimer()
         {
-            if (_timer != null)
-            {
-                _timer.Stop();
-            }
+            _timer?.Stop();
         }
     }
 }

@@ -8,14 +8,14 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     ///  A simple lookup table with a CRUD interface
     /// </summary>
     public static class DataDictionary
     {
-        private static Dictionary<object, object> _dictionary = new Dictionary<object, object>();
+        private static readonly Dictionary<object, object> _dictionary = new();
 
         public static bool Add(object name, object value, bool replaceIfExists = false)
         {

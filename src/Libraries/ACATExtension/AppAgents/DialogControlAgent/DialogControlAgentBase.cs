@@ -5,13 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 
-namespace ACAT.Lib.Extension.AppAgents.DialogControlAgent
+namespace ACAT.Extension.AppAgents.DialogControlAgent
 {
     /// <summary>
     /// Base class for agent to handle applicaoion dialogs.  For eg,

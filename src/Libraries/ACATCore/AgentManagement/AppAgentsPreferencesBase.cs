@@ -5,23 +5,27 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
+using System.ComponentModel.DataAnnotations;
 using System;
+using System.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+using ACATResources;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// Base class for the settings for all the application agents.
     /// </summary>
     [Serializable]
-    public abstract class AppAgentsPreferencesBase : PreferencesBase
+    public partial class AppAgentsPreferencesBase : PreferencesBase
     {
         /// <summary>
         /// Creates an instance of the class
         /// </summary>
         protected AppAgentsPreferencesBase()
         {
-            AutoSwitchScannerEnable = true;
+            autoSwitchScannerEnable = true;
         }
 
         /// <summary>
@@ -29,7 +33,21 @@ namespace ACAT.Lib.Core.AgentManagement
         /// window and display the appropriate scanner.  If false,
         /// always displays the Alphabet scanner.
         /// </summary>
-        [BoolDescriptor("Auto-display contextual menu when the app window gets focus", true)]
-        public bool AutoSwitchScannerEnable { get; set; }
+        [Display(Name = nameof(StringResources.Autodisplaycontextualmenuwhentheappwindowgetsfocus),
+     ResourceType = typeof(StringResources))]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        public bool autoSwitchScannerEnable =  true;
+
+        public override bool Save()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool ResetToDefault()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -11,17 +11,18 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Web;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     public class HtmlUtils
     {
         /// <summary>
         /// Paths of the browsers exe
         /// </summary>
-        private static string _chromeBrowserPath = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
+        private static readonly string _chromeBrowserPath = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
 
-        private static string _edgeBrowserPath = @"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe";
+        private static readonly string _edgeBrowserPath = @"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe";
 
         //private static string _firefoxBrowserPath = @"C:\Program Files\Mozilla Firefox\firefox.exe"; // Uncomment if would be used
 
@@ -114,10 +115,8 @@ namespace ACAT.Lib.Core.Utility
                 string tempFilePathLogs = Path.Combine(FileUtils.GetLogsDir(), "TempFile.html");
                 try
                 {
-                    using (StreamWriter writer = new StreamWriter(tempFilePathLogs))
-                    {
-                        writer.Write(htmlContent);
-                    }
+                    using StreamWriter writer = new(tempFilePathLogs);
+                    writer.Write(htmlContent);
                 }
                 catch (Exception exp)
                 {
@@ -131,8 +130,8 @@ namespace ACAT.Lib.Core.Utility
                     {
                         FileName = _edgeBrowserPath,
                         Arguments = $"\"{tempFilePathLogs}\"",
+                        WorkingDirectory = Path.GetDirectoryName(tempFilePathLogs)
                     };
-                    processStartInfo.WorkingDirectory = Path.GetDirectoryName(tempFilePathLogs);
                     Process.Start(processStartInfo);
 
                     // Code to open Html local files using Firefox
@@ -150,8 +149,8 @@ namespace ACAT.Lib.Core.Utility
                     {
                         FileName = _chromeBrowserPath,
                         Arguments = $"/c \"{tempFilePathLogs}\"",
+                        WorkingDirectory = Path.GetDirectoryName(tempFilePathLogs)
                     };
-                    processStartInfo.WorkingDirectory = Path.GetDirectoryName(tempFilePathLogs);
                     Process.Start(processStartInfo);
                 }
                 else
@@ -160,14 +159,14 @@ namespace ACAT.Lib.Core.Utility
                     var processStartInfo = new ProcessStartInfo
                     {
                         FileName = tempFilePathLogs,
+                        WorkingDirectory = Path.GetDirectoryName(tempFilePathLogs)
                     };
-                    processStartInfo.WorkingDirectory = Path.GetDirectoryName(tempFilePathLogs);
                     Process.Start(processStartInfo);
                 }
             }
             catch (Exception ex)
             {
-                Log.Debug("Error loading HTML script: " + ex.Message);
+                Log.Exception("Error loading HTML script: " + ex.Message);
             }
         }
 
@@ -180,7 +179,7 @@ namespace ACAT.Lib.Core.Utility
         public static string EncodeString(string text)
         {
             text = text.Replace("\\", "/");
-            StringBuilder encodedStringBuilder = new StringBuilder();
+            StringBuilder encodedStringBuilder = new();
             foreach (char c in text)
             {
                 //Exlclude cases. so the path is readeable by the browser for Videos or objects sources
@@ -203,6 +202,11 @@ namespace ACAT.Lib.Core.Utility
         private static string ReplaceDash(string text)
         {
             return text.Replace("-", " ");
+        }
+
+        public static object DecodeHtml(string desc)
+        {
+            return HttpUtility.HtmlDecode(desc);
         }
     }
 }

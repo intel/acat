@@ -117,7 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Calibration is essential. BCI need to convert your thought into a trigger/switch. There are three calibrations below, each slightly different that you must complete wih a minimum score. You can adjust the scanning speed and try additional calibrations to help improve your accuracy. For more information this video or setup guide</value>
-  </data>
 </root>

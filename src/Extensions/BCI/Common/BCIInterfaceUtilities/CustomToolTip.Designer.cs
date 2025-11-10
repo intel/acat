@@ -1,4 +1,7 @@
-﻿namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
+﻿using ACAT.Core.WidgetManagement;
+using ACATResources;
+
+namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
     partial class CustomToolTip
     {
@@ -30,7 +33,7 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.labelTooltip = new System.Windows.Forms.Label();
-            this.scannerRoundedButtonControl1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.scannerRoundedButtonControl1 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,7 +65,7 @@
             this.labelTooltip.Name = "labelTooltip";
             this.labelTooltip.Size = new System.Drawing.Size(383, 193);
             this.labelTooltip.TabIndex = 0;
-            this.labelTooltip.Text = "Hint tooltip";
+            this.labelTooltip.Text = StringResources.Hinttooltip;
             this.labelTooltip.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // scannerRoundedButtonControl1
@@ -88,8 +91,8 @@
             // 
             // CustomToolTip
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
             this.ClientSize = new System.Drawing.Size(484, 201);
             this.Controls.Add(this.tableLayoutPanel1);
@@ -97,7 +100,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "CustomToolTip";
             this.Padding = new System.Windows.Forms.Padding(4);
-            this.Text = "CustomToolTip";
+            this.Text = StringResources.CustomToolTip;
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
@@ -108,6 +111,6 @@
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label labelTooltip;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl scannerRoundedButtonControl1;
+        private ScannerRoundedButtonControl scannerRoundedButtonControl1;
     }
 }

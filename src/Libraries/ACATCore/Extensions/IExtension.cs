@@ -5,9 +5,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 
-namespace ACAT.Lib.Core.Extensions
+namespace ACAT.Core.Extensions
 {
     /// <summary>
     /// Interface to enable callers to invoke methods/properties
@@ -20,7 +20,7 @@ namespace ACAT.Lib.Core.Extensions
         /// <summary>
         /// Returns the IDescriptor object for the class
         /// </summary>
-        IDescriptor Descriptor { get; }
+        ClassDescriptorAttribute Descriptor { get; }
 
         /// <summary>
         /// Returns the extension invoker object

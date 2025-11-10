@@ -5,13 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// Form that displays a toast message (similar to the
@@ -33,7 +33,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// How long should the toast stay up?
         /// </summary>
-        private int _timeout = 2000;
+        private readonly int _timeout = 2000;
 
         /// <summary>
         /// Timer used to faded out
@@ -48,7 +48,6 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             InitializeComponent();
             ShowInTaskbar = false;
-            TopMost = true;
             Load += ToastForm_Load;
             Closing += OnClosing;
             _timeout = timeOut;

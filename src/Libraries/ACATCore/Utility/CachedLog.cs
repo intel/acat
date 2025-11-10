@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Caches auditlog entries in memory and dumps them to disk when
@@ -22,12 +22,12 @@ namespace ACAT.Lib.Core.Utility
         /// </summary>
         private readonly String LogFileFullPath;
 
-        private List<String> logEntries = new List<string>();
+        private readonly List<String> logEntries = new();
 
         /// <summary>
         /// Name of the audit log file
         /// </summary>
-        private string LogFileName;
+        private readonly string LogFileName;
 
         public CachedLog(string baseFileName)
         {
@@ -80,7 +80,7 @@ namespace ACAT.Lib.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 return false;
             }
             finally

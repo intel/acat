@@ -5,12 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Diagnostics;
 using System.Threading;
+using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Common
 {
     /// <summary>
     /// Displays a splash screen.  The splash screen has a
@@ -24,6 +25,8 @@ namespace ACAT.Lib.Core.PanelManagement
         /// The splash screen form
         /// </summary>
         private SplashScreen _form;
+
+        public Form SplashScreen => _form;
 
         /// <summary>
         /// Minimum time in ms the splash screen has to stay up
@@ -67,7 +70,7 @@ namespace ACAT.Lib.Core.PanelManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
@@ -75,9 +78,21 @@ namespace ACAT.Lib.Core.PanelManagement
         /// Call this to show the splash screen.  It is display asynchronously
         /// to enable the application to do its initializating tasks
         /// </summary>
-        public void Show()
+        public void Show(string message)
         {
-            _thread = new Thread(showSplash) { IsBackground = true };
+            _thread = new Thread(() =>
+            {
+                _form = new SplashScreen(message);
+                _form.TopMost = true;
+                _form.ShowInTaskbar = true;
+                _form.StartPosition = FormStartPosition.CenterScreen;
+                _form.Shown += (s, e) =>
+                {
+                    _form.BringToFront();
+                    _form.Activate();
+                };
+                _form.ShowDialog();
+            }) { IsBackground = true };
             _thread.SetApartmentState(ApartmentState.STA);
             _stopWatch.Start();
             _thread.Start();
@@ -91,16 +106,6 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             _minUpTime = minUpTime;
             _stopWatch = new Stopwatch();
-        }
-
-        /// <summary>
-        /// Displays the splash screen
-        /// </summary>
-        private void showSplash()
-        {
-            _form = new SplashScreen();
-
-            _form.ShowDialog();
         }
 
         /// <summary>

@@ -12,18 +12,19 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.Utility;
 using System;
 
-namespace ACAT.Lib.Core.AbbreviationsManagement
+namespace ACAT.Core.AbbreviationsManagement
 {
     public class AbbreviationsManager : IDisposable
     {
         /// <summary>
         /// Static singleton instance
         /// </summary>
-        private static readonly AbbreviationsManager _instance = new AbbreviationsManager();
+        private static readonly AbbreviationsManager _instance = new();
 
         /// <summary>
         /// Has this object been disposed
@@ -69,10 +70,7 @@ namespace ACAT.Lib.Core.AbbreviationsManagement
         /// <returns></returns>
         public bool Init(String abbreviationsFile = null)
         {
-            if (Abbreviations != null)
-            {
-                Abbreviations.Dispose();
-            }
+            Abbreviations?.Dispose();
 
             Abbreviations = new Abbreviations();
 
@@ -88,7 +86,7 @@ namespace ACAT.Lib.Core.AbbreviationsManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {

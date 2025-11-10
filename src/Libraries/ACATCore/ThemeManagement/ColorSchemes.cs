@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 
-namespace ACAT.Lib.Core.ThemeManagement
+namespace ACAT.Core.ThemeManagement
 {
     /// <summary>
     /// Encapsulates a list of color scheme objects for the various ui elements
@@ -44,7 +44,7 @@ namespace ACAT.Lib.Core.ThemeManagement
         /// Name of the default color scheme.  If a ui element does not have a
         /// color scheme defined, this is used as the default
         /// </summary>
-        public static ColorScheme DefaultColorScheme = new ColorScheme("default");
+        public static ColorScheme DefaultColorScheme = new("default");
 
         /// <summary>
         /// Name of the color scheme for all the dialogs

@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- No actual code to compile -->
+  <PropertyGroup>
+    <TargetFramework>net481</TargetFramework>
+    <OutputType>Library</OutputType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Use Link to preserve folder structure in metadata -->
+    <Assets Include="$(SolutionDir)Assets\**\*">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Assets>
+  </ItemGroup>
+
+  <Target Name="CopyAssetFiles" AfterTargets="Build">
+    <!-- Ensure destination directories exist -->
+    <MakeDir Directories="$(OutputPath)Assets\%(Assets.RecursiveDir)" />
+
+    <!-- Copy files while preserving subfolders -->
+    <Copy
+      SourceFiles="@(Assets)"
+      DestinationFiles="$(OutputPath)Assets\%(Assets.RecursiveDir)%(Filename)%(Extension)"
+      SkipUnchangedFiles="true" />
+  </Target>
+  
+  <ItemGroup>
+    <InstallFiles Include="$(SolutionDir)\Applications\Install\Users\**\*" >
+      <Link>Install\Users\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </InstallFiles>
+  </ItemGroup>
+
+  <Target Name="CopyInstallFiles" AfterTargets="CopyAssetFiles">
+    <!-- Ensure destination directories exist -->
+    <MakeDir Directories="$(OutputPath)Install\Users\%(InstallFiles.RecursiveDir)" />
+
+    <!-- Copy files while preserving subfolders -->
+    <Copy
+      SourceFiles="@(InstallFiles)"
+      DestinationFiles="$(OutputPath)%(InstallFiles.RecursiveDir)%(Filename)%(Extension)"
+      SkipUnchangedFiles="true" />
+  </Target>
+
+
+  <Target Name="UnzipDependency">
+    <!-- Define paths -->
+    <PropertyGroup>
+      <ZipFile>$(SolutionDir)\Applications\Install\ConvAssistApp\ConvAssist.zip</ZipFile>
+      <ExtractedDir>$(BaseOutputPath)\UnzippedDependency\</ExtractedDir>
+      <UnzipFlagFile>$(ExtractedDir).unzipped</UnzipFlagFile>
+    </PropertyGroup>
+
+    <!-- Only unzip if the flag file doesn't exist -->
+    <Message Text="Unzipping dependency files from $(ZipFile) to $(ExtractedDir)" Condition="!Exists('$(UnzipFlagFile)')" Importance="high" />
+    <Exec Condition="!Exists('$(UnzipFlagFile)')" Command="powershell -Command &quot;Expand-Archive -Path '$(ZipFile)' -DestinationPath '$(ExtractedDir)' -Force&quot;" />
+    <Message Text="Unzipped dependency files to $(ExtractedDir)" Condition="!Exists('$(UnzipFlagFile)')" Importance="high" />
+ 
+    <!-- Create a flag file to avoid re-extraction -->
+    <WriteLinesToFile Condition="!Exists('$(UnzipFlagFile)')" File="$(UnzipFlagFile)" Lines="Unzipped on $(MSBuildThisFileFullPath)" Overwrite="true" />
+
+    <!-- Copy contents to OutputPath -->
+    <ItemGroup>
+      <DependencyFiles Include="$(ExtractedDir)**\*" />
+    </ItemGroup>
+    <Message Text="Copying dependency files to output directory: $(OutDir)" Importance="high" />
+    <Copy SourceFiles="@(DependencyFiles)" DestinationFolder="$(OutDir)\ConvAssistApp\%(RecursiveDir)" SkipUnchangedFiles="true" />
+  </Target>
+</Project>

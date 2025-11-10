@@ -9,7 +9,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Creates a rounded corner control.  Can be applied to
@@ -51,7 +51,7 @@ namespace ACAT.Lib.Core.Utility
             int xwr2 = xw - r2;
             int yhr2 = yh - r2;
 
-            GraphicsPath _graphicsPath = new GraphicsPath();
+            GraphicsPath _graphicsPath = new();
 
             _graphicsPath.StartFigure();
 

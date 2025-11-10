@@ -10,7 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Tracks the state of Shift, Ctrl and Alt keys.  On the UI, if
@@ -28,11 +28,11 @@ namespace ACAT.Lib.Core.Utility
         private const byte VK_CAPITAL = 0x14;
         private const byte VK_NUMLOCK = 0x90;
 
-        private static int _alt = 0x2;
-        private static int _ctrl = 0x1;
+        private static readonly int _alt = 0x2;
+        private static readonly int _ctrl = 0x1;
         private static int _extendedKeyPressedStatus = 0;
         private static int _extendedKeyTriggerStatus = 0;
-        private static int _shift = 0x4;
+        private static readonly int _shift = 0x4;
         private static bool _stickyAlt = false;
         private static bool _stickyCtrl = false;
         private static bool _stickyShift = false;
@@ -104,7 +104,7 @@ namespace ACAT.Lib.Core.Utility
         /// <returns></returns>
         public static List<Keys> GetExtendedKeys()
         {
-            List<Keys> retVal = new List<Keys>();
+            List<Keys> retVal = new();
 
             if (IsCtrlOn())
             {
@@ -439,10 +439,7 @@ namespace ACAT.Lib.Core.Utility
         /// </summary>
         private static void notifyKeyStateChanged()
         {
-            if (EvtKeyStateChanged != null)
-            {
-                EvtKeyStateChanged();
-            }
+            EvtKeyStateChanged?.Invoke();
         }
 
         /// <summary>
@@ -451,7 +448,7 @@ namespace ACAT.Lib.Core.Utility
         /// </summary>
         private static void removeNonStickySpecialKeys()
         {
-            ArrayList removeList = new ArrayList();
+            _ = new ArrayList();
             bool somethingChanged = false;
 
             if (!_stickyShift)

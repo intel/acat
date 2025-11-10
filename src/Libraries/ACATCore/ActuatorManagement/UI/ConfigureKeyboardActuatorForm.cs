@@ -12,14 +12,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement.UI;
-using ACAT.Lib.Core.PanelManagement;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.ActuatorManagement.Settings;
+using ACAT.Core.ActuatorManagement.UI;
+using ACAT.Core.PanelManagement;
+using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// Displays a list of switches for an acutator to enable configure
@@ -186,11 +189,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="e">event args</param>
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            /*if (!_isDirty || MessageBox.Show("Changes not saved. Quit anyway?",
-                Text, MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question) == DialogResult.Yes)*/
-
-            if (!_isDirty || ConfirmBox.ShowDialog("Changes not saved. Quit anyway?", null, false))
+            if (!_isDirty || ConfirmBoxTwoOption.ShowDialog("Changes not saved.", "Quit anyway?", "Yes", "No"))
             {
                 DialogResult = DialogResult.Cancel;
                 Close();
@@ -206,12 +205,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             if (validate())
             {
-                /*if (_isDirty &&
-                    MessageBox.Show("Save changes?",
-                        Text, MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question) == DialogResult.Yes)*/
-
-                if (_isDirty && ConfirmBox.ShowDialog("Save changes?", null, false))
+                if (_isDirty && ConfirmBoxTwoOption.ShowDialog("Save changes?", "", "Yes", "No"))
                 {
                     updateDataFromUIAndSave();
                     DialogResult = DialogResult.OK;
@@ -411,11 +405,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             var shortcut = dataGridView2.Rows[e.RowIndex].Cells[ShortcutColumn.Name].Value as String;
 
-            //var result = MessageBox.Show("Delete shortcut " + shortcut, Text, MessageBoxButtons.YesNo,
-            //MessageBoxIcon.Question);
-            bool result = ConfirmBox.ShowDialog("Delete shortcut " + shortcut.ToString() + " ?", null, false);
+            bool result = ConfirmBoxTwoOption.ShowDialog("Delete shortcut " + shortcut.ToString() + " ?", "", "Yes", "No");
 
-            //if (result == DialogResult.No)
             if (!result)
             {
                 return;
@@ -477,7 +468,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <returns>true if there are no duplicates</returns>
         private bool noDuplicateShortcuts()
         {
-            List<String> array = new List<string>();
+            List<String> array = new();
             for (int ii = 0; ii < dataGridView2.Rows.Count; ii++)
             {
                 array.Add(dataGridView2[ShortcutColumn.Name, ii].Value as String);
@@ -497,7 +488,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             if (Actuator == null)
             {
                 // MessageBox.Show("Error.  Actuator to configure is null");
-                bool result = ConfirmBox.ShowDialog("Error. Actuator to configure is null", null, false);
+                _ = ConfirmBoxOneOption.ShowDialog("Unexpected Error", "No valid actuators available", "OK");
                 Close();
             }
 
@@ -508,8 +499,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
                 ClientSize = new System.Drawing.Size(ClientSize.Width, (int)(_designTimeAspectRatio * ClientSize.Width));
             }
 
-            TopMost = false;
-            TopMost = true;
 
             if (!String.IsNullOrEmpty(Title))
             {
@@ -561,7 +550,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         private void setColumnWidths()
         {
-            int w = dataGridView2.Width - SystemInformation.VerticalScrollBarWidth;
+            _ = dataGridView2.Width - SystemInformation.VerticalScrollBarWidth;
 
             setColumnWidthPercent(ShortcutColumn, 30);
             setColumnWidthPercent(CommandColumn, 25);
@@ -636,7 +625,13 @@ namespace ACAT.Lib.Core.ActuatorManagement
                 switchSetting.Source = dataGridView2[ShortcutColumn.Name, ii].Value as String;
             }
 
-            var actuatorSetting = actuatorConfig.Find(Actuator.Name);
+            string ActuatorName = Actuator.Name;
+            if (Actuator.Name.Equals("Keyboard Actuator", StringComparison.OrdinalIgnoreCase))
+            {
+                ActuatorName = "Keyboard";
+            }
+
+            var actuatorSetting = actuatorConfig.Find(ActuatorName);
 
             if (actuatorSetting != null)
             {
@@ -657,8 +652,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
             if (!noDuplicateShortcuts())
             {
-                // MessageBox.Show("Error! Duplicate shortcuts found. Shorcuts have to be unique", Actuator.Name);
-                bool result = ConfirmBox.ShowDialog("Error! Duplicate shortcuts found. Shorcuts have to be unique. Actuator: " + Actuator.Name.ToString(), null, false);
+                _ = ConfirmBoxOneOption.ShowDialog("Error! Duplicate shortcuts found.",
+                    "Shortcuts have to be unique. Actuator: " + Actuator.Name.ToString(), StringResources.OK);
                 return false;
             }
 
@@ -673,8 +668,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
             if (!ok)
             {
-                // MessageBox.Show("Warning! You have not set any of the switches to select on trigger", Actuator.Name);
-                bool result = ConfirmBox.ShowDialog("Warning! You have not set any of the switches to select on trigger. Actuator: " + Actuator.Name.ToString(), null, false);
+                _ = ConfirmBoxOneOption.ShowDialog("Warning! You have not set any of the switches to select on trigger.",
+                    "Actuator: " + Actuator.Name.ToString(), StringResources.OK);
             }
 
             ok = false;
@@ -690,7 +685,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
             if (!ok)
             {
                 //MessageBox.Show("Warning! You have disabled all switches", Actuator.Name);
-                bool result = ConfirmBox.ShowDialog("Warning! You have disabled all switches. Actuator: " + Actuator.Name.ToString(), null, false);
+                _ = ConfirmBoxOneOption.ShowDialog("Warning! You have disabled all switches.",
+                    "Actuator: " + Actuator.Name.ToString(), StringResources.OK);
             }
 
             return true;

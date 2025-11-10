@@ -12,11 +12,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.ActuatorManagement.Settings;
+using ACAT.Core.PanelManagement;
+using ACATResources;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// Displays a list of switches for an acutator to enable configure
@@ -124,11 +127,13 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="e">event args</param>
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            /*if (!_isDirty || MessageBox.Show("Changes not saved. Quit anyway?",
-                                Text, MessageBoxButtons.YesNo,
-                                MessageBoxIcon.Question) == DialogResult.Yes)*/
-
-            if (!_isDirty || ConfirmBox.ShowDialog("Changes not saved. Quit anyway?", null, false))
+            if (!_isDirty || ConfirmBoxTwoOption.ShowDialog("Changes not saved. Quit anyway?", "", StringResources.Yes, StringResources.No))
+            {
+                // MessageBox.Show("Changes not saved. Quit anyway?", Text);
+                // DialogResult = DialogResult.Cancel;
+                // Close();
+            }
+            else
             {
                 DialogResult = DialogResult.Cancel;
                 Close();
@@ -148,7 +153,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
                     MessageBox.Show("Save changes?",
                                         Text, MessageBoxButtons.YesNo,
                                         MessageBoxIcon.Question) == DialogResult.Yes)*/
-                if (_isDirty && ConfirmBox.ShowDialog("Save changes?", null, false))
+                if (_isDirty && ConfirmBoxTwoOption.ShowDialog("Save changes?", "", StringResources.Yes, StringResources.No))
                 {
                     updateDataFromUIAndSave();
                     DialogResult = DialogResult.OK;
@@ -310,7 +315,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
             if (Actuator == null)
             {
                 // MessageBox.Show("Error.  Actuator to configure is null");
-                bool result = ConfirmBox.ShowDialog("Error. Actuator to configure is null", null, false);
+                _ = ConfirmBoxOneOption.ShowDialog("Unexpected Error.",
+                    "No actuator to configure.", StringResources.OK);
                 Close();
             }
 
@@ -321,8 +327,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
                 ClientSize = new System.Drawing.Size(ClientSize.Width, (int)(_designTimeAspectRatio * ClientSize.Width));
             }
 
-            TopMost = false;
-            TopMost = true;
 
             checkBoxWrapText.Checked = _wrapText;
 
@@ -415,7 +419,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         private void setColumnWidths()
         {
-            int w = dataGridView2.Width - SystemInformation.VerticalScrollBarWidth;
+            _ = dataGridView2.Width - SystemInformation.VerticalScrollBarWidth;
 
             setColumnWidthPercent(SwitchNameColumn, 15);
             setColumnWidthPercent(DescriptionColumn, 30);
@@ -488,8 +492,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
             if (!ok)
             {
-                // MessageBox.Show("Warning! You have not set any of the switches to select on trigger", Actuator.Name);
-                bool result = ConfirmBox.ShowDialog("Warning! You have not set any of the switches to select on trigger. Actuator: " + Actuator.Name.ToString(), null, false);
+                _ = ConfirmBoxOneOption.ShowDialog("Warning! You have not set any of the switches to select on trigger.",
+                    "Actuator: " + Actuator.Name.ToString(), StringResources.OK);
             }
 
             ok = false;
@@ -505,7 +509,8 @@ namespace ACAT.Lib.Core.ActuatorManagement
             if (!ok)
             {
                 // MessageBox.Show("Warning! You have disabled all switches", Actuator.Name);
-                bool result = ConfirmBox.ShowDialog("Warning! You have disabled all switches. Actuator: " + Actuator.Name.ToString(), null, false);
+                _ = ConfirmBoxOneOption.ShowDialog("Warning! You have disabled all switches.",
+                    "Actuator: " + Actuator.Name.ToString(), StringResources.OK);
             }
 
             return true;

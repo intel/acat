@@ -16,13 +16,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.Utility;
 using System;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// This is a wrapper class for the Actuator.  It has helper functions
@@ -43,17 +44,17 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <summary>
         /// Event is set when the background task is done
         /// </summary>
-        private readonly ManualResetEvent _bgTaskDoneEvent = new ManualResetEvent(true);
+        private readonly ManualResetEvent _bgTaskDoneEvent = new(true);
 
         /// <summary>
         /// This event is set when the calibration has concluded
         /// </summary>
-        private readonly ManualResetEvent _calibrationDoneEvent = new ManualResetEvent(true);
+        private readonly ManualResetEvent _calibrationDoneEvent = new(true);
 
         /// <summary>
         /// Has the calibartion form been created
         /// </summary>
-        private readonly ManualResetEvent _formCreatedEvent = new ManualResetEvent(false);
+        private readonly ManualResetEvent _formCreatedEvent = new(false);
 
         /// <summary>
         /// Background worker
@@ -70,9 +71,9 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <summary>
         /// Has initialization completed?
         /// </summary>
-        private ManualResetEvent initDoneEvent = new ManualResetEvent(false);
+        private readonly ManualResetEvent initDoneEvent = new(false);
 
-        private ManualResetEvent postInitDoneEvent = new ManualResetEvent(false);
+        private readonly ManualResetEvent postInitDoneEvent = new(false);
 
         /// <summary>
         /// Initializes an instance of the class
@@ -124,7 +125,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="enableConfigure">should the config button be enabled</param>
         public void OnEndCalibration(String errorMessage = "", bool enableConfigure = true)
         {
-            Log.Debug();
+            Log.Verbose();
 
             if (!String.IsNullOrEmpty((errorMessage)))
             {
@@ -162,7 +163,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         }
 
         /// <summary>
-        /// Invoked when initaliation is complete.  Sets the event
+        /// Invoked when initialization is complete.  Sets the event
         /// </summary>
         /// <param name="success">was init successful?</param>
         public void OnInitDone(bool success = true)
@@ -318,7 +319,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="e">event args</param>
         private void bgWorker_RunCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Log.Debug();
+            Log.Verbose();
             _bgTaskDoneEvent.Set();
         }
 
@@ -353,10 +354,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         private void hideCalibrationForm()
         {
-            if (calibrationForm != null)
-            {
-                calibrationForm.Hide();
-            }
+            calibrationForm?.Hide();
         }
 
         /// <summary>

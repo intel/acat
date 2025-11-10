@@ -10,9 +10,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
+using ACAT.Core.ActuatorManagement.Interfaces;
 
-namespace ACAT.Lib.Core.InputActuators
+namespace ACAT.Core.ActuatorManagement.WinsockActuators
 {
     /// <summary>
     /// Represents a switch triggered from data sent over a tcp/ip connection

@@ -10,19 +10,20 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DimReduction;
 using Accord.Math;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
+namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.Classifiers
 {
     [Serializable]
     public class KFoldCrossValidate
     {
         private readonly int nFolds = 10;
-        private readonly String partitioningMethod = "sequential"; //Options: "sequential", "random"
+        private readonly string partitioningMethod = "sequential"; //Options: "sequential", "random"
 
         /// <summary>
         /// Constructor with default parameters (sequential, 10 folds)
@@ -45,7 +46,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             if (_partitioningMethod.ToLower() == "sequential" || _partitioningMethod.ToLower() == "random")
                 partitioningMethod = _partitioningMethod.ToLower();
             else
-                throw new System.ArgumentException("Parameter" + _partitioningMethod + " not supported in crossValidation", "original");
+                throw new ArgumentException("Parameter" + _partitioningMethod + " not supported in crossValidation", "original");
         }
 
         /// <summary>
@@ -63,24 +64,23 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             // Split in folds
             int[] indicesFolds = SplitInFolds(labels);
 
-            List<double> output = new List<double>();
+            List<double> output = new();
             output.InsertRange(0, Vector.Zeros(nTrials));
 
             // Train & Test in parallel
             Parallel.For(0, nFolds, i =>
                 {
                     // Generate train and test indices to split in folds
-                    int[] indTrain = Matrix.Find(indicesFolds, element => element != i);
-                    int[] indTest = Matrix.Find(indicesFolds, element => element == i);
-                    List<double> kOutput;
+                    int[] indTrain = indicesFolds.Find(element => element != i);
+                    int[] indTest = indicesFolds.Find(element => element == i);
 
-                    DimReductRDA DimReductObj = new DimReductRDA(DimReductObj4Params.shrinkParam, DimReductObj4Params.regularizeParam);
+                    DimReductRDA DimReductObj = new(DimReductObj4Params.shrinkParam, DimReductObj4Params.regularizeParam);
 
                     //Train in K-1 folds (defined by indTrain)
                     DimReductObj.Learn(data.Get(indTrain), labels.Get(indTrain).ToList());
 
                     // Test in k fold (defined by indTest)
-                    DimReductObj.Reduce(data.Get(indTest), out kOutput);
+                    DimReductObj.Reduce(data.Get(indTest), out List<double> kOutput);
 
                     // Save test in output matrix
                     int j = 0;
@@ -105,13 +105,13 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
             int nTrials = labels.Count;
 
             // 1. Create partitions
-            List<int> indicesFolds = new List<int>();
+            List<int> indicesFolds = new();
             switch (partitioningMethod)
             {
                 case "sequential":
                     // generate indices
-                    int nElementsFold = (int)Math.Floor((double)nTrials / (double)nFolds);
-                    int extraElementFold = (int)nTrials % nFolds;
+                    int nElementsFold = (int)Math.Floor(nTrials / (double)nFolds);
+                    int extraElementFold = nTrials % nFolds;
 
                     int endElementPrev = -1;
                     for (int k = 0; k < nFolds; k++)
@@ -120,7 +120,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                         int endElement = (k + 1) * nElementsFold - 1;
 
                         if (k < extraElementFold)
-                            endElement = endElement + 1;
+                            endElement++;
 
                         endElementPrev = endElement;
 

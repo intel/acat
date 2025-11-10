@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.TTSManagement
+namespace ACAT.Core.TTSManagement
 {
     /// <summary>
     /// Stores the mapping between a language

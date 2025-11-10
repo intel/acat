@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+]>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="Menu" value="@CmdMainMenu" />
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="BoxWidget"  name="ToolbarBox">
+      <Widget class="RowWidget" name ="DefaultButtonsBox">
+        <Widget class="ScannerButton" name="Menu" colorScheme="ScannerButton" />
+      </Widget>
+    </Widget>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopLevelRotation"
+            start="true"
+            onEnter=""
+            scanTime="@MenuDialogScanTime"
+            iterations="1"
+            onSelect="actuate(@SelectedWidget);stop();">
+      <Widget name="Menu" />
+    </Animation>
+  </Animations>
+</ACAT>

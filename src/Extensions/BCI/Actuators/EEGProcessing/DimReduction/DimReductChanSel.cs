@@ -10,13 +10,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using Accord.Math;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
+namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.DimReduction
 {
     [Serializable]
     public class DimReductChanSel
@@ -57,7 +57,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
                 {
                     // If channelSubset > numChannels (Eg: receiving data from OpenBCI 8ch and susbset is for 16ch), disable extra channels
                     int maxChannels = inputData[0].GetLength(1);
-                    List<int> newChannelSubset = new List<int>();
+                    List<int> newChannelSubset = new();
                     for (int channelIdx = 0; channelIdx < channelSubset.Length; channelIdx++)
                     {
                         if (channelSubset[channelIdx] <= maxChannels)
@@ -79,13 +79,13 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing
 
                     int[] indicesSamples = Vector.Range(0, numSamples);
 
-                    reducedData = Matrix.Get(thisTrialData, indicesSamples, channelSubsetZero);
+                    reducedData = thisTrialData.Get(indicesSamples, channelSubsetZero);
                     outputData.Add(reducedData);
                 }
             }
             catch (Exception e)
             {
-                Log.Debug(e.Message);
+                Log.Exception(e.Message);
             }
             return true;
         }

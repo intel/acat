@@ -15,7 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement.Settings
 {
     /// <summary>
     /// Holds settings for an actuator and for all the
@@ -27,7 +27,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <summary>
         /// Description for the actuator
         /// </summary>
-        public String Description;
+        public string Description;
 
         /// <summary>
         /// Is the actuator enabled or not?
@@ -39,25 +39,25 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         public Guid Id;
 
-        public String ImageFileName;
+        public string ImageFileName;
 
         /// <summary>
         /// Name of the actuator
         /// </summary>
-        public String Name;
+        public string Name;
 
         /// <summary>
         /// List of settings for the switches that belong to
         /// the actuator
         /// </summary>
-        public List<SwitchSetting> SwitchSettings = new List<SwitchSetting>();
+        public List<SwitchSetting> SwitchSettings = new();
 
         /// <summary>
         /// Initializes an instance of the class
         /// </summary>
         public ActuatorSetting()
         {
-            Name = String.Empty;
+            Name = string.Empty;
             Id = Guid.Empty;
             Enabled = false;
         }
@@ -70,7 +70,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="id">actuator id</param>
         /// <param name="enabled">is the actuator enabled?</param>
         /// <param name="switchSettings">settings for switches</param>
-        public ActuatorSetting(String name, Guid id, String description = "", String imageFileName = "", bool enabled = true,
+        public ActuatorSetting(string name, Guid id, string description = "", string imageFileName = "", bool enabled = true,
             IEnumerable<SwitchSetting> switchSettings = null)
         {
             Name = name;
@@ -78,7 +78,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             Enabled = enabled;
             Description = description;
             ImageFileName = imageFileName;
-            SwitchSettings = (switchSettings != null) ? switchSettings.ToList() : new List<SwitchSetting>();
+            SwitchSettings = switchSettings != null ? switchSettings.ToList() : new List<SwitchSetting>();
         }
 
         /// <summary>
@@ -87,9 +87,9 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         /// <param name="switchName">Name of the switch</param>
         /// <returns>Switch settings object, null if not found</returns>
-        public SwitchSetting Find(String switchName)
+        public SwitchSetting Find(string switchName)
         {
-            return SwitchSettings.FirstOrDefault(switchSetting => String.Compare(switchSetting.Name, switchName, true) == 0);
+            return SwitchSettings.FirstOrDefault(switchSetting => string.Compare(switchSetting.Name, switchName, true) == 0);
         }
     }
 }

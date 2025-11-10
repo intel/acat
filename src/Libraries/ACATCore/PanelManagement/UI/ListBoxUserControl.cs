@@ -8,7 +8,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// Custom list box with custom colors and custom
@@ -57,8 +57,12 @@ namespace ACAT.Lib.Core.PanelManagement
             // Draw the background of the ListBox control for each item.
             e.DrawBackground();
 
-            SizeF size = e.Graphics.MeasureString(Items[e.Index].ToString(), e.Font);
-            e.Graphics.DrawString(Items[e.Index].ToString(), e.Font, brush, e.Bounds.Left, e.Bounds.Top + (e.Bounds.Height / 2 - size.Height / 2));
+            var item = Items[e.Index] as ListViewItem;
+            string text = item != null ? item.Text : Items[e.Index].ToString();
+            
+
+            SizeF size = e.Graphics.MeasureString(text, e.Font);
+            e.Graphics.DrawString(text, e.Font, brush, e.Bounds.Left, e.Bounds.Top + (e.Bounds.Height / 2 - size.Height / 2));
 
             // If the ListBox has focus, draw a focus rectangle around the selected item.
             e.DrawFocusRectangle();

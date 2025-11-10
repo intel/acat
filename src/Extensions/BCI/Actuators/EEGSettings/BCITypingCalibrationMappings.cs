@@ -10,8 +10,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PreferencesManagement;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.PreferencesManagement;
 using System;
 using System.Xml.Serialization;
 
@@ -74,13 +74,22 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             return retVal;
         }
 
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<BCIKeyboardRightCalibrationSettings>();
+            var res = Save(tmp, SettingsFilePath);
+            Load();
+
+            return res;
+        }
+
         /// <summary>
         /// Saves settings
         /// </summary>
         /// <returns>true on success</returns>
         public override bool Save()
         {
-            return Save<BCITypingCalibrationMappings>(this, SettingsFilePath);
+            return Save(this, SettingsFilePath);
         }
     }
 }

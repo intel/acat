@@ -1,5 +1,5 @@
 ﻿
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     partial class ConfirmBoxLargeSingleOption
     {
@@ -31,7 +31,7 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             this.labelPrompt = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonDecision = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonDecision = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.checkBoxDontShowThisMessage = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -43,10 +43,11 @@ namespace ACAT.Lib.Core.PanelManagement
             this.labelPrompt.Dock = System.Windows.Forms.DockStyle.Fill;
             this.labelPrompt.Font = new System.Drawing.Font("Montserrat Medium", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelPrompt.ForeColor = System.Drawing.Color.White;
-            this.labelPrompt.Location = new System.Drawing.Point(73, 40);
+            this.labelPrompt.Location = new System.Drawing.Point(147, 78);
+            this.labelPrompt.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelPrompt.Name = "labelPrompt";
             this.tableLayoutPanel1.SetRowSpan(this.labelPrompt, 15);
-            this.labelPrompt.Size = new System.Drawing.Size(624, 300);
+            this.labelPrompt.Size = new System.Drawing.Size(1257, 585);
             this.labelPrompt.TabIndex = 84;
             this.labelPrompt.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -66,9 +67,10 @@ namespace ACAT.Lib.Core.PanelManagement
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 9.090908F));
             this.tableLayoutPanel1.Controls.Add(this.buttonDecision, 4, 18);
             this.tableLayoutPanel1.Controls.Add(this.labelPrompt, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.checkBoxDontShowThisMessage, 3, 21);
+            this.tableLayoutPanel1.Controls.Add(this.checkBoxDontShowThisMessage, 2, 21);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(6);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 25;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4F));
@@ -96,8 +98,8 @@ namespace ACAT.Lib.Core.PanelManagement
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(781, 514);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1562, 988);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // buttonDecision
@@ -113,10 +115,11 @@ namespace ACAT.Lib.Core.PanelManagement
             this.buttonDecision.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonDecision.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonDecision.Font = new System.Drawing.Font("Montserrat", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonDecision.Location = new System.Drawing.Point(283, 363);
+            this.buttonDecision.Location = new System.Drawing.Point(570, 708);
+            this.buttonDecision.Margin = new System.Windows.Forms.Padding(6);
             this.buttonDecision.Name = "buttonDecision";
             this.tableLayoutPanel1.SetRowSpan(this.buttonDecision, 3);
-            this.buttonDecision.Size = new System.Drawing.Size(204, 54);
+            this.buttonDecision.Size = new System.Drawing.Size(411, 105);
             this.buttonDecision.TabIndex = 83;
             this.buttonDecision.Text = "OK";
             this.buttonDecision.UseMnemonic = false;
@@ -125,29 +128,30 @@ namespace ACAT.Lib.Core.PanelManagement
             // 
             // checkBoxDontShowThisMessage
             // 
+            this.checkBoxDontShowThisMessage.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.checkBoxDontShowThisMessage.AutoSize = true;
-            this.tableLayoutPanel1.SetColumnSpan(this.checkBoxDontShowThisMessage, 5);
-            this.checkBoxDontShowThisMessage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.SetColumnSpan(this.checkBoxDontShowThisMessage, 7);
             this.checkBoxDontShowThisMessage.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxDontShowThisMessage.ForeColor = System.Drawing.Color.White;
-            this.checkBoxDontShowThisMessage.Location = new System.Drawing.Point(213, 423);
+            this.checkBoxDontShowThisMessage.Location = new System.Drawing.Point(499, 825);
+            this.checkBoxDontShowThisMessage.Margin = new System.Windows.Forms.Padding(6);
             this.checkBoxDontShowThisMessage.Name = "checkBoxDontShowThisMessage";
-            this.checkBoxDontShowThisMessage.Padding = new System.Windows.Forms.Padding(40, 0, 0, 0);
             this.tableLayoutPanel1.SetRowSpan(this.checkBoxDontShowThisMessage, 3);
-            this.checkBoxDontShowThisMessage.Size = new System.Drawing.Size(344, 54);
+            this.checkBoxDontShowThisMessage.Size = new System.Drawing.Size(552, 48);
             this.checkBoxDontShowThisMessage.TabIndex = 85;
             this.checkBoxDontShowThisMessage.Text = "Don\'t show this message again";
             this.checkBoxDontShowThisMessage.UseVisualStyleBackColor = true;
             // 
             // ConfirmBoxLargeSingleOption
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.ClientSize = new System.Drawing.Size(781, 514);
+            this.ClientSize = new System.Drawing.Size(1562, 988);
             this.ControlBox = false;
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "ConfirmBoxLargeSingleOption";
             this.Text = "ACAT";
             this.tableLayoutPanel1.ResumeLayout(false);

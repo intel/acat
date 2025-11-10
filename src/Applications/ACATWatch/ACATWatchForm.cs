@@ -14,8 +14,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.Utility.NamedPipe;
+using ACAT.Core.Utility;
+using ACAT.Core.Utility.NamedPipe;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -1313,7 +1313,6 @@ namespace ACAT.Applications.ACATWatch
             IntPtr fg = User32Interop.GetForegroundWindow();
             Log.Debug("Fg window handle: " + fg.ToInt32());
 
-
             User32Interop.GetWindowThreadProcessId(User32Interop.GetForegroundWindow(), out uint h);
 
             Log.Debug("Process id of fgwindow: " + h);
@@ -1375,7 +1374,7 @@ namespace ACAT.Applications.ACATWatch
             Log.Debug("h: " + h);
             if (h != 0)
             {
-                IntPtr handle = new IntPtr(h);
+                IntPtr handle = new(h);
 
                 ForceWindowIntoForeground(handle);
             }
@@ -1388,7 +1387,7 @@ namespace ACAT.Applications.ACATWatch
 
         private ContextMenu createContextMenu()
         {
-            ContextMenu retVal = new ContextMenu();
+            ContextMenu retVal = new();
             retVal.MenuItems.Add("&Exit", OnExit);
 
             return retVal;
@@ -1396,7 +1395,7 @@ namespace ACAT.Applications.ACATWatch
 
         private NotifyIcon createTrayIcon()
         {
-            NotifyIcon trayIcon = new NotifyIcon
+            NotifyIcon trayIcon = new()
             {
                 Text = "ACAT Watcher",
                 Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location),
@@ -1424,10 +1423,7 @@ namespace ACAT.Applications.ACATWatch
                 trayIcon = null;
             }
 
-            if (this.trayMenu != null)
-            {
-                this.trayMenu.Dispose();
-            }
+            this.trayMenu?.Dispose();
         }
 
         private void LauncherForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -1452,7 +1448,7 @@ namespace ACAT.Applications.ACATWatch
             }
             catch (Exception ex)
             {
-                Log.Debug("Failed to start pipe server " + ex.ToString());
+                Log.Exception("Failed to start pipe server", ex);
             }
         }
 
@@ -1482,7 +1478,7 @@ namespace ACAT.Applications.ACATWatch
                         int h = Int32.Parse(message);
                         if (h != 0)
                         {
-                            IntPtr handle = new IntPtr(h);
+                            IntPtr handle = new(h);
 
                             FocusWindow(handle);
                         }
@@ -1494,7 +1490,7 @@ namespace ACAT.Applications.ACATWatch
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.Message);
+                Log.Exception(ex);
             }
         }
     }

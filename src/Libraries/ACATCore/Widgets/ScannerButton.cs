@@ -5,12 +5,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ThemeManagement;
-using ACAT.Lib.Core.Utility;
-using System.Drawing;
+using ACAT.Core.ThemeManagement;
+using ACAT.Core.Utility;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Widgets
+namespace ACAT.Core.Widgets
 {
     /// <summary>
     /// A widget that uses a ScannerButton as the UI control.

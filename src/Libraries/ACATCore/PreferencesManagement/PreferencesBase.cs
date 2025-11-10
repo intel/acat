@@ -13,11 +13,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PreferencesManagement.Interfaces;
+using ACAT.Core.Utility;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
+using System.ComponentModel;
+using System.Reflection;
 using System.Text;
+using System.Xml.Serialization;
 
-namespace ACAT.Lib.Core.PreferencesManagement
+
+namespace ACAT.Core.PreferencesManagement
 {
     /// <summary>
     /// Use this as the base class for any derived class that
@@ -26,12 +32,50 @@ namespace ACAT.Lib.Core.PreferencesManagement
     /// a class by deserializing from the xml file.
     /// </summary>
     [Serializable]
-    public abstract class PreferencesBase : IPreferences
+    public abstract class PreferencesBase : ObservableValidator, IPreferences, IDisposable
     {
+        [XmlIgnore]
+        public bool IsDirty { get; private set; } = false;
+
+        public PreferencesBase()
+        {
+            PropertyChanged += PreferencesBase_PropertyChanged;
+
+        }
+
+        private void PreferencesBase_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(IsDirty))
+            {
+                IsDirty = true;
+                NotifyPreferencesChanged();
+            }
+        }
+
+        [NonSerialized, XmlIgnore]
+        public static Assembly ApplicationAssembly;
+
+        /// <summary>
+        /// Returns a string representation of the settings
+        /// </summary>
+        public String toString()
+        {
+            StringBuilder sb = new();
+            sb.Append("Preferences: ");
+            sb.Append(XmlUtils.XmlSerializeToString(this));
+            return sb.ToString();
+        }
+
         /// <summary>
         /// For the event that notifies that preferences changed
         /// </summary>
         public delegate void PreferencesChangedDelegate();
+
+        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+            ValidateProperty(GetType().GetProperty(e.PropertyName)?.GetValue(this), e.PropertyName);
+        }
 
         /// <summary>
         /// Event that is raised when any of the preferences change.
@@ -48,7 +92,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <returns>Preferences read or null</returns>
         public static T Load<T>(String preferencesFile, bool loadDefaultsOnFail = true, bool saveAfterLoad = true) where T : new()
         {
-            T preferences = default(T);
+            T preferences = default;
 
             if (String.IsNullOrEmpty(preferencesFile))
             {
@@ -59,7 +103,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
             if (preferences == null)
             {
-                Log.Debug("Could not load preferences from " + preferencesFile + ". Creating a new one");
+                Log.Warn($"Could not load preferences from {preferencesFile} - creating a new one.");
                 if (loadDefaultsOnFail == true)
                 {
                     preferences = new T();
@@ -68,10 +112,10 @@ namespace ACAT.Lib.Core.PreferencesManagement
 
             if (preferences != null && saveAfterLoad)
             {
-                if (!XmlUtils.XmlFileSave<T>(preferences, preferencesFile))
+                if (!XmlUtils.XmlFileSave(preferences, preferencesFile))
                 {
                     Log.Error("Unable to save default preferences!");
-                    preferences = default(T);
+                    preferences = default;
                 }
             }
             return preferences;
@@ -97,7 +141,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         public static bool Save<T>(T prefs, String preferencesFile)
         {
             // save current settings into current file and preset file
-            var retVal = XmlUtils.XmlFileSave<T>(prefs, preferencesFile);
+            var retVal = XmlUtils.XmlFileSave(prefs, preferencesFile);
 
             if (retVal == false)
             {
@@ -114,7 +158,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <param name="fileName">name of the file to save to</param>
         public static void SaveDefaults<T>(String fileName) where T : new()
         {
-            T prefs = new T();
+            T prefs = new();
             Save(prefs, fileName);
         }
 
@@ -123,10 +167,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// </summary>
         public void NotifyPreferencesChanged()
         {
-            if (EvtPreferencesChanged != null)
-            {
-                EvtPreferencesChanged();
-            }
+            EvtPreferencesChanged?.Invoke();
         }
 
         /// <summary>
@@ -135,15 +176,17 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// <returns></returns>
         public abstract bool Save();
 
-        /// <summary>
-        /// Returns a string representation of the settings
-        /// </summary>*.
-        public virtual String toString()
+        public abstract bool ResetToDefault();
+
+        private bool _disposed = false;
+
+        public void Dispose()
         {
-            var sb = new StringBuilder();
-            sb.Append("Preferences: ");
-            sb.Append(XmlUtils.XmlSerializeToString<PreferencesBase>(this));
-            return sb.ToString();
+            if (_disposed) return;
+
+            PropertyChanged -= PreferencesBase_PropertyChanged;
+            _disposed = true;
+
         }
     }
 }

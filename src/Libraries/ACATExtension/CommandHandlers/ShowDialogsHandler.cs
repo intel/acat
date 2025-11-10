@@ -5,15 +5,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.Utility;
+using ACAT.Extension.UI;
+using ACATResources;
 using System;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension.CommandHandlers
+namespace ACAT.Extension.CommandHandlers
 {
     /// <summary>
     /// Shows the various settings dialogs such as General,
@@ -94,7 +96,7 @@ namespace ACAT.Lib.Extension.CommandHandlers
             var appName = (attributes.Length != 0) ? ((AssemblyTitleAttribute)attributes[0]).Title : String.Empty;
 
             var version = ACATPreferences.ApplicationAssembly.GetName().Version.Major + "." + ACATPreferences.ApplicationAssembly.GetName().Version.Minor;
-            var versionInfo = String.Format(R.GetString("Version"), version);
+            var versionInfo = String.Format(StringResources.Version, version);
 
             attributes = ACATPreferences.ApplicationAssembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
             var copyrightInfo = (attributes.Length != 0) ? ((AssemblyCopyrightAttribute)attributes[0]).Copyright : String.Empty;
@@ -122,7 +124,7 @@ namespace ACAT.Lib.Extension.CommandHandlers
             }
             catch (Exception e)
             {
-                Log.Debug("Error creating dialog of type " + name + ". Exception: " + e);
+                Log.Exception("Error creating dialog of type " + name + ". Exception: " + e);
             }
         }
     }

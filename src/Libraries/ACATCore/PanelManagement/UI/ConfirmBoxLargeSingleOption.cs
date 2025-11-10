@@ -5,11 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACATResources;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// A single button message box with an optional checkbox for
@@ -22,6 +23,7 @@ namespace ACAT.Lib.Core.PanelManagement
             InitializeComponent();
             Load += ConfirmBox_Load;
         }
+
         public int LabelFont { get; set; }
         public bool CheckBoxChecked { get; set; }
 
@@ -36,10 +38,13 @@ namespace ACAT.Lib.Core.PanelManagement
 
         public static bool ShowDialog(String prompt, String decisionPrompt, Form parent = null, bool displayCheckBox = false)
         {
-            var confirmBox = new ConfirmBoxLargeSingleOption();
-            confirmBox.Prompt = prompt;
-            confirmBox.DecisionPrompt = decisionPrompt;
-            confirmBox.DisplayCheckBox = displayCheckBox;
+            var confirmBox = new ConfirmBoxLargeSingleOption
+            {
+                Prompt = prompt,
+                DecisionPrompt = decisionPrompt,
+                DisplayCheckBox = displayCheckBox
+            };
+            confirmBox.checkBoxDontShowThisMessage.Text = StringResources.dontShowMessage;
 
             confirmBox.ShowDialog(parent);
 
@@ -61,7 +66,6 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             CenterToScreen();
 
-            TopMost = true;
 
             labelPrompt.Text = Prompt;
             if (LabelFont != 0)

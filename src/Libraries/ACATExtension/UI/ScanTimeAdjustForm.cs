@@ -5,17 +5,19 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Extension.UI;
 using System;
 using System.Security.Permissions;
 using System.Windows.Forms;
-using static ACAT.Lib.Core.PanelManagement.ScannerCommon;
+using static ACAT.Core.PanelManagement.Common.ScannerCommon;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     /// <summary>
     /// Base class for all horizontal strip scanners.  This
@@ -23,7 +25,7 @@ namespace ACAT.Lib.Extension
     /// The width of the scanner is dynamically
     /// computed depending on how many menu items are there
     /// </summary>
-    [DescriptorAttribute("D6AE907B-CB4B-417E-9FCC-E587D976FFD7",
+    [ClassDescriptor("D6AE907B-CB4B-417E-9FCC-E587D976FFD7",
                 "ScanTimeAdjustScanner",
                 "Adjust scan time")]
     public partial class ScanTimeAdjustForm : Form, IScannerPanel
@@ -79,10 +81,12 @@ namespace ACAT.Lib.Extension
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
+
+        public Guid Id => Descriptor.Id;
 
         /// <summary>
         /// Gets this form
@@ -150,7 +154,7 @@ namespace ACAT.Lib.Extension
 
         /// <summary>
         /// Called to check if the specified widget in arg should
-        /// be enabled or not.  This function is called perfiodically
+        /// be enabled or not.  This function is called periodically
         /// because application context may change any time. Set
         /// the handled property in arg to true if this is handled.
         /// </summary>
@@ -280,13 +284,10 @@ namespace ACAT.Lib.Extension
         /// </summary>
         /// <param name="m">Windows message</param>
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         protected override void WndProc(ref Message m)
         {
-            if (_scannerCommon != null)
-            {
-                _scannerCommon.HandleWndProc(m);
-            }
+            _scannerCommon?.HandleWndProc(m);
 
             base.WndProc(ref m);
         }

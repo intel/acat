@@ -9,7 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
-
+*.exe
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
@@ -60,6 +60,7 @@ BenchmarkDotNet.Artifacts/
 project.lock.json
 project.fragment.lock.json
 artifacts/
+build/
 
 # StyleCop
 StyleCopReport.xml
@@ -355,6 +356,17 @@ MigrationBackup/
 src/Redistributable/
 
 # Installer Stuff
-src/Setup/ACATSetup*.exe
-src/Setup/*.nsi
-src/Applications/Install/ConvAssistApp/ConvAssist
+src/Setup/SetupAcat/
+# src/Setup/*.nsi
+src/Setup/*.zip
+.vscode/
+src/WindowsFormsApp1/App.config
+src/WindowsFormsApp1/Program.cs
+src/WindowsFormsApp1/WindowsFormsApp1.csproj
+src/WindowsFormsApp1/Properties/AssemblyInfo.cs
+src/WindowsFormsApp1/Properties/Resources.Designer.cs
+src/WindowsFormsApp1/Properties/Resources.resx
+src/WindowsFormsApp1/Properties/Settings.Designer.cs
+src/WindowsFormsApp1/Properties/Settings.settings
+src/keys/acat-dev-signingcert.snk
+src/keys/acat-rel-signingcert.snk

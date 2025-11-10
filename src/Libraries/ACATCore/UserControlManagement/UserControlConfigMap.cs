@@ -5,8 +5,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.UserControlManagement.Interfaces;
+using ACAT.Core.Utility;
+using ACAT.Core.Utility.TypeLoader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,16 +19,16 @@ using System.Linq;
 using System.Reflection;
 using System.Xml;
 
-namespace ACAT.Lib.Core.UserControlManagement
+namespace ACAT.Core.UserControlManagement
 {
     /// <summary>
     /// UserControlConfigMap is an xml file that contains a mapping between the
     /// user control and the name of the xml file that
-    /// contains animation and other info for the user control. 
+    /// contains animation and other info for the user control.
     /// </summary>
     public class UserControlConfigMap
     {
-        private const String DefaultCulture = "en";
+        private const String DefaultKey = "panelconfigs";
 
         /// <summary>
         /// Name of the config file that has the mapping.  This is loaded from
@@ -38,19 +41,21 @@ namespace ACAT.Lib.Core.UserControlManagement
         /// </summary>
         private static Dictionary<String, Dictionary<String, String>> _configFileLocationMap;
 
-        private static Dictionary<String, List<Guid>> _cultureConfigIdMapTable;
+        private static Dictionary<String, List<Guid>> _ConfigIdMapTable;
 
         private static Dictionary<String, String> _loadConfigFileLocationMap;
 
-        private static String _loadCulture;
+        //private static String _loadCulture;
 
         private static List<Guid> _loadUserControlConfigMapTable;
 
         private static Dictionary<Guid, UserControlConfigMapEntry> _masterUserControlConfigMapTable;
+
         /// <summary>
         /// If one of the dll found has an error with the certificate
         /// </summary>
         private static volatile bool _DLLError = false;
+
         /// <summary>
         /// Caches the class Type of user controls
         /// </summary>
@@ -135,18 +140,7 @@ namespace ACAT.Lib.Core.UserControlManagement
         /// <returns>Panel config map object</returns>
         public static UserControlConfigMapEntry GetUserControlConfigMapEntry(Guid guid)
         {
-            var retVal = getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.Name, guid);
-            if (retVal == null)
-            {
-                retVal = getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, guid);
-            }
-
-            if (retVal == null)
-            {
-                retVal = getCultureConfigMapEntry(DefaultCulture, guid);
-            }
-
-            return retVal;
+            return getConfigMapEntry(guid);
         }
 
         /// <summary>
@@ -158,18 +152,7 @@ namespace ACAT.Lib.Core.UserControlManagement
         /// <returns>Panel config map object</returns>
         public static UserControlConfigMapEntry GetUserControlConfigMapEntry(String name)
         {
-            var retVal = getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.Name, name);
-            if (retVal == null)
-            {
-                retVal = getCultureConfigMapEntry(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, name);
-            }
-
-            if (retVal == null)
-            {
-                retVal = getCultureConfigMapEntry(DefaultCulture, name);
-            }
-
-            return retVal;
+            return getConfigMapEntry(name);
         }
 
         /// <summary>
@@ -189,7 +172,7 @@ namespace ACAT.Lib.Core.UserControlManagement
         /// <returns>The descirptor guid</returns>
         public static Guid GetUserControlId(Type type)
         {
-            var descAttribute = DescriptorAttribute.GetDescriptor(type);
+            var descAttribute = ClassDescriptorAttribute.GetDescriptor(type);
             Guid retVal = Guid.Empty;
             if (descAttribute != null)
             {
@@ -198,6 +181,7 @@ namespace ACAT.Lib.Core.UserControlManagement
 
             return retVal;
         }
+
 
         /// <summary>
         /// Walks the directories specified in extensionDir,
@@ -211,13 +195,11 @@ namespace ACAT.Lib.Core.UserControlManagement
         {
             _masterUserControlConfigMapTable = new Dictionary<Guid, UserControlConfigMapEntry>();
 
-            _cultureConfigIdMapTable = new Dictionary<string, List<Guid>>();
+            _ConfigIdMapTable = new Dictionary<string, List<Guid>>();
 
             _configFileLocationMap = new Dictionary<string, Dictionary<string, string>>();
 
             _userControlsCache = new Hashtable();
-
-            _loadCulture = DefaultCulture;
 
             _loadUserControlConfigMapTable = new List<Guid>();
 
@@ -226,92 +208,37 @@ namespace ACAT.Lib.Core.UserControlManagement
             // first walk the extension directories
             foreach (string dir in extensionDirs)
             {
-                //String extensionDir = dir + "\\" + AgentManager.AppAgentsRootDir;
-                //load(extensionDir);
-
-                //extensionDir = dir + "\\" + AgentManager.FunctionalAgentsRootDir;
-                //load(extensionDir);
-
-                String extensionDir = dir + "\\" + PanelManager.UiRootDir;
-                load(extensionDir); 
+                load(dir, "ACAT*.dll");
                 if (_DLLError)
                     return false;
             }
 
+            // load the usercontrolconfigmap.xml file
+            var usercontrolConfigMapFile = Path.Combine(FileUtils.GetPanelConfigDir(), UserControlConfigMapFileName);
+            LoadUserControlConfigMap(usercontrolConfigMapFile);
+
             // load the panels from the default culture (which is English)
-            var resourcesDir = FileUtils.GetDefaultResourcesDir();
+            var resourcesDir = Path.Combine(FileUtils.GetPanelConfigDir(), "common");
             Log.Debug("DefaultResourcesDir: " + resourcesDir);
-            load(resourcesDir);
+            load(resourcesDir, "*.xml");
 
-            _cultureConfigIdMapTable.Add(_loadCulture, _loadUserControlConfigMapTable);
+            // Also pick up any overrides for the current culture
+            resourcesDir = Path.Combine(FileUtils.GetPanelConfigDir(), CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
+            Log.Debug("DefaultResourcesDir: " + resourcesDir);
+            load(resourcesDir, "*.xml");
 
-            _configFileLocationMap.Add(_loadCulture, _loadConfigFileLocationMap);
-
-            if (!_cultureConfigIdMapTable.ContainsKey(CultureInfo.DefaultThreadCurrentUICulture.Name))
-            {
-                resourcesDir = Path.Combine(FileUtils.ACATPath, CultureInfo.DefaultThreadCurrentUICulture.Name);
-                if (Directory.Exists(resourcesDir))
-                {
-                    _loadCulture = CultureInfo.DefaultThreadCurrentUICulture.Name;
-
-                    _loadUserControlConfigMapTable = new List<Guid>();
-
-                    _loadConfigFileLocationMap = new Dictionary<string, string>();
-
-                    Log.Debug("ResourcesDir: " + resourcesDir);
-                    load(resourcesDir);
-
-                    _cultureConfigIdMapTable.Add(_loadCulture, _loadUserControlConfigMapTable);
-
-                    _configFileLocationMap.Add(_loadCulture, _loadConfigFileLocationMap);
-                }
-            }
-
-            // load for the current culture
-            if (!_cultureConfigIdMapTable.ContainsKey(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName))
-            {
-                resourcesDir = Path.Combine(FileUtils.ACATPath, CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName);
-                if (Directory.Exists(resourcesDir))
-                {
-                    _loadCulture = CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName;
-
-                    _loadUserControlConfigMapTable = new List<Guid>();
-
-                    _loadConfigFileLocationMap = new Dictionary<string, string>();
-
-                    Log.Debug("ResourcesDir: " + resourcesDir);
-                    load(resourcesDir);
-
-                    _cultureConfigIdMapTable.Add(_loadCulture, _loadUserControlConfigMapTable);
-
-                    _configFileLocationMap.Add(_loadCulture, _loadConfigFileLocationMap);
-                }
-            }
+            _ConfigIdMapTable.Add(DefaultKey, _loadUserControlConfigMapTable);
+            _configFileLocationMap.Add(DefaultKey, _loadConfigFileLocationMap);
 
             return true;
         }
 
-        /// <summary>
-        /// Loads class Types from the specified assembly
-        /// </summary>
-        /// <param name="assembly">Assembly to load from</param>
-        /// <returns>true on success</returns>
-        public static bool Load(Assembly assembly)
-        {
-            if (_userControlsCache == null)
-            {
-                _userControlsCache = new Hashtable();
-            }
-
-            return loadTypesFromAssembly(assembly);
-        }
-
         public static void Reset()
         {
-            if (_cultureConfigIdMapTable != null)
+            if (_ConfigIdMapTable != null)
             {
-                _cultureConfigIdMapTable.Clear();
-                _cultureConfigIdMapTable = null;
+                _ConfigIdMapTable.Clear();
+                _ConfigIdMapTable = null;
             }
 
             if (_masterUserControlConfigMapTable != null)
@@ -352,16 +279,7 @@ namespace ACAT.Lib.Core.UserControlManagement
 
                 Log.IsNull("mapEntry.UsercontrolType", mapEntry.UserControlType);
 
-                var configFilePath = getConfigFilePathFromLocationMap(CultureInfo.DefaultThreadCurrentUICulture.Name, mapEntry.ConfigFileName);
-                if (String.IsNullOrEmpty(configFilePath))
-                {
-                    configFilePath = getConfigFilePathFromLocationMap(CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, mapEntry.ConfigFileName);
-                }
-
-                if (String.IsNullOrEmpty(configFilePath))
-                {
-                    configFilePath = getConfigFilePathFromLocationMap(DefaultCulture, mapEntry.ConfigFileName);
-                }
+                var configFilePath = getConfigFilePathFromLocationMap(mapEntry.ConfigFileName);
 
                 if (mapEntry.UserControlType != null && !String.IsNullOrEmpty(configFilePath))
                 {
@@ -424,11 +342,11 @@ namespace ACAT.Lib.Core.UserControlManagement
         /// <param name="language">culture</param>
         /// <param name="configFile">config file</param>
         /// <returns>full path, empty if not found</returns>
-        private static String getConfigFilePathFromLocationMap(String language, String configFile)
+        private static String getConfigFilePathFromLocationMap(String configFile)
         {
-            if (_configFileLocationMap.ContainsKey(language))
+            if (_configFileLocationMap.ContainsKey(DefaultKey))
             {
-                var map = _configFileLocationMap[language];
+                var map = _configFileLocationMap[DefaultKey];
 
                 if (map.ContainsKey(configFile))
                 {
@@ -446,14 +364,14 @@ namespace ACAT.Lib.Core.UserControlManagement
         /// <param name="language">language</param>
         /// <param name="panelClass">panel class</param>
         /// <returns>object, null if not found</returns>
-        private static UserControlConfigMapEntry getCultureConfigMapEntry(String language, String name)
+        private static UserControlConfigMapEntry getConfigMapEntry(String name)
         {
-            if (!_cultureConfigIdMapTable.ContainsKey(language))
+            if (!_ConfigIdMapTable.ContainsKey(DefaultKey))
             {
                 return null;
             }
 
-            List<Guid> configIds = _cultureConfigIdMapTable[language];
+            List<Guid> configIds = _ConfigIdMapTable[DefaultKey];
 
             foreach (var configId in configIds)
             {
@@ -477,14 +395,14 @@ namespace ACAT.Lib.Core.UserControlManagement
         /// <param name="language">language</param>
         /// <param name="panelClass">panel class</param>
         /// <returns>object, null if not found</returns>
-        private static UserControlConfigMapEntry getCultureConfigMapEntry(String language, Guid guid)
+        private static UserControlConfigMapEntry getConfigMapEntry( Guid guid)
         {
-            if (!_cultureConfigIdMapTable.ContainsKey(language))
+            if (!_ConfigIdMapTable.ContainsKey(DefaultKey))
             {
                 return null;
             }
 
-            List<Guid> configIds = _cultureConfigIdMapTable[language];
+            List<Guid> configIds = _ConfigIdMapTable[DefaultKey];
 
             foreach (var configId in configIds)
             {
@@ -506,46 +424,17 @@ namespace ACAT.Lib.Core.UserControlManagement
         /// to look for files
         /// </summary>
         /// <param name="dir">Directory to walk</param>
-        /// <param name="resursive">Recursively search?</param>
-        private static void load(String dir, bool resursive = true)
+        /// <param name="recursive">Recursively search?</param>
+        private static void load(String dir, string wildcard)
         {
             if (Directory.Exists(dir) && !_DLLError)
             {
-                var walker = new DirectoryWalker(dir, "*.*");
+                var walker = new DirectoryWalker(dir, wildcard);
                 Log.Debug("Walking dir " + dir);
                 walker.Walk(new OnFileFoundDelegate(onFileFound));
             }
         }
 
-        /// <summary>
-        /// Loads relevant types from the assembly and caches them
-        /// </summary>
-        /// <param name="assembly">name of the assembly</param>
-        /// <returns>true on success</returns>
-        private static bool loadTypesFromAssembly(Assembly assembly)
-        {
-            bool retVal = true;
-
-            if (assembly == null)
-            {
-                return false;
-            }
-
-            try
-            {
-                foreach (Type type in assembly.GetTypes())
-                {
-                    addUserControlTypeToCache(type);
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Debug(ex.ToString());
-                retVal = false;
-            }
-
-            return retVal;
-        }
 
         /// <summary>
         /// Found a DLL.  Load the class Types of all the relevant classes
@@ -554,54 +443,31 @@ namespace ACAT.Lib.Core.UserControlManagement
         /// <param name="dllName">name of the dll</param>
         private static void onDllFound(String dllName)
         {
+            TypeLoader<IUserControl> typeLoader = new();
+
             try
             {
                 Log.Debug("Found dll " + dllName);
 
-                var retVal = VerifyDigitalSignature.ValidateCertificate(dllName);
-                if (retVal && !_DLLError)
+                typeLoader.LoadFromAssembly(dllName, false);
+
+                foreach (var type in typeLoader.LoadedTypes.Values)
                 {
-                    try
-                    {
-                        VerifyDigitalSignature.Verify(dllName);
-                    }
-                    catch (Exception ex)
-                    {
-                        ConfirmBoxSingleOption confirmBoxSingleOption = new ConfirmBoxSingleOption
-                        {
-                            Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n Status Error: ERUCCM",
-                            DecisionPrompt = "ok",
-                            LabelFont = 10
-                        };
-                        confirmBoxSingleOption.BringToFront();
-                        confirmBoxSingleOption.TopMost = true;
-                        confirmBoxSingleOption.ShowDialog();
-                        confirmBoxSingleOption.Dispose();
-                        _DLLError = true;
-                    }
+                    Log.Debug("Found type " + type.FullName);
+                    addUserControlTypeToCache(type);
                 }
-                if (!_DLLError)
-                {
-                    if (dllName.ToLower().Contains("usercontrols.dll"))
-                    {
-                        Log.Debug("HAHA");
-                    }
-                    loadTypesFromAssembly(Assembly.LoadFile(dllName));
-                }
-                
             }
+
+            catch (BadImageFormatException ex)
+            {
+                Log.Exception($"Error loading dll {dllName} Exception: {ex.Message}");
+                //_DLLError = true;
+            }
+
             catch (Exception ex)
             {
-                Log.Debug("Could get types from assembly " + dllName + ". Exception : " + ex);
-                if (ex is ReflectionTypeLoadException)
-                {
-                    var typeLoadException = (ReflectionTypeLoadException)ex;
-                    var exceptions = typeLoadException.LoaderExceptions;
-                    foreach (var e in exceptions)
-                    {
-                        Log.Debug("Loader exception: " + e);
-                    }
-                }
+                Log.Exception($"Error loading dll{dllName} Exception: {ex.Message}");
+                _DLLError = true;
             }
         }
 
@@ -616,21 +482,14 @@ namespace ACAT.Lib.Core.UserControlManagement
             String filePath = file.ToLower();
             String fileName = Path.GetFileName(filePath);
 
-            if (String.Compare(fileName, UserControlConfigMapFileName, true) == 0)
+            String extension = Path.GetExtension(filePath);
+            if (String.Compare(extension, ".dll", true) == 0)
             {
-                onPanelConfigMapFileFound(filePath);
+                onDllFound(filePath);
             }
-            else
+            else if (String.Compare(extension, ".xml", true) == 0)
             {
-                String extension = Path.GetExtension(filePath);
-                if (String.Compare(extension, ".dll", true) == 0)
-                {
-                    onDllFound(filePath);
-                }
-                else if (String.Compare(extension, ".xml", true) == 0)
-                {
-                    onXmlFileFound(filePath);
-                }
+                onXmlFileFound(filePath);
             }
         }
 
@@ -642,7 +501,7 @@ namespace ACAT.Lib.Core.UserControlManagement
         /// from the file.
         /// </summary>
         /// <param name="configFileName">full path to the config file</param>
-        private static void onPanelConfigMapFileFound(String configFileName)
+        private static void LoadUserControlConfigMap(String configFileName)
         {
             try
             {
@@ -672,14 +531,20 @@ namespace ACAT.Lib.Core.UserControlManagement
         /// Found an XML file. Store the complete path to the file
         /// to the location map table
         /// </summary>
-        /// <param name="xmlFileName">name of theo xml file</param>
+        /// <param name="xmlFileName">name of the xml file</param>
         private static void onXmlFileFound(String xmlFileName)
         {
-            String fileName = Path.GetFileName(xmlFileName).ToLower();
-            if (!_loadConfigFileLocationMap.ContainsKey(fileName))
+            string fileName = Path.GetFileName(xmlFileName).ToLower();
+
+            if (_loadConfigFileLocationMap.ContainsKey(fileName))
+            {
+                Log.Debug("Updating xmlfile " + fileName + ", fullPath: " + xmlFileName);
+                _loadConfigFileLocationMap[fileName] = xmlFileName;
+            }
+            else
             {
                 Log.Debug("Adding xmlfile " + fileName + ", fullPath: " + xmlFileName);
-                _loadConfigFileLocationMap.Add(fileName.ToLower(), xmlFileName);
+                _loadConfigFileLocationMap.Add(fileName, xmlFileName);
             }
         }
 

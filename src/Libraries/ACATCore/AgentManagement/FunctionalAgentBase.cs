@@ -5,11 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.AgentManagement.Interfaces;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.UserControlManagement.Interfaces;
+using ACAT.Core.Utility;
 using System.Threading;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// Base class for all functional agents
@@ -62,6 +64,15 @@ namespace ACAT.Lib.Core.AgentManagement
         /// </summary>
         /// <returns>trye b success</returns>
         public abstract bool Activate();
+        //{
+        //    return false;
+        //}
+
+        public abstract bool Activate(IUserControl usercontrol);
+        //{
+        //    //throw new System.NotImplementedException();
+        //    return false;
+        //}
 
         /// <summary>
         /// Call this function from within the functional agent

@@ -5,11 +5,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Globalization;
 
-namespace ACAT.Lib.Core.SpellCheckManagement
+namespace ACAT.Core.SpellCheckManagement.Interfaces
 {
     /// <summary>
     /// Interface to Spellcheckers
@@ -20,7 +20,7 @@ namespace ACAT.Lib.Core.SpellCheckManagement
         /// Returns a descriptor which contains a user readable name, a
         /// short textual description and a unique GUID.
         /// </summary>
-        IDescriptor Descriptor { get; }
+        ClassDescriptorAttribute Descriptor { get; }
 
         /// <summary>
         /// Initialize the spell checker
@@ -40,9 +40,9 @@ namespace ACAT.Lib.Core.SpellCheckManagement
         /// </summary>
         /// <param name="configFileDirectory">Directory where the settings are stored</param>
         /// <returns>true on success, false on failure</returns>
-        bool LoadSettings(String configFileDirectory);
+        bool LoadSettings(string configFileDirectory);
 
-        String Lookup(String word);
+        string Lookup(string word);
 
         /// <summary>
         /// Save the word predictor settings to a file that is maintained
@@ -50,7 +50,7 @@ namespace ACAT.Lib.Core.SpellCheckManagement
         /// </summary>
         /// <param name="configFileDirectory">Directory where the settings are stored</param>
         /// <returns>true on success, false on failure</returns>
-        bool SaveSettings(String configFileDirectory);
+        bool SaveSettings(string configFileDirectory);
 
         /// <summary>
         /// Uninitializes

@@ -5,12 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACATResources;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
-using System;
 
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
@@ -19,7 +20,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
     /// </summary>
     ///
 
-    [DescriptorAttribute("AEC69561-1525-4C71-8388-651277AFABC3",
+    [ClassDescriptor("AEC69561-1525-4C71-8388-651277AFABC3",
         "OtherTestForm",
         "Application window used to display other test for BCI")]
     public partial class OtherTestForm : Form
@@ -27,11 +28,11 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <summary>
         /// Custom Tooltip object
         /// </summary>
-        private CustomToolTip customToolTip = new CustomToolTip();
+        private CustomToolTip customToolTip = new();
 
         private BCIMenuOptions.Options Options;
 
-        private Screen primaryScreen = Screen.PrimaryScreen;
+        private readonly Screen primaryScreen = Screen.PrimaryScreen;
 
         /// <summary>
         /// Confirm Box with multiple results
@@ -45,21 +46,11 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         public static BCIMenuOptions.Options ShowFormDialog(Form parent = null, bool setTopMost = false)
         {
             var confirmBox = new OtherTestForm();
-            if (parent != null && setTopMost)
-            {
-                parent.TopMost = false;
-                confirmBox.TopMost = true;
-            }
             //To always display the form in the main screen
             confirmBox.StartPosition = FormStartPosition.Manual;
             confirmBox.Location = confirmBox.primaryScreen.WorkingArea.Location;
             confirmBox.ShowDialog(parent);
             BCIMenuOptions.Options retVal = confirmBox.Options;
-            if (parent != null && setTopMost)
-            {
-                parent.TopMost = true;
-                confirmBox.TopMost = false;
-            }
             confirmBox.Dispose();
             return retVal;
         }
@@ -76,19 +67,19 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             switch (scannerRoundedButtonControl.Name)
             {
                 case var _ when scannerRoundedButtonControl.Name.Contains("ReMapCalibrations"):
-                    customToolTip.ShowToolTip(BCIR.GetString("HintReMapCalibrations"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip.ShowToolTip(StringResources.ResourceManager.GetString("HintReMapCalibrations"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("TriggerCheck"):
-                    customToolTip.ShowToolTip(BCIR.GetString("HintTriggerCheck"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip.ShowToolTip(StringResources.ResourceManager.GetString("HintTriggerCheck"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("SignalCheck"):
-                    customToolTip.ShowToolTip(BCIR.GetString("HintSignalCheck"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip.ShowToolTip(StringResources.ResourceManager.GetString("HintSignalCheck"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
 
                 case var _ when scannerRoundedButtonControl.Name.Contains("EyesOpenClose"):
-                    customToolTip.ShowToolTip(BCIR.GetString("HintEyesOpenCloseCalibration"), (ScannerRoundedButtonControl)sender, 5, 5);
+                    customToolTip.ShowToolTip(StringResources.ResourceManager.GetString("HintEyesOpenCloseCalibration"), (ScannerRoundedButtonControl)sender, 5, 5);
                     break;
             }
         }
@@ -130,7 +121,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error ButtonCalibrate_Click: " + ex.Message);
+                Log.Exception("BCI LOG | Error ButtonCalibrate_Click: " + ex.Message);
                 Close();
             }
         }

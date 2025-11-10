@@ -7,7 +7,7 @@
 
 using System.Threading;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Thread-safe semphore-like behavior to gate
@@ -64,10 +64,7 @@ namespace ACAT.Lib.Core.Utility
             if (Interlocked.Read(ref _lockCount) <= 0)
             {
                 Interlocked.Exchange(ref _lockCount, 0);
-                if (EvtUnlocked != null)
-                {
-                    EvtUnlocked();
-                }
+                EvtUnlocked?.Invoke();
             }
         }
     }

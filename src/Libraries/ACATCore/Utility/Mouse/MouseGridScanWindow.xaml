@@ -1,4 +1,4 @@
-﻿<Window x:Class="ACAT.Lib.Core.Utility.MouseGridScanWindow"
+﻿<Window x:Class="ACAT.Core.Utility.MouseGridScanWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Mouse Grid Scan Window" Height="600" Width="800" AllowsTransparency="True" WindowStyle="None">

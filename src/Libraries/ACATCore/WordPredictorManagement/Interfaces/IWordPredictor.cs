@@ -5,12 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using ACAT.Core.PreferencesManagement.Interfaces;
+using ACAT.Core.Utility.TypeLoader;
 
-namespace ACAT.Lib.Core.WordPredictionManagement
+namespace ACAT.Core.WordPredictorManagement.Interfaces
 {
     /// <summary>
     /// Word prediction mode changed
@@ -72,7 +74,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
     /// more accurate predictions based on the user.
     /// All WordPredictors should implement this interface.
     /// </summary>
-    public interface IWordPredictor : IDisposable
+    public interface IWordPredictor : ISupportsPreferences, IPluginExtension, IExtension, IDisposable
     {
         /// <summary>
         /// Event to indicate mode has changed
@@ -98,7 +100,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// Returns a descriptor which contains a user readable name, a
         /// short textual description and a unique GUID.
         /// </summary>
-        IDescriptor Descriptor { get; }
+        //ClassDescriptorAttribute Descriptor { get; }
 
         /// <summary>
         /// Whether puncutations should be a part of the prediction. For
@@ -152,7 +154,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        bool Learn(String text, WordPredictorMessageTypes RequestType);
+        bool Learn(string text, WordPredictorMessageTypes RequestType);
 
         /// <summary>
         /// Call this on a context switch to a document.  Creates
@@ -160,7 +162,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// </summary>
         /// <param name="text">Text from the document</param>
         /// <returns>Handle.  Pass this to unload</returns>
-        int LoadContext(String text);
+        int LoadContext(string text);
 
         /// <summary>
         /// Reset to factory default settings
@@ -173,7 +175,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// </summary>
         /// <param name="configFileDirectory">Directory where the settings are stored</param>
         /// <returns>true on success, false on failure</returns>
-        bool LoadSettings(String configFileDirectory);
+        bool LoadSettings(string configFileDirectory);
 
         WordPredictionResponse Predict(WordPredictionRequest req);
 
@@ -193,7 +195,7 @@ namespace ACAT.Lib.Core.WordPredictionManagement
         /// </summary>
         /// <param name="configFileDirectory">Directory where the settings are stored</param>
         /// <returns>true on success, false on failure</returns>
-        bool SaveSettings(String configFileDirectory);
+        bool SaveSettings(string configFileDirectory);
 
         /// <summary>
         /// Set the mode in which the predictor will work

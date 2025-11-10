@@ -5,17 +5,20 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.ThemeManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// Base class for all horizontal strip scanners.  This
@@ -82,9 +85,9 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>
@@ -133,6 +136,8 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             get { return _scannerCommon.TextController; }
         }
+
+        public Guid Id => Descriptor.Id;
 
         /// <summary>
         /// Set the form style
@@ -260,13 +265,10 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         /// <param name="m">Windows message</param>
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         protected override void WndProc(ref Message m)
         {
-            if (_scannerCommon != null)
-            {
-                _scannerCommon.HandleWndProc(m);
-            }
+            _scannerCommon?.HandleWndProc(m);
 
             base.WndProc(ref m);
         }
@@ -292,6 +294,10 @@ namespace ACAT.Lib.Core.PanelManagement
             setFormWidth();
 
             _scannerCommon.OnLoad();
+            var colorScheme = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(ColorSchemes.TalkWindowSchemeName);
+            this.BackColor = colorScheme.Background;
+            this.ForeColor = colorScheme.Foreground;
+
 
             PanelCommon.AnimationManager.Start(_rootWidget);
         }
@@ -303,7 +309,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         private void setFormWidth()
         {
-            List<Widget> children = new List<Widget>();
+            List<Widget> children = new();
             _rootWidget.Finder.FindAllButtons(children);
             int count = children.Count();
             int width = B1.Width + B1.Margin.Left + B1.Margin.Right;

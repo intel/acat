@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.InputActuators;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement.BaseActuators;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.Utility;
+using ACATResources;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Utils
 {
     /// <summary>
     /// Repositions the scanner to one of the pre-defined spots on
@@ -93,7 +93,7 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             _form.Invoke(new MethodInvoker(delegate
             {
-                _toastForm = new ToastForm(R.GetString("TriggerToStop"), -1);
+                _toastForm = new ToastForm(StringResources.TriggerToStop, -1);
                 Windows.SetWindowPosition(_toastForm, Windows.WindowPosition.CenterScreen);
                 _toastForm.Show();
 
@@ -128,7 +128,7 @@ namespace ACAT.Lib.Core.PanelManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -238,9 +238,7 @@ namespace ACAT.Lib.Core.PanelManagement
             {
                 unsubscribeFromHookEvents();
 
-                if (_form != null)
-                {
-                    _form.Invoke(new MethodInvoker(delegate
+                _form?.Invoke(new MethodInvoker(delegate
                     {
                         if (_toastForm != null)
                         {
@@ -251,13 +249,9 @@ namespace ACAT.Lib.Core.PanelManagement
                         if (_timer != null)
                         {
                             _timer.Stop();
-                            if (EvtAutoPostionScannerStopped != null)
-                            {
-                                EvtAutoPostionScannerStopped(this, EventArgs.Empty);
-                            }
+                            EvtAutoPostionScannerStopped?.Invoke(this, EventArgs.Empty);
                         }
                     }));
-                }
             }
             catch
             {

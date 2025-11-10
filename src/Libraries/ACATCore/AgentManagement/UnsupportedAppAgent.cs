@@ -5,19 +5,19 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// Application agent for all unsupported applications. This is the
     /// default agent used by the Agent Manager if it can't find an agent
     /// that supports the current foreground process.
     /// </summary>
-    [DescriptorAttribute("B23F799A-2A08-4387-BF5D-D4F80F79951A",
+    [ClassDescriptor("B23F799A-2A08-4387-BF5D-D4F80F79951A",
                         "Unsupported App Agent",
                         "Application Agent for unsupported applications")]
     public class UnsupportedAppAgent : GenericAppAgentBase
@@ -30,7 +30,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <summary>
         /// Ignore ACAT. There is a dedicated agent for it
         /// </summary>
-        private static String[] _ignoreAppList = { "acatapp" };
+        private static readonly String[] _ignoreAppList = { "acatapp" };
 
         /// <summary>
         /// Returns the processes supported by this agent.
@@ -77,7 +77,7 @@ namespace ACAT.Lib.Core.AgentManagement
         /// <param name="handled">true if handled</param>
         public override void OnFocusChanged(WindowActivityMonitorInfo monitorInfo, ref bool handled)
         {
-            Log.Debug();
+            Log.Verbose();
 
             if (ignoreApp(monitorInfo.FgProcess.ProcessName))
             {

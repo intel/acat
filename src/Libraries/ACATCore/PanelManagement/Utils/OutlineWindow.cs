@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Utils
 {
     /// <summary>
     /// Draws an outline (a red border) around a window to
@@ -69,7 +69,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         /// <param name="rectangle">Rectangle to draw</param>
         /// <param name="penWidth">width of the pen</param>
-        public void Draw(System.Windows.Rect rectangle, int penWidth = 0)
+        public void Draw(Rectangle rectangle, int penWidth = 0)
         {
             Log.Debug(rectangle.ToString());
 
@@ -105,7 +105,7 @@ namespace ACAT.Lib.Core.PanelManagement
                     y = penWidth;
                 }
 
-                if (rectangle.Right > (Screen.PrimaryScreen.WorkingArea.Width - penWidth))
+                if (rectangle.Right > Screen.PrimaryScreen.WorkingArea.Width - penWidth)
                 {
                     rectangle.Width = rectangle.Width - (rectangle.Right - Screen.PrimaryScreen.WorkingArea.Width) - 3 * penWidth;
                 }
@@ -115,8 +115,8 @@ namespace ACAT.Lib.Core.PanelManagement
                     rectangle.Height = rectangle.Height - (rectangle.Bottom - Screen.PrimaryScreen.WorkingArea.Height) - penWidth;
                 }
 
-                var width = (rectangle.X > 0) ? (float)rectangle.Width : (float)rectangle.Width + (float)rectangle.X;
-                var height = (rectangle.Y > 0) ? (float)rectangle.Height : (float)rectangle.Height + (float)rectangle.Y;
+                var width = rectangle.X > 0 ? rectangle.Width : rectangle.Width + (float)rectangle.X;
+                var height = rectangle.Y > 0 ? rectangle.Height : rectangle.Height + (float)rectangle.Y;
 
                 Log.Debug("Draw rectangle " + x + " " + y + " " + width + " " + height);
 
@@ -124,7 +124,6 @@ namespace ACAT.Lib.Core.PanelManagement
             }
             catch
             {
-
             }
             finally
             {
@@ -142,7 +141,7 @@ namespace ACAT.Lib.Core.PanelManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -168,11 +167,10 @@ namespace ACAT.Lib.Core.PanelManagement
 
             form.Opacity = 0.9;
             form.ShowInTaskbar = false;
-            form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            form.FormBorderStyle = FormBorderStyle.None;
             form.WindowState = FormWindowState.Maximized;
 
             Log.Debug("Form width: " + form.Width + "Form height: " + form.Height);
-            form.TopMost = true;
             int boundWidth = Screen.PrimaryScreen.Bounds.Width;
             int boundHeight = Screen.PrimaryScreen.Bounds.Height;
             Log.Debug("boundWidth=" + boundWidth + " boundHeight=" + boundHeight);

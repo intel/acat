@@ -7,7 +7,7 @@
 
 using System.Windows.Forms;
 
-namespace ACAT.Extensions
+namespace ACAT.Extension.UI
 {
     /// <summary>
     /// The interface for the textbox that is displayed in the talk application

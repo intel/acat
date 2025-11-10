@@ -27,13 +27,13 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGUtils
         /// <returns>Returns a new instance of the object read from the binary file.</returns>
         public static T ReadFromBinaryFile<T>(string filePath)
         {
-            using (Stream stream = File.Open(filePath, FileMode.Open))
+            using Stream stream = File.Open(filePath, FileMode.Open);
+            var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             {
-                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                binaryFormatter.Binder = new PreMergeToMergedDeserializationBinder();
+                Binder = new PreMergeToMergedDeserializationBinder()
+            };
 
-                return (T)binaryFormatter.Deserialize(stream);
-            }
+            return (T)binaryFormatter.Deserialize(stream);
         }
 
         /// <summary>
@@ -47,12 +47,12 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGUtils
         /// <param name="append">If false the file will be overwritten if it already exists. If true the contents will be appended to the file.</param>
         public static void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false)
         {
-            using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
+            using Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create);
+            var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             {
-                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                binaryFormatter.Binder = new PreMergeToMergedDeserializationBinder();
-                binaryFormatter.Serialize(stream, objectToWrite);
-            }
+                Binder = new PreMergeToMergedDeserializationBinder()
+            };
+            binaryFormatter.Serialize(stream, objectToWrite);
         }
     }
 }
@@ -64,14 +64,13 @@ internal sealed class PreMergeToMergedDeserializationBinder : SerializationBinde
 {
     public override Type BindToType(string assemblyName, string typeName)
     {
-        Type typeToDeserialize = null;
         string currentAssemblyInfo = Assembly.GetExecutingAssembly().FullName;
 
         //my modification
         string currentAssemblyName = currentAssemblyInfo.Split(',')[0];
         if (assemblyName.StartsWith(currentAssemblyName)) assemblyName = currentAssemblyInfo;
 
-        typeToDeserialize = Type.GetType(string.Format("{0}, {1}", typeName, assemblyName));
+        Type typeToDeserialize = Type.GetType(string.Format("{0}, {1}", typeName, assemblyName));
         return typeToDeserialize;
     }
 }

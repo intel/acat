@@ -1,5 +1,8 @@
 ﻿
-namespace ACAT.Lib.Extension
+using ACATResources;
+using ACAT.Core.WidgetManagement;
+
+namespace ACAT.Extension
 
 {
     partial class UserControlScreenLock
@@ -34,12 +37,12 @@ namespace ACAT.Lib.Extension
             this.label1 = new System.Windows.Forms.Label();
             this.labelScanSpeedSelect3 = new System.Windows.Forms.Label();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
-            this.B4 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.buttonUnlock = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B5 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B4 = new ScannerRoundedButtonControl();
+            this.B3 = new ScannerRoundedButtonControl();
+            this.B2 = new ScannerRoundedButtonControl();
+            this.B1 = new ScannerRoundedButtonControl();
+            this.buttonUnlock = new ScannerRoundedButtonControl();
+            this.B5 = new ScannerRoundedButtonControl();
             this.tableLayoutPanelMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,7 +75,7 @@ namespace ACAT.Lib.Extension
             this.tableLayoutPanelMain.SetRowSpan(this.label1, 2);
             this.label1.Size = new System.Drawing.Size(674, 128);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Screen Locked";
+            this.label1.Text = StringResources.ScreenLocked;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelScanSpeedSelect3
@@ -89,7 +92,7 @@ namespace ACAT.Lib.Extension
             this.tableLayoutPanelMain.SetRowSpan(this.labelScanSpeedSelect3, 2);
             this.labelScanSpeedSelect3.Size = new System.Drawing.Size(510, 128);
             this.labelScanSpeedSelect3.TabIndex = 71;
-            this.labelScanSpeedSelect3.Text = "To unlock, use your switch to type the pin shown in the box";
+            this.labelScanSpeedSelect3.Text = StringResources.ToUnlockUseYourSwitchToTypeThePinShownInTheBox;
             this.labelScanSpeedSelect3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanelMain
@@ -243,7 +246,7 @@ namespace ACAT.Lib.Extension
             this.buttonUnlock.Name = "buttonUnlock";
             this.buttonUnlock.Size = new System.Drawing.Size(164, 58);
             this.buttonUnlock.TabIndex = 82;
-            this.buttonUnlock.Text = "Unlock";
+            this.buttonUnlock.Text = StringResources.buttonUnlock;
             this.buttonUnlock.UseMnemonic = false;
             this.buttonUnlock.UseVisualStyleBackColor = false;
             this.buttonUnlock.Click += new System.EventHandler(this.buttonDone_Click);
@@ -289,13 +292,13 @@ namespace ACAT.Lib.Extension
 
         private System.Windows.Forms.RichTextBox richTextBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelMain;
-        private Core.WidgetManagement.ScannerRoundedButtonControl B4;
-        private Core.WidgetManagement.ScannerRoundedButtonControl B3;
-        private Core.WidgetManagement.ScannerRoundedButtonControl B2;
+        private ScannerRoundedButtonControl B4;
+        private ScannerRoundedButtonControl B3;
+        private ScannerRoundedButtonControl B2;
         private System.Windows.Forms.Label labelScanSpeedSelect3;
         private System.Windows.Forms.Label label1;
-        private Core.WidgetManagement.ScannerRoundedButtonControl B1;
-        private Core.WidgetManagement.ScannerRoundedButtonControl buttonUnlock;
-        private Core.WidgetManagement.ScannerRoundedButtonControl B5;
+        private ScannerRoundedButtonControl B1;
+        private ScannerRoundedButtonControl buttonUnlock;
+        private ScannerRoundedButtonControl B5;
     }
 }

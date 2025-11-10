@@ -11,27 +11,42 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Utils;
+using ACAT.Core.Utility;
+using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.Actuators.CameraActuator
+namespace ACAT.Extensions.Actuators.CameraActuator
 {
     public partial class ConfigureActuatorForm : Form
     {
         public bool IsClosing;
+
+        // TODO - Localize Me
         private const String _calibrating = "Calibrating...\nPlease be still";
+
+        // TODO - Localize Me
         private const String _initializing = "Initializing\nPlease wait...";
+
+        // TODO - Localize Me
         private const String _switchingCamera = "Switching camera\nPlease wait...";
+
+        // TODO - Localize Me
         private const String textCalibratingNeutralFace = "In Calibration - System is calibrating for NEUTRAL face\n\nDO NOT do any head moverments or facial gestures\n\nStay still";
+
+        // TODO - Localize Me
         private const String textSelectCamera = "Practice the selected gestures a few times.\n\nACAT will indicate below if it detects a successful gesture.\n\nClick on Settings to adjust gesture sensitivity and hold times";
+
+        // TODO - Localize Me
         private const String textSetParameters = "1. Adjust settings.\n2. Click on Apply Changes\n3. Test your gestures until you’re comfortable with the settings.\n\nACAT will indicate below if it detects a successful gesture";
-        private Color _buttonBackColor;
+
+        private readonly Color _buttonBackColor;
         private bool _gestureDetectedAtleastOnce = false;
-        private CameraActuator _cameraActuator;
+        private readonly CameraActuator _cameraActuator;
         private int _gestureCount = 0;
         private Mode _mode = Mode.SelectCamera;
         private SampleImageForm _sampleImageForm = null;
@@ -40,8 +55,6 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         private VideoWindowFinder _videoWindowFinder;
         private WebcamGestureSelectUserControl _webcamGestureSelectUserControl;
         private WebcamGestureSettingsUserControl _webcamGestureSettingsUserControl;
-        private WindowActiveWatchdog _windowActiveWatchdog;
-        private WindowOverlapWatchdog _windowOverlapWatchdog;
 
         internal ConfigureActuatorForm(CameraActuator cameraActuator)
         {
@@ -97,17 +110,16 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
                 setLabelPromptDefaultText();
 
                 Log.Debug("Camera sensor is is running. Calling _videoWindowFinder.Start()");
-                //_videoWindowFinder.Start();
+                _videoWindowFinder.Start();
             }
         }
 
         private void _videoWindowFinder_EvtVideoWindowDisplayed(IntPtr handle)
         {
-            Log.Debug();
+            Log.Verbose();
 
             try
             {
-                _windowOverlapWatchdog = new WindowOverlapWatchdog(handle.ToInt32());
 
                 Log.Debug("Docking calibration window");
 
@@ -123,7 +135,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
                     {
                         _sampleImageForm = new SampleImageForm();
 
-                        User32Interop.RECT rect = new User32Interop.RECT();
+                        User32Interop.RECT rect = new();
                         User32Interop.GetWindowRect(handle, out rect);
 
                         _sampleImageForm.Show(this);
@@ -144,7 +156,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 
         private void _webcamGestureSelectUserControl_EvtGestureSelected(bool cheekTwitch, bool eyebrowRaise)
         {
-            var switches = _cameraActuator.Switches;
+            _ = _cameraActuator.Switches;
 
             if (cheekTwitch && eyebrowRaise)
             {
@@ -186,7 +198,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
                     return;
                 }
             }
-            else if (_cameraActuator.CameraActuatorInitInProgress && !_gestureDetectedAtleastOnce )
+            else if (_cameraActuator.CameraActuatorInitInProgress && !_gestureDetectedAtleastOnce)
             {
                 if (!showDoneActionConfirm("You have not tested your facial gestures to check if ACAT can detect them. Exit Webcam Calibration?"))
                 {
@@ -209,8 +221,6 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
             CameraSensor.hideVideoWindow();
 
             _textTimer.Stop();
-
-            _windowActiveWatchdog.Dispose();
 
             saveActuatorConfig();
 
@@ -293,12 +303,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 
             setControlsEnable(false);
 
-            var form = Context.AppPanelManager.GetCurrentForm() as Form;
-            if (form == null)
-            {
-                form = this;
-            }
-
+            var form = Context.AppPanelManager.GetCurrentForm() as Form ?? this;
             try
             {
                 form.Invoke(new MethodInvoker(delegate
@@ -310,7 +315,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 
@@ -322,11 +327,6 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 
         private void ConfigureActuatorForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (_windowOverlapWatchdog != null)
-            {
-                _windowOverlapWatchdog.Dispose();
-                _windowOverlapWatchdog = null;
-            }
 
             if (_sampleImageForm != null)
             {
@@ -344,7 +344,6 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
             Log.Debug("ENtered ConfigureActuatorForm_Load");
 
             Resize += CalibrateForm_Resize;
-            _windowActiveWatchdog = new WindowActiveWatchdog(this);
 
             _webcamGestureSelectUserControl = new WebcamGestureSelectUserControl(_cameraActuator);
             _webcamGestureSettingsUserControl = new WebcamGestureSettingsUserControl(_cameraActuator);
@@ -363,7 +362,6 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 
         private void ConfigureActuatorForm_Shown(object sender, EventArgs e)
         {
-            ScannerFocus.SetFocus(this);
 
             _textTimer = new Timer
             {
@@ -417,13 +415,12 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 
         private void pause()
         {
-            _windowActiveWatchdog.Pause();
         }
 
         private void resume()
         {
-            _windowActiveWatchdog.Resume();
         }
+
         private void saveActuatorConfig()
         {
             var actuatorConfig = Context.AppActuatorManager.GetActuatorConfig();
@@ -439,7 +436,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 
         private void setControlsEnable(bool enable, bool isCalibrating = false)
         {
-            var buttonEnable = (isCalibrating) ? false : enable;
+            var buttonEnable = !isCalibrating && enable;
 
             //Windows.SetEnabled(buttonDone, buttonEnable);
 
@@ -506,6 +503,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
                     break;
             }
         }
+
         private void setNotificationText(String text = "")
         {
             try
@@ -530,22 +528,21 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         {
             pause();
 
-            var msgBox = new ConfirmBoxTwoOptions
+            ConfirmBoxTwoOption msgBox = new()
             {
                 Prompt = message,
-                Op1Prompt = "Yes",
-                Op2Prompt = "No"
+                Op1Prompt = StringResources.Yes,
+                Op3Prompt = StringResources.No
             };
 
-            msgBox.ShowDialog(this);
-
-            var result = msgBox.OptionsResult;
+            var result = msgBox.ShowDialog(this);
 
             msgBox.Dispose();
 
             resume();
 
-            return result == ConfirmBoxTwoOptions.Options.Option1;
+            return result == DialogResult.Yes; // TODO - Localize Me
+            //return result == ConfirmBoxTwoOption.Options.Option1;
         }
 
         private void startTimer(String message)

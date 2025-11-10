@@ -11,18 +11,13 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Applications;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Extension;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
+using ACAT.Extension;
 using ACATExtension.CommandHandlers;
 using System;
-using System.ComponentModel;
-using System.IO;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.Pkcs;
 using System.Windows.Forms;
 
 namespace ACATConfig
@@ -40,15 +35,15 @@ namespace ACATConfig
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="arg">event args</param>
-        private static void form_EvtLanguageChanged(object sender, ACATConfigMainForm.PreferencesLanguageChanged arg)
+     /*   private static void form_EvtLanguageChanged(object sender, ACATConfigMainForm.PreferencesLanguageChanged arg)
         {
-            Common.AppPreferences.Language = arg.CI.Name;
+            Common.AppPreferences.Language = arg.CI.TwoLetterISOLanguageName;
             ResourceUtils.SetCulture(Common.AppPreferences.Language);
             if (arg.IsDefault)
             {
                 Common.AppPreferences.Save();
             }
-        }
+        }*/
 
         /// <summary>
         /// The main entry point for the application.
@@ -63,6 +58,18 @@ namespace ACATConfig
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            // Ensure PreferencesEditForm is initialized before other steps.
+            // This is required to avoid issues with preference editing dialogs later.
+            // If initialization fails, log the error and exit.
+                        try
+                        {
+                            PreferencesEditForm.EnsureInitialized();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Failed to initialize PreferencesEditForm.\n\n" + ex.Message, "ACAT", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
 
             if (!validateACATCoreLibraryCertificates())
             {
@@ -77,7 +84,7 @@ namespace ACATConfig
 
             CoreGlobals.AppId = "ACATConfig";
 
-            CoreGlobals.EvtFatalError += CoreGlobals_EvtFatalError;
+            FatalErrorHandler.EvtFatalError += CoreGlobals_EvtFatalError;
 
             FileUtils.LogAssemblyInfo();
 
@@ -98,6 +105,11 @@ namespace ACATConfig
                 return;
             }
 
+            if (!AppCommon.SetCulture())
+            {
+                return;
+            }
+
             User32Interop.SetProcessDPIAware();
 
             AppCommon.CheckDisplayScalingAndResolution();
@@ -105,11 +117,6 @@ namespace ACATConfig
             Log.SetupListeners();
 
             CommandDescriptors.Init();
-
-            if (!AppCommon.SetCulture())
-            {
-                return;
-            }
 
             Common.PreInit();
             Common.Init();
@@ -120,7 +127,7 @@ namespace ACATConfig
             splash.Close();
 
             var form = new ACATConfigMainForm();
-            form.EvtLanguageChanged += form_EvtLanguageChanged;
+            //form.EvtLanguageChanged += form_EvtLanguageChanged;
             Application.Run(form);
         }
 
@@ -140,7 +147,6 @@ namespace ACATConfig
                 Context.AppPanelManager.GetCurrentForm().OnPause();
                 var form = Context.AppPanelManager.GetCurrentForm().PanelCommon.RootWidget.UIControl as Form;
                 ConfirmBoxLargeSingleOption.ShowDialog(reason, "OK", form);
-
             }
             else
             {

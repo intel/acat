@@ -18,6 +18,7 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
     public enum BCIClassifierStatus
     {
         Ok,
+        Mismatch,
         Expired,
         NotFound,
     }

@@ -5,7 +5,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-namespace ACAT.Lib.Core.TTSManagement
+using ACAT.Core.TTSManagement.Interfaces;
+
+namespace ACAT.Core.TTSManagement
 {
     /// <summary>
     /// Represents an integer value that has a range

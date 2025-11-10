@@ -5,23 +5,23 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AbbreviationsManagement;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.CommandManagement;
-using ACAT.Lib.Core.SpellCheckManagement;
-using ACAT.Lib.Core.ThemeManagement;
-using ACAT.Lib.Core.TTSManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
-using ACAT.Lib.Core.WordPredictionManagement;
+using ACAT.Core.AbbreviationsManagement;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.CommandManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.SpellCheckManagement;
+using ACAT.Core.ThemeManagement;
+using ACAT.Core.TTSManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Core.WordPredictorManagement;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// Encapsulates system wide global shared objects. Creates
@@ -42,7 +42,7 @@ namespace ACAT.Lib.Core.PanelManagement
         private static readonly AgentManager _agentManager;
         private static readonly AutomationEventManager _automationEventManager;
         private static readonly CommandManager _commandManager;
-        private static readonly List<String> _extensionDirs = new List<String>();
+        private static readonly List<String> _extensionDirs = new();
         private static readonly PanelManager _panelManager;
         private static readonly SpellCheckManager _spellCheckManager;
         private static readonly ThemeManager _themeManager;
@@ -75,7 +75,7 @@ namespace ACAT.Lib.Core.PanelManagement
         static Context()
         {
             AppQuit = false;
-            AppWindowPosition = Windows.WindowPosition.MiddleRight;
+            AppWindowPosition = Windows.WindowPosition.CenterScreen;
 
             //Initialize all the manager singleton objects
             _abbreviationsManager = AbbreviationsManager.Instance;
@@ -111,6 +111,7 @@ namespace ACAT.Lib.Core.PanelManagement
             PerfMon = 128,
             NoUI = 256,
             NoActuator = 512,
+            MouseScanner = 1024,
             All = 0xffff
         }
 
@@ -233,26 +234,26 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public static bool ShowTalkWindowOnStartup { get; set; }
 
-        /// <summary>
-        /// Changes the culture to the specified culture
-        /// </summary>
-        /// <param name="culture">culture to change to</param>
-        public static void ChangeCulture(CultureInfo cultureInfo)
-        {
-            var culture = CultureInfo.CreateSpecificCulture(cultureInfo.Name);
+        ///// <summary>
+        ///// Changes the culture to the specified culture
+        ///// </summary>
+        ///// <param name="culture">culture to change to</param>
+        //public static void ChangeCulture(CultureInfo cultureInfo)
+        //{
+        //    var culture = CultureInfo.CreateSpecificCulture(cultureInfo.Name);
 
-            CultureInfo.DefaultThreadCurrentCulture = culture;
-            CultureInfo.DefaultThreadCurrentUICulture = culture;
+        //    CultureInfo.DefaultThreadCurrentCulture = culture;
+        //    CultureInfo.DefaultThreadCurrentUICulture = culture;
 
-            ResourceUtils.InstallLanguageForUser();
+        //    ResourceUtils.InstallLanguageForUser();
 
-            if (EvtCultureChanged != null)
-            {
-                WindowActivityMonitor.Pause();
-                EvtCultureChanged(cultureInfo, new CultureChangedEventArg(cultureInfo));
-                WindowActivityMonitor.Resume();
-            }
-        }
+        //    if (EvtCultureChanged != null)
+        //    {
+        //        WindowActivityMonitor.Pause();
+        //        EvtCultureChanged(cultureInfo, new CultureChangedEventArg(cultureInfo));
+        //        WindowActivityMonitor.Resume();
+        //    }
+        //}
 
         /// <summary>
         /// Disposes allocated resources
@@ -263,64 +264,40 @@ namespace ACAT.Lib.Core.PanelManagement
 
             if (!isEnabled(StartupFlags.NoActuator))
             {
-                if (AppActuatorManager != null)
-                {
-                    AppActuatorManager.Dispose();
-                }
+                AppActuatorManager?.Dispose();
             }
 
             if (!isEnabled(StartupFlags.NoUI))
             {
-                if (AppPanelManager != null)
-                {
-                    AppPanelManager.Dispose();
-                }
+                AppPanelManager?.Dispose();
             }
 
             if (isEnabled(StartupFlags.WordPrediction))
             {
-                if (AppWordPredictionManager != null)
-                {
-                    AppWordPredictionManager.Dispose();
-                }
+                AppWordPredictionManager?.Dispose();
             }
 
             if (isEnabled(StartupFlags.TextToSpeech))
             {
-                if (AppTTSManager != null)
-                {
-                    AppTTSManager.Dispose();
-                }
+                AppTTSManager?.Dispose();
             }
 
             if (isEnabled(StartupFlags.SpellChecker))
             {
-                if (AppSpellCheckManager != null)
-                {
-                    AppSpellCheckManager.Dispose();
-                }
+                AppSpellCheckManager?.Dispose();
             }
 
             if (isEnabled(StartupFlags.Abbreviations))
             {
-                if (AppAbbreviationsManager != null)
-                {
-                    AppAbbreviationsManager.Dispose();
-                }
+                AppAbbreviationsManager?.Dispose();
             }
 
             if (isEnabled(StartupFlags.AgentManager))
             {
-                if (AppAgentMgr != null)
-                {
-                    AppAgentMgr.Dispose();
-                }
+                AppAgentMgr?.Dispose();
             }
 
-            if (AppAutomationEventManger != null)
-            {
-                AppAutomationEventManger.Dispose();
-            }
+            AppAutomationEventManger?.Dispose();
 
             WindowActivityMonitor.Dispose();
         }
@@ -351,6 +328,11 @@ namespace ACAT.Lib.Core.PanelManagement
 
             bool retVal = AppCommandManager.Init();
 
+            if (retVal)
+            {
+                retVal = createAgentManager();
+            }
+
             if (retVal && !isEnabled(StartupFlags.NoUI))
             {
                 retVal = createThemeManager();
@@ -364,6 +346,11 @@ namespace ACAT.Lib.Core.PanelManagement
                 {
                     retVal = initWidgetManager();
                 }
+            }
+
+            if (retVal)
+            {
+                retVal = createActuatorManager();
             }
 
             if (retVal)
@@ -384,16 +371,6 @@ namespace ACAT.Lib.Core.PanelManagement
             if (retVal)
             {
                 retVal = createAbbreviationsManager();
-            }
-
-            if (retVal)
-            {
-                retVal = createAgentManager();
-            }
-
-            if (retVal)
-            {
-                retVal = createActuatorManager();
             }
 
             if (retVal)
@@ -450,7 +427,6 @@ namespace ACAT.Lib.Core.PanelManagement
 
             if (isEnabled(StartupFlags.WindowsActivityMonitor))
             {
-                WindowActivityMonitor.GetActiveWindow();
                 WindowActivityMonitor.Start();
             }
 
@@ -656,7 +632,7 @@ namespace ACAT.Lib.Core.PanelManagement
 
                 if (retVal)
                 {
-                    retVal = AppWordPredictionManager.SetActiveWordPredictor();
+                    retVal = AppWordPredictionManager.SetActiveWordPredictor(CultureInfo.CurrentUICulture);
                     if (!retVal)
                     {
                         setCompletionStatus("Error setting active word prediction engine");
@@ -680,32 +656,10 @@ namespace ACAT.Lib.Core.PanelManagement
         private static void getExtensionDirs()
         {
             _extensionDirs.Clear();
-            var dirs = CoreGlobals.AppPreferences.Extensions.Split(',');
-            var extensionDirRootPath = FileUtils.GetExtensionDir();
-            if (Directory.Exists(extensionDirRootPath))
-            {
-                foreach (var str in dirs)
-                {
-                    var dir = str.Trim();
-                    if (Path.IsPathRooted(dir))
-                    {
-                        _extensionDirs.Add(dir);
-                    }
-                    else
-                    {
-                        var fullPath = FileUtils.GetExtensionDir(dir);
-                        if (Directory.Exists(fullPath))
-                        {
-                            var attr = File.GetAttributes(fullPath);
-                            if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
-                            {
-                                Log.Debug("Adding Extensiondir " + fullPath);
-                                _extensionDirs.Add(fullPath);
-                            }
-                        }
-                    }
-                }
-            }
+            // TODO: Add support for multiple extension directories
+            //var dirs = CoreGlobals.AppPreferences.Extensions.Split(',');
+
+            _extensionDirs.Add(FileUtils.GetExtensionDir());
         }
 
         /// <summary>
@@ -741,7 +695,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="fatal">is the error fatal?</param>
         private static void setCompletionStatus(String status, bool fatal = true)
         {
-            _completionStatus = (fatal) ? "Fatal error. " + status : status;
+            _completionStatus = status;
             _isFatal = fatal;
         }
 

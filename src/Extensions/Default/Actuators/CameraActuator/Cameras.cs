@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 
-namespace ACAT.Extensions.Default.Actuators.CameraActuator
+namespace ACAT.Extensions.Actuators.CameraActuator
 {
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
         Guid("29840822-5B84-11D0-BD3B-00A0C911CE86"),
@@ -61,7 +61,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 
     public class Cameras
     {
-        public static readonly Guid VideoInputDevice = new Guid(0x860BB310,
+        public static readonly Guid VideoInputDevice = new(0x860BB310,
                                                                 0x5D01, 0x11d0,
                                                                 0xBD, 0x3B,
                                                                 0x00, 0xA0,
@@ -107,11 +107,10 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         private static List<IMoniker> getDevicesOfCategory(Guid category)
         {
             var monikerList = new List<IMoniker>();
-            IEnumMoniker enumMoniker;
 
             var enumDev = (ICreateDevEnum)new CreateDevEnum();
 
-            var hResult = enumDev.CreateClassEnumerator(category, out enumMoniker, 0);
+            var hResult = enumDev.CreateClassEnumerator(category, out IEnumMoniker enumMoniker, 0);
             if (hResult != S_OK || enumMoniker == null)
             {
                 return monikerList;
@@ -169,8 +168,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 
                 var bag = (IPropertyBag)bagObject;
 
-                object val;
-                var hResult = bag.Read(propertyName, out val, null);
+                var hResult = bag.Read(propertyName, out object val, null);
 
                 if (hResult != S_OK)
                 {

@@ -10,20 +10,28 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
+using ACATResources;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
 
-namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
     /// <summary>
     /// Preference settings for the ConvAssist word predictor (English)
     /// </summary>
     [Serializable]
-    public class Settings : PreferencesBase
+    public partial class Settings : PreferencesBase
     {
-        [StringDescriptor("A string of characters that should be filtered out from the predicted words, eg, punctuations")]
-        public String FilterChars = String.Empty;
+       [Display(Name = nameof(StringResources.Astringofcharactersthatshouldbefilteredoutfromthpredicted),
+        ResourceType = typeof(StringResources))]
+       [UIHint("TextBox")]
+       [DefaultValue("")]
+       [ObservableProperty]
+       private String filterChars  = "";
 
         /// <summary>
         /// Path to the file where preferences are stored
@@ -31,27 +39,53 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         [NonSerialized, XmlIgnore]
         public static String PreferencesFilePath;
 
-        /// <summary>
-        /// Set this to true if the language uses diacritics
-        /// </summary>
-        [BoolDescriptor("Set this to true if the ConvAssist database for this language requires encoding translation", true)]
-        public bool UseDefaultEncoding = true;
+        ///// <summary>
+        ///// Set this to true if the language uses diacritics
+        ///// </summary>
+        //[Display(Name = nameof(StringResources.SetthistotrueiftheConvAssistdatabaseforthislanguagerequiresencodingtranslation),
+        // Description = nameof(StringResources.Sethistotrueifthelanguageusesdiacritics),
+        //ResourceType = typeof(StringResources))]
+        //[UIHint("ToggleSwitch")]
+        //[DefaultValue(true)]
+        //[ObservableProperty]
+        //private bool useDefaultEncoding = true;
 
-        [BoolDescriptor("Display disclaimer on application startup", true)]
-        public bool ShowDisclaimerOnStartup = true;
+        [Display(Name = nameof(StringResources.Displaydisclaimeronapplicationstartup),
+        ResourceType = typeof(StringResources))]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        private bool showDisclaimerOnStartup = true;
 
-        [IntDescriptor("Wait time (in seconds) for the ConvAssist executable to load", 60, 500)]
-        public int ConvAssistExeLoadWaitTime = 100;
+        [Display(Name = nameof(StringResources.WaittimefortheConvAssistexecutabletoload),
+        ResourceType = typeof(StringResources))]
+        [Range(60, 500)]
+        [UIHint("Slider")]
+        [DefaultValue(100)]
+        [ObservableProperty]
+        private int convAssistExeLoadWaitTime  = 100;
 
-        [IntDescriptor("Wait time (in secs) for the ConvAssist modules to load", 30, 200)]
-        public int ConvAssistModuleLoadWaitTime = 80;
+        [Display(Name = nameof(StringResources.WaittimefortheConvAssistmodulestoload),
+        ResourceType = typeof(StringResources))]
+        [Range(30, 200)]
+        [UIHint("Slider")]
+        [DefaultValue(80)]
+        [ObservableProperty]
+        private int convAssistModuleLoadWaitTime  = 80;
 
-        [BoolDescriptor("Enable small model sentence prediction ")]
-        public bool EnableSmallVocabularySentencePrediction = false;
+        [Display(Name = nameof(StringResources.Enablesmallmodelsentenceprediction),
+        ResourceType = typeof(StringResources))]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(false)]
+        [ObservableProperty]
+        private bool enableSmallVocabularySentencePrediction = false;
 
-
-        [BoolDescriptor("Enable sentence prediction")]
-        public bool Test_GeneralSentencePrediction = false;
+        [Display(Name = nameof(StringResources.Enablesentenceprediction),
+        ResourceType = typeof(StringResources))]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(false)]
+        [ObservableProperty]
+        private bool test_GeneralSentencePrediction = false;
 
         /// <summary>
         /// Loads the settings from the settings file
@@ -71,6 +105,15 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         public override bool Save()
         {
             return Save(this, PreferencesFilePath);
+        }
+
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<Settings>();
+            var res = Save(tmp, PreferencesFilePath);
+            Load();
+
+            return res;
         }
     }
 }

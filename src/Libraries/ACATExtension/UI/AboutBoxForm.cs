@@ -5,18 +5,20 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     /// <summary>
     /// Displays the about box with information about the application,
     /// version, copyright and 3rd Party attributions.
     /// </summary>
+    [DesignerCategory("Code")]
     public partial class AboutBoxForm : Form
     {
         /// <summary>

@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.WordPredictorManagement
+namespace ACAT.Core.WordPredictorManagement
 {
     /// <summary>
     /// Stores the mapping between a language

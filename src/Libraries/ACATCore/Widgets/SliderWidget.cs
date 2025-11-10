@@ -5,15 +5,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACATResources;
 using System;
 using System.Globalization;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace ACAT.Lib.Core.Widgets
+namespace ACAT.Core.Widgets
 {
     /// <summary>
     /// Extension class for slider widget.  This consists of a
@@ -50,10 +50,7 @@ namespace ACAT.Lib.Core.Widgets
         /// <param name="units">conversion units</param>
         public static void SetState(this SliderWidget sliderWidget, int sliderPosition, decimal units)
         {
-            if (sliderWidget != null)
-            {
-                sliderWidget.SetSliderValue(sliderPosition, 1 / units);
-            }
+            sliderWidget?.SetSliderValue(sliderPosition, 1 / units);
         }
     }
 
@@ -173,7 +170,7 @@ namespace ACAT.Lib.Core.Widgets
             String tickFrequency = XmlUtils.GetXMLAttrString(node, "tickfrequency");
             String sliderStep = XmlUtils.GetXMLAttrString(node, "step");
             String sliderCaption = XmlUtils.GetXMLAttrString(node, "caption");
-            sliderCaption = R.GetString(sliderCaption);
+            sliderCaption = StringResources.ResourceManager.GetString(sliderCaption);
 
             int initialValue = XmlUtils.GetXMLAttrInt(node, "initialvalue", DefaultInitialSliderValue);
 
@@ -431,7 +428,7 @@ namespace ACAT.Lib.Core.Widgets
             }
             catch (Exception ex)
             {
-                Log.Debug("Error parsing decimal " + inputString + ", ex: " + ex.ToString());
+                Log.Exception("Error parsing decimal " + inputString + ", ex: " + ex.ToString());
                 retVal = false;
             }
 

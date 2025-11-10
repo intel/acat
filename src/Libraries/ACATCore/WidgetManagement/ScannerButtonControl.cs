@@ -8,7 +8,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
     /// <summary>
     /// Usercontrol that represents a button widget.
@@ -27,12 +27,17 @@ namespace ACAT.Lib.Core.WidgetManagement
             this.EnabledChanged += ScannerButtonControl_EnabledChanged;
         }
 
+        public ScannerButtonControl(string name) : this()
+        {
+            Name = name;
+        }
+
         private void ScannerButtonControl_EnabledChanged(object sender, System.EventArgs e)
         {
             if (Image != null && grayscale != null)
             {
                 color = new Bitmap(Image);
-                Bitmap c = new Bitmap(Image);
+                Bitmap c = new(Image);
                 int x, y;
                 // Loop through the images pixels to reset color.
                 for (x = 0; x < c.Width; x++)

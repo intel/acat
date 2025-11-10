@@ -13,22 +13,22 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.Actuators.CameraActuator
+namespace ACAT.Extensions.Actuators.CameraActuator
 {
     public partial class WebcamGestureSelectUserControl : UserControl
     {
-        private Color _buttonBackColor;
-        private Dictionary<int, IActuatorSwitch> _dict = new Dictionary<int, IActuatorSwitch>();
+        private readonly Color _buttonBackColor;
+        private readonly Dictionary<int, IActuatorSwitch> _dict = new();
         private IEnumerable<string> _installedCameras;
-        private CameraActuator _cameraActuator;
+        private readonly CameraActuator _cameraActuator;
         private int bothIndex = -1;
 
         private int cameraIndex = -1;
@@ -215,7 +215,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 
         private void setControlsEnable(bool enable, bool isCalibrating = false)
         {
-            var buttonEnable = (isCalibrating) ? true : enable;
+            var buttonEnable = (isCalibrating) || enable;
 
             Windows.SetEnabled(buttonRecalibrate, buttonEnable);
 

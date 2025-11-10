@@ -490,7 +490,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
 
         public event BCIEvents.BCIStartCalibration EvtBCIStartCalibration;
 
-        public event BCIEvents.BCIUpdateTextBox EvtBCIUpdateTexttBox;
+        public event BCIEvents.BCIUpdateTextBox EvtBCIUpdateTextBox;
 
         public event BCIEvents.BCIParametersResult EvtParametersResult;
 
@@ -2098,7 +2098,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp
         /// <param name="message"></param>
         private void RequestToUpdateTextBox(string message)
         {
-            _mainForm.Invoke(new MethodInvoker(delegate { EvtBCIUpdateTexttBox?.Invoke(message); }));
+            _mainForm.Invoke(new MethodInvoker(delegate { EvtBCIUpdateTextBox?.Invoke(message); }));
         }
 
         /// <summary>

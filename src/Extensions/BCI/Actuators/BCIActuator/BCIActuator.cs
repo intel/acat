@@ -322,7 +322,10 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                             // Check if current available channels are different that channels used in calibration (in the classifier)
                             // NOTE: Status set to Expired, in a future release a new status should be created for this condition
                             if (!AreChannelsEqual(currentChannels, tmpDecisionMaker.TrainedClassifiersObj.channelSubset))
-                                classifierStatus = BCIClassifierStatus.Expired;
+                            {
+                                Log.Debug("Classifier: " + scanSection + " - Different channels than calibration. Current channels will be used in calibration.");
+                                classifierStatus = BCIClassifierStatus.Mismatch;
+                            }
                             // Check if classifier expired
                             else if (DateTime.Now.Subtract(tmpDecisionMaker.TrainedClassifiersObj.calibrationTime).TotalMinutes > BCIActuatorSettings.Settings.Calibration_MaxElapsedTimeToForceRecalibration)
                                 classifierStatus = BCIClassifierStatus.Expired;
@@ -1246,7 +1249,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
             // Send auc to ACAT
             var bciCalibrationResult = new BCICalibrationResult(auc, calibrationSuccessful, error);
-            Log.Debug("Sending response. Calibration successful: " + calibrationSuccessful + " | AUC: " + auc);
+            Log.Debug("Sending response. Calibration result: " + calibrationSuccessful + " | AUC: " + auc);
             SendIoctlResponse((int)OpCodes.CalibrationResult, bciCalibrationResult);
             Log.Debug("IoctRequest " + OpCodes.CalibrationResult + " sent. Message: " + bciCalibrationResult.ToString());
         }

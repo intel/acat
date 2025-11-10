@@ -24,11 +24,11 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
             CalibrationSuccessful = false;
         }
 
-        public BCICalibrationResult(float auc, bool calibrationSuccesful, BCIError error)
+        public BCICalibrationResult(float auc, bool calibrationSuccessful, BCIError error)
         {
             AUC = auc;
             Error = error;
-            CalibrationSuccessful = calibrationSuccesful;
+            CalibrationSuccessful = calibrationSuccessful;
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
         public float AUC { get; set; }
 
         /// <summary>
-        /// Boolean, true if calibration succesful
+        /// Boolean, true if calibration successful
         /// </summary>
         public bool CalibrationSuccessful { get; set; }
 

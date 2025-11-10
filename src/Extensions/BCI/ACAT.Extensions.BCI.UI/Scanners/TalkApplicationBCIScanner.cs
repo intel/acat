@@ -938,6 +938,10 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                     result = BCIInterfaceUtils.ShowMainOptionsWindow(this, BCIInterfaceUtils.RECALIBRATEIF, BCIInterfaceUtils.IMPROVECALIBRATION, bciCalibrationStatus.OkToGoToTyping);
                     break;
 
+                case BCIClassifierStatus.Mismatch:
+                    result = BCIInterfaceUtils.ShowMainOptionsWindow(this, BCIInterfaceUtils.CALIBRATIONNEEDED, BCIInterfaceUtils.CALIBRATIONMISMATCH, bciCalibrationStatus.OkToGoToTyping);
+                    break;
+
                 case BCIClassifierStatus.Expired:
                     result = BCIInterfaceUtils.ShowMainOptionsWindow(this, BCIInterfaceUtils.CALIBRATIONNEEDED, BCIInterfaceUtils.CALIBRATIONEXPIRED, bciCalibrationStatus.OkToGoToTyping);
                     break;
@@ -1480,7 +1484,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             animationSharpManager.EvtBCIExitApplication += ExitApplication;
             animationSharpManager.EvtBCIStartCalibration += BCIShowRecalibrationWindowMessage;
             animationSharpManager.EvtBCICalibrationComplete += BCIShowCalibrationResult;
-            animationSharpManager.EvtBCIUpdateTexttBox += UpdatetextBoxEvt;
+            animationSharpManager.EvtBCIUpdateTextBox += UpdatetextBoxEvt;
             LEDStatusUserControl userControlLED = new() { Dock = DockStyle.Fill };
             panelLEDStatus.Controls.Add(userControlLED);
         }
@@ -1602,7 +1606,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             animationSharpManager.EvtBCIExitApplication -= ExitApplication;
             animationSharpManager.EvtBCIStartCalibration -= BCIShowRecalibrationWindowMessage;
             animationSharpManager.EvtBCICalibrationComplete -= BCIShowCalibrationResult;
-            animationSharpManager.EvtBCIUpdateTexttBox -= UpdatetextBoxEvt;
+            animationSharpManager.EvtBCIUpdateTextBox -= UpdatetextBoxEvt;
 
             Context.AppWordPredictionManager.ActiveWordPredictor.EvtModeChanged -= ActiveWordPredictor_EvtModeChanged;
             _textBoxTalkWindow.KeyPress -= TextBoxTalkWindowOnKeyPress;

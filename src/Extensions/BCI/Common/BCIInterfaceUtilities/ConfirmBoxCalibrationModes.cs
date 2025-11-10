@@ -722,6 +722,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 label.Text = "-";
             switch (bCIClassifierInfo.ClassifierStatus)
             {
+                case BCIClassifierStatus.Mismatch:
                 case BCIClassifierStatus.Expired:
                 case BCIClassifierStatus.NotFound:
                     if (bCIClassifierInfo.IsRequired)

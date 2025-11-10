@@ -33,6 +33,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         public const string BACKTOMAINMODES = "Back";
         public const string CALIBRATE = "Calibrate";
         public const string CALIBRATEAGAIN = "Calibrate again";
+        public const string CALIBRATIONMISMATCH = "Calibration Mismatch";
         public const string CALIBRATIONEXPIRED = "Calibration Expired";
         public const string CALIBRATIONFAILEDAUC = "Calibration failed, \n Score: ";
         public const string CALIBRATIONMODE = "Calibration modes";
@@ -205,7 +206,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             var confirmDialog = new ConfirmBoxThreeOption
             {
                 PromptTitle = CALIBRATIONSTATUS,
-                Prompt = CALIBRATIONEXPIRED + (auc * 100),
+                Prompt = CALIBRATIONFAILEDAUC + (auc * 100),
                 Op1Prompt = EXITAPPLICATION,
                 Op2Prompt = CALIBRATEAGAIN,
                 Op3Prompt = CALIBRATE,

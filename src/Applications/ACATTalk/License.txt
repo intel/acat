@@ -5,7 +5,8 @@ Assistive Context-Aware Toolkit (ACAT)
 Distributed under the Apache 2.0 license 
 (https://spdx.org/licenses/Apache-2.0.html)
 
-Copyright (c) 2013-2019; 2023 Intel Corporation 
+
+Copyright (c) 2013-2025 Intel Corporation 
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -79,16 +80,6 @@ MaterialSkin Library
 --------------------------------------------------------------------------
 
 Distributed under the MIT license.
-
-https://spdx.org/licenses/MIT.html
-
---------------------------------------------------------------------------
-NewtonSoft Library
---------------------------------------------------------------------------
-
-Distributed under the The MIT License
-
-Copyright (c) 2007 James Newton-King
 
 https://spdx.org/licenses/MIT.html
 

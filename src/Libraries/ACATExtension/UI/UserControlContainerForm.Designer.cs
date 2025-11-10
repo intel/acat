@@ -1,5 +1,5 @@
 ﻿
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     partial class UserControlContainerForm
     {
@@ -27,7 +27,7 @@ namespace ACAT.Lib.Extension
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        protected override void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControlContainerForm));
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
@@ -83,7 +83,6 @@ namespace ACAT.Lib.Extension
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.ResumeLayout(false);
-
         }
 
         #endregion

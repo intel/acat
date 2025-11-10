@@ -5,21 +5,24 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.UserControlManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
-using ACAT.Lib.Core.Widgets;
-using ACAT.Lib.Core.WordPredictionManagement;
+using ACATResources;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.Audit;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Core.Widgets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using ACAT.Core.WordPredictorManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.WordPredictorManagement.Interfaces;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.UserControlManagement.Interfaces;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension.UI
 {
     /// <summary>
     /// This is a helper class exclusively for Alphabet scanners.
@@ -95,7 +98,7 @@ namespace ACAT.Lib.Extension
         /// </summary>
         public void AutocompleteWithFirstWord()
         {
-            List<Widget> list = new List<Widget>();
+            List<Widget> list = new();
             _rootWidget.Finder.FindAllChildren(typeof(WordListItemWidget), list);
 
             if (list.Any())
@@ -134,7 +137,7 @@ namespace ACAT.Lib.Extension
         /// </summary>
         public void OnClosing(object sender, FormClosingEventArgs e)
         {
-            Log.Debug();
+            Log.Verbose();
         }
 
         /// <summary>
@@ -185,7 +188,7 @@ namespace ACAT.Lib.Extension
         /// </summary>
         public void OnPause()
         {
-            Log.Debug();
+            Log.Verbose();
         }
 
         /// <summary>
@@ -194,7 +197,7 @@ namespace ACAT.Lib.Extension
         /// </summary>
         public void OnResume()
         {
-            Log.Debug();
+            Log.Verbose();
 
             refreshWordPredictionsAndSetCurrentWord();
         }
@@ -278,7 +281,7 @@ namespace ACAT.Lib.Extension
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -318,7 +321,7 @@ namespace ACAT.Lib.Extension
         /// <param name="e">event args</param>
         private void AppAgent_EvtTextChanged(object sender, EventArgs e)
         {
-            Log.Debug();
+            Log.Verbose();
             try
             {
                 if (_form.Visible)
@@ -328,7 +331,7 @@ namespace ACAT.Lib.Extension
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
             Log.Debug("returning");
@@ -340,7 +343,7 @@ namespace ACAT.Lib.Extension
 
             var wordSelected = wordListItemWidget.Value.Trim();
 
-            if (!String.IsNullOrEmpty(wordSelected))
+            if (!string.IsNullOrEmpty(wordSelected))
             {
                 KeyStateTracker.ClearAlt();
                 KeyStateTracker.ClearCtrl();
@@ -356,7 +359,7 @@ namespace ACAT.Lib.Extension
 
             var letterSelected = letterListItemWidget.Value.Trim();
 
-            if (!String.IsNullOrEmpty(letterSelected))
+            if (!string.IsNullOrEmpty(letterSelected))
             {
                 KeyStateTracker.ClearAlt();
                 KeyStateTracker.ClearCtrl();
@@ -370,7 +373,7 @@ namespace ACAT.Lib.Extension
 
             var wordSelected = sentenceListItemWidget.Value.Trim();
 
-            if (!String.IsNullOrEmpty(wordSelected))
+            if (!string.IsNullOrEmpty(wordSelected))
             {
                 KeyStateTracker.ClearAlt();
                 KeyStateTracker.ClearCtrl();
@@ -386,11 +389,11 @@ namespace ACAT.Lib.Extension
         /// <param name="count">how many words?</param>
         /// <param name="word">word to check</param>
         /// <returns>true if it does</returns>
-        private bool contains(IEnumerable<String> list, int count, String word)
+        private bool contains(IEnumerable<string> list, int count, string word)
         {
             for (int ii = 0; ii < count && ii < list.Count(); ii++)
             {
-                if (String.Compare(word, list.ElementAt(ii), true) == 0)
+                if (string.Compare(word, list.ElementAt(ii), true) == 0)
                 {
                     return true;
                 }
@@ -411,10 +414,8 @@ namespace ACAT.Lib.Extension
                 // text in the target window
                 if (!KeyStateTracker.IsShiftOn())
                 {
-                    using (AgentContext context = Context.AppAgentMgr.ActiveContext())
-                    {
-                        context.TextAgent().SetSelectMode(false);
-                    }
+                    using AgentContext context = Context.AppAgentMgr.ActiveContext();
+                    context.TextAgent().SetSelectMode(false);
                 }
             }
             catch (Exception ex)
@@ -425,7 +426,7 @@ namespace ACAT.Lib.Extension
 
         private void processSentencePredictionResponse(WordPredictionResponse response)
         {
-            List<string> predictedSentenceList1 = new List<string>();
+            List<string> predictedSentenceList1 = new();
 
             var predictedSentenceList = response.Results;
 
@@ -455,12 +456,12 @@ namespace ACAT.Lib.Extension
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug(ex.ToString());
+                    Log.Exception(ex.ToString());
                 }
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
             if (_sentenceListWidget != null)
@@ -488,8 +489,8 @@ namespace ACAT.Lib.Extension
         private void processWordPredictionResponse(WordPredictionResponse response)
         {
             IEnumerable<string> predictedLettersList = new List<string>();
-            List<string> predictedWordsList1 = new List<string>();
-            List<string> predictedLettersList1 = new List<string>();
+            List<string> predictedWordsList1 = new();
+            List<string> predictedLettersList1 = new();
 
             var predictedWordList = response.Results;
 
@@ -521,33 +522,40 @@ namespace ACAT.Lib.Extension
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug(ex.ToString());
+                    Log.Exception(ex.ToString());
                 }
                 predictedWordList = predictedWordsList1;
                 predictedLettersList = predictedLettersList1;
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
             Log.Debug("predictedWordList count: " + predictedWordList.Count());
 
             // check if the current word is a possessive word. If not, we need to create
             // a possessive version of the word and add it as the last word
             // in the predicton list.
-            var possessiveWord = String.Empty;
+            var possessiveWord = string.Empty;
             var wordAtCaret = response.Request.CurrentWord;  // check if it is the same
 
             var charAtCaret = '\0';
 
             using (var agentContext = Context.AppAgentMgr.ActiveContext())
             {
-                agentContext.TextAgent().GetCharAtCaret(out charAtCaret);
-                Log.Debug("charAtCaret: [" + charAtCaret + "]");
+                try
+                {
+                    agentContext.TextAgent().GetCharAtCaret(out charAtCaret);
+                    Log.Debug("charAtCaret: [" + charAtCaret + "]");
+                }
+                catch (InvalidAgentContextException ex)
+                {
+                    Log.Exception(ex.ToString());
+                }
             }
 
-            if (!String.IsNullOrEmpty(wordAtCaret) &&
-                R.IsCurrentCultureEnglish() &&
+            if (!string.IsNullOrEmpty(wordAtCaret) &&
+                ResourceHelper.IsCurrentCultureEnglish() &&
                 Context.AppAgentMgr.CurrentEditingMode == EditingMode.Edit &&
                 !wordAtCaret.EndsWith("'s", StringComparison.InvariantCultureIgnoreCase) &&
                 (charAtCaret == '\0' || charAtCaret == 0x0D || charAtCaret == 0x0A ||
@@ -577,7 +585,7 @@ namespace ACAT.Lib.Extension
                 }
                 // if there is a possessive form of the word, add
                 // it to the list.
-                if (!String.IsNullOrEmpty(possessiveWord) &&
+                if (!string.IsNullOrEmpty(possessiveWord) &&
                     !contains(predictedWordList, ii, possessiveWord))
                 {
                     int index;
@@ -677,8 +685,8 @@ namespace ACAT.Lib.Extension
 
             try
             {
-                String wordAtCaret;
-                String nwords;
+                string wordAtCaret;
+                string nwords;
                 var charAtCaret = '\0';
 
                 using (var agentContext = Context.AppAgentMgr.ActiveContext())
@@ -694,20 +702,14 @@ namespace ACAT.Lib.Extension
                     Log.Debug("charAtCaret: [" + charAtCaret + "]");
                 }
 
-                if (String.IsNullOrEmpty(nwords) && String.IsNullOrEmpty(wordAtCaret))
+                if (string.IsNullOrEmpty(nwords) && string.IsNullOrEmpty(wordAtCaret))
                 {
-                    if (_currentWordWidget != null)
-                    {
-                        _currentWordWidget.SetCurrentWord(String.Empty);
-                    }
+                    _currentWordWidget?.SetCurrentWord(string.Empty);
 
-                    if (_wordListWidgetWidget != null)
-                    {
-                        _wordListWidgetWidget.ClearEntries();
-                    }
+                    _wordListWidgetWidget?.ClearEntries();
 
                     nwords = " ";
-                    wordAtCaret = String.Empty;
+                    wordAtCaret = string.Empty;
                 }
 
                 Log.Debug("wordatcaret length: " + wordAtCaret.Length);
@@ -725,7 +727,7 @@ namespace ACAT.Lib.Extension
                 */
 
                 // do the word prediction
-                if (wordAtCaret.Length > 1 && Char.IsPunctuation(wordAtCaret[0]))
+                if (wordAtCaret.Length > 1 && char.IsPunctuation(wordAtCaret[0]))
                 {
                     wordAtCaret = wordAtCaret.Substring(1);
                 }
@@ -733,9 +735,9 @@ namespace ACAT.Lib.Extension
                 if (_sentenceListWidget != null)
                 {
                     bool ellipses = false;
-                    if (String.IsNullOrEmpty(wordAtCaret.Trim()))
+                    if (string.IsNullOrEmpty(wordAtCaret.Trim()))
                     {
-                        ellipses = !String.IsNullOrEmpty(nwords);
+                        ellipses = !string.IsNullOrEmpty(nwords);
                     }
 
                     if (ellipses)
@@ -780,7 +782,7 @@ namespace ACAT.Lib.Extension
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 

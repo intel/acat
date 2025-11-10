@@ -5,9 +5,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PanelManagement.Common;
 using System;
 
-namespace ACAT.Lib.Core.PanelManagement.CommandDispatcher
+namespace ACAT.Core.PanelManagement.CommandDispatcher
 {
     /// <summary>
     /// Interface for commands that will be executed
@@ -32,8 +33,8 @@ namespace ACAT.Lib.Core.PanelManagement.CommandDispatcher
         /// </summary>
         /// <param name="handled">true if handled</param>
         /// <returns>true on success</returns>
-        bool Execute(ref bool handled);
+        bool Execute(ref bool handled, object source);
 
-        bool Execute2(object source, ref bool handled);
+        bool Execute(ref bool handled);
     }
 }

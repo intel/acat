@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace ACAT.Lib.Core.WordPredictorManagement
+namespace ACAT.Core.WordPredictorManagement
 {
     /// <summary>
     /// Maintains a list of preferred word predictors
@@ -73,14 +73,17 @@ namespace ACAT.Lib.Core.WordPredictorManagement
                 return getByLanguage(String.Empty);
             }
 
-            var guid = getByLanguage(ci.Name);
-
-            if (Guid.Equals(guid, Guid.Empty))
-            {
-                guid = getByLanguage(ci.TwoLetterISOLanguageName);
-            }
-
+            var guid = getByLanguage(ci.TwoLetterISOLanguageName);
             return guid;
+        }
+
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<PreferredWordPredictors>();
+            var res = Save(tmp, FilePath);
+            Load();
+
+            return res;
         }
 
         /// <summary>

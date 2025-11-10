@@ -11,20 +11,21 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.TTSManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
+using ACAT.Core.PreferencesManagement.Interfaces;
+using ACAT.Core.TTSManagement;
+using ACAT.Core.TTSManagement.Interfaces;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Speech.Synthesis;
 
-namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
+namespace ACAT.Extensions.TTSEngines.SAPIEngine
 {
-    [DescriptorAttribute("B7AB6188-AE23-40E3-9E6A-F8AA8A81E2BF",
+    [ClassDescriptor("B7AB6188-AE23-40E3-9E6A-F8AA8A81E2BF",
                         "Speech Synthesizer TTS Engine",
                         "Text to Speech based on the Microsoft Speech Synthesizer")]
     public class SAPIEngine : ExtensionInvoker, ITTSEngine, ISupportsPreferences
@@ -102,7 +103,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
             Synthesizer.SpeakCompleted += Synthesizer_SpeakCompleted;
         }
 
-//#pragma warning disable
+        //#pragma warning disable
 
         /// <summary>
         /// Triggered when bookmark reached after async text to speech
@@ -124,7 +125,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// </summary>
         public event TTSVoiceChanged EvtVoiceChanged;
 
-//#pragma warning enable
+        //#pragma warning enable
 
         /// <summary>
         /// Gets or sets the culture info for the voice to use
@@ -134,10 +135,12 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public new IDescriptor Descriptor
+        public new ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
+
+        public Guid Id => Descriptor.Id;
 
         /// <summary>
         /// Returns the current status of the speech engine, whether
@@ -414,12 +417,11 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// <returns>true on success</returns>
         public virtual bool ShowPreferencesDialog()
         {
-            // var form = new SettingsForm();
             var form = new SettingsForm();
             form.ShowDialog();
             form.Dispose();
 
-            return true;
+            return false;
         }
 
         /// <summary>
@@ -444,7 +446,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
             }
             catch (Exception ex)
             {
-                Log.Debug("exception caught! ex=" + ex.Message);
+                Log.Exception("Exception caught! ex=" + ex.Message);
             }
 
             return true;
@@ -479,7 +481,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 
@@ -509,7 +511,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
             }
             catch (Exception ex)
             {
-                Log.Debug("exception caught! ex=" + ex.Message);
+                Log.Exception("Exception caught! ex=" + ex.Message);
             }
 
             return true;
@@ -544,8 +546,10 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
 
                     Log.Debug("Speaking text");
 
-                    TTSPrompt prompt = new TTSPrompt(ssml, SynthesisTextFormat.Ssml);
-                    prompt.Bookmark = bookmark;
+                    TTSPrompt prompt = new(ssml, SynthesisTextFormat.Ssml)
+                    {
+                        Bookmark = bookmark
+                    };
                     Synthesizer.SpeakAsync(prompt);
 
                     Log.Debug("Returned from speakasync");
@@ -557,7 +561,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 
@@ -614,7 +618,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -671,10 +675,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// <returns>true on success</returns>
         private bool loadPronunciations(CultureInfo ci)
         {
-            if (_pronunciations != null)
-            {
-                _pronunciations.Dispose();
-            }
+            _pronunciations?.Dispose();
 
             _pronunciations = new Pronunciations();
 
@@ -688,10 +689,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// <param name="bookmark">the bookmark</param>
         private void notifyBookmarkReached(int bookmark)
         {
-            if (EvtBookmarkReached != null)
-            {
-                EvtBookmarkReached(this, new TTSBookmarkReachedEventArgs(bookmark));
-            }
+            EvtBookmarkReached?.Invoke(this, new TTSBookmarkReachedEventArgs(bookmark));
         }
 
         /// <summary>
@@ -699,10 +697,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
         /// </summary>
         private void notifyPropertyChanged()
         {
-            if (EvtPropertyChanged != null)
-            {
-                EvtPropertyChanged(this, new EventArgs());
-            }
+            EvtPropertyChanged?.Invoke(this, new EventArgs());
         }
 
         /// <summary>
@@ -735,12 +730,12 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
                 else
                 {
                     _speechSynthesizer.SelectVoiceByHints(SAPISettings.Gender, VoiceAge.NotSet, 0,
-                        CultureInfo.DefaultThreadCurrentUICulture);
+                        CultureInfo.CurrentUICulture);
                 }
             }
             catch (Exception ex)
             {
-                Log.Debug("Error setting TTS settings " + ex);
+                Log.Exception("Error setting TTS settings " + ex);
             }
         }
 
@@ -759,7 +754,7 @@ namespace ACAT.Extensions.Default.TTSEngines.SAPIEngine
             }
             catch (Exception ex)
             {
-                Log.Debug("Invalid bookmark " + e.Bookmark + ", exception: " + ex);
+                Log.Exception("Invalid bookmark " + e.Bookmark + ", exception: " + ex);
             }
         }
 

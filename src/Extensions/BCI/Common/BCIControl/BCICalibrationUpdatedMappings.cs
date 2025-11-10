@@ -36,7 +36,7 @@ namespace ACAT.Extensions.BCI.Common.BCIControl
 
         public BCICalibrationUpdatedMappings(Dictionary<BCIScanSections, BCIScanSections> dictUpdatedMappings, BCIError error)
         {
-            dictUpdatedMappings = DictUpdatedMappings;
+            _ = DictUpdatedMappings;
             Error = error;
         }
     }

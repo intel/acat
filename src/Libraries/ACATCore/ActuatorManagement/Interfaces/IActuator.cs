@@ -11,13 +11,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.Onboarding;
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.Extensions;
 using System;
 using System.Collections.Generic;
+using ACAT.Core.PreferencesManagement.Interfaces;
+using ACAT.Core.CoreInterfaces;
+using ACAT.Core.Utility.TypeLoader;
+using ACAT.Core.ActuatorManagement.Settings;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement.Interfaces
 {
     /// <summary>
     /// Delegate for the event raised when an actuator wants to send custom data
@@ -25,7 +27,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
     /// </summary>
     /// <param name="opcode">operation code</param>
     /// <param name="response">response to be sent (typically JSON)</param>
-    public delegate void IoctlResponse(int opcode, String response);
+    public delegate void IoctlResponse(int opcode, object response);
 
     /// <summary>
     /// Delegate for the event raised when a switch is engaged. This is the
@@ -74,7 +76,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
     /// Actutators must implement this interface.  An actuator contains one or
     /// more switches and raises events when the switches are actuated.
     /// </summary>
-    public interface IActuator : ISupportsPreferences, IExtension, IDisposable
+    public interface IActuator : IPluginExtension, ISupportsPreferences, IExtension, IDisposable
     {
         /// <summary>
         /// Raised when the actuator wants to send custom data to the application
@@ -104,9 +106,9 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <summary>
         /// Gets the name of the actuator
         /// </summary>
-        String Name { get; }
+        string Name { get; }
 
-        String OnboardingImageFileName { get; }
+        string OnboardingImageFileName { get; }
 
         bool ShowTryoutOnStartup { get; }
 
@@ -133,7 +135,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <returns></returns>
         State GetState();
 
-        IEnumerable<String> GetSupportedKeyboardConfigs();
+        IEnumerable<string> GetSupportedKeyboardConfigs();
 
         /// <summary>
         /// Initializes the actuator
@@ -147,7 +149,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="opcode">operation code</param>
         /// <param name="request">Data (typically a JSON script fragment)</param>
         /// <returns></returns>
-        bool IoctlRequest(int opcode, String request);
+        bool IoctlRequest(int opcode, object request);
 
         /// <summary>
         /// Parses the XML node that contains all the info for this actuator
@@ -196,7 +198,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         /// <param name="name">Switch to unload</param>
         /// <returns></returns>
-        bool RemoveSwitch(String name);
+        bool RemoveSwitch(string name);
 
         /// <summary>
         /// Resumes actuator.  Will resume raising events

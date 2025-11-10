@@ -13,7 +13,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.Actuators.CameraActuator
+namespace ACAT.Extensions.Actuators.CameraActuator
 {
     public partial class SampleImageForm : Form
     {
@@ -25,7 +25,6 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 
         private void SampleImageForm_Load(object sender, EventArgs e)
         {
-            TopMost = true;
         }
     }
 }

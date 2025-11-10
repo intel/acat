@@ -5,12 +5,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
+using ACATResources;
+using ACAT.Core.PreferencesManagement.Attributes;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     /// <summary>
     /// ACAT preferences that can be serialized/deserialized to a file
@@ -18,7 +22,8 @@ namespace ACAT.Lib.Extension
     /// from a file.
     /// </summary>
     [Serializable]
-    public class ACATPreferences : Preferences
+    [Descriptor("General Settings for ACAT", "General")]
+    public partial class ACATPreferences : SystemPreferences
     {
         [NonSerialized, XmlIgnore]
         public static String DefaultPreferencesFilePath = String.Empty;
@@ -26,44 +31,104 @@ namespace ACAT.Lib.Extension
         [NonSerialized, XmlIgnore]
         public static String PreferencesFilePath = String.Empty;
 
-        [BoolDescriptor("Clear talk window when the typing mode is changed")]
-        public bool ClearTalkWindowOnTypeModeChange = true;
+        [Display(Name = nameof(StringResources.Cleartalkwindowwhenthetypingmodeischanged), 
+           // Description = nameof(StringResources.Cleartalkwindowwhenthetypingmodeischanged), 
+            ResourceType = typeof(StringResources))]
+        [Category("Test")]
+        [UIHint("ToggleSwitch")]
+        [ObservableProperty]
+        private bool clearTalkWindowOnTypeModeChange = true;
 
-        [IntDescriptor("Pin to unlock the screen. Use digits 1 through 5 only", 111, 55555)]
-        public String ScreenLockPin = "5143";
+        [Display(Name = nameof(StringResources.Pintounlockthescreen),
+            Description = nameof(StringResources.Usedigits1throug5only),
+            ResourceType = typeof(StringResources))]
+        [Description("Use digits 1 through 5 only")]
+        [UIHint("PinEntry")]
+        [ObservableProperty]
+        private String screenLockPin = "5143";
 
-        [BoolDescriptor("Convert text to speech on ENTER key press")]
-        public bool SpeakOnEnterKey = true;
+        [Display(Name = nameof(StringResources.ConverttexttospeechonENTERkeypress),
+         // Description = nameof(StringResources.ConverttexttospeechonENTERkeypress),
+          ResourceType = typeof(StringResources))]
+        [UIHint("ToggleSwitch")]
+        [ObservableProperty]
+        private bool speakOnEnterKey = true;
 
-        [IntDescriptor("Number of times the buttons in the strip scanner are scanned. Strip scanners are typically used for accented letters in non-English languages", 1, 10)]
-        public int StripScannerColumnIterations = 2;
-        
-        [BoolDescriptor("Enable suggestions for sentence completion")]
-        public bool UseSentencePrediction = true;
+        [Display(Name = nameof(StringResources.Numberoftimesthebuttonsinthestripscannerarecanned),
+          Description = nameof(StringResources.ScannerColumnIterations),
+          ResourceType = typeof(StringResources))]
+        [UIHint("NumericUpDown")]
+        [ObservableProperty]
+        private int stripScannerColumnIterations = 2;
 
-        [IntDescriptor("How many words to display in the word prediction list", 3, 10)]
-        public int WordPredictionCount = 10;
+        [Display(Name = nameof(StringResources.Enablesuggestionsforsentencecompletion),
+      //   Description = nameof(StringResources.Enablesuggestionsforsentencecompletion),
+         ResourceType = typeof(StringResources))]
+        [UIHint("ToggleSwitch")]
+        [ObservableProperty]
+        private bool useSentencePrediction = true;
 
-        [BoolDescriptor("Enable learning for word prediction")]
-        public bool WordPredictionEnableLearn = true;
+        [Display(Name = nameof(StringResources.Howmanywordstodisplayinthewordpredictionlist),
+        // Description = nameof(StringResources.Howmanywordstodisplayinthewordpredictionlist),
+         ResourceType = typeof(StringResources))]
+        [UIHint("NumericUpDown")]
+        [Range(3, 20, ErrorMessage = "Word prediction count must be between 3 and 20.")]
+        [ObservableProperty]
+        private int wordPredictionCount = 10;
 
-        [BoolDescriptor("Display words in the prediction list that match the prefix of the word entered so far")]
-        public bool WordPredictionFilterMatchPrefix = false;
+        [Display(Name = nameof(StringResources.Enablelearningforwordprediction),
+       //  Description = nameof(StringResources.Enablelearningforwordprediction),
+         ResourceType = typeof(StringResources))]
+        [Descriptor("Enable learning for word prediction")]
+        [UIHint("ToggleSwitch")]
+        [ObservableProperty]
+        private bool wordPredictionEnableLearn = true;
 
-        [IntDescriptor("Length of the prefix to match when filtering words (valid only if WordPredictionFilterMatchPrefix is true)", 1, 10)]
-        public int WordPredictionFilterMatchPrefixLengthAdjust = 1;
+        [Display(Name = nameof(StringResources.Displaywordsinthepredictionlistthatmatchtheprefixofthewordenteredsofar),
+       // Description = nameof(StringResources.Displaywordsinthepredictionlistthatmatchtheprefixofthewordenteredsofar),
+        ResourceType = typeof(StringResources))]
+        [UIHint("ToggleSwitch")]
+        [ObservableProperty]
+        private bool wordPredictionFilterMatchPrefix = false;
 
-        [BoolDescriptor("Filter punctuations in word prediction results")]
-        public bool WordPredictionFilterPunctuations = true;
+        [Display(Name = nameof(StringResources.Lengthoftheprefixtomatchwhenfilteringwords_),
+       //  Description = nameof(StringResources.Lengthoftheprefixtomatchwhenfilteringwords_),
+         ResourceType = typeof(StringResources))]
+        [UIHint("NumericUpDown")]
+        [Range(1, 10, ErrorMessage = "Prefix length must be between 1 and 10.")]
+        [ObservableProperty]
+        private int wordPredictionFilterMatchPrefixLengthAdjust = 1;
 
-        [IntDescriptor("Extra time to pause on the first word in the word prediction list (in msecs)", 0, 3000)]
-        public int WordPredictionFirstPauseTime = 600;
+        [Display(Name = nameof(StringResources.Filterpunctuationsinwordpredictionresults),
+        // Description = nameof(StringResources.Filterpunctuationsinwordpredictionresults),
+         ResourceType = typeof(StringResources))]
+        [UIHint("ToggleSwitch")]
+        [ObservableProperty]
+        private bool wordPredictionFilterPunctuations = true;
 
-        [IntDescriptor("Number of times the words in the word prediction list are scanned", 1, 10)]
-        public int WordPredictionScanIterations = 1;
+        [Display(Name = nameof(StringResources.Extratimetopauseonthefirstwordinthewordpredictionlist),
+        // Description = nameof(StringResources.Extratimetopauseonthefirstwordinthewordpredictionlist),
+         ResourceType = typeof(StringResources))]
+        [UIHint("NumericUpDown")]
+        [Range(0, 3000, ErrorMessage = "Pause time must be between 0 and 3000 milliseconds.")]
+        [ObservableProperty]
+        private int wordPredictionFirstPauseTime = 600;
 
-        [IntDescriptor("Number of words suggestions to compute probabilities", 5, 20)]
-        public int WordsSuggestions = 10;
+        [Display(Name = nameof(StringResources.Numberoftimesthewordsinthewordpredictionlistarescanned),
+      //   Description = nameof(StringResources.Numberoftimesthewordsinthewordpredictionlistarescanned),
+         ResourceType = typeof(StringResources))]
+        [UIHint("NumericUpDown")]
+        [Range(1, 10, ErrorMessage = "Word prediction scan iterations must be between 1 and 10.")]
+        [ObservableProperty]
+        private int wordPredictionScanIterations = 1;
+
+        [Display(Name = nameof(StringResources.Numberofwordssuggestionstoomputeprobabilities),
+        // Description = nameof(StringResources.Numberofwordssuggestionstoomputeprobabilities),
+         ResourceType = typeof(StringResources))]
+        [UIHint("NumericUpDown")]
+        [Range(5, 20, ErrorMessage = "Words suggestions must be between 5 and 20.")]
+        [ObservableProperty]
+        private int wordsSuggestions = 10;
 
         /// <summary>
         /// Loads the settings from the preferences path
@@ -93,7 +158,7 @@ namespace ACAT.Lib.Extension
         public override bool Save()
         {
             return !String.IsNullOrEmpty(PreferencesFilePath) &&
-                Save<ACATPreferences>(this, PreferencesFilePath);
+                Save(this, PreferencesFilePath);
         }
 
         /// <summary>
@@ -102,56 +167,22 @@ namespace ACAT.Lib.Extension
         /// <param name="variableName">name of the variable</param>
         /// <param name="defaultValue">default value of the variable</param>
         /// <returns>value of the variable from the settings</returns>
-        protected override int resolveVariableInt(String variableName, int defaultValue)
+        public override int resolveVariableInt(String variableName, int defaultValue)
         {
-            int retVal;
-            switch (variableName)
+            var retVal = variableName switch
             {
-                case "@FirstPauseTime":
-                    retVal = FirstPauseTime;
-                    break;
-
-                case "@ScanTime":
-                    retVal = ScanTime;
-                    break;
-
-                case "@GridScanIterations":
-                    retVal = GridScanIterations;
-                    break;
-
-                case "@RowScanIterations":
-                    retVal = RowScanIterations;
-                    break;
-
-                case "@ColumnScanIterations":
-                    retVal = ColumnScanIterations;
-                    break;
-
-                case "@WordPredictionScanIterations":
-                    retVal = WordPredictionScanIterations;
-                    break;
-
-                case "@MenuDialogScanTime":
-                    retVal = MenuDialogScanTime;
-                    break;
-
-                case "@FirstRepeatTime":
-                    retVal = FirstRepeatTime;
-                    break;
-
-                case "@WordPredictionFirstPauseTime":
-                    retVal = WordPredictionFirstPauseTime;
-                    break;
-
-                case "@StripScannerColumnIterations":
-                    retVal = StripScannerColumnIterations;
-                    break;
-
-                default:
-                    retVal = base.resolveVariableInt(variableName, defaultValue);
-                    break;
-            }
-
+                "@FirstPauseTime" => FirstPauseTime,
+                "@ScanTime" => ScanTime,
+                "@GridScanIterations" => GridScanIterations,
+                "@RowScanIterations" => RowScanIterations,
+                "@ColumnScanIterations" => ColumnScanIterations,
+                "@WordPredictionScanIterations" => WordPredictionScanIterations,
+                "@MenuDialogScanTime" => MenuDialogScanTime,
+                "@FirstRepeatTime" => FirstRepeatTime,
+                "@WordPredictionFirstPauseTime" => WordPredictionFirstPauseTime,
+                "@StripScannerColumnIterations" => StripScannerColumnIterations,
+                _ => base.resolveVariableInt(variableName, defaultValue),
+            };
             return retVal;
         }
     }

@@ -1,18 +1,7 @@
-﻿////////////////////////////////////////////////////////////////////////////
-//
-// Copyright 2013-2019; 2023 Intel Corporation
-// SPDX-License-Identifier: Apache-2.0
-//
-////////////////////////////////////////////////////////////////////////////
+﻿using System;
 
-using System;
-
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
-    /// <summary>
-    /// MicroStopwatch class which tracks timers more accurately than the
-    /// .NET timers
-    /// </summary>
     public class MicroStopwatch : System.Diagnostics.Stopwatch
     {
         private readonly double _microSecPerTick =
@@ -50,6 +39,10 @@ namespace ACAT.Lib.Core.Utility
         private long _timerIntervalInMicroSec = 0;
 
         private MicroStopwatch microStopwatch;
+
+        // private MicroStopwatch microSW = new MicroStopwatch();
+
+        // private Boolean swStarted = false;
 
         public MicroTimer()
         {
@@ -121,6 +114,7 @@ namespace ACAT.Lib.Core.Utility
 
         public long ElapsedMicroseconds()
         {
+            //return microSW.ElapsedMicroseconds;
             return microStopwatch.ElapsedMicroseconds;
         }
 
@@ -133,12 +127,12 @@ namespace ACAT.Lib.Core.Utility
 
             _stopTimer = false;
 
-            System.Threading.ThreadStart threadStart = delegate ()
+            void threadStart()
             {
                 NotificationTimer(ref _timerIntervalInMicroSec,
                                   ref _ignoreEventIfLateBy,
                                   ref _stopTimer);
-            };
+            }
 
             _threadTimer = new System.Threading.Thread(threadStart)
             {
@@ -213,7 +207,7 @@ namespace ACAT.Lib.Core.Utility
                 }
 
                 MicroTimerEventArgs microTimerEventArgs =
-                     new MicroTimerEventArgs(timerCount,
+                     new(timerCount,
                                              elapsedMicroseconds,
                                              timerLateBy,
                                              callbackFunctionExecutionTime);

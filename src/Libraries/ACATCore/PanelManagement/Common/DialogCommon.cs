@@ -5,20 +5,24 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.AnimationManagement;
-using ACAT.Lib.Core.Interpreter;
-using ACAT.Lib.Core.ThemeManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.AnimationManagement;
+using ACAT.Core.Interpreter;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.PanelManagement.Utils;
+using ACAT.Core.ThemeManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Core.WidgetManagement.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Security.Permissions;
 using System.Windows.Automation;
 using System.Windows.Forms;
+using ACAT.Core.PanelManagement.PanelConfig;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Common
 {
     /// <summary>
     /// Helper class that contains helper function for all the dialog
@@ -30,7 +34,7 @@ namespace ACAT.Lib.Core.PanelManagement
     /// call the methods in this class whereever they are needed. Refer
     /// to the documentation for the methods in this class for info on when these
     /// methods need to be invoked.
-    /// This class creates the WidgetManager and AnimationManager objects
+    /// This class creates the WidgetManager and PanelAnimationManager objects
     /// required by the form and has getters for the various fields.
     /// </summary>
     public class DialogCommon : IDisposable, IPanelCommon
@@ -53,7 +57,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// The animation manager for this form
         /// </summary>
-        private AnimationManager _animationManager;
+        private PanelAnimationManager _animationManager;
 
         /// <summary>
         /// Has this object been disposed off?
@@ -63,7 +67,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// Name of the form in the Panel config map
         /// </summary>
-        private String _panelName;
+        private string _panelName;
 
         /// <summary>
         /// The root widget for this form.  This is the window itself
@@ -80,10 +84,6 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         //private GraphicsPath _formGraphicsPath;
 
-        /// <summary>
-        /// Make sure nothing overlaps the form
-        /// </summary>
-        private WindowOverlapWatchdog _windowOverlapWatchdog;
 
         /// <summary>
         /// Initializes an new instance of the DialogCommon class.  Create this
@@ -94,7 +94,7 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             _form = form;
             _form.ShowInTaskbar = false;
-            _panelName = String.Empty;
+            _panelName = string.Empty;
             _dialogPanel = (IDialogPanel)_form;
             _syncLock = new SyncLock();
             AutoDockScanner = true;
@@ -108,7 +108,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// Gets the Animation Manager object
         /// </summary>
-        public AnimationManager AnimationManager
+        public PanelAnimationManager AnimationManager
         { get { return _animationManager; } }
 
         /// <summary>
@@ -133,10 +133,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// Gets the object that manages the size and position
         /// of the panel
         /// </summary>
-        public ScannerPositionSizeController PositionSizeController
-        { get { return null; } }
-
-        public ScannerPositionSizeController2 PositionSizeController2 { get; }
+        public ScannerPositionSizeController PositionSizeController2 { get; }
 
         /// <summary>
         /// Gets the widget that reprensents the form
@@ -157,6 +154,8 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public WidgetManager WidgetManager
         { get { return _widgetManager; } }
+
+        public ScannerPositionSizeController PositionSizeController => throw new NotImplementedException();
 
         /// <summary>
         /// Sets the style of the form.  No sys menu
@@ -244,14 +243,12 @@ namespace ACAT.Lib.Core.PanelManagement
                 retVal = initAnimationManager(panelConfigMapEntry);
             }
 
-            Windows.SetTopMost(_form);
 
             PanelManager.Instance.EvtScannerShow += Instance_EvtScannerShow;
             Windows.EvtWindowPositionChanged += Windows_EvtWindowPositionChanged;
 
             Windows.SetWindowPositionAndNotify(_form, Windows.WindowPosition.CenterScreen);
 
-            _windowOverlapWatchdog = new WindowOverlapWatchdog(_form);
 
             return retVal;
         }
@@ -301,10 +298,6 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public void OnPause()
         {
-            if (_windowOverlapWatchdog != null)
-            {
-                _windowOverlapWatchdog.Pause();
-            }
 
             _animationManager.Pause();
         }
@@ -317,10 +310,6 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             Windows.SetWindowPositionAndNotify(_form, Windows.WindowPosition.CenterScreen);
 
-            if (_windowOverlapWatchdog != null)
-            {
-                _windowOverlapWatchdog.Resume();
-            }
 
             _animationManager.Resume();
         }
@@ -350,29 +339,18 @@ namespace ACAT.Lib.Core.PanelManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
                     PanelManager.Instance.EvtScannerShow -= Instance_EvtScannerShow;
 
                     // dispose all managed resources.
-                    Log.Debug();
+                    Log.Verbose();
 
-                    if (_animationManager != null)
-                    {
-                        _animationManager.Dispose();
-                    }
+                    _animationManager?.Dispose();
 
-                    if (_windowOverlapWatchdog != null)
-                    {
-                        _windowOverlapWatchdog.Dispose();
-                    }
-
-                    if (_rootWidget != null)
-                    {
-                        _rootWidget.Dispose();
-                    }
+                    _rootWidget?.Dispose();
                 }
 
                 // Release unmanaged resources.
@@ -403,7 +381,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="widget"></param>
         private void createAndShowScannerForWidget(Widget widget)
         {
-            if (!(_form is IPanel))
+            if (_form is not IPanel)
             {
                 return;
             }
@@ -411,7 +389,7 @@ namespace ACAT.Lib.Core.PanelManagement
             var startupArg = createStartupArgForScanner(widget);
 
             Log.Debug("Creating Panel " + widget.Panel);
-            Form panel = Context.AppPanelManager.CreatePanel(widget.Panel, String.Empty, startupArg);
+            Form panel = Context.AppPanelManager.CreatePanel(widget.Panel, string.Empty, startupArg);
             var child = panel as IScannerPanel;
             if (child != null)
             {
@@ -444,7 +422,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         private bool initAnimationManager(PanelConfigMapEntry panelConfigMapEntry)
         {
-            _animationManager = new AnimationManager();
+            _animationManager = new PanelAnimationManager();
 
             bool retVal = _animationManager.Init(panelConfigMapEntry);
             if (!retVal)
@@ -474,7 +452,7 @@ namespace ACAT.Lib.Core.PanelManagement
             else
             {
                 _rootWidget = _widgetManager.RootWidget;
-                if (String.IsNullOrEmpty(_rootWidget.SubClass))
+                if (string.IsNullOrEmpty(_rootWidget.SubClass))
                 {
                     _rootWidget.SubClass = PanelCategory.Dialog.ToString();
                 }
@@ -508,7 +486,7 @@ namespace ACAT.Lib.Core.PanelManagement
                     position = Windows.WindowPosition.MiddleRight;
                 }
 
-                if (((IPanel)arg.Scanner).PanelCommon.DisplayMode != DisplayModeTypes.Popup)
+                if (arg.Scanner.PanelCommon.DisplayMode != DisplayModeTypes.Popup)
                 {
                     Windows.DockWithScanner(_form, arg.Scanner as Form, position, false);
                 }
@@ -517,8 +495,6 @@ namespace ACAT.Lib.Core.PanelManagement
                 {
                     _form.Left = 0;
                 }
-
-                Windows.SetTopMost(arg.Scanner as Form);
             }
         }
 
@@ -550,7 +526,7 @@ namespace ACAT.Lib.Core.PanelManagement
 
             foreach (var widget in widgetList)
             {
-                if (widget is IButtonWidget || !String.IsNullOrEmpty(widget.Panel))
+                if (widget is IButtonWidget || !string.IsNullOrEmpty(widget.Panel))
                 {
                     widget.EvtActuated += widget_EvtActuated;
                 }
@@ -576,15 +552,15 @@ namespace ACAT.Lib.Core.PanelManagement
 
             if (widget is IButtonWidget)
             {
-                String value = widget.Value;
-                if (!String.IsNullOrEmpty(value))
+                string value = widget.Value;
+                if (!string.IsNullOrEmpty(value))
                 {
                     Log.Debug("**Actuate** " + widget.Name + " Value: " + value);
 
                     _dialogPanel.OnButtonActuated(widget);
                 }
             }
-            else if (!String.IsNullOrEmpty(widget.Panel))
+            else if (!string.IsNullOrEmpty(widget.Panel))
             {
                 _form.Invoke(new MethodInvoker(delegate
                 {
@@ -609,7 +585,7 @@ namespace ACAT.Lib.Core.PanelManagement
         private void Windows_EvtWindowPositionChanged(Form form, Windows.WindowPosition position)
         {
             if (AutoDockScanner &&
-                (form is IScannerPanel) &&
+                form is IScannerPanel &&
                 Windows.GetVisible(_form) &&
                 form != _form &&
                 Windows.GetOpacity(_form) != 0.0f)
@@ -625,8 +601,6 @@ namespace ACAT.Lib.Core.PanelManagement
                 {
                     _form.Left = 0;
                 }
-
-                Windows.SetTopMost(form);
             }
         }
     }

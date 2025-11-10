@@ -5,22 +5,24 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
-using ACAT.Lib.Core.Widgets;
-using ACAT.Lib.Extension.CommandHandlers;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.Audit;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Core.Widgets;
+using ACAT.Extension.CommandHandlers;
+using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension.UI
 {
     /// <summary>
     /// This is a helper class exclusively for Alphabet scanners.
@@ -96,7 +98,7 @@ namespace ACAT.Lib.Extension
         /// <param name="index">index number of the word in the list</param>
         /// <param name="word">the predicted word</param>
         /// <returns>formatted string</returns>
-        public delegate String FormatPredictionWord(int index, String word);
+        public delegate string FormatPredictionWord(int index, string word);
 
         /// <summary>
         /// Raised to format the predicted word
@@ -127,7 +129,7 @@ namespace ACAT.Lib.Extension
         /// Gets the PanelClass of the scanner. Call this in
         /// the PanelClass getter in the Alphabet scanner.
         /// </summary>
-        public String PanelClass { get; private set; }
+        public string PanelClass { get; private set; }
 
         /// <summary>
         /// Gets the PanelCommon object
@@ -185,7 +187,7 @@ namespace ACAT.Lib.Extension
         /// </summary>
         public void AutocompleteWithFirstWord()
         {
-            List<Widget> list = new List<Widget>();
+            List<Widget> list = new();
             _rootWidget.Finder.FindAllChildren(typeof(WordListItemWidget), list);
 
             if (list.Any())
@@ -231,7 +233,7 @@ namespace ACAT.Lib.Extension
 
             if (!_scannerCommon.Initialize(startupArg))
             {
-                Log.Debug("Could not initialize form " + _form.Name);
+                Log.Error($"Could not initialize form {_form.Name}");
                 return false;
             }
 
@@ -260,7 +262,7 @@ namespace ACAT.Lib.Extension
         /// </summary>
         public void OnClosing(object sender, FormClosingEventArgs e)
         {
-            Log.Debug();
+            Log.Verbose();
 
             KeyStateTracker.EvtKeyStateChanged -= KeyStateTracker_EvtKeyStateChanged;
 
@@ -333,7 +335,7 @@ namespace ACAT.Lib.Extension
         /// </summary>
         public void OnPause()
         {
-            Log.Debug();
+            Log.Verbose();
 
             _scannerCommon.OnPause();
         }
@@ -344,7 +346,7 @@ namespace ACAT.Lib.Extension
         /// </summary>
         public void OnResume()
         {
-            Log.Debug();
+            Log.Verbose();
 
             _scannerCommon.OnResume();
 
@@ -411,11 +413,11 @@ namespace ACAT.Lib.Extension
             int desktopHeight = Screen.PrimaryScreen.WorkingArea.Height;
             if (form.Height > desktopHeight)
             {
-                float ratio = ((float)desktopHeight / form.Height);
+                float ratio = (float)desktopHeight / form.Height;
 
                 form.Top = 0;
                 form.Height = desktopHeight;
-                form.Width = (int)((float)form.Width * ratio);
+                form.Width = (int)(form.Width * ratio);
             }
         }
 
@@ -475,7 +477,7 @@ namespace ACAT.Lib.Extension
         /// function in the Alphabet scanner.
         /// </summary>
         /// <param name="m">windows message</param>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public bool WndProc(ref Message m)
         {
             return _scannerCommon.HandleWndProc(m);
@@ -490,7 +492,7 @@ namespace ACAT.Lib.Extension
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -512,7 +514,7 @@ namespace ACAT.Lib.Extension
         /// <param name="e">event args</param>
         private void AppAgent_EvtTextChanged(object sender, EventArgs e)
         {
-            Log.Debug();
+            Log.Verbose();
             try
             {
                 if (_form.Visible)
@@ -522,7 +524,7 @@ namespace ACAT.Lib.Extension
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
             Log.Debug("returning");
@@ -534,7 +536,7 @@ namespace ACAT.Lib.Extension
 
             var wordSelected = wordListItemWidget.Value.Trim();
 
-            if (!String.IsNullOrEmpty(wordSelected))
+            if (!string.IsNullOrEmpty(wordSelected))
             {
                 KeyStateTracker.ClearAlt();
                 KeyStateTracker.ClearCtrl();
@@ -550,7 +552,7 @@ namespace ACAT.Lib.Extension
 
             var letterSelected = letterListItemWidget.Value.Trim();
 
-            if (!String.IsNullOrEmpty(letterSelected))
+            if (!string.IsNullOrEmpty(letterSelected))
             {
                 KeyStateTracker.ClearAlt();
                 KeyStateTracker.ClearCtrl();
@@ -570,10 +572,8 @@ namespace ACAT.Lib.Extension
                 // text in the target window
                 if (!KeyStateTracker.IsShiftOn())
                 {
-                    using (AgentContext context = Context.AppAgentMgr.ActiveContext())
-                    {
-                        context.TextAgent().SetSelectMode(false);
-                    }
+                    using AgentContext context = Context.AppAgentMgr.ActiveContext();
+                    context.TextAgent().SetSelectMode(false);
                 }
             }
             catch (Exception ex)
@@ -642,8 +642,8 @@ namespace ACAT.Lib.Extension
 
             try
             {
-                String wordAtCaret;
-                String nwords;
+                string wordAtCaret;
+                string nwords;
                 var charAtCaret = '\0';
 
                 using (var agentContext = Context.AppAgentMgr.ActiveContext())
@@ -659,20 +659,14 @@ namespace ACAT.Lib.Extension
                     Log.Debug("charAtCaret: [" + charAtCaret + "]");
                 }
 
-                if (String.IsNullOrEmpty(nwords) && String.IsNullOrEmpty(wordAtCaret))
+                if (string.IsNullOrEmpty(nwords) && string.IsNullOrEmpty(wordAtCaret))
                 {
-                    if (_currentWordWidget != null)
-                    {
-                        _currentWordWidget.SetCurrentWord(String.Empty);
-                    }
+                    _currentWordWidget?.SetCurrentWord(string.Empty);
 
-                    if (_wordListWidgetWidget != null)
-                    {
-                        _wordListWidgetWidget.ClearEntries();
-                    }
+                    _wordListWidgetWidget?.ClearEntries();
 
                     nwords = " ";
-                    wordAtCaret = String.Empty;
+                    wordAtCaret = string.Empty;
                 }
 
                 Log.Debug("wordatcaret length: " + wordAtCaret.Length);
@@ -683,19 +677,16 @@ namespace ACAT.Lib.Extension
                 Log.Debug("CurrentWord: [" + wordAtCaret + "]");
 
                 // do the word prediction
-                if (wordAtCaret.Length > 1 && Char.IsPunctuation(wordAtCaret[0]))
+                if (wordAtCaret.Length > 1 && char.IsPunctuation(wordAtCaret[0]))
                 {
                     wordAtCaret = wordAtCaret.Substring(1);
                 }
 
-                if (_wordListWidgetWidget != null)
-                {
-                    _wordListWidgetWidget.ClearEntries();
-                }
+                _wordListWidgetWidget?.ClearEntries();
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 
@@ -741,7 +732,7 @@ namespace ACAT.Lib.Extension
             /// </summary>
             /// <param name="alphabetScannerCommon">parent object</param>
             /// <param name="cmd">command to execute</param>
-            public CommandHandler(AlphabetScannerCommon alphabetScannerCommon, String cmd)
+            public CommandHandler(AlphabetScannerCommon alphabetScannerCommon, string cmd)
                 : base(cmd)
             {
                 _alphabetScannerCommon = alphabetScannerCommon;
@@ -774,7 +765,7 @@ namespace ACAT.Lib.Extension
 
                     case "CmdWindowPosSizeMenu":
                         {
-                            var panel = Context.AppPanelManager.CreatePanel("WindowPosSizeMenu", R.GetString("Window")) as IPanel;
+                            var panel = Context.AppPanelManager.CreatePanel("WindowPosSizeMenu", StringResources.Window) as IPanel;
                             if (panel != null)
                             {
                                 Context.AppPanelManager.Show(form as IPanel, panel);

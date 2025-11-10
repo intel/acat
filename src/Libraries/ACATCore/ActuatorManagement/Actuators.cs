@@ -1,27 +1,18 @@
-﻿////////////////////////////////////////////////////////////////////////////
-//
-// Copyright 2013-2019; 2023 Intel Corporation
+﻿// Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
-//
-//
-// Actuators.cs
-//
-// Contains a collection of actuators in the system.  Creates
-// the actuator objects by loading the Actuator settings file,
-// looks into the Actuators extension directory, loads the DLL's
-// and caches the Type of the actuator objects
-//
-////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement.BaseActuators;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.ActuatorManagement.Settings;
+using ACAT.Core.Utility;
+using ACAT.Core.Utility.TypeLoader;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// Contains a collection of actuators in the system.  Creates
@@ -32,6 +23,11 @@ namespace ACAT.Lib.Core.ActuatorManagement
     public class Actuators : IDisposable
     {
         /// <summary>
+        /// If one of the dll found has an error with the certificate
+        /// </summary>
+        private static volatile bool _DLLError = false;
+
+        /// <summary>
         /// A list of actuators
         /// </summary>
         private readonly List<IActuator> _actuators;
@@ -41,26 +37,24 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         private readonly List<ActuatorEx> _actuatorsEx;
 
-        /// <summary>
-        /// A map of the guid and the type of the actuator.  The Type will
-        /// be used to create an instance of the actuator
-        /// </summary>
-        private readonly Dictionary<Guid, Type> _actuatorsTypeCache;
+        ///// <summary>
+        ///// A map of the guid and the type of the actuator.  The Type will
+        ///// be used to create an instance of the actuator
+        ///// </summary>
+        //private readonly Dictionary<Guid, Type> _actuatorsTypeCache;
+
+        private readonly TypeLoader<IActuator> _actuatorTypeLoader = new();
 
         /// <summary>
         /// Has this object been disposed
         /// </summary>
         private bool _disposed = false;
         /// <summary>
-        /// If one of the dll found has an error with the certificate
-        /// </summary>
-        private static volatile bool _DLLError = false;
-        /// <summary>
         /// Initializes the Actuator object
         /// </summary>
         public Actuators()
         {
-            _actuatorsTypeCache = new Dictionary<Guid, Type>();
+            //_actuatorsTypeCache = new Dictionary<Guid, Type>();
             _actuatorsEx = new List<ActuatorEx>();
             _actuators = new List<IActuator>();
         }
@@ -150,7 +144,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
                 }
             }
 
-            Log.Debug("Could not find actuator by name " + name);
+            Log.Warn("Could not find actuator by name " + name);
             return null;
         }
 
@@ -170,12 +164,12 @@ namespace ACAT.Lib.Core.ActuatorManagement
                 }
             }
 
-            Log.Debug("Could not find actuator of type " + actuatorType.Name);
+            Log.Warn("Could not find actuator of type " + actuatorType.Name);
             return null;
         }
 
         /// <summary>
-        /// Loads actuator settigns from the settings file.
+        /// Loads actuator settings from the settings file.
         /// Walks through the extensions dirs, looks for actuators in there
         /// and caches the Types of the actuators.
         /// Configures the actuators with the settings from the settings file.
@@ -188,16 +182,23 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <returns>true on success</returns>
         public bool Load(IEnumerable<String> extensionDirs, String configFile, bool loadAll = false)
         {
-            addKeyboardActuatorToCache();
-            addSwitchInterfaceActuatorTocache();
+            ClassDescriptorAttribute keyboard = typeof(KeyboardActuator)
+                .GetCustomAttributes(typeof(ClassDescriptorAttribute), inherit: false)
+                .FirstOrDefault() as ClassDescriptorAttribute;
+            ClassDescriptorAttribute switchInterface = typeof(SwitchInterfaceActuator)
+                .GetCustomAttributes(typeof(ClassDescriptorAttribute), inherit: false)
+                .FirstOrDefault() as ClassDescriptorAttribute;
+
+            _actuatorTypeLoader.AddAssemblytoCache(keyboard.Id, typeof(KeyboardActuator));
+            _actuatorTypeLoader.AddAssemblytoCache(switchInterface.Id, typeof(SwitchInterfaceActuator));
 
             foreach (string dir in extensionDirs)
             {
-                String extensionDir = dir + "\\" + ActuatorManager.ActuatorsRootDir;
-                loadActuatorTypesIntoCache(extensionDir);
+                String extensionDir = Path.Combine(dir, ActuatorManager.ActuatorsRootDir);
+                LoadTypesIntoCache(extensionDir);
             }
-            if(_DLLError)
-                return false;   
+            if (_DLLError)
+                return false;
             if (!File.Exists(configFile))
             {
                 return false;
@@ -215,12 +216,12 @@ namespace ACAT.Lib.Core.ActuatorManagement
                     bool enabled = (loadAll) || actuatorSetting.Enabled;
                     if (enabled && (actuatorSetting.Id != Guid.Empty))
                     {
-                        if (!_actuatorsTypeCache.ContainsKey(actuatorSetting.Id))
+                        if (!_actuatorTypeLoader.LoadedTypes.ContainsKey(actuatorSetting.Id))
                         {
                             continue;
                         }
 
-                        var type = _actuatorsTypeCache[actuatorSetting.Id];
+                        var type = _actuatorTypeLoader.LoadedTypes[actuatorSetting.Id];
                         if (type != null)
                         {
                             var assembly = Assembly.LoadFrom(type.Assembly.Location);
@@ -247,9 +248,9 @@ namespace ACAT.Lib.Core.ActuatorManagement
             // settings file and add them to the settings file
 
             bool isDirty = false;
-            foreach (var actuatorType in _actuatorsTypeCache.Values)
+            foreach (var actuatorType in _actuatorTypeLoader.LoadedTypes.Values)
             {
-                var attr = DescriptorAttribute.GetDescriptor(actuatorType);
+                ClassDescriptorAttribute attr = ClassDescriptorAttribute.GetDescriptor(actuatorType);
                 if (attr != null && attr.Id != Guid.Empty)
                 {
                     var actuatorSetting = Config.Find(attr.Id);
@@ -369,7 +370,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -378,7 +379,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
                         actuator.SourceActuator.Dispose();
                     }
 
-                    _actuatorsTypeCache.Clear();
+                    //_actuatorsTypeCache.Clear();
                     _actuatorsEx.Clear();
                 }
 
@@ -388,109 +389,24 @@ namespace ACAT.Lib.Core.ActuatorManagement
             _disposed = true;
         }
 
-        /// <summary>
-        /// Adds the actuator with the GUID and type to the cache
-        /// </summary>
-        /// <param name="guid">GUID of the actuator</param>
-        /// <param name="type">Type of the actuato</param>
-        private void addActuatorToCache(Guid guid, Type type)
+        private void LoadTypesIntoCache(String dir)
         {
-            if (_actuatorsTypeCache.ContainsKey(guid))
-            {
-                Log.Debug("Actuator " + type.FullName + ", guid " + guid + " is already added");
-                return;
-            }
+            var walker = new DirectoryWalker(dir, "ACAT.Extensions.*Actuator.dll");
 
-            Log.Debug("Adding Actuator " + type.FullName + ", guid " + guid + " to cache");
-            _actuatorsTypeCache.Add(guid, type);
-        }
-
-        /// <summary>
-        /// Adds the keyboard actuator to the list of actuators.  This
-        /// actuator is bundled with the SDK.
-        /// </summary>
-        private void addKeyboardActuatorToCache()
-        {
-            var attr = DescriptorAttribute.GetDescriptor(typeof(InputActuators.KeyboardActuator));
-            if (attr != null)
-            {
-                addActuatorToCache(attr.Id, typeof(InputActuators.KeyboardActuator));
-            }
-        }
-
-        private void addSwitchInterfaceActuatorTocache()
-        {
-            var attr = DescriptorAttribute.GetDescriptor(typeof(InputActuators.SwitchInterfaceActuator));
-            if (attr != null)
-            {
-                addActuatorToCache(attr.Id, typeof(InputActuators.SwitchInterfaceActuator));
-            }
-        }
-
-        /// <summary>
-        /// Recursively descends into the directory and loads all the
-        /// actuator types in each of the actuator DLLs
-        /// </summary>
-        /// <param name="dir">Directory to descend into/param>
-        /// <param name="resursive">Descend recursively</param>
-        private void loadActuatorTypesIntoCache(String dir, bool resursive = true)
-        {
-            var walker = new DirectoryWalker(dir, "*.dll");
+            // Recursively look for Actuators in /Extensions
             walker.Walk(new OnFileFoundDelegate(onFileFound));
         }
 
-        /// <summary>
-        /// Callback function for the directory walker. called whenever
-        /// it finds a DLL
-        /// </summary>
-        /// <param name="dllName"></param>
         private void onFileFound(String dllName)
         {
             try
             {
-
-                var retVal = VerifyDigitalSignature.ValidateCertificate(dllName);
-                if (retVal && !_DLLError)
-                {
-                    try
-                    {
-                        VerifyDigitalSignature.Verify(dllName);
-                    }
-                    catch (Exception ex)
-                    {
-                        ConfirmBoxSingleOption confirmBoxSingleOption = new ConfirmBoxSingleOption
-                        {
-                            Prompt = $"The following DLL is not digitally signed \nDLL: {dllName}.\nReason for failure: {ex.Message} \n Status Error: ERA",
-                            DecisionPrompt = "ok",
-                            LabelFont = 10
-                        };
-                        confirmBoxSingleOption.BringToFront();
-                        confirmBoxSingleOption.TopMost = true;
-                        confirmBoxSingleOption.ShowDialog();
-                        confirmBoxSingleOption.Dispose();
-                        _DLLError = true;
-                    }
-                }
-                if (!_DLLError)
-                {
-                    var inputActuatorsAssembly = Assembly.LoadFrom(dllName);
-                    foreach (Type type in inputActuatorsAssembly.GetTypes())
-                    {
-                        if (typeof(ActuatorBase).IsAssignableFrom(type))
-                        {
-                            var attr = DescriptorAttribute.GetDescriptor(type);
-                            if (attr != null && attr.Id != Guid.Empty)
-                            {
-                                addActuatorToCache(attr.Id, type);
-                            }
-                        }
-                    }
-                }
-                
+                _actuatorTypeLoader.LoadFromAssembly(dllName);
             }
             catch (Exception ex)
             {
-                //Log.Debug("Could not get types from assembly " + dllName + ". Exception : " + ex.ToString());
+                Log.Exception($"Error loading actuator from {dllName}: {ex.Message}");
+                _DLLError = true;
             }
         }
     }

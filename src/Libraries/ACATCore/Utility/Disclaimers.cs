@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Manages disclaimers that could be displayed in an
@@ -20,7 +20,7 @@ namespace ACAT.Lib.Core.Utility
         /// Stores mapping between the attribution source and the
         /// attribution string
         /// </summary>
-        private static readonly Dictionary<String, String> _disclaimers = new Dictionary<string, string>();
+        private static readonly Dictionary<String, String> _disclaimers = new();
 
         /// <summary>
         /// Adds a disclaimer. Token is a string to ensure if the

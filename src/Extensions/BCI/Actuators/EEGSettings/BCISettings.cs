@@ -10,9 +10,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Xml.Serialization;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
+using ACAT.Core.PreferencesManagement.Attributes;
 
 namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
 {
@@ -20,7 +24,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
     /// Settings for the Sample Actuator
     /// </summary>
     [Serializable]
-    public class BCISettings : PreferencesBase
+    public partial class BCISettings : PreferencesBase
     {
         /// <summary>
         /// Name of the settings file
@@ -30,76 +34,192 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
 
         // ************************** Testing (internal use)  *********************************** //
 
-        [BoolDescriptor("For internal use, true to use OpenBCI Cyton board, false to use a dummy sensor")]
-        public bool Testing_UseSensor;
+#if DEBUG
+        [Display(
+            Name = "Enable Debug Mode",
+            Description = "Disables directly using BCI sensor.  UI will let you skip through steps.",
+            GroupName = "Developer Settings")]
+        [ObservableProperty]
+        private bool testing_UseSensor = true;
 
-        // [BoolDescriptor("For internal use, force recalibration from file in Testing_CalibrationFileId", false)]
-        public bool Testing_ForceRecalibrateFromFile;
+        [Display(
+            Name = "Force Recalibration From File",
+            Description = "For internal use, force recalibration from file in Testing_CalibrationFileId",
+            GroupName = "Developer Settings")]
+        [ObservableProperty]
+        private bool testing_ForceRecalibrateFromFile = false;
 
-        //[StringDescriptor("For internal use, ID of the file to recalibrate from")]
-        public string Testing_CalibrationFileId; // if empty use session
+        [Display(
+            Name = "Calibration File Name",
+            Description = "ID of the file to recalibrate from.",
+            GroupName = "Developer Settings")]
+        [ObservableProperty]
+        private string testing_CalibrationFileId;
 
-        //[IntDescriptor("For internal use, testID for data collection V2 (box / small buttons calibration and testing. Use 5 for ACAT-Talk", 1, 5, 1)]
-        public int Testing_TestID; // For data collection V2
+        [Display(
+            Name = "Test ID Number",
+            Description = "testID for data collection V2 (box / small buttons calibration and testing. Use 5 for ACAT-Talk",
+            GroupName = "Developer Settings")]
+        [ObservableProperty]
+        private int testing_TestID; // For data collection V2
 
-        //[BoolDescriptor("Disables signal quality checks when selecting Next from BCI Onboarding")]
-        public bool Testing_IgnoreSignalTestResultDuringOnboarding;
+        [Display(
+            Name = "Disable Signal Qualty Check",
+            Description = "Disables signal quality checks when selecting Next from BCI Onboarding",
+            GroupName = "Developer Settings")]
+        [ObservableProperty]
+        private bool testing_IgnoreSignalTestResultDuringOnboarding = false;
 
-        //[BoolDescriptor("Skips optical sensor tests in BCI Onboarding")]
-        public bool Testing_BCIOnboardingIgnoreOpticalSensorChecks;
+        [Display(
+            Name = "Disable Optical Sensor Tests",
+            Description = "Skips optical sensor tests in BCI Onboarding",
+            GroupName = "Developer Settings")]
+        [ObservableProperty]
+        private bool testing_BCIOnboardingIgnoreOpticalSensorChecks = false;
 
-        public int Testing_MinimumProbabiltyToDisplayBarOnTyping;
+        [Display(
+            Name = "Min Probability to Display on Typing",
+            Description = "Minimum probablility score to show on the display while typing.",
+            GroupName = "Developer Settings")]
+        [UIHint("TextBox")]
+        [ObservableProperty]
+        private int testing_MinimumProbabiltyToDisplayBarOnTyping;
 
-        [BoolDescriptor("For internal use, automatically duplicate the required channels as optional channels (simulate connection of daisy board)", false)]
-        public bool Testing_DuplicateRequiredChannelsAsOptionalChannels;
+        [Display(
+            Name = "Duplicate Required Channels as Optional",
+            Description = "Automatically duplicate the required channels as optional channels (simulate connection of daisy board)",
+            GroupName = "Developer Settings")]
+        [ObservableProperty]
+        private bool testing_DuplicateRequiredChannelsAsOptionalChannels = false;
 
+#else // DON'T DISPLAY THESE SETTINGS IN RELEASE BUILD, ONLY FOR TESTING PURPOSES
+        public bool Testing_UseSensor = true;
+
+        public bool Testing_ForceRecalibrateFromFile = false;
+
+        public string Testing_CalibrationFileId;
+
+        public int Testing_TestID = 5;
+
+        public bool Testing_IgnoreSignalTestResultDuringOnboarding = false;
+
+        public bool Testing_BCIOnboardingIgnoreOpticalSensorChecks = false;
+
+        public int Testing_MinimumProbabiltyToDisplayBarOnTyping = 0;
+
+        public bool Testing_DuplicateRequiredChannelsAsOptionalChannels = false;
+#endif
         // ************************** Scanning **************************************//
 
-        [IntDescriptor("Pause time (ins ms)", 100, 5000, 300)]
-        public int Scanning_PauseTime { get; set; }
+        [Display(
+            Name = "Scanning pause time (ms)",
+            Description = "Pause time in milliseconds between scanning iterations. Default: 300ms",
+            GroupName = "Scanning Settings")]
+        [Range(100, 5000)]
+        [UIHint("Slider")]
+        [DefaultValue(300)]
+        [ObservableProperty]
+        private int scanning_PauseTime = 300;
 
-        [IntDescriptor("Pause time (ins ms)", 100, 5000, 300)]
-        public int Scanning_ShortPauseTime { get; set; }
+        [Display(
+            Name = "Scanning short pause time (ms)",
+            Description = "Pause time in milliseconds between scanning iterations when the user is typing. Default: 300ms",
+            GroupName = "Scanning Settings")]
+        [Range(100, 5000)]
+        [UIHint("Slider")]
+        [DefaultValue(300)]
+        [ObservableProperty]
+        private int scanning_ShortPauseTime = 300;
 
-        [IntDescriptor("Time (ins ms) when decision is shown", 200, 5000, 2000)]
-        public int Scanning_ShowDecisionTime { get; set; }
+        [Display(
+            Name = "Scanning decision display time (ms)",
+            Description = "Time in milliseconds to display the decision made by the user. Default: 2000ms",
+            GroupName = "Scanning Settings")]
+        [Range(0, 5000)]
+        [UIHint("Slider")]
+        [DefaultValue(2000)]
+        [ObservableProperty]
+        private int scanning_ShowDecisionTime = 2000;
 
-        [IntDescriptor("Delay (in ms) after a decision is made", 0, 20000, 5000)]
-        public int Scanning_DelayAfterDecision { get; set; }
+        [Display(
+            Name = "Scanning delay after decision (ms)",
+            Description = "Delay in milliseconds after a decision is made before the next scanning iteration starts. Default: 5000ms",
+            GroupName = "Scanning Settings")]
+        [Range(0, 20000)]
+        [UIHint("Slider")]
+        [DefaultValue(5000)]
+        [ObservableProperty]
+        private int scanning_DelayAfterDecision  = 5000;
 
-        [IntDescriptor("Delay (in ms) to get ready before typing", 0, 20000, 3000)]
-        public int Scanning_DelayToGetReady { get; set; }
+        [Display(
+            Name = "Scanning delay to get ready (ms)",
+            Description = "Delay in milliseconds to get ready before typing. Default: 3000ms",
+            GroupName = "Scanning Settings")]
+        [Range(0, 20000)]
+        [UIHint("Slider")]
+        [DefaultValue(3000)]
+        [ObservableProperty]
+        private int scanning_DelayToGetReady = 3000;
 
-        [BoolDescriptor("Is focal circle filled?", false)]
-        public bool Scanning_IsFocalCircleFilled;
+        [Display(
+            Name="Fill Focal Circle",
+            Description = "If true, the focal circle will be filled with the color specified in Scanning_FocalCircleColor. Default: false")]
+        [UIHint("ToggleSwitch")]
+        [ObservableProperty]
+        private bool scanning_IsFocalCircleFilled = false;
 
-        [StringDescriptor("Color of the focal circle. Available options: green, yellow.", "green")]
-        public String Scanning_FocalCircleColor;
+        [Display(
+            Name = "Focal Circle Color",
+            Description = "Color of the focal circle. Available options: green, yellow. Default: green",
+            GroupName = "Scanning Settings")]
+        [UIHint("TextBox")]
+        [ObservableProperty]
+        private String scanning_FocalCircleColor = "green";
 
         // ************************** Calibration *********************************** //
 
         //[IntDescriptor("Offset added to target in calibration", 0, 10000, 1000)]
         public int Calibration_OffsetTarget;
 
-        [IntDescriptor("Maximum elapsed time to force calibrating again", 30, 600, 360)]
-        public int Calibration_MaxElapsedTimeToForceRecalibration;
+        [Display(
+            Name = "Maximum elapsed time to force calibrating again")]
+        [Range(30, 600)]
+        [UIHint("Slider")]
+        [ObservableProperty]
+        private int calibration_MaxElapsedTimeToForceRecalibration = 360;
 
-        [StringDescriptor("Path where the trained classifiers are stored", "Actuators\\BCI\\TrainedClassifiers")]
-        public string Calibration_TrainedClassifiersFilePath;
+        public string Calibration_TrainedClassifiersFilePath  = "Actuators\\BCI\\TrainedClassifiers";
 
-        [BoolDescriptor("Display popup window with signals after calibration", false)]
-        public bool Calibration_DisplaySignalsAfterCalibrationFlag;
+        [Display(
+            Name = "Display popup window with signals after calibration?")]
+        [UIHint("ToggleSwitch")]
+        [ObservableProperty]
+        private bool calibration_DisplaySignalsAfterCalibrationFlag = false;
 
+        [Display(
+            Name = "Use advance mode for typing-calibration mappings?")]
         [BoolDescriptor("Use advance mode for typing-calibration mappins?")]
-        public bool Calibration_UseAdvanceModeForTypingMappings;
+        [UIHint("ToggleSwitch")]
+        [ObservableProperty]
+        private bool calibration_UseAdvanceModeForTypingMappings;
 
         // ************************** DAQ / sensor *********************************** //
 
         /// <summary>
         /// Data parser: column index where EEG data starts. Default: 8
         /// </summary>
-        [IntDescriptor("Number of channels of the device. Options: 8, 16", 8, 16, 8)]
-        public int DAQ_NumEEGChannels;
+        [Descriptor("Number of channels of the device. Options: 8, 16")]
+        [Range(8, 16)]
+        [UIHint("Slider")]
+        [ObservableProperty]
+        private int dAQ_NumEEGChannels = 8;
+
+        [Descriptor("Type of the BCI device")]
+        [UIHint("TextBox")]
+        [DefaultValue("GTecBCI")]
+        //[ObservableProperty]
+        public string DAQ_DeviceType { get; set; }
+
 
         /// <summary>
         /// ComPort where the optical sensor is connected (this will be automatically detected in Onboarding)
@@ -107,24 +227,42 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         //[StringDescriptor("BCI sensor port", "COM4")]
         public string DAQ_ComPort { get; set; }
 
+        [Descriptor("Name of the GTec blueooth device")]
+        [UIHint("TextBox")]
+        [DefaultValue("")]
+        [ObservableProperty]
+        private string gTecDeviceName  = "";
+
         /// <summary>
         /// Index where the data from the optical sensor is sent
         /// This can change depending on the port where is connected
         /// </summary>
-        [IntDescriptor("Index of the port where the optical sensor is connected. Use 1 for port D11, 2 for port D12, 3 for port D13", 1, 3, 2)]
-        public int DAQ_OpticalSensorIdxPort { get; set; }
+        [Descriptor("Index of the port where the optical sensor is connected. Use 1 for port D11, 2 for port D12, 3 for port D13")]
+        [Range(1, 3)]
+        [UIHint("Slider")]
+        [DefaultValue(2)]
+        [ObservableProperty]
+        private int dAQ_OpticalSensorIdxPort  = 2;
 
         /// <summary>
         /// Lux threshold for the optical sensor
         /// </summary>
-        [IntDescriptor("Lux threshold value for the optical sensor", 0, 60, 20)]
-        public int DAQ_OpticalSensorLuxThreshold { get; set; }
+        [Descriptor("Lux threshold value for the optical sensor")]
+        [Range(0, 60)]
+        [UIHint("Slider")]
+        [DefaultValue(20)]
+        [ObservableProperty]
+        private int dAQ_OpticalSensorLuxThreshold  = 20;
 
-        [BoolDescriptor("Automatically disable bad channels while typing", true)]
-        public bool DAQ_DisableChannelsAutomatically;
+        [Descriptor("Automatically disable bad channels while typing")]
+        [UIHint("ToggleSwitch")]
+        [ObservableProperty]
+        private bool dAQ_DisableChannelsAutomatically = true;
 
-        [BoolDescriptor("Display filter settings screen before displaying EEG signals screen", true)]
-        public bool DAQ_ShowFilterSettings;
+        [Descriptor("Display filter settings screen before displaying EEG signals screen")]
+        [UIHint("ToggleSwitch")]
+        [ObservableProperty]
+        private bool dAQ_ShowFilterSettings = true;
 
         /// <summary>
         /// Index of the frontend filter:
@@ -146,33 +284,50 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         /// 2: 60Hz (USA)
         /// 0: none
         /// </summary>
-        [IntDescriptor("Index of the notch filter where 0=no filter, 1=50Hz (Europe), 2=60Hz (US)", 0, 2, 2)]
-        public int DAQ_NotchFilterIdx { get; set; }
+        [Descriptor("Index of the notch filter where 0=no filter, 1=50Hz (Europe), 2=60Hz (US)")]
+        [Range(0, 2)]
+        [UIHint("Slider")]
+        [DefaultValue(2)]
+        [ObservableProperty]
+        private int dAQ_NotchFilterIdx  = 2;
 
         /// <summary>
         /// Directory where data will be saved
         /// </summary>
         ///
-        [StringDescriptor("Directory where EEG data will be saved", "EEGData")]
-        public String DAQ_OutputDirectory { get; set; }
+        [Descriptor("Directory where EEG data will be saved")]
+        [UIHint("TextBox")]
+        [ObservableProperty]
+        private String dAQ_OutputDirectory = "EEGData";
 
         /// <summary>
         /// True if data will be saved to a file
         /// </summary>
-        [BoolDescriptor("Save filtered eeg data from typing to a file? NOTE: Calibration data from current session will always be saved to a file.", true)]
-        public bool DAQ_SaveToFileFlag { get; set; }
+        [Descriptor("Save filtered eeg data from typing to a file? NOTE: Calibration data from current session will always be saved to a file.")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        private bool dAQ_SaveToFileFlag  = true;
 
         /// <summary>
         /// Saves raw data in addition to filtered data
         /// </summary>
-        [BoolDescriptor("Save additional file with rawData")]
-        public bool DAQ_SaveAditionalFileWithRawData { get; set; }
+        [Descriptor("Save additional file with rawData")]
+        [UIHint("ToggleSwitch")]
+        [ObservableProperty]
+        private bool dAQ_SaveAditionalFileWithRawData;
 
-        [IntDescriptor("Delay after typing repetition to ensure data is received from Cyton board", 0, 3000, 850)]
-        public int DAQ_DelayAfterTypingRepetition;
+        [Descriptor("Delay after typing repetition to ensure data is received from Cyton board")]
+        [Range(0, 3000)]
+        [UIHint("Slider")]
+        [ObservableProperty]
+        private int dAQ_DelayAfterTypingRepetition = 850;
 
-        [IntDescriptor("Delay after calibration repetition to mimic typing", 0, 3000, 0)]
-        public int DAQ_DelayAfterCalibrationRepetition;
+        [Descriptor("Delay after calibration repetition to mimic typing")]
+        [Range(0, 3000)]
+        [UIHint("Slider")]
+        [ObservableProperty]
+        private int dAQ_DelayAfterCalibrationRepetition = 0;
 
         // ************************** Signal control *********************************** //
 
@@ -191,75 +346,54 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         /// <summary>
         /// Duration (in ms) to calculate UVrms of the received signal
         /// </summary>
-        [IntDescriptor("Duration (in ms) of the window used to calculate the status of each channel", 100, 10000, 1000)]
-        public int SignalControl_WindowDurationForVrmsMeaseurment { get; set; }
+        [Descriptor("Duration (in ms) of the window used to calculate the status of each channel")]
+        [Range(0, 10000)]
+        [UIHint("Slider")]
+        [DefaultValue(1000)]
+        [ObservableProperty]
+        private int signalControl_WindowDurationForVrmsMeaseurment  = 1000;
 
         /// <summary>
         /// Boolen, true if recheck for signal quality required
         /// </summary>
         public bool SignalControl_RecheckNeeded { get; set; }
 
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #1 in required group", "Cz")]
-        public String SignalControl_RequiredChannel_Channel1_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #2 in required group", "C3")]
-        public String SignalControl_RequiredChannel_Channel2_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #3 in required group", "C4")]
-        public String SignalControl_RequiredChannel_Channel3_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #4 in required group", "Pz")]
-        public String SignalControl_RequiredChannel_Channel4_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #5 in required group", "P3")]
-        public String SignalControl_RequiredChannel_Channel5_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #6 in required group", "P4")]
-        public String SignalControl_RequiredChannel_Channel6_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #7 in required group", "T5")]
-        public String SignalControl_RequiredChannel_Channel7_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #8 in required group", "Fz")]
-        public String SignalControl_RequiredChannel_Channel8_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #9 in optional group", "T6")]
-        public String SignalControl_OptionalChannel_Channel9_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #10 bin optional group", "F3")]
-        public String SignalControl_OptionalChannel_Channel10_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #11 in optional group", "F4")]
-        public String SignalControl_OptionalChannel_Channel11_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #12 in optional group", "F7")]
-        public String SignalControl_OptionalChannel_Channel12_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #13 in optional group", "O1")]
-        public String SignalControl_OptionalChannel_Channel13_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #14 in optional group", "O2")]
-        public String SignalControl_OptionalChannel_Channel14_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #15 in optional group", "Fp1")]
-        public String SignalControl_OptionalChannel_Channel15_Name;
-
-        [StringDescriptor("Short name / id (ex: Pz, C3, etc.) of channel #16 in optional group", "Fp2")]
-        public String SignalControl_OptionalChannel_Channel16_Name;
+        public string SignalControl_RequiredChannel_Channel1_Name = "Cz";
+        public string SignalControl_RequiredChannel_Channel2_Name = "C3";
+        public string SignalControl_RequiredChannel_Channel3_Name = "C4";
+        public string SignalControl_RequiredChannel_Channel4_Name = "Pz";
+        public string SignalControl_RequiredChannel_Channel5_Name = "P3";
+        public string SignalControl_RequiredChannel_Channel6_Name = "P4";
+        public string SignalControl_RequiredChannel_Channel7_Name = "T5";
+        public string SignalControl_RequiredChannel_Channel8_Name = "Fz";
+        public string SignalControl_OptionalChannel_Channel9_Name = "T6";
+        public string SignalControl_OptionalChannel_Channel10_Name  = "F3";
+        public string SignalControl_OptionalChannel_Channel11_Name  = "F4";
+        public string SignalControl_OptionalChannel_Channel12_Name = "F7";
+        public string SignalControl_OptionalChannel_Channel13_Name = "O1";
+        public string SignalControl_OptionalChannel_Channel14_Name = "O2";
+        public string SignalControl_OptionalChannel_Channel15_Name = "Fp1";
+        public string SignalControl_OptionalChannel_Channel16_Name = "Fp2";
 
         // ************************** Signal control *********************************** //
 
         /// <summary>
         /// Scan time of the trigger test
         /// </summary>
-        [IntDescriptor("Scan time of the trigger test", 50, 10000, 200)]
-        public int TriggerTest_ScanTime;
+        [Descriptor("Scan time of the trigger test")]
+        [Range(50, 10000)]
+        [UIHint("Slider")]
+        [ObservableProperty]
+        private int triggerTest_ScanTime = 200;
 
         /// <summary>
         /// Number of iterations of the trigger test
         /// </summary>
-        [IntDescriptor("Number of repetitons for the trigger test. One repetition corresponds to the trigger box switching black-white-black", 1, 1000, 10)]
-        public int TriggerTest_NumRepetitions;
+        [Descriptor("Number of repetitons for the trigger test. One repetition corresponds to the trigger box switching black-white-black")]
+        [Range(1, 1000)]
+        [UIHint("Slider")]
+        [ObservableProperty]
+        private int triggerTest_NumRepetitions = 10;
 
         /// <summary>
         /// Minimum duty cycle required to pass the trigger test. Set as 0 to bypass. Default 70
@@ -280,53 +414,64 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         //[LongDescriptorAttribute("Unix timestamp (seconds) of user's last impedance check completed", 0, long.MaxValue, 0)]
         public long SignalQuality_TimeOfLastImpedanceCheck​;
 
-        [IntDescriptorAttribute("Maximum time elapsed (minutes) since user's last impedance check to allow before forcing a recheck", 0, 600, 360)]
-        public int SignalQuality_MaxTimeMinsElapsedSinceLastImpedanceCheck​;
+        [Descriptor("Maximum time elapsed (minutes) since user's last impedance check to allow before forcing a recheck")]
+        [Range(0, 600)]
+        [UIHint("Slider")]
+        [ObservableProperty]
+        private int signalQuality_MaxTimeMinsElapsedSinceLastImpedanceCheck​;
 
         //[BoolDescriptor("If the user passed the last overall signal quality check that was executed (saved on user Exit or continuation to calibration")]
         public bool SignalQuality_PassedLastOverallQualityCheck;
 
-        [IntDescriptorAttribute("Minimum number of electrodes with good status (green) required for overall good sensing quality", 0, 8, 5)]
-        public int SignalQuality_MinOverallGoodChannels;
+        [Descriptor("Minimum number of electrodes with good status (green) required for overall good sensing quality")]
+        [Range(0, 8)]
+        [UIHint("Slider")]
+        [ObservableProperty]
+        private int signalQuality_MinOverallGoodChannels = 5;
 
-        [IntDescriptorAttribute("Maximum number of electrodes allowed with ok status (yellow) required for overall ok sensing quality", 0, 8, 3)]
-        public int SignalQuality_MaxOverallOKChannels​;
+        [Descriptor("Maximum number of electrodes allowed with ok status (yellow) required for overall ok sensing quality")]
+        [Range(0, 8)]
+        [UIHint("Slider")]
+        [ObservableProperty]
+        private int signalQuality_MaxOverallOKChannels​;
 
-        [IntDescriptorAttribute("Maximum number of electrodes with bad status (red) allowed to avoid overall bad sensing quality", 0, 8, 0)]
-        public int SignalQuality_MaxOverallBadChannels​;
+        [Descriptor("Maximum number of electrodes with bad status (red) allowed to avoid overall bad sensing quality")]
+        [Range(0, 8)]
+        [UIHint("Slider")]
+        [ObservableProperty]
+        private int signalQuality_MaxOverallBadChannels​ = 0;
 
-        [BoolDescriptor("Whether to stop impedance testing after it completes one full cycle through all electrodes", true)]
-        public bool SignalQuality_StopImpedanceTestAfterOneCycle = true;
-
-        //// Ranges for parameters with NO Cap attached
-        /*
-        [IntDescriptorAttribute("Upper bound (percentage) of the range of railing values considered good (green)", 0, 20, 10)]
-        public int SignalQuality_RailingGoodMaxThreshold​;
-
-        [IntDescriptorAttribute("Upper bound (percentage) of the range of railing values considered ok (yellow)", 0, 25, 25)]
-        public int SignalQuality_RailingOkMaxThreshold​;
-
-        [IntDescriptorAttribute("Upper bound (kilo Ohms) of the range of impedance values considered good (green)", 0, 7000, 5500)]
-        public int SignalQuality_ImpedanceGoodMaxThreshold​;
-
-        [IntDescriptorAttribute("Upper bound (kilo Ohms) of the range of impedance values considered ok (yellow)", 0, 7000, 6500)]
-        public int SignalQuality_ImpedanceOkMaxThreshold​;
-        */
-        //// Ranges for parameters with NO Cap attached
+        [Descriptor("Whether to stop impedance testing after it completes one full cycle through all electrodes")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        private bool signalQuality_StopImpedanceTestAfterOneCycle = true;
 
         //// Default ranges for parameters with Cap attached
 
-        [IntDescriptorAttribute("Upper bound (percentage) of the range of railing values considered good (green)", 0, 20, 10)]
-        public int SignalQuality_RailingGoodMaxThreshold​;
+        [Descriptor("Upper bound (percentage) of the range of railing values considered good (green)")]
+        [Range(0, 20)]
+        [UIHint("Slider")]
+        [ObservableProperty]
+        private int signalQuality_RailingGoodMaxThreshold​;
 
-        [IntDescriptorAttribute("Upper bound (percentage) of the range of railing values considered ok (yellow)", 0, 25, 20)]
-        public int SignalQuality_RailingOkMaxThreshold​;
+        [Descriptor("Upper bound (percentage) of the range of railing values considered ok (yellow)")]
+        [Range(0, 25)]
+        [UIHint("Slider")]
+        [ObservableProperty]
+        private int signalQuality_RailingOkMaxThreshold​ = 20;
 
-        [IntDescriptorAttribute("Upper bound (kilo Ohms) of the range of impedance values considered good (green)", 0, 1000, 100)]
-        public int SignalQuality_ImpedanceGoodMaxThreshold​;
+        [Descriptor("Upper bound (kilo Ohms) of the range of impedance values considered good (green)")]
+        [Range(0, 1000)]
+        [UIHint("Slider")]
+        [ObservableProperty]
+        private int signalQuality_ImpedanceGoodMaxThreshold​;
 
-        [IntDescriptorAttribute("Upper bound (kilo Ohms) of the range of impedance values considered ok (yellow)", 0, 1000, 200)]
-        public int SignalQuality_ImpedanceOkMaxThreshold​;
+        [Descriptor("Upper bound (kilo Ohms) of the range of impedance values considered ok (yellow)")]
+        [Range(0, 1000)]
+        [UIHint("Slider")]
+        [ObservableProperty]
+        private int signalQuality_ImpedanceOkMaxThreshold​ = 200;
 
         //// Default ranges for parameters with Cap attached
 
@@ -338,53 +483,101 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         /// <summary>
         /// Subset of channels. This will be an array where true=enabled, false=disabled
         /// </summary>
-        [BoolDescriptor("Whether channel #1 is enabled / utilized by the algorithm during processing", true)]
-        public bool Classifier_EnableChannel1 = true;
+        [Descriptor("Whether channel #1 is enabled / utilized by the algorithm during processing")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        private bool classifier_EnableChannel1 = true;
 
-        [BoolDescriptor("Whether channel #2 is enabled / utilized by the algorithm during processing", true)]
-        public bool Classifier_EnableChannel2 = true;
+        [Descriptor("Whether channel #2 is enabled / utilized by the algorithm during processing")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        private bool classifier_EnableChannel2 = true;
 
-        [BoolDescriptor("Whether channel #3 is enabled / utilized by the algorithm during processing", true)]
-        public bool Classifier_EnableChannel3 = true;
+        [Descriptor("Whether channel #3 is enabled / utilized by the algorithm during processing")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        private bool classifier_EnableChannel3  = true;
 
-        [BoolDescriptor("Whether channel #4 is enabled / utilized by the algorithm during processing", true)]
-        public bool Classifier_EnableChannel4 = true;
+        [Descriptor("Whether channel #4 is enabled / utilized by the algorithm during processing")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        private bool classifier_EnableChannel4  = true;
 
-        [BoolDescriptor("Whether channel #5 is enabled / utilized by the algorithm during processing", true)]
-        public bool Classifier_EnableChannel5 = true;
+        [Descriptor("Whether channel #5 is enabled / utilized by the algorithm during processing")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        private bool classifier_EnableChannel5  = true;
 
-        [BoolDescriptor("Whether channel #6 is enabled / utilized by the algorithm during processing", true)]
-        public bool Classifier_EnableChannel6 = true;
+        [Descriptor("Whether channel #6 is enabled / utilized by the algorithm during processing")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        private bool classifier_EnableChannel6  = true;
 
-        [BoolDescriptor("Whether channel #7 is enabled / utilized by the algorithm during processing", true)]
-        public bool Classifier_EnableChannel7 = true;
+        [Descriptor("Whether channel #7 is enabled / utilized by the algorithm during processing")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        private bool classifier_EnableChannel7  = true;
 
-        [BoolDescriptor("Whether channel #8 is enabled / utilized by the algorithm during processing", true)]
-        public bool Classifier_EnableChannel8 = true;
+        [Descriptor("Whether channel #8 is enabled / utilized by the algorithm during processing")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        private bool classifier_EnableChannel8  = true;
 
-        [BoolDescriptor("Whether channel #9 is enabled / utilized by the algorithm during processing", true)]
-        public bool Classifier_EnableChannel9 = true;
+        [Descriptor("Whether channel #9 is enabled / utilized by the algorithm during processing")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        private bool classifier_EnableChannel9  = true;
 
-        [BoolDescriptor("Whether channel #10 is enabled / utilized by the algorithm during processing", true)]
-        public bool Classifier_EnableChannel10 = true;
+        [Descriptor("Whether channel #10 is enabled / utilized by the algorithm during processing")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        private bool classifier_EnableChannel10  = true;
 
-        [BoolDescriptor("Whether channel #11 is enabled / utilized by the algorithm during processing", true)]
-        public bool Classifier_EnableChannel11 = true;
+        [Descriptor("Whether channel #11 is enabled / utilized by the algorithm during processing")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        private bool classifier_EnableChannel11  = true;
 
-        [BoolDescriptor("Whether channel #12 is enabled / utilized by the algorithm during processing", true)]
-        public bool Classifier_EnableChannel12 = true;
+        [Descriptor("Whether channel #12 is enabled / utilized by the algorithm during processing")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        private bool classifier_EnableChannel12 = true;
 
-        [BoolDescriptor("Whether channel #13 is enabled / utilized by the algorithm during processing", true)]
-        public bool Classifier_EnableChannel13 = true;
+        [Descriptor("Whether channel #13 is enabled / utilized by the algorithm during processing")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        private bool classifier_EnableChannel13 = true;
 
-        [BoolDescriptor("Whether channel #14 is enabled / utilized by the algorithm during processing", true)]
-        public bool Classifier_EnableChannel14 = true;
+        [Descriptor("Whether channel #14 is enabled / utilized by the algorithm during processing")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        private bool classifier_EnableChannel14  = true;
 
-        [BoolDescriptor("Whether channel #15 is enabled / utilized by the algorithm during processing", true)]
-        public bool Classifier_EnableChannel15 = true;
+        [Descriptor("Whether channel #15 is enabled / utilized by the algorithm during processing")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        private bool classifier_EnableChannel15 = true;
 
-        [BoolDescriptor("Whether channel #16 is enabled / utilized by the algorithm during processing", true)]
-        public bool Classifier_EnableChannel16 = true;
+        [Descriptor("Whether channel #16 is enabled / utilized by the algorithm during processing")]
+        [UIHint("ToggleSwitch")]
+        [DefaultValue(true)]
+        [ObservableProperty]
+        private bool classifier_EnableChannel16  = true;
 
         // [StringDescriptor("Method to use for signal quality check ('Top8' = Signal quality check only on top 8 channels | 'AllEnabled' = Signal quality check on all channels enabled with Classifier_EnableChannel1-16)" , "AllEnabled")]
         public String SignalQuality_AcceptanceMode;
@@ -432,17 +625,28 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         /// </summary>
         public string CrossaValidation_SortMethod;
 
-        [IntDescriptor("Maximum number of sequences to predict user intended selection", 1, 50, 10)]
-        public int Classifier_MaxDecisionSequences;
+        [Descriptor("Maximum number of sequences to predict user intended selection")]
+        [Range(1, 50)]
+        [UIHint("Slider")]
+        [ObservableProperty]
+        private int classifier_MaxDecisionSequences = 10;
 
-        [FloatDescriptor("Confidence threshold to make a selection", 0.5f, 1f, 0.95f)]
-        public float Classifier_ConfidenceThreshold;
+        [Descriptor("Confidence threshold to make a selection")]
+        [Range(0.5f, 1f)]
+        [UIHint("Slider")]
+        [DefaultValue(0.95f)]
+        [ObservableProperty]
+        private float classifier_ConfidenceThreshold = 0.95f;
 
-        [BoolDescriptor("Include next character probabilities from a language model for faster character prediction", true)]
-        public bool Classifier_UseNextCharacterProbabilities;
+        [Descriptor("Include next character probabilities from a language model for faster character prediction")]
+        [UIHint("ToggleSwitch")]
+        [ObservableProperty]
+        private bool classifier_UseNextCharacterProbabilities = true;
 
-        [BoolDescriptor("Include next word probabilities from a language model for faster word prediction", true)]
-        public bool Classifier_UseNextWordProbabilities;
+        [Descriptor("Include next word probabilities from a language model for faster word prediction")]
+        [UIHint("ToggleSwitch")]
+        [ObservableProperty]
+        private bool classifier_UseNextWordProbabilities = true;
 
         // ***************************** Data parser ********************************** //
 
@@ -453,74 +657,102 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
 
         // ************************** Eyes closed detection *********************************** //
 
-        [BoolDescriptor("Enable eyes closed detection", false)]
-        public bool EyesClosed_EnableDetection;
+        [Descriptor("Enable eyes closed detection")]
+        [UIHint("ToggleSwitch")]
+        [ObservableProperty]
+        private bool eyesClosed_EnableDetection = false;
 
-        [IntDescriptor("Eyes closed calibration, number of repetitions")]
-        public int EyesClosedCalibration_NumRepetitions;
+        [Descriptor("Eyes closed calibration, number of repetitions")]
+        [UIHint("Slider")]
+        [ObservableProperty]
+        private int eyesClosedCalibration_NumRepetitions;
 
-        [IntDescriptor("Eyes closed calibration, duration when eyes are open/closed")]
-        public int EyesClosedCalibration_IntervalDuration;
+        [Descriptor("Eyes closed calibration, duration when eyes are open/closed")]
+        [UIHint("Slider")]
+        [ObservableProperty]
+        private int eyesClosedCalibration_IntervalDuration;
 
-        [IntDescriptor("Window duration for eyes closed detection", 1200, 10000, 1500)]
-        public int EyesClosed_WindowDuration;
+        [IntDescriptor("Window duration for eyes closed detection")]
+        [Range(1200, 10000)]
+        [UIHint("Slider")]
+        [ObservableProperty]
+        private int eyesClosed_WindowDuration = 1500;
 
-        [IntDescriptor("Delay to start animation after eyes closed detection", 0, 10000, 1000)]
-        public int EyesClosed_DelayToStartAnimationAfterDetection;
+        [Descriptor("Delay to start animation after eyes closed detection")]
+        [Range(0, 10000)]
+        [UIHint("Slider")]
+        [ObservableProperty]
+        private int eyesClosed_DelayToStartAnimationAfterDetection = 1000;
 
         // This is dynamically updated
-        [FloatDescriptor("Adaptive threshold (automatically calculated after calibration) for eyes closed detection", 0, 20, 5.5f)]
-        public float EyesClosed_AdaptiveThreshold;
+        [Descriptor("Adaptive threshold (automatically calculated after calibration) for eyes closed detection")]
+        [Range(0, 20)]
+        [UIHint("Slider")]
+        [DefaultValue(5.5f)]
+        [ObservableProperty]
+        private float eyesClosed_AdaptiveThreshold  = 5.5f;
 
-        [BoolDescriptor("If eyes closed detection enabled, using fix threshold?", true)]
-        public bool EyesClosed_UseFixThreshold;
+        [Descriptor("If eyes closed detection enabled, using fix threshold?")]
+        [UIHint("ToggleSwitch")]
+        [ObservableProperty]
+        private bool eyesClosed_UseFixThreshold = true;
 
-        [FloatDescriptor("Threshold for eyes closed detection", 1, 10, 5.8f)]
-        public float EyesClosed_FixThreshold_Threshold;
+        [Descriptor("Threshold for eyes closed detection")]
+        [Range(1, 10)]
+        [UIHint("Slider")]
+        [DefaultValue(5.8f)]
+        [ObservableProperty]
+        private float eyesClosed_FixThreshold_Threshold = 5.8f;
 
-        [FloatDescriptor("If eyes closed detection enabled and not using fix threshold", 0.1f, 10, 3)]
-        public float EyesClosed_AdaptiveThreshold_StandardDeviationMultiplier;
+        [Descriptor("If eyes closed detection enabled and not using fix threshold")]
+        [Range(0.1f, 10)]
+        [UIHint("Slider")]
+        [DefaultValue(3)]
+        [ObservableProperty]
+        private float eyesClosed_AdaptiveThreshold_StandardDeviationMultiplier = 3;
 
-        [BoolDescriptor("Show disclaimer dialog on startup", true)]
-        public bool ShowDisclaimerOnStartup;
+        [Descriptor("Show disclaimer dialog on startup")]
+        [UIHint("ToggleSwitch")]
+        [ObservableProperty]
+        private bool showDisclaimerOnStartup = true;
 
         public BCISettings()
         {
-            Calibration_DisplaySignalsAfterCalibrationFlag = false;
+            calibration_DisplaySignalsAfterCalibrationFlag = false;
             Calibration_OffsetTarget = 1000;
-            Calibration_MaxElapsedTimeToForceRecalibration = 360;
+            calibration_MaxElapsedTimeToForceRecalibration = 360;
             Calibration_TrainedClassifiersFilePath = "Actuators\\BCI\\TrainedClassifiers";
-            Calibration_UseAdvanceModeForTypingMappings = false;
+            calibration_UseAdvanceModeForTypingMappings = false;
 
-            Classifier_ConfidenceThreshold = 0.95f;
-            Classifier_MaxDecisionSequences = 10;
-            Classifier_UseNextCharacterProbabilities = true;
-            Classifier_UseNextWordProbabilities = false;
+            classifier_ConfidenceThreshold = 0.95f;
+            classifier_MaxDecisionSequences = 10;
+            classifier_UseNextCharacterProbabilities = true;
+            classifier_UseNextWordProbabilities = false;
 
             CrossValidation_NumFolds = 10;
             CrossaValidation_SortMethod = "sequential";
 
-            DataParser_UseSoftwareTrigers = false;
+            DataParser_UseSoftwareTrigers = true;
 
             // Required Channels
-            Classifier_EnableChannel1 = true;
-            Classifier_EnableChannel2 = true;
-            Classifier_EnableChannel3 = true;
-            Classifier_EnableChannel4 = true;
-            Classifier_EnableChannel5 = true;
-            Classifier_EnableChannel6 = true;
-            Classifier_EnableChannel7 = true;
-            Classifier_EnableChannel8 = true;
+            classifier_EnableChannel1 = true;
+            classifier_EnableChannel2 = true;
+            classifier_EnableChannel3 = true;
+            classifier_EnableChannel4 = true;
+            classifier_EnableChannel5 = true;
+            classifier_EnableChannel6 = true;
+            classifier_EnableChannel7 = true;
+            classifier_EnableChannel8 = true;
 
             // Optional Channels
-            Classifier_EnableChannel9 = true;
-            Classifier_EnableChannel10 = true;
-            Classifier_EnableChannel11 = true;
-            Classifier_EnableChannel12 = true;
-            Classifier_EnableChannel13 = true;
-            Classifier_EnableChannel14 = true;
-            Classifier_EnableChannel15 = true;
-            Classifier_EnableChannel16 = true;
+            classifier_EnableChannel9 = true;
+            classifier_EnableChannel10 = true;
+            classifier_EnableChannel11 = true;
+            classifier_EnableChannel12 = true;
+            classifier_EnableChannel13 = true;
+            classifier_EnableChannel14 = true;
+            classifier_EnableChannel15 = true;
+            classifier_EnableChannel16 = true;
 
             SignalQuality_AcceptanceMode = "AllEnabled";
 
@@ -529,42 +761,43 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             DimReductRDA_ShrinkParam = 0.9;
             DimReductRDA_RegParam = 0.1;
 
+            DAQ_DeviceType = "GTecBCI";
             DAQ_ComPort = "COM4";
-            DAQ_DisableChannelsAutomatically = false;
+            dAQ_DisableChannelsAutomatically = false;
             DAQ_FrontendFilterIdx = 4; //Bandpass 5-50Hz
-            DAQ_OpticalSensorIdxPort = 3; // Connected to D13
-            DAQ_OutputDirectory = "EEGData";
-            DAQ_NotchFilterIdx = 2; //60Hz
-            DAQ_SaveToFileFlag = true;
-            DAQ_SaveAditionalFileWithRawData = true;
-            DAQ_ShowFilterSettings = true;
-            DAQ_DelayAfterTypingRepetition = 850;
-            DAQ_DelayAfterCalibrationRepetition = 0;
-            DAQ_NumEEGChannels = 8;
-            DAQ_OpticalSensorLuxThreshold = 20;
+            dAQ_OpticalSensorIdxPort = 3; // Connected to D13
+            dAQ_OutputDirectory = "EEGData";
+            dAQ_NotchFilterIdx = 2; //60Hz
+            dAQ_SaveToFileFlag = true;
+            dAQ_SaveAditionalFileWithRawData = true;
+            dAQ_ShowFilterSettings = true;
+            dAQ_DelayAfterTypingRepetition = 850;
+            dAQ_DelayAfterCalibrationRepetition = 0;
+            dAQ_NumEEGChannels = 8;
+            dAQ_OpticalSensorLuxThreshold = 20;
 
-            EyesClosedCalibration_IntervalDuration = 5000;
-            EyesClosedCalibration_NumRepetitions = 10;
-            EyesClosed_EnableDetection = false;
-            EyesClosed_WindowDuration = 2000;
-            EyesClosed_UseFixThreshold = false;
-            EyesClosed_FixThreshold_Threshold = 5f;
-            EyesClosed_AdaptiveThreshold_StandardDeviationMultiplier = 8;
-            EyesClosed_DelayToStartAnimationAfterDetection = 1000;
+            eyesClosedCalibration_IntervalDuration = 5000;
+            eyesClosedCalibration_NumRepetitions = 10;
+            eyesClosed_EnableDetection = false;
+            eyesClosed_WindowDuration = 2000;
+            eyesClosed_UseFixThreshold = false;
+            eyesClosed_FixThreshold_Threshold = 5f;
+            eyesClosed_AdaptiveThreshold_StandardDeviationMultiplier = 8;
+            eyesClosed_DelayToStartAnimationAfterDetection = 1000;
 
             FeatureExtraction_WindowDurationInMs = 500;
 
-            Scanning_PauseTime = 300;
-            Scanning_ShortPauseTime = 300;
-            Scanning_ShowDecisionTime = 2000;
-            Scanning_DelayAfterDecision = 5000;
-            Scanning_DelayToGetReady = 3000;
+            scanning_PauseTime = 300;
+            scanning_ShortPauseTime = 300;
+            scanning_ShowDecisionTime = 2000;
+            scanning_DelayAfterDecision = 5000;
+            scanning_DelayToGetReady = 3000;
 
-            Scanning_FocalCircleColor = "green";
-            Scanning_IsFocalCircleFilled = false;
+            scanning_FocalCircleColor = "green";
+            scanning_IsFocalCircleFilled = false;
 
             SignalMonitor_ScaleIdx = 2; //
-            SignalControl_WindowDurationForVrmsMeaseurment = 1000; //1 second
+            signalControl_WindowDurationForVrmsMeaseurment = 1000; //1 second
 
             SignalControl_RecheckNeeded = true; // by default, force user to do signal quality tests and calibration
 
@@ -577,7 +810,6 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             SignalControl_RequiredChannel_Channel6_Name = "P4";
             SignalControl_RequiredChannel_Channel7_Name = "T5";
             SignalControl_RequiredChannel_Channel8_Name = "Fz";
-
             SignalControl_OptionalChannel_Channel9_Name = "T6";
             SignalControl_OptionalChannel_Channel10_Name = "F3";
             SignalControl_OptionalChannel_Channel11_Name = "F4";
@@ -587,8 +819,8 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             SignalControl_OptionalChannel_Channel15_Name = "Fp1";
             SignalControl_OptionalChannel_Channel16_Name = "Fp2";
 
-            TriggerTest_ScanTime = 200; // 200ms
-            TriggerTest_NumRepetitions = 10; // 10 repetitions
+            triggerTest_ScanTime = 200; // 200ms
+            triggerTest_NumRepetitions = 10; // 10 repetitions
             TriggerTest_MinDutyCycleToPassTriggerTest = 0.5f; // 0.5
 
             // SignalQuality_RecheckNeeded = true;
@@ -598,13 +830,13 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             SignalQuality_LastImpedanceValues = new int[16];
             for (int i = 0; i < 16; i++)
                 SignalQuality_LastImpedanceValues[i] = int.MaxValue;
-            SignalQuality_StopImpedanceTestAfterOneCycle = true;
+            signalQuality_StopImpedanceTestAfterOneCycle = true;
             SignalQuality_TimeOfLastImpedanceCheck = 0;
-            SignalQuality_MaxTimeMinsElapsedSinceLastImpedanceCheck​ = 360;
+            signalQuality_MaxTimeMinsElapsedSinceLastImpedanceCheck​ = 360;
             SignalQuality_PassedLastOverallQualityCheck = false;
-            SignalQuality_MinOverallGoodChannels = 6;
-            SignalQuality_MaxOverallOKChannels​ = 2;
-            SignalQuality_MaxOverallBadChannels​ = 0;
+            signalQuality_MinOverallGoodChannels = 6;
+            signalQuality_MaxOverallOKChannels​ = 2;
+            signalQuality_MaxOverallBadChannels​ = 0;
 
             //// Ranges for parameters with NO Cap attached
             /*
@@ -617,10 +849,10 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
 
             //// Default ranges for parameters with Cap attached
 
-            SignalQuality_RailingGoodMaxThreshold​ = 10;
-            SignalQuality_RailingOkMaxThreshold​ = 20;
-            SignalQuality_ImpedanceGoodMaxThreshold​ = 100;
-            SignalQuality_ImpedanceOkMaxThreshold​ = 200;
+            signalQuality_RailingGoodMaxThreshold​ = 7;
+            signalQuality_RailingOkMaxThreshold​ = 10;
+            signalQuality_ImpedanceGoodMaxThreshold​ = 100;
+            signalQuality_ImpedanceOkMaxThreshold​ = 200;
 
             //// Default ranges for parameters with Cap attached
 
@@ -633,7 +865,9 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
             Testing_BCIOnboardingIgnoreOpticalSensorChecks = false;
             Testing_DuplicateRequiredChannelsAsOptionalChannels = false;
 
-            ShowDisclaimerOnStartup = true;
+            showDisclaimerOnStartup = true;
+
+            gTecDeviceName = "";
         }
 
         /// <summary>
@@ -653,63 +887,32 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         /// <returns>true on success</returns>
         public override bool Save()
         {
-            return Save<BCISettings>(this, SettingsFilePath);
+            return Save(this, SettingsFilePath);
         }
 
         public bool GetClassifier_EnableChannel(int channelIndx)
         {
             int channelName = channelIndx + 1;
-            switch (channelName)
+            return channelName switch
             {
-                case 1:
-                    return Classifier_EnableChannel1;
-
-                case 2:
-                    return Classifier_EnableChannel2;
-
-                case 3:
-                    return Classifier_EnableChannel3;
-
-                case 4:
-                    return Classifier_EnableChannel4;
-
-                case 5:
-                    return Classifier_EnableChannel5;
-
-                case 6:
-                    return Classifier_EnableChannel6;
-
-                case 7:
-                    return Classifier_EnableChannel7;
-
-                case 8:
-                    return Classifier_EnableChannel8;
-
-                case 9:
-                    return Classifier_EnableChannel9;
-
-                case 10:
-                    return Classifier_EnableChannel10;
-
-                case 11:
-                    return Classifier_EnableChannel11;
-
-                case 12:
-                    return Classifier_EnableChannel12;
-
-                case 13:
-                    return Classifier_EnableChannel13;
-
-                case 14:
-                    return Classifier_EnableChannel14;
-
-                case 15:
-                    return Classifier_EnableChannel15;
-
-                case 16:
-                    return Classifier_EnableChannel16;
-            }
-            return false;
+                1 => Classifier_EnableChannel1,
+                2 => Classifier_EnableChannel2,
+                3 => Classifier_EnableChannel3,
+                4 => Classifier_EnableChannel4,
+                5 => Classifier_EnableChannel5,
+                6 => Classifier_EnableChannel6,
+                7 => Classifier_EnableChannel7,
+                8 => Classifier_EnableChannel8,
+                9 => Classifier_EnableChannel9,
+                10 => Classifier_EnableChannel10,
+                11 => Classifier_EnableChannel11,
+                12 => Classifier_EnableChannel12,
+                13 => Classifier_EnableChannel13,
+                14 => Classifier_EnableChannel14,
+                15 => Classifier_EnableChannel15,
+                16 => Classifier_EnableChannel16,
+                _ => false,
+            };
         }
 
         public bool SetClassifier_EnableChannel(int channelIndx, bool newVal)
@@ -782,6 +985,15 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
                     break;
             }
             return false;
+        }
+
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<BCIKeyboardRightCalibrationSettings>();
+            var res = Save(tmp, SettingsFilePath);
+            Load();
+
+            return res;
         }
     }
 }

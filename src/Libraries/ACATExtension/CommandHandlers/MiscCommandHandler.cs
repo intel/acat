@@ -5,12 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Extension.UI;
+using ACATResources;
 using System;
 
-namespace ACAT.Lib.Extension.CommandHandlers
+namespace ACAT.Extension.CommandHandlers
 {
     public class MiscCommandHandler : RunCommandHandler
     {
@@ -43,7 +45,7 @@ namespace ACAT.Lib.Extension.CommandHandlers
                     break;
 
                 case "CmdExitAppWithConfirm":
-                    if (DialogUtils.ConfirmScanner(null, R.GetString("QuitApplication")))
+                    if (DialogUtils.ConfirmScanner(null, StringResources.QuitApplication))
                     {
                         quitApplication();
                     }

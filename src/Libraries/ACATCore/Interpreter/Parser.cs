@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ACAT.Lib.Core.Interpreter
+namespace ACAT.Core.Interpreter
 {
     /// <summary>
     /// A script parser class. Generates intermediate pCode

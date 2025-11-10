@@ -10,7 +10,7 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Handles path's and path conversions

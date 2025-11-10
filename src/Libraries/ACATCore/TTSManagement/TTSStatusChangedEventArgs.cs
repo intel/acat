@@ -5,9 +5,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.TTSManagement.Interfaces;
 using System;
 
-namespace ACAT.Lib.Core.TTSManagement
+namespace ACAT.Core.TTSManagement
 {
     /// <summary>
     /// Event args when the TTS engine status changes

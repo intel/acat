@@ -10,10 +10,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement.Interfaces;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// This form displays an actuator error
@@ -105,8 +106,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             CenterToScreen();
 
-            TopMost = false;
-            TopMost = true;
             labelCaption.Text = Caption;
             labelPrompt.Text = Prompt;
 

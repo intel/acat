@@ -1,5 +1,7 @@
 ﻿
-namespace ACAT.Lib.Extension
+using ACATResources;
+
+namespace ACAT.Extension
 {
     partial class DisclaimerDialog
     {
@@ -30,7 +32,7 @@ namespace ACAT.Lib.Extension
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonOK = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.buttonOK = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.checkBoxDontShowThisMessage = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.richTextBoxDisclaimer = new System.Windows.Forms.RichTextBox();
@@ -106,7 +108,7 @@ namespace ACAT.Lib.Extension
             this.tableLayoutPanel1.SetRowSpan(this.buttonOK, 2);
             this.buttonOK.Size = new System.Drawing.Size(183, 46);
             this.buttonOK.TabIndex = 0;
-            this.buttonOK.Text = "OK";
+            this.buttonOK.Text = StringResources.OK;
             this.buttonOK.UseMnemonic = false;
             this.buttonOK.UseVisualStyleBackColor = false;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
@@ -123,7 +125,7 @@ namespace ACAT.Lib.Extension
             this.tableLayoutPanel1.SetRowSpan(this.checkBoxDontShowThisMessage, 2);
             this.checkBoxDontShowThisMessage.Size = new System.Drawing.Size(309, 60);
             this.checkBoxDontShowThisMessage.TabIndex = 1;
-            this.checkBoxDontShowThisMessage.Text = "  Don\'t show this message again";
+            this.checkBoxDontShowThisMessage.Text = StringResources.DonTShowThisMessageAgain;
             this.checkBoxDontShowThisMessage.UseVisualStyleBackColor = true;
             // 
             // label1
@@ -139,7 +141,7 @@ namespace ACAT.Lib.Extension
             this.tableLayoutPanel1.SetRowSpan(this.label1, 2);
             this.label1.Size = new System.Drawing.Size(185, 52);
             this.label1.TabIndex = 86;
-            this.label1.Text = "Disclaimer";
+            this.label1.Text = StringResources.Disclaimer;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // richTextBoxDisclaimer

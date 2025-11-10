@@ -16,13 +16,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.Utility;
 using System;
 using System.Text;
 using System.Threading;
 
-namespace ACAT.Lib.Core.InputActuators
+namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockClientActuator
 {
     /// <summary>
     /// Represents the base class for an actuator that receives
@@ -50,7 +50,7 @@ namespace ACAT.Lib.Core.InputActuators
         /// <summary>
         /// Used for connect retries
         /// </summary>
-        private readonly ManualResetEvent _evtConnectRetry = new ManualResetEvent(false);
+        private readonly ManualResetEvent _evtConnectRetry = new(false);
 
         /// <summary>
         /// Thread used to try to connect to the server
@@ -86,7 +86,7 @@ namespace ACAT.Lib.Core.InputActuators
         /// <summary>
         /// Gets or sets the IP address of the server
         /// </summary>
-        public String ServerAddress { get; set; }
+        public string ServerAddress { get; set; }
 
         /// <summary>
         /// Gets or sets the TCPIP port of the server
@@ -150,14 +150,11 @@ namespace ACAT.Lib.Core.InputActuators
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     _quitConnect = true;
                     _evtConnectRetry.Set();
-                    if (_connectThread != null)
-                    {
-                        _connectThread.Join(2000);
-                    }
+                    _connectThread?.Join(2000);
 
                     if (disposing)
                     {
@@ -193,7 +190,7 @@ namespace ACAT.Lib.Core.InputActuators
         /// <param name="data">The data itself</param>
         protected virtual void onDataReceived(System.Net.IPAddress address, byte[] data)
         {
-            String strData = ASCIIEncoding.ASCII.GetString(data, 0, data.Length);
+            string strData = Encoding.ASCII.GetString(data, 0, data.Length);
             Log.Debug("Received data: " + strData);
 
             // parse the string, find the switch that causes the trigger
@@ -217,7 +214,7 @@ namespace ACAT.Lib.Core.InputActuators
         /// </summary>
         /// <param name="msg">msg to send</param>
         /// <returns>true on sucess</returns>
-        protected int Send(String msg)
+        protected int Send(string msg)
         {
             try
             {
@@ -316,10 +313,7 @@ namespace ACAT.Lib.Core.InputActuators
                 try
                 {
                     Log.Debug("Trying to connecting to tcp/ip server");
-                    if (socketClient == null)
-                    {
-                        socketClient = createSocketClient();
-                    }
+                    socketClient ??= createSocketClient();
 
                     if (socketClient != null)
                     {
@@ -342,7 +336,7 @@ namespace ACAT.Lib.Core.InputActuators
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug("Error connecting to server " + ex);
+                    Log.Exception("Error connecting to server " + ex);
                 }
             }
 

@@ -5,14 +5,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.AgentManagement.Interfaces;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.AgentManagement
+namespace ACAT.Core.AgentManagement
 {
     /// <summary>
     /// Sends keystokes to the active window by inserting them
@@ -295,7 +296,7 @@ namespace ACAT.Lib.Core.AgentManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -382,7 +383,7 @@ namespace ACAT.Lib.Core.AgentManagement
             int scanCode = User32Interop.VkKeyScan(ch);
             if (scanCode < 0)
             {
-                //String str = Encoding.Default.GetString(new[] { (byte)ch });
+                //String str = Encoding.GetString(new[] { (byte)ch });
                 SendKeys.SendWait(ch.ToString());
             }
             else

@@ -10,8 +10,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PreferencesManagement;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.PreferencesManagement;
 using System;
 using System.Xml.Serialization;
 
@@ -70,8 +70,17 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         public static BCIWordCalibrationSettings Load()
         {
             BCIWordCalibrationSettings retVal = PreferencesBase.Load<BCIWordCalibrationSettings>(SettingsFilePath);
-            Save(retVal, SettingsFilePath);
+            //Save(retVal, SettingsFilePath);
             return retVal;
+        }
+
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<BCIWordCalibrationSettings>();
+            var res = Save(tmp, SettingsFilePath);
+            Load();
+
+            return res;
         }
 
         /// <summary>
@@ -80,7 +89,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGSettings
         /// <returns>true on success</returns>
         public override bool Save()
         {
-            return Save<BCIWordCalibrationSettings>(this, SettingsFilePath);
+            return Save(this, SettingsFilePath);
         }
     }
 }

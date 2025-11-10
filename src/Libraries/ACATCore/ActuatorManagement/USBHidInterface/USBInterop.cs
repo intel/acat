@@ -13,7 +13,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement.USBHidInterface
 {
     /// <summary>
     /// Interop methods into Windows HID and USB functions
@@ -81,7 +81,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
                                         DllImports.GENERIC_READ | DllImports.GENERIC_WRITE,
                                         DllImports.FILE_SHARE_READ | DllImports.FILE_SHARE_WRITE,
                                         0, DllImports.OPEN_EXISTING, 0, 0);
-            return (HidHandle == -1) ? 0 : 1;
+            return HidHandle == -1 ? 0 : 1;
         }
 
         /// <summary>
@@ -89,14 +89,12 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         public IntPtr DuplicateHandle(IntPtr sourceHandle)
         {
-            IntPtr newHandle;
-
             IntPtr currentProcess = DllImports.GetCurrentProcess();
             bool result = DllImports.DuplicateHandle(
                                     currentProcess,
                                     sourceHandle,
                                     currentProcess,
-                                    out newHandle,
+                                    out IntPtr newHandle,
                                     0,
                                     false,
                                     DllImports.DUPLICATE_SAME_ACCESS);

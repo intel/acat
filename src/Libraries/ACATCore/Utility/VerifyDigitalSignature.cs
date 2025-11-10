@@ -10,7 +10,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.Pkcs;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     public class VerifyDigitalSignature
     {
@@ -41,11 +41,13 @@ namespace ACAT.Lib.Core.Utility
             "EEGDataAcquisition.dll",
             "EEGProcessing.dll",
             "EEGSettings.dll",
-            "SensorUI.dll",
+            "openBCISensorUI.dll",
+            "gTecSensorUI.dll",
             "animationsharp.dll",
             "BCIInterfaceUtilities.dll"
         };
 #endif
+
         /// <summary>
         /// If the DLL needs to validate if it has an active certificate
         /// </summary>
@@ -64,6 +66,7 @@ namespace ACAT.Lib.Core.Utility
             return false;
 #endif
         }
+
         public static void Verify(String fileName)
         {
             IntPtr certStore = IntPtr.Zero;

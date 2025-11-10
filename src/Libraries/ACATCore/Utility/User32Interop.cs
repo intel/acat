@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// PInvoke interface to user32.dll functions
@@ -67,7 +67,7 @@ namespace ACAT.Lib.Core.Utility
         public const uint WS_TILEDWINDOW = WS_OVERLAPPEDWINDOW;
         public const uint WS_VISIBLE = 0x10000000;
         public const uint WS_VSCROLL = 0x00200000;
-        public static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+        public static readonly IntPtr HWND_TOPMOST = new(-1);
 
         public delegate bool EnumDelegate(IntPtr hWnd, int lParam);
 
@@ -79,6 +79,49 @@ namespace ACAT.Lib.Core.Utility
             GetRoot = 2,
             GetRootOwner = 3
         }
+
+    public static class Win32Constants
+    {
+        //Declare the mouse hook constant.
+        //For other hook types, you can obtain these values from Winuser.h in the Microsoft SDK.
+        public const int WM_LBUTTONUP = 0x0202;
+
+        public const int TME_LEAVE = 0x00000002;
+
+        public const int SWP_NOACTIVATE = 0x0010;
+
+        public const int WM_DPICHANGED = 0x02E0;
+        public const int WM_MOUSELEAVE = 0x02A3;
+        public const int WM_MOUSEMOVE = 0x0200;
+        public const int WM_NCHITTEST = 0x0084;
+
+        public const int HTTRANSPARENT = -1;
+        public const int WM_ERASEBKGND = 0x0014;
+        public const int HWND_TOPMOST = -1;
+
+        public const int DT_LEFT = 0x00000000;
+        public const int DT_SINGLELINE = 0x00000020;
+        public const int DT_NOCLIP = 0x00000100;
+        public const int DT_CALCRECT = 0x00000400;
+        public const int DT_NOPREFIX = 0x00000800;
+        public const int DT_END_ELLIPSIS = 0x00008000;
+
+        public const uint TOKEN_QUERY = 0x0008;
+
+        /// <summary>
+        /// Constant identify if windows is minimized
+        /// </summary>
+        public const uint WS_MINIMIZE = 0x20000000;
+
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HTCAPTION = 0x2;
+
+        public const int WM_SYSCOMMAND = 0x0112;
+        public const int SC_MOVE = 0xF010;
+
+
+    }
+
 
         [Flags]
         public enum MouseEventFlags : uint
@@ -210,8 +253,8 @@ namespace ACAT.Lib.Core.Utility
         [DllImport("user32.dll", SetLastError = true)]
         public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
-        [DllImportAttribute("user32.dll", EntryPoint = "GetWindowThreadProcessId")]
-        public static extern int GetWindowThreadProcessId([InAttribute()] IntPtr handle, out int lpdwProcessId);
+        [DllImport("user32.dll", EntryPoint = "GetWindowThreadProcessId")]
+        public static extern int GetWindowThreadProcessId([In()] IntPtr handle, out int lpdwProcessId);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern bool InsertMenu(IntPtr hMenu, int uPosition, int uFlags, int uIDNewItem, string lpNewItem);
@@ -433,17 +476,17 @@ namespace ACAT.Lib.Core.Utility
                 this.Y = y;
             }
 
-            public POINT(System.Drawing.Point pt)
+            public POINT(Point pt)
                 : this(pt.X, pt.Y)
             {
             }
 
-            public static implicit operator System.Drawing.Point(POINT p)
+            public static implicit operator Point(POINT p)
             {
-                return new System.Drawing.Point(p.X, p.Y);
+                return new Point(p.X, p.Y);
             }
 
-            public static implicit operator POINT(System.Drawing.Point p)
+            public static implicit operator POINT(Point p)
             {
                 return new POINT(p.X, p.Y);
             }
@@ -462,9 +505,9 @@ namespace ACAT.Lib.Core.Utility
         {
             public int flags;
             public int length;
-            public System.Drawing.Point ptMaxPosition;
-            public System.Drawing.Point ptMinPosition;
-            public System.Drawing.Rectangle rcNormalPosition;
+            public Point ptMaxPosition;
+            public Point ptMinPosition;
+            public Rectangle rcNormalPosition;
             public int showCmd;
         }
     }

@@ -7,7 +7,7 @@
 
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Widgets
+namespace ACAT.Core.Widgets
 {
     /// <summary>
     /// A widget that uses a ScannerButton as the UI control.

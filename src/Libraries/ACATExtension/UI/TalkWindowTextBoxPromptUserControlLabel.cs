@@ -30,6 +30,5 @@ namespace ACAT.Extensions
                 label1.Text = text;
             }
         }
-
     }
 }

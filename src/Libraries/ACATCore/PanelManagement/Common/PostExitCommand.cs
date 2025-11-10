@@ -5,9 +5,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
 
-namespace ACAT.Lib.Core.PanelManagement
+////////////////////////////////////////////////////////////////////////////
+//
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+//
+////////////////////////////////////////////////////////////////////////////
+
+using ACAT.Core.PanelManagement.CommandDispatcher;
+
+namespace ACAT.Core.PanelManagement.Common
 {
     /// <summary>
     /// Represents a command that should be executed AFTER a

@@ -5,15 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Common.BCIControl;
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
-using Newtonsoft.Json;
+using ACATResources;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using System;
-using ACAT.ACATResources;
 
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
@@ -21,7 +20,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
     /// Form that handles different calibraitons options to configure and initialize calibration sesion
     /// </summary>
 
-    [DescriptorAttribute("5A13AD81-2943-4A11-885F-37D4C2F19918",
+    [ClassDescriptor("5A13AD81-2943-4A11-885F-37D4C2F19918",
         "RemapCalibrationForm",
         "Application window used to display the remap of calibrations")]
     public partial class RemapCalibrationForm : Form
@@ -41,17 +40,17 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// </summary>
         private bool OptionResult;
 
-        private Screen primaryScreen = Screen.PrimaryScreen;
+        private readonly Screen primaryScreen = Screen.PrimaryScreen;
 
-        private String _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  <head>\r\n  <style>\r\n    a:link{color: rgb(255, 170, 0);}\r\n  " +
+        // TODO - Localize Me
+        private readonly String _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  <head>\r\n  <style>\r\n    a:link{color: rgb(255, 170, 0);}\r\n  " +
                             "</style>\r\n  </head>\r\n  <body style=\"background-color:#232433;\">\r\n    " +
                             "<p style=\"font-family:'Montserrat Medium'; font-size:18px; color:white; text-align: center;\">\r\n" +
                             "Each calibration that you have completed is assigned to the specific section for which you have trained. " +
                             "Sometimes using the calibration from one section and applying it to a different section can help with accuracy. " +
                             "To change where a calibration is  applied. Use the interface below.<br/>" +
-                            "For more information watch this <a href=\"$ASSETS_VIDEOS_DIR#ACATOverviewBCI.mp4\">video</a> or review the <a href=$ACAT_USER_GUIDE#BCICalibrationRemap>set up guide</a>" +
+                            "For more information review the <a href=$ACAT_USER_GUIDE#BCICalibrationRemap>set up guide</a>" +
                             "</p>\r\n</body>\r\n</html>";
-
 
         /// <summary>
         /// Confirm Box with multiple results
@@ -69,23 +68,11 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         public static bool ShowFormDialog(Form parent = null, bool setTopMost = false)
         {
             var confirmBox = new RemapCalibrationForm();
-            if (parent != null && setTopMost)
-            {
-                parent.TopMost = false;
-                confirmBox.TopMost = true;
-            }
-            confirmBox.TopMost = true;
             //To always display the form in the main screen
             confirmBox.StartPosition = FormStartPosition.Manual;
             confirmBox.Location = confirmBox.primaryScreen.WorkingArea.Location;
             confirmBox.ShowDialog(parent);
             bool retVal = confirmBox.OptionResult;
-            if (parent != null && setTopMost)
-            {
-                parent.TopMost = true;
-                confirmBox.TopMost = false;
-            }
-            confirmBox.TopMost = false;
             confirmBox.Dispose();
             return retVal;
         }
@@ -109,7 +96,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("Error AddItemsToComboBox: " + ex.Message);
+                Log.Exception("Error AddItemsToComboBox: " + ex.Message);
             }
         }
 
@@ -118,12 +105,12 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// </summary>
         /// <param name="opcode"></param>
         /// <param name="response"></param>
-        private void BciActuator_EvtIoctlResponse(int opcode, string response)
+        private void BciActuator_EvtIoctlResponse(int opcode, object response)
         {
             switch (opcode)
             {
                 case (int)OpCodes.SendMapOptions:
-                    _bCIMapOptions = JsonConvert.DeserializeObject<BCIMapOptions>(response);
+                    _bCIMapOptions = response as BCIMapOptions;
                     ProcessMapOptionsAnswer();
                     break;
             }
@@ -137,7 +124,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 
         private void ButtonDone_Click(object sender, EventArgs e)
         {
-            var strBCICalibrationUpdatedMappings = JsonConvert.SerializeObject(GetMappingsValues());
+            var strBCICalibrationUpdatedMappings = GetMappingsValues();
             _bciActuator?.IoctlRequest((int)OpCodes.SendUpdatedMappings, strBCICalibrationUpdatedMappings);
             OptionResult = CheckIfComboBoxValuesChanged();
             Log.Debug("BCI LOG | Mappings change: " + OptionResult);
@@ -180,7 +167,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             {
                 _bciActuator.EvtIoctlResponse += BciActuator_EvtIoctlResponse;
             }
-            var strBciModeParams = JsonConvert.SerializeObject(new BCIUserInputParameters());
+            var strBciModeParams = new BCIUserInputParameters();
             _bciActuator?.IoctlRequest((int)OpCodes.RequestMapOptions, strBciModeParams);
         }
 
@@ -197,7 +184,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// </summary>
         private BCICalibrationUpdatedMappings GetMappingsValues()
         {
-            BCICalibrationUpdatedMappings bCICalibrationUpdatedMappings = new BCICalibrationUpdatedMappings();
+            BCICalibrationUpdatedMappings bCICalibrationUpdatedMappings = new();
             try
             {
                 bCICalibrationUpdatedMappings.DictUpdatedMappings.Add(BCIScanSections.Box, GetScanningSection(comboBoxBox.SelectedItem.ToString()));
@@ -208,7 +195,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("Error SaveMappingsValues: " + ex.Message);
+                Log.Exception("Error SaveMappingsValues: " + ex.Message);
             }
             return bCICalibrationUpdatedMappings;
         }
@@ -286,7 +273,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error ProcessMapOptionsAnswer: " + ex.Message);
+                Log.Exception("BCI LOG | Error ProcessMapOptionsAnswer: " + ex.Message);
             }
         }
 
@@ -309,7 +296,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             try
             {
-                if(comboBox.Items.Count > 0)
+                if (comboBox.Items.Count > 0)
                 {
                     BCIScanSections localbCIScanSection = BCIScanSections.None;
                     if (_bCIMapOptions.CurrentMappingsDict.ContainsKey(bCIScanSection))
@@ -336,11 +323,10 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                     if (comboBox.Items.Count > 0)
                         comboBox.SelectedIndex = 0;
                 }
-                
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error SetDefaultItemInComboBox: " + ex.Message);
+                Log.Exception("BCI LOG | Error SetDefaultItemInComboBox: " + ex.Message);
             }
         }
 
@@ -385,7 +371,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 }
             }
 
-            List<String> list = new List<String>();
+            List<String> list = new();
 
             if (param2.ToLower().EndsWith(".mp4"))
             {
@@ -399,23 +385,21 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             {
                 list.Add("PDF");
                 list.Add("true");
-                list.Add(R.GetString("PDFLoaderHtml"));
+                list.Add(StringResources.PDFLoaderHtml);
                 list.Add(param1);
                 list.Add(param2);
             }
 
             try
             {
-                this.TopMost = false;
+                //this.TopMost = false;
                 HtmlUtils.LoadHtml(SmartPath.ApplicationPath, list.ToArray());
             }
             catch
             {
-
             }
             finally
             {
-
             }
         }
     }

@@ -1,0 +1,71 @@
+﻿////////////////////////////////////////////////////////////////////////////
+//
+// Copyright 2013-2019; 2023 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+//
+////////////////////////////////////////////////////////////////////////////
+
+using ACAT.Core.CoreInterfaces;
+using ACAT.Core.Utility;
+using ACAT.Extensions.Onboarding.UI;
+using ACAT.Extensions.Onboarding.UI.UserControls;
+
+namespace ACAT.Extensions.Onboarding.Onboarding
+{
+    /// <summary>
+    /// The onboarding extension that displays the Welcome screen
+    /// </summary>
+    [ClassDescriptor("6D8DA00E-5035-4B7F-A646-ED9F840A13BF",
+                    "OnboardingWelcome",
+                    "Welcome onboarding")]
+    public class OnboardingWelcome : OnboardingExtensionBase
+    {
+        // TODO - Localize Me
+        private const string Step1 = "STEP 1";
+
+        private IOnboardingWizard _wizard;
+
+        public override ClassDescriptorAttribute Descriptor
+        {
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
+        }
+
+        public override IOnboardingUserControl GetFirstStep()
+        {
+            return GetStep(Step1);
+        }
+
+        public override IOnboardingUserControl GetStep(string stepId)
+        {
+            IOnboardingUserControl userControl;
+
+            switch (stepId)
+            {
+                case Step1:
+
+                    userControl = new UserControlWelcome(_wizard, this, stepId);
+                    userControl.Initialize();
+                    return userControl;
+
+                default:
+                    return null;
+            }
+        }
+
+        public override bool Initialize(IOnboardingWizard wizard)
+        {
+            _wizard = wizard;
+            return true;
+        }
+
+        public override bool IsFirstStep(string stepId)
+        {
+            return stepId == Step1;
+        }
+
+        public override bool IsLastStep(string stepId)
+        {
+            return stepId == Step1;
+        }
+    }
+}

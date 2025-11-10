@@ -17,20 +17,21 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.InputActuators;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.ActuatorManagement.BaseActuators;
+using ACAT.Core.ActuatorManagement.Interfaces;
+using ACAT.Core.ActuatorManagement.Settings;
+using ACAT.Core.Audit;
+using ACAT.Core.Extensions;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PreferencesManagement;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     /// <summary>
     /// Manages all the actuators.  Responsible for reading the
@@ -48,7 +49,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// The base directory under which all the actuator Dll's are
         /// located.
         /// </summary>
-        public static String ActuatorsRootDir = "Actuators";
+        public static String ActuatorsRootDir = "";
 
         /// <summary>
         /// Input config file that contains a list of all actuators and
@@ -114,16 +115,15 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         private Thread _thread;
 
-        
         /// <summary>
         /// Prevents a default instance of ActuatorManager class from being created
         /// </summary>
-        private ActuatorManager()
-        {
-            //_activeSwitches = new Dictionary<String, IActuatorSwitch>();
-            //_nonActuateSwitches = new Dictionary<String, IActuatorSwitch>();
-            //_syncObjectSwitches = new object();
-        }
+        //private ActuatorManager()
+        //{
+        //    _activeSwitches = new Dictionary<String, IActuatorSwitch>();
+        //    _nonActuateSwitches = new Dictionary<String, IActuatorSwitch>();
+        //    _syncObjectSwitches = new object();
+        //}
 
         /// <summary>
         /// Deleagate for notification of start of calibration by an actuator
@@ -190,13 +190,13 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// </summary>
         public static ActuatorManager Instance
         {
-            get { return _instance ?? (_instance = new ActuatorManager()); }
+            get { return _instance ??= new ActuatorManager(); }
         }
 
         /// <summary>
         /// Gets the object that contains a list of actuators
         /// </summary>
-        public IEnumerable<IActuator> Actuators
+        public IEnumerable<IActuator> ActuatorsList
         {
             get { return _actuators.ActuatorList; }
         }
@@ -238,7 +238,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         {
             foreach (var actuator in _actuators.ActuatorList)
             {
-                var descAttribute = DescriptorAttribute.GetDescriptor(actuator.GetType());
+                var descAttribute = ClassDescriptorAttribute.GetDescriptor(actuator.GetType());
 
                 if (descAttribute != null)
                 {
@@ -262,7 +262,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
             _activeSwitches = new Dictionary<String, IActuatorSwitch>();
             _nonActuateSwitches = new Dictionary<String, IActuatorSwitch>();
             _syncObjectSwitches = new object();
-
 
             calibrationQueue = new BlockingQueue<object>();
 
@@ -384,7 +383,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="enableConfigure">should the "configure" be enabled</param>
         public void OnEndCalibration(IActuator source, String errorMessage = "", bool enableConfigure = true)
         {
-            Log.Debug();
+            Log.Verbose();
             Log.Debug("Calling isCalibratingActuator");
 
             if (isCalibratingActuator(source))
@@ -406,10 +405,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         public void OnError(IActuator source, String message, bool enableConfigure = true)
         {
             var aex = _actuators.find(source);
-            if (aex != null)
-            {
-                aex.OnError(message, enableConfigure);
-            }
+            aex?.OnError(message, enableConfigure);
         }
 
         /// <summary>
@@ -421,21 +417,14 @@ namespace ACAT.Lib.Core.ActuatorManagement
         public void OnInitDone(IActuator source, bool success = true)
         {
             var aex = _actuators.find(source);
-            if (aex != null)
-            {
-                aex.OnInitDone(success);
-            }
+            aex?.OnInitDone(success);
         }
 
         public void OnPostInitDone(IActuator source, bool success = true)
         {
             var aex = _actuators.find(source);
-            if (aex != null)
-            {
-                aex.OnPostInitDone(success);
-            }
+            aex?.OnPostInitDone(success);
         }
-
 
         /// <summary>
         /// Pauses all the acutators.  No events will be triggered
@@ -534,37 +523,37 @@ namespace ACAT.Lib.Core.ActuatorManagement
             return ActuatorConfig.Load();
         }
 
-        /// <summary>
-        /// Returns form that displays preferences selection form for actuators and allows configuration.
-        /// User can enable/disable actuators and also configure settings for each actuator.  
-        /// </summary>
-        public Form GetPreferencesSelectionForm(IntPtr parentControlHandle)
-        {
-            if (_actuators == null)
-            {
-                return null;
-            }
+        ///// <summary>
+        ///// Returns form that displays preferences selection form for actuators and allows configuration.
+        ///// User can enable/disable actuators and also configure settings for each actuator.
+        ///// </summary>
+        //public Form GetPreferencesSelectionForm(IntPtr parentControlHandle)
+        //{
+        //    if (_actuators == null)
+        //    {
+        //        return null;
+        //    }
 
-            var list = new List<PreferencesCategory>();
-            var keyboardActuator = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
+        //    var list = new List<PreferencesCategory>();
+        //    _ = ActuatorManager.Instance.GetActuator(typeof(KeyboardActuator));
 
-            foreach (var actuator in _actuators.ActuatorList)
-            {
-                list.Add(new PreferencesCategory(actuator, true, actuator.Enabled));
-            }
+        //    foreach (var actuator in _actuators.ActuatorList)
+        //    {
+        //        list.Add(new PreferencesCategory(actuator, true, actuator.Enabled));
+        //    }
 
-            // Create and return the form for the user to select which actuators are enabled, change settings etc.
-            var form = new PreferencesCategorySelectForm
-            {
-                PreferencesCategories = list,
-                CategoryColumnHeaderText = "Actuator",
-                Title = "Actuators",
-                ParentControlHandle = parentControlHandle,
-                DisallowEnable = true
-            };
+        //    // Create and return the form for the user to select which actuators are enabled, change settings etc.
+        //    var form = new PreferencesCategorySelectForm
+        //    {
+        //        PreferencesCategories = list,
+        //        CategoryColumnHeaderText = "Actuator",
+        //        Title = "Actuators",
+        //        ParentControlHandle = parentControlHandle,
+        //        DisallowEnable = true
+        //    };
 
-            return form;
-        }
+        //    return form;
+        //}
 
         /// <summary>
         /// Saves preferences in actuator settings
@@ -662,12 +651,11 @@ namespace ACAT.Lib.Core.ActuatorManagement
             return GetActuator(typeof(SwitchInterfaceActuator));
         }
 
-
         public bool CheckScanTimingConfigureEnable()
         {
             var keyboardActuator = Context.AppActuatorManager.GetKeyboardActuator();
 
-            foreach (var actuator in Context.AppActuatorManager.Actuators)
+            foreach (var actuator in Context.AppActuatorManager.ActuatorsList)
             {
                 if (keyboardActuator != null && actuator != keyboardActuator)
                 {
@@ -687,14 +675,13 @@ namespace ACAT.Lib.Core.ActuatorManagement
             return false;
         }
 
-
         public void ShowTryoutDialog(bool startup = false)
         {
             var keyboardActuator = Context.AppActuatorManager.GetKeyboardActuator();
 
             bool dialogShown = false;
 
-            foreach (var actuator in Context.AppActuatorManager.Actuators)
+            foreach (var actuator in Context.AppActuatorManager.ActuatorsList)
             {
                 if (keyboardActuator != null && actuator != keyboardActuator)
                 {
@@ -715,7 +702,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
                 }
             }
 
-            if (!dialogShown && Context.AppActuatorManager.Actuators.Count() == 1 && keyboardActuator != null &&
+            if (!dialogShown && Context.AppActuatorManager.ActuatorsList.Count() == 1 && keyboardActuator != null &&
                 keyboardActuator.SupportsTryout &&
                (!startup || keyboardActuator.ShowTryoutOnStartup))
             {
@@ -729,7 +716,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
 
             bool dialogShown = false;
 
-            foreach (var actuator in Context.AppActuatorManager.Actuators)
+            foreach (var actuator in Context.AppActuatorManager.ActuatorsList)
             {
                 if (keyboardActuator != null && actuator != keyboardActuator)
                 {
@@ -745,14 +732,13 @@ namespace ACAT.Lib.Core.ActuatorManagement
                 }
             }
 
-            if (!dialogShown && Context.AppActuatorManager.Actuators.Count() == 1 && keyboardActuator != null &&
+            if (!dialogShown && Context.AppActuatorManager.ActuatorsList.Count() == 1 && keyboardActuator != null &&
                 keyboardActuator.SupportsScanTimingsConfigureDialog)
-               
+
             {
                 keyboardActuator.ShowScanTimingsConfigureDialog();
             }
         }
-
 
         /// <summary>
         /// Action to execute when the user intitiates it
@@ -772,7 +758,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -783,7 +769,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
                         calibrationQueue.Clear();
                         calibrationQueue.Enqueue("Stop");
                     }
-
 
                     if (_thread != null)
                     {
@@ -813,7 +798,6 @@ namespace ACAT.Lib.Core.ActuatorManagement
         private void act(IActuatorSwitch switchObj)
         {
             bool handled = false;
-
 
             var actuator = switchObj.Actuator;
             var action = switchObj.GetTriggerScanMode();
@@ -1182,10 +1166,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="switchObj">The switch that caused the trigger</param>
         private void notifySwitchAccepted(IActuatorSwitch switchObj)
         {
-            if (EvtSwitchAccepted != null)
-            {
-                EvtSwitchAccepted(this, new ActuatorSwitchEventArgs(switchObj));
-            }
+            EvtSwitchAccepted?.Invoke(this, new ActuatorSwitchEventArgs(switchObj));
         }
 
         /// <summary>
@@ -1217,10 +1198,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="switchObj">The switch that caused the trigger</param>
         private void notifySwitchDown(IActuatorSwitch switchObj)
         {
-            if (EvtSwitchDown != null)
-            {
-                EvtSwitchDown(this, new ActuatorSwitchEventArgs(switchObj));
-            }
+            EvtSwitchDown?.Invoke(this, new ActuatorSwitchEventArgs(switchObj));
         }
 
         /// <summary>
@@ -1241,7 +1219,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
                 return;
             }
 
-            Log.Debug();
+            Log.Verbose();
 
             var delegates = EvtSwitchHook.GetInvocationList();
             foreach (var del in delegates)
@@ -1262,10 +1240,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="switchObj">The switch that caused the trigger</param>
         private void notifySwitchRejected(IActuatorSwitch switchObj)
         {
-            if (EvtSwitchRejected != null)
-            {
-                EvtSwitchRejected(this, new ActuatorSwitchEventArgs(switchObj));
-            }
+            EvtSwitchRejected?.Invoke(this, new ActuatorSwitchEventArgs(switchObj));
         }
 
         /// <summary>
@@ -1274,10 +1249,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="switchObj">The switch that caused the trigger</param>
         private void notifySwitchUp(IActuatorSwitch switchObj)
         {
-            if (EvtSwitchUp != null)
-            {
-                EvtSwitchUp(this, new ActuatorSwitchEventArgs(switchObj));
-            }
+            EvtSwitchUp?.Invoke(this, new ActuatorSwitchEventArgs(switchObj));
         }
     }
 }

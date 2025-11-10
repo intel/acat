@@ -5,9 +5,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.PanelManagement.Common;
 using System;
 
-namespace ACAT.Lib.Core.PanelManagement.CommandDispatcher
+namespace ACAT.Core.PanelManagement.CommandDispatcher
 {
     /// <summary>
     /// Base class for handling a command.  A command (an action verb)
@@ -46,14 +47,13 @@ namespace ACAT.Lib.Core.PanelManagement.CommandDispatcher
         /// </summary>
         /// <param name="handled">was the command handler?</param>
         /// <returns>true on success</returns>
+        public virtual bool Execute(ref bool handled, object source = null)
+        {
+            return false;
+        }
         public virtual bool Execute(ref bool handled)
         {
-            return true;
-        }
-
-        public virtual bool Execute2(object source, ref bool handled)
-        {
-            return true;
+            return Execute(ref handled, null);
         }
     }
 }

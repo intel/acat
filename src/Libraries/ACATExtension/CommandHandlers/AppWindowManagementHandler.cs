@@ -5,17 +5,20 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.PanelManagement.CommandDispatcher;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.Extensions;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.CommandDispatcher;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.PanelManagement.Utils;
+using ACAT.Core.Utility;
+using ACAT.Extension.UI;
+using ACATResources;
 using System;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension.CommandHandlers
+namespace ACAT.Extension.CommandHandlers
 {
     /// <summary>
     /// Command handler to manipulate the foreground window
@@ -61,22 +64,20 @@ namespace ACAT.Lib.Extension.CommandHandlers
                     break;
 
                 case "CmdCloseWindow":
-                    var info = WindowActivityMonitor.GetForegroundWindowInfo();
+                    var info = WindowActivityMonitor.CurrentWindowInfo();
+                    
                     WindowHighlight win = null;
                     if (info.FgHwnd != IntPtr.Zero)
                     {
                         win = new WindowHighlight(info.FgHwnd, Dispatcher.Scanner.Form);
                     }
 
-                    if (DialogUtils.ConfirmScanner(null, R.GetString("CloseHighlightedWindow")))
+                    if (DialogUtils.ConfirmScanner(null, StringResources.CloseHighlightedWindow))
                     {
                         AgentManager.Instance.Keyboard.Send(Keys.LMenu, Keys.F4);
                     }
 
-                    if (win != null)
-                    {
-                        win.Dispose();
-                    }
+                    win?.Dispose();
 
                     break;
 
@@ -91,13 +92,10 @@ namespace ACAT.Lib.Extension.CommandHandlers
                         Form form = Context.AppPanelManager.CreatePanel("WindowMoveResizeScannerForm");
                         if (form != null)
                         {
-                            form.Text = R.GetString("MoveWindow");
+                            form.Text = StringResources.MoveWindow;
 
                             var extension = form as IExtension;
-                            if (extension != null)
-                            {
-                                extension.GetInvoker().SetValue("MoveWindow", true);
-                            }
+                            extension?.GetInvoker().SetValue("MoveWindow", true);
 
                             Context.AppPanelManager.ShowDialog(form as IPanel);
                         }
@@ -115,13 +113,10 @@ namespace ACAT.Lib.Extension.CommandHandlers
                         Form form = Context.AppPanelManager.CreatePanel("WindowMoveResizeScannerForm");
                         if (form != null)
                         {
-                            form.Text = R.GetString("ResizeWindow");
+                            form.Text = StringResources.ResizeWindow;
 
                             var extension = form as IExtension;
-                            if (extension != null)
-                            {
-                                extension.GetInvoker().SetValue("ResizeWindow", true);
-                            }
+                            extension?.GetInvoker().SetValue("ResizeWindow", true);
 
                             Context.AppPanelManager.ShowDialog(form as IPanel);
                         }
@@ -181,7 +176,7 @@ namespace ACAT.Lib.Extension.CommandHandlers
                     {
                         if (DualMonitor.MultipleMonitors)
                         {
-                            var panel = Context.AppPanelManager.CreatePanel("DualMonitorMenu", R.GetString("DualMonitorMenu")) as IPanel;
+                            var panel = Context.AppPanelManager.CreatePanel("DualMonitorMenu", StringResources.DualMonitorMenu) as IPanel;
                             if (panel != null)
                             {
                                 Context.AppPanelManager.Show(Context.AppPanelManager.GetCurrentForm(), panel);

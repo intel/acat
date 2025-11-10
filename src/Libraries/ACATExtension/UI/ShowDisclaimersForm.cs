@@ -5,15 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.ACATResources;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.Utility;
+using ACATResources;
 using System;
-using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
     /// <summary>
     /// A form to display disclaimers. Disclaimers are added to
@@ -49,11 +48,9 @@ namespace ACAT.Lib.Extension
         /// <param name="e">event args</param>
         private void ShowDisclaimersForm_Load(object sender, EventArgs e)
         {
-            TopMost = true;
-
             CenterToScreen();
 
-            buttonOK.Text = R.GetString(buttonOK.Text);
+            buttonOK.Text = StringResources.ResourceManager.GetString(buttonOK.Text);
 
             try
             {
@@ -68,14 +65,13 @@ namespace ACAT.Lib.Extension
                 var text = sb.ToString().Trim();
                 if (String.IsNullOrEmpty(text))
                 {
-                    ConfirmBoxSingleOption.ShowDialog("No disclaimers found", "OK");
+                    ConfirmBoxOneOption.ShowDialog(StringResources.Warning, StringResources.NoDisclaimersFound, StringResources.OK);
                     Close();
                 }
                 else
                 {
                     textBoxDisclaimers.Text += text;
                 }
-                
             }
             catch
             {

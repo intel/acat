@@ -10,14 +10,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
+using ACATResources;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
 
-namespace ACAT.Extensions.Default.Actuators.CameraActuator
+namespace ACAT.Extensions.Actuators.CameraActuator
 {
     [Serializable]
-    public class Settings : PreferencesBase
+    public partial class Settings : PreferencesBase
     {
         /// <summary>
         /// Name of the settings file
@@ -30,20 +34,42 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         /// </summary>
         public String[] CameraList;
 
-        [IntDescriptor("Value is in milliseconds. If you observe two movement detections, once when you move your cheek up and the second when you return to normal position, adjust the value to the approximate time you hold the cheek in the up position​​", 0, 1000, 0)]
-        public int CheekTwitchHoldTime = 0;
+        [Display(Name = nameof(StringResources.CheekTwitchHoldTime),
+         Description = nameof(StringResources.Valueisinmilliseconds),
+            ResourceType = typeof(StringResources))]
+        [Range(0, 1000)]
+        [DefaultValue(0)]
+        [ObservableProperty]
+        private int cheekTwitchHoldTime = 0;
 
-        [IntDescriptor("Try higher values if the system is triggering with involuntary cheek movement. Try lower values  if you want the system to trigger with less cheek movement​​", 5, 50, 20)]
-        public int CheekTwitchSensitivity = 20;
+        [Display(Name = nameof(StringResources.CheekTwitchSensitivity),
+         Description = nameof(StringResources.TryHigherValuesIfTheSystemIsTriggeringWithInvoluntaryCheekMovemen),
+            ResourceType = typeof(StringResources))]
+        [Range(5, 50)]
+        [DefaultValue(20)]
+        [ObservableProperty]
+        private int cheekTwitchSensitivity = 20;
 
-        [IntDescriptor("Value is in milliseconds. If you observe two movement detections, once when you raise your eyebrows and the second when you return to normal position, adjust the value to the approximate time you hold the eyebrow in the raised position", 0, 2000, 0)]
-        public int EyebrowRaiseHoldTime = 0;
+        [Display(Name = nameof(StringResources.EyebrowRaiseHoldTime),
+           Description = nameof(StringResources.valueisinmillisecondsIfyouobservetwomovementdetections),ResourceType = typeof(StringResources))]
+        [Range(0, 2000)]
+        [DefaultValue(0)]
+        [ObservableProperty]
+        private int eyebrowRaiseHoldTime = 0;
 
-        [IntDescriptor("Try higher values if the system is triggering with involuntary eyebrow movement. Try lower values  if you want to the system to trigger with less eyebrow movement", 5, 50, 10)]
-        public int EyebrowRaiseSensitivity = 10;
+        [Display(Name = nameof(StringResources.EyebrowRaiseSensitivity),
+         Description = nameof(StringResources.TryHigherValuesIfTheSystemIsTriggeringWithInvoluntaryCheekMovemen), ResourceType = typeof(StringResources))]
+        [Range(5, 50)]
+        [DefaultValue(10)]
+        [ObservableProperty]
+        private int eyebrowRaiseSensitivity = 10;
 
-        [IntDescriptor("Try higher values if the system is trying to recalibrate too often with involuntary head movements​. Try lower values if the system is too slow in adjusting the facial regions with head repositioning​", 20, 100, 40)]
-        public int HeadMovementSensitivity = 40;
+        [Display(Name = nameof(StringResources.HeadMovementSensitivity),
+            Description = nameof(StringResources.Tryhighervalueshead), ResourceType = typeof(StringResources))]
+        [Range(20, 100)]
+        [DefaultValue(40)]
+        [ObservableProperty]
+        private int headMovementSensitivity = 40;
 
         /// <summary>
         /// Preferred camera to use
@@ -66,7 +92,7 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         public static Settings Load()
         {
             Settings retVal = PreferencesBase.Load<Settings>(SettingsFilePath);
-            Save(retVal, SettingsFilePath);
+            //Save(retVal, SettingsFilePath);
             return retVal;
         }
 
@@ -77,6 +103,15 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         public override bool Save()
         {
             return Save(this, SettingsFilePath);
+        }
+
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<Settings>();
+            var res = Save(tmp, SettingsFilePath);
+            Load();
+
+            return res;
         }
     }
 }

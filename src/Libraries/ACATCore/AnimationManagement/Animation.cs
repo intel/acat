@@ -5,16 +5,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Interpreter;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.Interpreter;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
 
-namespace ACAT.Lib.Core.AnimationManagement
+namespace ACAT.Core.AnimationManagement
 {
     /// <summary>
     /// Represents a single animation sequence.
@@ -241,7 +241,7 @@ namespace ACAT.Lib.Core.AnimationManagement
         {
             clearAnimationWidgetList();
 
-            Log.Debug(rootWidget.Name + ". widgetXMLNodeList count: " + _widgetXMLNodeList.Count);
+            Log.Verbose(rootWidget.Name + ". widgetXMLNodeList count: " + _widgetXMLNodeList.Count);
 
             foreach (XmlNode xmlNode in _widgetXMLNodeList)
             {
@@ -259,7 +259,7 @@ namespace ACAT.Lib.Core.AnimationManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -314,10 +314,7 @@ namespace ACAT.Lib.Core.AnimationManagement
         {
             var retVal = new AnimationWidget { UIWidget = uiWidget };
             AnimationWidgetList.Add(retVal);
-            if (EvtAnimationWidgetAdded != null)
-            {
-                EvtAnimationWidgetAdded(this, new AnimationWidgetAddedEventArgs(retVal));
-            }
+            EvtAnimationWidgetAdded?.Invoke(this, new AnimationWidgetAddedEventArgs(retVal));
 
             return retVal;
         }
@@ -424,21 +421,18 @@ namespace ACAT.Lib.Core.AnimationManagement
         {
             var name = XmlUtils.GetXMLAttrString(xmlNode, "name");
 
-            Log.Debug("name=" + name);
+            Log.Verbose("name=" + name);
             if (!String.IsNullOrEmpty(name) && !name.Contains("*"))
             {
                 var widgetName = resolveName(variables, name);
-                Log.Debug("Resolved name : " + widgetName);
+                Log.Verbose("Resolved name : " + widgetName);
 
                 var uiWidget = rootWidget.Finder.FindChild(widgetName);
                 if (uiWidget != null && (uiWidget.UIControl == null || uiWidget.Visible))
                 {
-                    Log.Debug("Found child name : " + widgetName);
+                    Log.Verbose("Found child name : " + widgetName);
                     var animationWidget = createAndAddAnimationWidget(uiWidget);
-                    if (animationWidget != null)
-                    {
-                        animationWidget.Load(xmlNode);
-                    }
+                    animationWidget?.Load(xmlNode);
                 }
                 else
                 {
@@ -471,10 +465,7 @@ namespace ACAT.Lib.Core.AnimationManagement
                 {
                     Log.Debug("containerWidget: " + containerWidget.Name);
 
-                    if (EvtResolveWidgetChildren != null)
-                    {
-                        EvtResolveWidgetChildren(this, new ResolveWidgetChildrenEventArgs(rootWidget, containerWidget, xmlNode));
-                    }
+                    EvtResolveWidgetChildren?.Invoke(this, new ResolveWidgetChildrenEventArgs(rootWidget, containerWidget, xmlNode));
 
                     foreach (var childWidget in containerWidget.Children)
                     {
@@ -482,10 +473,7 @@ namespace ACAT.Lib.Core.AnimationManagement
                         {
                             Log.Debug("Found child name : " + childWidget.Name);
                             var animationWidget = createAndAddAnimationWidget(childWidget);
-                            if (animationWidget != null)
-                            {
-                                animationWidget.Load(xmlNode);
-                            }
+                            animationWidget?.Load(xmlNode);
                         }
                     }
                 }

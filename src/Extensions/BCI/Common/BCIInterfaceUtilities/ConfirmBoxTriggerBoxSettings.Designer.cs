@@ -1,4 +1,7 @@
 ﻿
+using ACAT.Core.WidgetManagement;
+using ACATResources;
+
 namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 {
     partial class ConfirmBoxTriggerBoxSettings
@@ -29,47 +32,45 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfirmBoxTriggerBoxSettings));
             this.tableLayoutParameters = new System.Windows.Forms.TableLayoutPanel();
             this.labelTitle = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutConfigurations = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutScanningTime = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonUpScanningTime = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonUpScanningTime = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel18 = new System.Windows.Forms.TableLayoutPanel();
             this.label7 = new System.Windows.Forms.Label();
             this.tableLayoutPanel19 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonInfoScanningTime = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonInfoScanningTime = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.customSliderScanningTime = new ColorSlider.ColorSlider();
-            this.ButtonDownScanningTime = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonDownScanningTime = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel20 = new System.Windows.Forms.TableLayoutPanel();
             this.labelScanningTime = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutNumberTargets = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonUpNumberTargets = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonUpNumberTargets = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.labelNumberTargets = new System.Windows.Forms.Label();
             this.customSliderNumberTargets = new ColorSlider.ColorSlider();
-            this.ButtonDownNumberTargets = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonDownNumberTargets = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel21 = new System.Windows.Forms.TableLayoutPanel();
             this.label6 = new System.Windows.Forms.Label();
             this.tableLayoutPanel22 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonInfoNumberTargets = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonInfoNumberTargets = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonRestoreDefaults = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonRestoreDefaults = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutBox = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonStartTriggerTest = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.ButtonOpcTriggerTest = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonStartTriggerTest = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonOpcTriggerTest = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonInfoBox = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonInfoBox = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.LineBoxSelection = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.scannerRoundedButtonControl3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.ButtonExit = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.ButtonExit = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutParameters.SuspendLayout();
@@ -85,7 +86,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutBox.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
-            this.tableLayoutPanel6.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.SuspendLayout();
@@ -94,7 +94,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             // 
             this.tableLayoutParameters.ColumnCount = 3;
             this.tableLayoutParameters.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutParameters.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1200F));
+            this.tableLayoutParameters.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 900F));
             this.tableLayoutParameters.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutParameters.Controls.Add(this.labelTitle, 1, 0);
             this.tableLayoutParameters.Controls.Add(this.tableLayoutPanel1, 1, 1);
@@ -106,12 +106,12 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutParameters.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutParameters.Name = "tableLayoutParameters";
             this.tableLayoutParameters.RowCount = 5;
-            this.tableLayoutParameters.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 250F));
-            this.tableLayoutParameters.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 650F));
+            this.tableLayoutParameters.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 203F));
+            this.tableLayoutParameters.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 528F));
             this.tableLayoutParameters.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutParameters.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 150F));
-            this.tableLayoutParameters.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutParameters.Size = new System.Drawing.Size(2070, 1121);
+            this.tableLayoutParameters.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 122F));
+            this.tableLayoutParameters.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutParameters.Size = new System.Drawing.Size(1552, 911);
             this.tableLayoutParameters.TabIndex = 13;
             // 
             // labelTitle
@@ -120,10 +120,9 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.labelTitle.Dock = System.Windows.Forms.DockStyle.Fill;
             this.labelTitle.Font = new System.Drawing.Font("Montserrat Medium", 28F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTitle.ForeColor = System.Drawing.SystemColors.Control;
-            this.labelTitle.Location = new System.Drawing.Point(439, 0);
-            this.labelTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelTitle.Location = new System.Drawing.Point(329, 0);
             this.labelTitle.Name = "labelTitle";
-            this.labelTitle.Size = new System.Drawing.Size(1192, 250);
+            this.labelTitle.Size = new System.Drawing.Size(894, 203);
             this.labelTitle.TabIndex = 16;
             this.labelTitle.Text = "Trigger Test";
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -137,35 +136,34 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutBox, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(439, 254);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(329, 206);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 10;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 62F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1192, 642);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(894, 522);
             this.tableLayoutPanel1.TabIndex = 15;
             // 
             // tableLayoutConfigurations
             // 
             this.tableLayoutConfigurations.ColumnCount = 2;
-            this.tableLayoutConfigurations.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 6F));
+            this.tableLayoutConfigurations.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 4F));
             this.tableLayoutConfigurations.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutConfigurations.Controls.Add(this.tableLayoutScanningTime, 1, 0);
             this.tableLayoutConfigurations.Controls.Add(this.tableLayoutNumberTargets, 1, 1);
             this.tableLayoutConfigurations.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutConfigurations.Controls.Add(this.tableLayoutPanel2, 1, 4);
             this.tableLayoutConfigurations.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutConfigurations.Location = new System.Drawing.Point(596, 134);
+            this.tableLayoutConfigurations.Location = new System.Drawing.Point(447, 108);
             this.tableLayoutConfigurations.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutConfigurations.Name = "tableLayoutConfigurations";
             this.tableLayoutConfigurations.RowCount = 3;
@@ -174,30 +172,30 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutConfigurations.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutConfigurations.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutConfigurations.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutConfigurations.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 75F));
-            this.tableLayoutConfigurations.Size = new System.Drawing.Size(596, 508);
+            this.tableLayoutConfigurations.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 61F));
+            this.tableLayoutConfigurations.Size = new System.Drawing.Size(447, 414);
             this.tableLayoutConfigurations.TabIndex = 80;
             // 
             // tableLayoutScanningTime
             // 
             this.tableLayoutScanningTime.ColumnCount = 4;
             this.tableLayoutScanningTime.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 45F));
-            this.tableLayoutScanningTime.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutScanningTime.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 38F));
             this.tableLayoutScanningTime.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55F));
-            this.tableLayoutScanningTime.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 78F));
+            this.tableLayoutScanningTime.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 58F));
             this.tableLayoutScanningTime.Controls.Add(this.ButtonUpScanningTime, 3, 1);
             this.tableLayoutScanningTime.Controls.Add(this.tableLayoutPanel18, 0, 0);
             this.tableLayoutScanningTime.Controls.Add(this.customSliderScanningTime, 2, 1);
             this.tableLayoutScanningTime.Controls.Add(this.ButtonDownScanningTime, 1, 1);
             this.tableLayoutScanningTime.Controls.Add(this.tableLayoutPanel20, 0, 1);
             this.tableLayoutScanningTime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutScanningTime.Location = new System.Drawing.Point(44, 4);
-            this.tableLayoutScanningTime.Margin = new System.Windows.Forms.Padding(38, 4, 4, 4);
+            this.tableLayoutScanningTime.Location = new System.Drawing.Point(32, 3);
+            this.tableLayoutScanningTime.Margin = new System.Windows.Forms.Padding(28, 3, 3, 3);
             this.tableLayoutScanningTime.Name = "tableLayoutScanningTime";
             this.tableLayoutScanningTime.RowCount = 2;
-            this.tableLayoutScanningTime.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 62F));
+            this.tableLayoutScanningTime.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutScanningTime.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutScanningTime.Size = new System.Drawing.Size(548, 100);
+            this.tableLayoutScanningTime.Size = new System.Drawing.Size(412, 82);
             this.tableLayoutScanningTime.TabIndex = 80;
             // 
             // ButtonUpScanningTime
@@ -212,10 +210,10 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonUpScanningTime.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonUpScanningTime.Font = new System.Drawing.Font("Montserrat SemiBold", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonUpScanningTime.ForeColor = System.Drawing.Color.White;
-            this.ButtonUpScanningTime.Location = new System.Drawing.Point(470, 62);
+            this.ButtonUpScanningTime.Location = new System.Drawing.Point(353, 50);
             this.ButtonUpScanningTime.Margin = new System.Windows.Forms.Padding(0);
             this.ButtonUpScanningTime.Name = "ButtonUpScanningTime";
-            this.ButtonUpScanningTime.Size = new System.Drawing.Size(78, 38);
+            this.ButtonUpScanningTime.Size = new System.Drawing.Size(59, 32);
             this.ButtonUpScanningTime.TabIndex = 82;
             this.ButtonUpScanningTime.Text = "+";
             this.ButtonUpScanningTime.TextAlign = System.Drawing.ContentAlignment.TopLeft;
@@ -228,17 +226,16 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutPanel18.ColumnCount = 3;
             this.tableLayoutScanningTime.SetColumnSpan(this.tableLayoutPanel18, 4);
             this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 38F));
             this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel18.Controls.Add(this.label7, 0, 0);
             this.tableLayoutPanel18.Controls.Add(this.tableLayoutPanel19, 1, 0);
             this.tableLayoutPanel18.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel18.Location = new System.Drawing.Point(4, 4);
-            this.tableLayoutPanel18.Margin = new System.Windows.Forms.Padding(4);
+            this.tableLayoutPanel18.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel18.Name = "tableLayoutPanel18";
             this.tableLayoutPanel18.RowCount = 1;
             this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel18.Size = new System.Drawing.Size(540, 54);
+            this.tableLayoutPanel18.Size = new System.Drawing.Size(406, 44);
             this.tableLayoutPanel18.TabIndex = 86;
             // 
             // label7
@@ -247,12 +244,11 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label7.Font = new System.Drawing.Font("Montserrat SemiBold", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.Color.White;
-            this.label7.Location = new System.Drawing.Point(4, 0);
-            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label7.Location = new System.Drawing.Point(3, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(228, 54);
+            this.label7.Size = new System.Drawing.Size(191, 44);
             this.label7.TabIndex = 0;
-            this.label7.Text = "Scanning time*";
+            this.label7.Text = "Scanning time:*";
             this.label7.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // tableLayoutPanel19
@@ -261,14 +257,14 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel19.Controls.Add(this.ButtonInfoScanningTime, 0, 1);
             this.tableLayoutPanel19.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel19.Location = new System.Drawing.Point(248, 0);
-            this.tableLayoutPanel19.Margin = new System.Windows.Forms.Padding(12, 0, 0, 0);
+            this.tableLayoutPanel19.Location = new System.Drawing.Point(206, 0);
+            this.tableLayoutPanel19.Margin = new System.Windows.Forms.Padding(9, 0, 0, 0);
             this.tableLayoutPanel19.Name = "tableLayoutPanel19";
             this.tableLayoutPanel19.RowCount = 3;
             this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
+            this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel19.Size = new System.Drawing.Size(38, 54);
+            this.tableLayoutPanel19.Size = new System.Drawing.Size(29, 44);
             this.tableLayoutPanel19.TabIndex = 84;
             // 
             // ButtonInfoScanningTime
@@ -283,10 +279,10 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonInfoScanningTime.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonInfoScanningTime.Font = new System.Drawing.Font("Montserrat SemiBold", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonInfoScanningTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.ButtonInfoScanningTime.Location = new System.Drawing.Point(0, 11);
+            this.ButtonInfoScanningTime.Location = new System.Drawing.Point(0, 9);
             this.ButtonInfoScanningTime.Margin = new System.Windows.Forms.Padding(0);
             this.ButtonInfoScanningTime.Name = "ButtonInfoScanningTime";
-            this.ButtonInfoScanningTime.Size = new System.Drawing.Size(31, 31);
+            this.ButtonInfoScanningTime.Size = new System.Drawing.Size(23, 25);
             this.ButtonInfoScanningTime.TabIndex = 18;
             this.ButtonInfoScanningTime.Text = "?";
             this.ButtonInfoScanningTime.UseMnemonic = false;
@@ -313,7 +309,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             0,
             0,
             0});
-            this.customSliderScanningTime.Location = new System.Drawing.Point(239, 62);
+            this.customSliderScanningTime.Location = new System.Drawing.Point(180, 50);
             this.customSliderScanningTime.Margin = new System.Windows.Forms.Padding(0);
             this.customSliderScanningTime.Maximum = new decimal(new int[] {
             2000,
@@ -339,7 +335,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             0});
             this.customSliderScanningTime.ShowDivisionsText = false;
             this.customSliderScanningTime.ShowSmallScale = false;
-            this.customSliderScanningTime.Size = new System.Drawing.Size(231, 38);
+            this.customSliderScanningTime.Size = new System.Drawing.Size(173, 32);
             this.customSliderScanningTime.SmallChange = new decimal(new int[] {
             1,
             0,
@@ -374,10 +370,10 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonDownScanningTime.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonDownScanningTime.Font = new System.Drawing.Font("Montserrat SemiBold", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonDownScanningTime.ForeColor = System.Drawing.Color.White;
-            this.ButtonDownScanningTime.Location = new System.Drawing.Point(189, 62);
+            this.ButtonDownScanningTime.Location = new System.Drawing.Point(142, 50);
             this.ButtonDownScanningTime.Margin = new System.Windows.Forms.Padding(0);
             this.ButtonDownScanningTime.Name = "ButtonDownScanningTime";
-            this.ButtonDownScanningTime.Size = new System.Drawing.Size(50, 38);
+            this.ButtonDownScanningTime.Size = new System.Drawing.Size(38, 32);
             this.ButtonDownScanningTime.TabIndex = 81;
             this.ButtonDownScanningTime.Text = "-";
             this.ButtonDownScanningTime.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -389,17 +385,17 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             // 
             this.tableLayoutPanel20.ColumnCount = 3;
             this.tableLayoutPanel20.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel20.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 48F));
+            this.tableLayoutPanel20.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 36F));
             this.tableLayoutPanel20.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel20.Controls.Add(this.labelScanningTime, 0, 0);
             this.tableLayoutPanel20.Controls.Add(this.label2, 1, 0);
             this.tableLayoutPanel20.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel20.Location = new System.Drawing.Point(0, 62);
+            this.tableLayoutPanel20.Location = new System.Drawing.Point(0, 50);
             this.tableLayoutPanel20.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel20.Name = "tableLayoutPanel20";
             this.tableLayoutPanel20.RowCount = 1;
             this.tableLayoutPanel20.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel20.Size = new System.Drawing.Size(189, 38);
+            this.tableLayoutPanel20.Size = new System.Drawing.Size(142, 32);
             this.tableLayoutPanel20.TabIndex = 87;
             // 
             // labelScanningTime
@@ -411,7 +407,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.labelScanningTime.Location = new System.Drawing.Point(0, 0);
             this.labelScanningTime.Margin = new System.Windows.Forms.Padding(0);
             this.labelScanningTime.Name = "labelScanningTime";
-            this.labelScanningTime.Size = new System.Drawing.Size(99, 38);
+            this.labelScanningTime.Size = new System.Drawing.Size(77, 32);
             this.labelScanningTime.TabIndex = 80;
             this.labelScanningTime.Text = "2000";
             this.labelScanningTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -422,10 +418,9 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.label2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.label2.Font = new System.Drawing.Font("Montserrat Light", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(103, 14);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(80, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(40, 24);
+            this.label2.Size = new System.Drawing.Size(30, 32);
             this.label2.TabIndex = 81;
             this.label2.Text = "ms";
             this.label2.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -434,22 +429,22 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             // 
             this.tableLayoutNumberTargets.ColumnCount = 4;
             this.tableLayoutNumberTargets.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 45F));
-            this.tableLayoutNumberTargets.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutNumberTargets.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 38F));
             this.tableLayoutNumberTargets.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55F));
-            this.tableLayoutNumberTargets.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 78F));
+            this.tableLayoutNumberTargets.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 58F));
             this.tableLayoutNumberTargets.Controls.Add(this.ButtonUpNumberTargets, 3, 1);
             this.tableLayoutNumberTargets.Controls.Add(this.labelNumberTargets, 0, 1);
             this.tableLayoutNumberTargets.Controls.Add(this.customSliderNumberTargets, 2, 1);
             this.tableLayoutNumberTargets.Controls.Add(this.ButtonDownNumberTargets, 1, 1);
             this.tableLayoutNumberTargets.Controls.Add(this.tableLayoutPanel21, 0, 0);
             this.tableLayoutNumberTargets.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutNumberTargets.Location = new System.Drawing.Point(44, 112);
-            this.tableLayoutNumberTargets.Margin = new System.Windows.Forms.Padding(38, 4, 4, 4);
+            this.tableLayoutNumberTargets.Location = new System.Drawing.Point(32, 91);
+            this.tableLayoutNumberTargets.Margin = new System.Windows.Forms.Padding(28, 3, 3, 3);
             this.tableLayoutNumberTargets.Name = "tableLayoutNumberTargets";
             this.tableLayoutNumberTargets.RowCount = 2;
-            this.tableLayoutNumberTargets.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 62F));
+            this.tableLayoutNumberTargets.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutNumberTargets.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutNumberTargets.Size = new System.Drawing.Size(548, 100);
+            this.tableLayoutNumberTargets.Size = new System.Drawing.Size(412, 82);
             this.tableLayoutNumberTargets.TabIndex = 81;
             // 
             // ButtonUpNumberTargets
@@ -464,10 +459,10 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonUpNumberTargets.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonUpNumberTargets.Font = new System.Drawing.Font("Montserrat SemiBold", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonUpNumberTargets.ForeColor = System.Drawing.Color.White;
-            this.ButtonUpNumberTargets.Location = new System.Drawing.Point(470, 62);
+            this.ButtonUpNumberTargets.Location = new System.Drawing.Point(353, 50);
             this.ButtonUpNumberTargets.Margin = new System.Windows.Forms.Padding(0);
             this.ButtonUpNumberTargets.Name = "ButtonUpNumberTargets";
-            this.ButtonUpNumberTargets.Size = new System.Drawing.Size(78, 38);
+            this.ButtonUpNumberTargets.Size = new System.Drawing.Size(59, 32);
             this.ButtonUpNumberTargets.TabIndex = 82;
             this.ButtonUpNumberTargets.Text = "+";
             this.ButtonUpNumberTargets.TextAlign = System.Drawing.ContentAlignment.TopLeft;
@@ -481,10 +476,10 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.labelNumberTargets.Dock = System.Windows.Forms.DockStyle.Fill;
             this.labelNumberTargets.Font = new System.Drawing.Font("Montserrat ExtraBold", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelNumberTargets.ForeColor = System.Drawing.Color.White;
-            this.labelNumberTargets.Location = new System.Drawing.Point(4, 62);
-            this.labelNumberTargets.Margin = new System.Windows.Forms.Padding(4, 0, 0, 0);
+            this.labelNumberTargets.Location = new System.Drawing.Point(3, 50);
+            this.labelNumberTargets.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.labelNumberTargets.Name = "labelNumberTargets";
-            this.labelNumberTargets.Size = new System.Drawing.Size(185, 38);
+            this.labelNumberTargets.Size = new System.Drawing.Size(139, 32);
             this.labelNumberTargets.TabIndex = 80;
             this.labelNumberTargets.Text = "77";
             this.labelNumberTargets.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -508,7 +503,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             0,
             0,
             0});
-            this.customSliderNumberTargets.Location = new System.Drawing.Point(239, 62);
+            this.customSliderNumberTargets.Location = new System.Drawing.Point(180, 50);
             this.customSliderNumberTargets.Margin = new System.Windows.Forms.Padding(0);
             this.customSliderNumberTargets.Maximum = new decimal(new int[] {
             100,
@@ -534,7 +529,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             0});
             this.customSliderNumberTargets.ShowDivisionsText = false;
             this.customSliderNumberTargets.ShowSmallScale = false;
-            this.customSliderNumberTargets.Size = new System.Drawing.Size(231, 38);
+            this.customSliderNumberTargets.Size = new System.Drawing.Size(173, 32);
             this.customSliderNumberTargets.SmallChange = new decimal(new int[] {
             1,
             0,
@@ -569,10 +564,10 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonDownNumberTargets.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonDownNumberTargets.Font = new System.Drawing.Font("Montserrat SemiBold", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonDownNumberTargets.ForeColor = System.Drawing.Color.White;
-            this.ButtonDownNumberTargets.Location = new System.Drawing.Point(189, 62);
+            this.ButtonDownNumberTargets.Location = new System.Drawing.Point(142, 50);
             this.ButtonDownNumberTargets.Margin = new System.Windows.Forms.Padding(0);
             this.ButtonDownNumberTargets.Name = "ButtonDownNumberTargets";
-            this.ButtonDownNumberTargets.Size = new System.Drawing.Size(50, 38);
+            this.ButtonDownNumberTargets.Size = new System.Drawing.Size(38, 32);
             this.ButtonDownNumberTargets.TabIndex = 81;
             this.ButtonDownNumberTargets.Text = "-";
             this.ButtonDownNumberTargets.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -585,17 +580,16 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutPanel21.ColumnCount = 3;
             this.tableLayoutNumberTargets.SetColumnSpan(this.tableLayoutPanel21, 4);
             this.tableLayoutPanel21.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel21.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel21.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 38F));
             this.tableLayoutPanel21.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel21.Controls.Add(this.label6, 0, 0);
             this.tableLayoutPanel21.Controls.Add(this.tableLayoutPanel22, 1, 0);
             this.tableLayoutPanel21.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel21.Location = new System.Drawing.Point(4, 4);
-            this.tableLayoutPanel21.Margin = new System.Windows.Forms.Padding(4);
+            this.tableLayoutPanel21.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel21.Name = "tableLayoutPanel21";
             this.tableLayoutPanel21.RowCount = 1;
             this.tableLayoutPanel21.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel21.Size = new System.Drawing.Size(540, 54);
+            this.tableLayoutPanel21.Size = new System.Drawing.Size(406, 44);
             this.tableLayoutPanel21.TabIndex = 85;
             // 
             // label6
@@ -604,12 +598,11 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label6.Font = new System.Drawing.Font("Montserrat SemiBold", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.Color.White;
-            this.label6.Location = new System.Drawing.Point(4, 0);
-            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label6.Location = new System.Drawing.Point(3, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(335, 54);
+            this.label6.Size = new System.Drawing.Size(279, 44);
             this.label6.TabIndex = 0;
-            this.label6.Text = "Number of repetitions*";
+            this.label6.Text = "Number of Repetitions*";
             this.label6.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // tableLayoutPanel22
@@ -618,14 +611,14 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutPanel22.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel22.Controls.Add(this.ButtonInfoNumberTargets, 0, 1);
             this.tableLayoutPanel22.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel22.Location = new System.Drawing.Point(355, 0);
-            this.tableLayoutPanel22.Margin = new System.Windows.Forms.Padding(12, 0, 0, 0);
+            this.tableLayoutPanel22.Location = new System.Drawing.Point(294, 0);
+            this.tableLayoutPanel22.Margin = new System.Windows.Forms.Padding(9, 0, 0, 0);
             this.tableLayoutPanel22.Name = "tableLayoutPanel22";
             this.tableLayoutPanel22.RowCount = 3;
             this.tableLayoutPanel22.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel22.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
+            this.tableLayoutPanel22.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel22.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel22.Size = new System.Drawing.Size(38, 54);
+            this.tableLayoutPanel22.Size = new System.Drawing.Size(29, 44);
             this.tableLayoutPanel22.TabIndex = 84;
             // 
             // ButtonInfoNumberTargets
@@ -640,10 +633,10 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonInfoNumberTargets.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonInfoNumberTargets.Font = new System.Drawing.Font("Montserrat SemiBold", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonInfoNumberTargets.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.ButtonInfoNumberTargets.Location = new System.Drawing.Point(0, 11);
+            this.ButtonInfoNumberTargets.Location = new System.Drawing.Point(0, 9);
             this.ButtonInfoNumberTargets.Margin = new System.Windows.Forms.Padding(0);
             this.ButtonInfoNumberTargets.Name = "ButtonInfoNumberTargets";
-            this.ButtonInfoNumberTargets.Size = new System.Drawing.Size(31, 31);
+            this.ButtonInfoNumberTargets.Size = new System.Drawing.Size(23, 25);
             this.ButtonInfoNumberTargets.TabIndex = 18;
             this.ButtonInfoNumberTargets.Text = "?";
             this.ButtonInfoNumberTargets.UseMnemonic = false;
@@ -655,11 +648,10 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(4, 4);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4);
+            this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
             this.tableLayoutConfigurations.SetRowSpan(this.panel1, 5);
-            this.panel1.Size = new System.Drawing.Size(1, 500);
+            this.panel1.Size = new System.Drawing.Size(1, 408);
             this.panel1.TabIndex = 88;
             // 
             // tableLayoutPanel2
@@ -669,12 +661,12 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.Controls.Add(this.ButtonRestoreDefaults, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(6, 432);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(4, 352);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(590, 76);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(443, 62);
             this.tableLayoutPanel2.TabIndex = 89;
             // 
             // ButtonRestoreDefaults
@@ -689,12 +681,11 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonRestoreDefaults.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonRestoreDefaults.Font = new System.Drawing.Font("Montserrat Light", 14F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonRestoreDefaults.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.ButtonRestoreDefaults.Location = new System.Drawing.Point(299, 4);
-            this.ButtonRestoreDefaults.Margin = new System.Windows.Forms.Padding(4);
+            this.ButtonRestoreDefaults.Location = new System.Drawing.Point(224, 3);
             this.ButtonRestoreDefaults.Name = "ButtonRestoreDefaults";
-            this.ButtonRestoreDefaults.Size = new System.Drawing.Size(287, 68);
+            this.ButtonRestoreDefaults.Size = new System.Drawing.Size(216, 56);
             this.ButtonRestoreDefaults.TabIndex = 2;
-            this.ButtonRestoreDefaults.Text = "Restore defaults";
+            this.ButtonRestoreDefaults.Text = "Restore Defaults";
             this.ButtonRestoreDefaults.UseMnemonic = false;
             this.ButtonRestoreDefaults.UseVisualStyleBackColor = true;
             this.ButtonRestoreDefaults.Click += new System.EventHandler(this.ButtonRestoreDefaults_Click);
@@ -703,21 +694,21 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             // 
             this.tableLayoutBox.ColumnCount = 4;
             this.tableLayoutBox.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 58F));
-            this.tableLayoutBox.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutBox.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 94F));
+            this.tableLayoutBox.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 38F));
+            this.tableLayoutBox.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
             this.tableLayoutBox.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 42F));
             this.tableLayoutBox.Controls.Add(this.ButtonStartTriggerTest, 3, 0);
             this.tableLayoutBox.Controls.Add(this.ButtonOpcTriggerTest, 0, 0);
             this.tableLayoutBox.Controls.Add(this.tableLayoutPanel7, 1, 0);
             this.tableLayoutBox.Controls.Add(this.LineBoxSelection, 2, 1);
             this.tableLayoutBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutBox.Location = new System.Drawing.Point(0, 134);
+            this.tableLayoutBox.Location = new System.Drawing.Point(0, 108);
             this.tableLayoutBox.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutBox.Name = "tableLayoutBox";
             this.tableLayoutBox.RowCount = 2;
             this.tableLayoutBox.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutBox.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 6F));
-            this.tableLayoutBox.Size = new System.Drawing.Size(596, 72);
+            this.tableLayoutBox.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
+            this.tableLayoutBox.Size = new System.Drawing.Size(447, 58);
             this.tableLayoutBox.TabIndex = 19;
             // 
             // ButtonStartTriggerTest
@@ -733,12 +724,11 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonStartTriggerTest.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonStartTriggerTest.Font = new System.Drawing.Font("Montserrat Light", 14F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonStartTriggerTest.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.ButtonStartTriggerTest.Location = new System.Drawing.Point(410, 4);
-            this.ButtonStartTriggerTest.Margin = new System.Windows.Forms.Padding(4);
+            this.ButtonStartTriggerTest.Location = new System.Drawing.Point(307, 3);
             this.ButtonStartTriggerTest.Name = "ButtonStartTriggerTest";
-            this.ButtonStartTriggerTest.Size = new System.Drawing.Size(182, 58);
+            this.ButtonStartTriggerTest.Size = new System.Drawing.Size(137, 47);
             this.ButtonStartTriggerTest.TabIndex = 0;
-            this.ButtonStartTriggerTest.Text = "Start now";
+            this.ButtonStartTriggerTest.Text = "Start";
             this.ButtonStartTriggerTest.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ButtonStartTriggerTest.UseMnemonic = false;
             this.ButtonStartTriggerTest.UseVisualStyleBackColor = true;
@@ -757,10 +747,10 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonOpcTriggerTest.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonOpcTriggerTest.Font = new System.Drawing.Font("Montserrat SemiBold", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonOpcTriggerTest.ForeColor = System.Drawing.Color.White;
-            this.ButtonOpcTriggerTest.Location = new System.Drawing.Point(4, 4);
-            this.ButtonOpcTriggerTest.Margin = new System.Windows.Forms.Padding(4, 4, 0, 0);
+            this.ButtonOpcTriggerTest.Location = new System.Drawing.Point(3, 3);
+            this.ButtonOpcTriggerTest.Margin = new System.Windows.Forms.Padding(3, 3, 0, 0);
             this.ButtonOpcTriggerTest.Name = "ButtonOpcTriggerTest";
-            this.ButtonOpcTriggerTest.Size = new System.Drawing.Size(258, 62);
+            this.ButtonOpcTriggerTest.Size = new System.Drawing.Size(193, 50);
             this.ButtonOpcTriggerTest.TabIndex = 17;
             this.ButtonOpcTriggerTest.Text = "Trigger Test";
             this.ButtonOpcTriggerTest.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -774,14 +764,14 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel7.Controls.Add(this.ButtonInfoBox, 0, 1);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel7.Location = new System.Drawing.Point(274, 0);
-            this.tableLayoutPanel7.Margin = new System.Windows.Forms.Padding(12, 0, 0, 0);
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(205, 0);
+            this.tableLayoutPanel7.Margin = new System.Windows.Forms.Padding(9, 0, 0, 0);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 3;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(38, 66);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(29, 53);
             this.tableLayoutPanel7.TabIndex = 23;
             // 
             // ButtonInfoBox
@@ -796,10 +786,10 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonInfoBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonInfoBox.Font = new System.Drawing.Font("Montserrat SemiBold", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonInfoBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(170)))), ((int)(((byte)(0)))));
-            this.ButtonInfoBox.Location = new System.Drawing.Point(0, 17);
+            this.ButtonInfoBox.Location = new System.Drawing.Point(0, 14);
             this.ButtonInfoBox.Margin = new System.Windows.Forms.Padding(0);
             this.ButtonInfoBox.Name = "ButtonInfoBox";
-            this.ButtonInfoBox.Size = new System.Drawing.Size(31, 31);
+            this.ButtonInfoBox.Size = new System.Drawing.Size(23, 25);
             this.ButtonInfoBox.TabIndex = 18;
             this.ButtonInfoBox.Text = "?";
             this.ButtonInfoBox.UseMnemonic = false;
@@ -812,10 +802,10 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.LineBoxSelection.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
             this.tableLayoutBox.SetColumnSpan(this.LineBoxSelection, 2);
             this.LineBoxSelection.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LineBoxSelection.Location = new System.Drawing.Point(316, 66);
-            this.LineBoxSelection.Margin = new System.Windows.Forms.Padding(4, 0, 4, 4);
+            this.LineBoxSelection.Location = new System.Drawing.Point(237, 53);
+            this.LineBoxSelection.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.LineBoxSelection.Name = "LineBoxSelection";
-            this.LineBoxSelection.Size = new System.Drawing.Size(276, 2);
+            this.LineBoxSelection.Size = new System.Drawing.Size(207, 2);
             this.LineBoxSelection.TabIndex = 24;
             // 
             // label1
@@ -823,51 +813,28 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.label1.AutoSize = true;
             this.tableLayoutPanel1.SetColumnSpan(this.label1, 2);
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("Montserrat Medium", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Montserrat Medium", 19F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.Control;
-            this.label1.Location = new System.Drawing.Point(4, 0);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
             this.tableLayoutPanel1.SetRowSpan(this.label1, 2);
-            this.label1.Size = new System.Drawing.Size(1184, 134);
+            this.label1.Size = new System.Drawing.Size(888, 108);
             this.label1.TabIndex = 1;
-            this.label1.Text = resources.GetString("label1.Text");
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel6
             // 
             this.tableLayoutPanel6.ColumnCount = 2;
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Controls.Add(this.scannerRoundedButtonControl3, 0, 1);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(4, 4);
-            this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(4);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 2;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(427, 242);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(320, 197);
             this.tableLayoutPanel6.TabIndex = 17;
-            // 
-            // scannerRoundedButtonControl3
-            // 
-            this.scannerRoundedButtonControl3.BackColor = System.Drawing.Color.White;
-            this.scannerRoundedButtonControl3.BorderColor = System.Drawing.Color.Transparent;
-            this.scannerRoundedButtonControl3.BorderRadiusBottomLeft = 1;
-            this.scannerRoundedButtonControl3.BorderRadiusBottomRight = 1;
-            this.scannerRoundedButtonControl3.BorderRadiusTopLeft = 1;
-            this.scannerRoundedButtonControl3.BorderRadiusTopRight = 1;
-            this.scannerRoundedButtonControl3.BorderWidth = 3F;
-            this.scannerRoundedButtonControl3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.scannerRoundedButtonControl3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.scannerRoundedButtonControl3.Location = new System.Drawing.Point(0, 25);
-            this.scannerRoundedButtonControl3.Margin = new System.Windows.Forms.Padding(0);
-            this.scannerRoundedButtonControl3.Name = "scannerRoundedButtonControl3";
-            this.scannerRoundedButtonControl3.Size = new System.Drawing.Size(80, 217);
-            this.scannerRoundedButtonControl3.TabIndex = 14;
-            this.scannerRoundedButtonControl3.UseMnemonic = false;
-            this.scannerRoundedButtonControl3.UseVisualStyleBackColor = false;
             // 
             // tableLayoutPanel3
             // 
@@ -880,43 +847,40 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel5, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel13, 1, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(4, 950);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 772);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.Padding = new System.Windows.Forms.Padding(50, 12, 50, 12);
+            this.tableLayoutPanel3.Padding = new System.Windows.Forms.Padding(38, 10, 38, 10);
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(2062, 142);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1546, 116);
             this.tableLayoutPanel3.TabIndex = 14;
             // 
             // tableLayoutPanel4
             // 
             this.tableLayoutPanel4.ColumnCount = 3;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 438F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 38F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 328F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 28F));
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(1362, 16);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(4);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(1021, 13);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(646, 110);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(484, 90);
             this.tableLayoutPanel4.TabIndex = 2;
             // 
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.ColumnCount = 2;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 312F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 234F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.Controls.Add(this.ButtonExit, 0, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(54, 16);
-            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(4);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(41, 13);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(646, 110);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(484, 90);
             this.tableLayoutPanel5.TabIndex = 1;
             // 
             // ButtonExit
@@ -931,10 +895,9 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.ButtonExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ButtonExit.Font = new System.Drawing.Font("Montserrat Light", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonExit.ForeColor = System.Drawing.SystemColors.Control;
-            this.ButtonExit.Location = new System.Drawing.Point(4, 4);
-            this.ButtonExit.Margin = new System.Windows.Forms.Padding(4);
+            this.ButtonExit.Location = new System.Drawing.Point(3, 3);
             this.ButtonExit.Name = "ButtonExit";
-            this.ButtonExit.Size = new System.Drawing.Size(304, 102);
+            this.ButtonExit.Size = new System.Drawing.Size(228, 84);
             this.ButtonExit.TabIndex = 0;
             this.ButtonExit.Text = "Cancel";
             this.ButtonExit.UseMnemonic = false;
@@ -945,15 +908,14 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             // 
             this.tableLayoutPanel13.ColumnCount = 3;
             this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 312F));
+            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 234F));
             this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel13.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel13.Location = new System.Drawing.Point(708, 16);
-            this.tableLayoutPanel13.Margin = new System.Windows.Forms.Padding(4);
+            this.tableLayoutPanel13.Location = new System.Drawing.Point(531, 13);
             this.tableLayoutPanel13.Name = "tableLayoutPanel13";
             this.tableLayoutPanel13.RowCount = 1;
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel13.Size = new System.Drawing.Size(646, 110);
+            this.tableLayoutPanel13.Size = new System.Drawing.Size(484, 90);
             this.tableLayoutPanel13.TabIndex = 3;
             // 
             // tableLayoutPanel12
@@ -961,25 +923,23 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutPanel12.ColumnCount = 2;
             this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel12.Location = new System.Drawing.Point(4, 254);
-            this.tableLayoutPanel12.Margin = new System.Windows.Forms.Padding(4);
+            this.tableLayoutPanel12.Location = new System.Drawing.Point(3, 206);
             this.tableLayoutPanel12.Name = "tableLayoutPanel12";
             this.tableLayoutPanel12.RowCount = 2;
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel12.Size = new System.Drawing.Size(250, 382);
+            this.tableLayoutPanel12.Size = new System.Drawing.Size(188, 310);
             this.tableLayoutPanel12.TabIndex = 18;
             // 
             // ConfirmBoxTriggerBoxSettings
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
-            this.ClientSize = new System.Drawing.Size(2070, 1121);
+            this.ClientSize = new System.Drawing.Size(1552, 911);
             this.ControlBox = false;
             this.Controls.Add(this.tableLayoutParameters);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ConfirmBoxTriggerBoxSettings";
             this.Text = "ACAT";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ConfirmBoxCalibrationModes_FormClosing);
@@ -1003,7 +963,6 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             this.tableLayoutBox.ResumeLayout(false);
             this.tableLayoutBox.PerformLayout();
             this.tableLayoutPanel7.ResumeLayout(false);
-            this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -1012,46 +971,45 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 
         #endregion
         private System.Windows.Forms.TableLayoutPanel tableLayoutParameters;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl scannerRoundedButtonControl3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonExit;
+        private ScannerRoundedButtonControl ButtonExit;
         private System.Windows.Forms.Label labelTitle;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutBox;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonOpcTriggerTest;
+        private ScannerRoundedButtonControl ButtonOpcTriggerTest;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonInfoBox;
+        private ScannerRoundedButtonControl ButtonInfoBox;
         private System.Windows.Forms.Panel LineBoxSelection;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonStartTriggerTest;
+        private ScannerRoundedButtonControl ButtonStartTriggerTest;
         private System.Windows.Forms.TableLayoutPanel tableLayoutConfigurations;
         private System.Windows.Forms.TableLayoutPanel tableLayoutScanningTime;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonUpScanningTime;
+        private ScannerRoundedButtonControl ButtonUpScanningTime;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel18;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel19;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonInfoScanningTime;
+        private ScannerRoundedButtonControl ButtonInfoScanningTime;
         private ColorSlider.ColorSlider customSliderScanningTime;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonDownScanningTime;
+        private ScannerRoundedButtonControl ButtonDownScanningTime;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel20;
         private System.Windows.Forms.Label labelScanningTime;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutNumberTargets;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonUpNumberTargets;
+        private ScannerRoundedButtonControl ButtonUpNumberTargets;
         private System.Windows.Forms.Label labelNumberTargets;
         private ColorSlider.ColorSlider customSliderNumberTargets;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonDownNumberTargets;
+        private ScannerRoundedButtonControl ButtonDownNumberTargets;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel21;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel22;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonInfoNumberTargets;
+        private ScannerRoundedButtonControl ButtonInfoNumberTargets;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private Lib.Core.WidgetManagement.ScannerRoundedButtonControl ButtonRestoreDefaults;
+        private ScannerRoundedButtonControl ButtonRestoreDefaults;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel13;
     }
 }

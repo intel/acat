@@ -12,7 +12,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement.Settings
 {
     /// <summary>
     /// Represents the settings for a single switch of an
@@ -25,7 +25,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// The command verb to be used for a switch that
         /// is used for selection
         /// </summary>
-        public const String TriggerCommand = "@Trigger";
+        public const string TriggerCommand = "@Trigger";
 
         /// <summary>
         /// Should the switch be actuated?  if set to
@@ -38,17 +38,17 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// Optional file that contains the beep sound that
         /// will be played when the switch is activated
         /// </summary>
-        public String BeepFile;
+        public string BeepFile;
 
         /// <summary>
         /// Command mapped to the switch
         /// </summary>
-        public String Command;
+        public string Command;
 
         /// <summary>
         /// A user-friendly description of the switch
         /// </summary>
-        public String Description;
+        public string Description;
 
         /// <summary>
         /// Is the switch enabled?
@@ -60,30 +60,30 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// is held for a perdiod less than this, the switch
         /// activation (trigger) is ignored.
         /// </summary>
-        public String MinHoldTime;
+        public string MinHoldTime;
 
         /// <summary>
         /// Name of the switch
         /// </summary>
-        public String Name;
+        public string Name;
 
         /// <summary>
         /// Switch source
         /// </summary>
-        public String Source;
+        public string Source;
 
         /// <summary>
         /// Initializes an instance fo the class
         /// </summary>
         public SwitchSetting()
         {
-            Name = String.Empty;
-            Source = String.Empty;
-            Description = String.Empty;
+            Name = string.Empty;
+            Source = string.Empty;
+            Description = string.Empty;
             Enabled = false;
-            BeepFile = String.Empty;
+            BeepFile = string.Empty;
             Actuate = false;
-            Command = String.Empty;
+            Command = string.Empty;
         }
 
         /// <summary>
@@ -95,10 +95,10 @@ namespace ACAT.Lib.Core.ActuatorManagement
         /// <param name="minHoldTIme">minimum hold time</param>
         /// <param name="enabled">is it enabled or not</param>
         /// <param name="actuate">whether to actuate or not</param>
-        public SwitchSetting(String name,
-                            String description,
-                            String command,
-                            String minHoldTIme = "@MinActuationHoldTime",
+        public SwitchSetting(string name,
+                            string description,
+                            string command,
+                            string minHoldTIme = "@MinActuationHoldTime",
                             bool enabled = true,
             bool actuate = true)
         {
@@ -106,7 +106,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             Description = description;
             Source = name;
             Enabled = enabled;
-            BeepFile = String.Empty;
+            BeepFile = string.Empty;
             MinHoldTime = minHoldTIme;
             Actuate = actuate;
             Command = command;
@@ -129,7 +129,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             }
             else if (IsTriggerSwitch())
             {
-                Command = String.Empty;
+                Command = string.Empty;
             }
         }
 

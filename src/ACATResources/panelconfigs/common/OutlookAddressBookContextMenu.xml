@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE ACAT [
+  <!ENTITY usebold "false">
+  <!ENTITY buttonFontName "Arial">
+]>
+
+<ACAT>
+  <WidgetAttributes>
+    <WidgetAttribute name="ContextMenuTitle" label="" value="" fontsize="20" fontname="&buttonFontName;" mouseClickActuate="false" bold="&usebold;"/>
+
+    <WidgetAttribute name="ItemIcon1" label=" " value="@CmdGoBack" fontsize="20" fontname="&buttonFontName;"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText1" label="&#x75;" value="@CmdGoBack" fontsize="18" fontname="ACAT Icon"  bold="&usebold;"/>
+
+    <WidgetAttribute name="ItemIcon2" label="&#x88;" value="@AddressBookSelectField" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText2" label="SelectField" value="@AddressBookSelectField" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>
+
+    <WidgetAttribute name="ItemIcon3" label="&#x70;" value="@PreviousField" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText3" label="PrevField" value="@PreviousField" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>
+
+    <WidgetAttribute name="ItemIcon4" label="&#x6F;" value="@NextField" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText4" label="NextField" value="@NextField" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>
+
+    <WidgetAttribute name="ItemIcon5" label="&#xA6;" value="@Up" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText5" label="Up" value="@Up" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>
+
+    <WidgetAttribute name="ItemIcon6" label="&#xA5;" value="@Down" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText6" label="Down" value="@Down" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>
+    
+    <WidgetAttribute name="ItemIcon7" label="&#xA8;" value="@Right" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText7" label="Right" value="@Right" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>
+
+    <WidgetAttribute name="ItemIcon8" label="&#xA7;" value="@Left" fontsize="20" fontname="ACAT Icon"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText8" label="Left" value="@Left" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>
+
+    <WidgetAttribute name="ItemIcon9" label="y" value="@PageUp" fontsize="20" fontname="ACAT Alpha"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText9" label="PageUp" value="@PageUp" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>
+
+    <WidgetAttribute name="ItemIcon10" label="z" value="@PageDown" fontsize="20" fontname="ACAT Alpha"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText10" label="PageDown" value="@PageDown" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>
+
+    <WidgetAttribute name="ItemIcon11" label="X" value="@CmdCloseWindow" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>
+    <WidgetAttribute name="ItemText11" label="Close" value="@CmdCloseWindow" fontsize="18" fontname="&buttonFontName;"  bold="&usebold;"/>
+  </WidgetAttributes>
+
+  <Layout>
+    <Widget class="RowWidget" name="TitleRow">
+      <Widget class="ScannerButton" name="ContextMenuTitle" colorScheme="ContextMenuTitle"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row1">
+      <Widget class="ContextMenuIcon" name="ItemIcon1"/>
+      <Widget class="ContextMenuText" name="ItemText1"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row2">
+      <Widget class="ContextMenuIcon" name="ItemIcon2"/>
+      <Widget class="ContextMenuText" name="ItemText2"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row3">
+      <Widget class="ContextMenuIcon" name="ItemIcon3"/>
+      <Widget class="ContextMenuText" name="ItemText3"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row4">
+      <Widget class="ContextMenuIcon" name="ItemIcon4"/>
+      <Widget class="ContextMenuText" name="ItemText4"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row5">
+      <Widget class="ContextMenuIcon" name="ItemIcon5"/>
+      <Widget class="ContextMenuText" name="ItemText5"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row6">
+      <Widget class="ContextMenuIcon" name="ItemIcon6"/>
+      <Widget class="ContextMenuText" name="ItemText6"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row7">
+      <Widget class="ContextMenuIcon" name="ItemIcon7"/>
+      <Widget class="ContextMenuText" name="ItemText7"/>
+    </Widget>
+    
+    <Widget class="RowWidget" name="Row8">
+      <Widget class="ContextMenuIcon" name="ItemIcon8"/>
+      <Widget class="ContextMenuText" name="ItemText8"/>
+    </Widget>
+
+    <Widget class="RowWidget" name="Row9">
+      <Widget class="ContextMenuIcon" name="ItemIcon9"/>
+      <Widget class="ContextMenuText" name="ItemText9"/>
+    </Widget>
+
+    <Widget class="RowWidget" name="Row10">
+      <Widget class="ContextMenuIcon" name="ItemIcon10"/>
+      <Widget class="ContextMenuText" name="ItemText10"/>
+    </Widget>
+
+    <Widget class="RowWidget" name="Row11">
+      <Widget class="ContextMenuIcon" name="ItemIcon11"/>
+      <Widget class="ContextMenuText" name="ItemText11"/>
+    </Widget>
+  </Layout>
+
+  <Animations>
+    <Animation name="TopLevelRotation"
+               start="true"
+               onEnter=""
+               firstPauseTime="@FirstPauseTime"
+               autoStart="true"
+               scanTime="@MenuDialogScanTime"
+               iterations="@RowScanIterations">
+      <Widget name="Row1" onSelect="actuate(ItemText1);transition(TopLevelRotation)"/>
+      <Widget name="Row2" onSelect="actuate(ItemText2);transition(TopLevelRotation)"/>
+      <Widget name="Row3" onSelect="actuate(ItemText3);select(ItemText3);transition(ButtonPressed)"/>
+      <Widget name="Row4" onSelect="actuate(ItemText4);select(ItemText4);transition(ButtonPressed)"/>
+      <Widget name="Row5" onSelect="actuate(ItemText5);select(ItemText5);transition(ButtonPressed)"/>
+      <Widget name="Row6" onSelect="actuate(ItemText6);select(ItemText6);transition(ButtonPressed)"/>
+      <Widget name="Row7" onSelect="actuate(ItemText7);select(ItemText7);transition(ButtonPressed)"/>
+      <Widget name="Row8" onSelect="actuate(ItemText8);select(ItemText8);transition(ButtonPressed)"/>
+      <Widget name="Row9" onSelect="actuate(ItemText9);select(ItemText9);transition(ButtonPressed)"/>
+      <Widget name="Row10" onSelect="actuate(ItemText10);select(ItemText10);transition(ButtonPressed)"/>
+      <Widget name="Row11" onSelect="actuate(ItemText11);transition(TopLevelRotation)"/>
+    </Animation>
+
+    <Animation name="ButtonPressed"
+                onEnter=""
+                iterations="1"
+                onEnd="transition(TopLevelRotation)">
+      <Widget name="@SelectedWidget" firstPauseTime="@FirstRepeatTime" onSelect="actuate(@SelectedWidget);transition(ButtonPressed)" />
+    </Animation>
+  </Animations>
+</ACAT>

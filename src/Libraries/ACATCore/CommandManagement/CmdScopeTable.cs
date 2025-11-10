@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace ACAT.Lib.Core.CommandManagement
+namespace ACAT.Core.CommandManagement
 {
     /// <summary>
     /// Represents a presistent collection of commands
@@ -54,6 +54,15 @@ namespace ACAT.Lib.Core.CommandManagement
         public void Add(CmdScopeMapEntry cmdScopeMapEntry)
         {
             CmdScopeMapEntries.Add(cmdScopeMapEntry);
+        }
+
+        public override bool ResetToDefault()
+        {
+            var tmp = LoadDefaults<CmdScopeTable>();
+            var res = Save(tmp, FilePath);
+            Load();
+
+            return res;
         }
 
         /// <summary>

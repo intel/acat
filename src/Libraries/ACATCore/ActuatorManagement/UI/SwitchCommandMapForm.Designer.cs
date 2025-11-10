@@ -10,7 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-namespace ACAT.Lib.Core.ActuatorManagement
+namespace ACAT.Core.ActuatorManagement
 {
     partial class SwitchCommandMapForm
     {
@@ -138,7 +138,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             this.checkBoxWrapText.UseVisualStyleBackColor = true;
             this.checkBoxWrapText.CheckedChanged += new System.EventHandler(this.checkBoxWrapText_CheckedChanged);
             // 
-            // label1
+            // initializing
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
@@ -146,7 +146,7 @@ namespace ACAT.Lib.Core.ActuatorManagement
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(64, 14);
             this.label1.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.label1.Name = "label1";
+            this.label1.Name = "initializing";
             this.label1.Padding = new System.Windows.Forms.Padding(0, 0, 0, 5);
             this.label1.Size = new System.Drawing.Size(389, 42);
             this.label1.TabIndex = 4;

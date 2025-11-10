@@ -10,18 +10,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AgentManagement;
-using ACAT.Lib.Core.AgentManagement.TextInterface;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.AgentManagement;
+using ACAT.Core.AgentManagement.TextControlAgents;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.AppAgents.TalkApplicationScannerAgent
+namespace ACAT.Extensions.AppAgents.TalkApplicationScannerAgent
 {
-    [DescriptorAttribute("AAF2B6C4-2F31-403D-BF45-7C35FA8B4FFC",
+    [ClassDescriptor("AAF2B6C4-2F31-403D-BF45-7C35FA8B4FFC",
                             "Talk Application Agent",
                             "Manages interactions with the Talk Window with Embedded Scanner")]
     internal class TalkApplicationScannerAgent : AgentBase
@@ -102,7 +102,7 @@ namespace ACAT.Extensions.Default.AppAgents.TalkApplicationScannerAgent
         /// <param name="handled">set to true if handled</param>
         public override void OnFocusChanged(WindowActivityMonitorInfo monitorInfo, ref bool handled)
         {
-            Log.Debug();
+            Log.Verbose();
 
             _windowHandle = monitorInfo.FgHwnd;
 
@@ -120,7 +120,7 @@ namespace ACAT.Extensions.Default.AppAgents.TalkApplicationScannerAgent
                 }
                 else
                 {
-                    Log.Debug("DID NOT find automationelement for the text box");
+                    Log.Error("DID NOT find automationelement for the text box");
                     textBoxControl = null;
                 }
             }

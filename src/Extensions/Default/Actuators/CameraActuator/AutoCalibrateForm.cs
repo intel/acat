@@ -11,19 +11,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement.Utils;
+using ACAT.Core.Utility;
 using System;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.Actuators.CameraActuator
+namespace ACAT.Extensions.Actuators.CameraActuator
 {
     internal partial class AutoCalibrateForm : Form
     {
         private VideoWindowFinder _videoWindowFinder;
-        CameraActuator _visionActuator;
-        private WindowActiveWatchdog _windowActiveWatchdog;
-        private WindowOverlapWatchdog _windowOverlapWatchdog;
+        private readonly CameraActuator _visionActuator;
+
         public AutoCalibrateForm(CameraActuator visionActuator)
         {
             InitializeComponent();
@@ -37,34 +36,17 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         {
             try
             {
-                _windowOverlapWatchdog = new WindowOverlapWatchdog(handle.ToInt32());
-
                 _videoWindowFinder.DockVideoWindow(this);
-
             }
             catch
             {
-
             }
         }
 
-        private void AutoCalibrateForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (_windowOverlapWatchdog != null)
-            {
-                _windowOverlapWatchdog.Dispose();
-                _windowOverlapWatchdog = null;
-            }
-        }
 
         private void AutoCalibrateForm_Load(object sender, EventArgs e)
         {
             Resize += AutoCalibrateForm_Resize;
-
-            FormClosing += AutoCalibrateForm_FormClosing;
-
-            TopMost = false;
-            TopMost = true;
 
             Left = Top = 0;
             CameraSensor.showVideoWindow();
@@ -80,9 +62,6 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
 
         private void AutoCalibrateForm_Shown(object sender, EventArgs e)
         {
-            ScannerFocus.SetFocus(this);
-
-            _windowActiveWatchdog = new WindowActiveWatchdog(this);
 
             _videoWindowFinder = new VideoWindowFinder();
             _videoWindowFinder.EvtVideoWindowDisplayed += _videoWindowFinder_EvtVideoWindowDisplayed;
@@ -93,7 +72,6 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         {
             CameraSensor.hideVideoWindow();
 
-            _windowActiveWatchdog.Dispose();
 
             Windows.CloseForm(this);
         }
@@ -102,11 +80,11 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         {
             CameraSensor.visionCommand("action=RECALIBRATE", 0);
         }
+
         private void EndCalibration()
         {
             _visionActuator.EvtCalibrationEnd -= VisionActuator_EvtCalibrationEnd;
 
-            _windowActiveWatchdog.Dispose();
 
             if (_videoWindowFinder != null)
             {

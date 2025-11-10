@@ -7,7 +7,7 @@
 
 using System;
 
-namespace ACAT.Lib.Core.Audit
+namespace ACAT.Core.Audit
 {
     /// <summary>
     /// Represents log entry to audit events related to actuator

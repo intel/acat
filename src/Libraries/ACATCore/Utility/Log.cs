@@ -5,15 +5,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-
 #define DbgView
 
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+//using System.Windows.Shapes;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Handles logging application messages of a variety of criticalities (Debug - Fatal)
@@ -25,16 +26,27 @@ namespace ACAT.Lib.Core.Utility
     /// </summary>
     public class Log
     {
+        /// Valid Trace Levels:
+        ///    Off = 0,
+        ///    Error = 1,
+        ///    Warning = 2,
+        ///    Info = 3,
+        ///    Verbose = 4
+        public static TraceSwitch TraceLevelSwitch = new("AppTraceSwitch", "Controls tracing level", "Info");
+
         private static DateTime? prevMessageTimeStamp = null;
 
         /// <summary>
         // set  this to true if you don't want to trigger the assertions in this file
         /// </summary>
-#if DEBUG
+//#if DEBUG
         private const bool AssertionMode = true;
-#else
-        private const bool AssertionMode = false;
-#endif
+        private const bool simpleLog = true;
+//#else
+        //private const bool AssertionMode = false;
+        //private const bool simpleLog = false;
+//#endif
+        private const bool IncludeStackTrace = false;
 
         /// <summary>
         /// Used for synchronization
@@ -54,7 +66,7 @@ namespace ACAT.Lib.Core.Utility
         /// <summary>
         /// Name of the log file
         /// </summary>
-        private static string LogFileName = "ACATLog.txt";
+        private static readonly string LogFileName = "ACATLog.txt";
 
         /// <summary>
         /// Full path to the log file in which the debug messages are stored
@@ -98,11 +110,9 @@ namespace ACAT.Lib.Core.Utility
                 LogFileName = "ACATLog.txt";
             }
 
-
             logFileFullPath = Path.Combine(logFileFolder, LogFileName);
 
             logFileFullPath = Path.ChangeExtension(logFileFullPath, null) + CoreGlobals.LogFileSuffix + ".txt";
-
         } // end method
 
         /// <summary>
@@ -126,19 +136,20 @@ namespace ACAT.Lib.Core.Utility
                 // cleanup logs folder if the flag is turned off
             }
 
-#if !DEBUG
-            if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugMessagesEnable)
-            {
-                if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugLogMessagesToFile)
-                {
-                    var listener = new TextWriterTraceListener(logFileFullPath, "ACATDebugListener");
-                    Trace.Listeners.Add(listener);
-                }
-            }
-#else
+//#if !DEBUG
+//            if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugMessagesEnable)
+//            {
+//                if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugLogMessagesToFile)
+//                {
+//                    var listener = new TextWriterTraceListener(logFileFullPath, "ACATDebugListener");
+//                    Trace.Listeners.Add(listener);
+//                }
+//            }
+//#else
             var listener = new TextWriterTraceListener(logFileFullPath, "ACATDebugListener");
             Trace.Listeners.Add(listener);
-#endif
+
+            //#endif
         }
 
         /// <summary>
@@ -152,212 +163,86 @@ namespace ACAT.Lib.Core.Utility
         /// <summary>
         /// Logs the name of the function that called this function.
         /// </summary>
-        public static void Debug()
+        public static void Verbose(string msg = "",
+            [CallerFilePath] string file = "",
+            [CallerLineNumber] int line = 0)
         {
-
-#if !DEBUG
-            if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugMessagesEnable)
-            {
-                string output = formatClassNameAndMethod("DEBUG", new StackTrace().GetFrame(1));
-                Trace.WriteLine(output);
-            }
-#else
-        string output = formatClassNameAndMethod("DEBUG", new StackTrace().GetFrame(1));
-        Trace.WriteLine(output);
-#endif
+            WriteTrace($"{formatClassNameAndMethod("VERBOSE")} {msg}", file, line, TraceLevel.Verbose);
         }
 
         /// <summary>
         /// Logs a debug message
         /// <param name="message">Message to log.</param>
         [DebuggerStepThrough]
-        public static void Debug(string message)
+        public static void Debug(string message,
+            [CallerFilePath] string file = "",
+            [CallerLineNumber] int line = 0)
         {
-#if !DEBUG
-            if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugMessagesEnable)
-            {
-                string output = formatClassNameAndMethod("DEBUG", new StackTrace().GetFrame(1)) + message;
-                Trace.WriteLine(output);
-            }
-#else
-        string output = formatClassNameAndMethod("DEBUG", new StackTrace().GetFrame(1)) + message;
-        Trace.WriteLine(output);
-#endif
+            WriteTrace($"{formatClassNameAndMethod("DEBUG")} {message}", file, line, TraceLevel.Info);
         }
 
-        public static void Exception(Exception exc)
+        public static void Exception(String msg,
+            [CallerFilePath] string file = "",
+            [CallerLineNumber] int line = 0)
         {
-            string output = "*** EXCEPTION: ****" + exc.ToString() + ". StackTrace:" + exc.StackTrace;
-            System.Diagnostics.Trace.WriteLine(output);
+            WriteTrace($"{formatClassNameAndMethod("EXCEPTION")} {msg}",file, line, TraceLevel.Error, true);
         }
-
-        /// <summary>
-        /// Logs a debug message
-        /// <param name="message">Message to log.</param>
-        /// <param name="exc">Exception to log information of.</param>
-        public static void Debug(string message, Exception exc)
+        public static void Exception(Exception exc,
+            [CallerFilePath] string file = "",
+            [CallerLineNumber] int line = 0)
         {
-#if !DEBUG
-            if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugMessagesEnable)
-            {
-            string output = "DEBUG: " + message + " StackTrace:" + exc.StackTrace;
-            Trace.WriteLine(output);
-            }
-#else
-            string output = "DEBUG: " + message + " StackTrace:" + exc.StackTrace;
-            Trace.WriteLine(output);
-#endif
+            var stackTrace = IncludeStackTrace ? $"\n\tStackTrace: {exc.StackTrace}" : string.Empty;
+            WriteTrace($"{formatClassNameAndMethod("EXCEPTION")} {exc.Message}{stackTrace}", file, line, TraceLevel.Error, true);
         }
 
         /// <summary>
         /// Logs a Info message
         /// </summary>
         /// <param name="message">Message to log.</param>
-        public static void Info(string message)
+        public static void Info(string message, [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {
-#if !DEBUG
-            if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugMessagesEnable)
-            {
-                string output = formatClassNameAndMethod("INFO", new StackTrace().GetFrame(1)) + message;
-                Trace.WriteLine(output);
-            }
-#else
-            string output = formatClassNameAndMethod("INFO", new StackTrace().GetFrame(1)) + message;
-            Trace.WriteLine(output);
-#endif
-        }
-
-        /// <summary>
-        /// Logs a Info message
-        /// </summary>
-        /// <param name="message">Message to log.</param>
-        /// <param name="exc">Exception to log information of.</param>
-        public static void Info(string message, Exception exc)
-        {
-#if !DEBUG
-            if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugMessagesEnable)
-            {
-                string output = "INFO: " + message + " StackTrace:" + exc.StackTrace;
-                Trace.WriteLine(output);
-            }
-#else
-            string output = "INFO: " + message + " StackTrace:" + exc.StackTrace;
-            Trace.WriteLine(output);
-#endif
+            WriteTrace($"{formatClassNameAndMethod("INFO")} {message}", file, line, TraceLevel.Info);
         }
 
         /// <summary>
         /// Logs a Warning message
         /// </summary>
         /// <param name="message">Message to log.</param>
-        public static void Warn(string message)
+        public static void Warn(string message, [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {
-#if !DEBUG
-            if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugMessagesEnable)
-            {
-                string output = formatClassNameAndMethod("WARN", new StackTrace().GetFrame(1)) + message;
-                Trace.WriteLine(output);
-            }
-#else
-            string output = formatClassNameAndMethod("WARN", new StackTrace().GetFrame(1)) + message;
-            Trace.WriteLine(output);
-#endif
-        }
-
-        /// <summary>
-        /// Logs a Warning message
-        /// </summary>
-        /// <param name="message">Message to log.</param>
-        /// <param name="exc">Exception to log information of.</param>
-        public static void Warn(string message, Exception exc)
-        {
-#if !DEBUG
-            if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugMessagesEnable)
-            {
-#endif
-            string output = "WARN: " + message + " StackTrace:" + exc.StackTrace;
-            System.Diagnostics.Trace.WriteLine(output);
-#if !DEBUG
-            }
-#endif
+            WriteTrace($"{formatClassNameAndMethod("WARN")} {message}", file, line, TraceLevel.Warning);
         }
 
         /// <summary>
         /// Logs an error message
         /// </summary>
         /// <param name="message">Message to log.</param>
-        public static void Error(string message)
+        public static void Error(string message, [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {
-#if !DEBUG
-            if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugMessagesEnable)
-            {
-                string output = formatClassNameAndMethod("ERROR", new StackTrace().GetFrame(1)) + message;
-                Trace.WriteLine(output);
-            }
-#else
-            string output = formatClassNameAndMethod("ERROR", new StackTrace().GetFrame(1)) + message;
-            Trace.WriteLine(output);
-            Trace.Assert(AssertionMode);
-#endif
+            WriteTrace($"{formatClassNameAndMethod("ERROR")} {message}", file, line, TraceLevel.Error, true);
         }
 
         /// <summary>
-        /// Logs an error message
+        /// Writes to Trace if Logging is enabled.
         /// </summary>
         /// <param name="message">Message to log.</param>
-        /// <param name="exc">Exception to log information of.</param>
-        public static void Error(string message, Exception exc)
+        public static void WriteTrace(string message, string filename, int linenumber, TraceLevel traceLevel, bool assert = false)
         {
-#if !DEBUG
-            if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugMessagesEnable)
+//#if !DEBUG
+//            if (CoreGlobals.AppPreferences != null && !CoreGlobals.AppPreferences.DebugMessagesEnable)
+//            {
+//                return;
+//            }
+//#else
+            if (TraceLevelSwitch.Level >= traceLevel )
             {
-                string output = "ERROR: " + message + " StackTrace:" + exc.StackTrace;
-                Trace.WriteLine(output);
+                Trace.WriteLine($@"{filename}({linenumber},1): {message}");
             }
-#else
-            string output = "ERROR: " + message + " StackTrace:" + exc.StackTrace;
-            Trace.WriteLine(output);
-            Trace.Assert(AssertionMode);
-#endif
-        }
-
-        /// <summary>
-        /// Logs a Fatal error message
-        /// </summary>
-        /// <param name="message">Message to log.</param>
-        public static void Fatal(string message)
-        {
-#if !DEBUG
-            if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugMessagesEnable)
+            if (assert)
             {
-                string output = formatClassNameAndMethod("FATAL", new StackTrace().GetFrame(1)) + message;
-                Trace.WriteLine(output);
+                Trace.Assert(AssertionMode);
             }
-#else
-            string output = formatClassNameAndMethod("FATAL", new StackTrace().GetFrame(1)) + message;
-            Trace.WriteLine(output);
-            Trace.Assert(AssertionMode);
-#endif
-        }
-
-        /// <summary>
-        /// Logs a Fatal error message
-        /// </summary>
-        /// <param name="message">Message to log.</param>
-        /// <param name="exc">Exception to log information of.</param>
-        public static void Fatal(string message, Exception exc)
-        {
-#if !DEBUG
-            if (CoreGlobals.AppPreferences != null && CoreGlobals.AppPreferences.DebugMessagesEnable)
-            {
-                string output = "FATAL: " + message + " StackTrace:" + exc.StackTrace;
-                Trace.WriteLine(output);
-            }
-#else
-            string output = "FATAL: " + message + " StackTrace:" + exc.StackTrace;
-            Trace.WriteLine(output);
-            Trace.Assert(AssertionMode);
-#endif
+//#endif
         }
 
         public static void IsNull(String message, object obj)
@@ -373,31 +258,43 @@ namespace ACAT.Lib.Core.Utility
         /// <param name="stackFrame">Stackframe of the calling method</param>
         /// <returns></returns>
         [DebuggerStepThrough]
-        private static String formatClassNameAndMethod(String prefix, StackFrame stackFrame)
+        private static String formatClassNameAndMethod(String prefix)
         {
-            DateTime nowUtc = DateTime.UtcNow;
-            DateTime now = DateTime.Now;
-
-            string strNow = now.ToString("h:mm:ss tt");
-
-            if (prevMessageTimeStamp == null)
+            if (simpleLog)
             {
+                return $"[{DateTime.Now:HH:mm:ss}] [{prefix}] - ";
+            }
+            else
+            {
+                // Get the stack frame of the caller of this method
+
+#pragma warning disable CS0162 // Unreachable code detected
+                StackFrame stackFrame = new StackTrace().GetFrame(2);  // Get the caller of the caller
+#pragma warning restore CS0162 // Unreachable code detected
+                DateTime nowUtc = DateTime.UtcNow;
+                DateTime now = DateTime.Now;
+
+                string strNow = now.ToString("h:mm:ss tt");
+
+                if (prevMessageTimeStamp == null)
+                {
+                    prevMessageTimeStamp = nowUtc;
+                }
+
+                var elapsed = nowUtc - Process.GetCurrentProcess().StartTime.ToUniversalTime();
+
+                MethodBase methodBase = stackFrame.GetMethod();
+
+                var elapsedSincePrev = nowUtc - prevMessageTimeStamp;
+
+                var prefix2 = "[" + strNow + ", " + ((int)(elapsed.TotalMilliseconds / 1000)) + "." + (int)(elapsed.TotalMilliseconds % 1000) + ", " + elapsedSincePrev?.Seconds + "." + elapsedSincePrev?.Milliseconds + " " + prefix + "] ";
+
                 prevMessageTimeStamp = nowUtc;
+
+                return prefix2 + ":[" + stackFrame.GetMethod().DeclaringType.Namespace + "][" +
+                            stackFrame.GetMethod().DeclaringType.Name + "." + methodBase.Name + "] ";
             }
 
-            var elapsed = nowUtc - Process.GetCurrentProcess().StartTime.ToUniversalTime();
-            
-            MethodBase methodBase = stackFrame.GetMethod();
-
-            var elapsedSincePrev = nowUtc - prevMessageTimeStamp;
-
-
-            var prefix2 = "[" + strNow + ", " + ((int) (elapsed.TotalMilliseconds / 1000)) + "." + (int)(elapsed.TotalMilliseconds % 1000) + ", " + elapsedSincePrev?.Seconds + "." + elapsedSincePrev?.Milliseconds + " " + prefix + "] ";
-
-            prevMessageTimeStamp = nowUtc;
-
-            return prefix2 + ":[" + stackFrame.GetMethod().DeclaringType.Namespace + "][" +
-                        stackFrame.GetMethod().DeclaringType.Name + "." + methodBase.Name + "] ";
         }
     }
 }

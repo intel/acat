@@ -11,23 +11,35 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
+using ACAT.Core.PanelManagement;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.Actuators.CameraActuator
+namespace ACAT.Extensions.Actuators.CameraActuator
 {
     internal partial class WebcamGestureSettingsUserControl : UserControl
     {
+        // TODO - Localize Me
         private const String ctHoldTimeHelp = "Set the value to the approximate time you tend to hold the gesture";
+
+        // TODO - Localize Me
         private const String ctSensitivityHelp = "Lower values will increase camera sensitivity to your cheek twitch​";
+
+        // TODO - Localize Me
         private const String erHoldTimeHelp = "Set the value to the approximate time you tend to hold the gesture";
+
+        // TODO - Localize Me
         private const String erSensitivityHelp = "Lower values will increase camera sensitivity to your eyebrow raise​";
+
+        // TODO - Localize Me
         private const String head = "Head";
+
+        // TODO - Localize Me
         private const String headSensitivityHelp = "Lower values increase camera sensitivity to head movements causing jitter in face regions.";
-        private CameraActuator _cameraActuator;
+
+        private readonly CameraActuator _cameraActuator;
         private int _ctIndex;
         private int _erIndex;
         private int _headIndex;
@@ -37,12 +49,12 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         private volatile bool _sensitivityChanged = false;
         private int _sensitivityInitialValue;
         private List<String> _switches;
-        private Color buttonApplyBackColor;
-        private Tuple<int, int> ctHoldTimeRange = Tuple.Create<int, int>(0, 1000);
-        private Tuple<int, int> ctSensitivityRange = Tuple.Create<int, int>(5, 50);
-        private Tuple<int, int> erHoldTimeRange = Tuple.Create<int, int>(0, 2000);
-        private Tuple<int, int> erSensitivityRange = Tuple.Create<int, int>(5, 50);
-        private Tuple<int, int> headSensitivityRange = Tuple.Create<int, int>(20, 100);
+        private readonly Color buttonApplyBackColor;
+        private readonly Tuple<int, int> ctHoldTimeRange = Tuple.Create(0, 1000);
+        private readonly Tuple<int, int> ctSensitivityRange = Tuple.Create(5, 50);
+        private readonly Tuple<int, int> erHoldTimeRange = Tuple.Create(0, 2000);
+        private readonly Tuple<int, int> erSensitivityRange = Tuple.Create(5, 50);
+        private readonly Tuple<int, int> headSensitivityRange = Tuple.Create(20, 100);
 
         internal WebcamGestureSettingsUserControl(CameraActuator cameraActuator)
         {
@@ -321,22 +333,23 @@ namespace ACAT.Extensions.Default.Actuators.CameraActuator
         private bool showSaveMessageBox()
         {
             EvtPause?.Invoke();
-            var msgBox = new ConfirmBoxTwoOptions
+            var msgBox = new ConfirmBoxTwoOption
             {
                 Prompt = "Save gesture parameters?",
                 Op1Prompt = "Yes",
-                Op2Prompt = "No"
+                Op3Prompt = "No"
             };
 
             msgBox.ShowDialog(this);
 
-            var result = msgBox.OptionsResult;
+            //var result = msgBox.OptionsResult;
 
             msgBox.Dispose();
 
             EvtResume?.Invoke();
 
-            return result == ConfirmBoxTwoOptions.Options.Option1;
+            return false; // TODO - Localize Me
+            //return result == ConfirmBoxTwoOption.Options.Option1;
         }
     }
 }

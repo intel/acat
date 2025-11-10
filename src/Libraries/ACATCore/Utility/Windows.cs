@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using ACAT.Core.Utility.Mouse;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,7 +16,7 @@ using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Contains numerous functions for window manipulation,
@@ -33,7 +34,7 @@ namespace ACAT.Lib.Core.Utility
         private const int ICON_SMALL2 = 2;
         private const int WM_GETICON = 0x7F;
         private static float _dpiX = 0.0f;
-        private static String _taskbarWinClass = "Shell_TrayWnd";
+        private static readonly String _taskbarWinClass = "Shell_TrayWnd";
         private static int _widestScannerWidth = 0; // width of the widest scanner
 
         private static WindowsVersion _windowsVersion = WindowsVersion.Unknown;
@@ -79,8 +80,6 @@ namespace ACAT.Lib.Core.Utility
         private delegate void setRegion(Control control, Region region);
 
         private delegate void setText(Control control, string text);
-
-        private delegate void setTopMost(Form form, bool value);
 
         private delegate void setTrackBarValue(TrackBar trackBar, int positionValue);
 
@@ -258,14 +257,10 @@ namespace ACAT.Lib.Core.Utility
         /// <returns>true if they do</returns>
         public static bool CheckOverlap(Form form1, Form form2)
         {
-            User32Interop.RECT windowRect;
-            User32Interop.GetWindowRect(form1.Handle, out windowRect);
+            User32Interop.GetWindowRect(form1.Handle, out User32Interop.RECT windowRect);
 
-            User32Interop.RECT rect;
-            User32Interop.GetWindowRect(form2.Handle, out rect);
-
-            User32Interop.RECT intersection;
-            return User32Interop.IntersectRect(out intersection, ref windowRect, ref rect);
+            User32Interop.GetWindowRect(form2.Handle, out User32Interop.RECT rect);
+            return User32Interop.IntersectRect(out _, ref windowRect, ref rect);
         }
 
         /// Closes the form asynchronously in a different thread
@@ -286,6 +281,9 @@ namespace ACAT.Lib.Core.Utility
         /// <param name="form">Form to close</param>
         public static void CloseForm(Form form)
         {
+            if (form == null || form.IsDisposed || form.Disposing)
+                return;
+
             if (form.InvokeRequired)
             {
                 form.Invoke(new closeForm(CloseForm), form);
@@ -343,7 +341,7 @@ namespace ACAT.Lib.Core.Utility
             }
         }
 
-        public static void DockWindow(IntPtr fgWindow, Form panel, Windows.WindowPosition scannerPosition)
+        public static void DockWindow(IntPtr fgWindow, Form panel, WindowPosition scannerPosition)
         {
             Log.Debug("fgWindow is null is : " + (fgWindow == IntPtr.Zero));
 
@@ -377,7 +375,7 @@ namespace ACAT.Lib.Core.Utility
             }
         }
 
-        public static void DockWindowWithLargestScanner(IntPtr fgWindow, Form panel, Windows.WindowPosition scannerPosition)
+        public static void DockWindowWithLargestScanner(IntPtr fgWindow, Form panel, WindowPosition scannerPosition)
         {
             Log.Debug("#$#$#$#$  fgWindow is null is : " + (fgWindow == IntPtr.Zero));
 
@@ -401,8 +399,7 @@ namespace ACAT.Lib.Core.Utility
 
             if (!IsDialog(fgWindow))
             {
-                User32Interop.RECT rect;
-                User32Interop.GetWindowRect(fgWindow, out rect);
+                User32Interop.GetWindowRect(fgWindow, out _);
 
                 int moveX = 0;
                 int moveY = 0;
@@ -647,7 +644,7 @@ namespace ACAT.Lib.Core.Utility
                 return _dpiX;
             }
 
-            Form form = new Form();
+            Form form = new();
 
             float retVal;
 
@@ -681,6 +678,11 @@ namespace ACAT.Lib.Core.Utility
             return User32Interop.GetForegroundWindow();
         }
 
+        public static int GetWindowThreadProcessId(IntPtr hWnd)
+        {
+            User32Interop.GetWindowThreadProcessId(hWnd, out int processId);
+            return processId;
+        }
         /// <summary>
         /// Gets the transparency of a form
         /// This is just a helper function that takes care of
@@ -868,7 +870,7 @@ namespace ACAT.Lib.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 return false;
             }
         }
@@ -881,7 +883,7 @@ namespace ACAT.Lib.Core.Utility
         public static string GetWindowClassName(IntPtr hWnd)
         {
             var sbClassName = new StringBuilder(512);
-            var length = User32Interop.GetClassName(hWnd, sbClassName, sbClassName.Capacity);
+            _ = User32Interop.GetClassName(hWnd, sbClassName, sbClassName.Capacity);
 
             return sbClassName.ToString();
         }
@@ -923,14 +925,12 @@ namespace ACAT.Lib.Core.Utility
         {
             try
             {
-                int processId;
-
                 if (GetOSVersion() != WindowsVersion.Win10)
                 {
                     return false;
                 }
 
-                User32Interop.GetWindowThreadProcessId(handle, out processId);
+                User32Interop.GetWindowThreadProcessId(handle, out int processId);
                 var process = Process.GetProcessById(processId);
                 return (String.Compare(process.ProcessName, "ApplicationFrameHost", true) == 0);
             }
@@ -969,9 +969,7 @@ namespace ACAT.Lib.Core.Utility
                 return false;
             }
 
-            bool isCloaked;
-
-            DwmGetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.Cloaked, out isCloaked, 8);
+            DwmGetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE.Cloaked, out bool isCloaked, 8);
 
             return isCloaked;
         }
@@ -1006,12 +1004,11 @@ namespace ACAT.Lib.Core.Utility
             bool retVal = false;
 
             AutomationElement window = AutomationElement.FromHandle(handle);
-            object objPattern;
             if (window.Current.ControlType == ControlType.Menu)
             {
                 retVal = true;
             }
-            else if (window.TryGetCurrentPattern(WindowPattern.Pattern, out objPattern))
+            else if (window.TryGetCurrentPattern(WindowPattern.Pattern, out object objPattern))
             {
                 WindowPattern windowPattern = objPattern as WindowPattern;
                 retVal = (!windowPattern.Current.CanMinimize && !windowPattern.Current.CanMaximize) || windowPattern.Current.IsModal;
@@ -1067,16 +1064,12 @@ namespace ACAT.Lib.Core.Utility
             // store windows we have already visited
             var windowCache = new HashSet<IntPtr> { hWnd };
 
-            User32Interop.RECT windowRect;
-            User32Interop.GetWindowRect(hWnd, out windowRect);
+            User32Interop.GetWindowRect(hWnd, out User32Interop.RECT windowRect);
 
             // check if any of the windows intersects with our window
             while ((hWnd = User32Interop.GetWindow(hWnd, User32Interop.GW_HWNDPREV)) != IntPtr.Zero &&
                    !windowCache.Contains(hWnd))
             {
-                User32Interop.RECT rect;
-                User32Interop.RECT intersection;
-
                 windowCache.Add(hWnd);
 
                 // is this a form created by our app?
@@ -1088,8 +1081,8 @@ namespace ACAT.Lib.Core.Utility
 
                 if (User32Interop.IsWindowVisible(hWnd) &&
                     !IsMinimized(hWnd) &&
-                    User32Interop.GetWindowRect(hWnd, out rect) &&
-                    User32Interop.IntersectRect(out intersection, ref windowRect, ref rect))
+                    User32Interop.GetWindowRect(hWnd, out User32Interop.RECT rect) &&
+                    User32Interop.IntersectRect(out _, ref windowRect, ref rect))
                 {
                     return true;
                 }
@@ -1118,22 +1111,17 @@ namespace ACAT.Lib.Core.Utility
             // store windows we have already visited
             var windowCache = new HashSet<IntPtr> { hWnd };
 
-            User32Interop.RECT windowRect;
-            User32Interop.GetWindowRect(hWnd, out windowRect);
+            User32Interop.GetWindowRect(hWnd, out User32Interop.RECT windowRect);
 
             // check if any of the windows intersects with our window
             while ((hWnd = User32Interop.GetWindow(hWnd, User32Interop.GW_HWNDPREV)) != IntPtr.Zero &&
                    !windowCache.Contains(hWnd))
             {
-                User32Interop.RECT rect;
-                User32Interop.RECT intersection;
-
                 windowCache.Add(hWnd);
-
                 if (User32Interop.IsWindowVisible(hWnd) &&
                     !IsMinimized(hWnd) &&
-                    User32Interop.GetWindowRect(hWnd, out rect) &&
-                    User32Interop.IntersectRect(out intersection, ref windowRect, ref rect))
+                    User32Interop.GetWindowRect(hWnd, out User32Interop.RECT rect) &&
+                    User32Interop.IntersectRect(out _, ref windowRect, ref rect))
                 {
                     return true;
                 }
@@ -1451,33 +1439,6 @@ namespace ACAT.Lib.Core.Utility
             }
         }
 
-        /// <summary>
-        /// Sets topmost to true
-        /// </summary>
-        /// <param name="form">which form?</param>
-        /// <param name="topMost">set to true for topmost, false otherwise</param>
-        public static void SetTopMost(Form form, bool topMost = true)
-        {
-            if (form.InvokeRequired)
-            {
-                form.Invoke(new setTopMost(SetTopMost), form, topMost);
-            }
-            else
-            {
-                // need to toggle to false and
-                // then to true for this to take effect
-
-                if (topMost)
-                {
-                    form.TopMost = false;
-                    form.TopMost = true;
-                }
-                else
-                {
-                    form.TopMost = false;
-                }
-            }
-        }
 
         /// <summary>
         /// Sets value of a tackbar as an integer
@@ -1573,7 +1534,6 @@ namespace ACAT.Lib.Core.Utility
             }
             catch
             {
-
             }
         }
 
@@ -1644,10 +1604,7 @@ namespace ACAT.Lib.Core.Utility
         public static void SetWindowPositionAndNotify(Form form, IntPtr insertAfter, WindowPosition position)
         {
             SetWindowPosition(form, insertAfter, position);
-            if (EvtWindowPositionChanged != null)
-            {
-                EvtWindowPositionChanged(form, position);
-            }
+            EvtWindowPositionChanged?.Invoke(form, position);
         }
 
         /// <summary>
@@ -1660,7 +1617,6 @@ namespace ACAT.Lib.Core.Utility
         public static void SetWindowSizePercent(IntPtr handle, WindowPosition scannerPosition, int percent)
         {
             Log.Debug("Entering...scannerPosition=" + scannerPosition.ToString() + " percent=" + percent.ToString());
-            int screenOffset = 0;
             int moveX = 0;
             int moveY = 0; // not really using Y-axis yet but something to keep in mind for the future
 
@@ -1672,7 +1628,7 @@ namespace ACAT.Lib.Core.Utility
             if (percent > 100)
                 percent = 100;
 
-            screenOffset = 100 - percent;
+            int screenOffset = 100 - percent;
 
             if (handle != IntPtr.Zero)
             {
@@ -1740,7 +1696,7 @@ namespace ACAT.Lib.Core.Utility
         /// <summary>
         /// Shows the child window as a dialog of the parent window
         /// This is just a helper function that takes care of
-        /// cross-thread invokations that would result in .NET
+        /// cross-thread invocations that would result in .NET
         /// exceptions.
         /// </summary>
         /// <param name="parent"></param>
@@ -1780,32 +1736,6 @@ namespace ACAT.Lib.Core.Utility
             }
         }
 
-        /// <summary>
-        /// Show the window as topmost without activating it. Sets
-        ///  the form's parent to parentForm
-        /// </summary>
-        /// <param name="parentForm">the parent of the form</param>
-        /// <param name="form">the form</param>
-        public static void ShowInactiveTopmost(Form parentForm, Form form)
-        {
-            if (form.InvokeRequired)
-            {
-                form.Invoke(new show(ShowInactiveTopmost), parentForm, form);
-            }
-            else
-            {
-                const int SW_SHOWNOACTIVATE = 4;
-                const int HWND_TOPMOST = -1;
-                const uint SWP_NOACTIVATE = 0x0010;
-
-                form.Owner = parentForm;
-
-                User32Interop.ShowWindow(form.Handle.ToInt32(), SW_SHOWNOACTIVATE);
-                User32Interop.SetWindowPos(form.Handle.ToInt32(), HWND_TOPMOST,
-                    form.Left, form.Top, form.Width, form.Height,
-                    SWP_NOACTIVATE);
-            }
-        }
 
         /// <summary>
         /// Show or hide the specified form in the Windows taskbar
@@ -1899,7 +1829,7 @@ namespace ACAT.Lib.Core.Utility
         /// <param name="scanner">The scanner to dock to</param>
         /// <param name="scannerPosition">Position of the scanner</param>
         /// <param name="dockWithLargestScanner">Set to true if dock to the largest scanner</param>
-        public static void ToggleForegroundWindowMaximizeDock(Form scanner, Windows.WindowPosition scannerPosition, bool dockWithLargestScanner = false)
+        public static void ToggleForegroundWindowMaximizeDock(Form scanner, WindowPosition scannerPosition, bool dockWithLargestScanner = false)
         {
             IntPtr fgWindow = GetForegroundWindow();
 
@@ -2026,10 +1956,7 @@ namespace ACAT.Lib.Core.Utility
                 if (opacity >= 0.8)
                 {
                     SetOpacity(form, 1.0);
-                    if (EvtFadeInComplete != null)
-                    {
-                        EvtFadeInComplete(form);
-                    }
+                    EvtFadeInComplete?.Invoke(form);
                     return;
                 }
                 Thread.Sleep(30);
@@ -2054,10 +1981,7 @@ namespace ACAT.Lib.Core.Utility
                 }
                 else
                 {
-                    if (EvtFadeOutComplete != null)
-                    {
-                        EvtFadeOutComplete(form);
-                    }
+                    EvtFadeOutComplete?.Invoke(form);
                     return;
                 }
             }

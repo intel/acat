@@ -5,14 +5,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PanelManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Enumerates active windows on the desktop.
@@ -78,7 +79,7 @@ namespace ACAT.Lib.Core.Utility
             Log.Debug("winList Count: " + winList.Count);
             bool found = false;
             var handle = IntPtr.Zero;
-            IntPtr ignoreWindowHandle = new IntPtr(ignoreHandle);
+            IntPtr ignoreWindowHandle = new(ignoreHandle);
 
             foreach (var windowInfo in winList)
             {
@@ -103,8 +104,8 @@ namespace ACAT.Lib.Core.Utility
                 // utility used to display debug messages from ACAT
                 if (!windowInfo.Title.Contains("DebugView") &&
                     !Windows.IsMinimized(handle) &&
-                    !(control is MenuPanelBase) &&
-                    !(control is IScannerPanel))
+                    control is not MenuPanelBase &&
+                    control is not IScannerPanel)
                 {
                     Log.Debug("Found top window " + windowInfo.Title);
                     found = true;
@@ -215,8 +216,7 @@ namespace ACAT.Lib.Core.Utility
 
             if (_excludeThisProcess)
             {
-                uint pid = 0;
-                User32Interop.GetWindowThreadProcessId(winHandle, out pid);
+                User32Interop.GetWindowThreadProcessId(winHandle, out uint pid);
 
                 if (pid == 0 || pid == _currentProcess.Id)
                 {

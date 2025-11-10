@@ -5,18 +5,19 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Extensions;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Extensions;
+using ACAT.Core.SpellCheckManagement.Interfaces;
+using ACAT.Core.Utility;
 using System;
 using System.Globalization;
 
-namespace ACAT.Lib.Core.SpellCheckManagement
+namespace ACAT.Core.SpellCheckManagement
 {
     /// <summary>
     /// The null spellchecker basically does nothing.  It is used
     /// where no SpellChecker is currently active/valid.
     /// </summary>
-    [DescriptorAttribute("CCC45241-9BA0-4BD9-AB37-DC2C960772F4",
+    [ClassDescriptor("CCC45241-9BA0-4BD9-AB37-DC2C960772F4",
                         "Null Spell Checker",
                         "No spell checking functionality.")]
     public class NullSpellChecker : ISpellChecker, IExtension
@@ -29,9 +30,9 @@ namespace ACAT.Lib.Core.SpellCheckManagement
         /// <summary>
         /// Gets the descriptor for this class
         /// </summary>
-        public IDescriptor Descriptor
+        public ClassDescriptorAttribute Descriptor
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
+            get { return ClassDescriptorAttribute.GetDescriptor(GetType()); }
         }
 
         /// <summary>
@@ -130,7 +131,7 @@ namespace ACAT.Lib.Core.SpellCheckManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {

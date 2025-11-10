@@ -4,252 +4,250 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
-    /// <summary>
-    /// MicroStopwatch class
-    /// </summary>
-    public class MicroStopwatch : System.Diagnostics.Stopwatch
-    {
-        readonly double _microSecPerTick =
-            1000000D / System.Diagnostics.Stopwatch.Frequency;
+    // public class MicroStopwatch : System.Diagnostics.Stopwatch
+    // {
+    //     private readonly double _microSecPerTick =
+    //         1000000D / System.Diagnostics.Stopwatch.Frequency;
 
-        public MicroStopwatch()
-        {
-            if (!System.Diagnostics.Stopwatch.IsHighResolution)
-            {
-                throw new Exception("On this system the high-resolution " +
-                                    "performance counter is not available");
-            }
-        }
+    //     public MicroStopwatch()
+    //     {
+    //         if (!System.Diagnostics.Stopwatch.IsHighResolution)
+    //         {
+    //             throw new Exception("On this system the high-resolution " +
+    //                                 "performance counter is not available");
+    //         }
+    //     }
 
-        public long ElapsedMicroseconds
-        {
-            get
-            {
-                return (long)(ElapsedTicks * _microSecPerTick);
-            }
-        }
-    }
+    //     public long ElapsedMicroseconds
+    //     {
+    //         get
+    //         {
+    //             return (long)(ElapsedTicks * _microSecPerTick);
+    //         }
+    //     }
+    // }
 
-    /// <summary>
-    /// MicroTimer class
-    /// </summary>
-    public class MicroTimer
-    {
-        public delegate void MicroTimerElapsedEventHandler(
-                             object sender,
-                             MicroTimerEventArgs timerEventArgs);
-        public event MicroTimerElapsedEventHandler MicroTimerElapsed;
-        MicroStopwatch microSW = new MicroStopwatch();
-        Boolean swStarted = false;
-        MicroStopwatch microStopwatch;
+    // /// <summary>
+    // /// MicroTimer class
+    // /// </summary>
+    // public class MicroTimer
+    // {
+    //     private long _ignoreEventIfLateBy = long.MaxValue;
 
-        System.Threading.Thread _threadTimer = null;
-        long _ignoreEventIfLateBy = long.MaxValue;
-        long _timerIntervalInMicroSec = 0;
-        bool _stopTimer = true;
+    //     private bool _stopTimer = true;
 
-        public long ElapsedMicroseconds()
-        {
-            //return microSW.ElapsedMicroseconds;
-            return microStopwatch.ElapsedMicroseconds;
-        }
+    //     private System.Threading.Thread _threadTimer = null;
 
-        public MicroTimer()
-        {
-        }
+    //     private long _timerIntervalInMicroSec = 0;
 
-        public MicroTimer(long timerIntervalInMicroseconds)
-        {
-            Interval = timerIntervalInMicroseconds;
-        }
+    //     private MicroStopwatch microStopwatch;
 
-        public long Interval
-        {
-            get
-            {
-                return System.Threading.Interlocked.Read(
-                    ref _timerIntervalInMicroSec);
-            }
-            set
-            {
-                System.Threading.Interlocked.Exchange(
-                    ref _timerIntervalInMicroSec, value);
-            }
-        }
+    //     private MicroStopwatch microSW = new MicroStopwatch();
 
-        public long IgnoreEventIfLateBy
-        {
-            get
-            {
-                return System.Threading.Interlocked.Read(
-                    ref _ignoreEventIfLateBy);
-            }
-            set
-            {
-                System.Threading.Interlocked.Exchange(
-                    ref _ignoreEventIfLateBy, value <= 0 ? long.MaxValue : value);
-            }
-        }
+    //     private Boolean swStarted = false;
 
-        public bool Enabled
-        {
-            set
-            {
-                if (value)
-                {
-                    Start();
-                }
-                else
-                {
-                    Stop();
-                }
-            }
-            get
-            {
-                return (_threadTimer != null && _threadTimer.IsAlive);
-            }
-        }
+    //     public MicroTimer()
+    //     {
+    //     }
 
-        public void Start()
-        {
-            if (Enabled || Interval <= 0)
-            {
-                return;
-            }
+    //     public MicroTimer(long timerIntervalInMicroseconds)
+    //     {
+    //         Interval = timerIntervalInMicroseconds;
+    //     }
 
-            _stopTimer = false;
+    //     public delegate void MicroTimerElapsedEventHandler(object sender,
+    //                          MicroTimerEventArgs timerEventArgs);
 
-            System.Threading.ThreadStart threadStart = delegate ()
-            {
-                NotificationTimer(ref _timerIntervalInMicroSec,
-                                  ref _ignoreEventIfLateBy,
-                                  ref _stopTimer);
-            };
+    //     public event MicroTimerElapsedEventHandler MicroTimerElapsed;
 
-            _threadTimer = new System.Threading.Thread(threadStart);
-            _threadTimer.Priority = System.Threading.ThreadPriority.Highest;
-            _threadTimer.Start();
-        }
+    //     public bool Enabled
+    //     {
+    //         set
+    //         {
+    //             if (value)
+    //             {
+    //                 Start();
+    //             }
+    //             else
+    //             {
+    //                 Stop();
+    //             }
+    //         }
+    //         get
+    //         {
+    //             return (_threadTimer != null && _threadTimer.IsAlive);
+    //         }
+    //     }
 
-        public void Stop()
-        {
-            _stopTimer = true;
-        }
+    //     public long IgnoreEventIfLateBy
+    //     {
+    //         get
+    //         {
+    //             return System.Threading.Interlocked.Read(ref _ignoreEventIfLateBy);
+    //         }
+    //         set
+    //         {
+    //             System.Threading.Interlocked.Exchange(ref _ignoreEventIfLateBy, value <= 0 ? long.MaxValue : value);
+    //         }
+    //     }
 
-        public void StopAndWait()
-        {
-            StopAndWait(System.Threading.Timeout.Infinite);
-        }
+    //     public long Interval
+    //     {
+    //         get
+    //         {
+    //             return System.Threading.Interlocked.Read(ref _timerIntervalInMicroSec);
+    //         }
+    //         set
+    //         {
+    //             System.Threading.Interlocked.Exchange(ref _timerIntervalInMicroSec, value);
+    //         }
+    //     }
 
-        public bool StopAndWait(int timeoutInMilliSec)
-        {
-            _stopTimer = true;
+    //     public void Abort()
+    //     {
+    //         _stopTimer = true;
+    //         //microStopwatch.Stop();
 
-            if (!Enabled || _threadTimer.ManagedThreadId ==
-                System.Threading.Thread.CurrentThread.ManagedThreadId)
-            {
-                return true;
-            }
+    //         if (Enabled)
+    //         {
+    //             _threadTimer.Abort();
+    //         }
+    //     }
 
-            return _threadTimer.Join(timeoutInMilliSec);
-        }
+    //     public long ElapsedMicroseconds()
+    //     {
+    //         //return microSW.ElapsedMicroseconds;
+    //         return microStopwatch.ElapsedMicroseconds;
+    //     }
 
-        public void Abort()
-        {
-            _stopTimer = true;
-            //microStopwatch.Stop();
+    //     public void Start()
+    //     {
+    //         if (Enabled || Interval <= 0)
+    //         {
+    //             return;
+    //         }
 
-            if (Enabled)
-            {
-                _threadTimer.Abort();
-            }
-        }
+    //         _stopTimer = false;
 
-        void NotificationTimer(ref long timerIntervalInMicroSec,
-                               ref long ignoreEventIfLateBy,
-                               ref bool stopTimer)
-        {
-            int timerCount = 0;
-            long nextNotification = 0;
+    //         System.Threading.ThreadStart threadStart = delegate ()
+    //         {
+    //             NotificationTimer(ref _timerIntervalInMicroSec,
+    //                               ref _ignoreEventIfLateBy,
+    //                               ref _stopTimer);
+    //         };
 
-            //MicroStopwatch microStopwatch = new MicroStopwatch();
-            microStopwatch = new MicroStopwatch();
-            microStopwatch.Start();
-            /*
-            if (!swStarted)
-            {
-                microSW.Start();
-                swStarted = true;
-            }
-            */
-            while (!stopTimer)
-            {
-                long callbackFunctionExecutionTime =
-                    microStopwatch.ElapsedMicroseconds - nextNotification;
+    //         _threadTimer = new System.Threading.Thread(threadStart);
+    //         _threadTimer.Priority = System.Threading.ThreadPriority.Highest;
+    //         _threadTimer.Start();
+    //     }
 
-                long timerIntervalInMicroSecCurrent =
-                    System.Threading.Interlocked.Read(ref timerIntervalInMicroSec);
-                long ignoreEventIfLateByCurrent =
-                    System.Threading.Interlocked.Read(ref ignoreEventIfLateBy);
+    //     public void Stop()
+    //     {
+    //         _stopTimer = true;
+    //     }
 
-                nextNotification += timerIntervalInMicroSecCurrent;
-                timerCount++;
-                long elapsedMicroseconds = 0;
+    //     public void StopAndWait()
+    //     {
+    //         StopAndWait(System.Threading.Timeout.Infinite);
+    //     }
 
-                while ((elapsedMicroseconds = microStopwatch.ElapsedMicroseconds)
-                        < nextNotification)
-                {
-                    System.Threading.Thread.SpinWait(10);
-                }
+    //     public bool StopAndWait(int timeoutInMilliSec)
+    //     {
+    //         _stopTimer = true;
 
-                long timerLateBy = elapsedMicroseconds - nextNotification;
+    //         if (!Enabled || _threadTimer.ManagedThreadId == System.Threading.Thread.CurrentThread.ManagedThreadId)
+    //         {
+    //             return true;
+    //         }
 
-                if (timerLateBy >= ignoreEventIfLateByCurrent)
-                {
-                    continue;
-                }
+    //         return _threadTimer.Join(timeoutInMilliSec);
+    //     }
 
-                MicroTimerEventArgs microTimerEventArgs =
-                     new MicroTimerEventArgs(timerCount,
-                                             elapsedMicroseconds,
-                                             timerLateBy,
-                                             callbackFunctionExecutionTime);
-                MicroTimerElapsed(this, microTimerEventArgs);
-            }
+    //     private void NotificationTimer(ref long timerIntervalInMicroSec,
+    //                            ref long ignoreEventIfLateBy,
+    //                            ref bool stopTimer)
+    //     {
+    //         int timerCount = 0;
+    //         long nextNotification = 0;
 
-            microStopwatch.Stop();
-            // microSW.Stop();
-        }
-    }
+    //         //MicroStopwatch microStopwatch = new MicroStopwatch();
+    //         microStopwatch = new MicroStopwatch();
+    //         microStopwatch.Start();
+    //         /*
+    //         if (!swStarted)
+    //         {
+    //             microSW.Start();
+    //             swStarted = true;
+    //         }
+    //         */
+    //         while (!stopTimer)
+    //         {
+    //             long callbackFunctionExecutionTime =
+    //                 microStopwatch.ElapsedMicroseconds - nextNotification;
 
-    /// <summary>
-    /// MicroTimer Event Argument class
-    /// </summary>
-    public class MicroTimerEventArgs : EventArgs
-    {
-        // Simple counter, number times timed event (callback function) executed
-        public int TimerCount { get; private set; }
+    //             long timerIntervalInMicroSecCurrent =
+    //                 System.Threading.Interlocked.Read(ref timerIntervalInMicroSec);
+    //             long ignoreEventIfLateByCurrent =
+    //                 System.Threading.Interlocked.Read(ref ignoreEventIfLateBy);
 
-        // Time when timed event was called since timer started
-        public long ElapsedMicroseconds { get; private set; }
+    //             nextNotification += timerIntervalInMicroSecCurrent;
+    //             timerCount++;
+    //             long elapsedMicroseconds = 0;
 
-        // How late the timer was compared to when it should have been called
-        public long TimerLateBy { get; private set; }
+    //             while ((elapsedMicroseconds = microStopwatch.ElapsedMicroseconds)
+    //                     < nextNotification)
+    //             {
+    //                 System.Threading.Thread.SpinWait(10);
+    //             }
 
-        // Time it took to execute previous call to callback function (OnTimedEvent)
-        public long CallbackFunctionExecutionTime { get; private set; }
+    //             long timerLateBy = elapsedMicroseconds - nextNotification;
 
-        public MicroTimerEventArgs(int timerCount,
-                                   long elapsedMicroseconds,
-                                   long timerLateBy,
-                                   long callbackFunctionExecutionTime)
-        {
-            TimerCount = timerCount;
-            ElapsedMicroseconds = elapsedMicroseconds;
-            TimerLateBy = timerLateBy;
-            CallbackFunctionExecutionTime = callbackFunctionExecutionTime;
-        }
-    }
+    //             if (timerLateBy >= ignoreEventIfLateByCurrent)
+    //             {
+    //                 continue;
+    //             }
+
+    //             MicroTimerEventArgs microTimerEventArgs =
+    //                  new MicroTimerEventArgs(timerCount,
+    //                                          elapsedMicroseconds,
+    //                                          timerLateBy,
+    //                                          callbackFunctionExecutionTime);
+    //             MicroTimerElapsed(this, microTimerEventArgs);
+    //         }
+
+    //         microStopwatch.Stop();
+    //         // microSW.Stop();
+    //     }
+    // }
+
+    // /// <summary>
+    // /// MicroTimer Event Argument class
+    // /// </summary>
+    // public class MicroTimerEventArgs : EventArgs
+    // {
+    //     public MicroTimerEventArgs(int timerCount,
+    //                                        long elapsedMicroseconds,
+    //                                        long timerLateBy,
+    //                                        long callbackFunctionExecutionTime)
+    //     {
+    //         TimerCount = timerCount;
+    //         ElapsedMicroseconds = elapsedMicroseconds;
+    //         TimerLateBy = timerLateBy;
+    //         CallbackFunctionExecutionTime = callbackFunctionExecutionTime;
+    //     }
+
+    //     // Time it took to execute previous call to callback function (OnTimedEvent)
+    //     public long CallbackFunctionExecutionTime { get; private set; }
+
+    //     // Time when timed event was called since timer started
+    //     public long ElapsedMicroseconds { get; private set; }
+
+    //     // Simple counter, number times timed event (callback function) executed
+    //     public int TimerCount { get; private set; }
+
+    //     // How late the timer was compared to when it should have been called
+    //     public long TimerLateBy { get; private set; }
+    // }
 }

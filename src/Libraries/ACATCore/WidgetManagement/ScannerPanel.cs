@@ -8,7 +8,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
     /// <summary>
     /// Contains style attributes for a scanner panel

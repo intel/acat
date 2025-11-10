@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.UserManagement;
+using ACAT.Core.UserManagement;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -16,7 +16,7 @@ using System.Security.Permissions;
 using System.Text;
 using System.Threading;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Contains functions to contruct paths relative to
@@ -28,7 +28,7 @@ namespace ACAT.Lib.Core.Utility
         /// <summary>
         /// Folder under which ACAT extensions are stored
         /// </summary>
-        public const String ExtensionsDir = "Extensions";
+        public const String ExtensionsDir = "";
 
         /// <summary>
         /// Folder under which all ACAT assets such as
@@ -118,52 +118,45 @@ namespace ACAT.Lib.Core.Utility
 
         public static Assembly AssemblyResolve(Assembly executingAssembly, ResolveEventArgs args)
         {
-            if (args.RequestingAssembly == null || String.IsNullOrEmpty(args.RequestingAssembly.Location))
+            if (args.RequestingAssembly == null ||
+                String.IsNullOrEmpty(args.RequestingAssembly.Location) ||
+                String.IsNullOrEmpty(args.Name))
             {
                 return null;
             }
 
-            Log.Debug("RequestingAssembly: [" + args.RequestingAssembly.Location + "], Name:[" + args.Name + "]");
+            Log.Debug($"RequestingAssembly: [{args.RequestingAssembly.Location}], Name:[{args.Name}]");
 
             var requestingAssemblyDir = Path.GetDirectoryName(args.RequestingAssembly.Location);
 
-            Log.Debug("RequestingAssembly directory is " + requestingAssemblyDir);
+            Log.Debug($"RequestingAssembly directory is {requestingAssemblyDir}");
 
             var assemblyName = new AssemblyName(args.Name).Name;
-            var assemblyPath = requestingAssemblyDir + "\\" + assemblyName + ".dll";
+            var assemblyPath = $"{requestingAssemblyDir}\\{assemblyName}.dll";
 
-            Log.Debug("Resolved assembly location: " + assemblyPath);
+            Log.Debug($"Resolved assembly location: {assemblyPath}");
 
             Assembly retVal = null;
             try
             {
-                if (!String.IsNullOrEmpty(assemblyPath))
-                {
-                    Log.Debug("LoadFrom " + assemblyPath);
-                    retVal = Assembly.LoadFrom(assemblyPath);
-                }
-                else
-                {
-                    Log.Debug("Could not find assembly " + args.RequestingAssembly.Location);
-                }
+                retVal = Assembly.LoadFrom(assemblyPath);
             }
             catch (FileNotFoundException fnf)
             {
-                Log.Exception(fnf);
 
-                if (!assemblyPath.ToLower().Contains(".resources"))
+                if ((assemblyPath.ToLower().Contains(".resources")) || (assemblyPath.ToLower().Contains(".xmlserializers")))
                 {
-                    throw;
+                return null;
                 }
 
-                return null;
-            }
-            catch (Exception ex)
-            {
-                Log.Debug("Could not load assembly.. Exception: " + ex);
+                Log.Exception(fnf);
+                throw;
             }
 
-            Log.IsNull("retVal: ", retVal);
+            catch (Exception ex)
+            {
+                Log.Exception($"Could not load assembly. Exception: {ex}");
+            }
             return retVal;
         }
 
@@ -247,7 +240,7 @@ namespace ACAT.Lib.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 
@@ -310,7 +303,12 @@ namespace ACAT.Lib.Core.Utility
         /// <returns>Resources dir</returns>
         public static String GetDefaultResourcesDir()
         {
-            return Path.Combine(ACATPath, "en");
+           return Path.Combine(ACATPath, "en");
+        }
+
+        public static String GetPanelConfigDir()
+        {
+            return Path.Combine(ACATPath, "panelconfigs");
         }
 
         /// <summary>
@@ -426,7 +424,8 @@ namespace ACAT.Lib.Core.Utility
 
         public static String GetHomeDir()
         {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ACAT");
+            //return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ACAT");
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ACAT");
         }
 
         /// <summary>
@@ -494,11 +493,16 @@ namespace ACAT.Lib.Core.Utility
         /// .NET specifications for localization directory layout.
         /// </summary>
         /// <returns>Resources dir</returns>
-        public static String GetResourcesDir()
+        public static String GetResourcesDir(string culture = null)
         {
-            var dirName = Path.Combine(ACATPath, Thread.CurrentThread.CurrentUICulture.Name);
+            if (String.IsNullOrEmpty(culture))
+            {
+                culture = Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
+            }
 
-            return Directory.Exists(dirName) ? dirName : Path.Combine(ACATPath, Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName);
+            var dirName = Path.Combine(ACATPath, culture);
+
+            return Directory.Exists(dirName) ? dirName : Path.Combine(ACATPath, culture);
         }
 
         /// <summary>
@@ -609,7 +613,7 @@ namespace ACAT.Lib.Core.Utility
         /// </summary>
         /// <param name="processName">name of the process to check</param>
         /// <returns>true if it is</returns>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public static bool IsRunning(String processName)
         {
             Process[] pname = Process.GetProcessesByName(processName);
@@ -639,16 +643,18 @@ namespace ACAT.Lib.Core.Utility
         /// </summary>
         /// <param name="executable">path to the executable</param>
         /// <returns>true on success</returns>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public static bool Run(String executable, ProcessWindowStyle style = ProcessWindowStyle.Normal)
         {
             bool retVal = true;
 
             Log.Debug("Run " + executable);
 
-            var startInfo = new ProcessStartInfo();
-            startInfo.FileName = executable;
-            startInfo.WindowStyle = style;
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = executable,
+                WindowStyle = style
+            };
 
             //Start the process.
             try
@@ -684,8 +690,7 @@ namespace ACAT.Lib.Core.Utility
         /// <returns>true on success</returns>
         public static bool RunBatchFile(String batchFileName, params String[] argList)
         {
-            bool retVal = true;
-
+            bool retVal;
             try
             {
                 var dir = AppDomain.CurrentDomain.BaseDirectory;
@@ -752,7 +757,7 @@ namespace ACAT.Lib.Core.Utility
 
             if (!dir.Exists)
             {
-                Log.Debug("No such directory: " + srcDir);
+                Log.Error("No such directory: " + srcDir);
                 return;
             }
 
@@ -782,7 +787,7 @@ namespace ACAT.Lib.Core.Utility
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug("Error copying file " + file.FullName + " to " + targetFile + ", exception: " + ex);
+                    Log.Exception("Error copying file " + file.FullName + " to " + targetFile + ", exception: " + ex);
                 }
             }
 
@@ -812,7 +817,6 @@ namespace ACAT.Lib.Core.Utility
                 //The File or directory doesn't exist
                 return false;
             }
-
 
             FileAttributes attributes = GetFileAttributes(path);
 
@@ -855,6 +859,5 @@ namespace ACAT.Lib.Core.Utility
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern FileAttributes GetFileAttributes(string fileName);
-
     }
 }

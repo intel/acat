@@ -6,12 +6,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace ACAT.Lib.Core.ThemeManagement
+namespace ACAT.Core.ThemeManagement
 {
     /// <summary>
     /// A singleton class that holds a mapping between a Theme name and
@@ -33,7 +33,7 @@ namespace ACAT.Lib.Core.ThemeManagement
         /// <summary>
         /// Mapping between the Theme name and the directory
         /// </summary>
-        public readonly Dictionary<String, String> ThemesLookupTable = new Dictionary<String, String>();
+        public readonly Dictionary<String, String> ThemesLookupTable = new();
 
         /// <summary>
         ///  Theme config file name
@@ -43,7 +43,7 @@ namespace ACAT.Lib.Core.ThemeManagement
         /// <summary>
         /// Returns the singleton instance
         /// </summary>
-        private static readonly ThemeManager _instance = new ThemeManager();
+        private static readonly ThemeManager _instance = new();
 
         /// <summary>
         /// The current active ksin
@@ -150,12 +150,12 @@ namespace ACAT.Lib.Core.ThemeManagement
             DirectoryWalker walker;
             if (Directory.Exists(userThemesDir))
             {
-                walker = new DirectoryWalker(userThemesDir);
-                walker.Walk(new OnDirectoryFoundDelegate(onDirFound));
+                walker = new DirectoryWalker(userThemesDir, "Theme.xml");
+                walker.Walk(new OnFileFoundDelegate(onFileFound));
             }
 
-            walker = new DirectoryWalker(FileUtils.GetThemesDir());
-            walker.Walk(new OnDirectoryFoundDelegate(onDirFound));
+            walker = new DirectoryWalker(FileUtils.GetThemesDir(), "Theme.xml");
+            walker.Walk(new OnFileFoundDelegate(onFileFound));
             return true;
         }
 
@@ -173,7 +173,7 @@ namespace ACAT.Lib.Core.ThemeManagement
             var themeDir = GetThemeDir(name);
             if (String.IsNullOrEmpty(themeDir))
             {
-                Log.Debug("Could not find Theme " + name + ", using default");
+                Log.Error($"Could not find Theme {name}, using default.");
                 themeDir = GetThemeDir(DefaultThemeName);
                 if (String.IsNullOrEmpty(themeDir))
                 {
@@ -185,25 +185,22 @@ namespace ACAT.Lib.Core.ThemeManagement
 
             var themeFile = Path.Combine(themeDir, ThemeConfigFileName);
 
-            Log.Debug("Creating Theme " + name + ", themeDir: " + themeDir);
+            Log.Debug($"Creating Theme {name}, themeDir: {themeDir}");
 
             // create the Theme object. This parses the Theme xml file and
             // creates the Theme object
             var theme = Theme.Create(name, themeDir, themeFile);
             if (theme != null)
             {
-                if (_activeTheme != null)
-                {
-                    _activeTheme.Dispose();
-                }
+                _activeTheme?.Dispose();
 
                 _activeTheme = theme;
                 ActiveThemeName = name;
-                Log.Debug("Created Theme successfully. active Theme is " + _activeTheme.Name);
+                Log.Debug("$Created Theme successfully. active Theme is {_activeTheme.Name}.");
             }
             else
             {
-                Log.Debug("Error creating Theme");
+                Log.Error($"Error creating theme with name {theme}");
                 retVal = false;
             }
 
@@ -219,19 +216,13 @@ namespace ACAT.Lib.Core.ThemeManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
-                    if (DefaultTheme != null)
-                    {
-                        DefaultTheme.Dispose();
-                    }
+                    DefaultTheme?.Dispose();
 
-                    if (_activeTheme != null)
-                    {
-                        _activeTheme.Dispose();
-                    }
+                    _activeTheme?.Dispose();
                 }
 
                 // Release unmanaged resources.
@@ -246,22 +237,14 @@ namespace ACAT.Lib.Core.ThemeManagement
         /// the directory name to the mapping table.  Name of the directory
         /// is also the name of the theme
         /// </summary>
-        /// <param name="dirName">directory to explore</param>
-        private void onDirFound(String dirName)
+        /// <param name="fileName">directory to explore</param>
+        private void onFileFound(String filePath)
         {
-            if (!File.Exists(Path.Combine(dirName, ThemeConfigFileName)))
+            var file = new FileInfo(filePath);
+            if (!ThemesLookupTable.ContainsKey(file.Directory.Name))
             {
-                return;
-            }
-
-            Log.Debug("Found Theme in  " + dirName);
-
-            var components = dirName.Split('\\');
-            var themeName = components[components.Length - 1];
-            if (!ThemesLookupTable.ContainsKey(themeName))
-            {
-                Log.Debug("Adding Theme: " + themeName + ", themeDir: " + dirName);
-                ThemesLookupTable.Add(themeName, dirName);
+                Log.Debug("Adding Theme: " + file.Directory.Name + ", themeDir: " + file.Directory.FullName);
+                ThemesLookupTable.Add(file.Directory.Name, file.Directory.FullName);
             }
         }
     }

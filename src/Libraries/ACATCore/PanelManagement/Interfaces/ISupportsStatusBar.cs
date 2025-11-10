@@ -5,7 +5,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-namespace ACAT.Lib.Core.PanelManagement
+using ACAT.Core.PanelManagement.Common;
+
+namespace ACAT.Core.PanelManagement.Interfaces
 {
     /// <summary>
     /// Interface to indicate whether the scanner

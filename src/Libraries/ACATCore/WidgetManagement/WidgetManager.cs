@@ -5,14 +5,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement.Interfaces;
+using ACAT.Core.WidgetManagement.Layout;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
     /// <summary>
     /// Caches the .NET types of all the widgets in the Core DLL as well
@@ -36,7 +39,7 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// <summary>
         /// The layout object for the scanner
         /// </summary>
-        private readonly Layout _layout;
+        private readonly LayoutAttribute _layout;
 
         /// <summary>
         /// Represents the scanner Form
@@ -59,11 +62,11 @@ namespace ACAT.Lib.Core.WidgetManagement
         public WidgetManager(Control control)
         {
             _widgetAttributes = new WidgetAttributes();
-            _layout = new Layout();
+            _layout = new LayoutAttribute();
             _rootWidget = new Widget(control);
 
-            Log.Debug("control name is : " + control.Name);
-            Log.Debug("_rootWidget.name is  : " + _rootWidget.Name);
+            Log.Debug("control name is " + control.Name);
+            Log.Debug("_rootWidget.name is " + _rootWidget.Name);
         }
 
         /// <summary>
@@ -78,7 +81,7 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// <summary>
         /// Gets for the layout manager object for the scanner
         /// </summary>
-        public Layout Layout
+        public LayoutAttribute Layout
         {
             get { return _layout; }
         }
@@ -120,7 +123,7 @@ namespace ACAT.Lib.Core.WidgetManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Could not find widgettype " + widgetTypeName + ", exception: " + ex);
+                Log.Exception("Could not find widgettype " + widgetTypeName + ", exception: " + ex);
             }
 
             return retVal;
@@ -188,17 +191,17 @@ namespace ACAT.Lib.Core.WidgetManagement
             if (retVal)
             {
                 Log.Debug("configPath: " + configPath);
-                Log.IsNull("Layout for root widget ", Layout.RootWidget);
 
                 retVal = Layout.Load(configPath, _rootWidget);
                 if (retVal)
                 {
+                    Log.Debug($"Layout for root widget {Layout.RootWidget.Name}");
                     retrieveAndSetWidgetAttribute(Layout.RootWidget);
                 }
             }
             else
             {
-                Log.Debug("Could not load WidgetAttributes from configFile [" + configPath + "]");
+                Log.Error($"Could not load WidgetAttributes from configFile [{configPath}]");
             }
 
             return retVal;
@@ -213,19 +216,13 @@ namespace ACAT.Lib.Core.WidgetManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
-                    if (_rootWidget != null)
-                    {
-                        _rootWidget.Dispose();
-                    }
+                    _rootWidget?.Dispose();
 
-                    if (_widgetAttributes != null)
-                    {
-                        _widgetAttributes.Dispose();
-                    }
+                    _widgetAttributes?.Dispose();
                 }
 
                 // Release unmanaged resources.
@@ -234,18 +231,6 @@ namespace ACAT.Lib.Core.WidgetManagement
             _disposed = true;
         }
 
-        /// <summary>
-        /// Walks the specified directory (rescursively)
-        /// to look for dll's that may contain widgets
-        /// </summary>
-        /// <param name="dir">Directory to walk</param>
-        /// <param name="resursive">Recursively search?</param>
-        private static void load(String dir, bool resursive = true)
-        {
-            var walker = new DirectoryWalker(dir, "*.dll");
-            Log.Debug("Walking dir " + dir);
-            walker.Walk(new OnFileFoundDelegate(onFileFound));
-        }
 
         /// <summary>
         /// Loads relevant types from the assembly and caches them
@@ -273,7 +258,7 @@ namespace ACAT.Lib.Core.WidgetManagement
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
                 retVal = false;
             }
 
@@ -286,22 +271,55 @@ namespace ACAT.Lib.Core.WidgetManagement
         /// </summary>
         private static void loadWidgetTypeCollection(IEnumerable<String> extensionDirs)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            _widgetTypeCollection = new List<String>();
-            var types = assembly.GetTypes();
-            foreach (var type in types)
+            foreach (String extensionDir in extensionDirs)
             {
-                if (typeof(Widget).IsAssignableFrom(type))
+                if (Directory.Exists(extensionDir))
                 {
-                    _widgetTypeCollection.Add(type.FullName);
+                    foreach (var dllPath in Directory.GetFiles(extensionDir, "ACAT.Extensions.*.dll", SearchOption.AllDirectories))
+                    {
+                        var isLoaded = AppDomain.CurrentDomain.GetAssemblies()
+                            .Where(a => !a.IsDynamic && !string.IsNullOrEmpty(a.Location))
+                            .Any(a => string.Equals(Path.GetFullPath(a.Location), Path.GetFullPath(dllPath), StringComparison.OrdinalIgnoreCase));
+
+                        if (!isLoaded)
+                        {
+                            try
+                            {
+                                Assembly.LoadFrom(dllPath);
+                            }
+                            catch (Exception ex)
+                            {
+                                // Log or handle if the assembly fails to load
+                                Console.WriteLine($"Failed to load {dllPath}: {ex.Message}");
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Log.Error("Extension directory does not exist: " + extensionDir);
                 }
             }
 
-            foreach (var dir in extensionDirs)
-            {
-                var targetDir = dir + "\\Widgets";
-                load(targetDir);
-            }
+            _widgetTypeCollection = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(assembly =>
+                {
+                    try
+                    {
+                        return assembly.GetTypes();
+                    }
+                    catch (ReflectionTypeLoadException ex)
+                    {
+                        // Fallback for partially loaded assemblies (e.g., missing dependencies)
+                        return ex.Types.Where(t => t != null)!;
+                    }
+                })
+                .Where(t => typeof(Widget).IsAssignableFrom(t) &&
+                            !t.IsAbstract &&
+                            t.FullName != null)
+                .Select(t => t.FullName!)
+                .Distinct() // Optional: Avoid duplicates
+                .ToList();
         }
 
         /// <summary>
@@ -318,7 +336,7 @@ namespace ACAT.Lib.Core.WidgetManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Could get types from assembly " + dllName + ". Exception : " + ex);
+                Log.Exception("Could get types from assembly " + dllName + ". Exception : " + ex);
                 if (ex is ReflectionTypeLoadException)
                 {
                     var typeLoadException = (ReflectionTypeLoadException)ex;
@@ -339,7 +357,7 @@ namespace ACAT.Lib.Core.WidgetManagement
         private static void onFileFound(String file)
         {
             String filePath = file.ToLower();
-            String fileName = Path.GetFileName(filePath);
+            _ = Path.GetFileName(filePath);
             String extension = Path.GetExtension(filePath);
             if (String.Compare(extension, ".dll", true) == 0)
             {

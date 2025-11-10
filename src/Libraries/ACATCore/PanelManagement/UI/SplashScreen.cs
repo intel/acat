@@ -5,12 +5,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Utility;
 using System;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// Form for the splash screen.  Can be customized with
@@ -23,33 +23,37 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// Make sure nothing overlaps this form
         /// </summary>
-        private readonly WindowOverlapWatchdog _watchDog;
+        //private readonly WindowOverlapWatchdog _watchDog;
 
         private int _count = 0;
 
         /// <summary>
-        /// Timer used to udpate info on the form
+        /// Timer used to update info on the form
         /// </summary>
         private Timer _timer;
 
         //String starting = "Starting.";
-        private String starting = ".";
+        private readonly String starting = ".";
 
         /// <summary>
         /// Initializes a new instance of the class..  Parameters
-        /// can be used to cutomize the screen
+        /// can be used to customize the screen
         /// </summary>
-        public SplashScreen()
+        public SplashScreen(string message)
         {
             InitializeComponent();
 
-            Windows.SetWindowPosition(this, Windows.WindowPosition.CenterScreen);
+            this.message.Text = message ?? String.Empty;
+
+            //Windows.SetWindowPosition(this, Windows.WindowPosition.CenterScreen);
 
             FormClosing += Form1_FormClosing;
 
             ShowInTaskbar = false;
+            StartPosition = FormStartPosition.CenterScreen;
+            FormBorderStyle = FormBorderStyle.None;
 
-            TopMost = true;
+            //TopMost = true;
 
             //_watchDog = new WindowOverlapWatchdog(this);
 
@@ -98,23 +102,20 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="e">event args</param>
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (_watchDog != null)
-            {
-                _watchDog.Dispose();
-            }
+            //_watchDog?.Dispose();
 
             _timer.Dispose();
         }
 
         /// <summary>
-        /// Perfoms initialization
+        /// Performs initialization
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="e">event args</param>
         private void SplashScreen_Load(object sender, EventArgs e)
         {
             var assembly = Assembly.GetEntryAssembly();
-            // get appname and copyright information
+            // get AppName and Copyright information
             object[] attributes = assembly.GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
 
             var appName = (attributes.Length != 0) ?
@@ -145,7 +146,6 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="e">event args</param>
         private void SplashScreen_Shown(object sender, EventArgs e)
         {
-            Windows.SetTopMost(this);
         }
 
         /// <summary>

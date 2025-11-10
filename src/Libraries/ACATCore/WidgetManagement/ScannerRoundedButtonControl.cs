@@ -11,7 +11,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.WidgetManagement
+namespace ACAT.Core.WidgetManagement
 {
     /// <summary>
     /// A button with rounded corners whose radius can be configured
@@ -36,6 +36,19 @@ namespace ACAT.Lib.Core.WidgetManagement
             this.FlatStyle = FlatStyle.Flat;
             //this.Dock = DockStyle.Fill;
             this.EnabledChanged += ScannerButtonControl_EnabledChanged;
+        }
+
+        public ScannerRoundedButtonControl(
+            string name,
+            string label,
+            string command,
+            string fontname,
+            int fontsize,
+            bool bold) : this()
+        {
+            this.Name = name;
+            this.Text = label;
+            this.Font = new Font(fontname, fontsize, bold ? FontStyle.Bold : FontStyle.Regular);
         }
 
         /// <summary>
@@ -159,18 +172,14 @@ namespace ACAT.Lib.Core.WidgetManagement
         {
             e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
             base.OnPaint(e);
-            RectangleF Rect = new RectangleF(0, 0, this.Width, this.Height);
-            using (GraphicsPath GraphPath = GetRoundPath(Rect, BorderRadiusTopLeft, BorderRadiusBottomLeft, BorderRadiusTopRight, BorderRadiusBottomRight, BorderWidth))
-            {
-                //GraphicsPath GraphInnerPath = GetRoundPath(Rect, BorderRadiusLeft, BorderRadiusRight, BorderWidth);
-                //Pen pen = new Pen(BorderColor, BorderWidth);
-                this.Region = new Region(GraphPath);
-                using (Pen pen = new Pen(BorderColor, BorderWidth))
-                {
-                    pen.Alignment = PenAlignment.Inset;
-                    e.Graphics.DrawPath(pen, GraphPath);
-                }
-            }
+            RectangleF Rect = new(0, 0, this.Width, this.Height);
+            using GraphicsPath GraphPath = GetRoundPath(Rect, BorderRadiusTopLeft, BorderRadiusBottomLeft, BorderRadiusTopRight, BorderRadiusBottomRight, BorderWidth);
+            //GraphicsPath GraphInnerPath = GetRoundPath(Rect, BorderRadiusLeft, BorderRadiusRight, BorderWidth);
+            //Pen pen = new Pen(BorderColor, BorderWidth);
+            this.Region = new Region(GraphPath);
+            using Pen pen = new(BorderColor, BorderWidth);
+            pen.Alignment = PenAlignment.Inset;
+            e.Graphics.DrawPath(pen, GraphPath);
         }
 
         /// <summary>
@@ -190,16 +199,16 @@ namespace ACAT.Lib.Core.WidgetManagement
             float rlt = radiusTopLeft / 2f;
 
             radiusBottomLeft = (int)Math.Max((Math.Min(radiusBottomLeft, Math.Min(Rect.Width, Rect.Height)) - width), 1);
-            float rlb = radiusBottomLeft / 2f;
+            _ = radiusBottomLeft / 2f;
 
             radiusTopRight = (int)Math.Max((Math.Min(radiusTopRight, Math.Min(Rect.Width, Rect.Height)) - width), 1);
-            float rrt = radiusTopRight / 2f;
+            _ = radiusTopRight / 2f;
 
             radiusBottomRight = (int)Math.Max((Math.Min(radiusBottomRight, Math.Min(Rect.Width, Rect.Height)) - width), 1);
-            float rrb = radiusBottomRight / 2f;
+            _ = radiusBottomRight / 2f;
 
             float w2 = width / 2f;
-            GraphicsPath GraphPath = new GraphicsPath();
+            GraphicsPath GraphPath = new();
             //Top-Left Arc
             GraphPath.AddArc(Rect.X + w2, Rect.Y + w2, radiusTopLeft, radiusTopLeft, 180, 90);
 
@@ -218,12 +227,12 @@ namespace ACAT.Lib.Core.WidgetManagement
             return GraphPath;
         }
 
-        private void ScannerButtonControl_EnabledChanged(object sender, System.EventArgs e)
+        private void ScannerButtonControl_EnabledChanged(object sender, EventArgs e)
         {
             if (Image != null && grayscale != null)
             {
                 color = new Bitmap(Image);
-                Bitmap c = new Bitmap(Image);
+                Bitmap c = new(Image);
                 int x, y;
                 // Loop through the images pixels to reset color.
                 for (x = 0; x < c.Width; x++)

@@ -1,4 +1,6 @@
-﻿namespace ACAT.Lib.Extension
+﻿using ACATResources;
+
+namespace ACAT.Extension
 {
     partial class ScanTimeAdjustForm
     {
@@ -30,13 +32,13 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.B8 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B7 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B6 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B5 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B4 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B8 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B7 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B6 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B5 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B4 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B3 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B2 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.labelScanSpeed = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -261,7 +263,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(876, 44);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Adjust Scanning Speed";
+            this.label1.Text = StringResources.AdjustScanningSpeed;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ScanTimeAdjustForm

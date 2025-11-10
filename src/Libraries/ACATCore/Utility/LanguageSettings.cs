@@ -5,10 +5,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
+using ACAT.Core.PreferencesManagement;
 using System;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Language-specific settings, loaded from a file
@@ -80,6 +80,11 @@ namespace ACAT.Lib.Core.Utility
         public bool IsTerminatorChar(char ch)
         {
             return TerminatorChars.IndexOf(ch) >= 0;
+        }
+
+        public override bool ResetToDefault()
+        {
+            return true;
         }
 
         /// <summary>

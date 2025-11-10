@@ -1,9 +1,9 @@
-﻿using ACAT.Lib.Core.Utility;
+﻿using ACAT.Core.Utility;
 using System;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Utils
 {
     /// <summary>
     /// Docks a scanner to a specified parent window at a specified
@@ -85,7 +85,7 @@ namespace ACAT.Lib.Core.PanelManagement
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug(ex.ToString());
+                    Log.Exception(ex.ToString());
                     _automationElementDockTo = null;
                 }
             }
@@ -124,7 +124,7 @@ namespace ACAT.Lib.Core.PanelManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -143,8 +143,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         private void handleDockCenter()
         {
-            User32Interop.RECT windowRect;
-            User32Interop.GetWindowRect(_windowHandleDockTo, out windowRect);
+            User32Interop.GetWindowRect(_windowHandleDockTo, out User32Interop.RECT windowRect);
 
             switch (_dockPosition)
             {
@@ -163,8 +162,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         private void handleDockLeft()
         {
-            User32Interop.RECT windowRect;
-            User32Interop.GetWindowRect(_windowHandleDockTo, out windowRect);
+            User32Interop.GetWindowRect(_windowHandleDockTo, out User32Interop.RECT windowRect);
 
             int screenLeft = Screen.FromControl(_form).Bounds.Left;
             int parentWidth = windowRect.right - windowRect.left;
@@ -205,8 +203,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         private void handleDockRight()
         {
-            User32Interop.RECT windowRect;
-            User32Interop.GetWindowRect(_windowHandleDockTo, out windowRect);
+            User32Interop.GetWindowRect(_windowHandleDockTo, out User32Interop.RECT windowRect);
 
             int screenWidth = Screen.FromControl(_form).Bounds.Width;
             int parentWidth = windowRect.right - windowRect.left;
@@ -218,7 +215,7 @@ namespace ACAT.Lib.Core.PanelManagement
             {
                 if (spaceLeftHoriz < _form.Width)
                 {
-                    var parentFormLeft = (screenWidth - _form.Width - parentWidth);
+                    var parentFormLeft = screenWidth - _form.Width - parentWidth;
                     User32Interop.MoveWindow(_windowHandleDockTo, parentFormLeft, windowRect.top, parentWidth, parentHeight, true);
                     User32Interop.GetWindowRect(_windowHandleDockTo, out windowRect);
                 }
@@ -280,7 +277,7 @@ namespace ACAT.Lib.Core.PanelManagement
             }
 
             int screenHeight = Screen.FromControl(_form).Bounds.Height;
-            if ((_form.Top + _form.Height) > screenHeight)
+            if (_form.Top + _form.Height > screenHeight)
             {
                 _form.Top = screenHeight - _form.Height;
             }

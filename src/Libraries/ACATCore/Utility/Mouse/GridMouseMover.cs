@@ -4,7 +4,10 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 ////////////////////////////////////////////////////////////////////////////
-namespace ACAT.Lib.Core.Utility
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace ACAT.Core.Utility.Mouse
 {
     /// <summary>
     /// Handles mouse scanning across the display. Methods in
@@ -75,16 +78,18 @@ namespace ACAT.Lib.Core.Utility
         /// Gets/sets speed of scanning of rectangle (1 to 500)
         /// </summary>
         public double GridRectangleSpeed { get; set; }
+        public int CursorX { get { return Cursor.Position.X;} }
+
+        public int CursorY { get { return Cursor.Position.Y; } }
+
+        public Point CursorPos { get { return Cursor.Position; } }
 
         /// <summary>
         /// Call this when the user activates the switch trigger
         /// </summary>
         public void Actuate()
         {
-            if (_window != null)
-            {
-                _window.Actuate();
-            }
+            _window?.Actuate();
         }
 
         /// <summary>
@@ -95,7 +100,6 @@ namespace ACAT.Lib.Core.Utility
         {
             _window = new MouseGridScanWindow
             {
-                EnableVerticalGridRectangle = EnableVerticalGridRectangle,
                 GridLineCycles = GridLineCycles,
                 GridLineSpeed = GridLineSpeed,
                 GridLineThickness = GridLineThickness,

@@ -5,13 +5,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.UserManagement;
+using ACAT.Core.UserManagement;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Useful resource-related functions
@@ -43,7 +43,11 @@ namespace ACAT.Lib.Core.Utility
         {
             var dirs = Directory.EnumerateDirectories(SmartPath.ApplicationPath);
 
-            var list = new List<CultureInfo>();
+            var list = new List<CultureInfo>
+            {
+                //Always add the current culture to the list
+                CultureInfo.DefaultThreadCurrentUICulture
+            };
 
             var currentResourcesDir = FileUtils.GetResourcesDir();
             var lastIndex = currentResourcesDir.LastIndexOf("\\");
@@ -86,7 +90,7 @@ namespace ACAT.Lib.Core.Utility
         /// under the ACAT application folder
         /// </summary>
         /// <returns>List of language folders</returns>
-        public static IEnumerable<String> GetInstalledLanugageDirectories()
+        public static IEnumerable<String> GetInstalledLangugageDirectories()
         {
             var dirs = Directory.EnumerateDirectories(SmartPath.ApplicationPath);
 
@@ -98,16 +102,19 @@ namespace ACAT.Lib.Core.Utility
                 {
                     var lastIndex = dir.LastIndexOf("\\");
                     var resourcesDir = dir.Substring(lastIndex + 1);
-                    var cultureInfo = new CultureInfo(resourcesDir);
 
-                    // the above statement will throw an exception if
-                    // the folder is not a language name or a two-letter
-                    // iso name
-                    list.Add(dir);
+                    if (resourcesDir.Length == 2 && (resourcesDir.CompareTo("en") != -1 || resourcesDir.CompareTo("es") != -1)) 
+                    {
+                        var cultureInfo = new CultureInfo(resourcesDir);
+                        // the above statement will throw an exception if
+                        // the folder is not a language name or a two-letter
+                        // iso name
+                        list.Add(dir);
+                    }
                 }
                 catch (Exception ex)
                 {
-                    Log.Debug("Language detect: Skipping folder " + dir + ". " + ex.Message);
+                    Log.Verbose("Language detect: Skipping folder " + dir + ". " + ex.Message);
                 }
             }
 
@@ -122,12 +129,12 @@ namespace ACAT.Lib.Core.Utility
             var defaultUserBaseDir = UserManager.BaseUserInstallDir + "\\" + UserManager.DefaultUserName;
             var installBaseDir = (String.IsNullOrEmpty(baseDir)) ? defaultUserBaseDir : baseDir;
             var srcDir = Path.Combine(SmartPath.ApplicationPath, installBaseDir,
-                CultureInfo.DefaultThreadCurrentUICulture.Name);
+                CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName);
             String language;
 
             if (Directory.Exists(srcDir))
             {
-                language = CultureInfo.DefaultThreadCurrentUICulture.Name;
+                language = CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName;
             }
             else
             {
@@ -156,8 +163,7 @@ namespace ACAT.Lib.Core.Utility
         /// <returns>true if it is </returns>
         public static bool IsCurrentCulture(String cultureName)
         {
-            return (String.Compare(cultureName, CultureInfo.DefaultThreadCurrentUICulture.Name, true) == 0 ||
-                    String.Compare(cultureName, CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, true) == 0);
+            return (String.Compare(cultureName, CultureInfo.DefaultThreadCurrentUICulture.TwoLetterISOLanguageName, true) == 0);
         }
 
         /// <summary>
@@ -170,8 +176,7 @@ namespace ACAT.Lib.Core.Utility
             var installedCultures = EnumerateInstalledLanguages();
             foreach (var c in installedCultures)
             {
-                if (String.Compare(ci.Name, c.Name, true) == 0 ||
-                    String.Compare(c.TwoLetterISOLanguageName, ci.TwoLetterISOLanguageName, true) == 0)
+                if (String.Compare(c.TwoLetterISOLanguageName, ci.TwoLetterISOLanguageName, true) == 0)
                 {
                     return true;
                 }
@@ -203,69 +208,39 @@ namespace ACAT.Lib.Core.Utility
         }
 
         /// <summary>
-        /// Sets the specified culture as the default culture.
-        /// </summary>
-        /// <param name="ci"></param>
-        public static void SetCulture(CultureInfo ci)
-        {
-            CultureInfo.DefaultThreadCurrentCulture = ci;
-            CultureInfo.DefaultThreadCurrentUICulture = ci;
-        }
-
-        /// <summary>
         /// Set culture to the language specified
         /// </summary>
         /// <param name="language">language to set</param>
-        public static void SetCulture(String language)
+        public static void SetCulture(String language = "en")
         {
             try
             {
                 language = language.Trim();
-                var resourcesDir = FileUtils.GetResourcesDir();
+
+                // Check to make sure we have assets avaialable for the requested culture.
+                // If not, fallback to english.
+
+                CultureInfo culture = CultureInfo.CreateSpecificCulture(language);
+
+                var resourcesDir = FileUtils.GetResourcesDir(culture.TwoLetterISOLanguageName);
                 var resourceDll = Path.Combine(resourcesDir, ACATResourcesDLLName);
 
-                if (String.IsNullOrEmpty(language.Trim()))
-                {
-                    if (!Directory.Exists(resourcesDir) || !File.Exists(resourceDll))
-                    {
-                        SetEnglishCulture();
-                    }
-                    else
-                    {
-                        CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CurrentCulture;
-                        CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.CurrentCulture;
-                    }
-
-                    return;
-                }
-
-                var culture = CultureInfo.CreateSpecificCulture(language);
-                CultureInfo.DefaultThreadCurrentCulture = culture;
-                CultureInfo.DefaultThreadCurrentUICulture = culture;
-
-                resourcesDir = FileUtils.GetResourcesDir();
-                resourceDll = Path.Combine(resourcesDir, ACATResourcesDLLName);
-
+                //TODO: Code Smell
                 if (!Directory.Exists(resourcesDir) || !File.Exists(resourceDll))
                 {
-                    SetEnglishCulture();
+                    Log.Warn(language + " resources not found.  Will use English as the default");
+                    culture = CultureInfo.CreateSpecificCulture("en");
                 }
+
+                CultureInfo.DefaultThreadCurrentCulture = culture;
+                CultureInfo.DefaultThreadCurrentUICulture = culture;
             }
             catch (Exception ex)
             {
                 Log.Error("Error setting culture to " + language + ", " + ex + ", will use English as the default");
-                SetEnglishCulture();
+                CultureInfo.DefaultThreadCurrentCulture = CultureInfo.CreateSpecificCulture("en");
+                CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.CreateSpecificCulture("en");
             }
-        }
-
-        /// <summary>
-        /// Sets the culture to English (which is the default)
-        /// </summary>
-        public static void SetEnglishCulture()
-        {
-            var enCulture = CultureInfo.CreateSpecificCulture("en");
-            CultureInfo.DefaultThreadCurrentCulture = enCulture;
-            CultureInfo.DefaultThreadCurrentUICulture = enCulture;
         }
     }
 }

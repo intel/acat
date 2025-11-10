@@ -5,14 +5,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.UserControlManagement;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.PanelManagement.PanelConfig;
+using ACAT.Core.UserControlManagement;
+using ACAT.Core.Utility;
 using System;
 using System.Collections.Generic;
-using System.Windows.Automation;
+using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
     /// How is a panel being displayed?
@@ -54,7 +57,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// The root directory under ACAT from where the scanners/dialog/menus
         /// are loaded
         /// </summary>
-        public static String UiRootDir = "UI";
+        public static String UiRootDir = "";
 
         /// <summary>
         /// Singleton instance of PanelManager
@@ -64,7 +67,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <summary>
         /// Represents the stack of panels
         /// </summary>
-        private readonly Stack<PanelStack> _stack = new Stack<PanelStack>();
+        private readonly Stack<PanelStack> _stack = new();
 
         /// <summary>
         /// Is calibration in progress?
@@ -150,7 +153,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public static PanelManager Instance
         {
-            get { return _instance ?? (_instance = new PanelManager()); }
+            get { return _instance ??= new PanelManager(); }
         }
 
         /// <summary>
@@ -244,7 +247,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public void CloseCurrentPanel()
         {
-            Log.Debug();
+            Log.Verbose();
 
             if (_stack.Count > 0)
             {
@@ -289,6 +292,11 @@ namespace ACAT.Lib.Core.PanelManagement
             return getTopOfStack().CreatePanel(panelClass);
         }
 
+        public Form CreatePanelFromConfig(PanelConfigMapEntry panelConfig, string title)
+        {
+            return getTopOfStack().CreatePanelFromConfig(panelConfig, title);
+        }
+
         /// <summary>
         /// Creates the panel with the specified panel class
         /// </summary>
@@ -324,22 +332,10 @@ namespace ACAT.Lib.Core.PanelManagement
             return getTopOfStack().CreatePanel(panelClass, panelTitle, startupArg);
         }
 
-        /// <summary>
-        /// Creates the panel with the specified panel class
-        /// </summary>
-        /// <param name="panelClass">the panel class</param>
-        /// <param name="panelTitle">panel title</param>
-        /// <param name="winHandle">target window handle</param>
-        /// <param name="focusedElement">currently focused element</param>
-        /// <returns>the form for the panel</returns>
-        public Form CreatePanel(
-            ref String panelClass,
-            String panelTitle,
-            IntPtr winHandle,
-            AutomationElement focusedElement)
-        {
-            return getTopOfStack().CreatePanel(ref panelClass, panelTitle, winHandle, focusedElement);
-        }
+        //public Form CreatePanel(String panelClass, String panelConfig, String panelTitle, StartupArg startupArg)
+        //{
+        //    return getTopOfStack().CreatePanel(panelClass, panelConfig, panelTitle, startupArg);
+        //}
 
         /// <summary>
         /// Disposes resources
@@ -392,24 +388,21 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         /// <param name="extensionDirs">extension dirs to walk</param>
         /// <returns>true on success</returns>
-        public bool Init(IEnumerable<String> extensionDirs)
+        public bool Init(IEnumerable<string> extensionDirs)
         {
             PanelConfigMap.Reset();
 
             var retVal = PanelConfigMap.Load(extensionDirs);
-            if(!retVal)
+            if (!retVal)
                 return false;
 
             retVal = UserControlConfigMap.Load(extensionDirs);
             if (!retVal)
                 return false;
 
-            PanelConfigMap.Load(Preferences.ApplicationAssembly);
+            PanelConfigMap.Load(SystemPreferences.ApplicationAssembly);
 
-            if (EvtStartupAddForms != null)
-            {
-                EvtStartupAddForms(this, new EventArgs());
-            }
+            EvtStartupAddForms?.Invoke(this, new EventArgs());
 
             EvtStartupAddUserControls?.Invoke(this, new EventArgs());
 
@@ -550,10 +543,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="arg"></param>
         internal void NotifyPanelPreShow(PanelPreShowEventArg arg)
         {
-            if (EvtPanelPreShow != null)
-            {
-                EvtPanelPreShow(this, arg);
-            }
+            EvtPanelPreShow?.Invoke(this, arg);
         }
 
         /// <summary>
@@ -561,10 +551,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         internal void NotifyQuitApplication()
         {
-            if (EvtAppQuit != null)
-            {
-                EvtAppQuit(_instance, new EventArgs());
-            }
+            EvtAppQuit?.Invoke(_instance, new EventArgs());
         }
 
         /// <summary>
@@ -576,7 +563,7 @@ namespace ACAT.Lib.Core.PanelManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Debug();
+                Log.Verbose();
 
                 Context.EvtCultureChanged -= Context_EvtCultureChanged;
 
@@ -689,6 +676,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// Returns the top of stack in the stack of panels
         /// </summary>
         /// <returns>PanelStack object</returns>
+        [DebuggerStepThrough]
         private PanelStack getTopOfStack()
         {
             PanelStack panelStack;
@@ -714,10 +702,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="arg">event args</param>
         private void panelStack_EvtScannerClosed(object sender, ScannerCloseEventArg arg)
         {
-            if (EvtScannerClosed != null)
-            {
-                EvtScannerClosed(sender, arg);
-            }
+            EvtScannerClosed?.Invoke(sender, arg);
         }
 
         /// <summary>
@@ -732,16 +717,10 @@ namespace ACAT.Lib.Core.PanelManagement
             if (arg.Scanner.PanelClass == "Alphabet")
             {
                 Windows.WidestScannerWidth = arg.Scanner.Form.Width;
-                if (EvtAlphabetScannerWidthChanged != null)
-                {
-                    EvtAlphabetScannerWidthChanged(arg.Scanner.Form.Width);
-                }
+                EvtAlphabetScannerWidthChanged?.Invoke(arg.Scanner.Form.Width);
             }
 
-            if (EvtScannerShow != null)
-            {
-                EvtScannerShow(sender, arg);
-            }
+            EvtScannerShow?.Invoke(sender, arg);
         }
 
         /// <summary>
@@ -753,10 +732,7 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             Log.Debug("Display Resolution changed. Working area is " + Screen.PrimaryScreen.WorkingArea);
 
-            if (EvtDisplaySettingsChanged != null)
-            {
-                EvtDisplaySettingsChanged(sender, e);
-            }
+            EvtDisplaySettingsChanged?.Invoke(sender, e);
         }
     }
 }

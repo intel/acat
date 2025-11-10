@@ -1,87 +1,46 @@
-﻿////////////////////////////////////////////////////////////////////////////
-//
-// Copyright 2013-2019; 2023 Intel Corporation
+﻿// Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
-//
-////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.AnimationManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.UserControlManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Extension.UI;
+using ACAT.Extension.UI.UserControls;
+using ACATResources;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Extension
+namespace ACAT.Extension
 {
-    /// <summary>
-    /// The tryout app that allows the user to practice switch scanning and
-    /// also set a suitable scanning speed
-    /// </summary>
-    [DescriptorAttribute("61E8A29A-5076-4047-A9F5-89E7E4903407",
+    [ClassDescriptor("61E8A29A-5076-4047-A9F5-89E7E4903407",
                         "UserControlDefaultTryout",
                     "User Control to adjust the scan timing")]
-    public partial class UserControlDefaultTryout : UserControl, IUserControl
+    public partial class UserControlDefaultTryout : KeyboardUserControl
     {
         private int _currentWordIndex = 0;
         private int _index = 0;
-        private UserControlKeyboardCommon _keyboardCommon;
 
         private readonly int _prevScanTime = CoreGlobals.AppPreferences.ScanTime;
 
-        private readonly List<String> _words = new List<string>();
+        private readonly List<String> _words = new();
 
-        public UserControlDefaultTryout()
+        public UserControlDefaultTryout() : base()
         {
             InitializeComponent();
 
-            _words.Add("tab");
-            _words.Add("eat");
-            _words.Add("tea");
-            _words.Add("ate");
-            _words.Add("bet");
-            _words.Add("bat");
-
-            // beta
+            _words.Add(StringResources.TryoutWord1);
+            _words.Add(StringResources.TryoutWord2);
+            _words.Add(StringResources.TryoutWord3);
+            _words.Add(StringResources.TryoutWord4);
+            _words.Add(StringResources.TryoutWord5);
+            _words.Add(StringResources.TryoutWord6);
         }
 
-        public event AnimationPlayerStateChanged EvtPlayerStateChanged;
-
-        /// <summary>
-        /// Gets the descriptor for this class
-        /// </summary>
-        public IDescriptor Descriptor
+        protected override bool HandleInitialize()
         {
-            get { return DescriptorAttribute.GetDescriptor(GetType()); }
-        }
-
-        /// <summary>
-        /// Gets the snchronization object
-        /// </summary>
-        public SyncLock SyncObj
-        {
-            get { return _keyboardCommon.SyncObj; }
-        }
-
-        public IUserControlCommon UserControlCommon
-        {
-            get
-            {
-                return _keyboardCommon;
-            }
-        }
-
-        public bool Initialize(UserControlConfigMapEntry mapEntry, TextController textController, IScannerPanel scanner)
-        {
-            _keyboardCommon = new UserControlKeyboardCommon(this, mapEntry, textController, scanner);
-
-            bool retVal = _keyboardCommon.Initialize();
-
-            _keyboardCommon.AnimationManager.EvtPlayerStateChanged += AnimationManager_EvtPlayerStateChanged;
-
             richTextBox.AppendText(_words[_currentWordIndex], Color.DimGray);
 
             customSliderScanningSpeed.ValueChanged += CustomSliderScanningSpeed_ValueChanged;
@@ -89,32 +48,16 @@ namespace ACAT.Lib.Extension
             customSliderScanningSpeed.MouseUp += CustomSliderScanningSpeed_MouseUp;
             customSliderScanningSpeed.Minimum = 1;
             customSliderScanningSpeed.Maximum = 100;
-            customSliderScanningSpeed.Value = (int)(Common.AppPreferences.ScanTime / 100);
+            customSliderScanningSpeed.Value = Common.AppPreferences.ScanTime / 100;
 
             checkBoxDontShowThisOnStartup.Checked = false;
 
             checkBoxDontShowThisOnStartup.CheckStateChanged += CheckBoxDontShowThisOnStartup_CheckStateChanged;
 
-            return retVal;
+            return true;
         }
 
-        public void OnLoad()
-        {
-            _keyboardCommon.OnLoad();
-            _keyboardCommon.AnimationManager.OnLoad(_keyboardCommon.RootWidget);
-        }
-
-        public void OnPause()
-        {
-            _keyboardCommon.OnPause();
-        }
-
-        public void OnResume()
-        {
-            _keyboardCommon.OnResume();
-        }
-
-        public void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
+        public override void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
         {
             var wordToType = _words[_currentWordIndex];
 
@@ -129,9 +72,9 @@ namespace ACAT.Lib.Extension
 
                         if (_index == wordToType.Length)
                         {
-                            (_keyboardCommon.ScannerForm as IScannerPanel).OnPause();
+                            (_userControlCommon.ScannerForm as IScannerPanel).OnPause();
 
-                            var toastForm = new ToastForm2("GREAT JOB!", "Continue practicing \nor hit \"Next\" to continue");
+                            var toastForm = new ToastForm2(StringResources.TryoutAlert, StringResources.TryoutSuccess);
                             Windows.SetWindowPosition(toastForm, Windows.WindowPosition.CenterScreen);
                             toastForm.ShowDialog(this);
 
@@ -145,7 +88,7 @@ namespace ACAT.Lib.Extension
                             _index = 0;
                             richTextBox.Text = String.Empty;
                             richTextBox.AppendText(_words[_currentWordIndex], Color.DimGray);
-                            (_keyboardCommon.ScannerForm as IScannerPanel).OnResume();
+                            (_userControlCommon.ScannerForm as IScannerPanel).OnResume();
                             return;
                         }
                     }));
@@ -155,16 +98,11 @@ namespace ACAT.Lib.Extension
             handled = true;
         }
 
-        private void AnimationManager_EvtPlayerStateChanged(object sender, PlayerStateChangedEventArgs e)
-        {
-            EvtPlayerStateChanged?.Invoke(this, e);
-        }
 
         private void buttonDone_Click(object sender, EventArgs e)
         {
             if (CoreGlobals.AppPreferences.ScanTime != _prevScanTime)
             {
-                
                 if (!DialogUtils.ConfirmScanner(null, "Save scan speed?"))
                 {
                     CoreGlobals.AppPreferences.ScanTime = _prevScanTime;
@@ -173,19 +111,20 @@ namespace ACAT.Lib.Extension
 
             if (checkBoxDontShowThisOnStartup.Checked)
             {
-                ConfirmBoxSingleOption.ShowDialog("Refer to the ACAT User Guide on how to re-enable this screen", "OK", _keyboardCommon.ScannerForm);
+                ConfirmBoxOneOption.ShowDialog("Refer to the ACAT User Guide on how to re-enable this screen",
+                    "", "OK", _userControlCommon.ScannerForm);
             }
 
             CoreGlobals.AppPreferences.Save();
 
-            _keyboardCommon.ScannerForm.Close();
+            _userControlCommon.ScannerForm.Close();
         }
 
         private void changeScanningSpeed()
         {
             Invoke(new MethodInvoker(delegate
             {
-                (_keyboardCommon.ScannerForm as IScannerPanel).OnPause();
+                (_userControlCommon.ScannerForm as IScannerPanel).OnPause();
 
                 decimal sliderVal = customSliderScanningSpeed.Value;
                 int sliderValRounded = (int)(sliderVal * 100);
@@ -194,7 +133,7 @@ namespace ACAT.Lib.Extension
 
                 Common.AppPreferences.NotifyPreferencesChanged();
 
-                (_keyboardCommon.ScannerForm as IScannerPanel).OnResume();
+                (_userControlCommon.ScannerForm as IScannerPanel).OnResume();
             }));
         }
 
@@ -214,7 +153,7 @@ namespace ACAT.Lib.Extension
 
                 CoreGlobals.AppPreferences.Save();
 
-                _keyboardCommon.ScannerForm.Close();
+                _userControlCommon.ScannerForm.Close();
             }));
         }
 

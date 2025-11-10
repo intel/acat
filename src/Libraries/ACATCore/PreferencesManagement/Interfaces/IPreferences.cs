@@ -12,7 +12,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-namespace ACAT.Lib.Core.PreferencesManagement
+namespace ACAT.Core.PreferencesManagement.Interfaces
 {
     /// <summary>
     /// Implement this interface if the class supports Preferences.
@@ -26,5 +26,7 @@ namespace ACAT.Lib.Core.PreferencesManagement
         /// </summary>
         /// <returns>true on sucess</returns>
         bool Save();
+
+        bool ResetToDefault();
     }
 }

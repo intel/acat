@@ -5,17 +5,21 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.ActuatorManagement;
-using ACAT.Lib.Core.AnimationManagement;
-using ACAT.Lib.Core.PanelManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
-using ACAT.Lib.Core.Widgets;
+using ACAT.Core.ActuatorManagement;
+using ACAT.Core.AnimationManagement;
+using ACAT.Core.PanelManagement;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.PanelManagement.PanelConfig;
+using ACAT.Core.UserControlManagement.Interfaces;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement;
+using ACAT.Core.Widgets;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.UserControlManagement
+namespace ACAT.Core.UserControlManagement
 {
     /// <summary>
     /// Used by scanners to manage the usercontrols they host.
@@ -28,13 +32,13 @@ namespace ACAT.Lib.Core.UserControlManagement
         private int _iterations = 1;
         private volatile bool _playerTransitioned = false;
 
-        private IScannerPanel _scannerPanel;
+        private readonly IScannerPanel _scannerPanel;
         private volatile bool _stopTopLevelAnimation = false;
 
-        private TextController _textController;
-        private List<IUserControl> _userControls = new List<IUserControl>();
+        private readonly TextController _textController;
+        private readonly List<IUserControl> _userControls = new();
 
-        private Dictionary<Guid, IUserControl> _userControlCache = new Dictionary<Guid, IUserControl>();
+        private readonly Dictionary<Guid, IUserControl> _userControlCache = new();
 
         public UserControlManager(IScannerPanel scannerPanel, TextController textController)
         {
@@ -88,7 +92,7 @@ namespace ACAT.Lib.Core.UserControlManagement
             }
             catch (Exception es)
             {
-                Log.Debug("Error geting widgets: " + es.ToString());
+                Log.Exception("Error geting widgets: " + es.ToString());
             }
             return Widgets;
         }
@@ -116,11 +120,11 @@ namespace ACAT.Lib.Core.UserControlManagement
 
             _playerTransitioned = false;
 
-            var retVal = String.IsNullOrEmpty(userControlKeyName) ? false : addUserControlByKey(parent, userControlKeyName, tag);
+            var retVal = !String.IsNullOrEmpty(userControlKeyName) && addUserControlByKey(parent, userControlKeyName, tag);
 
             if (!retVal)
             {
-                retVal = String.IsNullOrEmpty(userControlName) ? false : addUserControlByName(parent, userControlName, tag);
+                retVal = !String.IsNullOrEmpty(userControlName) && addUserControlByName(parent, userControlName, tag);
             }
 
             return retVal;
@@ -152,7 +156,7 @@ namespace ACAT.Lib.Core.UserControlManagement
 
             foreach (var userControl in _userControls)
             {
-                Log.Debug("CALIBTEST calling onPause for " + userControl.Descriptor.Name);
+                Log.Verbose("CALIBTEST calling onPause for " + userControl.Descriptor.Name);
                 userControl.OnPause();
             }
         }
@@ -165,7 +169,7 @@ namespace ACAT.Lib.Core.UserControlManagement
 
             foreach (var userControl in _userControls)
             {
-                Log.Debug("CALIBTEST. Calling onResume for uc" + userControl.Descriptor.Name);
+                Log.Verbose("CALIBTEST. Calling onResume for uc" + userControl.Descriptor.Name);
                 userControl.OnResume();
             }
 
@@ -196,18 +200,15 @@ namespace ACAT.Lib.Core.UserControlManagement
 
                     list.RemoveAt(list.Count - 1);
 
-                    Log.Debug("MLEAK: Removed last entry. list.Count is " + list.Count);
-
                     removeUserControl(parent, userControl);
                 }
                 else
                 {
-                    Log.Debug("MLEAK: list.Count is already zero");
-
+                    Log.Warn("MLEAK: list.Count is already zero");
                 }
             }
 
-            return (guid != Guid.Empty) ? AddUserControlByGuid(parent, guid) : false;
+            return (guid != Guid.Empty) && AddUserControlByGuid(parent, guid);
         }
 
         public bool PushUserControlByKeyOrName(Control parent, String userControlKeyName, String userControlName, bool replaceCurrent = false)
@@ -238,8 +239,6 @@ namespace ACAT.Lib.Core.UserControlManagement
                 {
                     list.Add(guid);
                 }
-
-                Log.Debug("MLEAK: Added guid " + guid + ", List cocunt is " + list.Count);
 
                 removeUserControl(parent, userControl);
             }
@@ -272,7 +271,6 @@ namespace ACAT.Lib.Core.UserControlManagement
 
         private bool addUserControlByKey(Control parent, String userControlKeyName, object tag = null)
         {
-            bool retVal = true;
             String userControlName = String.Empty;
 
             if (String.IsNullOrEmpty(userControlKeyName))
@@ -280,6 +278,7 @@ namespace ACAT.Lib.Core.UserControlManagement
                 return false;
             }
 
+            bool retVal;
             try
             {
                 var panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(_scannerPanel.PanelClass);
@@ -299,7 +298,7 @@ namespace ACAT.Lib.Core.UserControlManagement
             }
             catch (Exception ex)
             {
-                Log.Debug("Unable to load userControl " + userControlName + ", exception: " + ex.ToString());
+                Log.Exception("Unable to load userControl " + userControlName + ", exception: " + ex.ToString());
                 retVal = false;
             }
 
@@ -308,15 +307,14 @@ namespace ACAT.Lib.Core.UserControlManagement
 
         private bool addUserControlByName(Control parent, String userControlName, object tag = null)
         {
-            bool retVal = true;
-
+            bool retVal;
             try
             {
                 retVal = createAndInitializeUserControl(parent, userControlName, tag);
             }
             catch (Exception ex)
             {
-                Log.Debug("Unable to load userControl " + userControlName + ", exception: " + ex.ToString());
+                Log.Exception("Unable to load userControl " + userControlName + ", exception: " + ex.ToString());
                 retVal = false;
             }
 
@@ -329,13 +327,13 @@ namespace ACAT.Lib.Core.UserControlManagement
 
             if (!isTopLevel)
             {
-                Log.Debug("AP1: SETTING _PlayterTransitioned to TRUE");
+                Log.Verbose("AP1: SETTING _PlayerTransitioned to TRUE");
                 _playerTransitioned = true;
                 _iterationCount = 0;
             }
             else
             {
-                Log.Debug("AP1: SETTING _PlayterTransitioned to FALSE");
+                Log.Verbose("AP1: SETTING _PlayerTransitioned to FALSE");
                 _playerTransitioned = false;
             }
         }
@@ -347,7 +345,7 @@ namespace ACAT.Lib.Core.UserControlManagement
             {
                 var playerState = userControl.UserControlCommon.AnimationManager.GetPlayerState();
 
-                Log.Debug("userControl: " + userControl.Descriptor.Name + ", state: " + playerState);
+                Log.Verbose("userControl: " + userControl.Descriptor.Name + ", state: " + playerState);
 
                 if (playerState != PlayerState.Timeout && playerState != PlayerState.Interrupted)
                 {
@@ -381,21 +379,20 @@ namespace ACAT.Lib.Core.UserControlManagement
 
             var guid = mapEntry.UserControlId;
 
-            IUserControl iUserControl;
             UserControl userControl;
 
-            if (!_userControlCache.TryGetValue(guid, out iUserControl))
+            if (!_userControlCache.TryGetValue(guid, out IUserControl iUserControl))
             {
                 userControl = (UserControl)Activator.CreateInstance(mapEntry.UserControlType);
                 iUserControl = (userControl as IUserControl);
 
                 _userControlCache.Add(iUserControl.Descriptor.Id, iUserControl);
-                Log.Debug("Adding UserControl to cache: " + iUserControl.Descriptor.Name);
+                Log.Verbose("Adding UserControl to cache: " + iUserControl.Descriptor.Name);
             }
             else
             {
                 userControl = (iUserControl as UserControl);
-                Log.Debug("Got UserControl from cache: " + iUserControl.Descriptor.Name);
+                Log.Verbose("Got UserControl from cache: " + iUserControl.Descriptor.Name);
             }
 
             if (tag != null)
@@ -403,6 +400,11 @@ namespace ACAT.Lib.Core.UserControlManagement
                 userControl.Tag = tag;
             }
 
+            //// Only change the DockStyle if it's not already set.
+            //if (userControl.Dock == DockStyle.None)
+            //{
+            //    userControl.Dock = DockStyle.Top;
+            //}
             userControl.Dock = DockStyle.Fill;
 
             parent.Controls.Add(userControl);
@@ -425,12 +427,12 @@ namespace ACAT.Lib.Core.UserControlManagement
         private IUserControl getNextUserControl(IUserControl userControl)
         {
             int ii;
-            Log.Debug("AP1 Find next user control. Count: " + _userControls.Count);
+            Log.Verbose("AP1 Find next user control. Count: " + _userControls.Count);
             for (ii = 0; ii < _userControls.Count; ii++)
             {
                 if (_userControls[ii] == userControl)
                 {
-                    Log.Debug("AP1 Found! ii = " + ii);
+                    Log.Verbose("AP1 Found! ii = " + ii);
                     break;
                 }
             }
@@ -443,11 +445,16 @@ namespace ACAT.Lib.Core.UserControlManagement
                     ii = 0;
                 }
 
-                Log.Debug("AP1 Returning next user control " + _userControls[ii].Descriptor.Name);
+                Log.Verbose("AP1 Returning next user control " + _userControls[ii].Descriptor.Name);
                 return _userControls[ii];
             }
 
             return null;
+        }
+
+        public IUserControl getUserControlByGuid(String name)
+        {
+            return _userControls.Find(uc => uc.Descriptor.Name == name);
         }
 
         private void removeUserControl(Control parent, IUserControl userControl)
@@ -464,23 +471,23 @@ namespace ACAT.Lib.Core.UserControlManagement
 
         private void userControl_EvtPlayerStateChanged(IUserControl userControl, PlayerStateChangedEventArgs e)
         {
-            Log.Debug("AP1 playerStateChanged for " + userControl.Descriptor.Name + ", " + "newState: " + e.NewState);
+            Log.Verbose("AP1 playerStateChanged for " + userControl.Descriptor.Name + ", " + "newState: " + e.NewState);
 
             if (_playerTransitioned)
             {
-                Log.Debug("AP1: _playterTransitioned is TRUE.  Returning");
+                Log.Verbose("AP1: _playterTransitioned is TRUE.  Returning");
                 return;
             }
 
             if (_stopTopLevelAnimation)
             {
-                Log.Debug("AP1: _stopTopLevelanimation is TRUE.  Returning");
+                Log.Verbose("AP1: _stopTopLevelanimation is TRUE.  Returning");
                 return;
             }
 
             if (e.NewState == PlayerState.Timeout)
             {
-                Log.Debug("AP1 timeout for " + userControl.Descriptor.Name);
+                Log.Verbose("PlayerState timeout for " + userControl.Descriptor.Name);
                 var next = getNextUserControl(userControl);
                 if (next != null)
                 {
@@ -488,7 +495,7 @@ namespace ACAT.Lib.Core.UserControlManagement
 
                     if (_iterationCount < _iterations)
                     {
-                        Log.Debug("AP1 Calling start on " + next.Descriptor.Name);
+                        Log.Verbose("AP1 Calling start on " + next.Descriptor.Name);
                         next.UserControlCommon.AnimationManager.Start();
                     }
                 }

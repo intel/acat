@@ -7,10 +7,11 @@
 
 using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Automation;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     /// <summary>
     /// Encapsulates information about the currently active
@@ -69,19 +70,23 @@ namespace ACAT.Lib.Core.Utility
         /// Converts object to string
         /// </summary>
         /// <returns>String represntation of the object</returns>
-        [EnvironmentPermissionAttribute(SecurityAction.LinkDemand, Unrestricted = true)]
+        [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public override String ToString()
         {
             try
             {
-                return "FgHwnd: " + FgHwnd +
-                    ", title: " + Title +
-                    ", fgProcess: " + FgProcess.ProcessName +
-                    ", focusedClass: " + FocusedElement.Current.ClassName +
-                    ", newWindow: " + IsNewWindow +
-                    ", newFocus: " + IsNewFocusedElement;
+                string className;
+                try { className = FocusedElement?.Current.ClassName; }
+                catch (COMException) { className = "<timeout>"; }
+
+                string processName;
+                try { processName = FgProcess?.ProcessName; }
+                catch (Exception) { processName = "<unavailable>"; }
+
+                return $"FgHwnd: {FgHwnd}, title: {Title} , fgProcess: {processName}" +
+                    $", focusedClass: {className}, newWindow: {IsNewWindow}, newFocus: {IsNewFocusedElement}";
             }
-            catch (Exception)
+            catch
             {
                 return String.Empty;
             }

@@ -1,179 +1,111 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A0990D4E-F25B-430C-BDA3-40A72560B877}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ACATResources</RootNamespace>
-    <AssemblyName>ACATResources</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
-    <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <DefineConstants>TRACE;ENABLE_DIGITAL_VERIFICATION</DefineConstants>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
+    <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="UIAutomationClient" />
-    <Reference Include="UIAutomationTypes" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="R.cs" />
-    <Compile Include="ACATResources.en.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ACATResources.en.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="en\KeyboardABCUserControlBCI2.xml">
-      
-    </Content>
-    <Content Include="en\KeyboardEditUserControlBCI.xml">
-      
-    </Content>
-    <Content Include="en\KeyboardLockUserControlBCI.xml">
-      
-    </Content>
-    <Content Include="en\KeyboardModesUserControlBCI.xml">
-      
-    </Content>
-    <Content Include="en\KeyboardNumberNumericKeypadUserControl.xml">
-      
-    </Content>
-    <Content Include="en\KeyboardYesNoUserControlBCI2.xml">
-      
-    </Content>
-    <Content Include="en\MenuUserControlBCI.xml">
-      
-    </Content>
-    <Content Include="en\NumericUserControlBCI.xml">
-      
-    </Content>
-    <Content Include="en\PhrasesUserControlBCI.xml">
-      
-    </Content>
-    <Content Include="en\TalkApplicationBCIScannerNewUI.xml">
-      
-    </Content>
-    <Content Include="en\TTSYesNoUserControlBCI2.xml">
-      
-    </Content>
-    <Content Include="en\UserControlContainerForm.xml">
-      
-    </Content>
-    <Content Include="en\UserControlScreenLock.xml">
-      
-    </Content>
-    <Content Include="en\UserControlDefaultTryout.xml">
-      
-    </Content>
-    <Content Include="en\KeyboardAbcUserControl.xml">
-      
-    </Content>
-    <Content Include="en\ScanTimeAdjustForm.xml">
-      
-    </Content>
-    <Content Include="en\UserControlTalkInterfaceDesc.xml">
-      
-    </Content>
-    <Content Include="en\WordPredictionSetModeScanner.xml">
-      
-    </Content>
-    <Content Include="en\KeyboardNumbersUserControl.xml">
-      
-    </Content>
-    <Content Include="en\KeyboardEditUserControl.xml">
-      
-    </Content>
-    <Content Include="en\MainMenu.xml">
-      
-    </Content>
-    <Content Include="en\SentencePredictionUserControl.xml">
-      
-    </Content>
-    <Content Include="en\KeyboardQwertyUserControl.xml">
-      
-    </Content>
-    <Content Include="en\PanelConfigMap.xml">
-      
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="en\TalkApplicationScannerQwerty.xml">
-      
-    </Content>
-    <Content Include="en\UserControlConfigMap.xml">
-      
-    </Content>
-    <Content Include="en\WordPredictionUserControl.xml">
-      
-    </Content>
-    <Content Include="en\WordPredictionUserControlBCI.xml">
-      
-    </Content>
-    <Content Include="en\YesNoResponseScanner.xml">
-      
-    </Content>
-    <Content Include="en\YesNoScanner.xml">
-      
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="ACATResources.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ACATResources.en.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <ItemGroup>
+      <EmbeddedResource Update="StringResources.en.resx">
+        <Generator>PublicRexXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="StringResources.es.resx">
+        <Generator>PublicRexXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="StringResources.resx">
+        <Generator>PublicRexXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+    </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>call $(SolutionDir)deployRedist.bat $(TargetDir)\$(TargetFileName) $(SolutionDir)</PostBuildEvent>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+  
+  <!-- Copy Assets Directories -->
+  <ItemGroup>
+    <Assets Include="$(SolutionDir)Assets\**\*">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Assets>
+  </ItemGroup>
+  
+  <Target Name="CopyAssetFiles" AfterTargets="Build">
+    <Message Text="Copy Asssets Files" Importance="high" />
+    <MakeDir Directories="$(OutputPath)Assets\%(Assets.RecursiveDir)" />
+    <Copy 
+      SourceFiles="@(Assets)" 
+      DestinationFiles="$(OutputPath)Assets\%(Assets.RecursiveDir)%(Filename)%(Extension)" 
+      SkipUnchangedFiles="true" />
   </Target>
-  <Target Name="AfterBuild">
+  
+  <!-- Copy Default User Install Files -->
+  <ItemGroup>
+    <DefaultUserFiles Include="$(SolutionDir)\Applications\Install\Users\**\*">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </DefaultUserFiles>
+  </ItemGroup>
+  
+  <Target Name="CopyInstallFiles" AfterTargets="Build">
+    <Message Text="Copy Install Files" Importance="high" />
+    <Copy 
+      SourceFiles="@(DefaultUserFiles)" 
+      DestinationFiles="$(OutputPath)Install\Users\%(DefaultUserFiles.RecursiveDir)%(Filename)%(Extension)" 
+      SkipUnchangedFiles="true" />
   </Target>
-  -->
+  
+  <!-- Copy PanelConfigs -->
+  <ItemGroup>
+    <PanelConfigs Include="$(ProjectDir)\panelconfigs\**\*">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </PanelConfigs>
+  </ItemGroup>
+  
+  <Target Name="CopyPanelConfigs" AfterTargets="Build">
+    <Message Text="Copy Panel Config Files" Importance="high" />
+    <Copy 
+      SourceFiles="@(PanelConfigs)" 
+      DestinationFiles="$(OutputPath)\panelconfigs\%(PanelConfigs.RecursiveDir)%(Filename)%(Extension)" 
+      SkipUnchangedFiles="true" />
+    </Target>
+  
+  <!-- Copy English ConvAssist Static Files -->
+  <ItemGroup>
+    <ConvAssistStatic Include="$(SolutionDir)\Applications\Install\en\**\*">
+      <Lang>en</Lang>
+      <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </ConvAssistStatic>
+    <ConvAssistStatic Include="$(SolutionDir)\Applications\Install\es\**\*">
+      <Lang>es</Lang>
+      <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </ConvAssistStatic>
+  </ItemGroup>
+  <Target Name="CopyStaticConvAssist" AfterTargets="Build">
+    <Message Text="Copy Static ConvAssist Files" Importance="high" />
+    <!-- Copy files while preserving subfolders -->
+    <Copy
+      SourceFiles="@(ConvAssistStatic)"
+      DestinationFiles="$(OutputPath)%(ConvAssistStatic.Lang)\%(ConvAssistStatic.RecursiveDir)%(Filename)%(Extension)"  
+      SkipUnchangedFiles="true" />
+  </Target>
+  <!-- Copy ConvAssist Application -->
+  <Target Name="UnzipDependency" AfterTargets="Build">
+    <!-- Define paths -->
+    <PropertyGroup>
+      <ZipFile>$(SolutionDir)\Applications\Install\ConvAssistApp\ConvAssist.zip</ZipFile>
+      <ExtractedDir>$(BaseOutputPath)\UnzippedDependency\</ExtractedDir>
+      <UnzipFlagFile>$(ExtractedDir).unzipped</UnzipFlagFile>
+    </PropertyGroup>
+    <!-- Only unzip if the flag file doesn't exist -->
+    <Message Text="Unzipping dependency files from $(ZipFile) to $(ExtractedDir)" Condition="!Exists('$(UnzipFlagFile)')" Importance="high" />
+    <Exec Condition="!Exists('$(UnzipFlagFile)')" Command="powershell -Command &quot;Expand-Archive -Path '$(ZipFile)' -DestinationPath '$(ExtractedDir)' -Force&quot;" />
+    <Message Text="Unzipped dependency files to $(ExtractedDir)" Condition="!Exists('$(UnzipFlagFile)')" Importance="high" />
+    <!-- Create a flag file to avoid re-extraction -->
+    <WriteLinesToFile Condition="!Exists('$(UnzipFlagFile)')" File="$(UnzipFlagFile)" Lines="Unzipped on $(MSBuildThisFileFullPath)" Overwrite="true" />
+    <Message Text="Copy ConvAssist App" Importance="high" />
+    <!-- Copy contents to OutputPath -->
+    <ItemGroup>
+      <DependencyFiles Include="$(ExtractedDir)**\*" />
+    </ItemGroup>
+    <Message Text="Copying dependency files to output directory: $(OutDir)" Importance="high" />
+    <Copy SourceFiles="@(DependencyFiles)" DestinationFolder="$(OutDir)\ConvAssistApp\%(RecursiveDir)" SkipUnchangedFiles="true" />
+  </Target>
 </Project>

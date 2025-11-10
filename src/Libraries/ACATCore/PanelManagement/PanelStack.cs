@@ -5,17 +5,20 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Audit;
-using ACAT.Lib.Core.Utility;
+using ACAT.Core.Audit;
+using ACAT.Core.PanelManagement.Common;
+using ACAT.Core.PanelManagement.Interfaces;
+using ACAT.Core.PanelManagement.PanelConfig;
+using ACAT.Core.Utility;
 using System;
-using System.Reflection;
+using System.Linq;
 using System.Windows.Automation;
 using System.Windows.Forms;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement
 {
     /// <summary>
-    /// The panel stack reprsents a "stack" of panels (or
+    /// The panel stack represents a "stack" of panels (or
     /// scanners). This is similar to the stack model that Android
     /// uses to display activities.  When a scanner is displayed as the
     /// child of a parent scanner, the parent scanner is 'paused' (hidden).
@@ -70,7 +73,7 @@ namespace ACAT.Lib.Core.PanelManagement
         {
             get
             {
-                if (_currentForm == null || !(_currentForm is IPanel))
+                if (_currentForm == null || _currentForm is not IPanel)
                 {
                     return DisplayModeTypes.None;
                 }
@@ -95,6 +98,128 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public DisplayModeTypes PreShowPanelDisplayMode { get; private set; }
 
+
+        public void AppAgent_EvtPanelRequest(object sender, PanelRequestEventArgs args)
+        {
+            Log.Debug($"Panel Request: {args}");
+
+            if (_currentForm != null)
+            {
+                LogCurrentFormState();
+
+                if (!args.UseCurrentScreenAsParent && IsModalBlocked(_currentForm, args.TargetPanel as IPanel))
+                {
+                    Log.Warn("Model dialog open; request denied.");
+                    return;
+                }
+            }
+
+            string requestedPanelClass = ResolveRequestedPanel(args.PanelClass);
+
+            if (args.MonitorInfo.IsNewWindow)
+            {
+                HandleNewWindowRequest(args, requestedPanelClass);
+            }
+            else
+            {
+                HandleExistingWindowRequest(args, requestedPanelClass);
+            }
+        }
+
+        private void LogCurrentFormState()
+        {
+            Log.Verbose($"_currentForm: {_currentForm.Name}, Modal={_currentForm.Modal}");
+            if (_currentForm.Owner != null)
+            {
+                Log.Verbose($"Owner: {_currentForm.Owner.Name}, Modal={_currentForm.Owner.Modal}");
+            }
+            else
+            {
+                Log.Verbose("_currentForm.Owner is null");
+            }
+        }
+
+        private bool IsModalBlocked(Form form, IPanel target)
+        {
+            if (target != null && target == form)
+            {
+                return false;
+            }
+
+            return form.Modal || (form.Owner?.Modal ?? false);
+        }
+
+        private string ResolveRequestedPanel(string panelClass)
+        {
+            if (PanelConfigMap.AreEqual(panelClass, PanelClasses.None))
+            {
+                return PanelClasses.Alphabet;
+            }
+
+            return panelClass;
+        }
+
+        private void HandleNewWindowRequest(PanelRequestEventArgs args, string requestedPanelClass)
+        {
+            IScannerPanel currentScanner = _currentPanel as IScannerPanel;
+
+            if (currentScanner != null && PanelConfigMap.AreEqual(currentScanner.PanelClass, requestedPanelClass) && _currentPanel.Owner == null)
+            {
+                Log.Debug("Current panel is already {0}, showing it", requestedPanelClass);
+                if (_currentPanel is MenuPanelBase menu)
+                    menu.SetTitle(args.Title);
+
+                Show(null, (IPanel)_currentPanel);
+                return;
+            }
+
+            if ((currentScanner == null) || currentScanner.OnQueryPanelChange(args))
+            {
+                SwapPanel(args, requestedPanelClass);
+            }
+        }
+
+        private void HandleExistingWindowRequest(PanelRequestEventArgs args, string requestedPanelClass)
+        {
+            IScannerPanel currentScanner = _currentPanel as IScannerPanel;
+            if (currentScanner == null)
+            {
+                Log.Debug("_currentPanel is null. Returning.");
+                return;
+            }
+
+            if (!PanelConfigMap.AreEqual(currentScanner.PanelClass, requestedPanelClass) &&
+                currentScanner.OnQueryPanelChange(args))
+            {
+                SwapPanel(args, requestedPanelClass);
+            }
+            else if (currentScanner is MenuPanelBase menu)
+            {
+                menu.SetTitle(args.Title);
+            }
+        }
+
+        private void SwapPanel(PanelRequestEventArgs args, string requestedPanelClass)
+        {
+            Log.Debug("Swapping panel to {0}", requestedPanelClass);
+
+            Form newPanelForm = PanelManager.Instance.CreatePanel(requestedPanelClass, args.Title ) as Form;
+            if (newPanelForm == null)
+            {
+                //MessageBox.Show($"Invalid form requested: {requestedPanelClass}");
+                Log.Error($"Invalid form requested: {requestedPanelClass}");
+                return;
+            }
+
+            if (args.UseCurrentScreenAsParent && _currentForm != null)
+            {
+                newPanelForm.Owner = _currentForm;
+                Log.Debug("Parent override enabled; new panel Owner set to _currentForm");
+            }
+
+            Show(null, newPanelForm as IPanel);
+        }
+
         /// <summary>
         /// Event handler for request to display a scanner. The
         /// arg parameter contains information about which scanner
@@ -102,114 +227,114 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         /// <param name="sender">event sender</param>
         /// <param name="arg">event arg</param>
-        public void AppAgent_EvtPanelRequest(object sender, PanelRequestEventArgs arg)
-        {
-            Log.Debug("A request came in for panel " + arg.PanelClass + ".  NewWindow is " +
-                      arg.MonitorInfo.IsNewWindow);
+        //public void AppAgent_EvtPanelRequest(object sender, PanelRequestEventArgs arg)
+        //{
+        //    Log.Debug("A request came in for panel " + arg.PanelClass + ".  NewWindow is " +
+        //              arg.MonitorInfo.IsNewWindow);
 
-            if (_currentForm != null)
-            {
-                Log.Debug("_currentForm is " + _currentForm.Name + ", type: " + _currentForm.GetType() +
-                            ", IsModal: " + _currentForm.Modal);
+        //    if (_currentForm != null)
+        //    {
+        //        Log.Debug("_currentForm is " + _currentForm.Name + ", type: " + _currentForm.GetType() +
+        //                    ", IsModal: " + _currentForm.Modal);
 
-                Form owner = _currentForm.Owner;
-                if (owner != null)
-                {
-                    Log.Debug("owner is : " + owner.Name + ", type: " + owner.GetType() +
-                                ", is owner ipanel? " + (_currentForm.Owner is IPanel));
-                }
-                else
-                {
-                    Log.Debug("_currentForm.Owner is null");
-                }
+        //        Form owner = _currentForm.Owner;
+        //        if (owner != null)
+        //        {
+        //            Log.Debug("owner is : " + owner.Name + ", type: " + owner.GetType() +
+        //                        ", is owner ipanel? " + (_currentForm.Owner is IPanel));
+        //        }
+        //        else
+        //        {
+        //            Log.Debug("_currentForm.Owner is null");
+        //        }
 
-                // if a modal dialog is currently open, don't honor the request.
-                // the modal dialog has to be closed first.
-                if (arg.TargetPanel == null || arg.TargetPanel != _currentForm)
-                {
-                    if (_currentForm.Modal || (_currentForm.Owner != null && _currentForm.Owner.Modal))
-                    {
-                        Log.Debug("A modal dialog is open. Will not honor panel request");
-                        return;
-                    }
-                }
-            }
+        //        if (arg.TargetPanel == null || arg.TargetPanel != _currentForm)
+        //        {
+        //            //return;
+        //            // if a modal dialog is currently open, don't honor the request.
+        //            // the modal dialog has to be closed first.
+        //            if (_currentForm.Modal || (_currentForm.Owner != null && _currentForm.Owner.Modal))
+        //            {
+        //                Log.Debug("A modal dialog is open. Will not honor panel request");
+        //                return;
+        //            }
+        //        }
+        //    }
 
-            // if no panel type, use the alphabet scanner as the
-            String requestedPanelClass = arg.PanelClass;
-            if (PanelConfigMap.AreEqual(arg.PanelClass, PanelClasses.None))
-            {
-                requestedPanelClass = PanelClasses.Alphabet;
-            }
+        //    // if no panel type, use the alphabet scanner as the
+        //    String requestedPanelClass = arg.PanelClass;
+        //    if (PanelConfigMap.AreEqual(arg.PanelClass, PanelClasses.None))
+        //    {
+        //        requestedPanelClass = PanelClasses.Alphabet;
+        //    }
 
-            IScannerPanel currentScanner = _currentPanel as IScannerPanel;
+        //    IScannerPanel currentScanner = _currentPanel as IScannerPanel;
 
-            if (arg.MonitorInfo.IsNewWindow)
-            {
-                Log.Debug("This is a new window. winHandle: " + arg.MonitorInfo.FgHwnd);
+        //    if (arg.MonitorInfo.IsNewWindow)
+        //    {
+        //        Log.Debug("This is a new window. winHandle: " + arg.MonitorInfo.FgHwnd);
 
-                if (currentScanner != null)
-                {
-                    Log.Debug("currentpanel: " + currentScanner.PanelClass + ", requested:  " + requestedPanelClass);
-                }
-                else
-                {
-                    Log.Debug("_currentPanel is null or not IScannerPanel. Activate alphabet scanner");
-                    requestedPanelClass = PanelClasses.Alphabet;
-                }
+        //        if (currentScanner != null)
+        //        {
+        //            Log.Debug("currentpanel: " + currentScanner.PanelClass + ", requested:  " + requestedPanelClass);
+        //        }
+        //        else
+        //        {
+        //            Log.Debug("_currentPanel is null or not IScannerPanel. Activate alphabet scanner");
+        //            requestedPanelClass = PanelClasses.Alphabet;
+        //        }
 
-                // if the current scanner is the same as the requested one, just show it
-                if (currentScanner != null && PanelConfigMap.AreEqual(currentScanner.PanelClass, requestedPanelClass) &&
-                    _currentPanel.Owner == null)
-                {
-                    Log.Debug("Current panel is already " + requestedPanelClass + ", calling Show()");
-                    _currentPanel.TopMost = true;
+        //        // if the current scanner is the same as the requested one, just show it
+        //        if (currentScanner != null && PanelConfigMap.AreEqual(currentScanner.PanelClass, requestedPanelClass) &&
+        //            _currentPanel.Owner == null)
+        //        {
+        //            Log.Debug("Current panel is already " + requestedPanelClass + ", calling Show()");
 
-                    if (_currentPanel is MenuPanelBase)
-                    {
-                        (_currentPanel as MenuPanelBase).SetTitle(arg.Title);
-                    }
-                    Show(null, (IPanel)_currentPanel);
-                }
-                else
-                {
-                    // check with the agent if it is OK to switch panels.
-                    if ((currentScanner == null) || currentScanner.OnQueryPanelChange(arg))
-                    {
-                        switchCurrentPanel(arg);
-                    }
-                }
-            }
-            else
-            {
-                if (currentScanner == null)
-                {
-                    Log.Debug("_currentPanel is null. returning");
-                    return;
-                }
+        //            if (_currentPanel is MenuPanelBase)
+        //            {
+        //                (_currentPanel as MenuPanelBase).SetTitle(arg.Title);
+        //            }
+        //            Show(null, (IPanel)_currentPanel);
+        //        }
+        //        else
+        //        {
+        //            // check with the agent if it is OK to switch panels.
+        //            if ((currentScanner == null) || currentScanner.OnQueryPanelChange(arg))
+        //            {
+        //                switchCurrentPanel(arg);
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (currentScanner == null)
+        //        {
+        //            Log.Debug("_currentPanel is null. returning");
+        //            return;
+        //        }
 
-                Log.Debug("Not a new window.  _currentPanel is " + currentScanner.PanelClass +
-                                " requested panel is " + requestedPanelClass);
+        //        Log.Debug("Not a new window.  _currentPanel is " + currentScanner.PanelClass +
+        //                        " requested panel is " + requestedPanelClass);
 
-                // if the current panel is not the same as the requested one, query the
-                // agent if it is OK to switch and then do the switch
-                if (!PanelConfigMap.AreEqual(currentScanner.PanelClass, requestedPanelClass) &&
-                                            currentScanner.OnQueryPanelChange(arg))
-                {
-                    switchCurrentPanel(arg);
-                }
-                else
-                {
-                    Log.Debug("Will not switch panels.  Current: " + currentScanner.PanelClass +
-                                    ", requested: " + requestedPanelClass);
+        //        // if the current panel is not the same as the requested one, query the
+        //        // agent if it is OK to switch and then do the switch
+        //        if (!PanelConfigMap.AreEqual(currentScanner.PanelClass, requestedPanelClass) &&
+        //                                    currentScanner.OnQueryPanelChange(arg))
+        //        {
+        //            switchCurrentPanel(arg);
+        //        }
+        //        else
+        //        {
+        //            Log.Debug("Will not switch panels.  Current: " + currentScanner.PanelClass +
+        //                            ", requested: " + requestedPanelClass);
 
-                    if (currentScanner is MenuPanelBase)
-                    {
-                        (currentScanner as MenuPanelBase).SetTitle(arg.Title);
-                    }
-                }
-            }
-        }
+        //            if (currentScanner is MenuPanelBase)
+        //            {
+        //                (currentScanner as MenuPanelBase).SetTitle(arg.Title);
+        //            }
+        //        }
+        //    }
+        //}
 
         public void CloseCurrentForm()
         {
@@ -233,14 +358,12 @@ namespace ACAT.Lib.Core.PanelManagement
         /// </summary>
         public void CloseCurrentPanel()
         {
-            Log.Debug();
+            Log.Verbose();
             bool isCurrentForm = false;
 
             if (_currentPanel != null)
             {
                 Log.Debug("Will close panel. _currentPanel.name is " + _currentPanel.Name);
-
-                Control form = _currentPanel;
                 Form f = _currentPanel;
                 while (true)
                 {
@@ -257,7 +380,7 @@ namespace ACAT.Lib.Core.PanelManagement
                     if (f.Owner != null)
                     {
                         Log.Debug("This one has a owner");
-                        form = f.Owner;
+                        Control form = f.Owner;
                         f = (Form)form;
                     }
                     else
@@ -321,10 +444,11 @@ namespace ACAT.Lib.Core.PanelManagement
 
             if (form is IPanel)
             {
+                // Continue with the rest of the initialization
                 (form as IPanel).Initialize(startupArg);
             }
 
-            Log.Debug("Returning form from createPanel");
+            Log.Debug("Returning form from DynamicallyCreatePanelForm");
 
             return form;
         }
@@ -343,27 +467,27 @@ namespace ACAT.Lib.Core.PanelManagement
                         IntPtr winHandle,
                         AutomationElement focusedElement)
         {
-            Log.Debug("panelClass: " + panelClass);
+            Log.Debug($"Searching for panel of type {panelClass}");
 
             var panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(panelClass);
             if (panelConfigMapEntry == null)
             {
-                Log.Debug("Could not find panel for " + panelClass + ". Using default ");
+                Log.Warn($"Could not find panel for {panelClass} - Using default.");
 
                 panelClass = PanelClasses.Alphabet;
                 panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(PanelClasses.Alphabet);
 
                 if (panelConfigMapEntry == null)
                 {
+                    Log.Error($"Unable to find an appropriate panel class.");
                     return null;
                 }
-
-                Log.Debug("Could not find panel for " + panelClass + ". Using default " + panelConfigMapEntry.FormType.Name);
             }
 
-            Log.Debug("panel: " + panelConfigMapEntry.FormType.Name);
+            Log.Debug($"Found panel class {panelConfigMapEntry.PanelClass} with. name {panelConfigMapEntry.FormType.Name}");
 
-            return createPanel(panelClass, panelTitle, panelConfigMapEntry.FormType, winHandle, focusedElement);
+            var form = DynamicallyCreatePanelForm(panelClass, panelTitle, panelConfigMapEntry.FormType, winHandle, focusedElement);
+            return form;
         }
 
         /// <summary>
@@ -480,9 +604,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <returns>true on success</returns>
         public bool ShowDialog(IPanel parent, IPanel panel)
         {
-            bool retVal = true;
-
-            if (!(panel is Form))
+            if (panel is not Form)
             {
                 return false;
             }
@@ -491,6 +613,7 @@ namespace ACAT.Lib.Core.PanelManagement
 
             Log.Debug("showDialog " + form.Name + ", type: " + form.GetType());
 
+            bool retVal;
             // if parent has not been specified, used the current form
             // as the parent and Show as Dialog.  If there is no current form, just
             // show.
@@ -610,72 +733,47 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="winHandle">target window handle</param>
         /// <param name="focusedElement">Target focused element</param>
         /// <returns></returns>
-        private Form createPanel(
-                        String panelClass,
-                        String panelTitle,
-                        Type type,
-                        IntPtr winHandle,
-                        AutomationElement focusedElement)
+        ///
+        private Form DynamicallyCreatePanelForm(
+            string panelClass,
+            string panelTitle,
+            Type type,
+            IntPtr winHandle,
+            AutomationElement focusedElement)
         {
-            Form retVal = null;
-            Log.Debug("***  panelClass: [" + panelClass + "], panel: [" + type.FullName + "]" +
-                        " title: [" + (panelTitle ?? "null") + "]");
-            try
+            Log.Debug($"*** panelClass: [{panelClass}], panel: [{type.FullName}] title: [{panelTitle ?? "null"}]");
+
+            var constructorArgSets = new object[][]
             {
-                Type[] types = { typeof(String) };
-                ConstructorInfo info = type.GetConstructor(types);
-                Object obj;
+                new object[] { panelClass },
+                new object[] { panelClass, winHandle },
+                new object[] { panelClass, panelTitle },
+                new object[] { panelClass, winHandle, focusedElement },
+                new object[] { } // for backward compatibility
+            };
 
-                if (info != null)
+            foreach (var args in constructorArgSets)
+            {
+                try
                 {
-                    obj = Activator.CreateInstance(type, panelClass);
-                }
-                else
-                {
-                    types = new[] { typeof(String), typeof(IntPtr) };
-                    info = type.GetConstructor(types);
+                    var argTypes = Array.ConvertAll(args, a => a?.GetType() ?? typeof(object));
+                    var ctor = type.GetConstructor(argTypes);
 
-                    if (info != null)
+                    if (ctor != null)
                     {
-                        obj = Activator.CreateInstance(type, panelClass, winHandle);
-                    }
-                    else
-                    {
-                        types = new[] { typeof(String), typeof(String) };
-                        info = type.GetConstructor(types);
-                        if (info != null)
-                        {
-                            obj = Activator.CreateInstance(type, panelClass, panelTitle);
-                        }
-                        else
-                        {
-                            types = new[] { typeof(String), typeof(IntPtr), typeof(AutomationElement) };
-                            info = type.GetConstructor(types);
-                            if (info != null)
-                            {
-                                obj = Activator.CreateInstance(type, panelClass, winHandle, focusedElement);
-                            }
-                            else
-                            {
-                                Log.Debug("Creating " + type + " with default constructor");
-                                obj = Activator.CreateInstance(type);
-                            }
-                        }
+                        var obj = ctor.Invoke(args);
+                        if (obj is Form form)
+                            return form;
                     }
                 }
-
-                if (obj is Form)
+                catch (Exception ex)
                 {
-                    retVal = obj as Form;
+                    Log.Exception($"Constructor failed with args ({string.Join(", ", args.Select(a => a?.ToString() ?? "null"))}): {ex}");
                 }
             }
-            catch (Exception ex)
-            {
-                Log.Debug(ex.ToString());
-                retVal = null;
-            }
 
-            return retVal;
+            Log.Debug($"No suitable constructor found for {type.FullName}");
+            return null;
         }
 
         /// <summary>
@@ -695,7 +793,7 @@ namespace ACAT.Lib.Core.PanelManagement
 
             var panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(arg.PanelClass);
 
-            Log.Debug("panelClass:  " + arg.PanelClass + ", ConfigFIle: " + ((panelConfigMapEntry != null) ? panelConfigMapEntry.ConfigFileName : String.Empty));
+            Log.Debug("panelClass:  " + arg.PanelClass + ", ConfigFile: " + ((panelConfigMapEntry != null) ? panelConfigMapEntry.ConfigFileName : String.Empty));
             return scannerPanel.Initialize(startupArg);
         }
 
@@ -908,7 +1006,7 @@ namespace ACAT.Lib.Core.PanelManagement
         /// <param name="eventArg">Info about which scanner to display</param>
         private void switchCurrentPanel(PanelRequestEventArgs eventArg)
         {
-            Log.Debug();
+            Log.Verbose();
 
             Log.Debug(eventArg.ToString());
 
@@ -925,7 +1023,7 @@ namespace ACAT.Lib.Core.PanelManagement
             Log.Debug("Calling show for ..." + eventArg.PanelClass);
             if (form == null)
             {
-                Log.Debug("createPanel returned null!!");
+                Log.Debug("DynamicallyCreatePanelForm returned null!!");
             }
             else
             {
@@ -943,6 +1041,11 @@ namespace ACAT.Lib.Core.PanelManagement
                     Show(null, (IPanel)form);
                 }
             }
+        }
+
+        internal Form CreatePanelFromConfig(PanelConfigMapEntry panelConfig, string title)
+        {
+            return CreatePanel(panelConfig.PanelClass, title, new StartupArg(panelConfig.PanelClass, panelConfig.ConfigName));
         }
     }
 }

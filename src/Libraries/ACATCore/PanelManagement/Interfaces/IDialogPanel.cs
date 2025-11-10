@@ -5,9 +5,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.WidgetManagement;
 
-namespace ACAT.Lib.Core.PanelManagement
+namespace ACAT.Core.PanelManagement.Interfaces
 {
     /// <summary>
     /// All ACAT Dialogs must implement this interface

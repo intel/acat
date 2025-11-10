@@ -1,4 +1,4 @@
-﻿namespace ACAT.Lib.Core.PanelManagement
+﻿namespace ACAT.Core.PanelManagement
 {
     partial class HorizontalStripScannerBase
     {
@@ -29,20 +29,20 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.B1 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B2 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B3 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B4 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B5 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B6 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B7 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
-            this.B8 = new ACAT.Lib.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B1 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B2 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B3 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B4 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B5 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B6 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B7 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
+            this.B8 = new ACAT.Core.WidgetManagement.ScannerRoundedButtonControl();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.BackColor = System.Drawing.Color.Black;
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
             this.tableLayoutPanel1.ColumnCount = 8;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
@@ -73,7 +73,8 @@
             // 
             // B1
             // 
-            this.B1.BorderColor = System.Drawing.Color.DimGray;
+            this.B1.BorderColor = System.Drawing.Color.Gray;
+            this.B1.ForeColor = System.Drawing.Color.White;
             this.B1.BorderRadiusBottomLeft = 0;
             this.B1.BorderRadiusBottomRight = 0;
             this.B1.BorderRadiusTopLeft = 0;
@@ -87,13 +88,14 @@
             this.B1.Name = "B1";
             this.B1.Size = new System.Drawing.Size(168, 88);
             this.B1.TabIndex = 0;
-            this.B1.Text = "scannerRoundedButtonControl1";
+            this.B1.Text = "";
             this.B1.UseMnemonic = false;
             this.B1.UseVisualStyleBackColor = true;
             // 
             // B2
             // 
-            this.B2.BorderColor = System.Drawing.Color.DimGray;
+            this.B2.BorderColor = System.Drawing.Color.Gray;
+            this.B2.ForeColor = System.Drawing.Color.White;
             this.B2.BorderRadiusBottomLeft = 0;
             this.B2.BorderRadiusBottomRight = 0;
             this.B2.BorderRadiusTopLeft = 0;
@@ -107,13 +109,14 @@
             this.B2.Name = "B2";
             this.B2.Size = new System.Drawing.Size(168, 88);
             this.B2.TabIndex = 1;
-            this.B2.Text = "scannerRoundedButtonControl2";
+            this.B2.Text = "";
             this.B2.UseMnemonic = false;
             this.B2.UseVisualStyleBackColor = true;
             // 
             // B3
             // 
-            this.B3.BorderColor = System.Drawing.Color.DimGray;
+            this.B3.BorderColor = System.Drawing.Color.Gray;
+            this.B3.ForeColor = System.Drawing.Color.White;
             this.B3.BorderRadiusBottomLeft = 0;
             this.B3.BorderRadiusBottomRight = 0;
             this.B3.BorderRadiusTopLeft = 0;
@@ -127,13 +130,14 @@
             this.B3.Name = "B3";
             this.B3.Size = new System.Drawing.Size(168, 88);
             this.B3.TabIndex = 2;
-            this.B3.Text = "scannerRoundedButtonControl3";
+            this.B3.Text = "";
             this.B3.UseMnemonic = false;
             this.B3.UseVisualStyleBackColor = true;
             // 
             // B4
             // 
-            this.B4.BorderColor = System.Drawing.Color.DimGray;
+            this.B4.BorderColor = System.Drawing.Color.Gray;
+            this.B4.ForeColor = System.Drawing.Color.White;
             this.B4.BorderRadiusBottomLeft = 0;
             this.B4.BorderRadiusBottomRight = 0;
             this.B4.BorderRadiusTopLeft = 0;
@@ -147,13 +151,14 @@
             this.B4.Name = "B4";
             this.B4.Size = new System.Drawing.Size(168, 88);
             this.B4.TabIndex = 3;
-            this.B4.Text = "scannerRoundedButtonControl4";
+            this.B4.Text = "";
             this.B4.UseMnemonic = false;
             this.B4.UseVisualStyleBackColor = true;
             // 
             // B5
             // 
-            this.B5.BorderColor = System.Drawing.Color.DimGray;
+            this.B5.BorderColor = System.Drawing.Color.Gray;
+            this.B5.ForeColor = System.Drawing.Color.White;
             this.B5.BorderRadiusBottomLeft = 0;
             this.B5.BorderRadiusBottomRight = 0;
             this.B5.BorderRadiusTopLeft = 0;
@@ -167,13 +172,14 @@
             this.B5.Name = "B5";
             this.B5.Size = new System.Drawing.Size(168, 88);
             this.B5.TabIndex = 4;
-            this.B5.Text = "scannerRoundedButtonControl5";
+            this.B5.Text = "";
             this.B5.UseMnemonic = false;
             this.B5.UseVisualStyleBackColor = true;
             // 
             // B6
             // 
-            this.B6.BorderColor = System.Drawing.Color.DimGray;
+            this.B6.BorderColor = System.Drawing.Color.Gray;
+            this.B6.ForeColor = System.Drawing.Color.White;
             this.B6.BorderRadiusBottomLeft = 0;
             this.B6.BorderRadiusBottomRight = 0;
             this.B6.BorderRadiusTopLeft = 0;
@@ -187,13 +193,14 @@
             this.B6.Name = "B6";
             this.B6.Size = new System.Drawing.Size(168, 88);
             this.B6.TabIndex = 5;
-            this.B6.Text = "scannerRoundedButtonControl6";
+            this.B6.Text = "";
             this.B6.UseMnemonic = false;
             this.B6.UseVisualStyleBackColor = true;
             // 
             // B7
             // 
-            this.B7.BorderColor = System.Drawing.Color.DimGray;
+            this.B7.BorderColor = System.Drawing.Color.Gray;
+            this.B7.ForeColor = System.Drawing.Color.White;
             this.B7.BorderRadiusBottomLeft = 0;
             this.B7.BorderRadiusBottomRight = 0;
             this.B7.BorderRadiusTopLeft = 0;
@@ -207,13 +214,14 @@
             this.B7.Name = "B7";
             this.B7.Size = new System.Drawing.Size(168, 88);
             this.B7.TabIndex = 6;
-            this.B7.Text = "scannerRoundedButtonControl7";
+            this.B7.Text = "";
             this.B7.UseMnemonic = false;
             this.B7.UseVisualStyleBackColor = true;
             // 
             // B8
             // 
-            this.B8.BorderColor = System.Drawing.Color.DimGray;
+            this.B8.BorderColor = System.Drawing.Color.Gray;
+            this.B8.ForeColor = System.Drawing.Color.White;
             this.B8.BorderRadiusBottomLeft = 0;
             this.B8.BorderRadiusBottomRight = 0;
             this.B8.BorderRadiusTopLeft = 0;
@@ -227,7 +235,7 @@
             this.B8.Name = "B8";
             this.B8.Size = new System.Drawing.Size(173, 88);
             this.B8.TabIndex = 7;
-            this.B8.Text = "scannerRoundedButtonControl8";
+            this.B8.Text = "";
             this.B8.UseMnemonic = false;
             this.B8.UseVisualStyleBackColor = true;
             // 
@@ -235,7 +243,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(51)))));
+            this.BackColor = System.Drawing.Color.FromArgb(35, 36, 51);
             this.ClientSize = new System.Drawing.Size(1349, 88);
             this.ControlBox = false;
             this.Controls.Add(this.tableLayoutPanel1);
@@ -243,7 +251,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "HorizontalStripScannerBase";
-            this.Text = "Scanner";
+            this.Text = "";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 

@@ -5,14 +5,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WidgetManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.WidgetManagement.Layout;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace ACAT.Lib.Core.Widgets
+namespace ACAT.Core.Widgets
 {
     /// <summary>
     /// A PictureBox or a Button control that displays an image.
@@ -117,7 +117,7 @@ namespace ACAT.Lib.Core.Widgets
             {
                 try
                 {
-                    Log.Debug();
+                    Log.Verbose();
 
                     if (disposing)
                     {
@@ -157,7 +157,7 @@ namespace ACAT.Lib.Core.Widgets
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                Log.Exception(ex.ToString());
             }
         }
 

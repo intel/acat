@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 
-namespace ACAT.Lib.Core.Utility
+namespace ACAT.Core.Utility
 {
     [UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = true, CharSet = CharSet.Unicode)]
     [SuppressUnmanagedCodeSecurity]
@@ -28,7 +28,7 @@ namespace ACAT.Lib.Core.Utility
     /// </summary>
     public class Kernel32Interop
     {
-        [FlagsAttribute]
+        [Flags]
         public enum EXECUTION_STATE : uint
         {
             ES_AWAYMODE_REQUIRED = 0x00000040,

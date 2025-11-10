@@ -10,24 +10,25 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.PreferencesManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.WordPredictionManagement;
-using Newtonsoft.Json;
+using ACAT.Core.PreferencesManagement.Interfaces;
+using ACAT.Core.Utility;
+using ACAT.Core.WordPredictorManagement;
+using ACAT.Core.WordPredictorManagement.Interfaces;
+using ACAT.Extensions.WordPredictors.ConvAssist.MessageTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
     internal class SentencePredictionsRequestHandler
     {
         private string _prevCurrentWord = null;
         private WordPredictionModes _prevMode = WordPredictionModes.None;
         private string _prevPrevWords = null;
-        private List<string> _prevSentencePredictionResults = new List<string>();
-        private ConvAssistWordPredictor _wordPredictor;
+        private List<string> _prevSentencePredictionResults = new();
+        private readonly ConvAssistWordPredictor _wordPredictor;
 
         public SentencePredictionsRequestHandler(ConvAssistWordPredictor wordPredictor)
         {
@@ -45,16 +46,14 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <returns>A list of predicted words</returns>
         public WordPredictionResponse ProcessPredictionRequest(WordPredictionRequest request)
         {
-            string[] prediction = { "" };
-            var result = new List<string>();
-            WordPredictionResponse response = null;
-            StringBuilder preceedingWords = new StringBuilder();
+            StringBuilder preceedingWords = new();
 
             if (request.PredictionType != PredictionTypes.Sentences)
             {
                 return new WordPredictionResponse(request, new List<String>(), false);
             }
 
+            WordPredictionResponse response;
             try
             {
                 Log.Debug("_prevMode: " + _prevMode + ", currentMode: " + _wordPredictor.GetMode());
@@ -73,16 +72,16 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                     String prevWords = request.PrevWords;
                     String currentWord = request.CurrentWord;
 
-                    if ((pref as Settings).UseDefaultEncoding)
-                    {
-                        prevWords = ConvAssistUtils.UTF8EncodingToDefault(prevWords);
-                        currentWord = ConvAssistUtils.UTF8EncodingToDefault(currentWord);
-                    }
+                    //if ((pref as Settings).UseDefaultEncoding)
+                    //{
+                    //    prevWords = ConvAssistUtils.UTF8EncodingToDefault(prevWords);
+                    //    currentWord = ConvAssistUtils.UTF8EncodingToDefault(currentWord);
+                    //}
 
                     preceedingWords.Clear();
                     preceedingWords.Append(prevWords);
                     preceedingWords.Append(currentWord);
-
+                    List<string> result;
                     try
                     {
                         string predictedWords = String.Empty;
@@ -92,13 +91,13 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                         {
                             if (request.WordPredictionMode == WordPredictionModes.Sentence)
                             {
-                                predictedSentences = _wordPredictor.SendMessageConvAssistSentencePrediction(preceedingWords.ToString(), 
+                                predictedSentences = _wordPredictor.SendMessageConvAssistSentencePrediction(preceedingWords.ToString(),
                                                                                     request.WordPredictionMode);
                                 Log.Debug("ConvAssist sentences response: " + predictedSentences);
                             }
                             else
                             {
-                                predictedWords = _wordPredictor.SendMessageConvAssistWordPrediction(preceedingWords.ToString(), 
+                                predictedWords = _wordPredictor.SendMessageConvAssistWordPrediction(preceedingWords.ToString(),
                                                                                 request.WordPredictionMode);
                                 predictedSentences = predictedWords;
                             }
@@ -137,7 +136,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("ConvAssist Predict Exception " + ex);
+                Log.Exception("ConvAssist Predict Exception " + ex);
 
                 _prevSentencePredictionResults = new List<string>();
                 response = new WordPredictionResponse(request, new List<String>(), false);
@@ -157,12 +156,12 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <returns>List of predictions with a keyword to tell apart wach type</returns>
         private List<string> ProcessSentencesPredictions(string predictions, string currentWord)
         {
-            StringBuilder resultFullPredictionWords = new StringBuilder();
-            WordAndCharacterPredictionResponse answer = new WordAndCharacterPredictionResponse();
+            StringBuilder resultFullPredictionWords = new();
+            WordAndCharacterPredictionResponse answer = new();
             var retVal = new List<string>();
-            answer = JsonConvert.DeserializeObject<WordAndCharacterPredictionResponse>(predictions);
-            List<string> predictSenetnces = new List<string>();
-            List<string> predictLettersSentence = new List<string>();
+            answer = JsonSerializer.Deserialize<WordAndCharacterPredictionResponse>(predictions);
+            List<string> predictSenetnces = new();
+            List<string> predictLettersSentence = new();
             int i = 0;
 
             if (answer != null)
@@ -175,12 +174,12 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
 
             // Keyword to split between predictions
             retVal.Add("&SENTENCES");
-            List<KeyValuePair<string, double>> SentenceList = new List<KeyValuePair<string, double>>();
+            List<KeyValuePair<string, double>> SentenceList = new();
             SentenceList = ConvAssistUtils.ToList(predictSenetnces);
             sentencePred = new string[SentenceList.Count];
             foreach (var element in SentenceList)
             {
-                sentencePred[i] = ConvAssistUtils.RemoveApostrophes(ConvAssistUtils.RemoveSpecialCharactersSentences(element.Key), true);
+                sentencePred[i] = ConvAssistUtils.CleanText(element.Key, true, false); //ConvAssistUtils.RemoveApostrophes(ConvAssistUtils.RemoveSpecialCharactersSentences(element.Key), true);
                 i += 1;
             }
             for (int count = 0, ii = 0; count < 5 && ii < SentenceList.Count(); ii++)
@@ -195,18 +194,18 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             try
             {
                 //Create Dictionary of each to set the number value as a Double
-                List<KeyValuePair<string, double>> SentenceChList = new List<KeyValuePair<string, double>>();
+                List<KeyValuePair<string, double>> SentenceChList = new();
                 SentenceChList = ConvAssistUtils.ToList(predictLettersSentence);
                 sentenceChPred = new string[SentenceChList.Count];
-                foreach (var element in SentenceChList)
+
+                foreach (var (item, index) in SentenceChList.Select((item, index) => (item, index)))
                 {
-                    sentenceChPred[i] = ConvAssistUtils.RemoveApostrophes(ConvAssistUtils.RemoveSpecialCharacters(element.Key));
-                    i += 1;
+                    sentenceChPred[index] = ConvAssistUtils.CleanText(item.Key, false, false); //ConvAssistUtils.RemoveApostrophes(ConvAssistUtils.RemoveSpecialCharacters(item.Key));
                 }
             }
             catch (Exception sentencesLetters)
             {
-                Log.Debug("ConvAssist Predict sentencesLetters " + sentencesLetters);
+                Log.Exception("ConvAssist Predict sentencesLetters " + sentencesLetters);
             }
             return retVal;
         }

@@ -12,22 +12,23 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-using ACAT.Lib.Core.UserManagement;
-using ACAT.Lib.Core.Utility;
-using ACAT.Lib.Core.Utility.NamedPipe;
-using ACAT.Lib.Core.WordPredictionManagement;
-using ACAT.Lib.Extension;
-using Newtonsoft.Json;
+using ACAT.Core.UserManagement;
+using ACAT.Core.Utility;
+using ACAT.Core.Utility.NamedPipe;
+using ACAT.Core.WordPredictorManagement.Interfaces;
+using ACAT.Extension;
+using ACAT.Extensions.WordPredictors.ConvAssist.MessageTypes;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.IO.Pipes;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
-namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
+namespace ACAT.Extensions.WordPredictors.ConvAssist
 {
     /// <summary>
     /// Type os the events being tracked
@@ -61,12 +62,12 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// <summary>
         /// Used the synchronization for animation transition
         /// </summary>
-        private readonly object _syncObj = new object();
+        private readonly object _syncObj = new();
 
         /// <summary>
         /// Path to the INI files
         /// </summary>
-        private string _pathToFiles = string.Empty;
+        private readonly string _pathToFiles = string.Empty;
 
         /// <summary>
         /// Cancelation object to skip task
@@ -76,15 +77,17 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         private CancellationTokenSource cancellationTokenSource;
         private bool disposed;
 
+        private static readonly object _writeSyncObj = new();
+
         /// <summary>
         /// Direction of comunication
         /// </summary>
-        private PipeDirection PipeDirection;
+        private readonly PipeDirection PipeDirection;
 
         /// <summary>
         /// Given Pipe name to be conected
         /// </summary>
-        private string PipeName;
+        private readonly string PipeName;
 
         /// <summary>
         /// Constructor
@@ -135,7 +138,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("ConvAssist ClosePipe Error:" + ex.Message);
+                Log.Exception("ConvAssist ClosePipe Error:" + ex.Message);
                 return false;
             }
             clientConected = false;
@@ -156,7 +159,7 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("Exception in createPipeServer: " + ex);
+                Log.Exception("Exception in createPipeServer: " + ex);
             }
 
             return success;
@@ -197,214 +200,202 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("ConvAssist AppEvent: " + ex.Message);
+                Log.Exception("ConvAssist AppEvent: " + ex.Message);
             }
             return true;
         }
 
-
         public async Task SendParams()
         {
-            try
+            int waitDelay = 3200;
+            //Static Path
+            string staticPath = Path.Combine(FileUtils.GetResourcesDir(), "WordPredictors", "ConvAssist");
+
+            //Personalize Path
+            string personalizedPath = Path.Combine(UserManager.CurrentUserDir, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, "WordPredictors", "ConvAssist", "Database");
+
+
+            List<string> parameters = new()
             {
-                ConvAssistSetParam paramEnableLog = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.EnableLog, Common.AppPreferences.EnableLogs.ToString());
-                string paramEnableLogstring = JsonConvert.SerializeObject(paramEnableLog);
-                ConvAssistMessage messageparamEnableLog = new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, paramEnableLogstring);
-                string jsonMessageparamEnableLog = JsonConvert.SerializeObject(messageparamEnableLog);
-                var resultEnableLog = await WriteAsync(jsonMessageparamEnableLog, 150);
-            }
-            catch (Exception ex)
+                JsonSerializer.Serialize(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.EnableLog, Common.AppPreferences.EnableLogs.ToString())),
+                JsonSerializer.Serialize(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.PathLog, FileUtils.GetLogsDir())),
+                JsonSerializer.Serialize(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.Suggestions, Common.AppPreferences.WordsSuggestions.ToString())),
+                JsonSerializer.Serialize(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.TestGeneralSentencePrediction, ConvAssistWordPredictor.settings.Test_GeneralSentencePrediction.ToString())),
+                JsonSerializer.Serialize(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.RetrieveACC, ConvAssistWordPredictor.settings.EnableSmallVocabularySentencePrediction.ToString())),
+                JsonSerializer.Serialize(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.PathStatic, staticPath)),
+                JsonSerializer.Serialize(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.PathPersonilized, personalizedPath)),
+                JsonSerializer.Serialize(new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.Path, _pathToFiles))
+            };
+
+
+            foreach (var param in parameters)
             {
-                Log.Debug("Error in param enable log: " + ex);
+                try
+                {
+                    var message = JsonSerializer.Serialize(new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, param));
+                    
+                    //TODO: Check result and handle appropriately.
+                    _ = WriteAsync(message, waitDelay).ConfigureAwait(false).GetAwaiter().GetResult();
+                }
+                catch (Exception ex)
+                {
+                    Log.Exception("Error in param enable log: " + ex);
+                }
             }
 
-            try
-            {
-                ConvAssistSetParam parampathLog = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.PathLog, FileUtils.GetLogsDir());
-                string parampathLogstring = JsonConvert.SerializeObject(parampathLog);
-                ConvAssistMessage messageparampathLog = new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, parampathLogstring);
-                string jsonMessageparampathLog = JsonConvert.SerializeObject(messageparampathLog);
-                var resultpathLog = await WriteAsync(jsonMessageparampathLog, 150);
-            }
-            catch (Exception ex)
-            {
-                Log.Debug("Error in param Log path: " + ex);
-            }
-
-            try
-            {
-                //SUGGESTIONS FOR WORD PREDCITONS PARAMETER
-                ConvAssistSetParam paramSuggestions = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.Suggestions, Common.AppPreferences.WordsSuggestions.ToString());
-                string paramSuggestionsstring = JsonConvert.SerializeObject(paramSuggestions);
-                ConvAssistMessage messageparamSuggestions = new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, paramSuggestionsstring);
-                string jsonMessageparamSuggestions = JsonConvert.SerializeObject(messageparamSuggestions);
-                var resultSuggestions = await WriteAsync(jsonMessageparamSuggestions, 250);
-            }
-            catch (Exception ex)
-            {
-                Log.Debug("Error in paramSuggestions: " + ex);
-            }
-
-            try
-            {
-                //TEST GENERAL SENTENCE PREDICTION PARAMETER
-                ConvAssistSetParam paramTestPred = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.TestGeneralSentencePrediction, ConvAssistWordPredictor.settings.Test_GeneralSentencePrediction.ToString());
-                string paramTestPredstring = JsonConvert.SerializeObject(paramTestPred);
-                ConvAssistMessage messageparamTestPred = new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, paramTestPredstring);
-                string jsonMessageparamTestPred = JsonConvert.SerializeObject(messageparamTestPred);
-                var resultTestPred = await WriteAsync(jsonMessageparamTestPred, 250);
-            }
-            catch (Exception ex)
-            {
-                Log.Debug("Error in paramTestPred: " + ex);
-            }
-
-            try
-            {
-                //RETRIEVE FROM ACC PARAMETER
-                ConvAssistSetParam paramRetrieveACC = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.RetrieveACC, ConvAssistWordPredictor.settings.EnableSmallVocabularySentencePrediction.ToString());
-                string paramRetrieveACCstring = JsonConvert.SerializeObject(paramRetrieveACC);
-                ConvAssistMessage messageparamRetrieveACC = new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, paramRetrieveACCstring);
-                string jsonMessageparamRetrieveACC = JsonConvert.SerializeObject(messageparamRetrieveACC);
-                var resultRetrieveACC = await WriteAsync(jsonMessageparamRetrieveACC, 250);
-            }
-            catch (Exception ex)
-            {
-                Log.Debug("Error in paramRetrieveACC: " + ex);
-            }
-
-            try
-            {
-                //PATH STATIC
-                string staticPath = Path.Combine(FileUtils.GetResourcesDir(), "WordPredictors", "ConvAssist");
-                ConvAssistSetParam paramRetrievePathStatic = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.PathStatic, staticPath);
-                string paramRetrievePathStaticstring = JsonConvert.SerializeObject(paramRetrievePathStatic);
-                ConvAssistMessage messageparamRetrievePathStatic = new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, paramRetrievePathStaticstring);
-                string jsonMessageparamRetrievePathStatic = JsonConvert.SerializeObject(messageparamRetrievePathStatic);
-                var resultRetrievePathStatic = await WriteAsync(jsonMessageparamRetrievePathStatic, 150);
-            }
-            catch (Exception ex)
-            {
-                Log.Debug("Error in paramPathStatic: " + ex);
-            }
-
-            try
-            {
-                //PATH PERSONALIZED
-                string personalizedPath = Path.Combine(UserManager.CurrentUserDir, CultureInfo.DefaultThreadCurrentUICulture.Name, "WordPredictors", "ConvAssist", "Database");
-                ConvAssistSetParam paramRetrievePathPersonalized = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.PathPersonilized, personalizedPath);
-                string paramRetrievePathPersonalizedstring = JsonConvert.SerializeObject(paramRetrievePathPersonalized);
-                ConvAssistMessage messageparamRetrievePathPersonalized = new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, paramRetrievePathPersonalizedstring);
-                string jsonMessageparamRetrievePathPersonalized = JsonConvert.SerializeObject(messageparamRetrievePathPersonalized);
-                var resultRetrievePathPersonalized = await WriteAsync(jsonMessageparamRetrievePathPersonalized, 150);
-            }
-            catch (Exception ex)
-            {
-                Log.Debug("Error in paramPathPersonalized: " + ex);
-            }
-
-            try
-            {
-                //PATH FOR THE INI FILES FOR EACH MODE
-                ConvAssistSetParam paramPath = new ConvAssistSetParam(ConvAssistSetParam.ConvAssistParameterType.Path, _pathToFiles);
-                string paramPathstring = JsonConvert.SerializeObject(paramPath);
-                ConvAssistMessage messageparamPath = new ConvAssistMessage(WordPredictorMessageTypes.SetParam, WordPredictionModes.None, paramPathstring);
-                string jsonMessageparamPath = JsonConvert.SerializeObject(messageparamPath);
-                var resultPath = await WriteAsync(jsonMessageparamPath, 60000);
-                var resultObject = JsonConvert.DeserializeObject<WordAndCharacterPredictionResponse>(resultPath);
-                if (resultObject != null && resultObject.MessageType == WordAndCharacterPredictionResponse.ConvAssistMessageTypes.SetParam)
-                    clientAnswerParameters = true;
-            }
-            catch (Exception ex)
-            {
-                Log.Debug("Error in paramPath: " + ex);
-            }
 
             // ConvAssist needs some time to get ready.  Send a message to check if it is ready
-            ConvAssistMessage message = new ConvAssistMessage(WordPredictorMessageTypes.NextSentencePredictionRequest, WordPredictionModes.None, string.Empty);
-            string jsonMessage = JsonConvert.SerializeObject(message);
+            string msg = JsonSerializer.Serialize(new ConvAssistMessage(WordPredictorMessageTypes.NextSentencePredictionRequest, WordPredictionModes.None, string.Empty));
 
-            bool clientready = false;
+            bool clientReady = false;
             var tcs = new TaskCompletionSource<bool>();
 
-            Task.Run(async () =>
+            await Task.Run(async () =>
             {
-                while (!clientready)
+                while (!clientReady)
                 {
-                    var result = await WriteAsync(jsonMessage, 150);
-                    var resultObject = JsonConvert.DeserializeObject<WordAndCharacterPredictionResponse>(result);
+                    var result = WriteAsync(msg, waitDelay).ConfigureAwait(false).GetAwaiter().GetResult();
+                    var resultObject = JsonSerializer.Deserialize<WordAndCharacterPredictionResponse>(result);
                     if (resultObject != null && resultObject.MessageType != WordAndCharacterPredictionResponse.ConvAssistMessageTypes.NotReady)
                     {
-                        clientready = true;
+                        clientReady = true;
                         tcs.SetResult(true);
                         break;
                     }
-                    await Task.Delay(1000);
+                    await Task.Delay(waitDelay);
                 }
             });
-                
-            bool timeout = await ConvAssistUtils.WithTimeout(tcs.Task, TimeSpan.FromSeconds(30));
-            
+
+            bool timeout = await ConvAssistUtils.WithTimeout(tcs.Task, TimeSpan.FromSeconds(100000));
         }
 
         /// <summary>
         /// Starts the named pipe server.
         /// </summary>
         /// <param name="token"></param>
-        public async Task<bool> StartNamedPipeServer(CancellationToken token, bool send_params = true, int timeout_sec = 180)
+        public async Task<bool> StartNamedPipeServer(CancellationToken token, bool send_params = true, int timeout_sec = 100000)
         {
             bool success = false;
+
             if (!disposed)
             {
                 var tcs = new TaskCompletionSource<bool>();
-                NamedPipeServer.BeginWaitForConnection(ar =>
+
+                using (token.Register(() =>
                 {
+                    try { NamedPipeServer.Close(); } catch { }
+                }))
+                {
+                    NamedPipeServer.BeginWaitForConnection(ar =>
+                    {
+                        try
+                        {
+                            OnConnection(ar);
+                            tcs.TrySetResult(true);
+                        }
+                        catch (Exception ex)
+                        {
+                            tcs.TrySetException(ex);
+                        }
+                    }, new PipeServerStateConvAssist(NamedPipeServer, token));
+
                     try
                     {
-                        OnConnection(ar);
-                        tcs.SetResult(true);
+                        success = ConvAssistUtils.WithTimeout(tcs.Task, TimeSpan.FromSeconds(timeout_sec)).ConfigureAwait(false).GetAwaiter().GetResult();
                     }
-                    catch (Exception ex)
+                    catch (TimeoutException)
                     {
-                        tcs.SetException(ex);
+                        Log.Exception("ConvAssist StartNamedPiperServer Timeout");
+
                     }
-                }, new PipeServerStateConvAssist(NamedPipeServer, token));
-                
-                try
-                {
-                    success = await ConvAssistUtils.WithTimeout(tcs.Task, TimeSpan.FromSeconds(timeout_sec));
-                }
-                catch (TimeoutException)
-                {
-                    Log.Debug("ConvAssist StartNamedPipeServer Timeout");
                 }
 
                 if (success && send_params)
                 {
                     try
                     {
-                        await SendParams().ConfigureAwait(false);
+                        var sendTask = SendParams();
+                        if(await Task.WhenAny(sendTask, Task.Delay(TimeSpan.FromSeconds(60))) != sendTask)
+                        {
+                            throw new TimeoutException("SendParam() took too long.");
+                        }
+                        await sendTask;
                         success = true;
                     }
-                    catch (TimeoutException)
+                    catch (TimeoutException ex)
                     {
                         success = false;
-                        Log.Debug("ConvAssist SendParams Timeout");
+                        Log.Exception(ex);
                     }
                     catch (Exception ex)
                     {
                         success = false;
-                        Log.Debug("Error in sendParams: " + ex);
+                        Log.Exception(ex);
                     }
                 }
 
                 PipeServer_EvtClientConnected();
+
             }
 
-
             return success;
+
+            //bool success = false;
+            //if (!disposed)
+            //{
+            //    var tcs = new TaskCompletionSource<bool>();
+            //    NamedPipeServer.BeginWaitForConnection(ar =>
+            //    {
+            //        try
+            //        {
+            //            OnConnection(ar);
+            //            tcs.SetResult(true);
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            tcs.SetException(ex);
+            //        }
+            //    }, new PipeServerStateConvAssist(NamedPipeServer, token));
+
+            //    try
+            //    {
+            //        success = await ConvAssistUtils.WithTimeout(tcs.Task, TimeSpan.FromSeconds(timeout_sec));
+            //    }
+            //    catch (TimeoutException)
+            //    {
+            //        Log.Exception("ConvAssist StartNamedPipeServer Timeout");
+            //    }
+
+            //    if (success && send_params)
+            //    {
+            //        try
+            //        {
+            //            var sendTask = SendParams();
+            //            if (await Task.WhenAny(sendTask, Task.Delay(5000)) != sendTask)
+            //            {
+            //                throw new TimeoutException("SendParams() took too long.");
+            //            }
+
+            //            await sendTask;
+            //            success = true;
+            //        }
+            //        catch (TimeoutException ex)
+            //        {
+            //            success = false;
+            //            Log.Debug(ex.Message);
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            success = false;
+            //            Log.Debug("Error in sendParams: " + ex);
+            //        }
+            //    }
+
+            //    PipeServer_EvtClientConnected();
+            //}
+
+            //return success;
         }
-        
 
         /// <summary>
         /// Stops the pipe server.
@@ -429,59 +420,92 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
         /// </exception>
         public void Write(string value)
         {
-            if (!this.disposed)
-            {
-                byte[] buffer = Encoding.UTF8.GetBytes(value);
-                this.NamedPipeServer.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServer);
-            }
-        }
+            if (this.disposed) return;
 
-        /// <summary>
-        /// Sends a string to the client. Async method
-        /// </summary>
-        /// <param name="value">
-        /// The string to send to the server.
-        /// </param>
-        /// <exception cref="ObjectDisposedException">
-        /// The object is disposed.
-        /// </exception>
-        public async Task<string> WriteAsync(string value, int msDelay)
-        {
-            TaskFinished = false;
-            string message;
-            //Variable set when the event from receiving data triggers
-            messageReceived = string.Empty;
-            if (!this.disposed)
-            {
-                byte[] buffer = Encoding.UTF8.GetBytes(value);
-                this.NamedPipeServer.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServer);
-            }
-
-            CancellationTokenSource source = new CancellationTokenSource(msDelay);
+            byte[] payload = Encoding.UTF8.GetBytes(value);
+            byte[] lengthPrefix = BitConverter.GetBytes(payload.Length);
 
             try
             {
-                while (!source.IsCancellationRequested)
+                this.NamedPipeServer.Write(lengthPrefix, 0, lengthPrefix.Length);
+                this.NamedPipeServer.Write(payload, 0, payload.Length);
+                this.NamedPipeServer.Flush();
+            }
+
+            catch (Exception ex)
+            {
+                Log.Exception("ConvAssist Write Error: " + ex.Message);
+            }
+        }
+
+#nullable enable
+        public async Task<string> WriteAsync(string value, int msDelay)
+        {
+            if (disposed)
+                return string.Empty;
+
+            TaskFinished = false;
+            messageReceived = string.Empty;
+
+            var writeTcs = new TaskCompletionSource<object?>();
+
+            byte[] payload = Encoding.UTF8.GetBytes(value);
+
+            Log.Debug("Payload hex: " + BitConverter.ToString(payload));
+
+            byte[] lengthPrefix = BitConverter.GetBytes(payload.Length);
+
+            this.NamedPipeServer.BeginWrite(lengthPrefix, 0, lengthPrefix.Length, ar =>
+            {
+                try
                 {
-                    if (messageReceived != string.Empty)
+                    this.NamedPipeServer.EndWrite(ar);
+
+                    this.NamedPipeServer.BeginWrite(payload, 0, payload.Length, ar2 =>
                     {
-                        source.Cancel(true);
-                    }
-                    await Task.Delay(10);
+                        try
+                        {
+                            this.NamedPipeServer.EndWrite(ar2);
+                            this.NamedPipeServer.Flush();
+                            writeTcs.TrySetResult(null);
+                        }
+                        catch (Exception ex)
+                        {
+                            writeTcs.TrySetException(ex);
+                        }
+                    }, null);
+                }
+                catch (Exception ex)
+                {
+                    writeTcs.TrySetException(ex);
+                }
+            }, null);
+
+            using var source = new CancellationTokenSource(msDelay);
+
+            try
+            {
+                await writeTcs.Task.ConfigureAwait(false);
+
+                while (!source.IsCancellationRequested && !disposed)
+                {
+                    if (!string.IsNullOrEmpty(messageReceived))
+                        break;
+
+                    await Task.Delay(10, source.Token).ConfigureAwait(false);
                 }
             }
-            catch
-            {
 
-            }
+            catch (TaskCanceledException) { }
+
             finally
             {
-                source.Dispose();
+                TaskFinished = true;
             }
 
-            message = messageReceived;
+            var message = messageReceived;
             messageReceived = string.Empty;
-            TaskFinished = true;
+
             return message;
         }
 
@@ -500,68 +524,49 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             try
             {
                 Log.Debug("ConvAssist WriteSync Lock on");
-                EnterCriticalSection(_syncObj);
-                TaskFinished = false;
-                //Variable set when the event from receiving data triggers
-                messageReceived = string.Empty;
-                if (!this.disposed)
+                lock (_writeSyncObj)
                 {
-                    byte[] buffer = Encoding.UTF8.GetBytes(value);
-                    this.NamedPipeServer.BeginWrite(buffer, 0, buffer.Length, this.WriteCallback, this.NamedPipeServer);
-                }
-
-                CancellationTokenSource source = new CancellationTokenSource(msDelay);
-                try
-                {
-                    while (!source.IsCancellationRequested)
+                    TaskFinished = false;
+                    //Variable set when the event from receiving data triggers
+                    messageReceived = string.Empty;
+                    if (!this.disposed)
                     {
-                        if (messageReceived != string.Empty)
-                        {
-                            source.Cancel(true);
-                        }
-                        Thread.Sleep(10);
-                    }
-                }
-                catch
-                {
-                }
+                        byte[] payload = Encoding.UTF8.GetBytes(value);
+                        byte[] lengthPrefix = BitConverter.GetBytes(payload.Length);
 
-                source.Dispose();
-                message = messageReceived;
-                messageReceived = string.Empty;
-                TaskFinished = true;
+                        this.NamedPipeServer.Write(lengthPrefix, 0, lengthPrefix.Length);
+                        this.NamedPipeServer.Write(payload, 0, payload.Length);
+                        this.NamedPipeServer.Flush();
+                    }
+
+                    using CancellationTokenSource source = new(msDelay);
+                    try
+                    {
+                        while (!source.IsCancellationRequested)
+                        {
+                            if (!string.IsNullOrEmpty(messageReceived))
+                            {
+                                source.Cancel(true);
+                                break;
+                            }
+                            Thread.Sleep(10);
+                        }
+                    }
+                    catch
+                    {
+                    }
+
+                    message = messageReceived;
+                    messageReceived = string.Empty;
+                    TaskFinished = true;
+                }
             }
             catch (Exception ex)
             {
-                Log.Debug("ConvAssist WriteSync " + ex);
-            }
-            finally
-            {
-                ExitCriticalSection(_syncObj);
+                Log.Exception("ConvAssist WriteSync " + ex);
             }
             Log.Debug("ConvAssist WriteSync Lock off");
             return message;
-        }
-
-        public void WriteToPipe(string data)
-        {
-            Write(data);
-        }
-
-        private void EnterCriticalSection(object syncObj)
-        {
-            while (!TryEnter(_syncObj))
-            {
-                if (Application.MessageLoop)
-                {
-                    Application.DoEvents();
-                }
-            }
-        }
-
-        private void ExitCriticalSection(object syncObj)
-        {
-            Monitor.Exit(syncObj);
         }
 
         /// <summary>
@@ -627,12 +632,28 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
                 PipeServer_EvtClientDisconnected();
                 return;
             }
+
+            // Must have at least 4 bytes for length prefix
             if (received < 4)
             {
                 return;
             }
-            string stringData = Encoding.UTF8.GetString(pipeState.Buffer, 0, received);
+
+            // Extract length prefix
+            int messageLength = BitConverter.ToInt32(pipeState.Buffer, 0);
+
+            // Sanity check
+            if (messageLength <= 0 || messageLength > PipeServerStateConvAssist.BufferSize - 4)
+            {
+                // Something went wrong — bad prefix or oversized payload
+                return;
+            }
+
+            // Extract payload
+            string stringData = Encoding.UTF8.GetString(pipeState.Buffer, 4, messageLength);
+
             pipeState.Message.Append(stringData);
+
             if (pipeState.PipeServer.IsMessageComplete)
             {
                 OnMessageReceived(new MessageReceivedEventArgs(stringData));
@@ -643,7 +664,13 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             {
                 if (pipeState.PipeServer.IsConnected)
                 {
-                    pipeState.PipeServer.BeginRead(pipeState.Buffer, 0, PipeServerStateConvAssist.BufferSize, ReadCallback, pipeState);
+                    pipeState.PipeServer.BeginRead(
+                        pipeState.Buffer,
+                        0,
+                        PipeServerStateConvAssist.BufferSize,
+                        ReadCallback,
+                        pipeState
+                    );
                 }
                 else
                 {
@@ -679,61 +706,8 @@ namespace ACAT.Extensions.Default.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Debug("ConvAssist Error in writeCallback: " + ex.Message);
+                Log.Exception("ConvAssist Error in writeCallback: " + ex.Message);
             }
         }
     }
-
-    /// <summary>
-    ///     Message received event arguments.
-    /// </summary>
-    /*public class MessageReceivedEventArgs : EventArgs
-    {
-        #region Constructors and Destructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MessageReceivedEventArgs"/> class.
-        /// </summary>
-        /// <param name="message">
-        /// The message received.
-        /// </param>
-        public MessageReceivedEventArgs(string message)
-        {
-            if (!string.IsNullOrEmpty(message))
-            {
-                this.Message = message;
-            }
-        }
-
-        #endregion Constructors and Destructors
-
-        #region Public Properties
-
-        /// <summary>
-        ///     Gets the message received from the named-pipe.
-        /// </summary>
-        public string Message { get; private set; }
-
-        #endregion Public Properties
-    }*/
-    /// <summary>
-    /// Contains global variables
-    /// </summary>
-
-    /*public static class Globals
-    {
-        /// <summary>
-        /// Title of the application
-        /// </summary>
-        public static String AppTitle = "Named Pipe Server";
-        /// <summary>
-        /// Folder where files are stored
-        /// </summary>
-        public static String LabelsFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Study Data";
-        /// <summary>
-        /// Name of the pipe server
-        /// </summary>
-        public static String PipeServerName = "TestPipe";
-        public static String Version = String.Empty;
-    }*/
 }

@@ -7,8 +7,8 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\ACATResources\ACATResources.csproj" />
-    <ProjectReference Include="$(SolutionDir)Libraries\ACATCore\ACAT.Core.csproj" />
-    <ProjectReference Include="$(SolutionDir)Libraries\ACATExtension\ACAT.Extension.csproj" />
+    <ProjectReference Include="$(SolutionRoot)Libraries\ACATCore\ACAT.Core.csproj" />
+    <ProjectReference Include="$(SolutionRoot)Libraries\ACATExtension\ACAT.Extension.csproj" />
     <ProjectReference Include="..\..\Common\AnimationSharp\ACAT.Extensions.BCI.Common.AnimationSharp.csproj" />
     <ProjectReference Include="..\..\Common\BCIControl\ACAT.Extensions.BCI.Common.BCIControl.csproj" />
     <ProjectReference Include="..\..\Common\BCIInterfaceUtilities\ACAT.Extensions.BCI.Common.BCIInterfaceUtilities.csproj" />
@@ -19,7 +19,9 @@
     <PackageReference Include="UnicornDotNet" version="1.24.0" />
     <PackageReference Include="Accord" Version="3.8.0.0" />
     <PackageReference Include="Accord.Math" Version="3.8.0.0" />
-    <PackageReference Include="brainflow" Version="5.5.0" />
+    <PackageReference Include="brainflow" Version="5.5.0">
+      <ExcludeAssets>native;libGanglionLib.dylib</ExcludeAssets>
+    </PackageReference>
     <Reference Include="System" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataVisualization" />

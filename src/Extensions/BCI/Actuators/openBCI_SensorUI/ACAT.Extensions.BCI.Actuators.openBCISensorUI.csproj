@@ -25,8 +25,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\ACATResources\ACATResources.csproj" />
-    <ProjectReference Include="$(SolutionDir)Libraries\ACATCore\ACAT.Core.csproj" />
-    <ProjectReference Include="$(SolutionDir)Libraries\ACATExtension\ACAT.Extension.csproj" />
+    <ProjectReference Include="$(SolutionRoot)Libraries\ACATCore\ACAT.Core.csproj" />
+    <ProjectReference Include="$(SolutionRoot)Libraries\ACATExtension\ACAT.Extension.csproj" />
     <ProjectReference Include="..\EEGDataAcquisition\ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition.csproj" />
     <ProjectReference Include="..\EEGSettings\ACAT.Extensions.BCI.Actuators.EEG.EEGSettings.csproj" />
     <ProjectReference Include="..\..\Common\BCIControl\ACAT.Extensions.BCI.Common.BCIControl.csproj" />
@@ -34,7 +34,9 @@
     <PackageReference Include="lioncs.ColorSlider" Version="1.0.0" />
     <PackageReference Include="Accord" Version="3.8.0.0" />
     <PackageReference Include="Accord.Math" Version="3.8.0.0" />
-    <PackageReference Include="brainflow" Version="5.5.0" />
+    <PackageReference Include="brainflow" Version="5.5.0">
+      <ExcludeAssets>native;libGanglionLib.dylib</ExcludeAssets>
+    </PackageReference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />

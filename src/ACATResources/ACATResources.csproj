@@ -23,7 +23,7 @@
   
   <!-- Copy Assets Directories -->
   <ItemGroup>
-    <Assets Include="$(SolutionDir)Assets\**\*">
+    <Assets Include="$(SolutionRoot)Assets\**\*">
       <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Assets>
   </ItemGroup>
@@ -39,7 +39,7 @@
   
   <!-- Copy Default User Install Files -->
   <ItemGroup>
-    <DefaultUserFiles Include="$(SolutionDir)\Applications\Install\Users\**\*">
+    <DefaultUserFiles Include="$(SolutionRoot)\Applications\Install\Users\**\*">
       <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
     </DefaultUserFiles>
   </ItemGroup>
@@ -69,11 +69,11 @@
   
   <!-- Copy English ConvAssist Static Files -->
   <ItemGroup>
-    <ConvAssistStatic Include="$(SolutionDir)\Applications\Install\en\**\*">
+    <ConvAssistStatic Include="$(SolutionRoot)\Applications\Install\en\**\*">
       <Lang>en</Lang>
       <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
     </ConvAssistStatic>
-    <ConvAssistStatic Include="$(SolutionDir)\Applications\Install\es\**\*">
+    <ConvAssistStatic Include="$(SolutionRoot)\Applications\Install\es\**\*">
       <Lang>es</Lang>
       <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
     </ConvAssistStatic>
@@ -90,7 +90,7 @@
   <Target Name="UnzipDependency" AfterTargets="Build">
     <!-- Define paths -->
     <PropertyGroup>
-      <ZipFile>$(SolutionDir)\Applications\Install\ConvAssistApp\ConvAssist.zip</ZipFile>
+      <ZipFile>$(SolutionRoot)\Applications\Install\ConvAssistApp\ConvAssist.zip</ZipFile>
       <ExtractedDir>$(BaseOutputPath)\UnzippedDependency\</ExtractedDir>
       <UnzipFlagFile>$(ExtractedDir).unzipped</UnzipFlagFile>
     </PropertyGroup>

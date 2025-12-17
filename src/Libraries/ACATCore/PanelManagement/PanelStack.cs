@@ -873,7 +873,7 @@ namespace ACAT.Core.PanelManagement
                 }
                 else
                 {
-                    Log.Debug("parentform is not closing. Setting _currentPanel to " + parentForm.Name +
+                    Log.Debug("parent form is not closing. Setting _currentPanel to " + parentForm.Name +
                                 ", type: " + parentForm.GetType());
 
                     _currentPanel = parentForm;

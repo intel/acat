@@ -11,6 +11,7 @@ using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using ACAT.Core.Widgets;
 using System;
 using System.Collections.Generic;
 using System.Linq;

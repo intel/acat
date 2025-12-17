@@ -18,14 +18,10 @@
     </PackageReference>
   </ItemGroup>
 
-  <Target Name="FilterBrainFlowNativeFiles" AfterTargets="CopyMyPackageFiles">
     <!-- Remove non-Windows files from output -->
+  <Target Name="FilterBrainFlowNativeFiles" AfterTargets="CopyMyPackageFiles">
     <ItemGroup>
-      <FilesToDelete Include="$(OutputPath)**\*.dylib;$(OutputPath)**\*.so" />
-    </ItemGroup>
-    <Delete Files="@(FilesToDelete)" />
-    <ItemGroup>
-      <FilesToDelete Include="$(OutputPath)**\*.dylib;$(OutputPath)**\*.dylib" />
+      <FilesToDelete Include="$(OutputPath)*.dylib;$(OutputPath)*.so;$(OutputPath)*32*;$(OutputPath)*x86*" />
     </ItemGroup>
     <Delete Files="@(FilesToDelete)" />
   </Target>

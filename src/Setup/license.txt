@@ -107,3 +107,11 @@ Brainflow Library
 Distributed under the MIT license.
 
 https://spdx.org/licenses/MIT.html
+
+--------------------------------------------------------------------------
+OpenBCI GUI
+--------------------------------------------------------------------------
+
+Distributed under the MIT license
+
+https://spdx.org/licenses/MIT.html

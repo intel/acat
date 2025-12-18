@@ -31,7 +31,7 @@
                onEnter=""
                scanTime="@MenuDialogScanTime"
                iterations="1"
-               onSelect="actuate(@SelectedWidget);stop();">
+               onSelect="actuate(@SelectedWidget);">
       <Widget name="ACATTalkSentence" />
       <Widget name="ACATTalkPhrase" />
       <Widget name="ACATTalkShorthand" />

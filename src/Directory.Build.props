@@ -29,16 +29,13 @@
     <Copyright>Copyright © Intel Corporation 2025</Copyright>
   </PropertyGroup>
 
-  <!-- Output path configuration -->
   <PropertyGroup>
-    <!-- Define SolutionDir if not set (e.g. when building project files directly) -->
-    <SolutionDir Condition="'$(SolutionDir)' == ''">$(MSBuildThisFileDirectory)</SolutionDir>
+    <SolutionRoot>$(MSBuildThisFileDirectory)</SolutionRoot>
+  </PropertyGroup>
 
-    <!-- Ensure trailing slash -->
-    <SolutionDir Condition="! EndsWith('$(SolutionDir)', '\')">$(SolutionDir)\</SolutionDir>
-
+  <PropertyGroup>
     <!-- Base output paths -->
-    <BaseOutputPath>$(SolutionDir)build\</BaseOutputPath>
+    <BaseOutputPath>$(SolutionRoot)build\</BaseOutputPath>
     <BuildPath>$(BaseOutputPath)bin\$(Configuration)\</BuildPath>
     <IntermediatePath>$(BaseOutputPath)obj\$(Configuration)\</IntermediatePath>
 
@@ -77,5 +74,12 @@
     <Optimize>true</Optimize>
     <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Resources.Extensions" Version ="8.0.0" />
+  </ItemGroup>
 
 </Project>

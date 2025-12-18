@@ -6,6 +6,6 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)Libraries\ACATCore\ACAT.Core.csproj" />
+    <ProjectReference Include="$(SolutionRoot)Libraries\ACATCore\ACAT.Core.csproj" />
   </ItemGroup>
 </Project>

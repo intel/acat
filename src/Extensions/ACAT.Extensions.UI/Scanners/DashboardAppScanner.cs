@@ -11,6 +11,7 @@ using ACAT.Core.WordPredictorManagement.Interfaces;
 using ACAT.Extension;
 using ACAT.Extension.AppAgents.ChromeBrowser;
 using ACAT.Extension.CommandHandlers;
+using ACAT.Extension.UI;
 using ACAT.Extension.UI.ScannerForms;
 using ACAT.Extensions.UI.UserControls.Toolbars;
 using System;

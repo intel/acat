@@ -7,8 +7,8 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\ACATResources\ACATResources.csproj" />
-    <ProjectReference Include="$(SolutionDir)Libraries\ACATCore\ACAT.Core.csproj" />
-    <ProjectReference Include="$(SolutionDir)Libraries\ACATExtension\ACAT.Extension.csproj" />
+    <ProjectReference Include="$(SolutionRoot)Libraries\ACATCore\ACAT.Core.csproj" />
+    <ProjectReference Include="$(SolutionRoot)Libraries\ACATExtension\ACAT.Extension.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

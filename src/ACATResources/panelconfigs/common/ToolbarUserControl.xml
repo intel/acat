@@ -21,7 +21,8 @@
             onEnter=""
             scanTime="@MenuDialogScanTime"
             iterations="1"
-            onSelect="actuate(@SelectedWidget);stop();">
+            onSelect="stop();actuate(@SelectedWidget);start();"
+            autoStart="true">
       <Widget name="Menu" />
     </Animation>
   </Animations>

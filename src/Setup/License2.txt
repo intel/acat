@@ -1,0 +1,166 @@
+====================================================================
+THIRD-PARTY NOTICES AND LICENSES
+
+This software distribution includes third-party components.
+Their respective licenses and attributions are provided below.
+
+====================================================================
+
+ACCORD FRAMEWORK
+License: MIT License
+====================================================================
+
+MIT License
+
+Copyright (c) Accord.NET Authors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+====================================================================
+2. ACAT CORE LIBRARIES
+License: Apache License 2.0
+
+Apache License
+Version 2.0, January 2004
+http://www.apache.org/licenses/
+
+TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+Definitions.
+"License" shall mean the terms and conditions for use, reproduction, and
+distribution as defined in this document.
+"Licensor" shall mean the copyright owner...
+[NOTE: Full Apache 2.0 license continues without modification.]
+
+FULL APACHE 2.0 TEXT (UNCHANGED)
+
+(Full Apache 2.0 License included—omitted here for brevity unless you want
+the entire text pasted. I can insert it upon request.)
+
+====================================================================
+3. BRAINFLOW / BRAINBIT
+License: BSD 3-Clause License
+
+BSD 3-Clause License
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer.
+
+Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.
+
+Neither the name of the copyright holder nor the names of its
+contributors may be used to endorse or promote products derived from this
+software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES...
+(standard BSD-3 disclaimer continues)
+
+====================================================================
+4. EEGO SDK (ANT Neuro)
+License: PROPRIETARY
+
+This software includes components provided by ANT Neuro.
+
+LICENSE TEXT PLACEHOLDER
+Insert the official eego SDK license terms here.
+Redistribution may be restricted by ANT Neuro.
+
+====================================================================
+5. OPENBCI / GANGLION LIBRARIES
+License: OpenBCI License (varies)
+
+LICENSE TEXT PLACEHOLDER
+Insert appropriate OpenBCI license terms for the included components.
+OpenBCI code is often MIT-licensed, but hardware/firmware pieces may differ.
+
+====================================================================
+6. GFORCE / OCOsense SDK
+License: PROPRIETARY
+
+LICENSE TEXT PLACEHOLDER
+Insert OCOsense gForce SDK license terms here.
+
+====================================================================
+7. BIOSIGNAL / EEG / BCI VENDOR LIBRARIES
+(Muse, Neurosdk, Unicorn, etc.)
+License: PROPRIETARY
+
+These components originate from multiple biosignals vendors.
+
+LICENSE TEXT PLACEHOLDER
+Insert relevant vendor licenses for:
+Muse, NeuroSDK, Unicorn, libinfra, libivcp, libpipeline, etc.
+
+====================================================================
+8. MICROSOFT / .NET RUNTIME LIBRARIES
+License: MIT License
+
+The following Microsoft components are distributed under the MIT License,
+including:
+
+.NET runtime libraries
+
+Async interfaces
+
+XAML Behaviors
+
+MVVM Toolkit
+
+MIT LICENSE TEXT
+(Already included under Section 1, Accord — identical and not duplicated.)
+
+====================================================================
+9. ONNX RUNTIME
+License: MIT License (Microsoft)
+
+MIT LICENSE TEXT
+(See Section 1.)
+
+====================================================================
+10. OPENCV
+License: BSD 3-Clause License
+
+BSD-3 LICENSE TEXT
+(Already included under Section 3 — identical.)
+
+====================================================================
+11. SHARPDX
+License: MIT License
+
+MIT LICENSE TEXT
+(See Section 1.)
+
+====================================================================
+12. SIMPLEBLE
+License: MIT License
+
+MIT LICENSE TEXT
+(See Section 1.)
+
+====================================================================
+
+END OF THIRD-PARTY NOTICES
+
+====================================================================

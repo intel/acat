@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <!-- Use Link to preserve folder structure in metadata -->
-    <Assets Include="$(SolutionDir)Assets\**\*">
+    <Assets Include="$(SolutionRoot)Assets\**\*">
       <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Assets>
   </ItemGroup>
@@ -29,7 +29,7 @@
   </Target>
   
   <ItemGroup>
-    <InstallFiles Include="$(SolutionDir)\Applications\Install\Users\**\*" >
+    <InstallFiles Include="$(SolutionRoot)\Applications\Install\Users\**\*" >
       <Link>Install\Users\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </InstallFiles>
   </ItemGroup>
@@ -49,7 +49,7 @@
   <Target Name="UnzipDependency">
     <!-- Define paths -->
     <PropertyGroup>
-      <ZipFile>$(SolutionDir)\Applications\Install\ConvAssistApp\ConvAssist.zip</ZipFile>
+      <ZipFile>$(SolutionRoot)\Applications\Install\ConvAssistApp\ConvAssist.zip</ZipFile>
       <ExtractedDir>$(BaseOutputPath)\UnzippedDependency\</ExtractedDir>
       <UnzipFlagFile>$(ExtractedDir).unzipped</UnzipFlagFile>
     </PropertyGroup>

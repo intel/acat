@@ -111,7 +111,7 @@ namespace ACAT.Core.UserControlManagement
 
         public bool AddUserControlByKeyOrName(Control parent, String userControlKeyName, String userControlName, object tag = null)
         {
-            StopTopLevelAnimation();
+            //StopTopLevelAnimation();
 
             if (parent.Controls.Count > 0)
             {

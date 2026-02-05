@@ -31,10 +31,7 @@
   <Target Name="CopyAssetFiles" AfterTargets="Build">
     <Message Text="Copy Asssets Files" Importance="high" />
     <MakeDir Directories="$(OutputPath)Assets\%(Assets.RecursiveDir)" />
-    <Copy 
-      SourceFiles="@(Assets)" 
-      DestinationFiles="$(OutputPath)Assets\%(Assets.RecursiveDir)%(Filename)%(Extension)" 
-      SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(Assets)" DestinationFiles="$(OutputPath)Assets\%(Assets.RecursiveDir)%(Filename)%(Extension)" SkipUnchangedFiles="true" />
   </Target>
   
   <!-- Copy Default User Install Files -->
@@ -46,10 +43,7 @@
   
   <Target Name="CopyInstallFiles" AfterTargets="Build">
     <Message Text="Copy Install Files" Importance="high" />
-    <Copy 
-      SourceFiles="@(DefaultUserFiles)" 
-      DestinationFiles="$(OutputPath)Install\Users\%(DefaultUserFiles.RecursiveDir)%(Filename)%(Extension)" 
-      SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(DefaultUserFiles)" DestinationFiles="$(OutputPath)Install\Users\%(DefaultUserFiles.RecursiveDir)%(Filename)%(Extension)" SkipUnchangedFiles="true" />
   </Target>
   
   <!-- Copy PanelConfigs -->
@@ -61,10 +55,7 @@
   
   <Target Name="CopyPanelConfigs" AfterTargets="Build">
     <Message Text="Copy Panel Config Files" Importance="high" />
-    <Copy 
-      SourceFiles="@(PanelConfigs)" 
-      DestinationFiles="$(OutputPath)\panelconfigs\%(PanelConfigs.RecursiveDir)%(Filename)%(Extension)" 
-      SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(PanelConfigs)" DestinationFiles="$(OutputPath)\panelconfigs\%(PanelConfigs.RecursiveDir)%(Filename)%(Extension)" SkipUnchangedFiles="true" />
     </Target>
   
   <!-- Copy English ConvAssist Static Files -->
@@ -78,13 +69,16 @@
       <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
     </ConvAssistStatic>
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+    <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
+  </ItemGroup>
   <Target Name="CopyStaticConvAssist" AfterTargets="Build">
     <Message Text="Copy Static ConvAssist Files" Importance="high" />
     <!-- Copy files while preserving subfolders -->
-    <Copy
-      SourceFiles="@(ConvAssistStatic)"
-      DestinationFiles="$(OutputPath)%(ConvAssistStatic.Lang)\%(ConvAssistStatic.RecursiveDir)%(Filename)%(Extension)"  
-      SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(ConvAssistStatic)" DestinationFiles="$(OutputPath)%(ConvAssistStatic.Lang)\%(ConvAssistStatic.RecursiveDir)%(Filename)%(Extension)" SkipUnchangedFiles="true" />
   </Target>
   <!-- Copy ConvAssist Application -->
   <Target Name="UnzipDependency" AfterTargets="Build">

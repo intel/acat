@@ -11,6 +11,10 @@
   <ItemGroup>
     <PackageReference Include="lioncs.ColorSlider" Version="1.0.0" />
     <PackageReference Include="MahApps.Metro" Version="2.4.10" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+    <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
     <PackageReference Include="SharpDX" Version="4.2.0" />
     <PackageReference Include="SharpDX.Direct2D1" Version="4.2.0" />
     <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
@@ -399,6 +403,8 @@
     <Compile Include="Utility\ImageUtils.cs" />
     <Compile Include="Utility\KeyStateTracker.cs" />
     <Compile Include="Utility\Log.cs" />
+    <Compile Include="Utility\LoggingConfiguration.cs" />
+    <Compile Include="Tests\LoggingConfigurationTest.cs" />
     <Compile Include="Utility\Mouse\MouseUtils.cs" />
     <Compile Include="PanelManagement\Common\PanelClasses.cs" />
     <Compile Include="PanelManagement\Common\PanelRequestEventArgs.cs" />

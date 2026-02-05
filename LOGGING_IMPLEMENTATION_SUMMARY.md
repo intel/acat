@@ -9,11 +9,14 @@ This PR successfully implements Microsoft.Extensions.Logging infrastructure acro
 **Location**: `/src/Libraries/ACATCore/Utility/LoggingConfiguration.cs`
 
 **Features**:
-- `AddACATLogging()` extension method for DI configuration
-- `CreateLoggerFactory()` for standalone factory creation
+- `AddACATLogging()` extension method for DI configuration (console logging and log levels)
+- `ConfigureFileLogging()` extension method for logger factory (file logging configuration)
+- `CreateLoggerFactory()` for standalone factory creation (includes both console and file logging)
 - `CreateLogger<T>()` and `CreateLogger(string)` factory methods
 - Automatic log directory detection using existing ACAT infrastructure
 - Fallback mechanisms for directory creation
+
+**Important Note**: File logging is configured separately using `ConfigureFileLogging()` on `ILoggerFactory` because the Serilog.Extensions.Logging.File package's `AddFile` extension method requires the factory to be built first.
 
 **Configuration**:
 - **Log File Pattern**: `logs/acat-{Date}.txt`

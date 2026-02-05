@@ -30,18 +30,6 @@ namespace ACAT.Core.Utility
                 // Add console logging
                 builder.AddConsole();
 
-                // Configure log file path: logs/acat-{Date}.txt
-                string logDirectory = GetLogDirectory();
-                string logFilePath = Path.Combine(logDirectory, "acat-.txt");
-
-                // Add file logging with Serilog
-                builder.AddFile(logFilePath, options =>
-                {
-                    options.MinLevel = LogLevel.Information;
-                    options.FileSizeLimitBytes = 10_000_000; // 10MB
-                    options.RetainedFileCountLimit = 7; // Keep 7 days of logs
-                });
-
                 // Set minimum log level based on build configuration
 #if DEBUG
                 builder.SetMinimumLevel(LogLevel.Debug);
@@ -51,6 +39,26 @@ namespace ACAT.Core.Utility
             });
 
             return services;
+        }
+        
+        /// <summary>
+        /// Configures file logging on the logger factory
+        /// This must be called after the service provider is built
+        /// </summary>
+        /// <param name="loggerFactory">The logger factory to configure</param>
+        /// <returns>The configured logger factory for chaining</returns>
+        public static ILoggerFactory ConfigureFileLogging(this ILoggerFactory loggerFactory)
+        {
+            // Configure log file path: logs/acat-{Date}.txt
+            string logDirectory = GetLogDirectory();
+            string logFilePath = Path.Combine(logDirectory, "acat-.txt");
+
+            // Add file logging with Serilog
+            loggerFactory.AddFile(logFilePath, LogLevel.Information, 
+                fileSizeLimitBytes: 10_000_000, // 10MB
+                retainedFileCountLimit: 7); // Keep 7 days of logs
+
+            return loggerFactory;
         }
 
         /// <summary>
@@ -105,7 +113,12 @@ namespace ACAT.Core.Utility
             var services = new ServiceCollection();
             services.AddACATLogging();
             var serviceProvider = services.BuildServiceProvider();
-            return serviceProvider.GetRequiredService<ILoggerFactory>();
+            var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+            
+            // Configure file logging on the logger factory
+            loggerFactory.ConfigureFileLogging();
+            
+            return loggerFactory;
         }
 
         /// <summary>

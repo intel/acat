@@ -30,19 +30,23 @@ using ACAT.Core.Utility;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-// Method 1: Use with dependency injection
+// Method 1: Use with dependency injection (includes file logging)
 var services = new ServiceCollection();
 services.AddACATLogging();
 var serviceProvider = services.BuildServiceProvider();
-var logger = serviceProvider.GetRequiredService<ILogger<MyClass>>();
+var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+loggerFactory.ConfigureFileLogging(); // Add file logging
+var logger = loggerFactory.CreateLogger<MyClass>();
 
-// Method 2: Create a standalone logger factory
+// Method 2: Create a standalone logger factory (file logging included)
 var loggerFactory = LoggingConfiguration.CreateLoggerFactory();
 var logger = loggerFactory.CreateLogger<MyClass>();
 
-// Method 3: Create a logger directly
+// Method 3: Create a logger directly (file logging included)
 var logger = LoggingConfiguration.CreateLogger<MyClass>();
 ```
+
+**Note**: The `AddACATLogging()` method configures console logging and log levels. File logging is configured separately using `ConfigureFileLogging()` on the logger factory, as the Serilog.Extensions.Logging.File package requires the factory to be built first.
 
 ## Configuration Details
 

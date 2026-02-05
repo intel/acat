@@ -19,6 +19,16 @@ namespace ACAT.Core.Utility
     public static class LoggingConfiguration
     {
         /// <summary>
+        /// Maximum size of a log file before rotation (10 MB)
+        /// </summary>
+        private const long MaxFileSizeBytes = 10_000_000;
+        
+        /// <summary>
+        /// Number of days of log files to retain
+        /// </summary>
+        private const int RetainedFileCountLimit = 7;
+        
+        /// <summary>
         /// Adds ACAT logging configuration to the service collection
         /// </summary>
         /// <param name="services">The service collection to configure</param>
@@ -55,8 +65,8 @@ namespace ACAT.Core.Utility
 
             // Add file logging with Serilog
             loggerFactory.AddFile(logFilePath, LogLevel.Information, 
-                fileSizeLimitBytes: 10_000_000, // 10MB
-                retainedFileCountLimit: 7); // Keep 7 days of logs
+                fileSizeLimitBytes: MaxFileSizeBytes,
+                retainedFileCountLimit: RetainedFileCountLimit);
 
             return loggerFactory;
         }

@@ -35,6 +35,7 @@ namespace ACATApp
     internal static class Program
     {
         private static Splash splash = null;
+        private static Microsoft.Extensions.Logging.ILoggerFactory modernLoggingFactory = null;
 
         /// <summary>
         /// The main entry point for the application.
@@ -100,8 +101,8 @@ namespace ACATApp
             Log.SetupListeners();
             
             // Initialize modern logging infrastructure (ticket #3)
-            var modernFactory = LoggingConfiguration.CreateLoggerFactory();
-            
+            modernLoggingFactory = LoggingConfiguration.CreateLoggerFactory();
+
             Log.Debug("ACAT Dashboard Application Launch");
         }
 
@@ -211,6 +212,7 @@ namespace ACATApp
             CloseSplashScreen();
             Log.Debug("ACATTalk Application shutdown");
             Log.Close();
+            modernLoggingFactory?.Dispose();
             AppCommon.OnExit();
         }
 

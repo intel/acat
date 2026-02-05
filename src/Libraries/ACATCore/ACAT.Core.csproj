@@ -404,6 +404,7 @@
     <Compile Include="Utility\KeyStateTracker.cs" />
     <Compile Include="Utility\Log.cs" />
     <Compile Include="Utility\LoggingConfiguration.cs" />
+    <Compile Include="Tests\LoggingConfigurationTest.cs" />
     <Compile Include="Utility\Mouse\MouseUtils.cs" />
     <Compile Include="PanelManagement\Common\PanelClasses.cs" />
     <Compile Include="PanelManagement\Common\PanelRequestEventArgs.cs" />

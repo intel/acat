@@ -34,6 +34,13 @@ jobs:
       run: |
         msbuild acat.sln /t:Build /p:Configuration=${{ matrix.configuration }}
       working-directory: src/
+    
+    # Execute logging infrastructure tests
+    - name: Validate Logging Infrastructure
+      run: |
+        dotnet test Libraries/ACATCore.Tests.Logging/ACATCore.Tests.Logging.csproj --configuration ${{ matrix.configuration }} --logger "console;verbosity=normal" --no-build
+      working-directory: src/
+      continue-on-error: false
       
     - name: Upload release build artifacts
       uses: actions/upload-artifact@v4.6.2

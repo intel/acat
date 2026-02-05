@@ -86,7 +86,11 @@ namespace ACATTalk
 
             Common.AppPreferences.AppName = "ACAT Talk";
 
+            // Initialize legacy logging system
             Log.SetupListeners();
+
+            // Initialize modern logging infrastructure (ticket #3)
+            var modernLoggingFactory = LoggingConfiguration.CreateLoggerFactory();
 
             Log.Debug("ACAT Talk Application Launch");
 
@@ -193,10 +197,12 @@ namespace ACATTalk
                 Log.Debug("ACATTalk Application shutdown");
 
                 Log.Close();
+                modernLoggingFactory?.Dispose();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
+                modernLoggingFactory?.Dispose();
             }
 
             AppCommon.OnExit();

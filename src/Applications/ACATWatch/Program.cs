@@ -41,7 +41,11 @@ namespace ACATWatch
                 CoreGlobals.AppPreferences.DebugLogMessagesToFile = true;
                 CoreGlobals.AppPreferences.DebugMessagesEnable = true;
 
+                // Initialize legacy logging (existing code)
                 Log.SetupListeners();
+
+                // Initialize modern logging infrastructure (ticket #3)
+                var modernLogger = LoggingConfiguration.CreateLoggerFactory();
 
                 FileUtils.LogAssemblyInfo(Assembly.GetExecutingAssembly());
 
@@ -52,6 +56,7 @@ namespace ACATWatch
                 Log.Info("**** Exit " + Common.AppPreferences.AppName + " " + DateTime.Now.ToString() + " ****");
 
                 Log.Close();
+                modernLogger?.Dispose();
             }
             else
             {

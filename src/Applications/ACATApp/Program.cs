@@ -96,7 +96,12 @@ namespace ACATApp
 
         private static void InitializeLogging()
         {
+            // Initialize legacy logging
             Log.SetupListeners();
+            
+            // Initialize modern logging infrastructure (ticket #3)
+            var modernFactory = LoggingConfiguration.CreateLoggerFactory();
+            
             Log.Debug("ACAT Dashboard Application Launch");
         }
 

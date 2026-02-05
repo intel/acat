@@ -1,0 +1,1 @@
+ScannerButtonControl.Designer.cs

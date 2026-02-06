@@ -61,7 +61,7 @@ namespace ACAT.Core.Utility
         {
             // Configure log file path: logs/acat-{Date}.txt
             string logDirectory = GetLogDirectory();
-            string logFilePath = Path.Combine(logDirectory, "acat-.txt");
+            string logFilePath = Path.Combine(logDirectory, "acat-{Date}.txt");
 
             // Add file logging with Serilog
             loggerFactory.AddFile(logFilePath, LogLevel.Information, 

@@ -349,7 +349,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
             catch (Exception e)
             {
-                _logger.LogError(e, e.Message);
+                _logger.LogError(e, "Failed to get available classifiers");
             }
             return availableClassifiers;
         }
@@ -378,7 +378,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
             catch (Exception e)
             {
-                _logger.LogError(e, e.Message);
+                _logger.LogError(e, "Failed to load typing mappings");
             }
         }
 
@@ -467,7 +467,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
             catch (Exception e)
             {
-                _logger.LogError(e, e.Message);
+                _logger.LogError(e, "Failed to load classifiers");
                 return false;
             }
             return !missingClassifier;
@@ -1026,7 +1026,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
             catch (Exception e)
             {
-                _logger.LogError(e, e.Message);
+                _logger.LogError(e, "Failed to send updated mappings");
             }
         }
 
@@ -1234,7 +1234,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                 catch (Exception e)
                 {
                     auc = -1;
-                    _logger.LogError(e, e.Message);
+                    _logger.LogError(e, "Failed during calibration data analysis");
                     error = new BCIError(BCIErrorCodes.CalibrationError_OnAnalyzingData_UnknownException, StringResources.CalibrationError_CalibrationFailed);
                 }
             }
@@ -1343,7 +1343,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                     catch (Exception e)
                     {
                         sensorError = new BCIError(BCIErrorCodes.CalibrationError_UnknwonException, StringResources.CalibrationError_CalibrationFailed);
-                        _logger.LogError(e, e.Message);
+                        _logger.LogError(e, "Failed to process calibration input");
                     }
                 }
             }
@@ -1665,7 +1665,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
             catch (Exception e)
             {
-                _logger.LogError(e, e.Message);
+                _logger.LogError(e, "Failed to start session");
             }
         }
 
@@ -1719,7 +1719,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
             catch (Exception e)
             {
-                _logger.LogError(e, e.Message);
+                _logger.LogError(e, "Failed to recalibrate from file");
             }
             return auc;
         }

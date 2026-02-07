@@ -25,6 +25,7 @@ using ACAT.Core.WidgetManagement;
 using ACAT.Core.WordPredictorManagement;
 using ACAT.Core.WordPredictorManagement.Interfaces;
 using ACAT.Extension.UI;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
 
@@ -35,13 +36,15 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         "User Control for Sentence Prediction BCI")]
     public partial class PhrasesUserControlBCI : UserControl, IUserControl
     {
+        private readonly ILogger<PhrasesUserControlBCI> _logger;
         private static String _formConfigFilePath = "";
         private static UserControlConfigMapEntry _mapEntry;
         private UserControlKeyboardCommon _keyboardCommon;
         IScannerPanel _scanner;
         private UserControlWordPredictionCommon _sentencePredictionCommon;
-        public PhrasesUserControlBCI()
+        public PhrasesUserControlBCI(ILogger<PhrasesUserControlBCI> logger = null)
         {
+            _logger = logger ?? LoggerFactory.GetLogger<PhrasesUserControlBCI>();
             InitializeComponent();
         }
 
@@ -152,9 +155,9 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         {
             if (!String.IsNullOrEmpty(text))
             {
-                Log.Debug("*** TTS *** : " + text);
+                _logger.LogDebug("*** TTS *** : " + text);
                 TTSManager.Instance.ActiveEngine.Speak(text);
-                Log.Debug("*** TTS *** : sent text!");
+                _logger.LogDebug("*** TTS *** : sent text!");
 
                 AuditLog.Audit(new AuditEventTextToSpeech(TTSManager.Instance.ActiveEngine.Descriptor.Name));
             }

@@ -6,6 +6,7 @@ using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.ActuatorManagement.Settings;
 using ACAT.Core.Utility;
 using ACAT.Core.Utility.TypeLoader;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,6 +23,8 @@ namespace ACAT.Core.ActuatorManagement
     /// </summary>
     public class Actuators : IDisposable
     {
+        private readonly ILogger<Actuators> _logger;
+
         /// <summary>
         /// If one of the dll found has an error with the certificate
         /// </summary>
@@ -52,8 +55,9 @@ namespace ACAT.Core.ActuatorManagement
         /// <summary>
         /// Initializes the Actuator object
         /// </summary>
-        public Actuators()
+        public Actuators(ILogger<Actuators> logger = null)
         {
+            _logger = logger;
             //_actuatorsTypeCache = new Dictionary<Guid, Type>();
             _actuatorsEx = new List<ActuatorEx>();
             _actuators = new List<IActuator>();

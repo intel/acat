@@ -18,6 +18,7 @@
 
 using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.ComponentModel;
 using System.Threading;
@@ -36,6 +37,8 @@ namespace ACAT.Core.ActuatorManagement
     /// </summary>
     internal class ActuatorEx
     {
+        private readonly ILogger<ActuatorEx> _logger;
+
         /// <summary>
         /// The inner acutator object
         /// </summary>
@@ -79,8 +82,9 @@ namespace ACAT.Core.ActuatorManagement
         /// Initializes an instance of the class
         /// </summary>
         /// <param name="src">The inner actuator object</param>
-        public ActuatorEx(IActuator src)
+        public ActuatorEx(IActuator src, ILogger<ActuatorEx> logger = null)
         {
+            _logger = logger;
             SourceActuator = src;
         }
 

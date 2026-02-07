@@ -9,6 +9,7 @@ using ACAT.Core.Extensions;
 using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WordPredictorManagement.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -24,6 +25,8 @@ namespace ACAT.Core.WordPredictorManagement
                             "Disable word prediction")]
     public class NullWordPredictor : IWordPredictor, ISupportsPreferences, IExtension
     {
+        private readonly ILogger<NullWordPredictor> _logger;
+
         protected WordPredictionModes _wordPredictionMode = WordPredictionModes.Sentence;
 
         /// <summary>
@@ -44,8 +47,10 @@ namespace ACAT.Core.WordPredictorManagement
         /// <summary>
         /// Creates an instance of the class
         /// </summary>
-        public NullWordPredictor()
+        /// <param name="logger">Logger instance</param>
+        public NullWordPredictor(ILogger<NullWordPredictor> logger = null)
         {
+            _logger = logger;
             _invoker = new ExtensionInvoker(this);
         }
 
@@ -276,7 +281,7 @@ namespace ACAT.Core.WordPredictorManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("");
 
                 if (disposing)
                 {

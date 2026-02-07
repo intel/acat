@@ -7,6 +7,7 @@
 
 using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,11 @@ namespace ACAT.Core.AgentManagement
     public class Keyboard : IKeyboard
     {
         /// <summary>
+        /// Logger instance for this class
+        /// </summary>
+        private readonly ILogger<Keyboard> _logger;
+
+        /// <summary>
         /// Windows keyboard layout
         /// </summary>
         private readonly IntPtr _keyboardLayout = User32Interop.GetKeyboardLayout(0);
@@ -35,6 +41,11 @@ namespace ACAT.Core.AgentManagement
         {
             KEYEVENTF_EXTENDEDKEY = 0x0001,
             KEYEVENTF_KEYUP = 0x0002
+        }
+
+        public Keyboard(ILogger<Keyboard> logger)
+        {
+            _logger = logger;
         }
 
         /// <summary>
@@ -56,7 +67,7 @@ namespace ACAT.Core.AgentManagement
         /// <param name="key">modifier key</param>
         public void ExtendedKeyDown(Keys key)
         {
-            Log.Debug(key.ToString());
+            _logger.LogDebug("ExtendedKeyDown: {Key}", key.ToString());
             User32Interop.keybd_event((byte)key, 0xAA, 0, UIntPtr.Zero);
         }
 
@@ -67,7 +78,7 @@ namespace ACAT.Core.AgentManagement
         /// <param name="key">modifier key</param>
         public void ExtendedKeyUp(Keys key)
         {
-            Log.Debug(key.ToString());
+            _logger.LogDebug("ExtendedKeyUp: {Key}", key.ToString());
             User32Interop.keybd_event((byte)key, 0xAA, (uint)Flags.KEYEVENTF_KEYUP, UIntPtr.Zero);
         }
 
@@ -361,11 +372,11 @@ namespace ACAT.Core.AgentManagement
             Log.Debug("virtualKey for [" + c + "] is " + virtualKey);
             if ((virtualKey & 0x100) == 0x100)
             {
-                Log.Debug("Shift needs to be pressed for [" + c + "]");
+                _logger.LogDebug("Shift needs to be pressed for [{Char}]", c);
                 return true;
             }
 
-            Log.Debug("Shift does not need to be pressed for [" + c + "]");
+            _logger.LogDebug("Shift does not need to be pressed for [{Char}]", c);
             return false;
         }
 

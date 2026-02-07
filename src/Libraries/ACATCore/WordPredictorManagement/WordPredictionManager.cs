@@ -11,6 +11,7 @@ using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PreferencesManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WordPredictorManagement.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -28,6 +29,8 @@ namespace ACAT.Core.WordPredictorManagement
     /// </summary>
     public class WordPredictionManager : IDisposable
     {
+        private readonly ILogger<WordPredictionManager> _logger;
+
         /// <summary>
         /// Name of the folder under which the Word predictor DLLs are located
         /// </summary>
@@ -66,8 +69,11 @@ namespace ACAT.Core.WordPredictorManagement
         /// <summary>
         /// Initializes and instance of the WordPredictionManager class.
         /// </summary>
-        private WordPredictionManager()
+        /// <param name="logger">Logger instance</param>
+        private WordPredictionManager(ILogger<WordPredictionManager> logger = null)
         {
+            _logger = logger;
+
             AppDomain currentDomain = AppDomain.CurrentDomain;
 
             Context.EvtCultureChanged += Context_EvtCultureChanged;
@@ -385,7 +391,7 @@ namespace ACAT.Core.WordPredictorManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("");
 
                 Context.EvtCultureChanged -= Context_EvtCultureChanged;
 
@@ -436,7 +442,7 @@ namespace ACAT.Core.WordPredictorManagement
             }
             catch (Exception ex)
             {
-                Log.Exception("Unable to load WordPredictor " + type + ", assembly: " + type.Assembly.FullName + ". Exception: " + ex);
+                _logger?.LogError(ex, "Unable to load WordPredictor {Type}, assembly: {Assembly}", type, type.Assembly.FullName);
                 retVal = false;
             }
 

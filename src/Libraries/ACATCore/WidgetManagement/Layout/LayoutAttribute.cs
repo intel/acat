@@ -7,6 +7,7 @@
 
 using ACAT.Core.ThemeManagement;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,6 +25,8 @@ namespace ACAT.Core.WidgetManagement.Layout
     /// </summary>
     public class LayoutAttribute
     {
+        private readonly ILogger<LayoutAttribute> _logger;
+
         /// <summary>
         /// List of widgets that have the "contextual=true" attribute
         /// enabled. For these widgets, the enable/disable state will
@@ -50,8 +53,10 @@ namespace ACAT.Core.WidgetManagement.Layout
         /// <summary>
         /// Initializes an instance of the Layout class
         /// </summary>
-        public LayoutAttribute()
+        /// <param name="logger">Logger instance</param>
+        public LayoutAttribute(ILogger<LayoutAttribute> logger = null)
         {
+            _logger = logger;
             _colorSchemeName = string.Empty;
             _disabledButtonColorSchemeName = string.Empty;
             Colors = ColorSchemes.DefaultColorScheme;
@@ -113,17 +118,17 @@ namespace ACAT.Core.WidgetManagement.Layout
             Widget widget = null;
             try
             {
-                Log.Debug("creating widget with name " + widgetName);
+                _logger?.LogDebug("creating widget with name {WidgetName}", widgetName);
 
                 widget = (Widget)Activator.CreateInstance(classType, widgetName);
 
-                Log.IsNull("Widget created ", widget);
+                _logger?.LogDebug("Widget created: {IsNull}", widget != null ? "Not Null" : "Null");
 
                 widget?.SetLayout(this);
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger?.LogError(ex, ex.Message);
             }
 
             return widget;
@@ -141,17 +146,17 @@ namespace ACAT.Core.WidgetManagement.Layout
             Widget widget = null;
             try
             {
-                Log.Debug("creating widget " + classType);
+                _logger?.LogDebug("creating widget {ClassType}", classType);
 
                 widget = (Widget)Activator.CreateInstance(classType, uiControl);
 
-                Log.IsNull("Widget created ", widget);
+                _logger?.LogDebug("Widget created: {IsNull}", widget != null ? "Not Null" : "Null");
 
                 widget?.SetLayout(layout: this);
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger?.LogError(ex, ex.Message);
             }
 
             return widget;
@@ -172,7 +177,7 @@ namespace ACAT.Core.WidgetManagement.Layout
         {
             bool retVal = true;
 
-            Log.Debug("configFile: " + configFile + ", rootWidget.name is " + rootWidget.Name);
+            _logger?.LogDebug("configFile: {ConfigFile}, rootWidget.name is {RootWidgetName}", configFile, rootWidget.Name);
 
             ConfigFile = configFile;
 
@@ -200,12 +205,12 @@ namespace ACAT.Core.WidgetManagement.Layout
                 else
                 {
                     retVal = false;
-                    Log.Error("Could not find layout element in xml file " + configFile + ", panel: " + rootWidget.Name);
+                    _logger?.LogError("Could not find layout element in xml file {ConfigFile}, panel: {PanelName}", configFile, rootWidget.Name);
                 }
             }
             else
             {
-                Log.Error("Could not find config file " + configFile);
+                _logger?.LogError("Could not find config file {ConfigFile}", configFile);
                 retVal = false;
             }
 
@@ -366,7 +371,7 @@ namespace ACAT.Core.WidgetManagement.Layout
         /// <param name="node">xml node that contains layout info</param>
         private void loadChildren(Widget rootWidget, XmlNode node)
         {
-            Log.Debug("rootWidget=" + rootWidget.Name);
+            _logger?.LogDebug("rootWidget={Name}", rootWidget.Name);
             XmlNodeList widgetNodes = node.SelectNodes("Widget");
             if (widgetNodes == null)
             {

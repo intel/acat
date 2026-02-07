@@ -13,6 +13,7 @@
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,11 +23,14 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.Utilities
 {
     internal class FileReader
     {
+        private readonly ILogger<FileReader> _logger;
+
         /// <summary>
         /// Constructor: read settings
         /// </summary>
-        public FileReader()
+        public FileReader(ILogger<FileReader> logger = null)
         {
+            _logger = logger ?? LoggerFactory.GetLogger<FileReader>();
         }
 
         /// <summary>
@@ -106,7 +110,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.Utilities
             }
             else
             {
-                Log.Debug("Markers file doesn't exist");
+                _logger.LogDebug("Markers file doesn't exist");
             }
             return markerValues;
         }
@@ -202,12 +206,12 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGProcessing.Utilities
                 }
                 else
                 {
-                    Log.Debug("EEG file doesn't exist");
+                    _logger.LogDebug("EEG file doesn't exist");
                 }
             }
             catch (Exception e)
             {
-                Log.Exception(e.ToString());
+                _logger.LogError(e, e.ToString());
             }
         }
     }

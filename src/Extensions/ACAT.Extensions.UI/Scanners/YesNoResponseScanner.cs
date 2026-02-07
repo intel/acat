@@ -22,6 +22,7 @@ using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extension.CommandHandlers;
 using ACAT.Extension.UI;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Security.Permissions;
 using System.Windows.Forms;
@@ -33,6 +34,8 @@ namespace ACAT.Extensions.UI.Menus
                         "Yes No Response Scanner")]
     public partial class YesNoResponseScanner : Form, IScannerPanel, IExtension
     {
+        private readonly ILogger<YesNoResponseScanner> _logger;
+
         /// <summary>
         /// Represents the widget of this form
         /// </summary>
@@ -88,6 +91,7 @@ namespace ACAT.Extensions.UI.Menus
         /// <param name="panelTitle">Title of the scanner</param>
         public YesNoResponseScanner(String panelClass, String panelTitle)
         {
+            _logger = LoggingConfiguration.CreateLogger<YesNoResponseScanner>();
             scannerCommon = new ScannerCommon(this);
 
             InitializeComponent();
@@ -166,7 +170,7 @@ namespace ACAT.Extensions.UI.Menus
         {
             get
             {
-                Log.Verbose();
+                _logger.LogTrace("CreateParams");
                 return Windows.SetFormStyles(base.CreateParams);
             }
         }
@@ -205,7 +209,7 @@ namespace ACAT.Extensions.UI.Menus
         /// <returns>true on success</returns>
         public bool Initialize(StartupArg startupArg)
         {
-            Log.Verbose();
+            _logger.LogTrace("Initialize");
             PanelClass = startupArg.PanelClass;
             startupCommandArg = startupArg.Arg;
             this.startupArg = startupArg;
@@ -237,7 +241,7 @@ namespace ACAT.Extensions.UI.Menus
         /// </summary>
         public virtual void OnPause()
         {
-            Log.Verbose();
+            _logger.LogTrace("OnPause");
 
             scannerCommon.OnPause();
         }
@@ -257,7 +261,7 @@ namespace ACAT.Extensions.UI.Menus
         /// </summary>
         public virtual void OnResume()
         {
-            Log.Verbose();
+            _logger.LogTrace("OnResume");
 
             scannerCommon.OnResume();
         }

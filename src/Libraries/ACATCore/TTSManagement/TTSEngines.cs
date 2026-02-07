@@ -8,6 +8,7 @@
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.Extensions;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -39,6 +40,11 @@ namespace ACAT.Core.TTSManagement
         private static ITTSEngine _nullTTSEngine = null;
 
         /// <summary>
+        /// Logger instance
+        /// </summary>
+        private readonly ILogger<TTSEngines> _logger;
+
+        /// <summary>
         /// Table mapping the GUID and culture to the TTSEngine type
         /// </summary>
         private readonly Dictionary<Guid, Tuple<String, Type>> _ttsEnginesTypeCache;
@@ -68,8 +74,9 @@ namespace ACAT.Core.TTSManagement
         /// <summary>
         /// Initializes a new instance of the class
         /// </summary>
-        public TTSEngines()
+        public TTSEngines(ILogger<TTSEngines> logger = null)
         {
+            _logger = logger;
             _ttsEnginesTypeCache = new Dictionary<Guid, Tuple<String, Type>>();
 
             PreferredTTSEngines.FilePath = UserManager.GetFullPath(PreferredConfigFile);
@@ -328,11 +335,11 @@ namespace ACAT.Core.TTSManagement
         {
             if (_ttsEnginesTypeCache.ContainsKey(guid))
             {
-                Log.Debug("TTS Engine" + type.FullName + ", guid " + guid + " is already added");
+                _logger?.LogDebug("TTS Engine {TypeName}, guid {Guid} is already added", type.FullName, guid);
                 return;
             }
 
-            Log.Debug("Adding TTS Engine " + type.FullName + ", guid " + guid + " to cache");
+            _logger?.LogDebug("Adding TTS Engine {TypeName}, guid {Guid} to cache", type.FullName, guid);
             _ttsEnginesTypeCache.Add(guid, new Tuple<String, Type>(language, type));
         }
 

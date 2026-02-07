@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;
 using System.IO;
@@ -23,6 +24,8 @@ namespace ACAT.Core.UserManagement
     /// </summary>
     public class UserManager
     {
+        private static ILogger<UserManager> _logger;
+
         public const String BaseUserInstallDir = "Install\\Users";
 
         /// <summary>
@@ -40,6 +43,7 @@ namespace ACAT.Core.UserManagement
         /// </summary>
         static UserManager()
         {
+            _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<UserManager>();
             _currentUserName = DefaultUserName;
         }
 
@@ -136,7 +140,7 @@ namespace ACAT.Core.UserManagement
             {
                 MessageBox.Show("Error creating dir. ex: " + ex);
 
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, ex.Message);
                 retVal = false;
             }
 

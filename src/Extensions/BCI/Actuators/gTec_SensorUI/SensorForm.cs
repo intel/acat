@@ -13,6 +13,7 @@
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -27,6 +28,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     /// </summary>
     public partial class SensorForm : Form
     {
+        private readonly ILogger<SensorForm> _logger;
+
         /// <summary>
         /// Variable storing connection manager for gTec BCI device
         /// </summary>
@@ -110,8 +113,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         public UserControl _currentUserControlShown;
 
         // Form which acts as parent for / base for all possible user controls displayed during testing process
-        public SensorForm(DAQ_gTecBCI gTecBCI)
+        public SensorForm(DAQ_gTecBCI gTecBCI, ILogger<SensorForm> logger)
         {
+            _logger = logger;
             InitializeComponent();
 
             this.WindowState = FormWindowState.Maximized;
@@ -186,7 +190,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="state"></param>
         public void updateOnboardingStatus(OnboardingUserState state, Dictionary<String, object> resultParams)
         {
-            Log.Debug("SensorForm | updateOnboardingStatus | state: " + state.ToString());
+            _logger.LogDebug("SensorForm | updateOnboardingStatus | state: " + state.ToString());
             UserControl newUserControl = null;
 
             switch (state)
@@ -386,11 +390,11 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     }
 
                     timerProcessData.Start();
-                    Log.Debug("startStopProcessDataTimer | Started timerProcessData");
+                    _logger.LogDebug("startStopProcessDataTimer | Started timerProcessData");
                 }
                 catch (Exception e)
                 {
-                    Log.Exception("startStopProcessDataTimer | Exception: " + e.ToString());
+                    _logger.LogError(e, "startStopProcessDataTimer | Exception: {Exception}", e.ToString());
                 }
             }
             else
@@ -407,7 +411,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                 }
                 catch (Exception e)
                 {
-                    Log.Exception("startStopProcessDataTimer | Exception: " + e.ToString());
+                    _logger.LogError(e, "startStopProcessDataTimer | Exception: {Exception}", e.ToString());
                 }
             }
         }
@@ -423,7 +427,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             // Check flag to stop this particular timer
             if (_stopTimers || GTecDeviceTester._endSignalCheckTimer)
             {
-                Log.Debug("ProcessDataSignalCheck_Tick | _stopTimers | GTecDeviceTester._endSignalCheckTimer");
+                _logger.LogDebug("ProcessDataSignalCheck_Tick | _stopTimers | GTecDeviceTester._endSignalCheckTimer");
                 startStopProcessDataTimer(false, OnboardingUserState.ExitBCITesting);
                 return;
             }
@@ -459,7 +463,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     // Only exit if ExitOnboardingEarly flag has been set (user selected Exit button)
                     if (!ExitOnboardingEarly)
                     {
-                        Log.Debug("User has requested to close form (Alt + F4) - ignore");
+                        _logger.LogDebug("User has requested to close form (Alt + F4) - ignore\");
                         e.Cancel = true;
                         closeReasonIsUserClosing = true;
                     }
@@ -532,7 +536,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         private void modifyUserControlsForDebugMode()
         {
-            Log.Debug("SensorForm | modifyUserControlsForDebugMode");
+            _logger.LogDebug("SensorForm | modifyUserControlsForDebugMode");
 
             _userControlTestBCIConnections.buttonExit_userControlTestBCIConnections.AutoSize = true;
             _userControlTestBCIConnections.buttonExit_userControlTestBCIConnections.Font = new Font("Montserrat Medium", 13F);

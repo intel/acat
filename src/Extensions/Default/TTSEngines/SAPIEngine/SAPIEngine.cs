@@ -17,6 +17,7 @@ using ACAT.Core.TTSManagement;
 using ACAT.Core.TTSManagement.Interfaces;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -65,6 +66,8 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// </summary>
         private bool _disposed;
 
+        private readonly ILogger<SAPIEngine> _logger;
+
         /// <summary>
         /// Is speech muted?
         /// </summary>
@@ -93,8 +96,9 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public SAPIEngine()
+        public SAPIEngine(ILogger<SAPIEngine> logger)
         {
+            _logger = logger;
             SAPISettings.PreferencesFilePath = UserManager.GetFullPath(SettingsFileName);
             SAPISettings = SAPISettings.Load();
             UseAlternatePronunciations = SAPISettings.UseAlternatePronunciations;
@@ -281,10 +285,8 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
 
             foreach (InstalledVoice iv in ins)
             {
-                Log.Debug("Found installed voice: " + iv.VoiceInfo.Name +
-                            "Gender " + iv.VoiceInfo.Gender +
-                            ", age: " + iv.VoiceInfo.Age +
-                            ", culture: " + iv.VoiceInfo.Culture.Name);
+                _logger.LogDebug("Found installed voice: {VoiceName} Gender {Gender}, age: {Age}, culture: {Culture}",
+                    iv.VoiceInfo.Name, iv.VoiceInfo.Gender, iv.VoiceInfo.Age, iv.VoiceInfo.Culture.Name);
             }
 
             loadPronunciations(ci);
@@ -433,20 +435,20 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// <returns>true on success</returns>
         public bool Speak(String text)
         {
-            Log.Debug("Entering...");
+            _logger.LogDebug("Entering...");
 
             try
             {
                 if (!IsMuted())
                 {
                     text = autoAppendPunctuation(replaceWithAltPronunciations(text));
-                    Log.Debug("Speaking text");
+                    _logger.LogDebug("Speaking text");
                     Synthesizer.SpeakAsync(text);
                 }
             }
             catch (Exception ex)
             {
-                Log.Exception("Exception caught! ex=" + ex.Message);
+                _logger.LogError(ex, "Exception caught! ex={Message}", ex.Message);
             }
 
             return true;
@@ -471,7 +473,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
                 {
                     var promptBuilder = new PromptBuilder();
                     text = autoAppendPunctuation(replaceWithAltPronunciations(text));
-                    Log.Debug("Speaking text");
+                    _logger.LogDebug("Speaking text");
                     promptBuilder.AppendText(autoAppendPunctuation(text));
 
                     promptBuilder.AppendBookmark(bookmark.ToString());
@@ -481,7 +483,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "{Exception}", ex.ToString());
                 retVal = false;
             }
 
@@ -496,7 +498,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
         /// <returns>true on success</returns>
         public bool SpeakSsml(String ssml, String text, String ttsPlaceHolderString)
         {
-            Log.Debug("Entering...");
+            _logger.LogDebug("Entering...");
 
             try
             {
@@ -505,13 +507,13 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
                     text = autoAppendPunctuation(replaceWithAltPronunciations(text));
                     ssml = ssml.Replace(ttsPlaceHolderString, text);
 
-                    Log.Debug("Speaking text");
+                    _logger.LogDebug("Speaking text");
                     Synthesizer.SpeakSsmlAsync(ssml);
                 }
             }
             catch (Exception ex)
             {
-                Log.Exception("Exception caught! ex=" + ex.Message);
+                _logger.LogError(ex, "Exception caught! ex={Message}", ex.Message);
             }
 
             return true;
@@ -544,7 +546,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
                     text = autoAppendPunctuation(replaceWithAltPronunciations(text));
                     ssml = ssml.Replace(ttsPlaceHolderString, text);
 
-                    Log.Debug("Speaking text");
+                    _logger.LogDebug("Speaking text");
 
                     TTSPrompt prompt = new(ssml, SynthesisTextFormat.Ssml)
                     {
@@ -552,7 +554,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
                     };
                     Synthesizer.SpeakAsync(prompt);
 
-                    Log.Debug("Returned from speakasync");
+                    _logger.LogDebug("Returned from speakasync");
                 }
                 else
                 {
@@ -561,7 +563,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "{Exception}", ex.ToString());
                 retVal = false;
             }
 
@@ -618,7 +620,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger.LogTrace("Disposing SAPIEngine");
 
                 if (disposing)
                 {
@@ -679,7 +681,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
 
             _pronunciations = new Pronunciations();
 
-            Log.Debug("Loading pronunciations. Filename is " + SAPISettings.PronunciationsFile);
+            _logger.LogDebug("Loading pronunciations. Filename is {PronunciationsFile}", SAPISettings.PronunciationsFile);
             return _pronunciations.Load(ci, SAPISettings.PronunciationsFile);
         }
 
@@ -735,7 +737,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
             }
             catch (Exception ex)
             {
-                Log.Exception("Error setting TTS settings " + ex);
+                _logger.LogError(ex, "Error setting TTS settings {Exception}", ex);
             }
         }
 
@@ -754,7 +756,7 @@ namespace ACAT.Extensions.TTSEngines.SAPIEngine
             }
             catch (Exception ex)
             {
-                Log.Exception("Invalid bookmark " + e.Bookmark + ", exception: " + ex);
+                _logger.LogError(ex, "Invalid bookmark {Bookmark}, exception: {Exception}", e.Bookmark, ex);
             }
         }
 

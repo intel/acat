@@ -9,6 +9,7 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.SpellCheckManagement.Interfaces;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -38,6 +39,11 @@ namespace ACAT.Core.SpellCheckManagement
         private static readonly SpellCheckManager _instance = new();
 
         /// <summary>
+        /// Logger instance
+        /// </summary>
+        private readonly ILogger<SpellCheckManager> _logger;
+
+        /// <summary>
         /// The active word predictor
         /// </summary>
         private ISpellChecker _activeSpellChecker;
@@ -55,8 +61,9 @@ namespace ACAT.Core.SpellCheckManagement
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        private SpellCheckManager()
+        private SpellCheckManager(ILogger<SpellCheckManager> logger = null)
         {
+            _logger = logger;
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.AssemblyResolve += currentDomain_AssemblyResolve;
 

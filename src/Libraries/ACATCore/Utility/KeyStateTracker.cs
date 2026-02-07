@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Core.Utility
 {
@@ -25,6 +26,7 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class KeyStateTracker
     {
+        private static ILogger<KeyStateTracker> _logger;
         private const byte VK_CAPITAL = 0x14;
         private const byte VK_NUMLOCK = 0x90;
 

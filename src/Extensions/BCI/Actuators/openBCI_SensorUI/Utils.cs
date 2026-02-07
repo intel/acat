@@ -1,5 +1,6 @@
 ﻿using ACAT.Core.Utility;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -8,11 +9,13 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
 {
     internal class Utils
     {
+        private static readonly ILogger<Utils> _logger = LoggerFactory.GetLogger<Utils>();
+
         internal static void HandleHelpNavigaion(WebBrowserNavigatingEventArgs e)
         {
             var str = e.Url.ToString();
 
-            Log.Debug("Url is [" + str + "]");
+            _logger.LogDebug("Url is [" + str + "]");
 
             if (str.ToLower().Contains("blank"))
             {

@@ -16,6 +16,7 @@ using ACAT.Core.WidgetManagement;
 using ACAT.Core.Widgets;
 using ACAT.Extension.CommandHandlers;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,8 @@ namespace ACAT.Extension.UI
     /// </summary>
     public class AlphabetScannerCommon : IDisposable
     {
+        private readonly ILogger<AlphabetScannerCommon> _logger;
+
         /// <summary>
         /// Widget that represents the alphabet scanner
         /// </summary>
@@ -83,8 +86,9 @@ namespace ACAT.Extension.UI
         /// Constructor. Initialize the various controls and
         /// display the UI
         /// </summary>
-        public AlphabetScannerCommon(IScannerPanel scannerPanel)
+        public AlphabetScannerCommon(IScannerPanel scannerPanel, ILogger<AlphabetScannerCommon> logger)
         {
+            _logger = logger;
             _scannerPanel = scannerPanel;
             _form = scannerPanel.Form;
             Dispatcher = new CmdDispatcher(this, scannerPanel);
@@ -233,7 +237,7 @@ namespace ACAT.Extension.UI
 
             if (!_scannerCommon.Initialize(startupArg))
             {
-                Log.Error($"Could not initialize form {_form.Name}");
+                _logger.LogError($"Could not initialize form {_form.Name}");
                 return false;
             }
 
@@ -262,7 +266,7 @@ namespace ACAT.Extension.UI
         /// </summary>
         public void OnClosing(object sender, FormClosingEventArgs e)
         {
-            Log.Verbose();
+            _logger.LogTrace();
 
             KeyStateTracker.EvtKeyStateChanged -= KeyStateTracker_EvtKeyStateChanged;
 
@@ -335,7 +339,7 @@ namespace ACAT.Extension.UI
         /// </summary>
         public void OnPause()
         {
-            Log.Verbose();
+            _logger.LogTrace();
 
             _scannerCommon.OnPause();
         }
@@ -346,7 +350,7 @@ namespace ACAT.Extension.UI
         /// </summary>
         public void OnResume()
         {
-            Log.Verbose();
+            _logger.LogTrace();
 
             _scannerCommon.OnResume();
 
@@ -492,7 +496,7 @@ namespace ACAT.Extension.UI
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger.LogTrace();
 
                 if (disposing)
                 {
@@ -514,7 +518,7 @@ namespace ACAT.Extension.UI
         /// <param name="e">event args</param>
         private void AppAgent_EvtTextChanged(object sender, EventArgs e)
         {
-            Log.Verbose();
+            _logger.LogTrace();
             try
             {
                 if (_form.Visible)
@@ -524,15 +528,15 @@ namespace ACAT.Extension.UI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, ex.Message);
             }
 
-            Log.Debug("returning");
+            _logger.LogDebug("returning");
         }
 
         private void autoComplete(WordListItemWidget wordListItemWidget)
         {
-            Log.Debug("wordListItemName : " + wordListItemWidget.Name + ", value: " + wordListItemWidget.Value);
+            _logger.LogDebug("wordListItemName : " + wordListItemWidget.Name + ", value: " + wordListItemWidget.Value);
 
             var wordSelected = wordListItemWidget.Value.Trim();
 
@@ -548,7 +552,7 @@ namespace ACAT.Extension.UI
 
         private void autoComplete(LetterListItemWidget letterListItemWidget)
         {
-            Log.Debug("leterListItemName : " + letterListItemWidget.Name + ", value: " + letterListItemWidget.Value);
+            _logger.LogDebug("leterListItemName : " + letterListItemWidget.Name + ", value: " + letterListItemWidget.Value);
 
             var letterSelected = letterListItemWidget.Value.Trim();
 
@@ -578,7 +582,7 @@ namespace ACAT.Extension.UI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -601,7 +605,7 @@ namespace ACAT.Extension.UI
 
             CoreGlobals.Stopwatch3.Stop();
 
-            Log.Debug("TimeElapsed for tryRefreshWordPredictionsAndSetCurrentWord: " + CoreGlobals.Stopwatch3.ElapsedMilliseconds);
+            _logger.LogDebug("TimeElapsed for tryRefreshWordPredictionsAndSetCurrentWord: " + CoreGlobals.Stopwatch3.ElapsedMilliseconds);
         }
 
         /// <summary>
@@ -651,12 +655,12 @@ namespace ACAT.Extension.UI
                     // we need the word at the cursor and also the previous n-words
                     // in the current sentence
                     int caretPos = agentContext.TextAgent().GetCaretPos();
-                    Log.Debug("Perform WordPrediction at caretPos " + caretPos);
+                    _logger.LogDebug("Perform WordPrediction at caretPos " + caretPos);
                     agentContext.TextAgent().GetPrefixAndWordAtCaret(out nwords, out wordAtCaret);
-                    Log.Debug("wordAtCaret: [" + wordAtCaret + "]");
+                    _logger.LogDebug("wordAtCaret: [" + wordAtCaret + "]");
 
                     agentContext.TextAgent().GetCharAtCaret(out charAtCaret);
-                    Log.Debug("charAtCaret: [" + charAtCaret + "]");
+                    _logger.LogDebug("charAtCaret: [" + charAtCaret + "]");
                 }
 
                 if (string.IsNullOrEmpty(nwords) && string.IsNullOrEmpty(wordAtCaret))
@@ -669,12 +673,12 @@ namespace ACAT.Extension.UI
                     wordAtCaret = string.Empty;
                 }
 
-                Log.Debug("wordatcaret length: " + wordAtCaret.Length);
+                _logger.LogDebug("wordatcaret length: " + wordAtCaret.Length);
 
                 //Log.Debug("Text: [" + text + "], caretPos: " + caretPos.ToString());
 
-                Log.Debug("Prefix: [" + nwords + "]");
-                Log.Debug("CurrentWord: [" + wordAtCaret + "]");
+                _logger.LogDebug("Prefix: [" + nwords + "]");
+                _logger.LogDebug("CurrentWord: [" + wordAtCaret + "]");
 
                 // do the word prediction
                 if (wordAtCaret.Length > 1 && char.IsPunctuation(wordAtCaret[0]))
@@ -686,11 +690,11 @@ namespace ACAT.Extension.UI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, ex.Message);
                 retVal = false;
             }
 
-            Log.Debug("Returning");
+            _logger.LogDebug("Returning");
             return retVal;
         }
 

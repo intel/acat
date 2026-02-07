@@ -7,6 +7,7 @@
 
 using ACAT.Core.ThemeManagement;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
 
@@ -18,13 +19,16 @@ namespace ACAT.Core.Widgets
     /// </summary>
     public class LetterListItemWidget : ScannerButtonBase
     {
+        private readonly ILogger<LetterListItemWidget> _logger;
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="control">the inner .NET Control for the widget</param>
-        public LetterListItemWidget(Control control)
+        public LetterListItemWidget(Control control, ILogger<LetterListItemWidget> logger = null)
             : base(control)
         {
+            _logger = logger ?? LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<LetterListItemWidget>();
             if (button != null)
             {
                 button.AutoEllipsis = true;
@@ -43,7 +47,7 @@ namespace ACAT.Core.Widgets
         {
             String text = GetText().Trim();
             AddForAnimation = !String.IsNullOrEmpty(text);
-            Log.Debug(" LetterListItem " + Name + ", AddForAnimation: " + AddForAnimation + ", Text: [" + text + "]");
+            _logger.LogDebug(" LetterListItem " + Name + ", AddForAnimation: " + AddForAnimation + ", Text: [" + text + "]");
             return AddForAnimation;
         }
     }

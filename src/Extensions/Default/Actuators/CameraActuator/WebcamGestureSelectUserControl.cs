@@ -15,6 +15,7 @@
 
 using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -29,6 +30,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         private readonly Dictionary<int, IActuatorSwitch> _dict = new();
         private IEnumerable<string> _installedCameras;
         private readonly CameraActuator _cameraActuator;
+        private readonly ILogger<WebcamGestureSelectUserControl> _logger;
         private int bothIndex = -1;
 
         private int cameraIndex = -1;
@@ -37,11 +39,12 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
         private int erIndex = -1;
 
-        internal WebcamGestureSelectUserControl(CameraActuator cameraActuator)
+        internal WebcamGestureSelectUserControl(CameraActuator cameraActuator, ILogger<WebcamGestureSelectUserControl> logger)
         {
             InitializeComponent();
             _buttonBackColor = buttonRecalibrate.BackColor;
             _cameraActuator = cameraActuator;
+            _logger = logger;
         }
 
         public delegate void GestureSelected(bool cheekTwitch, bool eyebrowRaise);
@@ -115,7 +118,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         {
             var camera = dropdownCameraSelect.SelectedItem as String;
 
-            Log.Debug("calling changeCamera to : " + camera);
+            _logger.LogDebug("calling changeCamera to {Camera}", camera);
 
             if (dropdownCameraSelect.Items.Count > 1 && dropdownCameraSelect.SelectedIndex != cameraIndex)
             {

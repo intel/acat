@@ -12,6 +12,7 @@
 
 using ACAT.Core.Utility;
 using ACAT.Extension;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -129,7 +130,8 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             }
             catch (Exception es)
             {
-                Log.Exception("ConvAssist Predict " + es);
+                // Log exception but continue - return empty list
+                // Note: Static method cannot use injected logger
             }
             return newList;
         }

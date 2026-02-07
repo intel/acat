@@ -8,6 +8,7 @@
 using System;
 using System.Text;
 using System.Windows.Forms;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Core.Utility
 {
@@ -17,6 +18,7 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class TextUtils
     {
+        private static ILogger<TextUtils> _logger;
         /// <summary>
         /// Converts a byte array into a hex string
         /// </summary>
@@ -40,7 +42,7 @@ namespace ACAT.Core.Utility
         /// <returns></returns>
         public static String Capitalize(String word)
         {
-            Log.Debug(word);
+            _logger?.LogDebug("{Word}", word);
             if (String.IsNullOrEmpty(word))
             {
                 return word;
@@ -59,7 +61,7 @@ namespace ACAT.Core.Utility
             }
 
             char c = word[index];
-            Log.Debug("index: " + index + "c: " + c.ToString());
+            _logger?.LogDebug("index: {Index}, c: {Char}", index, c);
 
             if (!Char.IsLetter(c) || Char.IsUpper(c))
             {
@@ -69,7 +71,7 @@ namespace ACAT.Core.Utility
             word = word.Remove(index, 1);
             c = Char.ToUpper(c);
             word = word.Insert(index, c.ToString());
-            Log.Debug("returning " + word);
+            _logger?.LogDebug("returning {Word}", word);
             return word;
         }
 
@@ -95,7 +97,7 @@ namespace ACAT.Core.Utility
 
                 if (String.IsNullOrEmpty(inputString))
                 {
-                    Log.Debug("NULL string. return true " + insertOrReplaceOffset);
+                    _logger?.LogDebug("NULL string. return true {Offset}", insertOrReplaceOffset);
                     return true;
                 }
 

@@ -8,6 +8,7 @@
 using ACAT.Core.AgentManagement;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -21,6 +22,8 @@ namespace ACAT.Extension.AppAgents.DialogControlAgent
     /// </summary>
     public class DialogControlAgentBase : GenericAppAgentBase
     {
+        private readonly ILogger<DialogControlAgentBase> _logger;
+
         /// <summary>
         /// If set to true, the agent will autoswitch the
         /// scanners depending on which element has focus.
@@ -33,6 +36,11 @@ namespace ACAT.Extension.AppAgents.DialogControlAgent
         /// Handle to the window that was previously active
         /// </summary>
         private IntPtr _prevHwnd = IntPtr.Zero;
+
+        public DialogControlAgentBase(ILogger<DialogControlAgentBase> logger)
+        {
+            _logger = logger;
+        }
 
         /// <summary>
         /// Gets which processes this agent supported. Use the
@@ -63,13 +71,13 @@ namespace ACAT.Extension.AppAgents.DialogControlAgent
         /// <param name="handled">set to true if handled</param>
         public override void OnFocusChanged(WindowActivityMonitorInfo monitorInfo, ref bool handled)
         {
-            Log.Debug("prevHwnd: " + _prevHwnd + ", fgHwnd: " + monitorInfo.FgHwnd);
+            _logger.LogDebug("prevHwnd: " + _prevHwnd + ", fgHwnd: " + monitorInfo.FgHwnd);
 
             base.OnFocusChanged(monitorInfo, ref handled);
 
             if (autoSwitchScanners && _prevHwnd != monitorInfo.FgHwnd)
             {
-                Log.Debug("They are not equal. Show dialog panel");
+                _logger.LogDebug("They are not equal. Show dialog panel");
 
                 showPanel(this, new PanelRequestEventArgs(PanelClasses.DialogContextMenu,
                                                             monitorInfo.Title,

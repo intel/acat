@@ -16,6 +16,7 @@ using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -29,6 +30,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     /// </summary>
     public class GTecDeviceTester
     {
+        private readonly ILogger<GTecDeviceTester> _logger;
         public DAQ_gTecBCI gTecBCI = null;
 
         /// <summary>
@@ -123,8 +125,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// Tests BCI devices - connections to the hw and data quality
         /// Displays errors accordingly - After an error, starts at the beginning of the process (testing device connections)
         /// </summary>
-        public GTecDeviceTester()
+        public GTecDeviceTester(ILogger<GTecDeviceTester> logger)
         {
+            _logger = logger;
             // Do not call init function here
 
             // Call init function after creating object of this class and linking any necessary event handler (ex: EvtBCIDeviceTestingCompleted)
@@ -136,14 +139,14 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         public void initialize()
         {
-            Log.Debug("gTecDeviceTester | initialize");
+            _logger.LogDebug("gTecDeviceTester | initialize");
 
             gTecBCI = (DAQ_gTecBCI)DAQFactory.CreateDAQ(DAQDeviceType.GTecBCI);
 
             // Close main form if for some reason it's opened at this point
             if (_mainForm != null && _mainForm.IsDisposed == false)
             {
-                Log.Debug("gTecDeviceTester | _mainForm != null && _mainForm.IsDisposed == false");
+                _logger.LogDebug("gTecDeviceTester | _mainForm != null && _mainForm.IsDisposed == false");
                 _mainForm.Close();
                 _mainForm.Dispose();
             }
@@ -155,7 +158,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Exception getting Testing_UseSensor setting");
             }
 
             // If flag set to exit onboarding early, then send event EvtBCIDeviceTestingCompleted and do not continue this function
@@ -217,7 +220,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="eventParams">Any extra params sent with bluetooth event request</param>
         public void bluetoothResultHandler(DAQ_gTecBCI.BluetoothEvent bluetoothEvent, Dictionary<String, object> eventParams)
         {
-            Log.Debug("gTecDeviceTester | bluetoothResultHandler | bluetoothEvent: " + bluetoothEvent.ToString() + " | _currentOnboardingUserState: " + _currentOnboardingUserState.ToString());
+            _logger.LogDebug("gTecDeviceTester | bluetoothResultHandler | bluetoothEvent: " + bluetoothEvent.ToString() + " | _currentOnboardingUserState: " + _currentOnboardingUserState.ToString());
 
             switch (bluetoothEvent)
             {
@@ -232,7 +235,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     }
                     catch (Exception ex)
                     {
-                        Log.Exception("gTecDeviceTester | bluetoothResultHandler | Exception: " + ex.Message);
+                        _logger.LogError(ex, "gTecDeviceTester | bluetoothResultHandler | Exception: {Message}", ex.Message);
                     }
 
                     // We were seeing if device could be connected to from the start of the testing process
@@ -277,7 +280,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         // <returns></returns>
         public async Task startBCIDeviceTesting(int initialDelaySec = 0)
         {
-            Log.Debug("gTecDeviceTester | startBCIDeviceTesting | initialDelaySec: " + initialDelaySec.ToString());
+            _logger.LogDebug("gTecDeviceTester | startBCIDeviceTesting | initialDelaySec: " + initialDelaySec.ToString());
 
             // Extra time to wait before actually starting testing process (a lot of testing functions can return immediately, so this is for user experience)
             if (initialDelaySec > 0)
@@ -336,7 +339,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Exception in updateOnboardingStatus");
             }
         }
 
@@ -345,7 +348,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         private void buttonNextHandler(String buttonNextName)
         {
-            Log.Debug("gTecDeviceTester | buttonNextHandler | buttonNextName: " + buttonNextName);
+            _logger.LogDebug("gTecDeviceTester | buttonNextHandler | buttonNextName: " + buttonNextName);
             switch (buttonNextName)
             {
                 // Next button clicked from UserControlBluetoothDisconnected
@@ -443,14 +446,14 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     bool userPassedLastSignalQualityCheck = BCIActuatorSettings.Settings.SignalQuality_PassedLastOverallQualityCheck;
                     if (userPassedLastSignalQualityCheck)
                     {
-                        Log.Debug("User passed most recent signal quality check");
+                        _logger.LogDebug("User passed most recent signal quality check");
                         exitBCIOnboarding = true;
                     }
 
                     // Check if testing parameter set to ignore signal quality check result
                     if (BCIActuatorSettings.Settings.Testing_IgnoreSignalTestResultDuringOnboarding)
                     {
-                        Log.Debug("BCIGtecActuatorSettings.Testing_IgnoreSignalTestResultDuringOnboarding = true");
+                        _logger.LogDebug("BCIGtecActuatorSettings.Testing_IgnoreSignalTestResultDuringOnboarding = true");
                         exitBCIOnboarding = true;
 
                         if (!userPassedLastSignalQualityCheck)
@@ -625,7 +628,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// <param name="e"></param>
         private void _mainForm_EvtFormClosed(object sender, FormClosedEventArgs e)
         {
-            Log.Debug("gTecDeviceTester | _mainForm_EvtFormClosed");
+            _logger.LogDebug("gTecDeviceTester | _mainForm_EvtFormClosed");
         }
 
         /// <summary>
@@ -668,7 +671,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception e)
             {
-                Log.Exception("_mainForm_EvtButtonExitClicked_DEBUG exception: " + e.ToString());
+                _logger.LogError(e, "_mainForm_EvtButtonExitClicked_DEBUG exception: {Exception}", e.ToString());
             }
         }
     }

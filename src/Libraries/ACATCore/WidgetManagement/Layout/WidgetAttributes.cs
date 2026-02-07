@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,6 +21,8 @@ namespace ACAT.Core.WidgetManagement.Layout
     /// </summary>
     public class WidgetAttributes : IDisposable
     {
+        private readonly ILogger<WidgetAttributes> _logger;
+
         /// <summary>
         /// Has this object been disposed
         /// </summary>
@@ -33,8 +36,10 @@ namespace ACAT.Core.WidgetManagement.Layout
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public WidgetAttributes()
+        /// <param name="logger">Logger instance</param>
+        public WidgetAttributes(ILogger<WidgetAttributes> logger = null)
         {
+            _logger = logger;
             _widgetAttributes = new Dictionary<string, WidgetAttribute>();
         }
 
@@ -104,7 +109,7 @@ namespace ACAT.Core.WidgetManagement.Layout
 
             var xmlDoc = new XmlDocument();
 
-            Log.Debug($"Loading config file {configFile}.");
+            _logger?.LogDebug("Loading config file {ConfigFile}.", configFile);
 
             try
             {
@@ -113,7 +118,7 @@ namespace ACAT.Core.WidgetManagement.Layout
                 XmlNodeList widgetAttributeNodes = xmlDoc.SelectNodes("/ACAT/WidgetAttributes/WidgetAttribute");
                 if (_widgetAttributes == null)
                 {
-                    Log.Error("widgetAttributes == null.");
+                    _logger?.LogError("widgetAttributes == null.");
                     return false;
                 }
 
@@ -131,12 +136,12 @@ namespace ACAT.Core.WidgetManagement.Layout
             }
             catch (FileNotFoundException)
             {
-                Log.Exception($"Could not load config file. File does not exist - {configFile}");
+                _logger?.LogError("Could not load config file. File does not exist - {ConfigFile}", configFile);
                 retVal = false;            
             }   
             catch (Exception ex)
             {
-                Log.Exception($"Error loading config file {configFile} -  {ex}");
+                _logger?.LogError(ex, "Error loading config file {ConfigFile}", configFile);
                 retVal = false;
             }
 
@@ -152,7 +157,7 @@ namespace ACAT.Core.WidgetManagement.Layout
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("");
 
                 if (disposing)
                 {

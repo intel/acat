@@ -10,14 +10,16 @@
 using System;
 using System.Collections.Generic;
 using System.Media;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Core.Utility
 {
     /// <summary>
-    /// Class that use the C:\Windows\Media Sounds
+    /// Class that use the C:\\Windows\\Media Sounds
     /// </summary>
     public class SoundManager
     {
+        private static ILogger<SoundManager> _logger;
         /// <summary>
         /// Are the sounds initialized
         /// </summary>
@@ -101,7 +103,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception("Error playing Sound: " + ex);
+                _logger?.LogError(ex, "Error playing Sound");
             }
         }
 
@@ -120,7 +122,7 @@ namespace ACAT.Core.Utility
                 player.Play();
             }
             else
-                Log.Debug("_soundPlayer object was null");
+                _logger?.LogDebug("_soundPlayer object was null");
         }
 
         /// <summary>
@@ -138,7 +140,7 @@ namespace ACAT.Core.Utility
                 player.PlaySync();
             }
             else
-                Log.Debug("_soundPlayer object was null");
+                _logger?.LogDebug("_soundPlayer object was null");
         }
 
         private static void SetSounds()

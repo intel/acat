@@ -21,6 +21,7 @@ using ACAT.Core.WordPredictorManagement;
 using ACAT.Core.WordPredictorManagement.Interfaces;
 using ACAT.Extension.UI;
 using ACAT.Extension.UI.UserControls;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace ACAT.Extensions.UI.UserControls
@@ -30,10 +31,12 @@ namespace ACAT.Extensions.UI.UserControls
                     "User Control for Sentence Prediction")]
     public partial class SentencePredictionUserControl : KeyboardUserControl
     {
+        private readonly ILogger<SentencePredictionUserControl> _logger;
         private UserControlWordPredictionCommon _userControlWordPredictionCommon;
 
         public SentencePredictionUserControl()
         {
+            _logger = LoggingConfiguration.CreateLogger<SentencePredictionUserControl>();
             InitializeComponent();
         }
 
@@ -73,9 +76,9 @@ namespace ACAT.Extensions.UI.UserControls
         {
             if (!String.IsNullOrEmpty(text))
             {
-                Log.Debug("*** TTS *** : " + text);
+                _logger.LogDebug("*** TTS *** : {Text}", text);
                 TTSManager.Instance.ActiveEngine.Speak(text);
-                Log.Debug("*** TTS *** : sent text!");
+                _logger.LogDebug("*** TTS *** : sent text!");
 
                 AuditLog.Audit(new AuditEventTextToSpeech(TTSManager.Instance.ActiveEngine.Descriptor.Name));
             }

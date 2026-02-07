@@ -19,6 +19,7 @@ using ACAT.Core.UserControlManagement;
 using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
 
@@ -29,12 +30,14 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         "User Control keyboard BCI")]
     public partial class TTSYesNoUserControlBCI2 : UserControl, IUserControl
     {
+        private readonly ILogger<TTSYesNoUserControlBCI2> _logger;
         private static String _formConfigFilePath = "";
         private static UserControlConfigMapEntry _mapEntry;
         private UserControlKeyboardCommon _keyboardCommon;
 
-        public TTSYesNoUserControlBCI2()
+        public TTSYesNoUserControlBCI2(ILogger<TTSYesNoUserControlBCI2> logger = null)
         {
+            _logger = logger ?? LoggerFactory.GetLogger<TTSYesNoUserControlBCI2>();
             InitializeComponent();
         }
 
@@ -129,9 +132,9 @@ namespace ACAT.Extensions.BCI.UI.UserControls
         {
             if (!String.IsNullOrEmpty(text))
             {
-                Log.Debug("*** TTS *** : " + text);
+                _logger.LogDebug("*** TTS *** : " + text);
                 TTSManager.Instance.ActiveEngine.Speak(text);
-                Log.Debug("*** TTS *** : sent text!");
+                _logger.LogDebug("*** TTS *** : sent text!");
 
                 AuditLog.Audit(new AuditEventTextToSpeech(TTSManager.Instance.ActiveEngine.Descriptor.Name));
             }

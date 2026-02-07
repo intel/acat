@@ -8,6 +8,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -21,13 +22,15 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGUtils
 {
     internal class SerialComm
     {
+        private readonly ILogger<SerialComm> _logger;
         private const int DefaultBaudRate = 115200;
         private long _error = 0;
         private readonly string _portName;
         private SerialPort _serialPort;
 
-        public SerialComm(String portName)
+        public SerialComm(String portName, ILogger<SerialComm> logger = null)
         {
+            _logger = logger ?? LoggerFactory.GetLogger<SerialComm>();
             _portName = portName;
         }
 
@@ -185,7 +188,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGUtils
             {
                 if (!errorOccurred)
                 {
-                    Log.Debug("OPTSEN: Callback Error in data received callback: " + ex.Message);
+                    _logger.LogDebug("OPTSEN: Callback Error in data received callback: " + ex.Message);
                     setError();
                     notifySerialPortDataReceiveError(ex.Message);
                 }
@@ -210,7 +213,7 @@ namespace ACAT.Extensions.BCI.Actuators.EEG.EEGUtils
             {
                 if (!errorOccurred)
                 {
-                    Log.Debug("OPTSEN: BeginRead Error in data received callback: " + ex.Message);
+                    _logger.LogDebug("OPTSEN: BeginRead Error in data received callback: " + ex.Message);
                     notifySerialPortDataReceiveError(ex.Message);
                     setError();
                 }

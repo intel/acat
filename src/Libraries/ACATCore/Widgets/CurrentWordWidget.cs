@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Timers;
 using System.Windows.Forms;
@@ -20,6 +21,8 @@ namespace ACAT.Core.Widgets
     /// </summary>
     public class CurrentWordWidget : LabelWidget
     {
+        private readonly ILogger<CurrentWordWidget> _logger;
+
         /// <summary>
         /// Timer to simulate a blinking cursor
         /// </summary>
@@ -44,9 +47,12 @@ namespace ACAT.Core.Widgets
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="control">the inner .NET Control for the widget</param>
-        public CurrentWordWidget(Control control)
-            : base(control)
+        /// <param name="logger">Logger instance</param>
+        public CurrentWordWidget(Control control, ILogger<CurrentWordWidget> logger)
+            : base(control, logger)
         {
+            _logger = logger;
+
             if (control is Label)
             {
                 var label = (Label)control;
@@ -81,7 +87,7 @@ namespace ACAT.Core.Widgets
             {
                 try
                 {
-                    Log.Verbose();
+                    _logger.LogTrace("");
 
                     if (disposing)
                     {

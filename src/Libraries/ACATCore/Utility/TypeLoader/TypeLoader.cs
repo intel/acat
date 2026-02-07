@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Core.Utility.TypeLoader
 {
     public class TypeLoader<TInterface> : ITypeLoader<TInterface>
         where TInterface : class, IPluginExtension
     {
+        private readonly ILogger<TypeLoader<TInterface>> _logger;
         private readonly Dictionary<Guid, Type> _typeCache = new();
 
         public IReadOnlyDictionary<Guid, Type> LoadedTypes => _typeCache;
@@ -157,7 +159,7 @@ namespace ACAT.Core.Utility.TypeLoader
             catch (Exception ex)
             {
                 // Log or skip if instantiation fails
-                Log.Exception($"Failed to create instance of {assembly.FullName}: {ex.Message}");
+                _logger?.LogError(ex, "Failed to create instance of {AssemblyName}", assembly.FullName);
             }
         }
     }

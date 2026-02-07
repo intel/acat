@@ -22,6 +22,7 @@ using ACATResources;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Windows.Automation;
@@ -38,6 +39,8 @@ namespace ACAT.Extension.AppAgents.WindowsExplorer
     /// </summary>
     public class WindowsExplorerAgentBase : GenericAppAgentBase
     {
+        private readonly ILogger<WindowsExplorerAgentBase> _logger;
+
         /// <summary>
         /// If set to true, the agent will autoswitch the
         /// scanners depending on which element has focus.
@@ -84,9 +87,10 @@ namespace ACAT.Extension.AppAgents.WindowsExplorer
             get { return new[] { new AgentProcessInfo(ExplorerProcessName) }; }
         }
 
-        public WindowsExplorerAgentBase()
+        public WindowsExplorerAgentBase(ILogger<WindowsExplorerAgentBase> logger)
         {
-            Log.Debug("WindowsExplorerAgentBase Constructed");
+            _logger = logger;
+            _logger.LogDebug("WindowsExplorerAgentBase Constructed");
             //AgentName = "Windows Explorer Agent";
             //AutoSwitchScanners = true;
         }
@@ -290,7 +294,7 @@ namespace ACAT.Extension.AppAgents.WindowsExplorer
             {
                 if (isFileExplorer(windowElement))
                 {
-                    Log.Debug("isFileExploer is TRUE ");
+                    _logger.LogDebug("isFileExploer is TRUE ");
                     if (Windows.IsMinimized(monitorInfo.FgHwnd))
                     {
                         retVal = false;
@@ -302,16 +306,16 @@ namespace ACAT.Extension.AppAgents.WindowsExplorer
                 }
                 else
                 {
-                    Log.Debug("isFileExploer is FALSE");
+                    _logger.LogDebug("isFileExploer is FALSE");
                     retVal = false;
                 }
             }
             else
             {
-                Log.Debug("windowElement is NULL");
+                _logger.LogDebug("windowElement is NULL");
             }
 
-            Log.Debug("return from getmenu : " + retVal);
+            _logger.LogDebug("return from getmenu : " + retVal);
             return retVal;
         }
 
@@ -347,7 +351,7 @@ namespace ACAT.Extension.AppAgents.WindowsExplorer
 
             while (parent != null)
             {
-                Log.Debug("class: " + parent.Current.ClassName + ", ctrltype: " + parent.Current.ControlType.ProgrammaticName + ", name: " + parent.Current.Name);
+                _logger.LogDebug("class: " + parent.Current.ClassName + ", ctrltype: " + parent.Current.ControlType.ProgrammaticName + ", name: " + parent.Current.Name);
                 if (parent == AutomationElement.RootElement ||
                     (String.Compare(parent.Current.ClassName, "SysListView32", true) == 0 &&
                         String.Compare(parent.Current.ControlType.ProgrammaticName, "ControlType.List", true) == 0 &&
@@ -356,12 +360,12 @@ namespace ACAT.Extension.AppAgents.WindowsExplorer
                     (String.Compare(parent.Current.ClassName, "Shell_TrayWnd", true) == 0 &&
                         String.Compare(parent.Current.ControlType.ProgrammaticName, "ControlType.Pane", true) == 0))
                 {
-                    Log.Debug("Returning true");
+                    _logger.LogDebug("Returning true");
                     return true;
                 }
                 parent = walker.GetParent(parent);
             }
-            Log.Debug("Returning false");
+            _logger.LogDebug("Returning false");
             return false;
         }
 
@@ -384,11 +388,11 @@ namespace ACAT.Extension.AppAgents.WindowsExplorer
         /// <param name="handled">set to true if handled</param>
         private void displayScanner(WindowActivityMonitorInfo monitorInfo, ref bool handled)
         {
-            Log.Debug("Entered");
+            _logger.LogDebug("Entered");
             if (monitorInfo != null && monitorInfo.FocusedElement != null && 
                 monitorInfo.FocusedElement.Current.ControlType.ProgrammaticName == "ControlType.Edit")
             {
-                Log.Debug("controtype edit");
+                _logger.LogDebug("controtype edit");
 
                 //base.OnFocusChanged(monitorInfo, ref handled);
                 //showPanel(this, new PanelRequestEventArgs(PanelClasses.Alphabet, monitorInfo));
@@ -396,7 +400,7 @@ namespace ACAT.Extension.AppAgents.WindowsExplorer
             }
             else// if (monitorInfo.IsNewWindow)
             {
-                Log.Debug("calling getmenu");
+                _logger.LogDebug("calling getmenu");
 
                 String panel = PanelClasses.None;
                 handled = getMenu(monitorInfo, ref panel);

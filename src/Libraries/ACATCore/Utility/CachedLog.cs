@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +18,8 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class CachedLog
     {
+        private readonly ILogger<CachedLog> _logger;
+
         /// <summary>
         /// Full path to the log file
         /// </summary>
@@ -29,8 +32,9 @@ namespace ACAT.Core.Utility
         /// </summary>
         private readonly string LogFileName;
 
-        public CachedLog(string baseFileName)
+        public CachedLog(string baseFileName, ILogger<CachedLog> logger)
         {
+            _logger = logger;
             string logFileFolder = FileUtils.GetLogsDir();
 
             try
@@ -80,7 +84,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, ex.Message);
                 return false;
             }
             finally

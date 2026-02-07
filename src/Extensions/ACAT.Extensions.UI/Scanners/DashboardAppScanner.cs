@@ -14,6 +14,7 @@ using ACAT.Extension.CommandHandlers;
 using ACAT.Extension.UI;
 using ACAT.Extension.UI.ScannerForms;
 using ACAT.Extensions.UI.UserControls.Toolbars;
+using Microsoft.Extensions.Logging;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -27,6 +28,7 @@ namespace ACAT.Extensions.UI.Scanners
     [DesignerCategory("code")]
     public partial class DashboardAppScanner : GenericScannerForm
     {
+        private readonly ILogger<DashboardAppScanner> _logger;
         private TableLayoutPanel panelDashboardControls;
         private TableLayoutPanel panelTopToolbar;
         private TableLayoutPanel ScannerBorder;
@@ -35,11 +37,12 @@ namespace ACAT.Extensions.UI.Scanners
 
         public DashboardAppScanner() : base()
         {
+            _logger = LoggingConfiguration.CreateLogger<DashboardAppScanner>();
             _dispatcher = new DashboardAppDispatcher(this);
             _launchAppAgent = Context.AppAgentMgr.GetFunctionalAgentByName("LaunchAppAgent") as IFunctionalAgent;
             if (_launchAppAgent == null)
             {
-                Log.Error("LaunchAppAgent not found. Ensure it is registered in the ACAT configuration.");
+                _logger.LogError("LaunchAppAgent not found. Ensure it is registered in the ACAT configuration.");
             }
         }
 
@@ -138,7 +141,7 @@ namespace ACAT.Extensions.UI.Scanners
                 if (e.Control is UserControl userControl)
                 {
                     currentPanel = userControl;
-                    Log.Debug($"Current panel set to: {currentPanel.GetType().Name}");
+                    _logger.LogDebug("Current panel set to: {PanelName}", currentPanel.GetType().Name);
                 }
             };
         }
@@ -207,14 +210,14 @@ namespace ACAT.Extensions.UI.Scanners
             var form = PanelManager.Instance.CreatePanel("TalkApplicationScanner", startupArg);
             if (form == null)
             {
-                Log.Error("Could not create TalkApplicationScanner panel.");
+                _logger.LogError("Could not create TalkApplicationScanner panel.");
                 return false;
             }
 
             var agent = Context.AppAgentMgr.GetAgentByName("Talk Application Agent");
             if (agent == null)
             {
-                Log.Error("Talk Application Agent not found. Ensure it is registered in the ACAT configuration.");
+                _logger.LogError("Talk Application Agent not found. Ensure it is registered in the ACAT configuration.");
                 form.Dispose();
                 return false;
             }
@@ -230,7 +233,7 @@ namespace ACAT.Extensions.UI.Scanners
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.Message);
+                _logger.LogError(ex, "Error showing talk panel");
                 return false;
             }
             //finally
@@ -246,7 +249,7 @@ namespace ACAT.Extensions.UI.Scanners
 
         public bool HandleTalkAppRequest(string Command)
         {
-            Log.Debug($"Handling Talk App Request: {Command}");
+            _logger.LogDebug("Handling Talk App Request: {Command}", Command);
             ScannerCommon.UserControlManager.StopTopLevelAnimation();
             this.Hide();
 
@@ -266,7 +269,7 @@ namespace ACAT.Extensions.UI.Scanners
 
             else
             {
-                Log.Error($"Unknown command: {Command}");
+                _logger.LogError("Unknown command: {Command}", Command);
                 return false;
             }
 
@@ -312,6 +315,8 @@ namespace ACAT.Extensions.UI.Scanners
         }
         protected class DashboardAppCommandHandler : RunCommandHandler
         {
+            private readonly ILogger<DashboardAppScanner> _logger;
+
             public class CommandHandlerArgs :EventArgs
             {
                 public CommandHandlerArgs(String command)
@@ -326,11 +331,14 @@ namespace ACAT.Extensions.UI.Scanners
                 }
             }
 
-            public DashboardAppCommandHandler(String cmd) : base(cmd) { }
+            public DashboardAppCommandHandler(String cmd) : base(cmd) 
+            {
+                _logger = LoggingConfiguration.CreateLogger<DashboardAppScanner>();
+            }
 
             public override bool Execute(ref bool handled)
             {
-                Log.Info($"Executing command: {Command}");
+                _logger.LogInformation("Executing command: {Command}", Command);
                 var form = Dispatcher.Scanner.Form as DashboardAppScanner;
 
                 handled = Command switch
@@ -353,7 +361,7 @@ namespace ACAT.Extensions.UI.Scanners
                 form.ScannerCommon.UserControlManager.StopTopLevelAnimation();
                 form.Visible = false;
 
-                Log.Info($"Executing command: {Command} from source: {source?.GetType().Name}");
+                form._logger.LogInformation("Executing command: {Command} from source: {SourceType}", Command, source?.GetType().Name);
 
                 switch (Command)
                 {

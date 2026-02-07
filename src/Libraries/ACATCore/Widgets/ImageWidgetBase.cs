@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -18,6 +19,8 @@ namespace ACAT.Core.Widgets
     /// </summary>
     public class ImageWidgetBase : ButtonWidgetBase
     {
+        private readonly ILogger<ImageWidgetBase> _logger;
+
         /// <summary>
         /// The Picturebox element for this widget
         /// </summary>
@@ -32,9 +35,12 @@ namespace ACAT.Core.Widgets
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="control">the inner .NET Control for the widget</param>
-        public ImageWidgetBase(Control control)
-            : base(control)
+        /// <param name="logger">Logger instance</param>
+        public ImageWidgetBase(Control control, ILogger<ImageWidgetBase> logger)
+            : base(control, logger)
         {
+            _logger = logger;
+
             IsHighlightOn = false;
             IsSelectedHighlightOn = false;
 
@@ -134,7 +140,7 @@ namespace ACAT.Core.Widgets
             {
                 try
                 {
-                    Log.Verbose();
+                    _logger.LogTrace("");
 
                     if (disposing)
                     {

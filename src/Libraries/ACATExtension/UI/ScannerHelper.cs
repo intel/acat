@@ -10,6 +10,7 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Reflection;
 using System.Windows.Forms;
@@ -21,14 +22,16 @@ namespace ACAT.Extension.UI
     /// </summary>
     public class ScannerHelper
     {
+        private readonly ILogger<ScannerHelper> _logger;
+
         /// <summary>
         /// Initializes an instances of the class
         /// </summary>
         /// <param name="panel">the scanner object</param>
         /// <param name="startupArg">initialization arguments</param>
-        public ScannerHelper(IScannerPanel panel, StartupArg startupArg)
-        {
-            DialogMode = startupArg.DialogMode;
+        /// <param name="logger">Logger instance</param>
+        public ScannerHelper(IScannerPanel panel, StartupArg startupArg, ILogger<ScannerHelper> logger)
+        {            _logger = logger;            DialogMode = startupArg.DialogMode;
 
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.AssemblyResolve += currentDomain_AssemblyResolve;
@@ -95,7 +98,7 @@ namespace ACAT.Extension.UI
         /// <returns></returns>
         private Assembly currentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            Log.Debug("ScannerHelper.  Assembly resolve raised");
+            _logger.LogDebug("ScannerHelper.  Assembly resolve raised");
             return FileUtils.AssemblyResolve(Assembly.GetExecutingAssembly(), args);
         }
     }

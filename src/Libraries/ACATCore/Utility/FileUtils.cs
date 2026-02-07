@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.UserManagement;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -25,6 +26,8 @@ namespace ACAT.Core.Utility
     /// </summary>
     public class FileUtils
     {
+        private static ILogger<FileUtils> _logger;
+
         /// <summary>
         /// Folder under which ACAT extensions are stored
         /// </summary>
@@ -125,16 +128,17 @@ namespace ACAT.Core.Utility
                 return null;
             }
 
-            Log.Debug($"RequestingAssembly: [{args.RequestingAssembly.Location}], Name:[{args.Name}]");
+            _logger?.LogDebug("RequestingAssembly: [{Location}], Name:[{Name}]",
+                args.RequestingAssembly.Location, args.Name);
 
             var requestingAssemblyDir = Path.GetDirectoryName(args.RequestingAssembly.Location);
 
-            Log.Debug($"RequestingAssembly directory is {requestingAssemblyDir}");
+            _logger?.LogDebug("RequestingAssembly directory is {Directory}", requestingAssemblyDir);
 
             var assemblyName = new AssemblyName(args.Name).Name;
             var assemblyPath = $"{requestingAssemblyDir}\\{assemblyName}.dll";
 
-            Log.Debug($"Resolved assembly location: {assemblyPath}");
+            _logger?.LogDebug("Resolved assembly location: {Path}", assemblyPath);
 
             Assembly retVal = null;
             try
@@ -149,13 +153,13 @@ namespace ACAT.Core.Utility
                 return null;
                 }
 
-                Log.Exception(fnf);
+                _logger?.LogError(fnf, "Exception loading assembly");
                 throw;
             }
 
             catch (Exception ex)
             {
-                Log.Exception($"Could not load assembly. Exception: {ex}");
+                _logger?.LogError(ex, "Could not load assembly");
             }
             return retVal;
         }
@@ -240,7 +244,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger?.LogError(ex, "Exception in Copy");
                 retVal = false;
             }
 
@@ -317,12 +321,14 @@ namespace ACAT.Core.Utility
         /// <param name="assembly">input assembly</param>
         public static void GetDependentAssemblyVersion(Assembly assembly)
         {
-            Log.Debug("Assembly name: " + assembly.GetName() + " Version: " + assembly.GetName().Version.ToString());
+            _logger?.LogDebug("Assembly name: {Name} Version: {Version}",
+                assembly.GetName(), assembly.GetName().Version);
 
             AssemblyName[] referenced = assembly.GetReferencedAssemblies();
             foreach (AssemblyName refAssembly in referenced)
             {
-                Log.Debug("Assembly name: " + refAssembly.Name + " Version: " + refAssembly.Version.ToString());
+                _logger?.LogDebug("Assembly name: {Name} Version: {Version}",
+                    refAssembly.Name, refAssembly.Version);
             }
         }
 
@@ -635,7 +641,8 @@ namespace ACAT.Core.Utility
 
             var appVersion = "Version " + assembly.GetName().Version;
 
-            Log.Info("***** " + appName + ". " + appVersion + ". " + DateTime.Now.ToString() + " *****");
+            _logger?.LogInformation("***** {AppName}. {AppVersion}. {DateTime} *****",
+                appName, appVersion, DateTime.Now);
         }
 
         /// <summary>
@@ -648,7 +655,7 @@ namespace ACAT.Core.Utility
         {
             bool retVal = true;
 
-            Log.Debug("Run " + executable);
+            _logger?.LogDebug("Run {Executable}", executable);
 
             var startInfo = new ProcessStartInfo
             {
@@ -663,11 +670,11 @@ namespace ACAT.Core.Utility
             }
             catch (Exception e)
             {
-                Log.Error("Error executing " + executable + ". Exception: " + e);
+                _logger?.LogError(e, "Error executing {Executable}", executable);
                 return false;
             }
 
-            Log.Debug("Returning " + retVal);
+            _logger?.LogDebug("Returning {Result}", retVal);
 
             return retVal;
         }

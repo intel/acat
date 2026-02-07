@@ -11,6 +11,7 @@ using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extension.CommandHandlers;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace ACAT.Extension
@@ -23,6 +24,8 @@ namespace ACAT.Extension
                     "Horizontal strip of buttons")]
     public partial class HorizontalStripScanner : HorizontalStripScannerBase
     {
+        private readonly ILogger<HorizontalStripScanner> _logger;
+
         /// <summary>
         /// The command dispatcher.  If the derived class as additional
         /// commands, just call Commands.Add on this object
@@ -37,7 +40,8 @@ namespace ACAT.Extension
         /// </summary>
         /// <param name="panelClass">The panel class of the contextual menu</param>
         /// <param name="panelTitle">title of the contextual</param>
-        public HorizontalStripScanner(String panelClass, String panelTitle)
+        /// <param name="logger">Logger instance</param>
+        public HorizontalStripScanner(String panelClass, String panelTitle, ILogger<HorizontalStripScanner> logger)
             : base(panelClass, panelTitle)
         {
             commandDispatcher = new Dispatcher(this);
@@ -59,7 +63,7 @@ namespace ACAT.Extension
         /// <param name="handled">was this handled here?</param>
         public override void OnWidgetActuated(WidgetActuatedEventArgs e, ref bool handled)
         {
-            Log.Debug("HorizontalStripScanner onWidgetActuated");
+            _logger.LogDebug("HorizontalStripScanner onWidgetActuated");
             Windows.CloseAsync(this);
             handled = false;
         }

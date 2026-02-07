@@ -24,6 +24,7 @@
 
 using ACAT.Core.ActuatorManagement;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Extensions.Actuators.SampleActuator
 {
@@ -61,7 +62,7 @@ namespace ACAT.Extensions.Actuators.SampleActuator
             {
                 try
                 {
-                    Log.Verbose();
+                    _logger.LogTrace("Disposing SampleActuatorSwitch");
 
                     if (disposing)
                     {

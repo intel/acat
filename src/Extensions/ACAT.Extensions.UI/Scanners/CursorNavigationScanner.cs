@@ -25,6 +25,7 @@ using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extension;
 using ACAT.Extension.CommandHandlers;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Security.Permissions;
 using System.Windows.Forms;
@@ -41,6 +42,8 @@ namespace ACAT.Extensions.UI.Scanners
                         "Cursor Navigation Scanner")]
     public partial class CursorNavigationScanner : Form, IScannerPanel, ISupportsStatusBar
     {
+        private readonly ILogger<CursorNavigationScanner> _logger;
+
         /// <summary>
         /// Dispatcher to handle execution of commands
         /// </summary>
@@ -61,6 +64,7 @@ namespace ACAT.Extensions.UI.Scanners
         /// </summary>
         public CursorNavigationScanner()
         {
+            _logger = LoggingConfiguration.CreateLogger<CursorNavigationScanner>();
             _scannerCommon = new ScannerCommon(this);
 
             InitializeComponent();
@@ -199,7 +203,7 @@ namespace ACAT.Extensions.UI.Scanners
         /// </summary>
         public void OnPause()
         {
-            Log.Verbose();
+            _logger.LogTrace("OnPause");
 
             _scannerCommon.OnPause();
         }
@@ -219,7 +223,7 @@ namespace ACAT.Extensions.UI.Scanners
         /// </summary>
         public void OnResume()
         {
-            Log.Verbose();
+            _logger.LogTrace("OnResume");
 
             _scannerCommon.OnResume();
         }
@@ -319,7 +323,7 @@ namespace ACAT.Extensions.UI.Scanners
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Error in KeyStateTracker_EvtKeyStateChanged");
             }
         }
 

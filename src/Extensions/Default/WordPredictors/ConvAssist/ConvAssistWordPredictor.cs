@@ -19,6 +19,7 @@ using ACAT.Core.WordPredictorManagement;
 using ACAT.Core.WordPredictorManagement.Interfaces;
 using ACAT.Extensions.WordPredictors.ConvAssist.MessageTypes;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -79,6 +80,8 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// </summary>
         internal static Settings settings;
 
+        private readonly ILogger<ConvAssistWordPredictor> _logger;
+
         private readonly WordPredictionsRequestHandler _wordPredictionsRequestHandler;
 
         /// <summary>
@@ -92,8 +95,9 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <summary>
         /// Initializes and instance of the class
         /// </summary>
-        public ConvAssistWordPredictor()
+        public ConvAssistWordPredictor(ILogger<ConvAssistWordPredictor> logger)
         {
+            _logger = logger;
             Settings.PreferencesFilePath = getUserRelativePath(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, SettingsFileName, true);
 
             settings = Settings.Load();
@@ -171,7 +175,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             //So, we don't need to start it here
             string path = Path.Combine(FileUtils.ACATPath, ConvAssistAppFolder, ConvAssistAppName);
 
-            Log.Info("ConvAssist path: " + path);
+            _logger.LogInformation("ConvAssist path: {Path}", path);
 
             Process[] runningProcesses = Process.GetProcessesByName(ConvAssistName);
             if (runningProcesses.Length == 0)
@@ -194,7 +198,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 }
             }
 #endif
-            Log.Info("ConvAssist process started. Starting Named Pipe.");
+            _logger.LogInformation("ConvAssist process started. Starting Named Pipe.");
             // Now start the named pipe server and wait for the client to connect
             string convAssistSettings = Path.Combine(UserManager.CurrentUserDir, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, "WordPredictors", "ConvAssist", "Settings");
 
@@ -305,7 +309,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Exception in Init");
             }
 
             return result;
@@ -334,7 +338,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <returns>A list of predicted words</returns>
         private WordPredictionResponse ProcessPredictionRequest(WordPredictionRequest request)
         {
-            Log.Debug("Predict for: " + request.PrevWords + " " + request.CurrentWord);
+            _logger.LogDebug("Predict for: {PrevWords} {CurrentWord}", request.PrevWords, request.CurrentWord);
             WordPredictionResponse response = null;
 
             try
@@ -358,7 +362,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Exception("ConvAssist Exception " + ex);
+                _logger.LogError(ex, "ConvAssist Exception {Exception}", ex);
                 response = new WordPredictionResponse(request, new List<String>(), false);
             }
 

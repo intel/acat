@@ -7,6 +7,7 @@
 
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement.Layout;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -25,6 +26,8 @@ namespace ACAT.Core.Widgets
     /// </summary>
     public class ImageWidget : ImageWidgetBase
     {
+        private readonly ILogger<ImageWidget> _logger;
+
         /// <summary>
         /// Height of the cropped image
         /// </summary>
@@ -59,9 +62,11 @@ namespace ACAT.Core.Widgets
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="uiControl">the inner .NET Control for the widget</param>
-        public ImageWidget(Control uiControl)
-            : base(uiControl)
+        /// <param name="logger">Logger instance</param>
+        public ImageWidget(Control uiControl, ILogger<ImageWidget> logger)
+            : base(uiControl, logger)
         {
+            _logger = logger;
         }
 
         /// <summary>
@@ -117,7 +122,7 @@ namespace ACAT.Core.Widgets
             {
                 try
                 {
-                    Log.Verbose();
+                    _logger.LogTrace("");
 
                     if (disposing)
                     {
@@ -157,7 +162,7 @@ namespace ACAT.Core.Widgets
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, ex.Message);
             }
         }
 

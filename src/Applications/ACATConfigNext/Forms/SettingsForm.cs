@@ -6,6 +6,7 @@ using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extension;
 using ACATConfigNext.UserControls;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,6 +19,7 @@ namespace ACATConfigNext.Forms
 {
     public class SettingsForm : Form
     {
+        private readonly ILogger<SettingsForm> _logger;
         private TableLayoutPanel basePanel;
         private FlowLayoutPanel leftPanel;
         private TableLayoutPanel navPanel;
@@ -40,8 +42,9 @@ namespace ACATConfigNext.Forms
 
         private bool _isDirty = false;
 
-        public SettingsForm()
+        public SettingsForm(ILogger<SettingsForm> logger)
         {
+            _logger = logger;
             WpfInitializationHelper.EnsureApplicationResources();
 
             InitializeComponent();
@@ -183,7 +186,7 @@ namespace ACATConfigNext.Forms
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "An error occurred while canceling changes");
                 MessageBox.Show("An error occurred while canceling changes.", "Cancel Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -215,7 +218,7 @@ namespace ACATConfigNext.Forms
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "An error occurred while exiting");
                 MessageBox.Show("An error occurred while saving settings.", "Save Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -401,7 +404,7 @@ namespace ACATConfigNext.Forms
                     }
                     catch (Exception ex)
                     {
-                        Log.Debug($"Could not copy property {prop.Name}: {ex.Message}");
+                        _logger.LogDebug("Could not copy property {PropertyName}: {Message}", prop.Name, ex.Message);
                     }
                 }
             }

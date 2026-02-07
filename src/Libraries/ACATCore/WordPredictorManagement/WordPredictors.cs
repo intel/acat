@@ -9,6 +9,7 @@ using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.Utility.TypeLoader;
 using ACAT.Core.WordPredictorManagement.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -25,6 +26,8 @@ namespace ACAT.Core.WordPredictorManagement
     /// </summary>
     public class WordPredictors : IDisposable
     {
+        private readonly ILogger<WordPredictors> _logger;
+
         /// <summary>
         /// Name of the config file where Id's of preferred word predictors are stored
         /// </summary>
@@ -66,8 +69,10 @@ namespace ACAT.Core.WordPredictorManagement
         /// <summary>
         /// Initializes an instance of the WordPredictors class
         /// </summary>
-        public WordPredictors()
+        /// <param name="logger">Logger instance</param>
+        public WordPredictors(ILogger<WordPredictors> logger)
         {
+            _logger = logger;
             _wordPredictors = new List<IWordPredictor>();
             _wordPredictorsTypeCache = new Dictionary<Guid, Tuple<string, Type>>();
 
@@ -171,7 +176,7 @@ namespace ACAT.Core.WordPredictorManagement
                 ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(foundTuple.Item2);
                 if (descriptor != null)
                 {
-                    Log.Debug("Found word predictor for culture " + (ci != null ? ci.TwoLetterISOLanguageName : "Neutral") + "[" + descriptor.Name + "]");
+                    _logger.LogDebug("Found word predictor for culture {Culture}[{Name}]", (ci != null ? ci.TwoLetterISOLanguageName : "Neutral"), descriptor.Name);
                     return descriptor.Id;
                 }
             }
@@ -263,12 +268,12 @@ namespace ACAT.Core.WordPredictorManagement
                 ClassDescriptorAttribute descriptor = ClassDescriptorAttribute.GetDescriptor(type);
                 if (descriptor != null && Equals(guid, descriptor.Id))
                 {
-                    Log.Debug("Found word predictor of type " + type);
+                    _logger.LogDebug("Found word predictor of type {Type}", type);
                     return type;
                 }
             }
 
-            Log.Error($"Could not find word predictor for id {guid}");
+            _logger.LogError("Could not find word predictor for id {Guid}", guid);
             return null;
         }
 
@@ -301,11 +306,11 @@ namespace ACAT.Core.WordPredictorManagement
         {
             if (_wordPredictorsTypeCache.ContainsKey(guid))
             {
-                Log.Debug("Wordpredictor " + type.FullName + ", guid " + guid.ToString() + " is already added");
+                _logger.LogDebug("Wordpredictor {TypeName}, guid {Guid} is already added", type.FullName, guid.ToString());
                 return;
             }
 
-            Log.Debug("Adding Wordpredictor " + type.FullName + ", guid " + guid.ToString() + " to cache");
+            _logger.LogDebug("Adding Wordpredictor {TypeName}, guid {Guid} to cache", type.FullName, guid.ToString());
             _wordPredictorsTypeCache.Add(guid, new Tuple<string, Type>(language, type));
         }
 
@@ -318,7 +323,7 @@ namespace ACAT.Core.WordPredictorManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger.LogTrace("");
 
                 _nullWordPredictor?.Dispose();
 
@@ -344,7 +349,7 @@ namespace ACAT.Core.WordPredictorManagement
         {
             if (!Directory.Exists(dir))
             {
-                Log.Warn($"Directory {dir} doesn't exist.");
+                _logger.LogWarning("Directory {Directory} doesn't exist.", dir);
                 return;
             }
             DirectoryWalker walker = new(dir, "ACAT.Extensions.WordPredictors.*.dll");
@@ -371,7 +376,7 @@ namespace ACAT.Core.WordPredictorManagement
             }
             catch (Exception ex)
             {
-                Log.Exception($"Error loading actuator from {dllName}: {ex.Message}");
+                _logger.LogError(ex, "Error loading actuator from {DllName}", dllName);
                 _DLLError = true;
             }
         }

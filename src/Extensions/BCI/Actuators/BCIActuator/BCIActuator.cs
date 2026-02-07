@@ -844,7 +844,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
                     // Add classifier to dictionary
                     DictClassifierInfo.Add(calibrationSection, classifierInfo);
-                    _logger.LogWarning("Calibration:" + calibrationSection + " isRequired:" + classifierInfo.IsRequired + " Status:" + classifierInfo.ClassifierStatus.ToString() + " Auc:" + classifierInfo.Auc);
+                    _logger.LogDebug("Calibration:" + calibrationSection + " isRequired:" + classifierInfo.IsRequired + " Status:" + classifierInfo.ClassifierStatus.ToString() + " Auc:" + classifierInfo.Auc);
 
                     // Set overall status
                     if (classifierInfo.IsRequired && classifierInfo.ClassifierStatus != BCIClassifierStatus.Ok)
@@ -1928,7 +1928,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
                 // Display error on logs
                 if (error.ErrorCode != BCIErrorCodes.Status_Ok)
-                    _logger.LogWarning("Error: " + error.ErrorCode + " Message" + error.ErrorMessage);
+                    _logger.LogError("Error: " + error.ErrorCode + " Message" + error.ErrorMessage);
             }
             else
             {

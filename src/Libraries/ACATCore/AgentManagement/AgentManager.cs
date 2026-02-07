@@ -687,7 +687,7 @@ namespace ACAT.Core.AgentManagement
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public void OnPanelClosed(String panelClass)
         {
-            _logger?.LogTrace("");
+            _logger?.LogTrace("OnPanelClosed");
             _logger?.LogDebug("panelClass : " + panelClass);
             _logger?.LogDebug(" currentAgent: " + _currentAgent);
             if (_currentAgent != null)
@@ -1256,7 +1256,7 @@ namespace ACAT.Core.AgentManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                _logger?.LogTrace("");
+                _logger?.LogTrace("Dispose");
 
                 if (disposing)
                 {

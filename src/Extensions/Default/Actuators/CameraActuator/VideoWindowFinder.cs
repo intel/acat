@@ -12,6 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Windows.Forms;
@@ -28,6 +29,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         /// </summary>
         private bool _disposed;
 
+        private readonly ILogger<VideoWindowFinder> _logger;
         private Thread _thread;
 
         public delegate void VideoWindowDisplayedDelegate(IntPtr handle);
@@ -35,6 +37,11 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         public event VideoWindowDisplayedDelegate EvtVideoWindowDisplayed;
 
         public event EventHandler EvtVideoWindowFindStart;
+
+        public VideoWindowFinder(ILogger<VideoWindowFinder> logger)
+        {
+            _logger = logger;
+        }
 
         /// <summary>
         /// Disposes resources
@@ -83,7 +90,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
             {
                 try
                 {
-                    Log.Verbose();
+                    _logger.LogDebug("Disposing VideoWindowFinder");
 
                     if (disposing)
                     {
@@ -106,7 +113,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
                     // Release the native unmanaged resources
 
-                    Log.Debug("Exiting dispose");
+                    _logger.LogDebug("Exiting dispose");
                     _disposed = true;
                 }
                 finally

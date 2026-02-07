@@ -23,6 +23,7 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.PreferencesManagement.Interfaces;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -38,6 +39,8 @@ namespace ACAT.Core.ActuatorManagement
     /// </summary>
     public abstract class ActuatorBase : IActuator
     {
+        private readonly ILogger<ActuatorBase> _logger;
+
         /// <summary>
         /// Used to invoke methods/properties in the actuator
         /// </summary>
@@ -57,8 +60,9 @@ namespace ACAT.Core.ActuatorManagement
         /// <summary>
         /// Initializes a new instance of the ActuatorBase class
         /// </summary>
-        protected ActuatorBase()
+        protected ActuatorBase(ILogger<ActuatorBase> logger = null)
         {
+            _logger = logger;
             Enabled = false;
             _switches = new Dictionary<String, IActuatorSwitch>();
             actuatorState = State.Stopped;

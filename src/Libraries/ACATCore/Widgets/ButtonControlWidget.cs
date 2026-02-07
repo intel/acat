@@ -9,6 +9,7 @@ using ACAT.Core.PanelManagement.Utils;
 using ACAT.Core.ThemeManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement.Layout;
+using Microsoft.Extensions.Logging;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -20,6 +21,8 @@ namespace ACAT.Core.Widgets
     /// </summary>
     public class ButtonControlWidget : ButtonWidgetBase
     {
+        private readonly ILogger<ButtonControlWidget> _logger;
+
         /// <summary>
         /// Has this object been disposed off yet?
         /// </summary>
@@ -34,9 +37,12 @@ namespace ACAT.Core.Widgets
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="uiControl">the inner .NET Control for the widget</param>
-        public ButtonControlWidget(Control uiControl)
-            : base(uiControl)
+        /// <param name="logger">Logger instance</param>
+        public ButtonControlWidget(Control uiControl, ILogger<ButtonControlWidget> logger)
+            : base(uiControl, logger)
         {
+            _logger = logger;
+
             if (uiControl is Button)
             {
                 Colors = ThemeManager.Instance.ActiveTheme.Colors.GetColorScheme(ColorSchemes.ButtonSchemeName);
@@ -55,8 +61,11 @@ namespace ACAT.Core.Widgets
         string command,
         string fontname,
         int fontsize,
-        bool bold) : this(uiControl)
+        bool bold,
+        ILogger<ButtonControlWidget> logger) : this(uiControl, logger)
         {
+            _logger = logger;
+
             uiControl.Name = name;
             uiControl.Text = label;
             uiControl.Font = new Font(fontname, fontsize, bold ? FontStyle.Bold : FontStyle.Regular);
@@ -107,7 +116,7 @@ namespace ACAT.Core.Widgets
             {
                 try
                 {
-                    Log.Verbose();
+                    _logger.LogTrace("");
 
                     if (disposing)
                     {

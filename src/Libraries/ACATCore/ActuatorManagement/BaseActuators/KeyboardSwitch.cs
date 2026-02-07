@@ -16,6 +16,7 @@
 using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.ActuatorManagement.Settings;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 
 namespace ACAT.Core.ActuatorManagement.BaseActuators
 {
@@ -28,6 +29,11 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
     internal class KeyboardSwitch : ActuatorSwitchBase
     {
         /// <summary>
+        /// Logger instance for this class
+        /// </summary>
+        private readonly ILogger<KeyboardSwitch> _logger;
+
+        /// <summary>
         /// Has this object been disposed?
         /// </summary>
         private bool _disposed;
@@ -35,17 +41,19 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
         /// <summary>
         /// Initializes the keyboardswitch object
         /// </summary>
-        public KeyboardSwitch()
+        public KeyboardSwitch(ILogger<KeyboardSwitch> logger)
         {
+            _logger = logger;
         }
 
         /// <summary>
         /// Initialize the keyboard actuator object
         /// </summary>
         /// <param name="switchObj"></param>
-        public KeyboardSwitch(IActuatorSwitch switchObj)
+        public KeyboardSwitch(IActuatorSwitch switchObj, ILogger<KeyboardSwitch> logger)
             : base(switchObj)
         {
+            _logger = logger;
         }
 
         /// <summary>
@@ -82,7 +90,7 @@ namespace ACAT.Core.ActuatorManagement.BaseActuators
             {
                 try
                 {
-                    Log.Verbose();
+                    _logger.LogTrace("Disposing KeyboardSwitch");
 
                     if (disposing)
                     {

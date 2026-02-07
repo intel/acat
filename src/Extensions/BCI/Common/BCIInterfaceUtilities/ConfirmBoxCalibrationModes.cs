@@ -11,6 +11,7 @@ using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -28,6 +29,11 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
     public partial class ConfirmBoxCalibrationModes : Form
     {
         #region Properties
+        /// <summary>
+        /// Logger instance
+        /// </summary>
+        private readonly ILogger<ConfirmBoxCalibrationModes> _logger;
+
         /// <summary>
         /// Main object of the actuator
         /// </summary>
@@ -73,8 +79,9 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <summary>
         /// Confirm Box with multiple results
         /// </summary>
-        public ConfirmBoxCalibrationModes()
+        public ConfirmBoxCalibrationModes(ILogger<ConfirmBoxCalibrationModes> logger)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             InitializeComponent();
             Load += ConfirmBoxCalibrationModes_Load;
 
@@ -140,7 +147,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 
         private void ButtonCalibrate_Click(object sender, EventArgs e)
         {
-            Log.Debug("BCI LOG | Mode Selected: " + _scanSectionsSelected);
+            _logger.LogDebug("BCI LOG | Mode Selected: {ScanSection}", _scanSectionsSelected);
             _ = new BCISimpleParameters();
             try
             {
@@ -149,7 +156,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 switch (scannerRoundedButtonControl.Name)
                 {
                     case var _ when scannerRoundedButtonControl.Name.Contains("Box"):
-                        Log.Debug("BCI LOG | Calibrate Button Selected: " + BCIScanSections.Box);
+                        _logger.LogDebug("BCI LOG | Calibrate Button Selected: {Section}", BCIScanSections.Box);
                         if (_scanSectionsSelected == BCIScanSections.Box)
                             parameters = GetCalibrationParameters();
                         else
@@ -158,7 +165,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                         break;
 
                     case var _ when scannerRoundedButtonControl.Name.Contains("Sentence"):
-                        Log.Debug("BCI LOG | Calibrate Button Selected " + BCIScanSections.Sentence);
+                        _logger.LogDebug("BCI LOG | Calibrate Button Selected {Section}", BCIScanSections.Sentence);
                         if (_scanSectionsSelected == BCIScanSections.Sentence)
                             parameters = GetCalibrationParameters();
                         else
@@ -167,7 +174,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                         break;
 
                     case var _ when scannerRoundedButtonControl.Name.Contains("KeyboardL"):
-                        Log.Debug("BCI LOG | Calibrate Button Selected " + BCIScanSections.KeyboardL);
+                        _logger.LogDebug("BCI LOG | Calibrate Button Selected {Section}", BCIScanSections.KeyboardL);
                         if (_scanSectionsSelected == BCIScanSections.KeyboardL)
                             parameters = GetCalibrationParameters();
                         else
@@ -176,7 +183,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                         break;
 
                     case var _ when scannerRoundedButtonControl.Name.Contains("Word"):
-                        Log.Debug("BCI LOG | Calibrate Button Selected " + BCIScanSections.Word);
+                        _logger.LogDebug("BCI LOG | Calibrate Button Selected {Section}", BCIScanSections.Word);
                         if (_scanSectionsSelected == BCIScanSections.Word)
                             parameters = GetCalibrationParameters();
                         else
@@ -185,7 +192,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                         break;
 
                     case var _ when scannerRoundedButtonControl.Name.Contains("KeyboardR"):
-                        Log.Debug("BCI LOG | Calibrate Button Selected " + BCIScanSections.KeyboardR);
+                        _logger.LogDebug("BCI LOG | Calibrate Button Selected {Section}", BCIScanSections.KeyboardR);
                         if (_scanSectionsSelected == BCIScanSections.KeyboardR)
                             parameters = GetCalibrationParameters();
                         else
@@ -197,7 +204,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Exception("BCI LOG | Error ButtonCalibrate_Click " + ex.Message);
+                _logger.LogError(ex, "BCI LOG | Error ButtonCalibrate_Click");
             }
         }
 
@@ -284,7 +291,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 
         private void ButtonInfoModes_MouseLeave(object sender, EventArgs e)
         {
-            try { customToolTip?.HideToolTip(); } catch (Exception ex) { Log.Debug("Error ButtonInfoModes_MouseLeave: " + ex.Message); }
+            try { customToolTip?.HideToolTip(); } catch (Exception ex) { _logger.LogDebug(ex, "Error ButtonInfoModes_MouseLeave"); }
         }
 
         private void ButtonInfoParameters_MouseEnter(object sender, EventArgs e)
@@ -350,7 +357,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Exception("BCI LOG | Error ButtonOpc_Click " + ex.Message);
+                _logger.LogError(ex, "BCI LOG | Error ButtonOpc_Click");
             }
         }
 
@@ -512,7 +519,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Exception("BCI LOG | Exception DisplayCalibrationHelp " + ex.Message);
+                _logger.LogError(ex, "BCI LOG | Exception DisplayCalibrationHelp");
             }
         }
 
@@ -544,7 +551,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Exception("BCI LOG | Error GetCalibrationParametersDefault | " + ex.Message.ToString());
+                _logger.LogError(ex, "BCI LOG | Error GetCalibrationParametersDefault");
             }
             return bciSimpleParameters;
         }
@@ -673,7 +680,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Exception("BCI LOG | Error ProcessCalibrationStatusResult | " + ex.Message.ToString());
+                _logger.LogError(ex, "BCI LOG | Error ProcessCalibrationStatusResult");
             }
         }
 
@@ -843,7 +850,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             {
                 colorSlider.Value = colorSlider.Minimum;
                 label.Text = colorSlider.Minimum.ToString();
-                Log.Debug("BCI LOG | ValidateSliderValues | " + ex.Message.ToString());
+                _logger.LogDebug(ex, "BCI LOG | ValidateSliderValues");
             }
         }
 
@@ -857,7 +864,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         {
             var str = e.Url.ToString();
 
-            Log.Debug("Url is [" + str + "]");
+            _logger.LogDebug("Url is [{Url}]", str);
 
             if (str.ToLower().Contains("blank"))
             {

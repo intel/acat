@@ -12,6 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net.Http;
 using System.Text;
@@ -21,6 +22,13 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
     [Serializable]
     public class TransportHttp : ITTSTransport
     {
+        private readonly ILogger<TransportHttp> _logger;
+
+        public TransportHttp(ILogger<TransportHttp> logger)
+        {
+            _logger = logger;
+        }
+
         public bool Send(String data, TTSFormat format)
         {
             if (format == TTSFormat.None)
@@ -49,7 +57,7 @@ namespace ACAT.Extensions.TTSEngines.TTSClient
             }
             catch (Exception ex)
             {
-                Log.Exception("*** Could not send TTS request over http to " + Url + ". Exception: " + ex);
+                _logger.LogError(ex, "*** Could not send TTS request over http to {Url}. Exception: {Exception}", Url, ex);
             }
         }
     }

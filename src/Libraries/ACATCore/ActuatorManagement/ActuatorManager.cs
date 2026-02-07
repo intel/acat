@@ -26,6 +26,7 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.PreferencesManagement;
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +46,8 @@ namespace ACAT.Core.ActuatorManagement
     /// </summary>
     public class ActuatorManager : IDisposable
     {
+        private readonly ILogger<ActuatorManager> _logger;
+
         /// <summary>
         /// The base directory under which all the actuator Dll's are
         /// located.
@@ -118,9 +121,10 @@ namespace ACAT.Core.ActuatorManagement
         /// <summary>
         /// Prevents a default instance of ActuatorManager class from being created
         /// </summary>
-        //private ActuatorManager()
-        //{
-        //    _activeSwitches = new Dictionary<String, IActuatorSwitch>();
+        private ActuatorManager(ILogger<ActuatorManager> logger = null)
+        {
+            _logger = logger;
+            _activeSwitches = new Dictionary<String, IActuatorSwitch>();
         //    _nonActuateSwitches = new Dictionary<String, IActuatorSwitch>();
         //    _syncObjectSwitches = new object();
         //}

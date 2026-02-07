@@ -14,6 +14,7 @@
 
 using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,6 +25,8 @@ namespace ACAT.Core.AbbreviationsManagement
 {
     public class Abbreviations : IDisposable
     {
+        private readonly ILogger<Abbreviations> _logger;
+
         /// <summary>
         /// Name of the abbreviations file
         /// </summary>
@@ -53,6 +56,14 @@ namespace ACAT.Core.AbbreviationsManagement
         /// Has this object been disposed
         /// </summary>
         private bool _disposed;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Abbreviations(ILogger<Abbreviations> logger = null)
+        {
+            _logger = logger;
+        }
 
         /// <summary>
         /// Gets the sorted list of abbreviations
@@ -168,7 +179,7 @@ namespace ACAT.Core.AbbreviationsManagement
             }
             catch (Exception ex)
             {
-                Log.Exception("Error processing abbreviations file " + abbreviationsFile + ". Exception: " + ex);
+                _logger?.LogError(ex, "Error processing abbreviations file {AbbreviationsFile}", abbreviationsFile);
                 retVal = false;
             }
 

@@ -26,6 +26,7 @@ using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using ACAT.Extension.UI;
 using ACAT.Extensions.UI.UserControls.Toolbars;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -63,6 +64,8 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         /// </summary>
         private const string SettingsFileName = "LaunchAppSettings.xml";
 
+        private readonly ILogger<LaunchAppAgent> _logger;
+
         /// <summary>
         /// The usercontrol that displays the list of applications
         /// </summary>
@@ -86,8 +89,9 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public LaunchAppAgent()
+        public LaunchAppAgent(ILogger<LaunchAppAgent> logger)
         {
+            _logger = logger;
             LaunchAppSettings.PreferencesFilePath = UserManager.GetFullPath(SettingsFileName);
             Settings = LaunchAppSettings.Load();
         }
@@ -99,7 +103,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
 
             if (_launchAppScanner == null)
             {
-                Log.Error("Could not create LaunchAppScanner");
+                _logger.LogError("Could not create LaunchAppScanner");
                 return false;
             }
 
@@ -192,11 +196,11 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
         {
             if (IsClosing)
             {
-                Log.Debug("IsClosing is true.  Will not handle the focus change");
+                _logger.LogDebug("IsClosing is true.  Will not handle the focus change");
                 return;
             }
 
-            Log.Debug("OnFocus: " + monitorInfo);
+            _logger.LogDebug("OnFocus: {MonitorInfo}", monitorInfo);
 
             base.OnFocusChanged(monitorInfo, ref handled);
 
@@ -379,7 +383,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "{Exception}", ex.ToString());
                 retVal = false;
             }
 
@@ -452,7 +456,7 @@ namespace ACAT.Extensions.FunctionalAgents.LaunchAppAgent
             }
             catch (Exception ex)
             {
-                Log.Debug(ex.ToString());
+                _logger.LogDebug("{Exception}", ex.ToString());
             }
         }
 

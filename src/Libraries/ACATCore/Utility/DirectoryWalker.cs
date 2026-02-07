@@ -5,6 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Linq;
@@ -30,6 +31,8 @@ namespace ACAT.Core.Utility
     /// <param name="fileWildCard">files to find</param>
     public class DirectoryWalker
     {
+        private readonly ILogger<DirectoryWalker> _logger;
+
         ///// <summary>
         ///// Invoked when a directory is found
         ///// </summary>
@@ -59,8 +62,9 @@ namespace ACAT.Core.Utility
         {
         }
         
-        public DirectoryWalker(String rootDir, String fileWildCard)
+        public DirectoryWalker(String rootDir, String fileWildCard, ILogger<DirectoryWalker> logger = null)
         {
+            _logger = logger ?? LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<DirectoryWalker>();
             _rootDir = rootDir;
             _wildCard = fileWildCard;
         }
@@ -83,21 +87,21 @@ namespace ACAT.Core.Utility
 
                 foreach (var file in dllFiles)
                 {
-                    Log.Verbose("Found file: " + file);
+                    _logger.LogTrace("Found file: " + file);
                     fileFoundDelegate?.Invoke(file);
                 }
             }
             catch (UnauthorizedAccessException ex)
             {
-                Log.Exception("Access denied: " + ex.Message);
+                _logger.LogError(ex, "Access denied: " + ex.Message);
             }
             catch (IOException ex)
             {
-                Log.Verbose("IO error: " + ex.Message);
+                _logger.LogTrace("IO error: " + ex.Message);
             }
             catch (Exception ex)
             {
-                Log.Exception("Error: " + ex.Message);
+                _logger.LogError(ex, "Error: " + ex.Message);
             }
         }
 

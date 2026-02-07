@@ -11,6 +11,7 @@ using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -26,6 +27,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                         "Application window used as a configuration UI for trigger test")]
     public partial class ConfirmBoxTriggerBoxSettings : Form
     {
+        private readonly ILogger<ConfirmBoxTriggerBoxSettings> _logger;
         /// <summary>
         /// Main object of the actuator
         /// </summary>
@@ -56,8 +58,9 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <summary>
         /// Confirm Box with multiple results
         /// </summary>
-        public ConfirmBoxTriggerBoxSettings()
+        public ConfirmBoxTriggerBoxSettings(ILogger<ConfirmBoxTriggerBoxSettings> logger = null)
         {
+            _logger = logger ?? LoggerFactory.GetLogger<ConfirmBoxTriggerBoxSettings>();
             InitializeComponent();
             label1.Text = StringResources.CalibrationIsEssential;
             Load += ConfirmBox_Load;
@@ -104,7 +107,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Exception("Error ButtonStartTriggerTest_Click: " + ex.Message);
+                _logger.LogError(ex, "Error ButtonStartTriggerTest_Click: " + ex.Message);
                 OptionResult = new Tuple<BCIMenuOptions.Options, BCISimpleParameters>(BCIMenuOptions.Options.TriggerTest, GetTriggerTestParameters());
                 Close();
             }
@@ -163,7 +166,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
 
         private void ButtonInfoModes_MouseLeave(object sender, EventArgs e)
         {
-            try { customToolTip?.HideToolTip(); } catch (Exception ex) { Log.Debug("Error ButtonInfoModes_MouseLeave: " + ex.Message); }
+            try { customToolTip?.HideToolTip(); } catch (Exception ex) { _logger.LogDebug("Error ButtonInfoModes_MouseLeave: " + ex.Message); }
         }
 
         private void ButtonInfoParameters_MouseEnter(object sender, EventArgs e)
@@ -195,7 +198,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Exception("Error ButtonOpc_Click: " + ex.Message);
+                _logger.LogError(ex, "Error ButtonOpc_Click: " + ex.Message);
             }
         }
 

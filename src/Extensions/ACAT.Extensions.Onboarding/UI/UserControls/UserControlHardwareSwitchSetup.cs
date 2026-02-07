@@ -17,6 +17,7 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Extensions.Onboarding.Onboarding;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -34,6 +35,8 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
     public partial class UserControlHardwareSwitchSetup : UserControl, IOnboardingUserControl
     {
         #region Properties
+
+        private readonly ILogger<UserControlHardwareSwitchSetup> _logger;
 
         // TODO - Localize Me
         private const String bodyStyle = " background-color:#232433;";
@@ -62,6 +65,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
 
         public UserControlHardwareSwitchSetup(IOnboardingWizard wizard, IOnboardingExtension onboardingExtension, String stepId, OnboardingHardwareSwitchSetup.SwitchType switchType)
         {
+            _logger = LoggingConfiguration.CreateLogger<UserControlHardwareSwitchSetup>();
             InitializeComponent();
 
             _onboardingExtension = onboardingExtension;
@@ -124,7 +128,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
                 }
             }
 
-            Log.Debug("triggerHotKey: " + _strTriggerHotkey);
+            _logger.LogDebug("triggerHotKey: " + _strTriggerHotkey);
 
             _strTriggerHotkey = Regex.Replace(_strTriggerHotkey, "alt", "", RegexOptions.IgnoreCase);
             _strTriggerHotkey = Regex.Replace(_strTriggerHotkey, "shift", "", RegexOptions.IgnoreCase);
@@ -133,11 +137,11 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
 
             if (!isFunctionKey(_strTriggerHotkey))
             {
-                Log.Debug("Invalid triggerHotKey. Reseting to F12");
+                _logger.LogDebug("Invalid triggerHotKey. Reseting to F12");
                 _strTriggerHotkey = "F12";
             }
 
-            Log.Debug("After parsing triggerhotkey: " + _strTriggerHotkey);
+            _logger.LogDebug("After parsing triggerhotkey: " + _strTriggerHotkey);
 
             initButtons();
 
@@ -204,7 +208,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
         {
             var isValid = isHotkeyValid();
 
-            Log.Debug("isValidKeyCombo: " + isValid);
+            _logger.LogDebug("isValidKeyCombo: " + isValid);
 
             bool retVal;
 
@@ -252,7 +256,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
         {
             var str = e.Url.ToString();
 
-            Log.Debug("Url is [" + str + "]");
+            _logger.LogDebug("Url is [" + str + "]");
 
             if (str.ToLower().Contains("blank"))
             {

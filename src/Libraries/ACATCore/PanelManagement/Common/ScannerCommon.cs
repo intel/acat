@@ -20,6 +20,7 @@ using ACAT.Core.WidgetManagement;
 using ACAT.Core.WidgetManagement.Interfaces;
 using ACAT.Core.WidgetManagement.Layout;
 using ACAT.Core.Widgets;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -61,6 +62,11 @@ namespace ACAT.Core.PanelManagement.Common
         /// used for synchronization
         /// </summary>
         private readonly SyncLock _syncLock;
+
+        /// <summary>
+        /// Logger instance
+        /// </summary>
+        private readonly ILogger<ScannerCommon> _logger;
 
         /// <summary>
         /// The animation manager object.  Manages all animations
@@ -137,8 +143,9 @@ namespace ACAT.Core.PanelManagement.Common
         /// Initializes a new instance of the class
         /// </summary>
         /// <param name="iScannerPanel">The scanner Form object</param>
-        public ScannerCommon(IScannerPanel iScannerPanel)
+        public ScannerCommon(IScannerPanel iScannerPanel, ILogger<ScannerCommon> logger = null)
         {
+            _logger = logger;
             ScannerForm = iScannerPanel.Form;
 
             StartupArg = null;
@@ -432,7 +439,7 @@ namespace ACAT.Core.PanelManagement.Common
         /// <returns></returns>
         public bool Initialize(StartupArg startupArg)
         {
-            Log.Debug("Entered from Initialize");
+            _logger?.LogDebug("Entered from Initialize");
 
             Context.AppPanelManager.EvtPanelPreShow += AppPanelManager_EvtPanelPreShow;
 
@@ -501,7 +508,7 @@ namespace ACAT.Core.PanelManagement.Common
             Context.AppPanelManager.EvtCalibrationStartNotify += AppPanelManager_EvtCalibrationStartNotify;
             Context.AppPanelManager.EvtCalibrationEndNotify += AppPanelManager_EvtCalibrationEndNotify;
 
-            Log.Debug("Returning from Initialize " + retVal);
+            _logger?.LogDebug("Returning from Initialize {RetVal}", retVal);
 
             return retVal;
         }
@@ -543,7 +550,7 @@ namespace ACAT.Core.PanelManagement.Common
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger?.LogError(ex, "Exception in OnClosing");
             }
         }
 
@@ -586,29 +593,29 @@ namespace ACAT.Core.PanelManagement.Common
 
             CoreGlobals.AppPreferences.EvtPreferencesChanged -= AppPreferences_EvtPreferencesChanged;
 
-            Log.Debug(ScannerForm.Name + ", _syncObj.Status: " + _syncLock.Status + ", hashcode: " + _syncLock.GetHashCode());
+            _logger?.LogDebug("{FormName}, _syncObj.Status: {Status}, hashcode: {HashCode}", ScannerForm.Name, _syncLock.Status, _syncLock.GetHashCode());
 
             if (_syncLock.Status != SyncLock.StatusValues.None)
             {
-                Log.Debug(ScannerForm.Name + ", _syncObj.Status: " + _syncLock.Status + ", form already closed.  returning");
+                _logger?.LogDebug("{FormName}, _syncObj.Status: {Status}, form already closed.  returning", ScannerForm.Name, _syncLock.Status);
                 return;
             }
 
-            Log.Debug(ScannerForm.Name + ", _syncObj.Status: " + _syncLock.Status + ", Will continue closing");
+            _logger?.LogDebug("{FormName}, _syncObj.Status: {Status}, Will continue closing", ScannerForm.Name, _syncLock.Status);
 
-            Log.Debug("Setting _syncLock.Status to CLOSING " + ScannerForm.Name);
+            _logger?.LogDebug("Setting _syncLock.Status to CLOSING {FormName}", ScannerForm.Name);
             _syncLock.Status = SyncLock.StatusValues.Closing;
 
             if (_animationManager != null)
             {
-                Log.Verbose("Before animationmangoer.stop");
+                _logger?.LogTrace("Before animationmangoer.stop");
                 _animationManager.Stop();
-                Log.Verbose("After animationmangoer.stop");
+                _logger?.LogTrace("After animationmangoer.stop");
             }
 
-            Log.Verbose("Unsubscribe to EvtHeartbeat for " + ScannerForm.Name);
+            _logger?.LogTrace("Unsubscribe to EvtHeartbeat for {FormName}", ScannerForm.Name);
             WindowActivityMonitor.EvtWindowMonitorHeartbeat -= WindowActivityMonitor_EvtWindowMonitorHeartbeat;
-            Log.Verbose("Unsubscribe to EvtHeartbeat DONE for " + ScannerForm.Name);
+            _logger?.LogTrace("Unsubscribe to EvtHeartbeat DONE for {FormName}", ScannerForm.Name);
 
             PositionSizeController.OnClosing();
 
@@ -619,7 +626,7 @@ namespace ACAT.Core.PanelManagement.Common
             Context.AppPanelManager.EvtCalibrationStartNotify -= AppPanelManager_EvtCalibrationStartNotify;
             Context.AppPanelManager.EvtCalibrationEndNotify -= AppPanelManager_EvtCalibrationEndNotify;
 
-            Log.Debug("Exiting FormClosing for " + ScannerForm.Name);
+            _logger?.LogDebug("Exiting FormClosing for {FormName}", ScannerForm.Name);
         }
 
         /// <summary>

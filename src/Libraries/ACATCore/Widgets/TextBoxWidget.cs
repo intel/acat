@@ -8,6 +8,7 @@
 using ACAT.Core.PanelManagement.Utils;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement.Layout;
+using Microsoft.Extensions.Logging;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -19,6 +20,8 @@ namespace ACAT.Core.Widgets
     /// </summary>
     public class TextBoxWidget : ButtonWidgetBase
     {
+        private readonly ILogger<TextBoxWidget> _logger;
+
         /// <summary>
         /// Has this been disposed?
         /// </summary>
@@ -43,9 +46,11 @@ namespace ACAT.Core.Widgets
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="uiControl">the inner .NET Control for the widget</param>
-        public TextBoxWidget(Control uiControl)
-            : base(uiControl)
+        /// <param name="logger">Logger instance</param>
+        public TextBoxWidget(Control uiControl, ILogger<TextBoxWidget> logger)
+            : base(uiControl, logger)
         {
+            _logger = logger;
         }
 
         /// <summary>
@@ -102,7 +107,7 @@ namespace ACAT.Core.Widgets
             {
                 try
                 {
-                    Log.Verbose();
+                    _logger.LogTrace("");
 
                     if (disposing)
                     {

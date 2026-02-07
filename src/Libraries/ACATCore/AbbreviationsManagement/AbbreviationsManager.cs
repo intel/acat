@@ -15,12 +15,15 @@
 using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace ACAT.Core.AbbreviationsManagement
 {
     public class AbbreviationsManager : IDisposable
     {
+        private readonly ILogger<AbbreviationsManager> _logger;
+
         /// <summary>
         /// Static singleton instance
         /// </summary>
@@ -34,8 +37,9 @@ namespace ACAT.Core.AbbreviationsManagement
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        private AbbreviationsManager()
+        private AbbreviationsManager(ILogger<AbbreviationsManager> logger = null)
         {
+            _logger = logger;
             Context.EvtCultureChanged += Context_EvtCultureChanged;
         }
 

@@ -8,6 +8,7 @@
 using ACAT.Core.PanelManagement.Utils;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement.Layout;
+using Microsoft.Extensions.Logging;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -21,6 +22,8 @@ namespace ACAT.Core.Widgets
     /// </summary>
     public class ScannerButtonBase : ButtonWidgetBase
     {
+        private readonly ILogger<ScannerButtonBase> _logger;
+
         /// <summary>
         /// The Button UI control
         /// </summary>
@@ -56,9 +59,11 @@ namespace ACAT.Core.Widgets
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="uiControl">the inner .NET Control for the widget</param>
-        public ScannerButtonBase(Control uiControl)
-            : base(uiControl)
+        /// <param name="logger">Logger instance</param>
+        public ScannerButtonBase(Control uiControl, ILogger<ScannerButtonBase> logger)
+            : base(uiControl, logger)
         {
+            _logger = logger;
             button = uiControl as Button;
         }
 
@@ -138,7 +143,7 @@ namespace ACAT.Core.Widgets
             {
                 try
                 {
-                    Log.Verbose();
+                    _logger.LogTrace("");
 
                     if (disposing)
                     {

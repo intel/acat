@@ -18,6 +18,7 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Extensions.Onboarding.Onboarding;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -36,6 +37,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
     [DesignerCategory("code")]
     public partial class UserControlHardwareSwitchTest : UserControl, IOnboardingUserControl
     {
+        private readonly ILogger<UserControlHardwareSwitchTest> _logger;
         private const String bodyStyle = " background-color:#232433;";
         private const String headStyle = "a:link{color: rgb(255, 170, 0);}";
         private const int switchActivationDelay = 300;
@@ -57,6 +59,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
 
         public UserControlHardwareSwitchTest(IOnboardingWizard wizard, IOnboardingExtension onboardingExtension, String stepId, OnboardingHardwareSwitchSetup.SwitchType switchType)
         {
+            _logger = LoggingConfiguration.CreateLogger<UserControlHardwareSwitchTest>();
             InitializeComponent();
 
             _onboardingExtension = onboardingExtension;
@@ -121,7 +124,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
                 hotKey += "+" + e.KeyCode;
             }
 
-            Log.Debug("Keyudown Hotkey: " + hotKey);
+            _logger.LogDebug("Keyudown Hotkey: " + hotKey);
 
             if (String.Compare(hotKey, _strTriggerHotkey, true) == 0)
             {
@@ -147,16 +150,16 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
                 hotKey += "+" + e.KeyCode;
             }
 
-            Log.Debug("Keyup hotkey: " + hotKey);
+            _logger.LogDebug("Keyup hotkey: " + hotKey);
 
             if (String.Compare(e.KeyCode.ToString(), _strTriggerHotkey, true) == 0)
             {
                 _hotkeyActive = false;
 
-                Log.Debug("elapsedmilliseconds " + _acceptTimer.ElapsedMilliseconds);
+                _logger.LogDebug("elapsedmilliseconds " + _acceptTimer.ElapsedMilliseconds);
                 if (_acceptTimer.IsRunning && _acceptTimer.ElapsedMilliseconds >= _acceptTime)
                 {
-                    Log.Debug("Setting _switchTested to true");
+                    _logger.LogDebug("Setting _switchTested to true");
                     _switchTested = true;
                     setButtonBackgroundAndText(true, "Switch\nActivated");
 
@@ -164,7 +167,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
                 }
                 else
                 {
-                    Log.Debug("Key not accepted as elapsed time is < MinActuationHoldTime");
+                    _logger.LogDebug("Key not accepted as elapsed time is < MinActuationHoldTime");
                 }
 
                 _acceptTimer.Stop();
@@ -206,7 +209,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
                 }
             }
 
-            Log.Debug("keyboardActuationCombo: " + _strTriggerHotkey);
+            _logger.LogDebug("keyboardActuationCombo: " + _strTriggerHotkey);
 
             _acceptTime = CoreGlobals.AppPreferences.MinActuationHoldTime;
 
@@ -238,7 +241,7 @@ namespace ACAT.Extensions.Onboarding.UI.UserControls
 
         public bool QueryGoToNextStep()
         {
-            Log.Debug("QueryGoToNextStep: SwichTested: " + _switchTested);
+            _logger.LogDebug("QueryGoToNextStep: SwichTested: " + _switchTested);
 
             bool retVal;
 

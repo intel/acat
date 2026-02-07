@@ -9,6 +9,7 @@ using ACAT.Core.AbbreviationsManagement;
 using ACAT.Core.AgentManagement;
 using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
 using System.Linq;
@@ -51,10 +52,16 @@ namespace ACAT.Core.PanelManagement.Common
         private static LastAction _lastAction = LastAction.Unknown;
 
         /// <summary>
+        /// Logger instance
+        /// </summary>
+        private readonly ILogger<TextController> _logger;
+
+        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        internal TextController()
+        internal TextController(ILogger<TextController> logger = null)
         {
+            _logger = logger;
         }
 
         /// <summary>
@@ -101,7 +108,7 @@ namespace ACAT.Core.PanelManagement.Common
             }
             bool isCapitalizedWordToReplace = false;
 
-            Log.Debug("Entered AutoCompleteWord");
+            _logger?.LogDebug("Entered AutoCompleteWord");
             try
             {
                 using AgentContext context = Context.AppAgentMgr.ActiveContext();
@@ -116,19 +123,19 @@ namespace ACAT.Core.PanelManagement.Common
                 _autocompleteStartOffset = -1;
 
                 context.TextAgent().GetPrevWordOffsetAutoComplete(out int offset, out int count);
-                Log.Debug("PrevWord offset: " + offset + ", count: " + count);
+                _logger?.LogDebug("PrevWord offset: {Offset}, count: {Count}", offset, count);
 
                 CoreGlobals.Stopwatch4.Stop();
-                Log.Debug("AutoComplete TimeElapsed 1: " + CoreGlobals.Stopwatch4.ElapsedMilliseconds);
+                _logger?.LogDebug("AutoComplete TimeElapsed 1: {ElapsedMilliseconds}", CoreGlobals.Stopwatch4.ElapsedMilliseconds);
 
                 CoreGlobals.Stopwatch4.Reset();
                 CoreGlobals.Stopwatch4.Start();
 
                 // check if we are just completing the current word or inserting a new word
                 bool checkInsert = context.TextAgent().CheckInsertOrReplaceWord(out int insertOrReplaceOffset, out string wordToReplace);
-                Log.Debug("checkInsert: " + checkInsert + ", insertorreplaceoffset: " + insertOrReplaceOffset +
-                          ", caret: " + caretPos + ", caretPos-delprev: " + (caretPos - count));
-                Log.Debug("wordtoReplace: " + wordToReplace);
+                _logger?.LogDebug("checkInsert: {CheckInsert}, insertorreplaceoffset: {Offset}, caret: {Caret}, caretPos-delprev: {CaretMinusCount}",
+                          checkInsert, insertOrReplaceOffset, caretPos, caretPos - count);
+                _logger?.LogDebug("wordtoReplace: {WordToReplace}", wordToReplace);
 
                 _autoCompletePartialWord = wordToReplace;
 
@@ -139,12 +146,12 @@ namespace ACAT.Core.PanelManagement.Common
                 }
 
                 CoreGlobals.Stopwatch4.Stop();
-                Log.Debug("AutoComplete TimeElapsed 2: " + CoreGlobals.Stopwatch4.ElapsedMilliseconds);
+                _logger?.LogDebug("AutoComplete TimeElapsed 2: {ElapsedMilliseconds}", CoreGlobals.Stopwatch4.ElapsedMilliseconds);
                 CoreGlobals.Stopwatch4.Reset();
                 CoreGlobals.Stopwatch4.Start();
 
-                Log.Debug("checkInsert: " + checkInsert + ". inserRepOff: " + insertOrReplaceOffset +
-                          ". wordTORep: " + wordToReplace);
+                _logger?.LogDebug("checkInsert: {CheckInsert}. inserRepOff: {Offset}. wordTORep: {Word}",
+                          checkInsert, insertOrReplaceOffset, wordToReplace);
 
                 if (KeyStateTracker.IsStickyShiftOn())
                 {
@@ -158,7 +165,7 @@ namespace ACAT.Core.PanelManagement.Common
 
                 if (checkInsert)
                 {
-                    Log.Debug("Inserting [" + wordSelected + "] at offset " + insertOrReplaceOffset);
+                    _logger?.LogDebug("Inserting [{WordSelected}] at offset {Offset}", wordSelected, insertOrReplaceOffset);
 
                     CoreGlobals.Stopwatch5.Reset();
                     CoreGlobals.Stopwatch5.Start();
@@ -166,7 +173,7 @@ namespace ACAT.Core.PanelManagement.Common
                     context.TextAgent().Insert(insertOrReplaceOffset, wordSelected);
 
                     CoreGlobals.Stopwatch5.Stop();
-                    Log.Debug("AutoComplete Insert operation TimeElapsed: " + CoreGlobals.Stopwatch5.ElapsedMilliseconds);
+                    _logger?.LogDebug("AutoComplete Insert operation TimeElapsed: {ElapsedMilliseconds}", CoreGlobals.Stopwatch5.ElapsedMilliseconds);
                 }
                 else
                 {
@@ -183,14 +190,14 @@ namespace ACAT.Core.PanelManagement.Common
                         wordSelected = capitalizeWord(wordSelected);
                     }
 
-                    Log.Debug("Replacing word at offset " + insertOrReplaceOffset + ". Length: " +
-                              wordToReplaceLength + ". with [" + wordSelected + "]");
+                    _logger?.LogDebug("Replacing word at offset {Offset}. Length: {Length}. with [{Word}]",
+                              insertOrReplaceOffset, wordToReplaceLength, wordSelected);
 
                     context.TextAgent().Replace(insertOrReplaceOffset, wordToReplaceLength, wordSelected);
                 }
 
                 CoreGlobals.Stopwatch4.Stop();
-                Log.Debug("AutoComplete TimeElapsed 3: " + CoreGlobals.Stopwatch4.ElapsedMilliseconds);
+                _logger?.LogDebug("AutoComplete TimeElapsed 3: {ElapsedMilliseconds}", CoreGlobals.Stopwatch4.ElapsedMilliseconds);
                 CoreGlobals.Stopwatch4.Reset();
                 CoreGlobals.Stopwatch4.Start();
 
@@ -201,30 +208,30 @@ namespace ACAT.Core.PanelManagement.Common
                 postAutoCompleteWord();
 
                 _autoCompleteCaretPos = context.TextAgent().GetCaretPos();
-                Log.Debug("_autocompleteCursorPos is " + _autoCompleteCaretPos);
+                _logger?.LogDebug("_autocompleteCursorPos is {CaretPos}", _autoCompleteCaretPos);
 
                 CoreGlobals.Stopwatch4.Stop();
-                Log.Debug("AutoComplete TimeElapsed 4: " + CoreGlobals.Stopwatch4.ElapsedMilliseconds);
+                _logger?.LogDebug("AutoComplete TimeElapsed 4: {ElapsedMilliseconds}", CoreGlobals.Stopwatch4.ElapsedMilliseconds);
             }
             catch (InvalidAgentContextException iace)
             {
-                Log.Exception("Agent Context is invalid " + iace);
+                _logger?.LogError(iace, "Agent Context is invalid");
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger?.LogError(ex, "Exception in AutoCompleteWord");
             }
             finally
             {
                 uint threadId = Kernel32Interop.GetCurrentThreadId();
-                Log.Debug("Calling TextChangedNotifications.Release AFTER Autocompeting word");
+                _logger?.LogDebug("Calling TextChangedNotifications.Release AFTER Autocompeting word");
 
                 Context.AppAgentMgr.TextChangedNotifications.Release();
 
-                Log.Debug("Returned from TextChangedNotifications.Release AFTER Autocompeting word " + threadId);
+                _logger?.LogDebug("Returned from TextChangedNotifications.Release AFTER Autocompeting word {ThreadId}", threadId);
             }
 
-            Log.Debug("Exited AutoCompleteWord");
+            _logger?.LogDebug("Exited AutoCompleteWord");
         }
 
         /// <summary>
@@ -251,12 +258,12 @@ namespace ACAT.Core.PanelManagement.Common
                 if (CoreGlobals.AppPreferences.ExpandAbbreviationsOnSeparator &&
                     !TextUtils.IsTerminatorOrWhiteSpace(charAtCaret))
                 {
-                    Log.Debug("no sentence terminator or white space here.  returning");
+                    _logger?.LogDebug("no sentence terminator or white space here.  returning");
                     return null;
                 }
 
                 int startPos = context.TextAgent().GetPreviousWordAtCaret(out string word);
-                Log.Debug("Prev word: " + word);
+                _logger?.LogDebug("Prev word: {Word}", word);
                 if (string.IsNullOrEmpty(word))
                 {
                     return null;
@@ -274,9 +281,9 @@ namespace ACAT.Core.PanelManagement.Common
 
                     string stringToCaret = context.TextAgent().GetStringToCaret(startPos);
 
-                    Log.Debug("String to caret from startPos " + startPos + ": [" + stringToCaret + "]");
+                    _logger?.LogDebug("String to caret from startPos {StartPos}: [{StringToCaret}]", startPos, stringToCaret);
                     replacement = stringToCaret.Replace(word, replacement);
-                    Log.Debug("After replacement, replacement : [" + replacement + "]");
+                    _logger?.LogDebug("After replacement, replacement : [{Replacement}]", replacement);
 
                     if (isFirstWord)
                     {

@@ -13,6 +13,7 @@
 using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Linq;
@@ -26,6 +27,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
     /// </summary>
     public partial class UserControlBCIErrorOpticalSensor : UserControl
     {
+        private readonly ILogger<UserControlBCIErrorOpticalSensor> _logger;
         /// <summary>
         /// Unique ID for this step
         /// </summary>
@@ -58,8 +60,9 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
         /// <summary>
         /// User Control Form for the output signals from sensor
         /// </summary>
-        public UserControlBCIErrorOpticalSensor(String stepId)
+        public UserControlBCIErrorOpticalSensor(String stepId, ILogger<UserControlBCIErrorOpticalSensor> logger = null)
         {
+            _logger = logger ?? LoggerFactory.GetLogger<UserControlBCIErrorOpticalSensor>();
             InitializeComponent();
 
             _stepId = stepId;
@@ -147,7 +150,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
             }
             catch (Exception e)
             {
-                Log.Exception(e);
+                _logger.LogError(e, e.ToString());
             }
         }
 

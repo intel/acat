@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Automation;
 using System.Windows.Forms;
@@ -17,6 +18,12 @@ namespace ACAT.Core.AgentManagement
     /// </summary>
     public class AgentUtils
     {
+        private static ILogger<AgentUtils> _logger;
+
+        public static void SetLogger(ILogger<AgentUtils> logger)
+        {
+            _logger = logger;
+        }
         /// <summary>
         /// Finds a descendent of the focused element that has the specified
         /// className, controlType and automationID
@@ -75,8 +82,8 @@ namespace ACAT.Core.AgentManagement
 
             while (parent != null)
             {
-                Log.Debug("parent.ClassName: " + parent.Current.ClassName + ", parent.ControlType: " +
-                            parent.Current.ControlType.ProgrammaticName + ", parent.AutoId: " + parent.Current.AutomationId);
+                _logger?.LogDebug("parent.ClassName: {ClassName}, parent.ControlType: {ControlType}, parent.AutoId: {AutoId}",
+                            parent.Current.ClassName, parent.Current.ControlType.ProgrammaticName, parent.Current.AutomationId);
 
                 if (String.Compare(parent.Current.ClassName, className, true) == 0 &&
                     String.Compare(parent.Current.ControlType.ProgrammaticName, controlType, true) == 0 &&
@@ -147,7 +154,8 @@ namespace ACAT.Core.AgentManagement
             {
                 if (!element.Current.IsEnabled || !element.Current.IsKeyboardFocusable)
                 {
-                    Log.Debug("Control not enabled or keyboard focusable. AutomationID " + element.Current.AutomationId);
+                    _logger?.LogDebug("Control not enabled or keyboard focusable. AutomationID {AutomationId}",
+                        element.Current.AutomationId);
                     return;
                 }
 
@@ -164,7 +172,7 @@ namespace ACAT.Core.AgentManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger?.LogError(ex, "Error inserting text into element");
             }
         }
 

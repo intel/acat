@@ -15,6 +15,7 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.Utils;
 using ACAT.Core.Utility;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -47,6 +48,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         private readonly Color _buttonBackColor;
         private bool _gestureDetectedAtleastOnce = false;
         private readonly CameraActuator _cameraActuator;
+        private readonly ILogger<ConfigureActuatorForm> _logger;
         private int _gestureCount = 0;
         private Mode _mode = Mode.SelectCamera;
         private SampleImageForm _sampleImageForm = null;
@@ -56,13 +58,14 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         private WebcamGestureSelectUserControl _webcamGestureSelectUserControl;
         private WebcamGestureSettingsUserControl _webcamGestureSettingsUserControl;
 
-        internal ConfigureActuatorForm(CameraActuator cameraActuator)
+        internal ConfigureActuatorForm(CameraActuator cameraActuator, ILogger<ConfigureActuatorForm> logger)
         {
             InitializeComponent();
 
             _buttonBackColor = buttonDone.BackColor;
 
             _cameraActuator = cameraActuator;
+            _logger = logger;
 
             Load += ConfigureActuatorForm_Load;
             Shown += ConfigureActuatorForm_Shown;
@@ -100,7 +103,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
         private void _timer_Tick(object sender, EventArgs e)
         {
-            Log.Debug("_cameraActuator.CameraSensorRunning: " + _cameraActuator.CameraSensorRunning);
+            _logger.LogDebug("_cameraActuator.CameraSensorRunning: {CameraSensorRunning}", _cameraActuator.CameraSensorRunning);
 
             if (_cameraActuator.CameraSensorRunning)
             {
@@ -109,19 +112,19 @@ namespace ACAT.Extensions.Actuators.CameraActuator
 
                 setLabelPromptDefaultText();
 
-                Log.Debug("Camera sensor is is running. Calling _videoWindowFinder.Start()");
+                _logger.LogDebug("Camera sensor is is running. Calling _videoWindowFinder.Start()");
                 _videoWindowFinder.Start();
             }
         }
 
         private void _videoWindowFinder_EvtVideoWindowDisplayed(IntPtr handle)
         {
-            Log.Verbose();
+            _logger.LogDebug("Video window displayed");
 
             try
             {
 
-                Log.Debug("Docking calibration window");
+                _logger.LogDebug("Docking calibration window");
 
                 _videoWindowFinder.DockVideoWindow(this);
 
@@ -213,9 +216,9 @@ namespace ACAT.Extensions.Actuators.CameraActuator
                 _videoWindowFinder.EvtVideoWindowDisplayed -= _videoWindowFinder_EvtVideoWindowDisplayed;
                 _videoWindowFinder.EvtVideoWindowFindStart -= _videoWindowFinder_EvtVideoWindowFindStart;
 
-                Log.Debug("Calling dockvideo dispose");
+                _logger.LogDebug("Calling dockvideo dispose");
                 _videoWindowFinder.Dispose();
-                Log.Debug("Returned from dockvideo dispose");
+                _logger.LogDebug("Returned from dockvideo dispose");
             }
 
             CameraSensor.hideVideoWindow();
@@ -315,7 +318,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "Exception in CameraActuator_EvtChangeCameraStart");
             }
         }
 
@@ -341,7 +344,7 @@ namespace ACAT.Extensions.Actuators.CameraActuator
         {
             Left = Top = 0;
 
-            Log.Debug("ENtered ConfigureActuatorForm_Load");
+            _logger.LogDebug("Entered ConfigureActuatorForm_Load");
 
             Resize += CalibrateForm_Resize;
 

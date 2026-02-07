@@ -18,6 +18,7 @@ using ACAT.Extensions.BCI.Actuators.EEG.EEGDataAcquisition;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Actuators.EEG.EEGUtils;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -32,6 +33,8 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
     /// </summary>
     public class OpenBCIDeviceTester
     {
+        private readonly ILogger<OpenBCIDeviceTester> _logger;
+
         /// <summary>
         /// Variables representing all the different states in testing process (state machine)
         /// </summary>

@@ -11,6 +11,7 @@ using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PreferencesManagement;
 using ACAT.Core.TTSManagement.Interfaces;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -56,6 +57,11 @@ namespace ACAT.Core.TTSManagement
         private static readonly TTSManager _instance = new();
 
         /// <summary>
+        /// Logger instance
+        /// </summary>
+        private readonly ILogger<TTSManager> _logger;
+
+        /// <summary>
         /// Has this object been disposed
         /// </summary>
         private bool _disposed;
@@ -68,8 +74,9 @@ namespace ACAT.Core.TTSManagement
         /// <summary>
         /// Initializes the singleton instance of the class
         /// </summary>
-        private TTSManager()
+        private TTSManager(ILogger<TTSManager> logger = null)
         {
+            _logger = logger;
             ActiveEngine = TTSEngines.NullTTSEngine;
             Context.EvtCultureChanged += Context_EvtCultureChanged;
         }

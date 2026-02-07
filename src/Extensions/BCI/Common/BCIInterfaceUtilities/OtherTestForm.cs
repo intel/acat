@@ -9,6 +9,7 @@ using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -25,6 +26,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         "Application window used to display other test for BCI")]
     public partial class OtherTestForm : Form
     {
+        private readonly ILogger<OtherTestForm> _logger;
         /// <summary>
         /// Custom Tooltip object
         /// </summary>
@@ -37,8 +39,9 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
         /// <summary>
         /// Confirm Box with multiple results
         /// </summary>
-        public OtherTestForm()
+        public OtherTestForm(ILogger<OtherTestForm> logger = null)
         {
+            _logger = logger ?? LoggerFactory.GetLogger<OtherTestForm>();
             InitializeComponent();
             Load += ConfirmBox_Load;
         }
@@ -97,22 +100,22 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
                 switch (scannerRoundedButtonControl.Name)
                 {
                     case var _ when scannerRoundedButtonControl.Name.Contains("ReMapCalibrations"):
-                        Log.Debug("BCI LOG | AdvancedOptions | ButtonClick: ReMapCalibrations");
+                        _logger.LogDebug("BCI LOG | AdvancedOptions | ButtonClick: ReMapCalibrations");
                         Options = BCIMenuOptions.Options.RemapCalibrations;
                         break;
 
                     case var _ when scannerRoundedButtonControl.Name.Contains("TriggerCheck"):
-                        Log.Debug("BCI LOG | AdvancedOptions | ButtonClick: TriggerCheck");
+                        _logger.LogDebug("BCI LOG | AdvancedOptions | ButtonClick: TriggerCheck");
                         Options = BCIMenuOptions.Options.TriggerTest;
                         break;
 
                     case var _ when scannerRoundedButtonControl.Name.Contains("SignalCheck"):
-                        Log.Debug("BCI LOG | AdvancedOptions | ButtonClick: SignalCheck");
+                        _logger.LogDebug("BCI LOG | AdvancedOptions | ButtonClick: SignalCheck");
                         Options = BCIMenuOptions.Options.SignalCheck;
                         break;
 
                     case var _ when scannerRoundedButtonControl.Name.Contains("EyesOpenClose"):
-                        Log.Debug("BCI LOG | AdvancedOptions | ButtonClick: EyesOpenClose");
+                        _logger.LogDebug("BCI LOG | AdvancedOptions | ButtonClick: EyesOpenClose");
                         Options = BCIMenuOptions.Options.EyesCalibration;
                         break;
                 }
@@ -121,7 +124,7 @@ namespace ACAT.Extensions.BCI.Common.BCIInterfaceUtilities
             }
             catch (Exception ex)
             {
-                Log.Exception("BCI LOG | Error ButtonCalibrate_Click: " + ex.Message);
+                _logger.LogError(ex, "BCI LOG | Error ButtonCalibrate_Click: " + ex.Message);
                 Close();
             }
         }

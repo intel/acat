@@ -14,6 +14,7 @@ using ACAT.Core.PanelManagement.Utils;
 using ACAT.Core.Utility;
 using ACAT.Extension.UI;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Automation;
 using System.Windows.Forms;
@@ -27,13 +28,17 @@ namespace ACAT.Extension.CommandHandlers
     /// </summary>
     public class AppWindowManagementHandler : RunCommandHandler
     {
+        private readonly ILogger<AppWindowManagementHandler> _logger;
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="cmd">The command to be executed</param>
-        public AppWindowManagementHandler(String cmd)
+        /// <param name="logger">Logger instance</param>
+        public AppWindowManagementHandler(String cmd, ILogger<AppWindowManagementHandler> logger)
             : base(cmd)
         {
+            _logger = logger;
         }
 
         /// <summary>
@@ -241,7 +246,7 @@ namespace ACAT.Extension.CommandHandlers
 
             if (!Windows.IsApplicationFrameHostProcessWindow(fgHandle))
             {
-                Log.Debug("controltype: " + window.Current.ControlType.ProgrammaticName);
+                _logger.LogDebug("controltype: " + window.Current.ControlType.ProgrammaticName);
 
                 bool retVal = false;
                 if (window.TryGetCurrentPattern(WindowPattern.Pattern, out object objPattern))
@@ -249,7 +254,7 @@ namespace ACAT.Extension.CommandHandlers
                     var windowPattern = objPattern as WindowPattern;
                     retVal = (windowPattern.Current.CanMaximize) && !windowPattern.Current.IsModal;
 
-                    Log.Debug("canmaximize: " + windowPattern.Current.CanMaximize + ", ismodal: " + windowPattern.Current.IsModal);
+                    _logger.LogDebug("canmaximize: " + windowPattern.Current.CanMaximize + ", ismodal: " + windowPattern.Current.IsModal);
                 }
 
                 return retVal;
@@ -284,7 +289,7 @@ namespace ACAT.Extension.CommandHandlers
 
             if (!Windows.IsApplicationFrameHostProcessWindow(fgHandle))
             {
-                Log.Debug("controltype: " + window.Current.ControlType.ProgrammaticName);
+                _logger.LogDebug("controltype: " + window.Current.ControlType.ProgrammaticName);
 
                 bool retVal = false;
                 if (window.TryGetCurrentPattern(WindowPattern.Pattern, out object objPattern))
@@ -292,7 +297,7 @@ namespace ACAT.Extension.CommandHandlers
                     var windowPattern = objPattern as WindowPattern;
                     retVal = (windowPattern.Current.CanMinimize) && !windowPattern.Current.IsModal;
 
-                    Log.Debug("canminimize: " + windowPattern.Current.CanMinimize + ", ismodal: " + windowPattern.Current.IsModal);
+                    _logger.LogDebug("canminimize: " + windowPattern.Current.CanMinimize + ", ismodal: " + windowPattern.Current.IsModal);
                 }
 
                 return retVal;
@@ -322,7 +327,7 @@ namespace ACAT.Extension.CommandHandlers
 
             bool retVal = isWindowMaximizable(fgHandle) || isWindowMinimizable(fgHandle);
 
-            Log.Debug("returning " + retVal);
+            _logger.LogDebug("returning " + retVal);
 
             return retVal;
         }

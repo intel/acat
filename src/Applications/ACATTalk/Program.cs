@@ -22,6 +22,7 @@ using ACAT.Core.Utility;
 using ACAT.Extension;
 using ACAT.Extension.CommandHandlers;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
 
@@ -33,6 +34,7 @@ namespace ACATTalk
     internal static class Program
     {
         private static Splash splash = null;
+        private static ILogger _logger;
 
         /// <summary>
         /// The main entry point for the application.
@@ -91,8 +93,9 @@ namespace ACATTalk
 
             // Initialize modern logging infrastructure (ticket #3)
             var modernLoggingFactory = LoggingConfiguration.CreateLoggerFactory();
+            _logger = modernLoggingFactory.CreateLogger(typeof(Program));
 
-            Log.Debug("ACAT Talk Application Launch");
+            _logger.LogDebug("ACAT Talk Application Launch");
 
             AuditLog.Audit(new AuditEvent("Application", "start"));
 
@@ -194,7 +197,7 @@ namespace ACATTalk
                 splash?.Close();
                 splash = null;
 
-                Log.Debug("ACATTalk Application shutdown");
+                _logger.LogDebug("ACATTalk Application shutdown");
 
                 Log.Close();
                 modernLoggingFactory?.Dispose();

@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //
 // Copyright 2013-2019; 2023 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
@@ -11,6 +11,7 @@ using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.WidgetManagement.Interfaces;
 using ACAT.Extensions.BCI.Common.BCIControl;
+using Microsoft.Extensions.Logging;
 using SharpDX.Direct2D1;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
     /// </summary>
     public class AnimationManagerUtils
     {
+        private static readonly ILogger<AnimationManagerUtils> _logger = LoggerFactory.GetLogger<AnimationManagerUtils>();
         /// <summary>
         /// String messages for BCI
         /// </summary>
@@ -103,7 +105,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.ToString());
             }
             configNodes = null;
             return btnStringsAll;
@@ -157,7 +159,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.ToString());
             }
             configNodes = null;
             return widgetsBox;
@@ -185,7 +187,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception("Error in GetBoxWidgetsList: " + ex.Message);
+                _logger.LogError("Error in GetBoxWidgetsList: " + ex.Message);
                 return new List<Widget>[totalAmountOfBoxes];
             }
             return widgets;
@@ -213,7 +215,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception("Error in GetButtonDataList: " + ex.Message);
+                _logger.LogError("Error in GetButtonDataList: " + ex.Message);
                 return new List<ButtonsData>[totalAmountOfBoxes];
             }
             return buttonDataList;
@@ -287,7 +289,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception("Error in GetButtonsOffsetList: " + ex.Message);
+                _logger.LogError("Error in GetButtonsOffsetList: " + ex.Message);
                 return new List<int>[totalAmountOfBoxes];
             }
             return offsetStrings;
@@ -319,7 +321,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception("Error in GetButtonsStringsList: " + ex.Message);
+                _logger.LogError("Error in GetButtonsStringsList: " + ex.Message);
                 return new List<string>[totalAmountOfBoxes];
             }
             return buttonsStringsList;
@@ -406,7 +408,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception("Error in GetControlsBtns: " + ex.Message);
+                _logger.LogError("Error in GetControlsBtns: " + ex.Message);
                 flashingSequenceIDList = new List<int[]>[totalAmountOfBoxes];
                 flashingSequenceList = new List<int[]>[totalAmountOfBoxes];
                 return new List<ScannerButtonControl>[totalAmountOfBoxes];
@@ -449,7 +451,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.ToString());
             }
             configNodes = null;
             return ctrlBtnsAll;
@@ -486,7 +488,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception("Error in GetFlashingSequenceIDBoxList: " + ex.Message);
+                _logger.LogError("Error in GetFlashingSequenceIDBoxList: " + ex.Message);
                 return new List<int>[totalAmountOfBoxes];
             }
             return flashingSequenceIDBoxList;
@@ -524,7 +526,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception es)
             {
-                Log.Exception("Exception geting values probs " + es);
+                _logger.LogError("Exception geting values probs " + es);
             }
             return nextProbs;
         }
@@ -579,7 +581,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception("Exception in getLettersProbs: " + ex.Message.ToString());
+                _logger.LogError("Exception in getLettersProbs: " + ex.Message.ToString());
                 return _ = new Dictionary<int, double>();
             }
             return nextProbs;
@@ -642,7 +644,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.ToString());
             }
             configNodes = null;
             return matrixButtonList;
@@ -685,7 +687,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.ToString());
             }
             configNodes = null;
             return offsets;
@@ -770,7 +772,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.ToString());
             }
             configNodes = null;
             return flashingSeqAll;
@@ -838,7 +840,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception es)
             {
-                Log.Exception("Exception geting values probs " + es);
+                _logger.LogError("Exception geting values probs " + es);
             }
             return nextProbs;
         }

@@ -8,6 +8,7 @@
 using ACAT.Core.PanelManagement.Utils;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement.Layout;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -21,6 +22,8 @@ namespace ACAT.Core.Widgets
     /// </summary>
     public class LabelWidget : ButtonWidgetBase
     {
+        private readonly ILogger<LabelWidget> _logger;
+
         /// <summary>
         /// Should the corners of the control be rounded?
         /// </summary>
@@ -55,9 +58,12 @@ namespace ACAT.Core.Widgets
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="uiControl">the inner .NET Control for the widget</param>
-        public LabelWidget(Control uiControl)
-            : base(uiControl)
+        /// <param name="logger">Logger instance</param>
+        public LabelWidget(Control uiControl, ILogger<LabelWidget> logger)
+            : base(uiControl, logger)
         {
+            _logger = logger;
+
             Label label = (Label)uiControl;
             label.Paint += label_Paint;
 
@@ -145,7 +151,7 @@ namespace ACAT.Core.Widgets
             {
                 try
                 {
-                    Log.Verbose();
+                    _logger.LogTrace("");
 
                     if (disposing)
                     {
@@ -197,7 +203,7 @@ namespace ACAT.Core.Widgets
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, ex.Message);
             }
         }
 

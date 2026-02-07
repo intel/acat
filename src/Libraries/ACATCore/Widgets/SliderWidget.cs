@@ -8,6 +8,7 @@
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;
 using System.Windows.Forms;
@@ -62,6 +63,8 @@ namespace ACAT.Core.Widgets
     /// </summary>
     public class SliderWidget : Widget
     {
+        private readonly ILogger<SliderWidget> _logger;
+
         public const decimal SliderUnitsHundredths = 0.01M;
 
         /// <summary>
@@ -142,9 +145,11 @@ namespace ACAT.Core.Widgets
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="uiControl">the inner .NET Control for the widget</param>
-        public SliderWidget(Control uiControl)
-            : base(uiControl)
+        /// <param name="logger">Logger instance</param>
+        public SliderWidget(Control uiControl, ILogger<SliderWidget> logger)
+            : base(uiControl, logger)
         {
+            _logger = logger;
             EvtChildAdded += SliderWidget_EvtChildAdded;
         }
 
@@ -192,7 +197,7 @@ namespace ACAT.Core.Widgets
 
                 if (_decimalStep >= 1)
                 {
-                    Log.Error("SliderWidget::Load() - Warning!  Decimal step is greater than/equal to 1!");
+                    _logger.LogError("SliderWidget::Load() - Warning!  Decimal step is greater than/equal to 1!");
                 }
 
                 _minValue = 0;
@@ -304,8 +309,8 @@ namespace ACAT.Core.Widgets
         /// <param name="e">event args</param>
         private void _trackBar_ValueChanged(object sender, EventArgs e)
         {
-            Log.Debug("trackbar value: " + _trackBar.Value);
-            Log.Debug("Widget: " + _trackBar.Name + ".  Setting value to " + ConvertTicksToRealValue(_trackBar.Value));
+            _logger.LogDebug("trackbar value: {Value}", _trackBar.Value);
+            _logger.LogDebug("Widget: {Name}.  Setting value to {RealValue}", _trackBar.Name, ConvertTicksToRealValue(_trackBar.Value));
 
             Windows.SetText(_currentValueControl, ConvertTicksToRealValue(_trackBar.Value).ToString());
 
@@ -341,7 +346,7 @@ namespace ACAT.Core.Widgets
         {
             if ((tickPosition > _maxTicks) || (tickPosition < _minTicks))
             {
-                Log.Error("SetTickPosition() - tickPosition out of acceptable range!");
+                _logger.LogError("SetTickPosition() - tickPosition out of acceptable range!");
             }
 
             Windows.SetTrackBarValue(_trackBar, tickPosition);
@@ -407,7 +412,7 @@ namespace ACAT.Core.Widgets
                     break;
 
                 default:
-                    Log.Debug("Unrecognized subclass " + subclass);
+                    _logger.LogDebug("Unrecognized subclass {Subclass}", subclass);
                     break;
             }
         }
@@ -428,7 +433,7 @@ namespace ACAT.Core.Widgets
             }
             catch (Exception ex)
             {
-                Log.Exception("Error parsing decimal " + inputString + ", ex: " + ex.ToString());
+                _logger.LogError(ex, "Error parsing decimal {InputString}", inputString);
                 retVal = false;
             }
 

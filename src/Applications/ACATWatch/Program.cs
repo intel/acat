@@ -14,6 +14,7 @@ using ACAT.Applications;
 using ACAT.Applications.ACATWatch;
 using ACAT.Core.Utility;
 using ACAT.Extension;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Reflection;
 using System.Windows.Forms;
@@ -22,6 +23,8 @@ namespace ACATWatch
 {
     internal static class Program
     {
+        private static ILogger _logger;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -46,14 +49,15 @@ namespace ACATWatch
 
                 // Initialize modern logging infrastructure (ticket #3)
                 var modernLogger = LoggingConfiguration.CreateLoggerFactory();
+                _logger = modernLogger.CreateLogger(typeof(Program));
 
                 FileUtils.LogAssemblyInfo(Assembly.GetExecutingAssembly());
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new ACATWatchForm());
+                Application.Run(new ACATWatchForm(_logger));
 
-                Log.Info("**** Exit " + Common.AppPreferences.AppName + " " + DateTime.Now.ToString() + " ****");
+                _logger.LogInformation("**** Exit " + Common.AppPreferences.AppName + " " + DateTime.Now.ToString() + " ****");
 
                 Log.Close();
                 modernLogger?.Dispose();
@@ -61,8 +65,11 @@ namespace ACATWatch
             else
             {
                 Log.SetupListeners();
-                Log.Error("Failed to load user preferences. Exiting application.");
+                var tempFactory = LoggingConfiguration.CreateLoggerFactory();
+                var tempLogger = tempFactory.CreateLogger(typeof(Program));
+                tempLogger.LogError("Failed to load user preferences. Exiting application.");
                 Log.Close();
+                tempFactory.Dispose();
             }
         }
     }

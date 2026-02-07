@@ -14,6 +14,7 @@ using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.WidgetManagement.Interfaces;
 using ACAT.Core.Widgets;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -24,8 +25,11 @@ namespace ACAT.Core.UserControlManagement
 {
     public class UserControlCommon : IUserControlCommon, IDisposable
     {
-        public UserControlCommon(IUserControl userControl, UserControlConfigMapEntry mapEntry, IScannerPanel iScannerPanel)
+        private readonly ILogger<UserControlCommon> _logger;
+
+        public UserControlCommon(IUserControl userControl, UserControlConfigMapEntry mapEntry, IScannerPanel iScannerPanel, ILogger<UserControlCommon> logger)
         {
+            _logger = logger;
             ScannerForm = iScannerPanel.Form;
             this.mapEntry = mapEntry;
             ScannerPanel = iScannerPanel;
@@ -92,7 +96,7 @@ namespace ACAT.Core.UserControlManagement
 
         public bool Initialize()
         {
-            Log.Debug("Entered from Initialize");
+            _logger.LogDebug("Entered from Initialize");
 
             bool retVal = initWidgetManager(mapEntry);
 
@@ -101,7 +105,7 @@ namespace ACAT.Core.UserControlManagement
                 retVal = initAnimationManager(mapEntry);
             }
 
-            Log.Debug("Returning from Initialize " + retVal);
+            _logger.LogDebug("Returning from Initialize {RetVal}", retVal);
 
             WindowActivityMonitor.EvtWindowMonitorHeartbeat += WindowActivityMonitorEvtWindowMonitorHeartbeat;
 
@@ -123,7 +127,7 @@ namespace ACAT.Core.UserControlManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Exception in OnClosing");
             }
         }
 
@@ -145,31 +149,31 @@ namespace ACAT.Core.UserControlManagement
                 }
             }
 
-            Log.Debug(ScannerForm.Name + ", SyncObj.Status: " + SyncLock.Status + ", hashcode: " + SyncLock.GetHashCode());
+            _logger.LogDebug("{ScannerFormName}, SyncObj.Status: {Status}, hashcode: {HashCode}", ScannerForm.Name, SyncLock.Status, SyncLock.GetHashCode());
 
             if (SyncLock.Status != SyncLock.StatusValues.None)
             {
-                Log.Debug(ScannerForm.Name + ", SyncObj.Status: " + SyncLock.Status + ", form already closed.  returning");
+                _logger.LogDebug("{ScannerFormName}, SyncObj.Status: {Status}, form already closed.  returning", ScannerForm.Name, SyncLock.Status);
                 return;
             }
 
-            Log.Debug(ScannerForm.Name + ", SyncObj.Status: " + SyncLock.Status + ", Will continue closing");
+            _logger.LogDebug("{ScannerFormName}, SyncObj.Status: {Status}, Will continue closing", ScannerForm.Name, SyncLock.Status);
 
-            Log.Debug("Setting SyncLock.Status to CLOSING " + ScannerForm.Name);
+            _logger.LogDebug("Setting SyncLock.Status to CLOSING {ScannerFormName}", ScannerForm.Name);
             SyncLock.Status = SyncLock.StatusValues.Closing;
 
-            Log.Debug("Before animationmangoer.stop");
+            _logger.LogDebug("Before animationmangoer.stop");
             AnimationManager.Stop();
 
-            Log.Debug("After animationmangoer.stop");
+            _logger.LogDebug("After animationmangoer.stop");
 
-            Log.Debug("Unsubscribe to EvtHeartbeat for " + ScannerForm.Name);
+            _logger.LogDebug("Unsubscribe to EvtHeartbeat for {ScannerFormName}", ScannerForm.Name);
             WindowActivityMonitor.EvtWindowMonitorHeartbeat -= WindowActivityMonitorEvtWindowMonitorHeartbeat;
-            Log.Debug("Unsubscribe to EvtHeartbeat DONE for " + ScannerForm.Name);
+            _logger.LogDebug("Unsubscribe to EvtHeartbeat DONE for {ScannerFormName}", ScannerForm.Name);
 
             unsubscribeEvents();
 
-            Log.Debug("Exiting FormClosing for " + ScannerForm.Name);
+            _logger.LogDebug("Exiting FormClosing for {ScannerFormName}", ScannerForm.Name);
         }
 
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
@@ -195,7 +199,7 @@ namespace ACAT.Core.UserControlManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "Exception in OnPause");
             }
         }
 
@@ -214,7 +218,7 @@ namespace ACAT.Core.UserControlManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, "Exception in OnResume");
             }
         }
 
@@ -223,7 +227,7 @@ namespace ACAT.Core.UserControlManagement
             // Check to see if Dispose has already been called.
             if (!disposed)
             {
-                Log.Verbose();
+                _logger.LogTrace("Disposing UserControlCommon");
 
                 if (disposing)
                 {
@@ -273,7 +277,7 @@ namespace ACAT.Core.UserControlManagement
 
             if (!retVal)
             {
-                Log.Error("Error initializing animation manager");
+                _logger.LogError("Error initializing animation manager");
                 AnimationManager = null;
             }
 
@@ -289,7 +293,7 @@ namespace ACAT.Core.UserControlManagement
             bool retVal = WidgetManager.Initialize(mapEntry.ConfigFileName);
             if (!retVal)
             {
-                Log.Error("Unable to initialize widget manager");
+                _logger.LogError("Unable to initialize widget manager");
             }
             else
             {
@@ -314,7 +318,7 @@ namespace ACAT.Core.UserControlManagement
                 command = command.Substring(1);
             }
 
-            Log.Debug("Calling scanner common runcomand with " + command);
+            _logger.LogDebug("Calling scanner common runcomand with {Command}", command);
             ScannerForm.Invoke(new MethodInvoker(delegate
             {
                 String[] parts = command.Split('.');
@@ -362,7 +366,7 @@ namespace ACAT.Core.UserControlManagement
         {
             if (SyncLock.IsClosing())
             {
-                Log.Debug("Form is closing " + ScannerForm.Name);
+                _logger.LogDebug("Form is closing {ScannerFormName}", ScannerForm.Name);
                 WindowActivityMonitor.EvtWindowMonitorHeartbeat -= WindowActivityMonitorEvtWindowMonitorHeartbeat;
                 return;
             }
@@ -391,7 +395,7 @@ namespace ACAT.Core.UserControlManagement
                             break;
                         }
 
-                        Log.Verbose($"widget.Enabled set to: {widget.Enabled} for feature {widget.Name}");
+                        _logger.LogTrace("widget.Enabled set to: {Enabled} for feature {WidgetName}", widget.Enabled, widget.Name);
                     }
                 }
             }
@@ -418,7 +422,7 @@ namespace ACAT.Core.UserControlManagement
 
         private void textToSpeech(String text)
         {
-            Log.Debug("Convert to speech. text=" + text);
+            _logger.LogDebug("Convert to speech. text={Text}", text);
             Context.AppTTSManager.ActiveEngine.Speak(text);
         }
 
@@ -449,7 +453,7 @@ namespace ACAT.Core.UserControlManagement
                 var value = widget.Value;
                 if (!String.IsNullOrEmpty(value))
                 {
-                    Log.Debug("**Actuate** " + widget.Name + " Value: " + value);
+                    _logger.LogDebug("**Actuate** {WidgetName} Value: {Value}", widget.Name, value);
 
                     actuateButton(widget);
                 }

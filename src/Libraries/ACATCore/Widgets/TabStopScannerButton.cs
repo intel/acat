@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -19,6 +20,8 @@ namespace ACAT.Core.Widgets
     /// </summary>
     public class TabStopScannerButton : ScannerButtonBase
     {
+        private readonly ILogger<TabStopScannerButton> _logger;
+
         /// <summary>
         /// First tab stop before the widget has been scaled
         /// </summary>
@@ -53,9 +56,11 @@ namespace ACAT.Core.Widgets
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="uiControl">the inner .NET Control for the widget</param>
-        public TabStopScannerButton(Control uiControl)
-            : base(uiControl)
+        /// <param name="logger">Logger instance</param>
+        public TabStopScannerButton(Control uiControl, ILogger<TabStopScannerButton> logger)
+            : base(uiControl, logger)
         {
+            _logger = logger;
             _text = String.Empty;
         }
 
@@ -170,7 +175,7 @@ namespace ACAT.Core.Widgets
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, ex.Message);
             }
         }
 

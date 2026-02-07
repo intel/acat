@@ -12,6 +12,7 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.Widgets;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,8 @@ namespace ACAT.Extension.UI
     /// </summary>
     public class UserControlWordPredictionCommon : IDisposable
     {
+        private readonly ILogger<UserControlWordPredictionCommon> _logger;
+
         /// <summary>
         /// Widget that represents the alphabet scanner
         /// </summary>
@@ -73,8 +76,9 @@ namespace ACAT.Extension.UI
         /// Constructor. Initialize the various controls and
         /// display the UI
         /// </summary>
-        public UserControlWordPredictionCommon(IUserControl userControl, TextController textController, IScannerPanel scannerPanel, PredictionTypes[] predictionTypes)
+        public UserControlWordPredictionCommon(IUserControl userControl, TextController textController, IScannerPanel scannerPanel, PredictionTypes[] predictionTypes, ILogger<UserControlWordPredictionCommon> logger)
         {
+            _logger = logger;
             _form = scannerPanel.Form;
             _textController = textController;
             _predictionTypes = predictionTypes;
@@ -137,7 +141,7 @@ namespace ACAT.Extension.UI
         /// </summary>
         public void OnClosing(object sender, FormClosingEventArgs e)
         {
-            Log.Verbose();
+            _logger.LogTrace();
         }
 
         /// <summary>
@@ -188,7 +192,7 @@ namespace ACAT.Extension.UI
         /// </summary>
         public void OnPause()
         {
-            Log.Verbose();
+            _logger.LogTrace();
         }
 
         /// <summary>
@@ -197,7 +201,7 @@ namespace ACAT.Extension.UI
         /// </summary>
         public void OnResume()
         {
-            Log.Verbose();
+            _logger.LogTrace();
 
             refreshWordPredictionsAndSetCurrentWord();
         }
@@ -281,7 +285,7 @@ namespace ACAT.Extension.UI
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger.LogTrace();
 
                 if (disposing)
                 {
@@ -321,7 +325,7 @@ namespace ACAT.Extension.UI
         /// <param name="e">event args</param>
         private void AppAgent_EvtTextChanged(object sender, EventArgs e)
         {
-            Log.Verbose();
+            _logger.LogTrace();
             try
             {
                 if (_form.Visible)
@@ -331,15 +335,15 @@ namespace ACAT.Extension.UI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, ex.Message);
             }
 
-            Log.Debug("returning");
+            _logger.LogDebug("returning");
         }
 
         private void autoComplete(WordListItemWidget wordListItemWidget)
         {
-            Log.Debug("wordListItemName : " + wordListItemWidget.Name + ", value: " + wordListItemWidget.Value);
+            _logger.LogDebug("wordListItemName : " + wordListItemWidget.Name + ", value: " + wordListItemWidget.Value);
 
             var wordSelected = wordListItemWidget.Value.Trim();
 
@@ -355,7 +359,7 @@ namespace ACAT.Extension.UI
 
         private void autoComplete(LetterListItemWidget letterListItemWidget)
         {
-            Log.Debug("leterListItemName : " + letterListItemWidget.Name + ", value: " + letterListItemWidget.Value);
+            _logger.LogDebug("leterListItemName : " + letterListItemWidget.Name + ", value: " + letterListItemWidget.Value);
 
             var letterSelected = letterListItemWidget.Value.Trim();
 
@@ -369,7 +373,7 @@ namespace ACAT.Extension.UI
 
         private void autoComplete(SentenceListItemWidget sentenceListItemWidget)
         {
-            Log.Debug("sentenceListItemName : " + sentenceListItemWidget.Name + ", value: " + sentenceListItemWidget.Value);
+            _logger.LogDebug("sentenceListItemName : " + sentenceListItemWidget.Name + ", value: " + sentenceListItemWidget.Value);
 
             var wordSelected = sentenceListItemWidget.Value.Trim();
 
@@ -420,7 +424,7 @@ namespace ACAT.Extension.UI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -456,12 +460,12 @@ namespace ACAT.Extension.UI
                 }
                 catch (Exception ex)
                 {
-                    Log.Exception(ex.ToString());
+                    _logger.LogError(ex, ex.Message);
                 }
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, ex.Message);
             }
 
             if (_sentenceListWidget != null)
@@ -546,18 +550,11 @@ namespace ACAT.Extension.UI
                 try
                 {
                     agentContext.TextAgent().GetCharAtCaret(out charAtCaret);
-                    Log.Debug("charAtCaret: [" + charAtCaret + "]");
-                }
-                catch (InvalidAgentContextException ex)
-                {
-                    Log.Exception(ex.ToString());
-                }
-            }
-
-            if (!string.IsNullOrEmpty(wordAtCaret) &&
-                ResourceHelper.IsCurrentCultureEnglish() &&
-                Context.AppAgentMgr.CurrentEditingMode == EditingMode.Edit &&
-                !wordAtCaret.EndsWith("'s", StringComparison.InvariantCultureIgnoreCase) &&
+                        _logger.LogDebug("charAtCaret: [" + charAtCaret + "]");
+                    }
+                    catch (InvalidAgentContextException ex)
+                    {
+                        _logger.LogError(ex, ex.Message);
                 (charAtCaret == '\0' || charAtCaret == 0x0D || charAtCaret == 0x0A ||
                 TextUtils.IsPunctuationOrWhiteSpace(charAtCaret) ||
                 TextUtils.IsTerminatorOrWhiteSpace(charAtCaret)))
@@ -575,7 +572,7 @@ namespace ACAT.Extension.UI
                         break;
                     }
 
-                    Log.Debug("setting Word for " + ii + ":  " + word + " ");
+                    _logger.LogDebug("setting Word for " + ii + ":  " + word + " ");
                     if (_wordListWidgetWidget.Children.ElementAt(ii) is WordListItemWidget)
                     {
                         _wordListWidgetWidget.Children.ElementAt(ii).SetText(word);
@@ -612,7 +609,7 @@ namespace ACAT.Extension.UI
 
             if (_currentWordWidget != null)
             {
-                Log.Debug("Calling SetCurrentWord with : [" + wordAtCaret + "]");
+                _logger.LogDebug("Calling SetCurrentWord with : [" + wordAtCaret + "]");
                 _currentWordWidget.SetCurrentWord(wordAtCaret);
             }
             // Validation for the character predictions if there any value the proceed to add the element to the childs
@@ -625,7 +622,7 @@ namespace ACAT.Extension.UI
                     {
                         break;
                     }
-                    Log.Debug("setting letter for " + ii + ":  " + letter.Trim('\'') + " ");
+                    _logger.LogDebug("setting letter for " + ii + ":  " + letter.Trim('\'') + " ");
                     if (_letterListWidgetWidget.Children.ElementAt(ii) is LetterListItemWidget)
                     {
                         string textValue = letter.Trim('\'', ' ');
@@ -654,7 +651,7 @@ namespace ACAT.Extension.UI
 
             CoreGlobals.Stopwatch3.Stop();
 
-            Log.Debug("TimeElapsed for tryRefreshWordPredictionsAndSetCurrentWord: " + CoreGlobals.Stopwatch3.ElapsedMilliseconds);
+            _logger.LogDebug("TimeElapsed for tryRefreshWordPredictionsAndSetCurrentWord: " + CoreGlobals.Stopwatch3.ElapsedMilliseconds);
         }
 
         /// <summary>
@@ -694,12 +691,12 @@ namespace ACAT.Extension.UI
                     // we need the word at the cursor and also the previous n-words
                     // in the current sentence
                     int caretPos = agentContext.TextAgent().GetCaretPos();
-                    Log.Debug("Perform WordPrediction at caretPos " + caretPos);
+                    _logger.LogDebug("Perform WordPrediction at caretPos " + caretPos);
                     agentContext.TextAgent().GetPrefixAndWordAtCaret(out nwords, out wordAtCaret);
-                    Log.Debug("wordAtCaret: [" + wordAtCaret + "]");
+                    _logger.LogDebug("wordAtCaret: [" + wordAtCaret + "]");
 
                     agentContext.TextAgent().GetCharAtCaret(out charAtCaret);
-                    Log.Debug("charAtCaret: [" + charAtCaret + "]");
+                    _logger.LogDebug("charAtCaret: [" + charAtCaret + "]");
                 }
 
                 if (string.IsNullOrEmpty(nwords) && string.IsNullOrEmpty(wordAtCaret))
@@ -712,12 +709,12 @@ namespace ACAT.Extension.UI
                     wordAtCaret = string.Empty;
                 }
 
-                Log.Debug("wordatcaret length: " + wordAtCaret.Length);
+                _logger.LogDebug("wordatcaret length: " + wordAtCaret.Length);
 
                 //Log.Debug("Text: [" + text + "], caretPos: " + caretPos.ToString());
 
-                Log.Debug("Prefix: [" + nwords + "]");
-                Log.Debug("CurrentWord: [" + wordAtCaret + "]");
+                _logger.LogDebug("Prefix: [" + nwords + "]");
+                _logger.LogDebug("CurrentWord: [" + wordAtCaret + "]");
 
                 /*
                 if (_wordListWidgetWidget != null)
@@ -782,11 +779,11 @@ namespace ACAT.Extension.UI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger.LogError(ex, ex.Message);
                 retVal = false;
             }
 
-            Log.Debug("Returning");
+            _logger.LogDebug("Returning");
             return retVal;
         }
     }

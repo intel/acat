@@ -25,6 +25,7 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.Widgets;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -48,7 +49,7 @@ namespace ACAT.Extensions.FunctionalAgents.SwitchWindowsAgent
                             "SwitchWindowsScanner",
                             "Switch Windows Scanner")]
     public partial class SwitchWindowsScanner : GenericScannerForm
-    {
+    {        private readonly ILogger<SwitchWindowsScanner> _logger;
         /// <summary>
         /// Enables invoking methods and properties in this form
         /// </summary>

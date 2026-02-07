@@ -24,6 +24,7 @@ using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Extension.UI.ScannerForms;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Security.Permissions;
 using System.Threading;
@@ -49,6 +50,8 @@ namespace ACAT.Extensions.UI.Dialogs
                         "WindowMoveResizeScannerForm")]
     public partial class WindowMoveResizeScannerForm : GenericScannerForm, IDialogPanel
     {
+        private readonly ILogger<WindowMoveResizeScannerForm> _logger;
+
         /// <summary>
         /// Used to invoke methods and properties in this class
         /// </summary>
@@ -64,6 +67,7 @@ namespace ACAT.Extensions.UI.Dialogs
         /// </summary>
         public WindowMoveResizeScannerForm() : base()
         {
+            _logger = LoggingConfiguration.CreateLogger<WindowMoveResizeScannerForm>();
             InitializeComponent();
 
             _invoker = new ExtensionInvoker(this);
@@ -138,13 +142,13 @@ namespace ACAT.Extensions.UI.Dialogs
         ///
         public void OnButtonActuated(Widget widget)
         {
-            Log.Debug("**Actuate** " + widget.UIControl.Name + " Value: " + widget.Value);
+            _logger.LogDebug("**Actuate** {WidgetName} Value: {WidgetValue}", widget.UIControl.Name, widget.Value);
 
             var value = widget.Value;
 
             if (String.IsNullOrEmpty(value))
             {
-                Log.Debug("OnButtonActuated() -- received actuation from empty widget!");
+                _logger.LogDebug("OnButtonActuated() -- received actuation from empty widget!");
                 return;
             }
 
@@ -179,7 +183,7 @@ namespace ACAT.Extensions.UI.Dialogs
                         break;
 
                     default:
-                        Log.Debug("OnButtonActuated() -- unhandled widget actuation!");
+                        _logger.LogDebug("OnButtonActuated() -- unhandled widget actuation!");
                         break;
                 }
             }));

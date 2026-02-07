@@ -16,6 +16,7 @@
 using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.ActuatorManagement.Settings;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -31,6 +32,8 @@ namespace ACAT.Core.ActuatorManagement
     /// </summary>
     public class ActuatorSwitchBase : IActuatorSwitch
     {
+        private readonly ILogger<ActuatorSwitchBase> _logger;
+
         /// <summary>
         /// The command verb to be used for a switch that
         /// is used for selection
@@ -72,8 +75,9 @@ namespace ACAT.Core.ActuatorManagement
         /// <summary>
         /// Initializes the Switch object
         /// </summary>
-        public ActuatorSwitchBase()
+        public ActuatorSwitchBase(ILogger<ActuatorSwitchBase> logger = null)
         {
+            _logger = logger;
             _isActive = false;
             Name = String.Empty;
             Source = String.Empty;
@@ -85,8 +89,9 @@ namespace ACAT.Core.ActuatorManagement
         /// Initializes the switch object from the passed switch object
         /// </summary>
         /// <param name="switchObj">Source switch object</param>
-        public ActuatorSwitchBase(IActuatorSwitch switchObj)
+        public ActuatorSwitchBase(IActuatorSwitch switchObj, ILogger<ActuatorSwitchBase> logger = null)
         {
+            _logger = logger;
             Name = switchObj.Name;
             Description = switchObj.Description;
             Source = switchObj.Source;

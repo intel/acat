@@ -7,6 +7,7 @@
 
 using ACAT.Core.Utility;
 using ACAT.Extensions.BCI.Common.BCIControl;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,14 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
 {
     public class BCIUtils
     {
+        private readonly ILogger<BCIUtils> _logger;
+        private readonly ILogger<BCIUtils> _logger;
+
+        public BCIUtils(ILogger<BCIUtils> logger = null)
+        {
+            _logger = logger ?? LoggerFactory.GetLogger<BCIUtils>();
+        }
+
         /// <summary>
         /// Array of ID to be used as targe for calibration
         /// </summary>
@@ -94,7 +103,7 @@ namespace ACAT.Extensions.BCI.Common.AnimationSharp.Utility
             }
             catch (Exception es)
             {
-                Log.Exception("Error no highlight log saved: " + es);
+                _logger.LogError(es, "Error no highlight log saved: " + es);
             }
             return sb.ToString();
         }

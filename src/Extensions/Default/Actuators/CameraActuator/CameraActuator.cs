@@ -22,6 +22,7 @@ using ACAT.Core.UserManagement;
 using ACAT.Core.Utility;
 using ACAT.Core.Utility.TypeLoader;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Runtime.ExceptionServices;
@@ -40,6 +41,8 @@ namespace ACAT.Extensions.Actuators.CameraActuator
                             "Actuator which uses a webcam to detect facial gestures and trigger ACAT")]
     internal class CameraActuator : ActuatorBase, ISupportsPreferences, IPluginExtension
     {
+        private readonly ILogger<CameraActuator> _logger;
+
         /// <summary>
         /// The settings object for this actuator
         /// </summary>

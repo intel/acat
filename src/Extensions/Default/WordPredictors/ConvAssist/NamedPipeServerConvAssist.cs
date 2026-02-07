@@ -18,6 +18,7 @@ using ACAT.Core.Utility.NamedPipe;
 using ACAT.Core.WordPredictorManagement.Interfaces;
 using ACAT.Extension;
 using ACAT.Extensions.WordPredictors.ConvAssist.MessageTypes;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -64,6 +65,8 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// </summary>
         private readonly object _syncObj = new();
 
+        private readonly ILogger<NamedPipeServerConvAssist> _logger;
+
         /// <summary>
         /// Path to the INI files
         /// </summary>
@@ -94,8 +97,11 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// </summary>
         /// <param name="pipeName">Name of the pipe</param>
         /// <param name="pipeDirection">What direction?</param>
-        public NamedPipeServerConvAssist(string pipeName, PipeDirection pipeDirection, string path)
+        /// <param name="path">Path to files</param>
+        /// <param name="logger">Logger instance</param>
+        public NamedPipeServerConvAssist(string pipeName, PipeDirection pipeDirection, string path, ILogger<NamedPipeServerConvAssist> logger)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.PipeName = pipeName;
             this.PipeDirection = pipeDirection;
             this._pathToFiles = path;
@@ -138,7 +144,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Exception("ConvAssist ClosePipe Error:" + ex.Message);
+                _logger.LogError(ex, "ConvAssist ClosePipe Error:{Message}", ex.Message);
                 return false;
             }
             clientConected = false;
@@ -159,7 +165,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Exception("Exception in createPipeServer: " + ex);
+                _logger.LogError(ex, "Exception in createPipeServer: {Exception}", ex);
             }
 
             return success;
@@ -200,7 +206,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Exception("ConvAssist AppEvent: " + ex.Message);
+                _logger.LogError(ex, "ConvAssist AppEvent: {Message}", ex.Message);
             }
             return true;
         }
@@ -239,7 +245,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                 }
                 catch (Exception ex)
                 {
-                    Log.Exception("Error in param enable log: " + ex);
+                    _logger.LogError(ex, "Error in param enable log: {Exception}", ex);
                 }
             }
 
@@ -305,7 +311,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                     }
                     catch (TimeoutException)
                     {
-                        Log.Exception("ConvAssist StartNamedPiperServer Timeout");
+                        _logger.LogError("ConvAssist StartNamedPiperServer Timeout");
 
                     }
                 }
@@ -325,12 +331,12 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
                     catch (TimeoutException ex)
                     {
                         success = false;
-                        Log.Exception(ex);
+                        _logger.LogError(ex, "TimeoutException in SendParams");
                     }
                     catch (Exception ex)
                     {
                         success = false;
-                        Log.Exception(ex);
+                        _logger.LogError(ex, "Exception in SendParams");
                     }
                 }
 
@@ -434,7 +440,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
             catch (Exception ex)
             {
-                Log.Exception("ConvAssist Write Error: " + ex.Message);
+                _logger.LogError(ex, "ConvAssist Write Error: {Message}", ex.Message);
             }
         }
 
@@ -451,7 +457,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
             byte[] payload = Encoding.UTF8.GetBytes(value);
 
-            Log.Debug("Payload hex: " + BitConverter.ToString(payload));
+            _logger.LogDebug("Payload hex: {Payload}", BitConverter.ToString(payload));
 
             byte[] lengthPrefix = BitConverter.GetBytes(payload.Length);
 
@@ -523,7 +529,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             string message = string.Empty;
             try
             {
-                Log.Debug("ConvAssist WriteSync Lock on");
+                _logger.LogDebug("ConvAssist WriteSync Lock on");
                 lock (_writeSyncObj)
                 {
                     TaskFinished = false;
@@ -563,9 +569,9 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Exception("ConvAssist WriteSync " + ex);
+                _logger.LogError(ex, "ConvAssist WriteSync {Exception}", ex);
             }
-            Log.Debug("ConvAssist WriteSync Lock off");
+            _logger.LogDebug("ConvAssist WriteSync Lock off");
             return message;
         }
 
@@ -575,7 +581,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
         /// <param name="ar"></param>
         private void OnConnection(IAsyncResult ar)
         {
-            Log.Debug("ConvAssist Establish connection");
+            _logger.LogDebug("ConvAssist Establish connection");
             NumClientsConnected++;
             clientConected = true;
             var pipeServerState = (PipeServerStateConvAssist)ar.AsyncState;
@@ -608,7 +614,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
 
         private void PipeServer_EvtClientDisconnected()
         {
-            Log.Debug("ConvAssist PipeServer_EvtClientDisconnected");
+            _logger.LogDebug("ConvAssist PipeServer_EvtClientDisconnected");
             EvtClientDisconnected?.Invoke(null, new EventArgs());
             clientConected = false;
             clientAnswerParameters = false;
@@ -706,7 +712,7 @@ namespace ACAT.Extensions.WordPredictors.ConvAssist
             }
             catch (Exception ex)
             {
-                Log.Exception("ConvAssist Error in writeCallback: " + ex.Message);
+                _logger.LogError(ex, "ConvAssist Error in writeCallback: {Message}", ex.Message);
             }
         }
     }

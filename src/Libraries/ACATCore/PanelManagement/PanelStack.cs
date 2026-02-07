@@ -10,6 +10,7 @@ using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.PanelManagement.PanelConfig;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Windows.Automation;
@@ -29,6 +30,11 @@ namespace ACAT.Core.PanelManagement
         private static bool _appCloseNotifed;
 
         /// <summary>
+        /// Logger instance
+        /// </summary>
+        private readonly ILogger<PanelStack> _logger;
+
+        /// <summary>
         /// The currently active and visible scanner form.
         /// </summary>
         private Form _currentForm;
@@ -45,8 +51,9 @@ namespace ACAT.Core.PanelManagement
         /// <summary>
         /// Initializes an instance of the class
         /// </summary>
-        public PanelStack()
+        public PanelStack(ILogger<PanelStack> logger = null)
         {
+            _logger = logger;
             PreShowPanel = null;
             PreShowPanelDisplayMode = DisplayModeTypes.None;
         }
@@ -101,7 +108,7 @@ namespace ACAT.Core.PanelManagement
 
         public void AppAgent_EvtPanelRequest(object sender, PanelRequestEventArgs args)
         {
-            Log.Debug($"Panel Request: {args}");
+            _logger?.LogDebug("Panel Request: {Args}", args);
 
             if (_currentForm != null)
             {
@@ -109,7 +116,7 @@ namespace ACAT.Core.PanelManagement
 
                 if (!args.UseCurrentScreenAsParent && IsModalBlocked(_currentForm, args.TargetPanel as IPanel))
                 {
-                    Log.Warn("Model dialog open; request denied.");
+                    _logger?.LogWarning("Model dialog open; request denied.");
                     return;
                 }
             }
@@ -128,14 +135,14 @@ namespace ACAT.Core.PanelManagement
 
         private void LogCurrentFormState()
         {
-            Log.Verbose($"_currentForm: {_currentForm.Name}, Modal={_currentForm.Modal}");
+            _logger?.LogTrace("_currentForm: {FormName}, Modal={Modal}", _currentForm.Name, _currentForm.Modal);
             if (_currentForm.Owner != null)
             {
-                Log.Verbose($"Owner: {_currentForm.Owner.Name}, Modal={_currentForm.Owner.Modal}");
+                _logger?.LogTrace("Owner: {OwnerName}, Modal={Modal}", _currentForm.Owner.Name, _currentForm.Owner.Modal);
             }
             else
             {
-                Log.Verbose("_currentForm.Owner is null");
+                _logger?.LogTrace("_currentForm.Owner is null");
             }
         }
 
@@ -165,7 +172,7 @@ namespace ACAT.Core.PanelManagement
 
             if (currentScanner != null && PanelConfigMap.AreEqual(currentScanner.PanelClass, requestedPanelClass) && _currentPanel.Owner == null)
             {
-                Log.Debug("Current panel is already {0}, showing it", requestedPanelClass);
+                _logger?.LogDebug("Current panel is already {PanelClass}, showing it", requestedPanelClass);
                 if (_currentPanel is MenuPanelBase menu)
                     menu.SetTitle(args.Title);
 
@@ -184,7 +191,7 @@ namespace ACAT.Core.PanelManagement
             IScannerPanel currentScanner = _currentPanel as IScannerPanel;
             if (currentScanner == null)
             {
-                Log.Debug("_currentPanel is null. Returning.");
+                _logger?.LogDebug("_currentPanel is null. Returning.");
                 return;
             }
 
@@ -201,20 +208,20 @@ namespace ACAT.Core.PanelManagement
 
         private void SwapPanel(PanelRequestEventArgs args, string requestedPanelClass)
         {
-            Log.Debug("Swapping panel to {0}", requestedPanelClass);
+            _logger?.LogDebug("Swapping panel to {PanelClass}", requestedPanelClass);
 
             Form newPanelForm = PanelManager.Instance.CreatePanel(requestedPanelClass, args.Title ) as Form;
             if (newPanelForm == null)
             {
                 //MessageBox.Show($"Invalid form requested: {requestedPanelClass}");
-                Log.Error($"Invalid form requested: {requestedPanelClass}");
+                _logger?.LogError("Invalid form requested: {PanelClass}", requestedPanelClass);
                 return;
             }
 
             if (args.UseCurrentScreenAsParent && _currentForm != null)
             {
                 newPanelForm.Owner = _currentForm;
-                Log.Debug("Parent override enabled; new panel Owner set to _currentForm");
+                _logger?.LogDebug("Parent override enabled; new panel Owner set to _currentForm");
             }
 
             Show(null, newPanelForm as IPanel);

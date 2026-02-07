@@ -18,6 +18,7 @@ using ACAT.Extensions.BCI.Actuators.EEG.EEGSettings;
 using ACAT.Extensions.BCI.Common.BCIControl;
 using Accord.Math;
 using brainflow;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -33,6 +34,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
     /// </summary>
     public partial class UserControlBCISignalCheck : UserControl
     {
+        private readonly ILogger<UserControlBCISignalCheck> _logger;
+
         private readonly String _htmlText = "<!DOCTYPE html>\r\n<html>\r\n  <head>\r\n  <style>\r\n    a:link{color: rgb(255, 170, 0);}\r\n  " +
                             "</style>\r\n  </head>\r\n  <body style=\"background-color:#232433;\">\r\n    " +
                             "<p style=\"font-family:'Montserrat Medium'; font-size:20px; color:white; text-align: center;\">\r\n" +
@@ -142,8 +145,9 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         /// <param name="stepId"></param>
         ///
-        public UserControlBCISignalCheck()
+        public UserControlBCISignalCheck(ILogger<UserControlBCISignalCheck> logger)
         {
+            _logger = logger;
             InitializeComponent();
 
             buttonNext_userControlBCISignalCheck.Enabled = true;
@@ -434,7 +438,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Exception in ProcessDataSignalCheck");
             }
         }
 
@@ -493,7 +497,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Exception in setElectrodeCapMapColors");
             }
         }
 
@@ -512,7 +516,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Exception in tabControlElectrodeQuality_SelectedIndexChanged");
             }
         }
 
@@ -563,7 +567,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Exception in addChartToScreen");
             }
         }
 
@@ -621,7 +625,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception e)
             {
-                Log.Exception(e.Message);
+                _logger.LogError(e, "Exception in removeColumnsFromChan: {Message}", e.Message);
             }
             return result;
         }
@@ -770,7 +774,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.Message);
+                _logger.LogError(e, "Exception in ProcessDataSignalCheck: {Message}", e.Message);
             }
         }
     }

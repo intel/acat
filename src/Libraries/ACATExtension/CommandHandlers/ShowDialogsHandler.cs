@@ -11,6 +11,7 @@ using ACAT.Core.PanelManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Extension.UI;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Reflection;
 using System.Windows.Forms;
@@ -24,13 +25,17 @@ namespace ACAT.Extension.CommandHandlers
     /// </summary>
     public class ShowDialogsHandler : RunCommandHandler
     {
+        private readonly ILogger<ShowDialogsHandler> _logger;
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="cmd">The command to be executed</param>
-        public ShowDialogsHandler(String cmd)
+        /// <param name="logger">Logger instance</param>
+        public ShowDialogsHandler(String cmd, ILogger<ShowDialogsHandler> logger)
             : base(cmd)
         {
+            _logger = logger;
         }
 
         /// <summary>
@@ -124,7 +129,7 @@ namespace ACAT.Extension.CommandHandlers
             }
             catch (Exception e)
             {
-                Log.Exception("Error creating dialog of type " + name + ". Exception: " + e);
+                _logger.LogError(e, "Error creating dialog of type " + name + ". Exception: " + e);
             }
         }
     }

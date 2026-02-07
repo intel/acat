@@ -13,6 +13,7 @@
 using ACAT.Core.AgentManagement;
 using ACAT.Core.AgentManagement.TextControlAgents;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Text;
 using System.Windows.Automation;
@@ -22,11 +23,13 @@ namespace ACAT.Extensions.AppAgents.TalkApplicationScannerAgent
 {
     internal class TalkApplicationTextControlAgent : EditTextControlAgent
     {
+        private readonly ILogger<TalkApplicationTextControlAgent> _logger;
         private readonly Control _textControl;
 
-        public TalkApplicationTextControlAgent(Control textControl, IntPtr handle, AutomationElement editControlElement, ref bool handled) :
+        public TalkApplicationTextControlAgent(ILogger<TalkApplicationTextControlAgent> logger, Control textControl, IntPtr handle, AutomationElement editControlElement, ref bool handled) :
             base(handle, editControlElement, ref handled)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _textControl = textControl;
         }
 
@@ -64,7 +67,7 @@ namespace ACAT.Extensions.AppAgents.TalkApplicationScannerAgent
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Error in Insert method");
             }
             finally
             {
@@ -74,7 +77,7 @@ namespace ACAT.Extensions.AppAgents.TalkApplicationScannerAgent
 
         public override void Replace(int offset, int count, String word)
         {
-            Log.Debug("HARRIS offset = " + offset + " count " + count + " word " + word);
+            _logger.LogDebug("HARRIS offset = {Offset} count {Count} word {Word}", offset, count, word);
 
             try
             {
@@ -114,7 +117,7 @@ namespace ACAT.Extensions.AppAgents.TalkApplicationScannerAgent
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger.LogError(ex, "Error in Replace method");
             }
             finally
             {

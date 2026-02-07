@@ -720,7 +720,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             {
                 try
                 {
-                    _logger.LogTrace();
+                    _logger.LogTrace("Disposing BCIActuator resources");
 
                     if (disposing)
                     {
@@ -1636,7 +1636,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                                 if (!String.IsNullOrEmpty(filePathCopyTo) && !String.IsNullOrEmpty(filePathCopyFrom) && File.Exists(filePathCopyFrom) && Directory.Exists(sessionDirectory))
                                 {
                                     File.Copy(filePathCopyFrom, filePathCopyTo);
-                                    _logger.LogDebug("FIles copied from: " + filePathCopyFrom + " to " + filePathCopyTo);
+                                    _logger.LogDebug("Files copied from: " + filePathCopyFrom + " to " + filePathCopyTo);
                                 }
                             }
                         }

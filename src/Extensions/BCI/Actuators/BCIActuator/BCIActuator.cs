@@ -253,7 +253,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
             catch (Exception e)
             {
-                _logger.LogError(e, e.Message);
+                _logger.LogError(e, "Failed to initialize BCIActuator");
             }
         }
 
@@ -277,7 +277,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Exception: " + e.Message);
+                _logger.LogError(e, "Failed to compare channels");
             }
             return equalChannels;
         }
@@ -1928,7 +1928,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
                 // Display error on logs
                 if (error.ErrorCode != BCIErrorCodes.Status_Ok)
-                    _logger.LogError("Error: " + error.ErrorCode + " Message" + error.ErrorMessage);
+                    _logger.LogError("Error: " + error.ErrorCode + " Message: " + error.ErrorMessage);
             }
             else
             {

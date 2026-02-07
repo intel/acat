@@ -12,7 +12,6 @@ using ACAT.Core.UserControlManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
 using ACAT.Core.Widgets;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,8 +66,6 @@ namespace ACAT.Core.AnimationManagement
     /// </summary>
     internal class AnimationPlayer : IDisposable
     {
-        private readonly ILogger<AnimationPlayer> _logger;
-
         /// <summary>
         /// Interpreter to interpret animation code
         /// </summary>
@@ -172,8 +169,7 @@ namespace ACAT.Core.AnimationManagement
         /// <param name="variables">variables and their values</param>
         public AnimationPlayer(Widget rootWidget, Interpret interpreter, Variables variables)
         {
-            _logger = LoggingConfiguration.CreateLogger<AnimationPlayer>();
-            _logger.LogTrace("CTOR(" + rootWidget.Name + ")");
+            Log.Verbose("CTOR(" + rootWidget.Name + ")");
             if (rootWidget.UIControl is IPanel)
             {
                 _syncObj = ((IPanel)rootWidget.UIControl).SyncObj;
@@ -331,12 +327,12 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         public void Interrupt()
         {
-            _logger.LogTrace("Interrupt(" + _rootWidget.Name + ")");
+            Log.Verbose("Interrupt(" + _rootWidget.Name + ")");
             if (_timer != null &&
                 (_playerState == PlayerState.Running ||
                 _playerState == PlayerState.Timeout))
             {
-                _logger.LogTrace("Interrupt timer for panel " + _rootWidget.Name);
+                Log.Verbose("Interrupt timer for panel " + _rootWidget.Name);
 
                 _timer.Stop();
                 setPlayerState(PlayerState.Interrupted);
@@ -379,14 +375,14 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         public void Pause()
         {
-            _logger.LogTrace("Pause(" + _rootWidget.Name + ")");
+            Log.Verbose("Pause(" + _rootWidget.Name + ")");
 
             if (_timer != null &&
                 (_playerState == PlayerState.Running ||
                 _playerState == PlayerState.Timeout ||
                 _playerState == PlayerState.Interrupted))
             {
-                _logger.LogTrace("AP1: Stop timer for panel " + _rootWidget.Name);
+                Log.Verbose("AP1: Stop timer for panel " + _rootWidget.Name);
 
                 _timer.Stop();
 
@@ -402,21 +398,21 @@ namespace ACAT.Core.AnimationManagement
         /// <param name="animation">transition to this animation</param>
         public void Resume(Animation animation = null)
         {
-            _logger.LogTrace("Resume(" + _rootWidget.Name + ") +, state: " + _playerState);
+            Log.Verbose("Resume(" + _rootWidget.Name + ") +, state: " + _playerState);
 
             if ((_playerState == PlayerState.Paused ||
                     _playerState == PlayerState.Timeout ||
                     _playerState == PlayerState.Interrupted) &&
                     _timer != null)
             {
-                _logger.LogTrace("Resume(" + _rootWidget.Name + ") Setting player state to running");
+                Log.Verbose("Resume(" + _rootWidget.Name + ") Setting player state to running");
                 setPlayerState(PlayerState.Running);
 
                 if (!CoreGlobals.AppPreferences.EnableManualScan)
                 {
                     if (animation != null)
                     {
-                        _logger.LogTrace("In Resume Calling Transition");
+                        Log.Verbose("In Resume Calling Transition");
                         Transition(animation);
                     }
                 }
@@ -434,25 +430,25 @@ namespace ACAT.Core.AnimationManagement
         {
             if (_timer == null)
             {
-                _logger.LogTrace("_heartbeatTimer is null");
+                Log.Verbose("_heartbeatTimer is null");
                 return;
             }
 
             _timer.Elapsed -= timer_Elapsed;
 
-            _logger.LogTrace("Inside stopthread. before enter " + _rootWidget.UIControl.Name);
+            Log.Verbose("Inside stopthread. before enter " + _rootWidget.UIControl.Name);
 
             tryEnterUntilSuccess(_transitionSync);
 
-            _logger.LogTrace("Inside stopthread. after enter " + _rootWidget.UIControl.Name);
+            Log.Verbose("Inside stopthread. after enter " + _rootWidget.UIControl.Name);
 
             _timer.Stop();
 
-            _logger.LogTrace("Inside stopthread. before exit" + _rootWidget.UIControl.Name);
+            Log.Verbose("Inside stopthread. before exit" + _rootWidget.UIControl.Name);
             Monitor.Exit(_transitionSync);
-            _logger.LogTrace("Inside stopthread. after exit" + _rootWidget.UIControl.Name);
+            Log.Verbose("Inside stopthread. after exit" + _rootWidget.UIControl.Name);
 
-            _logger.LogTrace("Stop" + _rootWidget.UIControl.Name + ", syncobj.status " + _syncObj.Status + ", intimer: " + _inTimer);
+            Log.Verbose("Stop" + _rootWidget.UIControl.Name + ", syncobj.status " + _syncObj.Status + ", intimer: " + _inTimer);
             setPlayerState(PlayerState.Stopped);
 
             _timer.Dispose();
@@ -468,7 +464,7 @@ namespace ACAT.Core.AnimationManagement
         {
             if (_syncObj == null)
             {
-                _logger.LogTrace("_syncObj is null. returning");
+                Log.Verbose("_syncObj is null. returning");
                 return;
             }
 
@@ -482,18 +478,18 @@ namespace ACAT.Core.AnimationManagement
 
                 if (animation != null)
                 {
-                    _logger.LogTrace("Transition to " + animation.Name);
+                    Log.Verbose("Transition to " + animation.Name);
                 }
 
                 setPlayerState(PlayerState.Stopped);
 
-                _logger.LogTrace("Transition : Before Enter " + _rootWidget.UIControl.Name + ", threadid: " + Kernel32Interop.GetCurrentThreadId());
+                Log.Verbose("Transition : Before Enter " + _rootWidget.UIControl.Name + ", threadid: " + Kernel32Interop.GetCurrentThreadId());
                 tryEnterUntilSuccess(_transitionSync);
-                _logger.LogTrace("Transition : After Enter " + _rootWidget.UIControl.Name + ", status:  " + _syncObj.Status);
+                Log.Verbose("Transition : After Enter " + _rootWidget.UIControl.Name + ", status:  " + _syncObj.Status);
 
                 if (_syncObj.IsClosing())
                 {
-                    _logger.LogTrace("FORM IS CLOSING. releasing _transitionSync and returning" + _rootWidget.UIControl.Name);
+                    Log.Verbose("FORM IS CLOSING. releasing _transitionSync and returning" + _rootWidget.UIControl.Name);
                     release(_transitionSync);
                     return;
                 }
@@ -518,11 +514,11 @@ namespace ACAT.Core.AnimationManagement
                 _currentWidgetIndex = getFirstAnimatedWidget();
                 _highlightedAnimationWidget = null;
 
-                _logger.LogTrace("Transition : Before Release " + _rootWidget.UIControl.Name);
+                Log.Verbose("Transition : Before Release " + _rootWidget.UIControl.Name);
                 release(_transitionSync);
-                _logger.LogTrace("Transition : After Release " + _rootWidget.UIControl.Name);
+                Log.Verbose("Transition : After Release " + _rootWidget.UIControl.Name);
 
-                _logger.LogTrace("Start new animation " + animation.Name);
+                Log.Verbose("Start new animation " + animation.Name);
 
                 if (!animation.AutoStart && animation.OnStart)
                 {
@@ -541,17 +537,17 @@ namespace ACAT.Core.AnimationManagement
                     }
                     */
                     _timer.Interval = _currentAnimation.SteppingTime;
-                    _logger.LogTrace(_rootWidget.UIControl.Name + ", syncobj.status " + _syncObj.Status);
+                    Log.Verbose(_rootWidget.UIControl.Name + ", syncobj.status " + _syncObj.Status);
 
                     if (_syncObj.Status == SyncLock.StatusValues.None)
                     {
                         timer_Elapsed(null, null);
-                        _logger.LogTrace("Starting timer " + _rootWidget.UIControl.Name);
+                        Log.Verbose("Starting timer " + _rootWidget.UIControl.Name);
                         _timer.Start();
                     }
                     else
                     {
-                        _logger.LogTrace("******** WILL NOT START TIMER!!!" +
+                        Log.Verbose("******** WILL NOT START TIMER!!!" +
                                     _rootWidget.UIControl.Name +
                                     ", syncobj.status " + _syncObj.Status);
                     }
@@ -561,10 +557,10 @@ namespace ACAT.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
-            _logger.LogTrace("Returning");
+            Log.Verbose("Returning");
         }
 
         /// <summary>
@@ -575,7 +571,7 @@ namespace ACAT.Core.AnimationManagement
         {
             if (_syncObj == null)
             {
-                _logger.LogTrace("_syncObj is null. returning");
+                Log.Verbose("_syncObj is null. returning");
                 return;
             }
 
@@ -606,9 +602,9 @@ namespace ACAT.Core.AnimationManagement
                 _delayedSelect = false;
                 _delayedSelect2 = false;
 
-                _logger.LogTrace("manualScanMode is " + manualScanMode);
+                Log.Verbose("manualScanMode is " + manualScanMode);
 
-                _logger.LogTrace(_playerState + ", " + _manualScanMode);
+                Log.Verbose(_playerState + ", " + _manualScanMode);
                 if (_playerState == PlayerState.Running)
                 {
                     if (checkStopManualAutoScan(manualScanMode))
@@ -629,20 +625,20 @@ namespace ACAT.Core.AnimationManagement
 
                 setPlayerState(PlayerState.Stopped);
 
-                _logger.LogTrace("Transition : Before Enter " + _rootWidget.UIControl.Name + ", threadid: " + Kernel32Interop.GetCurrentThreadId());
+                Log.Verbose("Transition : Before Enter " + _rootWidget.UIControl.Name + ", threadid: " + Kernel32Interop.GetCurrentThreadId());
                 tryEnterUntilSuccess(_transitionSync);
-                _logger.LogTrace("Transition : After Enter " + _rootWidget.UIControl.Name + ", status:  " + _syncObj.Status);
+                Log.Verbose("Transition : After Enter " + _rootWidget.UIControl.Name + ", status:  " + _syncObj.Status);
 
                 if (_syncObj.IsClosing())
                 {
-                    _logger.LogTrace("FORM IS CLOSING. releasing _transitionSync and returning" + _rootWidget.UIControl.Name);
+                    Log.Verbose("FORM IS CLOSING. releasing _transitionSync and returning" + _rootWidget.UIControl.Name);
                     release(_transitionSync);
                     return;
                 }
 
                 if (_highlightedWidget == null)
                 {
-                    _logger.LogTrace("_highlightedWidget is null");
+                    Log.Verbose("_highlightedWidget is null");
 
                     HighlightDefaultHome();
                 }
@@ -675,10 +671,10 @@ namespace ACAT.Core.AnimationManagement
 
                 bool handled = handleSingleMove();
 
-                _logger.LogTrace("Transition : Before Release " + _rootWidget.UIControl.Name);
+                Log.Verbose("Transition : Before Release " + _rootWidget.UIControl.Name);
 
                 release(_transitionSync);
-                _logger.LogTrace("Transition : After Release " + _rootWidget.UIControl.Name);
+                Log.Verbose("Transition : After Release " + _rootWidget.UIControl.Name);
 
                 if (handled)
                 {
@@ -689,17 +685,17 @@ namespace ACAT.Core.AnimationManagement
                 if (_timer != null)
                 {
                     _timer.Interval = CoreGlobals.AppPreferences.ScanTime;
-                    _logger.LogTrace(_rootWidget.UIControl.Name + ", syncobj.status " + _syncObj.Status);
+                    Log.Verbose(_rootWidget.UIControl.Name + ", syncobj.status " + _syncObj.Status);
 
                     if (_syncObj.Status == SyncLock.StatusValues.None)
                     {
                         timer_Elapsed(null, null);
-                        _logger.LogTrace("Starting timer " + _rootWidget.UIControl.Name);
+                        Log.Verbose("Starting timer " + _rootWidget.UIControl.Name);
                         _timer.Start();
                     }
                     else
                     {
-                        _logger.LogTrace("******** WILL NOT START TIMER!!!" + _rootWidget.UIControl.Name + ", syncobj.status " + _syncObj.Status);
+                        Log.Verbose("******** WILL NOT START TIMER!!!" + _rootWidget.UIControl.Name + ", syncobj.status " + _syncObj.Status);
                     }
 
                     setPlayerState(PlayerState.Running);
@@ -707,10 +703,10 @@ namespace ACAT.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.ToString());
+                Log.Exception(ex.ToString());
             }
 
-            _logger.LogTrace("Returning");
+            Log.Verbose("Returning");
         }
 
         /// <summary>
@@ -722,7 +718,7 @@ namespace ACAT.Core.AnimationManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                _logger.LogTrace();
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -749,7 +745,7 @@ namespace ACAT.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.ToString());
+                Log.Exception(ex.ToString());
                 return 0;
             }
         }
@@ -762,7 +758,7 @@ namespace ACAT.Core.AnimationManagement
         {
             if (_syncObj != null && _syncObj.IsClosing())
             {
-                _logger.LogTrace("Scanner closed" + _rootWidget.UIControl.Name);
+                Log.Verbose("Scanner closed" + _rootWidget.UIControl.Name);
                 throw new Exception();
             }
         }
@@ -802,22 +798,22 @@ namespace ACAT.Core.AnimationManagement
         /// <param name="tag">Tag</param>
         private void dumpManualPath(String tag)
         {
-            _logger.LogTrace(tag + " ---------------------");
+            Log.Verbose(tag + " ---------------------");
             if (_manualScanPath != null)
             {
                 if (_manualScanPath.Count == 0)
                 {
-                    _logger.LogTrace("None found");
+                    Log.Verbose("None found");
                 }
                 else
                 {
                     foreach (var h in _manualScanPath)
                     {
-                        _logger.LogTrace(h.Name);
+                        Log.Verbose(h.Name);
                     }
                 }
             }
-            _logger.LogTrace("---------------------");
+            Log.Verbose("---------------------");
         }
 
         /// <summary>
@@ -828,7 +824,7 @@ namespace ACAT.Core.AnimationManagement
         /// <returns>index of the first animation widget</returns>
         private int getFirstAnimatedWidget()
         {
-            _logger.LogTrace();
+            Log.Verbose();
             for (int ii = 0; ii < _currentAnimation.AnimationWidgetList.Count; ii++)
             {
                 if (_currentAnimation.AnimationWidgetList[ii].UIWidget.CanAddForAnimation())
@@ -869,7 +865,7 @@ namespace ACAT.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                _logger.LogError("ex=" + ex.Message);
+                Log.Exception("ex=" + ex.Message);
                 return -1;
             }
         }
@@ -1153,11 +1149,11 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         private void highlightNeighborAbove()
         {
-            _logger.LogTrace();
+            Log.Verbose();
 
             if (_highlightedWidget == null)
             {
-                _logger.LogTrace("_widgethighlighted is null");
+                Log.Verbose("_widgethighlighted is null");
                 return;
             }
 
@@ -1177,7 +1173,7 @@ namespace ACAT.Core.AnimationManagement
 
                 above ??= _highlightedWidget.Above[0];
 
-                _logger.LogTrace("above: " + above.Name);
+                Log.Verbose("above: " + above.Name);
                 above.HighlightOn();
                 if (!_manualScanPath.Contains(above))
                 {
@@ -1188,11 +1184,11 @@ namespace ACAT.Core.AnimationManagement
             }
             else
             {
-                _logger.LogTrace("above is null. Will get wraparound");
+                Log.Verbose("above is null. Will get wraparound");
                 var bottomMost = getWraparoundWidgetBottom();
                 if (bottomMost != null)
                 {
-                    _logger.LogTrace("bottomMost is " + bottomMost.Name);
+                    Log.Verbose("bottomMost is " + bottomMost.Name);
 
                     bottomMost.HighlightOn();
                     if (!_manualScanPath.Contains(bottomMost))
@@ -1210,11 +1206,11 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         private void highlightNeighborBelow()
         {
-            _logger.LogTrace();
+            Log.Verbose();
 
             if (_highlightedWidget == null)
             {
-                _logger.LogTrace("_widgethighlighted is null");
+                Log.Verbose("_widgethighlighted is null");
                 return;
             }
 
@@ -1234,7 +1230,7 @@ namespace ACAT.Core.AnimationManagement
 
                 below ??= _highlightedWidget.Below[0];
 
-                _logger.LogTrace("below: " + below.Name);
+                Log.Verbose("below: " + below.Name);
                 below.HighlightOn();
                 if (!_manualScanPath.Contains(below))
                 {
@@ -1244,11 +1240,11 @@ namespace ACAT.Core.AnimationManagement
             }
             else
             {
-                _logger.LogTrace("Below is null. Will get wraparound");
+                Log.Verbose("Below is null. Will get wraparound");
                 var topMost = getWraparoundWidgetTop();
                 if (topMost != null)
                 {
-                    _logger.LogTrace("topMost is " + topMost.Name);
+                    Log.Verbose("topMost is " + topMost.Name);
 
                     topMost.HighlightOn();
                     if (!_manualScanPath.Contains(topMost))
@@ -1267,7 +1263,7 @@ namespace ACAT.Core.AnimationManagement
         /// </summary>
         private void highlightNeighborLeft()
         {
-            _logger.LogTrace();
+            Log.Verbose();
 
             if (_highlightedWidget == null)
             {
@@ -1290,7 +1286,7 @@ namespace ACAT.Core.AnimationManagement
 
                 left ??= _highlightedWidget.Left[0];
 
-                _logger.LogTrace("Left: " + left.Name);
+                Log.Verbose("Left: " + left.Name);
                 left.HighlightOn();
                 if (!_manualScanPath.Contains(left))
                 {
@@ -1302,11 +1298,11 @@ namespace ACAT.Core.AnimationManagement
             {
                 // reached the left edge of the form. Wrap around
                 // to start scanning at the right edge
-                _logger.LogTrace("Left is null. Will get wraparound");
+                Log.Verbose("Left is null. Will get wraparound");
                 var rightmost = getWraparoundWidgetRight();
                 if (rightmost != null)
                 {
-                    _logger.LogTrace("Leftmost is " + rightmost.Name);
+                    Log.Verbose("Leftmost is " + rightmost.Name);
 
                     rightmost.HighlightOn();
                     if (!_manualScanPath.Contains(rightmost))
@@ -1346,7 +1342,7 @@ namespace ACAT.Core.AnimationManagement
 
                 right ??= _highlightedWidget.Right[0];
 
-                _logger.LogTrace("Right: " + right.Name);
+                Log.Verbose("Right: " + right.Name);
                 right.HighlightOn();
                 if (!_manualScanPath.Contains(right))
                 {
@@ -1401,13 +1397,13 @@ namespace ACAT.Core.AnimationManagement
         {
             try
             {
-                //_logger.LogTrace("Before EXIT for " + _rootWidget.UIControl.Name);
+                //Log.Verbose("Before EXIT for " + _rootWidget.UIControl.Name);
                 Monitor.Exit(syncObj);
-                //_logger.LogTrace("After EXIT for " + _rootWidget.UIControl.Name);
+                //Log.Verbose("After EXIT for " + _rootWidget.UIControl.Name);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ex.Message);
+                Log.Exception(ex);
             }
         }
 
@@ -1418,16 +1414,16 @@ namespace ACAT.Core.AnimationManagement
         /// <param name="playerState">new state</param>
         private void setPlayerState(PlayerState playerState)
         {
-            _logger.LogTrace();
+            Log.Verbose();
 
             PlayerState oldState = _playerState;
             if (oldState != playerState)
             {
-                _logger.LogTrace(_rootWidget.Name + ":Set player state to " + playerState);
+                Log.Verbose(_rootWidget.Name + ":Set player state to " + playerState);
                 _playerState = playerState;
                 if (EvtPlayerStateChanged != null)
                 {
-                    _logger.LogTrace("Calling evtPlayerStateChanged");
+                    Log.Verbose("Calling evtPlayerStateChanged");
                     EvtPlayerStateChanged.BeginInvoke(this, new PlayerStateChangedEventArgs(oldState, _playerState), null, null);
                 }
             }
@@ -1467,13 +1463,13 @@ namespace ACAT.Core.AnimationManagement
         {
             if (_syncObj.IsClosing())
             {
-                _logger.LogTrace("Form is closing. Returning" + _rootWidget.UIControl.Name);
+                Log.Verbose("Form is closing. Returning" + _rootWidget.UIControl.Name);
                 return;
             }
 
             if (_inTimer)
             {
-                _logger.LogTrace("Timer is busy. returning");
+                Log.Verbose("Timer is busy. returning");
                 return;
             }
 
@@ -1481,24 +1477,24 @@ namespace ACAT.Core.AnimationManagement
 
             try
             {
-                _logger.LogTrace("Before tryEnter " + _rootWidget.UIControl.Name + ", threadid: " + Kernel32Interop.GetCurrentThreadId());
+                Log.Verbose("Before tryEnter " + _rootWidget.UIControl.Name + ", threadid: " + Kernel32Interop.GetCurrentThreadId());
 
                 if (!tryEnter(_transitionSync))
                 {
-                    _logger.LogTrace("_transition sync will block returning");
+                    Log.Verbose("_transition sync will block returning");
                     return;
                 }
 
-                _logger.LogTrace("After tryEnter" + _rootWidget.UIControl.Name + ", status: " + _syncObj.Status);
+                Log.Verbose("After tryEnter" + _rootWidget.UIControl.Name + ", status: " + _syncObj.Status);
                 if (_syncObj.IsClosing())
                 {
-                    _logger.LogTrace("Form is closing. Returning" + _rootWidget.UIControl.Name);
+                    Log.Verbose("Form is closing. Returning" + _rootWidget.UIControl.Name);
                     return;
                 }
 
                 check();
 
-                _logger.LogTrace("CurrentAnimation: " + _currentAnimation.Name +
+                Log.Verbose("CurrentAnimation: " + _currentAnimation.Name +
                             ". Count: " + _currentAnimation.AnimationWidgetList.Count +
                             ". currentWidgetIndex: " + _currentWidgetIndex);
 
@@ -1506,14 +1502,14 @@ namespace ACAT.Core.AnimationManagement
 
                 var animationWidget = _currentAnimation.AnimationWidgetList[_currentWidgetIndex];
 
-                _logger.LogTrace(_rootWidget.UIControl.Name + ", status: " + _syncObj.Status);
+                Log.Verbose(_rootWidget.UIControl.Name + ", status: " + _syncObj.Status);
 
                 // if any switch is currently engaged, keep the current widget
                 // highlighted until the user releases the switch
                 //if (ActuatorManager.Instance.IsSwitchActive())
                 if (IsSwitchActive)
                 {
-                    _logger.LogTrace("Some switch is active. Will try again");
+                    Log.Verbose("Some switch is active. Will try again");
                     return;
                 }
 
@@ -1526,7 +1522,7 @@ namespace ACAT.Core.AnimationManagement
 
                 check();
 
-                _logger.LogTrace(_rootWidget.UIControl.Name + ", status: " + _syncObj.Status);
+                Log.Verbose(_rootWidget.UIControl.Name + ", status: " + _syncObj.Status);
 
                 if (!_currentAnimation.IsFirst && animatedWidgetCount() == 0)
                 {
@@ -1560,7 +1556,7 @@ namespace ACAT.Core.AnimationManagement
                     }
                     else
                     {
-                        _logger.LogTrace("Timer is null. returning");
+                        Log.Verbose("Timer is null. returning");
                         return;
                     }
 
@@ -1582,7 +1578,7 @@ namespace ACAT.Core.AnimationManagement
 
                 if (_highlightedAnimationWidget != null && _highlightedAnimationWidget != animationWidget)
                 {
-                    _logger.LogTrace(string.Format("Animation: {0}. Turning off . name = {1}. Count: {2}",
+                    Log.Verbose(string.Format("Animation: {0}. Turning off . name = {1}. Count: {2}",
                                 _currentAnimation.Name,
                                 _highlightedAnimationWidget.UIWidget.Name,
                                 _currentAnimation.AnimationWidgetList.Count));
@@ -1604,7 +1600,7 @@ namespace ACAT.Core.AnimationManagement
                 // now turn the highlight on on the next widget in the  sequence
                 animationWidget = _currentAnimation.AnimationWidgetList[_currentWidgetIndex];
 
-                _logger.LogTrace("Animation: " + _currentAnimation.Name +
+                Log.Verbose("Animation: " + _currentAnimation.Name +
                             ". Turning on " + _currentWidgetIndex +
                             ". name = " + animationWidget.UIWidget.Name);
 
@@ -1633,7 +1629,7 @@ namespace ACAT.Core.AnimationManagement
                 }
                 else
                 {
-                    _logger.LogTrace("timer is null. returning");
+                    Log.Verbose("timer is null. returning");
                     return;
                 }
 
@@ -1668,18 +1664,18 @@ namespace ACAT.Core.AnimationManagement
             }
             catch (Exception ex)
             {
-                _logger.LogError("AnimationPlayerexception " + ex);
+                Log.Exception("AnimationPlayerexception " + ex);
             }
             finally
             {
-                _logger.LogTrace("Before release " + _rootWidget.UIControl.Name);
+                Log.Verbose("Before release " + _rootWidget.UIControl.Name);
                 release(_transitionSync);
-                _logger.LogTrace("After release " + _rootWidget.UIControl.Name);
+                Log.Verbose("After release " + _rootWidget.UIControl.Name);
 
-                _logger.LogTrace("Setting intimer to false " + _rootWidget.UIControl.Name);
+                Log.Verbose("Setting intimer to false " + _rootWidget.UIControl.Name);
                 _inTimer = false;
 
-                _logger.LogTrace("Exiting timer " + _rootWidget.UIControl.Name);
+                Log.Verbose("Exiting timer " + _rootWidget.UIControl.Name);
             }
         }
 
@@ -1692,17 +1688,17 @@ namespace ACAT.Core.AnimationManagement
         {
             bool actuate = false;
 
-            _logger.LogTrace("------------->>> ENTER ");
+            Log.Verbose("------------->>> ENTER ");
 
             if (_syncObj.IsClosing())
             {
-                _logger.LogTrace("Form is closing. Returning" + _rootWidget.UIControl.Name);
+                Log.Verbose("Form is closing. Returning" + _rootWidget.UIControl.Name);
                 return;
             }
 
             if (_inTimer)
             {
-                _logger.LogTrace("Timer is busy. returning");
+                Log.Verbose("Timer is busy. returning");
                 return;
             }
 
@@ -1715,31 +1711,31 @@ namespace ACAT.Core.AnimationManagement
 
             try
             {
-                _logger.LogTrace("Before tryEnter " + _rootWidget.UIControl.Name + ", threadid: " + Kernel32Interop.GetCurrentThreadId());
+                Log.Verbose("Before tryEnter " + _rootWidget.UIControl.Name + ", threadid: " + Kernel32Interop.GetCurrentThreadId());
 
                 if (!tryEnter(_transitionSync))
                 {
-                    _logger.LogTrace("_transition sync will block returning");
+                    Log.Verbose("_transition sync will block returning");
                     return;
                 }
 
-                _logger.LogTrace("After tryEnter" + _rootWidget.UIControl.Name + ", status: " + _syncObj.Status);
+                Log.Verbose("After tryEnter" + _rootWidget.UIControl.Name + ", status: " + _syncObj.Status);
                 if (_syncObj.IsClosing())
                 {
-                    _logger.LogTrace("Form is closing. Returning" + _rootWidget.UIControl.Name);
+                    Log.Verbose("Form is closing. Returning" + _rootWidget.UIControl.Name);
                     return;
                 }
 
                 check();
 
-                _logger.LogTrace(_rootWidget.UIControl.Name + ", status: " + _syncObj.Status);
+                Log.Verbose(_rootWidget.UIControl.Name + ", status: " + _syncObj.Status);
 
                 // if any switch is currently engaged, keep the current widget
                 // highlighted until the user releases the switch
                 //if (ActuatorManager.Instance.IsSwitchActive())
                 if (IsSwitchActive)
                 {
-                    _logger.LogTrace("Some switch is active. Will try again");
+                    Log.Verbose("Some switch is active. Will try again");
                     return;
                 }
 
@@ -1769,7 +1765,7 @@ namespace ACAT.Core.AnimationManagement
                     }
                 }
 
-                _logger.LogTrace("_manualScanMode is " + _manualScanMode);
+                Log.Verbose("_manualScanMode is " + _manualScanMode);
 
                 var prevWidgetHighlighted = _highlightedWidget;
 
@@ -1794,29 +1790,29 @@ namespace ACAT.Core.AnimationManagement
 
                 if (prevWidgetHighlighted == _highlightedWidget)
                 {
-                    _logger.LogTrace("Same widget. Stopping timer");
+                    Log.Verbose("Same widget. Stopping timer");
                     _timer?.Stop();
                 }
                 check();
             }
             catch (Exception ex)
             {
-                _logger.LogError("AnimationPlayerexception " + ex);
+                Log.Exception("AnimationPlayerexception " + ex);
             }
             finally
             {
-                _logger.LogTrace("Before release " + _rootWidget.UIControl.Name);
+                Log.Verbose("Before release " + _rootWidget.UIControl.Name);
                 release(_transitionSync);
-                _logger.LogTrace("After release " + _rootWidget.UIControl.Name);
+                Log.Verbose("After release " + _rootWidget.UIControl.Name);
 
-                _logger.LogTrace("Setting intimer to false " + _rootWidget.UIControl.Name);
+                Log.Verbose("Setting intimer to false " + _rootWidget.UIControl.Name);
                 _inTimer = false;
 
                 if (actuate)
                 {
                     ManualScanActuateWidget(_highlightedWidget);
                 }
-                _logger.LogTrace("-----------  <<<< Exiting timer " + _rootWidget.UIControl.Name);
+                Log.Verbose("-----------  <<<< Exiting timer " + _rootWidget.UIControl.Name);
             }
         }
 
@@ -1836,7 +1832,7 @@ namespace ACAT.Core.AnimationManagement
         {
             while (!tryEnter(syncObj))
             {
-                _logger.LogTrace("CALLING DOEVENTS");
+                Log.Verbose("CALLING DOEVENTS");
                 if (Application.MessageLoop)
                 {
                     Application.DoEvents();

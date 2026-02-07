@@ -14,7 +14,6 @@ using ACAT.Core.PanelManagement;
 using ACAT.Core.PanelManagement.CommandDispatcher;
 using ACAT.Core.PanelManagement.Common;
 using ACAT.Core.Utility;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -141,11 +140,6 @@ namespace ACAT.Core.AgentManagement
         /// Singleton instance of the Agent manager
         /// </summary>
         private static readonly AgentManager _instance = new();
-
-        /// <summary>
-        /// Logger instance
-        /// </summary>
-        private static ILogger<AgentManager> _logger;
 
         /// <summary>
         /// Name of the executing assembly
@@ -296,15 +290,6 @@ namespace ACAT.Core.AgentManagement
         }
 
         /// <summary>
-        /// Sets the logger for the AgentManager
-        /// </summary>
-        /// <param name="logger">Logger instance</param>
-        public static void SetLogger(ILogger<AgentManager> logger)
-        {
-            _logger = logger;
-        }
-
-        /// <summary>
         /// Gets the currently active agent
         /// </summary>
         public IApplicationAgent ActiveAgent
@@ -431,12 +416,12 @@ namespace ACAT.Core.AgentManagement
                 setAgent(agent);
             }
 
-            _logger?.LogDebug("Calling activateAgent: " + agent.Name);
+            Log.Debug("Calling activateAgent: " + agent.Name);
             await activateAgent(agent);
 
             CompletionCode exitCode = agent.ExitCode;
 
-            _logger?.LogDebug("Returned from activateAgent: " + agent.Name);
+            Log.Debug("Returned from activateAgent: " + agent.Name);
             setAgent(null);
 
             if (agent.ExitCommand != null)
@@ -469,7 +454,7 @@ namespace ACAT.Core.AgentManagement
         {
             if (_currentAgent is IFunctionalAgent)
             {
-                _logger?.LogDebug("Cannot activate functional agent " + agent.Name + ", functional agent " + _currentAgent.Name + " is currently active");
+                Log.Debug("Cannot activate functional agent " + agent.Name + ", functional agent " + _currentAgent.Name + " is currently active");
                 return;
             }
 
@@ -499,7 +484,7 @@ namespace ACAT.Core.AgentManagement
         /// <param name="agent">agent to add</param>
         public void AddAgent(IntPtr handle, IApplicationAgent agent)
         {
-            _logger?.LogDebug("hwnd: " + handle + ", " + agent.Name);
+            Log.Debug("hwnd: " + handle + ", " + agent.Name);
 
             agent.EvtPanelRequest += agent_EvtPanelRequest;
             _agentsCache.AddAgent(handle, agent);
@@ -538,7 +523,7 @@ namespace ACAT.Core.AgentManagement
                 if (_currentAgent is IFunctionalAgent &&
                         ((FunctionalAgentBase)_currentAgent).IsClosing)
                 {
-                    _logger?.LogDebug("Functional agent is closing. returning");
+                    Log.Debug("Functional agent is closing. returning");
                     return;
                 }
 
@@ -687,9 +672,9 @@ namespace ACAT.Core.AgentManagement
         [EnvironmentPermission(SecurityAction.LinkDemand, Unrestricted = true)]
         public void OnPanelClosed(String panelClass)
         {
-            _logger?.LogTrace("OnPanelClosed");
-            _logger?.LogDebug("panelClass : " + panelClass);
-            _logger?.LogDebug(" currentAgent: " + _currentAgent);
+            Log.Verbose();
+            Log.Debug("panelClass : " + panelClass);
+            Log.Debug(" currentAgent: " + _currentAgent);
             if (_currentAgent != null)
             {
                 var currentWindow = WindowActivityMonitor.CurrentWindowInfo();
@@ -783,7 +768,7 @@ namespace ACAT.Core.AgentManagement
         {
             if (_currentAgent != null)
             {
-                _logger?.LogDebug("Calling runcommand agent : " + _currentAgent.Name + ", command: " + command);
+                Log.Debug("Calling runcommand agent : " + _currentAgent.Name + ", command: " + command);
 
                 var cmd = (command[0] == '@') ? command.Substring(1) : command;
                 _currentAgent.OnRunCommand(cmd, null, ref handled);
@@ -801,7 +786,7 @@ namespace ACAT.Core.AgentManagement
         {
             if (_currentAgent != null)
             {
-                _logger?.LogDebug("Calling runcommand agent : " + _currentAgent.Name + ", command: " + command);
+                Log.Debug("Calling runcommand agent : " + _currentAgent.Name + ", command: " + command);
                 String cmd = (command[0] == '@') ? command.Substring(1) : command;
                 _currentAgent.OnRunCommand(cmd, arg, ref handled);
             }
@@ -958,30 +943,30 @@ namespace ACAT.Core.AgentManagement
             var funcAgent = (FunctionalAgentBase)agent;
             Task task = Task.Factory.StartNew(() =>
             {
-                _logger?.LogDebug("Calling funcAgent.activate: " + agent.Name);
+                Log.Debug("Calling funcAgent.activate: " + agent.Name);
                 //funcAgent.IsClosing = false;
                 funcAgent.ExitCommand = null;
 
                 form.Invoke(new MethodInvoker(delegate
                 {
                     Context.AppPanelManager.NewStack();
-                    _logger?.LogDebug("Before activate " + funcAgent.Name);
+                    Log.Debug("Before activate " + funcAgent.Name);
                     funcAgent.Activate();
-                    _logger?.LogDebug("Returned from activate " + funcAgent.Name + ", calling closestack");
+                    Log.Debug("Returned from activate " + funcAgent.Name + ", calling closestack");
                     Context.AppPanelManager.CloseStack();
                 }));
 
                 // This event is triggered by the functional agent when it exits
-                _logger?.LogDebug("Waiting on CloseEvent...: " + agent.Name);
+                Log.Debug("Waiting on CloseEvent...: " + agent.Name);
                 funcAgent.CloseEvent.WaitOne();
-                _logger?.LogDebug("Returned from CloseEvent: " + agent.Name);
+                Log.Debug("Returned from CloseEvent: " + agent.Name);
 
                 funcAgent.PostClose();
             });
 
-            _logger?.LogDebug("Before await task");
+            Log.Debug("Before await task");
             await task;
-            _logger?.LogDebug("After await task");
+            Log.Debug("After await task");
 
             Windows.CloseForm(form);
         }
@@ -1000,27 +985,27 @@ namespace ACAT.Core.AgentManagement
         {
             if (inActivateAppAgent)
             {
-                _logger?.LogWarning("Already inside. returning");
+                Log.Warn("Already inside. returning");
                 return;
             }
 
-            _logger?.LogTrace("Before syncsetagent");
+            Log.Verbose("Before syncsetagent");
             lock (_syncActivateAgent)
             {
                 inActivateAppAgent = true;
-                _logger?.LogTrace("After syncsetagent");
+                Log.Verbose("After syncsetagent");
                 try
                 {
                     bool handled = false;
 
-                    //_logger?.LogDebug(monitorInfo.ToString());
+                    //Log.Debug(monitorInfo.ToString());
 
                     // did a request for displaying the contextual
                     // menu come in?  If so handle it.
 
                     bool getContextMenu = _getContextMenu;
 
-                    _logger?.LogTrace("getContextMenu: " + getContextMenu);
+                    Log.Verbose("getContextMenu: " + getContextMenu);
 
                     _getContextMenu = false;
 
@@ -1028,12 +1013,12 @@ namespace ACAT.Core.AgentManagement
 
                     // first check if there is an ad-hoc agent, if so,
                     // activate it
-                    _logger?.LogTrace("Looking for adhoc agent for " + monitorInfo.FgHwnd);
+                    Log.Verbose("Looking for adhoc agent for " + monitorInfo.FgHwnd);
                     IApplicationAgent agent = _agentsCache.GetAgent(monitorInfo.FgHwnd);
                     if (agent == null)
                     {
                         // check if a dialog or menu is active
-                        _logger?.LogTrace("Adhoc agent not present for " + monitorInfo.FgHwnd);
+                        Log.Verbose("Adhoc agent not present for " + monitorInfo.FgHwnd);
 
                         IntPtr parent = User32Interop.GetParent(monitorInfo.FgHwnd);
                         if (parent != IntPtr.Zero)
@@ -1042,13 +1027,13 @@ namespace ACAT.Core.AgentManagement
                                 (String.Compare(processName, _currentProcessName, true) != 0) &&
                                 isDialog(monitorInfo))
                             {
-                                _logger?.LogTrace("Fg window is a dialog.  Setting agent to dialog agent");
+                                Log.Verbose("Fg window is a dialog.  Setting agent to dialog agent");
 
                                 agent = _dialogAgent;
                             }
                             else if (EnableContextualMenusForMenus && isMenu(monitorInfo))
                             {
-                                _logger?.LogTrace("Fg window is a menu.  Setting agent to menu agent");
+                                Log.Verbose("Fg window is a menu.  Setting agent to menu agent");
                                 agent = _menuControlAgent;
                             }
                         }
@@ -1057,23 +1042,23 @@ namespace ACAT.Core.AgentManagement
                         {
                             if (Windows.IsMinimized(monitorInfo.FgHwnd))
                             {
-                                _logger?.LogTrace("Window is minimized. Use generic agent");
+                                Log.Verbose("Window is minimized. Use generic agent");
                                 agent = _genericAppAgent;
                             }
                             else
                             {
                                 // check if there is a dedicated agent for this process
-                                _logger?.LogTrace("Getting agent for " + processName);
+                                Log.Verbose("Getting agent for " + processName);
                                 agent = _agentsCache.GetAgent(monitorInfo.FgProcess);
                             }
                         }
                     }
                     else
                     {
-                        _logger?.LogTrace("Adhoc agent IS present for " + monitorInfo.FgHwnd);
+                        Log.Verbose("Adhoc agent IS present for " + monitorInfo.FgHwnd);
                     }
 
-                    _logger?.LogTrace("Current agent: " + ((_currentAgent != null) ?
+                    Log.Verbose("Current agent: " + ((_currentAgent != null) ?
                                                     _currentAgent.Name : "null") +
                                                     ", agent:  " + ((agent != null) ? agent.Name : "null"));
 
@@ -1083,7 +1068,7 @@ namespace ACAT.Core.AgentManagement
                     if (_currentAgent != null && _currentAgent != agent)
                     {
                         bool allowSwitch = _currentAgent.QueryAgentSwitch(agent);
-                        _logger?.LogTrace("CurrentAgent is " + _currentAgent.Name + ", queryAgentSwitch: " + allowSwitch);
+                        Log.Verbose("CurrentAgent is " + _currentAgent.Name + ", queryAgentSwitch: " + allowSwitch);
                         if (!allowSwitch)
                         {
                             _currentAgent.OnFocusChanged(monitorInfo, ref handled);
@@ -1100,7 +1085,7 @@ namespace ACAT.Core.AgentManagement
                     {
                         agent ??= _genericAppAgent;
 
-                        _logger?.LogTrace("agent : " + agent.Name);
+                        Log.Verbose("agent : " + agent.Name);
                         agent.OnContextMenuRequest(monitorInfo);
                         return;
                     }
@@ -1110,9 +1095,9 @@ namespace ACAT.Core.AgentManagement
                     // is appropriated for the context.
                     if (agent != null)
                     {
-                        _logger?.LogTrace("Trying agent " + agent.Name);
+                        Log.Verbose("Trying agent " + agent.Name);
                         agent.OnFocusChanged(monitorInfo, ref handled);
-                        _logger?.LogTrace("Returned from agent.OnFOcus");
+                        Log.Verbose("Returned from agent.OnFOcus");
                     }
 
                     // If we have reached here, it means there was no
@@ -1120,8 +1105,8 @@ namespace ACAT.Core.AgentManagement
                     // if it will handle it
                     if (!handled)
                     {
-                        _logger?.LogTrace("Did not find agent for " + processName + ". trying generic app agent");
-                        _logger?.LogTrace("_genericAppAgent is " + ((_genericAppAgent != null) ? "not null" : "null"));
+                        Log.Verbose("Did not find agent for " + processName + ". trying generic app agent");
+                        Log.Verbose("_genericAppAgent is " + ((_genericAppAgent != null) ? "not null" : "null"));
                         agent = _genericAppAgent;
                         try
                         {
@@ -1129,16 +1114,16 @@ namespace ACAT.Core.AgentManagement
                         }
                         catch (Exception ex)
                         {
-                            _logger?.LogError(ex, ex.Message);
+                            Log.Exception(ex);
                         }
                     }
 
                     // even the generic agent refused.  Use the null agent
                     // as the last resort
-                    _logger?.LogTrace("handled " + handled);
+                    Log.Verbose("handled " + handled);
                     if (!handled)
                     {
-                        _logger?.LogTrace("generic app agent refused. Using null agent");
+                        Log.Verbose("generic app agent refused. Using null agent");
                         agent = _nullAgent;
                         agent.OnFocusChanged(monitorInfo, ref handled);
                     }
@@ -1147,7 +1132,7 @@ namespace ACAT.Core.AgentManagement
                 }
                 catch (Exception ex)
                 {
-                    _logger?.LogError(ex.ToString());
+                    Log.Exception(ex.ToString());
                 }
                 finally
                 {
@@ -1155,7 +1140,7 @@ namespace ACAT.Core.AgentManagement
                 }
             }
 
-            _logger?.LogTrace("Return");
+            Log.Verbose("Return");
         }
 
         /// <summary>
@@ -1187,7 +1172,7 @@ namespace ACAT.Core.AgentManagement
         /// <param name="arg">event arg</param>
         private void agent_EvtPanelRequest(object sender, PanelRequestEventArgs arg)
         {
-            _logger?.LogDebug("Panel request for " + arg.PanelClass);
+            Log.Debug("Panel request for " + arg.PanelClass);
             triggerPanelRequest(sender, arg);
         }
 
@@ -1228,7 +1213,7 @@ namespace ACAT.Core.AgentManagement
 
             agent ??= _genericAppAgent;
 
-            _logger?.LogDebug("agent : " + agent.Name);
+            Log.Debug("agent : " + agent.Name);
 
             if (_getContextMenu)
             {
@@ -1256,7 +1241,7 @@ namespace ACAT.Core.AgentManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                _logger?.LogTrace("Dispose");
+                Log.Verbose();
 
                 if (disposing)
                 {
@@ -1319,24 +1304,24 @@ namespace ACAT.Core.AgentManagement
             bool retVal = false;
 
             AutomationElement window = AutomationElement.FromHandle(monitorInfo.FgHwnd);
-            _logger?.LogDebug("controltype: " + window.Current.ControlType.ProgrammaticName);
+            Log.Debug("controltype: " + window.Current.ControlType.ProgrammaticName);
 
             if (Equals(window.Current.ControlType, ControlType.Menu))
             {
-                _logger?.LogDebug("**** controltype: IT IS MENU");
+                Log.Debug("**** controltype: IT IS MENU");
                 retVal = true;
             }
             else if (window.TryGetCurrentPattern(WindowPattern.Pattern, out object objPattern))
             {
                 var windowPattern = objPattern as WindowPattern;
                 retVal = (!windowPattern.Current.CanMinimize && !windowPattern.Current.CanMaximize) || windowPattern.Current.IsModal;
-                _logger?.LogDebug("CanMinimize: " + windowPattern.Current.CanMinimize + ", canMaximize: " + windowPattern.Current.CanMaximize + ", isModal: " + windowPattern.Current.IsModal);
-                _logger?.LogDebug("retVal: " + retVal);
+                Log.Debug("CanMinimize: " + windowPattern.Current.CanMinimize + ", canMaximize: " + windowPattern.Current.CanMaximize + ", isModal: " + windowPattern.Current.IsModal);
+                Log.Debug("retVal: " + retVal);
 
                 retVal = retVal && !Windows.IsMinimized(monitorInfo.FgHwnd);
             }
 
-            _logger?.LogDebug("returning " + retVal);
+            Log.Debug("returning " + retVal);
 
             return retVal;
         }
@@ -1375,7 +1360,7 @@ namespace ACAT.Core.AgentManagement
                 _currentEditingMode = EditingMode.Edit;
             }
 
-            _logger?.LogDebug("_currentEditingMode: " + _currentEditingMode);
+            Log.Debug("_currentEditingMode: " + _currentEditingMode);
 
             if (_currentAgent != null && _currentAgent.TextControlAgent != null)
             {
@@ -1409,19 +1394,19 @@ namespace ACAT.Core.AgentManagement
         private bool notifyTextChanged(ITextControlAgent textInterface)
         {
             uint threadId = GetCurrentThreadId();
-            _logger?.LogDebug("Entered notifyTextChanged: " + threadId);
+            Log.Debug("Entered notifyTextChanged: " + threadId);
 
             // Use the semaphore to see if this is blocked
             if (TextChangedNotifications.OnHold())
             {
-                _logger?.LogDebug("NotificationsOnHold.  Exit ThreadID: " + threadId);
+                Log.Debug("NotificationsOnHold.  Exit ThreadID: " + threadId);
                 return false;
             }
 
             // try to acquire a lock
             if (!tryLock(_syncTextChangeNotifyObj))
             {
-                _logger?.LogDebug("_lock is true. returning on thread : " + threadId);
+                Log.Debug("_lock is true. returning on thread : " + threadId);
                 return false;
             }
 
@@ -1433,13 +1418,13 @@ namespace ACAT.Core.AgentManagement
                 // the same thread trying to re-enter the function
                 if (_notifyTextChangedLock)
                 {
-                    _logger?.LogDebug("REENTRANCY DETECTED. RETURNING");
+                    Log.Debug("REENTRANCY DETECTED. RETURNING");
                     return true;
                 }
 
                 if (textInterface != _textControlAgent)
                 {
-                    _logger?.LogDebug("event source is not the current agent. returning...");
+                    Log.Debug("event source is not the current agent. returning...");
                     return false;
                 }
 
@@ -1449,34 +1434,34 @@ namespace ACAT.Core.AgentManagement
                 {
                     if (EvtTextChanged != null)
                     {
-                        _logger?.LogDebug("Calling EvtTextChanged");
+                        Log.Debug("Calling EvtTextChanged");
                         EvtTextChanged(this, EventArgs.Empty);
-                        _logger?.LogDebug("Returned from EvtTextChanged");
+                        Log.Debug("Returned from EvtTextChanged");
                     }
                     else
                     {
-                        _logger?.LogDebug("EvtTextChanged is null");
+                        Log.Debug("EvtTextChanged is null");
                     }
                 }
                 catch (Exception ex)
                 {
-                    _logger?.LogError(ex.ToString());
+                    Log.Exception(ex.ToString());
                 }
 
                 _notifyTextChangedLock = false;
 
-                _logger?.LogDebug("Exit End of function ThreadID: " + threadId);
+                Log.Debug("Exit End of function ThreadID: " + threadId);
             }
             catch (Exception ex)
             {
-                _logger?.LogError(ex.ToString());
+                Log.Exception(ex.ToString());
             }
             finally
             {
                 release(_syncTextChangeNotifyObj);
             }
 
-            _logger?.LogDebug("Returning");
+            Log.Debug("Returning");
             return true;
         }
 
@@ -1489,13 +1474,13 @@ namespace ACAT.Core.AgentManagement
         {
             if (monitorInfo.FgHwnd == IntPtr.Zero)
             {
-                _logger?.LogDebug("hWnd is null");
+                Log.Debug("hWnd is null");
                 return;
             }
 
-            //_logger?.LogDebug(monitorInfo.ToString());
+            //Log.Debug(monitorInfo.ToString());
 
-            //_logger?.LogDebug(" hwnd: " + hWnd + " Title:  [" + title + "] process: " + process.ProcessName +
+            //Log.Debug(" hwnd: " + hWnd + " Title:  [" + title + "] process: " + process.ProcessName +
             //      ". focusedElement: [" +
             //  ((focusedElement != null) ? focusedElement.Current.ClassName : "null") + "]");
 
@@ -1505,7 +1490,7 @@ namespace ACAT.Core.AgentManagement
             {
                 var functionalAgent = _currentAgent as IFunctionalAgent;
 
-                _logger?.LogDebug(_currentAgent.Name + ", IsActive: " + functionalAgent.IsActive + ", IsClosing: " + functionalAgent.IsClosing);
+                Log.Debug(_currentAgent.Name + ", IsActive: " + functionalAgent.IsActive + ", IsClosing: " + functionalAgent.IsClosing);
 
                 if (functionalAgent.IsActive && !functionalAgent.IsClosing)
                 {
@@ -1531,7 +1516,7 @@ namespace ACAT.Core.AgentManagement
 
             if (_currentAgent != null)
             {
-                _logger?.LogDebug("CurrentAgent is " + _currentAgent.GetType());
+                Log.Debug("CurrentAgent is " + _currentAgent.GetType());
             }
 
             if (EvtFocusChanged != null)
@@ -1540,7 +1525,7 @@ namespace ACAT.Core.AgentManagement
             }
             else
             {
-                _logger?.LogDebug("EVTFocusChanged is null!");
+                Log.Debug("EVTFocusChanged is null!");
             }
         }
 
@@ -1556,7 +1541,7 @@ namespace ACAT.Core.AgentManagement
             }
             catch (Exception ex)
             {
-                _logger?.LogError(ex, ex.Message);
+                Log.Exception(ex);
             }
         }
 
@@ -1566,7 +1551,7 @@ namespace ACAT.Core.AgentManagement
         /// <param name="agent">sets the agent</param>
         private void setAgent(IApplicationAgent agent)
         {
-            _logger?.LogDebug("Setting agent to " + ((agent != null) ? agent.Name : "null"));
+            Log.Debug("Setting agent to " + ((agent != null) ? agent.Name : "null"));
             _currentAgent = agent;
         }
 
@@ -1579,31 +1564,31 @@ namespace ACAT.Core.AgentManagement
         private void TextChangedNotifications_EvtUnlocked()
         {
             uint threadId = GetCurrentThreadId();
-            _logger?.LogDebug("Enter ID. calling notifytextchanged on threadID: " + threadId);
+            Log.Debug("Enter ID. calling notifytextchanged on threadID: " + threadId);
 
             int ii = 0;
             while (true)
             {
-                _logger?.LogDebug("UNLOCKED!  Calling NotifyTextChanged");
+                Log.Debug("UNLOCKED!  Calling NotifyTextChanged");
                 if (notifyTextChanged(_textControlAgent))
                 {
-                    _logger?.LogDebug("Returned from NotifyTextChanged()");
+                    Log.Debug("Returned from NotifyTextChanged()");
                     break;
                 }
 
-                _logger?.LogDebug("wait for _lock to release " + ii);
+                Log.Debug("wait for _lock to release " + ii);
 
                 Application.DoEvents();
                 if (ii > 500)
                 {
-                    _logger?.LogDebug("TIMED OUT WAITING FOR LOCK");
+                    Log.Debug("TIMED OUT WAITING FOR LOCK");
                     break;
                 }
 
                 ii++;
             }
 
-            _logger?.LogDebug("Leave ThreadID: " + threadId);
+            Log.Debug("Leave ThreadID: " + threadId);
         }
 
         /// <summary>
@@ -1615,10 +1600,10 @@ namespace ACAT.Core.AgentManagement
         /// <param name="arg">panel request info</param>
         private void triggerPanelRequest(object sender, PanelRequestEventArgs arg)
         {
-            _logger?.LogDebug("PanelClass: " + arg.PanelClass);
+            Log.Debug("PanelClass: " + arg.PanelClass);
             if (_panelChangeNotifications.OnHold())
             {
-                _logger?.LogDebug("Panel change request paused.  will not change panel");
+                Log.Debug("Panel change request paused.  will not change panel");
                 return;
             }
 
@@ -1628,7 +1613,7 @@ namespace ACAT.Core.AgentManagement
             }
             else
             {
-                _logger?.LogDebug("EvtPanelrequest is null");
+                Log.Debug("EvtPanelrequest is null");
             }
         }
 

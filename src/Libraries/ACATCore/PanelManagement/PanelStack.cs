@@ -365,12 +365,12 @@ namespace ACAT.Core.PanelManagement
         /// </summary>
         public void CloseCurrentPanel()
         {
-            _logger?.LogTrace(nameof(CloseCurrentPanel));
+            Log.Verbose();
             bool isCurrentForm = false;
 
             if (_currentPanel != null)
             {
-                _logger?.LogDebug("Will close panel. _currentPanel.name is " + _currentPanel.Name);
+                Log.Debug("Will close panel. _currentPanel.name is " + _currentPanel.Name);
                 Form f = _currentPanel;
                 while (true)
                 {
@@ -381,18 +381,18 @@ namespace ACAT.Core.PanelManagement
 
                     if (f is IScannerPanel)
                     {
-                        _logger?.LogDebug("panelClass: " + ((IScannerPanel)f).PanelClass);
+                        Log.Debug("panelClass: " + ((IScannerPanel)f).PanelClass);
                     }
 
                     if (f.Owner != null)
                     {
-                        _logger?.LogDebug("This one has a owner");
+                        Log.Debug("This one has a owner");
                         Control form = f.Owner;
                         f = (Form)form;
                     }
                     else
                     {
-                        _logger?.LogDebug("Setting currentpanel to null. This one does not has a owner. Closing " +
+                        Log.Debug("Setting currentpanel to null. This one does not has a owner. Closing " +
                                     f.Name + ", type: " + f.GetType());
 
                         Windows.CloseForm(f);
@@ -404,7 +404,7 @@ namespace ACAT.Core.PanelManagement
             }
             else
             {
-                _logger?.LogDebug("_currentPanel is null");
+                Log.Debug("_currentPanel is null");
             }
 
             if (isCurrentForm)
@@ -443,11 +443,11 @@ namespace ACAT.Core.PanelManagement
         /// <returns>the form for the panel</returns>
         public Form CreatePanel(String panelClass, String panelTitle, StartupArg startupArg)
         {
-            _logger?.LogDebug("panelClass: " + panelClass);
+            Log.Debug("panelClass: " + panelClass);
 
             Form form = CreatePanel(ref panelClass, panelTitle, IntPtr.Zero, null);
 
-            _logger?.LogDebug("Form for this panel " + ". " + ((form != null) ? " is not null " : " is null "));
+            Log.IsNull("Form for this panel ", form);
 
             if (form is IPanel)
             {
@@ -455,7 +455,7 @@ namespace ACAT.Core.PanelManagement
                 (form as IPanel).Initialize(startupArg);
             }
 
-            _logger?.LogDebug("Returning form from DynamicallyCreatePanelForm");
+            Log.Debug("Returning form from DynamicallyCreatePanelForm");
 
             return form;
         }
@@ -474,24 +474,24 @@ namespace ACAT.Core.PanelManagement
                         IntPtr winHandle,
                         AutomationElement focusedElement)
         {
-            _logger?.LogDebug($"Searching for panel of type {panelClass}");
+            Log.Debug($"Searching for panel of type {panelClass}");
 
             var panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(panelClass);
             if (panelConfigMapEntry == null)
             {
-                _logger?.LogWarning($"Could not find panel for {panelClass} - Using default.");
+                Log.Warn($"Could not find panel for {panelClass} - Using default.");
 
                 panelClass = PanelClasses.Alphabet;
                 panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(PanelClasses.Alphabet);
 
                 if (panelConfigMapEntry == null)
                 {
-                    _logger?.LogError($"Unable to find an appropriate panel class.");
+                    Log.Error($"Unable to find an appropriate panel class.");
                     return null;
                 }
             }
 
-            _logger?.LogDebug($"Found panel class {panelConfigMapEntry.PanelClass} with. name {panelConfigMapEntry.FormType.Name}");
+            Log.Debug($"Found panel class {panelConfigMapEntry.PanelClass} with. name {panelConfigMapEntry.FormType.Name}");
 
             var form = DynamicallyCreatePanelForm(panelClass, panelTitle, panelConfigMapEntry.FormType, winHandle, focusedElement);
             return form;
@@ -540,7 +540,7 @@ namespace ACAT.Core.PanelManagement
         {
             if (_currentForm is IPanel)
             {
-                _logger?.LogDebug("Pausing _currentForm " + _currentForm.Name + ", IsModal: " + _currentForm.Modal);
+                Log.Debug("Pausing _currentForm " + _currentForm.Name + ", IsModal: " + _currentForm.Modal);
                 (_currentForm as IPanel).OnPause();
                 IsPaused = true;
             }
@@ -556,7 +556,7 @@ namespace ACAT.Core.PanelManagement
                 return;
             }
 
-            _logger?.LogDebug("Calling OnResume on " + _currentForm.Name);
+            Log.Debug("Calling OnResume on " + _currentForm.Name);
 
             (_currentForm as IPanel).OnResume();
 
@@ -618,7 +618,7 @@ namespace ACAT.Core.PanelManagement
 
             var form = (Form)panel;
 
-            _logger?.LogDebug("showDialog " + form.Name + ", type: " + form.GetType());
+            Log.Debug("showDialog " + form.Name + ", type: " + form.GetType());
 
             bool retVal;
             // if parent has not been specified, used the current form
@@ -626,18 +626,18 @@ namespace ACAT.Core.PanelManagement
             // show.
             if (parent == null)
             {
-                _logger?.LogDebug("parent passed is null");
-                _logger?.LogDebug("_currentForm " + ". " + ((_currentForm != null) ? " is not null " : " is null "));
-                _logger?.LogDebug("_currentPanel " + ". " + ((_currentPanel != null) ? " is not null " : " is null "));
+                Log.Debug("parent passed is null");
+                Log.IsNull("_currentForm ", _currentForm);
+                Log.IsNull("_currentPanel ", _currentPanel);
 
                 if (_currentForm is IPanel)
                 {
-                    _logger?.LogDebug("Showing as dialog child: " + panel.GetType() + ", parent: " + _currentForm.GetType());
+                    Log.Debug("Showing as dialog child: " + panel.GetType() + ", parent: " + _currentForm.GetType());
                     retVal = show((IPanel)_currentForm, panel, DisplayModeTypes.Dialog);
                 }
                 else
                 {
-                    _logger?.LogDebug("Just showing " + form.GetType());
+                    Log.Debug("Just showing " + form.GetType());
                     //retVal = Show(panel);
                     retVal = show(null, panel, DisplayModeTypes.Dialog);
                 }
@@ -645,7 +645,7 @@ namespace ACAT.Core.PanelManagement
             else
             {
                 var parentForm = parent as Form;
-                _logger?.LogDebug("showDialog parent: " + parentForm.Name + ", type: " + parentForm.GetType());
+                Log.Debug("showDialog parent: " + parentForm.Name + ", type: " + parentForm.GetType());
                 retVal = show(parent, panel, DisplayModeTypes.Dialog);
             }
 
@@ -748,7 +748,7 @@ namespace ACAT.Core.PanelManagement
             IntPtr winHandle,
             AutomationElement focusedElement)
         {
-            _logger?.LogDebug($"*** panelClass: [{panelClass}], panel: [{type.FullName}] title: [{panelTitle ?? "null"}]");
+            Log.Debug($"*** panelClass: [{panelClass}], panel: [{type.FullName}] title: [{panelTitle ?? "null"}]");
 
             var constructorArgSets = new object[][]
             {
@@ -775,11 +775,11 @@ namespace ACAT.Core.PanelManagement
                 }
                 catch (Exception ex)
                 {
-                    _logger?.LogError(ex, $"Constructor failed with args ({string.Join(", ", args.Select(a => a?.ToString() ?? "null"))})");
+                    Log.Exception($"Constructor failed with args ({string.Join(", ", args.Select(a => a?.ToString() ?? "null"))}): {ex}");
                 }
             }
 
-            _logger?.LogDebug($"No suitable constructor found for {type.FullName}");
+            Log.Debug($"No suitable constructor found for {type.FullName}");
             return null;
         }
 
@@ -800,7 +800,7 @@ namespace ACAT.Core.PanelManagement
 
             var panelConfigMapEntry = PanelConfigMap.GetPanelConfigMapEntry(arg.PanelClass);
 
-            _logger?.LogDebug("panelClass:  " + arg.PanelClass + ", ConfigFile: " + ((panelConfigMapEntry != null) ? panelConfigMapEntry.ConfigFileName : String.Empty));
+            Log.Debug("panelClass:  " + arg.PanelClass + ", ConfigFile: " + ((panelConfigMapEntry != null) ? panelConfigMapEntry.ConfigFileName : String.Empty));
             return scannerPanel.Initialize(startupArg);
         }
 
@@ -814,16 +814,16 @@ namespace ACAT.Core.PanelManagement
         {
             var form = (Form)sender;
 
-            _logger?.LogDebug("Enter (" + form.Name + ")");
+            Log.Debug("Enter (" + form.Name + ")");
 
             IPanel panel = form as IPanel;
             if (panel.SyncObj.Status == SyncLock.StatusValues.Closed)
             {
-                _logger?.LogDebug("Form is already closed. Returning " + form.Name);
+                Log.Debug("Form is already closed. Returning " + form.Name);
                 return;
             }
 
-            _logger?.LogDebug("Setting CLOSED for " + form.Name);
+            Log.Debug("Setting CLOSED for " + form.Name);
             (form as IPanel).SyncObj.Status = SyncLock.StatusValues.Closed;
 
             form.FormClosed -= panel_FormClosed;
@@ -834,7 +834,7 @@ namespace ACAT.Core.PanelManagement
 
             auditLogScannerEvent(form, "close");
 
-            _logger?.LogDebug("number of owned forms: " + array.Length);
+            Log.Debug("number of owned forms: " + array.Length);
 
             // close all the forms this panel owns
             while (true)
@@ -842,17 +842,17 @@ namespace ACAT.Core.PanelManagement
                 Form[] ownedForms = form.OwnedForms;
                 if (ownedForms.Length == 0)
                 {
-                    _logger?.LogDebug(form.Name + ": No more owned forms. Breaking");
+                    Log.Debug(form.Name + ": No more owned forms. Breaking");
                     break;
                 }
 
-                _logger?.LogDebug("Removing owned form from list. " + ownedForms[0].Name);
+                Log.Debug("Removing owned form from list. " + ownedForms[0].Name);
                 form.RemoveOwnedForm(ownedForms[0]);
-                _logger?.LogDebug("Calling close on " + ownedForms[0].Name);
+                Log.Debug("Calling close on " + ownedForms[0].Name);
                 Windows.CloseForm(ownedForms[0]);
             }
 
-            _logger?.LogDebug("form Name: " + form.Name + ", type: " + form.GetType());
+            Log.Debug("form Name: " + form.Name + ", type: " + form.GetType());
 
             // Exit the application if instructed to do so.
             if (Context.AppQuit)
@@ -870,23 +870,23 @@ namespace ACAT.Core.PanelManagement
             {
                 // Resume the parent if it is prudent to do so.
 
-                _logger?.LogDebug("parent Form is " + parentForm.Name);
+                Log.Debug("parent Form is " + parentForm.Name);
 
                 IPanel parentPanel = (IPanel)parentForm;
 
                 if (parentPanel.SyncObj.IsClosing())
                 {
-                    _logger?.LogDebug("*** Parent is closing. Will not call OnResume");
+                    Log.Debug("*** Parent is closing. Will not call OnResume");
                 }
                 else
                 {
-                    _logger?.LogDebug("parent form is not closing. Setting _currentPanel to " + parentForm.Name +
+                    Log.Debug("parent form is not closing. Setting _currentPanel to " + parentForm.Name +
                                 ", type: " + parentForm.GetType());
 
                     _currentPanel = parentForm;
                     _currentForm = parentForm;
 
-                    _logger?.LogDebug("Calling OnResume on parentForm " + parentForm.Name);
+                    Log.Debug("Calling OnResume on parentForm " + parentForm.Name);
 
                     parentPanel.OnResume();
 
@@ -898,7 +898,7 @@ namespace ACAT.Core.PanelManagement
             }
             else
             {
-                _logger?.LogDebug("parentform is null");
+                Log.Debug("parentform is null");
                 _currentPanel = null;
                 _currentForm = null;
             }
@@ -906,23 +906,23 @@ namespace ACAT.Core.PanelManagement
             var panelClass = (form is IScannerPanel) ? ((IScannerPanel)form).PanelClass : PanelClasses.None;
             if (!PanelConfigMap.AreEqual(panelClass, PanelClasses.None))
             {
-                _logger?.LogDebug("Calling AppAgentMgr.OnPanelClosed for " + panelClass);
+                Log.Debug("Calling AppAgentMgr.OnPanelClosed for " + panelClass);
                 Context.AppAgentMgr.OnPanelClosed(panelClass);
             }
 
             if (EvtScannerClosed != null)
             {
-                _logger?.LogDebug("Calling evetscannerclosed for " + form.Name);
+                Log.Debug("Calling evetscannerclosed for " + form.Name);
                 EvtScannerClosed(this, new ScannerCloseEventArg(form as IPanel));
             }
             else
             {
-                _logger?.LogDebug("EvtScannerClosed is NULL");
+                Log.Debug("EvtScannerClosed is NULL");
             }
 
             // (form as IPanel).SyncObj.Status = SyncLock.StatusValues.Closed;  // moved this up
 
-            _logger?.LogDebug("Exit " + form.Name);
+            Log.Debug("Exit " + form.Name);
         }
 
         /// <summary>
@@ -940,7 +940,7 @@ namespace ACAT.Core.PanelManagement
             Form panelForm = (Form)panel;
             Form parentForm = (Form)parent;
 
-            _logger?.LogDebug("parentForm: " + ((parentForm != null) ? parentForm.Name : " null") +
+            Log.Debug("parentForm: " + ((parentForm != null) ? parentForm.Name : " null") +
                         ".  panel: " + panelForm.Name);
 
             panelForm.FormClosed += panel_FormClosed;
@@ -956,7 +956,7 @@ namespace ACAT.Core.PanelManagement
 
                 if (displayMode == DisplayModeTypes.Dialog)
                 {
-                    _logger?.LogDebug("Showing Dialog" + panelForm.Name + " with parent " + parentForm.Name);
+                    Log.Debug("Showing Dialog" + panelForm.Name + " with parent " + parentForm.Name);
 
                     auditLogScannerEvent(panelForm, "show");
                     Context.AppPanelManager.NotifyPanelPreShow(new PanelPreShowEventArg(panel, displayMode));
@@ -964,9 +964,9 @@ namespace ACAT.Core.PanelManagement
                 }
                 else
                 {
-                    _logger?.LogDebug("Showing " + panelForm.Name);
+                    Log.Debug("Showing " + panelForm.Name);
 
-                    _logger?.LogDebug("parent is not null. Setting _currentPanel to " + panelForm.Name +
+                    Log.Debug("parent is not null. Setting _currentPanel to " + panelForm.Name +
                                 ", type: " + panelForm.GetType());
                     _currentPanel = panelForm;
                     auditLogScannerEvent(panelForm, "show");
@@ -978,8 +978,8 @@ namespace ACAT.Core.PanelManagement
             }
             else
             {
-                _logger?.LogDebug("showing " + panelForm.Name + ", parent is null");
-                _logger?.LogDebug("parent is null. Setting _currentPanel to " + panelForm.Name +
+                Log.Debug("showing " + panelForm.Name + ", parent is null");
+                Log.Debug("parent is null. Setting _currentPanel to " + panelForm.Name +
                             ", type: " + panelForm.GetType());
 
                 _currentPanel = panelForm;
@@ -1013,38 +1013,38 @@ namespace ACAT.Core.PanelManagement
         /// <param name="eventArg">Info about which scanner to display</param>
         private void switchCurrentPanel(PanelRequestEventArgs eventArg)
         {
-            _logger?.LogTrace(nameof(switchCurrentPanel));
+            Log.Verbose();
 
-            _logger?.LogDebug(eventArg.ToString());
+            Log.Debug(eventArg.ToString());
 
             if (!eventArg.UseCurrentScreenAsParent)
             {
-                _logger?.LogDebug("UseCurrentScreenAsParent is false.  closing current panel " +
+                Log.Debug("UseCurrentScreenAsParent is false.  closing current panel " +
                           ((_currentPanel != null) ? _currentPanel.Name : "<null>"));
 
                 CloseCurrentPanel();
             }
 
-            _logger?.LogDebug("Creating panel ..." + eventArg.PanelClass);
+            Log.Debug("Creating panel ..." + eventArg.PanelClass);
             Form form = createPanel(eventArg);
-            _logger?.LogDebug("Calling show for ..." + eventArg.PanelClass);
+            Log.Debug("Calling show for ..." + eventArg.PanelClass);
             if (form == null)
             {
-                _logger?.LogDebug("DynamicallyCreatePanelForm returned null!!");
+                Log.Debug("DynamicallyCreatePanelForm returned null!!");
             }
             else
             {
                 initializePanel(form as IScannerPanel, eventArg);
-                _logger?.LogDebug("Calling show for ..." + eventArg.PanelClass);
+                Log.Debug("Calling show for ..." + eventArg.PanelClass);
 
                 if (eventArg.UseCurrentScreenAsParent && _currentForm is IPanel)
                 {
-                    _logger?.LogDebug("Showing form " + form.Name + ", parent " + _currentForm.Name);
+                    Log.Debug("Showing form " + form.Name + ", parent " + _currentForm.Name);
                     Show((IPanel)_currentForm, (IPanel)form);
                 }
                 else
                 {
-                    _logger?.LogDebug("Showing form " + form.Name + " without parent.");
+                    Log.Debug("Showing form " + form.Name + " without parent.");
                     Show(null, (IPanel)form);
                 }
             }

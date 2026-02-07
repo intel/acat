@@ -1144,7 +1144,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             //    }
             //    catch (Exception e)
             //    {
-            //        _logger.LogError(e, e.Message);
+            //        _logger.LogError(e, "Failed to process eyes closed calibration event");
             //    }
             //}
         }
@@ -1175,7 +1175,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             //    }
             //    catch (Exception e)
             //    {
-            //        _logger.LogError(e, e.Message);
+            //        _logger.LogError(e, "Failed to end eyes closed calibration session");
             //    }
             //}
         }
@@ -1928,7 +1928,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
 
                 // Display error on logs
                 if (error.ErrorCode != BCIErrorCodes.Status_Ok)
-                    _logger.LogError("Error: " + error.ErrorCode + " Message: " + error.ErrorMessage);
+                    _logger.LogError("Error: {ErrorCode} Message: {ErrorMessage}", error.ErrorCode, error.ErrorMessage);
             }
             else
             {

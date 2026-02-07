@@ -277,7 +277,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             }
             catch (Exception e)
             {
-                _logger.LogError("Exception: " + e.Message);
+                _logger.LogError(e, "Exception: " + e.Message);
             }
             return equalChannels;
         }
@@ -875,7 +875,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             catch (Exception e)
             {
                 error = new BCIError(BCIErrorCodes.CalibrationError_LoadingClassifiers, StringResources.ClassifiersNotLoadedError);
-                _logger.LogError("Error " + BCIErrorCodes.CalibrationError_LoadingClassifiers.ToString() + " " + "Excepction: " + e.Message);
+                _logger.LogError(e, "Error " + BCIErrorCodes.CalibrationError_LoadingClassifiers.ToString() + " " + "Exception: " + e.Message);
             }
 
             // Set oKToGoToTyping status
@@ -963,7 +963,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             catch (Exception e)
             {
                 error = new BCIError(BCIErrorCodes.CalibrationError_LoadingClassifiers, StringResources.ClassifiersNotLoadedError);
-                _logger.LogError("Error " + BCIErrorCodes.CalibrationError_LoadingClassifiers.ToString() + " " + "Excepction: " + e.Message);
+                _logger.LogError(e, "Error " + BCIErrorCodes.CalibrationError_LoadingClassifiers.ToString() + " " + "Exception: " + e.Message);
             }
 
             // Send response to ACAT
@@ -1188,7 +1188,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
         /// <param name="request"></param>
         private void OnCalibrationEnd(object request)
         {
-            _logger.LogDebug("Calibartion End Received");
+            _logger.LogDebug("Calibration End Received");
 
             var bciCalibrationEnd = request as BCICalibrationEnd;
 
@@ -1534,7 +1534,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                             KeyboardRightCalibrationSettings.NumberOfIterationsPerTarget = bciUserInputParameters.NumIterationsPerTarget;
                             KeyboardRightCalibrationSettings.MinimumScoreRequired = bciUserInputParameters.MinScoreRequired;
                             KeyboardRightCalibrationSettings.Save();
-                            _logger.LogDebug("Paramters saved for keyboard right calibration");
+                            _logger.LogDebug("Parameters saved for keyboard right calibration");
                             break;
                     }
 
@@ -1923,12 +1923,12 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                 catch (Exception e)
                 {
                     error = new BCIError(BCIErrorCodes.TypingError_OnRepetitionEnd_UnknownException, StringResources.TypingError);// Error when processing data
-                    _logger.LogError("Error: " + error.ErrorCode + " Message" + error.ErrorMessage + " Excepcion: " + e.Message);
+                    _logger.LogError(e, "Error: " + error.ErrorCode + " Message" + error.ErrorMessage + " Exception: " + e.Message);
                 }
 
                 // Display error on logs
                 if (error.ErrorCode != BCIErrorCodes.Status_Ok)
-                    _logger.LogError("Error: " + error.ErrorCode + " Message" + error.ErrorMessage);
+                    _logger.LogWarning("Error: " + error.ErrorCode + " Message" + error.ErrorMessage);
             }
             else
             {

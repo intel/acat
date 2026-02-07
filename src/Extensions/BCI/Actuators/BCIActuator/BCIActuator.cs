@@ -875,7 +875,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             catch (Exception e)
             {
                 error = new BCIError(BCIErrorCodes.CalibrationError_LoadingClassifiers, StringResources.ClassifiersNotLoadedError);
-                _logger.LogError(e, "Error " + BCIErrorCodes.CalibrationError_LoadingClassifiers.ToString() + " " + "Exception: " + e.Message);
+                _logger.LogError(e, "Error " + BCIErrorCodes.CalibrationError_LoadingClassifiers.ToString());
             }
 
             // Set oKToGoToTyping status
@@ -963,7 +963,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
             catch (Exception e)
             {
                 error = new BCIError(BCIErrorCodes.CalibrationError_LoadingClassifiers, StringResources.ClassifiersNotLoadedError);
-                _logger.LogError(e, "Error " + BCIErrorCodes.CalibrationError_LoadingClassifiers.ToString() + " " + "Exception: " + e.Message);
+                _logger.LogError(e, "Error " + BCIErrorCodes.CalibrationError_LoadingClassifiers.ToString());
             }
 
             // Send response to ACAT
@@ -1923,7 +1923,7 @@ namespace ACAT.Extensions.BCI.Actuators.BCIActuator
                 catch (Exception e)
                 {
                     error = new BCIError(BCIErrorCodes.TypingError_OnRepetitionEnd_UnknownException, StringResources.TypingError);// Error when processing data
-                    _logger.LogError(e, "Error: " + error.ErrorCode + " Message" + error.ErrorMessage + " Exception: " + e.Message);
+                    _logger.LogError(e, "Error: " + error.ErrorCode + " Message" + error.ErrorMessage);
                 }
 
                 // Display error on logs

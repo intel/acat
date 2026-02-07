@@ -123,11 +123,11 @@ namespace ACAT.Core.ActuatorManagement
         /// </summary>
         private ActuatorManager(ILogger<ActuatorManager> logger = null)
         {
-            _logger = logger;
+            _logger = logger ?? LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<ActuatorManager>();
             _activeSwitches = new Dictionary<String, IActuatorSwitch>();
-        //    _nonActuateSwitches = new Dictionary<String, IActuatorSwitch>();
-        //    _syncObjectSwitches = new object();
-        //}
+            _nonActuateSwitches = new Dictionary<String, IActuatorSwitch>();
+            _syncObjectSwitches = new object();
+        }
 
         /// <summary>
         /// Deleagate for notification of start of calibration by an actuator
@@ -358,7 +358,7 @@ namespace ACAT.Core.ActuatorManagement
         {
             source.OnCalibrationCanceled();
 
-            Log.Debug("Entered ActuatorManger.OnCalibrationCanceled");
+            _logger.LogDebug("Entered ActuatorManger.OnCalibrationCanceled");
             if (isCalibratingActuator(source))
             {
                 source.OnCalibrationCanceled();
@@ -387,14 +387,14 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="enableConfigure">should the "configure" be enabled</param>
         public void OnEndCalibration(IActuator source, String errorMessage = "", bool enableConfigure = true)
         {
-            Log.Verbose();
-            Log.Debug("Calling isCalibratingActuator");
+            _logger.LogTrace(string.Empty);
+            _logger.LogDebug("Calling isCalibratingActuator");
 
             if (isCalibratingActuator(source))
             {
                 _calibratingActuatorEx.OnEndCalibration(errorMessage, enableConfigure);
 
-                Log.Debug("Setting calibratingActuatorEx to null");
+                _logger.LogDebug("Setting calibratingActuatorEx to null");
                 _calibratingActuatorEx = null;
             }
         }
@@ -481,17 +481,17 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="source">the requesting actuator</param>
         public void RequestCalibration(IActuator source, RequestCalibrationReason reason)
         {
-            Log.Debug("Entered RequestCalibration for " + source.Name);
+            _logger.LogDebug("Entered RequestCalibration for " + source.Name);
 
             if (!source.SupportsCalibration())
             {
-                Log.Debug(source.Name + ": Does not support calibration. returning");
+                _logger.LogDebug(source.Name + ": Does not support calibration. returning");
                 return;
             }
 
             if (calibrationQueue.Contains(source) || isCalibratingActuator(source))
             {
-                Log.Debug("Already queued up or currently processing. Will not enqueue for " + source.Name);
+                _logger.LogDebug("Already queued up or currently processing. Will not enqueue for " + source.Name);
                 return;
             }
 
@@ -500,7 +500,7 @@ namespace ACAT.Core.ActuatorManagement
             if (aex != null)
             {
                 aex.RequestCalibration(reason);
-                Log.Debug("Enqueing calibration request for " + source.Name);
+                _logger.LogDebug("Enqueing calibration request for " + source.Name);
 
                 calibrationQueue.Enqueue(aex);
             }
@@ -616,15 +616,15 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="buttonText">text of the calibration button</param>
         public void UpdateCalibrationStatus(IActuator source, String caption, String prompt, int timeout = 0, bool enableConfigure = true, String buttonText = "")
         {
-            Log.Debug("Checking if isCalibrationg for " + source.Name);
+            _logger.LogDebug("Checking if isCalibrationg for " + source.Name);
             if (isCalibratingActuator(source))
             {
-                Log.Debug("UpdateCalibStatus:  Yes it is!!. Calling calibratingActuatorEx.UpdateCalibrationStatus for " + source.Name);
+                _logger.LogDebug("UpdateCalibStatus:  Yes it is!!. Calling calibratingActuatorEx.UpdateCalibrationStatus for " + source.Name);
                 _calibratingActuatorEx.UpdateCalibrationStatus(getCalibrationFormPosition(), caption, prompt, timeout, enableConfigure, buttonText);
             }
             else
             {
-                Log.Debug("isCalibrating returned False.  Actuator is NOT calibrating for " + source.Name);
+                _logger.LogDebug("isCalibrating returned False.  Actuator is NOT calibrating for " + source.Name);
             }
         }
 
@@ -762,7 +762,7 @@ namespace ACAT.Core.ActuatorManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger.LogTrace(string.Empty);
 
                 if (disposing)
                 {
@@ -776,11 +776,11 @@ namespace ACAT.Core.ActuatorManagement
 
                     if (_thread != null)
                     {
-                        Log.Debug("Calling thread.join");
+                        _logger.LogDebug("Calling thread.join");
                         _thread.Join(2000);
                     }
 
-                    Log.Debug("Exited thread");
+                    _logger.LogDebug("Exited thread");
 
                     if (_actuators != null)
                     {
@@ -845,7 +845,7 @@ namespace ACAT.Core.ActuatorManagement
 
             if (!handled)
             {
-                Log.Debug("ACT on Switch " + switchObj.Name);
+                _logger.LogDebug("ACT on Switch " + switchObj.Name);
                 notifySwitchActivated(switchObj);
             }
         }
@@ -858,7 +858,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="e">event args</param>
         private void actuator_EvtSwitchActivated(object sender, ActuatorSwitchEventArgs e)
         {
-            Log.Debug("Switch " + e.SwitchObj.Name + " activated");
+            _logger.LogDebug("Switch " + e.SwitchObj.Name + " activated");
             disambiguateAndAct(e.SwitchObj.Actuate ? _activeSwitches : _nonActuateSwitches, e.SwitchObj);
         }
 
@@ -870,7 +870,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="e">event args</param>
         private void actuator_EvtSwitchDeactivated(object sender, ActuatorSwitchEventArgs e)
         {
-            Log.Debug("Switch " + e.SwitchObj.Name + " deactivated");
+            _logger.LogDebug("Switch " + e.SwitchObj.Name + " deactivated");
             //disambiguateAndAct(e.SwitchObj);
             disambiguateAndAct(e.SwitchObj.Actuate ? _activeSwitches : _nonActuateSwitches, e.SwitchObj);
         }
@@ -882,7 +882,7 @@ namespace ACAT.Core.ActuatorManagement
         /// <param name="e">event args</param>
         private void actuator_EvtSwitchTriggered(object sender, ActuatorSwitchEventArgs e)
         {
-            Log.Debug("Switch " + e.SwitchObj.Name + " triggered");
+            _logger.LogDebug("Switch " + e.SwitchObj.Name + " triggered");
             //disambiguateAndAct(e.SwitchObj);
             disambiguateAndAct(e.SwitchObj.Actuate ? _activeSwitches : _nonActuateSwitches, e.SwitchObj);
         }
@@ -905,9 +905,9 @@ namespace ACAT.Core.ActuatorManagement
         {
             while (!_exitThread)
             {
-                Log.Debug("Waiting for item");
+                _logger.LogDebug("Waiting for item");
                 var obj = calibrationQueue.Dequeue();
-                Log.Debug("Got item");
+                _logger.LogDebug("Got item");
 
                 if (obj is String)
                 {
@@ -917,12 +917,12 @@ namespace ACAT.Core.ActuatorManagement
                 if (obj is ActuatorEx)
                 {
                     _calibratingActuatorEx = obj as ActuatorEx;
-                    Log.Debug("Before start calib");
+                    _logger.LogDebug("Before start calib");
                     var actuator = _calibratingActuatorEx;
                     actuator.StartCalibration();
-                    Log.Debug("after start calib");
+                    _logger.LogDebug("after start calib");
 
-                    Log.Debug("Waiting for calib for " + actuator.SourceActuator.Name);
+                    _logger.LogDebug("Waiting for calib for " + actuator.SourceActuator.Name);
 
                     actuator.WaitForCalibration();
                 }
@@ -946,7 +946,7 @@ namespace ACAT.Core.ActuatorManagement
 
             if (!switchObj.Enabled)
             {
-                Log.Debug("Switch " + switchObj.Name + " is not enabled. Will be ignored");
+                _logger.LogDebug("Switch " + switchObj.Name + " is not enabled. Will be ignored");
                 return;
             }
 
@@ -957,7 +957,7 @@ namespace ACAT.Core.ActuatorManagement
                     {
                         if (!switches.ContainsKey(switchObj.Name))
                         {
-                            Log.Debug("SWITCH DOWN switches does not contain " + switchObj.Name + ". adding it");
+                            _logger.LogDebug("SWITCH DOWN switches does not contain " + switchObj.Name + ". adding it");
 
                             // add it to the current list of active switches
                             switches.Add(switchObj.Name, switchObj);
@@ -968,7 +968,7 @@ namespace ACAT.Core.ActuatorManagement
                         }
                         else
                         {
-                            Log.Debug("SWITCH DOWN switches already contains " + switchObj.Name);
+                            _logger.LogDebug("SWITCH DOWN switches already contains " + switchObj.Name);
                         }
                     }
 
@@ -981,7 +981,7 @@ namespace ACAT.Core.ActuatorManagement
                         switchObj.RegisterSwitchUp();
                         if (switches.ContainsKey(switchObj.Name))
                         {
-                            Log.Debug("SWITCH UP switches contains " + switchObj.Name);
+                            _logger.LogDebug("SWITCH UP switches contains " + switchObj.Name);
                             var activeSwitch = switches[switchObj.Name];
 
                             elapsedTime = (activeSwitch != null && activeSwitch.AcceptTimer.IsRunning) ?
@@ -989,13 +989,13 @@ namespace ACAT.Core.ActuatorManagement
 
                             bool accepted = false;
 
-                            Log.Debug("SWITCH UP Acauate: " + switchObj.Actuate);
-                            Log.Debug("SWITCH UP Acticeswitch != null is " + (activeSwitch != null));
+                            _logger.LogDebug("SWITCH UP Acauate: " + switchObj.Actuate);
+                            _logger.LogDebug("SWITCH UP Acticeswitch != null is " + (activeSwitch != null));
 
                             if (activeSwitch != null)
                             {
-                                Log.Debug("SWITCH UP Accepttimer is running " + activeSwitch.AcceptTimer.IsRunning);
-                                Log.Debug("SWITCH UP Elapsed milli: " + activeSwitch.AcceptTimer.ElapsedMilliseconds);
+                                _logger.LogDebug("SWITCH UP Accepttimer is running " + activeSwitch.AcceptTimer.IsRunning);
+                                _logger.LogDebug("SWITCH UP Elapsed milli: " + activeSwitch.AcceptTimer.ElapsedMilliseconds);
                             }
 
                             if (switchObj.Actuate &&
@@ -1003,13 +1003,13 @@ namespace ACAT.Core.ActuatorManagement
                                 activeSwitch.AcceptTimer.IsRunning &&
                                 activeSwitch.AcceptTimer.ElapsedMilliseconds >= CoreGlobals.AppPreferences.MinActuationHoldTime)
                             {
-                                Log.Debug("SWITCH UP Switch accepted! ElapsedMilliseconds: " + activeSwitch.AcceptTimer.ElapsedMilliseconds);
+                                _logger.LogDebug("SWITCH UP Switch accepted! ElapsedMilliseconds: " + activeSwitch.AcceptTimer.ElapsedMilliseconds);
                                 accepted = true;
                                 switchActivated = switchObj;
                             }
                             else
                             {
-                                Log.Debug("SWITCH UP Switch not found or actuate is false or timer not running or elapsedTime < accept time");
+                                _logger.LogDebug("SWITCH UP Switch not found or actuate is false or timer not running or elapsedTime < accept time");
                             }
 
                             switches.Remove(switchObj.Name);
@@ -1027,7 +1027,7 @@ namespace ACAT.Core.ActuatorManagement
                         }
                         else
                         {
-                            Log.Debug("SWITCH UP switches does not contain " + switchObj.Name);
+                            _logger.LogDebug("SWITCH UP switches does not contain " + switchObj.Name);
                         }
                     }
 
@@ -1150,15 +1150,15 @@ namespace ACAT.Core.ActuatorManagement
         /// <returns></returns>
         private bool isCalibratingActuator(IActuator actuator)
         {
-            Log.Debug("isCalibrating: " + actuator.Name + " calibratingActuatorEx is null:" + (_calibratingActuatorEx == null));
+            _logger.LogDebug("isCalibrating: " + actuator.Name + " calibratingActuatorEx is null:" + (_calibratingActuatorEx == null));
             if (_calibratingActuatorEx != null)
             {
-                Log.Debug("calibratingActuatorEx.SourceActuator: " + _calibratingActuatorEx.SourceActuator.Name);
+                _logger.LogDebug("calibratingActuatorEx.SourceActuator: " + _calibratingActuatorEx.SourceActuator.Name);
             }
 
             bool retVal = _calibratingActuatorEx != null && _calibratingActuatorEx.SourceActuator == actuator;
 
-            Log.Debug("isCalibrating: returning " + retVal);
+            _logger.LogDebug("isCalibrating: returning " + retVal);
 
             return retVal;
         }
@@ -1183,7 +1183,7 @@ namespace ACAT.Core.ActuatorManagement
 
             if (EvtSwitchActivated == null)
             {
-                Log.Debug("No subscribers. Returning");
+                _logger.LogDebug("No subscribers. Returning");
                 return;
             }
 
@@ -1191,7 +1191,7 @@ namespace ACAT.Core.ActuatorManagement
             foreach (var del in delegates)
             {
                 var switchActivated = (ActuatorSwitchEvent)del;
-                Log.Debug("Calling begininvoke for " + switchObj.Name);
+                _logger.LogDebug("Calling begininvoke for " + switchObj.Name);
                 switchActivated.BeginInvoke(this, new ActuatorSwitchEventArgs(switchObj), null, null);
             }
         }
@@ -1223,7 +1223,7 @@ namespace ACAT.Core.ActuatorManagement
                 return;
             }
 
-            Log.Verbose();
+            _logger.LogTrace(string.Empty);
 
             var delegates = EvtSwitchHook.GetInvocationList();
             foreach (var del in delegates)

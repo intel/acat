@@ -468,7 +468,7 @@ namespace ACAT.Extensions.BCI.Actuators.openBCISensorUI
                     // Only exit if ExitOnboardingEarly flag has been set (user selected Exit button)
                     if (!ExitOnboardingEarly)
                     {
-                        Log.Debug("User has requested to close form (Alt + F4) - ignore");
+                        _logger?.LogDebug("User has requested to close form (Alt + F4) - ignore");
                         e.Cancel = true;
                         closeReasonIsUserClosing = true;
                     }

@@ -345,8 +345,8 @@ namespace ACAT.Core.AgentManagement
 
             while (parent != null)
             {
-                Log.Debug("parent.ClassName: " + parent.Current.ClassName + ", parent.COntrolType: " +
-                    parent.Current.ControlType.ProgrammaticName + ", parent.AutoId: " + parent.Current.AutomationId);
+                _logger?.LogDebug("parent.ClassName: {ClassName}, parent.ControlType: {ControlType}, parent.AutoId: {AutoId}",
+                    parent.Current.ClassName, parent.Current.ControlType.ProgrammaticName, parent.Current.AutomationId);
 
                 if (String.Compare(parent.Current.ClassName, className, true) == 0 &&
                     String.Compare(parent.Current.ControlType.ProgrammaticName, controlType, true) == 0 &&

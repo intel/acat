@@ -34,6 +34,7 @@ using ACAT.Extensions.BCI.Common.BCIControl;
 using ACAT.Extensions.BCI.Common.BCIInterfaceUtilities;
 using ACAT.Extensions.BCI.UI.UserControls;
 using ACATResources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,6 +65,11 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// The command dispatcher object
         /// </summary>
         private readonly Dispatcher _dispatcher;
+
+        /// <summary>
+        /// Logger instance for this class
+        /// </summary>
+        private readonly ILogger<TalkApplicationBCIScanner> _logger;
 
         /// <summary>
         /// The AlphabetScannerCommon object. Has a number of
@@ -187,8 +193,9 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public TalkApplicationBCIScanner()
+        public TalkApplicationBCIScanner(ILogger<TalkApplicationBCIScanner> logger = null)
         {
+            _logger = logger;
             _scannerCommon = new ScannerCommon(this);
             InitializeComponent();
             this.DoubleBuffered = true;
@@ -737,7 +744,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                     {
                         if (!_RequestCalibration)//have a delay before start typing so the user can see the options and suggestions and start looking where is desired
                         {
-                            Log.Debug("BCI LOG | Delay before Typing ");//Run the delay in another therad to avoid blocking the UI
+                            _logger?.LogDebug("BCI LOG | Delay before Typing ");//Run the delay in another therad to avoid blocking the UI
                             _ = ShowTimedMessageBoxAsync().ConfigureAwait(false);
                         }
                         else
@@ -752,14 +759,14 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                     if (_BCIState == BCIState.BCIStartSession)
                     {
                         _BCIState = BCIState.BCIInitDone;
-                        Log.Debug("BCI LOG | BCI Init state: " + BCIState.BCIInitDone);
+                        _logger?.LogDebug("BCI LOG | BCI Init state: {State}", BCIState.BCIInitDone);
                     }
                     break;
 
                 case (int)OpCodes.SendCalibrationStatus:
                     //STEP - 1
                     var bciCalibrationStatus = response as BCICalibrationStatus;
-                    Log.Debug("BCI LOG | bciCalibrationStatus.OkToGoToTyping: " + bciCalibrationStatus.OkToGoToTyping);
+                    _logger?.LogDebug("BCI LOG | bciCalibrationStatus.OkToGoToTyping: {OkToGoToTyping}", bciCalibrationStatus.OkToGoToTyping);
                     if (_ShowMainOptions)//This window should only display once
                     {
                         _ShowMainOptions = false;
@@ -988,7 +995,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             }
             catch (Exception es)
             {
-                Log.Exception("BCI LOG | " + es.Message.ToString());
+                _logger?.LogError("BCI LOG | {Message}", es.Message.ToString());
             }
         }
 
@@ -1006,32 +1013,32 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                         break;
 
                     case BCIState.UIRefresh://1 Init state
-                        Log.Debug("BCI LOG | BCI Init state: " + BCIState.UIRefresh);
+                        _logger?.LogDebug("BCI LOG | BCI Init state: {State}", BCIState.UIRefresh);
                         _BCIState = BCIState.UIRefresh;
                         _ = ControlsUIAdjustment().ConfigureAwait(false);
                         break;
 
                     case BCIState.Initializing://2 Init state
-                        Log.Debug("BCI LOG | BCI Init state: " + BCIState.Initializing);
+                        _logger?.LogDebug("BCI LOG | BCI Init state: {State}", BCIState.Initializing);
                         _BCIState = BCIState.Initializing;
                         _ = InitializeBCI().ConfigureAwait(false);
                         break;
 
                     case BCIState.ReqCalibrationStatus://3 Init state
                         _BCIState = BCIState.ReqCalibrationStatus;
-                        Log.Debug("BCI LOG | BCI Init state: " + BCIState.ReqCalibrationStatus);
+                        _logger?.LogDebug("BCI LOG | BCI Init state: {State}", BCIState.ReqCalibrationStatus);
                         _ = BCIRequestCalibrationStatus().ConfigureAwait(false);
                         break;
 
                     case BCIState.StartBCIReqParams://4 Init state
                         //STEP - 4
-                        Log.Debug("BCI LOG | BCI Init state: " + BCIState.StartBCIReqParams);
+                        _logger?.LogDebug("BCI LOG | BCI Init state: {State}", BCIState.StartBCIReqParams);
                         _BCIState = BCIState.StartBCIReqParams;
                         _ = BCIStartBCIReqParams().ConfigureAwait(false);
                         break;
 
                     case BCIState.BCIStartSession://5 Init state
-                        Log.Debug("BCI LOG | BCI Init state: " + BCIState.BCIStartSession);
+                        _logger?.LogDebug("BCI LOG | BCI Init state: {State}", BCIState.BCIStartSession);
                         _BCIState = BCIState.BCIStartSession;
                         _ = BCIStartSession().ConfigureAwait(false);
                         break;
@@ -1039,7 +1046,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             }
             catch (Exception ex)
             {
-                Log.Exception("BCI LOG | Error in BCI Init state: " + bCIState + "  Messagge: " + ex.Message);
+                _logger?.LogError("BCI LOG | Error in BCI Init state: {State} Message: {Message}", bCIState, ex.Message);
             }
         }
 
@@ -1129,7 +1136,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             }
             catch (Exception e)
             {
-                Log.Exception("BCI LOG | Error in ExitApplication() BCI: " + e.Message);
+                _logger?.LogError("BCI LOG | Error in ExitApplication() BCI: {Message}", e.Message);
             }
         }
 
@@ -1250,8 +1257,8 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         private void LogAssemblyVersion()
         {
             var version = ACATPreferences.ApplicationAssembly.GetName().Version.Major + "." + ACATPreferences.ApplicationAssembly.GetName().Version.Minor;
-            Log.Debug("BCI LOG | ACAT - Assembly version info");
-            Log.Debug("BCI LOG | AssemblyVersion: " + version);
+            _logger?.LogDebug("BCI LOG | ACAT - Assembly version info");
+            _logger?.LogDebug("BCI LOG | AssemblyVersion: {Version}", version);
         }
 
         /// <summary>
@@ -1348,7 +1355,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                         if (BCIInterfaceUtils.GetCaretPositionOfTextBoxUC() != currentCaretPosition)
                         {
                             Windows.SetCaretPosition(_textBoxTalkWindow, BCIInterfaceUtils.GetCaretPositionOfTextBoxUC());
-                            Log.Debug("BCI LOG | Caret position reestablish | Textbox user control changed");
+                            _logger?.LogDebug("BCI LOG | Caret position reestablish | Textbox user control changed");
                         }
                     }
                 }
@@ -1359,14 +1366,14 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                         if (BCIInterfaceUtils.GetCaretPhrasePositionOfTextBoxUC() != currentCaretPosition)
                         {
                             Windows.SetCaretPosition(_textBoxTalkWindow, BCIInterfaceUtils.GetCaretPhrasePositionOfTextBoxUC());
-                            Log.Debug("BCI LOG | Caret position reestablish | Textbox user control changed");
+                            _logger?.LogDebug("BCI LOG | Caret position reestablish | Textbox user control changed");
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Log.Debug("BCI LOG | Error | SetCaretPositionForTextBoxUC: " + ex.Message);
+                _logger?.LogDebug("BCI LOG | Error | SetCaretPositionForTextBoxUC: {Message}", ex.Message);
             }
         }
 
@@ -1540,7 +1547,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger?.LogError(ex, ex.Message);
             }
         }
 
@@ -1552,9 +1559,9 @@ namespace ACAT.Extensions.BCI.UI.Scanners
         {
             if (!String.IsNullOrEmpty(text))
             {
-                Log.Debug("*** TTS *** : " + text);
+                _logger?.LogDebug("*** TTS *** : {Text}", text);
                 TTSManager.Instance.ActiveEngine.Speak(text);
-                Log.Debug("*** TTS *** : sent text!");
+                _logger?.LogDebug("*** TTS *** : sent text!");
 
                 AuditLog.Audit(new AuditEventTextToSpeech(TTSManager.Instance.ActiveEngine.Descriptor.Name));
             }
@@ -1660,7 +1667,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                 {
                     handled = true;
                     List<Widget>[] widgets;
-                    Log.Debug("BCI LOG | Command | selected | Pressed | " + Command.ToString());
+                    _logger?.LogDebug("BCI LOG | Command | selected | Pressed | {Command}", Command.ToString());
                     switch (Command)
                     {
                         case "CmdEditScanner":
@@ -1871,7 +1878,7 @@ namespace ACAT.Extensions.BCI.UI.Scanners
                     }
                 }
                 else
-                    Log.Debug("BCI LOG | Command | selected | Pressed in calibration | No action | " + Command.ToString());
+                    _logger?.LogDebug("BCI LOG | Command | selected | Pressed in calibration | No action | {Command}", Command.ToString());
                 return true;
             }
         }

@@ -9,6 +9,7 @@
 using ACAT.Core.AgentManagement.Interfaces;
 using ACAT.Core.Utility;
 using ACAT.Core.Utility.TypeLoader;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,6 +27,8 @@ namespace ACAT.Core.AgentManagement.Agents
     /// </summary>
     internal class AgentsCache : IDisposable
     {
+        private static ILogger<AgentsCache> _logger;
+
         /// <summary>
         /// Adhoc agents are those that can be added at runtime. Adhoc
         /// agents are attached to a window handle and activated when that
@@ -61,7 +64,7 @@ namespace ACAT.Core.AgentManagement.Agents
         /// </summary>
         public AgentsCache()
         {
-            Log.Verbose();
+            _logger?.LogTrace("AgentsCache created");
 
             _agentCache = new List<IApplicationAgent>();
             _agentLookupTableByProcessName = new Hashtable();
@@ -276,13 +279,13 @@ namespace ACAT.Core.AgentManagement.Agents
         /// <returns>true on success</returns>
         public bool Init(IEnumerable<string> extensionDirs)
         {
-            Log.Verbose();
+            _logger?.LogTrace("Initializing AgentsCache");
 
             loadCache(extensionDirs);
 
             _preferredAgents.Load(_agentLookupTableById);
 
-            Log.Debug("Done loading cache");
+            _logger?.LogDebug("Done loading cache");
 
             populateLookupTableByProcess();
 
@@ -319,7 +322,7 @@ namespace ACAT.Core.AgentManagement.Agents
             try
             {
                 var agent = (IApplicationAgent)Activator.CreateInstance(agentType);
-                Log.Debug("Adding agent " + agentType.FullName);
+                _logger?.LogDebug("Adding agent {AgentType}", agentType.FullName);
                 _agentCache.Add(agent);
                 _agentLookupTableById.Add(agent.Descriptor.Id, agent);
 
@@ -329,7 +332,7 @@ namespace ACAT.Core.AgentManagement.Agents
             }
             catch (Exception ex)
             {
-                Log.Exception("Could not load agent " + agentType + ", exception: " + ex);
+                _logger?.LogError(ex, "Could not load agent {AgentType}", agentType);
             }
         }
 
@@ -376,7 +379,7 @@ namespace ACAT.Core.AgentManagement.Agents
             }
             catch (Exception ex)
             {
-                Log.Exception($"Error loading agent from {agentName}: {ex.Message}");
+                _logger?.LogError(ex, "Error loading agent from {AgentName}", agentName);
             }
 
         }

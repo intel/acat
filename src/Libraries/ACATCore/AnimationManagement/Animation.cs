@@ -8,6 +8,7 @@
 using ACAT.Core.Interpreter;
 using ACAT.Core.Utility;
 using ACAT.Core.WidgetManagement;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,8 @@ namespace ACAT.Core.AnimationManagement
     /// </summary>
     public class Animation : IDisposable
     {
+        private static ILogger<Animation> _logger;
+
         /// <summary>
         /// Code to execute when the animation sequence ends without the
         /// user having selected anything during the sequence
@@ -241,7 +244,7 @@ namespace ACAT.Core.AnimationManagement
         {
             clearAnimationWidgetList();
 
-            Log.Verbose(rootWidget.Name + ". widgetXMLNodeList count: " + _widgetXMLNodeList.Count);
+            _logger?.LogTrace("{RootWidgetName}. widgetXMLNodeList count: {Count}", rootWidget.Name, _widgetXMLNodeList.Count);
 
             foreach (XmlNode xmlNode in _widgetXMLNodeList)
             {
@@ -259,7 +262,7 @@ namespace ACAT.Core.AnimationManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("Disposing Animation");
 
                 if (disposing)
                 {
@@ -421,22 +424,22 @@ namespace ACAT.Core.AnimationManagement
         {
             var name = XmlUtils.GetXMLAttrString(xmlNode, "name");
 
-            Log.Verbose("name=" + name);
+            _logger?.LogTrace("name={Name}", name);
             if (!String.IsNullOrEmpty(name) && !name.Contains("*"))
             {
                 var widgetName = resolveName(variables, name);
-                Log.Verbose("Resolved name : " + widgetName);
+                _logger?.LogTrace("Resolved name: {WidgetName}", widgetName);
 
                 var uiWidget = rootWidget.Finder.FindChild(widgetName);
                 if (uiWidget != null && (uiWidget.UIControl == null || uiWidget.Visible))
                 {
-                    Log.Verbose("Found child name : " + widgetName);
+                    _logger?.LogTrace("Found child name: {WidgetName}", widgetName);
                     var animationWidget = createAndAddAnimationWidget(uiWidget);
                     animationWidget?.Load(xmlNode);
                 }
                 else
                 {
-                    Log.Debug("Did not find child " + widgetName);
+                    _logger?.LogDebug("Did not find child {WidgetName}", widgetName);
                 }
             }
 
@@ -458,12 +461,12 @@ namespace ACAT.Core.AnimationManagement
 
             if (name.Contains("*"))
             {
-                Log.Debug("name=" + name);
+                _logger?.LogDebug("name={Name}", name);
 
                 var containerWidget = getContainerWidget(rootWidget, variables, name);
                 if (containerWidget != null)
                 {
-                    Log.Debug("containerWidget: " + containerWidget.Name);
+                    _logger?.LogDebug("containerWidget: {ContainerWidgetName}", containerWidget.Name);
 
                     EvtResolveWidgetChildren?.Invoke(this, new ResolveWidgetChildrenEventArgs(rootWidget, containerWidget, xmlNode));
 
@@ -471,7 +474,7 @@ namespace ACAT.Core.AnimationManagement
                     {
                         if (childWidget.UIControl == null || childWidget.Visible)
                         {
-                            Log.Debug("Found child name : " + childWidget.Name);
+                            _logger?.LogDebug("Found child name: {ChildWidgetName}", childWidget.Name);
                             var animationWidget = createAndAddAnimationWidget(childWidget);
                             animationWidget?.Load(xmlNode);
                         }

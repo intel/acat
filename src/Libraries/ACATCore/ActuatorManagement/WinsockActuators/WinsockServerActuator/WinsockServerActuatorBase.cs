@@ -15,6 +15,7 @@
 
 using ACAT.Core.ActuatorManagement.Interfaces;
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System.Text;
 
 namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
@@ -27,6 +28,8 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
     /// </summary>
     public class WinsockServerActuatorBase : ActuatorBase
     {
+        private static ILogger<WinsockServerActuatorBase> _logger;
+
         /// <summary>
         /// Has this object been disposed?
         /// </summary>
@@ -109,7 +112,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
             {
                 try
                 {
-                    Log.Verbose();
+                    _logger?.LogTrace("Disposing WinsockServerActuatorBase");
 
                     if (disposing)
                     {
@@ -152,7 +155,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
         protected virtual void onDataReceived(byte[] packet)
         {
             string strData = Encoding.ASCII.GetString(packet, 0, packet.Length);
-            Log.Debug("Received data: " + strData);
+            _logger?.LogDebug("Received data: {Data}", strData);
 
             // parse the string, find the switch that causes the trigger
             IActuatorSwitch switchObj = WinsockCommon.parseAndGetSwitch(strData, Switches, CreateSwitch);
@@ -191,7 +194,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
         /// <param name="e">event arg</param>
         private void _socketServer_OnClientConnected(object sender, WinsockClientConnectEventArgs e)
         {
-            Log.Debug("ImageActuator:  Client disconnected " + e.IPAddress);
+            _logger?.LogDebug("ImageActuator: Client disconnected {IPAddress}", e.IPAddress);
             onClientConnected(e);
         }
 
@@ -202,7 +205,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
         /// <param name="e">event argument</param>
         private void _socketServer_OnClientDisconnected(object sender, WinsockClientConnectEventArgs e)
         {
-            Log.Debug("ImageActuator:  Client connected " + e.IPAddress);
+            _logger?.LogDebug("ImageActuator: Client connected {IPAddress}", e.IPAddress);
             onClientDisconnected(e);
         }
 
@@ -232,7 +235,7 @@ namespace ACAT.Core.ActuatorManagement.WinsockActuators.WinsockServerActuator
             }
             else
             {
-                Log.Debug("Listen error.  Listen port not set");
+                _logger?.LogDebug("Listen error. Listen port not set");
             }
         }
 

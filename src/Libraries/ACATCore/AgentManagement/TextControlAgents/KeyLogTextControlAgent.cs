@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
 
@@ -20,6 +21,8 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
     /// </summary>
     public class KeyLogTextControlAgent : TextControlAgentBase
     {
+        private static ILogger<KeyLogTextControlAgent> _logger;
+
         /// <summary>
         /// Windows constant
         /// </summary>
@@ -83,7 +86,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
         /// <returns>caret position</returns>
         public override int GetCaretPos()
         {
-            Log.Verbose();
+            _logger?.LogTrace("Getting caret position");
             if (isValid(_textBox))
             {
                 return Windows.GetCaretPosition(_textBox);
@@ -178,8 +181,8 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
                     break;
             }
 
-            Log.Debug("Keycode: " + e.KeyCode +
-                        ", cursor: " + (_textBox != null ? _textBox.SelectionStart.ToString() : "-1"));
+            _logger?.LogDebug("Keycode: {KeyCode}, cursor: {Cursor}", e.KeyCode,
+                        (_textBox != null ? _textBox.SelectionStart.ToString() : "-1"));
         }
 
         /// <summary>
@@ -197,7 +200,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
 
             if (_textBox != null)
             {
-                Log.Debug("keyup: " + e.KeyCode);
+                _logger?.LogDebug("keyup: {KeyCode}", e.KeyCode);
 
                 switch (e.KeyCode)
                 {
@@ -313,7 +316,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
         /// <param name="e">arg</param>
         private void _textBox_TextChanged(object sender, EventArgs e)
         {
-            Log.Verbose();
+            _logger?.LogTrace("TextBox text changed");
             onTextChanged();
         }
 
@@ -325,7 +328,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
             if (_textBox == null)
             {
                 var name = string.Format("NullAgent_TB_" + _textBoxNameCounter++);
-                Log.Debug("Creating textbox window " + name);
+                _logger?.LogDebug("Creating textbox window {Name}", name);
                 _textBox = new TextBox { Name = name, Multiline = true };
                 _textBox.TextChanged += _textBox_TextChanged;
             }
@@ -340,7 +343,7 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
         /// </summary>
         private void disposeTextInterface()
         {
-            Log.Verbose();
+            _logger?.LogTrace("Disposing text interface");
             if (isValid(_textBox))
             {
                 _textBox.TextChanged -= _textBox_TextChanged;
@@ -367,9 +370,8 @@ namespace ACAT.Core.AgentManagement.TextControlAgents
         {
             if (_textBox != null)
             {
-                Log.Debug("textbox changed. Name: " + _textBox.Name +
-                            ", caretPos = " + _textBox.SelectionStart +
-                            ", _textBox: " + (_textBox == null ? "null" : _textBox.Text));
+                _logger?.LogDebug("textbox changed. Name: {Name}, caretPos: {CaretPos}, text: {Text}",
+                            _textBox.Name, _textBox.SelectionStart, _textBox.Text);
             }
 
             triggerTextChanged(this);

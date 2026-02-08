@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using ACAT.Core.Utility;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -19,6 +20,8 @@ namespace ACAT.Core.PanelManagement.Utils
     /// </summary>
     internal class OutlineWindow : IDisposable
     {
+        private static ILogger<OutlineWindow> _logger;
+
         /// <summary>
         /// Width of the pen to draw the border
         /// </summary>
@@ -71,7 +74,7 @@ namespace ACAT.Core.PanelManagement.Utils
         /// <param name="penWidth">width of the pen</param>
         public void Draw(Rectangle rectangle, int penWidth = 0)
         {
-            Log.Debug(rectangle.ToString());
+            _logger?.LogDebug("Drawing rectangle: {Rectangle}", rectangle);
 
             _form.Invalidate();
             _form.Refresh();
@@ -118,7 +121,7 @@ namespace ACAT.Core.PanelManagement.Utils
                 var width = rectangle.X > 0 ? rectangle.Width : rectangle.Width + (float)rectangle.X;
                 var height = rectangle.Y > 0 ? rectangle.Height : rectangle.Height + (float)rectangle.Y;
 
-                Log.Debug("Draw rectangle " + x + " " + y + " " + width + " " + height);
+                _logger?.LogDebug("Draw rectangle x={X} y={Y} width={Width} height={Height}", x, y, width, height);
 
                 formGraphics.DrawRectangle(pen, x, y, width, height);
             }
@@ -141,7 +144,7 @@ namespace ACAT.Core.PanelManagement.Utils
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("Disposing OutlineWindow");
 
                 if (disposing)
                 {
@@ -170,10 +173,10 @@ namespace ACAT.Core.PanelManagement.Utils
             form.FormBorderStyle = FormBorderStyle.None;
             form.WindowState = FormWindowState.Maximized;
 
-            Log.Debug("Form width: " + form.Width + "Form height: " + form.Height);
+            _logger?.LogDebug("Form width: {Width}, Form height: {Height}", form.Width, form.Height);
             int boundWidth = Screen.PrimaryScreen.Bounds.Width;
             int boundHeight = Screen.PrimaryScreen.Bounds.Height;
-            Log.Debug("boundWidth=" + boundWidth + " boundHeight=" + boundHeight);
+            _logger?.LogDebug("boundWidth={BoundWidth}, boundHeight={BoundHeight}", boundWidth, boundHeight);
 
             form.Location = new Point(0, 0);
         }

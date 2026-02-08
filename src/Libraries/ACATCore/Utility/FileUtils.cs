@@ -728,7 +728,7 @@ namespace ACAT.Core.Utility
             }
             catch (Exception ex)
             {
-                Log.Exception(ex);
+                _logger?.LogError(ex, "Exception in RunBatchFile");
                 retVal = false;
             }
 
@@ -764,7 +764,7 @@ namespace ACAT.Core.Utility
 
             if (!dir.Exists)
             {
-                Log.Error("No such directory: " + srcDir);
+                _logger?.LogError("No such directory: {SrcDir}", srcDir);
                 return;
             }
 
@@ -794,7 +794,7 @@ namespace ACAT.Core.Utility
                 }
                 catch (Exception ex)
                 {
-                    Log.Exception("Error copying file " + file.FullName + " to " + targetFile + ", exception: " + ex);
+                    _logger?.LogError(ex, "Error copying file {SourceFile} to {TargetFile}", file.FullName, targetFile);
                 }
             }
 

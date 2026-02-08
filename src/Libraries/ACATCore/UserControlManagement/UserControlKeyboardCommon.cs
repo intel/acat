@@ -12,6 +12,7 @@ using ACAT.Core.WidgetManagement;
 using ACAT.Core.WidgetManagement.Interfaces;
 using ACAT.Core.WidgetManagement.Layout;
 using ACAT.Core.Widgets;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
 
@@ -19,9 +20,12 @@ namespace ACAT.Core.UserControlManagement
 {
     public class UserControlKeyboardCommon : UserControlCommon
     {
-        public UserControlKeyboardCommon(IUserControl userControl, UserControlConfigMapEntry mapEntry, TextController textController, IScannerPanel iScannerPanel) :
+        private readonly ILogger<UserControlKeyboardCommon> _logger;
+
+        public UserControlKeyboardCommon(IUserControl userControl, UserControlConfigMapEntry mapEntry, TextController textController, IScannerPanel iScannerPanel, ILogger<UserControlKeyboardCommon> logger = null) :
             base(userControl, mapEntry, iScannerPanel)
         {
+            _logger = logger;
             TextController = textController;
         }
 
@@ -68,7 +72,7 @@ namespace ACAT.Core.UserControlManagement
                     SendKeys.SendWait(widget.Value + " ");
                     Context.AppAgentMgr.TextChangedNotifications.Release();
                     CoreGlobals.Stopwatch1.Stop();
-                    Log.Debug("TimeElapsed 1: " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                    _logger?.LogDebug("TimeElapsed 1: {ElapsedMs}", CoreGlobals.Stopwatch1.ElapsedMilliseconds);
                 }
                 else
                 {
@@ -78,7 +82,7 @@ namespace ACAT.Core.UserControlManagement
                     actuateKey(button.GetWidgetAttribute(), widget.Value[0]);
 
                     CoreGlobals.Stopwatch1.Stop();
-                    Log.Debug("TimeElapsed 2 : " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                    _logger?.LogDebug("TimeElapsed 2 : {ElapsedMs}", CoreGlobals.Stopwatch1.ElapsedMilliseconds);
                 }
             }
 
@@ -87,7 +91,7 @@ namespace ACAT.Core.UserControlManagement
 
         private void actuateKey(WidgetAttribute widgetAttribute, char value)
         {
-            Log.Debug(value.ToString());
+            _logger?.LogDebug("{Value}", value);
             if (!TextController.HandlePunctuation(widgetAttribute.Modifiers, value))
             {
                 if ((KeyStateTracker.IsShiftOn() || KeyStateTracker.IsCapsLockOn()) &&
@@ -104,7 +108,7 @@ namespace ACAT.Core.UserControlManagement
 
         private void actuateVirtualKey(WidgetAttribute widgetAttribute, String value)
         {
-            Log.Debug("VirtualKey: " + value);
+            _logger?.LogDebug("VirtualKey: {Value}", value);
 
             TextController.HandleVirtualKey(widgetAttribute.Modifiers, value);
         }

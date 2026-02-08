@@ -174,7 +174,7 @@ namespace ACAT.Core.AbbreviationsManagement
                 }
                 else
                 {
-                    Log.Debug("Abbreviation file " + abbreviationsFile + " does not exist");
+                    _logger?.LogDebug("Abbreviation file {AbbreviationsFile} does not exist", abbreviationsFile);
                 }
             }
             catch (Exception ex)
@@ -199,7 +199,7 @@ namespace ACAT.Core.AbbreviationsManagement
             // do we detect something?
             if (_abbreviationList.ContainsKey(lookupString))
             {
-                Log.Debug("Yes. Abbreviation list contains : " + lookupString);
+                _logger?.LogDebug("Yes. Abbreviation list contains : {LookupString}", lookupString);
                 return _abbreviationList[lookupString];
             }
 
@@ -258,7 +258,7 @@ namespace ACAT.Core.AbbreviationsManagement
             }
             catch (IOException ex)
             {
-                Log.Exception(ex);
+                _logger?.LogError(ex, ex.Message);
                 retVal = false;
             }
 
@@ -300,7 +300,7 @@ namespace ACAT.Core.AbbreviationsManagement
             // Check to see if Dispose has already been called.
             if (!_disposed)
             {
-                Log.Verbose();
+                _logger?.LogTrace("");
 
                 if (disposing)
                 {
@@ -332,7 +332,7 @@ namespace ACAT.Core.AbbreviationsManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger?.LogError(ex, ex.Message);
             }
         }
 
@@ -355,7 +355,7 @@ namespace ACAT.Core.AbbreviationsManagement
             }
             catch (Exception ex)
             {
-                Log.Exception(ex.ToString());
+                _logger?.LogError(ex, ex.Message);
                 xmlTextWriter = null;
             }
 

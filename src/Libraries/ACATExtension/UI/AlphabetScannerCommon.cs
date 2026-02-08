@@ -377,7 +377,7 @@ namespace ACAT.Extension.UI
 
                 CoreGlobals.Stopwatch1.Stop();
 
-                Log.Debug("TimeElapsed 3 : " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                _logger.LogDebug("TimeElapsed 3 : {ElapsedMs}", CoreGlobals.Stopwatch1.ElapsedMilliseconds);
 
                 handled = true;
             }
@@ -397,7 +397,7 @@ namespace ACAT.Extension.UI
 
                 CoreGlobals.Stopwatch1.Stop();
 
-                Log.Debug("TimeElapsed 3 : " + CoreGlobals.Stopwatch1.ElapsedMilliseconds);
+                _logger.LogDebug("TimeElapsed 3 : {ElapsedMs}", CoreGlobals.Stopwatch1.ElapsedMilliseconds);
 
                 handled = true;
             }
@@ -599,7 +599,7 @@ namespace ACAT.Extension.UI
 
             if (!tryRefreshWordPredictionsAndSetCurrentWord())
             {
-                Log.Debug("AgentContextException.  Retrying refreshing word prediction");
+                _logger.LogDebug("AgentContextException.  Retrying refreshing word prediction");
                 tryRefreshWordPredictionsAndSetCurrentWord();
             }
 

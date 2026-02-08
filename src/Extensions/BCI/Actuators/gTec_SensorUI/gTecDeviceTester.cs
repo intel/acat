@@ -459,7 +459,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                         if (!userPassedLastSignalQualityCheck)
                         {
                             // Exit anyways regardless of signal quality result
-                            Log.Debug("User did not pass signal quality check but set testing parameter to ignore result. Exiting as if user did pass the check");
+                            _logger.LogDebug("User did not pass signal quality check but set testing parameter to ignore result. Exiting as if user did pass the check");
                         }
                     }
 
@@ -494,7 +494,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
                     else
                     {
                         // Display message to user prompting them to improve signal quality before moving on
-                        Log.Debug("Not exiting | Did not pass signal quality criteria");
+                        _logger.LogDebug("Not exiting | Did not pass signal quality criteria");
                         bool confirmed = ConfirmBoxOneOption.ShowDialog(StringResources.SignalQualityChecksFailed +
                         "\n" + StringResources.Youneedtocompleteboth + "\n“ +Impedance” tests and get good signals to" + "\n" + "proceed" +
                         "\n" + StringResources.Pleaserefertotheuserguideforhelp, "", StringResources.OK, _mainForm, false);
@@ -512,7 +512,7 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
         /// </summary>
         private void runSignalCheckIfRequired()
         {
-            Log.Debug("gTecDeviceTester | runSignalCheckIfRequired");
+            _logger.LogDebug("gTecDeviceTester | runSignalCheckIfRequired");
 
             // Always check time last impedance test was run (all electrodes tested) and update UI accordingly
             long timestampPrevImpedanceTest = BCIActuatorSettings.Settings.SignalQuality_TimeOfLastImpedanceCheck;
@@ -523,8 +523,8 @@ namespace ACAT.Extensions.BCI.Actuators.gTecSensorUI
             bool maxTimeHasElapsed = false;
             if (minElapsedPrevSignalQualityCheck >= maxTimeMins)
                 maxTimeHasElapsed = true;
-            Log.Debug(String.Format("runSignalCheckIfRequired | timestampPrevImpedanceTest: {0}, timestampNow: {1}, secDiff: {2}", timestampPrevImpedanceTest.ToString(), timestampNow.ToString(), secDiff.ToString()));
-            Log.Debug(String.Format("minElapsedPrevSignalQualityCheck: {0}, maxTimeMins: {1}, maxTimeHasElapsed: {2}", minElapsedPrevSignalQualityCheck.ToString(), maxTimeMins.ToString(), maxTimeHasElapsed.ToString()));
+            _logger.LogDebug("runSignalCheckIfRequired | timestampPrevImpedanceTest: {TimestampPrevImpedanceTest}, timestampNow: {TimestampNow}, secDiff: {SecDiff}", timestampPrevImpedanceTest, timestampNow, secDiff);
+            _logger.LogDebug("minElapsedPrevSignalQualityCheck: {MinElapsedPrevSignalQualityCheck}, maxTimeMins: {MaxTimeMins}, maxTimeHasElapsed: {MaxTimeHasElapsed}", minElapsedPrevSignalQualityCheck, maxTimeMins, maxTimeHasElapsed);
 
             // Always check if user passed the last overall signal quality check that was executed
             // If max time has not passed, but user did not pass their most recent overall signal quality check,
